@@ -1,0 +1,31 @@
+/** @internal — utility-tier component; not part of @hirobius/design-system public API. */
+/**
+ * @tier utility
+ */
+﻿// @doc-exempt: variant preview helper used by docs pages, not a consumer-facing HDS surface.
+/**
+ * VariantPreviewDeck - preview deck for size/tone/variant families.
+ * @category Utilities
+ */
+import systemManifestData from 'virtual:hds-manifest';
+import { VariantPreviewDeck as VariantPreviewDeckImpl } from './componentPreviewRegistry';
+
+type SystemManifest = {
+  componentSpecs?: Record<string, {
+    filePath?: string;
+  }>;
+};
+
+const systemManifest = systemManifestData as SystemManifest;
+
+export function VariantPreviewDeck({
+  componentName,
+  filePath,
+}: {
+  componentName: string;
+  filePath?: string;
+}) {
+  const resolvedFilePath = filePath ?? systemManifest.componentSpecs?.[componentName]?.filePath;
+  return <VariantPreviewDeckImpl componentName={componentName} filePath={resolvedFilePath} />;
+}
+

@@ -1,0 +1,40 @@
+@import './fonts.css';
+@import './theme.css';
+@import './utilities.css';
+@import './xray.css';
+
+/* Smooth theme switching */
+body,
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.3s ease-out,
+    color 0.3s ease-out,
+    border-color 0.3s ease-out,
+    fill 0.3s ease-out,
+    stroke 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  *,
+  *::before,
+  *::after {
+    transition: none;
+  }
+}
+
+svg[data-hds-icon],
+svg.lucide {
+  display: block;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+svg.lucide:not([width]):not([height]) {
+  width: 1em;
+  height: 1em;
+}

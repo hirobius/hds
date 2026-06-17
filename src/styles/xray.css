@@ -1,0 +1,22 @@
+body[data-hds-xray="true"] [data-hds-component] {
+  outline: 1px dashed var(--semantic-color-feedback-info);
+  position: relative;
+}
+
+body[data-hds-xray="true"] [data-hds-component]::before {
+  content: attr(data-hds-component) " | " attr(data-hds-metrics);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: var(--semantic-space-subgrid-hairline) var(--semantic-space-subgrid-xs);
+  border-radius: var(--semantic-radius-action);
+  background: var(--semantic-color-feedback-info);
+  color: var(--semantic-color-content-onAccent);
+  font-family: var(--semantic-typography-mono-font-family);
+  font-size: 10px;
+  font-weight: var(--semantic-typography-mono-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
