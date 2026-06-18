@@ -38,9 +38,7 @@
     "accentCount": 1
   },
   "componentInventory": [
-    "AgentTag",
     "Alert",
-    "ApprovalCard",
     "Badge",
     "Callout",
     "Card",
@@ -68,7 +66,6 @@
     "NavGroup",
     "NavItem",
     "Page",
-    "PhaseHeader",
     "SegmentedControl",
     "Sketch",
     "SpecimenBlock",
@@ -511,10 +508,6 @@
         "filePath": "src/app/components/activity-feed.tsx"
       },
       {
-        "name": "AgentTag",
-        "filePath": "src/app/components/agent-tag.tsx"
-      },
-      {
         "name": "Alert",
         "filePath": "src/app/components/alert.tsx"
       },
@@ -525,10 +518,6 @@
       {
         "name": "ApiReference",
         "filePath": "src/app/components/api-reference.tsx"
-      },
-      {
-        "name": "ApprovalCard",
-        "filePath": "src/app/components/approval-card.tsx"
       },
       {
         "name": "AssetImg",
@@ -665,10 +654,6 @@
       {
         "name": "DocPageSpec",
         "filePath": "src/app/components/DocPageSpec.tsx"
-      },
-      {
-        "name": "DocShell",
-        "filePath": "src/app/components/doc-shell.tsx"
       },
       {
         "name": "DocTOC",
@@ -837,10 +822,6 @@
       {
         "name": "PageFooter",
         "filePath": "src/app/components/page-footer.tsx"
-      },
-      {
-        "name": "PhaseHeader",
-        "filePath": "src/app/components/phase-header.tsx"
       },
       {
         "name": "PreviewFrame",
@@ -1391,8 +1372,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/doc-shell.tsx",
         "src/app/components/page.tsx",
+        "src/app/data/projects.ts",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
         "src/stories/container.stories.tsx"
@@ -1568,6 +1549,7 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/app/data/projects.ts",
         "src/stories/divider.stories.tsx"
       ],
       "tokenMapping": {
@@ -1916,6 +1898,7 @@
         "src/app/components/sketch-controls.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/tooltip.tsx",
+        "src/app/data/projects.ts",
         "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/stories/foundation-swatch.stories.tsx",
         "src/stories/grid.stories.tsx",
@@ -3068,7 +3051,9 @@
         "exportName": "Sketch",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/data/projects.ts"
+      ],
       "tokenMapping": {},
       "props": {
         "controls": {
@@ -3138,14 +3123,12 @@
       },
       "consumers": [
         "src/app/components/activity-feed.tsx",
-        "src/app/components/agent-tag.tsx",
         "src/app/components/CategoryComponentDocs.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-page-header.tsx",
-        "src/app/components/doc-shell.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
@@ -3504,7 +3487,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/approval-card.tsx",
         "src/app/components/badge.tsx",
         "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
@@ -3658,7 +3640,6 @@
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/doc-sections.tsx",
-        "src/app/components/doc-shell.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/health-rail.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -3667,6 +3648,7 @@
         "src/app/components/lab/token-detail.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/app/stores/mobiusStore.ts",
@@ -3814,7 +3796,6 @@
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-page-header.tsx",
         "src/app/components/doc-sections.tsx",
-        "src/app/components/doc-shell.tsx",
         "src/app/components/doc-toc.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/error-boundary.tsx",
@@ -3894,14 +3875,13 @@
       "figmaUrl": null,
       "figmaId": null,
       "consumers": [
-        "src/app/components/agent-tag.tsx",
-        "src/app/components/approval-card.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/stacked-card-rail.tsx",
         "src/app/components/surface.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/docs/patterns/HdsDisclosure.tsx",
         "src/stories/card.stories.tsx",
@@ -4290,7 +4270,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/agent-tag.tsx",
         "src/app/pages/docs/patterns/HdsActivityFeed.tsx"
       ],
       "tokenMapping": {},
@@ -4351,99 +4330,6 @@
       ],
       "sourcePath": "src/app/components/ActivityFeed.tsx",
       "figmaLink": "TODO:hds-master:ActivityFeed"
-    },
-    "ApprovalCard": {
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/approval-card.tsx",
-      "description": "ApprovalCard — proposed-unit summary card for the autonomous build's approval inbox. Composes Card + Button + Tag into a compact decision surface for a single orchestration.json unit awaiting human ratification. Renders the unit's id, name, sprint / priority / cluster metadata as tag pills, the source attribution, a truncated description, and three action buttons (Approve / Deny / Grill) that fire callbacks the page wires to the 11a-2 bridge endpoint. Purely presentational per src/app/components/CLAUDE.md — no fetch logic lives here. The page (src/app/pages/admin/Approvals.tsx) owns the optimistic-update / reconcile flow and supplies the disabled flag while a mutation is in flight.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "ApprovalCard",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {
-        "unit": {
-          "type": "ApprovalUnitSummary"
-        },
-        "onApprove": {
-          "type": "(unit: ApprovalUnitSummary) => void",
-          "optional": true
-        },
-        "onDeny": {
-          "type": "(unit: ApprovalUnitSummary) => void",
-          "optional": true
-        },
-        "onGrill": {
-          "type": "(unit: ApprovalUnitSummary) => void",
-          "optional": true
-        },
-        "onOpenDetail": {
-          "type": "(unit: ApprovalUnitSummary) => void",
-          "optional": true
-        },
-        "pending": {
-          "type": "boolean",
-          "optional": true
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        }
-      },
-      "allowedChildren": [],
-      "propConstraints": {},
-      "requiredProps": [
-        "unit"
-      ],
-      "a11yRules": [],
-      "tier": "pattern",
-      "docExempt": false,
-      "variantAxes": [],
-      "componentProperties": [],
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {}
-        },
-        {
-          "name": "header",
-          "figmaSlotName": "Header",
-          "tokenBinding": {}
-        },
-        {
-          "name": "title",
-          "figmaSlotName": "Title",
-          "tokenBinding": {
-            "fill": "semantic.color.content.primary"
-          }
-        },
-        {
-          "name": "metaTags",
-          "figmaSlotName": "MetaTags",
-          "tokenBinding": {}
-        },
-        {
-          "name": "description",
-          "figmaSlotName": "Description",
-          "tokenBinding": {
-            "fill": "semantic.color.content.secondary"
-          }
-        },
-        {
-          "name": "footer",
-          "figmaSlotName": "Footer",
-          "tokenBinding": {}
-        }
-      ],
-      "sourcePath": "src/app/components/ApprovalCard.tsx",
-      "figmaLink": "TODO:hds-master:ApprovalCard"
     },
     "HeadingStack": {
       "category": "Typography",
@@ -4685,6 +4571,7 @@
         "src/app/components/preview-frame.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/tokenTableUtils.ts",
+        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/docs/patterns/_template.tsx",
         "src/app/pages/docs/patterns/HdsDisclosure.tsx",
@@ -5334,55 +5221,6 @@
         }
       ]
     },
-    "AgentTag": {
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/agent-tag.tsx",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:AgentTag",
-      "tier": "primitive",
-      "preview": {
-        "exportName": "AgentTag",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/activity-feed.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "assignee": {
-          "type": "string"
-        },
-        "costCeiling": {
-          "type": "number"
-        },
-        "costSpent": {
-          "type": "number",
-          "default": 0
-        },
-        "modelTier": {
-          "type": "enum",
-          "values": [
-            "open-local",
-            "open-remote",
-            "closed-frontier"
-          ]
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "description": "AgentTag — compact metadata cluster for an agent assignment."
-    },
     "Page": {
       "category": "Layout",
       "categorySource": "jsdoc",
@@ -5402,10 +5240,11 @@
       "consumers": [
         "src/app/components/doc-sections.tsx",
         "src/app/components/not-found-pattern.tsx",
+        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/ErrorPage.tsx",
         "src/app/pages/lab/IncubatorPage.tsx",
-        "src/app/routes.tsx",
+        "src/app/route-tree.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5435,75 +5274,6 @@
         },
         "style": {
           "type": "CSSProperties",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "PhaseHeader": {
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/phase-header.tsx",
-      "description": "Phase summary header: name + optional budget on the left, trailing slot (typically a status badge) on the right, with a progress rail beneath. The phase name renders as a real heading (default h3) so the page keeps a valid h1 → h2 → h3 → h4 outline.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:PhaseHeader",
-      "tier": "pattern",
-      "preview": {
-        "exportName": "PhaseHeader",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "as": {
-          "type": "enum",
-          "values": [
-            "h2",
-            "h3",
-            "h4"
-          ],
-          "default": "h3"
-        },
-        "budget": {
-          "type": "number",
-          "optional": true
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "done": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        },
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "warning",
-            "danger",
-            "default"
-          ],
-          "default": "default"
-        },
-        "total": {
-          "type": "number"
-        },
-        "trailing": {
-          "type": "ReactNode",
           "optional": true
         }
       },
@@ -5782,7 +5552,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/agent-tag.tsx",
         "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -6365,6 +6134,118 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "TODO:hds-master:HdsToggle"
+    },
+    "HdsPhosphor": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized icon alias stub for JSX normalization.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsFrame": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-internal frame primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsHeading": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized heading primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsLabel": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized label primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsCaption": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsCheckbox": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsChip": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized chip instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsAvatar": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized avatar instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
     }
   },
   "utilities": {
@@ -6875,6 +6756,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/data/projects.ts",
         "src/stories/stack.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7897,9 +7779,7 @@
         "exportName": "CommandPalette",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/doc-shell.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []
@@ -7929,34 +7809,6 @@
       "variantAxes": [],
       "componentProperties": []
     },
-    "DocShell": {
-      "category": "Layout",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": false,
-      "filePath": "src/app/components/doc-shell.tsx",
-      "description": "DocShell — three-column documentation layout for /hds doc routes. 9d-1 baseline: thin top header bar (wordmark + search slot + theme slot) over a three-column body — sticky left rail (~200px) projecting hierarchical nav from the live HDS manifest, max-width content column, sticky right rail (~200px) reserved as a TOC placeholder for 9d-6. Design contract (from the unit brief): - Compose Container / Stack — do NOT re-implement layout primitives. - Project left-rail nav from componentSpecs + utilities; never hand-author. - Surface from role tokens only (bg-background, border-border, etc.). - Sticky rails, scrollable content. Background: surface.background. Slots reserved for downstream 9-D units (placeholder text only): - 9d-2 — search input (header center) - 9d-6 — table of contents (right rail) Filled slots: - theme-toggle — ThemeToggle (9d-3, system / light / dark dropdown) Compatibility: - Wraps <Outlet /> in TocProvider (so existing useToc/useTocActiveId consumers keep working) and EmbeddedDocLayoutProvider (bottomSlot=null, so DocLayout consumers don't break when the shell hosts them). - This component is doc-tier internal scaffolding (utility tier) — not a part of the public HDS authoring surface, so it is intentionally not enrolled in the LLM-facing component inventory.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:DocShell",
-      "tier": "utility",
-      "preview": {
-        "exportName": "DocShell",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/api-reference.tsx",
-        "src/app/components/doc-page-header.tsx",
-        "src/app/components/doc-toc.tsx",
-        "src/app/components/theme-toggle.tsx",
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
     "DocTOC": {
       "category": "Uncategorized",
       "categorySource": "missing-jsdoc",
@@ -7974,7 +7826,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/doc-shell.tsx",
         "src/app/components/heading-anchor.tsx"
       ],
       "tokenMapping": {},
@@ -7998,7 +7849,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/doc-shell.tsx",
         "src/app/components/doc-toc.tsx",
         "src/app/pages/docs/patterns/_template.tsx",
         "src/app/pages/docs/templates/_template.tsx"
@@ -8024,7 +7874,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/doc-shell.tsx",
         "src/app/context/ThemeContext.tsx"
       ],
       "tokenMapping": {},
