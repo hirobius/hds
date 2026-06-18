@@ -1,6 +1,6 @@
 # System Strength Report
 
-> Generated: 2026-05-12T04:24:44.642Z
+> Generated: 2026-06-18T07:17:04.669Z
 > Spec: [docs/guardrails/strength-score-spec.md](./strength-score-spec.md)
 
 ---
@@ -9,8 +9,8 @@
 
 | Score | Composite | Wired Coverage | Description |
 |---|---|---|---|
-| **A — Internal Integrity** | **78**/100 | 5/6 | Closed-loop discipline: gates, wiring, fixtures, gating strength |
-| **B — Industry Benchmark** | **77**/100 | 7/8 | External standards: DORA, OWASP, WCAG, Web Vitals, TS, OSV, CHAOSS, coverage |
+| **A — Internal Integrity** | **79**/100 | 5/6 | Closed-loop discipline: gates, wiring, fixtures, gating strength |
+| **B — Industry Benchmark** | **72**/100 | 5/8 | External standards: DORA, OWASP, WCAG, Web Vitals, TS, OSV, CHAOSS, coverage |
 
 > Arithmetic mean over wired dimensions only. `needs-wiring` dims excluded from average.
 > **Two scores are never collapsed.** A high B with low A means "theatrical guardrails" — harden A first.
@@ -19,7 +19,7 @@
 
 ## Score A — Internal Integrity
 
-Composite: 78  |  Wired: 5/6
+Composite: 79  |  Wired: 5/6
 
 ### A1 — Registration Coverage
 
@@ -27,7 +27,7 @@ Composite: 78  |  Wired: 5/6
 
 **Methodology:** count(registered) / count(scripts/check-*.mjs ∪ audit-*.mjs)
 
-_Data: registered=65, scriptsOnDisk=64_
+_Data: registered=61, scriptsOnDisk=61_
 
 ### A2 — Wiring Honesty
 
@@ -35,7 +35,7 @@ _Data: registered=65, scriptsOnDisk=64_
 
 **Methodology:** count(gates without wiringTodo) / count(registered)
 
-_Data: honest=66, total=68_
+_Data: honest=61, total=63_
 
 ### A3 — Fixture Proof-of-Firing
 
@@ -43,15 +43,15 @@ _Data: honest=66, total=68_
 
 **Methodology:** count(gates with REAL non-stub fixture pair verified firing) / count(registered). Stubs exist but are unproven; missing is an error.
 
-_Data: total=68, withMissingFixtures=5, withRealFixtures=16, withStubFixtures=47_
+_Data: total=63, withMissingFixtures=5, withRealFixtures=15, withStubFixtures=43_
 
 ### A4 — Strict Gating
 
-`[███████████████░░░░░] 76`
+`[████████████████░░░░] 79`
 
 **Methodology:** count(firingChannel ∈ {pre-commit, pre-push, ci-pr}) / count(registered)
 
-_Data: strict=52, total=68_
+_Data: strict=50, total=63_
 
 ### A5 — Hardening Cluster Completeness _(needs-wiring)_
 
@@ -75,7 +75,7 @@ _Data: channel=pre-commit, gatesWithViolations=3, generatedAt=2026-05-06T21:31:2
 
 ## Score B — Industry Benchmark
 
-Composite: 77  |  Wired: 7/8
+Composite: 72  |  Wired: 5/8
 
 ### B1 — DORA Metrics _(needs-wiring)_
 
@@ -97,45 +97,43 @@ Framework: _OWASP SAMM + NIST SSDF_
 
 _Data: coveredCount=6, totalCategories=8_
 
-### B3 — WCAG 2.1 AA
+### B3 — WCAG 2.1 AA _(needs-wiring)_
 
 Framework: _WCAG 2.1 AA (W3C)_
 
-`[████████████████████] 100`
+`[····················] needs-wiring`
 
 **Methodology:** axe-playwright violations per route on critical pages (0 = 100)
 
-_Data: source=test-results/.last-run.json, status=failed, totalRoutes=20, violatingRoutes=0, violationsPerRouteMean=0_
+**Blocked:** test-results/.last-run.json absent — run pnpm test:a11y first
 
-### B4 — Web Vitals
+### B4 — Web Vitals _(wiring-failed)_
 
 Framework: _Google Web Vitals_
 
-`[███████░░░░░░░░░░░░░] 34`
+`[····················] needs-wiring`
 
 **Methodology:** Web Vitals (LCP, INP, CLS) via lighthouse-ci across critical routes — averaged perf score (0–100)
-
-_Data: source=lhci-collect-fresh_
 
 ### B5 — TS Strict Mode
 
 Framework: _TS strict-mode_
 
-`[███████████░░░░░░░░░] 57`
+`[████████████░░░░░░░░] 59`
 
 **Methodology:** tsconfig strict flags present + zero any in src/**/*.ts(x)
 
-_Data: anyCount=3, flagsPresent=4, totalFlags=8_
+_Data: anyCount=1, flagsPresent=4, totalFlags=8_
 
 ### B6 — OSV / npm Audit
 
 Framework: _OSV / npm audit_
 
-`[█████████████████░░░] 85`
+`[███████░░░░░░░░░░░░░] 35`
 
 **Methodology:** 0 critical + 0 high CVEs = 100; each critical -20, each high -5
 
-_Data: critical=0, high=3, info=0, low=2, moderate=1, source=pnpm-audit_
+_Data: critical=0, high=13, info=0, low=4, moderate=10, source=pnpm-audit_
 
 ### B7 — CHAOSS Docs Coverage
 
@@ -145,7 +143,7 @@ Framework: _CHAOSS (Linux Foundation)_
 
 **Methodology:** % components in component-api.json with real description
 
-_Data: total=50, withRealDesc=50_
+_Data: total=47, withRealDesc=47_
 
 ### B8 — Test Coverage
 
@@ -165,6 +163,7 @@ Dimensions that are `needs-wiring` require follow-up units before they contribut
 
 - **A5 (Hardening Cluster Completeness):** no-13g-units
 - **B1 (DORA Metrics):** scripts/derive-dora-metrics.mjs not yet authored (13s-strength-B1 follow-up unit)
+- **B3 (WCAG 2.1 AA):** test-results/.last-run.json absent — run pnpm test:a11y first
 
 ---
 

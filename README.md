@@ -49,7 +49,7 @@ In practice that means:
 
 Regression prevention is intentionally layered.
 
-`docs/ai/AI_ORCHESTRATION.md` is the operating contract. It defines the phase queue, permanent UI guardrails, required validation steps, and the self-heal requirement before a task can be marked complete.
+`CLAUDE.md` is the operating contract. It defines the agent execution protocol, permanent UI guardrails, required validation steps, and the self-heal requirement before a task can be marked complete.
 
 `scripts/self-heal.mjs` is the automated repair loop. It runs the local static and smoke checks, captures failures, and gives the agent a consistent path to diagnose and fix type, layout, and runtime drift before reporting completion.
 

@@ -7,7 +7,7 @@
  * (and recursive subdirs like src/app/components/lab/). Proposes one
  * of: primitive | pattern | template | utility.
  *
- * Output: docs/ai/TIER_AUDIT.md (draft markdown table for human
+ * Output: docs/audits/TIER_AUDIT.md (draft markdown table for human
  * review per the 8-X cluster plan). Honors a `@tier <value>` JSDoc
  * tag at the top of source as a hard override; honors `@doc-exempt`
  * as a strong utility signal. Heuristics misclassify boundary cases
@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPONENTS_DIR = path.join(ROOT, 'src/app/components');
 const MANIFEST_PATH = path.join(ROOT, 'public/hds-manifest.json');
-const AUDIT_PATH = path.join(ROOT, 'docs/ai/TIER_AUDIT.md');
+const AUDIT_PATH = path.join(ROOT, 'docs/audits/TIER_AUDIT.md');
 const DRY_RUN = process.argv.includes('--dry-run');
 const APPLY = process.argv.includes('--apply');
 

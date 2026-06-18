@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-06-18T06:43:29.756Z",
+  "generated": "2026-06-18T07:22:17.015Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -262,7 +262,7 @@
     }
   ],
   "health": {
-    "generatedAt": "2026-05-12T03:45:59.253Z",
+    "generatedAt": "2026-06-18T07:22:17.198Z",
     "integrity": {
       "score": 100,
       "grade": "F"
@@ -273,28 +273,28 @@
       "directPrimitiveViolations": 1,
       "storefrontGovernance": 0,
       "uncategorizedComponents": 1,
-      "namespaceViolations": 136,
-      "total": 138
+      "namespaceViolations": 131,
+      "total": 133
     },
     "usage": {
-      "highBlastRadiusTokens": 50,
+      "highBlastRadiusTokens": 47,
       "deadWood": 0,
-      "maxBlastRadius": 467,
+      "maxBlastRadius": 234,
       "maxBlastRadiusToken": "semantic.color.content.secondary",
       "textLockupsStandardized": 5
     },
     "componentCoverage": {
-      "documented": 50,
-      "total": 50,
+      "documented": 47,
+      "total": 47,
       "percent": 100,
-      "apiComponents": 50,
-      "specs": 68
+      "apiComponents": 47,
+      "specs": 65
     },
     "fidelity": {
       "grade": "C",
-      "complete": 32,
-      "total": 42,
-      "percent": 76,
+      "complete": 29,
+      "total": 39,
+      "percent": 74,
       "incomplete": [
         {
           "name": "Field",
@@ -455,14 +455,14 @@
       "criticalFileCount": 1,
       "criticalFiles": [
         {
-          "file": "/home/adrian/projects/adrian-milsap/src/app/components/componentPreviewRegistry.tsx",
+          "file": "/home/user/hirobius-design-system/src/app/components/componentPreviewRegistry.tsx",
           "count": 1,
           "label": "componentPreviewRegistry.tsx"
         }
       ],
-      "trendDelta": 1,
-      "trendLabel": "+1",
-      "lastScannedAt": "2026-05-11T18:02:17.939Z",
+      "trendDelta": -1,
+      "trendLabel": "-1",
+      "lastScannedAt": "2026-06-18T03:32:57.324Z",
       "sparklineValues": [
         24,
         24,
