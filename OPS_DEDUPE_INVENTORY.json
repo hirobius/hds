@@ -1,0 +1,991 @@
+{
+  "generated": "2026-06-18T22:07:44.781Z",
+  "repo": "hirobius/hirobius-design-system",
+  "files": {
+    "CLAUDE.md": {
+      "group": "governance_docs",
+      "bytes": 7008,
+      "sha256": "856d1a9f04a73febd64cce7dcc1c76ef4f2e13f81be9211c97baec4e43279873"
+    },
+    "AGENTS.md": {
+      "group": "governance_docs",
+      "bytes": 4520,
+      "sha256": "d348a40f716f8b90af77413e8addcc54e1be80a3a565517ad8dfbd62e71da294"
+    },
+    "TOKEN_GOVERNANCE.md": {
+      "group": "governance_docs",
+      "bytes": 4996,
+      "sha256": "77709cb6474a08569c94ba3b3f759ff0e0bac7c5ec6d40b57e5c7b36f4dc7327"
+    },
+    "TOKEN_MIGRATION.md": {
+      "group": "governance_docs",
+      "bytes": 999,
+      "sha256": "0f1db4ddd9e5901f2a95e7ed1feff44957685c52be3ff313fe5ffaecb3a5d422"
+    },
+    "SYSTEMS_REGISTRY.md": {
+      "group": "governance_docs",
+      "bytes": 13256,
+      "sha256": "2370e0bf11136c8c6a5bb1dd170f42125ed27f737ca5d93aecebe80ecb972c8c"
+    },
+    "OPERATING_MAP.md": {
+      "group": "governance_docs",
+      "bytes": 2461,
+      "sha256": "d569f0d21c65940ea0c661553f284446128771937bb94e46662534e86f43d3e8"
+    },
+    "BACKLOG.md": {
+      "group": "governance_docs",
+      "bytes": 7506,
+      "sha256": "87d937de49260d18075235af67feb46916d5a4b1c36012e855643ccbfd260cf8"
+    },
+    "README.md": {
+      "group": "governance_docs",
+      "bytes": 4557,
+      "sha256": "094ec07d93e80b3e518a206b9d4725730131a4f0db1b3f334860beafdf51400c"
+    },
+    "CONSUMING.md": {
+      "group": "governance_docs",
+      "bytes": 2664,
+      "sha256": "fbf04997b971f37f24a95b3e343eb60bba08f04162f1d402ef1e4cf7f179c49a"
+    },
+    "docs/CONSUMING.md": {
+      "group": "governance_docs",
+      "bytes": 4600,
+      "sha256": "2a84eab849ebc85ee4ab4c1bc353f3aa9abcf868deeefe46e49f6ced5c90b202"
+    },
+    "HDS_COMPLIANCE_LOG.md": {
+      "group": "governance_docs",
+      "bytes": 1523,
+      "sha256": "fbfd5812618cb519259c823108a68f765bb15eef77c84a967511b18b4750f1df"
+    },
+    "DECISIONS.md": {
+      "group": "governance_docs",
+      "bytes": 434,
+      "sha256": "b0e0661225d3d5ebd532931b19fd91ff83b3919f07a94e51e2b40f1d5a2f3041"
+    },
+    "PROCESS.md": {
+      "group": "governance_docs",
+      "bytes": 539,
+      "sha256": "fab3337cc04b0e31ca9177ad47893a05aa68f8f847bd793a441544d73ad647f6"
+    },
+    "DESIGN.md": {
+      "group": "governance_docs",
+      "bytes": 14610,
+      "sha256": "407cbd4335c8716db09a5fbc1e7374f8796774e7c1b3fb126cb14b6ba682e7e2"
+    },
+    "DESIGN.source.md": {
+      "group": "governance_docs",
+      "bytes": 7109,
+      "sha256": "757daac0e68f6c4da4e0b13a007d0b444e12edac33958fd4f58bfadbdf8e60ec"
+    },
+    "DESIGN-HANDOFF.md": {
+      "group": "governance_docs",
+      "bytes": 27941,
+      "sha256": "00a0e1a4cabac20c6bc84da7448bf367fa0d985a1f17bc0e6b079f4909a6bddd"
+    },
+    "CONTRIBUTING.md": {
+      "group": "governance_docs",
+      "bytes": 6404,
+      "sha256": "027a8288d6e4f76ec2b7ff54d752cfb8e1446a1cf468231218d793fc140ea15f"
+    },
+    "AGENT_CONTEXT_SYSTEM.md": {
+      "group": "governance_docs",
+      "bytes": 791,
+      "sha256": "b4cb51d26062de791743c09edcef16e2e588fca9995d6a1da6c4fc53b87e31b7"
+    },
+    "TYPOGRAPHY_MIGRATION_GUIDE.md": {
+      "group": "governance_docs",
+      "bytes": 8947,
+      "sha256": "2d2ac59282d31a7b145af928c469e6a4cfda00343373a6b9e75ba71acaadc93c"
+    },
+    "TYPOGRAPHY_REFACTOR.json": {
+      "group": "governance_docs",
+      "bytes": 4714,
+      "sha256": "3e0f7e1486d6d8000f7a0a82acd4aad9f6300513a62aff00ec8a81efe01cd995"
+    },
+    "hirobius.tokens.json": {
+      "group": "token_files",
+      "bytes": 66806,
+      "sha256": "77a9b0fbe9dac5be74c7df8c50afdd647f5cfd073d0ff0b9f9aa50ca3655976b"
+    },
+    "tokens.lock.json": {
+      "group": "token_files",
+      "bytes": 10246,
+      "sha256": "0f76db329cc7e17897cba858a399aef70e5686d209dbf69f5ee727d01b87f80e"
+    },
+    "hirobius.tenant-tokens.schema.json": {
+      "group": "token_files",
+      "bytes": 5324,
+      "sha256": "ce5315c91f047ecdb179d08198ebc750a8df4d4f2747b3d2e6dbf1f481259d08"
+    },
+    "src/styles/tokens.css": {
+      "group": "token_files",
+      "bytes": 26461,
+      "sha256": "8eba745aadc5af07b5a0df21c0a0bc7a6371b29552292fcf2d90dafb21d53eab"
+    },
+    "src/app/design-system/generated-tokens.ts": {
+      "group": "token_files",
+      "bytes": 18466,
+      "sha256": "2f57c5c9d387521f3989cb57c8f8f7823ff1457547010a29fb62a92b13626af9"
+    },
+    "tailwind.config.tokens.cjs": {
+      "group": "token_files",
+      "bytes": 2346,
+      "sha256": "c5b84769abc882633d8d87f8c697d0575911bee06ba9d0f5f2e231aef6c0c87b"
+    },
+    "public/hds-manifest.json": {
+      "group": "token_files",
+      "bytes": 324386,
+      "sha256": "a2d20281aa880523ef8d363a6423cc65c3e28179dca14a0e9af6c2132d6dc190"
+    },
+    "scripts/a11y-schema-check.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6610,
+      "sha256": "47cf611d05d6a3f8da61accf1272527b44b27c5978836f34b87b17e8f59b9be6"
+    },
+    "scripts/activity-log.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2973,
+      "sha256": "fd0b8c96acc737df9582788773b9fddaefcfe421721f95c0a6c743b8b9e8ce5a"
+    },
+    "scripts/audit-batch-deliverables.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 11735,
+      "sha256": "cb3faf962779fddde38adf638c96ad1255eab625f4f955afa3abe096aad346db"
+    },
+    "scripts/audit-bundle.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1350,
+      "sha256": "c51788466cd454c2521f9307861bbdff6d2375b1d17e021db610523a9c732809"
+    },
+    "scripts/audit-component-integrity.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 13504,
+      "sha256": "451a3b890fcff309645472c7c1b84293c9cb4de554ca9291eb6187986421986a"
+    },
+    "scripts/audit-deps.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1931,
+      "sha256": "7c819ba5d129a7e9e86f4cd8a981388d4dec31033a2990173000b3afa05d15d8"
+    },
+    "scripts/audit-exceptions.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8039,
+      "sha256": "4a0237720baec8ecb71eac0cb4e72c7f8618b87cc66d723220390726096062cf"
+    },
+    "scripts/audit-figma-system.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 19128,
+      "sha256": "1aa688aba958ace2887020ebed6a1b214fec7960ec642583389344d30c5d5746"
+    },
+    "scripts/audit-gate-purity.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 18298,
+      "sha256": "b9b9646a5f2cfed3509b15a77b779df5b2abec6678e32b7fd4e570e1c3bf69a8"
+    },
+    "scripts/audit-gate-replaceability.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 57364,
+      "sha256": "f0dacc5624109f64e16040e96db2f579cc4aaf17971e1099571583570ebd66af"
+    },
+    "scripts/audit-gates-supportjson.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 7907,
+      "sha256": "7117a18407cb54fced2bb4d572e3e9fb225215eb3f4cb969b13dc40d94198bab"
+    },
+    "scripts/audit-guardrails.js": {
+      "group": "pipeline_scripts",
+      "bytes": 9969,
+      "sha256": "d682bfc84a2e2b0b2729a29cb3ed148f9e544ed46312116a0cd1f8ecf68aaf1e"
+    },
+    "scripts/audit-pages.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4039,
+      "sha256": "1fc0e94c8beabccd30072dc0c2aaa66fc3253f3ffc66bb00173f5a924ba78d60"
+    },
+    "scripts/audit-sbom.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1654,
+      "sha256": "55de78ad840fbcc18a46fa9b62f151f8b15bbeae47166f1a888c02e956c93b59"
+    },
+    "scripts/audit-soft-gates.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 16567,
+      "sha256": "797a01d06d72c91e0b09d6d4d7701a7ecee3c34e74213b51a8f4c4317bc502ea"
+    },
+    "scripts/audit-strengths.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 13163,
+      "sha256": "b9464cc2af6d8a6c65b3a2a7791e6cb62a70ea4d48df4ed590ee5dddbef93dc3"
+    },
+    "scripts/audit-tiers.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 15668,
+      "sha256": "6e7dd5027330cdf07a5305d277aa0e0eecb451d2d1dfca1e9266da58c306b4a4"
+    },
+    "scripts/audit-tokens.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 40975,
+      "sha256": "b22a629929b08126317d142c4698a6ad8cd002106febb77bf7881089142b9e39"
+    },
+    "scripts/auth-middleware.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5536,
+      "sha256": "9ddc4a57a1486780a68aab5149f9c0146b12aedaa99f0dc2b9e2878b694de0f4"
+    },
+    "scripts/build-design-md.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 18130,
+      "sha256": "f0e38cc6d4f0603221f2299c073394e008337bbe96664ded79d5f687d7958db8"
+    },
+    "scripts/build-figma-masters.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2895,
+      "sha256": "70c349f24f3d1d1c126658e1d8bf3c39ebedac41e3e2e7cf675eb73897b3d312"
+    },
+    "scripts/build-figma-variables.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 20548,
+      "sha256": "df8a232c2b397d89358195e7c6a5c6e06093da473f41e3000a82c92d5e7c8311"
+    },
+    "scripts/build-handoff.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 21231,
+      "sha256": "059700ae8fa67f4a7b54f7dd7d4ef5a13c22d4eb43f3ffa757a2c1f39b159b24"
+    },
+    "scripts/build-hds-tokens.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6568,
+      "sha256": "f5e992d965aba0079f3bd249ae4622b2dcc3918b3f4c7af21935edd17f3cff5e"
+    },
+    "scripts/build-llms-txt.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 131,
+      "sha256": "050e779ad8fd6be2275cdc1d21269ff62faa8626ea0510e45c5df5998ece584c"
+    },
+    "scripts/build-roadmap-data.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 16414,
+      "sha256": "eff22b46f119cdfd579f519a649cd320e52e712ff629e046828823d79005059e"
+    },
+    "scripts/build-token-index.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 11794,
+      "sha256": "c0a2e4d42ee70a7e2da0bd1de605eae126dd522c2bdbbfca9c71e0a004f41c8c"
+    },
+    "scripts/build-token-quick-reference.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5934,
+      "sha256": "520ddee1584f3b44701d477d0445591288a9389302f0089011829ff239d39c48"
+    },
+    "scripts/build-tokens.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 67476,
+      "sha256": "573370138861a83ba9b83de210a56b456c91e344333ae9b203760a7e68f626e0"
+    },
+    "scripts/case-study-draft.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3177,
+      "sha256": "e1622850966d317b29274a05ab8bc1563c478adf63f9a33ead172113e5d8af7f"
+    },
+    "scripts/check-asset-manifest.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5667,
+      "sha256": "bcc736d238a817f4d970657f9a32921a6b4340b339684c716ed5e5b5d6b5f29e"
+    },
+    "scripts/check-attributions.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2211,
+      "sha256": "531230117f9f4be3e62cb01bdac22c1d0e600ed6883c15ef157393216e96d301"
+    },
+    "scripts/check-binding-drift.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5315,
+      "sha256": "ac4368eddbc3ea668529177287ec8e0f0397ebc8056d8edc7556fadaa4a890a9"
+    },
+    "scripts/check-brand.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5668,
+      "sha256": "57f6fcd1122dbfd7d2d3088d88876d24cd3ee4ab81decbd26b0e37ea0a799f83"
+    },
+    "scripts/check-code-connect.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2023,
+      "sha256": "2bb71dea34878e417a7da4dd838ccd464402c947880ff4f5b35b06abfd6fdee3"
+    },
+    "scripts/check-contrast.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 7411,
+      "sha256": "e3c2ebbf2b2e480dc9813be40c998d974df8599cee18e8906657fb32481933f2"
+    },
+    "scripts/check-css-integrity.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4782,
+      "sha256": "203ae28de853363fa3c245b099206375736c3f750f19a17e4c34cbb623bb9144"
+    },
+    "scripts/check-dimensions.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4170,
+      "sha256": "c43f3d98fcff730ffaf8207d9e47d4ae675c64d687368bdc62510ebdfdfad304"
+    },
+    "scripts/check-doc-structure.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 11604,
+      "sha256": "b8a831c080c4220e567f1c1b1a1f5ad01aef2fe184941598922c6a7dd33853c6"
+    },
+    "scripts/check-exemptions.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3539,
+      "sha256": "d8de515b77148f82e7482581caae2b0923b26c2d8f6036c2308b493a6bdba705"
+    },
+    "scripts/check-fixture-stubs-ratchet.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6686,
+      "sha256": "f0dc348f3a704368f0c3891429c70f98346dfc938703613ea7e2919d04de8ce4"
+    },
+    "scripts/check-focus-states.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6551,
+      "sha256": "1fffbc139c0118ea7cff6c772dc21d263bdac18f6737572e8c58a5830cbe5c29"
+    },
+    "scripts/check-frozen-demos.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1885,
+      "sha256": "438c3c1320223c77a92b44b3952f6adcac8ec8e5287be283083a6273f10a5777"
+    },
+    "scripts/check-hardcoded-breakpoints.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4778,
+      "sha256": "a3039f5541e9e31aee9f4ff776b15ad86d23ba6219448b12b207f157acf7f9ea"
+    },
+    "scripts/check-hardcoded-colors.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 9393,
+      "sha256": "f850677ba6575293b4ae8f583c5fc8a10d12e102352aba499bbe631f70c43803"
+    },
+    "scripts/check-hardcoded-spacing.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 7271,
+      "sha256": "f44b3cac2b2ba2f3df77bdd92d4db4977312acc63b653471a3bb62a84448dc70"
+    },
+    "scripts/check-legacy-hds-vars.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3289,
+      "sha256": "085f681a7dda4957142ac27bab4d4a8b1320588d071ad8982002599bf40eaf7a"
+    },
+    "scripts/check-licenses.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2416,
+      "sha256": "2e1328660fa00c5d8f31f5a000aca1fe9677a40774ac1bc2a4d9627d5e22f9c1"
+    },
+    "scripts/check-link-integrity.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 16143,
+      "sha256": "3c30c25031e8eeb0d55398c3dfbf0e9bf3b412bf4fa508c341785ce420253fb2"
+    },
+    "scripts/check-manifest-drift.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1459,
+      "sha256": "c4b1f669d3b68bb560dbeca8a1e256d09a0a4ca4199bc84a2e19ec915848604a"
+    },
+    "scripts/check-manifest-schema-semver.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5347,
+      "sha256": "679b52345b60afca201f7ead3bfcbe5d86bc5ed685ec3d117d8eed353a92d1eb"
+    },
+    "scripts/check-mono-roles.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1888,
+      "sha256": "c3af100c68a2d99ab2022c7c505311650b1a014defffa51ab314f365ba0df1fd"
+    },
+    "scripts/check-motion.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8482,
+      "sha256": "092ca9c2503bb626e4061f0d45285148b5d04ad624a6d407fcdd78d309dbea92"
+    },
+    "scripts/check-og-meta.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3509,
+      "sha256": "e639868a59b1867911bbf0090a8483dd40b7219e6fde048de63773affe5a459e"
+    },
+    "scripts/check-page-shell.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2138,
+      "sha256": "9fe9a80c0e74ec368c8a8dfb8e9a25759368863b773a2045ea112c0b2a80ffb1"
+    },
+    "scripts/check-reduced-motion.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5555,
+      "sha256": "01a337a74afe548b4ec635975825e5c48fc56be4c91a6d3f81a08d7a7090b6fe"
+    },
+    "scripts/check-ref-forwarding.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4166,
+      "sha256": "17313c00164869cde4a7672a0c4f56d63442ce3fff14fee7a47410c0d41794b8"
+    },
+    "scripts/check-registry.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3243,
+      "sha256": "c8ab2248dfabe0ad22c0d006f028e5004abeaa85e38e48a90dfd3862b8e894e9"
+    },
+    "scripts/check-route-coverage.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5603,
+      "sha256": "79b1a28375fa210c7806efb058950bc1cdc1e4bb4a79dba2c75d839c8a0b23dc"
+    },
+    "scripts/check-route-smoke.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3598,
+      "sha256": "1f822c301ed8087cf3eea63769546d023f665f0a54ff49d9f072e52ba4af5ef7"
+    },
+    "scripts/check-secrets.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4564,
+      "sha256": "a0217b81f56e9912bbe7a8b6a828afea632e09c6f6f39ea0c955fe2baf84234c"
+    },
+    "scripts/check-security-baseline.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5756,
+      "sha256": "e051fa374dde0751f070de5d6af456bebdc0f02230c5d0dba6724dd55f6acccd"
+    },
+    "scripts/check-snapshot-staleness.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 9944,
+      "sha256": "47de8f4e978bbcfff4cac70c651a86862f3ae16ce9cdf7006e05d3d240a7a978"
+    },
+    "scripts/check-source-canon.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 18897,
+      "sha256": "bc9079ca420e98aa7277bd1d25cb42bddd2f0ae6908583aa1d927407781f2aa1"
+    },
+    "scripts/check-style-discipline.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 12883,
+      "sha256": "9ba6b0bf71d71403747f4871bc371c2d8525aeacc211a0966e0fab98d7c0b281"
+    },
+    "scripts/check-template-source-of-truth.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 7589,
+      "sha256": "bb9fa6dd75589f021d1e8bbe800149fdc5c220032b6c3783d968822d20c7bb24"
+    },
+    "scripts/check-tenant-tokens.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4579,
+      "sha256": "3b0e7c14e4bb48b387ee29e82ef200f724dc761dce6bb69809044aa67d44462c"
+    },
+    "scripts/check-tier-bypass.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3927,
+      "sha256": "c3d9d2ba940d331fd3026d13a0e1d324bc025f21909f2e3e72bc1faa357a207e"
+    },
+    "scripts/check-token-descriptions.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8299,
+      "sha256": "5afb3f806ac196e9ddc1bc1c2494eed82f8de72f6a1ee3ad91865c2598123bb5"
+    },
+    "scripts/check-token-paths-ratchet.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 13889,
+      "sha256": "4e67ce0a4e7ee7835c6da4a678f2a94b98b15e87306a9a89768d3dc4d57e11ee"
+    },
+    "scripts/check-token-rebake-needed.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6954,
+      "sha256": "32765a24400ba2e731df3dffd4c7a4e10d1149a91d2df77e0f2e09b4e3cbb529"
+    },
+    "scripts/check-token-renames.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5030,
+      "sha256": "b611ad75dd60222e3eb5fccae50378a43656199d5d74b52d8a086b6065bf7d5d"
+    },
+    "scripts/check-token-structure.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6511,
+      "sha256": "c53c5e4588c9092bdbe270074f7de9476ac6d70edcb30ed38ac0188df97506d0"
+    },
+    "scripts/check-typography-discipline.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 13357,
+      "sha256": "164203d9c0413a811c7ffafff63a3f02cd5627733e338abbdbaac035e28a5860"
+    },
+    "scripts/check-unresponsive-grids.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6756,
+      "sha256": "e9b88b7f2f020844787a4523004fb19b3d0b8145c038cea35c3da060387dd1f8"
+    },
+    "scripts/check-validator-wiring.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 21432,
+      "sha256": "fadbfdb5665093f78882aa32f3e3a4ab427c0adfcf63bc86cc5caf545c8fcff1"
+    },
+    "scripts/component-discovery.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 7676,
+      "sha256": "5a9f83ba0af4cd813adf6c6b8ffb5d7af08425fb8347d9c7c518ac493676947b"
+    },
+    "scripts/convert-incoming-assets.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6232,
+      "sha256": "89767499a7aa2a32f330661a668bdedbd7792bb423cb9e7bf976f27c4a65b97e"
+    },
+    "scripts/correlation.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8987,
+      "sha256": "cc0b37e9c85754af58a260ac2e14a61dd87d936e61e14840dc550548baaab5b3"
+    },
+    "scripts/derive-routes.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4209,
+      "sha256": "9dc2ab238d78b3543c55b67387de18f492be2fa7ed7508b6dca7fbc2cc8f280d"
+    },
+    "scripts/dispatch-pod.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 7103,
+      "sha256": "26101da39da3d9939b70e84bc7467842d139a810043a17504fe85d66623a3a1e"
+    },
+    "scripts/enrich-manifest.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 13532,
+      "sha256": "c6db73669ad726441756629066c2361eff7136ddf324d2d479ee3ab2c33fe3ad"
+    },
+    "scripts/figma-bridge-smoke.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8525,
+      "sha256": "3ac4d96f1c273527190a987e1065837a9df71ba74651971b9a8767f3a32e9454"
+    },
+    "scripts/figma-console-snippet.js": {
+      "group": "pipeline_scripts",
+      "bytes": 3770,
+      "sha256": "0c162e16e7a50bd245185578915ca6319a9b3ae23dc7a960b2aca3d078077248"
+    },
+    "scripts/figma-diff.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6718,
+      "sha256": "a9af32605ffc5bc0fa0ded5abff3a0e65cabb6f9945aff0d61eac135502db65a"
+    },
+    "scripts/figma-library-generate.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 20545,
+      "sha256": "fd576f2fa20ac072a04b45682c4874e992765fee6a7608476577ded6bb21140b"
+    },
+    "scripts/figma-parity-check.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8509,
+      "sha256": "aa288183e1ec616f2dd4e8f1920b7b51b9b86ea3fc311c84948b0bb1a12b7ff7"
+    },
+    "scripts/generate-changelog.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8221,
+      "sha256": "65b161d115e6e9ea38763105721f56249a466b63555f8efea4e3bc88d1e27bf4"
+    },
+    "scripts/generate-closure-plan.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 9201,
+      "sha256": "8e04120ed094db045408f207f65a2ab7e345a1e588fe2fefdd79e4bf60b6ff81"
+    },
+    "scripts/generate-component-api.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 17477,
+      "sha256": "68cfe50d038d257eafb8dec82bbeda51a2f801f35540fc9b4789d124a20349e7"
+    },
+    "scripts/generate-component-changelogs.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4040,
+      "sha256": "f2a8d6fca4ba6ecdbce158d76adb62045b61a702cdbce773580a420382ce4f75"
+    },
+    "scripts/generate-llms-txt.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 9722,
+      "sha256": "26c6c1a34a48c38576e2451b42a460ebb0e685cba925d34f70842d0ac53286fc"
+    },
+    "scripts/generate-manifest-projection.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3483,
+      "sha256": "27ca87a5aacd454188dac0b98ce74b46d9b295b9df35cf5fb5f8f31d4048abcf"
+    },
+    "scripts/generate-manifest.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 10480,
+      "sha256": "f98e8474752f265865028339ee974c14a694d2ece3c422d3d4a9d6a6cba1503c"
+    },
+    "scripts/generate-portal-token.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4417,
+      "sha256": "38d9993c1d46291e0a8b267f897f14ac44d9ddf9587f2f64d2c32a3d0eb33e66"
+    },
+    "scripts/generate-security-posture.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5801,
+      "sha256": "c0d0691b05402e2d60f201fe59fbde6f31670de7eae31be0b145018e310c7b1b"
+    },
+    "scripts/generate-sitemap.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2964,
+      "sha256": "138e727019b3f481d433efe55e41b4269bca8fa04dbb72ef1f42c0298099905d"
+    },
+    "scripts/generate-strength-report.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 54649,
+      "sha256": "e0d6dfb603c4e00db7146f6f37647345a81b02ac4499025be066fc74962f668d"
+    },
+    "scripts/generate-system-atlas.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 19511,
+      "sha256": "3db2559586142ddc06943eccd03f649c1890d2949d51a51fb6d390228e00c411"
+    },
+    "scripts/generate-to-figma.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 31797,
+      "sha256": "12e86719bef9d676747f3c317ed088df54d9658ee5809a70dea16c37044b6c6f"
+    },
+    "scripts/generate-visual-catalog.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4601,
+      "sha256": "7c46336e257a035470aed31012f634a219d32eb6561659354086fe6beecf8f8e"
+    },
+    "scripts/hds-bridge.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 38521,
+      "sha256": "d54cdc3f0ad6ec1298cc06345beb8375c86351188c19be58d9737f7ad6def16d"
+    },
+    "scripts/hds-jsx-compiler.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 22855,
+      "sha256": "3eca815d81ae1790aefbb48b26cb75bc7d5cd2e9720cac3832ccfad9ff35dd43"
+    },
+    "scripts/hds-lint.js": {
+      "group": "pipeline_scripts",
+      "bytes": 18388,
+      "sha256": "57f6663e43b8e1337a354b939c9b771354367aa5cd8b9e814e32157d726fe304"
+    },
+    "scripts/llm-stream-bridge.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4302,
+      "sha256": "1cd908b11377de876653d7b0e77a5a29bf4736a5a876c040d57a770b00c8f4a3"
+    },
+    "scripts/normalize-figma-snapshot.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6680,
+      "sha256": "d2d90cce1336fad3447fd8d7d8de51cec14e249a7a1f1e221a3939abde1eb9e4"
+    },
+    "scripts/prerender.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8689,
+      "sha256": "77c28ff56f5e192141a203c406f336d3372e628a9ce03d7aa80b861e48dc0669"
+    },
+    "scripts/print-health-commit.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 926,
+      "sha256": "8532a3159ffb582207661acd5311d106113cf63334dd470617f9e110cdbf1036"
+    },
+    "scripts/project-component-spec.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 23631,
+      "sha256": "6406117827c1184798ff417d141067d2e62ae9e24017b5106d8ba9d97ddafe69"
+    },
+    "scripts/promote-to-core.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4174,
+      "sha256": "165adcf3b1fd53f808d28242c2432ea9d3aca7c1e16f379a7b8f90dfabb75be7"
+    },
+    "scripts/promote.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2871,
+      "sha256": "1ea2ed99bb2eae86fecb5dcf5ca928af96356cdf38f69755701f43aed3c635ea"
+    },
+    "scripts/record-health.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1976,
+      "sha256": "abfc527ada868aea43b7a510756bf14142134e4ce2d75f8c8164d3fae4fbf642"
+    },
+    "scripts/refresh-firing-stats.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4259,
+      "sha256": "78723197f27c2e56844db5df2ab982c168d094c094c681159139639bd5676513"
+    },
+    "scripts/run-gates.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 18403,
+      "sha256": "ffe815bfe33ae0ed846ab89267fc9c247a41b0f914c29a2432693ac90e3b128c"
+    },
+    "scripts/run-validator-tests.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3192,
+      "sha256": "f73340d626f4c524b9a4b8231954fd340438875f115546890498222c4f096f3a"
+    },
+    "scripts/sales-pipeline.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4725,
+      "sha256": "34137e57fbb7b669ef397041929bce2ddbd3b3b8debfe204c8f87d99fd6b5aa0"
+    },
+    "scripts/sales-proposal.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4666,
+      "sha256": "65a6c3c7016210b47db2bebdfa986cf30d541a55cbdba050524d2681eeb70762"
+    },
+    "scripts/scaffold-component.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5908,
+      "sha256": "6fdd16986cabaa02be719fe306a1d7dc5ac708281646560ced63997ad8dd4ec2"
+    },
+    "scripts/scaffold-tenant.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 12584,
+      "sha256": "2187140a75287de0305fbd44b01f591b0e1ec93378513bf2d026a9c570d4d1fe"
+    },
+    "scripts/self-heal.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 10671,
+      "sha256": "48af3cf7ca4eca92e14923f418d71803f12e59d089988b86828672a7d56932f9"
+    },
+    "scripts/setup-figma-canvas.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3751,
+      "sha256": "4c7b93e45736f34945a36b61bb0993cbdac56dc9671526742c4c7d1420e507d8"
+    },
+    "scripts/setup-hooks.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 996,
+      "sha256": "59e6b9cb9d74c85177bb76a27237c622634e6253d0a0b78676561b39ab5aa31e"
+    },
+    "scripts/snapshot-token-paths.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2641,
+      "sha256": "1fffc342645971a664729f337d7cce3ca07c28f8a14c582e8c9d502ea16435a3"
+    },
+    "scripts/swiss-canon-check.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 11641,
+      "sha256": "57553507c45ca74a12b8915326835bdba70db71fb660385176f029b0fdff8439"
+    },
+    "scripts/sync-asset-manifest.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4629,
+      "sha256": "bd6865eb7a3a154138f37a42cc526b4b3fec20d8f7e3f47bd07afc9eeb8f773c"
+    },
+    "scripts/sync-hds-registry.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6197,
+      "sha256": "d96e64317f114637c6c2d36e855a1a0d7d55dcbdf7cbe09352afc821f8cd9d82"
+    },
+    "scripts/sync-icons.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2572,
+      "sha256": "0f29d234e2a1963daf4fe3362cf0c364d268ecf818d70bf4d17e5ec5b779287a"
+    },
+    "scripts/sync-system-health.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 25116,
+      "sha256": "2e1d452a8c604183332923c974853e63a6021345c5520529bfc64c1e9d5b4594"
+    },
+    "scripts/test-doc-pages-snapshot.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 6986,
+      "sha256": "b8155fc2eed0998d82d78e28b55bce673a35c18842dbeb6653ca63c0f0064a1a"
+    },
+    "scripts/test-figma-masters-snapshot.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3202,
+      "sha256": "59db01e8bf730bbe9c722697cd4e52956ad133c260f61b8c3af673bfbe7eb8eb"
+    },
+    "scripts/test-phase1.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 5036,
+      "sha256": "ea286e1733eca8baf9d416c2cb77821eacaa376d56cc3d5cb8b9438364a7d3a4"
+    },
+    "scripts/test-prompt-regression.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 9676,
+      "sha256": "4d5bb58611ee63c81ca6120d4d17dea18ec8bc30fb38ce146fe12bf4838eeb7a"
+    },
+    "scripts/test-retry-loop.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3679,
+      "sha256": "39d59593e74d1839c0cc9f095e3cfaee37c76cb84be1db242d7a7bb6e92e34a7"
+    },
+    "scripts/ui-lint.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1947,
+      "sha256": "ff94a16ffd64fe796f84ad440f449b26d8374e35366385c147843b33cdbc351c"
+    },
+    "scripts/update-commit-history-cron.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1704,
+      "sha256": "60478f0fccee7608938448b8b55dcca2727e3a971b03053e5296b5af3485207f"
+    },
+    "scripts/update-commit-history.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1367,
+      "sha256": "ca32fc16938aaf361d57f5d402ca4df23c3310a3cbc2f110ad11ec41eb3f22c6"
+    },
+    "scripts/update-journal.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 42517,
+      "sha256": "7f709676202bd874e96c7048416cb8a768d9111ca0a378200fbdeec06215da87"
+    },
+    "scripts/update-precommit-hash.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 3365,
+      "sha256": "622b0c0d8a011da0c25121013e961b1c4fa5ff2b476fe4c85a47025da1180db3"
+    },
+    "scripts/validate-fixture-proof-of-firing.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 16672,
+      "sha256": "c6f3c8c0ec19c4c1202479505594c19f731576372cc658890741b2c40bab6f3e"
+    },
+    "scripts/validate-guardrail-registry.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 4604,
+      "sha256": "39c5c941b2ae73307a35872bf256d0df52b66529999d37bc313d6f8d89ce8fc0"
+    },
+    "scripts/validate-manifest.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8934,
+      "sha256": "94c9f7bd450452b08f84a7d194746bedec6d3a4a536b64466937e25bdcc0f6ca"
+    },
+    "scripts/verify-roadmap-sync.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 1565,
+      "sha256": "03573651a7487969ecf06ffcdcaf334a0b6e07b6eb7b7896b25301860db83594"
+    },
+    "scripts/verify-tokens.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 11200,
+      "sha256": "23e79db5b1549d9d7531b8c87115a93b3c7fc6f7444c464ead4384c3daea0259"
+    },
+    "scripts/visual-ingest.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 8373,
+      "sha256": "9ae01a134efe4982ad631bcea04eb2638b398f47636622dc79d6bb2c9121cfd2"
+    },
+    "scripts/watch-roadmap.mjs": {
+      "group": "pipeline_scripts",
+      "bytes": 2117,
+      "sha256": "4159d66c8506f534120ae2134a781ac6176080d557884302f2c9b4f5a638b637"
+    },
+    "validators/10f-1-figma-snapshot-adapter.mjs": {
+      "group": "validators",
+      "bytes": 6576,
+      "sha256": "34beced69d41caf30f27fd030664ca78556cba923443b5382c9db34ad10e6297"
+    },
+    "validators/10f-7-xpath-query-endpoint.mjs": {
+      "group": "validators",
+      "bytes": 3928,
+      "sha256": "053292af3e8128df2ff9fb7b703c67531787f30211e8498afcb65e077d9035a9"
+    },
+    "validators/a11y-validator.mjs": {
+      "group": "validators",
+      "bytes": 1927,
+      "sha256": "615538258171a652c6370d16207b910cc035f2ccc0b22fb0cae3b2c88a4aad97"
+    },
+    "validators/auth.mjs": {
+      "group": "validators",
+      "bytes": 5152,
+      "sha256": "df30be44fdaa6025bc2f98041a912fdb21d1d1872e1fa11d3d21d6a570ac5153"
+    },
+    "validators/binding-completeness.mjs": {
+      "group": "validators",
+      "bytes": 5123,
+      "sha256": "7b24b5710174bf3af7b7c1590effce6aa8da4d29a5bf4d4b176be1254a2c850d"
+    },
+    "validators/canon-rules.mjs": {
+      "group": "validators",
+      "bytes": 5762,
+      "sha256": "cd04e00025fae86b43de59d95e51a28e3636859b96b7e510a4cc1eb47cf8b721"
+    },
+    "validators/compiler.mjs": {
+      "group": "validators",
+      "bytes": 650,
+      "sha256": "69ee56794a19421fe4f22cd3749f438a8c1d0970564202ca8e55e1c6de99e985"
+    },
+    "validators/contrast.mjs": {
+      "group": "validators",
+      "bytes": 8952,
+      "sha256": "9acd659f6017988005d298a7df70d3f462969526dc393e73d0efc71b10f621fa"
+    },
+    "validators/correlation.mjs": {
+      "group": "validators",
+      "bytes": 3641,
+      "sha256": "3dd4851536865b178a4601af694d38ae3fde019014debc61a61c47f729beba9f"
+    },
+    "validators/envelope.mjs": {
+      "group": "validators",
+      "bytes": 3299,
+      "sha256": "d34c2095b198160c11730d57cd0c4efe308b0c80998ddd0f82cf53235affb3a8"
+    },
+    "validators/index.mjs": {
+      "group": "validators",
+      "bytes": 1959,
+      "sha256": "ecff38dda96d4e6307e91c304f3385e5f833f66d56ef31f5d1a5c962ebf692bf"
+    },
+    "validators/lint.mjs": {
+      "group": "validators",
+      "bytes": 5393,
+      "sha256": "1fd271b59503db1c85ce6758de8522a1a8af31f13be9b2c92a01f5c4434df4d9"
+    },
+    "validators/manifest-validator.mjs": {
+      "group": "validators",
+      "bytes": 3567,
+      "sha256": "d2f1c02dfcac38e0f9d8f14905d5fce7106c03abe58e354df7e227de7fa15d4e"
+    },
+    "validators/motion-perf.mjs": {
+      "group": "validators",
+      "bytes": 10383,
+      "sha256": "161d723d3ead17246dcd39511ee7afc113ef24645492a69362df9ebe2c8436f4"
+    },
+    "validators/parse-jsx.mjs": {
+      "group": "validators",
+      "bytes": 1081,
+      "sha256": "df8f42de02b706c408d7b7cfe980e06272d59b8254522615775aa935f457853a"
+    },
+    "validators/runtime-error-channel.mjs": {
+      "group": "validators",
+      "bytes": 5815,
+      "sha256": "0ad8fb0b09eaca348e4539664c4d0a3d3864515ef744bbe97db32a25a7c70bc9"
+    },
+    "validators/swiss-canon.mjs": {
+      "group": "validators",
+      "bytes": 13671,
+      "sha256": "3398e55480d56cf27a85db859309741accc7f6bfeb7337a68069e874dce61510"
+    },
+    "validators/token-sync.mjs": {
+      "group": "validators",
+      "bytes": 7311,
+      "sha256": "e9162ccbb4147750339f6f17497d0e3107fd39f3f46c16495b3d987d743719e3"
+    },
+    "validators/token-validator.mjs": {
+      "group": "validators",
+      "bytes": 2914,
+      "sha256": "34bd982facd24a13c53f8194416e18b83b6a19c145be3461f55acac8ef73f697"
+    },
+    "protocol/envelope.mjs": {
+      "group": "protocol",
+      "bytes": 7513,
+      "sha256": "098d5c47be59d5821dac0f30ba11335b5c1d0b9ed37eb7fcb5145db2861beb29"
+    },
+    "protocol/figma-snapshot.schema.json": {
+      "group": "protocol",
+      "bytes": 7527,
+      "sha256": "c64c9f5715f8f060f41b767f24695aa774da1be6e11aeeab17ad3aee12f3d02f"
+    },
+    "pipeline/figma-masters-batch.mjs": {
+      "group": "pipeline_dir",
+      "bytes": 36229,
+      "sha256": "f41f755c1bb8423b70623c8e84f5c8f924ffb5804153386030610aa83f79151a"
+    },
+    "pipeline/format-correction.mjs": {
+      "group": "pipeline_dir",
+      "bytes": 1375,
+      "sha256": "e0faed75f0c15b0ceb98b422370fbacb27516b31d0556a825585626f4bde84ae"
+    },
+    "pipeline/retry-loop.mjs": {
+      "group": "pipeline_dir",
+      "bytes": 4092,
+      "sha256": "8fef5d70c074dcedf17db0ce46939f03de3b1a026ea5662bf71f618368cad3df"
+    }
+  },
+  "fileCount": 196,
+  "tokenInventory": {
+    "source": "tokens.lock.json",
+    "count": 323
+  }
+}
