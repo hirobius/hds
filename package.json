@@ -157,8 +157,6 @@
     "figma:snapshot": "node scripts/normalize-figma-snapshot.mjs",
     "figma:stream": "node scripts/llm-stream-bridge.mjs",
     "guardrail:firing-stats": "node scripts/refresh-firing-stats.mjs",
-    "guardrail:learned-rules": "node scripts/promote-learned-rule.mjs --list",
-    "guardrail:promote-rule": "node scripts/promote-learned-rule.mjs",
     "heal": "node scripts/self-heal.mjs",
     "heal:smoke": "node scripts/self-heal.mjs --smoke",
     "health-commit": "pnpm check:semantic-report && node scripts/print-health-commit.mjs",
