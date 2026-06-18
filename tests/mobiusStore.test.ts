@@ -248,28 +248,28 @@ describe('mobiusStore', () => {
       expect(store.getState().activePreset).toBe('content');
     });
 
-    it('syncs /hds/tokens to tokens preset', () => {
-      store.getState().syncRoute('/hds/tokens');
+    it('syncs /tokens to tokens preset', () => {
+      store.getState().syncRoute('/tokens');
       expect(store.getState().activePreset).toBe('tokens');
     });
 
-    it('syncs /hds/color to foundations preset', () => {
-      store.getState().syncRoute('/hds/color');
+    it('syncs /color to foundations preset', () => {
+      store.getState().syncRoute('/color');
       expect(store.getState().activePreset).toBe('foundations');
     });
 
-    it('syncs /hds/typography to foundations preset', () => {
-      store.getState().syncRoute('/hds/typography');
+    it('syncs /typography to foundations preset', () => {
+      store.getState().syncRoute('/typography');
       expect(store.getState().activePreset).toBe('foundations');
     });
 
-    it('syncs /hds/components/button to components preset', () => {
-      store.getState().syncRoute('/hds/components/button');
+    it('syncs /components/button to components preset', () => {
+      store.getState().syncRoute('/components/button');
       expect(store.getState().activePreset).toBe('components');
     });
 
-    it('syncs /hds/patterns to components preset', () => {
-      store.getState().syncRoute('/hds/patterns');
+    it('syncs /patterns to components preset', () => {
+      store.getState().syncRoute('/patterns');
       expect(store.getState().activePreset).toBe('components');
     });
 
