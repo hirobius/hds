@@ -236,7 +236,7 @@ export default function TokensPage() {
     ?.fromScrollY;
   const tokenExplorerFromPath = new URLSearchParams(location.search).get('from');
   const hasExternalTokenSource =
-    !!tokenExplorerFromPath && !tokenExplorerFromPath.startsWith('/ops/hds/tokens');
+    !!tokenExplorerFromPath && !tokenExplorerFromPath.startsWith('/tokens');
   const tokenPath = new URLSearchParams(location.search).get('token');
   const backLabel = tokenExplorerFromPath
     ? (tokenExplorerFromPath.split('/').filter(Boolean).pop() ?? '')

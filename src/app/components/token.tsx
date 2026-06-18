@@ -313,7 +313,7 @@ function TokenNodeSurface({
       ? () => {
           const from = location.pathname + location.search + location.hash;
           navigate(
-            `/ops/hds/tokens?token=${encodeURIComponent(tokenPathInput as string)}&from=${encodeURIComponent(from)}#interactive-token-explorer`,
+            `/tokens?token=${encodeURIComponent(tokenPathInput as string)}&from=${encodeURIComponent(from)}#interactive-token-explorer`,
             { state: { fromScrollY: window.scrollY } },
           );
         }

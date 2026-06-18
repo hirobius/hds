@@ -1,0 +1,115 @@
+{
+  "principles": [
+    {
+      "title": "Productive",
+      "body": "Quick, legible motion for small UI changes.",
+      "description": "Use for buttons, inputs, toggles, tooltips, popovers, and subtle state changes.",
+      "token": "semantic.motion.productive"
+    },
+    {
+      "title": "Expressive",
+      "body": "A little extra room for teaching moments and major entries.",
+      "description": "Use for modals, drawers, dialogs, onboarding, and emphasized surface arrivals.",
+      "token": "semantic.motion.expressive"
+    },
+    {
+      "title": "Spatial",
+      "body": "Movement that follows the layout across the viewport.",
+      "description": "Use for page transitions and broad layout travel.",
+      "token": "semantic.motion.spatial"
+    },
+    {
+      "title": "Exit",
+      "body": "Removal should feel calm and quick.",
+      "description": "Use for dismissals, toasts, and DOM removal.",
+      "token": "semantic.motion.exit"
+    }
+  ],
+  "durationSteps": [
+    {
+      "key": "instant",
+      "value": "100ms",
+      "ms": 100,
+      "description": "Immediate state flips and removals."
+    },
+    {
+      "key": "short",
+      "value": "150ms",
+      "ms": 150,
+      "description": "Small UI motion like hover and feedback."
+    },
+    {
+      "key": "medium",
+      "value": "250ms",
+      "ms": 250,
+      "description": "Clearer transitions and teaching moments."
+    },
+    {
+      "key": "long",
+      "value": "400ms",
+      "ms": 400,
+      "description": "Longer layout travel across the viewport."
+    }
+  ],
+  "easingCurves": [
+    {
+      "key": "emphasized",
+      "label": "Emphasized",
+      "values": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "curve": [0.4, 0, 0.2, 1],
+      "description": "Balanced timing for general UI motion."
+    },
+    {
+      "key": "decelerate",
+      "label": "Decelerate",
+      "values": "cubic-bezier(0, 0, 0.2, 1)",
+      "curve": [0, 0, 0.2, 1],
+      "description": "Starts quick, then settles into place."
+    },
+    {
+      "key": "accelerate",
+      "label": "Accelerate",
+      "values": "cubic-bezier(0.4, 0, 1, 1)",
+      "curve": [0.4, 0, 1, 1],
+      "description": "Leaves quickly, then closes fast."
+    },
+    {
+      "key": "elastic",
+      "label": "Elastic",
+      "values": "spring(300, 20, 1)",
+      "curve": [0.18, 0.9, 0.32, 1.18],
+      "description": "Bouncy motion with a small overshoot and return.",
+      "spring": {
+        "stiffness": 300,
+        "damping": 20,
+        "mass": 1
+      }
+    }
+  ],
+  "uiSamples": [
+    {
+      "title": "Button feedback",
+      "body": "Hover and active states stay productively timed with no deformation.",
+      "token": "semantic.motion.productive",
+      "intent": "productive"
+    },
+    {
+      "title": "Tooltip reveal",
+      "body": "Tooltips and popovers enter cleanly with a small y-offset and opacity only.",
+      "token": "semantic.motion.productive",
+      "intent": "productive"
+    },
+    {
+      "title": "Dialog reveal",
+      "body": "Important surfaces can use the expressive token when the entry should feel more deliberate.",
+      "token": "semantic.motion.expressive",
+      "intent": "expressive"
+    },
+    {
+      "title": "Page transition",
+      "body": "Full-page movement stays spatial so the screen change feels grounded in the layout.",
+      "token": "semantic.motion.spatial",
+      "intent": "spatial"
+    }
+  ]
+}

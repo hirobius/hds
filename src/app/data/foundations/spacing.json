@@ -1,0 +1,99 @@
+{
+  "page": "Spacing",
+  "path": "/hds/foundations/spacing",
+  "definition": {
+    "id": "spacing",
+    "category": "foundation",
+    "summary": "Spacing is a single-tier primitive scale - every value is an explicit multiple of 4px. There is no semantic spacing tier. Components reference hds.space.px* constants directly, which resolve to var(--primitive-space-*) CSS custom properties."
+  },
+  "rules": [
+    {
+      "id": "token-only",
+      "rule": "All spacing values must reference primitive.space.* tokens - no raw px, rem, %, or numeric values in component or page styles.",
+      "enforceable": true,
+      "valid": "gap: hds.space.px16",
+      "invalid": "gap: hds.space.px12  // tokenized, but the wrong value for this example"
+    },
+    {
+      "id": "grid-4px",
+      "rule": "All spacing values must stay on the 4px grid. Off-grid values are not allowed.",
+      "enforceable": true,
+      "valid": "padding: hds.space.px12",
+      "invalid": "padding: hds.space.px12  // tokenized, but not the intended step for this example"
+    },
+    {
+      "id": "tier-discipline",
+      "rule": "Apply spacing tokens from the correct tier: sub-grid (px2-px6) for tight internal offsets, component (px8-px16) for padding, layout (px24-px48) for card and column gaps, section (px64+) for page rhythm.",
+      "enforceable": false,
+      "valid": "padding: hds.space.px16  // component tier",
+      "invalid": "padding: hds.space.px64  // section tier used for a button"
+    }
+  ],
+  "usage": [
+    {
+      "condition": "Icon padding, badge internals, hairline offsets",
+      "apply": "hds.space.px2 / px4 / px6 (sub-grid)"
+    },
+    {
+      "condition": "Button / input internal padding, tight layout gaps",
+      "apply": "hds.space.px8 / px12 / px16 (component)"
+    },
+    {
+      "condition": "Card padding, component gaps, column gutters",
+      "apply": "hds.space.px24 / px32 / px48 (layout)"
+    },
+    {
+      "condition": "Page vertical rhythm, hero spacing, section separation",
+      "apply": "hds.space.px64 / px80 / px96 / px128 (section)"
+    }
+  ],
+  "examples": [
+    {
+      "name": "COMPONENT PADDING - React inline style",
+      "code": "// Button internal padding - component tier\nstyle={{\n  paddingTop:    hds.space.px8,\n  paddingBottom: hds.space.px8,\n  paddingLeft:   hds.space.px16,\n  paddingRight:  hds.space.px16,\n}}",
+      "tokensUsed": [
+        "primitive.space.2",
+        "primitive.space.4"
+      ]
+    },
+    {
+      "name": "LAYOUT GAP - React inline style",
+      "code": "// Card grid - layout tier\nstyle={{\n  display: 'grid',\n  gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',\n  gap: hds.space.px20,\n}}",
+      "tokensUsed": [
+        "primitive.space.5"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "token": "primitive.space.4",
+      "css": "--primitive-space-4",
+      "figma": "primitive/space/4",
+      "component": "HdsButton, Input padding"
+    },
+    {
+      "token": "primitive.space.5",
+      "css": "--primitive-space-5",
+      "figma": "primitive/space/5",
+      "component": "Card gap, grid gap"
+    },
+    {
+      "token": "primitive.space.6",
+      "css": "--primitive-space-6",
+      "figma": "primitive/space/6",
+      "component": "Card padding"
+    },
+    {
+      "token": "primitive.space.8",
+      "css": "--primitive-space-8",
+      "figma": "primitive/space/8",
+      "component": "Section internal margin"
+    },
+    {
+      "token": "primitive.space.16",
+      "css": "--primitive-space-16",
+      "figma": "primitive/space/16",
+      "component": "Page-level section gap"
+    }
+  ]
+}

@@ -90,7 +90,7 @@ export default function HdsFieldPatternPage() {
         },
       ]}
       primitives={[
-        { label: 'Input — text input primitive', href: '/ops/hds/components/inputs#hdsinput' },
+        { label: 'Input — text input primitive', href: '/components/inputs#hdsinput' },
       ]}
     />
   );

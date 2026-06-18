@@ -190,7 +190,7 @@ export default function LicensePage() {
           HDS is built on the shoulders of excellent open source work. The following projects are
           directly visible in the interface and deserve explicit recognition. The full tech stack is
           documented on the{' '}
-          <InlineLink href="/ops/hds/tech-stack" externalIcon={false}>
+          <InlineLink href="/tech-stack" externalIcon={false}>
             Tech Stack
           </InlineLink>{' '}
           page.
