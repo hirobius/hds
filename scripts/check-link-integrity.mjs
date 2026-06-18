@@ -108,6 +108,7 @@ function runDocRefsCheck() {
     if (token.startsWith('http://') || token.startsWith('https://')) return true;
     if (token.startsWith('/')) return true;
     if (token.startsWith('pnpm ') || token.startsWith('git ') || token.startsWith('node ') || token.startsWith('npx ')) return true;
+    if (token.startsWith('@')) return true; // scoped npm package specifier (e.g. @hirobius/design-system/tokens.css), not a local file
     if (token.startsWith('<!--')) return true;
     if (token.includes('://')) return true;
     if (token.includes('*')) return true;
