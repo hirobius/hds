@@ -8,6 +8,11 @@
     "pnpm": ">=8"
   },
   "type": "module",
+  "typeCoverage": {
+    "ignoreFiles": [
+      "src/app/components/mobius-scene.tsx"
+    ]
+  },
   "module": "./dist/hirobius-ui.js",
   "types": "./src/index.ts",
   "sideEffects": [
