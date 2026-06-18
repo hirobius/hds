@@ -48,7 +48,7 @@ export function NavGroup({
 }: NavGroupProps) {
   const location = useLocation();
   const resolvedItems = items ?? [];
-  const forceCollapsedOnOverview = collapsible && location.pathname === '/ops/hds';
+  const forceCollapsedOnOverview = collapsible && location.pathname === '/';
   const hasActive =
     collapsible &&
     resolvedItems.some((item) =>

@@ -40,10 +40,10 @@ const API_ACCOUNTS = [
 ] as const;
 
 const INTERNAL_TOOLS = [
-  { label: 'Architecture Snapshot', href: '/ops/hds/architecture-snapshot' },
-  { label: 'System Contract', href: '/ops/hds/system-contract' },
-  { label: 'Contribution Guide', href: '/ops/hds/contribution-guide' },
-  { label: 'Sandbox', href: '/ops/hds/sandbox' },
+  { label: 'Architecture Snapshot', href: '/architecture-snapshot' },
+  { label: 'System Contract', href: '/system-contract' },
+  { label: 'Contribution Guide', href: '/contribution-guide' },
+  { label: 'Sandbox', href: '/sandbox' },
 ] as const;
 
 // ── Sub-components ────────────────────────────────────────────────────────────

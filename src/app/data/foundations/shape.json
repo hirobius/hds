@@ -1,0 +1,157 @@
+{
+  "page": "Shape",
+  "path": "/hds/foundations/shape",
+  "definition": {
+    "id": "shape",
+    "category": "foundation",
+    "summary": "Primitive radii are value-based. Use them for plain geometry, and keep semantic.radius.action for interactive controls."
+  },
+  "rules": [
+    {
+      "id": "buttons-sharp",
+      "rule": "All buttons must use semantic.radius.action. No raw border-radius values.",
+      "enforceable": true,
+      "valid": "borderRadius: semantic.radius.action",
+      "invalid": "borderRadius: primitive.radius.0"
+    },
+    {
+      "id": "action-token",
+      "rule": "Buttons and inputs must reference semantic.radius.action - not primitive.radius.4 directly - so the global toggle works.",
+      "enforceable": true,
+      "valid": "borderRadius: semantic.radius.action",
+      "invalid": "borderRadius: primitive.radius.0"
+    },
+    {
+      "id": "no-raw-border-color",
+      "rule": "Border colors must use semantic.color.border.* tokens - never raw hex or primitive color tokens.",
+      "enforceable": true,
+      "valid": "border: `1px solid var(--semantic-color-border-default)`",
+      "invalid": "border: '1px solid #e2e8f0'"
+    },
+    {
+      "id": "no-borderWidth-raw",
+      "rule": "Border widths must use primitive.borderWidth.xs or primitive.borderWidth.md - no raw px values.",
+      "enforceable": true,
+      "valid": "border: `${primitive.borderWidth.md} solid ...`",
+      "invalid": "border: '1px solid ...'"
+    }
+  ],
+  "usage": [
+    {
+      "condition": "All buttons and action triggers",
+      "apply": "semantic.radius.action (= 4px)"
+    },
+    {
+      "condition": "All form inputs",
+      "apply": "semantic.radius.action (= 4px)"
+    },
+    {
+      "condition": "Cards, dialogs, larger surfaces",
+      "apply": "primitive.radius.8 (= 8px)"
+    },
+    {
+      "condition": "Feedback components (Alert, Toast)",
+      "apply": "primitive.radius.4 (= 4px)"
+    },
+    {
+      "condition": "Checkboxes, small inner elements",
+      "apply": "primitive.radius.2 (= 2px)"
+    },
+    {
+      "condition": "Badges, chips, pill buttons",
+      "apply": "primitive.radius.full (= 9999px)"
+    },
+    {
+      "condition": "Structural blocks, full-bleed images",
+      "apply": "primitive.radius.0 (= 0)"
+    },
+    {
+      "condition": "Default card / input border",
+      "apply": "var(--semantic-color-border-default)"
+    },
+    {
+      "condition": "Focus ring, active indicator border",
+      "apply": "var(--semantic-color-border-accent)"
+    },
+    {
+      "condition": "Emphasized border, strong rule",
+      "apply": "var(--semantic-color-border-strong)"
+    }
+  ],
+  "examples": [
+    {
+      "name": "CARD - border-radius and border color",
+      "code": "style={{\n  borderRadius: primitive.radius.8,\n  border: `${primitive.borderWidth.xs} solid var(--semantic-color-border-default)`,\n  background: 'var(--semantic-color-surface-raised)',\n}}",
+      "tokensUsed": [
+        "primitive.radius.8",
+        "semantic.color.border.default"
+      ]
+    },
+    {
+      "name": "BUTTON - global action radius",
+      "code": "style={{\n  borderRadius: semantic.radius.action,  // 4px - rounded action corners, brand identity\n  border: 'none',\n  padding: `${primitive.space.2} ${primitive.space.3}`,\n}}",
+      "tokensUsed": [
+        "semantic.radius.action"
+      ]
+    },
+    {
+      "name": "BADGE / CHIP - pill radius",
+      "code": "style={{\n  borderRadius: primitive.radius.full,  // 9999px\n  padding: `${primitive.space.1} ${primitive.space.2}`,\n}}",
+      "tokensUsed": [
+        "primitive.radius.full"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "token": "primitive.radius.0",
+      "css": "--primitive-radius-0",
+      "figma": "primitive/radius/0",
+      "component": "Full-bleed images, structural blocks"
+    },
+    {
+      "token": "primitive.radius.4",
+      "css": "--primitive-radius-4",
+      "figma": "primitive/radius/4",
+      "component": "Alert, feedback chips"
+    },
+    {
+      "token": "primitive.radius.8",
+      "css": "--primitive-radius-8",
+      "figma": "primitive/radius/8",
+      "component": "Card, Dialog"
+    },
+    {
+      "token": "primitive.radius.full",
+      "css": "--primitive-radius-full",
+      "figma": "primitive/radius/full",
+      "component": "Badge, Tag, pill button"
+    },
+    {
+      "token": "semantic.radius.action",
+      "css": "--semantic-radius-action",
+      "figma": "semantic/radius/action",
+      "component": "HdsButton, Input, HdsSelect, HdsToggle, Token"
+    },
+    {
+      "token": "semantic.color.border.default",
+      "css": "--semantic-color-border-default",
+      "figma": "semantic/color/border/default",
+      "component": "Card, Input idle border"
+    },
+    {
+      "token": "semantic.color.border.accent",
+      "css": "--semantic-color-border-accent",
+      "figma": "semantic/color/border/accent",
+      "component": "Focus ring"
+    }
+  ],
+  "radiusScale": [
+    { "key": "0", "val": "0px" },
+    { "key": "2", "val": "2px" },
+    { "key": "4", "val": "4px" },
+    { "key": "8", "val": "8px" },
+    { "key": "full", "val": "9999px" }
+  ],
+  "_borderTokens": "Derived at runtime from tokenRefs.semantic.color.border in ShapePage.tsx"
+}

@@ -1,0 +1,851 @@
+[
+  {
+    "page": "Overview",
+    "path": "/hds",
+    "category": "foundations",
+    "summary": "Portfolio-level overview of HDS. Bundles the design point of view, live system surface, current state, and the key entry points into tokens, foundations, components, and the supporting Hirobius case study.",
+    "decisions": [
+      {
+        "rule": "Tokens are the source of truth for all visual decisions",
+        "rationale": "Ensures Figma and code are always in sync; no designer-developer handoff gap"
+      },
+      {
+        "rule": "Three-tier architecture: primitive â†’ semantic â†’ component",
+        "rationale": "Primitives give raw values; semantic tokens give intent; component tokens give scoped control"
+      },
+      {
+        "rule": "Self-hosted fonts only",
+        "rationale": "CDN fonts are a single point of failure and a privacy concern (GDPR)"
+      }
+    ]
+  },
+  {
+    "page": "ArchitectureSnapshot",
+    "path": "/hds/architecture-snapshot",
+    "category": "foundations",
+    "summary": "Internal architecture snapshot for HDS. Captures the system guardrails, token structure, file topology, and implementation recipes used as a deep reference during larger refactors and recovery work."
+  },
+  {
+    "page": "ComponentDocPageShell",
+    "path": "/hds/components/component-doc-page-shell",
+    "category": "components",
+    "summary": "Shared documentation shell for component category pages. Provides the common header, editorial index, quick-link grid, and routed content frame used across component documentation."
+  },
+  {
+    "page": "Feedback",
+    "path": "/hds/components/feedback",
+    "category": "components",
+    "navSection": "Components",
+    "navOrder": 4,
+    "summary": "Components that communicate system state and editorial status. Feedback is kept separate from passive display primitives so alerts and other status surfaces have a clear semantic home.",
+    "components": [
+      {
+        "name": "Alert",
+        "description": "Contextual banner for success, error, warning, and info states. Supports optional title and dismiss action.",
+        "variants": [
+          "success",
+          "error",
+          "warning",
+          "info"
+        ]
+      }
+    ]
+  },
+  {
+    "page": "ContributionGuide",
+    "path": "/hds/contribution-guide",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 8,
+    "summary": "How to add components, tokens, and patterns to the Hirobius Design System."
+  },
+  {
+    "page": "FoundationDoc",
+    "path": "/hds/foundation-doc",
+    "category": "foundations",
+    "summary": "Shared foundation-page wrapper for HDS documentation. Standardizes the left navigation, page header lockup, content rail, and table-of-contents behavior across foundation references."
+  },
+  {
+    "page": "Guidance",
+    "path": "/hds/guidance",
+    "category": "foundations",
+    "summary": "Do/don't usage rules for the Hirobius Design System. Every rule traces back to a specific token or contrast requirement â€” nothing is subjective. Rules are grouped by category: color, typography, spacing, motion, and component usage."
+  },
+  {
+    "page": "HdsSystemDocLayout",
+    "path": "/hds/hds-system-doc-layout",
+    "category": "foundations",
+    "summary": "Internal HDS documentation layout primitive that composes the shared sidebar, content column, and context-aware table of contents for system-authored doc pages."
+  },
+  {
+    "page": "LegacyTokenExplorerPanel",
+    "path": "/hds/legacy-token-explorer-panel",
+    "category": "foundations",
+    "summary": "Interactive token explorer showing the primitive, semantic, and component alias chain, plus the runtime bridge and live token previews used across the docs."
+  },
+  {
+    "page": "License",
+    "path": "/hds/license",
+    "category": "foundations",
+    "summary": "Licensing terms for HDS: MIT for all component source code, build scripts, token compiler, and CI configuration. CC BY 4.0 for the design language (visual assets, token values, type choices). Both are permissive; attribution is only required for design assets."
+  },
+  {
+    "page": "MicrosoftDSCaseStudy",
+    "path": "/hds/microsoft-d-s-case-study",
+    "category": "foundations",
+    "summary": "Unified Xbox and Microsoft Game Dev case study covering system foundations, token architecture, component standardization, and the visual language work used to align teams and scale design operations."
+  },
+  {
+    "page": "MicrosoftDesignSystems",
+    "path": "/hds/microsoft-design-systems",
+    "category": "foundations",
+    "summary": "Case study documenting how the Xbox Design System was translated into a unified Xbox and Microsoft Game Dev ecosystem. Combines migration architecture, token-driven text systems, documentation guidance, and visual-language artifacts into a single production-facing narrative."
+  },
+  {
+    "page": "Ops",
+    "path": "/hds/ops",
+    "category": "foundations",
+    "summary": "Internal workspace HQ — API accounts, build pipeline health, and internal tool links."
+  },
+  {
+    "page": "PhaseProgressPanel",
+    "path": "/hds/phase-progress-panel",
+    "category": "foundations",
+    "summary": "Live phase-timeline reference for HDS. Documents the animated segmented progress panel, its six-phase structure, token-backed motion and color behavior, and the way dense status information is translated into a readable systems surface.",
+    "components": [
+      {
+        "name": "Disclosure",
+        "description": "Compact disclosure trigger that collapses the phase timeline in the overview right rail while preserving the panel as a token-backed systems surface.",
+        "variants": [
+          "closed",
+          "open"
+        ]
+      }
+    ]
+  },
+  {
+    "page": "PortfolioAssetSlot",
+    "path": "/hds/portfolio-asset-slot",
+    "category": "foundations",
+    "summary": "Shared portfolio media primitive that powers slot-based image placement across the Microsoft Design Systems and Visual Design pages. Handles draft slot badges, responsive framing, readable captions, and the shared lightbox interaction for mapped assets."
+  },
+  {
+    "page": "portfolioData",
+    "path": "/hds/portfolio-data",
+    "category": "foundations",
+    "summary": "Static data module supplying portfolio tile colors, sketch labels, and shell entry SVG logos."
+  },
+  {
+    "page": "PortfolioDraft",
+    "path": "/hds/portfolio-draft",
+    "category": "foundations",
+    "summary": "Placeholder-first portfolio direction study focused on a more image-heavy case study format, visual-language artifacts, and the system architecture signals behind large-scale design work."
+  },
+  {
+    "page": "Sandbox",
+    "path": "/hds/sandbox",
+    "category": "foundations",
+    "summary": "Headless preview route for Figma capture; selects a component and variant via URL query params."
+  },
+  {
+    "page": "Scope",
+    "path": "/hds/scope",
+    "category": "foundations",
+    "summary": "Defines the boundary and intended use cases for HDS components and tokens."
+  },
+  {
+    "page": "Shape",
+    "path": "/hds/shape",
+    "category": "foundations",
+    "summary": "Border and radius foundation for HDS. Documents the primitive radius scale, semantic action radius, and the border-color rules that shape components, cards, and interactive surfaces."
+  },
+  {
+    "page": "SpacingTest",
+    "path": "/hds/spacing-test",
+    "category": "foundations",
+    "summary": "Internal visual stress page for spacing and interaction experiments. Used to inspect hard cases, hover behavior, and responsive density decisions without affecting public-facing docs."
+  },
+  {
+    "page": "SystemContract",
+    "path": "/hds/system-contract",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 9,
+    "summary": "Formal contract between HDS and its consumers — versioning, stability guarantees, and breaking-change policy."
+  },
+  {
+    "page": "TechStack",
+    "path": "/hds/tech-stack",
+    "category": "foundations",
+    "summary": "The full technology stack behind adrianmilsap.com and HDS: Vite + React 18 + TypeScript, token-backed CSS variables plus a small layout utility layer, Motion, Lucide React, pnpm, and Vercel. Documents what was chosen, why, and what was deliberately omitted."
+  },
+  {
+    "page": "Tokens",
+    "path": "/hds/tokens",
+    "category": "foundations",
+    "summary": "Main technical token reference for HDS. Documents the tier model, naming logic, consumption patterns, cascade behavior, and the interactive explorer for primitive, semantic, and component tokens.",
+    "components": [
+      {
+        "name": "TokenExplorerPanel",
+        "description": "Full-page interactive token browser. Tier tabs (Primitive / Semantic / Component), searchable token list, alias chain visualization with resolved values."
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "Semantic and component tokens must resolve through primitives",
+        "rationale": "Keeps the alias chain traceable and makes theme changes automatic."
+      },
+      {
+        "rule": "Theme switching belongs to the semantic layer",
+        "rationale": "Components should consume intent, not branch on light and dark values."
+      }
+    ]
+  },
+  {
+    "page": "Color",
+    "path": "/hds/color",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 1,
+    "summary": "HDS color system: a 10-step true-monochromatic neutral scale, a 10-step brand blue scale anchored at #1E2FFF (blue.500), and semantic color tokens for bg, text, border, and icon roles. All colors switch automatically between light and dark mode via the CSS var alias chain.",
+    "tokens": [
+      {
+        "path": "primitive.color.blue.500",
+        "role": "Brand primary â€” the single brand blue"
+      },
+      {
+        "path": "semantic.color.surface.page",
+        "role": "Main page background surface"
+      },
+      {
+        "path": "semantic.color.surface.raised",
+        "role": "Secondary surface, sidebar, panels"
+      },
+      {
+        "path": "semantic.color.content.primary",
+        "role": "Primary body text"
+      },
+      {
+        "path": "semantic.color.content.secondary",
+        "role": "Secondary/subdued text"
+      },
+      {
+        "path": "semantic.color.content.accent",
+        "role": "Brand-colored text, links, emphasis"
+      },
+      {
+        "path": "semantic.color.border.default",
+        "role": "Default dividers and outlines"
+      },
+      {
+        "path": "semantic.color.border.accent",
+        "role": "Brand-colored borders, focus rings"
+      },
+      {
+        "path": "semantic.color.surface.accent",
+        "role": "Brand fill for CTAs and active indicators"
+      },
+      {
+        "path": "semantic.color.surface.accentSubtle",
+        "role": "Light brand tint for hover states and active backgrounds"
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "One blue: #1E2FFF blue only",
+        "rationale": "Constraint drives intentionality; every blue usage is purposeful"
+      },
+      {
+        "rule": "True monochromatic neutrals (equal RGB channels)",
+        "rationale": "Prevents warm/cool tint accumulation across UI surfaces"
+      }
+    ]
+  },
+  {
+    "page": "Typography",
+    "path": "/hds/typography",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 2,
+    "summary": "HDS type ramp: 8 semantic Swiss-canon styles (display, h1, h2, h3, body, small, caption, mono). Always consumed via semantic.typography.* inline style objects - never Tailwind font classes.",
+    "components": [
+      {
+        "name": "display",
+        "token": "semantic.typography.display",
+        "description": "Display headline (Swiss canon). Clash Display medium weight. 72px."
+      },
+      {
+        "name": "h1",
+        "token": "semantic.typography.h1",
+        "description": "Page title (Swiss canon). Clash Display medium weight. 48px."
+      },
+      {
+        "name": "h2",
+        "token": "semantic.typography.h2",
+        "description": "Section heading (Swiss canon). Clash Display medium weight. 30px."
+      },
+      {
+        "name": "h3",
+        "token": "semantic.typography.h3",
+        "description": "Sub-section heading (Swiss canon). Clash Display medium weight. 20px."
+      },
+      {
+        "name": "body",
+        "token": "semantic.typography.body",
+        "description": "Body prose. Satoshi regular 400. 17px / leading-relaxed / measure capped at 60ch."
+      },
+      {
+        "name": "small",
+        "token": "semantic.typography.small",
+        "description": "Supporting body text. Satoshi regular 400. 15px / leading-relaxed."
+      },
+      {
+        "name": "caption",
+        "token": "semantic.typography.caption",
+        "description": "Supplementary metadata labels, tags, badges. 13px per Swiss canon hierarchy."
+      },
+      {
+        "name": "mono",
+        "token": "semantic.typography.mono",
+        "description": "Code, token paths, technical labels. Geist Mono regular. 15px / leading-relaxed."
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "Always semantic.typography.* inline style objects â€” never Tailwind font classes",
+        "rationale": "Keeps typography token-driven and theme-aware"
+      },
+      {
+        "rule": "Responsive scaling via CSS clamp() in theme.css, not in tokens.json",
+        "rationale": "Token JSON stores static desktop-max primitive refs; clamp overrides live in CSS"
+      },
+      {
+        "rule": "Three typefaces: Satoshi (body / UI), Clash Display (display + h1, h2, h3 headings only), Geist Mono (code / technical metadata).",
+        "rationale": "Self-hosted only; Clash gives editorial weight on display and a clean grotesk on body, Geist Mono carries token paths and technical readouts."
+      }
+    ]
+  },
+  {
+    "page": "Spacing",
+    "path": "/hds/spacing",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 3,
+    "summary": "HDS spacing scale: 4px base grid with 19 named steps from px0 to px128. All spacing via semantic.space.* tokens or the small token-backed layout utility layer. Includes container widths, doc shell dimensions, and responsive gutter values.",
+    "tokens": [
+      {
+        "path": "primitive.space.4",
+        "role": "px4 â€” tight inline gap, chip padding"
+      },
+      {
+        "path": "primitive.space.8",
+        "role": "px8 â€” default inline gap, small padding"
+      },
+      {
+        "path": "primitive.space.12",
+        "role": "px12 â€” standard component padding"
+      },
+      {
+        "path": "primitive.space.16",
+        "role": "px16 â€” base layout unit"
+      },
+      {
+        "path": "primitive.space.24",
+        "role": "px24 â€” section padding, card padding"
+      },
+      {
+        "path": "primitive.space.32",
+        "role": "px32 â€” larger section gaps"
+      },
+      {
+        "path": "primitive.space.48",
+        "role": "px48 â€” major section separation"
+      },
+      {
+        "path": "primitive.space.64",
+        "role": "px64 â€” page-level vertical rhythm"
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "All spacing snaps to the 4px base grid",
+        "rationale": "Consistent rhythm; prevents arbitrary values accumulating"
+      }
+    ]
+  },
+  {
+    "page": "Elevation",
+    "path": "/hds/elevation",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 5,
+    "summary": "HDS elevation system: 4 role-based tokens (flat / raised / floating / overlay) bundle surface + shadow + border together so primitives stay coherent. Cards default to flat (border, no shadow); interactive cards lift to raised; popovers/tooltips use floating; dialogs/sheets use overlay. Bind via semantic.elevation.{role}, never via raw shadow values.",
+    "decisions": [
+      {
+        "rule": "4-role elevation system: flat / raised / floating / overlay",
+        "rationale": "Role bundles keep surface + shadow + border coherent — agents can't accidentally combine a raised shadow with a border, or use a raw rgba shadow that bypasses dark-mode-aware token values."
+      }
+    ]
+  },
+  {
+    "page": "Shape",
+    "path": "/hds/shape",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 4,
+    "summary": "HDS shape system: sharp buttons, calibrated card/input corners, and the rules for when rounded or full-pill treatments are allowed.",
+    "tokens": [
+      {
+        "path": "primitive.radius.0",
+        "role": "0 â€” buttons, always sharp"
+      },
+      {
+        "path": "primitive.radius.4",
+        "role": "2px â€” token chips, tight elements"
+      },
+      {
+        "path": "primitive.radius.8",
+        "role": "8px â€” cards, panels, inputs"
+      },
+      {
+        "path": "primitive.radius.full",
+        "role": "9999px â€” pill shapes, avatars"
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "Buttons always border-radius: 0",
+        "rationale": "Sharp corners reinforce the system's precision and technical character"
+      }
+    ]
+  },
+  {
+    "page": "Motion",
+    "path": "/hds/motion",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 6,
+    "summary": "HDS motion system: four duration tokens (instant 100ms, short 150ms, medium 250ms, long 400ms) and four easing curves (emphasized, decelerate, accelerate, elastic). All animations use Motion (Framer Motion). Respects prefers-reduced-motion.",
+    "tokens": [
+      {
+        "path": "primitive.duration.instant",
+        "role": "100ms — immediate state changes"
+      },
+      {
+        "path": "primitive.duration.short",
+        "role": "150ms - hover, color, focus transitions"
+      },
+      {
+        "path": "primitive.duration.medium",
+        "role": "250ms - page enters, element reveals"
+      },
+      {
+        "path": "primitive.duration.long",
+        "role": "400ms — layout shifts, panel open/close"
+      },
+      {
+        "path": "primitive.easing.emphasized",
+        "role": "Symmetric cubic bezier with balanced input and output tangents"
+      },
+      {
+        "path": "primitive.easing.decelerate",
+        "role": "Cubic bezier with steep initial gain and constrained tail velocity"
+      },
+      {
+        "path": "primitive.easing.accelerate",
+        "role": "Cubic bezier with restrained initial gain and steep terminal velocity"
+      },
+      {
+        "path": "primitive.easing.elastic",
+        "role": "Spring response defined by stiffness, damping, and mass parameters"
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "All animations via Motion (Framer Motion)",
+        "rationale": "Consistent spring physics and gesture support; single animation API"
+      },
+      {
+        "rule": "prefers-reduced-motion respected at the CSS and JS layers",
+        "rationale": "Accessibility requirement; motion can cause discomfort"
+      }
+    ]
+  },
+  {
+    "page": "Breakpoints",
+    "path": "/hds/breakpoints",
+    "category": "foundations",
+    "navSection": "Foundations",
+    "navOrder": 7,
+    "summary": "HDS responsive breakpoints: mobile-first with four named breakpoints (sm 640px, md 768px, lg 1024px, xl 1280px). The doc shell has its own layout breakpoints for sidebar visibility and TOC rail. useIsMobile() hook at 768px.",
+    "decisions": [
+      {
+        "rule": "Mobile-first CSS â€” base styles target mobile, overrides target larger screens",
+        "rationale": "Forces layout discipline; prevents desktop-centric thinking"
+      }
+    ]
+  },
+  {
+    "page": "Icons",
+    "path": "/hds/icons",
+    "category": "foundations",
+    "summary": "HDS iconography: Lucide React through the shared Icon wrapper. Monochrome only unless a semantic status role requires color. Size is governed by the icon-size tokens and component API.",
+    "decisions": [
+      {
+        "rule": "Lucide React only through Icon",
+        "rationale": "Single consistent visual language with token-governed sizing and color"
+      },
+      {
+        "rule": "Monochrome icons only",
+        "rationale": "Color in icons competes with the single-accent system"
+      }
+    ]
+  },
+  {
+    "page": "Actions",
+    "path": "/hds/components/actions",
+    "category": "components",
+    "navSection": "Components",
+    "navOrder": 1,
+    "summary": "Action components: triggers that initiate state changes or navigation. Validated against Material Design, Ant Design, and Chakra UI â€” components whose primary purpose is triggering an action are universally classified as Actions, distinct from navigation links and data-entry controls.",
+    "components": [
+      {
+        "name": "HdsButton",
+        "description": "Primary action trigger. Variants: primary (brand fill), secondary (surface fill), tertiary (text only). Always border-radius: 0. Sizes: sm, md.",
+        "token": "component.button.bg",
+        "tokens": [
+          "component.button.text",
+          "component.button.border"
+        ],
+        "variants": [
+          "primary",
+          "secondary",
+          "tertiary"
+        ]
+      },
+      {
+        "name": "IconButton",
+        "description": "Icon-only action button. Same variants as HdsButton. Square aspect ratio. Accessible via aria-label.",
+        "variants": [
+          "primary",
+          "secondary",
+          "tertiary"
+        ]
+      }
+    ],
+    "tokens": [
+      {
+        "path": "component.button.bg",
+        "role": "Button fill in primary state"
+      },
+      {
+        "path": "component.button.text",
+        "role": "Button label color"
+      },
+      {
+        "path": "component.button.border",
+        "role": "Button outline in secondary/tertiary states"
+      },
+      {
+        "path": "semantic.color.surface.accent",
+        "role": "Primary button fill"
+      },
+      {
+        "path": "semantic.motion.productive",
+        "role": "Hover and focus transition timing"
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "Buttons always border-radius: 0",
+        "rationale": "Sharp corners are a defining constraint of the HDS visual language"
+      },
+      {
+        "rule": "Directional icon buttons (prev/next) are Actions, not Navigation",
+        "rationale": "They trigger a state change; the combined navigation composition is documented as Sequential Navigator."
+      }
+    ]
+  },
+  {
+    "page": "Inputs",
+    "path": "/hds/components/inputs",
+    "category": "components",
+    "navSection": "Components",
+    "navOrder": 2,
+    "summary": "Data-entry controls for forms and user input. Validated against Material Design, Ant Design, and Chakra UI classification. All inputs share a consistent label + control + helper/error anatomy.",
+    "components": [
+      {
+        "name": "Input",
+        "description": "Single-line text field with label, helper text, and error state.",
+        "variants": [
+          "default",
+          "error",
+          "disabled"
+        ]
+      },
+      {
+        "name": "HdsSelect",
+        "description": "Animated dropdown selector with accessible keyboard navigation.",
+        "variants": [
+          "default",
+          "brand",
+          "rainbow"
+        ]
+      },
+      {
+        "name": "HdsRadio",
+        "description": "Single-choice radio control with five interactive states.",
+        "variants": [
+          "rest",
+          "hover",
+          "focused",
+          "pressed",
+          "disabled"
+        ]
+      },
+      {
+        "name": "HdsSlider",
+        "description": "Range slider bound to the HDS scale, with a value readout.",
+        "variants": [
+          "default"
+        ]
+      },
+      {
+        "name": "SegmentedControl",
+        "description": "Compact segmented selector for mutually exclusive modes.",
+        "variants": [
+          "default"
+        ]
+      },
+      {
+        "name": "TokenDisplayToggle",
+        "description": "Context-backed segmented control for switching token chips between dot-notation and CSS variable display modes."
+      },
+      {
+        "name": "Tag",
+        "description": "Interactive filter chip and category label with a brand-accented active state.",
+        "variants": [
+          "default",
+          "active"
+        ]
+      }
+    ],
+    "tokens": [
+      {
+        "path": "component.input.bg",
+        "role": "Input field background"
+      },
+      {
+        "path": "component.input.border",
+        "role": "Default input outline"
+      },
+      {
+        "path": "semantic.color.border.accent",
+        "role": "Focus ring and active input border"
+      },
+      {
+        "path": "semantic.color.content.primary",
+        "role": "Input text color"
+      },
+      {
+        "path": "semantic.color.content.secondary",
+        "role": "Placeholder and helper text"
+      }
+    ]
+  },
+  {
+    "page": "Display",
+    "path": "/hds/components/display",
+    "category": "components",
+    "navSection": "Components",
+    "navOrder": 3,
+    "summary": "Components for presenting information without triggering actions. Display covers icons, content surfaces, technical notation, and token references.",
+    "components": [
+      {
+        "name": "Icon",
+        "description": "Standardizes all Lucide icon rendering through the HDS token system. Three size keys: small (16px), medium (20px), large (24px). Defaults to aria-hidden=true since icons are decorative inside labeled parents.",
+        "interactive": false
+      },
+      {
+        "name": "Card",
+        "description": "Bordered content surface with token-backed padding, gap, and radius for static information panels."
+      },
+      {
+        "name": "Token",
+        "description": "Inline token chip in monospace. Dot-notation paths (primitive.*, semantic.*, component.*) are deep-linkable â€” clicking navigates to the Interactive Token Explorer with the token pre-selected.",
+        "token": "semantic.color.surface.raised"
+      },
+      {
+        "name": "InlineCode",
+        "description": "Inline monospace code fragment for file paths, prop names, and code references. Non-linkable."
+      },
+      {
+        "name": "CodeBlock",
+        "description": "Code display with filename, optional language label, and copy-to-clipboard support."
+      },
+      {
+        "name": "Token node",
+        "description": "Visual token reference variant used in diagrams and explorer lists, with optional deep-link access."
+      },
+      {
+        "name": "AssetImg",
+        "description": "Image primitive that standardizes rendering, fallback, and usage contexts across the site."
+      }
+    ],
+    "tokens": [
+      {
+        "path": "semantic.color.surface.raised",
+        "role": "Token chip and skeleton fill"
+      },
+      {
+        "path": "semantic.color.content.accent",
+        "role": "Token chip text color on hover"
+      },
+      {
+        "path": "semantic.color.surface.accentSubtle",
+        "role": "Token chip hover background"
+      },
+      {
+        "path": "semantic.motion.productive",
+        "role": "Chip hover transition"
+      }
+    ]
+  },
+  {
+    "page": "Navigation",
+    "path": "/hds/components/navigation",
+    "category": "components",
+    "navSection": "Components",
+    "navOrder": 5,
+    "summary": "Components that provide spatial orientation and page-level routing. Validated against Material Design, Ant Design, Radix UI, and Chakra UI â€” components whose primary purpose is spatial orientation are universally grouped under Navigation.",
+    "components": [
+      {
+        "name": "DocLinkCard",
+        "description": "Navigation card for cross-linking between case studies and docs.",
+        "variants": [
+          "feature",
+          "compact"
+        ]
+      },
+      {
+        "name": "InlineLink",
+        "description": "Routing-aware inline text link. Internal routes (href starts with /) use React Router for client-side navigation. External destinations open in a new tab with rel=noopener noreferrer. Always underlined â€” WCAG accessibility requirement.",
+        "interactive": true
+      }
+    ],
+    "tokens": [
+      {
+        "path": "semantic.color.surface.accentSubtle",
+        "role": "Active nav item background tint"
+      },
+      {
+        "path": "semantic.color.surface.accent",
+        "role": "Active indicator bar color"
+      },
+      {
+        "path": "semantic.color.content.primary",
+        "role": "Active nav item text"
+      },
+      {
+        "path": "semantic.color.content.secondary",
+        "role": "Default nav item text"
+      },
+      {
+        "path": "semantic.color.border.default",
+        "role": "Idle indicator bar"
+      },
+      {
+        "path": "semantic.color.border.accent",
+        "role": "Hover indicator bar"
+      }
+    ],
+    "decisions": [
+      {
+        "rule": "Directional icon buttons (prev/next arrows) are IconButton (Actions) used in a navigation context",
+        "rationale": "The component is a trigger; the combined navigation composition is documented as Sequential Navigator."
+      }
+    ]
+  },
+  {
+    "page": "Layout",
+    "path": "/hds/components/layout",
+    "category": "components",
+    "navSection": "Components",
+    "navOrder": 6,
+    "summary": "Structural primitives for the HDS documentation shell: DocSection, DocPageHeader, and HdsComponentDoc compose every doc page layout. Not general-purpose layout primitives — these are doc-shell infrastructure.",
+    "components": [
+      {
+        "name": "DocSection",
+        "description": "Standard HDS doc page section with title, top border, and optional noBorder variant. Wraps a semantic <section> element."
+      },
+      {
+        "name": "DocPageHeader",
+        "description": "Page-level header block with group label (e.g. Components Â· Navigation), title, and intro paragraph. Used at the top of every HDS doc page."
+      },
+      {
+        "name": "HdsComponentDoc",
+        "description": "Manifest-backed component documentation block with tabbed Properties, Tokens, and Usage sections, a live preview specimen, and a Figma link. The standard unit for documenting a single HDS component — supersedes the legacy ComponentBlock."
+      }
+    ],
+    "tokens": [
+      {
+        "path": "semantic.color.border.default",
+        "role": "Section dividers and component block outlines"
+      },
+      {
+        "path": "semantic.color.surface.raised",
+        "role": "Component block header background"
+      },
+      {
+        "path": "semantic.color.content.secondary",
+        "role": "Group label and secondary metadata"
+      },
+      {
+        "path": "semantic.color.content.accent",
+        "role": "isNew chip and badge accent"
+      }
+    ]
+  },
+  {
+    "page": "System Lab",
+    "path": "/hds/components/doc-utilities",
+    "category": "components",
+    "summary": "Governed inventory for HDS utilities, branding assets, and lab-side maintenance components. Keeps internal system surfaces visible, categorized, and documented without mixing them into the public storefront."
+  },
+  {
+    "page": "Patterns",
+    "path": "/hds/patterns",
+    "category": "components",
+    "summary": "Governed recovery and text-state patterns for the Hirobius system. Captures routed error handling, not-found experiences, and future empty-state patterns as reusable design-system assets."
+  },
+  {
+    "page": "TypographyTest",
+    "path": "/hds/typography-test",
+    "category": "foundations",
+    "summary": "Internal typography verification page that renders the full type ramp, usage guidance, and line-height behavior to validate refactors and catch regressions in the text system."
+  },
+  {
+    "page": "Visuals",
+    "path": "/hds/visuals",
+    "category": "foundations",
+    "summary": "Reserved visual-design landing page for future Hirobius visual work and supporting editorial art direction."
+  },
+  {
+    "page": "VisualsBentoGrid",
+    "path": "/hds/visuals-bento-grid",
+    "category": "foundations",
+    "summary": "Internal helper that renders the Visuals page bento grid with span-aware tiles and overlay captions."
+  },
+  {
+    "page": "ComponentHealth",
+    "path": "/hds/component-health",
+    "category": "foundations",
+    "summary": "Live snapshot of every HDS component — token usage, a11y status, doc fidelity, and outstanding gaps. Manifest-driven, regenerates on each build."
+  },
+  {
+    "page": "MultiBrandTheming",
+    "path": "/hds/multi-brand-theming",
+    "category": "foundations",
+    "summary": "Multi-tenant token override surface. Demonstrates how a single HDS instance carries multiple brand tokens via [data-tenant=*] scopes — the foundation for client-portal whitelabeling."
+  }
+]

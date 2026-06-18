@@ -90,9 +90,9 @@ export default function DisclosurePatternPage() {
         },
       ]}
       primitives={[
-        { label: 'Surface — padded surface primitive', href: '/ops/hds/components/layout' },
-        { label: 'Stack — one-dimensional layout primitive', href: '/ops/hds/components/layout' },
-        { label: 'Icon — Phosphor icon primitive', href: '/ops/hds/components/display' },
+        { label: 'Surface — padded surface primitive', href: '/components/layout' },
+        { label: 'Stack — one-dimensional layout primitive', href: '/components/layout' },
+        { label: 'Icon — Phosphor icon primitive', href: '/components/display' },
       ]}
     />
   );

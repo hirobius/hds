@@ -26,19 +26,19 @@ const _STARTING_POINTS = [
 
 const ENTRY_LINKS = [
   {
-    href: '/ops/hds/color',
+    href: '/color',
     title: 'Overview',
     description: 'Scope, current status, stack choices, and the role HDS plays in the portfolio.',
     icon: Compass,
   },
   {
-    href: '/ops/hds/tokens',
+    href: '/tokens',
     title: 'Tokens',
     description: 'Live token reference, naming patterns, and the explorer.',
     icon: Search,
   },
   {
-    href: '/ops/hds/components/actions',
+    href: '/components/actions',
     title: 'Actions',
     description:
       'The first shared component family and the entry point into the reusable UI layer.',

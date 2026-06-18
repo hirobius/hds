@@ -130,9 +130,9 @@ export default function ActivityFeedPatternPage() {
         },
       ]}
       primitives={[
-        { label: 'Stack — one-dimensional layout primitive', href: '/ops/hds/components/layout' },
-        { label: 'Button — base action primitive', href: '/ops/hds/components/actions' },
-        { label: 'Icon — Phosphor icon primitive', href: '/ops/hds/components/display' },
+        { label: 'Stack — one-dimensional layout primitive', href: '/components/layout' },
+        { label: 'Button — base action primitive', href: '/components/actions' },
+        { label: 'Icon — Phosphor icon primitive', href: '/components/display' },
       ]}
     />
   );

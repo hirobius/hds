@@ -1,0 +1,141 @@
+{
+  "page": "Elevation",
+  "path": "/hds/elevation",
+  "category": "foundations",
+  "definition": {
+    "id": "elevation",
+    "category": "foundation",
+    "body": [
+      "Elevation describes the z-axis relationship between UI surfaces. HDS has no shadow tokens - depth is established through two mechanisms: surface fill progression (three background tiers with stepped lightness) and motion (surfaces that emerge animate into position)."
+    ]
+  },
+  "surfaceTiers": [
+    {
+      "label": "Page",
+      "cssVar": "--semantic-color-surface-page",
+      "tokenPath": "semantic.color.surface.page",
+      "use": "Base canvas. All content sits on this layer. Nothing is lower."
+    },
+    {
+      "label": "Raised",
+      "cssVar": "--semantic-color-surface-raised",
+      "tokenPath": "semantic.color.surface.raised",
+      "use": "Cards, sidebars, nav backgrounds. One step above the page."
+    },
+    {
+      "label": "Overlay",
+      "cssVar": "--semantic-color-surface-overlay",
+      "tokenPath": "semantic.color.surface.overlay",
+      "use": "Dropdown menus, popover panels, inline editors. Top of the fill ladder."
+    }
+  ],
+  "rules": [
+    {
+      "id": "no-shadows",
+      "rule": "Do not use box-shadow for elevation. Shadow tokens were intentionally removed - depth is expressed through surface fill and motion only.",
+      "enforceable": true,
+      "valid": "background: var(--semantic-color-surface-raised)",
+      "invalid": "boxShadow: \"0 2px 8px rgba(0,0,0,0.1)\""
+    },
+    {
+      "id": "surface-fill-ladder",
+      "rule": "Use exactly three surface levels in the fill ladder: primary (page), secondary (raised), tertiary (overlay). Do not create intermediate levels.",
+      "enforceable": false,
+      "valid": "background: var(--semantic-color-surface-raised)",
+      "invalid": "background: \"rgba(0,0,0,0.03)\"  // invented 4th tier"
+    },
+    {
+      "id": "border-for-edge",
+      "rule": "When adjacent surfaces share a fill too similar to distinguish (especially in dark mode), a border stroke draws the edge instead of shadow.",
+      "enforceable": false,
+      "valid": "border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`",
+      "invalid": "boxShadow: \"inset 0 0 0 1px rgba(0,0,0,0.1)\""
+    },
+    {
+      "id": "motion-for-z-order",
+      "rule": "Surfaces that emerge from behind other surfaces must animate (y: 8->0, opacity fade-in). This establishes z-order through behavior, not a persistent visual artifact.",
+      "enforceable": false,
+      "valid": "initial={{ y: 8, opacity: 0 }} animate={{ y: 0, opacity: 1 }}",
+      "invalid": "// rendering a dropdown without entrance animation"
+    }
+  ],
+  "usage": [
+    {
+      "condition": "Page canvas, document background",
+      "apply": "var(--semantic-color-surface-page)"
+    },
+    {
+      "condition": "Cards, sidebars, nav backgrounds",
+      "apply": "var(--semantic-color-surface-raised)"
+    },
+    {
+      "condition": "Dropdown menus, popovers, inline editors",
+      "apply": "var(--semantic-color-surface-overlay)"
+    },
+    {
+      "condition": "Distinguishing adjacent surfaces of similar lightness",
+      "apply": "border: hds.borderWidth.default solid var(--semantic-color-border-default)"
+    },
+    {
+      "condition": "Surface entering from behind (dropdown, modal, drawer open)",
+      "apply": "initial={{ y: 8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} + semantic.motion.productive"
+    }
+  ],
+  "avoid": [
+    "Using box-shadow for any elevation purpose - it degrades in dark mode and adds visual noise.",
+    "Inventing intermediate surface tiers (e.g. rgba overlays at 1%-3%) outside the three-tier system.",
+    "Using drop-shadow CSS filter as a substitute for box-shadow.",
+    "Rendering dropdowns or modals without an entrance animation - z-order must be communicated through motion."
+  ],
+  "examples": [
+    {
+      "name": "CARD - raised surface with edge border",
+      "code": "style={{\n  background:   'var(--semantic-color-surface-raised)',\n  border:       `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,\n  borderRadius: hds.borderRadius[8],\n  padding:      hds.space.px24,\n}}",
+      "tokensUsed": [
+        "semantic.color.surface.raised",
+        "semantic.color.border.default",
+        "primitive.radius.8"
+      ]
+    },
+    {
+      "name": "DROPDOWN - overlay surface with entrance animation",
+      "code": "<motion.div\n  initial={{ y: 8, opacity: 0 }}\n  animate={{ y: 0, opacity: 1 }}\n  transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}\n  style={{\n    background:  'var(--semantic-color-surface-overlay)',\n    border:      `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,\n    position:    'absolute',\n  }}\n/>",
+      "tokensUsed": [
+        "semantic.color.surface.overlay",
+        "semantic.motion.productive"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "token": "semantic.color.surface.page",
+      "css": "--semantic-color-surface-page",
+      "figma": "semantic/color/surface/page",
+      "component": "Page canvas, document root"
+    },
+    {
+      "token": "semantic.color.surface.raised",
+      "css": "--semantic-color-surface-raised",
+      "figma": "semantic/color/surface/raised",
+      "component": "Card, Sidebar, DocSection"
+    },
+    {
+      "token": "semantic.color.surface.overlay",
+      "css": "--semantic-color-surface-overlay",
+      "figma": "semantic/color/surface/overlay",
+      "component": "Dropdown, Popover, Tooltip"
+    },
+    {
+      "token": "semantic.color.border.default",
+      "css": "--semantic-color-border-default",
+      "figma": "semantic/color/border/default",
+      "component": "Card border, edge definition"
+    },
+    {
+      "token": "semantic.motion.productive",
+      "css": "--hds-motion-productive",
+      "figma": "semantic/motion/productive",
+      "component": "Surface entrance motion"
+    }
+  ]
+}

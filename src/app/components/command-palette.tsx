@@ -91,15 +91,15 @@ function sanitize(text: string): string {
 // ── Index build ───────────────────────────────────────────────────────────────
 
 const FOUNDATION_SECTIONS: Array<{ label: string; to: string; description: string }> = [
-  { label: 'Overview', to: '/ops/hds/color', description: 'HDS landing page' },
-  { label: 'Color', to: '/ops/hds/color', description: 'Color tokens and roles' },
-  { label: 'Typography', to: '/ops/hds/typography', description: 'Type ramp and pairings' },
-  { label: 'Spacing', to: '/ops/hds/spacing', description: 'Spacing scale' },
-  { label: 'Shape', to: '/ops/hds/shape', description: 'Radius and shape tokens' },
-  { label: 'Elevation', to: '/ops/hds/elevation', description: 'Shadow and z-index' },
-  { label: 'Motion', to: '/ops/hds/motion', description: 'Easing and duration' },
-  { label: 'Breakpoints', to: '/ops/hds/breakpoints', description: 'Responsive breakpoints' },
-  { label: 'Token Reference', to: '/ops/hds/tokens', description: 'Full token catalog' },
+  { label: 'Overview', to: '/color', description: 'HDS landing page' },
+  { label: 'Color', to: '/color', description: 'Color tokens and roles' },
+  { label: 'Typography', to: '/typography', description: 'Type ramp and pairings' },
+  { label: 'Spacing', to: '/spacing', description: 'Spacing scale' },
+  { label: 'Shape', to: '/shape', description: 'Radius and shape tokens' },
+  { label: 'Elevation', to: '/elevation', description: 'Shadow and z-index' },
+  { label: 'Motion', to: '/motion', description: 'Easing and duration' },
+  { label: 'Breakpoints', to: '/breakpoints', description: 'Responsive breakpoints' },
+  { label: 'Token Reference', to: '/tokens', description: 'Full token catalog' },
 ];
 
 const COMPONENT_CATEGORY_TO_ROUTE: Record<string, string> = {
@@ -115,11 +115,11 @@ const COMPONENT_CATEGORY_TO_ROUTE: Record<string, string> = {
 };
 
 function specToRoute(name: string, spec: ManifestSpec): string | null {
-  if (spec.tier === 'pattern') return `/ops/hds/patterns/${name}`;
-  if (spec.tier === 'template') return `/ops/hds/templates/${name}`;
+  if (spec.tier === 'pattern') return `/patterns/${name}`;
+  if (spec.tier === 'template') return `/templates/${name}`;
   if (spec.tier === 'primitive') {
     const seg = COMPONENT_CATEGORY_TO_ROUTE[spec.category ?? 'Uncategorized'] ?? 'doc-utilities';
-    return `/ops/hds/components/${seg}#${name}`;
+    return `/components/${seg}#${name}`;
   }
   return null;
 }
@@ -157,7 +157,7 @@ function buildIndex(): PaletteResult[] {
       description,
       kind: 'utility',
       // Utilities don't have dedicated doc pages; route to the utilities aggregator.
-      to: `/ops/hds/components/doc-utilities#${name}`,
+      to: `/components/doc-utilities#${name}`,
       haystack: `${name} ${description}`.toLowerCase(),
     });
   }
@@ -174,7 +174,7 @@ function buildIndex(): PaletteResult[] {
         label: tok.path,
         description,
         kind: 'token',
-        to: `/ops/hds/tokens#${encodeURIComponent(tok.path)}`,
+        to: `/tokens#${encodeURIComponent(tok.path)}`,
         haystack: `${tok.path} ${tok.cssVar ?? ''} ${description}`.toLowerCase(),
       });
     }

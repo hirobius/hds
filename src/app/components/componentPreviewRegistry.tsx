@@ -292,13 +292,13 @@ function getDefaultPreviewProps(componentName: string) {
       return {
         variant: 'side',
         label: 'Color',
-        href: '/ops/hds/color',
+        href: '/color',
         active: false,
         indent: 'root',
       };
     case 'InlineLink':
       return {
-        href: '/ops/hds/color',
+        href: '/color',
         children: 'Color',
       };
     case 'InlineCode':

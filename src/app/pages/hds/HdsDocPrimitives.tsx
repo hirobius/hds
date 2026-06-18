@@ -449,7 +449,7 @@ export function DocPageHeader({
   const location = useLocation();
   const navigate = useNavigate();
   const fromParam = new URLSearchParams(location.search).get('from');
-  const isFromTokens = fromParam === '/ops/hds/tokens';
+  const isFromTokens = fromParam === '/tokens';
 
   return (
     <div
@@ -464,7 +464,7 @@ export function DocPageHeader({
             <Button
               variant="primary"
               size="sm"
-              onClick={() => navigate('/ops/hds/tokens')}
+              onClick={() => navigate('/tokens')}
               iconLeft={
                 <Icon
                   icon={ArrowLeft}

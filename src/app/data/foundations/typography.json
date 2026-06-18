@@ -1,0 +1,307 @@
+{
+  "page": "Typography",
+  "path": "/hds/foundations/typography",
+  "definition": {
+    "id": "typography",
+    "category": "foundation",
+    "summary": "Typography is a closed system: one body font, one mono font, and a fixed set of semantic composite tokens."
+  },
+  "rules": [
+    {
+      "id": "one-typeface",
+      "rule": "Use Satoshi for body and UI text only. Clash Display is reserved for display, h1, h2, h3 headings.",
+      "enforceable": false,
+      "valid": "fontFamily: hds.fontFamily",
+      "invalid": "fontFamily: 'Georgia, serif'"
+    },
+    {
+      "id": "semantic-composite",
+      "rule": "Use semantic.typography.* composites for text styling instead of raw font values.",
+      "enforceable": true,
+      "valid": "style={hds.typeStyles.body}",
+      "invalid": "style={{ fontSize: 16, fontWeight: 400 }}"
+    },
+    {
+      "id": "no-tailwind-font",
+      "rule": "Skip Tailwind font utilities. Use hds.typeStyles.* inline style objects.",
+      "enforceable": true,
+      "valid": "style={hds.typeStyles.h1}",
+      "invalid": "className='text-xl font-semibold'"
+    },
+    {
+      "id": "mono-scope",
+      "rule": "Use Geist Mono for token chips, inline code, file paths, and technical metadata.",
+      "enforceable": false,
+      "valid": "<InlineCode>{tokenPath}</InlineCode>",
+      "invalid": "<p style={hds.typeStyles.mono}>See our documentation</p>"
+    }
+  ],
+  "usage": [
+    {
+      "condition": "Hero headlines and landing-page displays",
+      "apply": "hds.typeStyles.display"
+    },
+    {
+      "condition": "Primary section headings (h1)",
+      "apply": "hds.typeStyles.h1"
+    },
+    {
+      "condition": "Secondary section headings (h2)",
+      "apply": "hds.typeStyles.h2"
+    },
+    {
+      "condition": "Tertiary headings or card titles (h3)",
+      "apply": "hds.typeStyles.h3"
+    },
+    {
+      "condition": "Body text for long-form prose",
+      "apply": "hds.typeStyles.body"
+    },
+    {
+      "condition": "Standard interface text: sidebars, nav, labels, inputs",
+      "apply": "hds.typeStyles.small"
+    },
+    {
+      "condition": "Helper text, secondary metadata, form annotations",
+      "apply": "hds.typeStyles.caption"
+    },
+    {
+      "condition": "Code snippets, token names, keyboard shortcuts, technical metadata",
+      "apply": "hds.typeStyles.mono"
+    },
+    {
+      "condition": "Status badges and tags",
+      "apply": "hds.typeStyles.caption"
+    }
+  ],
+  "examples": [
+    {
+      "name": "BODY COPY - React inline style",
+      "code": "<p style={{ ...hds.typeStyles.body, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-primary)' }}>\n  All prose uses hds.typeStyles.body - no class overrides.\n</p>",
+      "tokensUsed": [
+        "semantic.typography.body",
+        "semantic.color.content.primary"
+      ]
+    },
+    {
+      "name": "HEADING - React inline style",
+      "code": "<h2 style={{ ...hds.typeStyles.h2, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-primary)' }}>\n  Sub-section title\n</h2>",
+      "tokensUsed": [
+        "semantic.typography.h2"
+      ]
+    },
+    {
+      "name": "LABEL - React inline style",
+      "code": "<p style={{ ...hds.typeStyles.small, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-secondary)' }}>\n  On this page\n</p>",
+      "tokensUsed": [
+        "semantic.typography.small",
+        "primitive.typography.size.sm",
+        "primitive.typography.weight.medium",
+        "primitive.typography.letterSpacing.wide",
+        "primitive.typography.lineHeight.none"
+      ]
+    },
+    {
+      "name": "CSS VAR EXPANSION - semantic composite",
+      "code": "/* Each semantic.typography.* expands to 5 CSS custom properties */\n--semantic-typography-display-fontFamily\n--semantic-typography-display-fontSize\n--semantic-typography-display-fontWeight\n--semantic-typography-display-letterSpacing\n--semantic-typography-display-lineHeight",
+      "tokensUsed": [
+        "semantic.typography.display"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "token": "semantic.typography.display",
+      "css": "primitive-backed via hds.typeStyles.display",
+      "figma": "semantic/typography/display",
+      "component": "Hero headlines and displays"
+    },
+    {
+      "token": "semantic.typography.h1",
+      "css": "primitive-backed via hds.typeStyles.h1",
+      "figma": "semantic/typography/h1",
+      "component": "Primary section headers (h1)"
+    },
+    {
+      "token": "semantic.typography.h2",
+      "css": "primitive-backed via hds.typeStyles.h2",
+      "figma": "semantic/typography/h2",
+      "component": "Secondary section headers (h2)"
+    },
+    {
+      "token": "semantic.typography.h3",
+      "css": "primitive-backed via hds.typeStyles.h3",
+      "figma": "semantic/typography/h3",
+      "component": "Tertiary headers (h3) and card titles"
+    },
+    {
+      "token": "semantic.typography.body",
+      "css": "--semantic-typography-body-*",
+      "figma": "semantic/typography/body",
+      "component": "Body copy, long-form prose"
+    },
+    {
+      "token": "semantic.typography.small",
+      "css": "primitive-backed via hds.typeStyles.small",
+      "figma": "semantic/typography/small",
+      "component": "Interface text, sidebars, nav, labels, inputs"
+    },
+    {
+      "token": "semantic.typography.caption",
+      "css": "primitive-backed via hds.typeStyles.caption",
+      "figma": "semantic/typography/caption",
+      "component": "Helper text, metadata, annotations"
+    },
+    {
+      "token": "semantic.typography.mono",
+      "css": "primitive-backed via hds.typeStyles.mono",
+      "figma": "semantic/typography/mono",
+      "component": "Code snippets, token names, technical metadata"
+    },
+    {
+      "token": "semantic.typography.caption",
+      "css": "primitive-backed via hds.typeStyles.caption",
+      "figma": "semantic/typography/caption",
+      "component": "Status badges and tags"
+    },
+    {
+      "token": "primitive.typography.family.primary",
+      "css": "--primitive-typography-family-primary",
+      "figma": "primitive/typography/family/primary",
+      "component": "All non-code text"
+    },
+    {
+      "token": "primitive.typography.family.mono",
+      "css": "--primitive-typography-family-mono",
+      "figma": "primitive/typography/family/mono",
+      "component": "InlineCode, CodeBlock"
+    }
+  ],
+  "typeScale": [
+    {
+      "key": "display",
+      "sizeToken": "primitive.typography.size.7xl",
+      "weightToken": "primitive.typography.weight.medium",
+      "lhToken": "primitive.typography.lineHeight.none",
+      "lsToken": "primitive.typography.letterSpacing.tight",
+      "usage": "Display headline (Swiss canon). 72px / Clash Display medium 500 / leading-none / unconstrained measure.",
+      "specimen": "Ag"
+    },
+    {
+      "key": "h1",
+      "sizeToken": "primitive.typography.size.4xl",
+      "weightToken": "primitive.typography.weight.medium",
+      "lhToken": "primitive.typography.lineHeight.tight",
+      "lsToken": "primitive.typography.letterSpacing.tight",
+      "usage": "Primary section headings (h1). 48px / Clash Display medium 500 / leading-tight.",
+      "specimen": "Ag"
+    },
+    {
+      "key": "h2",
+      "sizeToken": "primitive.typography.size.2xl",
+      "weightToken": "primitive.typography.weight.medium",
+      "lhToken": "primitive.typography.lineHeight.snug",
+      "lsToken": "primitive.typography.letterSpacing.tight",
+      "usage": "Secondary section headings (h2). 30px / Clash Display medium 500 / leading-snug.",
+      "specimen": "Ag"
+    },
+    {
+      "key": "h3",
+      "sizeToken": "primitive.typography.size.lg",
+      "weightToken": "primitive.typography.weight.medium",
+      "lhToken": "primitive.typography.lineHeight.snug",
+      "lsToken": "primitive.typography.letterSpacing.normal",
+      "usage": "Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug.",
+      "specimen": "Ag"
+    },
+    {
+      "key": "body",
+      "sizeToken": "primitive.typography.size.base",
+      "weightToken": "primitive.typography.weight.regular",
+      "lhToken": "primitive.typography.lineHeight.relaxed",
+      "lsToken": "primitive.typography.letterSpacing.normal",
+      "usage": "Body prose. 17px / Satoshi regular 400 / leading-relaxed / measure capped at 60ch.",
+      "specimen": "Ag"
+    },
+    {
+      "key": "small",
+      "sizeToken": "primitive.typography.size.sm",
+      "weightToken": "primitive.typography.weight.regular",
+      "lhToken": "primitive.typography.lineHeight.relaxed",
+      "lsToken": "primitive.typography.letterSpacing.normal",
+      "usage": "UI labels, sidebars, nav, inputs, footnotes. 15px / Satoshi regular 400 / leading-relaxed.",
+      "specimen": "Ag"
+    },
+    {
+      "key": "caption",
+      "sizeToken": "primitive.typography.size.xs",
+      "weightToken": "primitive.typography.weight.regular",
+      "lhToken": "primitive.typography.lineHeight.normal",
+      "lsToken": "primitive.typography.letterSpacing.wide",
+      "usage": "Caption / overline. 13px / Satoshi regular 400 / tracking-wide. Callers apply text-transform:uppercase via class.",
+      "specimen": "Ag"
+    },
+    {
+      "key": "mono",
+      "sizeToken": "primitive.typography.size.sm",
+      "weightToken": "primitive.typography.weight.regular",
+      "lhToken": "primitive.typography.lineHeight.relaxed",
+      "lsToken": "primitive.typography.letterSpacing.normal",
+      "usage": "Code snippets, token names, keyboard shortcuts, git hashes, hex codes, IP addresses, technical metadata. 15px Geist Mono regular 400 / leading-relaxed / measure 60ch.",
+      "specimen": "code"
+    }
+  ],
+  "fontSizes": [
+    { "key": "2xs", "token": "primitive.typography.size.2xs" },
+    { "key": "xs", "token": "primitive.typography.size.xs" },
+    { "key": "sm", "token": "primitive.typography.size.sm" },
+    { "key": "base", "token": "primitive.typography.size.base" },
+    { "key": "lg", "token": "primitive.typography.size.lg" },
+    { "key": "xl", "token": "primitive.typography.size.xl" },
+    { "key": "2xl", "token": "primitive.typography.size.2xl" },
+    { "key": "3xl", "token": "primitive.typography.size.3xl" },
+    { "key": "4xl", "token": "primitive.typography.size.4xl" },
+    { "key": "5xl", "token": "primitive.typography.size.5xl" },
+    { "key": "7xl", "token": "primitive.typography.size.7xl" }
+  ],
+  "fontWeights": [
+    { "key": "light", "token": "primitive.typography.weight.light" },
+    { "key": "regular", "token": "primitive.typography.weight.regular" },
+    { "key": "medium", "token": "primitive.typography.weight.medium" },
+    { "key": "semibold", "token": "primitive.typography.weight.semibold" },
+    { "key": "bold", "token": "primitive.typography.weight.bold" }
+  ],
+  "lineHeights": [
+    { "key": "compact", "token": "primitive.typography.lineHeight.compact", "specimen": "Ag\nBg" },
+    { "key": "none", "token": "primitive.typography.lineHeight.none", "specimen": "Ag\nBg" },
+    { "key": "tight", "token": "primitive.typography.lineHeight.tight", "specimen": "Ag\nBg" },
+    { "key": "normal", "token": "primitive.typography.lineHeight.normal", "specimen": "Ag\nBg" }
+  ],
+  "letterSpacings": [
+    {
+      "key": "tighter",
+      "token": "primitive.typography.letterSpacing.tighter",
+      "css": "var(--primitive-typography-letterSpacing-tighter)"
+    },
+    {
+      "key": "tight",
+      "token": "primitive.typography.letterSpacing.tight",
+      "css": "var(--primitive-typography-letterSpacing-tight)"
+    },
+    {
+      "key": "normal",
+      "token": "primitive.typography.letterSpacing.normal",
+      "css": "var(--primitive-typography-letterSpacing-normal)"
+    },
+    {
+      "key": "wide",
+      "token": "primitive.typography.letterSpacing.wide",
+      "css": "var(--primitive-typography-letterSpacing-wide)"
+    },
+    {
+      "key": "wider",
+      "token": "primitive.typography.letterSpacing.wider",
+      "css": "var(--primitive-typography-letterSpacing-wider)"
+    }
+  ]
+}

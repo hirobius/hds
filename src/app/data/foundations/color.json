@@ -1,0 +1,173 @@
+{
+  "page": "Color",
+  "path": "/hds/foundations/color",
+  "definition": {
+    "id": "color",
+    "category": "foundation",
+    "summary": "All color values resolve through a three-tier alias chain: primitive.color.* holds raw palette values, semantic.color.* maps them to purpose-scoped roles (bg, content, border, feedback) with automatic light/dark switching, and component.* scopes semantic roles to individual component slots. No hex values exist below the primitive tier."
+  },
+  "rules": [
+    {
+      "id": "no-raw-hex",
+      "rule": "Never use raw hex, RGB, or oklch values in component or page styles.",
+      "enforceable": true,
+      "valid": "color: var(--semantic-color-content-primary)",
+      "invalid": "color: #1a1a1a"
+    },
+    {
+      "id": "semantic-only",
+      "rule": "Components and pages must consume semantic.color.* or component.* tokens - never primitive.color.* directly.",
+      "enforceable": true,
+      "valid": "background: var(--semantic-color-surface-raised)",
+      "invalid": "background: var(--primitive-color-neutral-100)"
+    },
+    {
+      "id": "fill-no-text",
+      "rule": "--hds-fill and --hds-hover are solid surface aliases for background use only. Never use them as text colors.",
+      "enforceable": true,
+      "valid": "background: var(--hds-fill)",
+      "invalid": "color: var(--hds-fill)"
+    },
+    {
+      "id": "no-js-mode-fork",
+      "rule": "Do not fork color by mode in JS. Semantic vars handle mode switching in CSS.",
+      "enforceable": false,
+      "valid": "color: var(--semantic-color-content-primary)",
+      "invalid": "color: isDark ? \"var(--semantic-color-content-inverse)\" : \"var(--semantic-color-content-primary)\""
+    }
+  ],
+  "usage": [
+    {
+      "condition": "Body copy, headings, interactive labels",
+      "apply": "var(--semantic-color-content-primary)"
+    },
+    {
+      "condition": "Supporting labels, captions, metadata",
+      "apply": "var(--semantic-color-content-secondary)"
+    },
+    {
+      "condition": "Disabled text, placeholder",
+      "apply": "var(--semantic-color-content-disabled)"
+    },
+    {
+      "condition": "Brand links, active text accents",
+      "apply": "var(--semantic-color-content-accent)"
+    },
+    {
+      "condition": "Page canvas",
+      "apply": "var(--semantic-color-surface-page)"
+    },
+    {
+      "condition": "Cards, sidebar, nav backgrounds",
+      "apply": "var(--semantic-color-surface-raised)"
+    },
+    {
+      "condition": "Dropdowns, popovers, inline editors",
+      "apply": "var(--semantic-color-surface-overlay)"
+    },
+    {
+      "condition": "Brand CTA, active fills",
+      "apply": "var(--semantic-color-surface-accent)"
+    },
+    {
+      "condition": "Default borders, dividers, card outlines",
+      "apply": "var(--semantic-color-border-default)"
+    },
+    {
+      "condition": "Focus ring, brand-accent borders",
+      "apply": "var(--semantic-color-border-accent)"
+    },
+    {
+      "condition": "Success / error / warning / info banners",
+      "apply": "var(--semantic-color-feedback-*)"
+    },
+    {
+      "condition": "Solid surface aliases for reusable fills",
+      "apply": "var(--semantic-color-surface-raised) / var(--semantic-color-surface-accentSubtle)"
+    }
+  ],
+  "examples": [
+    {
+      "name": "TEXT - React inline style",
+      "code": "// Primary body copy\nstyle={{ color: 'var(--semantic-color-content-primary)' }}\n\n// Secondary / supporting label\nstyle={{ color: 'var(--semantic-color-content-secondary)' }}",
+      "tokensUsed": [
+        "semantic.color.content.primary",
+        "semantic.color.content.secondary"
+      ]
+    },
+    {
+      "name": "SURFACE - CSS class",
+      "code": ".card {\n  background: var(--semantic-color-surface-raised);\n  border: 1px solid var(--semantic-color-border-default);\n}",
+      "tokensUsed": [
+        "semantic.color.surface.raised",
+        "semantic.color.border.default"
+      ]
+    },
+    {
+      "name": "BRAND BUTTON - React inline styles",
+      "code": "style={{\n  background: 'var(--semantic-color-surface-accent)',\n  color:      'var(--semantic-color-content-onAccent)',\n}}",
+      "tokensUsed": [
+        "semantic.color.surface.accent",
+        "semantic.color.content.onAccent"
+      ]
+    },
+    {
+      "name": "FEEDBACK - Alert component",
+      "code": "// Alert.tsx VARIANT_CONFIG entry\nsuccess: {\n  colorVar: 'var(--semantic-color-feedback-success)',\n  bgVar:    'var(--semantic-color-feedback-bg-success)',\n}",
+      "tokensUsed": [
+        "semantic.color.feedback.success",
+        "semantic.color.feedback.bg.success"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "token": "semantic.color.content.primary",
+      "css": "--semantic-color-content-primary",
+      "figma": "semantic/color/content/primary",
+      "component": "Body copy, headings"
+    },
+    {
+      "token": "semantic.color.content.secondary",
+      "css": "--semantic-color-content-secondary",
+      "figma": "semantic/color/content/secondary",
+      "component": "Labels, captions"
+    },
+    {
+      "token": "semantic.color.surface.page",
+      "css": "--semantic-color-surface-page",
+      "figma": "semantic/color/surface/page",
+      "component": "Page canvas"
+    },
+    {
+      "token": "semantic.color.surface.raised",
+      "css": "--semantic-color-surface-raised",
+      "figma": "semantic/color/surface/raised",
+      "component": "Cards, sidebars"
+    },
+    {
+      "token": "semantic.color.surface.accent",
+      "css": "--semantic-color-surface-accent",
+      "figma": "semantic/color/surface/accent",
+      "component": "HdsButton primary"
+    },
+    {
+      "token": "semantic.color.border.default",
+      "css": "--semantic-color-border-default",
+      "figma": "semantic/color/border/default",
+      "component": "Cards, inputs"
+    },
+    {
+      "token": "semantic.color.border.accent",
+      "css": "--semantic-color-border-accent",
+      "figma": "semantic/color/border/accent",
+      "component": "Focus rings"
+    },
+    {
+      "token": "semantic.color.feedback.error",
+      "css": "--semantic-color-feedback-error",
+      "figma": "semantic/color/feedback/error",
+      "component": "Alert error variant"
+    }
+  ]
+}

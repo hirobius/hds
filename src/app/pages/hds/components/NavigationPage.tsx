@@ -32,9 +32,9 @@ export default function NavigationPage() {
           <NavGroup
             label="Design System"
             items={[
-              { path: '/ops/hds/tokens', label: 'Tokens' },
-              { path: '/ops/hds/components/actions', label: 'Components' },
-              { path: '/ops/hds/components/doc-utilities', label: 'Patterns' },
+              { path: '/tokens', label: 'Tokens' },
+              { path: '/components/actions', label: 'Components' },
+              { path: '/components/doc-utilities', label: 'Patterns' },
             ]}
           />
         </DemoBlock>
@@ -44,8 +44,8 @@ export default function NavigationPage() {
       matrix: (
         <DemoBlock heading="States">
           <Stack gap="tight" align="start">
-            <NavItem label="Tokens" href="/ops/hds/tokens" />
-            <NavItem label="Components" href="/ops/hds/components/actions" active />
+            <NavItem label="Tokens" href="/tokens" />
+            <NavItem label="Components" href="/components/actions" active />
           </Stack>
         </DemoBlock>
       ),
@@ -73,12 +73,12 @@ export default function NavigationPage() {
             <DocLinkCard
               title="Design Tokens"
               description="Color, space, and typography tokens."
-              href="/ops/hds/tokens"
+              href="/tokens"
               icon={Layers}
             />
             <DocLinkCard
               title="Components"
-              href="/ops/hds/components/actions"
+              href="/components/actions"
               icon={Layers}
               accent
             />
@@ -90,7 +90,7 @@ export default function NavigationPage() {
       matrix: (
         <DemoBlock heading="Variants">
           <Stack gap="tight" align="start">
-            <InlineLink href="/ops/hds/tokens">View tokens</InlineLink>
+            <InlineLink href="/tokens">View tokens</InlineLink>
             <InlineLink href="https://example.com" externalIcon>
               External link
             </InlineLink>
