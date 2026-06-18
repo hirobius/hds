@@ -1,7 +1,7 @@
 /**
  * DisplayPage - /hds/components/display
  *
- * Components: Icon, TextLockup, Table, InlineCode, CodeBlock, Token, Stat, Field, StatusListItem, AssetImg, EmptyState, StatusTile, PhaseHeader, AgentTag
+ * Components: Icon, TextLockup, Table, InlineCode, CodeBlock, Token, Stat, Field, StatusListItem, AssetImg, EmptyState, StatusTile
  * Category validated against: Ant Design (Data Display), Chakra UI (Data Display),
  * Radix UI (Card) - non-interactive components that present information
  * are grouped under "Display" or "Data Display".
@@ -16,9 +16,7 @@ import { Stack } from '../../../components/stack';
 import { Stat } from '../../../components/stat';
 import { Field } from '../../../components/field';
 import { StatusListItem } from '../../../components/status-list-item';
-import { AgentTag } from '../../../components/agent-tag';
 import { EmptyState } from '../../../components/empty-state';
-import { PhaseHeader } from '../../../components/phase-header';
 import { StatusTile } from '../../../components/status-tile';
 import { TextLockup } from '../../../components/text-lockup';
 import { InlineCode } from '../../../components/inline-code';
@@ -27,7 +25,6 @@ import { Table } from '../../../components/table';
 import { AssetImg } from '../../../components/asset-img';
 import { Token } from '../../../components/token';
 import { Card } from '../../../components/card';
-import { ApprovalCard } from '../../../components/approval-card';
 import { StackedCardRail } from '../../../components/stacked-card-rail';
 import { IconGallery } from './IconGallery';
 import { ComponentDocPageShell } from './ComponentDocPageShell';
@@ -199,38 +196,6 @@ export default function DisplayPage() {
         </DemoBlock>
       ),
     },
-    PhaseHeader: {
-      matrix: (
-        <DemoBlock heading="Tones">
-          <Stack gap="tight" align="start">
-            <PhaseHeader name="Phase 1 — Foundation" done={3} total={5} />
-            <PhaseHeader
-              name="Phase 2 — Hardening"
-              done={8}
-              total={8}
-              tone="success"
-              trailing={<Badge tone="success">Done</Badge>}
-            />
-            <PhaseHeader name="Phase 3 — Launch" done={2} total={6} tone="warning" budget={1500} />
-          </Stack>
-        </DemoBlock>
-      ),
-    },
-    AgentTag: {
-      matrix: (
-        <DemoBlock heading="Tiers">
-          <Stack gap="tight" align="start">
-            <AgentTag assignee="hermes3" modelTier="open-local" costCeiling={0} />
-            <AgentTag
-              assignee="sonnet-4-6"
-              modelTier="closed-frontier"
-              costSpent={0.45}
-              costCeiling={2.0}
-            />
-          </Stack>
-        </DemoBlock>
-      ),
-    },
     Token: {
       matrix: (
         <DemoBlock heading="Variants">
@@ -261,25 +226,6 @@ export default function DisplayPage() {
               </Card.Header>
             </Card>
           </Stack>
-        </DemoBlock>
-      ),
-    },
-    ApprovalCard: {
-      matrix: (
-        <DemoBlock heading="Variants">
-          <ApprovalCard
-            unit={{
-              id: 'demo-1',
-              name: 'Add token audit gate',
-              sprint: 2,
-              priority: 1,
-              cluster: 'hardening',
-              source: 'proposed-units.jsonl',
-              description:
-                'Add a pre-commit gate that validates all semantic token paths resolve correctly.',
-              approval: 'proposed',
-            }}
-          />
         </DemoBlock>
       ),
     },
@@ -320,11 +266,8 @@ export default function DisplayPage() {
           'AssetImg',
           'EmptyState',
           'StatusTile',
-          'PhaseHeader',
-          'AgentTag',
           'Token',
           'Card',
-          'ApprovalCard',
           'StackedCardRail',
         ]}
         configs={configs}
