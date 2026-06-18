@@ -737,6 +737,10 @@ function loopbackOnly(req, res, next) {
 }
 
 function readOrchestration() {
+  // orchestration moved to the ops repo (this is the design-system-only repo).
+  // Degrade gracefully so the bridge's legacy /orchestration endpoints return an
+  // empty set instead of a 500 when docs/ai/orchestration.json is absent.
+  if (!fs.existsSync(ORCHESTRATION_PATH)) return { units: [] };
   const raw = fs.readFileSync(ORCHESTRATION_PATH, 'utf8');
   return JSON.parse(raw);
 }
