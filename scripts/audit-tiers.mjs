@@ -25,6 +25,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { writeStableArtifact } from './lib/stable-artifact.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPONENTS_DIR = path.join(ROOT, 'src/app/components');
@@ -395,7 +396,7 @@ function main() {
   }
 
   const md = renderMarkdown(results, manifest);
-  fs.writeFileSync(AUDIT_PATH, md);
+  writeStableArtifact(AUDIT_PATH, md);
   console.log(`Wrote ${path.relative(ROOT, AUDIT_PATH)} — ${summary}`);
 }
 

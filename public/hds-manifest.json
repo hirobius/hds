@@ -262,7 +262,7 @@
     }
   ],
   "health": {
-    "generatedAt": "2026-06-18T07:22:17.198Z",
+    "generatedAt": "2026-06-18T14:21:47.440Z",
     "integrity": {
       "score": 100,
       "grade": "F"
@@ -455,7 +455,7 @@
       "criticalFileCount": 1,
       "criticalFiles": [
         {
-          "file": "/home/user/hirobius-design-system/src/app/components/componentPreviewRegistry.tsx",
+          "file": "src/app/components/componentPreviewRegistry.tsx",
           "count": 1,
           "label": "componentPreviewRegistry.tsx"
         }
