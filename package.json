@@ -1,7 +1,7 @@
 {
   "name": "@hirobius/design-system",
   "description": "Hirobius Design Systems Architecture: token-governed React components, documentation surfaces, and distribution tooling.",
-  "private": true,
+  "private": false,
   "version": "0.3.0",
   "engines": {
     "node": ">=20",
@@ -50,6 +50,14 @@
     "hirobius.tokens.json",
     "public/hds-manifest.json"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0",
+    "react-router": "^7.0.0"
+  },
   "scripts": {
     "_comment:a11y-high-value": "The following check:* validators are high-value accessibility checks that catch real violations (check:focus found 1 missing focus class). Kept dormant/manual-only to avoid pre-commit performance regression. Candidates to wire into pretest after CI stability review.",
     "_comment:link-integrity": "check:doc-refs and check:routes both validate internal link integrity (different surfaces: doc refs vs route links). Kept dormant/manual-only to prevent pre-commit cascade.",
@@ -74,8 +82,10 @@
     "build:lib": "vite build -c vite.config.lib.ts",
     "catalog": "node scripts/generate-visual-catalog.mjs",
     "changelog:generate": "node scripts/generate-changelog.mjs",
-    "changeset:add": "echo 'Install @changesets/cli (pnpm add -D @changesets/cli) to run: changeset add'",
-    "changeset:version": "echo 'Install @changesets/cli (pnpm add -D @changesets/cli) to run: changeset version'",
+    "changeset": "changeset",
+    "changeset:add": "changeset",
+    "changeset:version": "changeset version",
+    "release": "pnpm build:lib && changeset publish",
     "check": "pnpm check:full",
     "check:a11y": "pnpm lint --rule '{\"jsx-a11y/alt-text\":\"error\",\"jsx-a11y/img-redundant-alt\":\"error\"}'",
     "check:assets": "node scripts/check-asset-manifest.mjs",
@@ -231,15 +241,13 @@
     "lucide-react": "0.487.0",
     "motion": "12.23.24",
     "postprocessing": "^6.39.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-router": "7.13.0",
     "tailwind-merge": "^3.5.0",
     "three": "^0.183.2",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "0.92.0",
+    "@changesets/cli": "^2.27.10",
     "@axe-core/playwright": "^4.11.1",
     "@cyclonedx/cyclonedx-npm": "^4.2.1",
     "@lhci/cli": "0.15.1",
@@ -278,7 +286,10 @@
     "playwright": "^1.58.2",
     "pngjs": "^7.0.0",
     "prettier": "^3.8.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-docgen-typescript": "^2.4.0",
+    "react-router": "7.13.0",
     "size-limit": "^12.1.0",
     "style-dictionary": "^5.4.0",
     "tailwindcss": "^4.2.4",
