@@ -1,0 +1,152 @@
+{
+  "page": "Breakpoints",
+  "path": "/hds/foundations/breakpoints",
+  "category": "foundation",
+  "definition": {
+    "id": "breakpoints",
+    "category": "foundation",
+    "summary": "Breakpoints define the viewport-width thresholds at which layout changes occur. They are primitive tokens with no semantic tier - components reference hds.breakpoints.* in JavaScript and the documented px values in CSS media queries."
+  },
+  "rules": [
+    {
+      "id": "token-reference",
+      "rule": "JavaScript breakpoint checks must reference hds.breakpoints.* values - no magic numbers.",
+      "enforceable": true,
+      "valid": "window.innerWidth < hds.breakpoints.md",
+      "invalid": "window.innerWidth < breakpointValue"
+    },
+    {
+      "id": "no-css-var-in-media",
+      "rule": "CSS custom properties cannot be used in @media min-width queries - they resolve after the cascade runs. Use the raw px values documented by the token.",
+      "enforceable": true,
+      "valid": "@media (min-width: 768px) { /* md */ }",
+      "invalid": "@media (min-width: var(--primitive-breakpoint-md)) {}"
+    },
+    {
+      "id": "mobile-first",
+      "rule": "All responsive CSS must be mobile-first: base styles target xs (375px), overrides use min-width queries at sm/md/lg/xl.",
+      "enforceable": false,
+      "valid": ".el { display: block; } @media (min-width: 1024px) { .el { display: grid; } }",
+      "invalid": ".el { display: grid; } @media (max-width: 1023px) { .el { display: block; } }"
+    }
+  ],
+  "usage": [
+    {
+      "condition": "JavaScript component logic (isMobile check, column count)",
+      "apply": "hds.breakpoints.md or hds.breakpoints.lg"
+    },
+    {
+      "condition": "CSS media query - single-column to two-column layout",
+      "apply": "@media (min-width: 768px) /* md */"
+    },
+    {
+      "condition": "CSS media query - sidebar layout activates",
+      "apply": "@media (min-width: 1024px) /* lg */"
+    },
+    {
+      "condition": "Tailwind responsive utilities",
+      "apply": "md:grid-cols-2 lg:grid-cols-3"
+    },
+    {
+      "condition": "Content max-width constraint",
+      "apply": "max-width: 1200px (xl breakpoint region)"
+    }
+  ],
+  "examples": [
+    {
+      "name": "CSS - @media min-width",
+      "code": "/* Token values cannot be used inside @media min-width directly -\n   reference the documented px values. */\n\n@media (min-width: 768px) { /* md */ }\n@media (min-width: 1024px) { /* lg */ }",
+      "tokensUsed": [
+        "primitive.breakpoint.md",
+        "primitive.breakpoint.lg"
+      ]
+    },
+    {
+      "name": "UTILITY LAYER - Tailwind responsive prefix",
+      "code": "<div className=\"grid-cols-1 md:grid-cols-2 lg:grid-cols-3\">\n  {/* grid-cols-1 is the mobile-first base */}\n</div>"
+    },
+    {
+      "name": "JAVASCRIPT - token reference",
+      "code": "import hds from '@/design-system/tokens';\n\n// Named values - no magic numbers\nconst isMobile = window.innerWidth < hds.breakpoints.md;  // < 768\n\n// In a resize handler\nconst cols = window.innerWidth >= hds.breakpoints.lg ? 3\n           : window.innerWidth >= hds.breakpoints.md ? 2\n           : 1;",
+      "tokensUsed": [
+        "primitive.breakpoint.md",
+        "primitive.breakpoint.lg"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "token": "primitive.breakpoint.xs",
+      "css": "--primitive-breakpoint-xs",
+      "figma": "primitive/breakpoint/xs",
+      "component": "Mobile layout floor - useIsMobile hook"
+    },
+    {
+      "token": "primitive.breakpoint.sm",
+      "css": "--primitive-breakpoint-sm",
+      "figma": "primitive/breakpoint/sm",
+      "component": "sm: utility prefix"
+    },
+    {
+      "token": "primitive.breakpoint.md",
+      "css": "--primitive-breakpoint-md",
+      "figma": "primitive/breakpoint/md",
+      "component": "useIsMobile and mobile/tablet shell checks"
+    },
+    {
+      "token": "primitive.breakpoint.lg",
+      "css": "--primitive-breakpoint-lg",
+      "figma": "primitive/breakpoint/lg",
+      "component": "HDS sidebar layout activation"
+    },
+    {
+      "token": "primitive.breakpoint.xl",
+      "css": "--primitive-breakpoint-xl",
+      "figma": "primitive/breakpoint/xl",
+      "component": "Content max-width constraint"
+    }
+  ],
+  "avoid": [
+    "Using @media max-width - the system is mobile-first, all responsive overrides are min-width.",
+    "Using CSS custom properties in @media min-width queries - they resolve after the cascade.",
+    "Hardcoding px values in JavaScript breakpoint checks - always reference hds.breakpoints.*."
+  ],
+  "breakpoints": [
+    {
+      "name": "xs",
+      "px": 375,
+      "token": "primitive.breakpoint.xs",
+      "utility": "-",
+      "notes": "iPhone mini baseline. Floor for all mobile layouts."
+    },
+    {
+      "name": "sm",
+      "px": 640,
+      "token": "primitive.breakpoint.sm",
+      "utility": "sm:",
+      "notes": "Large phone / landscape. Matches the utility-layer responsive scale."
+    },
+    {
+      "name": "md",
+      "px": 768,
+      "token": "primitive.breakpoint.md",
+      "utility": "md:",
+      "notes": "Mobile/tablet boundary for shell-responsive composition and JS layout checks."
+    },
+    {
+      "name": "lg",
+      "px": 1024,
+      "token": "primitive.breakpoint.lg",
+      "utility": "lg:",
+      "notes": "Desktop. HDS sidebar layout activates here."
+    },
+    {
+      "name": "xl",
+      "px": 1280,
+      "token": "primitive.breakpoint.xl",
+      "utility": "xl:",
+      "notes": "Wide desktop. Content reaches max-width (1200px)."
+    }
+  ],
+  "maxPx": 1400
+}

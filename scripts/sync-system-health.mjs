@@ -392,7 +392,10 @@ export function syncSystemHealth() {
 
   const pkg = readJson(PACKAGE_PATH);
   const report = readJson(REPORT_PATH);
-  const history = readJson(HISTORY_PATH);
+  // health-history.json is gitignored, so it is absent on fresh clones and CI
+  // (e.g. Vercel). Treat a missing history as empty — appendHistoryIfChanged
+  // already handles a non-array history and will write the file on first run.
+  const history = existsSync(HISTORY_PATH) ? readJson(HISTORY_PATH) : [];
   const componentApiManifest = writeComponentApiManifest();
   const dimensionsResult = runDimensionCheck();
   const docsResult = runComponentDocsCheck();
