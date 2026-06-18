@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { readdirSync, readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
+import { readdirSync, readFileSync, existsSync, mkdirSync } from 'fs';
+import { writeStableArtifact } from './lib/stable-artifact.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
@@ -256,9 +257,9 @@ if (!existsSync(auditDir)) {
   mkdirSync(auditDir, { recursive: true });
 }
 
-// Write report
+// Write report (stable: skip if only timestamp changed)
 const reportPath = join(auditDir, 'exceptions-audit.md');
-writeFileSync(reportPath, report, 'utf8');
+writeStableArtifact(reportPath, report);
 
 console.log(`Audit complete. Report written to ${reportPath}`);
 console.log(`Total suppressions found: ${results.eslintDisable.length + results.tsIgnore.length + results.customSentinels.length}`);

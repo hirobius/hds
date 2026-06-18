@@ -2,7 +2,7 @@
 
 > **Hirobius DesignOps Engine** — multi-tenant AI-native design system + agency platform.
 > Auto-generated boot context for fresh LLM agents. Read in 30 seconds; dive deeper via the links below.
-> Generated: 2026-05-12T04:24:44.642Z
+> Generated: 2026-06-18T16:11:22.358Z
 
 ---
 
@@ -22,16 +22,16 @@ Stack: React + Vite + TypeScript + Tailwind (token-mapped). 435+ orchestration u
 
 | | Composite | Wired coverage | Signal |
 |---|---|---|---|
-| **Score A — Internal Integrity** | 78/100 | 5/6 | Closed-loop discipline |
-| **Score B — Industry Benchmark** | 77/100 | 7/8 | DORA / OWASP / WCAG / Vitals |
+| **Score A — Internal Integrity** | 79/100 | 5/6 | Closed-loop discipline |
+| **Score B — Industry Benchmark** | 71/100 | 5/8 | DORA / OWASP / WCAG / Vitals |
 
 > Score A < 80 — harden internal discipline first (spec rule: A must reach 80 for 3 consecutive days before B becomes primary focus).
 
 ### Top-3 weakest wired dimensions
 
 - **A3 — Fixture Proof-of-Firing:** 24/100
-- **B4 — Web Vitals:** 34/100
-- **B5 — TS Strict Mode:** 57/100
+- **B6 — OSV / npm Audit:** 30/100
+- **B5 — TS Strict Mode:** 59/100
 
 ---
 

@@ -12,7 +12,8 @@
  */
 
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
+import { dirname, join, relative } from 'path';
+import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
 import { discoverHdsComponents } from './component-discovery.mjs';
@@ -51,7 +52,14 @@ function readJson(path) {
 }
 
 function writeJson(path, value) {
-  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+  const content = `${JSON.stringify(value, null, 2)}\n`;
+  // For tracked manifest artifacts use the stable writer so that regen runs
+  // that produce only timestamp differences leave the working tree clean.
+  if (path === MANIFEST_PATH) {
+    writeStableArtifact(path, content);
+  } else {
+    writeFileSync(path, content);
+  }
 }
 
 function normalizeHealthState(health) {
@@ -88,7 +96,12 @@ function summarizeCriticalFiles(violations) {
   const byFile = new Map();
 
   for (const entry of violations ?? []) {
-    byFile.set(entry.file, (byFile.get(entry.file) ?? 0) + 1);
+    // Normalise to a repo-relative path so machine-specific absolute paths
+    // never get embedded in the tracked manifest.
+    const relFile = entry.file.startsWith(ROOT)
+      ? relative(ROOT, entry.file)
+      : entry.file;
+    byFile.set(relFile, (byFile.get(relFile) ?? 0) + 1);
   }
 
   return [...byFile.entries()]

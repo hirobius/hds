@@ -1,11 +1,11 @@
 {
   "gates": [
     {
-      "id": "validate-orchestration",
-      "description": "Validates docs/ai/orchestration.json schema.",
+      "id": "check-contrast",
+      "description": "WCAG AA contrast check across token pairs.",
       "severity": "error",
-      "gateScript": "scripts/validate-orchestration.mjs",
-      "fixturePath": "fixtures/validate-orchestration"
+      "gateScript": "scripts/check-contrast.mjs",
+      "fixturePath": "fixtures/check-contrast"
     }
   ]
 }

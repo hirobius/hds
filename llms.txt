@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-05-12T03:46:03.806Z
+Generated: 2026-06-18T07:22:21.335Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture

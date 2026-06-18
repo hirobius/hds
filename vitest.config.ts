@@ -24,7 +24,10 @@ export default defineConfig({
     include: [
       'scripts/__tests__/**/*.{test,spec}.mjs',
       'src/**/*.{test,spec}.{ts,tsx,js,jsx}',
-      'tests/**/*.test.ts',
+      // Contract tests (tests/primitive-contracts/*.contract.test.tsx) are vitest +
+      // React Testing Library, so collect .tsx here. Playwright (testMatch '**/*.spec.ts')
+      // deliberately does NOT pick these up.
+      'tests/**/*.test.{ts,tsx}',
     ],
     environmentMatchPatterns: [
       // Run scripts tests in Node environment (they use fs, path, url builtins)

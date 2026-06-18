@@ -122,15 +122,37 @@ function fileDiffersFromHead(file) {
 }
 
 function main() {
-  if (VERBOSE) process.stderr.write('Running scripts/generate-manifest.mjs ...\n');
-  run('node scripts/generate-manifest.mjs');
-  if (VERBOSE) process.stderr.write('Running scripts/build-tokens.mjs ...\n');
-  run('node scripts/build-tokens.mjs');
+  // This is a CHECK gate: it MUST be side-effect-free on the working tree.
+  // It regenerates the build-chain outputs to compare them against HEAD, then
+  // restores the originals in a `finally`. Without this, the gate left
+  // public/hds-manifest.json as the un-enriched base form (57 vs the committed
+  // enriched 65), polluting the tree on every pre-commit/post-commit run and
+  // oscillating the manifest 65↔57.
+  const PROTECTED = [...GENERATED_OUTPUTS, 'src/app/data/component-api.json'];
+  const backup = new Map();
+  for (const file of PROTECTED) {
+    const p = path.join(ROOT, file);
+    if (fs.existsSync(p)) backup.set(p, fs.readFileSync(p));
+  }
 
   const drifted = [];
-  for (const file of GENERATED_OUTPUTS) {
-    const result = fileDiffersFromHead(file);
-    if (result.differs) drifted.push({ file, reason: result.reason });
+  try {
+    // Regenerate the SAME chain that produces the committed manifest
+    // (manifest:generate = generate-manifest + generate-component-api +
+    // enrich-manifest), plus the token build — so the comparison is
+    // apples-to-apples and the enrich stubs aren't a false-positive.
+    if (VERBOSE) process.stderr.write('Regenerating manifest + token build chain ...\n');
+    run('node scripts/generate-manifest.mjs');
+    run('node scripts/generate-component-api.mjs');
+    run('node scripts/enrich-manifest.mjs');
+    run('node scripts/build-tokens.mjs');
+
+    for (const file of GENERATED_OUTPUTS) {
+      const result = fileDiffersFromHead(file);
+      if (result.differs) drifted.push({ file, reason: result.reason });
+    }
+  } finally {
+    for (const [p, content] of backup) fs.writeFileSync(p, content);
   }
 
   if (drifted.length === 0) {
@@ -143,10 +165,12 @@ function main() {
     process.stderr.write(`  - ${file}  (${reason})\n`);
   }
   process.stderr.write(
-    '\nThe generated outputs above differ from HEAD. The token source files were edited\n' +
-      'without re-running the build chain. Stage the regenerated files now:\n\n' +
+    '\nThe generated outputs above are stale vs the build chain. The token/manifest\n' +
+      'source was edited without re-running the build. Rebake and stage the outputs:\n\n' +
+      '  pnpm tokens && pnpm manifest:generate\n' +
       `  git add ${drifted.map((d) => d.file).join(' ')}\n\n` +
-      'Then re-attempt the commit.\n',
+      'Then re-attempt the commit. (This check restores the working tree, so it does\n' +
+      'not leave the regenerated files in place.)\n',
   );
   return 1;
 }

@@ -2,6 +2,12 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  // Playwright owns the e2e/visual/a11y specs (*.spec.ts). The vitest + RTL
+  // contract tests under tests/primitive-contracts/ are *.contract.test.tsx and
+  // must NOT be collected here — without this, Playwright's default testMatch
+  // grabs them and fails on the `import ... from 'vitest'` / RTL render(). They
+  // run under `pnpm test` (vitest) instead.
+  testMatch: '**/*.spec.ts',
   timeout: 30_000,
   // 10o-11: retries: 0 → 2. Long-running visual.spec (~7 min, 77 tests) hits
   // intermittent vite dev-server crashes and HMR-triggered page reloads.

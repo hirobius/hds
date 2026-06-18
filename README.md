@@ -2,7 +2,28 @@
 
 Hirobius is a portfolio-grade design-system product surface: a React and TypeScript site, a governed component library, a token pipeline, and an autonomous verification loop living in one repository.
 
-## Quick start
+## Using the published package
+
+Installing HDS in another project? It ships to **GitHub Packages** as
+`@hirobius/design-system` (ESM). Full guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**.
+The short version:
+
+```ini
+# .npmrc in the consuming project — routes the @hirobius scope + auth
+@hirobius:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+```bash
+npm install @hirobius/design-system react react-dom react-router
+```
+
+```ts
+import '@hirobius/design-system/tokens.css';
+import { Button } from '@hirobius/design-system';
+```
+
+## Developing this repo
 
 ```bash
 pnpm install
@@ -49,7 +70,7 @@ In practice that means:
 
 Regression prevention is intentionally layered.
 
-`docs/ai/AI_ORCHESTRATION.md` is the operating contract. It defines the phase queue, permanent UI guardrails, required validation steps, and the self-heal requirement before a task can be marked complete.
+`CLAUDE.md` is the operating contract. It defines the agent execution protocol, permanent UI guardrails, required validation steps, and the self-heal requirement before a task can be marked complete.
 
 `scripts/self-heal.mjs` is the automated repair loop. It runs the local static and smoke checks, captures failures, and gives the agent a consistent path to diagnose and fix type, layout, and runtime drift before reporting completion.
 
@@ -60,8 +81,8 @@ Together the workflow is:
 1. Change code inside the token and component constraints.
 2. Run `pnpm typecheck` and `pnpm run heal`.
 3. Let Playwright catch runtime and visual regressions.
-4. If a regression is fixed through self-healing, log the root cause and resolution in `docs/logs/AI_DECISION_LEDGER.md`.
-5. Only then update the orchestration checklist and ship the change.
+4. If a regression is fixed through self-healing, log the root cause and resolution.
+5. Only then update the verification checklist and ship the change.
 
 ## Bundle and release hygiene
 
@@ -87,11 +108,10 @@ public/
 
 ## Primary docs
 
+- [`docs/CONSUMING.md`](docs/CONSUMING.md) — installing & using the published package
 - `CLAUDE.md`
 - `DESIGN.md`
 - `DESIGN-HANDOFF.md`
 - `TASKS.md`
 - `TOKEN_GOVERNANCE.md`
 - `SYSTEMS_REGISTRY.md`
-- `docs/ai/AI_ORCHESTRATION.md`
-- `docs/logs/AI_DECISION_LEDGER.md`

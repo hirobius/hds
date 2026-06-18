@@ -35,8 +35,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Generated data files (src/app/data/*.json) are gitignored but imported
+      # by source, so they must exist before typecheck. Regenerate them here.
+      - name: Generate data artifacts
+        run: node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
+
       - name: Typecheck
         run: pnpm typecheck
+
+      # Unit + contract tests (vitest). Includes tests/primitive-contracts/*.contract.test.tsx
+      # (React Testing Library); Playwright (testMatch '**/*.spec.ts') runs the e2e/visual specs.
+      - name: Unit tests (vitest)
+        run: pnpm exec vitest run
 
       - name: Full checks
         run: pnpm check:full
