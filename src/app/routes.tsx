@@ -1,5 +1,5 @@
 import { lazy, Suspense, type ComponentType } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router';
+import { createBrowserRouter, Navigate, useLocation } from 'react-router';
 import NotFoundPage from './pages/NotFoundPage';
 import ErrorPage from './pages/ErrorPage';
 import InfoPageWrapper from './pages/InfoPageWrapper';
@@ -50,6 +50,23 @@ function LazyHDS({ Page }: { Page: ComponentType }) {
       <Page />
     </Suspense>
   );
+}
+
+// Legacy deep-links from the monorepo used /ops/hds/*, /hds/*, and /ops/*
+// prefixes. The standalone site serves every page at root, so strip the legacy
+// prefix and forward to the equivalent route (preserving search + hash) instead
+// of dumping every old link on /color.
+function LegacyPrefixRedirect() {
+  const { pathname, search, hash } = useLocation();
+  let next = pathname;
+  for (const prefix of ['/ops/hds', '/hds', '/ops']) {
+    if (next === prefix || next.startsWith(`${prefix}/`)) {
+      next = next.slice(prefix.length) || '/';
+      break;
+    }
+  }
+  if (!next.startsWith('/')) next = `/${next}`;
+  return <Navigate to={{ pathname: next, search, hash }} replace />;
 }
 
 // ── Router ────────────────────────────────────────────────────────────────────
@@ -107,9 +124,9 @@ export const router = createBrowserRouter([
       { path: 'typography-test', element: <LazyHDS Page={TypographyTestPage} /> },
       { path: 'spacing-test', element: <LazyHDS Page={SpacingTestPage} /> },
 
-      // ── Legacy /hds/* and /ops/hds/* deep links → root equivalents ─────────
-      { path: 'hds/*', element: <Navigate to="/color" replace /> },
-      { path: 'ops/*', element: <Navigate to="/color" replace /> },
+      // ── Legacy /hds/*, /ops/hds/*, /ops/* deep links → root equivalents ────
+      { path: 'hds/*', element: <LegacyPrefixRedirect /> },
+      { path: 'ops/*', element: <LegacyPrefixRedirect /> },
 
       { path: '*', Component: NotFoundPage },
     ],
