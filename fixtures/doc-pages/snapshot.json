@@ -8,119 +8,119 @@
   },
   "pages": [
     {
-      "bytes": 4817,
+      "bytes": 4755,
       "exports": [
-        "HdsActivityFeedPatternPage",
+        "ActivityFeedPatternPage",
         "function"
       ],
       "imports": [
-        "../../../components/HdsActivityFeed",
-        "../../../components/HdsIcon",
+        "../../../components/activity-feed",
+        "../../../components/icon",
         "../../../context/ThemeContext",
         "./_template",
         "lucide-react"
       ],
       "path": "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
-      "sha256": "96114c89847e2579aa7027e1d205393c67338822ecf4e498679293aaff1946f5"
+      "sha256": "b4f97c3a05fb98266314f794e5449127ad13ff985df239dc23502ac9c950841d"
     },
     {
-      "bytes": 3981,
+      "bytes": 3867,
       "exports": [
-        "HdsDisclosurePatternPage",
+        "DisclosurePatternPage",
         "function"
       ],
       "imports": [
-        "../../../components/HdsDisclosure",
-        "../../../components/HdsStack",
-        "../../../components/HdsText",
+        "../../../components/disclosure",
+        "../../../components/stack",
+        "../../../components/text",
         "../../../context/ThemeContext",
         "./_template"
       ],
       "path": "src/app/pages/docs/patterns/HdsDisclosure.tsx",
-      "sha256": "a4d85a18ad1e4d9ff2bf5ff485fe9e47c4aa622b4eb324fd57831e1552c9e1ab"
+      "sha256": "11c13ab1de152cab6963d58ed574bcd5062f0c86818142ea37d2e27cae39174f"
     },
     {
-      "bytes": 3489,
+      "bytes": 3485,
       "exports": [
         "HdsFieldPatternPage",
         "function"
       ],
       "imports": [
-        "../../../components/HdsInput",
+        "../../../components/input",
         "../../../context/ThemeContext",
         "./_template"
       ],
       "path": "src/app/pages/docs/patterns/HdsField.tsx",
-      "sha256": "335ecc6c8e1f202cab44259e9d52bb5cd7a061cb0298464f62640ebe4687b00f"
+      "sha256": "7a824446a5223c2bbe5395f0ddcf86d632a5956b7ddfcb5aff40a678ccef872c"
     },
     {
-      "bytes": 4469,
+      "bytes": 4643,
       "exports": [
-        "HdsFoundationSwatchPatternPage",
+        "FoundationSwatchPatternPage",
         "function"
       ],
       "imports": [
-        "../../../components/HdsFoundationSwatch",
-        "../../../components/HdsGrid",
+        "../../../components/foundation-swatch",
+        "../../../components/grid",
         "../../../context/ThemeContext",
         "./_template"
       ],
       "path": "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
-      "sha256": "a3e2fb6928f9fd7c41ea62b9f41f75b085b3c17e10f1d23dbaf8a2487e959cbc"
+      "sha256": "3740fce4d2607ea1640a3bf375e5a027f9fd101e4cebd1b58aa549791a706e74"
     },
     {
-      "bytes": 3280,
+      "bytes": 3336,
       "exports": [
-        "HdsIconButtonPatternPage",
+        "IconButtonPatternPage",
         "function"
       ],
       "imports": [
-        "../../../components/HdsIconButton",
-        "../../../components/HdsStack",
+        "../../../components/icon-button",
+        "../../../components/stack",
         "../../../context/ThemeContext",
         "./_template",
         "lucide-react"
       ],
       "path": "src/app/pages/docs/patterns/HdsIconButton.tsx",
-      "sha256": "c713d0461304359bdc78a8cecb7e7ac89353849c798ef5e700461f89accba4ad"
+      "sha256": "fa87647d6e07f3f1db711e2816e9e8c9ac7909dcc3f4c2c16cd87cbb0e64e13b"
     },
     {
-      "bytes": 6825,
+      "bytes": 6778,
       "exports": [
         "PatternDocPage"
       ],
       "imports": [
-        "../../../components/HdsApiReference",
-        "../../../components/HdsCodeBlock",
-        "../../../components/HdsDocPageHeader",
-        "../../../components/HdsHeadingAnchor",
-        "../../../components/HdsStack",
-        "../../../components/HdsText",
+        "../../../components/api-reference",
+        "../../../components/code-block",
+        "../../../components/doc-page-header",
+        "../../../components/heading-anchor",
+        "../../../components/stack",
+        "../../../components/text",
         "../../hds/HdsSystemDocLayout",
         "react",
         "react-router",
         "virtual:hds-manifest"
       ],
       "path": "src/app/pages/docs/patterns/_template.tsx",
-      "sha256": "d803d43e9f84be12acfa1da90d9c14e8fe775dcc9d368aa5ac86c3f0c7399f66"
+      "sha256": "f34a4d584805ac9e7618b2faf2e4445b3e861f5c166236c8ff9ab905e80329cf"
     },
     {
-      "bytes": 6208,
+      "bytes": 6185,
       "exports": [
         "TemplateDocPage"
       ],
       "imports": [
-        "../../../components/HdsCodeBlock",
-        "../../../components/HdsDocPageHeader",
-        "../../../components/HdsHeadingAnchor",
-        "../../../components/HdsStack",
+        "../../../components/code-block",
+        "../../../components/doc-page-header",
+        "../../../components/heading-anchor",
+        "../../../components/stack",
         "../../hds/HdsSystemDocLayout",
         "react",
         "react-router",
         "virtual:hds-manifest"
       ],
       "path": "src/app/pages/docs/templates/_template.tsx",
-      "sha256": "86f4130478a5053ed04147cbe40510f36d740554f7f752acf323da761775cd6a"
+      "sha256": "16a6bc160261f4a45d0b195de904ece5d5c82f7e1094552783c75a93e4ecf26b"
     }
   ]
 }
