@@ -2,7 +2,28 @@
 
 Hirobius is a portfolio-grade design-system product surface: a React and TypeScript site, a governed component library, a token pipeline, and an autonomous verification loop living in one repository.
 
-## Quick start
+## Using the published package
+
+Installing HDS in another project? It ships to **GitHub Packages** as
+`@hirobius/design-system` (ESM). Full guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**.
+The short version:
+
+```ini
+# .npmrc in the consuming project — routes the @hirobius scope + auth
+@hirobius:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+```bash
+npm install @hirobius/design-system react react-dom react-router
+```
+
+```ts
+import '@hirobius/design-system/tokens.css';
+import { Button } from '@hirobius/design-system';
+```
+
+## Developing this repo
 
 ```bash
 pnpm install
@@ -61,7 +82,7 @@ Together the workflow is:
 2. Run `pnpm typecheck` and `pnpm run heal`.
 3. Let Playwright catch runtime and visual regressions.
 4. If a regression is fixed through self-healing, log the root cause and resolution.
-5. Only then update the orchestration checklist and ship the change.
+5. Only then update the verification checklist and ship the change.
 
 ## Bundle and release hygiene
 
@@ -87,6 +108,7 @@ public/
 
 ## Primary docs
 
+- [`docs/CONSUMING.md`](docs/CONSUMING.md) — installing & using the published package
 - `CLAUDE.md`
 - `DESIGN.md`
 - `DESIGN-HANDOFF.md`
