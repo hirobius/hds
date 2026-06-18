@@ -60,7 +60,7 @@ Together the workflow is:
 1. Change code inside the token and component constraints.
 2. Run `pnpm typecheck` and `pnpm run heal`.
 3. Let Playwright catch runtime and visual regressions.
-4. If a regression is fixed through self-healing, log the root cause and resolution in `docs/logs/AI_DECISION_LEDGER.md`.
+4. If a regression is fixed through self-healing, log the root cause and resolution.
 5. Only then update the orchestration checklist and ship the change.
 
 ## Bundle and release hygiene
@@ -93,5 +93,3 @@ public/
 - `TASKS.md`
 - `TOKEN_GOVERNANCE.md`
 - `SYSTEMS_REGISTRY.md`
-- `docs/ai/AI_ORCHESTRATION.md`
-- `docs/logs/AI_DECISION_LEDGER.md`

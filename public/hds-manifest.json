@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-06-17T22:43:11.337Z",
+  "generated": "2026-06-18T06:43:29.756Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -810,10 +810,6 @@
       {
         "name": "NotFoundPattern",
         "filePath": "src/app/components/not-found-pattern.tsx"
-      },
-      {
-        "name": "OpsGate",
-        "filePath": "src/app/components/OpsGate.tsx"
       },
       {
         "name": "Page",
@@ -7935,27 +7931,6 @@
       "tier": "utility",
       "preview": {
         "exportName": "PageFooter",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "OpsGate": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": false,
-      "filePath": "src/app/components/OpsGate.tsx",
-      "description": "Wraps `/ops/*` routes with a client-side password gate. - In dev mode, always renders children (DEV_BYPASS). - On first prod visit, shows a password screen. - Successful password sets a 7-day localStorage flag. - `?key=<password>` URL param accepted for shareable deep links.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:OpsGate",
-      "tier": "utility",
-      "preview": {
-        "exportName": "OpsGate",
         "sizing": "panel"
       },
       "consumers": [],

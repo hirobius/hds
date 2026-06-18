@@ -5,11 +5,10 @@
 //     (so new routes self-heal and the SW never strands the SPA on a stale
 //     index.html with old route metadata).
 //   - Static GET assets (JS/CSS/img)   → cache-first.
-//   - POST /api/route                  → never intercepted (auto-assigner).
 //   - non-GET in general               → never intercepted.
 
-const CACHE_NAME = 'hirobius-ops-v2';
-const APP_SHELL  = ['/', '/ops', '/ops/sessions', '/index.html'];
+const CACHE_NAME = 'hirobius-ops-v3';
+const APP_SHELL  = ['/', '/index.html'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

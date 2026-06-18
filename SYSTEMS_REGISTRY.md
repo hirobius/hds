@@ -200,8 +200,8 @@ Current state:
 - preview scanning also exists in `.github/workflows/token-scan.yml`
 - preview scanning now injects a headless browser script at scan time instead of depending on a product-bundle bridge
 - the retired prototype files and stale inspector specs have been pruned; the remaining scanner surface is the headless path plus token-index metadata
-- `scripts/batch-scan.mjs` is now the canonical route/render scan entrypoint
-- `scripts/headless-scan.browser.js` owns the browser-only DOM scan runtime
+- `scripts/batch-scan.mjs` is now the canonical route/render scan entrypoint <!-- doc-ref-ok: preview-scan tooling moved to ops repo (see ops export 2026-06-18) -->
+- `scripts/headless-scan.browser.js` owns the browser-only DOM scan runtime <!-- doc-ref-ok: preview-scan tooling moved to ops repo (see ops export 2026-06-18) -->
 - `scripts/build-token-index.mjs` and `src/app/design-system/token-usage-map.json` provide the static metadata used to enrich scan output
 
 Target state:
@@ -225,7 +225,7 @@ Current contract:
 
 - `pnpm scan` scans the default deployed site or any explicit `--url=...`
 - `pnpm scan:local` probes common localhost preview/dev ports instead of assuming a single fixed port
-- the scanner injects `scripts/headless-scan.browser.js` into each route at runtime
+- the scanner injects `scripts/headless-scan.browser.js` into each route at runtime <!-- doc-ref-ok: preview-scan tooling moved to ops repo (see ops export 2026-06-18) -->
 - static metadata comes from local `src/app/design-system/token-usage-map.json`, so route-level findings still include handoff drift, dead tokens, and audit-ok context
 
 ## Known Gaps And Drift
