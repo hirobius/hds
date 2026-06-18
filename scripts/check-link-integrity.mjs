@@ -364,6 +364,22 @@ function runRouteLinksCheck() {
     '/admin/approvals/',
   ];
 
+  // Augment the static allow-list with routes actually declared in the app
+  // route tree (the source of truth), so this check doesn't drift when routes
+  // are added or moved. (2026-06: routes moved from /hds/* and /ops/* to
+  // top-level paths; the static list lagged behind and flagged valid links.)
+  try {
+    const routeTreeSrc = readFileSync(join(ROOT, 'src/app/route-tree.tsx'), 'utf8');
+    for (const m of routeTreeSrc.matchAll(/path:\s*['"]([^'"]+)['"]/g)) {
+      const p = m[1];
+      if (p === '*') continue;
+      if (p.endsWith('/*')) { PREFIX_ROUTES.push('/' + p.slice(0, -1)); continue; }
+      EXACT_ROUTES.add(p.startsWith('/') ? p : '/' + p);
+    }
+  } catch {
+    /* route tree unreadable — fall back to the static allow-list above */
+  }
+
   const ROUTE_RE = /(?:href|to)\s*=\s*["'](\/[^"'#?]*)["']/g;
 
   function isAllowedRoute(route) {
