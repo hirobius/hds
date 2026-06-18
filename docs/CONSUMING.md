@@ -6,7 +6,7 @@ is the canonical consumption guide — point other teams here.
 | | |
 |---|---|
 | **Package** | `@hirobius/design-system` |
-| **Current version** | `0.3.0` |
+| **Current version** | `0.4.0` |
 | **Module format** | ESM only (`"type": "module"`) |
 | **Registry** | **GitHub Packages** (`https://npm.pkg.github.com`) — *not* public npm |
 | **Peers** | `react` ^18.3 ‖ ^19 · `react-dom` (match) · `react-router` ^7 |
