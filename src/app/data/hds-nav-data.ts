@@ -39,10 +39,19 @@ type RegistryEntry = {
 // ── Static additions (routes not in the registry) ────────────────────────────
 
 const INTERNAL_NAV_ITEMS: NavItem[] = [
-  { path: '/ops',                      label: 'Ops HQ' },
-  { path: '/ops/hds/component-health', label: 'Component Health' },
-  { path: '/ops/hds/brand-theming',    label: 'Brand Theming' },
+  { path: '/component-health', label: 'Component Health' },
+  { path: '/brand-theming',    label: 'Brand Theming' },
 ];
+
+/**
+ * Map a registry path to its standalone route. The registry carries the
+ * monorepo's /hds/* prefix; the standalone site serves every doc page at root
+ * (see src/app/routes.tsx). e.g. "/hds/components/actions" → "/components/actions".
+ */
+export function toAppPath(registryPath: string): string {
+  if (registryPath === '/hds') return '/';
+  return registryPath.startsWith('/hds/') ? registryPath.slice(4) : registryPath;
+}
 
 // ── Derivation ────────────────────────────────────────────────────────────────
 
@@ -72,7 +81,7 @@ function buildNavSections(): HdsNavSection[] {
     }
     if (!seenPaths.has(entry.path)) {
       seenPaths.add(entry.path);
-      sectionMap.get(section)!.push({ path: entry.path, label: entry.page });
+      sectionMap.get(section)!.push({ path: toAppPath(entry.path), label: entry.page });
     }
   }
 
@@ -83,11 +92,11 @@ function buildNavSections(): HdsNavSection[] {
     const section: HdsNavSection = { label, items };
 
     if (label === 'Foundations') {
-      section.getExact = (item) => item.path === '/ops/hds/color';
+      section.getExact = (item) => item.path === '/color';
     }
 
     if (label === 'Components') {
-      section.getIndent = (item) => item.path.startsWith('/ops/hds/components');
+      section.getIndent = (item) => item.path.startsWith('/components');
     }
 
     sections.push(section);
