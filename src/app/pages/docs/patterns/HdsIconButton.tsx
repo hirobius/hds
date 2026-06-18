@@ -85,8 +85,8 @@ export default function IconButtonPatternPage() {
         },
       ]}
       primitives={[
-        { label: 'Button — base action primitive', href: '/ops/hds/components/actions' },
-        { label: 'Icon — Phosphor icon primitive', href: '/ops/hds/components/display' },
+        { label: 'Button — base action primitive', href: '/components/actions' },
+        { label: 'Icon — Phosphor icon primitive', href: '/components/display' },
       ]}
     />
   );

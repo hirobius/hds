@@ -229,7 +229,7 @@ export default function ScopePage() {
               <Button
                 variant="primary"
                 size="md"
-                onClick={() => (window.location.href = '/ops/hds/system-contract')}
+                onClick={() => (window.location.href = '/system-contract')}
                 style={{
                   display: 'inline-flex',
                   gap: hds.semantic.space.subgrid.gap,

@@ -854,13 +854,13 @@ const ROUTE_LAYOUTS = {
 } as const satisfies Record<string, MobiusLayoutState>;
 
 const FOUNDATIONS_PREFIXES = [
-  '/ops/hds/color',
-  '/ops/hds/typography',
-  '/ops/hds/spacing',
-  '/ops/hds/shape',
-  '/ops/hds/elevation',
-  '/ops/hds/motion',
-  '/ops/hds/breakpoints',
+  '/color',
+  '/typography',
+  '/spacing',
+  '/shape',
+  '/elevation',
+  '/motion',
+  '/breakpoints',
 ] as const;
 
 function startsWithAny(pathname: string, prefixes: readonly string[]) {
@@ -885,8 +885,8 @@ function getRouteConfig(pathname: string): MobiusRouteConfig {
     pathname === '/portfolio/hirobius' ||
     pathname === '/hds/case-studies/hirobius' || // route-ok: legacy redirect source
     pathname === '/hds/process' || // route-ok: legacy redirect source
-    pathname === '/ops/hds/case-studies/hirobius' ||
-    pathname === '/ops/hds/process'
+    pathname === '/case-studies/hirobius' ||
+    pathname === '/process'
   ) {
     return { preset: 'hirobius', layout: ROUTE_LAYOUTS.ambientHirobius };
   }
@@ -895,7 +895,7 @@ function getRouteConfig(pathname: string): MobiusRouteConfig {
     return { preset: 'home', layout: ROUTE_LAYOUTS.ambientPortfolioHome };
   }
 
-  if (pathname === '/ops/hds' || pathname === '/hds') {
+  if (pathname === '/' || pathname === '/hds') {
     // route-ok: /hds is legacy redirect source
     return { preset: 'home', layout: ROUTE_LAYOUTS.ambientHome };
   }
@@ -904,7 +904,7 @@ function getRouteConfig(pathname: string): MobiusRouteConfig {
     return { preset: 'content', layout: ROUTE_LAYOUTS.ambientContent };
   }
 
-  if (pathname === '/ops/hds/tokens') {
+  if (pathname === '/tokens') {
     return { preset: 'tokens', layout: ROUTE_LAYOUTS.ambientTokens };
   }
 
@@ -912,11 +912,11 @@ function getRouteConfig(pathname: string): MobiusRouteConfig {
     return { preset: 'foundations', layout: ROUTE_LAYOUTS.ambientFoundations };
   }
 
-  if (pathname.startsWith('/ops/hds/components/')) {
+  if (pathname.startsWith('/components/')) {
     return { preset: 'components', layout: ROUTE_LAYOUTS.ambientComponents };
   }
 
-  if (pathname === '/ops/hds/patterns') {
+  if (pathname === '/patterns') {
     return { preset: 'components', layout: ROUTE_LAYOUTS.ambientComponents };
   }
 

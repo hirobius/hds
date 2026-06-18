@@ -105,9 +105,9 @@ export default function FoundationSwatchPatternPage() {
         },
       ]}
       primitives={[
-        { label: 'Surface — padded surface primitive', href: '/ops/hds/components/layout' },
-        { label: 'Grid — responsive grid primitive', href: '/ops/hds/components/layout' },
-        { label: 'Stack — one-dimensional layout primitive', href: '/ops/hds/components/layout' },
+        { label: 'Surface — padded surface primitive', href: '/components/layout' },
+        { label: 'Grid — responsive grid primitive', href: '/components/layout' },
+        { label: 'Stack — one-dimensional layout primitive', href: '/components/layout' },
       ]}
     />
   );
