@@ -32,7 +32,7 @@ import hds from '../../design-system/tokens';
 import { DocPageSpec } from '../../components/DocPageSpec';
 import type { PageSpec } from '../../components/DocPageSpec';
 import registryData from '../../data/hds-registry.json';
-import { HDS_NAV_SECTIONS } from '../../data/hds-nav-data';
+import { HDS_NAV_SECTIONS, toAppPath } from '../../data/hds-nav-data';
 import { TocProvider, TocItem, useToc, useTocActiveId } from './HdsTocContext';
 
 // Lazy-loaded: MobiusLogo → MobiusScene pulls in @react-three/fiber,
@@ -241,39 +241,9 @@ const hdsLayoutStyles = {
   } satisfies React.CSSProperties,
 } as const;
 
-const HDS_NAV = [
-  { path: '/ops/hds/color', label: 'Color' },
-  { path: '/ops/hds/typography', label: 'Typography' },
-  { path: '/ops/hds/spacing', label: 'Spacing' },
-  { path: '/ops/hds/shape', label: 'Shape' },
-  { path: '/ops/hds/elevation', label: 'Elevation' },
-  { path: '/ops/hds/motion', label: 'Motion' },
-  { path: '/ops/hds/breakpoints', label: 'Breakpoints' },
-  { path: '/ops/hds/components/actions', label: 'Actions' },
-  { path: '/ops/hds/components/inputs', label: 'Inputs' },
-  { path: '/ops/hds/components/display', label: 'Display' },
-  { path: '/ops/hds/components/feedback', label: 'Feedback' },
-  { path: '/ops/hds/components/navigation', label: 'Navigation' },
-  { path: '/ops/hds/components/layout', label: 'Layout' },
-  { path: '/ops/hds/contribution-guide', label: 'Contribution Guide' },
-  { path: '/ops/hds/system-contract', label: 'System Contract' },
-];
-
-// --- Page Order (Prev/Next Navigation) -----------------------------------
-
-const SIDEBAR_PAGER_PAGES = [
-  { path: '/microsoft-design-systems', label: 'Microsoft Design Systems', group: 'Portfolio' },
-  { path: '/visuals', label: 'Visual Design', group: 'Portfolio' },
-  ...HDS_NAV.map((page) => ({ ...page, group: 'HDS' })),
-  { path: '/vibe-sketchbook', label: 'Vibe Sketchbook', group: 'Portfolio' },
-  { path: '/vibe-sketchbook/cloth-simulation', label: 'Vibe Sketchbook', group: 'Portfolio' },
-] as const;
-
-const ALL_PAGES = [
-  { path: '/', label: 'Home', group: 'Portfolio' },
-  { path: '/info', label: 'Info', group: 'About' },
-  ...SIDEBAR_PAGER_PAGES,
-];
+// HDS_NAV / SIDEBAR_PAGER_PAGES / ALL_PAGES (the monorepo prev/next pager and
+// route-membership "recovery" check) were removed in the standalone extraction:
+// every route here renders the docs shell, so the legacy membership gate is moot.
 
 // --- TocLink ---------------------------------------------------------------
 
@@ -588,8 +558,8 @@ function Sidebar({
   const { isRtl, toggleDirection } = useLanguage();
   const copy = SHELL_COPY.en;
   const navigate = useNavigate();
-  const isHdsRoute =
-    location.pathname.startsWith('/ops/hds') || location.pathname.startsWith('/hds'); // route-ok: /hds is legacy redirect source
+  // Standalone: the entire site is the HDS docs, so always show the shell title.
+  const isHdsRoute = true;
 
   const sidebarNavStyle: React.CSSProperties = isOverlay
     ? {
@@ -930,19 +900,17 @@ function HDSDocRoot() {
     sidebarRef.current.scrollTop = sidebarScrollTopRef.current;
   }, [location.pathname]);
 
-  const currentIdx = ALL_PAGES.findIndex((p) => p.path === location.pathname);
-  const isRecoveryRoute = currentIdx === -1 && !isImmersiveSketchRoute;
+  // Standalone serves the entire HDS documentation site at root, so every route
+  // renders the docs shell (sidebar + rails). In the monorepo the docs lived
+  // under /ops/hds, so the shell was path-gated; there is no such prefix here.
+  const isRecoveryRoute = false;
   const isHomeRoute = location.pathname === '/';
   const mainContentMaxWidth = isImmersiveSketchRoute ? 'none' : MAIN_CONTENT_W;
 
-  const isTokensRoute = location.pathname === '/ops/hds/tokens';
-  const isHdsRoute = location.pathname === '/ops/hds' || location.pathname.startsWith('/ops/hds/');
-  const isDocRailRoute =
-    isHdsRoute ||
-    isTokensRoute ||
-    location.pathname === '/visuals' ||
-    location.pathname === '/microsoft-design-systems';
-  const isShellRoute = isHdsRoute;
+  const isTokensRoute = location.pathname === '/tokens';
+  const isShellRoute = !isImmersiveSketchRoute;
+  const isHdsRoute = isShellRoute;
+  const isDocRailRoute = isShellRoute;
   const sidebarVisible = isShellRoute && (!isMobile || sidebarOpen);
   const isMobileShellOpen = isMobile && isShellRoute && sidebarOpen;
   const showShellTopNav = !isRecoveryRoute;
@@ -1331,7 +1299,7 @@ function HDSDocRoot() {
                 )}
                 {!isImmersiveSketchRoute &&
                   (() => {
-                    const spec = HDS_REGISTRY.find((s) => s.path === location.pathname);
+                    const spec = HDS_REGISTRY.find((s) => toAppPath(s.path) === location.pathname);
                     return spec ? <DocPageSpec spec={spec} /> : null;
                   })()}
               </div>
