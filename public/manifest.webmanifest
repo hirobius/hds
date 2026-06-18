@@ -1,7 +1,7 @@
 {
   "name": "Hirobius Ops",
   "short_name": "Hirobius Ops",
-  "start_url": "/ops/sessions",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "theme_color": "#ffffff",

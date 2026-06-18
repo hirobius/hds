@@ -30,7 +30,7 @@ The repo has a **persistent orchestration lead-dog** (`scripts/swarm-watchdog.mj
 Auxiliary signal:
 
 - `docs/ai/swarm-watchdog-decisions.jsonl` — every dispatch decision logged structurally. Closed-loop self-improvement substrate.
-- `docs/ai/swarm-watchdog.log` — operational activity log (gitignored).
+- `docs/ai/swarm-watchdog.log` — operational activity log (gitignored). <!-- doc-ref-ok: swarm-watchdog retired 2026-05-06; log gitignored/never tracked -->
 - `scripts/audit-batch-deliverables.mjs` — deterministic per-unit audit. Now mandatory: `hermes-unit.mjs` refuses `mark-done` if it fails (per unit `13g-8`, shipped 2026-05-05).
 - `scripts/swarm-watchdog-pulse.sh` — auto-restart wrapper for the watchdog. <!-- doc-ref-ok: retired 2026-05-06 to scripts/_retired-2026-05-06/ -->
 
