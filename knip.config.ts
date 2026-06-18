@@ -70,10 +70,10 @@ const config: KnipConfig = {
     'tailwindcss',
     // Used only via npx in api-extractor scripts; not a runtime dep.
     '@microsoft/api-extractor',
-    // Used in tests/primitive-contracts/*.contract.test.tsx — installed as a
-    // transitive of @testing-library/dom. Treat as phantom dep until we
-    // promote it to an explicit devDep.
-    '@testing-library/react',
+    // Peer of @testing-library/react (now an explicit devDep, imported by
+    // tests/primitive-contracts/*.contract.test.tsx). @testing-library/dom is
+    // resolved transitively at runtime, not imported in source, so knip can't see it.
+    '@testing-library/dom',
     // Storybook stories import this; Storybook itself is not yet wired into
     // the build, so the dep is phantom for now.
     '@storybook/react',

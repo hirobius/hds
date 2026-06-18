@@ -43,6 +43,11 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      # Unit + contract tests (vitest). Includes tests/primitive-contracts/*.contract.test.tsx
+      # (React Testing Library); Playwright (testMatch '**/*.spec.ts') runs the e2e/visual specs.
+      - name: Unit tests (vitest)
+        run: pnpm exec vitest run
+
       - name: Full checks
         run: pnpm check:full
 

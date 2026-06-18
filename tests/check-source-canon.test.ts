@@ -1,5 +1,5 @@
 /**
- * tests/check-source-canon.spec.ts
+ * tests/check-source-canon.test.ts
  *
  * Fixture tests for scripts/check-source-canon.mjs rule detection.
  * These validate that new rules are correctly wired and will catch violations.
@@ -31,13 +31,19 @@ export function TestComponent() {
     fs.writeFileSync(fixturePath, content, 'utf8');
 
     try {
-      // Run the validator
-      const output = execSync(`node ${path.join(ROOT, 'scripts/check-source-canon.mjs')}`, {
-        encoding: 'utf8',
-        stdio: 'pipe',
-      }).catch((err: any) => err.stdout + err.stderr);
+      // The validator exits non-zero when it finds a violation, so execSync
+      // throws — capture stdout/stderr from the thrown error.
+      let output = '';
+      try {
+        output = execSync(`node ${path.join(ROOT, 'scripts/check-source-canon.mjs')}`, {
+          encoding: 'utf8',
+          stdio: 'pipe',
+        });
+      } catch (err: any) {
+        output = (err.stdout || '') + (err.stderr || '');
+      }
 
-      // The validator should exit with error and flag the DATA_TENANT violation
+      // The validator should flag the DATA_TENANT violation in the fixture.
       expect(output).toContain('DATA_TENANT');
       expect(output).toContain('data-tenant=');
     } finally {
@@ -54,20 +60,20 @@ export function TestComponent() {
     const tokensCssPath = path.join(ROOT, 'src/styles/tokens.css');
     expect(fs.existsSync(tokensCssPath)).toBe(true);
 
-    // The validator should pass because tokens.css is exempted
-    const output = execSync(`node ${path.join(ROOT, 'scripts/check-source-canon.mjs')} --verbose`, {
-      encoding: 'utf8',
-      stdio: 'pipe',
-    }).catch((err: any) => {
-      // Validator may exit 1 if OTHER violations exist, but check output
-      if (err.stdout && err.stdout.includes('DATA_TENANT')) {
-        throw new Error('DATA_TENANT rule wrongly flagged in tokens.css');
-      }
-      return err.stdout || '';
-    });
+    // The validator may exit non-zero for unrelated violations, so capture
+    // output via try/catch rather than relying on a zero exit.
+    let output = '';
+    try {
+      output = execSync(`node ${path.join(ROOT, 'scripts/check-source-canon.mjs')} --verbose`, {
+        encoding: 'utf8',
+        stdio: 'pipe',
+      });
+    } catch (err: any) {
+      output = (err.stdout || '') + (err.stderr || '');
+    }
 
-    // If no other violations, should exit cleanly; if there are violations,
-    // they should not be DATA_TENANT in tokens.css
-    expect(output).not.toContain('src/styles/tokens.css:');
+    // tokens.css is the exempt source of truth for tenant overrides: it may
+    // contain [data-tenant=] selectors but must never be flagged for DATA_TENANT.
+    expect(output).not.toMatch(/tokens\.css:\d+\s+\[DATA_TENANT\]/);
   });
 });
