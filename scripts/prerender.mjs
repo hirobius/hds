@@ -4,10 +4,11 @@
  * Run after `vite build` + `vite build --ssr src/entry-server.tsx`:
  *   node scripts/prerender.mjs
  *
- * For each public route, renders the page to an HTML string, injects it
- * into dist/index.html (replacing the empty <div id="root">), swaps in
- * per-page <title>/<meta> tags, and writes a route-specific HTML file so
- * Vercel serves fully-populated HTML before any JS executes.
+ * For each route, renders the page to an HTML string (full docs shell — the
+ * client and SSR share one route tree), injects it into dist/index.html
+ * (replacing the empty <div id="root">), swaps in per-page <title>/<meta>
+ * tags, and writes a route-specific HTML file so the host serves a populated
+ * shell before any JS executes.
  *
  * Cleans up the .ssr-cache/ server bundle after completion.
  */
@@ -64,109 +65,82 @@ try {
   /* already defined */
 }
 
-// ── Route table ───────────────────────────────────────────────────────────
+// ── Route table ─────────────────────────────────────────────────────────────
 
 const SITE_ORIGIN = 'https://adrianmilsap.com';
+const SITE_NAME = 'Hirobius Design System';
+const DEFAULT_OG_IMAGE = '/assets/xds-overview.webp';
+
+// The registry drives per-page titles + descriptions. Its paths use the
+// monorepo /hds/* prefix; map them to the standalone root scheme.
+const toAppPath = (p) => (p === '/hds' ? '/' : p.startsWith('/hds/') ? p.slice(4) : p);
+const registry = JSON.parse(
+  readFileSync(join(ROOT, 'src', 'app', 'data', 'hds-registry.json'), 'utf8'),
+);
+const registryByPath = new Map(registry.map((e) => [toAppPath(e.path), e]));
+
+// Doc routes to pre-render. Each gets the full shell SSR'd for a non-blank
+// first paint; the lazy page body hydrates on the client.
+const PRERENDER_PATHS = [
+  '/color',
+  '/typography',
+  '/spacing',
+  '/shape',
+  '/elevation',
+  '/motion',
+  '/breakpoints',
+  '/tokens',
+  '/icons',
+  '/components/actions',
+  '/components/inputs',
+  '/components/display',
+  '/components/feedback',
+  '/components/navigation',
+  '/components/layout',
+  '/getting-started',
+  '/guidance',
+  '/scope',
+  '/system-contract',
+  '/contribution-guide',
+  '/architecture-snapshot',
+  '/component-health',
+  '/brand-theming',
+  '/sandbox',
+  '/info',
+];
+
+function titleFor(path) {
+  const name = registryByPath.get(path)?.page ?? path.replace(/^\//, '').replace(/\//g, ' / ');
+  return `${name} — ${SITE_NAME}`;
+}
+
+function descFor(path) {
+  return (
+    registryByPath.get(path)?.summary ??
+    'Token-governed React components, foundations, and documentation for the Hirobius Design System.'
+  );
+}
 
 const ROUTES = [
+  // Home: render the default landing route (/color) into index.html so the root
+  // URL and the SPA fallback both paint the shell instead of a blank page.
   {
     url: '/',
+    renderUrl: '/color',
     outFile: 'index.html',
-    title: 'Adrian Milsap — Design Engineer',
-    description:
-      'Design engineer specializing in design systems, component architecture, and creative engineering. 8+ years at Microsoft building Xbox and Microsoft Game Developer design systems.',
-    ogImage: '/assets/xds-overview.webp',
+    title: SITE_NAME,
+    description: descFor('/color'),
+    ogImage: DEFAULT_OG_IMAGE,
     ogType: 'website',
   },
-  {
-    url: '/microsoft-design-systems',
-    outFile: 'microsoft-design-systems/index.html',
-    title: 'Microsoft Design Systems — Adrian Milsap',
-    description:
-      'How Adrian Milsap led design system work across Xbox and Microsoft Game Developer studios — scalable token-based component architecture used by 200+ designers and engineers.',
-    ogImage: '/assets/xds-overview.webp',
+  ...PRERENDER_PATHS.map((path) => ({
+    url: path,
+    outFile: `${path.replace(/^\//, '')}/index.html`,
+    title: titleFor(path),
+    description: descFor(path),
+    ogImage: DEFAULT_OG_IMAGE,
     ogType: 'article',
-  },
-  {
-    url: '/case-studies/hirobius',
-    outFile: 'case-studies/hirobius/index.html',
-    title: 'Hirobius Design System — Adrian Milsap',
-    description:
-      'Building a self-governing design system from scratch: token architecture, automated audit pipelines, multi-brand theming, and AI-assisted component generation.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'article',
-  },
-  {
-    url: '/visuals',
-    outFile: 'visuals/index.html',
-    title: 'Visual Design — Adrian Milsap',
-    description: 'Motion design, generative art, and visual design work by Adrian Milsap.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'website',
-  },
-  {
-    url: '/case-studies/the-ranch-foundation',
-    outFile: 'case-studies/the-ranch-foundation/index.html',
-    title: 'The Ranch Foundation — Adrian Milsap',
-    description:
-      'Hirobius design and automation work for The Ranch Foundation — a nonprofit serving communities in the Pacific Northwest.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'article',
-  },
-  {
-    url: '/info',
-    outFile: 'info/index.html',
-    title: 'Info — Adrian Milsap',
-    description:
-      'About Adrian Milsap — design engineer, builder of design systems, and creative technologist.',
-    ogImage: '/assets/adrian.webp',
-    ogType: 'website',
-  },
-  {
-    url: '/vibe-sketchbook/logo-lab',
-    outFile: 'vibe-sketchbook/logo-lab/index.html',
-    title: 'Logo Lab — Vibe Sketchbook — Adrian Milsap',
-    description:
-      'Interactive logo-lab sketch: exploratory typography and form-making experiments from the Vibe Sketchbook.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'website',
-  },
-  {
-    url: '/vibe-sketchbook/particle-tunnel',
-    outFile: 'vibe-sketchbook/particle-tunnel/index.html',
-    title: 'Particle Tunnel — Vibe Sketchbook — Adrian Milsap',
-    description:
-      'Interactive particle-tunnel sketch: GPU-accelerated motion experiments from the Vibe Sketchbook.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'website',
-  },
-  {
-    url: '/vibe-sketchbook/morph-tiles',
-    outFile: 'vibe-sketchbook/morph-tiles/index.html',
-    title: 'Morph Tiles — Vibe Sketchbook — Adrian Milsap',
-    description:
-      'Interactive morph-tiles sketch: grid-based morphing animations from the Vibe Sketchbook.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'website',
-  },
-  {
-    url: '/vibe-sketchbook/kinetic-type',
-    outFile: 'vibe-sketchbook/kinetic-type/index.html',
-    title: 'Kinetic Type — Vibe Sketchbook — Adrian Milsap',
-    description:
-      'Interactive kinetic-type sketch: motion typography studies from the Vibe Sketchbook.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'website',
-  },
-  {
-    url: '/vibe-sketchbook/three-scene',
-    outFile: 'vibe-sketchbook/three-scene/index.html',
-    title: 'Three Scene — Vibe Sketchbook — Adrian Milsap',
-    description:
-      'Interactive Three.js scene: 3D composition and shader experiments from the Vibe Sketchbook.',
-    ogImage: '/assets/xds-overview.webp',
-    ogType: 'website',
-  },
+  })),
 ];
 
 // ── HTML helpers ──────────────────────────────────────────────────────────
@@ -203,7 +177,7 @@ function injectIntoShell(shell, routeMeta, bodyHtml) {
     `    <meta property="og:image:width" content="1200" />`,
     `    <meta property="og:image:height" content="630" />`,
     `    <meta property="og:url" content="${canonical}" />`,
-    `    <meta property="og:site_name" content="Adrian Milsap" />`,
+    `    <meta property="og:site_name" content="${SITE_NAME}" />`,
     `    <meta name="twitter:card" content="summary_large_image" />`,
     `    <meta name="twitter:title" content="${title}" />`,
     `    <meta name="twitter:description" content="${description}" />`,
@@ -239,7 +213,7 @@ async function main() {
   for (const route of ROUTES) {
     let bodyHtml = '';
     try {
-      bodyHtml = render(route.url);
+      bodyHtml = render(route.renderUrl ?? route.url);
     } catch (err) {
       console.warn(`⚠  render() failed for ${route.url}: ${err.message}. Writing shell-only HTML.`);
     }
