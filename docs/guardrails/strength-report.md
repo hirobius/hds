@@ -1,6 +1,6 @@
 # System Strength Report
 
-> Generated: 2026-06-18T07:17:04.669Z
+> Generated: 2026-06-18T16:11:22.358Z
 > Spec: [docs/guardrails/strength-score-spec.md](./strength-score-spec.md)
 
 ---
@@ -10,7 +10,7 @@
 | Score | Composite | Wired Coverage | Description |
 |---|---|---|---|
 | **A — Internal Integrity** | **79**/100 | 5/6 | Closed-loop discipline: gates, wiring, fixtures, gating strength |
-| **B — Industry Benchmark** | **72**/100 | 5/8 | External standards: DORA, OWASP, WCAG, Web Vitals, TS, OSV, CHAOSS, coverage |
+| **B — Industry Benchmark** | **71**/100 | 5/8 | External standards: DORA, OWASP, WCAG, Web Vitals, TS, OSV, CHAOSS, coverage |
 
 > Arithmetic mean over wired dimensions only. `needs-wiring` dims excluded from average.
 > **Two scores are never collapsed.** A high B with low A means "theatrical guardrails" — harden A first.
@@ -75,7 +75,7 @@ _Data: channel=pre-commit, gatesWithViolations=3, generatedAt=2026-05-06T21:31:2
 
 ## Score B — Industry Benchmark
 
-Composite: 72  |  Wired: 5/8
+Composite: 71  |  Wired: 5/8
 
 ### B1 — DORA Metrics _(needs-wiring)_
 
@@ -129,11 +129,11 @@ _Data: anyCount=1, flagsPresent=4, totalFlags=8_
 
 Framework: _OSV / npm audit_
 
-`[███████░░░░░░░░░░░░░] 35`
+`[██████░░░░░░░░░░░░░░] 30`
 
 **Methodology:** 0 critical + 0 high CVEs = 100; each critical -20, each high -5
 
-_Data: critical=0, high=13, info=0, low=4, moderate=10, source=pnpm-audit_
+_Data: critical=0, high=14, info=0, low=4, moderate=11, source=pnpm-audit_
 
 ### B7 — CHAOSS Docs Coverage
 
