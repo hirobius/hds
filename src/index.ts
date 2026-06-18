@@ -55,9 +55,6 @@ export * from './app/components/not-found-pattern';
 export * from './app/components/tabs';
 export * from './app/components/tile-grid';
 export * from './app/components/status-tile';
-export * from './app/components/phase-header';
-export * from './app/components/agent-tag';
-export * from './app/components/approval-card';
 
 // ── patterns (8) ──
 export * from './app/components/activity-feed';

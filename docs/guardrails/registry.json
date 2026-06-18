@@ -42,18 +42,6 @@
       "supportsJson": true
     },
     {
-      "id": "audit-claims",
-      "description": "Detects stale claims on docs/ai/orchestration.json units. A claim goes stale when status=claimed and claimedAt is older than the stale-threshold (default 4h).",
-      "severity": "warn",
-      "gateScript": "scripts/audit-claims.mjs",
-      "fixturePath": "fixtures/audit-claims",
-      "lastFiringAt": "2026-05-10T16:58:26.596Z",
-      "lastViolationAt": "2026-05-08T02:21:50.453Z",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pre-commit"
-    },
-    {
       "id": "audit-component-integrity",
       "description": "Merged gate (13z-6): (1) --tokens: token compliance audit for HDS components (hardcoded hex/rgba/opacity/radius/spacing/transition values); (2) --completeness: asserts every shipped component has a rich manifest entry for LLM use; (3) --docs: documentation coverage gate (every component imported in at least one HDS doc page); (4) --api: public API surface guard comparing against docs/api/api-baseline.json. Default: runs all 4. Merged from: audit-components + check-component-completeness + check-component-docs + check-public-api.",
       "severity": "warn",
@@ -748,18 +736,6 @@
       "firingChannel": "pre-commit"
     },
     {
-      "id": "check-unit-overlap",
-      "description": "Pre-dispatch unit-overlap detector. Given a unit ID about to be claimed, reads its agentNotes and description for likely file paths and refuses to claim if another in-flight (status: claimed) unit is also touching those paths. Hooked into hermes-unit.mjs claim flow. Mitigates the parallel-pod anti-pattern where two agents race to edit the same file.",
-      "severity": "error",
-      "gateScript": "scripts/check-unit-overlap.mjs",
-      "fixturePath": "fixtures/check-unit-overlap",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "generated",
-      "firingChannel": "manual"
-    },
-    {
       "id": "check-unresponsive-grids",
       "description": "Catches static multi-column gridTemplateColumns values with no nearby isMobile guard. Every multi-column grid must be responsive.",
       "severity": "warn",
@@ -782,32 +758,6 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "scope": "full-tree"
-    },
-    {
-      "id": "check-commit-message-task-ref",
-      "description": "Validates that commits on feature branches reference an open Hermes Kanban task via 'Refs: <task-id>' line in the commit body. Wired in .husky/commit-msg. Warn-only by default; promote with KANBAN_REF_ENFORCE=error. Skips main/release/*/hotfix/*, [skip-kanban] tag, merge/revert commits. Accepts kanban IDs (t_<hex>) and legacy unit IDs (1[0-9][a-z]-<n>).",
-      "severity": "warn",
-      "gateScript": "scripts/check-commit-message-task-ref.mjs",
-      "fixturePath": "fixtures/check-commit-message-task-ref",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "commit-msg",
-      "scope": "full-tree"
-    },
-    {
-      "id": "audit-orphan-wip",
-      "description": "Scans every branch ahead of main and classifies each commit as tracked/orphan based on whether it has a 'Refs: <task-id>' line that points to an open Hermes Kanban task. Companion to check-commit-message-task-ref (which catches new orphans pre-commit); this catches the existing backlog. Always exits 0 — purely informational. Run via 'pnpm audit:wip'. Writes docs/guardrails/orphan-wip-report.json.",
-      "severity": "info",
-      "gateScript": "scripts/audit-orphan-wip.mjs",
-      "fixturePath": "fixtures/audit-orphan-wip",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
       "scope": "full-tree"
     },
     {
@@ -836,20 +786,6 @@
       "firingChannel": "pre-commit",
       "scope": "full-tree",
       "supportsJson": true
-    },
-    {
-      "id": "validate-orchestration",
-      "description": "Validates docs/ai/orchestration.json schema. In strict mode (--strict-validation), additionally asserts all approved units have a valid validationCmd. Pre-commit MUST invoke the strict form.",
-      "severity": "error",
-      "gateScript": "scripts/validate-orchestration.mjs",
-      "fixturePath": "fixtures/validate-orchestration",
-      "lastFiringAt": "2026-05-10T17:01:41.908Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pre-commit",
-      "strictArgv": "--strict-validation",
-      "glob": "docs/ai/orchestration.json"
     },
     {
       "id": "audit-gate-replaceability",

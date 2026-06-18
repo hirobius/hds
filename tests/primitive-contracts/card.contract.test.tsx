@@ -28,10 +28,13 @@ describe('Card contract', () => {
     expect(el?.className).toContain('rounded-lg');
   });
 
-  it('root emits border class', () => {
-    const { container } = render(<Card>Content</Card>);
-    const el = container.firstChild as HTMLElement;
-    expect(el?.className).toContain('border');
+  it('is borderless by default and opts into a border via the bordered prop', () => {
+    // CLAUDE.md (2026-05-03): cards are borderless by default — the border is
+    // expressed via data-bordered + an inline border, not a utility class.
+    const def = render(<Card>Content</Card>).container.firstChild as HTMLElement;
+    expect(def?.getAttribute('data-bordered')).toBe('false');
+    const bordered = render(<Card bordered>Content</Card>).container.firstChild as HTMLElement;
+    expect(bordered?.getAttribute('data-bordered')).toBe('true');
   });
 
   it('data-padding defaults to "component"', () => {

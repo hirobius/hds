@@ -102,12 +102,6 @@
     "summary": "Case study documenting how the Xbox Design System was translated into a unified Xbox and Microsoft Game Dev ecosystem. Combines migration architecture, token-driven text systems, documentation guidance, and visual-language artifacts into a single production-facing narrative."
   },
   {
-    "page": "Ops",
-    "path": "/hds/ops",
-    "category": "foundations",
-    "summary": "Internal workspace HQ — API accounts, build pipeline health, and internal tool links."
-  },
-  {
     "page": "PhaseProgressPanel",
     "path": "/hds/phase-progress-panel",
     "category": "foundations",

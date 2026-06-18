@@ -156,6 +156,17 @@ function runGateAgainstFixture(gateScript, fixturePath) {
     return { ran: true, exitCode: 0, skipped: false, skipReason: null };
   } catch (err) {
     const exitCode = err.status ?? 1;
+    // Exit code 78 = the gate signaled SKIP (e.g. check-secrets when the gitleaks
+    // binary is unavailable). A gate that cannot run is neither a firing nor a
+    // false-positive — treat it as skipped so it doesn't fail proof-of-firing.
+    if (exitCode === 78) {
+      return {
+        ran: false,
+        exitCode,
+        skipped: true,
+        skipReason: 'gate signaled skip (exit 78 — required tool unavailable)',
+      };
+    }
     return { ran: true, exitCode, skipped: false, skipReason: null };
   }
 }

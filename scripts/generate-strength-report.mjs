@@ -25,6 +25,7 @@
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
+import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { fileURLToPath } from 'url';
 import { execSync, spawnSync } from 'child_process';
 
@@ -1434,9 +1435,9 @@ function main() {
   const jsonPath = resolve(ROOT, 'docs/guardrails/strength-report.json');
   const overviewPath = resolve(ROOT, 'docs/guardrails/SYSTEM_OVERVIEW.md');
 
-  writeFileSync(mdPath, mdContent, 'utf-8');
-  writeFileSync(jsonPath, jsonContent, 'utf-8');
-  writeFileSync(overviewPath, overviewContent, 'utf-8');
+  writeStableArtifact(mdPath, mdContent);
+  writeStableArtifact(jsonPath, jsonContent);
+  writeStableArtifact(overviewPath, overviewContent);
 
   // Summary to stdout
   const { aResult, bResult } = report;

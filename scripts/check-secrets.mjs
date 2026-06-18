@@ -33,6 +33,12 @@ const fixtureFile = process.env.FIXTURE_FILE;
 const CONFIG = '.gitleaks.toml';
 const configArgs = existsSync(CONFIG) ? ['--config', CONFIG] : [];
 
+// Fixture-mode skip sentinel. When the gitleaks binary is unavailable the gate
+// cannot run, which is a SKIP — not a pass and not a firing. We exit with this
+// code so validate-fixture-proof-of-firing maps it to skipped:true rather than
+// misreading the tool error as "the passing fixture tripped the gate".
+const SKIP_EXIT_CODE = 78;
+
 let result = { violations: [], summary: { mode: '' }, ok: true };
 
 let tempFixturePath = null;
@@ -58,8 +64,26 @@ try {
     });
   }
 } catch (err) {
+  // gitleaks binary not installed → ENOENT (spawn failed, no exit status).
+  // Degrade gracefully instead of erroring out:
+  //   - fixture mode: emit the SKIP sentinel so proof-of-firing skips this gate.
+  //   - staged mode:  warn but exit 0 — a missing optional scanner must never
+  //     block a commit/CI run on its own.
+  if (err?.code === 'ENOENT') {
+    if (tempFixturePath) { try { unlinkSync(tempFixturePath); } catch {} }
+    result.ok = true;
+    result.summary.skipped = true;
+    result.summary.skipReason = 'gitleaks binary not installed';
+    if (!jsonMode) {
+      console.error(
+        'check-secrets: gitleaks not installed — skipping secrets scan (install gitleaks to enable this gate).',
+      );
+    }
+    emitResult(result, jsonMode);
+    process.exit(fixtureFile ? SKIP_EXIT_CODE : 0);
+  }
   // Exit code 1 from gitleaks = leaks detected.
-  // Other non-zero exit codes = tool error (missing binary, bad config, etc.).
+  // Other non-zero exit codes = tool error (bad config, etc.).
   const code = err?.status ?? 2;
   if (code === 1) {
     result.violations.push({

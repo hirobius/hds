@@ -14,8 +14,9 @@
  *   - llms.txt (repo-root mirror for local tooling)
  */
 
-import { mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { mkdirSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
+import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { fileURLToPath } from 'url';
 import { writeManifest as writeComponentApiManifest } from './generate-component-api.mjs';
 import { buildTokenQuickReference } from './build-token-quick-reference.mjs';
@@ -185,8 +186,8 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 `;
 
   mkdirSync(join(ROOT, 'public'), { recursive: true });
-  writeFileSync(join(ROOT, 'public', 'llms.txt'), txt);
-  writeFileSync(join(ROOT, 'llms.txt'), txt);
+  writeStableArtifact(join(ROOT, 'public', 'llms.txt'), txt);
+  writeStableArtifact(join(ROOT, 'llms.txt'), txt);
 
   return txt;
 }
