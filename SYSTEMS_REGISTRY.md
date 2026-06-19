@@ -158,7 +158,7 @@ Trigger:
 Expected follow-on actions:
 
 1. log it in `HDS_COMPLIANCE_LOG.md`
-2. promote it to `TASKS.md` if follow-up work remains
+2. promote it to `BACKLOG.md` if follow-up work remains
 
 ### Process lessons
 
@@ -174,7 +174,7 @@ Expected follow-on action:
 
 The current root-doc setup is intentionally slim:
 
-- `TASKS.md` is active work only
+- `BACKLOG.md` is active work only
 - `HDS_COMPLIANCE_LOG.md` is active findings only
 - `PROCESS.md` and `DECISIONS.md` are archive pointers, not day-to-day working docs
 

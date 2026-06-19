@@ -2,7 +2,7 @@
 
 Active docs and shell findings only.
 
-Historical entries were moved to [`docs/archive/compliance/HDS_COMPLIANCE_HISTORY.md`](C:\Users\Adrian\Documents\New%20project\adrian-milsap\docs\archive\compliance\HDS_COMPLIANCE_HISTORY.md) so this file stays useful during launch work.
+Historical entries were moved to [`docs/archive/compliance/HDS_COMPLIANCE_HISTORY.md`](./docs/archive/compliance/HDS_COMPLIANCE_HISTORY.md) so this file stays useful during launch work.
 
 ## Current Focus
 
@@ -42,4 +42,4 @@ Historical entries were moved to [`docs/archive/compliance/HDS_COMPLIANCE_HISTOR
 
 - Keep only current open findings here.
 - Once a finding is fixed and no follow-up remains, move the historical note to archive instead of expanding this root file.
-- If a finding becomes a real work item, mirror it in [`TASKS.md`](C:\Users\Adrian\Documents\New%20project\adrian-milsap\TASKS.md).
+- If a finding becomes a real work item, mirror it in [`BACKLOG.md`](./BACKLOG.md).

@@ -9,7 +9,7 @@ Lightweight ownership map for agent-facing docs.
 | Primary agent entrypoint | `CLAUDE.md` |
 | Visual system guidance | `DESIGN.md` |
 | Token governance | `TOKEN_GOVERNANCE.md` |
-| Active work | `TASKS.md` |
+| Active work | `BACKLOG.md` |
 | Audit findings | `HDS_COMPLIANCE_LOG.md` |
 | Process and decisions archive | `PROCESS.md` |
 | Scripts and checks | `SYSTEMS_REGISTRY.md` |

@@ -112,6 +112,6 @@ public/
 - `CLAUDE.md`
 - `DESIGN.md`
 - `DESIGN-HANDOFF.md`
-- `TASKS.md`
+- `BACKLOG.md`
 - `TOKEN_GOVERNANCE.md`
 - `SYSTEMS_REGISTRY.md`
