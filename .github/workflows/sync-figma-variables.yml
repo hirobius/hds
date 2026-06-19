@@ -24,19 +24,12 @@ jobs:
           node-version: '22'
 
       # ── Build both output files ──────────────────────────────────────────
+      # These are deterministic derivatives of hirobius.tokens.json and are
+      # gitignored (not committed). Regenerating them here means the payload
+      # pushed below always matches the current token source. To produce them
+      # locally for a manual Figma import, run `pnpm figma-variables`.
       - name: Generate Figma variables files
         run: node scripts/build-figma-variables.mjs
-
-      # ── Commit the generated plugin file back to the repo ────────────────
-      # This keeps hirobius.figma-variables.json always in sync with the
-      # token source, so it can be imported manually at any time.
-      - name: Commit generated Figma variables file
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'chore: regenerate hirobius.figma-variables.json'
-          file_pattern: 'hirobius.figma-variables.json hirobius.figma-variables-api.json'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
 
       # ── Push to Figma Variables REST API ─────────────────────────────────
       # Requires GitHub Secrets:

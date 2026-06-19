@@ -12,7 +12,7 @@ Branch: `claude/design-system-hardening-2xc2re`. One row per queue item.
 | 3   | Reproducible release (changesets + CI) | done   | changeset added → next = 0.5.0; `release` now gates on smoke; dry-run clean. RELEASE_READY below |
 | 4   | Fix secrets-hook gap                   | done   | husky now calls `pnpm check:secrets` (graceful) not raw gitleaks |
 | 5   | Prune scripts                          | todo   | —                                                               |
-| 6   | Reconcile generated-artifact policy    | todo   | —                                                               |
+| 6   | Reconcile generated-artifact policy    | done   | wired `prebuild:lib` (component-api.json); untracked ~410KB figma exports → gitignored/regenerated |
 
 ## Pre-commit hook note (web session)
 
@@ -50,6 +50,28 @@ hook runs clean.
 - **/protocol subpath:** added `@hirobius/design-system/protocol` →
   `protocol/envelope.mjs` (pure Node ESM, native crypto, zero deps — shipped
   raw, no bundling).
+
+## Generated-artifact policy (item 6)
+
+- **component-api.json contract — was INCOHERENT, now fixed.** It is
+  gitignored + generated, but `build:lib` imports it (via
+  `component-instance-matrix.tsx`) and nothing regenerated it for the library
+  build — a clean checkout's `build:lib`/`pnpm release` would fail. Added
+  `prebuild:lib: node scripts/generate-component-api.mjs` so pnpm regenerates it
+  before every `build:lib`. Verified: deleting the file then running `build:lib`
+  regenerates and builds clean. (build:lib needs ONLY component-api.json of the
+  generated data set; typecheck additionally needs token-audit-report/used-icons/
+  roadmap, which the existing `dev`/`sync:health` flows already generate.)
+- **Figma exports (~410KB) — DECISION: generate, don't commit.**
+  `hirobius.figma-variables.json` (176KB) + `hirobius.figma-variables-api.json`
+  (232KB) are deterministic outputs of `hirobius.tokens.json`
+  (`scripts/build-figma-variables.mjs`), not source, and NOT shipped to
+  consumers (absent from `files`). No automatic gate depends on them
+  (`audit-figma-system` is manual/warn). Gitignored + `git rm --cached`
+  (kept on disk); the `sync-figma-variables` workflow already regenerates them
+  before the Figma REST push, so its now-moot "commit back" step was removed.
+  Regenerate locally with `pnpm figma-variables`. Rationale: DEFAULT-DECISION
+  RULE — prefer generating large derivable artifacts over committing them.
 
 ## RELEASE_READY (item 3 — a human runs the actual publish)
 
