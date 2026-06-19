@@ -9,7 +9,7 @@ Branch: `claude/design-system-hardening-2xc2re`. One row per queue item.
 | --- | -------------------------------------- | ------ | --------------------------------------------------------------- |
 | 1   | Slim the published package             | done   | pack ~49MB→0.55MB, ~62MB→3.1MB unpacked, ~400→207 files; dist 57MB→0.65MB |
 | 2   | Consumer smoke test                    | done   | `pnpm smoke:consumer` packs+installs+imports all 7 subpaths; install now 47 pkgs |
-| 3   | Reproducible release (changesets + CI) | done   | changeset added → next = 0.5.0; `release` now gates on smoke; dry-run clean. RELEASE_READY below |
+| 3   | Reproducible release (changesets + CI) | done   | **0.5.0 PUBLISHED** to GitHub Packages; release pipeline fixed end-to-end (pnpm pin, HUSKY=0, package access) |
 | 4   | Fix secrets-hook gap                   | done   | husky now calls `pnpm check:secrets` (graceful) not raw gitleaks |
 | 5   | Prune scripts                          | done   | 13 dead scripts removed (147→134); 6 test-backed candidates kept |
 | 6   | Reconcile generated-artifact policy    | done   | wired `prebuild:lib` (component-api.json); untracked ~410KB figma exports → gitignored/regenerated |
