@@ -22,11 +22,25 @@ if (!existsSync(HOOKS_DIR)) {
   process.exit(0);
 }
 
+// `prepare` runs on install AND on `npm publish` / `npm pack`. In CI (and any
+// environment that sets HUSKY=0 to disable git hooks — e.g. the changesets
+// release job) husky's installer intentionally skips. That is a SKIP, not a
+// failure, so we must exit 0 — otherwise `npm publish` aborts in its prepare
+// step. Mirrors the graceful-degradation contract of check-secrets.mjs.
+if (process.env.HUSKY === '0') {
+  console.log('Husky disabled (HUSKY=0) — skipping git hook install.');
+  process.exit(0);
+}
+
 try {
   process.chdir(ROOT);
+  // husky() returns "" on success and a non-empty message string when it
+  // skips (HUSKY=0, CI, no git dir); it throws only on a real error. Treat a
+  // returned skip message as informational, not fatal.
   const result = installHusky('.husky');
   if (result) {
-    throw new Error(String(result));
+    console.log(`Husky: ${String(result).trim()}`);
+    process.exit(0);
   }
   console.log('✓ git hooks activated (.husky/)');
 } catch (err) {
