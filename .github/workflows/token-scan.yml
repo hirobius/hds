@@ -8,7 +8,7 @@ env:
 
 jobs:
   token-scan:
-    if: github.event.deployment_status.state == 'success' && contains(toLower(github.event.deployment_status.environment), 'preview')
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment, 'preview')
     concurrency:
       group: token-scan-${{ github.event.deployment.id || github.sha }}
       cancel-in-progress: true
