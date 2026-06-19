@@ -14,6 +14,49 @@ Branch: `claude/design-system-hardening-2xc2re`. One row per queue item.
 | 5   | Prune scripts                          | done   | 13 dead scripts removed (147→134); 6 test-backed candidates kept |
 | 6   | Reconcile generated-artifact policy    | done   | wired `prebuild:lib` (component-api.json); untracked ~410KB figma exports → gitignored/regenerated |
 
+## Release execution status (post-merge to main)
+
+All hardening work is merged to `main`. The release pipeline was driven end-to-end
+and is now **one admin setting away from publishing 0.5.0**:
+
+- Fixed the release workflow, which had **never** succeeded: pinned pnpm via
+  `packageManager` (action-setup failed on every prior run); scoped `HUSKY=0` to
+  the changesets step; made `setup-hooks.mjs` (`prepare`) no-op under HUSKY=0 so
+  `npm publish`'s prepare step doesn't abort.
+- Changesets versioned `main` to **0.5.0** (CHANGELOG written, changesets
+  consumed). The bot couldn't open the Version Packages PR ("Allow GitHub Actions
+  to create and approve pull requests" is **disabled**) — opened + merged manually.
+- The publish run now gets all the way through `build:lib` and `smoke:consumer`
+  (**PASS in CI** — all 7 subpaths) and fails only at `changeset publish`:
+  `npm info @hirobius/design-system` → **403 permission_denied: read_package**.
+  Cause: 0.4.0/0.4.1 were published manually, so the package is not linked to this
+  repo's Actions, and the default `GITHUB_TOKEN` can't read/write it.
+
+### TWO admin actions needed to finish the publish (human, GitHub UI)
+
+1. **Link the package to the repo** (fixes the 403): GitHub → `hirobius` packages →
+   `@hirobius/design-system` → Package settings → *Manage Actions access* → add
+   `hirobius/hirobius-design-system` with **Write**. (Alternatively add a PAT with
+   `write:packages` as a repo secret and set `NODE_AUTH_TOKEN` to it in
+   `release.yml`.)
+2. **Allow Actions to open PRs** (so future releases are hands-off): repo
+   Settings → Actions → General → enable *Allow GitHub Actions to create and
+   approve pull requests*.
+
+Then re-run the latest **Release** workflow on `main` (Actions tab → Re-run) — it
+will publish **0.5.0**. Nothing else is needed; main is already at 0.5.0.
+
+### Item 2 (ops re-pin) — BLOCKED, cannot do from here
+
+- The `ops` repo is **outside this session's GitHub scope** (restricted to
+  `hirobius/hirobius-design-system`), and the `list_repos`/`add_repo` tooling to
+  add it isn't available in this session.
+- It also can't be done until 0.5.0 is actually published (above).
+- **Action for ops, after 0.5.0 publishes:** bump its dependency on
+  `@hirobius/design-system` from `^0.4.0` to `^0.5.0`, reinstall, and re-verify
+  imports — note the barrel removed `ComponentDocPage` + `SpecimenBlock` and added
+  the `/protocol` subpath.
+
 ## Pre-commit hook note (web session)
 
 The graceful `check:secrets` wrapper means the **secrets** gate no longer needs
