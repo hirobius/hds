@@ -11,7 +11,7 @@ Branch: `claude/design-system-hardening-2xc2re`. One row per queue item.
 | 2   | Consumer smoke test                    | done   | `pnpm smoke:consumer` packs+installs+imports all 7 subpaths; install now 47 pkgs |
 | 3   | Reproducible release (changesets + CI) | done   | changeset added → next = 0.5.0; `release` now gates on smoke; dry-run clean. RELEASE_READY below |
 | 4   | Fix secrets-hook gap                   | done   | husky now calls `pnpm check:secrets` (graceful) not raw gitleaks |
-| 5   | Prune scripts                          | todo   | —                                                               |
+| 5   | Prune scripts                          | done   | 13 dead scripts removed (147→134); 6 test-backed candidates kept |
 | 6   | Reconcile generated-artifact policy    | done   | wired `prebuild:lib` (component-api.json); untracked ~410KB figma exports → gitignored/regenerated |
 
 ## Pre-commit hook note (web session)
@@ -72,6 +72,24 @@ hook runs clean.
   before the Figma REST push, so its now-moot "commit back" step was removed.
   Regenerate locally with `pnpm figma-variables`. Rationale: DEFAULT-DECISION
   RULE — prefer generating large derivable artifacts over committing them.
+
+## Script prune (item 5)
+
+Reachability audit (roots = package.json / registry.json / husky / workflows,
+then transitive script→script follow) found 19 unreferenced candidates. A sonnet
+sub-agent confirmed and removed **13 genuinely-dead scripts** and **kept 6** that
+have live vitest tests in `scripts/__tests__/` (removing them would break
+`pnpm test`).
+
+- Deleted (13): `a11y-schema-check`, `build-llms-txt` (stub re-importing the live
+  `generate-llms-txt`), `figma-console-snippet`, `figma-library-generate`,
+  `figma-parity-check`, `generate-portal-token`, `generate-system-atlas`,
+  `project-component-spec`, `setup-figma-canvas`, `swiss-canon-check`,
+  `test-retry-loop`, `update-commit-history`, `update-commit-history-cron`.
+- Kept (test-backed): `activity-log`, `case-study-draft`, `dispatch-pod`,
+  `promote-to-core`, `sales-pipeline`, `sales-proposal`.
+- Verified after deletion: typecheck, build:lib, validate-guardrail-registry,
+  check-registry — all pass.
 
 ## RELEASE_READY (item 3 — a human runs the actual publish)
 
