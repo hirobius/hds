@@ -105,7 +105,7 @@
     "changeset": "changeset",
     "changeset:add": "changeset",
     "changeset:version": "changeset version",
-    "release": "pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish",
+    "release": "pnpm build:lib && pnpm smoke:consumer --skip-build && npm publish",
     "check": "pnpm check:full",
     "check:a11y": "pnpm lint --rule '{\"jsx-a11y/alt-text\":\"error\",\"jsx-a11y/img-redundant-alt\":\"error\"}'",
     "check:assets": "node scripts/check-asset-manifest.mjs",
