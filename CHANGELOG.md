@@ -1,5 +1,46 @@
 # Changelog
 
+## 0.5.0
+
+### Minor Changes
+
+- 23cfdae: Make the package publishable and consumable.
+  - Publish target set to GitHub Packages (`publishConfig.registry`); `private`
+    removed so `npm publish` is allowed.
+  - Declare `react`, `react-dom`, and `react-router` as peer dependencies so
+    consumers provide a single copy (no duplicate-React hook errors).
+  - Wire up Changesets (`changeset add` / `version` / `release`) and a CI release
+    workflow that publishes on merge to `main`.
+
+- 390a877: Harden and slim the consumable package surface.
+
+  **Packaging**
+  - Cut the published tarball from ~49 MB / ~400 files to ~0.55 MB / ~207 files:
+    the library build no longer copies the 47 MB `public/` tree (portfolio PNGs,
+    fonts, JSON) into the package (`publicDir: false`), no longer ships sourcemaps
+    (`sourcemap: false`), and no longer drags the whole component-preview universe
+    (every component via `import.meta.glob`, the 3D mobius-scene chunk, the lab
+    modules, the component-api/token-audit artifacts) into the bundle.
+  - Excluded demo/lab/3D source (`src/stories`, `src/app/components/lab`, the
+    mobius/shaders modules) from the package `files`.
+
+  **Consumer resolution (fixes latent breakage in 0.4.0/0.4.1)**
+  - Externalize `motion/react` correctly so the bundle imports it (resolved via the
+    `motion` dependency) instead of emitting a bare `framer-motion` import — a
+    package that was never a dependency, which broke every consumer of a
+    motion-based component (tooltip, alert, disclosure, …).
+  - Demote app-only runtime deps (`three`, `@react-three/*`, `postprocessing`,
+    `express`, `cors`, `fuse.js`, `zustand`) from `dependencies` to
+    `devDependencies`; consumers no longer transitively install the three.js
+    ecosystem.
+
+  **API surface**
+  - Added subpath export `@hirobius/design-system/protocol` (bridge envelope).
+  - BREAKING: removed `ComponentDocPage` and `SpecimenBlock` from the main barrel
+    — they are docs-shell renderers, not consumable primitives. Import them from
+    the in-repo doc site directly if needed.
+    </content>
+
 All notable changes to the Hirobius Design System (HDS) are documented in this file.
 
 This project uses [Changesets](https://github.com/changesets/changesets) for structured
@@ -15,13 +56,13 @@ Once the changeset workflow is active, `pnpm changeset:version` will auto-aggreg
 
 ## Phase history overview
 
-| Phase | Milestone | Status |
-|-------|-----------|--------|
-| Phase 0 | Project bootstrap — Vite + React + Tailwind v4 + token pipeline | Complete |
-| Phase 8 | shadcn pivot — Radix primitives + cva/clsx/cn + HdsButton/Input/Card/Dialog | Complete |
-| Phase 9D | Three-column doc shell, cmd-k palette, scrollspy TOC, theme toggle | Complete |
-| Phase 10 | Token governance, component completeness, Figma plugin bridge v1 | Complete |
-| Phase 11 | Approval app — orchestration schema, bridge endpoints, list/detail views | Complete |
+| Phase    | Milestone                                                                                         | Status      |
+| -------- | ------------------------------------------------------------------------------------------------- | ----------- |
+| Phase 0  | Project bootstrap — Vite + React + Tailwind v4 + token pipeline                                   | Complete    |
+| Phase 8  | shadcn pivot — Radix primitives + cva/clsx/cn + HdsButton/Input/Card/Dialog                       | Complete    |
+| Phase 9D | Three-column doc shell, cmd-k palette, scrollspy TOC, theme toggle                                | Complete    |
+| Phase 10 | Token governance, component completeness, Figma plugin bridge v1                                  | Complete    |
+| Phase 11 | Approval app — orchestration schema, bridge endpoints, list/detail views                          | Complete    |
 | Phase 12 | HDS refinement — strict TypeScript, ESLint hardening, multi-tenant architecture, LLM prompt suite | In progress |
 
 Current version: `0.0.1` (pre-1.0; semantic versioning enforced after first stable release tag)
@@ -36,12 +77,12 @@ Four `Hds*`-prefixed primitives were renamed or removed during the
 shadcn pivot (Phase 8). The new names are stable and re-exported from
 `@hirobius/design-system` per the `src/index.ts` barrel.
 
-| Old | New | Notes |
-|---|---|---|
-| `HdsButton` | `Button` | Same API; prefix dropped during shadcn alignment |
-| `HdsSurface` | `Surface` | Same API; prefix dropped |
-| `HdsIconButton` | `IconButton` | Same API; prefix dropped |
-| `HdsButtonGroup` | _removed_ | No drop-in replacement — use a `Stack direction="row"` with multiple `<Button>` children |
+| Old              | New          | Notes                                                                                    |
+| ---------------- | ------------ | ---------------------------------------------------------------------------------------- |
+| `HdsButton`      | `Button`     | Same API; prefix dropped during shadcn alignment                                         |
+| `HdsSurface`     | `Surface`    | Same API; prefix dropped                                                                 |
+| `HdsIconButton`  | `IconButton` | Same API; prefix dropped                                                                 |
+| `HdsButtonGroup` | _removed_    | No drop-in replacement — use a `Stack direction="row"` with multiple `<Button>` children |
 
 Migration: `import { HdsButton } from '@hirobius/design-system'` →
 `import { Button } from '@hirobius/design-system'`. For `HdsButtonGroup`,
@@ -89,7 +130,7 @@ rewritten. The migration applies to consumers, not to history.
 - **approval-app:** 11a-4 approval app per-unit detail view ([faa2928](#))
 - **tokens:** 10t-5-type-ramp-composites Swiss-canon 8-style ramp ([19ffb04](#))
 - **approval-app:** 11a-3 approval app list view ([8dde9f3](#))
-- **docs:** 10d-11 mark lab/Token* as @deprecated; capture closure note ([7236844](#))
+- **docs:** 10d-11 mark lab/Token\* as @deprecated; capture closure note ([7236844](#))
 - **docs:** 10d-14 surface componentSpec.figmaLink in doc-page header ([dc7b3d3](#))
 - **cleanup:** 10o-22-delete-test-ghost-button remove HdsTestGhost ([e3b1c92](#))
 - **approval-app:** 11a-2 bridge approval endpoints ([8112480](#))
@@ -108,7 +149,7 @@ rewritten. The migration applies to consumers, not to history.
 - **docs:** 9d-3 system/light/dark theme toggle ([b5ace7b](#))
 - **docs:** 9d-2 cmd-k command palette over manifest ([e964600](#))
 - **docs:** 9d-4 standardized doc-page header ([13d1a45](#))
-- **tokens:** 9d-7 semantic.docs.* type + spacing scale for doc-site ([f696a66](#))
+- **tokens:** 9d-7 semantic.docs.\* type + spacing scale for doc-site ([f696a66](#))
 - **bridge:** p5-4 plugin runtime error channel (render-error → retry loop) ([c1cd3d7](#))
 - **manifest:** backlog-2 expand GENERATIVE_SUBSET via 8s-8 AST projection ([38fb002](#))
 - **docs:** 9d-1 three-column doc shell (Vercel/Geist baseline) ([343c848](#))
@@ -131,7 +172,7 @@ rewritten. The migration applies to consumers, not to history.
 - **tooling:** 8s-1 reinstall Tailwind v4 with token bridge ([2b5cd72](#))
 - **governance:** 8x-6 drop experiment tier; strict contract for componentSpecs ([5ce58d3](#))
 - **tokens:** 8e-3 emit tailwind.config.tokens.cjs from DTCG source ([c043726](#))
-- **tokens:** 8e-2 role.* alias layer for shadcn vocabulary ([9584649](#))
+- **tokens:** 8e-2 role.\* alias layer for shadcn vocabulary ([9584649](#))
 - **tokens:** 8e-1 elevation/shadow composites + theme-aware shadow color ([fb2ba89](#))
 - **governance:** 8x-5 split tier=utility|experiment into peer sections ([098418b](#))
 - **governance:** 8x-4 orphan resolution — drop 5 source-less specs ([0e3ec58](#))
