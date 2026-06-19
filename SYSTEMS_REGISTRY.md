@@ -197,7 +197,7 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 Current state:
 
 - static enforcement now lives primarily in `pnpm check:fast`, `pnpm check:full`, and `pnpm check:release`
-- preview scanning also exists in `.github/workflows/token-scan.yml`
+- preview scanning previously ran as a `token-scan` GitHub workflow; that workflow and its scan tooling were exported to the ops repo (see ops export 2026-06-18) and the now-dead workflow file was removed from this repo
 - preview scanning now injects a headless browser script at scan time instead of depending on a product-bundle bridge
 - the retired prototype files and stale inspector specs have been pruned; the remaining scanner surface is the headless path plus token-index metadata
 - `scripts/batch-scan.mjs` is now the canonical route/render scan entrypoint <!-- doc-ref-ok: preview-scan tooling moved to ops repo (see ops export 2026-06-18) -->
