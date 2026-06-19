@@ -2,7 +2,7 @@
   "name": "@hirobius/design-system",
   "description": "Hirobius Design Systems Architecture: token-governed React components, documentation surfaces, and distribution tooling.",
   "private": false,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "engines": {
     "node": ">=20",
     "pnpm": ">=8"
@@ -104,7 +104,7 @@
     "changeset": "changeset",
     "changeset:add": "changeset",
     "changeset:version": "changeset version",
-    "release": "pnpm build:lib && changeset publish",
+    "release": "pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish",
     "check": "pnpm check:full",
     "check:a11y": "pnpm lint --rule '{\"jsx-a11y/alt-text\":\"error\",\"jsx-a11y/img-redundant-alt\":\"error\"}'",
     "check:assets": "node scripts/check-asset-manifest.mjs",

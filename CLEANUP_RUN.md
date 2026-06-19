@@ -9,7 +9,7 @@ Branch: `claude/design-system-hardening-2xc2re`. One row per queue item.
 | --- | -------------------------------------- | ------ | --------------------------------------------------------------- |
 | 1   | Slim the published package             | done   | pack ~49MB→0.55MB, ~62MB→3.1MB unpacked, ~400→207 files; dist 57MB→0.65MB |
 | 2   | Consumer smoke test                    | done   | `pnpm smoke:consumer` packs+installs+imports all 7 subpaths; install now 47 pkgs |
-| 3   | Reproducible release (changesets + CI) | todo   | —                                                               |
+| 3   | Reproducible release (changesets + CI) | done   | changeset added → next = 0.5.0; `release` now gates on smoke; dry-run clean. RELEASE_READY below |
 | 4   | Fix secrets-hook gap                   | done   | husky now calls `pnpm check:secrets` (graceful) not raw gitleaks |
 | 5   | Prune scripts                          | todo   | —                                                               |
 | 6   | Reconcile generated-artifact policy    | todo   | —                                                               |
@@ -50,6 +50,38 @@ hook runs clean.
 - **/protocol subpath:** added `@hirobius/design-system/protocol` →
   `protocol/envelope.mjs` (pure Node ESM, native crypto, zero deps — shipped
   raw, no bundling).
+
+## RELEASE_READY (item 3 — a human runs the actual publish)
+
+The release pipeline is reproducible via Changesets + `.github/workflows/release.yml`.
+**This session did NOT publish** (hard stop). To cut the release:
+
+1. Merge this branch to `main`. The Release workflow opens a "Version Packages" PR.
+2. Review/merge that PR. It runs `pnpm changeset:version` (→ **0.5.0**, applying
+   the changesets in `.changeset/`) then `pnpm release`:
+   `build:lib && smoke:consumer --skip-build && changeset publish`.
+   The smoke gate means a package that fails consumer resolution cannot publish.
+3. Auth uses the built-in `GITHUB_TOKEN` (GitHub Packages, `@hirobius` scope).
+
+Prep done here:
+- `package.json` version reconciled `0.4.0 → 0.4.1` to match the latest live
+  release (manual-publish drift) so `changeset version` bumps cleanly to 0.5.0.
+- Changeset `slim-consumable-surface.md` (minor) added describing this session.
+- `release` npm script now runs `smoke:consumer` before `changeset publish`.
+- Verified: `changeset status` → 0.5.0; `npm publish --dry-run` → 554.9 kB / 207
+  files, name @hirobius/design-system. **No publish performed.**
+- 0.4.0 / 0.4.1 untouched (not unpublished, not broken).
+
+> NOTE for the human: `.changeset/distribution-setup.md` is a leftover changeset
+> whose content ("make the package publishable") already shipped in 0.4.0 (it was
+> never consumed because 0.4.x was published manually). It is left in place — you
+> may delete it before running `changeset version` so it doesn't pollute the
+> 0.5.0 changelog. Not removed here to avoid touching shipped release history.
+
+> **Why 0.5.0 (minor) and not a patch:** the barrel removed `ComponentDocPage`
+> and `SpecimenBlock` (breaking). ops pins `^0.4.0`, so it will NOT auto-receive
+> 0.5.0 — re-pin to `^0.5.0` and re-verify imports after the breaking changes
+> (and pick up the `framer-motion`/three.js install fixes).
 
 ## Consumer-resolution fixes (surfaced by the smoke test, item 2)
 
