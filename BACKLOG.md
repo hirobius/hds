@@ -96,10 +96,11 @@ Consolidated 2026-05-11 from `docs/ai/orchestration.json`,
 - `idea` **dashbd-skillsbar-wire-input-skills** — Wire 13 input-needing buried scripts as buttons via input-shell
 - `idea` **dashbd-approved-triage-tool** — Approved-bucket triage command (gap: no dedicated tool today)
 - `idea` **dashbd-skill-token-impact-trace** — Token impact trace — blast-radius report per token
+- `ready` **session-gitleaks-missing-web-session** — Husky pre-commit/pre-push fail in remote/web sessions: `gitleaks` binary not on PATH (exit 127), forcing `git commit --no-verify`. Install gitleaks in the web env OR make `scripts/check-secrets.mjs` no-op with a warning when the binary is absent.
 
 ---
 
-**Total: 69 open items.**
+**Total: 70 open items.**
 
 ## Conventions
 
