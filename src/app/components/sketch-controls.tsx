@@ -79,6 +79,7 @@ export function SketchRange({
           <input
             {...props}
             type="range"
+            aria-label={typeof label === 'string' ? label : undefined}
             onChange={(event) => onValueChange(Number(event.target.value))}
             style={{ width: '100%', ...style }}
           />
