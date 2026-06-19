@@ -32,72 +32,51 @@ const DESKTOP = { width: 1440, height: 900 };
  * tested separately. Parameterized routes (/ops/clients/:slug,
  * /admin/approvals/:id) are pinned to known-good fixtures.
  */
+// Standalone HDS site: every page is served at ROOT (see src/app/route-tree.tsx).
+// The legacy /ops/hds/*, /hds/*, /ops/* prefixes are redirect-only, and the old
+// portfolio / ops-dashboard / admin / client routes were removed in the strip —
+// so this mirrors the real, non-redirect page routes in the route tree.
 const ALL_ROUTES = [
   // ── Root + info ─────────────────────────────────────────────────────────────
   '/',
   '/info',
-  '/wet-paint',
-  '/case-studies/hirobius',
-  '/case-studies/the-ranch-foundation',
-  '/microsoft-design-systems',
-  '/visuals',
-  '/portfolio/draft',
 
-  // ── HDS docs surface (ops-gated) ────────────────────────────────────────────
-  '/ops/hds/typography',
-  '/ops/hds/color',
-  '/ops/hds/spacing',
-  '/ops/hds/tokens',
-  '/ops/hds/elevation',
-  '/ops/hds/motion',
-  '/ops/hds/breakpoints',
-  '/ops/hds/shape',
-  '/ops/hds/process',
-  '/ops/hds/components/actions',
-  '/ops/hds/components/inputs',
-  '/ops/hds/components/display',
-  '/ops/hds/components/feedback',
-  '/ops/hds/components/navigation',
-  '/ops/hds/components/layout',
-  '/ops/hds/components/doc-utilities',
-  '/ops/hds/case-studies/hirobius',
+  // ── Getting started / system ────────────────────────────────────────────────
+  '/getting-started',
+  '/guidance',
+  '/scope',
+  '/tech-stack',
+  '/license',
+  '/contribution-guide',
+  '/system-contract',
+  '/brand-theming',
+  '/architecture-snapshot',
+  '/component-health',
+  '/sandbox',
 
-  // ── HDS internal / WIP ──────────────────────────────────────────────────────
-  '/ops/hds/typography-test',
-  '/ops/hds/spacing-test',
-  '/ops/hds/architecture-snapshot',
-  '/ops/hds/component-health',
-  '/ops/hds/sandbox',
-  '/ops/hds/contribution-guide',
-  '/ops/hds/system-contract',
-  '/ops/hds/brand-theming',
+  // ── Foundations ─────────────────────────────────────────────────────────────
+  '/color',
+  '/typography',
+  '/spacing',
+  '/shape',
+  '/elevation',
+  '/motion',
+  '/breakpoints',
+  '/tokens',
+  '/icons',
 
-  // ── Ops ─────────────────────────────────────────────────────────────────────
-  '/ops',
-  '/ops/briefing',
-  '/ops/atlas',
-  '/ops/build',
-  '/ops/knowledge',
-  '/ops/sessions',
-  '/ops/kanban',
-  '/ops/clients',
-  '/ops/clients/lilac-insure',
-  '/ops/clients/lilac-insure/report',
-  '/ops/clients/lilac-insure/brand-audit',
-  '/ops/staging',
-  // ── Ops · temporary (deleted with OpsDashboardPage once harvest is finalized) ──
-  '/ops/_legacy',
+  // ── Components ──────────────────────────────────────────────────────────────
+  '/components/actions',
+  '/components/inputs',
+  '/components/display',
+  '/components/feedback',
+  '/components/navigation',
+  '/components/layout',
+  '/components/doc-utilities',
 
-  // ── Admin ───────────────────────────────────────────────────────────────────
-  '/admin/approvals',
-  '/admin/approvals/p0-1-repo-structure',
-
-  // ── Client portal (public, token-gated; visited without ?token= renders the
-  //    "Not authorized" surface — that surface still has to layout-cleanly). ──
-  '/c/lilac-insure',
-
-  // ── Lab (incubator only — sketchbook is tested separately) ──────────────────
-  '/lab/incubator',
+  // ── Tests / WIP ─────────────────────────────────────────────────────────────
+  '/typography-test',
+  '/spacing-test',
 ] as const;
 
 for (const route of ALL_ROUTES) {

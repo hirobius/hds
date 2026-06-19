@@ -116,6 +116,7 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
         <input
           ref={ref}
           type="range"
+          aria-label={label}
           min={min}
           max={max}
           step={step}
