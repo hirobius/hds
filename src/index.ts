@@ -13,7 +13,7 @@
 // Side-effect import: design system base styles (tokens + theme + utilities)
 import './styles/index.css';
 
-// ── primitives (30) ──
+// ── primitives (29) ──
 export * from './app/components/alert';
 export * from './app/components/asset-img';
 export * from './app/components/badge';
@@ -39,7 +39,6 @@ export * from './app/components/inline-link';
 export * from './app/components/input';
 export * from './app/components/nav-item';
 export * from './app/components/segmented-control';
-export * from './app/components/specimen-block';
 export * from './app/components/stack';
 export * from './app/components/surface';
 export * from './app/components/table';
@@ -66,9 +65,13 @@ export * from './app/components/sketch';
 export * from './app/components/stepper-field';
 export * from './app/components/text-lockup';
 
-// ── templates (5) ──
+// ── templates (4) ──
+// NOTE: ComponentDocPage and HdsSpecimenBlock are intentionally NOT part of the
+// published surface — they are docs-shell renderers that pull the entire
+// component preview universe (import.meta.glob over every component + lab module,
+// the 3D mobius-scene chunk, and the token-audit/component-api artifacts) into the
+// library bundle. They remain available to the in-repo doc site via direct import.
 export * from './app/layouts/CaseStudyLayout';
-export * from './app/components/ComponentDocPage';
 export * from './app/components/error-pattern';
 export * from './app/components/info-page';
 export * from './app/pages/hds/HdsSystemDocLayout';
@@ -79,4 +82,3 @@ export { default as tokens } from '../hirobius.tokens.json';
 
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
-

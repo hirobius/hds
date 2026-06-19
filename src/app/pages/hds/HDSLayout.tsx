@@ -439,7 +439,10 @@ function NestedNavGroup({
         onClick={() => setOpen((value) => !value)}
         className="hds-text-hover hds-bg-hover-neutral hds-focus"
         aria-expanded={open}
-        style={{ ...hdsLayoutStyles.nestedNavGroupBtn, paddingLeft: `calc(${hds.semantic.space.sidebar.sectionGap} + (${hds.semantic.space.sidebar.indent} * ${indentLevel}))` }}
+        style={{
+          ...hdsLayoutStyles.nestedNavGroupBtn,
+          paddingLeft: `calc(${hds.semantic.space.sidebar.sectionGap} + (${hds.semantic.space.sidebar.indent} * ${indentLevel}))`,
+        }}
       >
         <span style={{ ...hds.typeStyles.label }}>{label}</span>
         <Icon
@@ -605,10 +608,7 @@ function Sidebar({
       };
 
   return (
-    <nav
-      aria-label="Portfolio navigation"
-      style={sidebarNavStyle}
-    >
+    <nav aria-label="Portfolio navigation" style={sidebarNavStyle}>
       <div
         ref={navRef}
         className="hds-scrollbar"
@@ -626,7 +626,10 @@ function Sidebar({
           {/* Header — desktop only; mobile topbar carries the logo */}
           {!isOverlay && (
             <div
-              style={{ ...hdsLayoutStyles.sidebarHeaderSticky, background: 'var(--semantic-color-surface-page)' }}
+              style={{
+                ...hdsLayoutStyles.sidebarHeaderSticky,
+                background: 'var(--semantic-color-surface-page)',
+              }}
             >
               <button
                 type="button"
@@ -672,9 +675,7 @@ function Sidebar({
 
           {/* Footer */}
           {!isOverlay && LANGUAGE_SWITCHER_ENABLED && (
-            <div
-              style={hdsLayoutStyles.sidebarFooter}
-            >
+            <div style={hdsLayoutStyles.sidebarFooter}>
               <div
                 style={{
                   display: 'flex',
@@ -909,7 +910,6 @@ function HDSDocRoot() {
 
   const isTokensRoute = location.pathname === '/tokens';
   const isShellRoute = !isImmersiveSketchRoute;
-  const isHdsRoute = isShellRoute;
   const isDocRailRoute = isShellRoute;
   const sidebarVisible = isShellRoute && (!isMobile || sidebarOpen);
   const isMobileShellOpen = isMobile && isShellRoute && sidebarOpen;
@@ -1047,7 +1047,12 @@ function HDSDocRoot() {
         {/* Mobile nav trigger — always present on HDS shell routes, regardless of Mobius mode */}
         {isMobile && isShellRoute && (
           <div
-            style={{ ...hdsLayoutStyles.mobileNavTriggerWrapper, top: MOBILE_SHELL_CONTROL_TOP, left: hds.semantic.space.layout.gutter, zIndex: MOBILE_SHELL_HEADER_LAYER }}
+            style={{
+              ...hdsLayoutStyles.mobileNavTriggerWrapper,
+              top: MOBILE_SHELL_CONTROL_TOP,
+              left: hds.semantic.space.layout.gutter,
+              zIndex: MOBILE_SHELL_HEADER_LAYER,
+            }}
           >
             <IconButton
               icon={sidebarOpen ? X : Menu}
@@ -1090,7 +1095,10 @@ function HDSDocRoot() {
 
             return (
               <div
-                style={{ ...hdsLayoutStyles.mobiusOverlayContainer, zIndex: isMobile && isShellRoute ? MOBILE_SHELL_HEADER_LAYER : hds.zIndex.focus }}
+                style={{
+                  ...hdsLayoutStyles.mobiusOverlayContainer,
+                  zIndex: isMobile && isShellRoute ? MOBILE_SHELL_HEADER_LAYER : hds.zIndex.focus,
+                }}
               >
                 {/* Mobius-mode hamburger removed — standalone trigger above handles all HDS shell routes */}
                 <button
@@ -1138,9 +1146,7 @@ function HDSDocRoot() {
             aria-label="App controls"
             style={{ ...hdsLayoutStyles.shellTopNav, zIndex: SHELL_TOP_NAV_LAYER }}
           >
-            <div
-              style={hdsLayoutStyles.shellTopNavInner}
-            >
+            <div style={hdsLayoutStyles.shellTopNavInner}>
               <div
                 data-mobius-anchor="shell-top-nav-mobius"
                 aria-hidden="true"
@@ -1192,7 +1198,12 @@ function HDSDocRoot() {
         {isMobileShellOpen && (
           <div
             aria-hidden="true"
-            style={{ ...hdsLayoutStyles.mobileHeaderBar, height: SHELL_TOP_NAV_HEIGHT, background: SIDEBAR_PANEL_BG, zIndex: MOBILE_SIDEBAR_LAYER }}
+            style={{
+              ...hdsLayoutStyles.mobileHeaderBar,
+              height: SHELL_TOP_NAV_HEIGHT,
+              background: SIDEBAR_PANEL_BG,
+              zIndex: MOBILE_SIDEBAR_LAYER,
+            }}
           />
         )}
 
@@ -1221,7 +1232,11 @@ function HDSDocRoot() {
         >
           {isShellRoute && !isMobile && (
             <div
-              style={{ ...hdsLayoutStyles.sidebarLeftRail, top: SHELL_TOP_NAV_OFFSET, paddingTop: `calc(${DOC_HEADER_TOP_OFFSET} - ${RAIL_TOP_ALIGN_NUDGE})` }}
+              style={{
+                ...hdsLayoutStyles.sidebarLeftRail,
+                top: SHELL_TOP_NAV_OFFSET,
+                paddingTop: `calc(${DOC_HEADER_TOP_OFFSET} - ${RAIL_TOP_ALIGN_NUDGE})`,
+              }}
             >
               <Sidebar
                 isDark={isDark}
@@ -1306,7 +1321,14 @@ function HDSDocRoot() {
             </main>
             {showToc && !isImmersiveSketchRoute && isDocRailRoute && (
               <div
-                style={{ ...hdsLayoutStyles.tocRightRail, position: isTokensRoute ? 'relative' : 'sticky', top: isTokensRoute ? undefined : 0, paddingTop: isTokensRoute ? SHELL_TOP_NAV_OFFSET : `calc(${SHELL_TOP_NAV_OFFSET} - ${RAIL_TOP_ALIGN_NUDGE})` }}
+                style={{
+                  ...hdsLayoutStyles.tocRightRail,
+                  position: isTokensRoute ? 'relative' : 'sticky',
+                  top: isTokensRoute ? undefined : 0,
+                  paddingTop: isTokensRoute
+                    ? SHELL_TOP_NAV_OFFSET
+                    : `calc(${SHELL_TOP_NAV_OFFSET} - ${RAIL_TOP_ALIGN_NUDGE})`,
+                }}
               >
                 {isTokensRoute ? (
                   <TokensRail isDark={isDark} tokenPath={tokenPath} />
