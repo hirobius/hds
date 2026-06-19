@@ -137,7 +137,7 @@ When token values or token structure change:
 2. run `pnpm tokens:verify`
 3. confirm generated outputs updated correctly
 4. update `DESIGN.md` and `DESIGN-HANDOFF.md` in the same commit when the mirrored visual guidance changed
-5. if follow-up work remains, add it to `TASKS.md`
+5. if follow-up work remains, add it to `BACKLOG.md`
 6. if the change exposes a docs or shell finding, log it in `HDS_COMPLIANCE_LOG.md`
 7. update process/decision archive only if Adrian explicitly asks for that documentation
 

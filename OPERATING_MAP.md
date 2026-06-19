@@ -13,7 +13,7 @@ Do not use it as a second policy file.
 
 | If you have...                                                 | Put it in...            |
 | -------------------------------------------------------------- | ----------------------- |
-| a new task or follow-up                                        | `TASKS.md`              |
+| a new task or follow-up                                        | `BACKLOG.md`              |
 | a page-review or docs-shell finding                            | `HDS_COMPLIANCE_LOG.md` |
 | a process lesson or milestone Adrian explicitly wants archived | `PROCESS.md`            |
 | a token-rule change                                            | `TOKEN_GOVERNANCE.md`   |
