@@ -2,7 +2,13 @@
 set -e
 
 echo "Running secrets scan..."
-gitleaks git --config .gitleaks.toml --staged --verbose
+# Route through the registry wrapper (scripts/check-secrets.mjs) instead of the
+# raw binary: the wrapper degrades to a warning + exit 0 when the gitleaks
+# binary is absent (e.g. Claude Code web sessions), so commits no longer need
+# --no-verify. When gitleaks IS installed it runs the identical staged scan.
+# This is the same gate run-gates.mjs invokes from the registry below; keeping
+# it here preserves the "secrets first" ordering.
+pnpm check:secrets
 
 echo "Running lint-staged (Prettier formatting on staged files)..."
 pnpm exec lint-staged
