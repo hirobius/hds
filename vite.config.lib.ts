@@ -50,16 +50,19 @@ const hdsManifestVirtualPlugin = {
   },
   load(id: string) {
     if (id !== resolvedHdsManifestModuleId) return null;
-    const manifest = readFileSync(
-      path.resolve(__dirname, 'public/hds-manifest.json'),
-      'utf8',
-    );
+    const manifest = readFileSync(path.resolve(__dirname, 'public/hds-manifest.json'), 'utf8');
     return `export default ${manifest};`;
   },
 };
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), hdsManifestVirtualPlugin],
+  // Do NOT copy the `public/` directory into the library output. The app build
+  // (vite.config.mjs) serves portfolio assets, fonts, manifests from public/,
+  // but the published package must not carry ~47MB of portfolio PNGs, fonts,
+  // and JSON. Fonts are referenced by absolute `/fonts/...` URLs that resolve
+  // against the *consumer's* web root, so bundling them here is dead weight.
+  publicDir: false,
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -93,8 +96,16 @@ export default defineConfig({
         'react/jsx-runtime',
         'react-dom',
         'react-router',
-        'motion',
-        'framer-motion',
+        // Externalize ALL `motion` subpaths (`motion`, `motion/react`, …). An
+        // exact-string 'motion' did NOT match the `motion/react` specifier our
+        // components import, so Vite bundled motion/react's wrapper — which
+        // re-exports from `framer-motion`. `framer-motion` was then emitted as a
+        // bare import even though it is NOT a dependency (only `motion` is),
+        // breaking resolution for every consumer using a motion-based component.
+        // The regex keeps motion/react external so it resolves against the
+        // installed `motion` peer dependency.
+        /^motion(\/.*)?$/,
+        /^framer-motion(\/.*)?$/,
         // Node-style externals for ESM peer deps.
         /^@radix-ui\//,
         /^@phosphor-icons\//,
@@ -115,7 +126,10 @@ export default defineConfig({
         },
       },
     },
-    sourcemap: true,
+    // Consumers don't need (and shouldn't pay for) library sourcemaps — they
+    // bloat the tarball (the 3D scene map alone was ~5.8MB) and leak internal
+    // source layout. Debugging happens against this repo, not the package.
+    sourcemap: false,
     minify: 'esbuild',
   },
 });

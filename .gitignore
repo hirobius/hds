@@ -113,6 +113,15 @@ src/app/data/health-history.json
 src/app/data/security-posture.json
 src/app/data/commit-history.json
 
+# Figma variable exports — ~410KB of artifacts deterministically generated from
+# hirobius.tokens.json by scripts/build-figma-variables.mjs (run via
+# `pnpm figma-variables`). Not source, not shipped to consumers, and no
+# automatic gate depends on them (audit-figma-system is manual/warn). The
+# sync-figma-variables CI workflow regenerates them before pushing to the Figma
+# REST API, so a committed copy is redundant. Regenerate on demand.
+hirobius.figma-variables.json
+hirobius.figma-variables-api.json
+
 # Auto-research findings — local LLM output, regenerated each run
 # (queries.json itself IS tracked; only the per-run findings are local-only)
 docs/research/findings/
