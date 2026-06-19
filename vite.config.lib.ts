@@ -96,8 +96,16 @@ export default defineConfig({
         'react/jsx-runtime',
         'react-dom',
         'react-router',
-        'motion',
-        'framer-motion',
+        // Externalize ALL `motion` subpaths (`motion`, `motion/react`, …). An
+        // exact-string 'motion' did NOT match the `motion/react` specifier our
+        // components import, so Vite bundled motion/react's wrapper — which
+        // re-exports from `framer-motion`. `framer-motion` was then emitted as a
+        // bare import even though it is NOT a dependency (only `motion` is),
+        // breaking resolution for every consumer using a motion-based component.
+        // The regex keeps motion/react external so it resolves against the
+        // installed `motion` peer dependency.
+        /^motion(\/.*)?$/,
+        /^framer-motion(\/.*)?$/,
         // Node-style externals for ESM peer deps.
         /^@radix-ui\//,
         /^@phosphor-icons\//,

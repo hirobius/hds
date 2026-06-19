@@ -8,7 +8,7 @@ Branch: `claude/design-system-hardening-2xc2re`. One row per queue item.
 | #   | Item                                   | Status | Result                                                          |
 | --- | -------------------------------------- | ------ | --------------------------------------------------------------- |
 | 1   | Slim the published package             | done   | pack ~49MB→0.55MB, ~62MB→3.1MB unpacked, ~400→207 files; dist 57MB→0.65MB |
-| 2   | Consumer smoke test                    | todo   | —                                                               |
+| 2   | Consumer smoke test                    | done   | `pnpm smoke:consumer` packs+installs+imports all 7 subpaths; install now 47 pkgs |
 | 3   | Reproducible release (changesets + CI) | todo   | —                                                               |
 | 4   | Fix secrets-hook gap                   | done   | husky now calls `pnpm check:secrets` (graceful) not raw gitleaks |
 | 5   | Prune scripts                          | todo   | —                                                               |
@@ -50,6 +50,27 @@ hook runs clean.
 - **/protocol subpath:** added `@hirobius/design-system/protocol` →
   `protocol/envelope.mjs` (pure Node ESM, native crypto, zero deps — shipped
   raw, no bundling).
+
+## Consumer-resolution fixes (surfaced by the smoke test, item 2)
+
+- **motion/react externalization (vite.config.lib.ts):** the external matcher
+  was exact-string `'motion'`, which did NOT match the `motion/react` specifier
+  the components import. Vite therefore bundled motion/react's wrapper, which
+  re-exports from `framer-motion` (kept external) — so the published bundle
+  emitted a bare `import … from "framer-motion"`, a package that is NOT a
+  declared dependency. Every consumer using a motion-based component (tooltip,
+  alert, disclosure, segmented-control, …) would hit `Cannot find package
+  'framer-motion'`. Fixed by externalizing `/^motion(\/.*)?$/` so the bundle
+  imports `motion/react`, resolved via the `motion` dependency. **0.4.0/0.4.1
+  shipped with this latent breakage** — the next release fixes it.
+- **Dependency reclassification (package.json):** `three`, `@react-three/fiber`,
+  `@react-three/drei`, `@react-three/postprocessing`, `postprocessing`,
+  `express`, `cors`, `fuse.js`, `zustand` were `dependencies` but are never
+  imported by the published bundle (3D scene, bridge server, and app-only
+  state/search). Demoted to `devDependencies` so consumers stop transitively
+  installing the entire three.js ecosystem. Confirmed absent from every dist
+  entry; lockfile resynced; frozen-lockfile + typecheck + build:lib stay green.
+  Consumer install dropped to 47 packages.
 
 ## API-SURFACE CHANGES (ops must re-pin / re-verify)
 
