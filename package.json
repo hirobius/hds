@@ -47,13 +47,17 @@
       "import": "./dist/contexts.js",
       "default": "./dist/contexts.js"
     },
+    "./protocol": "./protocol/envelope.mjs",
+    "./protocol/envelope": "./protocol/envelope.mjs",
+    "./protocol/figma-snapshot.schema.json": "./protocol/figma-snapshot.schema.json",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
     "src",
     "hirobius.tokens.json",
-    "public/hds-manifest.json"
+    "public/hds-manifest.json",
+    "protocol"
   ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
