@@ -18,14 +18,6 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
-# Husky git hooks are developer-side guards (typecheck, lint, registry gates)
-# that assume locally-generated, gitignored data artifacts exist. The Changesets
-# action makes a bot "Version Packages" commit on a fresh checkout where those
-# artifacts are absent, so the pre-commit hook would fail. Disable hooks for CI —
-# the gates run in their own workflows, not on bot commits.
-env:
-  HUSKY: '0'
-
 permissions:
   contents: write
   pull-requests: write
@@ -56,3 +48,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Skip husky git hooks ONLY for the bot "Version Packages" commit this
+          # action makes. The hooks are local-dev guards (typecheck/lint/registry)
+          # that assume gitignored generated data artifacts exist, which they
+          # don't on a fresh CI checkout. Scoped to this step so the earlier
+          # `pnpm install` prepare/setup-hooks still runs normally.
+          HUSKY: '0'
