@@ -47,11 +47,26 @@
       "import": "./dist/contexts.js",
       "default": "./dist/contexts.js"
     },
+    "./protocol": {
+      "import": "./protocol/envelope.mjs",
+      "default": "./protocol/envelope.mjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
     "src",
+    "!src/stories",
+    "!src/app/components/lab",
+    "!src/app/components/mobius-scene.tsx",
+    "!src/app/components/mobius-logo.tsx",
+    "!src/app/components/mobius-shell-layer.tsx",
+    "!src/app/components/mobius-constants.ts",
+    "!src/app/components/shaders",
+    "!src/app/stores/mobiusStore.ts",
+    "!src/app/stores/mobiusCurve.ts",
+    "protocol/envelope.mjs",
+    "protocol/figma-snapshot.schema.json",
     "hirobius.tokens.json",
     "public/hds-manifest.json"
   ],
