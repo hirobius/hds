@@ -1,6 +1,6 @@
 # Exception Audit Report
 
-Generated: 2026-06-18T06:45:01.815Z
+Generated: 2026-06-19T04:08:13.365Z
 
 ## Summary
 
@@ -50,8 +50,8 @@ Generated: 2026-06-18T06:45:01.815Z
 | `src/app/context/__tests__/context.test.tsx` | 18 | `eslint-disable-next-line` | `@typescript-eslint/no-explicit-any` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 415 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 860 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 893 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 861 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 894 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 182 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-tabindex` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 216 | `eslint-disable-next-line` | `@typescript-eslint/no-unused-vars` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 528 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
@@ -130,7 +130,7 @@ Generated: 2026-06-18T06:45:01.815Z
 | `src/app/pages/hds/ComponentHealthPage.tsx` | 532 | `spacing-ok` | `internal health table tight row, 4px = subgrid hairline` | justified |
 | `src/app/pages/hds/ComponentHealthPage.tsx` | 540 | `spacing-ok` | `internal health table tight row, 4px = subgrid hairline` | justified |
 | `src/app/pages/hds/ComponentHealthPage.tsx` | 618 | `spacing-ok` | `legend pip + label tight pairing, 4px = subgrid hairline` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 1263 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 1278 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 44 | `hds-bypass` | `primitive documentation */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, DATA_TENANT, INLINE_STRUCTURAL_BORDER */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 86 | `audit-ok` | `brand palette demo content` | justified |
