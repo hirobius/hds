@@ -47,7 +47,14 @@ jobs:
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GitHub Packages write. The default GITHUB_TOKEN can only publish a
+          # package that is LINKED to this repo. @hirobius/design-system 0.4.0/0.4.1
+          # were published manually, so the package isn't linked and the token gets
+          # 403 write_package. Fix EITHER by linking the package to this repo
+          # (Package settings → Manage Actions access → add this repo, Write), OR
+          # by adding a PAT with write:packages as the repo secret PACKAGES_PAT —
+          # this expression prefers it when present and falls back to GITHUB_TOKEN.
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_PAT || secrets.GITHUB_TOKEN }}
           # Skip husky git hooks ONLY for the bot "Version Packages" commit this
           # action makes. The hooks are local-dev guards (typecheck/lint/registry)
           # that assume gitignored generated data artifacts exist, which they

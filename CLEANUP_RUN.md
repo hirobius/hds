@@ -32,7 +32,33 @@ and is now **one admin setting away from publishing 0.5.0**:
   Cause: 0.4.0/0.4.1 were published manually, so the package is not linked to this
   repo's Actions, and the default `GITHUB_TOKEN` can't read/write it.
 
-### TWO admin actions needed to finish the publish (human, GitHub UI)
+### PROVEN: publish is blocked at the GitHub Packages auth layer
+
+With the owner's explicit authorization, I attempted the real publish (run #9):
+`build:lib` ✓, `smoke:consumer` ✓ (PASS in CI), then `npm publish` →
+**403 permission_denied: WRITE_package** on `PUT .../@hirobius/design-system`.
+Combined with the earlier `npm info` 403 (read), this proves the repo's Actions
+`GITHUB_TOKEN` has neither read nor write to the package — it isn't linked to the
+repo (0.4.x were hand-published). No token/workflow/API change I can make crosses
+this; it requires a one-time account-owner action. `release.yml` now prefers a
+`PACKAGES_PAT` secret if present, else `GITHUB_TOKEN`.
+
+### ONE admin action needed to finish the publish (human, ~30s)
+
+Pick either:
+
+- **A — link the package:** GitHub → `hirobius` → Packages →
+  `@hirobius/design-system` → Package settings → *Manage Actions access* → add
+  `hirobius/hirobius-design-system` with **Write**. Then re-run the latest
+  **Release** workflow. (No secret needed; GITHUB_TOKEN then works.)
+- **B — add a PAT secret:** create a classic PAT with `write:packages`
+  (+ `read:packages`), add it as repo secret **`PACKAGES_PAT`**, then re-run the
+  latest **Release** workflow. (`release.yml` already prefers this secret.)
+
+Either way the run then publishes **0.5.0**. main is already at 0.5.0; nothing
+else is needed.
+
+### (superseded) earlier note — TWO admin actions
 
 1. **Link the package to the repo** (fixes the 403): GitHub → `hirobius` packages →
    `@hirobius/design-system` → Package settings → *Manage Actions access* → add
