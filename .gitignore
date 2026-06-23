@@ -11,6 +11,9 @@ coverage/
 # Generated CycloneDX SBOM (regenerate via `pnpm audit:sbom`; not committed)
 docs/security/sbom.json
 
+# Storybook static build output
+storybook-static/
+
 # Environment & secrets — never commit
 .env
 .env.*
