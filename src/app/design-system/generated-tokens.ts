@@ -47,6 +47,12 @@ export const tokens = {
         "700": "var(--primitive-color-green-700)",
         "950": "var(--primitive-color-green-950)"
       },
+      cyan: {
+        "50": "var(--primitive-color-cyan-50)",
+        "400": "var(--primitive-color-cyan-400)",
+        "700": "var(--primitive-color-cyan-700)",
+        "900": "var(--primitive-color-cyan-900)"
+      },
       amber: {
         "50": "var(--primitive-color-amber-50)",
         "400": "var(--primitive-color-amber-400)",

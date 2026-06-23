@@ -144,6 +144,30 @@ const PAIRS = [
     text: 'semantic.color.content.onAccent',
     bg:   'semantic.color.surface.accent',
   },
+  // Feedback roles as text/labels on the raised (paper/card) surface. Each is
+  // mode-aware; the contract asserts AA (≥4.5:1) on its own scheme's surface so
+  // a bright dark-scheme hue can never ship as light-mode text (the class of bug
+  // consumers kept rediscovering). info uses cyan (decoupled from brand blue).
+  {
+    label: 'feedback.success / surface.raised',
+    text: 'semantic.color.feedback.success',
+    bg:   'semantic.color.surface.raised',
+  },
+  {
+    label: 'feedback.warning / surface.raised',
+    text: 'semantic.color.feedback.warning',
+    bg:   'semantic.color.surface.raised',
+  },
+  {
+    label: 'feedback.info / surface.raised',
+    text: 'semantic.color.feedback.info',
+    bg:   'semantic.color.surface.raised',
+  },
+  {
+    label: 'feedback.error / surface.raised',
+    text: 'semantic.color.feedback.error',
+    bg:   'semantic.color.surface.raised',
+  },
 ];
 
 // ── Main ──────────────────────────────────────────────────────

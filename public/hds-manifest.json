@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-06-18T07:22:17.015Z",
+  "generated": "2026-06-23T20:18:31.215Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -8173,6 +8173,34 @@
         "value": "#022c22"
       },
       {
+        "path": "primitive.color.cyan.50",
+        "cssVar": "--primitive-color-cyan-50",
+        "type": "color",
+        "description": "Specific value within the cyan range at a defined lightness step.",
+        "value": "#ecfeff"
+      },
+      {
+        "path": "primitive.color.cyan.400",
+        "cssVar": "--primitive-color-cyan-400",
+        "type": "color",
+        "description": "Specific value within the cyan range at a defined lightness step.",
+        "value": "#49c7ff"
+      },
+      {
+        "path": "primitive.color.cyan.700",
+        "cssVar": "--primitive-color-cyan-700",
+        "type": "color",
+        "description": "Specific value within the cyan range at a defined lightness step.",
+        "value": "#0e7490"
+      },
+      {
+        "path": "primitive.color.cyan.900",
+        "cssVar": "--primitive-color-cyan-900",
+        "type": "color",
+        "description": "Specific value within the cyan range at a defined lightness step.",
+        "value": "#164e63"
+      },
+      {
         "path": "primitive.color.amber.50",
         "cssVar": "--primitive-color-amber-50",
         "type": "color",
@@ -9181,11 +9209,11 @@
         "path": "semantic.color.feedback.info",
         "cssVar": "--semantic-color-feedback-info",
         "type": "color",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "alias": "{primitive.color.cyan.700}",
+        "resolvedValue": "#0e7490",
         "dark": {
-          "alias": "{primitive.color.blue.300}",
-          "resolvedValue": "oklch(0.70 0.2903 266.54)"
+          "alias": "{primitive.color.cyan.400}",
+          "resolvedValue": "#49c7ff"
         }
       },
       {
@@ -9225,11 +9253,11 @@
         "path": "semantic.color.feedback.bg.info",
         "cssVar": "--semantic-color-feedback-bg-info",
         "type": "color",
-        "alias": "{primitive.color.blue.50}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "alias": "{primitive.color.cyan.50}",
+        "resolvedValue": "#ecfeff",
         "dark": {
-          "alias": "{primitive.color.blue.900}",
-          "resolvedValue": "oklch(0.22 0.05 266.54)"
+          "alias": "{primitive.color.cyan.900}",
+          "resolvedValue": "#164e63"
         }
       },
       {
@@ -10013,10 +10041,10 @@
         "type": "color",
         "description": "Badge background color.",
         "alias": "{semantic.color.feedback.bg.info}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "resolvedValue": "#ecfeff",
         "dark": {
           "alias": "{semantic.color.feedback.bg.info}",
-          "resolvedValue": "oklch(0.96 0.03 266.54)"
+          "resolvedValue": "#ecfeff"
         }
       },
       {

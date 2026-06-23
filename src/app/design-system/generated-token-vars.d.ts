@@ -44,6 +44,10 @@ declare module 'react' {
     '--primitive-color-green-400'?: string | undefined;
     '--primitive-color-green-700'?: string | undefined;
     '--primitive-color-green-950'?: string | undefined;
+    '--primitive-color-cyan-50'?: string | undefined;
+    '--primitive-color-cyan-400'?: string | undefined;
+    '--primitive-color-cyan-700'?: string | undefined;
+    '--primitive-color-cyan-900'?: string | undefined;
     '--primitive-color-amber-50'?: string | undefined;
     '--primitive-color-amber-400'?: string | undefined;
     '--primitive-color-amber-800'?: string | undefined;
