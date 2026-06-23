@@ -134,6 +134,17 @@ per-component documentation, screen-reader proof, and visibility.
 non-repo / personal: making the repo public, CPACC credential, AI-demo deploy,
 resume positioning — these are your calls, not DS tasks.*
 
+## WS-J — Consumer override contracts (theme axes)
+
+Let an adopting app override the design language on a documented seam, no DS-repo
+change. Same pattern across axes: expose a small contract, optionally a helper.
+
+| ID | Task | Source | Pri | Status | Sandbox |
+|----|------|--------|-----|--------|---------|
+| J1 | **Brand color** — single seed → AA accent (override + `createBrandTheme`) | consumer | P1 | ✅ B1/B2/B3 | ✓ |
+| J2 | **Fonts** — documented family-primitive override + `FontProvider` (`CONSUMING.md §7`) | consumer Q | P1 | ✅ docs | ✓ |
+| J3 | **Spacing rhythm** — `--hds-space-unit` base knob to rescale the 4px grid cleanly (express scale as multiples of a base); density modes already exist | consumer Q | P2 | 🟡 | ✗ (scale refactor + build) |
+
 ## WS-H — Housekeeping
 
 | ID | Task | Source | Pri | Status |

@@ -188,7 +188,43 @@ Any seed (light *or* dark) should satisfy, in **both** light and dark themes:
 on-accent text ≥ 4.5:1, accent-as-link ≥ 4.5:1, accent-as-border/ring ≥ 3.0:1 —
 with **no consumer foreground overrides**.
 
-## 7. TypeScript & bundler requirements
+## 7. Fonts & spacing overrides
+
+Same model as brand theming — override a small, documented seam on `:root` (or a
+wrapper) and the system follows.
+
+### Fonts
+
+Every type role resolves from three family primitives. Override them and all text
+re-fonts (semantic roles alias these — e.g.
+`--semantic-typography-h1-font-family → var(--primitive-typography-family-display)`):
+
+```css
+:root {
+  --primitive-typography-family-primary: "Inter", system-ui, sans-serif;  /* body / UI   */
+  --primitive-typography-family-display: "Fraunces", Georgia, serif;      /* headings    */
+  --primitive-typography-family-mono:    "JetBrains Mono", monospace;     /* code / data */
+}
+```
+
+You load the `@font-face` (or webfont link) yourself; HDS only references the
+families. A `FontProvider` (from `…/contexts`) is also available. Note: swapping
+families shifts metrics — eyeball heading rhythm and line-height after a change.
+
+### Spacing rhythm
+
+Two supported knobs today:
+
+- **Density** — set `data-density="compact"` on `<html>` to tighten the component
+  spacing one step (the 4px grid is preserved).
+- **Per-step override** — the scale is `--primitive-space-1 … N` (4px grid). You
+  *can* override individual steps, but component internals assume that rhythm, so
+  change conservatively.
+
+A single base-unit knob (`--hds-space-unit`) to rescale the whole rhythm cleanly
+is on the roadmap (WS-J) — it needs the scale expressed as multiples of a base.
+
+## 8. TypeScript & bundler requirements
 
 - **ESM-only.** Use a modern bundler (Vite, Next, Rspack, etc.). `require()` /
   CommonJS resolution will not work.
