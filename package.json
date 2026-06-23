@@ -164,6 +164,7 @@
     "check:token-renames": "node scripts/check-token-renames.mjs",
     "check:token-structure": "node scripts/check-token-structure.mjs",
     "check:tokens-sd": "node scripts/tokens-sd/parity.mjs",
+    "check:tokens-presets": "node scripts/tokens-sd/presets/check.mjs",
     "check:tokens": "node scripts/check-hardcoded-colors.mjs && pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}' && node scripts/audit-tokens.mjs --forbidden && node scripts/check-tier-bypass.mjs && node scripts/check-hardcoded-spacing.mjs && node scripts/check-typography-discipline.mjs --fonts-only",
     "check:type-coverage": "pnpm exec type-coverage --at-least 99.9",
     "closure:plan": "node scripts/run-gates.mjs --channel pre-commit --emit-inventory docs/guardrails/full-strictness-inventory.json && node scripts/generate-closure-plan.mjs",

@@ -28,6 +28,21 @@ Outputs land in `scripts/tokens-sd/dist/` (gitignored):
 | `tokens.native.js` | nested ESM object | **resolved sRGB hex + unitless numbers** | React Native (no CSS-var support) |
 | `tokens.ios.swift` | `HDSColor`/`HDSMetric`/`HDSFont` enums | resolved `UIColor` + `CGFloat` | iOS / UIKit |
 | `tokens.android.xml` | `<color>`/`<dimen>` resources | resolved `#RRGGBB` + `dp` | Android |
+| `tokens.literal.css` | `:root { --… }` | **resolved sRGB hex** (light) | frameworks doing color math (no var refs) |
+| `tokens.literal.js` | nested ESM object | **resolved sRGB hex** (light) | MUI/styled color math (`alpha()`) |
+
+### Framework presets (C2 / C13)
+
+`scripts/tokens-sd/presets/` ships two plain-object adapters (no `@mui` /
+`tailwindcss` import — testable in isolation, validated by
+`pnpm check:tokens-presets`):
+
+- **`mui.mjs`** — `hdsMuiThemeOptions()` → MUI `ThemeOptions` from the **literal**
+  tree (so `alpha()` works). Maps the shadcn-shaped `role` tier onto MUI
+  `palette`/`shape`/`typography`. Light-mode only until C6.
+- **`tailwind.mjs`** — `hdsTailwindPreset()` → Tailwind v3 preset using
+  `var(--…)` refs, so it stays theme-aware (dark/tenant cascade re-skins
+  utilities for free).
 
 ### Native targets (C4)
 
