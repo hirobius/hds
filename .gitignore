@@ -8,6 +8,9 @@ temp/
 # Vitest coverage HTML report (full artifacts) — only coverage-summary.json in tests/ is tracked
 coverage/
 
+# Generated CycloneDX SBOM (regenerate via `pnpm audit:sbom`; not committed)
+docs/security/sbom.json
+
 # Environment & secrets — never commit
 .env
 .env.*
