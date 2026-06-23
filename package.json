@@ -173,6 +173,7 @@
     "docs:api": "node scripts/generate-component-api.mjs",
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
+    "docs:recipes": "node scripts/generate-consumer-recipes.mjs",
     "figma-variables": "node scripts/build-figma-variables.mjs",
     "figma:audit": "node scripts/audit-figma-system.mjs",
     "figma:bridge:smoke": "node scripts/figma-bridge-smoke.mjs",
