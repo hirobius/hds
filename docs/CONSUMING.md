@@ -135,8 +135,20 @@ required, and no hand-authored ramp.**
   --semantic-color-surface-accent:       <brand>;
   --semantic-color-surface-accentSubtle: <brand, light tint>;
   --semantic-color-border-accent:        <brand>;
+
+  /* role tier — REQUIRED for Tailwind-classed components (Button, ring, etc.).
+   * The role tokens bake in their :root value (CSS substitutes var() at the
+   * declaration site), so overriding only the semantic vars above never reaches
+   * them — re-declare the accent-bound role vars so they recompute. */
+  --role-primary:           var(--semantic-accent-rest);
+  --role-ring:              var(--semantic-accent-rest);
+  --role-accent:            var(--semantic-color-surface-accentSubtle);
+  --role-accent-foreground: var(--semantic-accent-content);
 }
 ```
+
+> The `createBrandTheme()` helper emits all of the above (semantic **and** role)
+> for you — prefer it over hand-authoring.
 
 ### Single-seed recipe (recommended)
 
