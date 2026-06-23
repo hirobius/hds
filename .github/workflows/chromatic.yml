@@ -1,0 +1,47 @@
+# Publishes Storybook to Chromatic on every push — gives a permanent hosted
+# Storybook URL that the Figma "Storybook Connect" plugin links to, and that
+# story.to.design can import components from. Works for private repos.
+#
+# One-time setup (yours):
+#   1. chromatic.com → log in with GitHub → add this repo → copy the project token.
+#   2. Repo → Settings → Secrets and variables → Actions → New secret:
+#        CHROMATIC_PROJECT_TOKEN = <token>
+#   3. Push (or Actions → Chromatic → Run workflow). Chromatic prints the
+#      published Storybook URL; paste it into Storybook Connect / story.to.design.
+name: Chromatic
+
+on:
+  # Manual until the CHROMATIC_PROJECT_TOKEN secret exists (Actions → Chromatic →
+  # Run workflow → pick a branch). Auto-runs on main once set up.
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Chromatic needs full git history for baselines
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install (skip browser download + git hooks)
+        run: pnpm install --frozen-lockfile
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+          HUSKY: '0'
+      - name: Generate artifacts + build Storybook
+        # component-api.json / used-icons.json are generated (gitignored), so
+        # produce them before the Storybook build.
+        run: pnpm manifest:generate && node scripts/sync-icons.mjs && pnpm build-storybook
+      - name: Publish to Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: storybook-static # reuse the build above
+          exitZeroOnChanges: true # don't fail CI on visual diffs
+          onlyChanged: true # TurboSnap: only re-snapshot affected stories
