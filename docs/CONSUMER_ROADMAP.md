@@ -46,23 +46,24 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 | ID | Task | Source | Pri | Status | Sandbox |
 |----|------|--------|-----|--------|---------|
 | C1 | SD multi-format emitter (CSS/SCSS/JS/JSON/RN), live parity-gated | RFC-T1, assess | P1 | ✅ `2be1d8b` | ✓ |
-| C2 | **MUI preset** `createHdsMuiTheme(mode)` consuming `tokens.js` | RFC-T2, assess | P1 | 🟡 | ✓¹ |
+| C2 | **MUI preset** `hdsMuiThemeOptions()` consuming the literal tree | RFC-T2, assess | P1 | ✅ `c70f532`⁶ | ✓¹ |
 | C3 | **Native targets: iOS (Swift) + Android (XML resources)** + RN production-ready (hex not oklch) | RFC-T1, **user ask** | P2 | ✅ `0155bb2`⁴ | ✓ |
 | C4 | Color-space + dimension transforms: `oklch→hex/rgb`, `px→dp`, durations→ms, resolve aliases | RFC, assess ("var() everywhere") | P1 | ✅ `0155bb2` | ✓ |
 | C5 | Phase-2 composites in SD: typography/motion/elevation/shadow expansion | RFC, SD-POC gaps | P2 | 🟡 | ✓ |
 | C6 | Real mode model — DTCG `$modes`/theme files; retire the Figma-extension dark-mode hack | assess | P1 | 🟡 | ✗² |
 | C7 | Native DTCG ingestion — SD reads canonical `$value` directly (confirm ownership of the `usesDtcg`→0-tokens issue) | assess[Med] | P2 | 🟡 | ✓ |
 | C8 | Fully **generate** the `hds` JS bridge (kill hand-maintenance / mixed shapes) | assess, prior | P1 | 🟡 | ✗² |
-| C9 | Formalize resolved-**literal** outputs for color-math frameworks (MUI `alpha()`, etc.) | assess | P2 | ◐³ | ✓ |
-| C10 | **Rails / ViewComponent interop** — token CSS/SCSS into the asset pipeline; ERB/ViewComponents consume the vars; optional ViewComponent scaffolds from the manifest | Rails Q | P2 | 🟡 | ✓⁵ |
+| C9 | Resolved-**literal** targets (`tokens.literal.css/js`) for color-math frameworks | assess | P2 | ✅ `c70f532`⁶ | ✓ |
+| C10 | **Rails / ViewComponent interop** — token CSS/SCSS into the asset pipeline; ERB/ViewComponents consume the vars (`docs/integrations/RAILS.md`) | Rails Q | P2 | ✅ `d97cc5f`⁵ | ✓⁵ |
 | C11 | **Web Components** — compile primitives to framework-agnostic custom elements, themed by the same vars. The true write-once path; serves **Rails, Vue, Svelte, plain HTML** with no React | RFC-T3 | P2 | 🟡 | ✗ |
 | C12 | **Headless behavior split** — expose the Radix behavior contracts separately so non-Tailwind *React* styling can reuse behavior | RFC-T3 | P2 | 🟡 | ✗ |
-| C13 | Additional framework presets — Vue, Tailwind v3, vanilla-extract/CSS-modules, Panda/StyleX (each ~one file over the token layer) | RFC-T2 | P2 | 🟡 | ✓¹ |
+| C13 | Framework presets — **Tailwind v3 done** (`presets/tailwind.mjs`); Vue, vanilla-extract, Panda/StyleX remain | RFC-T2 | P2 | ◐ `c70f532` | ✓¹ |
 
 ¹ logic validatable node-only; full verification wants the consuming build.
 ² touches the canonical generator + repo guardrails → needs full build.
 ³ partially delivered by C1's RN/resolved target + the MUI preset path.
 ⁴ light-mode values only until the DTCG mode model (C6); vivid out-of-sRGB stops are gamut-clamped.
+⁶ light-mode only until C6; preset returns a plain options object (validated by shape, not against a live `@mui createTheme`).
 ⁵ token consumption works node-only; depends on A2 (vars-only CSS) so Rails apps don't inherit the Tailwind preflight. Components are either re-implemented as ViewComponents (no React) or mounted as React islands via vite_rails / Inertia.
 
 > **Multi-stack reach summary.** Tokens (C1/C4) travel everywhere today. Per-stack
@@ -91,15 +92,16 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 
 | ID | Task | Source | Pri | Status | Sandbox |
 |----|------|--------|-----|--------|---------|
-| F1 | Bind `hds-bridge` to `127.0.0.1` | sec H1 | P1 | 🟡 | ✓ |
-| F2 | Scope CORS to localhost on both bridges | sec H2 | P1 | 🟡 | ✓ |
+| F1 | Bind `hds-bridge` to `127.0.0.1` | sec H1 | P1 | ✅ `4aeaae7` | ✓ |
+| F2 | Scope CORS to localhost on both bridges (origin-less clients still allowed) | sec H2 | P1 | ✅ `4aeaae7`⁷ | ✓ |
 | F3 | Replace `new Function()` eval of `templates.js` | sec M1 | P2 | 🟡 | ✓ |
 | F4 | Hash-check plugin-fetched scripts before eval | sec M2 | P2 | 🟡 | ✓ |
 | F5 | Auth/loopback guard on `/update-manifest` | sec M3 | P2 | 🟡 | ✓ |
-| F6 | gitleaks allowlist for the `ghp_…` doc placeholder | sec L2 | P2 | 🟡 | ✓ |
-| F7 | Invert `/pending-ids` guard to dev-only | sec L3 | P2 | 🟡 | ✓ |
+| F6 | De-shape the `ghp_…` doc placeholder so scanners don't flag it | sec L2 | P2 | ✅ `4aeaae7` | ✓ |
+| F7 | `/pending-ids` exposure | sec L3 | P2 | ✅ mitigated by F1⁷ | — |
 
 *(#8 install advisories — resolved: `pnpm audit --prod` is clean; vulns are dev-only.)*
+*(⁷ F2 uses a plugin-safe origin allow-list but is not runtime-tested against the live Figma plugin here. F7: guard left as-is — inverting it would break the dev diagnostic since the bridge runs with `NODE_ENV` unset; F1's loopback bind removes its network exposure.)*
 
 ## WS-G — Repo cleanup / lean published artifact
 
@@ -128,8 +130,42 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 5. **Lean artifact (WS-G):** G3/G4 are architectural — confirm intent before extracting.
 
 ## What this sandbox can do now (no `node_modules`)
-Node-only/validatable here: **A7, B2, B3, B5, B6, C5, C7, C9, C10, C13, D1, E1, E2, all of WS-F**.
+Node-only/validatable here: **B2, B3, B5, B6, C5, C7, D1, E1, E2, F3–F5**.
 Needs a full build env (deferred): A1–A4, B4, C6, C8, C11, C12, E3.
 
+## Caveats & follow-ups ledger
+
+Carry-forward caveats on everything shipped so far — none are blockers, but each
+wants a real build/runtime pass before "production."
+
+- **No full-build validation in-session.** `node_modules` isn't installed in the
+  work sandbox, so `typecheck` / `test:layout` / `vite` / the full guardrail
+  suite could not run. All token/preset/security work was validated **node-only**
+  (the token gates, preset shape checks, and `node --check` parsing). Re-run
+  `pnpm typecheck && pnpm test:layout && pnpm check:tokens-sd && pnpm
+  check:tokens-presets` in a full env before release.
+- **Style Dictionary dep.** `style-dictionary` is already a devDependency; the
+  in-sandbox runs used an isolated install symlinked into `node_modules`. A
+  normal `pnpm install` covers it — no action needed.
+- **Native + literal + MUI targets are light-mode only.** Dark values await the
+  DTCG mode model (**C6**). Until then, RN/iOS/Android/`tokens.literal.*`/the MUI
+  preset emit the light theme.
+- **Native colour gamut-clamping.** 17 vivid out-of-sRGB accent stops are
+  channel-clamped (hue shifts slightly); a chroma-reduction pass is the faithful
+  follow-up. Flagged inline in the Swift/XML output.
+- **MUI preset** returns a plain `ThemeOptions` object validated by **shape**,
+  not against a live `@mui` `createTheme()` (MUI isn't a repo dep).
+- **Tailwind preset** not verified against a real Tailwind v3 build.
+- **Rails (C10):** the token path is real; vendor `tokens.vars.css` until **A2**
+  ships a vars-only entry from the npm package. Component behavior (Radix) needs
+  Stimulus or **C11**.
+- **Security F2 (CORS)** uses a plugin-safe origin allow-list but wasn't
+  runtime-tested against the live Figma plugin; **F7** intentionally left as-is.
+- **Commits unsigned/unpushed** — env signing key is empty (**H1**).
+- **Cleanup remainder:** Tier-3 (`files` tighten / lean surface, **A7/G5**) is
+  build-gated; Tier-4/5 extractions (**G3/G4**) are decision-gated; a few small
+  dead files (`morph-card.tsx`, `BACKLOG/DECISIONS/PROCESS.md`) were left
+  untouched — further deletes need a go-ahead + a sonnet sub-agent per CLAUDE.md.
+
 ## Done this session
-A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · G1 (`0efc4728`) · G2 (`eb328a1`).
+A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · C2, C9, C13 (`c70f532`) · C10 (`d97cc5f`) · F1, F2, F6, F7 (`4aeaae7`) · G1 (`0efc4728`) · G2 (`eb328a1`).
