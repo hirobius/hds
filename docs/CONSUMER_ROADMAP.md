@@ -47,8 +47,8 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 |----|------|--------|-----|--------|---------|
 | C1 | SD multi-format emitter (CSS/SCSS/JS/JSON/RN), live parity-gated | RFC-T1, assess | P1 | ✅ `2be1d8b` | ✓ |
 | C2 | **MUI preset** `createHdsMuiTheme(mode)` consuming `tokens.js` | RFC-T2, assess | P1 | 🟡 | ✓¹ |
-| C3 | **Native targets: iOS (Swift) + Android (XML resources)** + make RN production-ready | RFC-T1, **user ask** | P2 | 🟡 | ✓¹ |
-| C4 | Color-space + dimension transforms: `oklch→hex/rgb`, `px→pt/dp`, resolve aliases — **gates C3 & RN** | RFC, assess ("var() everywhere") | P1 | 🟡 | ✓ |
+| C3 | **Native targets: iOS (Swift) + Android (XML resources)** + RN production-ready (hex not oklch) | RFC-T1, **user ask** | P2 | ✅ `0155bb2`⁴ | ✓ |
+| C4 | Color-space + dimension transforms: `oklch→hex/rgb`, `px→dp`, durations→ms, resolve aliases | RFC, assess ("var() everywhere") | P1 | ✅ `0155bb2` | ✓ |
 | C5 | Phase-2 composites in SD: typography/motion/elevation/shadow expansion | RFC, SD-POC gaps | P2 | 🟡 | ✓ |
 | C6 | Real mode model — DTCG `$modes`/theme files; retire the Figma-extension dark-mode hack | assess | P1 | 🟡 | ✗² |
 | C7 | Native DTCG ingestion — SD reads canonical `$value` directly (confirm ownership of the `usesDtcg`→0-tokens issue) | assess[Med] | P2 | 🟡 | ✓ |
@@ -58,6 +58,7 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 ¹ logic validatable node-only; full verification wants the consuming build.
 ² touches the canonical generator + repo guardrails → needs full build.
 ³ partially delivered by C1's RN/resolved target + the MUI preset path.
+⁴ light-mode values only until the DTCG mode model (C6); vivid out-of-sRGB stops are gamut-clamped.
 
 ## WS-D — Token correctness
 
@@ -120,4 +121,4 @@ Node-only/validatable here: **A7, B2, B3, B5, B6, C4, C5, C7, C9, D1, E1, E2, al
 Needs a full build env (deferred): A1–A4, B4, C6, C8, E3.
 
 ## Done this session
-A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · G1 (`0efc4728`) · G2 (`eb328a1`).
+A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · G1 (`0efc4728`) · G2 (`eb328a1`).
