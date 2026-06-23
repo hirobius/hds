@@ -11,7 +11,12 @@ const MANIFEST_PATH = path.join(process.cwd(), 'public/hds-manifest.json');
 const clients = new Set();
 let sequence = 0;
 
-app.use(cors());
+// Scope CORS: allow same-machine origins and origin-less clients (curl, the
+// Figma plugin sandbox), but reject cross-origin browser pages from other
+// domains. Mirrors scripts/hds-bridge.mjs.
+const isLocalOrigin = (origin) =>
+  !origin || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+app.use(cors({ origin: (origin, cb) => cb(null, isLocalOrigin(origin)) }));
 
 function sendEvent(res, event, payload) {
   res.write(`event: ${event}\n`);
