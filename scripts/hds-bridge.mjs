@@ -101,7 +101,18 @@ const app = express();
 // HDS_BRIDGE_PORT=3105.
 const PORT = Number(process.env.HDS_BRIDGE_PORT || 3005);
 
-app.use(cors());
+// Bind to loopback by default so the bridge — which exposes manifest/token write
+// endpoints — is not reachable from the local network. Override with
+// HDS_BRIDGE_HOST only if you explicitly need LAN access (e.g. a Figma desktop
+// running on another device).
+const HOST = process.env.HDS_BRIDGE_HOST || '127.0.0.1';
+
+// Scope CORS: allow same-machine origins and origin-less clients (curl, the
+// Figma plugin sandbox, which sends no Origin), but reject cross-origin browser
+// pages from other domains reaching the bridge's write endpoints.
+const isLocalOrigin = (origin) =>
+  !origin || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+app.use(cors({ origin: (origin, cb) => cb(null, isLocalOrigin(origin)) }));
 
 const clients = new Set();
 let sequence = 0;
@@ -1037,8 +1048,8 @@ const isEntryModule = (() => {
 })();
 
 if (isEntryModule) {
-  app.listen(PORT, () => {
-    console.log(`\n🌉 HDS Bridge live at http://localhost:${PORT}`);
+  app.listen(PORT, HOST, () => {
+    console.log(`\n🌉 HDS Bridge live at http://${HOST}:${PORT}`);
     console.log(`   - Manifest: http://localhost:${PORT}/get-manifest`);
     console.log(`   - Component Store: http://localhost:${PORT}/get-component-payload`);
     console.log(`   - Plugin Source: http://localhost:${PORT}/plugin-source/:file`);

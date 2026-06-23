@@ -32,7 +32,7 @@ literal token:
 
 ```bash
 # local dev
-export NODE_AUTH_TOKEN=ghp_your_token_here
+export NODE_AUTH_TOKEN=<your-github-token>   # PAT/CI token with read:packages
 
 # GitHub Actions: the built-in GITHUB_TOKEN works if the workflow has
 #   permissions: { packages: read }
