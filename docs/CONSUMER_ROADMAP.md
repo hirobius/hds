@@ -37,7 +37,7 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 | B3 | Contrast-safe on-accent ink — auto black/white from resolved accent lightness | P4, #2 | P1 | ✅ `fa99418` | ✓ |
 | B4 | Rename accent ramp off `blue` (`--primitive-color-accent-*`); keep `blue` as a literal palette | P3, assess | P1 | 🟡 | ✗ |
 | B5 | Normalize accent ramp to oklch (`blue.500` is hex) | #9, assess[Low] | P2 | 🟡 | ✓ |
-| B6 | Decouple `feedback.info` from the brand hue | #7, assess[Med] | P1 | 🟡 | ✓ |
+| B6 | Decouple `feedback.info` from brand → own `cyan` ramp (AA-safe); + feedback contrast guardrail in `check-contrast` | #7, assess[Med], consumer | P1 | ✅ `aa31bd5` | ✓ |
 
 > Sequencing: B4 → B5/B6 → B2 → B3 (rename once; oklch + info before deriving; ink last).
 
