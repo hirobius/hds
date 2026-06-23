@@ -90,7 +90,7 @@
           "$description": "Specific value within the blue range at a defined lightness step."
         },
         "500": {
-          "$value": "#1E2EFD",
+          "$value": "oklch(0.4822 0.2889 266.6)",
           "$description": "Specific value within the blue range at a defined lightness step."
         },
         "600": {

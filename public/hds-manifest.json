@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-06-23T20:18:31.215Z",
+  "generated": "2026-06-23T21:58:44.815Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -28,7 +28,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#1E2EFD",
+    "primaryColor": "oklch(0.4822 0.2889 266.6)",
     "primaryColorToken": "primitive.color.blue.500",
     "font": "Satoshi variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -8086,7 +8086,7 @@
         "cssVar": "--primitive-color-blue-500",
         "type": "color",
         "description": "Specific value within the blue range at a defined lightness step.",
-        "value": "#1E2EFD"
+        "value": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "primitive.color.blue.600",
@@ -9032,10 +9032,10 @@
         "type": "color",
         "description": "Accent-colored background",
         "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)",
         "dark": {
           "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
+          "resolvedValue": "oklch(0.4822 0.2889 266.6)"
         }
       },
       {
@@ -9099,7 +9099,7 @@
         "cssVar": "--semantic-color-content-accent",
         "type": "color",
         "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)",
         "dark": {
           "alias": "{primitive.color.blue.300}",
           "resolvedValue": "oklch(0.70 0.2903 266.54)"
@@ -9166,10 +9166,10 @@
         "cssVar": "--semantic-color-border-accent",
         "type": "color",
         "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)",
         "dark": {
           "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
+          "resolvedValue": "oklch(0.4822 0.2889 266.6)"
         }
       },
       {
@@ -9622,10 +9622,10 @@
         "type": "color",
         "description": "Default accent fill for interactive elements at rest.",
         "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)",
         "dark": {
           "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
+          "resolvedValue": "oklch(0.4822 0.2889 266.6)"
         }
       },
       {
@@ -9682,7 +9682,7 @@
         "type": "color",
         "description": "Text and icon color on neutral surfaces with accent intent.",
         "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)",
         "dark": {
           "alias": "{primitive.color.blue.300}",
           "resolvedValue": "oklch(0.70 0.2903 266.54)"
@@ -9849,7 +9849,7 @@
         "type": "color",
         "description": "Nav item border color when active or selected.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "component.nav.text",
@@ -9993,7 +9993,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "component.tag.activeBorder",
@@ -10001,7 +10001,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "component.tag.activeHover",
@@ -10093,7 +10093,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "component.button.bgHover",
@@ -10511,7 +10511,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "role.primary-foreground",
@@ -10567,7 +10567,7 @@
         "type": "color",
         "description": "Text on accent surface. shadcn role: accent-foreground.",
         "alias": "{semantic.color.content.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "role.destructive",
@@ -10607,7 +10607,7 @@
         "type": "color",
         "description": "Focus ring color. shadcn role: ring.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "oklch(0.4822 0.2889 266.6)"
       },
       {
         "path": "role.radius",
