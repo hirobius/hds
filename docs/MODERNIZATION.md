@@ -61,6 +61,45 @@ deliberately.
 - `tabs.tsx`/`table.tsx` — no `forwardRef` wrapper (acceptable; Radix-delegated).
 - `button.tsx:17` — arbitrary `transition-[colors,filter]` (reasonable escape hatch).
 
+## Deeper-audit findings (second pass, all independently verified)
+
+- **Two parallel shadow systems** — besides the hardcoded `--hds-shadow-*`, a
+  proper `semantic.shadow.{subtle,floating,overlay}` group exists
+  (`hirobius.tokens.json`, mode-aware via `--primitive-shadow-color`). **Resolved
+  by K1** (`d3f9a19`): `surface.tsx` + `--hds-shadow-*` now use the semantic
+  tokens; visual eyeball still wanted.
+- **Dead JS dark-mode path** — `src/app/design-system/theme.ts` `ct(isDark)` and
+  the `hds.color.surface.{page,raised}.{dark,light}` dual-key structs
+  (`tokens.ts:54-57`) are a **no-op**: both `.dark`/`.light` return the *same*
+  `var(--semantic-…)` string. `surface.tsx:64`/`controls.tsx:646` branch on
+  `isDark` for nothing. → delete `theme.ts`/`ct`, replace `isDark ? A : B` (same
+  var) with one semantic var. The one real gap: `badge.tsx:75` 4% overlay needs a
+  `--semantic-color-surface-neutral-subtle` token. **(K6)**
+- **`"use client"` directives** in `surface.tsx:21` + `badge.tsx:6` — a Next.js
+  RSC convention, no-op in this Vite + React-Router lib; misleading. Remove.
+- **`SegmentedControl` JS hover** (`segmented-control.tsx:83,141`) — `useState`
+  + Motion `onHoverStart` driving inline styles, so CSS `:hover` can't override
+  — **violates the repo's own rule** (theme.css:500). → move to CSS state classes
+  like `.hds-tag-btn`. **(K7)**
+- **Three token build pipelines** — `tokens:build` → `build-hds-tokens.mjs`
+  (legacy 179-line), `tokens` → `build-tokens.mjs` (canonical), `tokens:sd` →
+  Style Dictionary. Plus the `poc/style-dictionary-poc/` dir alongside its
+  graduated successor, `run-gates.mjs` exists but `check:fast`/`check:full` are
+  still 400-char megachains, Windows `.ps1` scripts checked in, and 56/86 fixture
+  dirs are stubs (HARDENING_ROADMAP A3 score 0/100). → retire `build-hds-tokens`,
+  delete the POC, wire `run-gates`. **(extends K2)**
+- **`typeStyles` alias explosion** (`tokens.ts:184-210`) — 24 migration aliases
+  for 8 canonical composites (`caption`/`small`/`label`→`ui`, etc.), still used in
+  30+ files. False variety; collapse + migrate callers. **(K8)**
+- **`primitive.shadow.color: "220 13% 18%"`** — a bare HSL-channel string with
+  `$type:color`, invalid per DTCG (the value the SD native target already skips).
+  Use a real color + `color-mix()`. **(Low)**
+- **`blue.600` vs `blue.700`** — `oklch(0.45…)` vs `oklch(0.44…)`, a 0.01 L delta
+  (imperceptible; ~0.05 is a real step). Ramp likely extended without recalibration.
+- **Low/cosmetic** — `hds.color.brandRGB:'30,46,253'` magic string (pre-`color-mix`),
+  `.hds-mobius-acrylic:hover !important` (theme.css), ecommerce `--hds-price-*`/
+  `--hds-badge-*` in the base layer.
+
 ## Top priorities (recommended order)
 
 1. **Shadow tokens** (HIGH, ~½ day, mostly node-only) — back `--hds-shadow-*` +
