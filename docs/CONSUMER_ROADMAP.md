@@ -84,8 +84,8 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 
 | ID | Task | Source | Pri | Status | Sandbox |
 |----|------|--------|-----|--------|---------|
-| E1 | Ship manifest + `component-api.json` + `llms.txt` + Code Connect as **documented** package surfaces | assess | P1 | 🟡 | ✓ |
-| E2 | Machine-readable **consumer recipes** (per-component usage for agents) | assess | P2 | 🟡 | ✓ |
+| E1 | Document the agentic surfaces (`docs/AGENTIC.md`) — manifest/tokens/component-api/llms.txt/Code Connect/recipes + gaps | assess | P1 | ✅ `d45990b` | ✓ |
+| E2 | Machine-readable **consumer recipes** — `docs/agentic/consumer-recipes.json`, generated from the manifest (48 components) | assess | P2 | ✅ `d45990b` | ✓ |
 | E3 | Generate framework bindings from the manifest | assess | P2 | 🟡 | ✗ |
 
 ## WS-F — Security hardening (dev bridges; not shipped, no leaks found)
@@ -123,7 +123,7 @@ per-component documentation, screen-reader proof, and visibility.
 
 | ID | Task | Source | Pri | Status | Sandbox |
 |----|------|--------|-----|--------|---------|
-| I1 | Per-component **WCAG 2.2 AA conformance** docs (criteria, ARIA pattern, keyboard map, focus mgmt) — `docs/accessibility/CONFORMANCE.md` | portfolio | P1 | ◐ scaffold + Button example | ✓ |
+| I1 | Per-component **WCAG 2.2 AA conformance** — criteria sourced from manifest `a11yRules` (24 components) + recipes; human record adds keyboard/focus/SR (`CONFORMANCE.md`) | portfolio | P1 | ✅ `d45990b` | ✓ |
 | I2 | **Screen-reader test notes** per component (NVDA/JAWS/VoiceOver), written into the conformance record | portfolio | P1 | 🟡 | ✗ (manual SR pass) |
 | I3 | Bump axe target **WCAG 2.1 → 2.2 AA** in `tests/a11y.spec.ts` | portfolio | P2 | 🟡 | ✗ (needs build to run) |
 | I4 | Public **Storybook + a11y addon**, deployed (visibility) | portfolio | P1 | 🟡 *(decision/build)* | ✗ |
@@ -202,4 +202,4 @@ wants a real build/runtime pass before "production."
   untouched — further deletes need a go-ahead + a sonnet sub-agent per CLAUDE.md.
 
 ## Done this session
-A5, A6, B1 (`8b11a83`) · B2, B3 (`fa99418`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · C2, C9, C13 (`c70f532`) · C5, C7 (`351e28b`) · C10 (`d97cc5f`) · D1 (`2770217`) · F1, F2, F6, F7 (`4aeaae7`) · G1 (`0efc4728`) · G2 (`eb328a1`) · I1, I6 scaffolded (`docs/accessibility/CONFORMANCE.md`).
+A5, A6, B1 (`8b11a83`) · B2, B3 (`fa99418`) · B6 (`aa31bd5`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · C2, C9, C13 (`c70f532`) · C5, C7 (`351e28b`) · C10 (`d97cc5f`) · D1 (`2770217`) · E1, E2, I1 (`d45990b`) · F1, F2, F6, F7 (`4aeaae7`) · G1 (`0efc4728`) · G2 (`eb328a1`) · I4-wiring (`6be2885`) · I6 (`CONFORMANCE.md`) · J1, J2 (`411431c`).
