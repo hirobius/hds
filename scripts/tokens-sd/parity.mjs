@@ -22,7 +22,7 @@
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
-import { generateCss } from './config.mjs';
+import { generateCss, validateNative } from './config.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '../..');
@@ -73,11 +73,24 @@ async function main() {
     );
   }
 
-  if (missing.length || mismatched.length) {
+  // ── Native targets (C4): structural validation ─────────────────────────────
+  const native = validateNative();
+  console.log('\n=== Native targets (iOS / Android / RN) ===');
+  console.log(`Native literals emitted: ${native.nativeCount}  (${native.clamped} oklch colors gamut-clamped to sRGB)`);
+  console.log(`Skipped (no native form): ${native.skipped}`);
+  for (const [reason, n] of Object.entries(native.skipReasons)) console.log(`    ${n}  ${reason}`);
+  if (native.problems.length) {
+    console.log(`\n✗ ${native.problems.length} native value problem(s):`);
+    native.problems.slice(0, 20).forEach((p) => console.log(`    ${p}`));
+  }
+
+  if (missing.length || mismatched.length || native.problems.length) {
     console.log('\nRESULT: FAIL');
     process.exit(1);
   }
-  console.log(`\nRESULT: PASS — all ${sd.size} covered scalar vars match the canonical generator.`);
+  console.log(
+    `\nRESULT: PASS — ${sd.size} scalar vars match canonical; ${native.nativeCount} native literals valid (no oklch/var/clamp/px leaks).`,
+  );
 }
 
 main().catch((err) => {

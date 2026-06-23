@@ -25,7 +25,24 @@ Outputs land in `scripts/tokens-sd/dist/` (gitignored):
 | `tokens.vars.scss` | `$…: …;`        | preserved as `var(--…)` | Sass/SCSS consumers |
 | `tokens.json`      | flat `{ "--name": value }` | preserved | tooling, codegen, docs |
 | `tokens.js`        | nested ESM object | preserved (`var(--…)`) | JS-in-CSS (MUI `sx`, styled-components, vanilla-extract) |
-| `tokens.native.js` | nested ESM object | **resolved to raw values** | React Native (no CSS-var support) |
+| `tokens.native.js` | nested ESM object | **resolved sRGB hex + unitless numbers** | React Native (no CSS-var support) |
+| `tokens.ios.swift` | `HDSColor`/`HDSMetric`/`HDSFont` enums | resolved `UIColor` + `CGFloat` | iOS / UIKit |
+| `tokens.android.xml` | `<color>`/`<dimen>` resources | resolved `#RRGGBB` + `dp` | Android |
+
+### Native targets (C4)
+
+Native platforms can't parse `oklch()` or CSS vars, so the native targets emit
+**resolved sRGB literals**: `scripts/tokens-sd/color.mjs` converts OKLCH →
+sRGB (Björn Ottosson's matrices, dependency-free) and dimensions resolve to
+unitless numbers (`px → CGFloat`/`dp`/RN number), durations to milliseconds.
+
+- **Gamut clamping:** the vivid accent stops carry chroma ~0.29, beyond sRGB.
+  Those colors are channel-clamped to sRGB and flagged with a `gamut-clamped
+  from oklch` comment in the Swift/XML output. Clamping shifts hue/chroma
+  slightly — a best-effort native approximation, not a colorimetric match.
+- **Skipped (no native scalar form):** CSS-only dimensions (`clamp()`/`ch`/`vw`/
+  `%`), motion easings (`cubicBezier`/`spring`), and bare HSL channel components.
+  `parity.mjs` reports the skip counts and reasons.
 
 ## Parity guarantee
 
@@ -50,15 +67,20 @@ Current: **314 covered scalar vars** across all four tiers (primitive · semanti
 aliases stay theme-aware (`var(--…)`); primitives resolve to raw values —
 matching `build-tokens.mjs` exactly.
 
+**Done — native color-space transform (C4):** RN/iOS/Android now emit resolved
+sRGB literals (OKLCH → hex/`UIColor`, `px` → number/`dp`, durations → ms). See
+*Native targets* above.
+
 **Deferred (phase 2):**
 - **Composites** — `typography`, `motion`, `transition`, `elevation`, `shadow`
   (one token → many vars; need the expanders in `build-tokens.mjs`).
 - **Modes** — the `[data-theme="dark"]` block (Style Dictionary has no native
-  "modes" concept; needs a custom format reading `$extensions…modes.Dark`).
+  "modes" concept; needs a custom format reading `$extensions…modes.Dark`). The
+  native targets therefore emit **light-mode** values only for now.
 - **Tenant overlays** — `[data-tenant="…"]` from `tenants/*/tokens.json`.
-- **React Native colors** — resolved values are emitted as-is, so OKLCH strings
-  pass through unchanged. RN cannot parse `oklch()`; a colour-space transform
-  (OKLCH → hex/rgb) is required before the native target is production-ready.
+- **Gamut-aware native color** — out-of-sRGB stops are channel-clamped; a
+  chroma-reduction (gamut-mapping) pass would preserve hue more faithfully.
 
-These are the same gaps catalogued in `scripts/poc/style-dictionary-poc/README.md`,
-now with the scalar layer fully productionised and parity-gated.
+These track the gaps catalogued in `scripts/poc/style-dictionary-poc/README.md`,
+now with the scalar layer fully productionised (CSS/SCSS/JS/JSON) **and the
+native targets (RN/iOS/Android) live**, all parity-gated.
