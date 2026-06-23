@@ -31,6 +31,15 @@ live region announces correctly). Those are documented below, per component.
 One row block per component. Keep it honest — mark untested cells `⏳ pending`,
 never assert a screen-reader pass you didn't run.
 
+> **Machine-readable source.** The structural a11y requirements per component are
+> already in the manifest — `componentSpecs[name].a11yRules` (24 components carry
+> rules), surfaced in `docs/agentic/consumer-recipes.json` (`pnpm docs:recipes`).
+> Treat those as the generated "criteria" column; this human record adds what the
+> manifest can't encode: the **keyboard map**, **focus management**, and
+> **screen-reader test notes**. Example: `Button.a11yRules` →
+> *"Must have accessible name via label/aria-label"* + *"Focus ring visible in all
+> interactive states"*.
+
 ### Template
 
 ```md

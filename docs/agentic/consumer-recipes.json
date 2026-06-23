@@ -1,0 +1,1803 @@
+{
+  "$note": "Generated from public/hds-manifest.json by scripts/generate-consumer-recipes.mjs. Do not edit by hand.",
+  "version": "1",
+  "source": "public/hds-manifest.json#componentSpecs",
+  "count": 48,
+  "recipes": {
+    "CaseStudyLayout": {
+      "tier": "template",
+      "category": "Layout",
+      "import": "import { CaseStudyLayout } from '@hirobius/design-system';",
+      "summary": "CaseStudyLayout — macro-layout skeleton for portfolio case study pages. Invisible structure only. No Surface, no decorative chrome. Slot anatomy: heroSlot → full-width (maxWidth=\"max\") — hero image + headline introSlot → prose-width (maxWidth=\"content\") — narrative, Brief/Problem/Solution metricsSlot → full-width (maxWidth=\"max\") — KPI or summary cards (optional) contentSlot → full-width (maxWidth=\"max\") — chapters, galleries, learnings",
+      "requiredProps": [
+        "heroSlot",
+        "introSlot",
+        "contentSlot"
+      ],
+      "props": {
+        "contentSlot": {
+          "type": "ReactNode"
+        },
+        "heroSlot": {
+          "type": "ReactNode"
+        },
+        "introSlot": {
+          "type": "ReactNode"
+        },
+        "metricsSlot": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Root element is <main> — only one CaseStudyLayout per page",
+          "required": true
+        }
+      ]
+    },
+    "Alert": {
+      "tier": "primitive",
+      "category": "Feedback",
+      "import": "import { Alert } from '@hirobius/design-system';",
+      "summary": "Alert - compact feedback surface with contextual severity.",
+      "requiredProps": [
+        "children"
+      ],
+      "variantAxes": [
+        "variant"
+      ],
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": [
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "info"
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "role=alert is set by the component — do not override",
+          "required": false
+        }
+      ]
+    },
+    "CinematicLink": {
+      "tier": "primitive",
+      "category": "Branding",
+      "import": "import { CinematicLink } from '@hirobius/design-system';",
+      "summary": "CinematicLink - cinematic editorial link treatment for portfolio surfaces.",
+      "props": {
+        "href": {
+          "type": "string"
+        },
+        "children": {
+          "type": "string"
+        }
+      }
+    },
+    "CodeBlock": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { CodeBlock } from '@hirobius/design-system';",
+      "summary": "CodeBlock - code display with copy button and optional collapsible toggle.",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "code": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string",
+          "optional": true
+        },
+        "language": {
+          "type": "string",
+          "optional": true
+        },
+        "truncateFromStart": {
+          "type": "boolean",
+          "default": false
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "block",
+            "inline"
+          ],
+          "default": "block"
+        }
+      }
+    },
+    "Container": {
+      "tier": "primitive",
+      "category": "Layout",
+      "import": "import { Container } from '@hirobius/design-system';",
+      "summary": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "maxWidth": {
+          "type": "enum",
+          "values": [
+            "content",
+            "max"
+          ],
+          "default": "max"
+        },
+        "padding": {
+          "type": "string",
+          "default": "var(--semantic-space-component-padding)"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      }
+    },
+    "Disclosure": {
+      "tier": "pattern",
+      "category": "Layout",
+      "import": "import { Disclosure } from '@hirobius/design-system';",
+      "summary": "Disclosure - compact disclosure surface for optional explanatory content.",
+      "props": {
+        "accent": {
+          "type": "boolean",
+          "default": false
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "contentStyle": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "ReactNode"
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        },
+        "triggerStyle": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "panel",
+            "nav",
+            "card"
+          ],
+          "default": "panel"
+        }
+      }
+    },
+    "Divider": {
+      "tier": "primitive",
+      "category": "Layout",
+      "import": "import { Divider } from '@hirobius/design-system';",
+      "summary": "Divider — semantic separator between content regions.",
+      "variantAxes": [
+        "orientation"
+      ],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "horizontal"
+        },
+        "spacing": {
+          "type": "string | number",
+          "optional": true
+        },
+        "strong": {
+          "type": "boolean",
+          "default": false
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      }
+    },
+    "DocLinkCard": {
+      "tier": "primitive",
+      "category": "Navigation",
+      "import": "import { DocLinkCard } from '@hirobius/design-system';",
+      "summary": "DocLinkCard - navigation card for editorial and documentation cross-links.",
+      "props": {},
+      "a11y": [
+        {
+          "rule": "Card link must have descriptive accessible name (not just the URL)",
+          "required": true
+        },
+        {
+          "rule": "Focus ring visible on keyboard navigation",
+          "required": true
+        }
+      ]
+    },
+    "ErrorPattern": {
+      "tier": "template",
+      "category": "Feedback",
+      "import": "import { ErrorPattern } from '@hirobius/design-system';",
+      "summary": "ErrorPattern - governed recovery surface for routed application errors.",
+      "props": {
+        "displayText": {
+          "type": "string",
+          "default": "Oops"
+        },
+        "message": {
+          "type": "string",
+          "default": "Something went wrong"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Headline renders as <h1> via Text variant=display — only one ErrorPattern per page",
+          "required": true
+        }
+      ]
+    },
+    "FoundationSwatch": {
+      "tier": "pattern",
+      "category": "Utilities",
+      "import": "import { FoundationSwatch } from '@hirobius/design-system';",
+      "summary": "FoundationSwatch - governed foundation specimen for color and semantic role previews.",
+      "props": {
+        "background": {
+          "type": "string"
+        },
+        "bordered": {
+          "type": "boolean",
+          "default": false
+        },
+        "details": {
+          "type": "string[]",
+          "optional": true
+        },
+        "foreground": {
+          "type": "string",
+          "default": "var(--semantic-color-content-primary)"
+        },
+        "hidePreviewLabel": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string"
+        },
+        "note": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "previewPosition": {
+          "type": "enum",
+          "values": [
+            "bottom-left",
+            "top-left",
+            "center"
+          ],
+          "default": "center"
+        },
+        "specimen": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "swatchVar": {
+          "type": "string",
+          "optional": true
+        },
+        "tokenDisplayPreset": {
+          "type": "enum",
+          "values": [
+            "depth1",
+            "depth2",
+            "full"
+          ],
+          "default": "depth2"
+        },
+        "tokenPath": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "Grid": {
+      "tier": "primitive",
+      "category": "Layout",
+      "import": "import { Grid } from '@hirobius/design-system';",
+      "summary": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
+      "props": {
+        "layout": {
+          "type": "enum",
+          "values": [
+            "fixed",
+            "auto-fit"
+          ],
+          "default": "fixed"
+        },
+        "columns": {
+          "type": "number",
+          "default": 12
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "default": "inset"
+        },
+        "subgrid": {
+          "type": "boolean",
+          "default": false
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "as": {
+          "type": "React.ElementType",
+          "optional": true
+        }
+      }
+    },
+    "Icon": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { Icon } from '@hirobius/design-system';",
+      "summary": "Icon — semantic icon wrapper for Lucide icons.",
+      "requiredProps": [
+        "icon"
+      ],
+      "variantAxes": [
+        "size"
+      ],
+      "props": {
+        "aria-hidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "color": {
+          "type": "string",
+          "default": "currentColor"
+        },
+        "icon": {
+          "type": "Icon"
+        },
+        "size": {
+          "type": "IconSize",
+          "default": "small"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "weight": {
+          "type": "enum",
+          "values": [
+            "thin",
+            "light",
+            "bold",
+            "fill",
+            "regular",
+            "duotone"
+          ],
+          "optional": true
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Must have aria-label when used without adjacent text",
+          "required": true
+        }
+      ]
+    },
+    "IconButton": {
+      "tier": "pattern",
+      "category": "Actions",
+      "import": "import { IconButton } from '@hirobius/design-system';",
+      "summary": "IconButton ” icon-only action trigger built on the shared Button primitive.",
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "icon": {
+          "type": "Icon"
+        },
+        "iconColor": {
+          "type": "string",
+          "optional": true
+        },
+        "iconLeft": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "iconRight": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "iconSize": {
+          "type": "IconSize",
+          "optional": true
+        },
+        "isDark": {
+          "type": "boolean",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "loading": {
+          "type": "boolean",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary",
+            "tertiary"
+          ],
+          "default": "secondary"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Must have aria-label (icon-only buttons have no visible text)",
+          "required": true
+        },
+        {
+          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
+          "required": true
+        }
+      ]
+    },
+    "InfoPage": {
+      "tier": "template",
+      "category": "Branding",
+      "import": "import { InfoPage } from '@hirobius/design-system';",
+      "summary": "InfoPage - branded profile surface used for the portfolio landing page.",
+      "requiredProps": [
+        "isDark"
+      ],
+      "props": {
+        "isDark": {
+          "type": "boolean"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Author name renders as <h1> via Text variant=heading3 — only one InfoPage per page",
+          "required": true
+        },
+        {
+          "rule": "Profile image must have a non-empty alt describing the subject",
+          "required": true
+        }
+      ]
+    },
+    "InlineCode": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { InlineCode } from '@hirobius/design-system';",
+      "summary": "InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.",
+      "props": {
+        "compact": {
+          "type": "boolean",
+          "default": false
+        },
+        "copyable": {
+          "type": "boolean",
+          "default": false
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      }
+    },
+    "InlineLink": {
+      "tier": "primitive",
+      "category": "Navigation",
+      "import": "import { InlineLink } from '@hirobius/design-system';",
+      "summary": "InlineLink ” inline navigation and external-link primitive for body copy.",
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "externalIcon": {
+          "type": "boolean",
+          "default": true
+        },
+        "href": {
+          "type": "string"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Link text must be descriptive — avoid \"click here\" or \"read more\"",
+          "required": true
+        },
+        {
+          "rule": "External links must signal new-tab behavior via aria-label or visually hidden text",
+          "required": false
+        }
+      ]
+    },
+    "Input": {
+      "tier": "primitive",
+      "category": "Inputs",
+      "import": "import { Input } from '@hirobius/design-system';",
+      "summary": "Input — text field primitive (shadcn baseline). shadcn-baseline implementation (8s-5): cva-driven sizing/state composed against role-token Tailwind utilities (bg-background / border-input / focus-visible:ring-ring / placeholder:text-muted-foreground / etc.) wired by 8e-2 + 8s-1. Border swaps to border-destructive on error and the focus ring follows. Theme is handled entirely by CSS custom properties. The label/helper/error wrapper is deliberately retained on this primitive so existing call sites keep working unchanged. A future 8t pass may extract those slots into an HdsField pattern (see orchestration agentNote). Variants: size — sm (32px) / md (40px, default) / lg (48px) textStyle — body (default) / mono Derived state (data-state): default | focus | filled | error | disabled | loading loading swaps the trailing area for a spinner and sets aria-busy; disabled is implied. demoState (frozen, via DemoStateContext) is honored so matrix cells still freeze visually.",
+      "variantAxes": [
+        "size",
+        "state"
+      ],
+      "props": {
+        "type": {
+          "type": "enum",
+          "values": [
+            "text",
+            "email",
+            "password",
+            "search",
+            "tel",
+            "url",
+            "number"
+          ],
+          "default": "text"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md"
+        },
+        "textStyle": {
+          "type": "enum",
+          "values": [
+            "body",
+            "mono"
+          ],
+          "default": "body"
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "helperText": {
+          "type": "string",
+          "optional": true
+        },
+        "error": {
+          "type": "boolean",
+          "default": false
+        },
+        "errorMessage": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "loading": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Must have associated label via label prop or aria-labelledby",
+          "required": true
+        }
+      ]
+    },
+    "NavGroup": {
+      "tier": "pattern",
+      "category": "Navigation",
+      "import": "import { NavGroup } from '@hirobius/design-system';",
+      "summary": "NavGroup - labeled navigation group for stacks of nav items.",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "collapsible": {
+          "type": "boolean",
+          "default": false
+        },
+        "contentStyle": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "getExact": {
+          "type": "(item: NavItem) => boolean",
+          "optional": true
+        },
+        "items": {
+          "type": "NavItem[]",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "level": {
+          "type": "NavLevel",
+          "default": "section"
+        },
+        "onNavigate": {
+          "type": "() => void",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "side",
+            "toc"
+          ],
+          "default": "side"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Navigation group must have accessible label (aria-label on the nav element)",
+          "required": true
+        },
+        {
+          "rule": "Expanded/collapsed state communicated via aria-expanded",
+          "required": true
+        }
+      ]
+    },
+    "NavItem": {
+      "tier": "primitive",
+      "category": "Navigation",
+      "import": "import { NavItem } from '@hirobius/design-system';",
+      "summary": "NavItem - navigation row primitive for sidebars, table of contents, and list navigation.",
+      "props": {
+        "active": {
+          "type": "boolean",
+          "default": false
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string"
+        },
+        "level": {
+          "type": "NavLevel",
+          "default": "root"
+        },
+        "onNavigate": {
+          "type": "(event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "side",
+            "toc"
+          ],
+          "default": "side"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Active item must be communicated via aria-current=\"page\" or aria-selected",
+          "required": true
+        },
+        {
+          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
+          "required": true
+        }
+      ]
+    },
+    "SegmentedControl": {
+      "tier": "primitive",
+      "category": "Inputs",
+      "import": "import { SegmentedControl } from '@hirobius/design-system';",
+      "summary": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices.",
+      "props": {
+        "ariaLabel": {
+          "type": "string",
+          "optional": true
+        },
+        "fullWidth": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(value: string) => void"
+        },
+        "options": {
+          "type": "HdsSegmentedOption[]"
+        },
+        "railPadding": {
+          "type": "Padding<string | number>",
+          "optional": true
+        },
+        "segmentPaddingX": {
+          "type": "PaddingLeft<string | number>",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "default",
+            "compact"
+          ],
+          "default": "default"
+        },
+        "value": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary"
+          ],
+          "default": "primary"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Must have accessible group label (aria-label or aria-labelledby on the container)",
+          "required": true
+        },
+        {
+          "rule": "Selected option must be communicated via aria-pressed or aria-selected",
+          "required": true
+        }
+      ]
+    },
+    "Sketch": {
+      "tier": "pattern",
+      "category": "Layout",
+      "import": "import { Sketch } from '@hirobius/design-system';",
+      "summary": "Sketch — shared shell for generative canvases and WebGL sketches.",
+      "props": {
+        "controls": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "children": {
+          "type": "ReactNode"
+        }
+      }
+    },
+    "Stack": {
+      "tier": "primitive",
+      "category": "Layout",
+      "import": "import { Stack } from '@hirobius/design-system';",
+      "summary": "Stack — one-dimensional layout primitive.",
+      "variantAxes": [
+        "direction"
+      ],
+      "props": {
+        "direction": {
+          "type": "enum",
+          "values": [
+            "column",
+            "row"
+          ],
+          "default": "column"
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "gap",
+            "medium",
+            "hairline",
+            "xs",
+            "stack"
+          ],
+          "default": "tight"
+        },
+        "align": {
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "stretch"
+          ],
+          "optional": true
+        },
+        "justify": {
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "space-between"
+          ],
+          "optional": true
+        },
+        "wrap": {
+          "type": "boolean",
+          "default": false
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "as": {
+          "type": "React.ElementType",
+          "optional": true
+        }
+      }
+    },
+    "StepperField": {
+      "tier": "pattern",
+      "category": "Inputs",
+      "import": "import { StepperField } from '@hirobius/design-system';",
+      "summary": "StepperField ” numeric input with decrement/increment controls. Classification baseline: Material Design, Chakra UI, and Ant Design treat steppers as numeric input controls rather than page-specific controls. This lives in shared components so sketches and docs consume the same primitive.",
+      "props": {
+        "inputStep": {
+          "type": "number",
+          "optional": true
+        },
+        "label": {
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "onChange": {
+          "type": "(value: number) => void"
+        },
+        "precision": {
+          "type": "number",
+          "optional": true
+        },
+        "step": {
+          "type": "number"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Must have associated label via label prop or aria-labelledby",
+          "required": true
+        },
+        {
+          "rule": "Decrement/increment buttons must have aria-label",
+          "required": true
+        }
+      ]
+    },
+    "Table": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { Table } from '@hirobius/design-system';",
+      "summary": "Table - structured data table primitive for documentation and compact UI matrices.",
+      "props": {
+        "caption": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "captionAction": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "columns": {
+          "type": "TableColumn[]"
+        },
+        "density": {
+          "type": "enum",
+          "values": [
+            "compact",
+            "comfortable"
+          ],
+          "default": "comfortable"
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "flush": {
+          "type": "boolean",
+          "default": false
+        },
+        "minWidth": {
+          "type": "string | number",
+          "optional": true
+        },
+        "rows": {
+          "type": "TableRow[]"
+        },
+        "stickyHeader": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Column headers must use <th> with scope=\"col\", row headers with scope=\"row\"",
+          "required": true
+        },
+        {
+          "rule": "Table must have caption or aria-label describing its contents",
+          "required": false
+        }
+      ]
+    },
+    "Tag": {
+      "tier": "primitive",
+      "category": "Inputs",
+      "import": "import { Tag } from '@hirobius/design-system';",
+      "summary": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) are owned by .hds-tag-btn / .hds-tag-pill in theme.css so :hover transitions work — inline styles beat :hover selectors and would silently break the effect. Active state: brand fill via [data-active=\"true\"] in theme.css. Hover states: inactive → subtle tint + brand border; active → brand-hover fill.",
+      "requiredProps": [
+        "children"
+      ],
+      "variantAxes": [
+        "active"
+      ],
+      "props": {
+        "active": {
+          "type": "boolean",
+          "default": false
+        },
+        "ariaLabel": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "onClick": {
+          "type": "() => void",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "a11y": [
+        {
+          "rule": "When used as interactive chip (onClick), must have role=\"button\" and keyboard activation",
+          "required": true
+        },
+        {
+          "rule": "When used as status indicator (no onClick), role should be \"status\" or omitted",
+          "required": false
+        }
+      ]
+    },
+    "Token": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { Token } from '@hirobius/design-system';",
+      "summary": "Token - reflective token specimen for unified node-based token views.",
+      "props": {
+        "accentColor": {
+          "type": "string"
+        },
+        "ariaLabel": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "fullWidth": {
+          "type": "boolean",
+          "optional": true
+        },
+        "isSelected": {
+          "type": "boolean",
+          "optional": true
+        },
+        "isSourceNode": {
+          "type": "boolean",
+          "optional": true
+        },
+        "label": {
+          "type": "string"
+        },
+        "leadingSlot": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "nodeRef": {
+          "type": "(el: HTMLElement) => void",
+          "optional": true
+        },
+        "nowrap": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onClick": {
+          "type": "(() => void) | (() => void)",
+          "optional": true
+        },
+        "pathDisplayDepth": {
+          "type": "number",
+          "optional": true
+        },
+        "pathDisplayLeadingDot": {
+          "type": "boolean",
+          "optional": true
+        },
+        "pathDisplayMode": {
+          "type": "enum",
+          "values": [
+            "full",
+            "compressed"
+          ],
+          "optional": true
+        },
+        "rawValue": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "swatchVar": {
+          "type": "string",
+          "optional": true
+        },
+        "tokenPath": {
+          "type": "string",
+          "optional": true
+        },
+        "truncateFromStart": {
+          "type": "boolean",
+          "optional": true
+        },
+        "value": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "node",
+            "diagram"
+          ],
+          "optional": true
+        }
+      }
+    },
+    "Card": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { Card } from '@hirobius/design-system';",
+      "summary": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card tone=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. Tone prop: 'default' (neutral border) | 'accent' (border-accent + raised bg) for highlighted variants like \"recommended package\", or feedback tones for status-driven cards. Tone replaces hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "requiredProps": [
+        "children"
+      ],
+      "variantAxes": [
+        "padding"
+      ],
+      "props": {
+        "as": {
+          "type": "string",
+          "optional": true
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "none",
+            "px24",
+            "px16"
+          ],
+          "default": "component"
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "default": "tight"
+        },
+        "noPadding": {
+          "type": "boolean",
+          "default": false
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode"
+        }
+      }
+    },
+    "StackedCardRail": {
+      "tier": "pattern",
+      "category": "Display",
+      "import": "import { StackedCardRail } from '@hirobius/design-system';",
+      "summary": "StackedCardRail — horizontally-scrolling stacked card carousel. Scroll mechanism: vertical scroll on an absolutely-positioned inner container is mapped to horizontal scroll on a sticky inner strip via a single scroll event listener. Cards use CSS scroll-driven animation (animation-timeline: view(x …)) for the stack/unstack effect where the browser supports it; a plain horizontal rail is the graceful fallback. Browser compat note: - animation-timeline: view() — Chrome 115+, Firefox 110+ (behind flag until v114), Safari 18+ (TP only as of 2025). The @supports guard ensures the stacking animation is only applied when the feature is available; all other browsers get a clean scrollable row. - :has() selector (neighbour shift on hover) — Chrome 105+, FF 121+, Safari 15.4+. Gated with @supports selector(:has(+ *)).",
+      "requiredProps": [
+        "cards"
+      ],
+      "props": {
+        "cards": {
+          "type": "StackedCardRailCard[]"
+        }
+      }
+    },
+    "Button": {
+      "tier": "primitive",
+      "category": "Actions",
+      "import": "import { Button } from '@hirobius/design-system';",
+      "summary": "Triggers an action when activated.",
+      "variantAxes": [
+        "variant",
+        "size",
+        "state"
+      ],
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary",
+            "tertiary"
+          ],
+          "default": "secondary"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "loading": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "iconLeft": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "iconRight": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "iconOnly": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Must have accessible name via label prop or aria-label",
+          "required": true
+        },
+        {
+          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
+          "required": true
+        }
+      ]
+    },
+    "Callout": {
+      "tier": "primitive",
+      "category": "Feedback",
+      "import": "import { Callout } from '@hirobius/design-system';",
+      "summary": "Tone-driven side-rule callout for status, quotes, hypotheses.",
+      "props": {
+        "italic": {
+          "type": "boolean",
+          "default": false
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "accent",
+            "info",
+            "success",
+            "warning",
+            "danger"
+          ],
+          "default": "info"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Callout is decorative; tone is signaled visually — pair with semantic role when meaning matters",
+          "required": false
+        }
+      ]
+    },
+    "EmptyState": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { EmptyState } from '@hirobius/design-system';",
+      "summary": "EmptyState — consistent no-data placeholder for lists, grids, and sections. communicate \"no data yet\" with consistent muted typography instead of agents inventing one-off `<p>No items.</p>` lines. use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container.",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        }
+      }
+    },
+    "Field": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { Field } from '@hirobius/design-system';",
+      "summary": "Caption label paired with a value — used in metadata grids and read-only forms.",
+      "requiredProps": [
+        "label"
+      ],
+      "props": {
+        "label": {
+          "type": "string"
+        },
+        "mono": {
+          "type": "boolean",
+          "default": false
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "warning",
+            "danger",
+            "default"
+          ],
+          "default": "default"
+        },
+        "value": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Label must describe the value; pair with aria-describedby when value is non-trivial",
+          "required": false
+        }
+      ]
+    },
+    "Page": {
+      "tier": "primitive",
+      "category": "Layout",
+      "import": "import { Page } from '@hirobius/design-system';",
+      "summary": "Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewport edges on scroll. Use as the outermost element of any new page so vertical rhythm is consistent across the system without per-page reinvention. Footer: every page mounted under HDSLayout (the standard route shell) gets a shared footer rendered after this component's content, with bottom space below the footer owned by the layout shell. Page intentionally does not render its own footer — the shell is the single source of truth. Use Container directly only for full-bleed surfaces (sketches, hero sections, embedded canvases) where the page owns its own vertical padding. Usage: <Page> <Stack direction=\"column\" gap=\"spacious\">...</Stack> </Page> <Page maxWidth=\"content\" paddingY=\"compact\"> <article>...</article> </Page>",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "maxWidth": {
+          "type": "enum",
+          "values": [
+            "content",
+            "max"
+          ],
+          "default": "max"
+        },
+        "paddingY": {
+          "type": "enum",
+          "values": [
+            "default",
+            "compact",
+            "none"
+          ],
+          "default": "default"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      }
+    },
+    "Stat": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { Stat } from '@hirobius/design-system';",
+      "summary": "Headline metric — large value, uppercase caption label, optional sub-line.",
+      "requiredProps": [
+        "label",
+        "value"
+      ],
+      "props": {
+        "label": {
+          "type": "string"
+        },
+        "sub": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "warning",
+            "danger",
+            "default"
+          ],
+          "default": "default"
+        },
+        "value": {
+          "type": "ReactNode"
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Provide an accessible name for the stat when value is symbolic (—, ✓, etc.)",
+          "required": false
+        }
+      ]
+    },
+    "StatusListItem": {
+      "tier": "pattern",
+      "category": "Display",
+      "import": "import { StatusListItem } from '@hirobius/design-system';",
+      "summary": "Status dot + title row with optional muted notes and trailing slot (e.g. badge).",
+      "requiredProps": [
+        "title"
+      ],
+      "props": {
+        "notes": {
+          "type": "ReactNode[]",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "info",
+            "success",
+            "warning",
+            "danger",
+            "neutral"
+          ],
+          "default": "neutral"
+        },
+        "trailing": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Status dot is decorative (aria-hidden); convey status meaning via title or trailing badge",
+          "required": true
+        }
+      ]
+    },
+    "StatusTile": {
+      "tier": "pattern",
+      "category": "Display",
+      "import": "import { StatusTile } from '@hirobius/design-system';",
+      "summary": "Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status colour belongs in the trailing slot, never as a left rule on the tile — every tile should look the same so feedback signals stay reserved for genuinely interrupting states.",
+      "props": {
+        "notes": {
+          "type": "ReactNode[]",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "warning",
+            "danger",
+            "info",
+            "neutral"
+          ],
+          "default": "neutral"
+        },
+        "trailing": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      }
+    },
+    "TileGrid": {
+      "tier": "primitive",
+      "category": "Layout",
+      "import": "import { TileGrid } from '@hirobius/design-system';",
+      "summary": "Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.",
+      "props": {
+        "gap": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "xs"
+          ],
+          "default": "sm"
+        },
+        "minTileWidth": {
+          "type": "string",
+          "default": "260px"
+        }
+      }
+    },
+    "Badge": {
+      "tier": "primitive",
+      "category": "Feedback",
+      "import": "import { Badge } from '@hirobius/design-system';",
+      "summary": "Badge - compact feedback badge for neutral and semantic states.",
+      "variantAxes": [
+        "tone"
+      ],
+      "props": {}
+    },
+    "TextLockup": {
+      "tier": "pattern",
+      "category": "Display",
+      "import": "import { TextLockup } from '@hirobius/design-system';",
+      "summary": "TextLockup - governed title-and-description pairing primitive.",
+      "props": {}
+    },
+    "AssetImg": {
+      "tier": "primitive",
+      "category": "Display",
+      "import": "import { AssetImg } from '@hirobius/design-system';",
+      "summary": "AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.",
+      "requiredProps": [
+        "src"
+      ],
+      "props": {
+        "alt": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "context": {
+          "type": "enum",
+          "values": [
+            "default",
+            "lightbox",
+            "detail"
+          ],
+          "default": "default"
+        },
+        "draggable": {
+          "type": "boolean",
+          "default": false
+        },
+        "expandable": {
+          "type": "boolean",
+          "default": true
+        },
+        "expandLabel": {
+          "type": "string",
+          "optional": true
+        },
+        "isDark": {
+          "type": "boolean",
+          "default": false
+        },
+        "loading": {
+          "type": "enum",
+          "values": [
+            "lazy",
+            "eager"
+          ],
+          "default": "lazy"
+        },
+        "naturalHeight": {
+          "type": "number",
+          "optional": true
+        },
+        "naturalWidth": {
+          "type": "number",
+          "optional": true
+        },
+        "onClick": {
+          "type": "(e: MouseEvent<Element, MouseEvent>) => void",
+          "optional": true
+        },
+        "onMouseDown": {
+          "type": "(e: MouseEvent<Element, MouseEvent>) => void",
+          "optional": true
+        },
+        "onMouseLeave": {
+          "type": "(e: MouseEvent<Element, MouseEvent>) => void",
+          "optional": true
+        },
+        "onMouseMove": {
+          "type": "(e: MouseEvent<Element, MouseEvent>) => void",
+          "optional": true
+        },
+        "onMouseUp": {
+          "type": "(e: MouseEvent<Element, MouseEvent>) => void",
+          "optional": true
+        },
+        "src": {
+          "type": "string"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "default": "{}"
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "a11y": [
+        {
+          "rule": "Must have alt text (decorative images use alt=\"\")",
+          "required": true
+        },
+        {
+          "rule": "Caption or description should be associated via aria-describedby when present",
+          "required": false
+        }
+      ]
+    },
+    "Tabs": {
+      "tier": "primitive",
+      "category": "Navigation",
+      "import": "import { Tabs } from '@hirobius/design-system';",
+      "summary": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      }
+    },
+    "TabsContent": {
+      "tier": "primitive",
+      "category": "Navigation",
+      "import": "import { TabsContent } from '@hirobius/design-system';",
+      "summary": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      }
+    },
+    "TabsList": {
+      "tier": "primitive",
+      "category": "Navigation",
+      "import": "import { TabsList } from '@hirobius/design-system';",
+      "summary": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      }
+    },
+    "TabsTrigger": {
+      "tier": "primitive",
+      "category": "Navigation",
+      "import": "import { TabsTrigger } from '@hirobius/design-system';",
+      "summary": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      }
+    },
+    "HdsRadio": {
+      "tier": "primitive",
+      "category": "Inputs",
+      "import": "import { HdsRadio } from '@hirobius/design-system';",
+      "summary": "Controls — shared input/control primitives.",
+      "props": {
+        "checked": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "onChange": {
+          "type": "(v: boolean) => void"
+        }
+      }
+    },
+    "HdsSelect": {
+      "tier": "primitive",
+      "category": "Inputs",
+      "import": "import { HdsSelect } from '@hirobius/design-system';",
+      "summary": "Controls — shared input/control primitives.",
+      "props": {
+        "label": {
+          "type": "string"
+        },
+        "onChange": {
+          "type": "(v: string) => void"
+        },
+        "options": {
+          "type": "{ value: string; label: string; }[]"
+        },
+        "showLabel": {
+          "type": "boolean",
+          "default": true
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "HdsSlider": {
+      "tier": "primitive",
+      "category": "Inputs",
+      "import": "import { HdsSlider } from '@hirobius/design-system';",
+      "summary": "Controls — shared input/control primitives.",
+      "props": {
+        "label": {
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "onChange": {
+          "type": "(v: number) => void"
+        },
+        "step": {
+          "type": "number",
+          "default": 1
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "HdsToggle": {
+      "tier": "primitive",
+      "category": "Inputs",
+      "import": "import { HdsToggle } from '@hirobius/design-system';",
+      "summary": "Controls — shared input/control primitives.",
+      "props": {
+        "label": {
+          "type": "string"
+        },
+        "checked": {
+          "type": "boolean",
+          "default": false
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+}
