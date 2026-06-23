@@ -161,6 +161,15 @@ works. Using OKLCH relative lightness (worked example: jade `#1fc28f`):
 }
 ```
 
+**Generate it from one seed.** Rather than hand-author the block, run the helper —
+it solves the accent lightness from the white-on-accent AA contract per hue (so
+you never copy blue's lightness onto a green) and prints the override:
+
+```bash
+node scripts/tokens-sd/brand.mjs --hue 165.2 --chroma 0.14
+# → AA-safe :root { --semantic-accent-* } block, white ink kept
+```
+
 > ⚠️ **Anti-pattern — never invert the foreground.** If `white`-on-accent fails
 > contrast, the accent *lightness* is wrong for the role — **darken the seed**,
 > do **not** flip `--semantic-color-content-onAccent` to dark ink. Inverting the
