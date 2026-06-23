@@ -67,6 +67,15 @@ export function createBrandTheme({ hue, chroma, target = 4.5, hoverStep = 0.05, 
     '--semantic-color-surface-accent': 'var(--semantic-accent-rest)',
     '--semantic-color-surface-accentSubtle': ok(0.96, subtleC, hue),
     '--semantic-color-border-accent': 'var(--semantic-accent-rest)',
+    // Role tier — required so Tailwind-classed components (Button `bg-primary`,
+    // ring, accent surfaces) re-skin. The role tokens bake in their :root value
+    // (`var()` substitutes at declaration site), so a downstream
+    // `--semantic-accent-*` override alone never reaches them; we re-declare the
+    // accent-bound role vars here so they recompute against the seed.
+    '--role-primary': 'var(--semantic-accent-rest)',
+    '--role-ring': 'var(--semantic-accent-rest)',
+    '--role-accent': 'var(--semantic-color-surface-accentSubtle)',
+    '--role-accent-foreground': 'var(--semantic-accent-content)',
   };
 
   // B3: pick on-accent ink only as a safety net. We solved for white ≥ target, so
