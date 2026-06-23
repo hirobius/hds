@@ -23,12 +23,31 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
-function hexToRGB(hex) {
-  if (!hex || !hex.startsWith('#') || hex.length !== 7) return null;
+/** sRGB 0-255 components from a hex or oklch(L C H) color. */
+function colorToRGB(color) {
+  if (typeof color === 'string' && color.startsWith('#') && color.length === 7) {
+    return {
+      r: parseInt(color.slice(1, 3), 16),
+      g: parseInt(color.slice(3, 5), 16),
+      b: parseInt(color.slice(5, 7), 16),
+    };
+  }
+  const m = /^oklch\(\s*([^)]+)\)/i.exec(color || '');
+  if (!m) return null;
+  const [L, C, H] = m[1].split(/\s+/).map((v) => (v.endsWith('%') ? parseFloat(v) / 100 : parseFloat(v)));
+  const h = (H * Math.PI) / 180;
+  const a = C * Math.cos(h);
+  const b = C * Math.sin(h);
+  const l_ = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m_ = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s_ = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  const clamp = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
+  const enc = (x) => (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+  const ch = (lin) => Math.round(clamp(enc(clamp(lin))) * 255);
   return {
-    r: parseInt(hex.slice(1, 3), 16),
-    g: parseInt(hex.slice(3, 5), 16),
-    b: parseInt(hex.slice(5, 7), 16),
+    r: ch(4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_),
+    g: ch(-1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_),
+    b: ch(-0.0041960863 * l_ - 0.7034186147 * m_ + 1.707614701 * s_),
   };
 }
 
@@ -73,7 +92,7 @@ for (const [id, helper, expected] of bridgeChecks) {
 
 const brandHex = raw.primitive?.color?.blue?.['500']?.['$value'];
 if (brandHex) {
-  const rgb = hexToRGB(brandHex);
+  const rgb = colorToRGB(brandHex);
   if (rgb) {
     const expectedRGB = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
     const actualRGB = extractRootVar(css, '--hds-color-brand-rgb');
@@ -84,7 +103,7 @@ if (brandHex) {
       }
     }
   } else {
-    errors.push(`I11 primitive.color.blue.500 value "${brandHex}" is not a 6-digit hex`);
+    errors.push(`I11 primitive.color.blue.500 value "${brandHex}" is not a hex or oklch color`);
   }
 } else {
   errors.push('I11 primitive.color.blue.500 not found in hirobius.tokens.json');

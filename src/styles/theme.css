@@ -206,11 +206,13 @@
   --hds-feedback-warning-bg: var(--semantic-color-feedback-bg-warning);
   --hds-feedback-info-bg:    var(--semantic-color-feedback-bg-info);
 
-  /* -- Shadow vars — no token backing. Legacy aliases only; do not use in new components. -- */
-  --hds-shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.08);
-  --hds-shadow-md:   0 2px 8px rgba(0, 0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --hds-shadow-lg:   0 4px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-  --hds-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  /* -- Shadow aliases → semantic.shadow tokens (K1). Now token-backed and
+   * mode-aware via --primitive-shadow-color; the dark-mode block below no longer
+   * needs to override them. Prefer --semantic-shadow-* directly in new code. -- */
+  --hds-shadow-sm:   var(--semantic-shadow-subtle);
+  --hds-shadow-md:   var(--semantic-shadow-floating);
+  --hds-shadow-lg:   var(--semantic-shadow-overlay);
+  --hds-shadow-card: var(--semantic-shadow-subtle);
   --hds-shadow-none: none;
 
   /* -- Ecommerce: price & badge — mapped to W3C DTCG semantic tokens ---------- */
@@ -280,12 +282,9 @@
   /* Feedback — dark mode vars resolve automatically from tokens.css */
   /* --hds-feedback-neutral auto-resolves from :root via semantic-color-content-secondary */
 
-  /* Shadow vars — dark mode legacy aliases */
-  --hds-shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.32);
-  --hds-shadow-md:   0 2px 8px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.24);
-  --hds-shadow-lg:   0 4px 24px rgba(0, 0, 0, 0.56), 0 2px 8px rgba(0, 0, 0, 0.36);
-  --hds-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.30), 0 2px 6px rgba(0, 0, 0, 0.20);
-  --hds-shadow-none: none;
+  /* Shadow vars: no dark override needed — --hds-shadow-* now alias the
+   * --semantic-shadow-* tokens, which adapt automatically via the Dark mode of
+   * --primitive-shadow-color. (K1) */
 
   /* Ecommerce — dark overrides resolved from :root semantic token bridges */
 }

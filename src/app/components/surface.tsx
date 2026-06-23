@@ -68,7 +68,7 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
       padding: paddingMap[padding],
       borderRadius: 'var(--component-card-radius)',
       border: 'none',
-      ...(shadow && { boxShadow: '0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.05)' }),
+      ...(shadow && { boxShadow: 'var(--semantic-shadow-floating)' }),
       boxSizing: 'border-box',
       height: '100%',
       ...(overflow !== undefined && { overflow }),
