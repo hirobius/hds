@@ -33,8 +33,8 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 | ID | Task | Source | Pri | Status | Sandbox |
 |----|------|--------|-----|--------|---------|
 | B1 | Document `--semantic-accent-*` override contract + jade example + "don't invert" anti-pattern | P1, #2 | P0 | ✅ `8b11a83` | — |
-| B2 | `createBrandTheme({hue,chroma})` — derive ramp at the **system's** lightness targets (per-hue contrast solve) | P2, #2 | P1 | 🟡 | ✓ |
-| B3 | Contrast-safe on-accent ink — auto black/white from resolved accent lightness | P4, #2 | P1 | 🟡 | ✓ |
+| B2 | `createBrandTheme({hue,chroma})` — derive ramp at the **system's** lightness targets (per-hue contrast solve) | P2, #2 | P1 | ✅ `fa99418` | ✓ |
+| B3 | Contrast-safe on-accent ink — auto black/white from resolved accent lightness | P4, #2 | P1 | ✅ `fa99418` | ✓ |
 | B4 | Rename accent ramp off `blue` (`--primitive-color-accent-*`); keep `blue` as a literal palette | P3, assess | P1 | 🟡 | ✗ |
 | B5 | Normalize accent ramp to oklch (`blue.500` is hex) | #9, assess[Low] | P2 | 🟡 | ✓ |
 | B6 | Decouple `feedback.info` from the brand hue | #7, assess[Med] | P1 | 🟡 | ✓ |
@@ -49,9 +49,9 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 | C2 | **MUI preset** `hdsMuiThemeOptions()` consuming the literal tree | RFC-T2, assess | P1 | ✅ `c70f532`⁶ | ✓¹ |
 | C3 | **Native targets: iOS (Swift) + Android (XML resources)** + RN production-ready (hex not oklch) | RFC-T1, **user ask** | P2 | ✅ `0155bb2`⁴ | ✓ |
 | C4 | Color-space + dimension transforms: `oklch→hex/rgb`, `px→dp`, durations→ms, resolve aliases | RFC, assess ("var() everywhere") | P1 | ✅ `0155bb2` | ✓ |
-| C5 | Phase-2 composites in SD: typography/motion/elevation/shadow expansion | RFC, SD-POC gaps | P2 | 🟡 | ✓ |
+| C5 | Composites in SD (typography/motion/transition/elevation) → **full :root parity (381/381)**; shadow as scalar | RFC, SD-POC gaps | P2 | ✅ `351e28b` | ✓ |
 | C6 | Real mode model — DTCG `$modes`/theme files; retire the Figma-extension dark-mode hack | assess | P1 | 🟡 | ✗² |
-| C7 | Native DTCG ingestion — SD reads canonical `$value` directly (confirm ownership of the `usesDtcg`→0-tokens issue) | assess[Med] | P2 | 🟡 | ✓ |
+| C7 | Native DTCG ingestion — confirmed: canonical JSON ingests via `usesDtcg` (333 leaves); consumer's "0 tokens" was their config | assess[Med] | P2 | ✅ `351e28b` | ✓ |
 | C8 | Fully **generate** the `hds` JS bridge (kill hand-maintenance / mixed shapes) | assess, prior | P1 | 🟡 | ✗² |
 | C9 | Resolved-**literal** targets (`tokens.literal.css/js`) for color-math frameworks | assess | P2 | ✅ `c70f532`⁶ | ✓ |
 | C10 | **Rails / ViewComponent interop** — token CSS/SCSS into the asset pipeline; ERB/ViewComponents consume the vars (`docs/integrations/RAILS.md`). Rationale: Rails-heavy employer target (Two Barrels) | Rails Q | P2 | ✅ `d97cc5f`⁵ | ✓⁵ |
@@ -76,7 +76,7 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 
 | ID | Task | Source | Pri | Status | Sandbox |
 |----|------|--------|-----|--------|---------|
-| D1 | Collapse tenant drift to one seam; generate `tenants.ts` + `tenants.css` from `tenants/*/tokens.json` | #6, assess[Med] | P1 | 🟡 | ✓ |
+| D1 | Tenant drift — `tenants.ts` now mirrors the semantic-accent seam (matches `tenants.css`); single source declared. *Follow-up: auto-generate the mirror.* | #6, assess[Med] | P1 | ✅ `2770217` | ✓ |
 
 *(info-hue and oklch normalization tracked as B6/B5.)*
 
@@ -151,7 +151,9 @@ resume positioning — these are your calls, not DS tasks.*
 5. **Lean artifact (WS-G):** G3/G4 are architectural — confirm intent before extracting.
 
 ## What this sandbox can do now (no `node_modules`)
-Node-only/validatable here: **B2, B3, B5, B6, C5, C7, D1, E1, E2, F3–F5**.
+Node-only/validatable here: **B5** (oklch normalize — needs exact round-trip), **B6**
+(needs an info-hue design choice), **E1, E2** (docs), **F5** (auth guard); **F3/F4**
+are eval refactors (surgical but not runtime-testable here).
 Needs a full build env (deferred): A1–A4, B4, C6, C8, C11, C12, E3.
 
 ## Caveats & follow-ups ledger
@@ -189,4 +191,4 @@ wants a real build/runtime pass before "production."
   untouched — further deletes need a go-ahead + a sonnet sub-agent per CLAUDE.md.
 
 ## Done this session
-A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · C2, C9, C13 (`c70f532`) · C10 (`d97cc5f`) · F1, F2, F6, F7 (`4aeaae7`) · G1 (`0efc4728`) · G2 (`eb328a1`) · I1, I6 scaffolded (`docs/accessibility/CONFORMANCE.md`).
+A5, A6, B1 (`8b11a83`) · B2, B3 (`fa99418`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · C2, C9, C13 (`c70f532`) · C5, C7 (`351e28b`) · C10 (`d97cc5f`) · D1 (`2770217`) · F1, F2, F6, F7 (`4aeaae7`) · G1 (`0efc4728`) · G2 (`eb328a1`) · I1, I6 scaffolded (`docs/accessibility/CONFORMANCE.md`).
