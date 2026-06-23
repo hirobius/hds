@@ -89,7 +89,7 @@ async function main() {
     process.exit(1);
   }
   console.log(
-    `\nRESULT: PASS — ${sd.size} scalar vars match canonical; ${native.nativeCount} native literals valid (no oklch/var/clamp/px leaks).`,
+    `\nRESULT: PASS — ${sd.size} :root vars match canonical (full coverage); ${native.nativeCount} native literals valid (no oklch/var/clamp/px leaks).`,
   );
 }
 

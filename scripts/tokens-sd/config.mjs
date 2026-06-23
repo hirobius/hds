@@ -35,20 +35,32 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync, mkdtempSync, readFileSync as read, rmSync } from 'fs';
 import { tmpdir } from 'os';
-import { walkTokens, valueToCSS } from '../build-tokens.mjs';
+import {
+  walkTokens,
+  valueToCSS,
+  expandTypography,
+  expandMotion,
+  expandTransition,
+  expandElevation,
+} from '../build-tokens.mjs';
 import { normalizeColor } from './color.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '../..');
 
-/** Composite / mode token types handled by build-tokens.mjs's expanders, not here. */
-export const DEFERRED_TYPES = new Set([
-  'typography',
-  'motion',
-  'transition',
-  'elevation',
-  'shadow',
-]);
+/**
+ * Composite token types — one token expands to many CSS vars. Excluded from the
+ * scalar path; emitted via the build-tokens.mjs expanders (C5). `shadow` is a
+ * single-var scalar (handled by valueToCSS), so it is NOT composite.
+ */
+export const COMPOSITE_TYPES = new Set(['typography', 'motion', 'transition', 'elevation']);
+
+const EXPANDERS = {
+  typography: expandTypography,
+  motion: expandMotion,
+  transition: expandTransition,
+  elevation: expandElevation,
+};
 
 /** Read the canonical DTCG source. */
 export function readRawTokens() {
@@ -67,7 +79,7 @@ export function readRawTokens() {
 export function collectScalarTokens(rawTokens, { resolveAll = false } = {}) {
   const out = [];
   for (const { path, type, value } of walkTokens(rawTokens)) {
-    if (DEFERRED_TYPES.has(type)) continue;
+    if (COMPOSITE_TYPES.has(type)) continue;
     const preserveAlias = resolveAll ? false : path[0] !== 'primitive';
     const css = valueToCSS(value, type, preserveAlias, rawTokens);
     if (css == null) continue;
@@ -175,6 +187,14 @@ export async function generateAll(rawTokens = readRawTokens()) {
     { key: 'tokens.json', format: 'hds/json' },
     { key: 'tokens.js', format: 'hds/js' },
   ]);
+  // C5: append composite-expanded vars to the var-layer targets (CSS/SCSS/JSON).
+  const composites = collectCompositeVars(rawTokens);
+  themed['tokens.vars.css'] = appendCssVars(themed['tokens.vars.css'], composites);
+  themed['tokens.vars.scss'] += composites.map((v) => `$${v.name}: ${v.value};`).join('\n') + '\n';
+  const jsonObj = JSON.parse(themed['tokens.json']);
+  for (const v of composites) jsonObj[`--${v.name}`] = v.value;
+  themed['tokens.json'] = JSON.stringify(jsonObj, null, 2) + '\n';
+
   const native = buildNativeTargets(rawTokens);
   const literal = buildLiteralTargets(rawTokens);
 
@@ -324,6 +344,30 @@ function literalValue(t) {
     return c ? c.hex : t.value; // bare HSL components etc. pass through
   }
   return t.value;
+}
+
+// ── C5: composite expansion (typography / motion / transition / elevation) ────
+// One composite token → many CSS vars. Reuses build-tokens.mjs's exported
+// expanders so the emitted vars are byte-identical to tokens.css. Returns
+// [{ name, value }] (name has no leading '--'). Composites are var-layer only —
+// not added to the path-based JS/native/literal trees.
+export function collectCompositeVars(rawTokens = readRawTokens()) {
+  const out = [];
+  for (const { path, type, value } of walkTokens(rawTokens)) {
+    const fn = EXPANDERS[type];
+    if (!fn) continue;
+    for (const { cssVar, cssValue } of fn(path, value)) {
+      if (cssValue != null) out.push({ name: cssVar.replace(/^--/, ''), value: String(cssValue) });
+    }
+  }
+  return out;
+}
+
+/** Inject extra `--name: value;` lines before the closing brace of a :root block. */
+function appendCssVars(css, vars) {
+  if (!vars.length) return css;
+  const lines = vars.map((v) => `  --${v.name}: ${v.value};`).join('\n');
+  return css.replace(/\n\}\n$/, `\n${lines}\n}\n`);
 }
 
 /** Nested literal token tree keyed by token path (consumed by framework presets). */

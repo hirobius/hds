@@ -82,13 +82,19 @@ Current: **314 covered scalar vars** across all four tiers (primitive · semanti
 aliases stay theme-aware (`var(--…)`); primitives resolve to raw values —
 matching `build-tokens.mjs` exactly.
 
+**Done — composites (C5):** `typography`/`motion`/`transition`/`elevation` are
+expanded (reusing `build-tokens.mjs`'s expanders) into the CSS/SCSS/JSON
+var-layer targets, and `shadow` is emitted as a single-var scalar. The CSS output
+now reaches **full `:root` parity (381/381 vars)**. Composites are var-layer only
+— not added to the path-based JS/native/literal trees.
+
 **Done — native color-space transform (C4):** RN/iOS/Android now emit resolved
 sRGB literals (OKLCH → hex/`UIColor`, `px` → number/`dp`, durations → ms). See
 *Native targets* above.
 
 **Deferred (phase 2):**
-- **Composites** — `typography`, `motion`, `transition`, `elevation`, `shadow`
-  (one token → many vars; need the expanders in `build-tokens.mjs`).
+- **Composites in JS/native/literal** — emitted to CSS/SCSS/JSON only; the
+  path-based trees stay scalar.
 - **Modes** — the `[data-theme="dark"]` block (Style Dictionary has no native
   "modes" concept; needs a custom format reading `$extensions…modes.Dark`). The
   native targets therefore emit **light-mode** values only for now.
@@ -97,5 +103,14 @@ sRGB literals (OKLCH → hex/`UIColor`, `px` → number/`dp`, durations → ms).
   chroma-reduction (gamut-mapping) pass would preserve hue more faithfully.
 
 These track the gaps catalogued in `scripts/poc/style-dictionary-poc/README.md`,
-now with the scalar layer fully productionised (CSS/SCSS/JS/JSON) **and the
-native targets (RN/iOS/Android) live**, all parity-gated.
+now with the **full `:root` layer productionised** (CSS/SCSS/JS/JSON, composites
+included) **and the native targets (RN/iOS/Android) live**, all parity-gated.
+
+### DTCG ingestion (C7)
+
+The canonical `hirobius.tokens.json` **does** ingest natively through Style
+Dictionary v5 with `usesDtcg: true` — a smoke check sees **333 DTCG leaves**, no
+`$value`→`value` pre-convert needed. A consumer's earlier "0 tokens" result was a
+local SD-config issue (missing `usesDtcg`/wrong source), not a problem with the
+HDS source. This emitter sidesteps the question entirely by pre-computing values
+with the canonical `valueToCSS`, but native ingestion is confirmed working.
