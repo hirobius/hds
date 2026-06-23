@@ -22,9 +22,14 @@ export interface TenantDefinition {
   /** Short description of the tenant / client brand. */
   description: string;
   /**
-   * CSS custom property overrides this tenant applies.
-   * Keys are exact `--var-name` strings; values are the resolved CSS value.
-   * Kept in sync with `src/styles/tenants.css` manually.
+   * CSS custom property overrides this tenant applies — a read-only **mirror**
+   * of the generated `src/styles/tenants.css`, for tooling/introspection only
+   * (not consumed by the runtime cascade).
+   *
+   * Single source of truth: `tenants/<slug>/tokens.json` (DTCG overlay) →
+   * `scripts/build-tokens.mjs` → `src/styles/tenants.css`. Keep these values
+   * byte-identical to that generated CSS; `check:tenant-tokens` validates the
+   * overlay shape.
    */
   tokens: Record<string, string>;
 }
@@ -38,8 +43,9 @@ export interface TenantDefinition {
  * Add a new entry here and a matching block in `src/styles/tenants.css`
  * for each new client.
  *
- * Design principle: tenant overrides target only the primitive accent ramp
- * and (optionally) the typography family primitives. All semantic and
+ * Design principle: tenant overrides target the **semantic-accent** seam
+ * (`--semantic-accent-*` + accent surface/border) by remapping it to a tenant
+ * palette ramp. Primitive-tier overrides are disallowed (rule R1). All
  * component tokens inherit automatically via the var() reference chain.
  */
 export const TENANT_REGISTRY: TenantDefinition[] = [
@@ -59,22 +65,18 @@ export const TENANT_REGISTRY: TenantDefinition[] = [
     name: 'Concrete Creations',
     description: 'WA State LLC e-commerce pilot — handmade concrete products. Warm stone/brown accent, Satoshi body / Clash Display headings.',
     tokens: {
-      // Accent ramp: warm stone-brown replacing the default blue.
-      // Light-mode accent (mid-tone warm brown)
-      '--primitive-color-blue-50':  'oklch(0.97 0.02 60)',
-      '--primitive-color-blue-100': 'oklch(0.94 0.04 60)',
-      '--primitive-color-blue-200': 'oklch(0.88 0.07 60)',
-      '--primitive-color-blue-300': 'oklch(0.77 0.12 55)',
-      '--primitive-color-blue-400': 'oklch(0.66 0.13 50)',
-      '--primitive-color-blue-450': 'oklch(0.56 0.13 48)',
-      '--primitive-color-blue-500': 'oklch(0.50 0.13 46)',   // primary accent — warm brown
-      '--primitive-color-blue-600': 'oklch(0.42 0.12 44)',
-      '--primitive-color-blue-700': 'oklch(0.36 0.10 42)',
-      '--primitive-color-blue-800': 'oklch(0.28 0.07 40)',
-      '--primitive-color-blue-900': 'oklch(0.20 0.05 38)',
-      // Typography: Satoshi body + Clash Display headings (matches Hirobius default)
-      '--primitive-typography-family-primary': '"Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-      '--primitive-typography-family-display': '"Clash Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      // Mirror of src/styles/tenants.css [data-tenant="concrete-creations"]
+      // (light mode). Source: tenants/concrete-creations/tokens.json — remaps the
+      // semantic-accent seam to the warm `stone` ramp. NOTE: values are
+      // placeholders pending final brand hexes (see the overlay $description).
+      '--semantic-accent-rest':                'var(--primitive-color-stone-600)',
+      '--semantic-accent-hover':               'var(--primitive-color-stone-700)',
+      '--semantic-accent-pressed':             'var(--primitive-color-stone-800)',
+      '--semantic-accent-subtle':              'var(--primitive-color-stone-100)',
+      '--semantic-accent-content':             'var(--primitive-color-stone-700)',
+      '--semantic-color-surface-accent':       'var(--primitive-color-stone-600)',
+      '--semantic-color-surface-accentSubtle': 'var(--primitive-color-stone-100)',
+      '--semantic-color-border-accent':        'var(--primitive-color-stone-600)',
     },
   },
 ];
