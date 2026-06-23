@@ -54,11 +54,22 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 | C7 | Native DTCG ingestion — SD reads canonical `$value` directly (confirm ownership of the `usesDtcg`→0-tokens issue) | assess[Med] | P2 | 🟡 | ✓ |
 | C8 | Fully **generate** the `hds` JS bridge (kill hand-maintenance / mixed shapes) | assess, prior | P1 | 🟡 | ✗² |
 | C9 | Formalize resolved-**literal** outputs for color-math frameworks (MUI `alpha()`, etc.) | assess | P2 | ◐³ | ✓ |
+| C10 | **Rails / ViewComponent interop** — token CSS/SCSS into the asset pipeline; ERB/ViewComponents consume the vars; optional ViewComponent scaffolds from the manifest | Rails Q | P2 | 🟡 | ✓⁵ |
+| C11 | **Web Components** — compile primitives to framework-agnostic custom elements, themed by the same vars. The true write-once path; serves **Rails, Vue, Svelte, plain HTML** with no React | RFC-T3 | P2 | 🟡 | ✗ |
+| C12 | **Headless behavior split** — expose the Radix behavior contracts separately so non-Tailwind *React* styling can reuse behavior | RFC-T3 | P2 | 🟡 | ✗ |
+| C13 | Additional framework presets — Vue, Tailwind v3, vanilla-extract/CSS-modules, Panda/StyleX (each ~one file over the token layer) | RFC-T2 | P2 | 🟡 | ✓¹ |
 
 ¹ logic validatable node-only; full verification wants the consuming build.
 ² touches the canonical generator + repo guardrails → needs full build.
 ³ partially delivered by C1's RN/resolved target + the MUI preset path.
 ⁴ light-mode values only until the DTCG mode model (C6); vivid out-of-sRGB stops are gamut-clamped.
+⁵ token consumption works node-only; depends on A2 (vars-only CSS) so Rails apps don't inherit the Tailwind preflight. Components are either re-implemented as ViewComponents (no React) or mounted as React islands via vite_rails / Inertia.
+
+> **Multi-stack reach summary.** Tokens (C1/C4) travel everywhere today. Per-stack
+> component strategy: React+Tailwind = native HDS · MUI/other-React = presets
+> (C2/C13) · Rails = ViewComponents over tokens, or React islands (C10) ·
+> Vue/Svelte/plain-HTML/Rails-without-React = Web Components (C11). Behavior
+> (Radix) is React-only unless C11/C12 land.
 
 ## WS-D — Token correctness
 
@@ -117,8 +128,8 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 5. **Lean artifact (WS-G):** G3/G4 are architectural — confirm intent before extracting.
 
 ## What this sandbox can do now (no `node_modules`)
-Node-only/validatable here: **A7, B2, B3, B5, B6, C4, C5, C7, C9, D1, E1, E2, all of WS-F**.
-Needs a full build env (deferred): A1–A4, B4, C6, C8, E3.
+Node-only/validatable here: **A7, B2, B3, B5, B6, C5, C7, C9, C10, C13, D1, E1, E2, all of WS-F**.
+Needs a full build env (deferred): A1–A4, B4, C6, C8, C11, C12, E3.
 
 ## Done this session
 A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · G1 (`0efc4728`) · G2 (`eb328a1`).
