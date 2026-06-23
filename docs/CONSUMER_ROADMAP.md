@@ -54,7 +54,7 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 | C7 | Native DTCG ingestion — SD reads canonical `$value` directly (confirm ownership of the `usesDtcg`→0-tokens issue) | assess[Med] | P2 | 🟡 | ✓ |
 | C8 | Fully **generate** the `hds` JS bridge (kill hand-maintenance / mixed shapes) | assess, prior | P1 | 🟡 | ✗² |
 | C9 | Resolved-**literal** targets (`tokens.literal.css/js`) for color-math frameworks | assess | P2 | ✅ `c70f532`⁶ | ✓ |
-| C10 | **Rails / ViewComponent interop** — token CSS/SCSS into the asset pipeline; ERB/ViewComponents consume the vars (`docs/integrations/RAILS.md`) | Rails Q | P2 | ✅ `d97cc5f`⁵ | ✓⁵ |
+| C10 | **Rails / ViewComponent interop** — token CSS/SCSS into the asset pipeline; ERB/ViewComponents consume the vars (`docs/integrations/RAILS.md`). Rationale: Rails-heavy employer target (Two Barrels) | Rails Q | P2 | ✅ `d97cc5f`⁵ | ✓⁵ |
 | C11 | **Web Components** — compile primitives to framework-agnostic custom elements, themed by the same vars. The true write-once path; serves **Rails, Vue, Svelte, plain HTML** with no React | RFC-T3 | P2 | 🟡 | ✗ |
 | C12 | **Headless behavior split** — expose the Radix behavior contracts separately so non-Tailwind *React* styling can reuse behavior | RFC-T3 | P2 | 🟡 | ✗ |
 | C13 | Framework presets — **Tailwind v3 done** (`presets/tailwind.mjs`); Vue, vanilla-extract, Panda/StyleX remain | RFC-T2 | P2 | ◐ `c70f532` | ✓¹ |
