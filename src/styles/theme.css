@@ -50,14 +50,22 @@
   --semantic-typography-h2-font-size:           clamp(24px, 3.5vw, 30px);
   --semantic-typography-h3-font-size:           clamp(18px, 2vw, 20px);
 
+  /* -- Spacing rhythm base unit (J3) ------------------------------------------ */
+  /* Macro layout rhythm derives from this base. Consumers can override
+   * --hds-space-unit on :root (or a wrapper) to scale section/layout spacing
+   * proportionally — e.g. 5px for a roomier feel — without touching the micro
+   * 4px component grid (which stays fixed so component internals + the Figma/
+   * native numeric token pipeline are unaffected). Default 4px = identical. */
+  --hds-space-unit: 4px;
+
   /* -- Responsive layout rhythm ----------------------------------------------- */
   /* Keep shell rhythm adaptive without pushing breakpoint logic into components. */
-  --semantic-space-layout-gutter: 32px;
-  --semantic-space-layout-gap: 24px;
-  --semantic-space-section-stack: 80px;
-  --semantic-space-section-inset: 128px;
-  --semantic-layout-grid-gap: 24px;
-  --semantic-layout-section-paddingY: 80px;
+  --semantic-space-layout-gutter: calc(8 * var(--hds-space-unit));   /* 32px */
+  --semantic-space-layout-gap: calc(6 * var(--hds-space-unit));      /* 24px */
+  --semantic-space-section-stack: calc(20 * var(--hds-space-unit));  /* 80px */
+  --semantic-space-section-inset: calc(32 * var(--hds-space-unit));  /* 128px */
+  --semantic-layout-grid-gap: calc(6 * var(--hds-space-unit));       /* 24px */
+  --semantic-layout-section-paddingY: calc(20 * var(--hds-space-unit)); /* 80px */
 
   --semantic-space-sidebar-gap: var(--primitive-space-5); /* 20px — increased from 16px */
   --semantic-space-sidebar-sectionGap: var(--primitive-space-4); /* 16px — increased from 12px */
@@ -218,12 +226,12 @@
 
 @media (max-width: 639px) {
   :root {
-    --semantic-space-layout-gutter: 16px;
-    --semantic-space-layout-gap: 16px;
-    --semantic-space-section-stack: 48px;
-    --semantic-space-section-inset: 64px;
-    --semantic-layout-grid-gap: 16px;
-    --semantic-layout-section-paddingY: 48px;
+    --semantic-space-layout-gutter: calc(4 * var(--hds-space-unit));   /* 16px */
+    --semantic-space-layout-gap: calc(4 * var(--hds-space-unit));      /* 16px */
+    --semantic-space-section-stack: calc(12 * var(--hds-space-unit));  /* 48px */
+    --semantic-space-section-inset: calc(16 * var(--hds-space-unit));  /* 64px */
+    --semantic-layout-grid-gap: calc(4 * var(--hds-space-unit));       /* 16px */
+    --semantic-layout-section-paddingY: calc(12 * var(--hds-space-unit)); /* 48px */
   }
 
   /* -- Mobile overflow guard ------------------------------------------------
