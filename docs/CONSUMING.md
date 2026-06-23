@@ -6,7 +6,7 @@ is the canonical consumption guide — point other teams here.
 | | |
 |---|---|
 | **Package** | `@hirobius/design-system` |
-| **Current version** | `0.4.0` |
+| **Current version** | `0.5.0` |
 | **Module format** | ESM only (`"type": "module"`) |
 | **Registry** | **GitHub Packages** (`https://npm.pkg.github.com`) — *not* public npm |
 | **Peers** | `react` ^18.3 ‖ ^19 · `react-dom` (match) · `react-router` ^7 |
@@ -111,7 +111,75 @@ import {
 </TenantProvider>;
 ```
 
-## 6. TypeScript & bundler requirements
+## 6. Brand theming — re-skin to your own accent
+
+HDS ships an electric-blue accent. To re-skin the **entire** system to your own
+brand, override the **semantic accent contract** — a small set of CSS custom
+properties — on `:root` (or any wrapper element), after importing `tokens.css`.
+Every accent surface, border, link, and interactive state aliases back through
+these vars, so overriding them re-skins the whole UI. **No DS-repo change
+required, and no hand-authored ramp.**
+
+### The override contract
+
+```css
+:root {
+  /* interactive accent states */
+  --semantic-accent-rest:    <brand>;
+  --semantic-accent-hover:   <brand, ~8% darker>;
+  --semantic-accent-pressed: <brand, ~16% darker>;
+  --semantic-accent-subtle:  <brand, light tint>;
+  --semantic-accent-content: <brand, readable as text on the page bg>;
+
+  /* accent surfaces & borders */
+  --semantic-color-surface-accent:       <brand>;
+  --semantic-color-surface-accentSubtle: <brand, light tint>;
+  --semantic-color-border-accent:        <brand>;
+}
+```
+
+### Single-seed recipe (recommended)
+
+A brand seed is a **hue + chroma**, *not* an absolute lightness — the **system**
+owns role lightness. Project your hue onto the system's lightness targets so the
+accent lands where the role expects it, and the existing foreground pairing just
+works. Using OKLCH relative lightness (worked example: jade `#1fc28f`):
+
+```css
+:root {
+  --brand-h: 165.2;   /* your brand hue    (jade) */
+  --brand-c: 0.14;    /* your brand chroma        */
+
+  /* accent lightness solved from the white-on-accent AA contract (system logic) */
+  --semantic-accent-rest:    oklch(0.548 var(--brand-c) var(--brand-h)); /* ≈ #048560 */
+  --semantic-accent-hover:   oklch(0.498 var(--brand-c) var(--brand-h));
+  --semantic-accent-pressed: oklch(0.448 var(--brand-c) var(--brand-h));
+  --semantic-color-surface-accent:       var(--semantic-accent-rest);
+  --semantic-color-surface-accentSubtle: oklch(0.96 0.03 var(--brand-h));
+  --semantic-color-border-accent:        var(--semantic-accent-rest);
+  /* --semantic-color-content-onAccent: left untouched — stays system white */
+}
+```
+
+> ⚠️ **Anti-pattern — never invert the foreground.** If `white`-on-accent fails
+> contrast, the accent *lightness* is wrong for the role — **darken the seed**,
+> do **not** flip `--semantic-color-content-onAccent` to dark ink. Inverting the
+> foreground forks the system's contract per-consumer and silently desyncs from
+> upstream accent/foreground changes. On-accent text stays system white.
+
+**Why you can't copy blue's lightness for a green seed:** at equal OKLCH `L`,
+hues differ in WCAG luminance (green ≫ blue, because luminance weights G `0.72`
+vs B `0.07`). HDS blue holds white-on-accent at `L≈0.49`; jade has to darken to
+`L≈0.548` for the same 4.5:1. Solve for the contrast ratio per hue rather than
+reusing a step.
+
+### Acceptance
+
+Any seed (light *or* dark) should satisfy, in **both** light and dark themes:
+on-accent text ≥ 4.5:1, accent-as-link ≥ 4.5:1, accent-as-border/ring ≥ 3.0:1 —
+with **no consumer foreground overrides**.
+
+## 7. TypeScript & bundler requirements
 
 - **ESM-only.** Use a modern bundler (Vite, Next, Rspack, etc.). `require()` /
   CommonJS resolution will not work.
