@@ -145,6 +145,16 @@ change. Same pattern across axes: expose a small contract, optionally a helper.
 | J2 | **Fonts** — documented family-primitive override + `FontProvider` (`CONSUMING.md §7`) | consumer Q | P1 | ✅ docs | ✓ |
 | J3 | **Spacing rhythm** — `--hds-space-unit` knob rescales the **macro layout rhythm** (theme.css); micro 4px grid stays fixed (Figma/native-safe); + density modes | consumer Q | P2 | ✅ `theme.css` | ✓ |
 
+## WS-K — Modernization / drift (from the architecture audit → `docs/MODERNIZATION.md`)
+
+| ID | Task | Sev | Pri | Status | Sandbox |
+|----|------|-----|-----|--------|---------|
+| K1 | **Shadow tokens** — back `--hds-shadow-*` + `surface.tsx` inline shadows with `semantic.elevation`/`primitive.shadow` (machinery exists) | High | P1 | 🟡 | ◐ (token wiring node-only; component edit + visual check) |
+| K2 | **Tier the validator pipeline** — fast pre-commit / full CI / nightly; re-enable dormant a11y checks in CI | Med | P2 | 🟡 | ✓ |
+| K3 | **Styling convergence decision** — inline `hds` bridge (46 components) vs CVA+Tailwind (2). Architectural; pick before migrating | Med | P1 | 🟡 *(decision)* | — |
+| K4 | Dark mode → DTCG `$modes` (= **C6**) | Med | P1 | 🟡 | ✗ |
+| K5 | Retire `--hds-*` legacy aliases (needs consumer audit) | Low-Med | P2 | 🟡 | ✗ |
+
 ## WS-H — Housekeeping
 
 | ID | Task | Source | Pri | Status |
