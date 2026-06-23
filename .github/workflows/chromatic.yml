@@ -11,10 +11,8 @@
 name: Chromatic
 
 on:
-  # Manual until the CHROMATIC_PROJECT_TOKEN secret exists (Actions → Chromatic →
-  # Run workflow → pick a branch). Auto-runs on main once set up.
   push:
-    branches: [main]
+    branches: [main, claude/new-session-5d606i]
   workflow_dispatch:
 
 jobs:
