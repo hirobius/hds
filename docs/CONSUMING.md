@@ -213,16 +213,23 @@ families shifts metrics — eyeball heading rhythm and line-height after a chang
 
 ### Spacing rhythm
 
-Two supported knobs today:
+Three knobs:
 
+- **Rhythm base unit** — set `--hds-space-unit` (default `4px`) on `:root` and the
+  **macro layout rhythm** (section stacks, gutters, layout/grid gaps, section
+  padding) rescales proportionally:
+
+  ```css
+  :root { --hds-space-unit: 5px; }   /* roomier: 80px stacks → 100px, etc. */
+  ```
+
+  The **micro component grid** (`--primitive-space-*`, e.g. button padding) stays
+  fixed on 4px by design — so component internals and the Figma/native numeric
+  token pipeline are unaffected.
 - **Density** — set `data-density="compact"` on `<html>` to tighten the component
   spacing one step (the 4px grid is preserved).
-- **Per-step override** — the scale is `--primitive-space-1 … N` (4px grid). You
-  *can* override individual steps, but component internals assume that rhythm, so
-  change conservatively.
-
-A single base-unit knob (`--hds-space-unit`) to rescale the whole rhythm cleanly
-is on the roadmap (WS-J) — it needs the scale expressed as multiples of a base.
+- **Per-step override** — override individual `--primitive-space-N` steps if you
+  must, but components assume that rhythm — change conservatively.
 
 ## 8. TypeScript & bundler requirements
 

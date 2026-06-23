@@ -143,7 +143,7 @@ change. Same pattern across axes: expose a small contract, optionally a helper.
 |----|------|--------|-----|--------|---------|
 | J1 | **Brand color** — single seed → AA accent (override + `createBrandTheme`) | consumer | P1 | ✅ B1/B2/B3 | ✓ |
 | J2 | **Fonts** — documented family-primitive override + `FontProvider` (`CONSUMING.md §7`) | consumer Q | P1 | ✅ docs | ✓ |
-| J3 | **Spacing rhythm** — `--hds-space-unit` base knob to rescale the 4px grid cleanly (express scale as multiples of a base); density modes already exist | consumer Q | P2 | 🟡 | ✗ (scale refactor + build) |
+| J3 | **Spacing rhythm** — `--hds-space-unit` knob rescales the **macro layout rhythm** (theme.css); micro 4px grid stays fixed (Figma/native-safe); + density modes | consumer Q | P2 | ✅ `theme.css` | ✓ |
 
 ## WS-H — Housekeeping
 
