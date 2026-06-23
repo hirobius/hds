@@ -110,7 +110,13 @@ export function createBrandTheme({ hue, chroma, target = 4.5, hoverStep = 0.05, 
 export default createBrandTheme;
 
 // ── CLI: node scripts/tokens-sd/brand.mjs --hue 165.2 --chroma 0.14 ───────────
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Guarded so the module stays importable in the browser (Storybook), where
+// `process` is undefined.
+if (
+  typeof process !== 'undefined' &&
+  Array.isArray(process.argv) &&
+  import.meta.url === `file://${process.argv[1]}`
+) {
   const arg = (name, def) => {
     const i = process.argv.indexOf(`--${name}`);
     return i >= 0 ? Number(process.argv[i + 1]) : def;
