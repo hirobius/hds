@@ -113,6 +113,27 @@ Sandbox: ✓ = validatable node-only in the current env · ✗ = needs `node_mod
 | G4 | Extract doc site + drop Three.js stack | cruft-T5 | P2 | 🟡 *(decision)* | — |
 | G5 | Make the published package a lean core (overlaps A4/A7) | assess | P1 | 🟡 | ✓ |
 
+## WS-I — Accessibility conformance & portfolio visibility
+
+Distilled from a portfolio-gap review. **Already enforced internally** (don't
+rebuild): axe-core in CI (`.github/workflows/a11y.yml`), visual regression
+(`visual.yml`), Lighthouse/CWV budgets (`perf.yml`), and the
+`check:contrast`/`check:focus`/`check:motion` validators. The real gaps are
+per-component documentation, screen-reader proof, and visibility.
+
+| ID | Task | Source | Pri | Status | Sandbox |
+|----|------|--------|-----|--------|---------|
+| I1 | Per-component **WCAG 2.2 AA conformance** docs (criteria, ARIA pattern, keyboard map, focus mgmt) — `docs/accessibility/CONFORMANCE.md` | portfolio | P1 | ◐ scaffold + Button example | ✓ |
+| I2 | **Screen-reader test notes** per component (NVDA/JAWS/VoiceOver), written into the conformance record | portfolio | P1 | 🟡 | ✗ (manual SR pass) |
+| I3 | Bump axe target **WCAG 2.1 → 2.2 AA** in `tests/a11y.spec.ts` | portfolio | P2 | 🟡 | ✗ (needs build to run) |
+| I4 | Public **Storybook + a11y addon**, deployed (visibility) | portfolio | P1 | 🟡 *(decision/build)* | ✗ |
+| I5 | Surface a11y/visual/perf **CI badges** in README (once repo is public) | portfolio | P2 | 🟡 *(repo-public dep)* | ✓ |
+| I6 | **Context-framing** convention per artifact (problem / orient / tradeoff / a11y note) — `docs/accessibility/CONFORMANCE.md` §4 | portfolio | P1 | ◐ doc | ✓ |
+
+*Framework-agnostic sample (Angular/Web Components) = **C11**. Excluded as
+non-repo / personal: making the repo public, CPACC credential, AI-demo deploy,
+resume positioning — these are your calls, not DS tasks.*
+
 ## WS-H — Housekeeping
 
 | ID | Task | Source | Pri | Status |
@@ -168,4 +189,4 @@ wants a real build/runtime pass before "production."
   untouched — further deletes need a go-ahead + a sonnet sub-agent per CLAUDE.md.
 
 ## Done this session
-A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · C2, C9, C13 (`c70f532`) · C10 (`d97cc5f`) · F1, F2, F6, F7 (`4aeaae7`) · G1 (`0efc4728`) · G2 (`eb328a1`).
+A5, A6, B1 (`8b11a83`) · C1 (`2be1d8b`) · C3, C4 (`0155bb2`) · C2, C9, C13 (`c70f532`) · C10 (`d97cc5f`) · F1, F2, F6, F7 (`4aeaae7`) · G1 (`0efc4728`) · G2 (`eb328a1`) · I1, I6 scaffolded (`docs/accessibility/CONFORMANCE.md`).
