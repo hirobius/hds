@@ -7,6 +7,7 @@
 
 import { hdsMuiThemeOptions } from './mui.mjs';
 import { hdsTailwindPreset } from './tailwind.mjs';
+import { createBrandTheme } from '../brand.mjs';
 
 const problems = [];
 const isHex = (v) => typeof v === 'string' && /^#[0-9A-F]{6}$/i.test(v);
@@ -44,6 +45,22 @@ console.log(`MUI palette.primary.main = ${p.primary.main}  (literal, color-math 
 console.log(`MUI shape.borderRadius   = ${mui.shape.borderRadius}`);
 console.log(`Tailwind colors.blue.500 = ${accent}  (var ref, theme-aware)`);
 console.log(`Tailwind color keys: ${Object.keys(tw.colors).length}  spacing: ${Object.keys(tw.spacing).length}  radius: ${Object.keys(tw.borderRadius).length}`);
+
+// ── Brand seed (B2/B3): every seed must be AA without foreground inversion ────
+const SEEDS = [
+  ['jade', 165.2, 0.14],
+  ['light-yellow', 100, 0.16],
+  ['dark-navy', 264, 0.12],
+  ['red', 27, 0.2],
+];
+for (const [name, hue, chroma] of SEEDS) {
+  const { report } = createBrandTheme({ hue, chroma });
+  if (report.whiteOnAccent < 4.5) problems.push(`brand seed ${name}: white-on-accent ${report.whiteOnAccent} < 4.5`);
+  if (report.accentOnWhite < 4.5) problems.push(`brand seed ${name}: accent-on-white ${report.accentOnWhite} < 4.5`);
+  if (report.borderOnWhite < 3.0) problems.push(`brand seed ${name}: border-on-white ${report.borderOnWhite} < 3.0`);
+  if (report.ink !== 'white') problems.push(`brand seed ${name}: ink flipped to ${report.ink} (foreground inversion)`);
+}
+console.log(`Brand seeds: ${SEEDS.length} validated AA (white ink, no foreground inversion)`);
 
 if (problems.length) {
   console.log(`\n✗ ${problems.length} problem(s):`);
