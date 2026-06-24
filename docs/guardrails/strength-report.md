@@ -1,6 +1,6 @@
 # System Strength Report
 
-> Generated: 2026-06-24T05:27:10.796Z
+> Generated: 2026-06-24T07:20:55.442Z
 > Spec: [docs/guardrails/strength-score-spec.md](./strength-score-spec.md)
 
 ---
@@ -9,7 +9,7 @@
 
 | Score | Composite | Wired Coverage | Description |
 |---|---|---|---|
-| **A — Internal Integrity** | **85**/100 | 5/6 | Closed-loop discipline: gates, wiring, fixtures, gating strength |
+| **A — Internal Integrity** | **92**/100 | 5/6 | Closed-loop discipline: gates, wiring, fixtures, gating strength |
 | **B — Industry Benchmark** | **73**/100 | 6/8 | External standards: DORA, OWASP, WCAG, Web Vitals, TS, OSV, CHAOSS, coverage |
 
 > Arithmetic mean over wired dimensions only. `needs-wiring` dims excluded from average.
@@ -19,7 +19,7 @@
 
 ## Score A — Internal Integrity
 
-Composite: 85  |  Wired: 5/6
+Composite: 92  |  Wired: 5/6
 
 ### A1 — Registration Coverage
 
@@ -39,11 +39,11 @@ _Data: honest=61, total=63_
 
 ### A3 — Fixture Proof-of-Firing
 
-`[███████████░░░░░░░░░] 56`
+`[██████████████████░░] 89`
 
 **Methodology:** count(gates with REAL non-stub fixture pair verified firing) / count(registered). Stubs exist but are unproven; missing is an error.
 
-_Data: total=63, withMissingFixtures=5, withRealFixtures=35, withStubFixtures=23_
+_Data: total=63, withMissingFixtures=0, withRealFixtures=56, withStubFixtures=7_
 
 ### A4 — Strict Gating
 
