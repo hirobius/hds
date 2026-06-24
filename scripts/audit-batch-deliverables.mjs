@@ -40,13 +40,29 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const ORCH = path.join(ROOT, 'docs/ai/orchestration.json');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureDir = process.env.FIXTURE_DIR;
+const INPUT_ROOT = fixtureDir || ROOT;
+
+const ORCH = path.join(INPUT_ROOT, 'docs/ai/orchestration.json');
 const ARGS = parseArgs(process.argv.slice(2));
 
 // ── Args ──────────────────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
-  const out = { units: null, since: null, batch: null, json: false, preMarkDone: false };
+  const out = {
+    units: null,
+    since: null,
+    batch: null,
+    json: false,
+    preMarkDone: false,
+    fixtureMode: false,
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--units')
@@ -66,6 +82,7 @@ function parseArgs(argv) {
     // X but it does not exist" as a warning, since the unit may have
     // intentionally deleted that path as its deliverable.
     else if (a === '--pre-mark-done') out.preMarkDone = true;
+    else if (a === '--fixture-mode') out.fixtureMode = true;
   }
   return out;
 }
@@ -101,6 +118,10 @@ function resolveUnits() {
     const ids = JSON.parse(fs.readFileSync(batchFile, 'utf8')).units || [];
     return all.filter((u) => ids.includes(u.id));
   }
+
+  // In fixture mode with no selector: audit all units so the fixture exercises
+  // the gate rather than falling through to the channel-mode no-op exit.
+  if (isFixtureMode) return all;
 
   // No selector provided — channel-mode no-op (run-gates --channel manual
   // invokes this gate without any batch selector; that's expected).

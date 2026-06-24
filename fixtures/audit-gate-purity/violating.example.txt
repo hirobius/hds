@@ -1,2 +1,0 @@
-// TODO: replace with real-violating-example for audit-gate-purity
-// STUB — this file needs real violating content

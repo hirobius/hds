@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-01-01T00:00:00.000Z",
+  "gates": [
+    {
+      "id": "fake-gate-impure",
+      "description": "Fixture gate: reads process.env.MY_SECRET_TOKEN without a pureExceptions entry — should be flagged IMPURE.",
+      "severity": "warn",
+      "gateScript": "scripts/fake-gate-impure.mjs",
+      "firingChannel": "pre-commit"
+    }
+  ]
+}

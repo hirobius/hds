@@ -1,0 +1,4 @@
+/* generated tokens - HEAD snapshot (committed, before token source was edited) */
+:root {
+  --primitive-color-blue-500: #1a4fd6;
+}

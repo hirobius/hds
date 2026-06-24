@@ -30,31 +30,38 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { resolve, relative } from 'node:path';
+import { resolve, relative, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { emitResult } from './lib/gate-output.mjs';
 
 const REPO_ROOT = resolve(fileURLToPath(import.meta.url), '..', '..');
-const REGISTRY_PATH = resolve(REPO_ROOT, 'docs/guardrails/registry.json');
-const REPORT_PATH   = resolve(REPO_ROOT, 'docs/guardrails/purity-audit.md');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || REPO_ROOT;
+
+const REGISTRY_PATH = join(INPUT_ROOT, 'docs/guardrails/registry.json');
+const REPORT_PATH = resolve(REPO_ROOT, 'docs/guardrails/purity-audit.md');
 
 // ── Allowlist for process.env ─────────────────────────────────────────────────
 // Anything outside this list is flagged as an env-impurity finding.
 
 const ENV_ALLOWLIST = new Set([
-  'NODE_ENV',          // mode detection
-  'CI',                // CI detection
-  'HOME',              // user home (read-only)
+  'NODE_ENV', // mode detection
+  'CI', // CI detection
+  'HOME', // user home (read-only)
   'npm_lifecycle_event', // npm-script context
-  'PATH',              // exec lookup (read-only)
-  'PWD',               // working dir (read-only)
-  'GITHUB_ACTIONS',    // CI sub-flag
-  'GITHUB_SHA',        // commit ref (CI provides)
-  'GITHUB_REF',        // branch ref (CI provides)
-  'GITHUB_TOKEN',      // CI auth
-  'TZ',                // timezone (deterministic when set)
-  'LANG',              // locale (read-only)
-  'LC_ALL',            // locale (read-only)
+  'PATH', // exec lookup (read-only)
+  'PWD', // working dir (read-only)
+  'GITHUB_ACTIONS', // CI sub-flag
+  'GITHUB_SHA', // commit ref (CI provides)
+  'GITHUB_REF', // branch ref (CI provides)
+  'GITHUB_TOKEN', // CI auth
+  'TZ', // timezone (deterministic when set)
+  'LANG', // locale (read-only)
+  'LC_ALL', // locale (read-only)
 ]);
 
 // ── Impurity pattern catalogue ────────────────────────────────────────────────
@@ -168,7 +175,10 @@ const ENV_REGEX = /\bprocess\.env\.([A-Z_][A-Z0-9_]*)/g;
 // ── Argv ──────────────────────────────────────────────────────────────────────
 
 const argv = process.argv.slice(2);
-const strict   = argv.includes('--strict');
+const fixtureMode = argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+// In fixture mode, treat any IMPURE finding as strict (exit 1) so the harness
+// can assert violating→non-zero / passing→zero without requiring --strict.
+const strict = argv.includes('--strict') || fixtureMode;
 const writeRpt = argv.includes('--report');
 const jsonMode = argv.includes('--json');
 
@@ -208,7 +218,7 @@ if (gates.length === 0) {
 
 /** @returns {GateResult} */
 function scanGate(gate) {
-  const scriptPath = resolve(REPO_ROOT, gate.gateScript);
+  const scriptPath = join(INPUT_ROOT, gate.gateScript);
   const result = {
     id: gate.id,
     gateScript: gate.gateScript,
@@ -237,9 +247,9 @@ function scanGate(gate) {
       if (pat.regex.test(stripped)) {
         result.findings.push({
           category: pat.category,
-          label:    pat.label,
-          line:     i + 1,
-          snippet:  line.trim().slice(0, 120),
+          label: pat.label,
+          line: i + 1,
+          snippet: line.trim().slice(0, 120),
         });
       }
     }
@@ -252,9 +262,9 @@ function scanGate(gate) {
       if (!ENV_ALLOWLIST.has(varName)) {
         result.findings.push({
           category: 'env',
-          label:    `process.env.${varName}`,
-          line:     i + 1,
-          snippet:  line.trim().slice(0, 120),
+          label: `process.env.${varName}`,
+          line: i + 1,
+          snippet: line.trim().slice(0, 120),
         });
       }
     }
@@ -269,13 +279,11 @@ function scanGate(gate) {
   // "mutation: writes orchestration.json on --update flag" — the leading
   // category before the colon must match the finding's category.
   const exemptedCategories = new Set(
-    result.exceptions
-      .map(s => String(s).split(':')[0]?.trim().toLowerCase())
-      .filter(Boolean),
+    result.exceptions.map((s) => String(s).split(':')[0]?.trim().toLowerCase()).filter(Boolean),
   );
 
-  const findingCategories = new Set(result.findings.map(f => f.category));
-  const allCovered = [...findingCategories].every(c => exemptedCategories.has(c));
+  const findingCategories = new Set(result.findings.map((f) => f.category));
+  const allCovered = [...findingCategories].every((c) => exemptedCategories.has(c));
 
   result.verdict = allCovered ? 'EXEMPTED' : 'IMPURE';
   return result;
@@ -286,11 +294,11 @@ const results = gates.map(scanGate);
 // ── Aggregates ────────────────────────────────────────────────────────────────
 
 const counts = {
-  PURE:     results.filter(r => r.verdict === 'PURE').length,
-  IMPURE:   results.filter(r => r.verdict === 'IMPURE').length,
-  EXEMPTED: results.filter(r => r.verdict === 'EXEMPTED').length,
-  MISSING:  results.filter(r => r.verdict === 'MISSING').length,
-  TOTAL:    results.length,
+  PURE: results.filter((r) => r.verdict === 'PURE').length,
+  IMPURE: results.filter((r) => r.verdict === 'IMPURE').length,
+  EXEMPTED: results.filter((r) => r.verdict === 'EXEMPTED').length,
+  MISSING: results.filter((r) => r.verdict === 'MISSING').length,
+  TOTAL: results.length,
 };
 
 // ── JSON mode (per unit 13p-9) ───────────────────────────────────────────────
@@ -303,10 +311,14 @@ if (jsonMode) {
   const violations = [];
   for (const r of results) {
     if (r.verdict === 'PURE') continue; // only emit non-clean rows
-    const severityForVerdict = r.verdict === 'IMPURE' ? 'warn'
-      : r.verdict === 'EXEMPTED' ? 'baselined'
-      : r.verdict === 'MISSING' ? 'error'
-      : 'info';
+    const severityForVerdict =
+      r.verdict === 'IMPURE'
+        ? 'warn'
+        : r.verdict === 'EXEMPTED'
+          ? 'baselined'
+          : r.verdict === 'MISSING'
+            ? 'error'
+            : 'info';
     if (r.findings && r.findings.length > 0) {
       for (const f of r.findings) {
         violations.push({
@@ -354,17 +366,17 @@ console.log(`  IMPURE:   ${counts.IMPURE}    (impurity present, NOT documented)`
 console.log(`  MISSING:  ${counts.MISSING}   (gateScript file does not exist)`);
 console.log('');
 
-const impure = results.filter(r => r.verdict === 'IMPURE');
+const impure = results.filter((r) => r.verdict === 'IMPURE');
 if (impure.length > 0) {
   console.log('IMPURE gates (need pureExceptions or refactor):');
   for (const r of impure) {
-    const cats = [...new Set(r.findings.map(f => f.category))].sort();
+    const cats = [...new Set(r.findings.map((f) => f.category))].sort();
     console.log(`  ✗ ${r.id}  (${cats.join(', ')})`);
   }
   console.log('');
 }
 
-const missing = results.filter(r => r.verdict === 'MISSING');
+const missing = results.filter((r) => r.verdict === 'MISSING');
 if (missing.length > 0) {
   console.log('MISSING gates (script file does not exist — registry drift):');
   for (const r of missing) {
@@ -379,16 +391,22 @@ if (writeRpt) {
   const lines = [];
   lines.push('# Gate Purity Audit');
   lines.push('');
-  lines.push(`Generated by \`scripts/audit-gate-purity.mjs\`. Scans every gate in \`docs/guardrails/registry.json\` for impurity patterns: filesystem mutation, wall-clock / random, network access, env reads outside the allowlist.`);
+  lines.push(
+    `Generated by \`scripts/audit-gate-purity.mjs\`. Scans every gate in \`docs/guardrails/registry.json\` for impurity patterns: filesystem mutation, wall-clock / random, network access, env reads outside the allowlist.`,
+  );
   lines.push('');
-  lines.push(`A gate may legitimately need to mutate (e.g. an \`--update\` flag), read the clock (e.g. log timestamps), or call out (e.g. fetch a remote schema). Document the exception in the registry: add \`pureExceptions: ["category: rationale", ...]\` next to the gate. The audit then records the finding but classifies the gate as **EXEMPTED**.`);
+  lines.push(
+    `A gate may legitimately need to mutate (e.g. an \`--update\` flag), read the clock (e.g. log timestamps), or call out (e.g. fetch a remote schema). Document the exception in the registry: add \`pureExceptions: ["category: rationale", ...]\` next to the gate. The audit then records the finding but classifies the gate as **EXEMPTED**.`,
+  );
   lines.push('');
   lines.push('## Summary');
   lines.push('');
   lines.push(`| Verdict | Count |`);
   lines.push(`|---|---:|`);
   lines.push(`| **PURE** — no impurity patterns found | ${counts.PURE} |`);
-  lines.push(`| **EXEMPTED** — impurity present, documented in \`pureExceptions\` | ${counts.EXEMPTED} |`);
+  lines.push(
+    `| **EXEMPTED** — impurity present, documented in \`pureExceptions\` | ${counts.EXEMPTED} |`,
+  );
   lines.push(`| **IMPURE** — impurity present, **NOT** documented | ${counts.IMPURE} |`);
   lines.push(`| **MISSING** — \`gateScript\` file does not exist | ${counts.MISSING} |`);
   lines.push(`| **TOTAL** | ${counts.TOTAL} |`);
@@ -400,17 +418,26 @@ if (writeRpt) {
   for (const p of PATTERNS) {
     lines.push(`| \`${p.category}\` | \`${p.label}\` | ${p.why} |`);
   }
-  lines.push(`| \`env\` | \`process.env.X\` (X not in allowlist) | external state — varies across machines |`);
+  lines.push(
+    `| \`env\` | \`process.env.X\` (X not in allowlist) | external state — varies across machines |`,
+  );
   lines.push('');
-  lines.push(`**Env allowlist:** ${[...ENV_ALLOWLIST].sort().map(x => `\`${x}\``).join(', ')}`);
+  lines.push(
+    `**Env allowlist:** ${[...ENV_ALLOWLIST]
+      .sort()
+      .map((x) => `\`${x}\``)
+      .join(', ')}`,
+  );
   lines.push('');
 
   if (counts.IMPURE > 0) {
     lines.push('## IMPURE gates');
     lines.push('');
-    lines.push('Each gate below has at least one finding in a category not covered by `pureExceptions`. Either add the exception (with rationale) to the registry or refactor the gate.');
+    lines.push(
+      'Each gate below has at least one finding in a category not covered by `pureExceptions`. Either add the exception (with rationale) to the registry or refactor the gate.',
+    );
     lines.push('');
-    for (const r of results.filter(x => x.verdict === 'IMPURE')) {
+    for (const r of results.filter((x) => x.verdict === 'IMPURE')) {
       lines.push(`### \`${r.id}\``);
       lines.push('');
       lines.push(`Source: \`${r.gateScript}\``);
@@ -437,9 +464,9 @@ if (writeRpt) {
     lines.push('');
     lines.push('| Gate | Categories | Exceptions |');
     lines.push('|---|---|---|');
-    for (const r of results.filter(x => x.verdict === 'EXEMPTED')) {
-      const cats = [...new Set(r.findings.map(f => f.category))].sort();
-      const excs = r.exceptions.map(e => `\`${String(e).replace(/`/g, '\\`')}\``).join('<br>');
+    for (const r of results.filter((x) => x.verdict === 'EXEMPTED')) {
+      const cats = [...new Set(r.findings.map((f) => f.category))].sort();
+      const excs = r.exceptions.map((e) => `\`${String(e).replace(/`/g, '\\`')}\``).join('<br>');
       lines.push(`| \`${r.id}\` | ${cats.join(', ')} | ${excs} |`);
     }
     lines.push('');
@@ -448,9 +475,11 @@ if (writeRpt) {
   if (counts.MISSING > 0) {
     lines.push('## MISSING gates');
     lines.push('');
-    lines.push('Registry references a script that does not exist. Either fix the path or remove the entry.');
+    lines.push(
+      'Registry references a script that does not exist. Either fix the path or remove the entry.',
+    );
     lines.push('');
-    for (const r of results.filter(x => x.verdict === 'MISSING')) {
+    for (const r of results.filter((x) => x.verdict === 'MISSING')) {
       lines.push(`- \`${r.id}\` → \`${r.gateScript}\``);
     }
     lines.push('');
@@ -461,7 +490,7 @@ if (writeRpt) {
     lines.push('');
     lines.push('No impurity patterns detected. Deterministic by static analysis.');
     lines.push('');
-    const pureIds = results.filter(x => x.verdict === 'PURE').map(x => `- \`${x.id}\``);
+    const pureIds = results.filter((x) => x.verdict === 'PURE').map((x) => `- \`${x.id}\``);
     lines.push(...pureIds);
     lines.push('');
   }

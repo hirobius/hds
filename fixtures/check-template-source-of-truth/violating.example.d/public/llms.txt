@@ -1,0 +1,1 @@
+# stub — presence confirms the output file exists for existsSync check
