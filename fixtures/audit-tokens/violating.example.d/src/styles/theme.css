@@ -1,0 +1,10 @@
+/* Minimal violating fixture for audit-tokens gate */
+/* Triggers: forbidden hardcoded color override in a non-root selector */
+
+:root {
+  --semantic-accent-rest: #1e2efd;
+}
+
+.override-example {
+  color: #ff0000;
+}

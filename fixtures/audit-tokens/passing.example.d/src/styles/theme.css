@@ -1,0 +1,6 @@
+/* Minimal passing fixture for audit-tokens gate */
+/* No ghost component vars, no forbidden overrides */
+
+:root {
+  --semantic-accent-rest: var(--primitive-color-blue-500);
+}

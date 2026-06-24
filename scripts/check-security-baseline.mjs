@@ -17,11 +17,20 @@
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { execSync } from 'child_process';
-import { join, relative } from 'path';
+import { join, relative, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || process.cwd();
 
 const ROOT = process.cwd();
-const PACKAGE_JSON = join(ROOT, 'package.json');
-const LOCKFILE = join(ROOT, 'pnpm-lock.yaml');
+const PACKAGE_JSON = join(INPUT_ROOT, 'package.json');
+const LOCKFILE = join(INPUT_ROOT, 'pnpm-lock.yaml');
 
 const BLOCKED_FILES = [
   '.env',
@@ -49,16 +58,12 @@ const TEXT_EXTENSIONS = new Set([
 ]);
 
 const SCAN_ROOTS = [
-  join(ROOT, 'src'),
-  join(ROOT, 'scripts'),
-  join(ROOT, 'public'),
+  join(INPUT_ROOT, 'src'),
+  join(INPUT_ROOT, 'scripts'),
+  join(INPUT_ROOT, 'public'),
 ];
 
-const SKIP_DIRS = new Set([
-  'node_modules',
-  'dist',
-  '.git',
-]);
+const SKIP_DIRS = new Set(['node_modules', 'dist', '.git']);
 
 const SECRET_PATTERNS = [
   { label: 'AWS access key', pattern: /\bAKIA[0-9A-Z]{16}\b/ },
@@ -102,6 +107,11 @@ function walk(dir, output = []) {
 
 /** Returns true if the file at `relPath` is tracked by git (i.e. actually committed). */
 function isGitTracked(relPath) {
+  // In fixture mode, treat any file that exists in the fixture root as "tracked"
+  // — the fixture author placed it there intentionally to represent a committed file.
+  if (FIXTURE_DIR) {
+    return existsSync(join(FIXTURE_DIR, relPath));
+  }
   try {
     const result = execSync(`git ls-files --error-unmatch "${relPath}"`, {
       cwd: ROOT,
@@ -125,7 +135,7 @@ function isPureComment(line) {
 const violations = [];
 
 for (const blocked of BLOCKED_FILES) {
-  const full = join(ROOT, blocked);
+  const full = join(INPUT_ROOT, blocked);
   if (existsSync(full) && isGitTracked(blocked)) {
     violations.push(`blocked file committed: ${blocked}`);
   }
@@ -135,8 +145,8 @@ if (!existsSync(LOCKFILE)) {
   violations.push('pnpm-lock.yaml is missing');
 }
 
-for (const filePath of SCAN_ROOTS.flatMap(dir => walk(dir))) {
-  const rel = relative(ROOT, filePath).replace(/\\/g, '/');
+for (const filePath of SCAN_ROOTS.flatMap((dir) => walk(dir))) {
+  const rel = relative(INPUT_ROOT, filePath).replace(/\\/g, '/');
   if (rel === 'scripts/check-security-baseline.mjs') continue;
   const content = readFileSync(filePath, 'utf8');
   const lines = content.split('\n');
@@ -170,7 +180,12 @@ if (!existsSync(PACKAGE_JSON)) {
   violations.push('package.json is missing');
 } else {
   const pkg = JSON.parse(readFileSync(PACKAGE_JSON, 'utf8'));
-  const dependencyGroups = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
+  const dependencyGroups = [
+    'dependencies',
+    'devDependencies',
+    'peerDependencies',
+    'optionalDependencies',
+  ];
 
   for (const group of dependencyGroups) {
     const deps = pkg[group] ?? {};
@@ -191,8 +206,12 @@ if (violations.length > 0) {
   for (const violation of violations) {
     console.error(`  ${violation}`);
   }
-  console.error('\n  Add // security-ok: reason only when the risk is understood and intentional.\n');
+  console.error(
+    '\n  Add // security-ok: reason only when the risk is understood and intentional.\n',
+  );
   process.exit(1);
 }
 
-console.log('\n✓ Security baseline check passed — no committed secrets, blocked env files, unsafe injection, or external font drift detected.\n');
+console.log(
+  '\n✓ Security baseline check passed — no committed secrets, blocked env files, unsafe injection, or external font drift detected.\n',
+);

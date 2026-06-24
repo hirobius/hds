@@ -1,0 +1,7 @@
+{
+  "name": "fixture-violating",
+  "version": "0.0.0",
+  "dependencies": {
+    "lodash": "latest"
+  }
+}
