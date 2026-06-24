@@ -39,16 +39,16 @@ export default function FeedbackPage() {
       matrix: (
         <DemoBlock heading="Variants">
           <Stack gap="tight" align="start">
-            <Alert variant="info" title="Info">
+            <Alert tone="info" title="Info">
               Background context or guidance.
             </Alert>
-            <Alert variant="success" title="Success">
+            <Alert tone="success" title="Success">
               Action completed successfully.
             </Alert>
-            <Alert variant="warning" title="Warning">
+            <Alert tone="warning" title="Warning">
               Proceed with caution.
             </Alert>
-            <Alert variant="error" title="Error">
+            <Alert tone="danger" title="Error">
               Something went wrong.
             </Alert>
           </Stack>

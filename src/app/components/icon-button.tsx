@@ -37,20 +37,12 @@ interface IconButtonProps extends Omit<ButtonProps, 'iconOnly' | 'children' | 's
  */
 /** @public */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  {
-    icon,
-    variant = 'secondary',
-    size = 'md',
-    iconSize,
-    iconColor,
-    label,
-    disabled,
-    'aria-label': ariaLabel,
-    ...props
-  },
+  { icon, variant, size, iconSize, iconColor, label, disabled, 'aria-label': ariaLabel, ...props },
   ref,
 ) {
-  const resolvedIconSize: IconSize = iconSize ?? SIZE_TO_ICON[size];
+  // IconButton owns a concrete icon-ramp default ('md') independent of Button's
+  // chrome default, so the icon stays sized even when size is left to Button.
+  const resolvedIconSize: IconSize = iconSize ?? SIZE_TO_ICON[size ?? 'md'];
   // Let Button's disabled:opacity-50 mute the icon; only apply an explicit
   // color when iconColor is provided. Using currentColor delegates to the
   // button's text color, which is already managed by component.button.* tokens.

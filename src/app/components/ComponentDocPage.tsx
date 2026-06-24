@@ -33,34 +33,40 @@ const tabPanelTransition = {
 type ComponentDocTabId = 'properties' | 'tokens' | 'usage';
 
 type ComponentApiManifest = {
-  components: Record<string, {
-    filePath?: string;
-    category?: string;
-    hidden?: boolean;
-    figmaUrl?: string | null;
-    description?: string;
-    props: ComponentPropRow[];
-    guides?: Array<{
-      label: string;
-      text: string;
-    }>;
-    observedTokens?: Array<{
-      raw: string;
-      tokenPath?: string;
-    }>;
-  }>;
+  components: Record<
+    string,
+    {
+      filePath?: string;
+      category?: string;
+      hidden?: boolean;
+      figmaUrl?: string | null;
+      description?: string;
+      props: ComponentPropRow[];
+      guides?: Array<{
+        label: string;
+        text: string;
+      }>;
+      observedTokens?: Array<{
+        raw: string;
+        tokenPath?: string;
+      }>;
+    }
+  >;
 };
 
 type SystemManifest = {
-  componentSpecs: Record<string, {
-    category: string;
-    description?: string;
-    figmaUrl: string | null;
-    figmaId?: string | null;
-    filePath?: string;
-    consumers?: string[];
-    tokenMapping?: Record<string, string>;
-  }>;
+  componentSpecs: Record<
+    string,
+    {
+      category: string;
+      description?: string;
+      figmaUrl: string | null;
+      figmaId?: string | null;
+      filePath?: string;
+      consumers?: string[];
+      tokenMapping?: Record<string, string>;
+    }
+  >;
 };
 
 const componentApi = componentApiManifest as ComponentApiManifest;
@@ -98,7 +104,6 @@ function renderTokenAnatomy(row: { whereLabel: string; whereDetail?: string }) {
   );
 }
 
-
 function useComponentDocTocSections(componentName: string) {
   const { register, unregister } = useToc();
   const componentId = slugify(componentName);
@@ -112,15 +117,22 @@ function useComponentDocTocSections(componentName: string) {
   return { componentId };
 }
 
-
 function StorefrontPlaceholder({ componentName }: { componentName: string }) {
   return (
     <Surface padding="component">
       <div style={placeholderSurfaceStyle}>
-        <span style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-primary)' }}>
+        <span
+          style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-primary)' }}
+        >
           {componentName}
         </span>
-        <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)', textAlign: 'center' }}>
+        <span
+          style={{
+            ...hds.typeStyles.ui,
+            color: 'var(--semantic-color-content-secondary)',
+            textAlign: 'center',
+          }}
+        >
           Preview and documentation load when this specimen enters the viewport.
         </span>
       </div>
@@ -159,14 +171,20 @@ export function HdsComponentDoc({
 }) {
   const manifestEntry = systemManifest.componentSpecs[componentName];
   const apiEntry = componentApi.components[componentName];
-  const figmaUrl = manifestEntry?.figmaUrl && !/figma\.com\/hds-placeholder/i.test(manifestEntry.figmaUrl)
-    ? manifestEntry.figmaUrl
-    : null;
-  const resolvedDescription = manifestEntry?.description ?? apiEntry?.description ?? description ?? '';
-  const resolvedProps = propRows && propRows.length > 0 ? propRows : apiEntry?.props ?? [];
+  const figmaUrl =
+    manifestEntry?.figmaUrl && !/figma\.com\/hds-placeholder/i.test(manifestEntry.figmaUrl)
+      ? manifestEntry.figmaUrl
+      : null;
+  const resolvedDescription =
+    manifestEntry?.description ?? apiEntry?.description ?? description ?? '';
+  const resolvedProps = propRows && propRows.length > 0 ? propRows : (apiEntry?.props ?? []);
   const resolvedGuides = apiEntry?.guides ?? [];
   const tokenMapping = manifestEntry?.tokenMapping ?? {};
-  const mappedTokenRows = buildReflectiveTokenRows(tokenMapping, componentName, manifestEntry?.category);
+  const mappedTokenRows = buildReflectiveTokenRows(
+    tokenMapping,
+    componentName,
+    manifestEntry?.category,
+  );
   const observedTokenRows = buildObservedTokenRows(
     apiEntry?.observedTokens ?? [],
     new Set(mappedTokenRows.map((row) => row.tokenPath)),
@@ -318,20 +336,20 @@ export function HdsComponentDoc({
                       { key: 'description', label: 'Description', width: 'minmax(0, 3fr)' },
                     ]}
                     rows={tokenRows.map((row) => ({
-                    key: `${componentName}-${row.key}`,
-                    cells: [
-                      {
-                        slot: 'token',
+                      key: `${componentName}-${row.key}`,
+                      cells: [
+                        {
+                          slot: 'token',
                           content: (
                             <Token variant="node" pathDisplayMode="full">
                               {row.tokenPath}
-                          </Token>
-                        ),
-                      },
-                      { slot: 'label', content: renderTokenAnatomy(row) },
-                      { slot: 'description', content: row.description },
-                    ],
-                  }))}
+                            </Token>
+                          ),
+                        },
+                        { slot: 'label', content: renderTokenAnatomy(row) },
+                        { slot: 'description', content: row.description },
+                      ],
+                    }))}
                   />
                 </Surface>
               </Disclosure>
@@ -341,7 +359,7 @@ export function HdsComponentDoc({
               <Disclosure label="Usage notes" defaultOpen={false}>
                 <Surface padding="component">
                   {resolvedGuides.map((guide) => (
-                    <Alert key={`${componentName}-${guide.label}`} variant="info" title={guide.label}>
+                    <Alert key={`${componentName}-${guide.label}`} tone="info" title={guide.label}>
                       {guide.text}
                     </Alert>
                   ))}
@@ -380,7 +398,8 @@ export function HdsComponentDoc({
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={tabPanelTransition}>
+                  transition={tabPanelTransition}
+                >
                   <Table
                     minWidth={640}
                     columns={PROP_TABLE_COLUMNS}
@@ -396,24 +415,25 @@ export function HdsComponentDoc({
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={tabPanelTransition}>
-                <Table
-                  columns={[
-                    { key: 'token', label: 'Token', width: 'minmax(0, 6fr)' },
-                    { key: 'source', label: 'Anatomy', width: 'minmax(0, 3fr)' },
-                    { key: 'description', label: 'Description', width: 'minmax(0, 3fr)' },
-                  ]}
-                  rows={tokenRows.map((row) => ({
-                    key: `${componentName}-${row.key}`,
-                    cells: [
-                      {
-                        slot: 'token',
+                  transition={tabPanelTransition}
+                >
+                  <Table
+                    columns={[
+                      { key: 'token', label: 'Token', width: 'minmax(0, 6fr)' },
+                      { key: 'source', label: 'Anatomy', width: 'minmax(0, 3fr)' },
+                      { key: 'description', label: 'Description', width: 'minmax(0, 3fr)' },
+                    ]}
+                    rows={tokenRows.map((row) => ({
+                      key: `${componentName}-${row.key}`,
+                      cells: [
+                        {
+                          slot: 'token',
                           content: (
                             <Token variant="node" pathDisplayMode="full">
                               {row.tokenPath}
-                          </Token>
-                        ),
-                      },
+                            </Token>
+                          ),
+                        },
                         { slot: 'label', content: renderTokenAnatomy(row) },
                         { slot: 'description', content: row.description },
                       ],
@@ -429,9 +449,10 @@ export function HdsComponentDoc({
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={tabPanelTransition}>
+                  transition={tabPanelTransition}
+                >
                   {resolvedGuides.map((guide) => (
-                    <Alert key={`${componentName}-${guide.label}`} variant="info" title={guide.label}>
+                    <Alert key={`${componentName}-${guide.label}`} tone="info" title={guide.label}>
                       {guide.text}
                     </Alert>
                   ))}
@@ -446,4 +467,3 @@ export function HdsComponentDoc({
     </div>
   );
 }
-

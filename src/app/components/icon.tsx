@@ -40,15 +40,18 @@ export interface IconProps {
   'aria-hidden'?: boolean | 'true' | 'false';
 }
 
-export function Icon({
-  icon: IconComponent,
-  size = 'small',
-  color = 'currentColor',
-  className = '',
-  style,
-  weight,
-  'aria-hidden': ariaHidden = true,
-}: IconProps) {
+export const Icon = React.forwardRef<SVGSVGElement, IconProps>(function Icon(
+  {
+    icon: IconComponent,
+    size = 'small',
+    color = 'currentColor',
+    className = '',
+    style,
+    weight,
+    'aria-hidden': ariaHidden = true,
+  },
+  ref,
+) {
   if (import.meta.env.DEV && !IconComponent) {
     console.warn('[Icon] icon prop is missing or undefined. Provide a Lucide icon component.');
     return null;
@@ -65,11 +68,12 @@ export function Icon({
     display: 'block',
     flexShrink: 0,
     aspectRatio: '1 / 1',
-    ...((style && typeof style === 'object') ? style : undefined),
+    ...(style && typeof style === 'object' ? style : undefined),
   } satisfies React.CSSProperties;
 
   return (
     <IconComponent
+      ref={ref}
       size={numericSize}
       color={color}
       className={className}
@@ -79,5 +83,4 @@ export function Icon({
       data-hds-icon=""
     />
   );
-}
-
+});

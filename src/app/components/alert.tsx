@@ -10,19 +10,19 @@ import { CircleCheck, TriangleAlert, CircleX, Info, type LucideIcon } from 'luci
 import hds from '../design-system/tokens';
 import { Icon } from './icon';
 
-type AlertVariant = 'success' | 'error' | 'warning' | 'info';
+type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 
 interface AlertProps {
-  /** Visual severity that controls icon, border, and surface treatment. */
-  variant?: AlertVariant;
+  /** Feedback tone that controls icon, border, and surface treatment. */
+  tone?: AlertTone;
   /** Optional heading shown above the body copy. */
   title?: string;
   /** Main alert message content. */
   children: React.ReactNode;
 }
 
-const VARIANT_CONFIG: Record<
-  AlertVariant,
+const TONE_CONFIG: Record<
+  AlertTone,
   {
     icon: LucideIcon;
     colorVar: string;
@@ -34,7 +34,7 @@ const VARIANT_CONFIG: Record<
     colorVar: 'var(--semantic-color-feedback-success)',
     bgVar: 'var(--semantic-color-feedback-bg-success)',
   },
-  error: {
+  danger: {
     icon: CircleX,
     colorVar: 'var(--semantic-color-feedback-error)',
     bgVar: 'var(--semantic-color-feedback-bg-error)',
@@ -53,10 +53,10 @@ const VARIANT_CONFIG: Record<
 
 /** @public */
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  { variant = 'info', title, children },
+  { tone = 'info', title, children },
   ref,
 ) {
-  const { icon: IconGlyph, colorVar, bgVar } = VARIANT_CONFIG[variant];
+  const { icon: IconGlyph, colorVar, bgVar } = TONE_CONFIG[tone];
   const hasTitle = Boolean(title);
 
   return (
