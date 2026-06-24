@@ -1,7 +1,10 @@
-// TODO: replace with real-violating-example for check-reduced-motion
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
+// violating: no @media (prefers-reduced-motion) block and no MotionConfig reducedMotion prop
+import { motion } from 'motion/react';
 
-export function ViolatingExample() {
-  return <div>stub</div>;
+export function App() {
+  return (
+    <motion.div animate={{ opacity: 1 }}>
+      <p>Animations run regardless of user motion preferences.</p>
+    </motion.div>
+  );
 }

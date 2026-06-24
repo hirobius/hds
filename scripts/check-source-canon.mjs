@@ -59,11 +59,12 @@ const SOFT = process.argv.includes('--soft');
 const VERBOSE = process.argv.includes('--verbose');
 const jsonMode = hasJsonFlag(process.argv);
 
-const SCAN_DIRS = [
-  'src/app/components',
-  'src/app/pages',
-  'src/app/layouts',
-];
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
+const SCAN_DIRS = ['src/app/components', 'src/app/pages', 'src/app/layouts'];
 
 // Per src/app/pages/sketches/CLAUDE.md, the sketches directory is the
 // "Expressive Zone" and explicitly suspends global HDS rules. Don't flag
@@ -120,7 +121,10 @@ function fileExemptions(source, filePath) {
   if (bypassMatch) {
     const body = bypassMatch[1].trim();
     // Extract any tokens that look like rule codes (ALL_CAPS with underscores)
-    const tokens = body.split(/[\s,]+/).map((t) => t.trim().toUpperCase()).filter(Boolean);
+    const tokens = body
+      .split(/[\s,]+/)
+      .map((t) => t.trim().toUpperCase())
+      .filter(Boolean);
     const codes = tokens.filter((t) => ALL_RULE_CODES.has(t));
 
     if (codes.length > 0) {
@@ -132,7 +136,7 @@ function fileExemptions(source, filePath) {
       const rel = filePath ? filePath : '<unknown>';
       process.stderr.write(
         `[check-source-canon] DEPRECATION: ${rel} uses bare hds-bypass without explicit rule codes.\n` +
-        `  Update to: /* hds-bypass: CODE1, CODE2 */ using codes from: ${[...ALL_RULE_CODES].join(', ')}\n`
+          `  Update to: /* hds-bypass: CODE1, CODE2 */ using codes from: ${[...ALL_RULE_CODES].join(', ')}\n`,
       );
     }
   }
@@ -232,24 +236,65 @@ function scanFile(filePath) {
   for (const cn of extractClassNames(source)) {
     const line = lineNumber(source, cn.index);
     if (!skip('FONT_BOLD') && FONT_BOLD_CLASS_RE.test(cn.value)) {
-      violations.push({ rel, line, code: 'FONT_BOLD', sample: cn.value, message: 'font-bold/extrabold/black className — use font-medium for emphasis, never bold' });
+      violations.push({
+        rel,
+        line,
+        code: 'FONT_BOLD',
+        sample: cn.value,
+        message: 'font-bold/extrabold/black className — use font-medium for emphasis, never bold',
+      });
     }
     if (!skip('BG_WHITE_BLACK') && BG_BLACK_WHITE_CLASS_RE.test(cn.value)) {
-      violations.push({ rel, line, code: 'BG_WHITE_BLACK', sample: cn.value, message: 'bg-white/bg-black className — use semantic.color.surface tokens' });
+      violations.push({
+        rel,
+        line,
+        code: 'BG_WHITE_BLACK',
+        sample: cn.value,
+        message: 'bg-white/bg-black className — use semantic.color.surface tokens',
+      });
     }
-    if (!skip('OVERSIZED_RADIUS') && OVERSIZED_RADIUS_CLASS_RE.test(cn.value) && fileNearStructural(source)) {
-      violations.push({ rel, line, code: 'OVERSIZED_RADIUS', sample: cn.value, message: 'rounded-2xl/3xl/full on structural element — use radius.action (4) or radius.card (8)' });
+    if (
+      !skip('OVERSIZED_RADIUS') &&
+      OVERSIZED_RADIUS_CLASS_RE.test(cn.value) &&
+      fileNearStructural(source)
+    ) {
+      violations.push({
+        rel,
+        line,
+        code: 'OVERSIZED_RADIUS',
+        sample: cn.value,
+        message:
+          'rounded-2xl/3xl/full on structural element — use radius.action (4) or radius.card (8)',
+      });
     }
     if (!skip('PURPLE_INDIGO') && PURPLE_CLASS_RE.test(cn.value)) {
-      violations.push({ rel, line, code: 'PURPLE_INDIGO', sample: cn.value, message: 'purple/indigo/violet/fuchsia tailwind utility — palette is stone + Swiss Red' });
+      violations.push({
+        rel,
+        line,
+        code: 'PURPLE_INDIGO',
+        sample: cn.value,
+        message: 'purple/indigo/violet/fuchsia tailwind utility — palette is stone + Swiss Red',
+      });
     }
     if (!skip('GRADIENT') && GRADIENT_CLASS_RE.test(cn.value)) {
-      violations.push({ rel, line, code: 'GRADIENT', sample: cn.value, message: 'bg-gradient-to-* — flat surfaces only' });
+      violations.push({
+        rel,
+        line,
+        code: 'GRADIENT',
+        sample: cn.value,
+        message: 'bg-gradient-to-* — flat surfaces only',
+      });
     }
     if (!skip('OFF_GRID_SPACING')) {
       const spacing = tailwindSpacingViolation(cn.value);
       if (spacing) {
-        violations.push({ rel, line, code: 'OFF_GRID_SPACING', sample: spacing.utility, message: `tailwind ${spacing.utility} is off the on-grid set` });
+        violations.push({
+          rel,
+          line,
+          code: 'OFF_GRID_SPACING',
+          sample: spacing.utility,
+          message: `tailwind ${spacing.utility} is off the on-grid set`,
+        });
       }
     }
   }
@@ -259,23 +304,47 @@ function scanFile(filePath) {
   if (!skip('FONT_BOLD')) {
     const reFontWeight = new RegExp(FONT_WEIGHT_BOLD_RE.source, 'g');
     while ((m = reFontWeight.exec(source)) !== null) {
-      violations.push({ rel, line: lineNumber(source, m.index), code: 'FONT_BOLD', sample: m[0], message: 'fontWeight bold/700+ in inline style — never bold' });
+      violations.push({
+        rel,
+        line: lineNumber(source, m.index),
+        code: 'FONT_BOLD',
+        sample: m[0],
+        message: 'fontWeight bold/700+ in inline style — never bold',
+      });
     }
   }
   if (!skip('BG_WHITE_BLACK')) {
     const reHex = new RegExp(RAW_HEX_BLACK_WHITE_RE.source, 'g');
     while ((m = reHex.exec(source)) !== null) {
-      violations.push({ rel, line: lineNumber(source, m.index), code: 'BG_WHITE_BLACK', sample: m[0], message: 'raw #fff or #000 — use semantic.color tokens' });
+      violations.push({
+        rel,
+        line: lineNumber(source, m.index),
+        code: 'BG_WHITE_BLACK',
+        sample: m[0],
+        message: 'raw #fff or #000 — use semantic.color tokens',
+      });
     }
   }
 
   // ── JSX text content rules ──
   for (const t of extractJsxText(source)) {
     if (!skip('LOREM') && LOREM_RE.test(t.value)) {
-      violations.push({ rel, line: t.line, code: 'LOREM', sample: t.value.slice(0, 60), message: 'lorem ipsum placeholder copy in JSX text' });
+      violations.push({
+        rel,
+        line: t.line,
+        code: 'LOREM',
+        sample: t.value.slice(0, 60),
+        message: 'lorem ipsum placeholder copy in JSX text',
+      });
     }
     if (!skip('ELLIPSIS') && TRIPLE_DOT_RE.test(t.value)) {
-      violations.push({ rel, line: t.line, code: 'ELLIPSIS', sample: t.value.slice(0, 60), message: 'three-period "..." in JSX text — use "…"' });
+      violations.push({
+        rel,
+        line: t.line,
+        code: 'ELLIPSIS',
+        sample: t.value.slice(0, 60),
+        message: 'three-period "..." in JSX text — use "…"',
+      });
     }
   }
 
@@ -285,7 +354,14 @@ function scanFile(filePath) {
   if (!skip('DATA_TENANT') && !rel.includes('src/styles/tokens.css')) {
     const reTenant = new RegExp(DATA_TENANT_SELECTOR_RE.source, 'g');
     while ((m = reTenant.exec(source)) !== null) {
-      violations.push({ rel, line: lineNumber(source, m.index), code: 'DATA_TENANT', sample: m[0], message: '[data-tenant=...] selector found — tenant overrides only permitted in src/styles/tokens.css' });
+      violations.push({
+        rel,
+        line: lineNumber(source, m.index),
+        code: 'DATA_TENANT',
+        sample: m[0],
+        message:
+          '[data-tenant=...] selector found — tenant overrides only permitted in src/styles/tokens.css',
+      });
     }
   }
 
@@ -294,9 +370,12 @@ function scanFile(filePath) {
   // that crowd adjacent prose. Use Card.Progress for state indicators or
   // separate Card.Body blocks for grouping. Component primitives (Card,
   // Badge, Surface) implement these patterns themselves and are exempt.
-  const isPrimitive = rel.startsWith('src/app/components/') &&
+  const isPrimitive =
+    rel.startsWith('src/app/components/') &&
     // Match kebab-case primitive filenames (post-5bc184ea rename).
-    /\/(card|badge|surface|divider|tag|tabs?|toggle|switch|checkbox|radio|select|input|textarea|stepper-field|combobox|segmented-control|button|icon-button|disclosure|alert|callout|banner|popover|tooltip|modal|sheet|lightbox|menu-button|nav-group|nav-item|side-nav|anchor|link|inline-link|inline-code|code-block)\.tsx$/.test(rel);
+    /\/(card|badge|surface|divider|tag|tabs?|toggle|switch|checkbox|radio|select|input|textarea|stepper-field|combobox|segmented-control|button|icon-button|disclosure|alert|callout|banner|popover|tooltip|modal|sheet|lightbox|menu-button|nav-group|nav-item|side-nav|anchor|link|inline-link|inline-code|code-block)\.tsx$/.test(
+      rel,
+    );
   if (!isPrimitive) {
     if (!skip('INLINE_THIN_BAR')) {
       const reBar = new RegExp(INLINE_THIN_BAR_RE.source, 'g');
@@ -306,7 +385,8 @@ function scanFile(filePath) {
           line: lineNumber(source, m.index),
           code: 'INLINE_THIN_BAR',
           sample: m[0].slice(0, 80),
-          message: 'inline thin colored bar (height: 1-8px + background: var(--…)) — use <Card.Progress> for state, or section structure (separate Card.Body blocks) for grouping',
+          message:
+            'inline thin colored bar (height: 1-8px + background: var(--…)) — use <Card.Progress> for state, or section structure (separate Card.Body blocks) for grouping',
         });
       }
     }
@@ -326,7 +406,8 @@ function scanFile(filePath) {
           line: ln,
           code: 'INLINE_STRUCTURAL_BORDER',
           sample: m[0].slice(0, 80),
-          message: 'inline structural border on a non-interactive surface — outlines are reserved for interactive affordances. Use background contrast, side-rules, or whitespace instead. Annotate `outline-ok: <reason>` for intentional exceptions (interactive ghost slots, focus rings).',
+          message:
+            'inline structural border on a non-interactive surface — outlines are reserved for interactive affordances. Use background contrast, side-rules, or whitespace instead. Annotate `outline-ok: <reason>` for intentional exceptions (interactive ghost slots, focus rings).',
         });
       }
     }
@@ -343,9 +424,10 @@ function loadStructuralBorderBaseline() {
   try {
     const text = fs.readFileSync(path.join(ROOT, '.source-canon-baseline.txt'), 'utf8');
     return new Set(
-      text.split('\n')
+      text
+        .split('\n')
         .map((l) => l.trim())
-        .filter((l) => l && !l.startsWith('#'))
+        .filter((l) => l && !l.startsWith('#')),
     );
   } catch {
     return new Set();
@@ -358,8 +440,12 @@ function structuralBorderKey(v) {
 
 function main() {
   const allFiles = [];
-  for (const dir of SCAN_DIRS) {
-    for (const f of walk(path.join(ROOT, dir))) allFiles.push(f);
+  if (isFixtureMode && fixtureFile) {
+    allFiles.push(path.resolve(fixtureFile));
+  } else {
+    for (const dir of SCAN_DIRS) {
+      for (const f of walk(path.join(ROOT, dir))) allFiles.push(f);
+    }
   }
 
   const allViolations = [];
@@ -444,9 +530,10 @@ function main() {
   }
 
   if (reportable.length === 0) {
-    const baselineNote = baseline.size > 0
-      ? ` (${baselined.length} baselined INLINE_STRUCTURAL_BORDER — burn down via 12d-2-outline-page-burndown)`
-      : '';
+    const baselineNote =
+      baseline.size > 0
+        ? ` (${baselined.length} baselined INLINE_STRUCTURAL_BORDER — burn down via 12d-2-outline-page-burndown)`
+        : '';
     console.log(`OK — no Swiss canon violations in source${baselineNote}`);
     process.exit(0);
   }
@@ -461,7 +548,11 @@ function main() {
   for (const v of reportable) {
     stream(`${label}${v.rel}:${v.line}  [${v.code}]  ${v.message}\n    sample: ${v.sample}`);
   }
-  stream(`\n${reportable.length} source-canon violation(s) — counts: ${Object.entries(grouped).map(([k, n]) => `${k}=${n}`).join(', ')}`);
+  stream(
+    `\n${reportable.length} source-canon violation(s) — counts: ${Object.entries(grouped)
+      .map(([k, n]) => `${k}=${n}`)
+      .join(', ')}`,
+  );
   if (baselined.length > 0) {
     stream(`(${baselined.length} INLINE_STRUCTURAL_BORDER baselined — not shown)`);
   }

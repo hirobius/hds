@@ -17,12 +17,12 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, extname, relative , dirname } from 'path';
+import { join, extname, relative, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC  = join(ROOT, 'src');
+const SRC = join(ROOT, 'src');
 
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist']);
 
@@ -41,6 +41,11 @@ const ALLOWLIST = new Set([
   join(ROOT, 'src', 'app', 'design-system', 'generated-token-descriptions.ts'),
 ]);
 
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
 const TIER_BYPASS_RE = /var\(--primitive-/;
 
 function walk(dir, files = []) {
@@ -48,7 +53,10 @@ function walk(dir, files = []) {
     const full = join(dir, entry);
     if (SKIP_DIRS.has(entry)) continue;
     const stat = statSync(full);
-    if (stat.isDirectory()) { walk(full, files); continue; }
+    if (stat.isDirectory()) {
+      walk(full, files);
+      continue;
+    }
     const ext = extname(entry);
     if (!['.tsx', '.ts', '.css'].includes(ext)) continue;
     if (ALLOWLIST.has(full)) continue;
@@ -57,11 +65,11 @@ function walk(dir, files = []) {
   return files;
 }
 
-const files = walk(SRC);
+const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walk(SRC);
 const violations = [];
 
 for (const file of files) {
-  const rel   = relative(ROOT, file).replace(/\\/g, '/');
+  const rel = relative(ROOT, file).replace(/\\/g, '/');
   const lines = readFileSync(file, 'utf-8').split('\n');
 
   for (let i = 0; i < lines.length; i++) {
@@ -87,7 +95,9 @@ if (violations.length === 0) {
   for (const v of violations) {
     console.error(`  ${v.file}:${v.line}`);
     console.error(`    Pattern: ${v.pattern}`);
-    console.error(`    Fix:     replace with var(--semantic-*) or var(--component-*), or add // tier-ok: <reason>\n`);
+    console.error(
+      `    Fix:     replace with var(--semantic-*) or var(--component-*), or add // tier-ok: <reason>\n`,
+    );
   }
   process.exit(1);
 }

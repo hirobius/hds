@@ -12,9 +12,14 @@
  */
 
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 const ROOT = process.cwd();
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 
 const PROSE_SURFACES = [
   'src/app/pages/hds/ColorPage.tsx',
@@ -29,8 +34,13 @@ const FORBIDDEN_PATTERNS = [
 
 let violations = 0;
 
-for (const rel of PROSE_SURFACES) {
-  const file = join(ROOT, rel);
+const filesToScan =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : PROSE_SURFACES.map((rel) => join(ROOT, rel));
+
+for (const file of filesToScan) {
+  const rel = isFixtureMode && fixtureFile ? file : file.slice(ROOT.length + 1);
   const lines = readFileSync(file, 'utf8').split('\n');
   const fileExempt = lines.some((line) => /font-ok:/.test(line));
 
@@ -47,7 +57,9 @@ for (const rel of PROSE_SURFACES) {
 
       console.error(`✕ mono role drift  ${rel}:${i + 1}`);
       console.error(`    ${line.trim()}`);
-      console.error('    → Use InlineCode for prose-adjacent technical references, or revert to normal body/caption styling.');
+      console.error(
+        '    → Use InlineCode for prose-adjacent technical references, or revert to normal body/caption styling.',
+      );
       violations++;
       break;
     }

@@ -1,7 +1,4 @@
-// TODO: replace with real-violating-example for check-mono-roles
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
+// violating: raw font-mono class on a prose surface that should use InlineCode
 export function ViolatingExample() {
-  return <div>stub</div>;
+  return <span className="font-mono text-sm">token-name</span>;
 }

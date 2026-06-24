@@ -1,7 +1,4 @@
-// TODO: replace with real-passing-example for check-tier-bypass
-// This stub needs a real passing .tsx snippet that the gate should NOT flag.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
+// passing: uses a semantic token — no tier bypass
 export function PassingExample() {
-  return <div>stub</div>;
+  return <div style={{ color: 'var(--semantic-color-text-primary)' }}>Hello</div>;
 }

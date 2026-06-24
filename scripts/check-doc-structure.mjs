@@ -22,39 +22,47 @@
  */
 
 import { readFileSync, readdirSync } from 'fs';
-import { join, relative } from 'path';
+import { join, relative, resolve } from 'path';
 
 const ROOT = process.cwd();
 const args = new Set(process.argv.slice(2));
 const STRICT = args.has('--strict');
 
-const DOC_PAGES = [
-  'src/app/pages/hds/ColorPage.tsx',
-  'src/app/pages/hds/TypographyPage.tsx',
-  'src/app/pages/hds/SpacingPage.tsx',
-  'src/app/pages/hds/ShapePage.tsx',
-  'src/app/pages/hds/ElevationPage.tsx',
-  'src/app/pages/hds/MotionPage.tsx',
-  'src/app/pages/hds/BreakpointsPage.tsx',
-  'src/app/pages/hds/GuidancePage.tsx',
-  'src/app/pages/hds/TechStackPage.tsx',
-  'src/app/pages/hds/LicensePage.tsx',
-  'src/app/pages/hds/GettingStartedPage.tsx',
-  'src/app/pages/hds/IconsPage.tsx',
-  'src/app/pages/hds/ScopePage.tsx',
-].map(p => join(ROOT, p));
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
+const DOC_PAGES =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : [
+        'src/app/pages/hds/ColorPage.tsx',
+        'src/app/pages/hds/TypographyPage.tsx',
+        'src/app/pages/hds/SpacingPage.tsx',
+        'src/app/pages/hds/ShapePage.tsx',
+        'src/app/pages/hds/ElevationPage.tsx',
+        'src/app/pages/hds/MotionPage.tsx',
+        'src/app/pages/hds/BreakpointsPage.tsx',
+        'src/app/pages/hds/GuidancePage.tsx',
+        'src/app/pages/hds/TechStackPage.tsx',
+        'src/app/pages/hds/LicensePage.tsx',
+        'src/app/pages/hds/GettingStartedPage.tsx',
+        'src/app/pages/hds/IconsPage.tsx',
+        'src/app/pages/hds/ScopePage.tsx',
+      ].map((p) => join(ROOT, p));
 
 // Component pages: all category pages inside hds/components/
 // Shell files (ComponentDocPageShell, IconGallery) are excluded — they are
 // shared layout, not docs pages.
-const COMPONENT_PAGE_EXCLUDES = new Set([
-  'ComponentDocPageShell.tsx',
-  'IconGallery.tsx',
-]);
+const COMPONENT_PAGE_EXCLUDES = new Set(['ComponentDocPageShell.tsx', 'IconGallery.tsx']);
 
-const COMPONENT_DOC_PAGES = readdirSync(join(ROOT, 'src/app/pages/hds/components'))
-  .filter(f => f.endsWith('.tsx') && !COMPONENT_PAGE_EXCLUDES.has(f))
-  .map(f => join(ROOT, 'src/app/pages/hds/components', f));
+const COMPONENT_DOC_PAGES =
+  isFixtureMode && fixtureFile
+    ? []
+    : readdirSync(join(ROOT, 'src/app/pages/hds/components'))
+        .filter((f) => f.endsWith('.tsx') && !COMPONENT_PAGE_EXCLUDES.has(f))
+        .map((f) => join(ROOT, 'src/app/pages/hds/components', f));
 
 function read(file) {
   return readFileSync(file, 'utf8');
@@ -191,7 +199,9 @@ function checkThirdPartyLinks(source, short) {
 
       // If no matching href exists anywhere in the file, warn
       if (!linksHref) {
-        warnings.push(`${short}:${i + 1} — "${product.name}" referenced in JSX text but no link to ${product.href} found in file. Add href or // link-ok: <reason>`);
+        warnings.push(
+          `${short}:${i + 1} — "${product.name}" referenced in JSX text but no link to ${product.href} found in file. Add href or // link-ok: <reason>`,
+        );
       }
     }
   }
@@ -212,7 +222,8 @@ for (const file of DOC_PAGES) {
 
   // Header check
   const hasNewHeader = source.includes('DocPageHeader');
-  const hasLegacyHeader = source.includes('DocPageHeader') || source.includes('HdsFoundationSection');
+  const hasLegacyHeader =
+    source.includes('DocPageHeader') || source.includes('HdsFoundationSection');
 
   if (!hasNewHeader && !hasLegacyHeader) {
     failures.push(`${short}: missing DocPageHeader or legacy header pattern`);
@@ -229,7 +240,9 @@ for (const file of DOC_PAGES) {
   // DocSection title uniqueness
   const dupes = findDuplicateDocSectionTitles(source);
   for (const dup of dupes) {
-    failures.push(`${short}: duplicate DocSection title "${dup}" — generates conflicting anchor ids`);
+    failures.push(
+      `${short}: duplicate DocSection title "${dup}" — generates conflicting anchor ids`,
+    );
   }
 
   // Third-party links (warn only)
@@ -261,7 +274,9 @@ for (const file of COMPONENT_DOC_PAGES) {
   // DocSection title uniqueness (component pages too)
   const dupes = findDuplicateDocSectionTitles(source);
   for (const dup of dupes) {
-    failures.push(`${short}: duplicate DocSection title "${dup}" — generates conflicting anchor ids`);
+    failures.push(
+      `${short}: duplicate DocSection title "${dup}" — generates conflicting anchor ids`,
+    );
   }
 
   // Soft rule: MISSING_DOCSECTION_ID
@@ -303,4 +318,6 @@ if (failures.length > 0) {
 
 const totalWarnings = warnings.length + softWarnings.length;
 const warnSuffix = totalWarnings > 0 ? ` (${totalWarnings} warning(s))` : '';
-console.log(`\nDoc structure check passed — ${DOC_PAGES.length} foundation pages + ${COMPONENT_DOC_PAGES.length} component pages (specimen gate) validated.${warnSuffix}\n`);
+console.log(
+  `\nDoc structure check passed — ${DOC_PAGES.length} foundation pages + ${COMPONENT_DOC_PAGES.length} component pages (specimen gate) validated.${warnSuffix}\n`,
+);

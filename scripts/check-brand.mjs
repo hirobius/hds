@@ -21,45 +21,60 @@
  */
 
 import { readFileSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { homedir } from 'os';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT      = join(__dirname, '..');
+const ROOT = join(__dirname, '..');
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
 const LEGACY_FONT_NAME = ['In', 'ter'].join('');
 const LEGACY_FONT_PATTERN = new RegExp(`\\b${LEGACY_FONT_NAME}\\b`, 'i');
 const LEGACY_FONT_FALLBACK_PATTERN = new RegExp(`Atkinson.*${LEGACY_FONT_NAME}`);
-const LEGACY_FONT_DECLARATION_PATTERN = new RegExp(`font.*:\\s*['"]?${LEGACY_FONT_NAME}['"]?|^.*\\b${LEGACY_FONT_NAME}\\b.*(font|typeface|primary)`, 'i');
+const LEGACY_FONT_DECLARATION_PATTERN = new RegExp(
+  `font.*:\\s*['"]?${LEGACY_FONT_NAME}['"]?|^.*\\b${LEGACY_FONT_NAME}\\b.*(font|typeface|primary)`,
+  'i',
+);
 
 // ── Read current brand values ─────────────────────────────────────────────────
 
-const raw          = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
 const primaryColor = raw.primitive?.color?.blue?.['500']?.$value?.toLowerCase();
-if (!primaryColor) throw new Error('Cannot read primitive.color.blue.500 from hirobius.tokens.json');
+if (!primaryColor)
+  throw new Error('Cannot read primitive.color.blue.500 from hirobius.tokens.json');
 
 // 12t-typography-truth-up: corrected token path. Was `raw.primitive.font.family.primary`,
 // which doesn't exist (tokens carry primitive.typography.family.primary). Empty fontName
 // silently disabled the legacy-font drift check.
-const fontRaw  = raw.primitive?.typography?.family?.primary?.$value;
+const fontRaw = raw.primitive?.typography?.family?.primary?.$value;
 const fontName = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? '';
 
 // All other blue scale values — these are NOT the brand primary, flag if used as brand
 const otherBlues = Object.values(raw.primitive?.color?.blue ?? {})
-  .map(v => v?.$value?.toLowerCase?.())
-  .filter(v => v && typeof v === 'string' && v !== primaryColor);
+  .map((v) => v?.$value?.toLowerCase?.())
+  .filter((v) => v && typeof v === 'string' && v !== primaryColor);
 
 // ── Files and rules ───────────────────────────────────────────────────────────
 
-const ACTIVE_DOCS = [
-  join(ROOT, 'scripts', 'build-tokens.mjs'),
-  join(ROOT, 'TASKS.md'),
-  join(ROOT, 'src', 'app', 'data', 'projects.ts'),
-  join(ROOT, 'src', 'app', 'components', 'HdsWebGLTriangleLogo.tsx'),
-];
-
-const globalClaudeMd = join(homedir(), '.claude', 'CLAUDE.md');
-if (existsSync(globalClaudeMd)) ACTIVE_DOCS.push(globalClaudeMd);
+const ACTIVE_DOCS =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : (() => {
+        const docs = [
+          join(ROOT, 'scripts', 'build-tokens.mjs'),
+          join(ROOT, 'TASKS.md'),
+          join(ROOT, 'src', 'app', 'data', 'projects.ts'),
+          join(ROOT, 'src', 'app', 'components', 'HdsWebGLTriangleLogo.tsx'),
+        ];
+        const globalClaudeMd = join(homedir(), '.claude', 'CLAUDE.md');
+        if (existsSync(globalClaudeMd)) docs.push(globalClaudeMd);
+        return docs;
+      })();
 
 // Lines matching these patterns are historical records — skip them
 const HISTORICAL_EXEMPTIONS = [
@@ -84,15 +99,15 @@ let errors = 0;
 
 for (const file of ACTIVE_DOCS) {
   if (!existsSync(file)) continue;
-  const rel     = file.startsWith(ROOT) ? file.slice(ROOT.length + 1).replace(/\\/g, '/') : file;
-  const lines   = readFileSync(file, 'utf8').split('\n');
+  const rel = file.startsWith(ROOT) ? file.slice(ROOT.length + 1).replace(/\\/g, '/') : file;
+  const lines = readFileSync(file, 'utf8').split('\n');
 
   lines.forEach((line, i) => {
     const lineNum = i + 1;
-    const lower   = line.toLowerCase();
+    const lower = line.toLowerCase();
 
     // Skip historical lines
-    if (HISTORICAL_EXEMPTIONS.some(p => p.test(line))) return;
+    if (HISTORICAL_EXEMPTIONS.some((p) => p.test(line))) return;
 
     // ── Color check ──────────────────────────────────────────────────────────
     // Flag if line mentions another blue-scale hex in a brand-relevant context.
@@ -101,7 +116,9 @@ for (const file of ACTIVE_DOCS) {
     if (!lower.includes(primaryColor)) {
       for (const stale of otherBlues) {
         if (lower.includes(stale)) {
-          console.error(`âœ— [${rel}:${lineNum}] Stale brand color ${stale} (current: ${primaryColor})`);
+          console.error(
+            `âœ— [${rel}:${lineNum}] Stale brand color ${stale} (current: ${primaryColor})`,
+          );
           console.error(`    ${line.trim()}`);
           errors++;
         }
@@ -110,10 +127,12 @@ for (const file of ACTIVE_DOCS) {
 
     // ── Font check ───────────────────────────────────────────────────────────
     // Flag stale legacy font references outside tests and archived context
-    if (LEGACY_FONT_PATTERN.test(line) && !FALLBACK_EXEMPTIONS.some(p => p.test(line))) {
+    if (LEGACY_FONT_PATTERN.test(line) && !FALLBACK_EXEMPTIONS.some((p) => p.test(line))) {
       // Only flag lines that look like they're declaring the primary font
       if (LEGACY_FONT_DECLARATION_PATTERN.test(line)) {
-        console.error(`âœ— [${rel}:${lineNum}] Stale legacy font reference "${LEGACY_FONT_NAME}" (current: ${fontName})`);
+        console.error(
+          `âœ— [${rel}:${lineNum}] Stale legacy font reference "${LEGACY_FONT_NAME}" (current: ${fontName})`,
+        );
         console.error(`    ${line.trim()}`);
         errors++;
       }
@@ -126,4 +145,6 @@ if (errors > 0) {
   process.exit(1);
 }
 
-console.log(`âœ“ check:brand — primary color ${primaryColor}, font "${fontName}" — all docs in sync`);
+console.log(
+  `âœ“ check:brand — primary color ${primaryColor}, font "${fontName}" — all docs in sync`,
+);

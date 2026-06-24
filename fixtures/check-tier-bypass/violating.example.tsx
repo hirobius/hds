@@ -1,7 +1,4 @@
-// TODO: replace with real-violating-example for check-tier-bypass
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
+// violating: direct primitive var reference bypasses the semantic tier
 export function ViolatingExample() {
-  return <div>stub</div>;
+  return <div style={{ color: 'var(--primitive-color-blue-500)' }}>Hello</div>;
 }
