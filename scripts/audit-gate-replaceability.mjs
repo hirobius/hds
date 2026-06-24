@@ -921,22 +921,6 @@ const REPLACEMENT_TABLE = {
     notes: 'Core HDS token governance. Keep.',
   },
 
-  'check-legacy-hds-vars': {
-    verdict: 'genuinely-custom',
-    replacement: {
-      tool: null,
-      source: null,
-      npmPackage: null,
-      configEffort: null,
-      exampleConfig: null,
-    },
-    keepReason:
-      'Flags deprecated --hds-text/dim/subtle CSS vars. Pure HDS migration guard with no industry equivalent.',
-    migrationCost: null,
-    coverageGain: null,
-    notes: 'Keep until migration is complete, then delete.',
-  },
-
   'check-binding-drift': {
     verdict: 'genuinely-custom',
     replacement: {
@@ -1200,23 +1184,6 @@ const REPLACEMENT_TABLE = {
     coverageGain: 'higher',
     notes:
       'Playwright covers runtime route smoke tests more thoroughly (real browser, not fetch). The custom gate is ~110 LOC; Playwright provides proper browser rendering.',
-  },
-
-  'check-code-connect': {
-    verdict: 'partially-replaceable',
-    replacement: {
-      tool: 'Figma Code Connect CLI',
-      source: 'https://www.figma.com/developers/code-connect',
-      npmPackage: '@figma/code-connect',
-      configEffort: 'small',
-      exampleConfig: '// npx figma connect publish --dry-run to check mapping coverage',
-    },
-    keepReason:
-      'Bidirectional parity check (React ↔ Figma) goes beyond what the Figma CLI validates by default.',
-    migrationCost: 'small',
-    coverageGain: 'equal',
-    notes:
-      'Figma Code Connect CLI validates .figma.tsx files structurally. The bidirectional coverage check is partially custom.',
   },
 
   'check-template-source-of-truth': {

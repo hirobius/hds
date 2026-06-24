@@ -22,9 +22,22 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const OUTPUT_PATH = join(__dirname, 'guardrails.json');
 
-const AI_KEYWORDS = ['9-style', 'typography', 'px16', 'px24', 'component.padding', 'component.gap', 'forbidden'];
+const AI_KEYWORDS = [
+  '9-style',
+  'typography',
+  'px16',
+  'px24',
+  'component.padding',
+  'component.gap',
+  'forbidden',
+];
 const DEPRECATED_TOKENS = ['label', 'title', 'displayXl', 'body2', 'monoXs', 'labelTechnical'];
-const LINTER_KEYWORDS = ['no-restricted-syntax', 'no-restricted-imports', 'deprecated', 'forbidden'];
+const LINTER_KEYWORDS = [
+  'no-restricted-syntax',
+  'no-restricted-imports',
+  'deprecated',
+  'forbidden',
+];
 
 function fileExists(path) {
   return existsSync(path);
@@ -45,8 +58,8 @@ function checkAIGuardrails() {
 
   if (fileExists(claudeMd)) {
     const content = readFile(claudeMd);
-    const hasKeywords = AI_KEYWORDS.some(kw => content.includes(kw));
-    const hasDeprecated = DEPRECATED_TOKENS.some(token => content.includes(token));
+    const hasKeywords = AI_KEYWORDS.some((kw) => content.includes(kw));
+    const hasDeprecated = DEPRECATED_TOKENS.some((token) => content.includes(token));
 
     if (hasKeywords && hasDeprecated) {
       status.status = 'healthy';
@@ -96,8 +109,8 @@ function checkLinterRules() {
   for (const cfg of eslintConfigs) {
     if (fileExists(cfg)) {
       const content = readFile(cfg);
-      const hasRestrictedRules = LINTER_KEYWORDS.some(kw => content.includes(kw));
-      const hasDeprecatedTokens = DEPRECATED_TOKENS.some(token => content.includes(token));
+      const hasRestrictedRules = LINTER_KEYWORDS.some((kw) => content.includes(kw));
+      const hasDeprecatedTokens = DEPRECATED_TOKENS.some((token) => content.includes(token));
 
       if (hasRestrictedRules && hasDeprecatedTokens) {
         status.status = 'healthy';
@@ -105,7 +118,8 @@ function checkLinterRules() {
         break;
       } else if (hasRestrictedRules) {
         status.status = 'partial';
-        status.message = 'ESLint config present with restriction rules but missing deprecated token checks';
+        status.message =
+          'ESLint config present with restriction rules but missing deprecated token checks';
         break;
       } else {
         status.status = 'warning';
@@ -129,11 +143,10 @@ function checkLinterRules() {
   // Check for custom Node.js linters that replace ESLint
   const customLinters = [
     join(ROOT, 'scripts', 'hds-lint.js'),
-    join(ROOT, 'scripts', 'check-legacy-hds-vars.mjs'),
     join(ROOT, 'scripts', 'audit-tokens.mjs'),
   ];
 
-  const customFound = customLinters.filter(l => fileExists(l)).length;
+  const customFound = customLinters.filter((l) => fileExists(l)).length;
   if (customFound > 0 && status.status === 'missing') {
     status.status = 'partial';
     status.message = `✓ ${customFound} custom Node.js linters found (ESLint/stylelint missing)`;
@@ -149,10 +162,7 @@ function checkLinterRules() {
 }
 
 function checkGatekeepers() {
-  const hooksDirs = [
-    join(ROOT, '.githooks'),
-    join(ROOT, '.husky'),
-  ];
+  const hooksDirs = [join(ROOT, '.githooks'), join(ROOT, '.husky')];
   const lintStagedConfig = join(ROOT, 'lint-staged.config.js');
   const packageJson = join(ROOT, 'package.json');
 
@@ -230,7 +240,9 @@ function checkCICD() {
   }
 
   try {
-    const files = readdirSync(workflowsDir).filter(f => f.endsWith('.yml') || f.endsWith('.yaml'));
+    const files = readdirSync(workflowsDir).filter(
+      (f) => f.endsWith('.yml') || f.endsWith('.yaml'),
+    );
     if (files.length === 0) {
       status.message = '✗ No GitHub Actions workflows found';
       return status;
@@ -244,7 +256,11 @@ function checkCICD() {
       const content = readFile(join(workflowsDir, file));
       if (!content) continue;
 
-      if (content.includes('token-scan') || content.includes('audit-tokens') || content.includes('forbidden')) {
+      if (
+        content.includes('token-scan') ||
+        content.includes('audit-tokens') ||
+        content.includes('forbidden')
+      ) {
         hasTokenScan = true;
       }
       if (content.includes('lint') || content.includes('check:') || content.includes('eslint')) {

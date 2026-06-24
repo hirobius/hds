@@ -1,0 +1,32 @@
+name: Chromatic
+
+# Visual-regression snapshots of the Storybook primitive tier.
+#
+# SETUP (one-time, manual): create a project at chromatic.com linked to this
+# repo, then add its token as the `CHROMATIC_PROJECT_TOKEN` GitHub Actions
+# secret. Once set, uncomment the `pull_request` trigger below so every PR gets
+# a visual diff. Until then this runs only on manual dispatch so it never fails
+# PRs for a missing token.
+on:
+  workflow_dispatch: {}
+  # pull_request:
+  #   branches: [main]
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Chromatic needs full git history for baselines
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          buildScriptName: build-storybook
+          exitZeroOnChanges: true

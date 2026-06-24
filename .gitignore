@@ -131,3 +131,6 @@ docs/research/findings/
 *.bak
 *.tmp
 *-report.json
+
+# Storybook build output
+storybook-static/
