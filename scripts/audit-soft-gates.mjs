@@ -57,11 +57,11 @@ const FIXTURE_DIR = process.env.FIXTURE_DIR;
 const INPUT_ROOT = FIXTURE_DIR || ROOT;
 
 const REGISTRY_PATH = path.join(INPUT_ROOT, 'docs/guardrails/registry.json');
-const OUT_JSON = FIXTURE_DIR
-  ? path.join(FIXTURE_DIR, 'soft-gates-audit.json')
-  : '/tmp/soft-gates-audit.json';
+// In fixture mode, report outputs go to /tmp (NOT FIXTURE_DIR) so proof-of-firing
+// stays a pure observer — writing into the fixture would mutate it every run.
+const OUT_JSON = FIXTURE_DIR ? '/tmp/soft-gates-audit.fixture.json' : '/tmp/soft-gates-audit.json';
 const OUT_PLAN = FIXTURE_DIR
-  ? path.join(FIXTURE_DIR, 'soft-gates-promotion-plan.md')
+  ? '/tmp/soft-gates-promotion-plan.fixture.md'
   : '/tmp/soft-gates-promotion-plan.md';
 // In fixture mode skip the canonical docs write (avoids touching the real repo tree).
 const OUT_PLAN_CANONICAL = FIXTURE_DIR
