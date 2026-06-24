@@ -1,1 +1,24 @@
-{ "__stub": true, "__todo": "replace with real-passing-example for check-token-structure" }
+{
+  "primitive": {
+    "color": {
+      "$type": "color",
+      "white": { "$value": "#ffffff" },
+      "black": { "$value": "#000000" }
+    }
+  },
+  "semantic": {
+    "color": {
+      "$type": "color",
+      "surface": { "$value": "{primitive.color.white}" },
+      "ink": { "$value": "{primitive.color.black}" }
+    }
+  },
+  "component": {
+    "button": {
+      "color": {
+        "$type": "color",
+        "bg": { "$value": "{semantic.color.surface}" }
+      }
+    }
+  }
+}

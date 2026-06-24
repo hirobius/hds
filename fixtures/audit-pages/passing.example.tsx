@@ -1,7 +1,5 @@
-// TODO: replace with real-passing-example for audit-pages
-// This stub needs a real passing .tsx snippet that the gate should NOT flag.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
+// passing: uses CSS variable for color — audit-pages should NOT flag this
 
 export function PassingExample() {
-  return <div>stub</div>;
+  return <div style={{ color: 'var(--hds-color-text-primary)' }}>Hello</div>;
 }

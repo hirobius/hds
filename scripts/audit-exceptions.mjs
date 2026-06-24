@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, resolve } from 'path';
 import { readdirSync, readFileSync, existsSync, mkdirSync } from 'fs';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
 
-const SOURCE_ROOTS = [
-  'src',
-  'scripts',
-  'validators',
-  'pipeline',
-];
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
+const SOURCE_ROOTS = ['src', 'scripts', 'validators', 'pipeline'];
 
 // Category definitions
 const CATEGORIES = {
@@ -22,13 +22,7 @@ const CATEGORIES = {
 };
 
 // Custom sentinel patterns
-const CUSTOM_SENTINELS = [
-  'audit-ok',
-  'font-ok',
-  'hds-bypass',
-  'spacing-ok',
-  'binding-ok',
-];
+const CUSTOM_SENTINELS = ['audit-ok', 'font-ok', 'hds-bypass', 'spacing-ok', 'binding-ok'];
 
 // Results collection
 const results = {
@@ -57,7 +51,7 @@ function walkDir(rootPath, extensions) {
         if (!entry.name.startsWith('.') && entry.name !== 'node_modules') {
           walk(fullPath);
         }
-      } else if (extensions.some(ext => entry.name.endsWith(ext))) {
+      } else if (extensions.some((ext) => entry.name.endsWith(ext))) {
         files.push(fullPath);
       }
     }
@@ -123,7 +117,7 @@ function findSuppressions(filePath) {
         // Only count if it's actually in a comment (// or /*)
         const commentStart = Math.min(
           line.indexOf('//') >= 0 ? line.indexOf('//') : Infinity,
-          line.indexOf('/*') >= 0 ? line.indexOf('/*') : Infinity
+          line.indexOf('/*') >= 0 ? line.indexOf('/*') : Infinity,
         );
         const sentinelPos = line.indexOf(sentinel);
         // Only count if sentinel appears after a comment marker
@@ -150,36 +144,38 @@ function findSuppressions(filePath) {
 function auditExceptions() {
   const extensions = ['.ts', '.tsx', '.mjs', '.js'];
 
-  for (const root of SOURCE_ROOTS) {
-    const rootPath = join(REPO_ROOT, root);
-    if (!existsSync(rootPath)) continue;
+  // In fixture mode scan exactly the one provided file; skip the normal walk.
+  const allFiles =
+    isFixtureMode && fixtureFile
+      ? [resolve(fixtureFile)]
+      : SOURCE_ROOTS.flatMap((root) => {
+          const rootPath = join(REPO_ROOT, root);
+          return existsSync(rootPath) ? walkDir(rootPath, extensions) : [];
+        });
 
-    const files = walkDir(rootPath, extensions);
+  for (const filePath of allFiles) {
+    // Skip the audit script itself to avoid false positives
+    if (filePath.includes('audit-exceptions.mjs')) continue;
 
-    for (const filePath of files) {
-      // Skip the audit script itself to avoid false positives
-      if (filePath.includes('audit-exceptions.mjs')) continue;
+    const suppressions = findSuppressions(filePath);
+    const relPath = filePath.replace(REPO_ROOT + '/', '');
 
-      const suppressions = findSuppressions(filePath);
-      const relPath = filePath.replace(REPO_ROOT + '/', '');
+    for (const supp of suppressions) {
+      const entry = {
+        file: relPath,
+        line: supp.line,
+        category: supp.category,
+        rule: supp.rule,
+        reason: supp.reason,
+        status: supp.justified ? 'justified' : 'untriaged',
+      };
 
-      for (const supp of suppressions) {
-        const entry = {
-          file: relPath,
-          line: supp.line,
-          category: supp.category,
-          rule: supp.rule,
-          reason: supp.reason,
-          status: supp.justified ? 'justified' : 'untriaged',
-        };
-
-        if (supp.category === CATEGORIES.ESLINT_DISABLE) {
-          results.eslintDisable.push(entry);
-        } else if (supp.category === CATEGORIES.TS_IGNORE) {
-          results.tsIgnore.push(entry);
-        } else {
-          results.customSentinels.push(entry);
-        }
+      if (supp.category === CATEGORIES.ESLINT_DISABLE) {
+        results.eslintDisable.push(entry);
+      } else if (supp.category === CATEGORIES.TS_IGNORE) {
+        results.tsIgnore.push(entry);
+      } else {
+        results.customSentinels.push(entry);
       }
     }
   }
@@ -189,14 +185,10 @@ function auditExceptions() {
  * Generate markdown report.
  */
 function generateReport() {
-  const allResults = [
-    ...results.eslintDisable,
-    ...results.tsIgnore,
-    ...results.customSentinels,
-  ];
+  const allResults = [...results.eslintDisable, ...results.tsIgnore, ...results.customSentinels];
 
-  const justified = allResults.filter(r => r.status === 'justified').length;
-  const untriaged = allResults.filter(r => r.status === 'untriaged').length;
+  const justified = allResults.filter((r) => r.status === 'justified').length;
+  const untriaged = allResults.filter((r) => r.status === 'untriaged').length;
 
   let md = '# Exception Audit Report\n\n';
   md += `Generated: ${new Date().toISOString()}\n\n`;
@@ -213,8 +205,8 @@ function generateReport() {
   };
 
   for (const [cat, items] of Object.entries(byCategory)) {
-    const justi = items.filter(r => r.status === 'justified').length;
-    const untri = items.filter(r => r.status === 'untriaged').length;
+    const justi = items.filter((r) => r.status === 'justified').length;
+    const untri = items.filter((r) => r.status === 'untriaged').length;
     md += `| ${cat} | ${items.length} | ${justi} | ${untri} |\n`;
   }
 
@@ -242,13 +234,30 @@ function generateReport() {
   md += `- **Justified (reason >= 10 chars):** ${justified}\n`;
   md += `- **Untriaged (reason < 10 chars or missing):** ${untriaged}\n\n`;
 
-  md += 'Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.\n';
+  md +=
+    'Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.\n';
 
   return md;
 }
 
 // Main
 auditExceptions();
+
+const allFound = results.eslintDisable.concat(results.tsIgnore, results.customSentinels);
+const totalFound = allFound.length;
+const justifiedCount = allFound.filter((r) => r.status === 'justified').length;
+const untriagedCount = allFound.filter((r) => r.status === 'untriaged').length;
+
+// Fixture mode: exit non-zero when any suppression is detected (proof-of-firing).
+if (isFixtureMode) {
+  if (totalFound > 0) {
+    console.error(`[fixture] ${totalFound} suppression(s) found — gate fires (exit 1).`);
+    process.exit(1);
+  }
+  console.log('[fixture] No suppressions found — gate passes (exit 0).');
+  process.exit(0);
+}
+
 const report = generateReport();
 
 // Ensure output directory exists
@@ -262,8 +271,8 @@ const reportPath = join(auditDir, 'exceptions-audit.md');
 writeStableArtifact(reportPath, report);
 
 console.log(`Audit complete. Report written to ${reportPath}`);
-console.log(`Total suppressions found: ${results.eslintDisable.length + results.tsIgnore.length + results.customSentinels.length}`);
-console.log(`Justified: ${(results.eslintDisable.concat(results.tsIgnore, results.customSentinels).filter(r => r.status === 'justified').length)}`);
-console.log(`Untriaged: ${(results.eslintDisable.concat(results.tsIgnore, results.customSentinels).filter(r => r.status === 'untriaged').length)}`);
+console.log(`Total suppressions found: ${totalFound}`);
+console.log(`Justified: ${justifiedCount}`);
+console.log(`Untriaged: ${untriagedCount}`);
 
 process.exit(0);

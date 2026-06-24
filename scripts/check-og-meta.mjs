@@ -16,9 +16,14 @@
  */
 
 import { readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
-const INDEX_HTML = 'index.html';
+// Fixture mode: parse a single file instead of index.html (proof-of-firing harness).
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
+const INDEX_HTML = isFixtureMode && fixtureFile ? resolve(fixtureFile) : 'index.html';
 const PUBLIC_DIR = 'public';
 
 // Colors for terminal output
@@ -48,7 +53,9 @@ function parseMetaTags() {
   const ogImage = ogImageMatch ? ogImageMatch[1].trim() : '';
 
   // Extract description meta tag
-  const descriptionMatch = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']+)["']/);
+  const descriptionMatch = html.match(
+    /<meta\s+name=["']description["']\s+content=["']([^"']+)["']/,
+  );
   const description = descriptionMatch ? descriptionMatch[1].trim() : '';
 
   return { title, ogImage, description };
@@ -90,20 +97,24 @@ function main() {
     errors.push('OGIMAGE_MISSING: og:image meta tag not found');
     hasErrors = true;
   } else if (!isValidOgImagePath(ogImage)) {
-    errors.push(`OGIMAGE_NOT_FOUND: og:image path "${ogImage}" does not exist in public/ or is not a valid URL`);
+    errors.push(
+      `OGIMAGE_NOT_FOUND: og:image path "${ogImage}" does not exist in public/ or is not a valid URL`,
+    );
     hasErrors = true;
   }
 
   // Check: description ≤ 160 chars
   if (description && description.length > 160) {
-    errors.push(`DESCRIPTION_TOO_LONG: description is ${description.length} chars (max 160 allowed)`);
+    errors.push(
+      `DESCRIPTION_TOO_LONG: description is ${description.length} chars (max 160 allowed)`,
+    );
     hasErrors = true;
   }
 
   // Output
   if (hasErrors) {
     log(colors.red, '✗ index.html meta validation failed:');
-    errors.forEach(err => log(colors.red, `  • ${err}`));
+    errors.forEach((err) => log(colors.red, `  • ${err}`));
     process.exit(1);
   } else {
     const titleLen = title.length;

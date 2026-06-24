@@ -17,12 +17,18 @@
  */
 
 import { readFileSync } from 'fs';
-import { join , dirname } from 'path';
+import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
-const __dirname   = dirname(fileURLToPath(import.meta.url));
-const ROOT        = join(__dirname, '..');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, '..');
 const TOKENS_FILE = join(ROOT, 'hirobius.tokens.json');
+
+// Fixture mode: proof-of-firing harness supplies a single file via env vars.
+// No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 
 // Alias pattern: {path.to.token}
 const ALIAS_RE = /^\{([^}]+)\}$/;
@@ -139,11 +145,12 @@ function walkTokens(node, path, inheritedType = null) {
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
+const targetFile = isFixtureMode && fixtureFile ? resolve(fixtureFile) : TOKENS_FILE;
 let tokens;
 try {
-  tokens = JSON.parse(readFileSync(TOKENS_FILE, 'utf-8'));
+  tokens = JSON.parse(readFileSync(targetFile, 'utf-8'));
 } catch (err) {
-  console.error(`✗ check-token-structure — failed to parse hirobius.tokens.json: ${err.message}`);
+  console.error(`✗ check-token-structure — failed to parse ${targetFile}: ${err.message}`);
   process.exit(1);
 }
 

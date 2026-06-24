@@ -13,14 +13,17 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { join, relative, resolve } from 'path';
 
 const ROOT = process.cwd();
 const SCAN_DIR = join(ROOT, 'src/app/pages');
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 const SKIP_DIRS = new Set(['figma', 'sketches', 'demos']);
-const SKIP_FILES = new Set([
-  'TokenCascadeDiagram.tsx',
-]);
+const SKIP_FILES = new Set(['TokenCascadeDiagram.tsx']);
 
 const CHECKS = [
   {
@@ -44,8 +47,7 @@ const CHECKS = [
   {
     name: 'Hardcoded border-radius pixel value',
     test: (line) =>
-      /borderRadius:\s*['"`]?\d+px/.test(line) &&
-      !/(hds\.borderRadius\.|var\(--)/.test(line),
+      /borderRadius:\s*['"`]?\d+px/.test(line) && !/(hds\.borderRadius\.|var\(--)/.test(line),
     fix: 'Use hds.borderRadius.* or a token-backed CSS variable',
   },
   {
@@ -93,7 +95,9 @@ function scanDir(dir) {
 let totalViolations = 0;
 const report = [];
 
-for (const filePath of scanDir(SCAN_DIR)) {
+const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : scanDir(SCAN_DIR);
+
+for (const filePath of filesToScan) {
   const rel = relative(ROOT, filePath).replace(/\\/g, '/');
   const lines = readFileSync(filePath, 'utf8').split('\n');
   const hits = [];
@@ -128,7 +132,9 @@ if (totalViolations === 0) {
 }
 
 console.error(`\n✗ Page token audit failed — ${totalViolations} violation(s) found.\n`);
-console.error('  Fix the value, route it through tokens, or add // audit-ok: <reason> for an intentional editorial exception.\n');
+console.error(
+  '  Fix the value, route it through tokens, or add // audit-ok: <reason> for an intentional editorial exception.\n',
+);
 
 for (const { file, hits } of report) {
   console.error(`  ${file}`);

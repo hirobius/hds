@@ -1,2 +1,14 @@
-// TODO: replace with real-passing-example for check-og-meta
-// STUB — this file needs real passing content
+<!-- passing: all required OG/title meta present — gate must exit 0 -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hirobius Design System</title>
+    <meta name="description" content="A short description under 160 chars." />
+    <meta property="og:image" content="https://hirobius.com/og-image.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
