@@ -24,14 +24,16 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { join, relative, resolve } from 'path';
 
-const ROOT      = process.cwd();
-const SCAN_DIRS = [
-  join(ROOT, 'src/app/components'),
-  join(ROOT, 'src/app/pages'),
-];
-const SKIP_DIRS  = new Set(['figma', 'sketches']);
+const ROOT = process.cwd();
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+const SCAN_DIRS = [join(ROOT, 'src/app/components'), join(ROOT, 'src/app/pages')];
+const SKIP_DIRS = new Set(['figma', 'sketches']);
 const SKIP_FILES = new Set(['types.ts', 'hooks.ts', 'HdsWebGLTriangleLogo.tsx']);
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -67,20 +69,24 @@ const violations = [];
  */
 function checkOutlineNone(lines, filePath) {
   for (let i = 0; i < lines.length; i++) {
-    const raw     = lines[i];
+    const raw = lines[i];
     const trimmed = raw.trim();
     if (!trimmed || isComment(trimmed) || trimmed.includes('// audit-ok')) continue;
 
-    if (raw.includes('focus:outline-none') || raw.includes('outline: \'none\'') || raw.includes("outline: 'none'")) {
+    if (
+      raw.includes('focus:outline-none') ||
+      raw.includes("outline: 'none'") ||
+      raw.includes("outline: 'none'")
+    ) {
       // Check this line and Â±3 surrounding lines for a focus replacement
       const window = lines.slice(Math.max(0, i - 3), Math.min(lines.length, i + 4)).join(' ');
       if (!hasFocusIndicator(window)) {
         violations.push({
-          file:    relative(ROOT, filePath).replace(/\\/g, '/'),
+          file: relative(ROOT, filePath).replace(/\\/g, '/'),
           lineNum: i + 1,
-          text:    trimmed,
-          rule:    'REMOVED FOCUS',
-          fix:     'Pair focus:outline-none with hds-focus class, or remove outline suppression entirely',
+          text: trimmed,
+          rule: 'REMOVED FOCUS',
+          fix: 'Pair focus:outline-none with hds-focus class, or remove outline suppression entirely',
         });
       }
     }
@@ -97,7 +103,7 @@ function checkRawInteractive(lines, filePath) {
   const INTERACTIVE_RE = /^\s*<(button|a)\b(?!\w)/;
 
   for (let i = 0; i < lines.length; i++) {
-    const raw     = lines[i];
+    const raw = lines[i];
     const trimmed = raw.trim();
     if (!trimmed || isComment(trimmed) || trimmed.includes('// audit-ok')) continue;
 
@@ -110,11 +116,11 @@ function checkRawInteractive(lines, filePath) {
 
       if (!hasFocusIndicator(window)) {
         violations.push({
-          file:    relative(ROOT, filePath).replace(/\\/g, '/'),
+          file: relative(ROOT, filePath).replace(/\\/g, '/'),
           lineNum: i + 1,
-          text:    trimmed,
-          rule:    'MISSING FOCUS',
-          fix:     'Add className="hds-focus" — or use Button/IconButton/Input which include it',
+          text: trimmed,
+          rule: 'MISSING FOCUS',
+          fix: 'Add className="hds-focus" — or use Button/IconButton/Input which include it',
         });
       }
     }
@@ -125,7 +131,7 @@ function checkRawInteractive(lines, filePath) {
 
 function scanFile(filePath) {
   const content = readFileSync(filePath, 'utf-8');
-  const lines   = content.split('\n');
+  const lines = content.split('\n');
   checkOutlineNone(lines, filePath);
   checkRawInteractive(lines, filePath);
 }
@@ -136,10 +142,7 @@ function scanDir(dir) {
     const stat = statSync(full);
     if (stat.isDirectory()) {
       if (!SKIP_DIRS.has(entry)) scanDir(full);
-    } else if (
-      (entry.endsWith('.tsx') || entry.endsWith('.ts')) &&
-      !SKIP_FILES.has(entry)
-    ) {
+    } else if ((entry.endsWith('.tsx') || entry.endsWith('.ts')) && !SKIP_FILES.has(entry)) {
       scanFile(full);
     }
   }
@@ -147,8 +150,16 @@ function scanDir(dir) {
 
 // ── Run ───────────────────────────────────────────────────────────────────────
 
-for (const dir of SCAN_DIRS) {
-  try { scanDir(dir); } catch { /* dir may not exist */ }
+if (isFixtureMode && fixtureFile) {
+  scanFile(resolve(fixtureFile));
+} else {
+  for (const dir of SCAN_DIRS) {
+    try {
+      scanDir(dir);
+    } catch {
+      /* dir may not exist */
+    }
+  }
 }
 
 if (violations.length === 0) {

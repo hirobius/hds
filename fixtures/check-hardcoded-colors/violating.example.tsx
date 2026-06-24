@@ -1,7 +1,8 @@
-// TODO: replace with real-violating-example for check-hardcoded-colors
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
-export function ViolatingExample() {
-  return <div>stub</div>;
+// violating: SVG fill attribute carries a hardcoded hex color (gate check C1).
+export function ViolatingColorIcon() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <rect width="16" height="16" fill="#ff0044" />
+    </svg>
+  );
 }

@@ -1,7 +1,8 @@
-// TODO: replace with real-passing-example for check-hardcoded-colors
-// This stub needs a real passing .tsx snippet that the gate should NOT flag.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
-export function PassingExample() {
-  return <div>stub</div>;
+// passing: SVG fill uses currentColor / a token var, not a raw color literal.
+export function PassingColorIcon() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <rect width="16" height="16" fill="currentColor" />
+    </svg>
+  );
 }
