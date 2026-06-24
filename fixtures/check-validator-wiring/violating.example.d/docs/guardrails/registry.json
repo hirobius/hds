@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-01-01T00:00:00.000Z",
+  "gates": [
+    {
+      "id": "check-foo",
+      "description": "Minimal fixture gate declared as pre-commit but not wired.",
+      "severity": "error",
+      "gateScript": "scripts/check-foo.mjs",
+      "firingChannel": "pre-commit"
+    }
+  ]
+}

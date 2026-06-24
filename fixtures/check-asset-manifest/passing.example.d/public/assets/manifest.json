@@ -1,0 +1,11 @@
+{
+  "assets": [
+    {
+      "path": "/assets/hero.webp",
+      "kind": "image",
+      "alt": "Hero banner image for homepage",
+      "status": "ready",
+      "reviewed": true
+    }
+  ]
+}

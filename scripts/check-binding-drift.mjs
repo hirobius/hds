@@ -34,8 +34,14 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOFT = process.argv.includes('--soft');
 const VERBOSE = process.argv.includes('--verbose');
 
-const COMPONENTS_DIR = path.join(ROOT, 'src/app/components');
-const MANIFEST_PATH = path.join(ROOT, 'public/hds-manifest.json');
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+
+const COMPONENTS_DIR = path.join(INPUT_ROOT, 'src/app/components');
+const MANIFEST_PATH = path.join(INPUT_ROOT, 'public/hds-manifest.json');
 
 function pathToCSSVar(p) {
   return '--' + p.split('.').join('-');
@@ -90,15 +96,13 @@ function checkComponent(name, spec, sourcePath) {
 
   const slug = specToSlug(name);
   const componentTierPrefix = `--component-${slug}-`;
-  const bindableVars = new Set(
-    [...bindablePaths(spec)].map(pathToCSSVar),
-  );
+  const bindableVars = new Set([...bindablePaths(spec)].map(pathToCSSVar));
 
   for (const ref of extractCssVars(source)) {
     if (!ref.name.startsWith(componentTierPrefix)) continue;
     if (bindableVars.has(ref.name)) continue;
     violations.push({
-      file: path.relative(ROOT, sourcePath),
+      file: path.relative(INPUT_ROOT, sourcePath),
       line: lineNumber(source, ref.index),
       cssVar: ref.name,
       spec: name,
@@ -132,12 +136,11 @@ function main() {
   }
 
   if (VERBOSE || violations.length > 0) {
-    const tail = missingSource > 0
-      ? ` ${missingSource} spec(s) had slots[] but no matching .tsx — ignored.`
-      : '';
-    console.log(
-      `Scanned ${scanned} component file(s) with populated slots[].${tail}`,
-    );
+    const tail =
+      missingSource > 0
+        ? ` ${missingSource} spec(s) had slots[] but no matching .tsx — ignored.`
+        : '';
+    console.log(`Scanned ${scanned} component file(s) with populated slots[].${tail}`);
   }
 
   if (violations.length === 0) {
@@ -157,7 +160,9 @@ function main() {
   }
   stream(
     `\n${violations.length} binding drift violation(s) — counts: ` +
-      `${Object.entries(grouped).map(([k, n]) => `${k}=${n}`).join(', ')}`,
+      `${Object.entries(grouped)
+        .map(([k, n]) => `${k}=${n}`)
+        .join(', ')}`,
   );
 
   if (SOFT) {

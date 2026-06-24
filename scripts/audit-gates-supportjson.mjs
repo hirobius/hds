@@ -42,11 +42,21 @@ import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const REGISTRY_PATH = path.join(ROOT, 'docs/guardrails/registry.json');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+
+const REGISTRY_PATH = path.join(INPUT_ROOT, 'docs/guardrails/registry.json');
 
 const argv = process.argv.slice(2);
 const jsonMode = hasJsonFlag(argv);
-const strictMode = argv.includes('--strict');
+const fixtureMode = argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+// In fixture mode, treat non-compliance as strict (exit 1) so the harness can
+// assert violating→non-zero / passing→zero without requiring --strict.
+const strictMode = argv.includes('--strict') || fixtureMode;
 const verbose = argv.includes('--verbose');
 
 // ── Load registry ────────────────────────────────────────────────────────────
@@ -79,14 +89,14 @@ const target = registry.gates.filter(
 const results = [];
 
 for (const gate of target) {
-  const scriptPath = path.join(ROOT, gate.gateScript);
+  const scriptPath = path.join(INPUT_ROOT, gate.gateScript);
   if (!fs.existsSync(scriptPath)) {
     results.push({ gate, bucket: 'errored', detail: 'gateScript file not found' });
     continue;
   }
 
   const proc = spawnSync(process.execPath, [scriptPath, '--json'], {
-    cwd: ROOT,
+    cwd: INPUT_ROOT,
     encoding: 'utf8',
     timeout: 30_000,
     maxBuffer: 16 * 1024 * 1024,
@@ -149,9 +159,8 @@ const summary = {
   nonCompliant: results.filter((r) => r.bucket === 'non-compliant').length,
   errored: results.filter((r) => r.bucket === 'errored').length,
 };
-summary.compliancePct = summary.total === 0
-  ? 0
-  : Math.round((summary.compliant / summary.total) * 100);
+summary.compliancePct =
+  summary.total === 0 ? 0 : Math.round((summary.compliant / summary.total) * 100);
 
 // Convert non-compliant + partial + errored into Violation rows so the
 // inventory can pick this gate's findings up via run-gates --emit-inventory.

@@ -16,8 +16,15 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 const ROOT = process.cwd();
-const ATTRIBUTIONS_PATH = join(ROOT, 'ATTRIBUTIONS.md');
-const MANIFEST_PATH = join(ROOT, 'public/assets/manifest.json');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+
+const ATTRIBUTIONS_PATH = join(INPUT_ROOT, 'ATTRIBUTIONS.md');
+const MANIFEST_PATH = join(INPUT_ROOT, 'public/assets/manifest.json');
 
 const violations = [];
 
@@ -29,7 +36,7 @@ if (!existsSync(ATTRIBUTIONS_PATH)) {
 const content = readFileSync(ATTRIBUTIONS_PATH, 'utf8');
 const idMatches = [...content.matchAll(/^- Registry ID:\s*([a-z0-9-]+)\s*$/gim)];
 const sourceMatches = [...content.matchAll(/^- Source:\s*\[.*?\]\((https?:\/\/[^\s)]+)\)\s*$/gim)];
-const ids = idMatches.map(match => match[1]);
+const ids = idMatches.map((match) => match[1]);
 const idSet = new Set(ids);
 
 if (ids.length === 0) {
@@ -51,7 +58,9 @@ if (existsSync(MANIFEST_PATH)) {
   for (const entry of assets) {
     if (!entry?.sourceId) continue;
     if (!idSet.has(entry.sourceId)) {
-      violations.push(`manifest sourceId does not exist in ATTRIBUTIONS.md: ${entry.path} -> ${entry.sourceId}`);
+      violations.push(
+        `manifest sourceId does not exist in ATTRIBUTIONS.md: ${entry.path} -> ${entry.sourceId}`,
+      );
     }
   }
 }
