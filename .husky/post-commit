@@ -8,6 +8,11 @@
 #    --no-verify was used (or the pre-commit hook silently failed). The
 #    log makes bypasses auditable; it does not prevent them.
 #
+# NOTE: firing telemetry (registry.json lastFiringAt/lastViolationAt) is NOT
+# refreshed here — doing so rewrote a git-tracked file on every commit and left
+# the tree perpetually dirty. Refresh it deliberately instead, off the hot path:
+#   pnpm guardrail:firing-stats   (or a ci-scheduled job that commits the result)
+#
 # Both jobs are detached + nohup'd so `git commit` returns immediately.
 
 ROOT="$(git rev-parse --show-toplevel)"
@@ -17,7 +22,7 @@ mkdir -p "$LOG_DIR"
 nohup node "$ROOT/scripts/orchestration-watcher.mjs" --once --quiet \
   >/dev/null 2>&1 </dev/null &
 
-nohup sh -c "node \"$ROOT/scripts/run-gates.mjs\" --channel pre-commit --emit-jsonl docs/guardrails/firing-log.jsonl && node \"$ROOT/scripts/refresh-firing-stats.mjs\"" \
+nohup sh -c "node \"$ROOT/scripts/run-gates.mjs\" --channel pre-commit --emit-jsonl docs/guardrails/firing-log.jsonl" \
   >>"$LOG_DIR/firing-log.stderr" 2>&1 </dev/null &
 
 exit 0

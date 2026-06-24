@@ -16,6 +16,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { writeStableArtifact } from './lib/stable-artifact.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -1700,7 +1701,13 @@ ${serialize(refsTree)}
   );
   writeFileSync(join(ROOT, 'src', 'app', 'design-system', 'generated-token-refs.ts'), tokenRefsTs);
   const manifest = buildManifest(allTokens, raw);
-  writeFileSync(join(ROOT, 'public', 'hds-manifest.json'), JSON.stringify(manifest, null, 2));
+  // Stable write: the `generated` ISO timestamp is volatile — only rewrite the
+  // manifest when its substantive content changes, so unchanged builds don't
+  // churn the git tree (default volatileRe matches ISO dates).
+  writeStableArtifact(
+    join(ROOT, 'public', 'hds-manifest.json'),
+    JSON.stringify(manifest, null, 2) + '\n',
+  );
 
   // ── Tailwind theme bridge (CommonJS) ────────────────────────────────────
   // tailwind.config.ts spreads this into its own theme.extend so utility
