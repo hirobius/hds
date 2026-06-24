@@ -40,7 +40,7 @@
 
 ### 🟡 Needs your nod (changes guardrail posture)
 
-- **#16 Execute decommission plan** — start with Wave 1 (scrap `check-code-connect` no-op + `check-legacy-hds-vars` migration-complete; both live-confirmed), then channel downgrades + merges.
+- **#16 Execute decommission plan** — ✅ Waves 1–2 done (2026-06-24): scrapped `check-code-connect` + `check-legacy-hds-vars`, downgraded 13 gates pre-commit→ci-pr (63→62 gates, pre-commit 47→32). Remaining: Waves 3–6 (merges, CVA-convergence retirements, ratchet retirements).
 
 ### 🟢 Additive infra / tooling (safe to do solo)
 

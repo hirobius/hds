@@ -26,7 +26,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "audit-bundle",
@@ -165,7 +165,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "audit-tokens",
@@ -253,19 +253,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
-    },
-    {
-      "id": "check-code-connect",
-      "description": "CI check: every Figma component with a Code Connect mapping (.figma.tsx) has a corresponding React component, and vice versa.",
-      "severity": "warn",
-      "gateScript": "scripts/check-code-connect.mjs",
-      "fixturePath": "fixtures/check-code-connect",
-      "lastFiringAt": "2026-06-19T02:45:49.806Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-contrast",
@@ -277,7 +265,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-css-integrity",
@@ -376,7 +364,7 @@
       "lastViolationAt": "2026-05-08T02:21:53.642Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-frozen-demos",
@@ -444,18 +432,6 @@
       "supportsJson": true
     },
     {
-      "id": "check-legacy-hds-vars",
-      "description": "Flags direct use of legacy --hds-text, --hds-dim, and --hds-subtle CSS custom properties in component and page source files. These vars have been renamed to the semantic text tier.",
-      "severity": "warn",
-      "gateScript": "scripts/check-legacy-hds-vars.mjs",
-      "fixturePath": "fixtures/check-legacy-hds-vars",
-      "lastFiringAt": "2026-06-19T02:45:50.580Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pre-commit"
-    },
-    {
       "id": "check-licenses",
       "description": "License compliance gate. Runs pnpm licenses list --prod and blocks copyleft/restrictive licenses (GPL/AGPL/LGPL/SSPL/BUSL/EUPL/OSL/CC-BY-NC/CDDL).",
       "severity": "error",
@@ -492,7 +468,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-mono-roles",
@@ -504,7 +480,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-motion",
@@ -528,7 +504,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "ci-pr",
       "wiringTodo": "should be ci-pr or ci-scheduled — not yet wired into a workflow that actually triggers it"
     },
     {
@@ -589,7 +565,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-route-smoke",
@@ -628,7 +604,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-source-canon",
@@ -733,7 +709,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-token-structure",
@@ -745,7 +721,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-unresponsive-grids",
@@ -782,7 +758,7 @@
       "lastViolationAt": "2026-05-06T19:18:44.986Z",
       "owner": "Adrian",
       "source": "generated",
-      "firingChannel": "pre-commit",
+      "firingChannel": "ci-pr",
       "scope": "full-tree"
     },
     {

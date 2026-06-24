@@ -1,6 +1,8 @@
 # Guardrail Decommission & Consolidation Plan
 
-**Status:** proposed — execution tracked as the "Execute guardrail decommission plan" task.
+**Status:** Waves 1–2 **executed 2026-06-24** (63→62 gates; 2 scrapped, 13 downgraded
+pre-commit→ci-pr — `audit-tiers` routed to ci-pr, not ci-scheduled, to match the
+`run-gates --channel` wiring in quality.yml). Waves 3–6 remain proposed.
 **Basis:** 63 registered gates (registry.json v1.0.0, 2026-06-19).
 **Context:** A CVA convergence pass on component primitives (inline `style={{}}` / JS
 style-objects → `cva()` variants) plus a new type-level gate forbidding a `style` prop on
@@ -18,7 +20,7 @@ moved to `ci-pr` / `ci-scheduled`.
 
 ## Execution waves (ranked: max overhead reduction at min risk)
 
-### Wave 1 — Zero-risk scraps (do first, no migration)
+### Wave 1 — Zero-risk scraps ✅ DONE (2026-06-24)
 
 1. **SCRAP `check-code-connect`** — self-documents as "no `.figma.tsx` files exist — exits 0."
    Pure pre-commit dead weight. _Live-confirmed 2026-06-24: "No Code Connect files found — skipping."_
@@ -28,7 +30,7 @@ moved to `ci-pr` / `ci-scheduled`.
    `lastViolationAt: null`. _Live-confirmed: zero references in component files._
    Pre-condition: `grep -r "var(--hds-text-primary\|secondary\|disabled" src/` empty outside `theme.css`.
 
-### Wave 2 — Downgrade pre-commit → ci-pr (high latency win, zero risk)
+### Wave 2 — Downgrade pre-commit → ci-pr ✅ DONE (2026-06-24)
 
 Batch-edit `firingChannel` in registry.json, then run `node scripts/update-precommit-hash.mjs`
 (else `check-validator-wiring` fails the next commit).
