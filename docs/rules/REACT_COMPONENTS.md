@@ -8,16 +8,16 @@
 
 Values are the ground truth from `hirobius.tokens.json` → `semantic.typography.*`.
 
-| Token / alias | Size (desktop max) | Weight | Role |
-|---|---|---|---|
-| `display` | 72px / 1.0 | 300 light | Hero headlines and landing-page displays |
-| `h1` / `heading1` | 48px / 1.25 | 300 light | Primary section headings (h1) |
-| `h2` / `heading2` | 30px / 1.375 | 300 light | Secondary section headings (h2) |
-| `h3` / `heading3` | 20px / 1.375 | 500 medium | Component and card headers (h3) |
-| `body` | 17px / 1.625 | 400 regular | Body prose — default text style |
-| `small` / `ui` | 15px / 1.625 | 400 regular | UI labels, sidebars, nav, footnotes |
-| `caption` | 13px / 1.5 | 400 regular | Helper text, secondary metadata, form annotations |
-| `mono` / `technical` | 15px / 1.625 | 400 regular | Monospace: code snippets, token names, keyboard shortcuts, git hashes, hex codes, IP addresses, and aligned data readouts |
+| Token / alias        | Size (desktop max) | Weight      | Role                                                                                                                      |
+| -------------------- | ------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `display`            | 72px / 1.0         | 300 light   | Hero headlines and landing-page displays                                                                                  |
+| `h1` / `heading1`    | 48px / 1.25        | 300 light   | Primary section headings (h1)                                                                                             |
+| `h2` / `heading2`    | 30px / 1.375       | 300 light   | Secondary section headings (h2)                                                                                           |
+| `h3` / `heading3`    | 20px / 1.375       | 500 medium  | Component and card headers (h3)                                                                                           |
+| `body`               | 17px / 1.625       | 400 regular | Body prose — default text style                                                                                           |
+| `small` / `ui`       | 15px / 1.625       | 400 regular | UI labels, sidebars, nav, footnotes                                                                                       |
+| `caption`            | 13px / 1.5         | 400 regular | Helper text, secondary metadata, form annotations                                                                         |
+| `mono` / `technical` | 15px / 1.625       | 400 regular | Monospace: code snippets, token names, keyboard shortcuts, git hashes, hex codes, IP addresses, and aligned data readouts |
 
 `body`, `small`/`ui`, and `caption` must have line-height ≥ 1.5. If a UI element feels too small, use `small`/`ui` (15px) — never drop to `mono`/`technical` or `caption` for standard text. Use `caption` (not `mono`/`technical`) for form helper text and secondary prose annotations.
 
@@ -27,11 +27,11 @@ Do not use `technical` for status tags, categories, dates, user names, or genera
 
 ## Spacing — 24px Component Padding Standard
 
-| Context | Token | Value | Role |
-|---|---|---|---|
-| Shared surface padding | `component.padding` | 24px | Default inset for cards, forms, panels, and other grouped surfaces |
-| Tight component gaps | `component.gap` | 8px | Label↔input rhythm and closely coupled control spacing |
-| Micro spacing | `subgrid.gap` | 4px | Inline clusters, cap-height nudge, and tiny internal offsets |
+| Context                | Token               | Value | Role                                                               |
+| ---------------------- | ------------------- | ----- | ------------------------------------------------------------------ |
+| Shared surface padding | `component.padding` | 24px  | Default inset for cards, forms, panels, and other grouped surfaces |
+| Tight component gaps   | `component.gap`     | 8px   | Label↔input rhythm and closely coupled control spacing             |
+| Micro spacing          | `subgrid.gap`       | 4px   | Inline clusters, cap-height nudge, and tiny internal offsets       |
 
 `component.padding` is the default inset for breathable shared surfaces. Use it for cards, forms, and panels; reserve `component.gap` for the 8px label/input rhythm and `subgrid.gap` for micro-spacing only.
 
@@ -46,6 +46,7 @@ Do not use `technical` for status tags, categories, dates, user names, or genera
 - **Automated Auto-Journaling**: Every autonomous visual fix or self-heal must append a timestamped Dev Note to `docs/CASE_STUDY_JOURNAL.md` describing the layout drift and how it was reconciled.
 
 ### Containers
+
 - **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="component"` (24px) for cards, `padding="item"` (16px) for compact items), consistent radius (`var(--primitive-radius-8)`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` on layout primitives accepts HDS token keys (`'normal'`, `'px24'`).
 - **No `<Divider>` for layout separation** — use 48px gap (`space.12`) between major sections; whitespace is the separator.
 
@@ -61,6 +62,7 @@ Every item below is a build error. If an AI agent or human produces any of these
 - **No hover fill changes** — interactive cards respond to hover with `transform: scale(1.02)` only. Never change `background-color`, `opacity`, or `border-color` on hover as the primary interaction signal.
 
 ### Typography
+
 - **NEVER manually stack headings + subheadings using `<Stack>`** — ALWAYS use:
   - `<TextLockup title="..." description="..." size="section|metric|detail" />` for doc surfaces and displays (preset sizes with automatic secondary color)
   - `<HeadingStack level="heading1|heading2|heading3" heading="..." subheading="..." />` for semantic heading pairs (enforced secondary color, automatic gaps)
@@ -77,6 +79,7 @@ For component recipes, visual hierarchy, text alignment, and responsiveness patt
 Prescriptive rules for each component family. Follow these exactly — they are derived from `hirobius.tokens.json`, `public/llms.txt`, and the HDS Card Anatomy table.
 
 ### Card
+
 - Background: `var(--semantic-color-surface-raised)`. No custom colors, gradients, or tinted fills.
 - Border: `1px solid var(--semantic-color-border-default)` (resting cards only — `elevation.flat`). Never use `box-shadow` as an elevation substitute.
 - Border radius: `var(--primitive-radius-8)` (8px). Never 12px, 16px, 20px, `rounded-xl`, or `rounded-full`.
@@ -87,24 +90,28 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 - Hover (interactive cards only): `transform: scale(1.02)`. Never change background-color, border-color, or opacity as the primary hover signal.
 
 ### Dialog
+
 - Modal and sheet surfaces must use `<HdsSurface>` for the background. Never hardcode `background-color`.
 - Internal padding: `var(--semantic-space-component-padding)` (`semantic.space.component.padding`). Pass `padding="component"` to `<HdsSurface>`.
 - Elevation: bind to `semantic.elevation.overlay` role — `surface.overlay` background + `shadow.overlay` shadow. Never use raw shadow values; always bind via the role token.
 - Never apply `backdrop-filter: blur` on the dialog surface itself; blur is reserved for the scrim behind the dialog.
 
 ### Table
+
 - All cell dividers: `1px solid var(--semantic-color-border-default)`. Never hardcode a hex or rgb color for dividers.
 - Table caption / header labels: `hds.typeStyles.caption` / `<Text variant="caption">`.
 - Row hover: use `var(--semantic-color-surface-overlay)` as a background tint. No custom colors.
 - Column headers use `hds.typeStyles.small` (15px / weight 400). Do not use `heading3` or bold weight in table headers.
 
 ### Tag
+
 - Default variant: background `var(--semantic-color-surface-raised)`, border `1px solid var(--semantic-color-border-default)` (border-radius `primitive.radius.full` — pill).
 - Feedback variants (error / success / warning / info): use `semantic.color.feedback.bg.*` tokens for background (e.g. `var(--semantic-color-feedback-bg-error)`), never custom colors.
 - Feedback text uses the matching `semantic.color.feedback.*` foreground token (e.g. `var(--semantic-color-feedback-error)`).
 - Label: `component.tag.fontSize` (13px / `primitive.typography.size.xs`) + `component.tag.fontWeight` (medium 500).
 
 ### HdsSelect
+
 - Follows the same border, radius, and focus rules as `Input`:
   - Border at rest: `1px solid var(--semantic-color-border-default)`.
   - Border on focus: `1px solid var(--semantic-color-border-accent)` + `2px` outline offset.
@@ -113,21 +120,40 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 - Never hardcode border or background colors; use component or semantic tokens.
 
 ### Tooltip
+
 - Background: `var(--semantic-color-surface-inverse)`. Never custom colors.
 - Text: `var(--semantic-color-content-inverse)`. Never a hardcoded color.
 - No border. Floating elements (popover/tooltip/dropdown) use `elevation.floating` which includes `shadow.floating` — bind via the role token, never via raw shadow values.
 - Type: `hds.typeStyles.small` (15px). Never `caption` or smaller for tooltip body text.
 
+## Form Controls — Controlled-Only Contract
+
+`HdsToggle`, `HdsRadio`, `HdsSlider`, `HdsSelect`, and `SegmentedControl` are
+**controlled-only by deliberate contract**. Each requires:
+
+- a value prop (`value` / `checked`) — the single source of truth, and
+- an `onChange` handler — fired on every user interaction.
+
+They do **not** accept `defaultValue` / `defaultChecked` and keep no internal
+value state. The consuming page owns the state and lifts it up. This is
+intentional: a selection control should have exactly one source of truth, and it
+aligns with the Pages-smart / Components-dumb split below (state lives in the page).
+
+`Input` is the deliberate exception — it supports both controlled (`value`) and
+uncontrolled (`defaultValue`) modes to match native `<input>` ergonomics for
+simple text fields. The selection controls do not. Do not add `defaultValue` to
+the selection controls without revisiting this contract.
+
 ## Elevation roles
 
 Bind to the role token — never write raw shadow, surface, or border values by hand. The role bundles all three so primitives can't mismatch.
 
-| Surface | Role token | Background | Shadow | Border |
-|---|---|---|---|---|
-| Card / panel resting | `semantic.elevation.flat` | `surface.page` | none | `border.subtle` 1px |
-| Card / panel lifted (interactive only) | `semantic.elevation.raised` | `surface.raised` | `shadow.subtle` | none |
-| Popover / dropdown / tooltip | `semantic.elevation.floating` | `surface.raised` | `shadow.floating` | none |
-| Dialog / sheet / modal | `semantic.elevation.overlay` | `surface.overlay` | `shadow.overlay` | none |
+| Surface                                | Role token                    | Background        | Shadow            | Border              |
+| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | ------------------- |
+| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | `border.subtle` 1px |
+| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                |
+| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                |
+| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                |
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
@@ -151,13 +177,15 @@ Cards default to `flat`. They lift to `raised` only on interactive hover or when
 Validator: `validators/motion-perf.mjs`. Full reference: `public/llms.txt` §Motion Performance Rules.
 
 ### Rendering cost tiers
-| Tier | Properties | Cost |
-|---|---|---|
-| composite | `transform`, `opacity` | GPU layer — 60fps safe |
-| paint | `color`, `border`, `filter`, `backdrop-filter` | Per-frame rasterise — costly on large surfaces |
-| layout | `width`, `height`, `top`, `left`, `bottom`, `margin`, `padding` | Full reflow — never animate |
+
+| Tier      | Properties                                                      | Cost                                           |
+| --------- | --------------------------------------------------------------- | ---------------------------------------------- |
+| composite | `transform`, `opacity`                                          | GPU layer — 60fps safe                         |
+| paint     | `color`, `border`, `filter`, `backdrop-filter`                  | Per-frame rasterise — costly on large surfaces |
+| layout    | `width`, `height`, `top`, `left`, `bottom`, `margin`, `padding` | Full reflow — never animate                    |
 
 ### Critical rules (validator-enforced)
+
 - **Never `transition: all`** — enumerate only compositor-safe properties: `transition: transform 0.3s ease, opacity 0.3s ease`.
 - **Never animate layout-triggering properties** — use `transform: translateX/Y` instead of `left/top`, `transform: scaleX/Y` instead of `width/height`.
 - **Never drive animation from scroll events or `scrollTop`/`scrollY` polling** — use CSS Scroll Timelines or `IntersectionObserver`.
@@ -166,17 +194,20 @@ Validator: `validators/motion-perf.mjs`. Full reference: `public/llms.txt` §Mot
 - **Never run `requestAnimationFrame` loops without a stop condition** — always cancel via `cancelAnimationFrame`.
 
 ### Preferred patterns
+
 - Default to `transform` + `opacity` for all motion.
 - For layout-like effects use the **FLIP pattern**: measure `first` → apply class → measure `last` → animate `transform` back.
 - For scroll-linked motion use CSS Scroll Timelines (`animation-timeline: scroll()` / `view()`).
 - Batch all DOM reads before writes — never interleave read/write in the same animation frame.
 
 ### Blur, filters, and GPU layers
+
 - Keep `blur()` at or below 8px on any animated or large surface.
 - Tailwind `blur-md` and above (12px+) are forbidden on animated surfaces.
 - Add `will-change` immediately before an animation begins; remove it immediately after.
 
 ### Accessibility
+
 - All animation/transition declarations must have a `@media (prefers-reduced-motion: reduce)` override or be wrapped in `@media (prefers-reduced-motion: no-preference)`.
 - Prefer downgrading the motion technique over removing feedback entirely.
 
