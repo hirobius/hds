@@ -1,6 +1,6 @@
 # Exception Audit Report
 
-Generated: 2026-06-24T18:27:43.748Z
+Generated: 2026-06-24T20:49:17.479Z
 
 ## Summary
 
@@ -191,7 +191,7 @@ Generated: 2026-06-24T18:27:43.748Z
 | `scripts/__tests__/build-token-index.test.mjs` | 286 | `audit-ok` | `reason with leading space  \n';` | justified |
 | `scripts/audit-component-integrity.mjs` | 143 | `audit-ok` | `')) continue;` | justified |
 | `scripts/audit-component-integrity.mjs` | 144 | `audit-ok` | `')) continue;` | justified |
-| `scripts/audit-gate-replaceability.mjs` | 1102 | `spacing-ok` | `etc.) are well-formed. No industry tool manages project-specific inline suppression markers.',` | justified |
+| `scripts/audit-gate-replaceability.mjs` | 1086 | `spacing-ok` | `etc.) are well-formed. No industry tool manages project-specific inline suppression markers.',` | justified |
 | `scripts/audit-pages.mjs` | 12 | `audit-ok` | `<reason>` | untriaged |
 | `scripts/audit-pages.mjs` | 111 | `audit-ok` | `')) continue;` | justified |
 | `scripts/audit-pages.mjs` | 112 | `audit-ok` | `')) continue;` | justified |
