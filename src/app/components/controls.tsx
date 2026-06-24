@@ -659,7 +659,6 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
                   isSelected={opt.value === value}
                   isFocused={idx === focusIdx}
                   variants={itemVariants}
-                  isDark={isDark}
                   onSelect={() => {
                     onChange(opt.value);
                     setOpen(false);
@@ -683,7 +682,6 @@ function SelectOption({
   isSelected,
   isFocused,
   variants,
-  isDark,
   onSelect,
   onHover,
 }: {
@@ -691,11 +689,9 @@ function SelectOption({
   isSelected: boolean;
   isFocused: boolean;
   variants: Variants;
-  isDark: boolean;
   onSelect: () => void;
   onHover: () => void;
 }) {
-  void isDark;
   const activeBackground = 'var(--semantic-color-surface-accentSubtle)';
 
   return (

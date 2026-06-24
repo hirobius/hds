@@ -21,7 +21,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        secondary: 'border border-input bg-background text-foreground hover:bg-accent hover:border-ring',
+        secondary:
+          'border border-input bg-background text-foreground hover:bg-accent hover:border-ring',
         tertiary: 'text-foreground hover:bg-accent',
       },
       size: {
@@ -44,7 +45,7 @@ const buttonVariants = cva(
       size: 'md',
       iconOnly: false,
     },
-  }
+  },
 );
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -53,7 +54,8 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 /** @public */
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
+  extends
+    Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
     Omit<ButtonVariantProps, 'iconOnly'> {
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
@@ -69,8 +71,6 @@ export interface ButtonProps
   iconOnly?: boolean;
   /** Disable interaction. Mirrors the native HTML attribute. */
   disabled?: boolean;
-  /** @deprecated CSS vars are theme-aware. Retained for backward compatibility. */
-  isDark?: boolean;
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -78,65 +78,62 @@ export interface ButtonProps
 /**
  * Triggers an action when activated.
  */
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  function Button(
-    {
-      className,
-      variant,
-      size,
-      iconOnly = false,
-      asChild = false,
-      label,
-      loading = false,
-      iconLeft,
-      iconRight,
-      disabled,
-      isDark: _isDark,
-      children,
-      type = 'button',
-      ...props
-    },
-    ref,
-  ) {
-    const isDisabled = disabled || loading;
-    const content = children ?? label;
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    className,
+    variant,
+    size,
+    iconOnly = false,
+    asChild = false,
+    label,
+    loading = false,
+    iconLeft,
+    iconRight,
+    disabled,
+    children,
+    type = 'button',
+    ...props
+  },
+  ref,
+) {
+  const isDisabled = disabled || loading;
+  const content = children ?? label;
 
-    if (asChild) {
-      return (
-        <Slot
-          ref={ref as React.Ref<HTMLElement>}
-          className={cn(buttonVariants({ variant, size, iconOnly, className }))}
-          aria-disabled={isDisabled || undefined}
-          aria-busy={loading || undefined}
-          data-state={loading ? 'loading' : undefined}
-          data-variant={variant ?? undefined}
-          data-size={size ?? undefined}
-          {...(props as React.HTMLAttributes<HTMLElement>)}
-        >
-          {children as React.ReactElement}
-        </Slot>
-      );
-    }
-
+  if (asChild) {
     return (
-      <button
-        ref={ref}
-        type={type}
-        disabled={isDisabled}
+      <Slot
+        ref={ref as React.Ref<HTMLElement>}
+        className={cn(buttonVariants({ variant, size, iconOnly, className }))}
+        aria-disabled={isDisabled || undefined}
         aria-busy={loading || undefined}
         data-state={loading ? 'loading' : undefined}
         data-variant={variant ?? undefined}
         data-size={size ?? undefined}
-        className={cn(buttonVariants({ variant, size, iconOnly, className }))}
-        {...props}
+        {...(props as React.HTMLAttributes<HTMLElement>)}
       >
-        {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : iconLeft}
-        {!iconOnly && content}
-        {!loading && !iconOnly && iconRight}
-      </button>
+        {children as React.ReactElement}
+      </Slot>
     );
-  },
-);
+  }
+
+  return (
+    <button
+      ref={ref}
+      type={type}
+      disabled={isDisabled}
+      aria-busy={loading || undefined}
+      data-state={loading ? 'loading' : undefined}
+      data-variant={variant ?? undefined}
+      data-size={size ?? undefined}
+      className={cn(buttonVariants({ variant, size, iconOnly, className }))}
+      {...props}
+    >
+      {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : iconLeft}
+      {!iconOnly && content}
+      {!loading && !iconOnly && iconRight}
+    </button>
+  );
+});
 
 /** @internal — CVA variant helper; compose via Button props instead. */
 export { buttonVariants };
