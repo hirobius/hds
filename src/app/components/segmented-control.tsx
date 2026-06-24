@@ -51,8 +51,8 @@ interface SegmentedControlProps {
   value: string;
   /** Called when the user selects a different option. */
   onChange: (value: string) => void;
-  /** Sizing variant for the control. */
-  size?: 'default' | 'compact';
+  /** Size on the sm/md ramp shared with Button/Input. */
+  size?: 'sm' | 'md';
   /** Visual treatment for the rail and active segment. */
   variant?: 'primary' | 'secondary';
   /** Whether the control should stretch to the width of its container. */
@@ -72,7 +72,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
       options,
       value,
       onChange,
-      size = 'default',
+      size = 'md',
       variant = 'primary',
       fullWidth = false,
       railPadding,
@@ -85,7 +85,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
     const frozenState = useFrozenState();
     const demoState = frozenState as 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled' | null;
     const isDisabled = demoState === 'disabled';
-    const isCompact = size === 'compact';
+    const isCompact = size === 'sm';
     const isSecondary = variant === 'secondary';
     const resolvedAriaLabel = ariaLabel ?? label;
     const resolvedSegmentPaddingX =
@@ -95,7 +95,10 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
     return (
       <div
         ref={ref}
-        style={{ ...segmentedControlStyles.outerWrapper, width: fullWidth ? '100%' : 'fit-content' }}
+        style={{
+          ...segmentedControlStyles.outerWrapper,
+          width: fullWidth ? '100%' : 'fit-content',
+        }}
       >
         {label && (
           <span
@@ -112,7 +115,14 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
         <div
           role="group"
           aria-label={resolvedAriaLabel}
-          style={{ ...segmentedControlStyles.railBase, width: fullWidth ? '100%' : 'fit-content', padding: railPadding ?? '4px', background: isSecondary ? 'var(--semantic-color-surface-page)' : 'var(--semantic-color-surface-raised)' }}
+          style={{
+            ...segmentedControlStyles.railBase,
+            width: fullWidth ? '100%' : 'fit-content',
+            padding: railPadding ?? '4px',
+            background: isSecondary
+              ? 'var(--semantic-color-surface-page)'
+              : 'var(--semantic-color-surface-raised)',
+          }}
         >
           {options.map((option) => {
             const active = option.value === value;

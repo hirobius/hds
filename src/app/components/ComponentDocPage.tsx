@@ -384,7 +384,7 @@ export function HdsComponentDoc({
                   options={availableTabs.map((tab) => ({ value: tab.id, label: tab.label }))}
                   value={activeTab}
                   onChange={(value) => setActiveTab(value as ComponentDocTabId)}
-                  size="compact"
+                  size="sm"
                   railPadding={hds.semantic.space.subgrid.gap}
                 />
               </div>

@@ -11,8 +11,8 @@ export function TokenDisplayToggle() {
     <SegmentedControl
       label="Display mode"
       value={showCss ? 'css' : 'token'}
-      onChange={value => setShowCss(value === 'css')}
-      size="compact"
+      onChange={(value) => setShowCss(value === 'css')}
+      size="sm"
       options={[
         { value: 'token', label: 'Token name' },
         { value: 'css', label: 'CSS var' },

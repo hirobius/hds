@@ -2,45 +2,45 @@
  * SegmentedControl stories — variant, size, and controlled demos.
  * @see src/app/components/SegmentedControl.tsx
  */
-import type { Meta, StoryObj } from "@storybook/react";
-import React, { useState } from "react";
-import { SegmentedControl } from "../app/components/segmented-control";
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
+import { SegmentedControl } from '../app/components/segmented-control';
 
 const VIEW_OPTIONS = [
-  { value: "list", label: "List" },
-  { value: "grid", label: "Grid" },
-  { value: "table", label: "Table" },
+  { value: 'list', label: 'List' },
+  { value: 'grid', label: 'Grid' },
+  { value: 'table', label: 'Table' },
 ];
 
 const THEME_OPTIONS = [
-  { value: "system", label: "System" },
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
+  { value: 'system', label: 'System' },
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
 ];
 
 const meta = {
-  title: "Primitives/segmented-control",
+  title: 'Primitives/segmented-control',
   component: SegmentedControl,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component:
-          "Segmented selection input for compact mutually-exclusive choices. Variants: primary | secondary. Sizes: default | compact. Supports full-width layout.",
+          'Segmented selection input for compact mutually-exclusive choices. Variants: primary | secondary. Sizes: sm | md. Supports full-width layout.',
       },
     },
   },
   argTypes: {
     variant: {
-      control: { type: "radio" },
-      options: ["primary", "secondary"],
+      control: { type: 'radio' },
+      options: ['primary', 'secondary'],
     },
     size: {
-      control: { type: "radio" },
-      options: ["default", "compact"],
+      control: { type: 'radio' },
+      options: ['sm', 'md'],
     },
-    fullWidth: { control: "boolean" },
+    fullWidth: { control: 'boolean' },
   },
 } satisfies Meta<typeof SegmentedControl>;
 
@@ -48,7 +48,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function PrimaryRender() {
-  const [value, setValue] = useState("list");
+  const [value, setValue] = useState('list');
   return (
     <SegmentedControl
       label="View"
@@ -65,7 +65,7 @@ export const Primary: Story = {
 };
 
 function SecondaryRender() {
-  const [value, setValue] = useState("system");
+  const [value, setValue] = useState('system');
   return (
     <SegmentedControl
       label="Theme"
@@ -82,14 +82,14 @@ export const Secondary: Story = {
 };
 
 function CompactRender() {
-  const [value, setValue] = useState("list");
+  const [value, setValue] = useState('list');
   return (
     <SegmentedControl
       ariaLabel="View mode"
       options={VIEW_OPTIONS}
       value={value}
       onChange={setValue}
-      size="compact"
+      size="sm"
     />
   );
 }
@@ -99,9 +99,9 @@ export const Compact: Story = {
 };
 
 function FullWidthRender() {
-  const [value, setValue] = useState("system");
+  const [value, setValue] = useState('system');
   return (
-    <div style={{ width: "360px" }}>
+    <div style={{ width: '360px' }}>
       <SegmentedControl
         label="Theme preference"
         options={THEME_OPTIONS}
@@ -115,10 +115,10 @@ function FullWidthRender() {
 
 export const FullWidth: Story = {
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       description: {
-        story: "Full-width segmented control stretches to the container width.",
+        story: 'Full-width segmented control stretches to the container width.',
       },
     },
   },

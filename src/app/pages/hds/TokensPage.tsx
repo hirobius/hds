@@ -215,7 +215,7 @@ function TokenExportSection() {
           options={EXPORT_TABS}
           value={format}
           onChange={(v) => setFormat(v as ExportFormat)}
-          size="compact"
+          size="sm"
           railPadding={hds.semantic.space.subgrid.gap}
         />
       </div>

@@ -86,7 +86,7 @@ export default function InputsPage() {
                 { value: 'repel', label: 'Repel' },
                 { value: 'flow', label: 'Flow' },
               ]}
-              size="default"
+              size="md"
             />
             <SegmentedControl
               label="Force mode"
@@ -97,7 +97,7 @@ export default function InputsPage() {
                 { value: 'repel', label: 'Repel' },
                 { value: 'flow', label: 'Flow' },
               ]}
-              size="compact"
+              size="sm"
             />
           </Stack>
         </DemoBlock>
