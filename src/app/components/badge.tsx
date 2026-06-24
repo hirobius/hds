@@ -3,86 +3,61 @@
  * @category Feedback
  * @tier primitive
  */
-"use client";
 
-import React, { type CSSProperties, type ReactNode } from 'react';
-import hds from '../design-system/tokens';
-import { useTheme } from '../context/ThemeContext';
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 
-interface BadgeProps {
-  /** Badge content. */
-  children: ReactNode;
-  /** Feedback tone; neutral is the default quiet metadata badge. */
-  tone?: 'neutral' | 'info' | 'success' | 'danger' | 'warning';
+// ── Variants ───────────────────────────────────────────────────────────────────
+// Tone is the only styling axis. Neutral is theme-aware via the `dark:` variant
+// (no runtime useTheme branch). Semantic tones use the named feedback utilities
+// (text-feedback-* / bg-feedback-bg-*) so there are no arbitrary color values.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens, the intentional 11px chip size, and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven
+const badgeVariants = cva(
+  'inline-flex w-fit items-center justify-center whitespace-nowrap box-border leading-none uppercase font-medium text-[11px] tracking-wide h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-[var(--component-badge-radius)]',
+  {
+    variants: {
+      tone: {
+        neutral:
+          'bg-black/[0.04] text-[color:var(--semantic-color-content-secondary)] dark:bg-white/[0.04]',
+        info: 'bg-feedback-bg-info text-feedback-info',
+        success: 'bg-feedback-bg-success text-feedback-success',
+        danger: 'bg-feedback-bg-danger text-feedback-danger',
+        warning: 'bg-feedback-bg-warning text-feedback-warning',
+      },
+    },
+    defaultVariants: { tone: 'neutral' },
+  },
+);
+
+// ── Types ──────────────────────────────────────────────────────────────────────
+
+type BadgeVariantProps = VariantProps<typeof badgeVariants>;
+
+/** @public */
+export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement>, BadgeVariantProps {
   /** Element rendered as the badge wrapper. Defaults to 'span'. */
   as?: React.ElementType;
 }
 
-const badgeStyle = {
-  ...hds.typeStyles.eyebrow,
-  // Badge is intentionally smaller than the eyebrow default (13px → 11px) — a
-  // compact metadata chip, not a kicker label. fontSize is the only deviation;
-  // textTransform + letterSpacing + fontWeight inherit from the eyebrow token.
-  fontSize: '11px',
-  display: 'inline-flex',
-  width: 'fit-content',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: 'var(--component-badge-height)',
-  minWidth: 'var(--component-badge-minWidth)',
-  paddingTop: `calc(var(--component-badge-paddingY) + ${hds.borderWidth.default})`,
-  paddingBottom: `calc(var(--component-badge-paddingY) + (${hds.borderWidth.default} * 2))`,
-  paddingLeft: 'var(--component-badge-paddingX)',
-  paddingRight: 'var(--component-badge-paddingX)',
-  borderRadius: 'var(--component-badge-radius)',
-  whiteSpace: 'nowrap',
-  lineHeight: 1,
-  boxSizing: 'border-box',
-} satisfies CSSProperties;
+// ── Component ──────────────────────────────────────────────────────────────────
 
-const badgeContentStyle = {
-  display: 'block',
-  lineHeight: 1,
-  transform: `translateY(${hds.space.px2})`,
-} satisfies CSSProperties;
+/** Compact metadata/status chip. Tone is the only styling input. */
+export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+  { className, tone, as: Tag = 'span', children, ...props },
+  ref,
+) {
+  return (
+    <Tag
+      ref={ref}
+      data-tone={tone ?? 'neutral'}
+      className={cn(badgeVariants({ tone }), className)}
+      {...props}
+    >
+      {children}
+    </Tag>
+  );
+});
 
-// Semantic tones share the feedback color matrix; neutral is computed at render time from theme.
-const semanticToneStyles = {
-  info: {
-    background: 'var(--semantic-color-feedback-bg-info)',
-    color: 'var(--semantic-color-feedback-info)',
-  },
-  success: {
-    background: 'var(--semantic-color-feedback-bg-success)',
-    color: 'var(--semantic-color-feedback-success)',
-  },
-  danger: {
-    background: 'var(--semantic-color-feedback-bg-error)',
-    color: 'var(--semantic-color-feedback-error)',
-  },
-  warning: {
-    background: 'var(--semantic-color-feedback-bg-warning)',
-    color: 'var(--semantic-color-feedback-warning)',
-  },
-} satisfies Record<'info' | 'success' | 'danger' | 'warning', CSSProperties>;
-
-/** @public */
-export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  function Badge({ children, tone = 'neutral', as: Tag = 'span' }, ref) {
-    const { isDark } = useTheme();
-
-    const neutralStyle: CSSProperties = {
-      background: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)', // audit-ok: no semantic token for 4% opacity overlay
-      color: 'var(--semantic-color-content-secondary)',
-    };
-
-    const toneStyle = tone === 'neutral' ? neutralStyle : semanticToneStyles[tone];
-
-    return (
-      <Tag ref={ref} style={{ ...badgeStyle, ...toneStyle }}>
-        <span style={badgeContentStyle}>{children}</span>
-      </Tag>
-    );
-  },
-);
-
+/** @internal — CVA variant helper; compose via Badge props instead. */
+export { badgeVariants };
