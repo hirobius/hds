@@ -180,6 +180,8 @@ function computeA3() {
     '<!-- TODO: replace with real-violating-example',
     '<!-- TODO: replace with real-passing-example',
     '{ "__stub": true',
+    // Prettier formats single-line JSON to multiline — also match the indented form
+    '"__stub": true',
   ];
 
   function looksLikeStub(filePath) {
@@ -199,9 +201,25 @@ function computeA3() {
   let withMissingFixtures = 0;
 
   for (const gate of gates) {
-    const fixtureDir = gate.fixturePath ? resolve(ROOT, gate.fixturePath) : null;
+    // Resolve fixtures the same way validate-fixture-proof-of-firing.mjs does —
+    // by gate id under fixtures/ — not via registry.fixturePath (which is null
+    // or stale for some gates and otherwise undercounts A3).
+    const fixtureDir = gate.id ? resolve(ROOT, 'fixtures', gate.id) : null;
     if (!fixtureDir || !existsSync(fixtureDir)) {
       withMissingFixtures++;
+      continue;
+    }
+
+    // Directory fixtures (violating.example.d/) take precedence over file
+    // fixtures — must match validate-fixture-proof-of-firing.mjs. A directory
+    // fixture is a stub while it holds a .stub sentinel.
+    const violatingDir = resolve(fixtureDir, 'violating.example.d');
+    const passingDir = resolve(fixtureDir, 'passing.example.d');
+    if (existsSync(violatingDir) && existsSync(passingDir)) {
+      const isDirStub =
+        existsSync(resolve(violatingDir, '.stub')) || existsSync(resolve(passingDir, '.stub'));
+      if (isDirStub) withStubFixtures++;
+      else withRealFixtures++;
       continue;
     }
 
