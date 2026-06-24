@@ -1,14 +1,14 @@
 # Exception Audit Report
 
-Generated: 2026-06-24T20:49:17.479Z
+Generated: 2026-06-24T21:54:28.409Z
 
 ## Summary
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 51 | 51 | 0 |
+| eslint-disable | 52 | 52 | 0 |
 | @ts-ignore/@ts-expect-error | 1 | 1 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 141 | 139 | 2 |
+| custom-sentinels (*-ok / hds-bypass) | 140 | 138 | 2 |
 | **Total** | **193** | **191** | **2** |
 
 ## eslint-disable
@@ -20,6 +20,7 @@ Generated: 2026-06-24T20:49:17.479Z
 | `src/app/components/ComponentDocPage.tsx` | 241 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/animated-label.tsx` | 54 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; no Tailwind utility covers multi-prop animation` | justified |
 | `src/app/components/asset-img.tsx` | 96 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
+| `src/app/components/badge.tsx` | 15 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens, the intentional 11px chip size, and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/button.tsx` | 17 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; Tailwind has no single utility for transition-[colors,filter]` | justified |
 | `src/app/components/code-block.tsx` | 6 | `eslint-disable*` | `jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation` | justified |
 | `src/app/components/command-palette.tsx` | 366 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- 10px is the standard shadcn cmd-palette kbd metadata size` | justified |
@@ -79,7 +80,6 @@ Generated: 2026-06-24T20:49:17.479Z
 |------|------|------|--------|--------|
 | `src/app/App.tsx` | 20 | `spacing-ok` | `error boundary fallback, not a UI component */}` | justified |
 | `src/app/components/CascadeText.tsx` | 76 | `audit-ok` | `orchestrated stagger — custom cubic-bezier + computed per-char delay; semantic motion tokens do not cover this easing curve` | justified |
-| `src/app/components/badge.tsx` | 75 | `audit-ok` | `no semantic token for 4% opacity overlay` | justified |
 | `src/app/components/card.tsx` | 312 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
 | `src/app/components/componentPreviewRegistry.tsx` | 72 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
 | `src/app/components/componentPreviewRegistry.tsx` | 85 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
