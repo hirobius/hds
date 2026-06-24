@@ -1,0 +1,9 @@
+{
+  "assets": [
+    {
+      "path": "/assets/photo-01.jpg",
+      "kind": "image",
+      "sourceId": "lib-foo"
+    }
+  ]
+}

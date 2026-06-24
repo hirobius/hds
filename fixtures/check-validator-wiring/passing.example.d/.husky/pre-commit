@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+
+echo "Running registry gates..."
+node scripts/run-gates.mjs --channel pre-commit

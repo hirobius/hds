@@ -1,0 +1,14 @@
+{
+  "componentSpecs": {
+    "HdsButton": {
+      "slots": [
+        {
+          "name": "root",
+          "tokenBinding": {
+            "background": "component.button.background"
+          }
+        }
+      ]
+    }
+  }
+}

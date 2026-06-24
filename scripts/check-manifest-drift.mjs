@@ -2,7 +2,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const repoRoot = process.cwd();
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const repoRoot = FIXTURE_DIR || process.cwd();
 const manifestPath = path.join(repoRoot, 'public', 'hds-manifest.json');
 const compilerPath = path.join(repoRoot, 'scripts', 'hds-jsx-compiler.mjs');
 
@@ -27,12 +31,14 @@ const knownNames = new Set([
   ...Object.keys(manifest.componentSpecs ?? {}),
   ...Object.keys(manifest.utilities ?? {}),
 ]);
-const compilerNames = new Set([
-  ...extractSetNames(compilerSource, 'FRAME_TAGS'),
-  ...extractSetNames(compilerSource, 'TEXT_TAGS'),
-  ...extractSetNames(compilerSource, 'INSTANCE_TAGS'),
-  ...extractSetNames(compilerSource, 'ICON_TAGS'),
-].filter((name) => /^Hds[A-Z]/.test(name)));
+const compilerNames = new Set(
+  [
+    ...extractSetNames(compilerSource, 'FRAME_TAGS'),
+    ...extractSetNames(compilerSource, 'TEXT_TAGS'),
+    ...extractSetNames(compilerSource, 'INSTANCE_TAGS'),
+    ...extractSetNames(compilerSource, 'ICON_TAGS'),
+  ].filter((name) => /^Hds[A-Z]/.test(name)),
+);
 
 let warnings = 0;
 

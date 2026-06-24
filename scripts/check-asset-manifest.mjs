@@ -16,12 +16,21 @@
  */
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { dirname, join, relative } from 'path';
+import { fileURLToPath } from 'url';
 
-const ROOT = process.cwd();
-const ASSETS_DIR = join(ROOT, 'public/assets');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, '..');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+
+const ASSETS_DIR = join(INPUT_ROOT, 'public/assets');
 const MANIFEST_PATH = join(ASSETS_DIR, 'manifest.json');
-const PROJECT_DATA_PATH = join(ROOT, 'src/app/data/projects.ts');
+const PROJECT_DATA_PATH = join(INPUT_ROOT, 'src/app/data/projects.ts');
 
 const ASSET_EXTENSIONS = new Set([
   '.png',
@@ -37,15 +46,7 @@ const ASSET_EXTENSIONS = new Set([
   '.pdf',
 ]);
 
-const IMAGE_LIKE_EXTENSIONS = new Set([
-  '.png',
-  '.jpg',
-  '.jpeg',
-  '.webp',
-  '.gif',
-  '.svg',
-  '.avif',
-]);
+const IMAGE_LIKE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.avif']);
 
 const ALLOWED_KINDS = new Set(['image', 'video', 'vector', 'document', 'other']);
 const ALLOWED_STATUS = new Set(['planned', 'ready', 'published', 'archived']);
@@ -77,7 +78,7 @@ function getAssetFiles(dir) {
     if (IGNORED_FILES.has(entry)) continue;
     if (!ASSET_EXTENSIONS.has(extname(entry))) continue;
 
-    const rel = normalizeSlashes(relative(join(ROOT, 'public'), full));
+    const rel = normalizeSlashes(relative(join(INPUT_ROOT, 'public'), full));
     results.push(`/${rel}`);
   }
 
@@ -143,7 +144,8 @@ for (const entry of manifest.assets) {
     violations.push(`sourceId must be a string when present for ${path}`);
   }
 
-  const requiresAlt = IMAGE_LIKE_EXTENSIONS.has(extname(path)) || kind === 'image' || kind === 'vector';
+  const requiresAlt =
+    IMAGE_LIKE_EXTENSIONS.has(extname(path)) || kind === 'image' || kind === 'vector';
   if (requiresAlt && !decorative) {
     if (typeof alt !== 'string' || alt.trim().length < 8) {
       violations.push(`alt text missing or too short for ${path}`);
@@ -180,7 +182,9 @@ if (existsSync(PROJECT_DATA_PATH)) {
     const window = lines.slice(i, Math.min(i + 8, lines.length)).join('\n');
     const altMatch = window.match(altPattern);
     if (!altMatch) {
-      violations.push(`projects.ts asset is missing nearby alt text: ${srcMatch[1]} (line ${i + 1})`);
+      violations.push(
+        `projects.ts asset is missing nearby alt text: ${srcMatch[1]} (line ${i + 1})`,
+      );
       continue;
     }
 
@@ -195,4 +199,6 @@ if (violations.length > 0) {
   fail('asset metadata drift detected.', violations);
 }
 
-console.log('\n✓ Asset manifest check passed — asset files, metadata, and portfolio alt coverage are in sync.\n');
+console.log(
+  '\n✓ Asset manifest check passed — asset files, metadata, and portfolio alt coverage are in sync.\n',
+);
