@@ -4,6 +4,7 @@
  */
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { MemoryRouter } from "react-router";
 import { FoundationSwatch } from "../app/components/foundation-swatch";
 import { Grid } from "../app/components/grid";
 
@@ -11,6 +12,9 @@ const meta = {
   title: "Primitives/foundation-swatch",
   component: FoundationSwatch,
   tags: ["autodocs"],
+  // Swatches with a `tokenPath` render <Token>, which calls useNavigate /
+  // useLocation — wrap every story in a Router so those stories don't throw.
+  decorators: [(Story) => <MemoryRouter><Story /></MemoryRouter>],
   parameters: {
     layout: "padded",
     docs: {

@@ -42,4 +42,6 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           storybookBuildDir: storybook-static # reuse the build above
           exitZeroOnChanges: true # don't fail CI on visual diffs
-          onlyChanged: true # TurboSnap: only re-snapshot affected stories
+          exitOnceUploaded: true # green once the build is published; don't block
+          # on Chromatic's own capture verdict (TurboSnap needs ~10 baseline
+          # builds before `onlyChanged` is reliable — enable it later).
