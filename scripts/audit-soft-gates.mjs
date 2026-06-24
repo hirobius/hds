@@ -49,15 +49,30 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const REGISTRY_PATH = path.join(ROOT, 'docs/guardrails/registry.json');
-const OUT_JSON = '/tmp/soft-gates-audit.json';
-const OUT_PLAN = '/tmp/soft-gates-promotion-plan.md';
-const OUT_PLAN_CANONICAL = path.join(ROOT, 'docs/guardrails/soft-gate-promotion-plan.md');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+
+const REGISTRY_PATH = path.join(INPUT_ROOT, 'docs/guardrails/registry.json');
+const OUT_JSON = FIXTURE_DIR
+  ? path.join(FIXTURE_DIR, 'soft-gates-audit.json')
+  : '/tmp/soft-gates-audit.json';
+const OUT_PLAN = FIXTURE_DIR
+  ? path.join(FIXTURE_DIR, 'soft-gates-promotion-plan.md')
+  : '/tmp/soft-gates-promotion-plan.md';
+// In fixture mode skip the canonical docs write (avoids touching the real repo tree).
+const OUT_PLAN_CANONICAL = FIXTURE_DIR
+  ? null
+  : path.join(ROOT, 'docs/guardrails/soft-gate-promotion-plan.md');
 
 const STRICT_CHANNELS = new Set(['pre-commit', 'pre-push', 'ci-pr']);
 const SELF_ID = 'audit-soft-gates';
 
 const argv = process.argv.slice(2);
+const FIXTURE_MODE = argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const SUMMARY_MODE = argv.includes('--summary');
 const JSON_MODE = argv.includes('--json');
 const DRY_RUN = argv.includes('--dry-run');
@@ -117,7 +132,7 @@ function recommend({ exitCode, durationMs, violationCount, severity }) {
  * Run a single gate and capture the result.
  */
 function runGate(gate) {
-  const scriptPath = path.join(ROOT, gate.gateScript);
+  const scriptPath = path.join(INPUT_ROOT, gate.gateScript);
 
   if (!fs.existsSync(scriptPath)) {
     return {
@@ -148,7 +163,7 @@ function runGate(gate) {
   // Run with --json first to capture violations
   const startJson = process.hrtime.bigint();
   const jsonProc = spawnSync(process.execPath, [scriptPath, '--json'], {
-    cwd: ROOT,
+    cwd: INPUT_ROOT,
     encoding: 'utf8',
     timeout: GATE_TIMEOUT_MS,
     maxBuffer: 32 * 1024 * 1024,
@@ -437,7 +452,9 @@ function buildPromotionPlan() {
 const planMd = buildPromotionPlan();
 
 fs.writeFileSync(OUT_PLAN, planMd, 'utf8');
-fs.writeFileSync(OUT_PLAN_CANONICAL, planMd, 'utf8');
+if (OUT_PLAN_CANONICAL) {
+  fs.writeFileSync(OUT_PLAN_CANONICAL, planMd, 'utf8');
+}
 
 // ── Output modes ──────────────────────────────────────────────────────────────
 
@@ -479,6 +496,22 @@ if (SUMMARY_MODE) {
   console.log(`JSON inventory written to:  ${OUT_JSON}`);
   console.log('');
   process.exit(0);
+}
+
+// In fixture mode, exit 1 if any gate is broken or has active violations
+// so the directory-fixture harness can distinguish violating → non-zero
+// from passing → zero.
+if (FIXTURE_MODE) {
+  const broken = results.filter(
+    (r) =>
+      r.recommendation === 'investigate-broken' || r.recommendation === 'baseline-then-promote',
+  );
+  if (broken.length > 0) {
+    process.stderr.write(
+      `audit-soft-gates [fixture]: ${broken.length} gate(s) need attention (investigate-broken or baseline-then-promote)\n`,
+    );
+    process.exit(1);
+  }
 }
 
 // Default: silent run (just writes files)
