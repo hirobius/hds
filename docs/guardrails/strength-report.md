@@ -1,6 +1,6 @@
 # System Strength Report
 
-> Generated: 2026-06-24T07:20:55.442Z
+> Generated: 2026-06-24T19:03:09.793Z
 > Spec: [docs/guardrails/strength-score-spec.md](./strength-score-spec.md)
 
 ---
@@ -27,7 +27,7 @@ Composite: 92  |  Wired: 5/6
 
 **Methodology:** count(registered) / count(scripts/check-*.mjs ∪ audit-*.mjs)
 
-_Data: registered=61, scriptsOnDisk=61_
+_Data: registered=62, scriptsOnDisk=62_
 
 ### A2 — Wiring Honesty
 
@@ -35,7 +35,7 @@ _Data: registered=61, scriptsOnDisk=61_
 
 **Methodology:** count(gates without wiringTodo) / count(registered)
 
-_Data: honest=61, total=63_
+_Data: honest=62, total=64_
 
 ### A3 — Fixture Proof-of-Firing
 
@@ -43,7 +43,7 @@ _Data: honest=61, total=63_
 
 **Methodology:** count(gates with REAL non-stub fixture pair verified firing) / count(registered). Stubs exist but are unproven; missing is an error.
 
-_Data: total=63, withMissingFixtures=0, withRealFixtures=56, withStubFixtures=7_
+_Data: total=64, withMissingFixtures=0, withRealFixtures=57, withStubFixtures=7_
 
 ### A4 — Strict Gating
 
@@ -51,7 +51,7 @@ _Data: total=63, withMissingFixtures=0, withRealFixtures=56, withStubFixtures=7_
 
 **Methodology:** count(firingChannel ∈ {pre-commit, pre-push, ci-pr}) / count(registered)
 
-_Data: strict=49, total=63_
+_Data: strict=50, total=64_
 
 ### A5 — Hardening Cluster Completeness _(needs-wiring)_
 
