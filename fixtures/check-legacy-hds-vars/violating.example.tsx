@@ -1,7 +1,5 @@
-// TODO: replace with real-violating-example for check-legacy-hds-vars
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
-export function ViolatingExample() {
-  return <div>stub</div>;
+// violating: references a retired legacy --hds-text-* alias instead of the
+// semantic content token.
+export function ViolatingLegacyVar() {
+  return <span style={{ color: 'var(--hds-text-primary)' }}>legacy</span>;
 }

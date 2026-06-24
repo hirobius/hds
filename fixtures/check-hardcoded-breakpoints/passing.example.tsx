@@ -1,7 +1,7 @@
-// TODO: replace with real-passing-example for check-hardcoded-breakpoints
-// This stub needs a real passing .tsx snippet that the gate should NOT flag.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
+// passing: comparison routed through the hds.breakpoints token, no raw px value.
+import { hds } from '../../src/app/design-system/tokens';
 
-export function PassingExample() {
-  return <div>stub</div>;
+export function PassingBreakpoint() {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < hds.breakpoints.md;
+  return <div>{isMobile ? 'mobile' : 'desktop'}</div>;
 }

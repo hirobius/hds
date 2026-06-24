@@ -23,27 +23,33 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, extname, relative , dirname } from 'path';
+import { join, extname, relative, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC  = join(ROOT, 'src');
+const SRC = join(ROOT, 'src');
 
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist']);
 
-const ALLOWLIST = new Set([
-  join(ROOT, 'src', 'styles', 'theme.css'),
-]);
+const ALLOWLIST = new Set([join(ROOT, 'src', 'styles', 'theme.css')]);
 
 const LEGACY_RE = /var\(--hds-(?:text-primary|text-secondary|text-disabled)\)/;
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
     if (SKIP_DIRS.has(entry)) continue;
     const stat = statSync(full);
-    if (stat.isDirectory()) { walk(full, files); continue; }
+    if (stat.isDirectory()) {
+      walk(full, files);
+      continue;
+    }
     const ext = extname(entry);
     if (!['.tsx', '.ts', '.css'].includes(ext)) continue;
     if (ALLOWLIST.has(full)) continue;
@@ -52,11 +58,11 @@ function walk(dir, files = []) {
   return files;
 }
 
-const files = walk(SRC);
+const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walk(SRC);
 const violations = [];
 
 for (const file of files) {
-  const rel   = relative(ROOT, file).replace(/\\/g, '/');
+  const rel = relative(ROOT, file).replace(/\\/g, '/');
   const lines = readFileSync(file, 'utf-8').split('\n');
 
   for (let i = 0; i < lines.length; i++) {
@@ -73,7 +79,9 @@ for (const file of files) {
 }
 
 if (violations.length === 0) {
-  console.log('âœ“ check-legacy-hds-vars — no --hds-text-primary/secondary/disabled references in component files');
+  console.log(
+    'âœ“ check-legacy-hds-vars — no --hds-text-primary/secondary/disabled references in component files',
+  );
   process.exit(0);
 } else {
   console.error(`\nâœ— check-legacy-hds-vars — ${violations.length} violation(s) found\n`);

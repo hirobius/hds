@@ -36,12 +36,17 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname } from 'path';
+import { join, dirname, extname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC  = join(ROOT, 'src', 'app');
+const SRC = join(ROOT, 'src', 'app');
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 
 // The known breakpoint px values — any bare comparison against these is a violation
 const BREAKPOINT_VALUES = new Set([375, 640, 768, 1024, 1280]);
@@ -49,7 +54,7 @@ const BP_NAME = { 375: 'xs', 640: 'sm', 768: 'md', 1024: 'lg', 1280: 'xl' };
 
 // Files that are exempt by nature
 const EXEMPT_FILES = new Set([
-  'tokens.ts',           // defines the values
+  'tokens.ts', // defines the values
   'generated-tokens.ts', // generated output
 ]);
 
@@ -71,16 +76,18 @@ function collectFiles(dir, results = []) {
 // e.g.  < 768   >= 1024   === 640   !== 375   > 1280
 const BP_COMPARISON = new RegExp(
   `(?:[<>]=?|===|!==)\\s*(${[...BREAKPOINT_VALUES].join('|')})\\b|\\b(${[...BREAKPOINT_VALUES].join('|')})\\s*(?:[<>]=?|===|!==)`,
-  'g'
+  'g',
 );
 
 const violations = [];
 
-for (const file of collectFiles(SRC)) {
+const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+
+for (const file of filesToScan) {
   const filename = file.split('/').pop();
   if (EXEMPT_FILES.has(filename)) continue;
 
-  const rel   = file.replace(ROOT + '/', '');
+  const rel = file.replace(ROOT + '/', '');
   const lines = readFileSync(file, 'utf8').split('\n');
 
   lines.forEach((line, i) => {
@@ -113,7 +120,7 @@ if (violations.length === 0) {
   process.exit(0);
 } else {
   console.log(`\n✗ ${violations.length} hardcoded breakpoint value(s) found:\n`);
-  violations.forEach(v => {
+  violations.forEach((v) => {
     console.log(`  ${v.file}:${v.line}  [raw value: ${v.val}px]`);
     console.log(`    ${v.raw}`);
     console.log(`    Fix: replace ${v.val} with hds.breakpoints.${v.name}\n`);

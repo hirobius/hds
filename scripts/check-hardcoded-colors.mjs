@@ -47,7 +47,7 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, extname, relative, basename , dirname } from 'path';
+import { join, extname, relative, basename, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 
@@ -55,7 +55,12 @@ const jsonMode = hasJsonFlag(process.argv);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC  = join(ROOT, 'src');
+const SRC = join(ROOT, 'src');
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 
 // ── Exemptions ────────────────────────────────────────────────────────────────
 
@@ -91,13 +96,15 @@ function isSketchbookCanvas(fullPath) {
 // ── Color patterns ────────────────────────────────────────────────────────────
 
 // Matches hex, rgb/rgba, oklch, hsl/hsla color values
-const COLOR_VALUE_RE = /(?:#[0-9a-fA-F]{3,8}|rgba?\s*\([^)]+\)|oklch\s*\([^)]+\)|hsla?\s*\([^)]+\))/;
+const COLOR_VALUE_RE =
+  /(?:#[0-9a-fA-F]{3,8}|rgba?\s*\([^)]+\)|oklch\s*\([^)]+\)|hsla?\s*\([^)]+\))/;
 
 // CSS-safe values that are allowed in SVG fill/stroke attributes
 const SVG_EXEMPT_RE = /^(?:none|currentColor|inherit|transparent|url\s*\(|var\s*\(--)/i;
 
 // Common named colors (caught only in canvas assignments to reduce false positives)
-const NAMED_COLOR_RE = /^(?:red|blue|green|white|black|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal|lime|silver|gold)\b/i;
+const NAMED_COLOR_RE =
+  /^(?:red|blue|green|white|black|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal|lime|silver|gold)\b/i;
 
 // ── Walk ──────────────────────────────────────────────────────────────────────
 
@@ -106,7 +113,10 @@ function walk(dir, files = []) {
     const full = join(dir, entry);
     if (SKIP_DIRS.has(entry)) continue;
     const stat = statSync(full);
-    if (stat.isDirectory()) { walk(full, files); continue; }
+    if (stat.isDirectory()) {
+      walk(full, files);
+      continue;
+    }
     const ext = extname(entry);
     if (ext !== '.tsx' && ext !== '.ts') continue;
     if (isSkippedFile(full)) continue;
@@ -132,7 +142,8 @@ function isSuppressed(lines, lineIdx) {
 //
 // Also catches fill={expr} where the string literal inside contains a color.
 
-const SVG_ATTR_RE = /\b(?:fill|stroke)(?:Color)?\s*=\s*(?:"([^"]+)"|'([^']+)'|\{['"]([^'"]+)['"]\})/g;
+const SVG_ATTR_RE =
+  /\b(?:fill|stroke)(?:Color)?\s*=\s*(?:"([^"]+)"|'([^']+)'|\{['"]([^'"]+)['"]\})/g;
 
 function checkSvgAttrs(lines, rel, violations) {
   for (let i = 0; i < lines.length; i++) {
@@ -166,7 +177,8 @@ function checkSvgAttrs(lines, rel, violations) {
 //   ctx.strokeStyle = 'oklch(...)'
 //   context.shadowColor = 'rgb(...)'
 
-const CANVAS_COLOR_RE = /\.(?:fillStyle|strokeStyle|shadowColor)\s*=\s*(?:"([^"]+)"|'([^']+)'|`([^`]+)`)/g;
+const CANVAS_COLOR_RE =
+  /\.(?:fillStyle|strokeStyle|shadowColor)\s*=\s*(?:"([^"]+)"|'([^']+)'|`([^`]+)`)/g;
 
 function checkCanvasAssignments(lines, rel, violations) {
   for (let i = 0; i < lines.length; i++) {
@@ -195,11 +207,11 @@ function checkCanvasAssignments(lines, rel, violations) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-const files = walk(SRC);
+const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walk(SRC);
 const violations = [];
 
 for (const file of files) {
-  const rel   = relative(ROOT, file).replace(/\\/g, '/');
+  const rel = relative(ROOT, file).replace(/\\/g, '/');
   const lines = readFileSync(file, 'utf-8').split('\n');
   checkSvgAttrs(lines, rel, violations);
   checkCanvasAssignments(lines, rel, violations);
