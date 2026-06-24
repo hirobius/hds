@@ -19,8 +19,14 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const REGISTRY = join(ROOT, 'src', 'app', 'data', 'hds-registry.json');
-const PAGES_DIR = join(ROOT, 'src', 'app', 'pages', 'hds');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+const REGISTRY = join(INPUT_ROOT, 'src', 'app', 'data', 'hds-registry.json');
+const PAGES_DIR = join(INPUT_ROOT, 'src', 'app', 'pages', 'hds');
 
 const EXCLUDE = new Set([
   'HDSLayout.tsx',

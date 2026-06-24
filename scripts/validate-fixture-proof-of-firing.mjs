@@ -39,7 +39,7 @@
  * Unit: 13g-3-fixture-proof-of-firing
  */
 
-import { readFileSync, existsSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, existsSync, statSync, writeFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
@@ -117,6 +117,55 @@ function getMtime(filePath) {
 }
 
 // ---------------------------------------------------------------------------
+// Directory-fixture support (proof-of-firing v2 — see FIXTURE_DIR_HARNESS.md)
+//
+// A gate whose input is not a single file (registry readers, manifest/snapshot
+// comparisons, deps/SBOM scans) uses a directory fixture: a synthetic mini-root
+// at fixtures/<gate-id>/{violating,passing}.example.d/ holding exactly the input
+// files the gate reads. The gate, in fixture mode, treats FIXTURE_DIR as its
+// input root. Directory fixtures take precedence over file fixtures.
+// ---------------------------------------------------------------------------
+
+function isDirectory(p) {
+  try {
+    return statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+/** A directory fixture is a STUB while it holds a top-level `.stub` sentinel. */
+function isStubDir(dir) {
+  return existsSync(join(dir, '.stub'));
+}
+
+/** Max mtimeMs over a directory tree, so edits to any contained file bust the cache. */
+function maxMtime(dir) {
+  let max = 0;
+  const stack = [dir];
+  while (stack.length) {
+    const cur = stack.pop();
+    const m = getMtime(cur);
+    if (m > max) max = m;
+    let entries;
+    try {
+      entries = readdirSync(cur, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const e of entries) {
+      const full = join(cur, e.name);
+      if (e.isDirectory()) stack.push(full);
+      else {
+        const fm = getMtime(full);
+        if (fm > max) max = fm;
+      }
+    }
+  }
+  return max;
+}
+
+// ---------------------------------------------------------------------------
 // Gate runner — only for REAL (non-stub) fixtures
 // ---------------------------------------------------------------------------
 
@@ -125,7 +174,7 @@ function getMtime(filePath) {
  * Gates that support FIXTURE_FILE env will use it for targeted scan.
  * Returns { ran: bool, exitCode: number|null, skipped: bool, skipReason: string }
  */
-function runGateAgainstFixture(gateScript, fixturePath) {
+function runGateAgainstFixture(gateScript, fixturePath, { isDir = false } = {}) {
   const absScript = resolve(ROOT, gateScript);
   if (!existsSync(absScript)) {
     return {
@@ -142,7 +191,7 @@ function runGateAgainstFixture(gateScript, fixturePath) {
   //   process.argv includes --fixture-mode
   const env = {
     ...process.env,
-    FIXTURE_FILE: fixturePath,
+    [isDir ? 'FIXTURE_DIR' : 'FIXTURE_FILE']: fixturePath,
     HDS_FIXTURE_MODE: '1',
   };
 
@@ -213,17 +262,28 @@ function validate() {
 
     const fixtureDir = resolve(ROOT, 'fixtures', gateId);
 
-    // Determine fixture file extensions — try all known extensions
-    const EXTS = ['.tsx', '.json', '.md', '.txt', '.mjs', '.js'];
+    // Resolve fixtures. Directory fixtures (violating.example.d/) take
+    // precedence over file fixtures (violating.example.<ext>).
     let violatingPath = null;
     let passingPath = null;
+    let isDirFixturePair = false;
 
-    for (const ext of EXTS) {
-      const vp = join(fixtureDir, `violating.example${ext}`);
-      const pp = join(fixtureDir, `passing.example${ext}`);
-      if (existsSync(vp)) violatingPath = vp;
-      if (existsSync(pp)) passingPath = pp;
-      if (violatingPath && passingPath) break;
+    const violatingDir = join(fixtureDir, 'violating.example.d');
+    const passingDir = join(fixtureDir, 'passing.example.d');
+    if (isDirectory(violatingDir) && isDirectory(passingDir)) {
+      violatingPath = violatingDir;
+      passingPath = passingDir;
+      isDirFixturePair = true;
+    } else {
+      // Determine fixture file extensions — try all known extensions
+      const EXTS = ['.tsx', '.json', '.md', '.txt', '.mjs', '.js'];
+      for (const ext of EXTS) {
+        const vp = join(fixtureDir, `violating.example${ext}`);
+        const pp = join(fixtureDir, `passing.example${ext}`);
+        if (existsSync(vp)) violatingPath = vp;
+        if (existsSync(pp)) passingPath = pp;
+        if (violatingPath && passingPath) break;
+      }
     }
 
     // MISSING case: no fixture dir or missing files
@@ -231,19 +291,19 @@ function validate() {
       const detail = !existsSync(fixtureDir)
         ? 'fixture directory does not exist'
         : !violatingPath
-          ? 'missing violating.example.<ext>'
-          : 'missing passing.example.<ext>';
+          ? 'missing violating.example.<ext> or violating.example.d/'
+          : 'missing passing.example.<ext> or passing.example.d/';
       missing.push({ id: gateId, detail });
       if (VERBOSE) console.warn(`  [MISSING] ${gateId}: ${detail}`);
       continue;
     }
 
-    const violatingMtime = getMtime(violatingPath);
-    const passingMtime = getMtime(passingPath);
+    const violatingMtime = isDirFixturePair ? maxMtime(violatingPath) : getMtime(violatingPath);
+    const passingMtime = isDirFixturePair ? maxMtime(passingPath) : getMtime(passingPath);
 
-    // Check stub markers
-    const violatingIsStub = isStubFile(violatingPath);
-    const passingIsStub = isStubFile(passingPath);
+    // Check stub markers (directory fixtures use a .stub sentinel file)
+    const violatingIsStub = isDirFixturePair ? isStubDir(violatingPath) : isStubFile(violatingPath);
+    const passingIsStub = isDirFixturePair ? isStubDir(passingPath) : isStubFile(passingPath);
 
     if (violatingIsStub || passingIsStub) {
       stubs.push({
@@ -292,7 +352,9 @@ function validate() {
     }
 
     // Run against violating fixture — expect non-zero exit
-    const violatingRun = runGateAgainstFixture(gateScript, violatingPath);
+    const violatingRun = runGateAgainstFixture(gateScript, violatingPath, {
+      isDir: isDirFixturePair,
+    });
 
     if (violatingRun.skipped) {
       if (VERBOSE) console.warn(`  [REAL/SKIP] ${gateId}: ${violatingRun.skipReason}`);
@@ -310,7 +372,9 @@ function validate() {
     }
 
     // Run against passing fixture — expect zero exit
-    const passingRun = runGateAgainstFixture(gateScript, passingPath);
+    const passingRun = runGateAgainstFixture(gateScript, passingPath, {
+      isDir: isDirFixturePair,
+    });
 
     if (passingRun.skipped) {
       if (VERBOSE) console.warn(`  [REAL/SKIP] ${gateId}: ${passingRun.skipReason}`);
