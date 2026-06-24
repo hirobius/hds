@@ -1,6 +1,6 @@
 # Exception Audit Report
 
-Generated: 2026-06-19T04:08:13.365Z
+Generated: 2026-06-24T18:27:43.748Z
 
 ## Summary
 
@@ -16,8 +16,8 @@ Generated: 2026-06-19T04:08:13.365Z
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
 | `src/app/components/CascadeText.tsx` | 29 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/ComponentDocPage.tsx` | 193 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/ComponentDocPage.tsx` | 223 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/ComponentDocPage.tsx` | 211 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/ComponentDocPage.tsx` | 241 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/animated-label.tsx` | 54 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; no Tailwind utility covers multi-prop animation` | justified |
 | `src/app/components/asset-img.tsx` | 96 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
 | `src/app/components/button.tsx` | 17 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; Tailwind has no single utility for transition-[colors,filter]` | justified |
@@ -84,7 +84,7 @@ Generated: 2026-06-19T04:08:13.365Z
 | `src/app/components/componentPreviewRegistry.tsx` | 72 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
 | `src/app/components/componentPreviewRegistry.tsx` | 85 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
 | `src/app/components/disclosure.tsx` | 121 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
-| `src/app/components/doc-sections.tsx` | 405 | `audit-ok` | `interactive demo area — fixed visual height, not a spacing/layout token` | justified |
+| `src/app/components/doc-sections.tsx` | 593 | `audit-ok` | `interactive demo area — fixed visual height, not a spacing/layout token` | justified |
 | `src/app/components/foundation-swatch.tsx` | 158 | `hds-bypass` | `fixed specimen height keeps foundation swatches visually comparable across token demos` | justified |
 | `src/app/components/morph-card.tsx` | 434 | `audit-ok` | `SVG fill transition — no token maps to 0.35s; hds.motion.productive.duration(0.15) is too fast for a color fill sweep` | justified |
 | `src/app/components/nav-item.tsx` | 254 | `audit-ok` | `hds-focus applied via mergedClassName` | justified |
@@ -166,8 +166,8 @@ Generated: 2026-06-19T04:08:13.365Z
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 126 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 127 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/SandboxPage.tsx` | 12 | `hds-bypass` | `error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 139 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 140 | `spacing-ok` | `error boundary fallback — hds context may be unavailable; raw 24px preserves diagnostic legibility` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 199 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 202 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
 | `src/app/pages/hds/SpacingPage.tsx` | 255 | `hds-bypass` | `demo-grid-visualization — explicit pixel values intentionally show the 8px grid step */}` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 1 | `hds-bypass` | `test page with hardcoded demo styles for visual audit */` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 2 | `font-ok` | `spacing test page intentionally uses monospace demo labels during visual inspection` | justified |
@@ -193,28 +193,28 @@ Generated: 2026-06-19T04:08:13.365Z
 | `scripts/audit-component-integrity.mjs` | 144 | `audit-ok` | `')) continue;` | justified |
 | `scripts/audit-gate-replaceability.mjs` | 1102 | `spacing-ok` | `etc.) are well-formed. No industry tool manages project-specific inline suppression markers.',` | justified |
 | `scripts/audit-pages.mjs` | 12 | `audit-ok` | `<reason>` | untriaged |
-| `scripts/audit-pages.mjs` | 107 | `audit-ok` | `')) continue;` | justified |
-| `scripts/audit-pages.mjs` | 108 | `audit-ok` | `')) continue;` | justified |
-| `scripts/audit-pages.mjs` | 131 | `audit-ok` | `<reason> for an intentional editorial exception.\n');` | justified |
-| `scripts/audit-tokens.mjs` | 535 | `audit-ok` | `reason */ or /* hds-bypass: reason */ or /* spacing-ok: reason */` | justified |
-| `scripts/audit-tokens.mjs` | 535 | `hds-bypass` | `reason */ or /* spacing-ok: reason */` | justified |
-| `scripts/audit-tokens.mjs` | 535 | `spacing-ok` | `reason */` | untriaged |
+| `scripts/audit-pages.mjs` | 111 | `audit-ok` | `')) continue;` | justified |
+| `scripts/audit-pages.mjs` | 112 | `audit-ok` | `')) continue;` | justified |
+| `scripts/audit-pages.mjs` | 136 | `audit-ok` | `<reason> for an intentional editorial exception.\n',` | justified |
+| `scripts/audit-tokens.mjs` | 599 | `audit-ok` | `reason */ or /* hds-bypass: reason */ or /* spacing-ok: reason */` | justified |
+| `scripts/audit-tokens.mjs` | 599 | `hds-bypass` | `reason */ or /* spacing-ok: reason */` | justified |
+| `scripts/audit-tokens.mjs` | 599 | `spacing-ok` | `reason */` | untriaged |
 | `scripts/build-token-index.mjs` | 181 | `audit-ok` | `reason` comments in a file's content.` | justified |
 | `scripts/check-dimensions.mjs` | 15 | `audit-ok` | `<reason> on the same line to suppress.` | justified |
-| `scripts/check-dimensions.mjs` | 116 | `audit-ok` | `<reason>\n');` | justified |
-| `scripts/check-doc-structure.mjs` | 178 | `hds-bypass` | `third-party-link both accepted)` | justified |
+| `scripts/check-dimensions.mjs` | 125 | `audit-ok` | `<reason>\n',` | justified |
+| `scripts/check-doc-structure.mjs` | 186 | `hds-bypass` | `third-party-link both accepted)` | justified |
 | `scripts/check-focus-states.mjs` | 23 | `audit-ok` | `<reason> to suppress a specific line` | justified |
-| `scripts/check-focus-states.mjs` | 72 | `audit-ok` | `')) continue;` | justified |
-| `scripts/check-focus-states.mjs` | 102 | `audit-ok` | `')) continue;` | justified |
+| `scripts/check-focus-states.mjs` | 74 | `audit-ok` | `')) continue;` | justified |
+| `scripts/check-focus-states.mjs` | 108 | `audit-ok` | `')) continue;` | justified |
 | `scripts/check-hardcoded-spacing.mjs` | 15 | `spacing-ok` | `<reason> exemption pattern.` | justified |
 | `scripts/check-hardcoded-spacing.mjs` | 27 | `spacing-ok` | `reason  (explicit exemption)` | justified |
 | `scripts/check-hardcoded-spacing.mjs` | 33 | `spacing-ok` | `<reason> on the same line to suppress.` | justified |
 | `scripts/check-hardcoded-spacing.mjs` | 160 | `spacing-ok` | `<reason>\n`);` | justified |
 | `scripts/check-mono-roles.mjs` | 11 | `font-ok` | `<reason>` on the offending line.` | justified |
-| `scripts/check-source-canon.mjs` | 101 | `hds-bypass` | `CODE1, CODE2, ... */` | justified |
-| `scripts/check-source-canon.mjs` | 106 | `font-ok` | `...          — file intentionally uses bold/heavy weights` | justified |
-| `scripts/check-source-canon.mjs` | 118 | `hds-bypass` | `<body> */  or  /* hds-bypass: <body>  (unclosed is fine)` | justified |
-| `scripts/check-source-canon.mjs` | 135 | `hds-bypass` | `CODE1, CODE2 */ using codes from: ${[...ALL_RULE_CODES].join(', ')}\n`` | justified |
+| `scripts/check-source-canon.mjs` | 102 | `hds-bypass` | `CODE1, CODE2, ... */` | justified |
+| `scripts/check-source-canon.mjs` | 107 | `font-ok` | `...          — file intentionally uses bold/heavy weights` | justified |
+| `scripts/check-source-canon.mjs` | 119 | `hds-bypass` | `<body> */  or  /* hds-bypass: <body>  (unclosed is fine)` | justified |
+| `scripts/check-source-canon.mjs` | 139 | `hds-bypass` | `CODE1, CODE2 */ using codes from: ${[...ALL_RULE_CODES].join(', ')}\n`,` | justified |
 | `scripts/check-typography-discipline.mjs` | 21 | `font-ok` | `<reason>` on the offending line.` | justified |
 | `scripts/check-typography-discipline.mjs` | 299 | `audit-ok` | `are intentional.` | justified |
 | `scripts/check-typography-discipline.mjs` | 383 | `font-ok` | `<reason>" to annotate intentional exceptions.',` | justified |
