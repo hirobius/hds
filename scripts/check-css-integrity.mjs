@@ -23,6 +23,12 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+
 function hexToRGB(hex) {
   if (!hex || !hex.startsWith('#') || hex.length !== 7) return null;
   return {
@@ -42,8 +48,8 @@ function extractRootVar(css, varName) {
   return match ? match[1].trim() : null;
 }
 
-const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
-const css = readFileSync(join(ROOT, 'src', 'styles', 'theme.css'), 'utf8');
+const raw = JSON.parse(readFileSync(join(INPUT_ROOT, 'hirobius.tokens.json'), 'utf8'));
+const css = readFileSync(join(INPUT_ROOT, 'src', 'styles', 'theme.css'), 'utf8');
 
 const errors = [];
 
@@ -80,7 +86,9 @@ if (brandHex) {
     if (actualRGB !== null) {
       const normalized = actualRGB.replace(/\s+/g, ' ').trim();
       if (normalized !== expectedRGB) {
-        errors.push(`I11 --hds-color-brand-rgb: theme.css has "${normalized}", token expects "${expectedRGB}" (from ${brandHex})`);
+        errors.push(
+          `I11 --hds-color-brand-rgb: theme.css has "${normalized}", token expects "${expectedRGB}" (from ${brandHex})`,
+        );
       }
     }
   } else {
@@ -95,10 +103,14 @@ if (Array.isArray(primaryFontArr) && primaryFontArr.length > 0) {
   const firstFont = primaryFontArr[0];
   const actualFam = extractRootVar(css, '--hds-font-family');
   if (actualFam !== null && !actualFam.includes(firstFont)) {
-    errors.push(`I12 --hds-font-family: theme.css does not lead with "${firstFont}" (primary font from token)`);
+    errors.push(
+      `I12 --hds-font-family: theme.css does not lead with "${firstFont}" (primary font from token)`,
+    );
   }
 } else {
-  errors.push('I12 primitive.typography.family.primary not found or not an array in hirobius.tokens.json');
+  errors.push(
+    'I12 primitive.typography.family.primary not found or not an array in hirobius.tokens.json',
+  );
 }
 
 const monoFontArr = raw.primitive?.typography?.family?.mono?.['$value'];
@@ -106,7 +118,9 @@ if (Array.isArray(monoFontArr) && monoFontArr.length > 0) {
   const firstMono = monoFontArr[0];
   const actualMono = extractRootVar(css, '--hds-font-mono');
   if (actualMono !== null && !actualMono.includes(firstMono)) {
-    errors.push(`I13 --hds-font-mono: theme.css does not include "${firstMono}" (mono font from token)`);
+    errors.push(
+      `I13 --hds-font-mono: theme.css does not include "${firstMono}" (mono font from token)`,
+    );
   }
 }
 

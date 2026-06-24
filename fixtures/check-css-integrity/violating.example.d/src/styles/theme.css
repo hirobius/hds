@@ -1,0 +1,19 @@
+/* Minimal violating fixture for check-css-integrity gate */
+/* DRIFT: --hds-accent (I1) is missing — will trigger I1 failure */
+
+:root {
+  /* --hds-accent is intentionally absent to induce I1 drift */
+  --hds-accent-hover: var(--semantic-accent-hover);
+  --hds-accent-pressed: var(--semantic-accent-pressed);
+  --hds-accent-inactive: var(--semantic-accent-inactive);
+  --hds-accent-disabled: var(--semantic-accent-disabled);
+  --hds-accent-content: var(--semantic-accent-content);
+  --hds-accent-content-hover: var(--semantic-accent-contentHover);
+  --hds-accent-subtle: var(--semantic-accent-subtle);
+  --hds-color-brand: var(--semantic-accent-rest);
+  --hds-color-brand-pressed: var(--semantic-accent-pressed);
+
+  --hds-color-brand-rgb: 30, 46, 253;
+  --hds-font-family: 'Satoshi', system-ui, sans-serif;
+  --hds-font-mono: 'Geist Mono', monospace;
+}

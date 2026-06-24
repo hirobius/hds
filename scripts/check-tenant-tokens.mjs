@@ -20,16 +20,22 @@
  */
 
 import { readFileSync, readdirSync, existsSync } from 'fs';
-import { join, dirname }                          from 'path';
-import { fileURLToPath }                          from 'url';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { validateTenantOverlay } from './build-tokens.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+
 const EXPECTED_SCHEMA_REF = 'hirobius.tenant-tokens.schema.json';
-const TENANTS_DIR = join(ROOT, 'tenants');
+const TENANTS_DIR = join(INPUT_ROOT, 'tenants');
 
 const REQUIRED_METADATA_FIELDS = ['slug', 'displayName', 'tier', 'status'];
 const VALID_STATUSES = ['scaffold', 'active', 'archived'];
@@ -39,7 +45,9 @@ function validateMetadata(meta, slug) {
 
   // M1 — slug must match directory name
   if (meta.slug !== slug) {
-    errors.push(`M1 [${slug}] metadata.slug "${meta.slug}" does not match directory name "${slug}"`);
+    errors.push(
+      `M1 [${slug}] metadata.slug "${meta.slug}" does not match directory name "${slug}"`,
+    );
   }
 
   // M2 — required fields
@@ -51,14 +59,16 @@ function validateMetadata(meta, slug) {
 
   // M3 — valid status
   if (meta.status && !VALID_STATUSES.includes(meta.status)) {
-    errors.push(`M3 [${slug}] metadata.status "${meta.status}" must be one of: ${VALID_STATUSES.join(', ')}`);
+    errors.push(
+      `M3 [${slug}] metadata.status "${meta.status}" must be one of: ${VALID_STATUSES.join(', ')}`,
+    );
   }
 
   return errors;
 }
 
 function run() {
-  const baseRaw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+  const baseRaw = JSON.parse(readFileSync(join(INPUT_ROOT, 'hirobius.tokens.json'), 'utf8'));
 
   let slugDirs;
   try {
@@ -97,9 +107,13 @@ function run() {
       // SC — $schema must reference hirobius.tenant-tokens.schema.json
       const schemaRef = overlay['$schema'];
       if (!schemaRef) {
-        allErrors.push(`SC [${slug}] tokens.json missing $schema field — add: "$schema": "../../${EXPECTED_SCHEMA_REF}"`);
+        allErrors.push(
+          `SC [${slug}] tokens.json missing $schema field — add: "$schema": "../../${EXPECTED_SCHEMA_REF}"`,
+        );
       } else if (!String(schemaRef).endsWith(EXPECTED_SCHEMA_REF)) {
-        allErrors.push(`SC [${slug}] $schema must reference "${EXPECTED_SCHEMA_REF}", got: "${schemaRef}"`);
+        allErrors.push(
+          `SC [${slug}] $schema must reference "${EXPECTED_SCHEMA_REF}", got: "${schemaRef}"`,
+        );
       }
 
       const overlayErrors = validateTenantOverlay(overlay, baseRaw, slug);
@@ -125,7 +139,7 @@ function run() {
 
   if (allErrors.length > 0) {
     console.error(`\n✗ Tenant validation failed (${tenantsChecked} tenant(s) checked):\n`);
-    allErrors.forEach(e => console.error(`  ${e}`));
+    allErrors.forEach((e) => console.error(`  ${e}`));
     console.error('');
     process.exit(1);
   }

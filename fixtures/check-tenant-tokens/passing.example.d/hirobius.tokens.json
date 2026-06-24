@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "$description": "Minimal fixture base tokens for check-tenant-tokens proof-of-firing.",
+  "primitive": {
+    "color": {
+      "$type": "color",
+      "blue": {
+        "500": {
+          "$value": "#3b82f6",
+          "$description": "Brand blue mid-ramp."
+        }
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "$type": "color",
+      "surface": {
+        "accent": {
+          "$value": "{primitive.color.blue.500}",
+          "$description": "Accent surface fill."
+        }
+      }
+    }
+  }
+}

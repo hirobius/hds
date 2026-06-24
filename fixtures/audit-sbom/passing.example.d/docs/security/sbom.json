@@ -1,0 +1,18 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "serialNumber": "urn:uuid:00000000-0000-0000-0000-000000000002",
+  "metadata": {
+    "timestamp": "2024-01-01T00:00:00.000Z"
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "react",
+      "version": "18.3.0",
+      "purl": "pkg:npm/react@18.3.0"
+    }
+  ]
+}

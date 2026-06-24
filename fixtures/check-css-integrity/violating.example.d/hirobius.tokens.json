@@ -1,0 +1,22 @@
+{
+  "primitive": {
+    "color": {
+      "blue": {
+        "500": {
+          "$value": "#1E2EFD"
+        }
+      }
+    },
+    "typography": {
+      "family": {
+        "$type": "fontFamily",
+        "primary": {
+          "$value": ["Satoshi", "system-ui", "sans-serif"]
+        },
+        "mono": {
+          "$value": ["Geist Mono", "monospace"]
+        }
+      }
+    }
+  }
+}

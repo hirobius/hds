@@ -1,0 +1,24 @@
+/* Minimal passing fixture for check-css-integrity gate */
+
+:root {
+  /* I1–I10: semantic accent bridge vars */
+  --hds-accent: var(--semantic-accent-rest);
+  --hds-accent-hover: var(--semantic-accent-hover);
+  --hds-accent-pressed: var(--semantic-accent-pressed);
+  --hds-accent-inactive: var(--semantic-accent-inactive);
+  --hds-accent-disabled: var(--semantic-accent-disabled);
+  --hds-accent-content: var(--semantic-accent-content);
+  --hds-accent-content-hover: var(--semantic-accent-contentHover);
+  --hds-accent-subtle: var(--semantic-accent-subtle);
+  --hds-color-brand: var(--semantic-accent-rest);
+  --hds-color-brand-pressed: var(--semantic-accent-pressed);
+
+  /* I11: RGB of #1E2EFD = 30, 46, 253 */
+  --hds-color-brand-rgb: 30, 46, 253;
+
+  /* I12: primary font */
+  --hds-font-family: 'Satoshi', system-ui, sans-serif;
+
+  /* I13: mono font */
+  --hds-font-mono: 'Geist Mono', monospace;
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HDS Manifest Component Spec",
+  "type": "object",
+  "required": ["category", "filePath", "description"],
+  "properties": {
+    "category": { "type": "string" },
+    "filePath": { "type": "string" },
+    "description": { "type": "string" }
+  }
+}

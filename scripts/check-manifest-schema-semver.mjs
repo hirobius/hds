@@ -21,8 +21,14 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 
-const lockPath = path.join(projectRoot, 'manifest', 'schema.lock.json');
-const currentPath = path.join(projectRoot, 'manifest', 'schema.json');
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || projectRoot;
+
+const lockPath = path.join(INPUT_ROOT, 'manifest', 'schema.lock.json');
+const currentPath = path.join(INPUT_ROOT, 'manifest', 'schema.json');
 
 // ──────────────────────────────────────────────────────────────────────────────
 
@@ -52,9 +58,7 @@ function compareSchemas(oldSchema, newSchema, path = '') {
   if (oldSchema.properties && newSchema.properties) {
     for (const prop of Object.keys(oldSchema.properties)) {
       if (!(prop in newSchema.properties)) {
-        breaking.push(
-          `Property removed: ${path ? path + '.' : ''}${prop}`
-        );
+        breaking.push(`Property removed: ${path ? path + '.' : ''}${prop}`);
       }
     }
   }
@@ -63,9 +67,7 @@ function compareSchemas(oldSchema, newSchema, path = '') {
   if (oldSchema.required && newSchema.required) {
     for (const field of oldSchema.required) {
       if (!newSchema.required.includes(field)) {
-        breaking.push(
-          `Required field removed: ${path ? path + '.' : ''}${field}`
-        );
+        breaking.push(`Required field removed: ${path ? path + '.' : ''}${field}`);
       }
     }
   }
@@ -74,9 +76,7 @@ function compareSchemas(oldSchema, newSchema, path = '') {
   if (oldSchema.required && newSchema.required) {
     for (const field of newSchema.required) {
       if (!oldSchema.required.includes(field)) {
-        breaking.push(
-          `New required field: ${path ? path + '.' : ''}${field}`
-        );
+        breaking.push(`New required field: ${path ? path + '.' : ''}${field}`);
       }
     }
   }
@@ -85,9 +85,7 @@ function compareSchemas(oldSchema, newSchema, path = '') {
   if (newSchema.properties && oldSchema.properties) {
     for (const prop of Object.keys(newSchema.properties)) {
       if (!(prop in oldSchema.properties)) {
-        minor.push(
-          `Property added: ${path ? path + '.' : ''}${prop}`
-        );
+        minor.push(`Property added: ${path ? path + '.' : ''}${prop}`);
       }
     }
   }
@@ -106,7 +104,7 @@ function compareSchemas(oldSchema, newSchema, path = '') {
         if (oldType !== newType) {
           // A type change is generally breaking unless it's a widening (e.g. string -> string|number)
           breaking.push(
-            `Type changed: ${path ? path + '.' : ''}${prop} (was ${oldType}, now ${newType})`
+            `Type changed: ${path ? path + '.' : ''}${prop} (was ${oldType}, now ${newType})`,
           );
         }
 
@@ -134,14 +132,14 @@ try {
   // Report minor changes (non-blocking)
   if (minor.length > 0) {
     console.log('Minor changes (non-breaking):');
-    minor.forEach(msg => console.log(`  + ${msg}`));
+    minor.forEach((msg) => console.log(`  + ${msg}`));
     console.log();
   }
 
   // Report and fail on breaking changes
   if (breaking.length > 0) {
     console.error('Breaking changes detected:');
-    breaking.forEach(msg => console.error(`  - ${msg}`));
+    breaking.forEach((msg) => console.error(`  - ${msg}`));
     console.error();
     console.error('To approve breaking changes:');
     console.error('  1. Update manifest/schema.lock.json to match manifest/schema.json');

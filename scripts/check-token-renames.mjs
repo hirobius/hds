@@ -36,6 +36,12 @@ import { snapshotTokenPaths } from './snapshot-token-paths.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
+// Fixture mode: resolve inputs against FIXTURE_DIR when set so the
+// proof-of-firing harness can run this gate against a synthetic mini-root.
+// No-op in normal runs (FIXTURE_DIR unset).
+// See docs/guardrails/FIXTURE_DIR_HARNESS.md.
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+
 // ── Internals (exported for testing) ─────────────────────────────────────────
 
 /**
@@ -79,36 +85,44 @@ export function findUndocumentedRemovals(current, baseline, migration) {
   const documented = parseMigrationLog(migration);
 
   return baseline
-    .filter(p => !currentSet.has(p))   // removed from current tree
-    .filter(p => !documented.has(p));  // not documented in migration log
+    .filter((p) => !currentSet.has(p)) // removed from current tree
+    .filter((p) => !documented.has(p)); // not documented in migration log
 }
 
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
-  const lockPath      = resolve(ROOT, 'tokens.lock.json');
-  const migrationPath = resolve(ROOT, 'TOKEN_MIGRATION.md');
+  const inputRoot = FIXTURE_DIR || ROOT;
+  const lockPath = resolve(inputRoot, 'tokens.lock.json');
+  const tokensPath = resolve(inputRoot, 'hirobius.tokens.json');
+  const migrationPath = resolve(inputRoot, 'TOKEN_MIGRATION.md');
 
   if (!existsSync(lockPath)) {
-    console.error('[check-token-renames] tokens.lock.json not found. Run: node scripts/snapshot-token-paths.mjs --write');
+    console.error(
+      '[check-token-renames] tokens.lock.json not found. Run: node scripts/snapshot-token-paths.mjs --write',
+    );
     process.exit(1);
   }
 
-  const baseline  = JSON.parse(readFileSync(lockPath, 'utf-8'));
-  const current   = snapshotTokenPaths();
+  const baseline = JSON.parse(readFileSync(lockPath, 'utf-8'));
+  const current = snapshotTokenPaths(FIXTURE_DIR ? tokensPath : undefined);
   const migration = existsSync(migrationPath) ? readFileSync(migrationPath, 'utf-8') : '';
 
   const undocumented = findUndocumentedRemovals(current, baseline, migration);
 
   if (undocumented.length === 0) {
-    const removedCount = baseline.filter(p => !new Set(current).has(p)).length;
+    const removedCount = baseline.filter((p) => !new Set(current).has(p)).length;
     if (removedCount > 0) {
-      console.log(`[check-token-renames] OK — ${removedCount} removed path(s) all documented in TOKEN_MIGRATION.md`);
+      console.log(
+        `[check-token-renames] OK — ${removedCount} removed path(s) all documented in TOKEN_MIGRATION.md`,
+      );
     }
     // Empty diff: silent exit 0
     process.exit(0);
   }
 
-  console.error('[check-token-renames] FAIL — the following token paths were removed without a TOKEN_MIGRATION.md entry:');
+  console.error(
+    '[check-token-renames] FAIL — the following token paths were removed without a TOKEN_MIGRATION.md entry:',
+  );
   for (const p of undocumented) {
     console.error(`  - ${p}`);
   }
