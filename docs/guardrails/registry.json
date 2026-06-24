@@ -181,6 +181,18 @@
       "supportsJson": true
     },
     {
+      "id": "check-prop-vocabulary",
+      "description": "Enforces HDS prop-value vocabulary on component primitives: feedback tone/variant unions use danger (never error); size unions stay on the sm|md|lg ramp (no default/compact).",
+      "severity": "warn",
+      "gateScript": "scripts/check-prop-vocabulary.mjs",
+      "fixturePath": "fixtures/check-prop-vocabulary",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit"
+    },
+    {
       "id": "check-typography-discipline",
       "description": "Merged gate (13z-6): (1) prevents raw font family strings in fontFamily style props; (2) verifies @font-face url() paths in fonts.css resolve to real files; (3) enforces fontWeight/textTransform override discipline (single-weight + casing-via-eyebrow policy). Sub-mode flags: --fonts-only, --font-files-only, --overrides-only. Merged from: check-hardcoded-fonts + check-font-files + audit-typography-overrides.",
       "severity": "warn",
@@ -709,11 +721,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "glob": [
-        "hirobius.tokens.json",
-        "src/styles/**",
-        "src/app/data/**"
-      ]
+      "glob": ["hirobius.tokens.json", "src/styles/**", "src/app/data/**"]
     },
     {
       "id": "check-token-renames",

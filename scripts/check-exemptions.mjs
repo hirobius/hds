@@ -19,13 +19,11 @@ import { fileURLToPath } from 'url';
 const __scriptDir = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__scriptDir, '..');
 
-const isFixtureMode = process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
-const SCAN_DIRS = isFixtureMode && fixtureFile ? null : [
-  join(ROOT, 'src'),
-  join(ROOT, 'scripts'),
-];
+const SCAN_DIRS = isFixtureMode && fixtureFile ? null : [join(ROOT, 'src'), join(ROOT, 'scripts')];
 
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist']);
 const ALLOWED_EXTS = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.css', '.md']);
@@ -54,6 +52,7 @@ const MARKERS = [
   'doc-structure-ok',
   'token-path-ok',
   'eyebrow-ok',
+  'vocab-ok',
 ];
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);
@@ -81,9 +80,8 @@ function walk(dir, files = []) {
 const violations = [];
 const counts = new Map();
 
-const filesToScan = isFixtureMode && fixtureFile
-  ? [resolve(fixtureFile)]
-  : SCAN_DIRS.flatMap(dir => walk(dir));
+const filesToScan =
+  isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : SCAN_DIRS.flatMap((dir) => walk(dir));
 
 for (const file of filesToScan) {
   const rel = relative(ROOT, file).replace(/\\/g, '/');
