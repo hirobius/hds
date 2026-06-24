@@ -1,0 +1,4 @@
+{
+  "ok": false,
+  "message": "Could not resolve entry point; dist/ not found. Run pnpm build first."
+}
