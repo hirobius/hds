@@ -1,1 +1,94 @@
-{ "__stub": true, "__todo": "replace with real-passing-example for check-contrast" }
+{
+  "primitive": {
+    "color": {
+      "$type": "color",
+      "black": { "$value": "#000000" },
+      "white": { "$value": "#ffffff" }
+    }
+  },
+  "semantic": {
+    "color": {
+      "content": {
+        "primary": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.black}",
+                "Dark": "{primitive.color.black}"
+              }
+            }
+          }
+        },
+        "secondary": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.black}",
+                "Dark": "{primitive.color.black}"
+              }
+            }
+          }
+        },
+        "onAccent": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.black}",
+                "Dark": "{primitive.color.black}"
+              }
+            }
+          }
+        }
+      },
+      "surface": {
+        "page": {
+          "$value": "{primitive.color.white}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.white}",
+                "Dark": "{primitive.color.white}"
+              }
+            }
+          }
+        },
+        "raised": {
+          "$value": "{primitive.color.white}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.white}",
+                "Dark": "{primitive.color.white}"
+              }
+            }
+          }
+        },
+        "overlay": {
+          "$value": "{primitive.color.white}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.white}",
+                "Dark": "{primitive.color.white}"
+              }
+            }
+          }
+        },
+        "accent": {
+          "$value": "{primitive.color.white}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.white}",
+                "Dark": "{primitive.color.white}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

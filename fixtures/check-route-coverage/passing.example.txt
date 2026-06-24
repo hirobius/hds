@@ -1,2 +1,0 @@
-// TODO: replace with real-passing-example for check-route-coverage
-// STUB — this file needs real passing content

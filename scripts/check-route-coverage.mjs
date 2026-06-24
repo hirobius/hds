@@ -11,12 +11,19 @@
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import ts from 'typescript';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const ROUTES_FILE = join(ROOT, 'src/app/routes.tsx');
-const TEST_FILE   = join(ROOT, 'tests/layout-integrity.spec.ts');
+
+// Fixture mode: parse a single routes file supplied via env (proof-of-firing harness).
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
+const ROUTES_FILE =
+  isFixtureMode && fixtureFile ? resolve(fixtureFile) : join(ROOT, 'src/app/routes.tsx');
+const TEST_FILE = join(ROOT, 'tests/layout-integrity.spec.ts');
 
 const EXEMPT_PREFIXES = ['/vibe-sketchbook'];
 
@@ -72,9 +79,9 @@ function walkRoutes(node, parentPath, absolutes) {
 
   const childPath = getStringProp(node, 'path');
   const childrenProp = getProp(node, 'children');
-  const elementProp  = getProp(node, 'element');
+  const elementProp = getProp(node, 'element');
   const componentProp = getProp(node, 'Component');
-  const indexProp     = getProp(node, 'index');
+  const indexProp = getProp(node, 'index');
   const isIndex = indexProp && indexProp.initializer.kind === ts.SyntaxKind.TrueKeyword;
 
   // Resolve this node's absolute path.
@@ -84,8 +91,8 @@ function walkRoutes(node, parentPath, absolutes) {
   // OR is an index route — but skip if it's only a children container.
   const hasNavigate = isNavigateElement(elementProp);
   const hasComponent = !!componentProp;
-  const hasElement   = !!elementProp;
-  const isWildcard   = childPath !== undefined && isWildcardPath(childPath);
+  const hasElement = !!elementProp;
+  const isWildcard = childPath !== undefined && isWildcardPath(childPath);
 
   if (!isWildcard && !hasNavigate && (hasComponent || hasElement || isIndex)) {
     absolutes.add(here);

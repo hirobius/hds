@@ -18,9 +18,16 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const tokenPath = resolve(__dirname, '../hirobius.tokens.json');
 
+// Fixture mode: proof-of-firing harness supplies a single file via env vars.
+// No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
 // ── Token loading ─────────────────────────────────────────────
 
-const tokens = JSON.parse(readFileSync(tokenPath, 'utf8'));
+const targetFile = isFixtureMode && fixtureFile ? resolve(fixtureFile) : tokenPath;
+const tokens = JSON.parse(readFileSync(targetFile, 'utf8'));
 
 // ── Path resolver ─────────────────────────────────────────────
 
@@ -65,8 +72,7 @@ function resolveSemanticHex(dotPath, mode) {
   let rawValue;
 
   if (mode === 'dark') {
-    const darkAlias =
-      node.$extensions?.['com.figma.variables']?.modes?.Dark;
+    const darkAlias = node.$extensions?.['com.figma.variables']?.modes?.Dark;
     rawValue = darkAlias != null ? darkAlias : node.$value;
   } else {
     rawValue = node.$value;
@@ -75,7 +81,7 @@ function resolveSemanticHex(dotPath, mode) {
   const hex = resolveAlias(rawValue);
   if (typeof hex !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(hex)) {
     throw new Error(
-      `Could not resolve ${dotPath} (${mode}) to a 6-digit hex. Got: ${JSON.stringify(hex)}`
+      `Could not resolve ${dotPath} (${mode}) to a 6-digit hex. Got: ${JSON.stringify(hex)}`,
     );
   }
   return hex.toLowerCase();
@@ -87,8 +93,7 @@ function hexToLuminance(hex) {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
   const g = parseInt(hex.slice(3, 5), 16) / 255;
   const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const lin = (c) =>
-    c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  const lin = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
   return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
 }
 
@@ -103,8 +108,12 @@ function contrastRatio(hex1, hex2) {
 const AA_NORMAL = 4.5;
 const AAA_NORMAL = 7.0;
 
-function passAA(ratio)  { return ratio >= AA_NORMAL; }
-function passAAA(ratio) { return ratio >= AAA_NORMAL; }
+function passAA(ratio) {
+  return ratio >= AA_NORMAL;
+}
+function passAAA(ratio) {
+  return ratio >= AAA_NORMAL;
+}
 
 // ── Pairs to check ────────────────────────────────────────────
 
@@ -112,66 +121,70 @@ const PAIRS = [
   {
     label: 'content.primary / surface.page',
     text: 'semantic.color.content.primary',
-    bg:   'semantic.color.surface.page',
+    bg: 'semantic.color.surface.page',
   },
   {
     label: 'content.primary / surface.raised',
     text: 'semantic.color.content.primary',
-    bg:   'semantic.color.surface.raised',
+    bg: 'semantic.color.surface.raised',
   },
   {
     label: 'content.primary / surface.overlay',
     text: 'semantic.color.content.primary',
-    bg:   'semantic.color.surface.overlay',
+    bg: 'semantic.color.surface.overlay',
   },
   {
     label: 'content.secondary / surface.page',
     text: 'semantic.color.content.secondary',
-    bg:   'semantic.color.surface.page',
+    bg: 'semantic.color.surface.page',
   },
   {
     label: 'content.secondary / surface.raised',
     text: 'semantic.color.content.secondary',
-    bg:   'semantic.color.surface.raised',
+    bg: 'semantic.color.surface.raised',
   },
   {
     label: 'content.secondary / surface.overlay',
     text: 'semantic.color.content.secondary',
-    bg:   'semantic.color.surface.overlay',
+    bg: 'semantic.color.surface.overlay',
   },
   {
     label: 'content.onAccent / surface.accent',
     text: 'semantic.color.content.onAccent',
-    bg:   'semantic.color.surface.accent',
+    bg: 'semantic.color.surface.accent',
   },
 ];
 
 // ── Main ──────────────────────────────────────────────────────
 
-const COL_PAIR  = 34;
-const COL_RATIO =  8;
+const COL_PAIR = 34;
+const COL_RATIO = 8;
 
 function fmt(ratio) {
   return `${ratio.toFixed(1)}:1`.padEnd(COL_RATIO);
 }
 
-function _aaGlyph(ratio)  { return passAA(ratio)  ? '✓' : '✗'; }
-function _aaaGlyph(ratio) { return passAAA(ratio)  ? '✓' : '✗'; }
+function _aaGlyph(ratio) {
+  return passAA(ratio) ? '✓' : '✗';
+}
+function _aaaGlyph(ratio) {
+  return passAAA(ratio) ? '✓' : '✗';
+}
 
 const results = PAIRS.map(({ label, text, bg }) => {
   const textLight = resolveSemanticHex(text, 'light');
-  const bgLight   = resolveSemanticHex(bg,   'light');
-  const textDark  = resolveSemanticHex(text,  'dark');
-  const bgDark    = resolveSemanticHex(bg,    'dark');
+  const bgLight = resolveSemanticHex(bg, 'light');
+  const textDark = resolveSemanticHex(text, 'dark');
+  const bgDark = resolveSemanticHex(bg, 'dark');
 
   const lightRatio = contrastRatio(textLight, bgLight);
-  const darkRatio  = contrastRatio(textDark,  bgDark);
+  const darkRatio = contrastRatio(textDark, bgDark);
 
   return { label, lightRatio, darkRatio };
 });
 
 const failures = results.filter(
-  ({ lightRatio, darkRatio }) => !passAA(lightRatio) || !passAA(darkRatio)
+  ({ lightRatio, darkRatio }) => !passAA(lightRatio) || !passAA(darkRatio),
 );
 
 if (failures.length === 0) {
@@ -179,8 +192,12 @@ if (failures.length === 0) {
 } else {
   console.log('\n✗ WCAG contrast check FAILED — the following pairs do not meet AA:\n');
   for (const { label, lightRatio, darkRatio } of failures) {
-    const lightFail = !passAA(lightRatio) ? ` light ${lightRatio.toFixed(1)}:1 (needs ${AA_NORMAL}:1)` : '';
-    const darkFail  = !passAA(darkRatio)  ? ` dark ${darkRatio.toFixed(1)}:1 (needs ${AA_NORMAL}:1)`   : '';
+    const lightFail = !passAA(lightRatio)
+      ? ` light ${lightRatio.toFixed(1)}:1 (needs ${AA_NORMAL}:1)`
+      : '';
+    const darkFail = !passAA(darkRatio)
+      ? ` dark ${darkRatio.toFixed(1)}:1 (needs ${AA_NORMAL}:1)`
+      : '';
     console.log(`  ✗ ${label}:${lightFail}${darkFail}`);
   }
   console.log('');
@@ -199,10 +216,10 @@ console.log('  ' + header);
 console.log('  ' + '─'.repeat(header.length));
 
 for (const { label, lightRatio, darkRatio } of results) {
-  const aaLight  = passAA(lightRatio)  ? '✓' : '✗';
-  const aaDark   = passAA(darkRatio)   ? '✓' : '✗';
+  const aaLight = passAA(lightRatio) ? '✓' : '✗';
+  const aaDark = passAA(darkRatio) ? '✓' : '✗';
   const aaaLight = passAAA(lightRatio) ? '✓' : '✗';
-  const aaaDark  = passAAA(darkRatio)  ? '✓' : '✗';
+  const aaaDark = passAAA(darkRatio) ? '✓' : '✗';
 
   const row =
     label.padEnd(COL_PAIR) +
@@ -217,5 +234,3 @@ for (const { label, lightRatio, darkRatio } of results) {
 console.log('');
 
 process.exit(failures.length > 0 ? 1 : 0);
-
-
