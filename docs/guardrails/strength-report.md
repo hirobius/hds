@@ -1,6 +1,6 @@
 # System Strength Report
 
-> Generated: 2026-06-18T16:11:22.358Z
+> Generated: 2026-06-24T05:27:10.796Z
 > Spec: [docs/guardrails/strength-score-spec.md](./strength-score-spec.md)
 
 ---
@@ -9,8 +9,8 @@
 
 | Score | Composite | Wired Coverage | Description |
 |---|---|---|---|
-| **A — Internal Integrity** | **79**/100 | 5/6 | Closed-loop discipline: gates, wiring, fixtures, gating strength |
-| **B — Industry Benchmark** | **71**/100 | 5/8 | External standards: DORA, OWASP, WCAG, Web Vitals, TS, OSV, CHAOSS, coverage |
+| **A — Internal Integrity** | **85**/100 | 5/6 | Closed-loop discipline: gates, wiring, fixtures, gating strength |
+| **B — Industry Benchmark** | **73**/100 | 6/8 | External standards: DORA, OWASP, WCAG, Web Vitals, TS, OSV, CHAOSS, coverage |
 
 > Arithmetic mean over wired dimensions only. `needs-wiring` dims excluded from average.
 > **Two scores are never collapsed.** A high B with low A means "theatrical guardrails" — harden A first.
@@ -19,7 +19,7 @@
 
 ## Score A — Internal Integrity
 
-Composite: 79  |  Wired: 5/6
+Composite: 85  |  Wired: 5/6
 
 ### A1 — Registration Coverage
 
@@ -39,19 +39,19 @@ _Data: honest=61, total=63_
 
 ### A3 — Fixture Proof-of-Firing
 
-`[█████░░░░░░░░░░░░░░░] 24`
+`[███████████░░░░░░░░░] 56`
 
 **Methodology:** count(gates with REAL non-stub fixture pair verified firing) / count(registered). Stubs exist but are unproven; missing is an error.
 
-_Data: total=63, withMissingFixtures=5, withRealFixtures=15, withStubFixtures=43_
+_Data: total=63, withMissingFixtures=5, withRealFixtures=35, withStubFixtures=23_
 
 ### A4 — Strict Gating
 
-`[████████████████░░░░] 79`
+`[████████████████░░░░] 78`
 
 **Methodology:** count(firingChannel ∈ {pre-commit, pre-push, ci-pr}) / count(registered)
 
-_Data: strict=50, total=63_
+_Data: strict=49, total=63_
 
 ### A5 — Hardening Cluster Completeness _(needs-wiring)_
 
@@ -75,7 +75,7 @@ _Data: channel=pre-commit, gatesWithViolations=3, generatedAt=2026-05-06T21:31:2
 
 ## Score B — Industry Benchmark
 
-Composite: 71  |  Wired: 5/8
+Composite: 73  |  Wired: 6/8
 
 ### B1 — DORA Metrics _(needs-wiring)_
 
@@ -97,15 +97,15 @@ Framework: _OWASP SAMM + NIST SSDF_
 
 _Data: coveredCount=6, totalCategories=8_
 
-### B3 — WCAG 2.1 AA _(needs-wiring)_
+### B3 — WCAG 2.1 AA
 
 Framework: _WCAG 2.1 AA (W3C)_
 
-`[····················] needs-wiring`
+`[████████████████████] 100`
 
 **Methodology:** axe-playwright violations per route on critical pages (0 = 100)
 
-**Blocked:** test-results/.last-run.json absent — run pnpm test:a11y first
+_Data: source=test-results/.last-run.json, status=failed, totalRoutes=20, violatingRoutes=0, violationsPerRouteMean=0_
 
 ### B4 — Web Vitals _(wiring-failed)_
 
@@ -129,11 +129,11 @@ _Data: anyCount=1, flagsPresent=4, totalFlags=8_
 
 Framework: _OSV / npm audit_
 
-`[██████░░░░░░░░░░░░░░] 30`
+`[███░░░░░░░░░░░░░░░░░] 15`
 
 **Methodology:** 0 critical + 0 high CVEs = 100; each critical -20, each high -5
 
-_Data: critical=0, high=14, info=0, low=4, moderate=11, source=pnpm-audit_
+_Data: critical=0, high=17, info=0, low=6, moderate=12, source=pnpm-audit_
 
 ### B7 — CHAOSS Docs Coverage
 
@@ -163,7 +163,6 @@ Dimensions that are `needs-wiring` require follow-up units before they contribut
 
 - **A5 (Hardening Cluster Completeness):** no-13g-units
 - **B1 (DORA Metrics):** scripts/derive-dora-metrics.mjs not yet authored (13s-strength-B1 follow-up unit)
-- **B3 (WCAG 2.1 AA):** test-results/.last-run.json absent — run pnpm test:a11y first
 
 ---
 
