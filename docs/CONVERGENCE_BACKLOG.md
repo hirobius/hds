@@ -45,7 +45,7 @@
 ### 🟢 Additive infra / tooling (safe to do solo)
 
 - **#12 `check-no-style-prop` gate** — type-level forbid of `style?:` on primitive interfaces. Blocked by #10.
-- **#15 Deprecation lifecycle** — dev-only one-time `console.warn` + removal ledger + gate that fails when a `@deprecated` prop outlives its target version.
+- ✅ **#15 Deprecation lifecycle** (2026-06-24): `check-deprecations` gate (every `@deprecated` JSDoc must carry a future `@removeIn <semver>`; fails past-due) + `warnOnce` dev runtime util (`src/lib/deprecation.ts`). Deprecations tracked in-code (single source of truth, no separate ledger). Ready for the first real deprecation (e.g. #7's Card props).
 - ✅ **#18 Storybook activated** (2026-06-24): SB8 deps installed; 21 primitive stories build clean (a11y/axe bundled); autodocs single-sources prop tables from the TS interfaces (no drift). `pnpm storybook` / `pnpm build-storybook`. **Chromatic scaffolded** (dep + `pnpm chromatic` + `.github/workflows/chromatic.yml`) — one manual step left: set the `CHROMATIC_PROJECT_TOKEN` secret + link a Chromatic project, then enable the PR trigger in the workflow.
 
 ### 🔵 Larger mechanical / judgment

@@ -181,6 +181,18 @@
       "supportsJson": true
     },
     {
+      "id": "check-deprecations",
+      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc in the component tier must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version).",
+      "severity": "warn",
+      "gateScript": "scripts/check-deprecations.mjs",
+      "fixturePath": "fixtures/check-deprecations",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit"
+    },
+    {
       "id": "check-prop-vocabulary",
       "description": "Enforces HDS prop-value vocabulary on component primitives: feedback tone/variant unions use danger (never error); size unions stay on the sm|md|lg ramp (no default/compact).",
       "severity": "warn",
