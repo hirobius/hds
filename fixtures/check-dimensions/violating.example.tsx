@@ -1,7 +1,4 @@
-// TODO: replace with real-violating-example for check-dimensions
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
-export function ViolatingExample() {
-  return <div>stub</div>;
+// violating: a raw fixed-size pixel literal (32) on a width dimension prop.
+export function ViolatingDimensions() {
+  return <div style={{ width: 32, height: 48 }}>fixed</div>;
 }

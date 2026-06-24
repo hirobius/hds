@@ -1,7 +1,6 @@
-// TODO: replace with real-passing-example for check-frozen-demos
-// This stub needs a real passing .tsx snippet that the gate should NOT flag.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
-export function PassingExample() {
-  return <div>stub</div>;
-}
+// passing: preview entry uses default-state specimen metadata, no bespoke
+// inline `demo:` element.
+export const actionsPreview = {
+  title: 'Button',
+  specimen: 'default',
+};

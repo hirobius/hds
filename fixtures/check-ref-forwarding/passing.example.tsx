@@ -1,7 +1,8 @@
-// TODO: replace with real-passing-example for check-ref-forwarding
-// This stub needs a real passing .tsx snippet that the gate should NOT flag.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
+// passing: the form control's ref is forwarded to the underlying <input>.
+import { forwardRef } from 'react';
 
-export function PassingExample() {
-  return <div>stub</div>;
-}
+export const PassingRefForwarding = forwardRef<HTMLInputElement, { value: string }>(
+  function PassingRefForwarding(props, ref) {
+    return <input ref={ref} type="text" value={props.value} />;
+  },
+);

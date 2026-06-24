@@ -1,7 +1,7 @@
-// TODO: replace with real-violating-example for check-page-shell
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
+// violating: a page imports raw HdsContainer instead of the Page shell, so it
+// loses the canonical vertical padding.
+import { HdsContainer } from '../../src/app/components/container';
 
-export function ViolatingExample() {
-  return <div>stub</div>;
+export function ViolatingPageShell() {
+  return <HdsContainer>content</HdsContainer>;
 }

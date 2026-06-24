@@ -12,14 +12,23 @@
  */
 
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 const ROOT = process.cwd();
-const TARGET_FILES = [
-  join(ROOT, 'src/app/pages/hds/components/ActionsPage.tsx'),
-  join(ROOT, 'src/app/pages/hds/components/InputsPage.tsx'),
-  join(ROOT, 'src/app/pages/hds/components/LayoutPage.tsx'),
-];
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
+const TARGET_FILES =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : [
+        join(ROOT, 'src/app/pages/hds/components/ActionsPage.tsx'),
+        join(ROOT, 'src/app/pages/hds/components/InputsPage.tsx'),
+        join(ROOT, 'src/app/pages/hds/components/LayoutPage.tsx'),
+      ];
 
 function readText(path) {
   return readFileSync(path, 'utf8');
@@ -46,11 +55,15 @@ for (const file of TARGET_FILES) {
 }
 
 if (offenders.length === 0) {
-  console.log('Frozen demo check passed: consumer preview pages only use default-state specimens and matrices.');
+  console.log(
+    'Frozen demo check passed: consumer preview pages only use default-state specimens and matrices.',
+  );
   process.exit(0);
 }
 
-console.error('Frozen demo check failed: bespoke preview demos still exist in consumer component docs.\n');
+console.error(
+  'Frozen demo check failed: bespoke preview demos still exist in consumer component docs.\n',
+);
 for (const offender of offenders) {
   console.error(`  ${offender.file}`);
   for (const line of offender.lines) {

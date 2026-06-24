@@ -34,14 +34,22 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { join, relative, resolve, basename } from 'path';
 
-const ROOT           = process.cwd();
+const ROOT = process.cwd();
 const COMPONENTS_DIR = join(ROOT, 'src/app/components');
 
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
+
 const SKIP_FILES = new Set([
-  'types.ts', 'hooks.ts', 'HdsWebGLTriangleLogo.tsx',
-  'DocSections.tsx', 'HdsDocPanels.tsx',
+  'types.ts',
+  'hooks.ts',
+  'HdsWebGLTriangleLogo.tsx',
+  'DocSections.tsx',
+  'HdsDocPanels.tsx',
 ]);
 
 // Tags that indicate a component is a form control primitive
@@ -51,12 +59,17 @@ const FORM_CONTROL_RE = /<(input|select|textarea)\b/;
 
 const violations = [];
 
-for (const entry of readdirSync(COMPONENTS_DIR)) {
+const entries =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : readdirSync(COMPONENTS_DIR).map((e) => join(COMPONENTS_DIR, e));
+
+for (const full of entries) {
+  const entry = basename(full);
   if (SKIP_FILES.has(entry)) continue;
   if (!entry.endsWith('.tsx') && !entry.endsWith('.ts')) continue;
 
-  const full    = join(COMPONENTS_DIR, entry);
-  const stat    = statSync(full);
+  const stat = statSync(full);
   if (!stat.isFile()) continue;
 
   const content = readFileSync(full, 'utf-8');
@@ -73,12 +86,12 @@ for (const entry of readdirSync(COMPONENTS_DIR)) {
 
     // Find which control elements are present for the report
     const controls = [];
-    if (/<input\b/.test(content))    controls.push('<input>');
-    if (/<select\b/.test(content))   controls.push('<select>');
+    if (/<input\b/.test(content)) controls.push('<input>');
+    if (/<select\b/.test(content)) controls.push('<select>');
     if (/<textarea\b/.test(content)) controls.push('<textarea>');
 
     violations.push({
-      file:     rel,
+      file: rel,
       controls: controls.join(', '),
     });
   }
@@ -87,13 +100,21 @@ for (const entry of readdirSync(COMPONENTS_DIR)) {
 // ── Report ────────────────────────────────────────────────────────────────────
 
 if (violations.length === 0) {
-  console.log('\nâœ“ Ref forwarding check passed — all form control components forward their ref.\n');
+  console.log(
+    '\nâœ“ Ref forwarding check passed — all form control components forward their ref.\n',
+  );
   process.exit(0);
 } else {
-  console.error(`\nâœ— Ref forwarding check failed — ${violations.length} component(s) missing forwardRef.\n`);
-  console.error('  Form libraries and focus management need ref access to the underlying DOM node.\n');
+  console.error(
+    `\nâœ— Ref forwarding check failed — ${violations.length} component(s) missing forwardRef.\n`,
+  );
+  console.error(
+    '  Form libraries and focus management need ref access to the underlying DOM node.\n',
+  );
   console.error('  Fix:    Wrap the export with forwardRef<HTMLInputElement, Props>(() => ...)');
-  console.error('  Exempt: Add // ref-ok: <reason> if the component is intentionally non-composable\n');
+  console.error(
+    '  Exempt: Add // ref-ok: <reason> if the component is intentionally non-composable\n',
+  );
 
   for (const { file, controls } of violations) {
     console.error(`  ${file}`);

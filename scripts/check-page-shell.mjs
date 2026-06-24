@@ -14,11 +14,16 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { join, relative, resolve } from 'path';
 
 const ROOT = process.cwd();
 const SCAN_DIR = join(ROOT, 'src/app/pages');
 const EXEMPT_MARKER = 'hds-page-shell-exempt';
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {
@@ -30,7 +35,7 @@ function walk(dir, acc = []) {
   return acc;
 }
 
-const files = walk(SCAN_DIR);
+const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walk(SCAN_DIR);
 const violations = [];
 
 for (const file of files) {
@@ -52,8 +57,12 @@ if (violations.length) {
     console.error(`    ${v.text}`);
   }
   console.error(`\nFix: replace Container with Page (src/app/components/Page.tsx).`);
-  console.error(`Page = Container + standard top/bottom padding so content breathes against viewport edges.`);
-  console.error(`If your page truly needs raw Container, add // ${EXEMPT_MARKER}: <reason> to the import line.\n`);
+  console.error(
+    `Page = Container + standard top/bottom padding so content breathes against viewport edges.`,
+  );
+  console.error(
+    `If your page truly needs raw Container, add // ${EXEMPT_MARKER}: <reason> to the import line.\n`,
+  );
   process.exit(1);
 }
 

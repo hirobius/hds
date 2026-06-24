@@ -19,16 +19,22 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, relative } from 'path';
+import { join, dirname, extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const SRC = join(ROOT, 'src', 'app');
 const SKIP_DIRS = new Set(['data', 'node_modules', 'dist']);
+
+// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const fixtureFile = process.env.FIXTURE_FILE;
 const DIMENSION_PROP_RE = /\b(width|minWidth|maxWidth|height|minHeight|maxHeight)\s*:\s*([^,}]+)/g;
 const WATCHED_SIZES = new Set([12, 32, 48]);
-const DISALLOWED_DIMENSION_VALUE_RE = /\b(?:hds\.space|hds\.semantic\.space|hds\.density)\b|var\(--(?:primitive|semantic|hds)-space-/;
+const DISALLOWED_DIMENSION_VALUE_RE =
+  /\b(?:hds\.space|hds\.semantic\.space|hds\.density)\b|var\(--(?:primitive|semantic|hds)-space-/;
 
 function collectFiles(dir, results = []) {
   for (const entry of readdirSync(dir)) {
@@ -46,7 +52,9 @@ function collectFiles(dir, results = []) {
 export function runDimensionCheck() {
   const violations = [];
 
-  for (const file of collectFiles(SRC)) {
+  const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+
+  for (const file of filesToScan) {
     const rel = relative(ROOT, file).replace(/\\/g, '/');
     const lines = readFileSync(file, 'utf8').split('\n');
 
@@ -113,7 +121,9 @@ export function main() {
         : `    Problem: raw dimension literal (${violation.value}px)`,
     );
     console.error(`    Context: ${violation.raw}`);
-    console.error('    Fix: use hds.size.*, hds.layout.*, or component min/max size vars for dimensions. Spacing tokens are for padding, gaps, and layout rhythm only, or add // audit-ok: <reason>\n');
+    console.error(
+      '    Fix: use hds.size.*, hds.layout.*, or component min/max size vars for dimensions. Spacing tokens are for padding, gaps, and layout rhythm only, or add // audit-ok: <reason>\n',
+    );
   }
 
   process.exit(1);

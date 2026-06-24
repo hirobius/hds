@@ -1,7 +1,6 @@
-// TODO: replace with real-violating-example for check-frozen-demos
-// This stub needs a real violating .tsx snippet that the gate SHOULD catch.
-// See docs/guardrails/HARDENING_ROADMAP.md §13g-3 for how to promote stubs to real fixtures.
-
-export function ViolatingExample() {
-  return <div>stub</div>;
-}
+// violating: a consumer preview page declares a bespoke inline `demo:` specimen
+// instead of a default-state specimen or matrix.
+export const actionsPreview = {
+  title: 'Button',
+  demo: <button type="button">Bespoke</button>,
+};
