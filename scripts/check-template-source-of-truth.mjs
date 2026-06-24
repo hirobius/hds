@@ -44,6 +44,15 @@ import { resolve, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '..', '..');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+// INPUT_ROOT: the root against which output-file existence is checked.
+// In fixture mode this is the fixture directory; in normal runs it is ROOT.
+const INPUT_ROOT = FIXTURE_DIR ?? ROOT;
+
 const args = process.argv.slice(2);
 const WARN_ONLY = args.includes('--warn-only');
 // --all: include unstaged changes (manual / CI use). Default: staged-only (safe for pre-commit).
@@ -70,10 +79,23 @@ const AUTO_GEN_MAP = {
 
 /**
  * Get the set of changed files.
+ * In fixture mode: read from FIXTURE_DIR/changed-files.txt (one path per line).
  * Default: staged only (pre-commit safe — ignores unrelated WIP files).
  * With --all: staged + unstaged (for CI / manual runs).
  */
 function getChangedFiles() {
+  if (FIXTURE_DIR) {
+    // Fixture mode: read the synthetic changed-file list instead of calling git.
+    const listPath = join(FIXTURE_DIR, 'changed-files.txt');
+    const raw = existsSync(listPath) ? readFileSync(listPath, 'utf8') : '';
+    const files = new Set();
+    for (const line of raw.split('\n')) {
+      const trimmed = line.trim();
+      if (trimmed) files.add(trimmed);
+    }
+    return files;
+  }
+
   try {
     const staged = execSync('git diff --cached --name-only', {
       cwd: ROOT,
@@ -103,11 +125,13 @@ function getChangedFiles() {
 
 /**
  * Check for the regen-only bypass marker.
+ * In fixture mode: always returns false (no bypass — we want the gate to fire).
  * In pre-commit context, the pending commit message is in .git/COMMIT_EDITMSG.
  * Falls back to the most recent committed message for CI / manual runs.
  * Worktree-safe: resolves the actual git dir via `git rev-parse --git-common-dir`.
  */
 function hasRegenOnlyBypass() {
+  if (FIXTURE_DIR) return false;
   try {
     // Resolve the actual git directory — handles both plain repos and worktrees.
     // `--git-common-dir` returns the shared git dir (the one with COMMIT_EDITMSG).
@@ -158,7 +182,8 @@ for (const [output, generators] of Object.entries(AUTO_GEN_MAP)) {
   if (bypass) continue;
 
   // Confirm the output file exists (avoid false positives on deletions).
-  const absPath = join(ROOT, output);
+  // In fixture mode INPUT_ROOT is the fixture directory; in normal runs it is ROOT.
+  const absPath = join(INPUT_ROOT, output);
   if (!existsSync(absPath)) continue;
 
   violations.push({

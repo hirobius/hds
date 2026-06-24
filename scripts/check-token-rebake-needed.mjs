@@ -33,6 +33,13 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const VERBOSE = process.argv.includes('--verbose');
 
+// Fixture mode: directory fixture for proof-of-firing
+// (see docs/guardrails/FIXTURE_DIR_HARNESS.md).
+// When FIXTURE_DIR is set, skip the build-chain entirely and compare each
+// generated output against a sibling "<file>.head" snapshot that represents
+// what was committed at HEAD.  No-op in normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+
 const GENERATED_OUTPUTS = [
   'src/styles/tokens.css',
   'src/styles/tokens.generated.css',
@@ -81,7 +88,10 @@ export function stripManifestTimestamp(json) {
     // rebake-check loop on every commit.
     const TS_KEYS = new Set(['generated', 'generatedAt', 'capturedAt']);
     const walk = (node) => {
-      if (Array.isArray(node)) { for (const v of node) walk(v); return; }
+      if (Array.isArray(node)) {
+        for (const v of node) walk(v);
+        return;
+      }
       if (node && typeof node === 'object') {
         for (const k of Object.keys(node)) {
           if (TS_KEYS.has(k)) delete node[k];
@@ -111,17 +121,60 @@ function fileDiffersFromHead(file) {
   // matching EITHER head OR staged-index — the staged version is what's
   // about to land in the next commit, so it's the correct reference for
   // "are the generated outputs in sync with the build chain?".
-  const norm = (s) => s == null ? null : (file === 'public/hds-manifest.json' ? stripManifestTimestamp(s) : s);
+  const norm = (s) =>
+    s == null ? null : file === 'public/hds-manifest.json' ? stripManifestTimestamp(s) : s;
   const wtNorm = norm(wtContent);
   if (norm(headContent) === wtNorm) return { differs: false };
   if (norm(stagedContent) === wtNorm) return { differs: false };
-  const reason = file === 'public/hds-manifest.json'
-    ? 'content differs (timestamp ignored)'
-    : 'content differs';
+  const reason =
+    file === 'public/hds-manifest.json' ? 'content differs (timestamp ignored)' : 'content differs';
   return { differs: true, reason };
 }
 
+/**
+ * Fixture-mode comparison: read the working-tree file and its ".head"
+ * sibling from FIXTURE_DIR and report drift without running any build script.
+ */
+function fixtureFileDiffers(file) {
+  const wtPath = path.join(FIXTURE_DIR, file);
+  const headPath = `${wtPath}.head`;
+  if (!fs.existsSync(wtPath)) {
+    // Only files present in the fixture are checked; skip absent files.
+    return { differs: false };
+  }
+  if (!fs.existsSync(headPath)) {
+    // No snapshot means the file was not committed at HEAD in this fixture.
+    return { differs: true, reason: 'file untracked at HEAD' };
+  }
+  const wtContent = fs.readFileSync(wtPath, 'utf8');
+  const headContent = fs.readFileSync(headPath, 'utf8');
+  const norm = (s) => (file === 'public/hds-manifest.json' ? stripManifestTimestamp(s) : s);
+  if (norm(headContent) === norm(wtContent)) return { differs: false };
+  return { differs: true, reason: 'content differs' };
+}
+
 function main() {
+  // --- FIXTURE MODE ---
+  // When FIXTURE_DIR is set, skip the build chain and compare static snapshot
+  // pairs: <file> (working tree) vs <file>.head (committed HEAD equivalent).
+  if (FIXTURE_DIR) {
+    const drifted = [];
+    for (const file of GENERATED_OUTPUTS) {
+      const result = fixtureFileDiffers(file);
+      if (result.differs) drifted.push({ file, reason: result.reason });
+    }
+    if (drifted.length === 0) {
+      if (VERBOSE) process.stderr.write('OK — no token-output drift (fixture mode)\n');
+      return 0;
+    }
+    process.stderr.write('TOKEN REBAKE REQUIRED (fixture mode):\n');
+    for (const { file, reason } of drifted) {
+      process.stderr.write(`  - ${file}  (${reason})\n`);
+    }
+    return 1;
+  }
+
+  // --- NORMAL MODE ---
   // This is a CHECK gate: it MUST be side-effect-free on the working tree.
   // It regenerates the build-chain outputs to compare them against HEAD, then
   // restores the originals in a `finally`. Without this, the gate left
@@ -175,8 +228,7 @@ function main() {
   return 1;
 }
 
-const isMain =
-  process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
   process.exit(main());
 }

@@ -28,8 +28,17 @@ import { fileURLToPath } from 'node:url';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const COMPONENTS_DIR = path.join(ROOT, 'src/app/components');
-const MANIFEST_PATH = path.join(ROOT, 'public/hds-manifest.json');
+
+// Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
+// directory fixture — see docs/guardrails/FIXTURE_DIR_HARNESS.md). No-op in
+// normal runs (FIXTURE_DIR unset).
+const FIXTURE_DIR = process.env.FIXTURE_DIR;
+const INPUT_ROOT = FIXTURE_DIR || ROOT;
+const IS_FIXTURE_MODE =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+
+const COMPONENTS_DIR = path.join(INPUT_ROOT, 'src/app/components');
+const MANIFEST_PATH = path.join(INPUT_ROOT, 'public/hds-manifest.json');
 const AUDIT_PATH = path.join(ROOT, 'docs/audits/TIER_AUDIT.md');
 const DRY_RUN = process.argv.includes('--dry-run');
 const APPLY = process.argv.includes('--apply');
@@ -79,10 +88,16 @@ function importedHdsComponents(source) {
 function hasPropsInterface(source, name) {
   if (new RegExp(`(?:interface|type)\\s+${name}Props\\b`).test(source)) return true;
   const unprefixed = name.replace(/^Hds/, '');
-  if (unprefixed && new RegExp(`(?:interface|type)\\s+${unprefixed}Props\\b`).test(source)) return true;
+  if (unprefixed && new RegExp(`(?:interface|type)\\s+${unprefixed}Props\\b`).test(source))
+    return true;
   // Inline-typed function signatures: `function HdsX({...}: { ... })` or arrow `({ ... }: <Type>)`.
   if (new RegExp(`function\\s+${name}\\s*\\([^)]*:\\s*\\{`).test(source)) return true;
-  if (new RegExp(`(?:const|let)\\s+${name}\\s*[:=][\\s\\S]{0,200}\\(\\s*\\{[^}]*\\}\\s*:`).test(source)) return true;
+  if (
+    new RegExp(`(?:const|let)\\s+${name}\\s*[:=][\\s\\S]{0,200}\\(\\s*\\{[^}]*\\}\\s*:`).test(
+      source,
+    )
+  )
+    return true;
   // Final fallback: any *Props interface/type declared in the file. The codebase varies between
   // `HdsXProps`, `<unprefixed>Props`, and short forms like `NavProps` — if any Props shape exists,
   // the component has a typed prop API.
@@ -103,7 +118,9 @@ function isBarrelLike(source, name) {
   if (reexports >= 1) return true;
   const namedExports = source.match(/^export\s+(?:const|function|class)\s+(\w+)/gm) || [];
   if (namedExports.length < 3) return false;
-  return !new RegExp(`export\\s+(?:default\\s+)?(?:const|function|class)\\s+${name}\\b`).test(source);
+  return !new RegExp(`export\\s+(?:default\\s+)?(?:const|function|class)\\s+${name}\\b`).test(
+    source,
+  );
 }
 
 function isHooksOnly(source) {
@@ -113,7 +130,7 @@ function isHooksOnly(source) {
 }
 
 function classifyByPath(file) {
-  const rel = path.relative(ROOT, file);
+  const rel = path.relative(INPUT_ROOT, file);
   if (rel.includes(`${path.sep}lab${path.sep}`) || rel.includes('/lab/')) return 'utility';
   return null;
 }
@@ -236,7 +253,9 @@ function renderMarkdown(results, manifest) {
   );
   lines.push('');
   lines.push(`Generated: ${new Date().toISOString().slice(0, 10)}`);
-  lines.push(`Manifest: ${Object.keys(manifest.componentSpecs || {}).length} componentSpecs, audit walked ${results.length} source files`);
+  lines.push(
+    `Manifest: ${Object.keys(manifest.componentSpecs || {}).length} componentSpecs, audit walked ${results.length} source files`,
+  );
   lines.push('');
   lines.push('## Counts');
   lines.push('');
@@ -248,7 +267,9 @@ function renderMarkdown(results, manifest) {
   lines.push('');
   lines.push('## Audit Table');
   lines.push('');
-  lines.push('Sorted by tier, then alphabetically. `Override` column = heuristic was overridden by an explicit `@tier` tag in source.');
+  lines.push(
+    'Sorted by tier, then alphabetically. `Override` column = heuristic was overridden by an explicit `@tier` tag in source.',
+  );
   lines.push('');
   lines.push('| Component | Tier | Override | Confidence | Reason |');
   lines.push('|-----------|------|----------|------------|--------|');
@@ -278,9 +299,13 @@ function renderMarkdown(results, manifest) {
   lines.push('## Resolution path');
   lines.push('');
   lines.push('1. Review every row above, especially boundary cases.');
-  lines.push('2. For any row Adrian disagrees with, add `@tier <value>` JSDoc at the top of the source file.');
+  lines.push(
+    '2. For any row Adrian disagrees with, add `@tier <value>` JSDoc at the top of the source file.',
+  );
   lines.push('3. Re-run `node scripts/audit-tiers.mjs` to refresh this table.');
-  lines.push('4. When the table is fully ratified, 8x-3 promotes `tier` to required in `validate-manifest.mjs` and 8x-4 surfaces deletion candidates from the orphan list (specs without a source file).');
+  lines.push(
+    '4. When the table is fully ratified, 8x-3 promotes `tier` to required in `validate-manifest.mjs` and 8x-4 surfaces deletion candidates from the orphan list (specs without a source file).',
+  );
   lines.push('');
   return lines.join('\n');
 }
@@ -372,12 +397,44 @@ function applyMode(results, manifest) {
   );
 }
 
+/**
+ * In strict / fixture mode: detect @tier JSDoc tags whose value is not one of
+ * the four canonical tiers.  Returns an array of { file, tag } objects.
+ */
+function findInvalidTierTags(files) {
+  const violations = [];
+  for (const file of files) {
+    const source = fs.readFileSync(file, 'utf8');
+    const jsdoc = topJSDoc(source);
+    const m = jsdoc.match(/@tier\s+(\w+)/);
+    if (m && !TIER_SET.has(m[1])) {
+      violations.push({ file, tag: m[1] });
+    }
+  }
+  return violations;
+}
+
 function main() {
   const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
   const files = walk(COMPONENTS_DIR).sort();
   const results = files.map((f) => classify(f, manifest));
   const counts = tally(results);
   const summary = summarize(counts, results.length);
+
+  // Strict enforcement in fixture mode: invalid @tier values are hard errors.
+  if (IS_FIXTURE_MODE) {
+    const violations = findInvalidTierTags(files);
+    if (violations.length > 0) {
+      for (const v of violations) {
+        console.error(
+          `✗ Invalid @tier value "${v.tag}" in ${path.relative(INPUT_ROOT, v.file)} — must be one of: ${TIERS.join(', ')}`,
+        );
+      }
+      process.exit(1);
+    }
+    console.log(`audit-tiers fixture-mode: no invalid @tier tags found. ${summary}`);
+    return;
+  }
 
   if (DRY_RUN) {
     console.log(summary);
