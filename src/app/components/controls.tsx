@@ -10,7 +10,6 @@ import type { Variants } from 'motion/react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
-import { useTheme } from '../context/ThemeContext';
 import { useFrozenState } from '../context/DemoStateContext';
 import { Icon } from './icon';
 import { Surface } from './surface';
@@ -474,7 +473,6 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
   { label, showLabel = true, options, value, onChange },
   ref,
 ) {
-  const { isDark } = useTheme();
   const [open, setOpen] = useState(false);
   const [hov, setHov] = useState(false);
   const [focusIdx, setFocusIdx] = useState(-1);
@@ -643,7 +641,9 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
               left: 0,
               right: 0,
               zIndex: hds.zIndex.overlay,
-              background: isDark ? hds.color.surface.raised.dark : hds.color.surface.raised.light,
+              // Theme-aware surface var (re-roots under [data-theme="dark"]); the prior
+              // isDark branch was dead — both refs resolved to this same var.
+              background: 'var(--semantic-color-surface-raised)',
               border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
               borderRadius: hds.borderRadius[8],
               overflow: 'hidden',
