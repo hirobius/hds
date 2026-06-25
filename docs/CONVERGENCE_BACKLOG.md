@@ -31,7 +31,7 @@
 
 ### 🔴 Needs CI / `test:layout` (rendering-affecting — validate where a browser runs)
 
-- **#9 CVA convergence sweep** _(the main event)_ — propagate the Button CVA pattern to drifted primitives (badge spike done). Blocked by #2.
+- **#9 CVA convergence sweep** _(the main event)_ — propagate the Button CVA pattern to drifted primitives. **In progress.** Converged so far: `button`, `input` (pre-existing) + `badge`, `surface`, `alert`, `callout` (this effort). Surface conversion also fixed a real bug (forced-theme no-op, #24). Each verified locally via the new `story-render` jsdom gate + Playwright screenshots (Chromium pre-installed). **Remaining genuine CVA candidates:** `segmented-control` (variant+size styleObj), `controls.tsx` (still has a `useTheme` JS branch — same anti-pattern Surface had). **Deliberately NOT CVA:** layout primitives (`stack`/`grid`/`container`/`divider`/`text`/`icon`/`table`/`disclosure`/`tooltip`) compute styles from continuous props; `tag` keeps colors in `theme.css` so `:hover` works. Was blocked by #2 (now done).
 - **#7 Card diet** — drop `noPadding` + legacy `padding`/`gap`; needs codemod + test:layout.
 - **#10 Canonical escape-hatch policy** — `className` everywhere, **no `style` passthrough** on primitives, `{...rest}` on the leaf only; remove `style` from Card/Surface/Callout/Icon.
 - **#11 Polymorphism → `asChild`/Slot** — converge Badge → Card → Surface (Surface = 36 sites, codemod it).
