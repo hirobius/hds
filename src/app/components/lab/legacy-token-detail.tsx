@@ -64,18 +64,27 @@ const legacyTokenDetailStyles = {
 } as const;
 import { Badge } from '../badge';
 import tokenAuditReport from '../../data/token-audit-report.json';
-import { convertCssColorToHex, contrastRatio, buildWebAimContrastHref } from '../../utils/colorUtils';
+import {
+  convertCssColorToHex,
+  contrastRatio,
+  buildWebAimContrastHref,
+} from '../../utils/colorUtils';
 import type { TokenAuditReport, UsageEntry } from '../../data/tokenAuditReportTypes';
-import { FlatToken, formatCategoryLabel, formatTokenValue, resolveAlias, resolveTokenLiteralValue, allTokens } from './tokenUtils';
+import {
+  FlatToken,
+  formatCategoryLabel,
+  formatTokenValue,
+  resolveAlias,
+  resolveTokenLiteralValue,
+  allTokens,
+} from './tokenUtils';
 
 type ThemeMode = 'light' | 'dark';
-
 
 const HIGH_IMPACT_LIMIT = 28;
 const DETAILS_LABEL_GAP = hds.semantic.space.subgrid.gap;
 
 const auditReport = tokenAuditReport as TokenAuditReport;
-
 
 function normalizeTokenRef(val: unknown): string | null {
   if (typeof val !== 'string') return null;
@@ -84,7 +93,7 @@ function normalizeTokenRef(val: unknown): string | null {
 
 function findUpstreamAliases(token: FlatToken): FlatToken[] {
   const { path } = token;
-  return allTokens.filter(t => {
+  return allTokens.filter((t) => {
     if (t.path === path) return false;
     return (
       normalizeTokenRef(t.lightAlias) === path ||
@@ -113,8 +122,6 @@ function resolveOklchForMode(ref: string, mode: ThemeMode) {
   return typeof value === 'string' && /^oklch\(/i.test(value.trim()) ? value : null;
 }
 
-
-
 function isAliasRef(ref: unknown): ref is string {
   return typeof ref === 'string' && ref.startsWith('{');
 }
@@ -123,7 +130,11 @@ function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-function resolveRecursiveAliasChain(ref: unknown, mode: ThemeMode, seen = new Set<string>()): FlatToken[] {
+function resolveRecursiveAliasChain(
+  ref: unknown,
+  mode: ThemeMode,
+  seen = new Set<string>(),
+): FlatToken[] {
   if (!isAliasRef(ref)) return [];
   const next = resolveAlias(ref);
   if (!next || seen.has(next.path)) return [];
@@ -134,7 +145,7 @@ function resolveRecursiveAliasChain(ref: unknown, mode: ThemeMode, seen = new Se
 
 function dedupeTokens(tokens: FlatToken[]) {
   const seen = new Set<string>();
-  return tokens.filter(token => {
+  return tokens.filter((token) => {
     if (seen.has(token.path)) return false;
     seen.add(token.path);
     return true;
@@ -162,35 +173,19 @@ function formatTraceRawValue(rawValue: unknown, mode: ThemeMode) {
   return formatTokenValue(rawValue);
 }
 
-
 function ProvenanceArrow() {
   return (
-    <span
-      aria-hidden="true"
-      style={legacyTokenDetailStyles.provenanceArrow}
-    >
+    <span aria-hidden="true" style={legacyTokenDetailStyles.provenanceArrow}>
       <Icon icon={ArrowUp} size={12} color="currentColor" weight="bold" />
     </span>
   );
 }
 
-function SourceValueNode({
-  value,
-  title,
-}: {
-  value: unknown;
-  title?: string;
-}) {
+function SourceValueNode({ value, title }: { value: unknown; title?: string }) {
   const label = typeof value === 'string' ? value : formatTokenValue(value);
 
   return (
-    <Token
-      variant="node"
-      nowrap={false}
-      isSourceNode
-      isSelected={false}
-      ariaLabel={title ?? label}
-    >
+    <Token variant="node" nowrap={false} isSourceNode isSelected={false} ariaLabel={title ?? label}>
       {label}
     </Token>
   );
@@ -239,7 +234,9 @@ function buildTraceBranches(token: FlatToken, mode: ThemeMode): TokenTraceBranch
 
   const modeRef = mode === 'light' ? token.lightAlias : token.darkAlias;
   const steps = buildSteps(modeRef);
-  return steps.length > 0 ? [{ rawValue: token.rawValue, steps }] : [{ rawValue: token.rawValue, steps: [] }];
+  return steps.length > 0
+    ? [{ rawValue: token.rawValue, steps }]
+    : [{ rawValue: token.rawValue, steps: [] }];
 }
 
 function isCompositeToken(token: FlatToken) {
@@ -265,9 +262,8 @@ function buildCompositeDnaEntries(token: FlatToken, mode: ThemeMode): CompositeD
   if (!token.composite) return [];
 
   return Object.entries(token.composite).map(([key, value]) => {
-    const aliasPath = typeof value === 'string'
-      ? resolveAlias(value)?.path ?? normalizeAliasPath(value)
-      : null;
+    const aliasPath =
+      typeof value === 'string' ? (resolveAlias(value)?.path ?? normalizeAliasPath(value)) : null;
     const sourceValue = resolveTokenLiteralValue(value, mode) ?? formatTraceRawValue(value, mode);
 
     return {
@@ -305,36 +301,39 @@ function TokenTraceStack({
           : formatTraceRawValue(branch.rawValue, mode);
 
         return (
-        <div
-          key={`trace-${index}-${branch.steps.map(step => step.path).join('|')}`}
-          style={{ ...legacyTokenDetailStyles.traceRow, paddingTop: index === 0 ? 0 : hds.semantic.space.component.gap }}
-        >
-          <Token
-            variant="node"
-            swatchVar={token.type === 'color' ? token.cssVar : undefined}
-            onClick={onSelectToken ? () => onSelectToken(token) : undefined}
-            isSelected={false}
-            truncateFromStart
+          <div
+            key={`trace-${index}-${branch.steps.map((step) => step.path).join('|')}`}
+            style={{
+              ...legacyTokenDetailStyles.traceRow,
+              paddingTop: index === 0 ? 0 : hds.semantic.space.component.gap,
+            }}
           >
-            {token.path}
-          </Token>
-          {lineage.map(step => (
-            <Fragment key={step.path}>
-              <ProvenanceArrow />
-              <Token
-                variant="node"
-                swatchVar={step.type === 'color' ? step.cssVar : undefined}
-                onClick={onSelectToken ? () => onSelectToken(step) : undefined}
-                isSelected={false}
-                truncateFromStart
-              >
-                {step.path}
-              </Token>
-            </Fragment>
-          ))}
-          <ProvenanceArrow />
-          <SourceValueNode value={rawLabel} title="Resolved raw value" />
-        </div>
+            <Token
+              variant="node"
+              swatchVar={token.type === 'color' ? token.cssVar : undefined}
+              onClick={onSelectToken ? () => onSelectToken(token) : undefined}
+              isSelected={false}
+              truncateFromStart
+            >
+              {token.path}
+            </Token>
+            {lineage.map((step) => (
+              <Fragment key={step.path}>
+                <ProvenanceArrow />
+                <Token
+                  variant="node"
+                  swatchVar={step.type === 'color' ? step.cssVar : undefined}
+                  onClick={onSelectToken ? () => onSelectToken(step) : undefined}
+                  isSelected={false}
+                  truncateFromStart
+                >
+                  {step.path}
+                </Token>
+              </Fragment>
+            ))}
+            <ProvenanceArrow />
+            <SourceValueNode value={rawLabel} title="Resolved raw value" />
+          </div>
         );
       })}
     </div>
@@ -343,11 +342,8 @@ function TokenTraceStack({
 
 function MicroProvenanceArrow() {
   return (
-    <span
-      aria-hidden="true"
-      style={legacyTokenDetailStyles.microProvenanceArrow}
-    >
-      <Icon icon={ArrowUp} size="small" color="currentColor" weight="bold" style={{ width: 10, height: 10, minWidth: 10, minHeight: 10 }} />
+    <span aria-hidden="true" style={legacyTokenDetailStyles.microProvenanceArrow}>
+      <Icon icon={ArrowUp} size={10} color="currentColor" weight="bold" />
     </span>
   );
 }
@@ -360,16 +356,28 @@ function SourceValueBadge({ value }: { value: string }) {
   );
 }
 
-function CompositeDnaCard({ entry, onSelectToken }: { entry: CompositeDnaEntry; onSelectToken?: (token: FlatToken) => void }) {
-  const aliasToken = entry.aliasPath ? allTokens.find(token => token.path === entry.aliasPath) ?? null : null;
+function CompositeDnaCard({
+  entry,
+  onSelectToken,
+}: {
+  entry: CompositeDnaEntry;
+  onSelectToken?: (token: FlatToken) => void;
+}) {
+  const aliasToken = entry.aliasPath
+    ? (allTokens.find((token) => token.path === entry.aliasPath) ?? null)
+    : null;
   return (
     <div style={{ display: 'grid', gap: hds.semantic.space.subgrid.gap, minWidth: 0 }}>
-      <p style={{ ...hds.typeStyles.technical, margin: 0, color: 'var(--semantic-color-content-secondary)' }}>
+      <p
+        style={{
+          ...hds.typeStyles.technical,
+          margin: 0,
+          color: 'var(--semantic-color-content-secondary)',
+        }}
+      >
         {entry.label}
       </p>
-      <div
-        style={legacyTokenDetailStyles.compositeDnaColumn}
-      >
+      <div style={legacyTokenDetailStyles.compositeDnaColumn}>
         <Token
           variant="node"
           tokenPath={entry.aliasPath ?? undefined}
@@ -411,7 +419,7 @@ function CompositeDnaGrid({
       </Token>
       <MicroProvenanceArrow />
       <div style={{ display: 'grid', gap: hds.semantic.space.component.padding, minWidth: 0 }}>
-        {entries.map(entry => (
+        {entries.map((entry) => (
           <CompositeDnaCard key={entry.key} entry={entry} onSelectToken={onSelectToken} />
         ))}
       </div>
@@ -424,12 +432,16 @@ function EmptyState({ isDark }: { isDark: boolean }) {
   return (
     <div
       style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'center', height: 220, gap: hds.semantic.space.sidebar.gap,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 220,
+        gap: hds.semantic.space.sidebar.gap,
         textAlign: 'center',
       }}
     >
-      <Icon icon={Search} size="small" color="var(--semantic-color-content-secondary)" style={{ width: 18, height: 18, minWidth: 18, minHeight: 18 }} />
+      <Icon icon={Search} size={18} color="var(--semantic-color-content-secondary)" />
       <span className="text-secondary" style={{ ...hds.typeStyles.ui, margin: 0 }}>
         Select a token to trace its alias chain
       </span>
@@ -449,7 +461,14 @@ export function LegacyTokenDetail({
   showHeading?: boolean;
 }) {
   if (!token) return <EmptyState isDark={isDark} />;
-  return <LegacyTokenDetailInner token={token} isDark={isDark} onSelectToken={onSelectToken} showHeading={showHeading} />;
+  return (
+    <LegacyTokenDetailInner
+      token={token}
+      isDark={isDark}
+      onSelectToken={onSelectToken}
+      showHeading={showHeading}
+    />
+  );
 }
 
 function LegacyTokenDetailInner({
@@ -476,9 +495,17 @@ function LegacyTokenDetailInner({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.18 }}>
+        transition={{ duration: 0.18 }}
+      >
         {showHeading ? (
-          <h2 style={{ ...hds.typeStyles.heading3, margin: 0, marginBottom: hds.semantic.space.component.gap, color: 'var(--semantic-color-content-primary)' }}>
+          <h2
+            style={{
+              ...hds.typeStyles.heading3,
+              margin: 0,
+              marginBottom: hds.semantic.space.component.gap,
+              color: 'var(--semantic-color-content-primary)',
+            }}
+          >
             Anatomy
           </h2>
         ) : null}
@@ -506,23 +533,45 @@ function CopyRailPanel({ token, mode }: { token: FlatToken; mode: ThemeMode }) {
   const items = [
     { id: 'css', label: 'CSS var', value: `var(${token.cssVar})`, variant: 'inline-code' as const },
     { id: 'path', label: 'JS path', value: token.path, variant: 'inline-code' as const },
-    ...(rawOklch ? [{ id: 'oklch', label: 'OKLCH', value: rawOklch, variant: 'inline-code' as const }] : []),
-    ...(rawHex ? [{ id: 'hex', label: 'Hex', value: rawHex, variant: 'inline-code' as const }] : []),
+    ...(rawOklch
+      ? [{ id: 'oklch', label: 'OKLCH', value: rawOklch, variant: 'inline-code' as const }]
+      : []),
+    ...(rawHex
+      ? [{ id: 'hex', label: 'Hex', value: rawHex, variant: 'inline-code' as const }]
+      : []),
   ];
 
   return (
     <section>
-      <p style={{ ...hds.typeStyles.ui, margin: 0, color: 'var(--semantic-color-content-primary)' }}>Copy</p>
+      <p
+        style={{ ...hds.typeStyles.ui, margin: 0, color: 'var(--semantic-color-content-primary)' }}
+      >
+        Copy
+      </p>
       <div style={{ display: 'grid', gap: hds.semantic.space.component.gap }}>
-        {items.map(item => (
-          <div key={item.id} style={{ display: 'grid', gap: hds.semantic.space.subgrid.gap, minWidth: 0 }}>
-            <p style={{
-              ...(item.id === 'css' || item.id === 'path' || item.id === 'oklch' || item.id === 'hex' ? hds.typeStyles.caption : hds.typeStyles.ui),
-              margin: 0,
-              color: item.id === 'css' || item.id === 'path' || item.id === 'oklch' || item.id === 'hex'
-                ? 'var(--semantic-color-content-secondary)'
-                : 'var(--semantic-color-content-primary)',
-            }}>
+        {items.map((item) => (
+          <div
+            key={item.id}
+            style={{ display: 'grid', gap: hds.semantic.space.subgrid.gap, minWidth: 0 }}
+          >
+            <p
+              style={{
+                ...(item.id === 'css' ||
+                item.id === 'path' ||
+                item.id === 'oklch' ||
+                item.id === 'hex'
+                  ? hds.typeStyles.caption
+                  : hds.typeStyles.ui),
+                margin: 0,
+                color:
+                  item.id === 'css' ||
+                  item.id === 'path' ||
+                  item.id === 'oklch' ||
+                  item.id === 'hex'
+                    ? 'var(--semantic-color-content-secondary)'
+                    : 'var(--semantic-color-content-primary)',
+              }}
+            >
               {item.label}
             </p>
             <CodeBlock code={item.value} variant="inline" truncateFromStart />
@@ -537,9 +586,7 @@ function CopyRailPanel({ token, mode }: { token: FlatToken; mode: ThemeMode }) {
 
 function ContrastBadge({ label, passes }: { label: string; passes: boolean }) {
   return (
-    <Badge
-      tone={passes ? 'success' : 'warning'}
-    >
+    <Badge tone={passes ? 'success' : 'warning'}>
       {label} {passes ? 'PASS' : 'FAIL'}
     </Badge>
   );
@@ -555,20 +602,44 @@ function ContrastCheckerPanel({ token, mode }: { token: FlatToken; mode: ThemeMo
     { label: 'on surface.overlay', path: 'semantic.color.surface.overlay' },
   ];
 
-  const results = surfaces.map(surface => {
-    const surfaceHex = resolveHexForMode(surface.path, mode);
-    if (!surfaceHex) return null;
-    const ratio = contrastRatio(tokenHex, surfaceHex);
-    return { label: surface.label, ratio, surfaceHex, passesAA: ratio >= 4.5, passesAAA: ratio >= 7.0, passesAALarge: ratio >= 3.0 };
-  }).filter((r): r is NonNullable<typeof r> => r !== null);
+  const results = surfaces
+    .map((surface) => {
+      const surfaceHex = resolveHexForMode(surface.path, mode);
+      if (!surfaceHex) return null;
+      const ratio = contrastRatio(tokenHex, surfaceHex);
+      return {
+        label: surface.label,
+        ratio,
+        surfaceHex,
+        passesAA: ratio >= 4.5,
+        passesAAA: ratio >= 7.0,
+        passesAALarge: ratio >= 3.0,
+      };
+    })
+    .filter((r): r is NonNullable<typeof r> => r !== null);
 
   if (results.length === 0) return null;
   const defaultCheckerHref = buildWebAimContrastHref(tokenHex, results[0].surfaceHex);
 
   return (
     <section>
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: hds.semantic.space.component.gap }}>
-        <p style={{ ...hds.typeStyles.ui, margin: 0, color: 'var(--semantic-color-content-primary)' }}>Contrast</p>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: hds.semantic.space.component.gap,
+        }}
+      >
+        <p
+          style={{
+            ...hds.typeStyles.ui,
+            margin: 0,
+            color: 'var(--semantic-color-content-primary)',
+          }}
+        >
+          Contrast
+        </p>
         <span
           style={{
             ...hds.typeStyles.caption,
@@ -577,21 +648,28 @@ function ContrastCheckerPanel({ token, mode }: { token: FlatToken; mode: ThemeMo
             transform: 'translateY(1px)',
           }}
         >
-          <InlineLink href={defaultCheckerHref}>
-            WebAIM checker
-          </InlineLink>
+          <InlineLink href={defaultCheckerHref}>WebAIM checker</InlineLink>
         </span>
       </div>
       <div>
-        {results.map(result => (
+        {results.map((result) => (
           <div key={result.label}>
-            <div
-              style={legacyTokenDetailStyles.contrastRow}
-            >
-              <span style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-secondary)', whiteSpace: 'nowrap' }}>
+            <div style={legacyTokenDetailStyles.contrastRow}>
+              <span
+                style={{
+                  ...hds.typeStyles.technical,
+                  color: 'var(--semantic-color-content-secondary)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {result.label}
               </span>
-              <span style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-primary)' }}>
+              <span
+                style={{
+                  ...hds.typeStyles.technical,
+                  color: 'var(--semantic-color-content-primary)',
+                }}
+              >
                 {result.ratio.toFixed(2)}:1
               </span>
             </div>
@@ -609,33 +687,66 @@ function ContrastCheckerPanel({ token, mode }: { token: FlatToken; mode: ThemeMo
 
 // ── Upstream consumers ────────────────────────────────────────────────────────
 
-function UpstreamConsumersPanel({ token, mode, onSelectToken }: { token: FlatToken; mode: ThemeMode; onSelectToken?: (token: FlatToken) => void }) {
+function UpstreamConsumersPanel({
+  token,
+  mode,
+  onSelectToken,
+}: {
+  token: FlatToken;
+  mode: ThemeMode;
+  onSelectToken?: (token: FlatToken) => void;
+}) {
   const upstream = useMemo(() => findUpstreamAliases(token), [token]);
   if (upstream.length === 0) return null;
 
   return (
     <section>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: hds.semantic.space.subgrid.gap, flexWrap: 'wrap' }}>
-        <p style={{ ...hds.typeStyles.ui, margin: 0, color: 'var(--semantic-color-content-primary)' }}>Aliased by</p>
-        <span style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-secondary)' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: hds.semantic.space.subgrid.gap,
+          flexWrap: 'wrap',
+        }}
+      >
+        <p
+          style={{
+            ...hds.typeStyles.ui,
+            margin: 0,
+            color: 'var(--semantic-color-content-primary)',
+          }}
+        >
+          Aliased by
+        </p>
+        <span
+          style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-secondary)' }}
+        >
           {upstream.length}
         </span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: DETAILS_LABEL_GAP }}>
-        {upstream.slice(0, 10).map(t => (
+        {upstream.slice(0, 10).map((t) => (
           <Token
             key={t.path}
             variant="node"
             tokenPath={t.path}
             onClick={onSelectToken ? () => onSelectToken(t) : undefined}
-            swatchVar={t.type === 'color' ? (resolveHexForMode(t.path, mode) ?? undefined) : undefined}
+            swatchVar={
+              t.type === 'color' ? (resolveHexForMode(t.path, mode) ?? undefined) : undefined
+            }
             truncateFromStart
           >
             {t.path}
           </Token>
         ))}
         {upstream.length > 10 && (
-          <p style={{ ...hds.typeStyles.caption, margin: 0, color: 'var(--semantic-color-content-secondary)' }}>
+          <p
+            style={{
+              ...hds.typeStyles.caption,
+              margin: 0,
+              color: 'var(--semantic-color-content-secondary)',
+            }}
+          >
             +{upstream.length - 10} more
           </p>
         )}
@@ -683,7 +794,14 @@ export function HdsLegacyTokenGovernancePanel({
     return (
       <div>
         {showHeading ? (
-          <h2 style={{ ...hds.typeStyles.heading3, margin: 0, marginBottom: hds.semantic.space.component.gap, color: 'var(--semantic-color-content-primary)' }}>
+          <h2
+            style={{
+              ...hds.typeStyles.heading3,
+              margin: 0,
+              marginBottom: hds.semantic.space.component.gap,
+              color: 'var(--semantic-color-content-primary)',
+            }}
+          >
             Details
           </h2>
         ) : null}
@@ -710,16 +828,36 @@ export function HdsLegacyTokenGovernancePanel({
     <div>
       <div>
         {showHeading ? (
-          <h2 style={{ ...hds.typeStyles.heading3, margin: 0, marginBottom: hds.semantic.space.component.gap, color: 'var(--semantic-color-content-primary)' }}>
+          <h2
+            style={{
+              ...hds.typeStyles.heading3,
+              margin: 0,
+              marginBottom: hds.semantic.space.component.gap,
+              color: 'var(--semantic-color-content-primary)',
+            }}
+          >
             Details
           </h2>
         ) : null}
         {token.description ? (
           <div>
-            <p style={{ ...hds.typeStyles.ui, margin: 0, color: 'var(--semantic-color-content-primary)' }}>
+            <p
+              style={{
+                ...hds.typeStyles.ui,
+                margin: 0,
+                color: 'var(--semantic-color-content-primary)',
+              }}
+            >
               Description
             </p>
-            <p style={{ ...hds.typeStyles.caption, margin: 0, color: 'var(--semantic-color-content-secondary)', maxWidth: '42ch' }}>
+            <p
+              style={{
+                ...hds.typeStyles.caption,
+                margin: 0,
+                color: 'var(--semantic-color-content-secondary)',
+                maxWidth: '42ch',
+              }}
+            >
               {token.description}
             </p>
           </div>

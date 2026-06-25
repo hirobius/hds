@@ -32,7 +32,13 @@ const tokenDetailStyles = {
   } satisfies React.CSSProperties,
 } as const;
 import { useIsMobile } from '../../pages/hds/HdsDocPrimitives';
-import { FlatToken, formatTokenValue, resolveAlias, resolveAliasCssVar, formatCategoryLabel } from './tokenUtils';
+import {
+  FlatToken,
+  formatTokenValue,
+  resolveAlias,
+  resolveAliasCssVar,
+  formatCategoryLabel,
+} from './tokenUtils';
 
 type UsageEntry = {
   tokenPath: string;
@@ -80,15 +86,22 @@ function InspectorCard({
   tone?: 'primary' | 'muted' | 'warning';
   subvalue?: ReactNode;
 }) {
-  const valueColor = tone === 'warning'
-    ? 'var(--semantic-color-feedback-warning)'
-    : tone === 'muted'
-      ? 'var(--semantic-color-content-secondary)'
-      : 'var(--semantic-color-content-primary)';
+  const valueColor =
+    tone === 'warning'
+      ? 'var(--semantic-color-feedback-warning)'
+      : tone === 'muted'
+        ? 'var(--semantic-color-content-secondary)'
+        : 'var(--semantic-color-content-primary)';
 
   return (
     <div>
-      <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+      <span
+        style={{
+          ...hds.typeStyles.caption,
+          color: 'var(--semantic-color-content-secondary)',
+          margin: 0,
+        }}
+      >
         {label}
       </span>
       <span
@@ -105,7 +118,13 @@ function InspectorCard({
       </span>
       {subvalue ? (
         typeof subvalue === 'string' || typeof subvalue === 'number' ? (
-          <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+          <span
+            style={{
+              ...hds.typeStyles.caption,
+              color: 'var(--semantic-color-content-secondary)',
+              margin: 0,
+            }}
+          >
             {subvalue}
           </span>
         ) : (
@@ -127,7 +146,13 @@ function LineageStepCard({
 }) {
   return (
     <div>
-      <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+      <span
+        style={{
+          ...hds.typeStyles.caption,
+          color: 'var(--semantic-color-content-secondary)',
+          margin: 0,
+        }}
+      >
         {label}
       </span>
       {typeof value === 'string' || typeof value === 'number' ? (
@@ -148,7 +173,13 @@ function LineageStepCard({
       )}
       {subvalue ? (
         typeof subvalue === 'string' || typeof subvalue === 'number' ? (
-          <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+          <span
+            style={{
+              ...hds.typeStyles.caption,
+              color: 'var(--semantic-color-content-secondary)',
+              margin: 0,
+            }}
+          >
             {subvalue}
           </span>
         ) : (
@@ -159,13 +190,7 @@ function LineageStepCard({
   );
 }
 
-function RawValueNode({
-  value,
-  title,
-}: {
-  value: ReactNode;
-  title?: string;
-}) {
+function RawValueNode({ value, title }: { value: ReactNode; title?: string }) {
   return (
     <div title={title} style={{ minWidth: 0, maxWidth: '100%' }}>
       <Token variant="node" isSelected={false}>
@@ -227,28 +252,54 @@ function CompositeSection({
 
   return (
     <section>
-      <p style={{ ...hds.typeStyles.body, color: 'var(--semantic-color-content-primary)', margin: 0 }}>
+      <p
+        style={{
+          ...hds.typeStyles.body,
+          color: 'var(--semantic-color-content-primary)',
+          margin: 0,
+        }}
+      >
         Component anatomy
       </p>
       <div>
         {entries.map(([key, authoredValue]) => {
-          const resolvedToken = typeof authoredValue === 'string' && authoredValue.startsWith('{')
-            ? resolveAlias(authoredValue)
-            : null;
-          const resolvedValue = typeof authoredValue === 'string'
-            ? resolveAliasCssVar(authoredValue)
-            : formatTokenValue(authoredValue);
+          const resolvedToken =
+            typeof authoredValue === 'string' && authoredValue.startsWith('{')
+              ? resolveAlias(authoredValue)
+              : null;
+          const resolvedValue =
+            typeof authoredValue === 'string'
+              ? resolveAliasCssVar(authoredValue)
+              : formatTokenValue(authoredValue);
 
           return (
             <button
               key={key}
               type="button"
               className="hds-focus"
-              onClick={resolvedToken && onSelectToken ? () => onSelectToken(resolvedToken) : undefined}
-              style={{ ...tokenDetailStyles.categoryBtnBase, cursor: resolvedToken && onSelectToken ? 'pointer' : 'default' }}
+              onClick={
+                resolvedToken && onSelectToken ? () => onSelectToken(resolvedToken) : undefined
+              }
+              style={{
+                ...tokenDetailStyles.categoryBtnBase,
+                cursor: resolvedToken && onSelectToken ? 'pointer' : 'default',
+              }}
             >
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: hds.semantic.space.component.gap }}>
-                <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  justifyContent: 'space-between',
+                  gap: hds.semantic.space.component.gap,
+                }}
+              >
+                <span
+                  style={{
+                    ...hds.typeStyles.caption,
+                    color: 'var(--semantic-color-content-secondary)',
+                    margin: 0,
+                  }}
+                >
                   {formatCategoryLabel(key)}
                 </span>
                 <span
@@ -264,7 +315,13 @@ function CompositeSection({
                 </span>
               </div>
               {resolvedToken ? (
-                <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+                <span
+                  style={{
+                    ...hds.typeStyles.caption,
+                    color: 'var(--semantic-color-content-secondary)',
+                    margin: 0,
+                  }}
+                >
                   {resolvedToken.path}
                 </span>
               ) : null}
@@ -280,7 +337,7 @@ function EmptyState({ isDark }: { isDark: boolean }) {
   void isDark;
   return (
     <div>
-      <Icon icon={Search} size="small" color="var(--semantic-color-content-secondary)" style={{ width: 18, height: 18, minWidth: 18, minHeight: 18 }} />
+      <Icon icon={Search} size={18} color="var(--semantic-color-content-secondary)" />
       <span className="text-secondary" style={{ ...hds.typeStyles.caption, margin: 0 }}>
         Select a token to inspect its lineage and usage.
       </span>
@@ -304,7 +361,9 @@ export function TokenDetail({
   if (!token) return <EmptyState isDark={isDark} />;
 
   const primitiveLeaf = findPrimitiveLeaf(token);
-  const primitiveValue = primitiveLeaf ? formatTokenValue(primitiveLeaf.rawValue) : formatTokenValue(token.rawValue);
+  const primitiveValue = primitiveLeaf
+    ? formatTokenValue(primitiveLeaf.rawValue)
+    : formatTokenValue(token.rawValue);
   const status = usageEntry ? getHealthStatus(usageEntry.totalReferences) : null;
   const _componentValue = usageEntry
     ? `${usageEntry.files.length} file${usageEntry.files.length === 1 ? '' : 's'}`
@@ -323,9 +382,16 @@ export function TokenDetail({
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.18 }}>
+        transition={{ duration: 0.18 }}
+      >
         <section>
-          <p style={{ ...hds.typeStyles.caption, margin: 0, color: 'var(--semantic-color-content-primary)' }}>
+          <p
+            style={{
+              ...hds.typeStyles.caption,
+              margin: 0,
+              color: 'var(--semantic-color-content-primary)',
+            }}
+          >
             Active token
           </p>
           <Token
@@ -341,37 +407,72 @@ export function TokenDetail({
         </section>
 
         <section>
-          <p style={{ ...hds.typeStyles.body, color: 'var(--semantic-color-content-primary)', margin: 0 }}>
+          <p
+            style={{
+              ...hds.typeStyles.body,
+              color: 'var(--semantic-color-content-primary)',
+              margin: 0,
+            }}
+          >
             Path of Truth
           </p>
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: hds.semantic.space.component.gap, overflowX: 'auto' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'stretch',
+              gap: hds.semantic.space.component.gap,
+              overflowX: 'auto',
+            }}
+          >
             <LineageStepCard
               label="Raw Value"
               value={<RawValueNode value={primitiveValue} title="Primitive resolved value" />}
             />
-            <span style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--semantic-color-content-secondary)' }}>
-              <Icon icon={ChevronRight} size="small" color="currentColor" style={{ width: 14, height: 14, minWidth: 14, minHeight: 14 }} />
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                color: 'var(--semantic-color-content-secondary)',
+              }}
+            >
+              <Icon icon={ChevronRight} size={14} color="currentColor" />
             </span>
             <LineageStepCard
               label="Primitive"
-              value={(
-                <Token variant="node" fullWidth tokenPath={primitiveLeaf ? primitiveLeaf.path : token.path} swatchVar={primitiveLeaf?.type === 'color' ? primitiveLeaf.cssVar : undefined}>
+              value={
+                <Token
+                  variant="node"
+                  fullWidth
+                  tokenPath={primitiveLeaf ? primitiveLeaf.path : token.path}
+                  swatchVar={primitiveLeaf?.type === 'color' ? primitiveLeaf.cssVar : undefined}
+                >
                   {primitiveLeaf ? primitiveLeaf.path : token.path}
                 </Token>
-              )}
+              }
             />
             {primitiveLeaf && primitiveLeaf.path !== token.path ? (
               <>
-                <span style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--semantic-color-content-secondary)' }}>
-                  <Icon icon={ChevronRight} size="small" color="currentColor" style={{ width: 14, height: 14, minWidth: 14, minHeight: 14 }} />
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    color: 'var(--semantic-color-content-secondary)',
+                  }}
+                >
+                  <Icon icon={ChevronRight} size={14} color="currentColor" />
                 </span>
                 <LineageStepCard
                   label="Selected"
-                  value={(
-                    <Token variant="node" fullWidth tokenPath={token.path} swatchVar={token.type === 'color' ? token.cssVar : undefined}>
+                  value={
+                    <Token
+                      variant="node"
+                      fullWidth
+                      tokenPath={token.path}
+                      swatchVar={token.type === 'color' ? token.cssVar : undefined}
+                    >
                       {token.path}
                     </Token>
-                  )}
+                  }
                 />
               </>
             ) : null}
@@ -383,7 +484,11 @@ export function TokenDetail({
             <InspectorCard
               label="Total References"
               value={usageEntry ? usageEntry.totalReferences : '—'}
-              subvalue={usageEntry ? `${usageEntry.files.length} file${usageEntry.files.length === 1 ? '' : 's'}` : 'No usage data'}
+              subvalue={
+                usageEntry
+                  ? `${usageEntry.files.length} file${usageEntry.files.length === 1 ? '' : 's'}`
+                  : 'No usage data'
+              }
             />
             <InspectorCard
               label="Health Check"
@@ -396,16 +501,20 @@ export function TokenDetail({
 
         {usageEntry ? (
           <section>
-            <p style={{ ...hds.typeStyles.body, color: 'var(--semantic-color-content-primary)', margin: 0 }}>
+            <p
+              style={{
+                ...hds.typeStyles.body,
+                color: 'var(--semantic-color-content-primary)',
+                margin: 0,
+              }}
+            >
               Consumed In
             </p>
             <FileChipList usageEntry={usageEntry} />
           </section>
         ) : null}
 
-        {token.composite ? (
-          <CompositeSection token={token} onSelectToken={onSelectToken} />
-        ) : null}
+        {token.composite ? <CompositeSection token={token} onSelectToken={onSelectToken} /> : null}
       </motion.div>
     </AnimatePresence>
   );

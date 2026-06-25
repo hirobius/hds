@@ -27,7 +27,7 @@ export interface IconProps {
   size?: IconSize;
   /** CSS color value or token, such as `var(--semantic-color-content-secondary)`. */
   color?: string;
-  /** Optional class hook for layout or utility styling. */
+  /** Optional class hook for layout or utility styling (rotation, transition, etc.). */
   className?: string;
   /** Optional inline styles for rare rotation, transition, or layout tweaks. */
   style?: React.CSSProperties;

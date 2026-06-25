@@ -370,12 +370,7 @@ function ComponentBlock({
             textDecoration: 'none',
           }}
         >
-          <Icon
-            icon={FigmaLogo}
-            size="small"
-            color="currentColor"
-            style={{ width: 14, height: 14, minWidth: 14, minHeight: 14 }}
-          />
+          <Icon icon={FigmaLogo} size={14} color="currentColor" />
           View in Figma
         </a>
       ) : resolvedFigmaTodo ? (
@@ -390,12 +385,7 @@ function ComponentBlock({
             color: 'var(--semantic-color-content-secondary)',
           }}
         >
-          <Icon
-            icon={FigmaLogo}
-            size="small"
-            color="currentColor"
-            style={{ width: 14, height: 14, minWidth: 14, minHeight: 14 }}
-          />
+          <Icon icon={FigmaLogo} size={14} color="currentColor" />
           Figma — TODO
         </Text>
       ) : (
@@ -409,12 +399,7 @@ function ComponentBlock({
             color: 'var(--semantic-color-content-primary)',
           }}
         >
-          <Icon
-            icon={FigmaLogo}
-            size="small"
-            color="currentColor"
-            style={{ width: 14, height: 14, minWidth: 14, minHeight: 14 }}
-          />
+          <Icon icon={FigmaLogo} size={14} color="currentColor" />
           Not yet linked
         </Text>
       )}
@@ -465,14 +450,7 @@ export function DocPageHeader({
               variant="primary"
               size="sm"
               onClick={() => navigate('/tokens')}
-              iconLeft={
-                <Icon
-                  icon={ArrowLeft}
-                  size="small"
-                  color="currentColor"
-                  style={{ width: 14, height: 14, minWidth: 14, minHeight: 14 }}
-                />
-              }
+              iconLeft={<Icon icon={ArrowLeft} size={14} color="currentColor" />}
             >
               Back to Tokens
             </Button>
