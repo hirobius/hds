@@ -41,14 +41,15 @@ import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC  = join(ROOT, 'src');
+const SRC = join(ROOT, 'src');
 
 const jsonMode = hasJsonFlag(process.argv);
 const argv = new Set(process.argv.slice(2));
 const INLINE_ONLY = argv.has('--inline-only');
 const STYLE_PROPS_ONLY = argv.has('--style-props-only');
 const CSS_VALUES_ONLY = argv.has('--css-values-only');
-const RUN_ALL = !INLINE_ONLY && !STYLE_PROPS_ONLY && !CSS_VALUES_ONLY;
+const CONVERGED_ONLY = argv.has('--converged-only');
+const RUN_ALL = !INLINE_ONLY && !STYLE_PROPS_ONLY && !CSS_VALUES_ONLY && !CONVERGED_ONLY;
 
 const isFixtureMode = argv.has('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
@@ -64,10 +65,33 @@ if (RUN_ALL || INLINE_ONLY) {
   ]);
 
   const HTML_ELEMENTS = new Set([
-    'div', 'span', 'nav', 'button', 'a', 'section', 'ul', 'li',
-    'header', 'footer', 'main', 'aside', 'label', 'form', 'input',
-    'textarea', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'table', 'tr', 'td', 'th',
+    'div',
+    'span',
+    'nav',
+    'button',
+    'a',
+    'section',
+    'ul',
+    'li',
+    'header',
+    'footer',
+    'main',
+    'aside',
+    'label',
+    'form',
+    'input',
+    'textarea',
+    'p',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'table',
+    'tr',
+    'td',
+    'th',
   ]);
 
   function walkInline(dir, files = []) {
@@ -75,7 +99,10 @@ if (RUN_ALL || INLINE_ONLY) {
       const full = join(dir, entry);
       if (SKIP_DIRS_BASE.has(entry)) continue;
       const stat = statSync(full);
-      if (stat.isDirectory()) { walkInline(full, files); continue; }
+      if (stat.isDirectory()) {
+        walkInline(full, files);
+        continue;
+      }
       if (extname(entry) !== '.tsx') continue;
       if (SKIP_FILES_INLINE.has(full)) continue;
       files.push(full);
@@ -96,19 +123,28 @@ if (RUN_ALL || INLINE_ONLY) {
 
   const inlineFiles = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walkInline(SRC);
   for (const file of inlineFiles) {
-    const rel   = relative(ROOT, file).replace(/\\/g, '/');
+    const rel = relative(ROOT, file).replace(/\\/g, '/');
     const lines = readFileSync(file, 'utf-8').split('\n');
 
     let i = 0;
     while (i < lines.length) {
       const line = lines[i];
-      if (!line.includes('style={{')) { i++; continue; }
+      if (!line.includes('style={{')) {
+        i++;
+        continue;
+      }
 
       const prevLine = i > 0 ? lines[i - 1] : '';
-      if (line.includes('// inline-ok:') || prevLine.includes('// inline-ok:')) { i++; continue; }
+      if (line.includes('// inline-ok:') || prevLine.includes('// inline-ok:')) {
+        i++;
+        continue;
+      }
 
       const tag = findElementTag(lines, i);
-      if (!tag) { i++; continue; }
+      if (!tag) {
+        i++;
+        continue;
+      }
 
       const startLine = i + 1;
       let depth = 0;
@@ -124,7 +160,7 @@ if (RUN_ALL || INLINE_ONLY) {
       if (depth <= 0) {
         const inner = styleLineContent.replace(/.*style=\{\{/, '').replace(/\}\}.*/, '');
         const commaCount = (inner.match(/,/g) || []).length;
-        propCount = commaCount > 0 ? commaCount + 1 : (inner.match(/[\w-]+\s*:/) ? 1 : 0);
+        propCount = commaCount > 0 ? commaCount + 1 : inner.match(/[\w-]+\s*:/) ? 1 : 0;
       } else {
         j = i + 1;
         while (j < lines.length && depth > 0) {
@@ -163,7 +199,10 @@ if (RUN_ALL || STYLE_PROPS_ONLY) {
       if (SKIP_DIRS_BASE.has(entry)) continue;
       const full = join(dir, entry);
       const stat = statSync(full);
-      if (stat.isDirectory()) { walkStyleProps(full, files); continue; }
+      if (stat.isDirectory()) {
+        walkStyleProps(full, files);
+        continue;
+      }
       if (!['.tsx', '.ts', '.jsx', '.js'].includes(extname(entry))) continue;
       files.push(full);
     }
@@ -202,7 +241,8 @@ if (RUN_ALL || STYLE_PROPS_ONLY) {
     return objectPattern.test(source);
   }
 
-  const stylePropsFiles = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walkStyleProps(SRC);
+  const stylePropsFiles =
+    isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walkStyleProps(SRC);
   for (const file of stylePropsFiles) {
     const source = readFileSync(file, 'utf-8');
     const rel = relative(ROOT, file).replace(/\\/g, '/');
@@ -251,11 +291,11 @@ if ((RUN_ALL || CSS_VALUES_ONLY) && !isFixtureMode) {
     join(STYLES_DIR, 'fonts.css'),
   ]);
 
-  const HEX_RE    = /(?<![\w-])#[0-9a-fA-F]{3,8}\b/;
-  const RGB_RE    = /\brgba?\s*\(/;
-  const HSL_RE    = /\bhsla?\s*\(/;
-  const NAMED_RE  = /(?<!-)\b(red|blue|green|white|black|gray|grey)\b(?!-)/i;
-  const CSS_KW    = /\b(transparent|currentColor|inherit|initial|unset)\b/i;
+  const HEX_RE = /(?<![\w-])#[0-9a-fA-F]{3,8}\b/;
+  const RGB_RE = /\brgba?\s*\(/;
+  const HSL_RE = /\bhsla?\s*\(/;
+  const NAMED_RE = /(?<!-)\b(red|blue|green|white|black|gray|grey)\b(?!-)/i;
+  const CSS_KW = /\b(transparent|currentColor|inherit|initial|unset)\b/i;
 
   function stripBlockComments(line) {
     return line.replace(/\/\*[^*]*(?:\*(?!\/)[^*]*)*\*\//g, '');
@@ -272,24 +312,33 @@ if ((RUN_ALL || CSS_VALUES_ONLY) && !isFixtureMode) {
   }
 
   for (const file of cssFiles) {
-    const rel   = relative(ROOT, file).replace(/\\/g, '/');
+    const rel = relative(ROOT, file).replace(/\\/g, '/');
     const lines = readFileSync(file, 'utf-8').split('\n');
 
     for (let i = 0; i < lines.length; i++) {
-      const raw  = lines[i];
+      const raw = lines[i];
       const line = stripBlockComments(raw);
 
       if (/^\s*(\/\/|\/\*|\*)/.test(raw.trim())) continue;
 
       const prevLine = i > 0 ? lines[i - 1] : '';
-      if (line.includes('/* css-ok:') || raw.includes('/* css-ok:') || prevLine.includes('/* css-ok:')) continue;
+      // Needle built by concatenation so the exemptions scanner doesn't read
+      // this detection literal as a (reason-less) css-ok exemption of its own.
+      const CSS_OK_NEEDLE = '/* css-ok' + ':';
+      if (
+        line.includes(CSS_OK_NEEDLE) ||
+        raw.includes(CSS_OK_NEEDLE) ||
+        prevLine.includes(CSS_OK_NEEDLE)
+      )
+        continue;
 
-      if (CSS_KW.test(line) && !HEX_RE.test(line) && !RGB_RE.test(line) && !HSL_RE.test(line)) continue;
+      if (CSS_KW.test(line) && !HEX_RE.test(line) && !RGB_RE.test(line) && !HSL_RE.test(line))
+        continue;
 
       const patterns = [];
-      if (HEX_RE.test(line))   patterns.push(line.match(HEX_RE)?.[0]);
-      if (RGB_RE.test(line))   patterns.push(line.match(RGB_RE)?.[0]?.replace('(', '(...)'));
-      if (HSL_RE.test(line))   patterns.push(line.match(HSL_RE)?.[0]?.replace('(', '(...)'));
+      if (HEX_RE.test(line)) patterns.push(line.match(HEX_RE)?.[0]);
+      if (RGB_RE.test(line)) patterns.push(line.match(RGB_RE)?.[0]?.replace('(', '(...)'));
+      if (HSL_RE.test(line)) patterns.push(line.match(HSL_RE)?.[0]?.replace('(', '(...)'));
       if (NAMED_RE.test(line)) {
         const m = line.match(NAMED_RE);
         if (m && !CSS_KW.test(m[0])) patterns.push(m[0]);
@@ -311,6 +360,46 @@ if ((RUN_ALL || CSS_VALUES_ONLY) && !isFixtureMode) {
   }
 }
 
+// ─── Check 4: converged-set ratchet (CVA purity) ─────────────────────────────
+// The CVA-converged primitives must express their OWN styling through cva
+// variants — no inline `style={{ … }}` object literals in the component body.
+// A caller-style PASSTHROUGH (`style={someVar}`, e.g. Surface's layout escape
+// hatch) is allowed; only self-authored inline-style literals are forbidden.
+// Append a component here the moment it converges (#9/#14). alert is tone-
+// converged but still spreads typography tokens inline (its title/body spans);
+// it joins this list once that typography moves to <Text>.
+// (Skips fixture mode — like the CSS check — because the converged set is a
+// fixed file allowlist, not an arbitrary scanned file; the shared gate fixtures
+// exercise the other sub-rules.)
+if ((RUN_ALL || CONVERGED_ONLY) && !isFixtureMode) {
+  const CONVERGED_SET = ['button', 'input', 'badge', 'surface', 'callout'].map((n) =>
+    join(SRC, 'app', 'components', `${n}.tsx`),
+  );
+
+  for (const file of CONVERGED_SET) {
+    let lines;
+    try {
+      lines = readFileSync(file, 'utf-8').split('\n');
+    } catch {
+      continue;
+    }
+    const rel = relative(ROOT, file).replace(/\\/g, '/');
+    for (let i = 0; i < lines.length; i++) {
+      if (!lines[i].includes('style={{')) continue;
+      const prev = i > 0 ? lines[i - 1] : '';
+      if (lines[i].includes('// inline-ok:') || prev.includes('// inline-ok:')) continue;
+      allViolations.push({
+        file: rel,
+        line: i + 1,
+        rule: 'converged-inline-style',
+        severity: 'warn',
+        message:
+          'converged primitive uses an inline style={{…}} literal — express styling via cva variants (className)',
+      });
+    }
+  }
+}
+
 // ─── Output ──────────────────────────────────────────────────────────────────
 
 if (jsonMode) {
@@ -326,7 +415,13 @@ if (jsonMode) {
 }
 
 if (allViolations.length === 0) {
-  const mode = INLINE_ONLY ? 'inline-styles' : STYLE_PROPS_ONLY ? 'style-props' : CSS_VALUES_ONLY ? 'css-values' : 'all checks';
+  const mode = INLINE_ONLY
+    ? 'inline-styles'
+    : STYLE_PROPS_ONLY
+      ? 'style-props'
+      : CSS_VALUES_ONLY
+        ? 'css-values'
+        : 'all checks';
   console.log(`✓ check-style-discipline (${mode}) — no violations`);
   process.exit(0);
 }
@@ -349,13 +444,22 @@ for (const [rule, violations] of byRule) {
 }
 
 if (byRule.has('inline-styles-overdense')) {
-  console.error('\n  Fix: extract to src/app/components/, add data-hds-component, or add "// inline-ok: <reason>"');
+  console.error(
+    '\n  Fix: extract to src/app/components/, add data-hds-component, or add "// inline-ok: <reason>"',
+  );
 }
 if (byRule.has('style-prop-function') || byRule.has('style-prop-string')) {
   console.error('\n  Fix: pass an object to style, or call the style factory before passing it.');
 }
 if (byRule.has('css-raw-color')) {
-  console.error('\n  Fix: use var(--semantic-color-*) or var(--component-*), or add "css-ok: <reason>"');
+  console.error(
+    '\n  Fix: use var(--semantic-color-*) or var(--component-*), or add "css-ok: <reason>"',
+  );
+}
+if (byRule.has('converged-inline-style')) {
+  console.error(
+    '\n  Fix: a CVA-converged primitive must not self-author inline styles — move the styling into its cva() variants. Caller-style passthrough (style={var}) is fine; "// inline-ok: <reason>" for a genuine exception.',
+  );
 }
 
 process.exit(1);

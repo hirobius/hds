@@ -54,6 +54,7 @@ const MARKERS = [
   'eyebrow-ok',
   'vocab-ok',
   'deprecation-ok',
+  'style-prop-ok',
 ];
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);
