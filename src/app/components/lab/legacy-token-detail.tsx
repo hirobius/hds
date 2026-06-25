@@ -431,14 +431,10 @@ function EmptyState({ isDark }: { isDark: boolean }) {
   void isDark;
   return (
     <div
+      className="flex flex-col items-center justify-center text-center"
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
         height: 220,
         gap: hds.semantic.space.sidebar.gap,
-        textAlign: 'center',
       }}
     >
       <Icon icon={Search} size={18} color="var(--semantic-color-content-secondary)" />
