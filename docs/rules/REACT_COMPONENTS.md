@@ -45,6 +45,14 @@ Do not use `technical` for status tags, categories, dates, user names, or genera
 - **Accessibility-First**: Semantic parity is required. All new components must pass standard aria-label and color contrast checks; this will be enforced by `axe-playwright`.
 - **Automated Auto-Journaling**: Every autonomous visual fix or self-heal must append a timestamped Dev Note to `docs/CASE_STUDY_JOURNAL.md` describing the layout drift and how it was reconciled.
 
+### Escape-Hatch Policy (className vs. style)
+
+The sanctioned escape hatch on every primitive is **`className`** — not inline `style`.
+
+- **Non-interactive feedback primitives — `Badge`, `Alert`, `Callout` — are className-only.** Their interfaces `Omit<…HTMLAttributes…, 'style'>`; they expose no `style` prop. They fully own their visual surface through `cva()` variants, and inline `style` would silently override governed tone/background/radius. Enforced by **`check-no-style-prop`** (`// style-prop-ok: <reason>` to exempt).
+- **Converged primitives author zero inline styles.** `button`, `input`, `badge`, `surface`, `callout` carry **no `style={{ … }}` object literal** in their own render — all styling lives in `cva()`. A caller-supplied **passthrough** (`style={callerStyle}`) for layout is allowed on `Surface`/`Card`; a primitive computing its _own_ inline style object is not. Enforced by the `converged-inline-style` rule in **`check-style-discipline`** (append a component to its `CONVERGED_SET` as it converges).
+- **Interactive / layout primitives** (`Button`, `IconButton`, `Surface`, `Card`, `Icon`, `Input`) keep `style` as an escape hatch for one-off visual treatments (e.g. a glassmorphism nav button) and layout positioning the component doesn't govern (`margin`, `position`, `width`). They must still not use `style` to override a property the component already governs via tokens/cva.
+
 ### Containers
 
 - **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="component"` (24px) for cards, `padding="item"` (16px) for compact items), consistent radius (`var(--primitive-radius-8)`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` on layout primitives accepts HDS token keys (`'normal'`, `'px24'`).

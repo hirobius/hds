@@ -38,7 +38,7 @@ const calloutVariants = cva('border-l-[3px] p-[var(--semantic-space-component-pa
 type CalloutVariantProps = VariantProps<typeof calloutVariants>;
 
 export interface CalloutProps
-  extends React.HTMLAttributes<HTMLDivElement>, Omit<CalloutVariantProps, 'italic'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'>, Omit<CalloutVariantProps, 'italic'> {
   /** Tone — drives the left rule color and bg tint. */
   tone?: CalloutTone;
   /** Italicize the body content (quote / pull-quote pattern). */

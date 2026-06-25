@@ -35,7 +35,8 @@ const badgeVariants = cva(
 type BadgeVariantProps = VariantProps<typeof badgeVariants>;
 
 /** @public */
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement>, BadgeVariantProps {
+export interface BadgeProps
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'style'>, BadgeVariantProps {
   /** Element rendered as the badge wrapper. Defaults to 'span'. */
   as?: React.ElementType;
 }
