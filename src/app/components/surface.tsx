@@ -18,28 +18,57 @@
  * @ai-intent Creates the only approved padded background-bearing wrapper in HDS so agents can express card, panel, and inset content without inventing ad hoc container chrome.
  * @ai-rules Use Surface only when content needs a background-bearing inset wrapper. Do NOT use Surface for macro page layouts, section spacing, or pure width constraints. Do NOT nest extra padded wrappers inside Surface to simulate another card. Do NOT recreate surface behavior with raw div padding, backgroundColor, or border styles elsewhere.
  */
-"use client";
+'use client';
 
 import React, { type CSSProperties, type HTMLAttributes, type ReactNode } from 'react';
-import { useTheme } from '../context/ThemeContext';
-import hds from '../design-system/tokens';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 
 type PaddingOption = 'component' | 'item' | 'px16' | 'px24' | 'none';
 
-const paddingMap: Record<PaddingOption, string> = {
-  component: 'var(--semantic-space-component-padding)',
-  item: '16px',
-  px16: '16px',
-  px24: '24px',
-  none: '0px',
-};
+// ── Variants ───────────────────────────────────────────────────────────────────
+// The background is the theme-aware `--semantic-color-surface-raised` var, which
+// re-roots under `[data-theme="dark"]` (see styles/tokens.css). The `theme` prop
+// therefore forces a theme by setting `data-theme` on the element itself — that
+// re-roots BOTH the surface background AND descendant content-color vars, so
+// forced-dark content stays readable. (Previously a JS isDark branch picked a
+// token whose dark/light refs both pointed at the same context var, so forcing
+// was a silent no-op.)
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists
+const surfaceVariants = cva(
+  'box-border h-full border-none rounded-[var(--component-card-radius)] bg-[color:var(--semantic-color-surface-raised)] text-[color:var(--semantic-color-content-primary)]',
+  {
+    variants: {
+      padding: {
+        component: 'p-[var(--semantic-space-component-padding)]',
+        // spacing-ok: 16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to
+        item: 'p-[16px]',
+        px16: 'p-[16px]',
+        px24: 'p-[24px]',
+        none: 'p-0',
+      },
+      shadow: {
+        true: 'shadow-[0_4px_12px_rgba(0,0,0,0.10),0_2px_4px_rgba(0,0,0,0.05)]',
+        false: '',
+      },
+    },
+    defaultVariants: { padding: 'component', shadow: false },
+  },
+);
 
-interface SurfaceProps extends Omit<HTMLAttributes<HTMLDivElement>, 'style' | 'className'> {
+// ── Types ──────────────────────────────────────────────────────────────────────
+
+type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
+
+interface SurfaceProps
+  extends
+    Omit<HTMLAttributes<HTMLDivElement>, 'style' | 'className'>,
+    Omit<SurfaceVariantProps, 'shadow'> {
   /** Surface content. */
   children?: ReactNode;
   /** Padding: 'component' (24px, default) | 'item' (16px) | primitive px values | 'none' (0px). */
   padding?: PaddingOption;
-  /** Reserved for future token incubation. Currently a no-op to keep surfaces token-governed. */
+  /** Apply the two-layer card elevation shadow for lift. */
   shadow?: boolean;
   /** Override CSS overflow. */
   overflow?: CSSProperties['overflow'];
@@ -53,40 +82,43 @@ interface SurfaceProps extends Omit<HTMLAttributes<HTMLDivElement>, 'style' | 'c
   as?: React.ElementType;
 }
 
+// ── Component ──────────────────────────────────────────────────────────────────
+
 /** @public */
-export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
-  function Surface(
-    { children, padding = 'component', shadow = false, overflow, theme: themeProp, style, className, as: Tag = 'div', ...rest },
-    ref,
-  ) {
-    const { isDark: contextIsDark } = useTheme();
-    const isDark = themeProp !== undefined ? themeProp === 'dark' : contextIsDark;
-    const surfaceBackground = isDark ? hds.color.surface.raised.dark : hds.color.surface.raised.light;
-
-    const surfaceStyle: CSSProperties = {
-      backgroundColor: surfaceBackground,
-      padding: paddingMap[padding],
-      borderRadius: 'var(--component-card-radius)',
-      border: 'none',
-      ...(shadow && { boxShadow: '0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.05)' }),
-      boxSizing: 'border-box',
-      height: '100%',
-      ...(overflow !== undefined && { overflow }),
-      ...style,
-    };
-
-    return (
-      <Tag
-        ref={ref}
-        className={className}
-        style={surfaceStyle}
-        data-hds-surface="true"
-        data-hds-component="Surface"
-        data-hds-metrics={`padding:${padding}`}
-        {...rest}
-      >
-        {children}
-      </Tag>
-    );
+export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(function Surface(
+  {
+    children,
+    padding = 'component',
+    shadow = false,
+    overflow,
+    theme: themeProp,
+    style,
+    className,
+    as: Tag = 'div',
+    ...rest
   },
-);
+  ref,
+) {
+  const surfaceStyle: CSSProperties | undefined =
+    overflow !== undefined || style
+      ? { ...(overflow !== undefined && { overflow }), ...style }
+      : undefined;
+
+  return (
+    <Tag
+      ref={ref}
+      data-theme={themeProp}
+      className={cn(surfaceVariants({ padding, shadow }), className)}
+      style={surfaceStyle}
+      data-hds-surface="true"
+      data-hds-component="Surface"
+      data-hds-metrics={`padding:${padding}`}
+      {...rest}
+    >
+      {children}
+    </Tag>
+  );
+});
+
+/** @internal — CVA variant helper; compose via Surface props instead. */
+export { surfaceVariants };
