@@ -1,15 +1,15 @@
 # Exception Audit Report
 
-Generated: 2026-06-24T21:54:28.409Z
+Generated: 2026-06-25T02:38:40.776Z
 
 ## Summary
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 52 | 52 | 0 |
+| eslint-disable | 55 | 55 | 0 |
 | @ts-ignore/@ts-expect-error | 1 | 1 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 140 | 138 | 2 |
-| **Total** | **193** | **191** | **2** |
+| custom-sentinels (*-ok / hds-bypass) | 141 | 139 | 2 |
+| **Total** | **197** | **195** | **2** |
 
 ## eslint-disable
 
@@ -18,10 +18,12 @@ Generated: 2026-06-24T21:54:28.409Z
 | `src/app/components/CascadeText.tsx` | 29 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/ComponentDocPage.tsx` | 211 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/ComponentDocPage.tsx` | 241 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/alert.tsx` | 22 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/animated-label.tsx` | 54 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; no Tailwind utility covers multi-prop animation` | justified |
 | `src/app/components/asset-img.tsx` | 96 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
 | `src/app/components/badge.tsx` | 15 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens, the intentional 11px chip size, and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/button.tsx` | 17 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; Tailwind has no single utility for transition-[colors,filter]` | justified |
+| `src/app/components/callout.tsx` | 19 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven padding + accent/surface vars have no Tailwind-theme utility` | justified |
 | `src/app/components/code-block.tsx` | 6 | `eslint-disable*` | `jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation` | justified |
 | `src/app/components/command-palette.tsx` | 366 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- 10px is the standard shadcn cmd-palette kbd metadata size` | justified |
 | `src/app/components/command-palette.tsx` | 368 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- kbd shortcut hint` | justified |
@@ -47,6 +49,7 @@ Generated: 2026-06-24T21:54:28.409Z
 | `src/app/components/preview-frame.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/shell-controls.tsx` | 149 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/stepper-field.tsx` | 59 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/surface.tsx` | 37 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/tile-grid.tsx` | 35 | `eslint-disable-next-line` | `no-restricted-syntax -- TileGrid IS the grid primitive; auto-fill template is its raison d'être` | justified |
 | `src/app/context/__tests__/context.test.tsx` | 18 | `eslint-disable-next-line` | `@typescript-eslint/no-explicit-any` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
@@ -102,6 +105,7 @@ Generated: 2026-06-24T21:54:28.409Z
 | `src/app/components/stacked-card-rail.tsx` | 169 | `audit-ok` | `percentage fill in CSS template */` | justified |
 | `src/app/components/stacked-card-rail.tsx` | 174 | `audit-ok` | `percentage fill in CSS template */` | justified |
 | `src/app/components/stacked-card-rail.tsx` | 175 | `audit-ok` | `percentage fill in CSS template */` | justified |
+| `src/app/components/surface.tsx` | 44 | `spacing-ok` | `16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to` | justified |
 | `src/app/components/text-lockup.tsx` | 9 | `font-ok` | `inline technical affordances within this lockup intentionally use monospace for code-like references` | justified |
 | `src/app/data/hdsEditorial.tsx` | 55 | `audit-ok` | `*/) now supported. Self-healing policy documented: new violation classes must be added to script in same commit as fix.' },` | justified |
 | `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 1 | `hds-bypass` | `internal architecture-snapshot audit page. Intentionally renders code/terminal excerpts and tabular status with raw inline typography to mirror the diagnostic shape of the source it documents. Not user-facing canon. */` | justified |
@@ -221,8 +225,8 @@ Generated: 2026-06-24T21:54:28.409Z
 
 ## Summary Stats
 
-- **Total suppressions:** 193
-- **Justified (reason >= 10 chars):** 191
+- **Total suppressions:** 197
+- **Justified (reason >= 10 chars):** 195
 - **Untriaged (reason < 10 chars or missing):** 2
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.
