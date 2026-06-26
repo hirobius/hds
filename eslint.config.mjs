@@ -57,6 +57,11 @@ export default [
       'figma-agent-plugin/**',
       '.claude/**',
       'scripts/_retired-*/**',
+      // Workflow (Dynamic-Workflow) scripts execute in the agent runtime, which
+      // injects globals (agent/parallel/log/phase/budget/args) and allows
+      // top-level await/return. They are not conventional ESM modules, so the
+      // standard module parser would false-error on them.
+      'scripts/**/*.workflow.js',
     ],
   },
 

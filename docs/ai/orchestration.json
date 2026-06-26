@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "description": "HDS autonomous-loop backlog + verifier contract. Read docs/ai/LOOP_ENGINEERING.md. Validated by `pnpm loop:validate`. The loop only ever dispatches units that are status:backlog, not human-only, and whose acceptanceChecks all resolve to a real gate or pnpm verifier.",
+  "concurrency": 1,
+  "budget": {
+    "tokenCeiling": null,
+    "perUnitWallClockMin": 25,
+    "maxAttempts": 2
+  },
+  "units": [
+    {
+      "id": "loop-smoke",
+      "title": "Loop harness smoke check",
+      "priority": "P3",
+      "status": "backlog",
+      "humanOnly": false,
+      "acceptanceChecks": ["pnpm:typecheck"],
+      "attempts": 0,
+      "brief": "No product change. Prove the harness can select → dispatch → verify (typecheck) → mark done end-to-end. Used to validate the loop before any real unit is turned on.",
+      "scopeHint": "none (harness self-test)"
+    },
+    {
+      "id": "hds-7-card-diet",
+      "title": "Card diet — remove legacy noPadding + padding/gap props",
+      "priority": "P1",
+      "status": "backlog",
+      "humanOnly": false,
+      "acceptanceChecks": ["pnpm:typecheck", "gate:check-deprecations"],
+      "attempts": 0,
+      "brief": "Remove the legacy noPadding/padding/gap props from Card via the deprecation lifecycle (warn + ledger + @removeIn) established in task #15. check-deprecations proves every @deprecated has a future @removeIn target.",
+      "scopeHint": "src/app/components/card.tsx + callsites"
+    },
+    {
+      "id": "hds-21-isdark-context",
+      "title": "Collapse isDark prop-drilling → theme context/hook",
+      "priority": "P2",
+      "status": "backlog",
+      "humanOnly": false,
+      "acceptanceChecks": ["pnpm:typecheck", "pnpm:test:layout"],
+      "attempts": 0,
+      "brief": "Replace isDark prop-drilling across doc/lab components with a theme context/hook. Self-contained; layout integrity proves no visual regression.",
+      "scopeHint": "src/app/components + src/app/pages/hds (doc/lab)"
+    },
+    {
+      "id": "hds-11-aschild-slot",
+      "title": "Converge polymorphism on asChild/Slot (Radix Slot)",
+      "priority": "P2",
+      "status": "human-only",
+      "humanOnly": true,
+      "acceptanceChecks": [],
+      "attempts": 0,
+      "brief": "Move ad-hoc `as` props to Radix Slot/asChild. Cross-cutting and architectural — no single mechanical check proves correctness, so it is human-only until decomposed into gate-verifiable sub-units.",
+      "scopeHint": "polymorphic components repo-wide"
+    },
+    {
+      "id": "hds-19-doc-canon",
+      "title": "Consolidate prose-doc source-of-truth mirrors",
+      "priority": "P2",
+      "status": "human-only",
+      "humanOnly": true,
+      "acceptanceChecks": [],
+      "attempts": 0,
+      "brief": "Pick canonical sources among DESIGN.md / DESIGN-HANDOFF.md / llms.txt / manifest and cut duplication. Subjective editorial judgement — not mechanically verifiable, so human-only.",
+      "scopeHint": "docs + DESIGN*.md + public/llms.txt"
+    },
+    {
+      "id": "hds-22-aria-label",
+      "title": "Standardize aria-label prop to DOM-style",
+      "priority": "P2",
+      "status": "done",
+      "humanOnly": false,
+      "acceptanceChecks": ["pnpm:typecheck", "pnpm:test:a11y"],
+      "attempts": 1,
+      "lastResult": "pass",
+      "brief": "Converged Tag/SegmentedControl/Token onto DOM-style aria-label (commit 65b107e). Recorded here as a worked example: typecheck + test:a11y were its mechanical acceptance checks.",
+      "scopeHint": "src/app/components/{tag,segmented-control,token}.tsx"
+    }
+  ]
+}
