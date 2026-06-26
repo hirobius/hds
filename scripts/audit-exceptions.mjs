@@ -190,8 +190,11 @@ function generateReport() {
   const justified = allResults.filter((r) => r.status === 'justified').length;
   const untriaged = allResults.filter((r) => r.status === 'untriaged').length;
 
+  // No generation timestamp: this report is rewritten by the audit-exceptions
+  // gate on every commit (and again by the post-commit re-run), so a clock-based
+  // stamp churned the tree perpetually. The report now changes only when the
+  // actual exception set does.
   let md = '# Exception Audit Report\n\n';
-  md += `Generated: ${new Date().toISOString()}\n\n`;
 
   // Summary counts
   md += '## Summary\n\n';
