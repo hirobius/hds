@@ -4,10 +4,10 @@ Authoritative rules for the token architecture, manifest structure, and sync pip
 
 ## 1. Two Separate Source Files — Know Which is Which
 
-| File | What it is | Who writes it | Who reads it |
-|---|---|---|---|
-| `hirobius.tokens.json` | W3C DTCG token graph. The design primitive. | Humans + Figma export | `pnpm tokens` pipeline → CSS vars + TS constants |
-| `public/hds-manifest.json` | System inventory: components, phases, health, and token snapshot. | `scripts/generate-manifest.mjs` + bridge `/update-manifest` | Agents, docs pages, LLM context, Figma plugin |
+| File                       | What it is                                                        | Who writes it                                               | Who reads it                                     |
+| -------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------ |
+| `hirobius.tokens.json`     | W3C DTCG token graph. The design primitive.                       | Humans + Figma export                                       | `pnpm tokens` pipeline → CSS vars + TS constants |
+| `public/hds-manifest.json` | System inventory: components, phases, health, and token snapshot. | `scripts/generate-manifest.mjs` + bridge `/update-manifest` | Agents, docs pages, LLM context, Figma plugin    |
 
 **NEVER conflate them.** A token lives in `hirobius.tokens.json`. A component spec lives in the manifest. A token _reference_ (the path string like `semantic.color.surface.raised`) may appear in both — in the token file as a node in the graph, in the manifest as a metadata field on a component spec.
 
@@ -17,13 +17,14 @@ Authoritative rules for the token architecture, manifest structure, and sync pip
 primitive  →  semantic  →  component
 ```
 
-| Tier | Path prefix | Purpose | Example |
-|---|---|---|---|
-| Primitive | `primitive.*` | Raw atoms. Direct values. | `primitive.color.blue.500 = #1E2EFD` |
-| Semantic | `semantic.*` | Purpose-named. References primitive. | `semantic.color.surface.raised → primitive.color.neutral.50` |
-| Component | `component.*` | Component-specific. References semantic. | `component.button.bg → semantic.accent.rest` |
+| Tier      | Path prefix   | Purpose                                  | Example                                                      |
+| --------- | ------------- | ---------------------------------------- | ------------------------------------------------------------ |
+| Primitive | `primitive.*` | Raw atoms. Direct values.                | `primitive.color.blue.500 = #1E2EFD`                         |
+| Semantic  | `semantic.*`  | Purpose-named. References primitive.     | `semantic.color.surface.raised → primitive.color.neutral.50` |
+| Component | `component.*` | Component-specific. References semantic. | `component.button.bg → semantic.accent.rest`                 |
 
 **Rules:**
+
 - Product UI MUST use `semantic.*` or `component.*` tokens. `primitive.*` is only touched when editing the token system itself.
 - A token MUST NOT skip tiers: `component.*` may only reference `semantic.*`, not `primitive.*` directly.
 - CSS variable naming: token path `semantic.color.surface.page` → `var(--semantic-color-surface-page)` (dots become hyphens, no other transformation).
@@ -50,36 +51,36 @@ Do not run individual scripts out of order. If a single script needs to run in i
 
 `public/hds-manifest.json` top-level keys and their owners:
 
-| Key | Owner | Do not hand-edit |
-|---|---|---|
-| `name`, `version`, `generated`, `source` | `generate-manifest.mjs` | ✓ |
-| `componentInventory` | `generate-manifest.mjs` (from source scan) | ✓ |
-| `componentSpecs` | `generate-manifest.mjs` + bridge `/update-manifest` | Partial — see §5 |
-| `tokens` | `generate-manifest.mjs` (snapshot from `hirobius.tokens.json`) | ✓ |
-| `typographyRamp`, `patternInventory` | `generate-manifest.mjs` | ✓ |
-| `phases`, `health` | `sync-system-health.mjs` + `build-roadmap-data.mjs` | ✓ |
-| `agentEntrypoint`, `architecture`, `systemSpecs` | Human-authored, stable | Can edit carefully |
-| `brand` | Human-authored | Can edit carefully |
+| Key                                              | Owner                                                          | Do not hand-edit   |
+| ------------------------------------------------ | -------------------------------------------------------------- | ------------------ |
+| `name`, `version`, `generated`, `source`         | `generate-manifest.mjs`                                        | ✓                  |
+| `componentInventory`                             | `generate-manifest.mjs` (from source scan)                     | ✓                  |
+| `componentSpecs`                                 | `generate-manifest.mjs` + bridge `/update-manifest`            | Partial — see §5   |
+| `tokens`                                         | `generate-manifest.mjs` (snapshot from `hirobius.tokens.json`) | ✓                  |
+| `typographyRamp`, `patternInventory`             | `generate-manifest.mjs`                                        | ✓                  |
+| `phases`, `health`                               | `build-roadmap-data.mjs`                                       | ✓                  |
+| `agentEntrypoint`, `architecture`, `systemSpecs` | Human-authored, stable                                         | Can edit carefully |
+| `brand`                                          | Human-authored                                                 | Can edit carefully |
 
 ## 5. `componentSpecs` — Required Fields Per Component
 
 Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-manifest.mjs` script (Phase 1.3) enforces this.
 
-| Field | Type | Source | Notes |
-|---|---|---|---|
-| `category` | string | JSDoc `@category` | Governs docs routing |
-| `filePath` | string | Source scan | Relative to repo root |
-| `description` | string | JSDoc | One sentence |
-| `props` | object | `src/app/data/component-api.json` | See prop schema below |
-| `tokens` | object | Hand-authored | Maps semantic role → token path |
-| `figmaPropertyMapping` | object | Hand-authored | Maps React prop → Figma property name |
-| `states` | string[] | Hand-authored | e.g. `["default","hover","focus","disabled"]` |
-| `allowedChildren` | string[] or `["*"]` | Hand-authored | Gatekeeper — Phase 1.2 addition |
-| `propConstraints` | object | Hand-authored | Gatekeeper — Phase 1.2 addition |
-| `requiredProps` | string[] | Derived from props | Gatekeeper — Phase 1.2 addition |
-| `a11yRules` | object[] | Hand-authored | Gatekeeper — Phase 1.2 addition |
-| `variantAxes` | string[] | Hand-authored | Phase A1 — ordered prop names emitted as Figma variant axes (cartesian product → COMPONENT_SET variants). e.g. `["variant","size","state"]` for HdsButton. |
-| `componentProperties` | object[] | Hand-authored | Phase A1 — Figma component-property declarations. See `manifest/schema.json#definitions.componentProperty`. Applied via `master.addComponentProperty(name, type, defaultValue)` AFTER `combineAsVariants`. |
+| Field                  | Type                | Source                            | Notes                                                                                                                                                                                                      |
+| ---------------------- | ------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `category`             | string              | JSDoc `@category`                 | Governs docs routing                                                                                                                                                                                       |
+| `filePath`             | string              | Source scan                       | Relative to repo root                                                                                                                                                                                      |
+| `description`          | string              | JSDoc                             | One sentence                                                                                                                                                                                               |
+| `props`                | object              | `src/app/data/component-api.json` | See prop schema below                                                                                                                                                                                      |
+| `tokens`               | object              | Hand-authored                     | Maps semantic role → token path                                                                                                                                                                            |
+| `figmaPropertyMapping` | object              | Hand-authored                     | Maps React prop → Figma property name                                                                                                                                                                      |
+| `states`               | string[]            | Hand-authored                     | e.g. `["default","hover","focus","disabled"]`                                                                                                                                                              |
+| `allowedChildren`      | string[] or `["*"]` | Hand-authored                     | Gatekeeper — Phase 1.2 addition                                                                                                                                                                            |
+| `propConstraints`      | object              | Hand-authored                     | Gatekeeper — Phase 1.2 addition                                                                                                                                                                            |
+| `requiredProps`        | string[]            | Derived from props                | Gatekeeper — Phase 1.2 addition                                                                                                                                                                            |
+| `a11yRules`            | object[]            | Hand-authored                     | Gatekeeper — Phase 1.2 addition                                                                                                                                                                            |
+| `variantAxes`          | string[]            | Hand-authored                     | Phase A1 — ordered prop names emitted as Figma variant axes (cartesian product → COMPONENT_SET variants). e.g. `["variant","size","state"]` for HdsButton.                                                 |
+| `componentProperties`  | object[]            | Hand-authored                     | Phase A1 — Figma component-property declarations. See `manifest/schema.json#definitions.componentProperty`. Applied via `master.addComponentProperty(name, type, defaultValue)` AFTER `combineAsVariants`. |
 
 ### Component property schema
 
@@ -113,15 +114,15 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
 ]
 ```
 
-| Field | Required | Notes |
-|---|---|---|
-| `name` | yes | Figma panel display name. Title Case with spaces. |
-| `type` | yes | One of `BOOLEAN`, `TEXT`, `INSTANCE_SWAP`. |
-| `defaultValue` | no | Default applied at master creation. |
-| `sourceProp` | no | React prop the JSX compiler maps from. |
-| `boundTo` | no | Defaults: `BOOLEAN→visibility`, `TEXT→characters`, `INSTANCE_SWAP→mainComponent`. |
-| `targetSelector` | no | Logical name of the tree node the property attaches to. Plugin matches by `node.name`. Convention: PascalCase. |
-| `invert` | no | If true, the JSX compiler negates the source prop value (e.g. `iconOnly→!Show label`). |
+| Field            | Required | Notes                                                                                                          |
+| ---------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| `name`           | yes      | Figma panel display name. Title Case with spaces.                                                              |
+| `type`           | yes      | One of `BOOLEAN`, `TEXT`, `INSTANCE_SWAP`.                                                                     |
+| `defaultValue`   | no       | Default applied at master creation.                                                                            |
+| `sourceProp`     | no       | React prop the JSX compiler maps from.                                                                         |
+| `boundTo`        | no       | Defaults: `BOOLEAN→visibility`, `TEXT→characters`, `INSTANCE_SWAP→mainComponent`.                              |
+| `targetSelector` | no       | Logical name of the tree node the property attaches to. Plugin matches by `node.name`. Convention: PascalCase. |
+| `invert`         | no       | If true, the JSX compiler negates the source prop value (e.g. `iconOnly→!Show label`).                         |
 
 ### When the JSX compiler emits an instance, it must:
 
@@ -156,12 +157,15 @@ If `optional` is absent and there is no `default`, the prop is implicitly requir
 ## 6. Updating the Manifest
 
 ### From the bridge (token sync round-trip)
+
 `POST /update-manifest` with `{ tokens: [...] }`. The bridge upserts by `path` first, falls back to `name`. Responds with `{ status, upserted, inserted }`. This is the canonical path for Figma→manifest token updates.
 
 ### From `generate-manifest.mjs`
+
 Re-generates `componentInventory`, `componentSpecs` scaffolding, `tokens` snapshot, and phase metadata. Run via `pnpm manifest:generate`. This OVERWRITES generated sections — any hand-edits to those sections are lost. Put hand-edits only in the fields listed as "Can edit carefully" in §4.
 
 ### Adding a new component
+
 1. Create the `.tsx` file with JSDoc `@category` tag.
 2. Run `pnpm manifest:generate` — the component appears in `componentInventory` and gets a scaffold `componentSpecs` entry with `tokenMapping`, `variantAxes`, `componentProperties` defaulted to empty.
 3. Hand-fill `tokens`, `figmaPropertyMapping`, `states`, `allowedChildren`, `propConstraints`, `requiredProps`, `a11yRules`, `variantAxes`, `componentProperties` either inline in the manifest or — preferably — in `scripts/build-tokens.mjs` so they survive re-generation.
@@ -182,6 +186,7 @@ disk
 ```
 
 Key facts:
+
 - Typography tokens are composite (W3C DTCG) — `build-figma-variables.mjs` explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing). Do not attempt to sync composite tokens directly.
 - The `expandTypography()` function in `build-figma-variables.mjs` owns this expansion. Do not duplicate its logic elsewhere.
 - Fluid clamp overrides on `display`, `heading1`, `heading2`, `heading3` are recorded in `$extensions["com.figma.variables"]` in `hirobius.tokens.json`. Figma stores the static desktop-max value; the browser applies the clamp on top. This divergence is intentional and documented.
@@ -198,13 +203,13 @@ Key facts:
 
 ## 9. Quick Reference — Which Script Does What
 
-| Need | Command |
-|---|---|
-| Rebuild everything after a token edit | `pnpm tokens` |
-| Rebuild just the manifest | `pnpm manifest:generate` |
-| Validate manifest against schema | `pnpm validate:manifest` |
-| Check for ghost / unused token vars | `pnpm check:ghost-tokens` |
-| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides` |
-| Full token + component audit | `pnpm check:fast` |
-| Sync Figma Variables from tokens | `node scripts/build-figma-variables.mjs` |
-| Audit Figma system state | `pnpm figma:audit` |
+| Need                                    | Command                                  |
+| --------------------------------------- | ---------------------------------------- |
+| Rebuild everything after a token edit   | `pnpm tokens`                            |
+| Rebuild just the manifest               | `pnpm manifest:generate`                 |
+| Validate manifest against schema        | `pnpm validate:manifest`                 |
+| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`                |
+| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides`         |
+| Full token + component audit            | `pnpm check:fast`                        |
+| Sync Figma Variables from tokens        | `node scripts/build-figma-variables.mjs` |
+| Audit Figma system state                | `pnpm figma:audit`                       |

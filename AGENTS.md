@@ -59,18 +59,17 @@ Common script groups that do exist:
 - Registry and sync:
   - `scripts/sync-hds-registry.mjs`
   - `scripts/sync-icons.mjs`
-  - `scripts/sync-system-health.mjs`
 
 ## Asset Intake Workflow
 
 Portfolio image-led pages use explicit slot ids like `hero-01` and `asset-07`.
 
-- Drop new loose assets into [public/assets/_incoming](C:\Users\Adrian\Documents\adrian-milsap\public\assets\_incoming)
+- Drop new loose assets into [public/assets/\_incoming](C:\Users\Adrian\Documents\adrian-milsap\public\assets_incoming)
 - Treat that folder as a staging area only
 - Use `pnpm assets:convert` to batch-convert `_incoming` images to WebP before slotting when appropriate
 - Use `--keep-png <file>` for transparency-sensitive or explicitly preserved PNG assets
 - Move final mapped assets into permanent folders under [public/assets](C:\Users\Adrian\Documents\adrian-milsap\public\assets)
-- Move replaced live assets into [public/assets/_archive](C:\Users\Adrian\Documents\adrian-milsap\public\assets\_archive) instead of hard-deleting them
+- Move replaced live assets into [public/assets/\_archive](C:\Users\Adrian\Documents\adrian-milsap\public\assets_archive) instead of hard-deleting them
 - Update page slot manifests to assign assets to slots
 - Do not hardcode ad hoc inline image paths throughout page markup
 
