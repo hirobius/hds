@@ -30,7 +30,7 @@ interface TagProps {
   /** Native tooltip for explicit file/path affordance. */
   title?: string;
   /** Accessible label when the visible text is abbreviated. */
-  ariaLabel?: string;
+  'aria-label'?: string;
 }
 
 // ── Style ──────────────────────────────────────────────────────────────────────
@@ -73,7 +73,7 @@ const pillStyle = {
 
 /** @public */
 export const Tag = React.forwardRef<HTMLButtonElement, TagProps>(function Tag(
-  { children, active = false, onClick, className, title, ariaLabel },
+  { children, active = false, onClick, className, title, 'aria-label': ariaLabel },
   ref,
 ) {
   const classes = ['hds-tag-btn', className].filter(Boolean).join(' ');

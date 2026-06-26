@@ -185,7 +185,13 @@ function SourceValueNode({ value, title }: { value: unknown; title?: string }) {
   const label = typeof value === 'string' ? value : formatTokenValue(value);
 
   return (
-    <Token variant="node" nowrap={false} isSourceNode isSelected={false} ariaLabel={title ?? label}>
+    <Token
+      variant="node"
+      nowrap={false}
+      isSourceNode
+      isSelected={false}
+      aria-label={title ?? label}
+    >
       {label}
     </Token>
   );
@@ -350,7 +356,7 @@ function MicroProvenanceArrow() {
 
 function SourceValueBadge({ value }: { value: string }) {
   return (
-    <Token variant="node" isSourceNode isSelected={false} ariaLabel={value}>
+    <Token variant="node" isSourceNode isSelected={false} aria-label={value}>
       {value}
     </Token>
   );
@@ -383,7 +389,7 @@ function CompositeDnaCard({
           tokenPath={entry.aliasPath ?? undefined}
           onClick={aliasToken && onSelectToken ? () => onSelectToken(aliasToken) : undefined}
           isSelected={false}
-          ariaLabel={entry.aliasPath ?? 'Literal'}
+          aria-label={entry.aliasPath ?? 'Literal'}
           truncateFromStart
         >
           {entry.aliasPath ?? 'Literal'}

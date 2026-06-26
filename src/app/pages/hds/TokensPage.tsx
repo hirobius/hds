@@ -208,7 +208,7 @@ function TokenExportSection() {
         }}
       >
         <SegmentedControl
-          ariaLabel="Token export format"
+          aria-label="Token export format"
           fullWidth
           variant="secondary"
           segmentPaddingX={hds.semantic.space.layout.gap}

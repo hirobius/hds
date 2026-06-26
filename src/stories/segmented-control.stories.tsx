@@ -85,7 +85,7 @@ function CompactRender() {
   const [value, setValue] = useState('list');
   return (
     <SegmentedControl
-      ariaLabel="View mode"
+      aria-label="View mode"
       options={VIEW_OPTIONS}
       value={value}
       onChange={setValue}

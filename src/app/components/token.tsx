@@ -20,7 +20,7 @@ type TokenBaseProps = {
   pathDisplayDepth?: number;
   pathDisplayLeadingDot?: boolean;
   nodeRef?: (el: HTMLElement | null) => void;
-  ariaLabel?: string;
+  'aria-label'?: string;
   /** When true, overflow ellipsis appears at the start (left) instead of the end. */
   truncateFromStart?: boolean;
 };
@@ -125,7 +125,13 @@ function TokenTone({
   return (
     <div
       data-inspector-ignore="token-swatch"
-      style={{ ...tokenStyles.toneSwatchBase, width: size, height: size, marginTop: offsetTop, background: tone }}
+      style={{
+        ...tokenStyles.toneSwatchBase,
+        width: size,
+        height: size,
+        marginTop: offsetTop,
+        background: tone,
+      }}
     />
   );
 }
@@ -155,7 +161,10 @@ function TokenNodeInline({
 }: TokenNodeInlineProps) {
   return (
     <div
-      style={{ ...tokenStyles.nodeInlineWrapperBase, alignItems: isSourceNode ? 'flex-start' : 'center' }}
+      style={{
+        ...tokenStyles.nodeInlineWrapperBase,
+        alignItems: isSourceNode ? 'flex-start' : 'center',
+      }}
     >
       {leadingSlot ? (
         leadingSlot
@@ -280,7 +289,7 @@ function TokenNodeSurface({
   pathDisplayDepth = 1,
   pathDisplayLeadingDot = false,
   nodeRef,
-  ariaLabel,
+  'aria-label': ariaLabel,
   nowrap = true,
   isSourceNode = false,
   truncateFromStart = false,
@@ -361,7 +370,7 @@ function TokenDiagram({
   nodeRef,
   className,
   onClick,
-  ariaLabel,
+  'aria-label': ariaLabel,
 }: TokenDiagramProps) {
   return (
     <TokenNodeSurface
@@ -369,7 +378,7 @@ function TokenDiagram({
       fullWidth
       nodeRef={nodeRef}
       onClick={onClick}
-      ariaLabel={ariaLabel}
+      aria-label={ariaLabel}
       swatchVar={swatchVar}
     >
       {label}

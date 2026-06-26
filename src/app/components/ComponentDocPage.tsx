@@ -377,7 +377,7 @@ export function HdsComponentDoc({
                 }}
               >
                 <SegmentedControl
-                  ariaLabel={`${componentName} documentation sections`}
+                  aria-label={`${componentName} documentation sections`}
                   fullWidth
                   variant="secondary"
                   segmentPaddingX={hds.semantic.space.layout.gap}

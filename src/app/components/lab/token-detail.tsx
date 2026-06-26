@@ -230,7 +230,7 @@ function FileChipList({ usageEntry }: { usageEntry: UsageEntry }) {
             onClick={() => navigator.clipboard.writeText(file)}
             className="whitespace-normal"
             title={file}
-            ariaLabel={`Copy path for ${shortName}`}
+            aria-label={`Copy path for ${shortName}`}
           >
             {shortName} Â· {references}
           </Tag>
@@ -400,7 +400,7 @@ export function TokenDetail({
             tokenPath={token.path}
             swatchVar={token.type === 'color' ? token.cssVar : undefined}
             onClick={onSelectToken ? () => onSelectToken(token) : undefined}
-            ariaLabel={onSelectToken ? `Select ${token.path}` : undefined}
+            aria-label={onSelectToken ? `Select ${token.path}` : undefined}
           >
             {token.path}
           </Token>
