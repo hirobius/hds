@@ -58,8 +58,8 @@ describe('Tag contract', () => {
     expect(btn?.getAttribute('data-active')).toBeNull();
   });
 
-  it('ariaLabel prop sets aria-label on the button', () => {
-    const { container } = render(<Tag ariaLabel="Filter by React">React</Tag>);
+  it('aria-label prop sets aria-label on the button', () => {
+    const { container } = render(<Tag aria-label="Filter by React">React</Tag>);
     const btn = container.querySelector('button');
     expect(btn?.getAttribute('aria-label')).toBe('Filter by React');
   });
