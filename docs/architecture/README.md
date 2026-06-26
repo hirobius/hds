@@ -30,10 +30,10 @@ ADR-NNNN-<slug>.md
 proposed  →  accepted  →  superseded
 ```
 
-| Status | Meaning |
-|---|---|
-| `proposed` | Decision under discussion; not yet ratified. |
-| `accepted` | Landed decision; in effect. Default state for shipped ADRs. |
+| Status       | Meaning                                                      |
+| ------------ | ------------------------------------------------------------ |
+| `proposed`   | Decision under discussion; not yet ratified.                 |
+| `accepted`   | Landed decision; in effect. Default state for shipped ADRs.  |
 | `superseded` | Replaced by a newer ADR. Populate the `superseded-by` field. |
 
 ---
@@ -48,8 +48,8 @@ id: ADR-NNNN
 title: <Human-readable title matching the file's H1>
 status: proposed | accepted | superseded
 date: YYYY-MM-DD
-supersedes: []          # list of ADR ids this ADR replaces, e.g. [ADR-0001]
-superseded-by: []       # list of ADR ids that replace this one
+supersedes: [] # list of ADR ids this ADR replaces, e.g. [ADR-0001]
+superseded-by: [] # list of ADR ids that replace this one
 ---
 ```
 
@@ -61,7 +61,7 @@ Write an ADR when:
 
 - The decision's reversal would require touching many files, breaking tenants,
   or retraining contributors (e.g. changing the CSS scope mechanism).
-- Future readers (including AI agents) need the *why*, not just the *what*.
+- Future readers (including AI agents) need the _why_, not just the _what_.
 - Multiple options were seriously considered and the rejected paths matter.
 - The decision propagates downstream into other units or systems.
 
@@ -75,11 +75,11 @@ You do **not** need an ADR for:
 
 ## Current ADRs
 
-| ID | Title | Status | Date |
-|---|---|---|---|
+| ID                                         | Title                           | Status   | Date       |
+| ------------------------------------------ | ------------------------------- | -------- | ---------- |
 | [ADR-0001](ADR-0001-multi-tenant-scope.md) | Multi-Tenant CSS Scope Decision | accepted | 2026-05-01 |
-| [ADR-0002](ADR-0002-hdslayout-split.md) | HDSLayout Split Plan | accepted | 2026-05-01 |
-| [ADR-0003](ADR-0003-bundle-budget.md) | Bundle Budget Decision | accepted | 2026-05-01 |
+| [ADR-0002](ADR-0002-hdslayout-split.md)    | HDSLayout Split Plan            | accepted | 2026-05-01 |
+| [ADR-0003](ADR-0003-bundle-budget.md)      | Bundle Budget Decision          | accepted | 2026-05-01 |
 
 ---
 
@@ -89,7 +89,6 @@ These files are reference docs, not ADRs (no ADR numbering):
 
 - `tenant-token-overlay-format.md` — per-tenant token overlay format spec.
 - `scorecard.md` — current quality % per surface area.
-- `strengths-and-differentiators.md` — product differentiation notes.
 - `ADR-template.md` — starter template for new ADRs.
 
 ---
