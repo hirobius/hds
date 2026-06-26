@@ -5533,7 +5533,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "description": "Badge - compact feedback badge for neutral and semantic states.",
+      "description": "Compact metadata/status chip. Tone is the only styling input.",
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
@@ -5548,6 +5548,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert.tsx",
         "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
