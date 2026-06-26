@@ -13,10 +13,13 @@ public/hds-manifest.json
 public/llms.txt
 llms.txt
 docs/guardrails/baselines/**
-docs/guardrails/strength-history.jsonl
 docs/guardrails/full-strictness-inventory.json
 docs/ai/swarm-watchdog-decisions.jsonl
 docs/ai/orchestration.json
+# Generated audit report — written by the audit-exceptions gate every run (and
+# the post-commit re-run). Prettier-reformatting it diverged from the generator
+# output and churned the tree on every commit; let the generator own its format.
+docs/audits/exceptions-audit.md
 
 # Lock + node
 pnpm-lock.yaml
