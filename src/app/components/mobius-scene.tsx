@@ -18,21 +18,17 @@
  * @doc-exempt: R3F scene internals — rendered inside MobiusLogo's Canvas, not a standalone UI component. Documented via MobiusLogo.
  */
 
-import { useRef, useMemo, useEffect, useCallback, useState } from 'react';
+import { useRef, useMemo, useEffect, useCallback, useState, Component, Suspense } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 import { mergeVertices, toCreasedNormals } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import type { MutableRefObject } from 'react';
+import type { MutableRefObject, ReactNode } from 'react';
 import { tokenValues } from '../design-system/generated-token-values';
 import { MobiusCurve } from '../stores/mobiusCurve';
-import {
-  useMobiusStore,
-  PERFORMANCE_BUDGETS,
-  type PerformanceTier,
-} from '../stores/mobiusStore';
+import { useMobiusStore, PERFORMANCE_BUDGETS, type PerformanceTier } from '../stores/mobiusStore';
 import {
   MOBIUS_VERTEX_COMMON,
   MOBIUS_VERTEX_NORMAL,
@@ -41,6 +37,25 @@ import {
   MOBIUS_FRAGMENT_PATCHES,
 } from './shaders/mobius.glsl';
 import { createFpsCounter, createBudgetWatcher, isPerfDebugEnabled } from './perf-budget';
+
+// ── Resilience ──────────────────────────────────────────────────────────────
+// The studio <Environment> preset streams an HDR from a third-party CDN. If that
+// fetch fails (offline, CDN outage, restricted network), the thrown loader error
+// must NOT crash the whole 3D scene / app — the env map is decorative lighting.
+// This boundary degrades it to "no env map" instead of bubbling to the app's
+// ErrorPage. Normal operation (HDR loads) is unaffected.
+class EnvironmentBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    // Intentionally swallowed: a missing decorative HDR is non-fatal.
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 // ── Prop types ────────────────────────────────────────────────────────────────
 
@@ -1141,7 +1156,11 @@ export function MobiusScene({
 
   return (
     <>
-      <Environment preset="studio" environmentIntensity={0.4} frames={1} />
+      <EnvironmentBoundary>
+        <Suspense fallback={null}>
+          <Environment preset="studio" environmentIntensity={0.4} frames={1} />
+        </Suspense>
+      </EnvironmentBoundary>
       <ambientLight intensity={0.1} />
       <directionalLight position={[5, 5, -2]} intensity={3} />
       <MobiusMesh
