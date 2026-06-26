@@ -1,4 +1,37 @@
 import { defineConfig, devices } from '@playwright/test';
+import { existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
+// Resolve a launchable Chromium binary.
+//
+// Remote sandboxes / CI images sometimes ship the full Chromium build
+// (chromium-<rev>) but omit the matching chrome-headless-shell that Playwright
+// launches by default in headless mode — making every spec fail at browser
+// launch ("Executable doesn't exist at .../chromium_headless_shell-<rev>/...").
+// When PLAYWRIGHT_BROWSERS_PATH points at such an image, fall back to the full
+// Chromium binary that IS present. Local dev (no PLAYWRIGHT_BROWSERS_PATH) is
+// unaffected: returns undefined and Playwright uses its own managed browser.
+function resolveChromiumExecutable(): string | undefined {
+  const override = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE;
+  if (override && existsSync(override)) return override;
+
+  const base = process.env.PLAYWRIGHT_BROWSERS_PATH;
+  if (!base || !existsSync(base)) return undefined;
+
+  const builds = readdirSync(base)
+    .filter((d) => /^chromium-\d+$/.test(d))
+    .sort((a, b) => Number(b.slice('chromium-'.length)) - Number(a.slice('chromium-'.length)));
+
+  for (const dir of builds) {
+    for (const rel of ['chrome-linux64/chrome', 'chrome-linux/chrome']) {
+      const candidate = join(base, dir, rel);
+      if (existsSync(candidate)) return candidate;
+    }
+  }
+  return undefined;
+}
+
+const chromiumExecutable = resolveChromiumExecutable();
 
 export default defineConfig({
   testDir: './tests',
@@ -35,6 +68,12 @@ export default defineConfig({
     timeout: 180_000,
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        ...(chromiumExecutable ? { launchOptions: { executablePath: chromiumExecutable } } : {}),
+      },
+    },
   ],
 });
