@@ -20,12 +20,6 @@
     ]
   },
   {
-    "page": "ArchitectureSnapshot",
-    "path": "/hds/architecture-snapshot",
-    "category": "foundations",
-    "summary": "Internal architecture snapshot for HDS. Captures the system guardrails, token structure, file topology, and implementation recipes used as a deep reference during larger refactors and recovery work."
-  },
-  {
     "page": "ComponentDocPageShell",
     "path": "/hds/components/component-doc-page-shell",
     "category": "components",
@@ -829,12 +823,6 @@
     "path": "/hds/visuals-bento-grid",
     "category": "foundations",
     "summary": "Internal helper that renders the Visuals page bento grid with span-aware tiles and overlay captions."
-  },
-  {
-    "page": "ComponentHealth",
-    "path": "/hds/component-health",
-    "category": "foundations",
-    "summary": "Live snapshot of every HDS component — token usage, a11y status, doc fidelity, and outstanding gaps. Manifest-driven, regenerates on each build."
   },
   {
     "page": "MultiBrandTheming",

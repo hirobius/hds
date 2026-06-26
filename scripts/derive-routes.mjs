@@ -76,7 +76,7 @@ function deriveRoutes() {
   // Parse routes.tsx
   try {
     const extracted = extractRoutesFromTSX(routesFile);
-    extracted.forEach(r => parsedRoutes.add(r));
+    extracted.forEach((r) => parsedRoutes.add(r));
   } catch (e) {
     console.error(`Error parsing ${routesFile}:`, e.message);
   }
@@ -119,17 +119,16 @@ function deriveRoutes() {
     // Test/internal pages (public but non-canonical)
     '/hds/typography-test',
     '/hds/spacing-test',
-    '/hds/architecture-snapshot',
     '/hds/burn-down',
     '/hds/sandbox',
   ];
 
-  explicitRoutes.forEach(r => parsedRoutes.add(r));
+  explicitRoutes.forEach((r) => parsedRoutes.add(r));
 
   // Try to extract component API routes if available
   try {
     const componentRoutes = extractComponentRoutes(componentApiFile);
-    componentRoutes.forEach(r => parsedRoutes.add(r));
+    componentRoutes.forEach((r) => parsedRoutes.add(r));
   } catch {
     // Non-fatal; component-api may not have detailed routing info
   }

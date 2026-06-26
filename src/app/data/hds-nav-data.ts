@@ -2,7 +2,7 @@
  * hds-nav-data — derives HDS sidebar navigation sections from the component registry.
  *
  * Registry entries opt into the sidebar via `navSection` + `navOrder` fields.
- * Internal routes not in the registry (e.g. /ops, /hds/component-health) are
+ * Internal routes not in the registry (e.g. /ops, /brand-theming) are
  * appended as static entries in the `INTERNAL_NAV_ITEMS` array below.
  *
  * This module is the single source of truth for HDS_NAV_SECTIONS in HDSLayout.
@@ -38,10 +38,7 @@ type RegistryEntry = {
 
 // ── Static additions (routes not in the registry) ────────────────────────────
 
-const INTERNAL_NAV_ITEMS: NavItem[] = [
-  { path: '/component-health', label: 'Component Health' },
-  { path: '/brand-theming',    label: 'Brand Theming' },
-];
+const INTERNAL_NAV_ITEMS: NavItem[] = [{ path: '/brand-theming', label: 'Brand Theming' }];
 
 /**
  * Map a registry path to its standalone route. The registry carries the

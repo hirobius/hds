@@ -30,8 +30,6 @@ const NavigationPage = lazy(() => import('./pages/hds/components/NavigationPage'
 const LayoutPage = lazy(() => import('./pages/hds/components/LayoutPage'));
 const TypographyTestPage = lazy(() => import('./pages/hds/TypographyTestPage'));
 const SpacingTestPage = lazy(() => import('./pages/hds/SpacingTestPage'));
-const ArchitectureSnapshotPage = lazy(() => import('./pages/hds/ArchitectureSnapshotPage'));
-const ComponentHealthPage = lazy(() => import('./pages/hds/ComponentHealthPage'));
 const SandboxPage = lazy(() => import('./pages/hds/SandboxPage'));
 const ContributionGuidePage = lazy(() => import('./pages/hds/ContributionGuidePage'));
 const SystemContractPage = lazy(() => import('./pages/hds/SystemContractPage'));
@@ -96,8 +94,6 @@ export const routeTree = [
       { path: 'contribution-guide', element: <LazyHDS Page={ContributionGuidePage} /> },
       { path: 'system-contract', element: <LazyHDS Page={SystemContractPage} /> },
       { path: 'brand-theming', element: <LazyHDS Page={MultiBrandThemingPage} /> },
-      { path: 'architecture-snapshot', element: <LazyHDS Page={ArchitectureSnapshotPage} /> },
-      { path: 'component-health', element: <LazyHDS Page={ComponentHealthPage} /> },
       { path: 'sandbox', element: <LazyHDS Page={SandboxPage} /> },
 
       // ── Foundations ───────────────────────────────────────────────────────

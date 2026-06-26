@@ -6,8 +6,8 @@
 |----------|-------|-----------|----------|
 | eslint-disable | 55 | 55 | 0 |
 | @ts-ignore/@ts-expect-error | 1 | 1 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 140 | 138 | 2 |
-| **Total** | **196** | **194** | **2** |
+| custom-sentinels (*-ok / hds-bypass) | 125 | 123 | 2 |
+| **Total** | **181** | **179** | **2** |
 
 ## eslint-disable
 
@@ -106,15 +106,6 @@
 | `src/app/components/surface.tsx` | 44 | `spacing-ok` | `16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to` | justified |
 | `src/app/components/text-lockup.tsx` | 9 | `font-ok` | `inline technical affordances within this lockup intentionally use monospace for code-like references` | justified |
 | `src/app/data/hdsEditorial.tsx` | 55 | `audit-ok` | `*/) now supported. Self-healing policy documented: new violation classes must be added to script in same commit as fix.' },` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 1 | `hds-bypass` | `internal architecture-snapshot audit page. Intentionally renders code/terminal excerpts and tabular status with raw inline typography to mirror the diagnostic shape of the source it documents. Not user-facing canon. */` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 447 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: hds.semantic.space.component.padding, borderRadius: 'var(--component-card-radius)' /* tier-ok: internal audit page pre-block — uses card radius */, border: '1px solid var(--semantic-color-border-default)', overflow: 'auto', fontSize: '0.75rem', fontFamily: hds.monoFamily, lineHeight: 1.7, margin: 0 }}>` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 493 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: hds.semantic.space.component.padding, borderRadius: 'var(--component-card-radius)' /* tier-ok: internal audit page pre-block — uses card radius */, border: '1px solid var(--semantic-color-border-default)', overflow: 'auto', fontSize: '0.75rem', fontFamily: hds.monoFamily, lineHeight: 1.7, margin: 0 }}>` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 523 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: hds.semantic.space.component.padding, borderRadius: 'var(--component-card-radius)' /* tier-ok: internal audit page pre-block — uses card radius */, border: '1px solid var(--semantic-color-border-default)', overflow: 'auto', fontSize: '0.75rem', fontFamily: hds.monoFamily, lineHeight: 1.7, margin: 0 }}>` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 556 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: hds.semantic.space.component.padding, borderRadius: 'var(--component-card-radius)' /* tier-ok: internal audit page pre-block — uses card radius */, border: '1px solid var(--semantic-color-border-default)', overflow: 'auto', fontSize: '0.75rem', fontFamily: hds.monoFamily, lineHeight: 1.7, margin: 0 }}>` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 642 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: hds.semantic.space.component.padding, borderRadius: 'var(--component-card-radius)' /* tier-ok: internal audit page pre-block — uses card radius */, border: `1px solid var(--semantic-color-feedback-warning)`, overflow: 'auto', fontSize: '0.75rem', fontFamily: hds.monoFamily, lineHeight: 1.7, margin: 0 }}>` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 655 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: hds.semantic.space.component.padding, borderRadius: 'var(--component-card-radius)' /* tier-ok: internal audit page pre-block — uses card radius */, border: '1px solid var(--semantic-color-border-default)', overflow: 'auto', fontSize: '0.75rem', fontFamily: hds.monoFamily, lineHeight: 1.7, margin: 0 }}>` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 662 | `audit-ok` | `SVG sweep — 350ms intentional, inside template-literal doc block` | justified |
-| `src/app/pages/hds/ArchitectureSnapshotPage.tsx` | 676 | `audit-ok` | `inside template-literal doc block, canonical-aligned value (150ms = --primitive-duration-short)` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 1 | `hds-bypass` | `foundation color doc — WCAG_PAIRINGS contains intentional raw hex literals for contrast-ratio math data; values are not used as CSS color properties */` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 180 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 181 | `audit-ok` | `token value showcase` | justified |
@@ -126,12 +117,6 @@
 | `src/app/pages/hds/ColorPage.tsx` | 187 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 188 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 189 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ComponentHealthPage.tsx` | 1 | `hds-bypass` | `internal health dashboard — executive summary page for the HDS build system, not a public user-facing doc page. Inline typography used for table readouts and status indicators. */` | justified |
-| `src/app/pages/hds/ComponentHealthPage.tsx` | 447 | `font-ok` | `code file path label — intentional monospace for path readout` | justified |
-| `src/app/pages/hds/ComponentHealthPage.tsx` | 453 | `font-ok` | `component name in health table — monospace for aligned tabular readout` | justified |
-| `src/app/pages/hds/ComponentHealthPage.tsx` | 532 | `spacing-ok` | `internal health table tight row, 4px = subgrid hairline` | justified |
-| `src/app/pages/hds/ComponentHealthPage.tsx` | 540 | `spacing-ok` | `internal health table tight row, 4px = subgrid hairline` | justified |
-| `src/app/pages/hds/ComponentHealthPage.tsx` | 618 | `spacing-ok` | `legend pip + label tight pairing, 4px = subgrid hairline` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1278 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 44 | `hds-bypass` | `primitive documentation */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, DATA_TENANT, INLINE_STRUCTURAL_BORDER */` | justified |
@@ -222,8 +207,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 196
-- **Justified (reason >= 10 chars):** 194
+- **Total suppressions:** 181
+- **Justified (reason >= 10 chars):** 179
 - **Untriaged (reason < 10 chars or missing):** 2
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.

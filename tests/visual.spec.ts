@@ -65,9 +65,9 @@ async function captureAndCompare(
   testInfo: import('@playwright/test').TestInfo,
   fileName: string,
 ) {
-  const actualPath   = testInfo.outputPath(`actual-${fileName}`);
+  const actualPath = testInfo.outputPath(`actual-${fileName}`);
   const baselinePath = testInfo.snapshotPath(fileName);
-  const diffPath     = testInfo.outputPath(`diff-${fileName}`);
+  const diffPath = testInfo.outputPath(`diff-${fileName}`);
 
   await ensureDirectory(actualPath);
   await page.screenshot({ path: actualPath, fullPage: false });
@@ -79,7 +79,11 @@ async function captureAndCompare(
   }
 
   let baselineExists = true;
-  try { await access(baselinePath, constants.F_OK); } catch { baselineExists = false; }
+  try {
+    await access(baselinePath, constants.F_OK);
+  } catch {
+    baselineExists = false;
+  }
 
   expect(
     baselineExists,
@@ -102,11 +106,16 @@ async function captureAndCompare(
 // ── Viewport matrix ────────────────────────────────────────────────────────────
 
 const VIEWPORTS = [
-  { name: 'mobile',   width: 375,  height: 812  },
-  { name: 'desktop',  width: 1280, height: 800  },
-  { name: 'tv',       width: 1920, height: 1080,
+  { name: 'mobile', width: 375, height: 812 },
+  { name: 'desktop', width: 1280, height: 800 },
+  {
+    name: 'tv',
+    width: 1920,
+    height: 1080,
     // Emulate Xbox Edge UA so UA-sniffing systems behave correctly
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edge/44.17763.1.0' },
+    userAgent:
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edge/44.17763.1.0',
+  },
 ];
 
 // Curated routes — expand after content is locked
@@ -195,7 +204,7 @@ for (const vp of VIEWPORTS) {
       await ensureDirectory(actualPath);
       await page.screenshot({
         path: actualPath,
-        fullPage: false,   // viewport-only keeps file sizes manageable
+        fullPage: false, // viewport-only keeps file sizes manageable
       });
 
       if (testInfo.config.updateSnapshots !== 'none') {
@@ -245,9 +254,9 @@ for (const vp of VIEWPORTS) {
 // Skip animation-heavy shader routes (mobius, home) — route list scoped to HDS.
 
 const THEMED_VIEWPORTS = [
-  { name: 'mobile',  width: 375,  height: 812 },
-  { name: 'tablet',  width: 768,  height: 1024 },
-  { name: 'desktop', width: 1280, height: 800  },
+  { name: 'mobile', width: 375, height: 812 },
+  { name: 'tablet', width: 768, height: 1024 },
+  { name: 'desktop', width: 1280, height: 800 },
 ];
 
 const THEMED_ROUTES = [
@@ -269,7 +278,9 @@ for (const theme of THEMES) {
           try {
             window.localStorage.setItem('hds-theme-mode', t);
             window.localStorage.setItem('hds-theme', t);
-          } catch { /* blocked */ }
+          } catch {
+            /* blocked */
+          }
         }, theme);
 
         await page.emulateMedia({ colorScheme: theme });
@@ -282,7 +293,7 @@ for (const theme of THEMES) {
         await forceTheme(page, theme);
         await page.waitForTimeout(300);
 
-        const slug     = route.replace(/\//g, '-').replace(/^-/, '');
+        const slug = route.replace(/\//g, '-').replace(/^-/, '');
         const fileName = `${vp.name}-${theme}-${slug}.png`;
         await captureAndCompare(page, testInfo, fileName);
       });
@@ -318,20 +329,24 @@ const COMPONENT_STATES = [
 
 // States to capture for each component entry.
 const INTERACTION_STATES = [
-  { name: 'default',  action: null },
-  { name: 'focus',    action: 'focus'  as const },
+  { name: 'default', action: null },
+  { name: 'focus', action: 'focus' as const },
   { name: 'disabled', action: 'disabled' as const },
 ] as const;
 
 for (const colorTheme of THEMES) {
-  test(`visual [desktop][${colorTheme}] /hds/components/actions — component states`, async ({ page }, testInfo) => {
+  test(`visual [desktop][${colorTheme}] /hds/components/actions — component states`, async ({
+    page,
+  }, testInfo) => {
     test.setTimeout(60_000);
     // Pre-set theme.
     await page.addInitScript((t) => {
       try {
         window.localStorage.setItem('hds-theme-mode', t);
         window.localStorage.setItem('hds-theme', t);
-      } catch { /* blocked */ }
+      } catch {
+        /* blocked */
+      }
     }, colorTheme);
 
     await page.emulateMedia({ colorScheme: colorTheme, reducedMotion: 'reduce' });
@@ -350,16 +365,18 @@ for (const colorTheme of THEMES) {
     for (const comp of COMPONENT_STATES) {
       // Resolve element — try primary selector then fallback.
       const el = page.locator(comp.selector).first();
-      const isPresent = await el.count() > 0;
+      const isPresent = (await el.count()) > 0;
       const target = isPresent ? el : page.locator(comp.altSelector).first();
-      const targetPresent = await target.count() > 0;
+      const targetPresent = (await target.count()) > 0;
       if (!targetPresent) continue;
 
       for (const state of INTERACTION_STATES) {
         if (state.action === 'disabled') {
           // Disabled state: check if a visible disabled button exists on the page.
-          const disabledEl = page.locator('button[disabled]:visible, button[aria-disabled="true"]:visible').first();
-          if (await disabledEl.count() === 0) continue;
+          const disabledEl = page
+            .locator('button[disabled]:visible, button[aria-disabled="true"]:visible')
+            .first();
+          if ((await disabledEl.count()) === 0) continue;
           // Use isVisible to guard against display:none or off-screen elements.
           const isVisible = await disabledEl.isVisible().catch(() => false);
           if (!isVisible) continue;
@@ -387,18 +404,3 @@ for (const colorTheme of THEMES) {
     }
   });
 }
-
-// ── Block D: Component health dashboard ────────────────────────────────────────
-// Smoke-tests that /hds/component-health renders without errors and includes
-// the expected table heading. No pixel baseline — just page-load + DOM check.
-
-test('visual health /hds/component-health renders', async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('/hds/component-health');
-  await page.waitForLoadState('networkidle');
-  // Verify the table is present
-  await page.waitForSelector('table', { timeout: 10_000 });
-  // Verify at least one component row is rendered
-  const rows = await page.locator('tbody tr').count();
-  expect(rows).toBeGreaterThan(0);
-});

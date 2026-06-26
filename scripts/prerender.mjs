@@ -102,8 +102,6 @@ const PRERENDER_PATHS = [
   '/scope',
   '/system-contract',
   '/contribution-guide',
-  '/architecture-snapshot',
-  '/component-health',
   '/brand-theming',
   '/sandbox',
   '/info',

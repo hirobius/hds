@@ -50,8 +50,6 @@ const ALL_ROUTES = [
   '/contribution-guide',
   '/system-contract',
   '/brand-theming',
-  '/architecture-snapshot',
-  '/component-health',
   '/sandbox',
 
   // ── Foundations ─────────────────────────────────────────────────────────────

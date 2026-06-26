@@ -34,7 +34,6 @@ src/app/data/hdsEditorial.tsx:primitive.color.accent
 src/app/data/token-audit-report.json:semantic.space.px8
 src/app/design-system/token-usage-map.json:semantic.space.layout.gap
 src/app/hooks/useHdsManifest.ts:semantic.accent.active
-src/app/pages/hds/ArchitectureSnapshotPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/BreakpointsPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/ColorPage.tsx:primitive.blue.map
 src/app/pages/hds/ColorPage.tsx:primitive.neutral.map
