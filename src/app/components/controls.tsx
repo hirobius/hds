@@ -161,7 +161,7 @@ interface ToggleProps extends Omit<
 }
 
 export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsToggle(
-  { label, checked, onChange, onFocus, onBlur, ...rest },
+  { label, checked, onChange, onFocus, onBlur, disabled, ...rest },
   ref,
 ) {
   const [hovered, setHovered] = useState(false);
@@ -169,7 +169,10 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
   const [focused, setFocused] = useState(false);
   const frozenState = useFrozenState();
   const effectiveDemoState = frozenState as HdsToggleDemoState | null;
-  const isDisabled = effectiveDemoState === 'disabled';
+  // Read the actual `disabled` prop — not just the demo-state — so a genuinely
+  // disabled toggle renders (and behaves) disabled. Previously isDisabled only
+  // tracked the frozen demo state, so `disabled` styled/interacted as enabled.
+  const isDisabled = disabled === true || effectiveDemoState === 'disabled';
   const visualState =
     effectiveDemoState ??
     (isDisabled
@@ -491,6 +494,21 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
     }
     document.addEventListener('mousedown', handleOutside);
     return () => document.removeEventListener('mousedown', handleOutside);
+  }, [open]);
+
+  // Close on Escape regardless of where focus sits (parity with ThemeToggle's
+  // dropdown). The trigger's onKeyDown only catches Escape while the trigger is
+  // focused; this document-level listener guarantees dismissal in all cases.
+  useEffect(() => {
+    if (!open) return;
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        setFocusIdx(-1);
+      }
+    }
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [open]);
 
   // Keyboard navigation
