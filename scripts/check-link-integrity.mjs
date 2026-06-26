@@ -44,6 +44,12 @@ const MODE_EXTERNAL = argSet.has('--external-only');
 const MODE_ROUTE_LINKS = argSet.has('--route-links-only');
 const RUN_ALL = !MODE_DOC_REFS && !MODE_EXTERNAL && !MODE_ROUTE_LINKS;
 
+// External-URL liveness is network-dependent (proxy/bot-block/transient-outage prone) and the
+// gate is declared `severity: warn` in docs/guardrails/registry.json. So a broken external link
+// warns but does NOT fail the run by default — keeping it out of the hard pre-push/CI gate.
+// Opt into enforcement (e.g. a scheduled link-health job) with --strict-external or env.
+const STRICT_EXTERNAL = argSet.has('--strict-external') || process.env.HDS_STRICT_EXTERNAL === '1';
+
 const isFixtureMode = argSet.has('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
@@ -66,21 +72,14 @@ function runDocRefsCheck() {
   ];
 
   // In fixture mode, scan only the provided fixture file (using relative path from ROOT)
-  const DOC_FILES = isFixtureMode && fixtureFile
-    ? [relative(ROOT, resolve(fixtureFile))]
-    : DOC_FILES_BASE;
+  const DOC_FILES =
+    isFixtureMode && fixtureFile ? [relative(ROOT, resolve(fixtureFile))] : DOC_FILES_BASE;
 
   const FILEISH_EXT = /\.(md|tsx?|mjs|cjs|json|css|html|ya?ml|toml)$/i;
   const BACKTICK_RE = /`([^`\n]+)`/g;
   const QUOTED_PATH_RE = /['"]([^'"\n]+?\.(?:md|tsx?|mjs|cjs|json|css|html|ya?ml|toml))['"]/gi;
 
-  const SKIP_EXACT = new Set([
-    'main',
-    'MIT',
-    'CC BY 4.0',
-    'Light/Dark',
-    'W3C DTCG 2025.10',
-  ]);
+  const SKIP_EXACT = new Set(['main', 'MIT', 'CC BY 4.0', 'Light/Dark', 'W3C DTCG 2025.10']);
 
   function looksLikeLocalFileRef(token) {
     if (FILEISH_EXT.test(token) && token.includes('/')) return true;
@@ -107,7 +106,13 @@ function runDocRefsCheck() {
     if (token.startsWith('~/')) return true;
     if (token.startsWith('http://') || token.startsWith('https://')) return true;
     if (token.startsWith('/')) return true;
-    if (token.startsWith('pnpm ') || token.startsWith('git ') || token.startsWith('node ') || token.startsWith('npx ')) return true;
+    if (
+      token.startsWith('pnpm ') ||
+      token.startsWith('git ') ||
+      token.startsWith('node ') ||
+      token.startsWith('npx ')
+    )
+      return true;
     if (token.startsWith('@')) return true; // scoped npm package specifier (e.g. @hirobius/design-system/tokens.css), not a local file
     if (token.startsWith('<!--')) return true;
     if (token.includes('://')) return true;
@@ -120,7 +125,7 @@ function runDocRefsCheck() {
   }
 
   function resolveCandidate(raw, filePath) {
-    const trimmed = raw.trim().replace(/^[./]+(?=[^/])/, match => match);
+    const trimmed = raw.trim().replace(/^[./]+(?=[^/])/, (match) => match);
     if (isAbsolute(trimmed)) return normalize(trimmed);
     return normalize(join(dirname(filePath), trimmed));
   }
@@ -156,12 +161,18 @@ function runDocRefsCheck() {
   }
 
   if (violations.length === 0) {
-    console.log('\n✓ check-link-integrity [doc-refs] — active docs point at existing local files.\n');
+    console.log(
+      '\n✓ check-link-integrity [doc-refs] — active docs point at existing local files.\n',
+    );
     return true;
   }
 
-  console.error(`\n✗ check-link-integrity [doc-refs] — ${violations.length} missing local reference(s).\n`);
-  console.error('  Fix the path, trim the stale reference, or add <!-- doc-ref-ok: reason --> on the line.\n');
+  console.error(
+    `\n✗ check-link-integrity [doc-refs] — ${violations.length} missing local reference(s).\n`,
+  );
+  console.error(
+    '  Fix the path, trim the stale reference, or add <!-- doc-ref-ok: reason --> on the line.\n',
+  );
   for (const violation of violations) {
     console.error(`  ${violation.file}:${violation.line}`);
     console.error(`    missing: ${violation.ref}`);
@@ -242,8 +253,15 @@ async function runExternalLinksCheck() {
         }
       });
 
-      req.on('error', (e) => { clearTimeout(timeout); resolve({ status: 0, error: e.message }); });
-      req.on('timeout', () => { req.destroy(); clearTimeout(timeout); resolve({ status: 0, error: `Timeout after ${TIMEOUT_MS}ms` }); });
+      req.on('error', (e) => {
+        clearTimeout(timeout);
+        resolve({ status: 0, error: e.message });
+      });
+      req.on('timeout', () => {
+        req.destroy();
+        clearTimeout(timeout);
+        resolve({ status: 0, error: `Timeout after ${TIMEOUT_MS}ms` });
+      });
       req.end();
     });
   }
@@ -287,7 +305,9 @@ async function runExternalLinksCheck() {
     console.log('\n✓ check-link-integrity [external] — all external links healthy.\n');
     return true;
   }
-  console.error(`\n✗ check-link-integrity [external] — ${failures.length} broken external link(s).\n`);
+  console.error(
+    `\n✗ check-link-integrity [external] — ${failures.length} broken external link(s).\n`,
+  );
   return false;
 }
 
@@ -357,12 +377,7 @@ function runRouteLinksCheck() {
   // HDS doc routes moved from /hds/* to /ops/hds/* (commit 3bf17b5b, 2026-05-10).
   // Defined under routes.tsx children of 'ops' (lines 297-366) with a wildcard
   // fallback redirecting unknown /ops/hds/* paths to /ops/hds/color.
-  const PREFIX_ROUTES = [
-    '/portfolio/',
-    '/ops/clients/',
-    '/ops/hds/',
-    '/admin/approvals/',
-  ];
+  const PREFIX_ROUTES = ['/portfolio/', '/ops/clients/', '/ops/hds/', '/admin/approvals/'];
 
   // Augment the static allow-list with routes actually declared in the app
   // route tree (the source of truth), so this check doesn't drift when routes
@@ -373,7 +388,10 @@ function runRouteLinksCheck() {
     for (const m of routeTreeSrc.matchAll(/path:\s*['"]([^'"]+)['"]/g)) {
       const p = m[1];
       if (p === '*') continue;
-      if (p.endsWith('/*')) { PREFIX_ROUTES.push('/' + p.slice(0, -1)); continue; }
+      if (p.endsWith('/*')) {
+        PREFIX_ROUTES.push('/' + p.slice(0, -1));
+        continue;
+      }
       EXACT_ROUTES.add(p.startsWith('/') ? p : '/' + p);
     }
   } catch {
@@ -384,7 +402,7 @@ function runRouteLinksCheck() {
 
   function isAllowedRoute(route) {
     if (EXACT_ROUTES.has(route)) return true;
-    return PREFIX_ROUTES.some(prefix => route.startsWith(prefix));
+    return PREFIX_ROUTES.some((prefix) => route.startsWith(prefix));
   }
 
   const violations = [];
@@ -423,12 +441,18 @@ function runRouteLinksCheck() {
   }
 
   if (violations.length === 0) {
-    console.log('\n✓ check-link-integrity [route-links] — internal route targets resolve to known app routes.\n');
+    console.log(
+      '\n✓ check-link-integrity [route-links] — internal route targets resolve to known app routes.\n',
+    );
     return true;
   }
 
-  console.error(`\n✗ check-link-integrity [route-links] — ${violations.length} invalid internal route reference(s).\n`);
-  console.error('  Fix the route, add the missing route definition, or add // route-ok: reason on the line.\n');
+  console.error(
+    `\n✗ check-link-integrity [route-links] — ${violations.length} invalid internal route reference(s).\n`,
+  );
+  console.error(
+    '  Fix the route, add the missing route definition, or add // route-ok: reason on the line.\n',
+  );
   for (const violation of violations) {
     console.error(`  ${violation.file}:${violation.line}`);
     console.error(`    invalid route: ${violation.route}`);
@@ -448,7 +472,17 @@ async function main() {
 
     if ((RUN_ALL || MODE_EXTERNAL) && !isFixtureMode) {
       const ok = await runExternalLinksCheck();
-      if (!ok) hadFailure = true;
+      if (!ok) {
+        if (STRICT_EXTERNAL) {
+          hadFailure = true;
+        } else {
+          console.warn(
+            '⚠ check-link-integrity [external] — external link failures are non-blocking by default ' +
+              '(registry severity: warn; liveness is network-dependent and proxy/bot-block prone). ' +
+              'Enforce with --strict-external or HDS_STRICT_EXTERNAL=1.\n',
+          );
+        }
+      }
     }
 
     if ((RUN_ALL || MODE_ROUTE_LINKS) && !isFixtureMode) {
