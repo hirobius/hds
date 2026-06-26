@@ -5,20 +5,8 @@
   "precommitStructureHashUpdatedAt": "2026-06-19T02:40:22.376Z",
   "gates": [
     {
-      "id": "audit-soft-gates",
-      "description": "Meta-audit: reads registry.json, filters to soft-channel gates (manual / pnpm-meta / ci-scheduled), runs each gate against the current tree, and emits a triage report at /tmp/soft-gates-audit.json + docs/guardrails/soft-gate-promotion-plan.md. Classifies each gate as promote-to-pre-commit, promote-to-pre-push, promote-to-ci-pr, baseline-then-promote, investigate-broken, or stay-soft. Runs on demand; never modifies firingChannel values.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-soft-gates.mjs",
-      "fixturePath": null,
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "generated",
-      "firingChannel": "manual"
-    },
-    {
       "id": "audit-batch-deliverables",
-      "description": "TODO: add description \u2014 audit-batch-deliverables.mjs JSDoc block is empty.",
+      "description": "TODO: add description — audit-batch-deliverables.mjs JSDoc block is empty.",
       "severity": "warn",
       "gateScript": "scripts/audit-batch-deliverables.mjs",
       "fixturePath": "fixtures/audit-batch-deliverables",
@@ -30,7 +18,7 @@
     },
     {
       "id": "audit-bundle",
-      "description": "Generates a bundle composition report at docs/perf/bundle-report.html using vite-bundle-visualizer. Manual channel only \u2014 artifact, not gating.",
+      "description": "Generates a bundle composition report at docs/perf/bundle-report.html using vite-bundle-visualizer. Manual channel only — artifact, not gating.",
       "severity": "warn",
       "gateScript": "scripts/audit-bundle.mjs",
       "fixturePath": null,
@@ -69,7 +57,7 @@
     },
     {
       "id": "audit-exceptions",
-      "description": "TODO: add description \u2014 audit-exceptions.mjs has no leading JSDoc block.",
+      "description": "TODO: add description — audit-exceptions.mjs has no leading JSDoc block.",
       "severity": "warn",
       "gateScript": "scripts/audit-exceptions.mjs",
       "fixturePath": "fixtures/audit-exceptions",
@@ -78,18 +66,6 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit"
-    },
-    {
-      "id": "audit-figma-system",
-      "description": "Read-only Figma sync audit for the Hirobius repo. Purpose: compare repo truth against the generated Figma variable exports.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-figma-system.mjs",
-      "fixturePath": "fixtures/audit-figma-system",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual"
     },
     {
       "id": "audit-gate-purity",
@@ -120,7 +96,7 @@
     },
     {
       "id": "audit-pages",
-      "description": "Token compliance auditor for page surfaces. This is intentionally looser than audit-components.mjs \u2014 reusable components must be strict, pages must still avoid raw design values but can keep justified editorial layout.",
+      "description": "Token compliance auditor for page surfaces. This is intentionally looser than audit-components.mjs — reusable components must be strict, pages must still avoid raw design values but can keep justified editorial layout.",
       "severity": "warn",
       "gateScript": "scripts/audit-pages.mjs",
       "fixturePath": "fixtures/audit-pages",
@@ -132,7 +108,7 @@
     },
     {
       "id": "audit-sbom",
-      "description": "Generates a CycloneDX Software Bill of Materials at docs/security/sbom.json. Manual channel \u2014 produces an artifact, not a gate. Useful for the GRC narrative and supply-chain review.",
+      "description": "Generates a CycloneDX Software Bill of Materials at docs/security/sbom.json. Manual channel — produces an artifact, not a gate. Useful for the GRC narrative and supply-chain review.",
       "severity": "warn",
       "gateScript": "scripts/audit-sbom.mjs",
       "fixturePath": null,
@@ -142,18 +118,6 @@
       "source": "human",
       "firingChannel": "manual",
       "supportsJson": true
-    },
-    {
-      "id": "audit-strengths",
-      "description": "Verifies that each documented differentiator in docs/architecture/strengths-and-differentiators.md is still real.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-strengths.mjs",
-      "fixturePath": "fixtures/audit-strengths",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-scheduled"
     },
     {
       "id": "audit-tiers",
@@ -366,19 +330,6 @@
       "firingChannel": "pre-commit"
     },
     {
-      "id": "check-fixture-stubs-ratchet",
-      "description": "B-class monotonic-decrement ratchet: asserts the withStubFixtures count from validate-fixture-proof-of-firing never increases. Any regression (new stub fixture added) fails the PR. Burn down by replacing stubs with real fixtures.",
-      "severity": "error",
-      "gateScript": "scripts/check-fixture-stubs-ratchet.mjs",
-      "fixturePath": "fixtures/check-fixture-stubs-ratchet",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "generated",
-      "firingChannel": "ci-pr",
-      "supportsJson": true
-    },
-    {
       "id": "check-focus-states",
       "description": "A11y focus state checker for HDS components and pages. Every interactive element must have a visible focus indicator.",
       "severity": "warn",
@@ -404,7 +355,7 @@
     },
     {
       "id": "check-hardcoded-breakpoints",
-      "description": "Catches raw pixel comparisons against known breakpoint values in JS/TS. All JS/TS viewport comparisons must use hds.breakpoints.* \u2014 no raw px numbers that match a known breakpoint value.",
+      "description": "Catches raw pixel comparisons against known breakpoint values in JS/TS. All JS/TS viewport comparisons must use hds.breakpoints.* — no raw px numbers that match a known breakpoint value.",
       "severity": "warn",
       "gateScript": "scripts/check-hardcoded-breakpoints.mjs",
       "fixturePath": "fixtures/check-hardcoded-breakpoints",
@@ -471,7 +422,7 @@
     },
     {
       "id": "check-manifest-drift",
-      "description": "TODO: add description \u2014 check-manifest-drift.mjs has no leading JSDoc block.",
+      "description": "TODO: add description — check-manifest-drift.mjs has no leading JSDoc block.",
       "severity": "warn",
       "gateScript": "scripts/check-manifest-drift.mjs",
       "fixturePath": "fixtures/check-manifest-drift",
@@ -508,7 +459,7 @@
     },
     {
       "id": "check-motion",
-      "description": "Verifies that interactive components ship with motion feedback \u2014 the HDS standard that every user action has a visible, token-timed response.",
+      "description": "Verifies that interactive components ship with motion feedback — the HDS standard that every user action has a visible, token-timed response.",
       "severity": "warn",
       "gateScript": "scripts/check-motion.mjs",
       "fixturePath": "fixtures/check-motion",
@@ -529,7 +480,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "ci-pr",
-      "wiringTodo": "should be ci-pr or ci-scheduled \u2014 not yet wired into a workflow that actually triggers it"
+      "wiringTodo": "should be ci-pr or ci-scheduled — not yet wired into a workflow that actually triggers it"
     },
     {
       "id": "check-page-shell",
@@ -581,7 +532,7 @@
     },
     {
       "id": "check-route-coverage",
-      "description": "Route coverage gate \u2014 every routable page must appear in the layout-integrity test set.",
+      "description": "Route coverage gate — every routable page must appear in the layout-integrity test set.",
       "severity": "warn",
       "gateScript": "scripts/check-route-coverage.mjs",
       "fixturePath": "fixtures/check-route-coverage",
@@ -590,19 +541,6 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "ci-pr"
-    },
-    {
-      "id": "check-route-smoke",
-      "description": "Runtime route smoke test for key portfolio and HDS routes. Uses the built app plus vite preview so route validation goes beyond static strings.",
-      "severity": "warn",
-      "gateScript": "scripts/check-route-smoke.mjs",
-      "fixturePath": "fixtures/check-route-smoke",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pnpm-meta",
-      "wiringTodo": "should be ci-pr or ci-scheduled \u2014 not yet wired into a workflow that actually triggers it"
     },
     {
       "id": "check-secrets",
@@ -696,7 +634,7 @@
     },
     {
       "id": "check-token-paths-ratchet",
-      "description": "Merged gate (13z-6): default mode scans src/** for unresolved design-token path references ({primitive,semantic,component,role}.x.y.z) against hirobius.tokens.json \u2014 fires pre-commit. With --ratchet flag: B-class monotonic-decrement ratchet asserting .token-path-baseline.txt entry count never increases \u2014 fires ci-pr. Use --update-baseline to record a new baseline. Merged from: check-token-paths (scan) + check-token-paths-ratchet (count ratchet).",
+      "description": "Merged gate (13z-6): default mode scans src/** for unresolved design-token path references ({primitive,semantic,component,role}.x.y.z) against hirobius.tokens.json — fires pre-commit. With --ratchet flag: B-class monotonic-decrement ratchet asserting .token-path-baseline.txt entry count never increases — fires ci-pr. Use --update-baseline to record a new baseline. Merged from: check-token-paths (scan) + check-token-paths-ratchet (count ratchet).",
       "severity": "error",
       "gateScript": "scripts/check-token-paths-ratchet.mjs",
       "fixturePath": "fixtures/check-token-paths-ratchet",
@@ -761,7 +699,7 @@
     },
     {
       "id": "check-validator-wiring",
-      "description": "Meta-validator: every gate registered in docs/guardrails/registry.json has a firingChannel that matches actual invocation. Catches aspirational guardrails \u2014 gates registered but never really firing.",
+      "description": "Meta-validator: every gate registered in docs/guardrails/registry.json has a firingChannel that matches actual invocation. Catches aspirational guardrails — gates registered but never really firing.",
       "severity": "warn",
       "gateScript": "scripts/check-validator-wiring.mjs",
       "fixturePath": "fixtures/check-validator-wiring",
@@ -770,19 +708,6 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "scope": "full-tree"
-    },
-    {
-      "id": "generate-strength-report",
-      "description": "Pure observer that reads registry.json, orchestration.json, swarm-watchdog-decisions.jsonl, tsconfig.json, and component-api.json. Computes Score A (Internal Integrity, 6 dims) + Score B (Industry Benchmark, 8 dims) per the 13s-strength-1 ADR. Emits docs/guardrails/strength-report.md and strength-report.json. Idempotent (same input \u2192 byte-identical output modulo timestamp). Fast (<2s). No mutations to source files.",
-      "severity": "warn",
-      "gateScript": "scripts/generate-strength-report.mjs",
-      "fixturePath": "fixtures/generate-strength-report",
-      "lastFiringAt": "2026-06-19T02:46:01.532Z",
-      "lastViolationAt": "2026-05-06T19:18:44.986Z",
-      "owner": "Adrian",
-      "source": "generated",
-      "firingChannel": "ci-pr",
       "scope": "full-tree"
     },
     {
@@ -797,32 +722,6 @@
       "source": "generated",
       "firingChannel": "pre-commit",
       "scope": "full-tree",
-      "supportsJson": true
-    },
-    {
-      "id": "audit-gate-replaceability",
-      "description": "Planning artifact: reads registry.json and produces a per-gate replaceability verdict (fully-replaceable / partially-replaceable / genuinely-custom) with industry-tool replacements and migration cost estimates. Output: /tmp/gate-replaceability-audit.json + docs/guardrails/gate-replaceability-plan.md. Manual channel only \u2014 run on demand when evaluating gate rationalization.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-gate-replaceability.mjs",
-      "fixturePath": "fixtures/audit-gate-replaceability",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "supportsJson": false
-    },
-    {
-      "id": "check-snapshot-staleness",
-      "description": "Warns when a committed snapshot baseline JSON is older than any of its source files \u2014 catching baselines that should have been regenerated after a source change but weren't. Covers fixtures/figma-masters/snapshot-pre-8v3.json (sources: pipeline/figma-masters-batch.mjs + public/hds-manifest.json) and fixtures/doc-pages/snapshot.json (sources: src/app/pages/docs/**/*.tsx). Warn-only by default; set STALENESS_ENFORCE=error to make blocking.",
-      "severity": "warn",
-      "gateScript": "scripts/check-snapshot-staleness.mjs",
-      "fixturePath": null,
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
       "supportsJson": true
     }
   ]

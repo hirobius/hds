@@ -74,7 +74,6 @@ jobs:
 
       - name: CI-PR registry gates (ci-pr channel)
         # Single source of truth: reads docs/guardrails/registry.json --channel ci-pr.
-        # Currently wired gates: audit-gate-purity, audit-strengths.
         # To add/remove a gate from ci-pr, update registry.json firingChannel — do not
         # add explicit invocations here. Runs with --parallel 4 for speed.
         run: node scripts/run-gates.mjs --channel ci-pr --parallel 4

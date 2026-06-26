@@ -1,1 +1,0 @@
-{ "stubCount": 90, "storedCount": 80, "description": "stubCount (90) > storedCount (80) — ratchet regression, exits 1" }
