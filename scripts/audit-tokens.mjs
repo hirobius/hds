@@ -33,6 +33,7 @@
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
+import { tmpdir } from 'node:os';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -43,7 +44,14 @@ const ROOT = join(__dirname, '..');
 const FIXTURE_DIR = process.env.FIXTURE_DIR;
 const INPUT_ROOT = FIXTURE_DIR || ROOT;
 
-const auditReportPath = join(INPUT_ROOT, 'src', 'app', 'data', 'token-audit-report.json');
+// The audit report is a gate OUTPUT, not a fixture input. In fixture mode
+// (FIXTURE_DIR set) the synthetic mini-root has no src/app/data/ dir, so writing
+// there crashed proof-of-firing with ENOENT and also violated the pure-observer
+// principle (a gate must not mutate the fixture it scans). Route the write to a
+// temp path in fixture mode — mirrors the audit-soft-gates fix (6a1405f).
+const auditReportPath = FIXTURE_DIR
+  ? join(tmpdir(), 'hds-audit-tokens-fixture-report.json')
+  : join(ROOT, 'src', 'app', 'data', 'token-audit-report.json');
 const args = new Set(process.argv.slice(2));
 const full = args.has('--full');
 const fix = args.has('--fix');
