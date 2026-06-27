@@ -2,19 +2,14 @@
 /**
  * @tier utility
  */
-﻿// @doc-exempt: variant preview helper used by docs pages, not a consumer-facing HDS surface.
+// @doc-exempt: variant preview helper used by docs pages, not a consumer-facing HDS surface.
 /**
  * VariantPreviewDeck - preview deck for size/tone/variant families.
  * @category Utilities
  */
 import systemManifestData from 'virtual:hds-manifest';
+import type { SystemManifest } from '../data/manifest-types';
 import { VariantPreviewDeck as VariantPreviewDeckImpl } from './componentPreviewRegistry';
-
-type SystemManifest = {
-  componentSpecs?: Record<string, {
-    filePath?: string;
-  }>;
-};
 
 const systemManifest = systemManifestData as SystemManifest;
 
@@ -28,4 +23,3 @@ export function VariantPreviewDeck({
   const resolvedFilePath = filePath ?? systemManifest.componentSpecs?.[componentName]?.filePath;
   return <VariantPreviewDeckImpl componentName={componentName} filePath={resolvedFilePath} />;
 }
-

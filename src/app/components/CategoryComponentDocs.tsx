@@ -3,6 +3,7 @@
 // motion-ok: this orchestration helper delegates interaction feedback to the child HDS components it renders rather than animating at the wrapper level
 import type { ReactNode } from 'react';
 import systemManifestData from 'virtual:hds-manifest';
+import type { SystemManifest } from '../data/manifest-types';
 import { DocSection, HdsComponentDoc } from '../pages/hds/HdsDocPrimitives';
 import { Stack } from './stack';
 
@@ -11,14 +12,6 @@ type ComponentDocConfig = {
   description?: string;
   layout?: 'default' | 'utility';
   children?: ReactNode;
-};
-
-type SystemManifest = {
-  componentInventory?: string[];
-  componentSpecs?: Record<string, {
-    category?: string;
-    hidden?: boolean;
-  }>;
 };
 
 const systemManifest = systemManifestData as SystemManifest;

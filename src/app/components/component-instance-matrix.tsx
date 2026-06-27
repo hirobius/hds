@@ -6,17 +6,20 @@
  * @doc-exempt: specimen matrix helper used by docs pages, not a consumer-facing HDS surface.
  */
 import React from 'react';
+import type {
+  ComponentApiManifest as BaseComponentApiManifest,
+  ManifestApiComponent,
+} from '../data/manifest-types';
 import componentApiManifest from '../data/component-api.json';
 import hds from '../design-system/tokens';
 import { FreezeState } from '../context/DemoStateContext';
 
-type ComponentApiManifest = {
-  components: Record<string, {
-    props: Array<{
-      name: string;
-      type: string;
-    }>;
-  }>;
+// ComponentInstanceMatrix requires prop `type` to be a non-optional string
+// (it calls parseLiteralOptions which expects a string). Derive a narrowed type.
+type MatrixApiPropRow = { name: string; type: string };
+type MatrixApiEntry = Omit<ManifestApiComponent, 'props'> & { props: MatrixApiPropRow[] };
+type ComponentApiManifest = Omit<BaseComponentApiManifest, 'components'> & {
+  components: Record<string, MatrixApiEntry>;
 };
 
 type MatrixOption = {
@@ -41,7 +44,7 @@ function toTitleCase(value: string) {
     .replace(/[-_]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
-    .replace(/\b\w/g, letter => letter.toUpperCase());
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 function parseLiteralOptions(type: string | undefined): MatrixOption[] | null {
@@ -56,11 +59,11 @@ function parseLiteralOptions(type: string | undefined): MatrixOption[] | null {
 
   const optionParts = normalized
     .split('|')
-    .map(part => part.trim())
+    .map((part) => part.trim())
     .filter(Boolean);
 
   const options = optionParts
-    .map(part => {
+    .map((part) => {
       const literal = part.match(/^['"](.*)['"]$/)?.[1];
       if (literal) {
         return { key: literal, label: literal };
@@ -76,7 +79,7 @@ function resolveMatrixOptions(componentName: string, dimension: string) {
   const syntheticOptions = SYNTHETIC_DIMENSION_OPTIONS[dimension];
   if (syntheticOptions) return syntheticOptions;
   const componentEntry = componentApi.components[componentName];
-  const prop = componentEntry?.props.find(entry => entry.name === dimension);
+  const prop = componentEntry?.props.find((entry) => entry.name === dimension);
   return parseLiteralOptions(prop?.type) ?? [];
 }
 
@@ -120,28 +123,59 @@ export function ComponentInstanceMatrix({
   return (
     <section>
       {title ? (
-        <p style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-primary)', margin: 0 }}>
+        <p
+          style={{
+            ...hds.typeStyles.ui,
+            color: 'var(--semantic-color-content-primary)',
+            margin: 0,
+          }}
+        >
           {title}
         </p>
       ) : null}
       <div>
         {resolvedColumnOptions.map((column) => (
-          <section
-            key={column.key}>
-            <p style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-primary)', margin: 0, paddingBottom: hds.semantic.space.layout.gap }}>
+          <section key={column.key}>
+            <p
+              style={{
+                ...hds.typeStyles.technical,
+                color: 'var(--semantic-color-content-primary)',
+                margin: 0,
+                paddingBottom: hds.semantic.space.layout.gap,
+              }}
+            >
               {column.label}
             </p>
             <div>
               {resolvedRowOptions.map((row) => (
-                <div
-                  key={`${row.key}-${column.key}`}>
-                  <p style={{ ...hds.typeStyles.technical, color: rowLabelTone === 'secondary' ? 'var(--semantic-color-content-secondary)' : 'var(--semantic-color-content-primary)', margin: 0 }}>
+                <div key={`${row.key}-${column.key}`}>
+                  <p
+                    style={{
+                      ...hds.typeStyles.technical,
+                      color:
+                        rowLabelTone === 'secondary'
+                          ? 'var(--semantic-color-content-secondary)'
+                          : 'var(--semantic-color-content-primary)',
+                      margin: 0,
+                    }}
+                  >
                     {row.label}
                   </p>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 0 }}>
-                    {freezeRowState
-                      ? <FreezeState state={row.key}>{renderInstance(row.key, column.key)}</FreezeState>
-                      : renderInstance(row.key, column.key)}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      justifyContent: 'flex-start',
+                      minWidth: 0,
+                    }}
+                  >
+                    {freezeRowState ? (
+                      <FreezeState state={row.key}>
+                        {renderInstance(row.key, column.key)}
+                      </FreezeState>
+                    ) : (
+                      renderInstance(row.key, column.key)
+                    )}
                   </div>
                 </div>
               ))}
@@ -152,4 +186,3 @@ export function ComponentInstanceMatrix({
     </section>
   );
 }
-

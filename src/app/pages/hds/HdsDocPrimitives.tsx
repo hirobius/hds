@@ -19,6 +19,12 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link as LinkSimple, Check, Figma as FigmaLogo, ArrowLeft } from 'lucide-react';
 import systemManifestData from 'virtual:hds-manifest';
+import type {
+  ComponentApiManifest as BaseComponentApiManifest,
+  SystemManifest as BaseSystemManifest,
+  ManifestComponentSpec,
+  ManifestApiComponent,
+} from '../../data/manifest-types';
 import { Icon } from '../../components/icon';
 import { Token } from '../../components/token';
 import { TextLockup } from '../../components/text-lockup';
@@ -49,27 +55,21 @@ type TokenRow = { token: string; note: string };
 type PropRow = ComponentPropRow;
 type ComponentStatus = 'new' | 'beta' | 'deprecated';
 
-type ComponentApiEntry = {
-  filePath?: string;
-  description?: string;
-  props: PropRow[];
-};
-
-type ComponentSpecEntry = {
-  category: string;
-  description?: string;
-  figmaUrl: string | null;
-  figmaLink?: string | null;
-  tokenMapping?: Record<string, string>;
-};
-
-type ComponentApiManifest = {
+// HdsDocPrimitives (ComponentBlock) requires props as PropRow[] (not
+// ManifestApiPropRow[]) because it passes them to buildPropTableRows.
+type ComponentApiEntry = Omit<ManifestApiComponent, 'props'> & { props: PropRow[] };
+type ComponentApiManifest = Omit<BaseComponentApiManifest, 'components'> & {
   generatedAt: string;
   source: string;
   components: Record<string, ComponentApiEntry>;
 };
 
-type SystemManifest = {
+// ComponentBlock requires category and figmaUrl to be required on spec entries.
+type ComponentSpecEntry = ManifestComponentSpec & {
+  category: string;
+  figmaUrl: string | null;
+};
+type SystemManifest = Omit<BaseSystemManifest, 'componentSpecs'> & {
   name: string;
   version: string;
   systemSpecs: {
