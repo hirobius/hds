@@ -6,13 +6,13 @@
 
 import { useState, forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
-import type { Variants } from 'motion/react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
+import * as RSelect from '@radix-ui/react-select';
 import { ChevronDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
+import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
-import { useDropdown } from '../hooks/useDropdown';
 import { Icon } from './icon';
 import { Surface } from './surface';
 
@@ -415,7 +415,13 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
 });
 
 // ── Select ────────────────────────────────────────────────────────────────────
-/** HdsSelect — animated dropdown selector with keyboard navigation. */
+/**
+ * HdsSelect — dropdown selector built on Radix Select (ADR-001 Radix convention).
+ * Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead,
+ * full keyboard (Home/End/PageUp-Down/wrap), Popper collision/flip positioning, and
+ * dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by
+ * tabs.tsx / command-palette.tsx; `ref` targets the trigger button.
+ */
 interface SelectProps {
   /** Select label rendered above the control. */
   label: string;
@@ -433,68 +439,10 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
   { label, showLabel = true, options, value, onChange },
   ref,
 ) {
-  const [hov, setHov] = useState(false);
-  const [focusIdx, setFocusIdx] = useState(-1);
-  // Dropdown owns open-state + dismissal (outside-click + Escape). The roving
-  // highlight (focusIdx) stays here; onClose clears it on dismissal. (ADR-015 scope.)
-  const { open, setOpen, toggle, containerRef } = useDropdown<HTMLDivElement>({
-    onClose: () => setFocusIdx(-1),
-  });
-
   const selected = options.find((o) => o.value === value) ?? options[0];
 
-  // Keyboard navigation
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (!open) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        setOpen(true);
-        setFocusIdx(-1);
-      }
-      return;
-    }
-    // Escape is owned by useDropdown's document listener (fires regardless of
-    // focus position); no local handler needed here.
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setFocusIdx((i) => Math.min(i + 1, options.length - 1));
-    }
-    if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setFocusIdx((i) => Math.max(i - 1, 0));
-    }
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      if (focusIdx >= 0) {
-        onChange(options[focusIdx].value);
-        setOpen(false);
-        setFocusIdx(-1);
-      }
-    }
-  }
-
-  // Stagger variants
-  const listVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.03, delayChildren: 0.01 } },
-    exit: { transition: { staggerChildren: 0.02, staggerDirection: -1 as const } },
-  };
-  const itemVariants = {
-    hidden: { opacity: 0, y: -4 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: hds.motion.expressive.duration, ...hds.motion.expressive.easing },
-    },
-    exit: { opacity: 0, y: -2, transition: { duration: hds.motion.productive.duration } },
-  };
-
   return (
-    <div
-      ref={containerRef}
-      style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}
-    >
-      {/* Label */}
+    <div className="flex flex-col">
       {showLabel ? (
         <span
           className="text-secondary"
@@ -504,191 +452,57 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
         </span>
       ) : null}
 
-      {/* Trigger button */}
-      <motion.button
-        ref={ref}
-        type="button"
-        role="combobox"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label={showLabel && label ? `${label}: ${selected.label}` : selected.label}
-        onClick={() => {
-          toggle();
-          setFocusIdx(-1);
-        }}
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
-        onKeyDown={handleKeyDown}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: hds.motion.productive.duration }}
-        className="hds-focus"
-        style={{
-          ...hds.typeStyles.ui,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: hds.semantic.space.component.gap,
-          background:
-            hov || open
-              ? 'var(--semantic-color-surface-accentSubtle)'
-              : 'var(--semantic-color-surface-raised)',
-          border: `${hds.borderWidth.default} solid ${hov || open ? 'var(--semantic-color-border-accent)' : 'var(--semantic-color-border-default)'}`,
-          color: 'var(--semantic-color-content-primary)',
-          paddingTop: hds.semantic.space.component.gap,
-          paddingBottom: hds.semantic.space.component.gap,
-          paddingLeft: hds.semantic.space.component.padding,
-          paddingRight: hds.semantic.space.component.padding,
-          borderRadius: hds.borderRadius.action,
-          width: '100%',
-          cursor: 'pointer',
-          boxSizing: 'border-box',
-          boxShadow:
-            hov || open
-              ? `inset 0 0 0 ${hds.borderWidth.default} var(--semantic-color-border-accent)`
-              : 'none',
-          transition: `border-color ${hds.motion.productive.duration}s ${hds.motion.productive.easing}, background-color ${hds.motion.productive.duration}s ${hds.motion.productive.easing}`,
-          textAlign: 'left',
-        }}
-      >
-        <span
-          style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+      <RSelect.Root value={value} onValueChange={onChange}>
+        <RSelect.Trigger
+          ref={ref}
+          aria-label={showLabel && label ? `${label}: ${selected.label}` : selected.label}
+          className={cn(
+            'hds-focus group flex w-full items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm',
+            'border-input bg-muted text-foreground transition-colors',
+            'hover:border-ring data-[state=open]:border-ring',
+          )}
         >
-          {selected.label}
-        </span>
-        <span
-          style={{
-            flexShrink: 0,
-            display: 'flex',
-            color: 'var(--semantic-color-content-secondary)',
-            transition: `transform ${hds.motion.productive.duration}s ${hds.motion.productive.easing}`,
-            transform: open ? 'rotate(0deg)' : 'rotate(-90deg)',
-          }}
-        >
-          <Icon icon={ChevronDown} size="small" color="currentColor" />
-        </span>
-      </motion.button>
+          <RSelect.Value />
+          <RSelect.Icon className="flex shrink-0 -rotate-90 text-muted-foreground transition-transform group-data-[state=open]:rotate-0">
+            <Icon icon={ChevronDown} size="small" color="currentColor" />
+          </RSelect.Icon>
+        </RSelect.Trigger>
 
-      {/* Animated dropdown panel */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            role="listbox"
-            aria-label={label}
-            onMouseLeave={() => setFocusIdx(-1)}
-            initial={{ opacity: 0, y: -6, scaleY: 0.95 }}
-            animate={{ opacity: 1, y: 0, scaleY: 1 }}
-            exit={{ opacity: 0, y: -4, scaleY: 0.97 }}
-            transition={{
-              duration: hds.motion.expressive.duration,
-              ...hds.motion.expressive.easing,
-            }}
+        <RSelect.Portal>
+          <RSelect.Content
+            position="popper"
+            sideOffset={4}
+            // Radix Popper vars: match trigger width and cap height to the
+            // collision-aware available space (replaces the old fixed top:100% panel).
             style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              right: 0,
-              zIndex: hds.zIndex.overlay,
-              // Theme-aware surface var (re-roots under [data-theme="dark"]); the prior
-              // isDark branch was dead — both refs resolved to this same var.
-              background: 'var(--semantic-color-surface-raised)',
-              border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-              borderRadius: hds.borderRadius[8],
-              overflow: 'hidden',
-              marginTop: hds.semantic.space.subgrid.gap,
-              transformOrigin: 'top',
+              minWidth: 'var(--radix-select-trigger-width)',
+              maxHeight: 'var(--radix-select-content-available-height)',
             }}
+            className={cn(
+              'z-50 overflow-hidden rounded-md border',
+              'border-border bg-popover text-popover-foreground shadow-md',
+            )}
           >
-            <motion.div variants={listVariants} initial="hidden" animate="visible" exit="exit">
-              {options.map((opt, idx) => (
-                <SelectOption
+            <RSelect.Viewport className="p-1">
+              {options.map((opt) => (
+                <RSelect.Item
                   key={opt.value}
-                  option={opt}
-                  isSelected={opt.value === value}
-                  isFocused={idx === focusIdx}
-                  variants={itemVariants}
-                  onSelect={() => {
-                    onChange(opt.value);
-                    setOpen(false);
-                    setFocusIdx(-1);
-                  }}
-                  onHover={() => setFocusIdx(idx)}
-                />
+                  value={opt.value}
+                  className={cn(
+                    'hds-focus relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-sm outline-none',
+                    'text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+                  )}
+                >
+                  <RSelect.ItemText>{opt.label}</RSelect.ItemText>
+                  <RSelect.ItemIndicator className="flex shrink-0">
+                    <Icon icon={Check} size="small" color="currentColor" />
+                  </RSelect.ItemIndicator>
+                </RSelect.Item>
               ))}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </RSelect.Viewport>
+          </RSelect.Content>
+        </RSelect.Portal>
+      </RSelect.Root>
     </div>
   );
 });
-
-// ── SelectOption ──────────────────────────────────────────────────────────────
-
-function SelectOption({
-  option,
-  isSelected,
-  isFocused,
-  variants,
-  onSelect,
-  onHover,
-}: {
-  option: { value: string; label: string };
-  isSelected: boolean;
-  isFocused: boolean;
-  variants: Variants;
-  onSelect: () => void;
-  onHover: () => void;
-}) {
-  const activeBackground = 'var(--semantic-color-surface-accentSubtle)';
-
-  return (
-    <motion.button
-      role="option"
-      aria-selected={isSelected}
-      type="button"
-      variants={variants}
-      onClick={onSelect}
-      onMouseEnter={onHover}
-      whileTap={{ scale: 0.98 }}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        background: isSelected
-          ? activeBackground
-          : isFocused
-            ? activeBackground
-            : 'var(--semantic-color-surface-overlay)',
-        border: 'none',
-        paddingTop: hds.semantic.space.component.gap,
-        paddingBottom: hds.semantic.space.component.gap,
-        paddingLeft: hds.semantic.space.component.padding,
-        paddingRight: hds.semantic.space.component.padding,
-        cursor: 'pointer',
-        color: 'var(--semantic-color-content-primary)',
-        transition: `background ${hds.motion.productive.duration}s ${hds.motion.productive.easing}, color ${hds.motion.productive.duration}s ${hds.motion.productive.easing}`,
-        textAlign: 'left',
-      }}
-    >
-      <span style={{ ...hds.typeStyles.ui }}>{option.label}</span>
-
-      <AnimatePresence>
-        {isSelected && (
-          <motion.span
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{
-              duration: hds.motion.expressive.duration,
-              ...hds.motion.expressive.easing,
-            }}
-            style={{ display: 'flex', color: 'var(--semantic-accent-rest)', flexShrink: 0 }}
-          >
-            <Icon icon={Check} size="small" color="var(--semantic-accent-rest)" />
-          </motion.span>
-        )}
-      </AnimatePresence>
-    </motion.button>
-  );
-}
