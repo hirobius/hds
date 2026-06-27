@@ -1,7 +1,7 @@
 /**
  * Contract test: Surface
- * Verifies that Surface renders with the expected data attributes and
- * padding inline styles for each padding option.
+ * Verifies that Surface renders the expected data attributes and the CVA
+ * padding utility class (p-0 / p-[16px]) for each padding option.
  * ThemeContext has a default value so no Provider is needed.
  *
  * @primitive Surface
@@ -47,16 +47,16 @@ describe('Surface contract', () => {
     expect(el?.getAttribute('data-hds-metrics')).toBe('padding:item');
   });
 
-  it('padding="none" sets inline padding to 0px', () => {
+  it('padding="none" applies the p-0 class', () => {
     const { container } = render(<Surface padding="none">Content</Surface>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.padding).toBe('0px');
+    expect(el.classList.contains('p-0')).toBe(true);
   });
 
-  it('padding="px16" sets inline padding to 16px', () => {
+  it('padding="px16" applies the p-[16px] class', () => {
     const { container } = render(<Surface padding="px16">Content</Surface>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.padding).toBe('16px');
+    expect(el.classList.contains('p-[16px]')).toBe(true);
   });
 
   it('as prop changes the rendered element', () => {

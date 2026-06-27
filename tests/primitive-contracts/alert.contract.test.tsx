@@ -1,7 +1,8 @@
 /**
  * Contract test: Alert
- * Verifies that Alert renders with the correct role and that variant-driven
- * background style variables are applied to the container.
+ * Verifies that Alert renders with role="alert" and that the `tone` prop drives
+ * the feedback-background utility class (bg-feedback-bg-*) on the container.
+ * (Tone is class-based via CVA — not an inline style — so we assert className.)
  *
  * @primitive Alert
  * @unit 12p-test-contract-tests-primitives
@@ -27,32 +28,36 @@ describe('Alert contract', () => {
     expect(container.textContent).toContain('Error occurred');
   });
 
-  it('variant=success renders feedback-bg-success style', () => {
-    const { container } = render(<Alert variant="success">OK</Alert>);
+  it('tone=success applies the feedback-bg-success class', () => {
+    const { container } = render(<Alert tone="success">OK</Alert>);
     const el = container.querySelector('[role="alert"]') as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-success');
+    expect(el.classList.contains('bg-feedback-bg-success')).toBe(true);
   });
 
-  it('variant=error renders feedback-bg-error style', () => {
-    const { container } = render(<Alert variant="error">Fail</Alert>);
+  it('tone=danger applies the feedback-bg-danger class', () => {
+    const { container } = render(<Alert tone="danger">Fail</Alert>);
     const el = container.querySelector('[role="alert"]') as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-error');
+    expect(el.classList.contains('bg-feedback-bg-danger')).toBe(true);
   });
 
-  it('variant=warning renders feedback-bg-warning style', () => {
-    const { container } = render(<Alert variant="warning">Warn</Alert>);
+  it('tone=warning applies the feedback-bg-warning class', () => {
+    const { container } = render(<Alert tone="warning">Warn</Alert>);
     const el = container.querySelector('[role="alert"]') as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-warning');
+    expect(el.classList.contains('bg-feedback-bg-warning')).toBe(true);
   });
 
-  it('variant=info renders feedback-bg-info style (default)', () => {
+  it('defaults to the feedback-bg-info class', () => {
     const { container } = render(<Alert>Info</Alert>);
     const el = container.querySelector('[role="alert"]') as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-info');
+    expect(el.classList.contains('bg-feedback-bg-info')).toBe(true);
   });
 
   it('title prop renders heading text', () => {
-    const { container } = render(<Alert title="Heads up" variant="warning">Detail</Alert>);
+    const { container } = render(
+      <Alert title="Heads up" tone="warning">
+        Detail
+      </Alert>,
+    );
     expect(container.textContent).toContain('Heads up');
   });
 });
