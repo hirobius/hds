@@ -88,8 +88,8 @@
 | `src/app/components/doc-sections.tsx` | 593 | `audit-ok` | `interactive demo area — fixed visual height, not a spacing/layout token` | justified |
 | `src/app/components/foundation-swatch.tsx` | 158 | `hds-bypass` | `fixed specimen height keeps foundation swatches visually comparable across token demos` | justified |
 | `src/app/components/morph-card.tsx` | 434 | `audit-ok` | `SVG fill transition — no token maps to 0.35s; hds.motion.productive.duration(0.15) is too fast for a color fill sweep` | justified |
-| `src/app/components/nav-item.tsx` | 254 | `audit-ok` | `hds-focus applied via mergedClassName` | justified |
-| `src/app/components/nav-item.tsx` | 275 | `audit-ok` | `hds-focus applied via mergedClassName` | justified |
+| `src/app/components/nav-item.tsx` | 264 | `audit-ok` | `hds-focus applied via mergedClassName` | justified |
+| `src/app/components/nav-item.tsx` | 285 | `audit-ok` | `hds-focus applied via mergedClassName` | justified |
 | `src/app/components/side-nav.tsx` | 218 | `audit-ok` | `hds-focus applied via className` | justified |
 | `src/app/components/side-nav.tsx` | 234 | `audit-ok` | `hds-focus applied via className` | justified |
 | `src/app/components/sketch-controls.tsx` | 29 | `audit-ok` | `hds-focus applied via textarea className` | justified |

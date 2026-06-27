@@ -500,10 +500,6 @@
     ],
     "namespaceViolations": [
       {
-        "name": "__test__",
-        "filePath": "src/app/components/command-palette.tsx"
-      },
-      {
         "name": "ActivityFeed",
         "filePath": "src/app/components/activity-feed.tsx"
       },
@@ -2882,6 +2878,7 @@
         "src/app/components/side-nav.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
+        "src/app/hooks/useInteractionState.ts",
         "src/app/pages/docs/patterns/HdsDisclosure.tsx"
       ],
       "tokenMapping": {},
@@ -2954,6 +2951,7 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/app/hooks/useInteractionState.ts",
         "src/stories/segmented-control.stories.tsx"
       ],
       "tokenMapping": {
@@ -3632,7 +3630,6 @@
       "consumers": [
         "src/app/components/activity-feed.tsx",
         "src/app/components/code-block.tsx",
-        "src/app/components/command-palette.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/doc-sections.tsx",
@@ -3646,6 +3643,7 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/app/lib/hds-search.ts",
         "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/app/stores/mobiusStore.ts",
         "src/index.ts",
@@ -5929,7 +5927,9 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/app/hooks/useInteractionState.test.ts",
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -6093,7 +6093,9 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/app/hooks/useInteractionState.test.ts",
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -7776,7 +7778,9 @@
         "exportName": "CommandPalette",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/lib/hds-search.ts"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []
@@ -7871,6 +7875,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/controls.tsx",
         "src/app/context/ThemeContext.tsx"
       ],
       "tokenMapping": {},
