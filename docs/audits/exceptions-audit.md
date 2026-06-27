@@ -14,8 +14,8 @@
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
 | `src/app/components/CascadeText.tsx` | 29 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/ComponentDocPage.tsx` | 211 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/ComponentDocPage.tsx` | 241 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/ComponentDocPage.tsx` | 199 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/ComponentDocPage.tsx` | 229 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/alert.tsx` | 22 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/animated-label.tsx` | 54 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; no Tailwind utility covers multi-prop animation` | justified |
 | `src/app/components/asset-img.tsx` | 96 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
@@ -29,7 +29,7 @@
 | `src/app/components/command-palette.tsx` | 158 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus` | justified |
 | `src/app/components/command-palette.tsx` | 179 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- dialog results scroll cap at 60% viewport height` | justified |
 | `src/app/components/command-palette.tsx` | 233 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- footer hint metadata size` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 560 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/componentPreviewRegistry.tsx` | 531 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/doc-page-header.tsx` | 272 | `eslint-disable-next-line` | `react-hooks/refs -- `ref` is a string prop (git branch), not a React ref` | justified |
 | `src/app/components/doc-toc.tsx` | 48 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/health-rail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
@@ -82,8 +82,8 @@
 | `src/app/App.tsx` | 20 | `spacing-ok` | `error boundary fallback, not a UI component */}` | justified |
 | `src/app/components/CascadeText.tsx` | 76 | `audit-ok` | `orchestrated stagger — custom cubic-bezier + computed per-char delay; semantic motion tokens do not cover this easing curve` | justified |
 | `src/app/components/card.tsx` | 312 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 72 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 85 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
+| `src/app/components/componentPreviewRegistry.tsx` | 43 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
+| `src/app/components/componentPreviewRegistry.tsx` | 56 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
 | `src/app/components/disclosure.tsx` | 147 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
 | `src/app/components/doc-sections.tsx` | 593 | `audit-ok` | `interactive demo area — fixed visual height, not a spacing/layout token` | justified |
 | `src/app/components/foundation-swatch.tsx` | 158 | `hds-bypass` | `fixed specimen height keeps foundation swatches visually comparable across token demos` | justified |
@@ -118,7 +118,7 @@
 | `src/app/pages/hds/ColorPage.tsx` | 188 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 189 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1278 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
-| `src/app/pages/hds/HdsDocPrimitives.tsx` | 44 | `hds-bypass` | `primitive documentation */` | justified |
+| `src/app/pages/hds/HdsDocPrimitives.tsx` | 50 | `hds-bypass` | `primitive documentation */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, DATA_TENANT, INLINE_STRUCTURAL_BORDER */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 86 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 87 | `audit-ok` | `brand palette demo content` | justified |
