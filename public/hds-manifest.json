@@ -4603,6 +4603,7 @@
       },
       "consumers": [
         "src/app/components/command-palette.tsx",
+        "src/app/hooks/useDropdown.ts",
         "src/stories/alert.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
@@ -5982,7 +5983,9 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/app/hooks/useDropdown.test.ts",
+        "src/app/hooks/useDropdown.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -7779,6 +7782,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/hooks/useDropdown.ts",
         "src/app/lib/hds-search.ts"
       ],
       "tokenMapping": {},
@@ -7875,8 +7879,9 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/controls.tsx",
-        "src/app/context/ThemeContext.tsx"
+        "src/app/context/ThemeContext.tsx",
+        "src/app/hooks/useDropdown.test.ts",
+        "src/app/hooks/useDropdown.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
