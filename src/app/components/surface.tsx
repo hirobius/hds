@@ -23,8 +23,7 @@
 import React, { type CSSProperties, type HTMLAttributes, type ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-
-type PaddingOption = 'component' | 'item' | 'px16' | 'px24' | 'none';
+import type { PaddingOption } from './surface-padding';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // The background is the theme-aware `--semantic-color-surface-raised` var, which
@@ -48,7 +47,9 @@ const surfaceVariants = cva(
         none: 'p-0',
       },
       shadow: {
-        true: 'shadow-[0_4px_12px_rgba(0,0,0,0.10),0_2px_4px_rgba(0,0,0,0.05)]',
+        // ADR-007: bind to the elevation-role token (raised) instead of a magic
+        // RGBA value. Resolves to --semantic-shadow-subtle; theme-aware.
+        true: 'shadow-[var(--semantic-elevation-raised-shadow)]',
         false: '',
       },
     },
