@@ -250,10 +250,7 @@ const STYLES = `
 
 function PlaceholderIcon() {
   return (
-    <div
-      className="hds-scr-cover-placeholder"
-      aria-hidden="true"
-    >
+    <div className="hds-scr-cover-placeholder" aria-hidden="true">
       <svg
         width="48"
         height="48"
@@ -298,8 +295,10 @@ interface CardItemProps {
 }
 
 function CardItem({ card, index, total }: CardItemProps) {
-  const inner = (
-    <div className="hds-scr-card-inner">
+  // Cover + meta content, shared by the <a> and <div> inner-surface variants
+  // (previously this markup was duplicated verbatim across both branches).
+  const content = (
+    <>
       <div className="hds-scr-cover">
         {card.coverImage ? (
           <img
@@ -332,7 +331,7 @@ function CardItem({ card, index, total }: CardItemProps) {
           {card.title}
         </span>
       </div>
-    </div>
+    </>
   );
 
   return (
@@ -342,42 +341,21 @@ function CardItem({ card, index, total }: CardItemProps) {
       aria-label={`${card.title}${card.category ? `, ${card.category}` : ''}, card ${index + 1} of ${total}`}
     >
       {card.href ? (
-        <a href={card.href} className="hds-scr-card-inner" style={{ display: 'flex', flexDirection: 'column', height: '100%', textDecoration: 'none', color: 'inherit' }}>
-          <div className="hds-scr-cover">
-            {card.coverImage ? (
-              <img
-                src={card.coverImage}
-                alt={card.title}
-                loading={index < 4 ? 'eager' : 'lazy'}
-                decoding="async"
-              />
-            ) : (
-              <PlaceholderIcon />
-            )}
-          </div>
-          <div className="hds-scr-meta">
-            {card.category && (
-              <span
-                style={{
-                  ...hds.typeStyles.eyebrow,
-                  color: 'var(--semantic-color-content-secondary)',
-                }}
-              >
-                {card.category}
-              </span>
-            )}
-            <span
-              style={{
-                ...hds.typeStyles.heading3,
-                color: 'var(--semantic-color-content-primary)',
-              }}
-            >
-              {card.title}
-            </span>
-          </div>
+        <a
+          href={card.href}
+          className="hds-scr-card-inner"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            textDecoration: 'none',
+            color: 'inherit',
+          }}
+        >
+          {content}
         </a>
       ) : (
-        inner
+        <div className="hds-scr-card-inner">{content}</div>
       )}
     </div>
   );
@@ -459,10 +437,7 @@ export function StackedCardRail({ cards }: StackedCardRailProps) {
             }
           />
           {/* Sticky strip — horizontally scrollable, driven by JS */}
-          <div
-            ref={stripRef}
-            className="hds-scr-strip"
-          >
+          <div ref={stripRef} className="hds-scr-strip">
             <div className="hds-scr-track" role="list">
               {cards.map((card, i) => (
                 <div key={card.id} role="listitem">

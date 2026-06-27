@@ -57,10 +57,21 @@ export type TextLockupProps = {
   descriptionAs?: TextLockupDescriptionTag;
 };
 
+// D6: the type ramp is owned by Text via `variant`. SIZE_MAP keeps only the
+// variant + tag + gap + layout-only overrides (color, max-width, and `detail`'s
+// deliberate metric deviations) — the redundant `...hds.typeStyles.*` spreads
+// (which Text already applies for the same variant) are gone. The anchor-span
+// case inherits its font from the surrounding <Text variant>.
 const EYEBROW_STYLE: CSSProperties = {
-  ...hds.typeStyles.ui,
   color: 'var(--semantic-color-content-secondary)',
   margin: 0,
+};
+
+const TITLE_OVERRIDE: CSSProperties = { color: 'var(--semantic-color-content-primary)', margin: 0 };
+const DESC_OVERRIDE: CSSProperties = {
+  color: 'var(--semantic-color-content-secondary)',
+  margin: 0,
+  maxWidth: hds.layout.proseMaxWidth,
 };
 
 const SIZE_MAP: Record<
@@ -75,74 +86,40 @@ const SIZE_MAP: Record<
   }
 > = {
   hero: {
-    title: {
-      ...hds.typeStyles.heading1,
-      color: 'var(--semantic-color-content-primary)',
-      margin: 0,
-    },
-    description: {
-      ...hds.typeStyles.body,
-      color: 'var(--semantic-color-content-secondary)',
-      margin: 0,
-      maxWidth: hds.layout.proseMaxWidth,
-    },
+    title: TITLE_OVERRIDE,
+    description: DESC_OVERRIDE,
     titleTag: 'h1',
     titleVariant: 'heading1',
     descriptionVariant: 'body',
     gap: hds.semantic.space.component.gap,
   },
   heroXl: {
-    title: {
-      ...hds.typeStyles.display,
-      color: 'var(--semantic-color-content-primary)',
-      margin: 0,
-    },
-    description: {
-      ...hds.typeStyles.body,
-      color: 'var(--semantic-color-content-secondary)',
-      margin: 0,
-      maxWidth: hds.layout.proseMaxWidth,
-    },
+    title: TITLE_OVERRIDE,
+    description: DESC_OVERRIDE,
     titleTag: 'h1',
     titleVariant: 'display',
     descriptionVariant: 'body',
     gap: hds.semantic.space.component.gap,
   },
   section: {
-    title: {
-      ...hds.typeStyles.heading2,
-      color: 'var(--semantic-color-content-primary)',
-      margin: 0,
-    },
-    description: {
-      ...hds.typeStyles.ui,
-      color: 'var(--semantic-color-content-secondary)',
-      margin: 0,
-      maxWidth: hds.layout.proseMaxWidth,
-    },
+    title: TITLE_OVERRIDE,
+    description: DESC_OVERRIDE,
     titleTag: 'h2',
     titleVariant: 'heading2',
     descriptionVariant: 'ui',
     gap: hds.semantic.space.component.gap,
   },
   metric: {
-    title: {
-      ...hds.typeStyles.heading1,
-      color: 'var(--semantic-color-content-primary)',
-      margin: 0,
-    },
-    description: {
-      ...hds.typeStyles.ui,
-      color: 'var(--semantic-color-content-secondary)',
-      margin: 0,
-      maxWidth: hds.layout.proseMaxWidth,
-    },
+    title: TITLE_OVERRIDE,
+    description: DESC_OVERRIDE,
     titleTag: 'h2',
     titleVariant: 'heading1',
     descriptionVariant: 'ui',
     gap: hds.semantic.space.subgrid.gap,
   },
   detail: {
+    // Deliberate deviation from the variant: `body`/`technical` variants but
+    // ui/mono metrics for the dense data-readout layout (lh:1 overrides mono).
     title: {
       fontSize: 'var(--semantic-typography-ui-font-size)',
       fontWeight: 'var(--semantic-typography-ui-font-weight)',
@@ -151,8 +128,6 @@ const SIZE_MAP: Record<
       lineHeight: 'var(--semantic-typography-ui-line-height)',
     },
     description: {
-      // 10t-5: technical composite collapsed into mono. Lockup keeps lh:1 for
-      // the dense data-readout layout (overrides mono's relaxed default).
       fontSize: 'var(--semantic-typography-mono-font-size)',
       fontWeight: 'var(--semantic-typography-mono-font-weight)',
       fontFamily: 'monospace',
@@ -166,17 +141,8 @@ const SIZE_MAP: Record<
     gap: hds.semantic.space.subgrid.gap,
   },
   numbered: {
-    title: {
-      ...hds.typeStyles.heading2,
-      color: 'var(--semantic-color-content-primary)',
-      margin: 0,
-    },
-    description: {
-      ...hds.typeStyles.ui,
-      color: 'var(--semantic-color-content-secondary)',
-      margin: 0,
-      maxWidth: hds.layout.proseMaxWidth,
-    },
+    title: TITLE_OVERRIDE,
+    description: DESC_OVERRIDE,
     titleTag: 'h2',
     titleVariant: 'heading2',
     descriptionVariant: 'ui',
@@ -184,103 +150,105 @@ const SIZE_MAP: Record<
   },
 };
 
-export const TextLockup = forwardRef<HTMLElement, TextLockupProps>(
-  function TextLockup(
-    {
-      title,
-      description,
-      eyebrow,
-      size,
-      align = 'left',
-      id,
-      as: RootTag = 'div',
-      titleAs,
-      descriptionAs: DescriptionTag = 'div',
-    },
-    ref,
-  ) {
-    const config = SIZE_MAP[size];
-    const TitleTag = titleAs ?? config.titleTag;
-    const centered = align === 'center';
-    const [copied, setCopied] = useState(false);
-
-    function copyLink() {
-      navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}#${id}`);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-
-    const showAnchor = size === 'numbered' && Boolean(id);
-
-    return (
-      <RootTag
-        ref={ref}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: config.gap,
-          alignItems: centered ? 'center' : undefined,
-          minWidth: 0,
-          textAlign: centered ? 'center' : 'left',
-          width: '100%',
-        }}
-      >
-        {eyebrow ? (
-          <Text variant="ui" as="p" style={{ ...EYEBROW_STYLE, maxWidth: centered ? 640 : undefined }}>
-            {eyebrow}
-          </Text>
-        ) : null}
-
-        {showAnchor ? (
-          <div className="hds-doc-section-header" style={{ display: 'flex' }}>
-            <Text variant={config.titleVariant} as={TitleTag}>
-              <button
-                type="button"
-                onClick={copyLink}
-                className="hds-focus"
-                aria-label={`Copy link to ${title}`}
-                style={textLockupStyles.anchorCopyBtn}
-              >
-                <span style={config.title}>{title}</span>
-                <span
-                  aria-hidden="true"
-                  data-copied={copied ? 'true' : undefined}
-                  className="hds-doc-section-copy-icon"
-                  style={{
-                    color: 'var(--semantic-color-content-accent)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  {copied ? (
-                    <Icon icon={Check} size="small" color="var(--semantic-color-content-accent)" />
-                  ) : (
-                    <Icon icon={Link} size="small" color="var(--semantic-color-content-accent)" />
-                  )}
-                </span>
-              </button>
-            </Text>
-          </div>
-        ) : (
-          <Text variant={config.titleVariant} as={TitleTag} style={config.title}>
-            {title}
-          </Text>
-        )}
-
-        {description ? (
-          <Text
-            variant={config.descriptionVariant}
-            as={DescriptionTag}
-            style={{
-              ...config.description,
-              maxWidth: centered ? 640 : config.description.maxWidth,
-            }}
-          >
-            {description}
-          </Text>
-        ) : null}
-      </RootTag>
-    );
+export const TextLockup = forwardRef<HTMLElement, TextLockupProps>(function TextLockup(
+  {
+    title,
+    description,
+    eyebrow,
+    size,
+    align = 'left',
+    id,
+    as: RootTag = 'div',
+    titleAs,
+    descriptionAs: DescriptionTag = 'div',
   },
-);
+  ref,
+) {
+  const config = SIZE_MAP[size];
+  const TitleTag = titleAs ?? config.titleTag;
+  const centered = align === 'center';
+  const [copied, setCopied] = useState(false);
+
+  function copyLink() {
+    navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}#${id}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  const showAnchor = size === 'numbered' && Boolean(id);
+
+  return (
+    <RootTag
+      ref={ref}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: config.gap,
+        alignItems: centered ? 'center' : undefined,
+        minWidth: 0,
+        textAlign: centered ? 'center' : 'left',
+        width: '100%',
+      }}
+    >
+      {eyebrow ? (
+        <Text
+          variant="ui"
+          as="p"
+          style={{ ...EYEBROW_STYLE, maxWidth: centered ? 640 : undefined }}
+        >
+          {eyebrow}
+        </Text>
+      ) : null}
+
+      {showAnchor ? (
+        <div className="hds-doc-section-header" style={{ display: 'flex' }}>
+          <Text variant={config.titleVariant} as={TitleTag}>
+            <button
+              type="button"
+              onClick={copyLink}
+              className="hds-focus"
+              aria-label={`Copy link to ${title}`}
+              style={textLockupStyles.anchorCopyBtn}
+            >
+              <span style={config.title}>{title}</span>
+              <span
+                aria-hidden="true"
+                data-copied={copied ? 'true' : undefined}
+                className="hds-doc-section-copy-icon"
+                style={{
+                  color: 'var(--semantic-color-content-accent)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                {copied ? (
+                  <Icon icon={Check} size="small" color="var(--semantic-color-content-accent)" />
+                ) : (
+                  <Icon icon={Link} size="small" color="var(--semantic-color-content-accent)" />
+                )}
+              </span>
+            </button>
+          </Text>
+        </div>
+      ) : (
+        <Text variant={config.titleVariant} as={TitleTag} style={config.title}>
+          {title}
+        </Text>
+      )}
+
+      {description ? (
+        <Text
+          variant={config.descriptionVariant}
+          as={DescriptionTag}
+          style={{
+            ...config.description,
+            maxWidth: centered ? 640 : config.description.maxWidth,
+          }}
+        >
+          {description}
+        </Text>
+      ) : null}
+    </RootTag>
+  );
+});
