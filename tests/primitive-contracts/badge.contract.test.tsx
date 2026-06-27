@@ -1,7 +1,8 @@
 /**
  * Contract test: Badge
- * Verifies that Badge renders with the expected inline styles for each tone.
- * ThemeContext has a default value so no Provider is needed.
+ * Verifies that Badge renders the expected feedback-background utility class for
+ * each tone. Tone + layout are class-based via CVA (not inline styles), so we
+ * assert className. ThemeContext has a default value so no Provider is needed.
  *
  * @primitive Badge
  * @unit 12p-test-contract-tests-primitives
@@ -27,28 +28,28 @@ describe('Badge contract', () => {
     expect(el?.tagName.toLowerCase()).toBe('span');
   });
 
-  it('tone=info applies feedback-bg-info background style', () => {
+  it('tone=info applies the feedback-bg-info class', () => {
     const { container } = render(<Badge tone="info">Info</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-info');
+    expect(el.classList.contains('bg-feedback-bg-info')).toBe(true);
   });
 
-  it('tone=success applies feedback-bg-success background style', () => {
+  it('tone=success applies the feedback-bg-success class', () => {
     const { container } = render(<Badge tone="success">OK</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-success');
+    expect(el.classList.contains('bg-feedback-bg-success')).toBe(true);
   });
 
-  it('tone=danger applies feedback-bg-error background style', () => {
+  it('tone=danger applies the feedback-bg-danger class', () => {
     const { container } = render(<Badge tone="danger">Error</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-error');
+    expect(el.classList.contains('bg-feedback-bg-danger')).toBe(true);
   });
 
-  it('tone=warning applies feedback-bg-warning background style', () => {
+  it('tone=warning applies the feedback-bg-warning class', () => {
     const { container } = render(<Badge tone="warning">Warn</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.background).toContain('semantic-color-feedback-bg-warning');
+    expect(el.classList.contains('bg-feedback-bg-warning')).toBe(true);
   });
 
   it('as="div" renders a div element', () => {
@@ -57,9 +58,9 @@ describe('Badge contract', () => {
     expect(el?.tagName.toLowerCase()).toBe('div');
   });
 
-  it('has display inline-flex style', () => {
+  it('has the inline-flex layout class', () => {
     const { container } = render(<Badge>Label</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.display).toBe('inline-flex');
+    expect(el.classList.contains('inline-flex')).toBe(true);
   });
 });
