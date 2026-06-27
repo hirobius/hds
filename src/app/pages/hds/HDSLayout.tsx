@@ -7,7 +7,7 @@
  * share one navigation and interaction model.
  */
 
-import React, { lazy, Suspense, useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router';
 import { motion } from 'motion/react';
 import { ChevronDown, Languages, Menu, X } from 'lucide-react';
@@ -20,9 +20,6 @@ import { Icon } from '../../components/icon';
 import { IconButton } from '../../components/icon-button';
 import { SideNav } from '../../components/side-nav';
 import { HdsSidebarUtilityButton } from '../../components/shell-controls';
-// MobiusShellLayer is lazy-loaded to exclude the three.js stack from the
-// main entry chunk. NAV_MOBIUS_ANCHOR comes from the lightweight constants
-// module (no three.js transitive deps) so HDSLayout stays lean at initial parse.
 import { NavItem } from '../../components/nav-item';
 import { TokensRail, TOKENS_RAIL_MIN_W } from '../../components/health-rail';
 import { ThemeProvider, useTheme } from '../../context/ThemeContext';
@@ -34,16 +31,6 @@ import type { PageSpec } from '../../components/DocPageSpec';
 import registryData from '../../data/hds-registry.json';
 import { HDS_NAV_SECTIONS, toAppPath } from '../../data/hds-nav-data';
 import { TocProvider, TocItem, useToc, useTocActiveId } from './HdsTocContext';
-
-// Lazy-loaded: MobiusLogo → MobiusScene pulls in @react-three/fiber,
-// three, @react-three/drei, postprocessing. Deferring this import drops ~900 kB
-// from the main entry parse path. Suspense fallback={null} = shell renders
-// immediately; canvas appears async (~100-200 ms) after chunk download.
-const MobiusShellLayer = lazy(() =>
-  import('../../components/mobius-shell-layer').then((m) => ({
-    default: m.MobiusShellLayer,
-  })),
-);
 
 const HDS_REGISTRY = registryData as PageSpec[];
 
@@ -80,11 +67,9 @@ const MOBIUS_ACRYLIC_SIZE = 140;
 const MOBILE_SCRIM_LAYER = hds.zIndex.overlay;
 const MOBILE_SIDEBAR_LAYER = `calc(${hds.zIndex.overlay} + 1)`;
 const MOBILE_SHELL_HEADER_LAYER = `calc(${MOBILE_SIDEBAR_LAYER} + 1)`;
-const MOBILE_MOBIUS_LAYER = `calc(${MOBILE_SHELL_HEADER_LAYER} + 1)`;
 const MOBILE_SHELL_CONTROL_TOP = `calc(${SHELL_TOP_NAV_SURFACE_HEIGHT} / 2)`;
 const MOBILE_OPEN_MOBIUS_ACRYLIC_SIZE = hds.size[64];
 const MOBILE_OPEN_MOBIUS_ANCHOR_SIZE = hds.size[40];
-const MOBILE_OPEN_MOBIUS_SCALE = 0.58;
 const SCROLL_HIDE_THRESHOLD = 56;
 const SCROLL_DOWN_TRIGGER = 18;
 const SCROLL_UP_TRIGGER = 10;
@@ -1026,18 +1011,6 @@ function HDSDocRoot() {
           isolation: 'isolate',
         }}
       >
-        {/* MobiusShellLayer is lazy — vendor-three loads async after first paint */}
-        <Suspense fallback={null}>
-          <MobiusShellLayer
-            showNavAcrylic={showMobiusNavPill}
-            navAcrylicBackground={mobiusAcrylicBackground}
-            navAcrylicBorder={mobiusAcrylicBorder}
-            forceVisible={isMobileShellOpen}
-            layerZIndex={isMobile && isShellRoute ? MOBILE_MOBIUS_LAYER : undefined}
-            navScaleMultiplier={isMobileShellOpen ? MOBILE_OPEN_MOBIUS_SCALE : 1}
-          />
-        </Suspense>
-
         {!isHomeRoute && (
           <a href="#main-content" className="skip-link hds-focus">
             {copy.skipToMain}

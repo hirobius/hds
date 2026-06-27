@@ -767,32 +767,8 @@
         "filePath": "src/app/components/doc-sections.tsx"
       },
       {
-        "name": "MOBIUS_SCROLL_EASING",
-        "filePath": "src/app/components/mobius-shell-layer.tsx"
-      },
-      {
-        "name": "MOBIUS_SCROLL_HIDE_Y",
-        "filePath": "src/app/components/mobius-shell-layer.tsx"
-      },
-      {
-        "name": "MobiusLogo",
-        "filePath": "src/app/components/mobius-logo.tsx"
-      },
-      {
-        "name": "MobiusScene",
-        "filePath": "src/app/components/mobius-scene.tsx"
-      },
-      {
-        "name": "MobiusShellLayer",
-        "filePath": "src/app/components/mobius-shell-layer.tsx"
-      },
-      {
         "name": "MorphCard",
         "filePath": "src/app/components/morph-card.tsx"
-      },
-      {
-        "name": "NAV_MOBIUS_ANCHOR",
-        "filePath": "src/app/components/mobius-shell-layer.tsx"
       },
       {
         "name": "NavGroup",
@@ -7419,80 +7395,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "figmaLink": "TODO:hds-master:DocPageSpec"
-    },
-    "MobiusLogo": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/mobius-logo.tsx",
-      "description": "MobiusLogo — production R3F Canvas wrapper. Responsibilities (mount-time only): 1. Auto-detect performance tier from navigator.hardwareConcurrency 2. Read brand color from --semantic-color-surface-accent CSS var 3. Read lerp duration from --hds-motion-expressive-duration CSS var 4. Subscribe to prefers-reduced-motion media query 5. Track mouse position for MobiusScene's magnetic influence MobiusScene is responsible for the frame loop and all rendering. This file never imports Leva. Canvas drawing code and shader uniforms here use values intrinsic to the 3D effect and not mappable to design tokens. Exempt from check-hardcoded-colors. The surrounding UI chrome in LogoLabSketch uses tokens normally.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "MobiusLogo",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/mobius-scene.tsx",
-        "src/app/components/mobius-shell-layer.tsx",
-        "src/app/stores/mobiusStore.ts"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "TODO:hds-master:MobiusLogo"
-    },
-    "MobiusScene": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/mobius-scene.tsx",
-      "description": "/** @internal — utility-tier component; not part of @hirobius/design-system public API.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "MobiusScene",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/mobius-logo.tsx",
-        "src/app/components/shaders/mobius.glsl.ts",
-        "src/app/stores/mobiusStore.ts"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "TODO:hds-master:MobiusScene"
-    },
-    "MobiusShellLayer": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/mobius-shell-layer.tsx",
-      "description": "MobiusShellLayer — persistent shell-level host for the Möbius canvas. This layer mounts once inside HDSLayout and never unmounts during route changes. Route changes only update store-driven presets and layout state. scene indirectly through mobiusStore and do not render their own canvas.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "MobiusShellLayer",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/mobius-constants.ts"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "TODO:hds-master:MobiusShellLayer"
     },
     "TokenDisplayToggle": {
       "category": "Uncategorized",
