@@ -92,6 +92,50 @@ function renderTokenAnatomy(row: { whereLabel: string; whereDetail?: string }) {
   );
 }
 
+// C2: the props + token tables are rendered identically in both the utility and
+// the default (tabbed) layout branches. Extract them once so the columns + cell
+// mapping live in a single place.
+const TOKEN_TABLE_COLUMNS = [
+  { key: 'token', label: 'Token', width: 'minmax(0, 6fr)' },
+  { key: 'source', label: 'Anatomy', width: 'minmax(0, 3fr)' },
+  { key: 'description', label: 'Description', width: 'minmax(0, 3fr)' },
+];
+
+type DocTokenRow = {
+  key: string;
+  tokenPath: string;
+  whereLabel: string;
+  whereDetail?: string;
+  description: string;
+};
+
+function PropsTable({ rows }: { rows: ComponentPropRow[] }) {
+  return <Table minWidth={640} columns={PROP_TABLE_COLUMNS} rows={buildPropTableRows(rows)} />;
+}
+
+function TokensTable({ rows, componentName }: { rows: DocTokenRow[]; componentName: string }) {
+  return (
+    <Table
+      columns={TOKEN_TABLE_COLUMNS}
+      rows={rows.map((row) => ({
+        key: `${componentName}-${row.key}`,
+        cells: [
+          {
+            slot: 'token',
+            content: (
+              <Token variant="node" pathDisplayMode="full">
+                {row.tokenPath}
+              </Token>
+            ),
+          },
+          { slot: 'label', content: renderTokenAnatomy(row) },
+          { slot: 'description', content: row.description },
+        ],
+      }))}
+    />
+  );
+}
+
 function useComponentDocTocSections(componentName: string) {
   const { register, unregister } = useToc();
   const componentId = slugify(componentName);
@@ -305,11 +349,7 @@ export function HdsComponentDoc({
             {hasProperties ? (
               <Disclosure label="Properties" defaultOpen={false}>
                 <Surface padding="component">
-                  <Table
-                    minWidth={640}
-                    columns={PROP_TABLE_COLUMNS}
-                    rows={buildPropTableRows(resolvedProps)}
-                  />
+                  <PropsTable rows={resolvedProps} />
                 </Surface>
               </Disclosure>
             ) : null}
@@ -317,28 +357,7 @@ export function HdsComponentDoc({
             {hasTokens ? (
               <Disclosure label="Tokens" defaultOpen={false}>
                 <Surface padding="component">
-                  <Table
-                    columns={[
-                      { key: 'token', label: 'Token', width: 'minmax(0, 6fr)' },
-                      { key: 'source', label: 'Anatomy', width: 'minmax(0, 3fr)' },
-                      { key: 'description', label: 'Description', width: 'minmax(0, 3fr)' },
-                    ]}
-                    rows={tokenRows.map((row) => ({
-                      key: `${componentName}-${row.key}`,
-                      cells: [
-                        {
-                          slot: 'token',
-                          content: (
-                            <Token variant="node" pathDisplayMode="full">
-                              {row.tokenPath}
-                            </Token>
-                          ),
-                        },
-                        { slot: 'label', content: renderTokenAnatomy(row) },
-                        { slot: 'description', content: row.description },
-                      ],
-                    }))}
-                  />
+                  <TokensTable rows={tokenRows} componentName={componentName} />
                 </Surface>
               </Disclosure>
             ) : null}
@@ -388,11 +407,7 @@ export function HdsComponentDoc({
                   exit={{ opacity: 0, y: -4 }}
                   transition={tabPanelTransition}
                 >
-                  <Table
-                    minWidth={640}
-                    columns={PROP_TABLE_COLUMNS}
-                    rows={buildPropTableRows(resolvedProps)}
-                  />
+                  <PropsTable rows={resolvedProps} />
                 </motion.section>
               ) : null}
 
@@ -405,28 +420,7 @@ export function HdsComponentDoc({
                   exit={{ opacity: 0, y: -4 }}
                   transition={tabPanelTransition}
                 >
-                  <Table
-                    columns={[
-                      { key: 'token', label: 'Token', width: 'minmax(0, 6fr)' },
-                      { key: 'source', label: 'Anatomy', width: 'minmax(0, 3fr)' },
-                      { key: 'description', label: 'Description', width: 'minmax(0, 3fr)' },
-                    ]}
-                    rows={tokenRows.map((row) => ({
-                      key: `${componentName}-${row.key}`,
-                      cells: [
-                        {
-                          slot: 'token',
-                          content: (
-                            <Token variant="node" pathDisplayMode="full">
-                              {row.tokenPath}
-                            </Token>
-                          ),
-                        },
-                        { slot: 'label', content: renderTokenAnatomy(row) },
-                        { slot: 'description', content: row.description },
-                      ],
-                    }))}
-                  />
+                  <TokensTable rows={tokenRows} componentName={componentName} />
                 </motion.section>
               ) : null}
 
