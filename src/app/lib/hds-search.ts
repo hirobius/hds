@@ -16,26 +16,12 @@
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type ManifestSpec = {
-  category?: string;
-  tier?: string;
-  hidden?: boolean;
-  docExempt?: boolean;
-  description?: string;
-};
+// Import canonical types for local use, and re-export them so that consumers
+// that already import from this module (e.g. command-palette.tsx) keep working
+// unchanged.
+import type { ManifestSpec, RoleToken, SystemManifest } from '../data/manifest-types';
 
-export type RoleToken = {
-  path?: string;
-  cssVar?: string;
-  description?: string;
-  alias?: string;
-};
-
-export type SystemManifest = {
-  componentSpecs?: Record<string, ManifestSpec>;
-  utilities?: Record<string, ManifestSpec>;
-  tokens?: { role?: Record<string, RoleToken> | RoleToken[] };
-};
+export type { ManifestSpec, RoleToken, SystemManifest };
 
 export type ResultKind = 'component' | 'pattern' | 'template' | 'utility' | 'token' | 'section';
 

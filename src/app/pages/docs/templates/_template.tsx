@@ -56,20 +56,7 @@ export interface TemplateDocPageProps {
   composes: TemplateLink[];
 }
 
-type ManifestComponentSpec = {
-  description?: string;
-  filePath?: string;
-  figmaUrl?: string | null;
-  figmaLink?: string | null;
-  tier?: string;
-  stability?: 'stable' | 'beta';
-  slots?: unknown[];
-  propConstraints?: Record<string, unknown>;
-};
-
-type SystemManifest = {
-  componentSpecs?: Record<string, ManifestComponentSpec>;
-};
+import type { SystemManifest } from '../../../data/manifest-types';
 
 const MANIFEST = systemManifestData as SystemManifest;
 
@@ -99,7 +86,8 @@ const PREVIEW_FRAME_STYLE = {
   padding: 'var(--semantic-space-component-padding)',
   background: 'var(--semantic-color-surface-page)',
   border: '1px solid var(--semantic-color-border-default)', // outline-ok: doc preview frame — scopes full template render from surrounding doc chrome
-  borderRadius: 'var(--primitive-radius-2)', /* tier-ok: doc preview frame — 2px radius has no semantic alias */
+  borderRadius:
+    'var(--primitive-radius-2)' /* tier-ok: doc preview frame — 2px radius has no semantic alias */,
   overflow: 'hidden' as const,
 };
 
@@ -116,7 +104,7 @@ export function TemplateDocPage({
 
   return (
     <HdsSystemDocLayout
-      contentSlot={(
+      contentSlot={
         <Stack gap="spacious" style={{ minWidth: 0 }}>
           <DocPageHeader spec={headerSpec} />
 
@@ -141,12 +129,7 @@ export function TemplateDocPage({
           <section>
             <Stack gap="tight">
               <HeadingAnchor level={2}>Call site</HeadingAnchor>
-              <CodeBlock
-                code={source}
-                language="tsx"
-                collapsible
-                defaultExpanded={false}
-              />
+              <CodeBlock code={source} language="tsx" collapsible defaultExpanded={false} />
             </Stack>
           </section>
 
@@ -182,7 +165,7 @@ export function TemplateDocPage({
             </Stack>
           </section>
         </Stack>
-      )}
+      }
     />
   );
 }

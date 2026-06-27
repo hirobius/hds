@@ -59,20 +59,7 @@ export interface PatternDocPageProps {
   primitives: PatternPrimitiveLink[];
 }
 
-type ManifestComponentSpec = {
-  description?: string;
-  filePath?: string;
-  figmaUrl?: string | null;
-  figmaLink?: string | null;
-  tier?: string;
-  stability?: 'stable' | 'beta';
-  slots?: unknown[];
-  propConstraints?: Record<string, unknown>;
-};
-
-type SystemManifest = {
-  componentSpecs?: Record<string, ManifestComponentSpec>;
-};
+import type { SystemManifest } from '../../../data/manifest-types';
 
 const MANIFEST = systemManifestData as SystemManifest;
 
@@ -110,7 +97,7 @@ export function PatternDocPage({
 
   return (
     <HdsSystemDocLayout
-      contentSlot={(
+      contentSlot={
         <Stack gap="spacious" style={{ minWidth: 0 }}>
           <DocPageHeader spec={headerSpec} />
 
@@ -120,7 +107,9 @@ export function PatternDocPage({
               <ul style={{ margin: 0, paddingInlineStart: '1.25em' }}>
                 {whenToUse.map((bullet) => (
                   <li key={bullet}>
-                    <Text variant="body" as="span">{bullet}</Text>
+                    <Text variant="body" as="span">
+                      {bullet}
+                    </Text>
                   </li>
                 ))}
               </ul>
@@ -140,16 +129,15 @@ export function PatternDocPage({
               {examples.map((example) => (
                 <Stack key={example.title} gap="tight">
                   <HeadingAnchor level={3}>{example.title}</HeadingAnchor>
-                  {example.description ? (
-                    <Text variant="body">{example.description}</Text>
-                  ) : null}
+                  {example.description ? <Text variant="body">{example.description}</Text> : null}
                   {example.preview ? (
                     <div
                       style={{
                         padding: 'var(--semantic-space-component-padding)',
                         background: 'var(--semantic-color-surface-page)',
                         border: '1px solid var(--semantic-color-border-default)', // outline-ok: doc preview container — scopes live component render from surrounding doc chrome
-                        borderRadius: 'var(--primitive-radius-2)', /* tier-ok: doc preview container — 2px radius has no semantic alias */
+                        borderRadius:
+                          'var(--primitive-radius-2)' /* tier-ok: doc preview container — 2px radius has no semantic alias */,
                       }}
                     >
                       {example.preview}
@@ -189,7 +177,7 @@ export function PatternDocPage({
               Templates skip this block (Adrian-ratified 2026-05-01). */}
           <ApiReference componentName={title} />
         </Stack>
-      )}
+      }
     />
   );
 }

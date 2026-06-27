@@ -3,6 +3,7 @@
 import { useEffect, useState, type ElementType } from 'react';
 import { GitBranch, SlidersHorizontal, Sparkle } from 'lucide-react';
 import systemManifestData from 'virtual:hds-manifest';
+import type { SystemManifest, ComponentApiManifest } from '../data/manifest-types';
 import componentApiManifest from '../data/component-api.json';
 import hds from '../design-system/tokens';
 import { Button } from './button';
@@ -10,36 +11,6 @@ import { PreviewFrame } from './preview-frame';
 import { allTokens } from './lab/tokenUtils';
 
 type PreviewSizingProfile = 'compact' | 'panel' | 'full';
-
-type ComponentPreviewSpec = {
-  exportName?: string;
-  sizing?: PreviewSizingProfile;
-};
-
-type SystemManifest = {
-  componentSpecs?: Record<
-    string,
-    {
-      filePath?: string;
-      preview?: ComponentPreviewSpec;
-    }
-  >;
-};
-
-type ComponentApiManifest = {
-  components?: Record<
-    string,
-    {
-      props?: Array<{
-        name: string;
-        type?: string;
-        default?: string;
-        required?: boolean;
-        description?: string;
-      }>;
-    }
-  >;
-};
 
 const systemManifest = systemManifestData as SystemManifest;
 const componentApi = componentApiManifest as ComponentApiManifest;

@@ -7,15 +7,10 @@
  */
 import type { ReactNode } from 'react';
 import systemManifestData from 'virtual:hds-manifest';
+import type { SystemManifest } from '../data/manifest-types';
 import hds from '../design-system/tokens';
 import { PreviewFrame } from './preview-frame';
 import { AutoPreviewSpecimen, VariantPreviewDeck } from './componentPreviewRegistry';
-
-type SystemManifest = {
-  componentSpecs?: Record<string, {
-    filePath?: string;
-  }>;
-};
 
 const systemManifest = systemManifestData as SystemManifest;
 
@@ -36,19 +31,26 @@ export function SpecimenBlock({
   hideVariantDeck?: boolean;
   hideHeroLabel?: boolean;
   hideHero?: boolean;
-  }) {
+}) {
   const resolvedFilePath = filePath ?? systemManifest.componentSpecs?.[componentName]?.filePath;
 
   return (
     <div>
       {hideHero ? null : (
         <PreviewFrame {...(hideHeroLabel ? { label: '' } : {})}>
-          {demo ?? <AutoPreviewSpecimen componentName={componentName} filePath={resolvedFilePath} />}
+          {demo ?? (
+            <AutoPreviewSpecimen componentName={componentName} filePath={resolvedFilePath} />
+          )}
         </PreviewFrame>
       )}
-      {hideVariantDeck ? null : <VariantPreviewDeck componentName={componentName} filePath={resolvedFilePath} />}
-      {matrix ? <div style={{ marginTop: hideHero ? 0 : `calc(${hds.semantic.space.component.gap} * 2)` }}>{matrix}</div> : null}
+      {hideVariantDeck ? null : (
+        <VariantPreviewDeck componentName={componentName} filePath={resolvedFilePath} />
+      )}
+      {matrix ? (
+        <div style={{ marginTop: hideHero ? 0 : `calc(${hds.semantic.space.component.gap} * 2)` }}>
+          {matrix}
+        </div>
+      ) : null}
     </div>
   );
 }
-

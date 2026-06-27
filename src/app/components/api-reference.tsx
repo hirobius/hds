@@ -25,49 +25,13 @@
 
 import * as React from 'react';
 import systemManifestData from 'virtual:hds-manifest';
+import type {
+  ManifestPropSpec,
+  SystemManifest,
+  ComponentApiManifest,
+} from '../data/manifest-types';
 import componentApiManifest from '../data/component-api.json';
 import hds from '../design-system/tokens';
-
-// ── Manifest types (narrow to the fields this component reads) ────────────────
-
-type ManifestPropSpec = {
-  type?: string;
-  values?: Array<string | number | boolean>;
-  default?: string | number | boolean;
-  optional?: boolean;
-};
-
-type ManifestSlot = {
-  name?: string;
-  figmaSlotName?: string;
-  tokenBinding?: Record<string, string>;
-};
-
-type ManifestComponentSpec = {
-  tier?: string;
-  props?: Record<string, ManifestPropSpec>;
-  propConstraints?: Record<string, ManifestPropSpec>;
-  requiredProps?: string[];
-  slots?: ManifestSlot[];
-};
-
-type SystemManifest = {
-  componentSpecs?: Record<string, ManifestComponentSpec>;
-};
-
-type ApiPropEntry = {
-  name: string;
-  type?: string;
-  default?: string;
-  required?: boolean;
-  description?: string;
-};
-
-type ComponentApiManifest = {
-  components?: Record<string, {
-    props?: ApiPropEntry[];
-  }>;
-};
 
 const MANIFEST = systemManifestData as SystemManifest;
 const COMPONENT_API = componentApiManifest as ComponentApiManifest;
@@ -87,9 +51,7 @@ type ApiRow = {
 function formatType(spec: ManifestPropSpec | undefined): string {
   if (!spec) return '';
   if (spec.type === 'enum' && Array.isArray(spec.values) && spec.values.length > 0) {
-    return spec.values
-      .map((v) => (typeof v === 'string' ? `'${v}'` : String(v)))
-      .join(' | ');
+    return spec.values.map((v) => (typeof v === 'string' ? `'${v}'` : String(v))).join(' | ');
   }
   return spec.type ?? '';
 }
@@ -121,10 +83,7 @@ export function buildApiRowsFromManifest(componentName: string): ApiRow[] {
     }
   }
 
-  const propNames = new Set<string>([
-    ...Object.keys(props),
-    ...Object.keys(constraints),
-  ]);
+  const propNames = new Set<string>([...Object.keys(props), ...Object.keys(constraints)]);
 
   const rows: ApiRow[] = [];
   for (const name of propNames) {
@@ -136,7 +95,8 @@ export function buildApiRowsFromManifest(componentName: string): ApiRow[] {
     const mergedType =
       formatType(propSpec) || formatType(constraintSpec) || formatType({ type: 'unknown' });
     const isOptionalFromSpec = propSpec?.optional === true;
-    const _isRequired = requiredSet.has(name) || (!isOptionalFromSpec && !requiredSet.size && false);
+    const _isRequired =
+      requiredSet.has(name) || (!isOptionalFromSpec && !requiredSet.size && false);
 
     rows.push({
       name,
@@ -290,7 +250,9 @@ export function ApiReference({
         aria-label={`${label} for ${componentName}`}
       >
         {label}
-        <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)' }}>
+        <span
+          style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)' }}
+        >
           {rows.length > 0 ? `${rows.length} prop${rows.length === 1 ? '' : 's'}` : ''}
           {rows.length > 0 && slots.length > 0 ? ' · ' : ''}
           {slots.length > 0 ? `${slots.length} slot${slots.length === 1 ? '' : 's'}` : ''}
@@ -301,11 +263,21 @@ export function ApiReference({
         <table id={propsTableId} style={tableStyle}>
           <thead>
             <tr>
-              <th style={cellHeaderStyle} scope="col">Name</th>
-              <th style={cellHeaderStyle} scope="col">Type</th>
-              <th style={cellHeaderStyle} scope="col">Default</th>
-              <th style={cellHeaderStyle} scope="col">Description</th>
-              <th style={cellHeaderStyle} scope="col">Required</th>
+              <th style={cellHeaderStyle} scope="col">
+                Name
+              </th>
+              <th style={cellHeaderStyle} scope="col">
+                Type
+              </th>
+              <th style={cellHeaderStyle} scope="col">
+                Default
+              </th>
+              <th style={cellHeaderStyle} scope="col">
+                Description
+              </th>
+              <th style={cellHeaderStyle} scope="col">
+                Required
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -313,7 +285,11 @@ export function ApiReference({
               <tr key={row.name}>
                 <td style={codeCellStyle}>
                   {row.name}
-                  {row.required ? <span style={requiredBadgeStyle} aria-hidden="true">*</span> : null}
+                  {row.required ? (
+                    <span style={requiredBadgeStyle} aria-hidden="true">
+                      *
+                    </span>
+                  ) : null}
                 </td>
                 <td style={codeCellStyle}>{row.type || '—'}</td>
                 <td style={codeCellStyle}>{row.default || '—'}</td>

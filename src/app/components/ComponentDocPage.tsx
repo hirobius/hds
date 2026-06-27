@@ -7,6 +7,12 @@ import { Figma as FigmaLogo } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import systemManifestData from 'virtual:hds-manifest';
+import type {
+  ComponentApiManifest as BaseComponentApiManifest,
+  SystemManifest as BaseSystemManifest,
+  ManifestComponentSpec,
+  ManifestApiComponent,
+} from '../data/manifest-types';
 import hds from '../design-system/tokens';
 import componentApiManifest from '../data/component-api.json';
 import { useToc, slugify } from '../pages/hds/HdsTocContext';
@@ -32,41 +38,23 @@ const tabPanelTransition = {
 
 type ComponentDocTabId = 'properties' | 'tokens' | 'usage';
 
-type ComponentApiManifest = {
-  components: Record<
-    string,
-    {
-      filePath?: string;
-      category?: string;
-      hidden?: boolean;
-      figmaUrl?: string | null;
-      description?: string;
-      props: ComponentPropRow[];
-      guides?: Array<{
-        label: string;
-        text: string;
-      }>;
-      observedTokens?: Array<{
-        raw: string;
-        tokenPath?: string;
-      }>;
-    }
-  >;
+// ComponentDocPage requires the API component entry to have a required props
+// array of ComponentPropRow (not the loose ManifestApiPropRow superset), since
+// it passes props directly to buildPropTableRows. We derive a local narrowed
+// type to preserve the guarantee without re-declaring the full shape.
+type DocApiEntry = Omit<ManifestApiComponent, 'props'> & { props: ComponentPropRow[] };
+type ComponentApiManifest = Omit<BaseComponentApiManifest, 'components'> & {
+  components: Record<string, DocApiEntry>;
 };
 
-type SystemManifest = {
-  componentSpecs: Record<
-    string,
-    {
-      category: string;
-      description?: string;
-      figmaUrl: string | null;
-      figmaId?: string | null;
-      filePath?: string;
-      consumers?: string[];
-      tokenMapping?: Record<string, string>;
-    }
-  >;
+// ComponentDocPage requires category and figmaUrl to be present (non-optional)
+// on the spec entries it reads. Derive from the canonical type.
+type DocComponentSpec = ManifestComponentSpec & {
+  category: string;
+  figmaUrl: string | null;
+};
+type SystemManifest = Omit<BaseSystemManifest, 'componentSpecs'> & {
+  componentSpecs: Record<string, DocComponentSpec>;
 };
 
 const componentApi = componentApiManifest as ComponentApiManifest;
