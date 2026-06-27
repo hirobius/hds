@@ -3,7 +3,7 @@
  * @category Layout
  * @tier pattern
  */
-import React, { useId, useState, type CSSProperties, type ReactNode } from 'react';
+import React, { useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import hds from '../design-system/tokens';
@@ -37,25 +37,35 @@ type DisclosureProps = {
 };
 
 /** @public */
-export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(function Disclosure({
-  label,
-  defaultOpen = false,
-  open,
-  onOpenChange,
-  variant = 'panel',
-  accent: _accent = false,
-  className,
-  triggerStyle,
-  contentStyle,
-  children,
-}, ref) {
+export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(function Disclosure(
+  {
+    label,
+    defaultOpen = false,
+    open,
+    onOpenChange,
+    variant = 'panel',
+    accent: _accent = false,
+    className,
+    triggerStyle,
+    contentStyle,
+    children,
+  },
+  ref,
+) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [hovered, setHovered] = useState(false);
   const panelId = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const resolvedOpen = open ?? internalOpen;
 
   function handleToggle() {
     const nextOpen = !resolvedOpen;
+    // If collapsing while focus sits on a child inside the (about-to-unmount)
+    // panel, return focus to the trigger so it doesn't fall to <body>.
+    if (!nextOpen && panelRef.current?.contains(document.activeElement)) {
+      triggerRef.current?.focus();
+    }
     if (open === undefined) {
       setInternalOpen(nextOpen);
     }
@@ -66,7 +76,9 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
     'hds-focus',
     variant === 'nav' ? 'hds-text-hover hds-bg-hover-neutral' : '',
     className ?? '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const baseTriggerStyle: CSSProperties = {
     display: variant === 'card' ? 'grid' : 'flex',
@@ -102,31 +114,46 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
     },
   };
 
-  const containerGap = variant === 'panel'
-    ? (resolvedOpen ? hds.semantic.space.sidebar.gap : 0)
-    : variant === 'card'
-      ? resolvedOpen ? hds.semantic.space.component.gap : 0
-      : resolvedOpen ? hds.semantic.space.sidebar.sectionGap : 0;
+  const containerGap =
+    variant === 'panel'
+      ? resolvedOpen
+        ? hds.semantic.space.sidebar.gap
+        : 0
+      : variant === 'card'
+        ? resolvedOpen
+          ? hds.semantic.space.component.gap
+          : 0
+        : resolvedOpen
+          ? hds.semantic.space.sidebar.sectionGap
+          : 0;
 
-  const labelContent = typeof label === 'string'
-    ? (
-        <span style={{ ...(variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption), margin: 0, color: 'currentColor' }}>
-          {label}
-        </span>
-      )
-    : label;
+  const labelContent =
+    typeof label === 'string' ? (
+      <span
+        style={{
+          ...(variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption),
+          margin: 0,
+          color: 'currentColor',
+        }}
+      >
+        {label}
+      </span>
+    ) : (
+      label
+    );
 
   const disclosureBody = (
     <>
       <button // audit-ok: hds-focus applied via triggerClassName variable
+        ref={triggerRef}
         type="button"
         onClick={handleToggle}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         aria-expanded={resolvedOpen}
-      aria-controls={panelId}
-      className={triggerClassName}
-      style={{
+        aria-controls={panelId}
+        className={triggerClassName}
+        style={{
           ...baseTriggerStyle,
           ...variantTriggerStyle[variant],
           ...triggerStyle,
@@ -146,7 +173,10 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
         <motion.span
           aria-hidden="true"
           animate={{ rotate: resolvedOpen ? 0 : -90 }}
-          transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+          transition={{
+            duration: hds.motion.productive.duration,
+            ease: hds.motion.productive.easing,
+          }}
           style={{
             display: 'inline-grid',
             placeItems: 'center',
@@ -159,22 +189,22 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
             overflow: 'hidden',
           }}
         >
-          <Icon
-            icon={ChevronDown}
-            size="small"
-            color="currentColor"
-          />
+          <Icon icon={ChevronDown} size="small" color="currentColor" />
         </motion.span>
       </button>
 
       <AnimatePresence initial={false}>
         {resolvedOpen && (
           <motion.div
+            ref={panelRef}
             id={panelId}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+            transition={{
+              duration: hds.motion.productive.duration,
+              ease: hds.motion.productive.easing,
+            }}
             style={{ overflow: 'hidden' }}
           >
             <div
@@ -192,11 +222,7 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
 
   if (variant === 'nav') {
     return (
-      <Stack
-        ref={ref}
-        gap="tight"
-        style={{ gap: containerGap }}
-      >
+      <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
         {disclosureBody}
       </Stack>
     );
