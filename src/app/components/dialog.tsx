@@ -37,6 +37,7 @@ import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { Text } from './text';
 
 // ── Root + leaf primitives (re-exported from Radix) ────────────────────────────
 
@@ -129,26 +130,34 @@ const DialogFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
 const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(function DialogTitle({ className, ...props }, ref) {
+>(function DialogTitle({ className, children, ...props }, ref) {
+  // D1: Text owns the type ramp; asChild keeps Radix's Title a11y wiring (the
+  // id that backs aria-labelledby) on the heading element.
   return (
-    <DialogPrimitive.Title
-      ref={ref}
-      className={cn('text-lg font-semibold leading-none tracking-tight', className)}
-      {...props}
-    />
+    <DialogPrimitive.Title asChild>
+      <Text ref={ref} as="h2" variant="heading3" className={className} {...props}>
+        {children}
+      </Text>
+    </DialogPrimitive.Title>
   );
 });
 
 const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(function DialogDescription({ className, ...props }, ref) {
+>(function DialogDescription({ className, children, ...props }, ref) {
   return (
-    <DialogPrimitive.Description
-      ref={ref}
-      className={cn('text-sm text-muted-foreground', className)}
-      {...props}
-    />
+    <DialogPrimitive.Description asChild>
+      <Text
+        ref={ref}
+        as="p"
+        variant="caption"
+        className={cn('text-muted-foreground', className)}
+        {...props}
+      >
+        {children}
+      </Text>
+    </DialogPrimitive.Description>
   );
 });
 

@@ -44,19 +44,12 @@
 import * as React from 'react';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
+import { Text } from './text';
+import { resolvePaddingValue, type PaddingOption } from './surface-padding';
 
 // ── Legacy padding/gap helpers (retained for backward compat) ─────────────────
 
-type PaddingOption = 'component' | 'item' | 'none' | 'px24' | 'px16';
 type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof hds.space;
-
-const PADDING_MAP: Record<PaddingOption, string> = {
-  component: 'var(--semantic-space-component-padding)',
-  item: '16px',
-  px24: '24px',
-  px16: '16px',
-  none: '0',
-};
 
 const GAP_MAP: Record<string, string> = {
   tight: 'var(--semantic-space-layout-tight)',
@@ -64,10 +57,6 @@ const GAP_MAP: Record<string, string> = {
   inset: 'var(--semantic-space-layout-inset)',
   spacious: 'var(--semantic-space-layout-spacious)',
 };
-
-function resolvePadding(p: PaddingOption): string {
-  return PADDING_MAP[p] ?? '0';
-}
 
 function resolveGap(g: GapOption): string {
   if (typeof g === 'string' && g in GAP_MAP) return GAP_MAP[g];
@@ -158,7 +147,7 @@ const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
 ) {
   const Comp = (as ?? 'div') as React.ElementType;
   const resolvedPadding = noPadding ? 'none' : padding;
-  const paddingValue = resolvePadding(resolvedPadding);
+  const paddingValue = resolvePaddingValue(resolvedPadding);
   const gapValue = resolvedPadding === 'none' ? '0' : resolveGap(gap);
 
   // Border resolution: explicit feedback tone always wins; otherwise
@@ -228,17 +217,16 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(function Ca
   );
 });
 
+// D1: route Card titles through the Text seam (HDS type ramp) instead of raw
+// Tailwind classes — the same raw strings were duplicated in dialog.tsx, leaking
+// the Card-Anatomy contract. Text owns the type decision; the description keeps
+// its muted tone (a secondary-content concern, not part of the type ramp).
 const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  function CardTitle({ className, ...props }, ref) {
-    const { children, ...rest } = props;
+  function CardTitle({ className, children, ...rest }, ref) {
     return (
-      <h3
-        ref={ref}
-        className={cn('text-lg font-semibold leading-none tracking-tight', className)}
-        {...rest}
-      >
+      <Text ref={ref} variant="heading3" className={className} {...rest}>
         {children}
-      </h3>
+      </Text>
     );
   },
 );
@@ -246,8 +234,12 @@ const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTML
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(function CardDescription({ className, ...props }, ref) {
-  return <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />;
+>(function CardDescription({ className, children, ...rest }, ref) {
+  return (
+    <Text ref={ref} variant="caption" className={cn('text-muted-foreground', className)} {...rest}>
+      {children}
+    </Text>
+  );
 });
 
 const CardBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

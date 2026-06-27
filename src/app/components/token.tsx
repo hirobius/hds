@@ -7,6 +7,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useLocation, useNavigate } from 'react-router';
 import hds from '../design-system/tokens';
+import { warnOnce } from '../../lib/deprecation';
 import { useTokenDisplay } from '../context/TokenDisplayContext';
 import { allTokens } from './lab/tokenUtils';
 import styles from './Token.module.css';
@@ -37,6 +38,13 @@ type TokenNodeSurfaceProps = TokenBaseProps & {
   leadingSlot?: React.ReactNode;
 };
 
+/**
+ * @deprecated `variant="diagram"` is a compatibility alias that resolves to the
+ * canonical `variant="node"` treatment; its diagram-only props (value,
+ * accentColor, description, rawValue) are no longer rendered. Migrate to
+ * `variant="node"`.
+ * @removeIn 1.0.0
+ */
 type TokenDiagramProps = TokenBaseProps & {
   variant: 'diagram';
   label: string;
@@ -390,12 +398,18 @@ function TokenDiagram({
  * Token - unified token component.
  *
  * variant="node" renders the canonical token surface.
- * variant="diagram" is maintained as a compatibility alias and now resolves
- * to the same node treatment so all token views share one visual language.
+ * variant="diagram" is a DEPRECATED compatibility alias (see TokenDiagramProps;
+ * @removeIn 1.0.0) that now resolves to the same node treatment.
  * Node content can use a left-side slot for swatches or other compact previews.
  */
 /** @public */
 export function Token(props: TokenProps) {
-  if (props.variant === 'diagram') return <TokenDiagram {...props} />;
+  if (props.variant === 'diagram') {
+    warnOnce(
+      'token-variant-diagram',
+      'Token variant="diagram" is deprecated and resolves to variant="node" (removed in 1.0.0); migrate to variant="node".',
+    );
+    return <TokenDiagram {...props} />;
+  }
   return <TokenNodeSurface {...props} />;
 }
