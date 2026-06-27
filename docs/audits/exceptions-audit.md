@@ -84,7 +84,7 @@
 | `src/app/components/card.tsx` | 312 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
 | `src/app/components/componentPreviewRegistry.tsx` | 72 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
 | `src/app/components/componentPreviewRegistry.tsx` | 85 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
-| `src/app/components/disclosure.tsx` | 121 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
+| `src/app/components/disclosure.tsx` | 147 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
 | `src/app/components/doc-sections.tsx` | 593 | `audit-ok` | `interactive demo area — fixed visual height, not a spacing/layout token` | justified |
 | `src/app/components/foundation-swatch.tsx` | 158 | `hds-bypass` | `fixed specimen height keeps foundation swatches visually comparable across token demos` | justified |
 | `src/app/components/morph-card.tsx` | 434 | `audit-ok` | `SVG fill transition — no token maps to 0.35s; hds.motion.productive.duration(0.15) is too fast for a color fill sweep` | justified |

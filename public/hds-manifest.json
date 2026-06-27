@@ -4605,6 +4605,7 @@
         "src/app/components/command-palette.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/info-page.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
