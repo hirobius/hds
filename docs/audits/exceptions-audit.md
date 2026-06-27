@@ -47,7 +47,7 @@
 | `src/app/components/preview-frame.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/shell-controls.tsx` | 149 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/stepper-field.tsx` | 59 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/surface.tsx` | 37 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists` | justified |
+| `src/app/components/surface.tsx` | 36 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/tile-grid.tsx` | 35 | `eslint-disable-next-line` | `no-restricted-syntax -- TileGrid IS the grid primitive; auto-fill template is its raison d'être` | justified |
 | `src/app/context/__tests__/context.test.tsx` | 18 | `eslint-disable-next-line` | `@typescript-eslint/no-explicit-any` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
@@ -81,7 +81,7 @@
 |------|------|------|--------|--------|
 | `src/app/App.tsx` | 20 | `spacing-ok` | `error boundary fallback, not a UI component */}` | justified |
 | `src/app/components/CascadeText.tsx` | 76 | `audit-ok` | `orchestrated stagger — custom cubic-bezier + computed per-char delay; semantic motion tokens do not cover this easing curve` | justified |
-| `src/app/components/card.tsx` | 312 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
+| `src/app/components/card.tsx` | 304 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
 | `src/app/components/componentPreviewRegistry.tsx` | 43 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
 | `src/app/components/componentPreviewRegistry.tsx` | 56 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
 | `src/app/components/disclosure.tsx` | 147 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
@@ -103,7 +103,7 @@
 | `src/app/components/stacked-card-rail.tsx` | 169 | `audit-ok` | `percentage fill in CSS template */` | justified |
 | `src/app/components/stacked-card-rail.tsx` | 174 | `audit-ok` | `percentage fill in CSS template */` | justified |
 | `src/app/components/stacked-card-rail.tsx` | 175 | `audit-ok` | `percentage fill in CSS template */` | justified |
-| `src/app/components/surface.tsx` | 44 | `spacing-ok` | `16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to` | justified |
+| `src/app/components/surface.tsx` | 43 | `spacing-ok` | `16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to` | justified |
 | `src/app/components/text-lockup.tsx` | 9 | `font-ok` | `inline technical affordances within this lockup intentionally use monospace for code-like references` | justified |
 | `src/app/data/hdsEditorial.tsx` | 55 | `audit-ok` | `*/) now supported. Self-healing policy documented: new violation classes must be added to script in same commit as fix.' },` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 1 | `hds-bypass` | `foundation color doc — WCAG_PAIRINGS contains intentional raw hex literals for contrast-ratio math data; values are not used as CSS color properties */` | justified |
