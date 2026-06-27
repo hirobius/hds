@@ -300,10 +300,6 @@ const DEFAULT_PREVIEW_PROPS: Record<string, Record<string, unknown>> = {
   Tag: {
     children: 'Tag',
   },
-  MobiusLogo: {
-    allowGrab: false,
-    style: { width: '240px', height: '240px' },
-  },
   AssetImg: {
     src: sampleAssetSrc,
     alt: 'Preview asset',
