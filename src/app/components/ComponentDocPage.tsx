@@ -149,6 +149,117 @@ function useComponentDocTocSections(componentName: string) {
   return { componentId };
 }
 
+type ComponentDocData = {
+  filePath?: string;
+  figmaUrl: string | null;
+  resolvedDescription: ReactNode;
+  resolvedProps: ComponentPropRow[];
+  resolvedGuides: Array<{ label: string; text: string }>;
+  tokenRows: DocTokenRow[];
+  hasTokens: boolean;
+  hasProperties: boolean;
+  hasUsageNotes: boolean;
+  availableTabs: Array<{ id: ComponentDocTabId; label: string }>;
+};
+
+// C4: the manifest+API join derived as pure data so HdsComponentDoc stays a thin
+// orchestrator over its hooks rather than owning the join inline.
+function resolveComponentDocData({
+  componentName,
+  propRows,
+  description,
+  layout,
+}: {
+  componentName: string;
+  propRows?: ComponentPropRow[];
+  description?: ReactNode;
+  layout: 'default' | 'utility';
+}): ComponentDocData {
+  const manifestEntry = systemManifest.componentSpecs[componentName];
+  const apiEntry = componentApi.components[componentName];
+  const figmaUrl =
+    manifestEntry?.figmaUrl && !/figma\.com\/hds-placeholder/i.test(manifestEntry.figmaUrl)
+      ? manifestEntry.figmaUrl
+      : null;
+  const resolvedDescription =
+    manifestEntry?.description ?? apiEntry?.description ?? description ?? '';
+  const resolvedProps = propRows && propRows.length > 0 ? propRows : (apiEntry?.props ?? []);
+  const resolvedGuides = apiEntry?.guides ?? [];
+  const tokenMapping = manifestEntry?.tokenMapping ?? {};
+  const mappedTokenRows = buildReflectiveTokenRows(
+    tokenMapping,
+    componentName,
+    manifestEntry?.category,
+  );
+  const observedTokenRows = buildObservedTokenRows(
+    apiEntry?.observedTokens ?? [],
+    new Set(mappedTokenRows.map((row) => row.tokenPath)),
+    componentName,
+    manifestEntry?.category,
+  );
+  const tokenRows = [...mappedTokenRows, ...observedTokenRows];
+  const hasTokens = layout !== 'utility' && tokenRows.length > 0;
+  const hasProperties = resolvedProps.length > 0;
+  const hasUsageNotes = resolvedGuides.length > 0;
+  const availableTabs = [
+    hasProperties ? { id: 'properties' as const, label: 'Properties' } : null,
+    hasTokens ? { id: 'tokens' as const, label: 'Tokens' } : null,
+    hasUsageNotes ? { id: 'usage' as const, label: 'Usage' } : null,
+  ].filter(Boolean) as Array<{ id: ComponentDocTabId; label: string }>;
+  return {
+    filePath: manifestEntry?.filePath ?? apiEntry?.filePath,
+    figmaUrl,
+    resolvedDescription,
+    resolvedProps,
+    resolvedGuides,
+    tokenRows,
+    hasTokens,
+    hasProperties,
+    hasUsageNotes,
+    availableTabs,
+  };
+}
+
+// C4: the tab state-machine — active tab + reset-to-available + hash sync.
+function useComponentDocTabs(
+  availableTabs: Array<{ id: ComponentDocTabId; label: string }>,
+  componentId: string,
+  layout: 'default' | 'utility',
+) {
+  const [activeTab, setActiveTab] = useState<ComponentDocTabId>('properties');
+
+  useEffect(() => {
+    if (availableTabs.length === 0) return;
+    if (!availableTabs.some((tab) => tab.id === activeTab)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setActiveTab(availableTabs[0].id);
+    }
+  }, [activeTab, availableTabs]);
+
+  useEffect(() => {
+    if (layout === 'utility') return;
+
+    const syncTabFromHash = () => {
+      const hash = window.location.hash;
+      const hashMap: Record<string, ComponentDocTabId> = {
+        [`#${componentId}-properties`]: 'properties',
+        [`#${componentId}-tokens`]: 'tokens',
+        [`#${componentId}-usage`]: 'usage',
+      };
+      const nextTab = hashMap[hash];
+      if (nextTab && availableTabs.some((tab) => tab.id === nextTab)) {
+        setActiveTab(nextTab);
+      }
+    };
+
+    syncTabFromHash();
+    window.addEventListener('hashchange', syncTabFromHash);
+    return () => window.removeEventListener('hashchange', syncTabFromHash);
+  }, [availableTabs, componentId, layout]);
+
+  return { activeTab, setActiveTab };
+}
+
 function StorefrontPlaceholder({ componentName }: { componentName: string }) {
   return (
     <Surface padding="component">
@@ -201,70 +312,22 @@ export function HdsComponentDoc({
   hideHeroLabel?: boolean;
   hideHero?: boolean;
 }) {
-  const manifestEntry = systemManifest.componentSpecs[componentName];
-  const apiEntry = componentApi.components[componentName];
-  const figmaUrl =
-    manifestEntry?.figmaUrl && !/figma\.com\/hds-placeholder/i.test(manifestEntry.figmaUrl)
-      ? manifestEntry.figmaUrl
-      : null;
-  const resolvedDescription =
-    manifestEntry?.description ?? apiEntry?.description ?? description ?? '';
-  const resolvedProps = propRows && propRows.length > 0 ? propRows : (apiEntry?.props ?? []);
-  const resolvedGuides = apiEntry?.guides ?? [];
-  const tokenMapping = manifestEntry?.tokenMapping ?? {};
-  const mappedTokenRows = buildReflectiveTokenRows(
-    tokenMapping,
-    componentName,
-    manifestEntry?.category,
-  );
-  const observedTokenRows = buildObservedTokenRows(
-    apiEntry?.observedTokens ?? [],
-    new Set(mappedTokenRows.map((row) => row.tokenPath)),
-    componentName,
-    manifestEntry?.category,
-  );
-  const tokenRows = [...mappedTokenRows, ...observedTokenRows];
-  const hasTokens = layout !== 'utility' && tokenRows.length > 0;
-  const hasProperties = resolvedProps.length > 0;
-  const hasUsageNotes = resolvedGuides.length > 0;
+  const { componentId } = useComponentDocTocSections(componentName);
+  const {
+    filePath,
+    figmaUrl,
+    resolvedDescription,
+    resolvedProps,
+    resolvedGuides,
+    tokenRows,
+    hasTokens,
+    hasProperties,
+    hasUsageNotes,
+    availableTabs,
+  } = resolveComponentDocData({ componentName, propRows, description, layout });
+  const { activeTab, setActiveTab } = useComponentDocTabs(availableTabs, componentId, layout);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [shouldHydrate, setShouldHydrate] = useState(false);
-  const [activeTab, setActiveTab] = useState<ComponentDocTabId>('properties');
-  const { componentId } = useComponentDocTocSections(componentName);
-
-  const availableTabs = [
-    hasProperties ? { id: 'properties' as const, label: 'Properties' } : null,
-    hasTokens ? { id: 'tokens' as const, label: 'Tokens' } : null,
-    hasUsageNotes ? { id: 'usage' as const, label: 'Usage' } : null,
-  ].filter(Boolean) as Array<{ id: ComponentDocTabId; label: string }>;
-  useEffect(() => {
-    if (availableTabs.length === 0) return;
-    if (!availableTabs.some((tab) => tab.id === activeTab)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setActiveTab(availableTabs[0].id);
-    }
-  }, [activeTab, availableTabs]);
-
-  useEffect(() => {
-    if (layout === 'utility') return;
-
-    const syncTabFromHash = () => {
-      const hash = window.location.hash;
-      const hashMap: Record<string, ComponentDocTabId> = {
-        [`#${componentId}-properties`]: 'properties',
-        [`#${componentId}-tokens`]: 'tokens',
-        [`#${componentId}-usage`]: 'usage',
-      };
-      const nextTab = hashMap[hash];
-      if (nextTab && availableTabs.some((tab) => tab.id === nextTab)) {
-        setActiveTab(nextTab);
-      }
-    };
-
-    syncTabFromHash();
-    window.addEventListener('hashchange', syncTabFromHash);
-    return () => window.removeEventListener('hashchange', syncTabFromHash);
-  }, [availableTabs, componentId, layout]);
 
   useEffect(() => {
     const target = rootRef.current;
@@ -327,7 +390,7 @@ export function HdsComponentDoc({
         {shouldHydrate ? (
           <SpecimenBlock
             componentName={componentName}
-            filePath={manifestEntry?.filePath ?? apiEntry?.filePath}
+            filePath={filePath}
             demo={demo}
             matrix={matrix}
             hideVariantDeck={hideVariantDeck}
