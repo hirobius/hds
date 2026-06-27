@@ -102,409 +102,369 @@ export function getPreviewVariantGroups(componentName: string): PreviewVariantGr
   });
 }
 
-function getDefaultPreviewProps(componentName: string) {
-  switch (componentName) {
-    case 'ControlsPanel':
-      return {
-        title: 'Controls',
-        placement: 'stacked',
-        children: <span>Preview controls</span>,
-      };
-    case 'ComponentPreview':
-      return {
-        component: function UtilityPreviewCard() {
-          return (
-            <div>
-              <span
-                style={{
-                  ...hds.typeStyles.technical,
-                  color: 'var(--semantic-color-content-primary)',
-                }}
-              >
-                Preview target
-              </span>
-              <span
-                style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)' }}
-              >
-                Utility-hosted specimen rendered through the preview harness.
-              </span>
-            </div>
-          );
-        },
-      };
-    case 'Alert':
-      return {
-        variant: 'info',
-        title: 'Ready',
-        children: 'Use alerts for compact system status and editorial context.',
-      };
-    case 'Badge':
-      return {
-        tone: 'neutral',
-        children: 'Canvas',
-      };
-    case 'ControlsSection':
-      return {
-        title: 'Section title',
-        description: 'Preview description',
-        children: <span>Section controls</span>,
-      };
-    case 'AnimatedLabel':
-      return {
-        children: 'Explore docs',
-      };
-    case 'HdsSidebarUtilityButton':
-      return {
-        onClick: () => undefined,
-        icon: SlidersHorizontal,
-        label: 'Utility button',
-      };
-    case 'HdsMobileTopBar':
-      return {
-        onToggleSidebar: () => undefined,
-        sidebarOpen: false,
-        mobileTopbarHeight: 56,
-        directionToggleEnabled: false,
-        previewMode: true,
-        shellCopy: {
-          layoutDirection: 'Layout direction',
-          openNavigation: 'Open navigation',
-          closeNavigation: 'Close navigation',
-        },
-      };
-    case 'CinematicLink':
-      return {
-        href: '#',
-        children: 'Preview link',
-      };
-    case 'InfoPage':
-      return {
-        isDark: false,
-      };
-    case 'StepperField':
-      return {
-        label: 'Density',
-        value: 8,
-        min: 0,
-        max: 16,
-        step: 1,
-        onChange: () => undefined,
-      };
-    case 'Disclosure':
-      return {
-        label: 'What ships in the shell?',
-        children: (
-          <div>
-            <span
-              style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)' }}
-            >
-              Default disclosure content lives behind the trigger until the user opens it.
-            </span>
-          </div>
-        ),
-      };
-    case 'NavGroup':
-      return {
-        label: 'Hirobius Design System',
-        variant: 'side',
-        items: [
-          { path: '#overview', label: 'Overview' },
-          { path: '#components', label: 'Components' },
-        ],
-      };
-    case 'Stack':
-      return {
-        children: (
-          <div>
-            <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-primary)' }}>
-              Item A
-            </span>
-            <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-primary)' }}>
-              Item B
-            </span>
-          </div>
-        ),
-      };
-    case 'Divider':
-      return {};
-    case 'Button':
-      return {
-        children: 'Save changes',
-      };
-    case 'DocLinkCard':
-      return {
-        title: 'Microsoft Design Systems',
-        description: 'Production-system case study entry with richer summary copy and metadata.',
-        href: '/portfolio/microsoft-design-systems',
-        icon: GitBranch,
-        meta: 'Primary case study',
-        variant: 'feature',
-      };
-    case 'HistoryCard':
-      return {
-        commit: {
-          hash: '8ac256d',
-          date: '2026-04-21T20:04:16.285Z',
-          message: 'sync',
-          displayMessage: 'Generated data refresh',
-        },
-        href: 'https://github.com/hirobius/adrian-milsap/commit/8ac256d',
-      };
-    case 'IconButton':
-      return {
-        icon: Sparkle,
-        'aria-label': 'Preview icon button',
-      };
-    case 'Input':
-      return {
-        label: 'Search tokens',
-      };
-    case 'NavItem':
-      return {
-        variant: 'side',
-        label: 'Color',
-        href: '/color',
-        active: false,
-        indent: 'root',
-      };
-    case 'InlineLink':
-      return {
-        href: '/color',
-        children: 'Color',
-      };
-    case 'InlineCode':
-      return {
-        children: 'semantic.color.content.primary',
-      };
-    case 'CodeBlock':
-      return {
-        variant: 'block',
-        filename: 'tokens.ts',
-        language: 'typescript',
-        code: `import hds from '../design-system/tokens';\n\nconst heading = {\n  ...hds.typeStyles.heading1,\n  color: 'var(--semantic-color-content-primary)',\n};`,
-      };
-    case 'Icon':
-      return {
-        icon: Sparkle,
-        size: 'small',
-        color: 'currentColor',
-      };
-    case 'HdsSlider':
-      return {
-        label: 'Particle count',
-        min: 0,
-        max: 100,
-        value: 50,
-        onChange: () => undefined,
-      };
-    case 'HdsRadio':
-      return {
-        label: 'Grid view',
-        checked: false,
-        onChange: () => undefined,
-      };
-    case 'HdsToggle':
-      return {
-        label: 'Cursor awareness',
-        checked: false,
-        onChange: () => undefined,
-      };
-    case 'SegmentedControl':
-      return {
-        label: 'Force mode',
-        value: 'attract',
-        onChange: () => undefined,
-        options: [
-          { value: 'attract', label: 'Attract' },
-          { value: 'repel', label: 'Repel' },
-          { value: 'flow', label: 'Flow' },
-        ],
-      };
-    case 'HdsSelect':
-      return {
-        label: 'Color mode',
-        value: 'brand',
-        onChange: () => undefined,
-        options: [
-          { value: 'brand', label: 'Brand' },
-          { value: 'neutral', label: 'Neutral' },
-        ],
-      };
-    case 'Tag':
-      return {
-        children: 'Tag',
-      };
-    case 'MobiusLogo':
-      return {
-        allowGrab: false,
-        style: { width: '240px', height: '240px' },
-      };
-    case 'AssetImg':
-      return {
-        src: sampleAssetSrc,
-        alt: 'Preview asset',
-        context: 'default',
-        expandable: false,
-      };
-    case 'TokenList':
-    case 'LegacyTokenList':
-      return {
-        tokens: allTokens.slice(0, 6),
-        selectedPath: sampleToken?.path ?? null,
-        onSelect: () => undefined,
-      };
-    case 'TokenDetail':
-    case 'LegacyTokenDetail':
-      return {
-        token: sampleToken,
-        isDark: false,
-        onSelectToken: () => undefined,
-      };
-    case 'HdsLegacyTokenGovernancePanel':
-      return {
-        token: sampleToken,
-        isDark: false,
-      };
-    case 'TokenCollectionList':
-      return {
-        sections: sampleTokenSections,
-        selectedPath: sampleToken?.path ?? null,
-        onSelect: () => undefined,
-      };
-    case 'Token':
-      return {
-        variant: 'node',
-        children: sampleToken?.path ?? 'primitive.color.blue.500',
-        pathDisplayMode: 'compressed',
-        pathDisplayDepth: 1,
-      };
-    case 'TextLockup':
-      return {
-        eyebrow: 'Display',
-        title: 'Governed text pairing',
-        description:
-          'Title, supporting copy, and optional eyebrow flow through one reusable layout primitive.',
-        size: 'section',
-        align: 'left',
-      };
-    case 'HdsComponentDoc':
-      return {
-        componentName: 'Button',
-        layout: 'utility',
-        description:
-          'The shared storefront shell used to render title, description, preview, tokens, props, and usage notes from generated data.',
-      };
-    case 'SpecimenBlock':
-      return {
-        componentName: 'Button',
-      };
-    case 'VariantPreviewDeck':
-      return {
-        componentName: 'Button',
-      };
-    case 'PreviewFrame':
-      return {
-        label: 'Preview',
-        children: (
-          <div>
-            <span
-              style={{
-                ...hds.typeStyles.technical,
-                color: 'var(--semantic-color-content-primary)',
-              }}
-            >
-              Preview content
-            </span>
-            <span
-              style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)' }}
-            >
-              Shared preview chrome for storefront specimens.
-            </span>
-          </div>
-        ),
-      };
-    case 'Table':
-      return {
-        caption: 'Utility slot specimen',
-        description: 'A compact slice of the shared table grammar.',
-        columns: [
-          { key: 'slot', label: 'Slot', width: '22%' },
-          { key: 'example', label: 'Example', width: '28%' },
-          { key: 'notes', label: 'Notes', width: '50%' },
-        ],
-        rows: [
-          {
-            key: 'label',
-            cells: [
-              { slot: 'label', content: 'label' },
-              { slot: 'label', content: 'Section label' },
-              { slot: 'description', content: 'Descriptive cells for lightweight text content.' },
-            ],
-          },
-          {
-            key: 'code',
-            cells: [
-              { slot: 'label', content: 'code' },
-              { slot: 'code', content: 'var(--semantic-color-content-primary)' },
-              { slot: 'description', content: 'Technical values stay monospace and compact.' },
-            ],
-          },
-          {
-            key: 'action',
-            cells: [
-              { slot: 'label', content: 'action' },
-              {
-                slot: 'action',
-                content: (
-                  <div style={{ display: 'flex', gap: hds.space.px8 }}>
-                    <Button size="sm">Copy</Button>
-                    <Button variant="secondary" size="sm">
-                      Open
-                    </Button>
-                  </div>
-                ),
-              },
-              {
-                slot: 'description',
-                content:
-                  'Action cells can host grouped controls without leaving the shared table grammar.',
-              },
-            ],
-          },
-        ],
-      };
-    case 'ComponentInstanceMatrix':
-      return {
-        componentName: 'Button',
-        dimensionX: 'variant',
-        dimensionY: 'size',
-        title: 'Button matrix',
-        isMobile: false,
-        rowLabelWidth: 88,
-        renderInstance: (rowKey, columnKey) => (
-          <Button
-            variant={rowKey as 'primary' | 'secondary' | 'tertiary'}
-            size={columnKey as 'sm' | 'md' | 'lg'}
+const DEFAULT_PREVIEW_PROPS_FALLBACK: Record<string, unknown> = {};
+
+const DEFAULT_PREVIEW_PROPS: Record<string, Record<string, unknown>> = {
+  ControlsPanel: {
+    title: 'Controls',
+    placement: 'stacked',
+    children: <span>Preview controls</span>,
+  },
+  ComponentPreview: {
+    component: function UtilityPreviewCard() {
+      return (
+        <div>
+          <span
+            style={{
+              ...hds.typeStyles.technical,
+              color: 'var(--semantic-color-content-primary)',
+            }}
           >
-            {rowKey} / {columnKey}
-          </Button>
-        ),
-      };
-    case 'FoundationSwatch':
-      return {
-        label: 'blue.500',
-        tokenPath: 'primitive.color.blue.500',
-        previewPosition: 'top-left',
-        // tier-ok: foundation swatch preview intentionally displays primitive source values for token education.
-        value: 'var(--primitive-color-blue-500)',
-        // tier-ok: foundation swatch preview intentionally displays primitive source values for token education.
-        background: 'var(--primitive-color-blue-500)',
-        // tier-ok: foundation swatch preview intentionally displays primitive source values for token education.
-        foreground: 'var(--semantic-color-content-onAccent)',
-      };
-    default:
-      return {};
-  }
+            Preview target
+          </span>
+          <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)' }}>
+            Utility-hosted specimen rendered through the preview harness.
+          </span>
+        </div>
+      );
+    },
+  },
+  Alert: {
+    variant: 'info',
+    title: 'Ready',
+    children: 'Use alerts for compact system status and editorial context.',
+  },
+  Badge: {
+    tone: 'neutral',
+    children: 'Canvas',
+  },
+  ControlsSection: {
+    title: 'Section title',
+    description: 'Preview description',
+    children: <span>Section controls</span>,
+  },
+  AnimatedLabel: {
+    children: 'Explore docs',
+  },
+  HdsSidebarUtilityButton: {
+    onClick: () => undefined,
+    icon: SlidersHorizontal,
+    label: 'Utility button',
+  },
+  HdsMobileTopBar: {
+    onToggleSidebar: () => undefined,
+    sidebarOpen: false,
+    mobileTopbarHeight: 56,
+    directionToggleEnabled: false,
+    previewMode: true,
+    shellCopy: {
+      layoutDirection: 'Layout direction',
+      openNavigation: 'Open navigation',
+      closeNavigation: 'Close navigation',
+    },
+  },
+  CinematicLink: {
+    href: '#',
+    children: 'Preview link',
+  },
+  InfoPage: {
+    isDark: false,
+  },
+  StepperField: {
+    label: 'Density',
+    value: 8,
+    min: 0,
+    max: 16,
+    step: 1,
+    onChange: () => undefined,
+  },
+  Disclosure: {
+    label: 'What ships in the shell?',
+    children: (
+      <div>
+        <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)' }}>
+          Default disclosure content lives behind the trigger until the user opens it.
+        </span>
+      </div>
+    ),
+  },
+  NavGroup: {
+    label: 'Hirobius Design System',
+    variant: 'side',
+    items: [
+      { path: '#overview', label: 'Overview' },
+      { path: '#components', label: 'Components' },
+    ],
+  },
+  Stack: {
+    children: (
+      <div>
+        <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-primary)' }}>
+          Item A
+        </span>
+        <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-primary)' }}>
+          Item B
+        </span>
+      </div>
+    ),
+  },
+  Divider: {},
+  Button: {
+    children: 'Save changes',
+  },
+  DocLinkCard: {
+    title: 'Microsoft Design Systems',
+    description: 'Production-system case study entry with richer summary copy and metadata.',
+    href: '/portfolio/microsoft-design-systems',
+    icon: GitBranch,
+    meta: 'Primary case study',
+    variant: 'feature',
+  },
+  HistoryCard: {
+    commit: {
+      hash: '8ac256d',
+      date: '2026-04-21T20:04:16.285Z',
+      message: 'sync',
+      displayMessage: 'Generated data refresh',
+    },
+    href: 'https://github.com/hirobius/adrian-milsap/commit/8ac256d',
+  },
+  IconButton: {
+    icon: Sparkle,
+    'aria-label': 'Preview icon button',
+  },
+  Input: {
+    label: 'Search tokens',
+  },
+  NavItem: {
+    variant: 'side',
+    label: 'Color',
+    href: '/color',
+    active: false,
+    indent: 'root',
+  },
+  InlineLink: {
+    href: '/color',
+    children: 'Color',
+  },
+  InlineCode: {
+    children: 'semantic.color.content.primary',
+  },
+  CodeBlock: {
+    variant: 'block',
+    filename: 'tokens.ts',
+    language: 'typescript',
+    code: `import hds from '../design-system/tokens';\n\nconst heading = {\n  ...hds.typeStyles.heading1,\n  color: 'var(--semantic-color-content-primary)',\n};`,
+  },
+  Icon: {
+    icon: Sparkle,
+    size: 'small',
+    color: 'currentColor',
+  },
+  HdsSlider: {
+    label: 'Particle count',
+    min: 0,
+    max: 100,
+    value: 50,
+    onChange: () => undefined,
+  },
+  HdsRadio: {
+    label: 'Grid view',
+    checked: false,
+    onChange: () => undefined,
+  },
+  HdsToggle: {
+    label: 'Cursor awareness',
+    checked: false,
+    onChange: () => undefined,
+  },
+  SegmentedControl: {
+    label: 'Force mode',
+    value: 'attract',
+    onChange: () => undefined,
+    options: [
+      { value: 'attract', label: 'Attract' },
+      { value: 'repel', label: 'Repel' },
+      { value: 'flow', label: 'Flow' },
+    ],
+  },
+  HdsSelect: {
+    label: 'Color mode',
+    value: 'brand',
+    onChange: () => undefined,
+    options: [
+      { value: 'brand', label: 'Brand' },
+      { value: 'neutral', label: 'Neutral' },
+    ],
+  },
+  Tag: {
+    children: 'Tag',
+  },
+  MobiusLogo: {
+    allowGrab: false,
+    style: { width: '240px', height: '240px' },
+  },
+  AssetImg: {
+    src: sampleAssetSrc,
+    alt: 'Preview asset',
+    context: 'default',
+    expandable: false,
+  },
+  // TokenList and LegacyTokenList share the same value (former fall-through cases)
+  TokenList: {
+    tokens: allTokens.slice(0, 6),
+    selectedPath: sampleToken?.path ?? null,
+    onSelect: () => undefined,
+  },
+  LegacyTokenList: {
+    tokens: allTokens.slice(0, 6),
+    selectedPath: sampleToken?.path ?? null,
+    onSelect: () => undefined,
+  },
+  // TokenDetail and LegacyTokenDetail share the same value (former fall-through cases)
+  TokenDetail: {
+    token: sampleToken,
+    isDark: false,
+    onSelectToken: () => undefined,
+  },
+  LegacyTokenDetail: {
+    token: sampleToken,
+    isDark: false,
+    onSelectToken: () => undefined,
+  },
+  HdsLegacyTokenGovernancePanel: {
+    token: sampleToken,
+    isDark: false,
+  },
+  TokenCollectionList: {
+    sections: sampleTokenSections,
+    selectedPath: sampleToken?.path ?? null,
+    onSelect: () => undefined,
+  },
+  Token: {
+    variant: 'node',
+    children: sampleToken?.path ?? 'primitive.color.blue.500',
+    pathDisplayMode: 'compressed',
+    pathDisplayDepth: 1,
+  },
+  TextLockup: {
+    eyebrow: 'Display',
+    title: 'Governed text pairing',
+    description:
+      'Title, supporting copy, and optional eyebrow flow through one reusable layout primitive.',
+    size: 'section',
+    align: 'left',
+  },
+  HdsComponentDoc: {
+    componentName: 'Button',
+    layout: 'utility',
+    description:
+      'The shared storefront shell used to render title, description, preview, tokens, props, and usage notes from generated data.',
+  },
+  SpecimenBlock: {
+    componentName: 'Button',
+  },
+  VariantPreviewDeck: {
+    componentName: 'Button',
+  },
+  PreviewFrame: {
+    label: 'Preview',
+    children: (
+      <div>
+        <span
+          style={{
+            ...hds.typeStyles.technical,
+            color: 'var(--semantic-color-content-primary)',
+          }}
+        >
+          Preview content
+        </span>
+        <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)' }}>
+          Shared preview chrome for storefront specimens.
+        </span>
+      </div>
+    ),
+  },
+  Table: {
+    caption: 'Utility slot specimen',
+    description: 'A compact slice of the shared table grammar.',
+    columns: [
+      { key: 'slot', label: 'Slot', width: '22%' },
+      { key: 'example', label: 'Example', width: '28%' },
+      { key: 'notes', label: 'Notes', width: '50%' },
+    ],
+    rows: [
+      {
+        key: 'label',
+        cells: [
+          { slot: 'label', content: 'label' },
+          { slot: 'label', content: 'Section label' },
+          { slot: 'description', content: 'Descriptive cells for lightweight text content.' },
+        ],
+      },
+      {
+        key: 'code',
+        cells: [
+          { slot: 'label', content: 'code' },
+          { slot: 'code', content: 'var(--semantic-color-content-primary)' },
+          { slot: 'description', content: 'Technical values stay monospace and compact.' },
+        ],
+      },
+      {
+        key: 'action',
+        cells: [
+          { slot: 'label', content: 'action' },
+          {
+            slot: 'action',
+            content: (
+              <div style={{ display: 'flex', gap: hds.space.px8 }}>
+                <Button size="sm">Copy</Button>
+                <Button variant="secondary" size="sm">
+                  Open
+                </Button>
+              </div>
+            ),
+          },
+          {
+            slot: 'description',
+            content:
+              'Action cells can host grouped controls without leaving the shared table grammar.',
+          },
+        ],
+      },
+    ],
+  },
+  ComponentInstanceMatrix: {
+    componentName: 'Button',
+    dimensionX: 'variant',
+    dimensionY: 'size',
+    title: 'Button matrix',
+    isMobile: false,
+    rowLabelWidth: 88,
+    renderInstance: (rowKey: string, columnKey: string) => (
+      <Button
+        variant={rowKey as 'primary' | 'secondary' | 'tertiary'}
+        size={columnKey as 'sm' | 'md' | 'lg'}
+      >
+        {rowKey} / {columnKey}
+      </Button>
+    ),
+  },
+  FoundationSwatch: {
+    label: 'blue.500',
+    tokenPath: 'primitive.color.blue.500',
+    previewPosition: 'top-left',
+    // tier-ok: foundation swatch preview intentionally displays primitive source values for token education.
+    value: 'var(--primitive-color-blue-500)',
+    // tier-ok: foundation swatch preview intentionally displays primitive source values for token education.
+    background: 'var(--primitive-color-blue-500)',
+    // tier-ok: foundation swatch preview intentionally displays primitive source values for token education.
+    foreground: 'var(--semantic-color-content-onAccent)',
+  },
+};
+
+function getDefaultPreviewProps(componentName: string) {
+  return DEFAULT_PREVIEW_PROPS[componentName] ?? DEFAULT_PREVIEW_PROPS_FALLBACK;
 }
 
 export function AutoPreviewSpecimen({
