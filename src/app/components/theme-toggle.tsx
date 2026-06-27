@@ -40,8 +40,8 @@
 
 import * as React from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { cn } from '../../lib/utils';
-import { useDropdown } from '../hooks/useDropdown';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -176,12 +176,6 @@ export interface ThemeToggleProps {
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const [mode, setMode] = React.useState<ThemeMode>(() => readStoredMode());
-  const triggerRef = React.useRef<HTMLButtonElement | null>(null);
-  // Dropdown owns open-state + dismissal; Escape restores focus to the trigger
-  // (this menu's items are real tab-order buttons). (ADR-015 scope.)
-  const { open, setOpen, toggle, containerRef } = useDropdown<HTMLDivElement>({
-    restoreFocusRef: triggerRef,
-  });
 
   // Apply the resolved theme on mount + whenever `mode` changes. When mode is
   // 'system', also subscribe to OS preference changes so the surface flips
@@ -204,94 +198,82 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     };
   }, [mode]);
 
-  const onSelect = (next: ThemeMode) => {
-    setMode(next);
-    setOpen(false);
-    triggerRef.current?.focus();
-  };
-
   return (
     // MotionConfig reducedMotion="user" defers to the OS prefers-reduced-motion setting.
     <MotionConfig reducedMotion="user">
-      <div ref={containerRef} className="relative inline-flex">
-        <button
-          ref={triggerRef}
-          type="button"
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-label={`Theme: ${MODE_META[mode].label}`}
-          data-hds-component="ThemeToggle"
-          data-mode={mode}
-          onClick={toggle}
-          className={cn(
-            'relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-md',
-            'border border-border bg-muted text-muted-foreground',
-            'hover:bg-accent hover:text-foreground',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-            'transition-colors',
-            className,
-          )}
-        >
-          {/* AnimatePresence swaps icons with a scale+fade on mode change */}
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={mode}
-              initial={{ opacity: 0, scale: 0.6, rotate: -15 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0.6, rotate: 15 }}
-              transition={{ duration: 0.15, ease: 'easeInOut' }}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              {React.createElement(MODE_META[mode].Icon)}
-            </motion.span>
-          </AnimatePresence>
-        </button>
+      {/* Radix DropdownMenu owns the menu a11y contract: menuitemradio roles +
+          aria-checked, roving focus, arrow keys, typeahead, Escape, outside-click,
+          and focus restore to the trigger. The trigger's icon-swap animation is
+          independent of menu open state and is retained. */}
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <button
+            type="button"
+            aria-label={`Theme: ${MODE_META[mode].label}`}
+            data-hds-component="ThemeToggle"
+            data-mode={mode}
+            className={cn(
+              'relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-md',
+              'border border-border bg-muted text-muted-foreground',
+              'hover:bg-accent hover:text-foreground',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'transition-colors',
+              className,
+            )}
+          >
+            {/* AnimatePresence swaps icons with a scale+fade on mode change */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={mode}
+                initial={{ opacity: 0, scale: 0.6, rotate: -15 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.6, rotate: 15 }}
+                transition={{ duration: 0.15, ease: 'easeInOut' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                {React.createElement(MODE_META[mode].Icon)}
+              </motion.span>
+            </AnimatePresence>
+          </button>
+        </DropdownMenu.Trigger>
 
-        <AnimatePresence>
-          {open ? (
-            <motion.div
-              role="menu"
-              aria-label="Theme"
-              initial={{ opacity: 0, y: -4, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -4, scale: 0.97 }}
-              transition={{ duration: 0.12, ease: 'easeOut' }}
-              className={cn(
-                'absolute right-0 top-full z-40 mt-1 min-w-32',
-                'rounded-md border border-border bg-popover p-1 text-popover-foreground',
-                'shadow-md',
-              )}
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            align="end"
+            sideOffset={4}
+            aria-label="Theme"
+            className={cn(
+              'z-50 min-w-32 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
+            )}
+          >
+            <DropdownMenu.RadioGroup
+              value={mode}
+              onValueChange={(next) => setMode(next as ThemeMode)}
             >
               {VALID_MODES.map((option) => {
                 const { label, Icon } = MODE_META[option];
-                const selected = option === mode;
                 return (
-                  <button
+                  <DropdownMenu.RadioItem
                     key={option}
-                    role="menuitemradio"
-                    aria-checked={selected}
-                    onClick={() => onSelect(option)}
+                    value={option}
                     className={cn(
-                      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm',
-                      'text-muted-foreground hover:bg-accent hover:text-foreground',
-                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                      selected && 'bg-accent text-foreground',
+                      'hds-focus relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
+                      'text-muted-foreground data-[highlighted]:bg-accent data-[highlighted]:text-foreground',
+                      'data-[state=checked]:text-foreground',
                     )}
                   >
                     <Icon />
                     <span className="flex-1">{label}</span>
-                    {selected ? (
-                      <span aria-hidden="true" className="text-xs">
-                        ✓
-                      </span>
-                    ) : null}
-                  </button>
+                    <DropdownMenu.ItemIndicator aria-hidden="true" className="text-xs">
+                      ✓
+                    </DropdownMenu.ItemIndicator>
+                  </DropdownMenu.RadioItem>
                 );
               })}
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </div>
+            </DropdownMenu.RadioGroup>
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
     </MotionConfig>
   );
 }
