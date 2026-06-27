@@ -55,7 +55,6 @@
     "FoundationSwatch",
     "Grid",
     "HdsRadio",
-    "HdsSelect",
     "HdsSlider",
     "HdsToggle",
     "HeadingStack",
@@ -496,6 +495,10 @@
       {
         "name": "HdsLegacyTokenGovernancePanel",
         "filePath": "src/app/components/lab/legacy-token-detail.tsx"
+      },
+      {
+        "name": "HdsSelect",
+        "filePath": "src/app/components/select.tsx"
       }
     ],
     "namespaceViolations": [
@@ -2008,7 +2011,6 @@
         "src/app/components/code-block.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/doc-sections.tsx",
@@ -2019,6 +2021,7 @@
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/components/lab/token-detail.tsx",
         "src/app/components/lab/tokenUtils.ts",
+        "src/app/components/select.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/theme-toggle.tsx",
@@ -3785,7 +3788,6 @@
         "src/app/components/component-preview.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/controls-panel.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-page-header.tsx",
@@ -3802,6 +3804,7 @@
         "src/app/components/shell-controls.tsx",
         "src/app/components/sketch-controls.tsx",
         "src/app/components/sketch.tsx",
+        "src/app/components/slider.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
@@ -5924,8 +5927,8 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
-      "filePath": "src/app/components/controls.tsx",
-      "description": "Controls — shared input/control primitives.",
+      "filePath": "src/app/components/radio.tsx",
+      "description": "HdsRadio — radio button with animated selection indicator.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -5934,6 +5937,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/controls.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts"
@@ -5975,11 +5979,11 @@
       "figmaLink": "TODO:hds-master:HdsRadio"
     },
     "HdsSelect": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
+      "category": "Uncategorized",
+      "categorySource": "missing-jsdoc",
+      "governedCategory": false,
       "hidden": false,
-      "filePath": "src/app/components/controls.tsx",
+      "filePath": "src/app/components/select.tsx",
       "description": "Controls — shared input/control primitives.",
       "figmaUrl": null,
       "figmaId": null,
@@ -5989,6 +5993,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/controls.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {
@@ -6034,8 +6039,8 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
-      "filePath": "src/app/components/controls.tsx",
-      "description": "Controls — shared input/control primitives.",
+      "filePath": "src/app/components/slider.tsx",
+      "description": "HdsSlider — range slider with label and value display.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -6044,6 +6049,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/controls.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {
@@ -6090,8 +6096,8 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
-      "filePath": "src/app/components/controls.tsx",
-      "description": "Controls — shared input/control primitives.",
+      "filePath": "src/app/components/toggle.tsx",
+      "description": "HdsToggle — boolean on/off toggle with animated thumb.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -6100,6 +6106,8 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/controls.tsx",
+        "src/app/components/radio.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts"

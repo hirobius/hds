@@ -14,8 +14,8 @@
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
 | `src/app/components/CascadeText.tsx` | 29 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/ComponentDocPage.tsx` | 199 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/ComponentDocPage.tsx` | 229 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/ComponentDocPage.tsx` | 234 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/ComponentDocPage.tsx` | 336 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/alert.tsx` | 22 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/animated-label.tsx` | 54 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; no Tailwind utility covers multi-prop animation` | justified |
 | `src/app/components/asset-img.tsx` | 96 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
