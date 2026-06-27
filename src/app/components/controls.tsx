@@ -4,7 +4,7 @@
  * @tier primitive
  */
 
-import { useState, forwardRef, useEffect, useRef } from 'react';
+import { useState, forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import type { Variants } from 'motion/react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -12,6 +12,7 @@ import { ChevronDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import { useDropdown } from '../hooks/useDropdown';
 import { Icon } from './icon';
 import { Surface } from './surface';
 
@@ -432,40 +433,15 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
   { label, showLabel = true, options, value, onChange },
   ref,
 ) {
-  const [open, setOpen] = useState(false);
   const [hov, setHov] = useState(false);
   const [focusIdx, setFocusIdx] = useState(-1);
-  const containerRef = useRef<HTMLDivElement>(null);
+  // Dropdown owns open-state + dismissal (outside-click + Escape). The roving
+  // highlight (focusIdx) stays here; onClose clears it on dismissal. (ADR-015 scope.)
+  const { open, setOpen, toggle, containerRef } = useDropdown<HTMLDivElement>({
+    onClose: () => setFocusIdx(-1),
+  });
 
   const selected = options.find((o) => o.value === value) ?? options[0];
-
-  // Close on outside click
-  useEffect(() => {
-    if (!open) return;
-    function handleOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setFocusIdx(-1);
-      }
-    }
-    document.addEventListener('mousedown', handleOutside);
-    return () => document.removeEventListener('mousedown', handleOutside);
-  }, [open]);
-
-  // Close on Escape regardless of where focus sits (parity with ThemeToggle's
-  // dropdown). The trigger's onKeyDown only catches Escape while the trigger is
-  // focused; this document-level listener guarantees dismissal in all cases.
-  useEffect(() => {
-    if (!open) return;
-    function handleEscape(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        setOpen(false);
-        setFocusIdx(-1);
-      }
-    }
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [open]);
 
   // Keyboard navigation
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -477,11 +453,8 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
       }
       return;
     }
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      setOpen(false);
-      setFocusIdx(-1);
-    }
+    // Escape is owned by useDropdown's document listener (fires regardless of
+    // focus position); no local handler needed here.
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setFocusIdx((i) => Math.min(i + 1, options.length - 1));
@@ -540,7 +513,7 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
         aria-expanded={open}
         aria-label={showLabel && label ? `${label}: ${selected.label}` : selected.label}
         onClick={() => {
-          setOpen((o) => !o);
+          toggle();
           setFocusIdx(-1);
         }}
         onMouseEnter={() => setHov(true)}

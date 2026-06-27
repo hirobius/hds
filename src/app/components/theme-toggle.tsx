@@ -41,6 +41,7 @@
 import * as React from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { cn } from '../../lib/utils';
+import { useDropdown } from '../hooks/useDropdown';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -68,9 +69,7 @@ function readStoredMode(): ThemeMode {
 
 function readSystemPreference(): ResolvedTheme {
   if (typeof window === 'undefined' || !window.matchMedia) return 'dark';
-  return window.matchMedia('(prefers-color-scheme: light)').matches
-    ? 'light'
-    : 'dark';
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
 
 function resolveTheme(mode: ThemeMode): ResolvedTheme {
@@ -159,10 +158,13 @@ function MonitorIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-const MODE_META: Record<ThemeMode, { label: string; Icon: React.FC<React.SVGProps<SVGSVGElement>> }> = {
+const MODE_META: Record<
+  ThemeMode,
+  { label: string; Icon: React.FC<React.SVGProps<SVGSVGElement>> }
+> = {
   system: { label: 'System', Icon: MonitorIcon },
-  light:  { label: 'Light',  Icon: SunIcon },
-  dark:   { label: 'Dark',   Icon: MoonIcon },
+  light: { label: 'Light', Icon: SunIcon },
+  dark: { label: 'Dark', Icon: MoonIcon },
 };
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -174,9 +176,12 @@ export interface ThemeToggleProps {
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const [mode, setMode] = React.useState<ThemeMode>(() => readStoredMode());
-  const [open, setOpen] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
   const triggerRef = React.useRef<HTMLButtonElement | null>(null);
+  // Dropdown owns open-state + dismissal; Escape restores focus to the trigger
+  // (this menu's items are real tab-order buttons). (ADR-015 scope.)
+  const { open, setOpen, toggle, containerRef } = useDropdown<HTMLDivElement>({
+    restoreFocusRef: triggerRef,
+  });
 
   // Apply the resolved theme on mount + whenever `mode` changes. When mode is
   // 'system', also subscribe to OS preference changes so the surface flips
@@ -199,27 +204,6 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     };
   }, [mode]);
 
-  // Close on outside click + Escape.
-  React.useEffect(() => {
-    if (!open) return;
-    const onPointer = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      if (!containerRef.current.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setOpen(false);
-        triggerRef.current?.focus();
-      }
-    };
-    document.addEventListener('mousedown', onPointer);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onPointer);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [open]);
-
   const onSelect = (next: ThemeMode) => {
     setMode(next);
     setOpen(false);
@@ -238,7 +222,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
           aria-label={`Theme: ${MODE_META[mode].label}`}
           data-hds-component="ThemeToggle"
           data-mode={mode}
-          onClick={() => setOpen((v) => !v)}
+          onClick={toggle}
           className={cn(
             'relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-md',
             'border border-border bg-muted text-muted-foreground',
