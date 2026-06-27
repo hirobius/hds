@@ -5,7 +5,7 @@
  */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation */
 
-import { useId, useState, type ReactNode } from 'react';
+import { useId, useRef, useState, type ReactNode } from 'react';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { Icon } from './icon';
@@ -122,6 +122,18 @@ export function CodeBlock({
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(defaultExpanded);
   const panelId = useId();
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  function handleToggle() {
+    const next = !expanded;
+    // Returning focus to the toggle when collapsing prevents focus from falling
+    // to <body> if the code <pre> (or copy button) inside the panel was focused.
+    if (!next && panelRef.current?.contains(document.activeElement)) {
+      toggleRef.current?.focus();
+    }
+    setExpanded(next);
+  }
 
   function handleCopy() {
     navigator.clipboard.writeText(code).then(() => {
@@ -132,10 +144,7 @@ export function CodeBlock({
 
   if (variant === 'inline') {
     return (
-      <div
-        className={className}
-        style={codeBlockStyles.inlineWrapper}
-      >
+      <div className={className} style={codeBlockStyles.inlineWrapper}>
         <code
           style={{
             ...hds.typeStyles.technical,
@@ -173,9 +182,7 @@ export function CodeBlock({
   // Block variant
   const headerEl =
     filename || language ? (
-      <div
-        style={codeBlockStyles.blockHeader}
-      >
+      <div style={codeBlockStyles.blockHeader}>
         <div
           style={{ display: 'flex', gap: hds.semantic.space.component.gap, alignItems: 'center' }}
         >
@@ -258,8 +265,9 @@ export function CodeBlock({
         }}
       >
         <button
+          ref={toggleRef}
           type="button"
-          onClick={() => setExpanded((v) => !v)}
+          onClick={handleToggle}
           aria-expanded={expanded}
           aria-controls={panelId}
           className="hds-focus"
@@ -290,6 +298,7 @@ export function CodeBlock({
         </button>
         {expanded && (
           <div
+            ref={panelRef}
             id={panelId}
             style={{
               borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
