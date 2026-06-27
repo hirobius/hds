@@ -5,6 +5,7 @@
  */
 import { forwardRef, useState } from 'react';
 import { motion } from 'motion/react';
+import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 
@@ -112,9 +113,20 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
             {label}
           </span>
         )}
-        <div
-          role="group"
+        <ToggleGroup.Root
+          type="single"
+          // Radix emits role="radio" + aria-checked on items (canonical
+          // mutually-exclusive semantics, upgrading the prior aria-pressed
+          // toggle-buttons); pair the container with role="radiogroup".
+          role="radiogroup"
           aria-label={resolvedAriaLabel}
+          value={value}
+          // Radix `single` allows deselect (empty value); a segmented control is
+          // always-one-selected, so ignore the empty case. Disabled freeze blocks change.
+          onValueChange={(next) => {
+            if (next && !isDisabled) onChange(next);
+          }}
+          disabled={isDisabled}
           style={{
             ...segmentedControlStyles.railBase,
             width: fullWidth ? '100%' : 'fit-content',
@@ -136,25 +148,19 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
             const showDisabled = isDisabled;
 
             return (
-              <div
+              <ToggleGroup.Item
+                asChild
                 key={option.value}
-                style={{
-                  display: 'flex',
-                  alignItems: 'stretch',
-                  flex: fullWidth ? '1 1 0' : '0 0 auto',
-                  minWidth: fullWidth ? 0 : isCompact ? 'max-content' : 'auto',
-                }}
+                value={option.value}
+                disabled={showDisabled}
               >
                 <motion.button
                   type="button"
-                  onClick={() => !showDisabled && onChange(option.value)}
                   onHoverStart={() => !demoState && setHoveredValue(option.value)}
                   onHoverEnd={() => !demoState && setHoveredValue(null)}
                   onFocus={() => !demoState && setFocusedValue(option.value)}
                   onBlur={() => !demoState && setFocusedValue(null)}
                   className="hds-focus"
-                  aria-pressed={active}
-                  disabled={showDisabled}
                   animate={
                     isSecondary
                       ? {
@@ -179,8 +185,12 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    // Flex sizing merged from the former per-segment wrapper div
+                    // (Item asChild renders the button directly into the rail flexbox).
+                    flex: fullWidth ? '1 1 0' : '0 0 auto',
                     gap: hds.semantic.space.subgrid.hairline,
                     minHeight: isCompact ? hds.size[32] : hds.size[48],
+                    minWidth: fullWidth ? 0 : isCompact ? 'max-content' : 'auto',
                     width: fullWidth ? '100%' : isCompact ? 'max-content' : '100%',
                     paddingTop: hds.semantic.space.subgrid.gap,
                     paddingBottom: hds.semantic.space.subgrid.gap,
@@ -278,10 +288,10 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
                     </span>
                   )}
                 </motion.button>
-              </div>
+              </ToggleGroup.Item>
             );
           })}
-        </div>
+        </ToggleGroup.Root>
       </div>
     );
   },
