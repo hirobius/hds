@@ -4,10 +4,10 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 55 | 55 | 0 |
-| @ts-ignore/@ts-expect-error | 1 | 1 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 125 | 123 | 2 |
-| **Total** | **181** | **179** | **2** |
+| eslint-disable | 49 | 49 | 0 |
+| @ts-ignore/@ts-expect-error | 0 | 0 | 0 |
+| custom-sentinels (*-ok / hds-bypass) | 126 | 124 | 2 |
+| **Total** | **175** | **173** | **2** |
 
 ## eslint-disable
 
@@ -29,18 +29,12 @@
 | `src/app/components/command-palette.tsx` | 158 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus` | justified |
 | `src/app/components/command-palette.tsx` | 179 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- dialog results scroll cap at 60% viewport height` | justified |
 | `src/app/components/command-palette.tsx` | 233 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- footer hint metadata size` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 491 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/componentPreviewRegistry.tsx` | 487 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/doc-page-header.tsx` | 272 | `eslint-disable-next-line` | `react-hooks/refs -- `ref` is a string prop (git branch), not a React ref` | justified |
 | `src/app/components/doc-toc.tsx` | 48 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/health-rail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/history-card.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/lab/legacy-token-detail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
-| `src/app/components/mobius-logo.tsx` | 166 | `eslint-disable*` | `react-hooks/refs -- intentional: ref stores one-time detected tier, value does not change after mount` | justified |
-| `src/app/components/mobius-logo.tsx` | 286 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/components/mobius-logo.tsx` | 450 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps -- isCoarsePointer read inside closure; adding it would restart event listeners on pointer mode change` | justified |
-| `src/app/components/mobius-scene.tsx` | 257 | `eslint-disable-line` | `react-hooks/exhaustive-deps -- initial values only; prop changes re-animate rather than re-mount` | justified |
-| `src/app/components/mobius-scene.tsx` | 261 | `eslint-disable-line` | `react-hooks/exhaustive-deps -- initial values only; prop changes re-animate rather than re-mount` | justified |
-| `src/app/components/mobius-scene.tsx` | 1123 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/morph-card.tsx` | 220 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps -- buildPath and render are stable arrow fns; adding them would re-mount observer on every render` | justified |
 | `src/app/components/morph-card.tsx` | 373 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps -- render is stable; re-running on render identity change is unnecessary` | justified |
 | `src/app/components/nav-group.tsx` | 68 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
@@ -51,9 +45,9 @@
 | `src/app/components/tile-grid.tsx` | 35 | `eslint-disable-next-line` | `no-restricted-syntax -- TileGrid IS the grid primitive; auto-fill template is its raison d'être` | justified |
 | `src/app/context/__tests__/context.test.tsx` | 18 | `eslint-disable-next-line` | `@typescript-eslint/no-explicit-any` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 415 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 861 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 894 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 400 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 846 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 879 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 182 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-tabindex` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 216 | `eslint-disable-next-line` | `@typescript-eslint/no-unused-vars` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 506 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
@@ -69,12 +63,6 @@
 | `src/app/pages/hds/components/IconGallery.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/stories/surface.stories.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 
-## @ts-ignore/@ts-expect-error
-
-| File | Line | Rule | Reason | Status |
-|------|------|------|--------|--------|
-| `src/app/components/mobius-scene.tsx` | 1031 | `@ts-expect-error` | `— dev/test telemetry hook` | justified |
-
 ## custom-sentinels (*-ok / hds-bypass)
 
 | File | Line | Rule | Reason | Status |
@@ -87,6 +75,7 @@
 | `src/app/components/disclosure.tsx` | 147 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
 | `src/app/components/doc-sections.tsx` | 593 | `audit-ok` | `interactive demo area — fixed visual height, not a spacing/layout token` | justified |
 | `src/app/components/foundation-swatch.tsx` | 158 | `hds-bypass` | `fixed specimen height keeps foundation swatches visually comparable across token demos` | justified |
+| `src/app/components/image-lightbox.tsx` | 105 | `audit-ok` | `Radix Dialog.Content container (tabIndex=-1, auto-focused on open). The dialog surface intentionally shows no focus ring; the visible focus affordance is the Close button (Button → hds-focus).` | justified |
 | `src/app/components/morph-card.tsx` | 434 | `audit-ok` | `SVG fill transition — no token maps to 0.35s; hds.motion.productive.duration(0.15) is too fast for a color fill sweep` | justified |
 | `src/app/components/nav-item.tsx` | 264 | `audit-ok` | `hds-focus applied via mergedClassName` | justified |
 | `src/app/components/nav-item.tsx` | 285 | `audit-ok` | `hds-focus applied via mergedClassName` | justified |
@@ -117,7 +106,7 @@
 | `src/app/pages/hds/ColorPage.tsx` | 187 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 188 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 189 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 1278 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 1251 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 50 | `hds-bypass` | `primitive documentation */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, DATA_TENANT, INLINE_STRUCTURAL_BORDER */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 86 | `audit-ok` | `brand palette demo content` | justified |
@@ -207,8 +196,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 181
-- **Justified (reason >= 10 chars):** 179
+- **Total suppressions:** 175
+- **Justified (reason >= 10 chars):** 173
 - **Untriaged (reason < 10 chars or missing):** 2
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.
