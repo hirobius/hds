@@ -3400,6 +3400,7 @@
         "sizing": "full"
       },
       "consumers": [
+        "src/app/components/api-reference.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/propTableUtils.tsx",

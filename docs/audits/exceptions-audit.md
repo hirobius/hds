@@ -29,7 +29,7 @@
 | `src/app/components/command-palette.tsx` | 158 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus` | justified |
 | `src/app/components/command-palette.tsx` | 179 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- dialog results scroll cap at 60% viewport height` | justified |
 | `src/app/components/command-palette.tsx` | 233 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- footer hint metadata size` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 531 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/componentPreviewRegistry.tsx` | 491 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/doc-page-header.tsx` | 272 | `eslint-disable-next-line` | `react-hooks/refs -- `ref` is a string prop (git branch), not a React ref` | justified |
 | `src/app/components/doc-toc.tsx` | 48 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/health-rail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
