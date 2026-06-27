@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router';
 import hds from '../design-system/tokens';
 import { useLanguage } from '../context/LanguageContext';
 import { useFrozenState } from '../context/DemoStateContext';
+import { useFocusVisible } from '../hooks/useFocusVisible';
 import { getNavLevelInset, type NavLevel } from '../lib/navLevels';
 
 const navItemStyles = {
@@ -69,19 +70,22 @@ const NAV_STATE_TOKENS = {
   },
 } as const;
 
-const NAV_VARIANT_LAYOUT: Record<NavVariant, {
-  typeStyle: CSSProperties;
-  leadingPaddingX: string;
-  trailingPaddingX: string;
-  paddingY: string;
-  width: (inset: string) => string;
-}> = {
+const NAV_VARIANT_LAYOUT: Record<
+  NavVariant,
+  {
+    typeStyle: CSSProperties;
+    leadingPaddingX: string;
+    trailingPaddingX: string;
+    paddingY: string;
+    width: (inset: string) => string;
+  }
+> = {
   side: {
     typeStyle: hds.typeStyles.ui,
     leadingPaddingX: hds.semantic.space.sidebar.railPadding,
     trailingPaddingX: 'var(--component-nav-paddingX)',
     paddingY: 'var(--component-nav-paddingY)',
-    width: inset => `calc(100% - ${inset})`,
+    width: (inset) => `calc(100% - ${inset})`,
   },
   toc: {
     typeStyle: hds.typeStyles.ui,
@@ -116,49 +120,52 @@ export function NavItem({
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
-  const [isFocusVisible, setIsFocusVisible] = useState(false);
+  // Modality-aware focus ring — shared seam with side-nav (ADR-015).
+  const { isFocusVisible, onFocus: onFocusVisible, clearFocusVisible } = useFocusVisible();
   const frozenState = useFrozenState();
   const effectiveDemoState = frozenState;
   const layout = NAV_VARIANT_LAYOUT[variant];
-  const normalizedDemoState: NavVisualState | undefined = effectiveDemoState === 'focused'
-    ? 'focus'
-    : effectiveDemoState as NavVisualState | undefined;
+  const normalizedDemoState: NavVisualState | undefined =
+    effectiveDemoState === 'focused' ? 'focus' : (effectiveDemoState as NavVisualState | undefined);
   const visualState: NavVisualState = disabled
     ? 'disabled'
     : active
       ? 'active'
-      : normalizedDemoState ?? (isPressed ? 'pressed' : isFocusVisible ? 'focus' : isHovered ? 'hover' : 'default');
+      : (normalizedDemoState ??
+        (isPressed ? 'pressed' : isFocusVisible ? 'focus' : isHovered ? 'hover' : 'default'));
 
   const showHover = visualState === 'hover';
   const showFocus = visualState === 'focus';
   const showPressed = visualState === 'pressed';
   const showActive = active || visualState === 'active';
-  const indicatorColor = visualState === 'disabled'
-    ? 'transparent'
-    : showActive || showPressed
-      ? NAV_STATE_TOKENS.indicator.active
-      : showHover
-        ? NAV_STATE_TOKENS.indicator.hover
-        : NAV_STATE_TOKENS.indicator.idle;
-  const backgroundColor = visualState === 'disabled'
-    ? NAV_STATE_TOKENS.background.disabled
-    : showActive
-      ? NAV_STATE_TOKENS.background.active
-      : showPressed
-        ? NAV_STATE_TOKENS.background.pressed
+  const indicatorColor =
+    visualState === 'disabled'
+      ? 'transparent'
+      : showActive || showPressed
+        ? NAV_STATE_TOKENS.indicator.active
         : showHover
-          ? NAV_STATE_TOKENS.background.hover
-          : NAV_STATE_TOKENS.background.idle;
-  const idleTextColor = variant === 'side'
-    ? 'var(--semantic-color-content-secondary)'
-    : NAV_STATE_TOKENS.text.idle;
-  const textColor = visualState === 'disabled'
-    ? NAV_STATE_TOKENS.text.disabled
-    : showActive || showPressed
-      ? NAV_STATE_TOKENS.text.active
-      : showHover
-        ? 'var(--semantic-color-content-primary)'
-      : idleTextColor;
+          ? NAV_STATE_TOKENS.indicator.hover
+          : NAV_STATE_TOKENS.indicator.idle;
+  const backgroundColor =
+    visualState === 'disabled'
+      ? NAV_STATE_TOKENS.background.disabled
+      : showActive
+        ? NAV_STATE_TOKENS.background.active
+        : showPressed
+          ? NAV_STATE_TOKENS.background.pressed
+          : showHover
+            ? NAV_STATE_TOKENS.background.hover
+            : NAV_STATE_TOKENS.background.idle;
+  const idleTextColor =
+    variant === 'side' ? 'var(--semantic-color-content-secondary)' : NAV_STATE_TOKENS.text.idle;
+  const textColor =
+    visualState === 'disabled'
+      ? NAV_STATE_TOKENS.text.disabled
+      : showActive || showPressed
+        ? NAV_STATE_TOKENS.text.active
+        : showHover
+          ? 'var(--semantic-color-content-primary)'
+          : idleTextColor;
   const inset = variant === 'side' ? getNavLevelInset(level) : '0px';
   const baseStyle: CSSProperties = {
     ...layout.typeStyle,
@@ -195,9 +202,7 @@ export function NavItem({
     'data-state': visualState === 'pressed' ? 'active' : visualState,
     'data-variant': variant,
     onFocus: (event: ReactFocusEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-      const target = event.currentTarget;
-      const modality = document.documentElement.dataset['inputModality'];
-      setIsFocusVisible(target.matches(':focus-visible') || modality === 'keyboard');
+      onFocusVisible(event.currentTarget);
       onFocus?.(event as ReactFocusEvent<HTMLAnchorElement>);
     },
     onMouseEnter: (event: ReactMouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
@@ -211,7 +216,7 @@ export function NavItem({
     },
     onPointerDown: (event: ReactPointerEvent<HTMLAnchorElement | HTMLButtonElement>) => {
       setIsPressed(true);
-      setIsFocusVisible(false);
+      clearFocusVisible();
       onPointerDown?.(event as ReactPointerEvent<HTMLAnchorElement>);
     },
     onPointerUp: (event: ReactPointerEvent<HTMLAnchorElement | HTMLButtonElement>) => {
@@ -223,7 +228,7 @@ export function NavItem({
       onPointerCancel?.(event as ReactPointerEvent<HTMLAnchorElement>);
     },
     onBlur: (event: ReactFocusEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-      setIsFocusVisible(false);
+      clearFocusVisible();
       setIsPressed(false);
       onBlur?.(event as ReactFocusEvent<HTMLAnchorElement>);
     },
@@ -235,7 +240,12 @@ export function NavItem({
         <div
           className="hds-nav-indicator"
           data-active={showActive ? 'true' : undefined}
-          style={{ ...navItemStyles.tocIndicatorBase, left: isRtl ? 'auto' : 0, right: isRtl ? 0 : 'auto', background: indicatorColor }}
+          style={{
+            ...navItemStyles.tocIndicatorBase,
+            left: isRtl ? 'auto' : 0,
+            right: isRtl ? 0 : 'auto',
+            background: indicatorColor,
+          }}
         />
       )}
       <span
@@ -258,7 +268,7 @@ export function NavItem({
         aria-disabled={disabled || undefined}
         {...(rest as unknown as ButtonHTMLAttributes<HTMLButtonElement>)}
         {...sharedProps}
-        onClick={event => {
+        onClick={(event) => {
           if (disabled) {
             event.preventDefault();
             return;
@@ -276,10 +286,12 @@ export function NavItem({
       className={mergedClassName}
       href={disabled ? undefined : href}
       aria-disabled={disabled || undefined}
-      aria-current={showActive ? rest['aria-current'] ?? (variant === 'toc' ? 'location' : 'page') : undefined}
+      aria-current={
+        showActive ? (rest['aria-current'] ?? (variant === 'toc' ? 'location' : 'page')) : undefined
+      }
       {...sharedProps}
       {...rest}
-      onClick={event => {
+      onClick={(event) => {
         if (disabled) {
           event.preventDefault();
           return;
@@ -288,7 +300,14 @@ export function NavItem({
         if (event.defaultPrevented) {
           return;
         }
-        if (isInternalHref && event.button === 0 && !event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
+        if (
+          isInternalHref &&
+          event.button === 0 &&
+          !event.metaKey &&
+          !event.altKey &&
+          !event.ctrlKey &&
+          !event.shiftKey
+        ) {
           event.preventDefault();
           navigate(href);
           return;
@@ -299,4 +318,3 @@ export function NavItem({
     </a>
   );
 }
-

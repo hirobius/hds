@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
+import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 import { Icon } from './icon';
 import { Surface } from './surface';
 
@@ -164,50 +165,23 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
   { label, checked, onChange, onFocus, onBlur, disabled, ...rest },
   ref,
 ) {
-  const [hovered, setHovered] = useState(false);
-  const [pressed, setPressed] = useState(false);
-  const [focused, setFocused] = useState(false);
   const frozenState = useFrozenState();
-  const effectiveDemoState = frozenState as HdsToggleDemoState | null;
-  // Read the actual `disabled` prop — not just the demo-state — so a genuinely
-  // disabled toggle renders (and behaves) disabled. Previously isDisabled only
-  // tracked the frozen demo state, so `disabled` styled/interacted as enabled.
-  const isDisabled = disabled === true || effectiveDemoState === 'disabled';
-  const visualState =
-    effectiveDemoState ??
-    (isDisabled
-      ? 'disabled'
-      : pressed
-        ? 'pressed'
-        : hovered
-          ? 'hover'
-          : focused
-            ? 'focused'
-            : 'rest');
-  const isHover = visualState === 'hover';
-  const isFocused = visualState === 'focused';
-  const isPressed = visualState === 'pressed';
+  // Shared single-element interaction machine (ADR-015). The hook honors the
+  // real `disabled` prop as well as the frozen demo state.
+  const { isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
+    disabled,
+    frozenState: frozenState as InteractionVisualState | null,
+  });
 
   return (
     <motion.label
       whileTap={isDisabled ? undefined : { scale: 0.99 }}
       transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
-      onMouseEnter={(_e) => {
-        setHovered(true);
-      }}
-      onMouseLeave={(_e) => {
-        setHovered(false);
-        setPressed(false);
-      }}
-      onPointerDown={(_e) => {
-        setPressed(true);
-      }}
-      onPointerUp={(_e) => {
-        setPressed(false);
-      }}
-      onPointerCancel={(_e) => {
-        setPressed(false);
-      }}
+      onMouseEnter={handlers.onMouseEnter}
+      onMouseLeave={handlers.onMouseLeave}
+      onPointerDown={handlers.onPointerDown}
+      onPointerUp={handlers.onPointerUp}
+      onPointerCancel={handlers.onPointerCancel}
       animate={{
         y: isPressed ? hds.space.px1 : 0,
       }}
@@ -250,12 +224,11 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
           disabled={isDisabled}
           onChange={(e) => onChange(e.target.checked)}
           onFocus={(e) => {
-            setFocused(true);
+            handlers.onFocus();
             onFocus?.(e);
           }}
           onBlur={(e) => {
-            setFocused(false);
-            setPressed(false);
+            handlers.onBlur();
             onBlur?.(e);
           }}
           className="hds-focus"
@@ -327,27 +300,12 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
   },
   ref,
 ) {
-  const [hovered, setHovered] = useState(false);
-  const [pressed, setPressed] = useState(false);
-  const [focused, setFocused] = useState(false);
   const frozenState = useFrozenState();
-  const demoState = frozenState as HdsRadioDemoState | null;
-
-  const visualState: HdsRadioDemoState =
-    demoState ??
-    (disabled
-      ? 'disabled'
-      : pressed
-        ? 'pressed'
-        : hovered
-          ? 'hover'
-          : focused
-            ? 'focused'
-            : 'rest');
-  const isDisabled = disabled || visualState === 'disabled';
-  const isHover = visualState === 'hover';
-  const isFocused = visualState === 'focused';
-  const isPressed = visualState === 'pressed';
+  // Shared single-element interaction machine (ADR-015), identical to HdsToggle.
+  const { isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
+    disabled,
+    frozenState: frozenState as InteractionVisualState | null,
+  });
 
   return (
     <motion.label
@@ -361,33 +319,31 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
         disabled={isDisabled}
         onChange={(e) => onChange(e.target.checked)}
         onMouseEnter={(e) => {
-          setHovered(true);
+          handlers.onMouseEnter();
           onMouseEnter?.(e);
         }}
         onMouseLeave={(e) => {
-          setHovered(false);
-          setPressed(false);
+          handlers.onMouseLeave();
           onMouseLeave?.(e);
         }}
         onPointerDown={(e) => {
-          setPressed(true);
+          handlers.onPointerDown();
           onPointerDown?.(e);
         }}
         onPointerUp={(e) => {
-          setPressed(false);
+          handlers.onPointerUp();
           onPointerUp?.(e);
         }}
         onPointerCancel={(e) => {
-          setPressed(false);
+          handlers.onPointerCancel();
           onPointerCancel?.(e);
         }}
         onFocus={(e) => {
-          setFocused(true);
+          handlers.onFocus();
           onFocus?.(e);
         }}
         onBlur={(e) => {
-          setFocused(false);
-          setPressed(false);
+          handlers.onBlur();
           onBlur?.(e);
         }}
         className="hds-focus"
