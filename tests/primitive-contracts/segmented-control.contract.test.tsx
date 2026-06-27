@@ -1,7 +1,8 @@
 /**
  * Contract test: SegmentedControl
- * Verifies that SegmentedControl renders the correct role, button count,
- * and aria-pressed state for the selected option.
+ * Verifies the radiogroup/radio semantics (Radix ToggleGroup, type="single"):
+ * role="radiogroup" container, role="radio" items, and aria-checked on the
+ * selected option. (Upgraded from the prior aria-pressed toggle-button model.)
  *
  * @primitive SegmentedControl
  * @unit 12p-test-contract-tests-primitives
@@ -32,39 +33,47 @@ describe('SegmentedControl contract', () => {
     expect(buttons).toHaveLength(OPTIONS.length);
   });
 
-  it('active option button has aria-pressed="true"', () => {
+  it('each option renders as role="radio"', () => {
+    const { container } = render(
+      <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} />,
+    );
+    const radios = container.querySelectorAll('[role="radio"]');
+    expect(radios).toHaveLength(OPTIONS.length);
+  });
+
+  it('active option has aria-checked="true"', () => {
     const { container } = render(
       <SegmentedControl options={OPTIONS} value="b" onChange={() => {}} />,
     );
     const buttons = container.querySelectorAll('button');
     const activeBtn = Array.from(buttons).find((b) => b.textContent?.includes('Option B'));
-    expect(activeBtn?.getAttribute('aria-pressed')).toBe('true');
+    expect(activeBtn?.getAttribute('aria-checked')).toBe('true');
   });
 
-  it('inactive option buttons have aria-pressed="false"', () => {
+  it('inactive options have aria-checked="false"', () => {
     const { container } = render(
       <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} />,
     );
     const buttons = container.querySelectorAll('button');
     const inactiveButtons = Array.from(buttons).filter((b) => !b.textContent?.includes('Option A'));
     inactiveButtons.forEach((btn) => {
-      expect(btn.getAttribute('aria-pressed')).toBe('false');
+      expect(btn.getAttribute('aria-checked')).toBe('false');
     });
   });
 
-  it('renders a group role container', () => {
+  it('renders a radiogroup role container', () => {
     const { container } = render(
       <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} aria-label="View mode" />,
     );
-    const group = container.querySelector('[role="group"]');
+    const group = container.querySelector('[role="radiogroup"]');
     expect(group).not.toBeNull();
   });
 
-  it('aria-label is applied to the group', () => {
+  it('aria-label is applied to the radiogroup', () => {
     const { container } = render(
       <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} aria-label="View mode" />,
     );
-    const group = container.querySelector('[role="group"]');
+    const group = container.querySelector('[role="radiogroup"]');
     expect(group?.getAttribute('aria-label')).toBe('View mode');
   });
 
