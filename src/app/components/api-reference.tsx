@@ -32,19 +32,11 @@ import type {
 } from '../data/manifest-types';
 import componentApiManifest from '../data/component-api.json';
 import hds from '../design-system/tokens';
+import { Table } from './table';
+import { PROP_TABLE_COLUMNS, buildPropTableRows, type ComponentPropRow } from './propTableUtils';
 
 const MANIFEST = systemManifestData as SystemManifest;
 const COMPONENT_API = componentApiManifest as ComponentApiManifest;
-
-// ── Row shape rendered by this component ──────────────────────────────────────
-
-type ApiRow = {
-  name: string;
-  type: string;
-  default: string;
-  description: string;
-  required: boolean;
-};
 
 // ── Derivation helpers ────────────────────────────────────────────────────────
 
@@ -68,7 +60,7 @@ function formatDefault(spec: ManifestPropSpec | undefined): string {
  * Required is sourced from componentSpec.requiredProps (canonical) with a
  * conservative fallback to !optional on the prop spec.
  */
-export function buildApiRowsFromManifest(componentName: string): ApiRow[] {
+export function buildApiRowsFromManifest(componentName: string): ComponentPropRow[] {
   const spec = MANIFEST.componentSpecs?.[componentName];
   if (!spec) return [];
 
@@ -85,7 +77,7 @@ export function buildApiRowsFromManifest(componentName: string): ApiRow[] {
 
   const propNames = new Set<string>([...Object.keys(props), ...Object.keys(constraints)]);
 
-  const rows: ApiRow[] = [];
+  const rows: ComponentPropRow[] = [];
   for (const name of propNames) {
     const propSpec = props[name];
     const constraintSpec = constraints[name];
@@ -119,35 +111,6 @@ export function buildApiRowsFromManifest(componentName: string): ApiRow[] {
 
 // ── Render ────────────────────────────────────────────────────────────────────
 
-const cellHeaderStyle: React.CSSProperties = {
-  ...hds.typeStyles.eyebrow,
-  color: 'var(--semantic-color-content-secondary)',
-  textAlign: 'left',
-  paddingTop: hds.semantic.space.subgrid.gap,
-  paddingBottom: hds.semantic.space.subgrid.gap,
-  paddingInlineEnd: hds.semantic.space.component.gap,
-  borderBottom: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-};
-
-const cellBodyStyle: React.CSSProperties = {
-  ...hds.typeStyles.ui,
-  color: 'var(--semantic-color-content-primary)',
-  textAlign: 'left',
-  paddingTop: hds.semantic.space.component.gap,
-  paddingBottom: hds.semantic.space.component.gap,
-  paddingInlineEnd: hds.semantic.space.component.gap,
-  borderBottom: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-  verticalAlign: 'top',
-};
-
-const codeCellStyle: React.CSSProperties = {
-  ...cellBodyStyle,
-  ...hds.typeStyles.technical,
-  whiteSpace: 'normal',
-  wordBreak: 'break-word',
-  color: 'var(--semantic-color-content-primary)',
-};
-
 const summaryStyle: React.CSSProperties = {
   ...hds.typeStyles.ui,
   color: 'var(--semantic-color-content-secondary)',
@@ -165,22 +128,10 @@ const detailsStyle: React.CSSProperties = {
   marginBlockStart: hds.semantic.space.section.stack,
 };
 
-const tableStyle: React.CSSProperties = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  marginBlockEnd: hds.semantic.space.component.gap,
-};
-
 const emptyNoteStyle: React.CSSProperties = {
   ...hds.typeStyles.ui,
   color: 'var(--semantic-color-content-secondary)',
   marginBlock: hds.semantic.space.component.gap,
-};
-
-const requiredBadgeStyle: React.CSSProperties = {
-  ...hds.typeStyles.caption,
-  color: 'var(--semantic-color-content-accent)',
-  marginInlineStart: hds.semantic.space.subgrid.xs,
 };
 
 const slotListStyle: React.CSSProperties = {
@@ -260,45 +211,9 @@ export function ApiReference({
       </summary>
 
       {rows.length > 0 ? (
-        <table id={propsTableId} style={tableStyle}>
-          <thead>
-            <tr>
-              <th style={cellHeaderStyle} scope="col">
-                Name
-              </th>
-              <th style={cellHeaderStyle} scope="col">
-                Type
-              </th>
-              <th style={cellHeaderStyle} scope="col">
-                Default
-              </th>
-              <th style={cellHeaderStyle} scope="col">
-                Description
-              </th>
-              <th style={cellHeaderStyle} scope="col">
-                Required
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.name}>
-                <td style={codeCellStyle}>
-                  {row.name}
-                  {row.required ? (
-                    <span style={requiredBadgeStyle} aria-hidden="true">
-                      *
-                    </span>
-                  ) : null}
-                </td>
-                <td style={codeCellStyle}>{row.type || '—'}</td>
-                <td style={codeCellStyle}>{row.default || '—'}</td>
-                <td style={cellBodyStyle}>{row.description || '—'}</td>
-                <td style={cellBodyStyle}>{row.required ? 'Yes' : 'No'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div id={propsTableId}>
+          <Table minWidth={640} columns={PROP_TABLE_COLUMNS} rows={buildPropTableRows(rows)} />
+        </div>
       ) : (
         <p style={emptyNoteStyle}>This component exposes no first-party props.</p>
       )}
