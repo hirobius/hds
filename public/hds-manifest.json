@@ -4603,6 +4603,8 @@
       },
       "consumers": [
         "src/app/components/command-palette.tsx",
+        "src/app/components/image-lightbox.test.tsx",
+        "src/app/components/image-lightbox.tsx",
         "src/app/hooks/useDropdown.ts",
         "src/stories/alert.stories.tsx",
         "src/stories/table.stories.tsx"
@@ -7059,7 +7061,9 @@
       "description": "",
       "figmaUrl": null,
       "figmaId": null,
-      "consumers": [],
+      "consumers": [
+        "src/app/components/image-lightbox.test.tsx"
+      ],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
