@@ -102,6 +102,7 @@ export function ImageLightbox({
                   position: 'fixed',
                   inset: 0,
                   zIndex: hds.zIndex.modal,
+                  // audit-ok: Radix Dialog.Content container (tabIndex=-1, auto-focused on open). The dialog surface intentionally shows no focus ring; the visible focus affordance is the Close button (Button → hds-focus).
                   outline: 'none',
                 }}
               >

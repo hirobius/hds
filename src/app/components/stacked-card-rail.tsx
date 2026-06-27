@@ -343,7 +343,7 @@ function CardItem({ card, index, total }: CardItemProps) {
       {card.href ? (
         <a
           href={card.href}
-          className="hds-scr-card-inner"
+          className="hds-focus hds-scr-card-inner"
           style={{
             display: 'flex',
             flexDirection: 'column',
