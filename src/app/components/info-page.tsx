@@ -1,7 +1,7 @@
 /**
  * @tier template
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import hds from '../design-system/tokens';
 import { DOC_LAYOUT_STICKY_OFFSET } from '../layouts/DocLayout';
 import { AssetImg } from './asset-img';
@@ -34,6 +34,7 @@ export interface InfoPageProps {
  */
 export function InfoPage({ isDark: _isDark }: InfoPageProps) {
   const [expanded, setExpanded] = useState(false);
+  const bioRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!expanded) return;
@@ -42,6 +43,14 @@ export function InfoPage({ isDark: _isDark }: InfoPageProps) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+  }, [expanded]);
+
+  // While the photo is expanded over the (faded) bio, mark the bio `inert` so a
+  // keyboard/SR user can't tab into the invisible link behind it. The zoom is a
+  // lightweight inline overlay, not a Radix Dialog, so this is the proportionate
+  // containment rather than a full focus trap.
+  useEffect(() => {
+    if (bioRef.current) bioRef.current.inert = expanded;
   }, [expanded]);
 
   // motion-ok: intentional smart-animate transition for profile-image expand interaction.
@@ -54,8 +63,18 @@ export function InfoPage({ isDark: _isDark }: InfoPageProps) {
     transition,
   };
 
+  // Native <button> resets so the control is visually identical to the prior div.
+  const imageButtonBase: React.CSSProperties = {
+    border: 'none',
+    background: 'transparent',
+    padding: 0,
+    margin: 0,
+    display: 'block',
+  };
+
   const imageButtonStyle: React.CSSProperties = expanded
     ? {
+        ...imageButtonBase,
         position: 'fixed',
         top: '50%',
         left: '50%',
@@ -69,6 +88,7 @@ export function InfoPage({ isDark: _isDark }: InfoPageProps) {
         transition,
       }
     : {
+        ...imageButtonBase,
         position: 'relative',
         width: `calc(${hds.size[96]} * 2)`,
         height: `calc(${hds.size[96]} * 2)`,
@@ -77,9 +97,7 @@ export function InfoPage({ isDark: _isDark }: InfoPageProps) {
       };
 
   return (
-    <div
-      style={infoPageStyles.pageWrapper}
-    >
+    <div style={infoPageStyles.pageWrapper}>
       <Stack gap="normal">
         <div
           style={{
@@ -101,18 +119,12 @@ export function InfoPage({ isDark: _isDark }: InfoPageProps) {
               flex: '0 0 auto',
             }}
           >
-            <div
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               aria-expanded={expanded}
               aria-label={expanded ? 'Collapse profile image' : 'Expand profile image'}
               onClick={() => setExpanded((v) => !v)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setExpanded((v) => !v);
-                }
-              }}
+              className="hds-focus"
               style={imageButtonStyle}
             >
               <AssetImg
@@ -130,7 +142,7 @@ export function InfoPage({ isDark: _isDark }: InfoPageProps) {
                   filter: 'grayscale(100%)',
                 }}
               />
-            </div>
+            </button>
 
             <Text
               variant="caption"
@@ -143,6 +155,7 @@ export function InfoPage({ isDark: _isDark }: InfoPageProps) {
           </figure>
 
           <Stack
+            ref={bioRef}
             gap="normal"
             style={{
               alignItems: 'flex-start',
