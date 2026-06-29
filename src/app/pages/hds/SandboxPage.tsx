@@ -28,6 +28,7 @@ import { Progress } from '../../components/progress';
 import { Avatar } from '../../components/avatar';
 import { Breadcrumb } from '../../components/breadcrumb';
 import { Pagination } from '../../components/pagination';
+import { HdsCheckbox } from '../../components/checkbox';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -40,6 +41,12 @@ type ComponentEntry = { default: RenderFn; [variant: string]: RenderFn };
 function PaginationDemo() {
   const [page, setPage] = useState(3);
   return <Pagination page={page} count={10} onPageChange={setPage} />;
+}
+
+// Checkbox is controlled; small stateful wrappers give the sandbox live demos.
+function CheckboxDemo({ start = false }: { start?: boolean }) {
+  const [on, setOn] = useState(start);
+  return <HdsCheckbox label="Email me updates" checked={on} onChange={setOn} />;
 }
 
 const REGISTRY: Record<string, ComponentEntry> = {
@@ -86,6 +93,15 @@ const REGISTRY: Record<string, ComponentEntry> = {
 
   Pagination: {
     default: () => <PaginationDemo />,
+  },
+
+  HdsCheckbox: {
+    default: () => <CheckboxDemo />,
+    checked: () => <CheckboxDemo start />,
+    indeterminate: () => (
+      <HdsCheckbox label="Select all" checked={false} indeterminate onChange={() => {}} />
+    ),
+    disabled: () => <HdsCheckbox label="Unavailable" checked={false} disabled onChange={() => {}} />,
   },
 
   Button: {

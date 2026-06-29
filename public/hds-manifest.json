@@ -56,6 +56,7 @@
     "Field",
     "FoundationSwatch",
     "Grid",
+    "HdsCheckbox",
     "HdsRadio",
     "HdsSlider",
     "HdsToggle",
@@ -2019,6 +2020,7 @@
         "src/app/components/activity-feed.tsx",
         "src/app/components/alert.tsx",
         "src/app/components/breadcrumb.tsx",
+        "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
@@ -6444,6 +6446,36 @@
       "requiredProps": [],
       "a11yRules": []
     },
+    "HdsCheckbox": {
+      "category": "Inputs",
+      "filePath": "src/app/components/checkbox.tsx",
+      "description": "HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph.",
+      "hidden": false,
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "preview": {
+        "exportName": "HdsCheckbox",
+        "sizing": "panel"
+      },
+      "tokenMapping": {},
+      "tier": "primitive",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "docExempt": false,
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsCheckbox",
+      "consumers": [
+        "src/app/components/checkbox.test.tsx"
+      ],
+      "variantAxes": [],
+      "componentProperties": []
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -6504,20 +6536,6 @@
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
       "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsCheckbox": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
       "hidden": true,
       "tier": "utility",
       "props": {},
@@ -6824,22 +6842,6 @@
           "type": "string"
         }
       },
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {},
-      "tokenMapping": {},
-      "tier": "utility"
-    },
-    "HdsCheckbox": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
-      "hidden": true,
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
       "preview": {},
