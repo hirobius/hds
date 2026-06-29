@@ -56,6 +56,7 @@
     "Field",
     "FoundationSwatch",
     "Grid",
+    "HdsCheckbox",
     "HdsRadio",
     "HdsSlider",
     "HdsToggle",
@@ -89,6 +90,7 @@
     "Text",
     "TextLockup",
     "TileGrid",
+    "ToastProvider",
     "Token"
   ],
   "typographyRamp": {
@@ -977,6 +979,10 @@
         "filePath": "src/app/components/tile-grid.tsx"
       },
       {
+        "name": "ToastProvider",
+        "filePath": "src/app/components/toast.tsx"
+      },
+      {
         "name": "Token",
         "filePath": "src/app/components/token.tsx"
       },
@@ -1019,6 +1025,10 @@
       {
         "name": "TYPE_PRESETS",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "useToast",
+        "filePath": "src/app/components/toast.tsx"
       },
       {
         "name": "VariantPreviewDeck",
@@ -2019,6 +2029,7 @@
         "src/app/components/activity-feed.tsx",
         "src/app/components/alert.tsx",
         "src/app/components/breadcrumb.tsx",
+        "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
@@ -2032,10 +2043,12 @@
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/components/lab/token-detail.tsx",
         "src/app/components/lab/tokenUtils.ts",
+        "src/app/components/menu.tsx",
         "src/app/components/select.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/theme-toggle.tsx",
+        "src/app/components/toast.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/data/hdsEditorial.tsx",
         "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
@@ -3813,6 +3826,7 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/lab/token-list.tsx",
         "src/app/components/lab/tokenUtils.ts",
+        "src/app/components/popover.tsx",
         "src/app/components/preview-frame.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/sketch-controls.tsx",
@@ -4626,6 +4640,8 @@
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
+        "src/app/components/menu.tsx",
+        "src/app/components/popover.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
@@ -5259,6 +5275,7 @@
         "src/app/components/not-found-pattern.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
+        "src/app/components/toast.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/ErrorPage.tsx",
@@ -6444,6 +6461,75 @@
       "requiredProps": [],
       "a11yRules": []
     },
+    "HdsCheckbox": {
+      "category": "Inputs",
+      "filePath": "src/app/components/checkbox.tsx",
+      "description": "HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph.",
+      "hidden": false,
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "preview": {
+        "exportName": "HdsCheckbox",
+        "sizing": "panel"
+      },
+      "tokenMapping": {},
+      "tier": "primitive",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "docExempt": false,
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsCheckbox",
+      "consumers": [
+        "src/app/components/checkbox.test.tsx"
+      ],
+      "variantAxes": [],
+      "componentProperties": []
+    },
+    "ToastProvider": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/toast.tsx",
+      "description": "Provider + viewport for the toast system. Wrap the app root once.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:ToastProvider",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "ToastProvider",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/toast.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "duration": {
+          "type": "number",
+          "default": 5000
+        },
+        "swipeDirection": {
+          "type": "SwipeDirection",
+          "default": "right"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -6504,20 +6590,6 @@
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
       "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsCheckbox": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
       "hidden": true,
       "tier": "utility",
       "props": {},
@@ -6824,22 +6896,6 @@
           "type": "string"
         }
       },
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {},
-      "tokenMapping": {},
-      "tier": "utility"
-    },
-    "HdsCheckbox": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
-      "hidden": true,
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
       "preview": {},
