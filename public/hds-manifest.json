@@ -41,6 +41,7 @@
     "Alert",
     "Avatar",
     "Badge",
+    "Breadcrumb",
     "Callout",
     "Card",
     "CinematicLink",
@@ -66,6 +67,7 @@
     "NavGroup",
     "NavItem",
     "Page",
+    "Pagination",
     "Progress",
     "SegmentedControl",
     "Skeleton",
@@ -551,6 +553,10 @@
         "filePath": "src/app/components/doc-sections.tsx"
       },
       {
+        "name": "Breadcrumb",
+        "filePath": "src/app/components/breadcrumb.tsx"
+      },
+      {
         "name": "buildApiRowsFromManifest",
         "filePath": "src/app/components/api-reference.tsx"
       },
@@ -801,6 +807,14 @@
       {
         "name": "PageFooter",
         "filePath": "src/app/components/page-footer.tsx"
+      },
+      {
+        "name": "Pagination",
+        "filePath": "src/app/components/pagination.tsx"
+      },
+      {
+        "name": "paginationRange",
+        "filePath": "src/app/components/pagination.tsx"
       },
       {
         "name": "PreviewFrame",
@@ -2004,6 +2018,7 @@
       "consumers": [
         "src/app/components/activity-feed.tsx",
         "src/app/components/alert.tsx",
+        "src/app/components/breadcrumb.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
@@ -2155,6 +2170,7 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/page-footer.tsx",
+        "src/app/components/pagination.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -5241,6 +5257,7 @@
       "consumers": [
         "src/app/components/doc-sections.tsx",
         "src/app/components/not-found-pattern.tsx",
+        "src/app/components/pagination.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/ErrorPage.tsx",
@@ -6324,6 +6341,88 @@
             "lg"
           ],
           "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Breadcrumb": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/breadcrumb.tsx",
+      "description": "Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is marked aria-current=\"page\".",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Breadcrumb",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Breadcrumb",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "items": {
+          "type": "BreadcrumbItem[]"
+        },
+        "label": {
+          "type": "string",
+          "default": "Breadcrumb"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Pagination": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/pagination.tsx",
+      "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Pagination",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Pagination",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "count": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string",
+          "default": "Pagination"
+        },
+        "onPageChange": {
+          "type": "(page: number) => void"
+        },
+        "page": {
+          "type": "number"
+        },
+        "siblingCount": {
+          "type": "number",
+          "default": 1
         }
       },
       "allowedChildren": [

@@ -12,6 +12,7 @@
 /* hds-bypass: error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */
 
 import { useSearchParams } from 'react-router';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Button } from '../../components/button';
 import { Badge } from '../../components/badge';
@@ -25,6 +26,8 @@ import { Spinner } from '../../components/spinner';
 import { Skeleton } from '../../components/skeleton';
 import { Progress } from '../../components/progress';
 import { Avatar } from '../../components/avatar';
+import { Breadcrumb } from '../../components/breadcrumb';
+import { Pagination } from '../../components/pagination';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -32,6 +35,12 @@ import { Avatar } from '../../components/avatar';
 
 type RenderFn = () => ReactNode;
 type ComponentEntry = { default: RenderFn; [variant: string]: RenderFn };
+
+// Pagination is controlled; a tiny stateful wrapper gives the sandbox a live demo.
+function PaginationDemo() {
+  const [page, setPage] = useState(3);
+  return <Pagination page={page} count={10} onPageChange={setPage} />;
+}
 
 const REGISTRY: Record<string, ComponentEntry> = {
   Spinner: {
@@ -61,6 +70,22 @@ const REGISTRY: Record<string, ComponentEntry> = {
     initials: () => <Avatar alt="Adrian Milsap" />,
     sm: () => <Avatar alt="Adrian Milsap" size="sm" />,
     lg: () => <Avatar alt="Adrian Milsap" size="lg" />,
+  },
+
+  Breadcrumb: {
+    default: () => (
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Components', href: '/components' },
+          { label: 'Breadcrumb' },
+        ]}
+      />
+    ),
+  },
+
+  Pagination: {
+    default: () => <PaginationDemo />,
   },
 
   Button: {

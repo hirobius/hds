@@ -61,10 +61,12 @@ export * from './app/components/status-tile';
 
 // ── patterns (8) ──
 export * from './app/components/activity-feed';
+export * from './app/components/breadcrumb';
 export * from './app/components/disclosure';
 export * from './app/components/foundation-swatch';
 export * from './app/components/icon-button';
 export * from './app/components/nav-group';
+export * from './app/components/pagination';
 export * from './app/components/sketch';
 export * from './app/components/stepper-field';
 export * from './app/components/text-lockup';
