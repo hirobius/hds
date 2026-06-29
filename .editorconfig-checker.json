@@ -21,7 +21,6 @@
     "scripts/poc",
     "src/app/components/ComponentDocPage\\.tsx",
     "src/app/components/lab/legacy-token-detail\\.tsx",
-    "src/app/components/mobius-scene\\.tsx",
     "src/app/components/table\\.tsx",
     "src/app/components/tag\\.tsx"
   ],

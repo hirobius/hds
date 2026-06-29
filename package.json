@@ -11,7 +11,7 @@
   "packageManager": "pnpm@10.33.0",
   "typeCoverage": {
     "ignoreFiles": [
-      "src/app/components/mobius-scene.tsx"
+      "src/app/components/mobius-distortion.ts"
     ]
   },
   "module": "./dist/hirobius-ui.js",
@@ -59,9 +59,7 @@
     "src",
     "!src/stories",
     "!src/app/components/lab",
-    "!src/app/components/mobius-scene.tsx",
-    "!src/app/components/mobius-logo.tsx",
-    "!src/app/components/mobius-shell-layer.tsx",
+    "!src/app/components/mobius-distortion.ts",
     "!src/app/components/mobius-constants.ts",
     "!src/app/components/shaders",
     "!src/app/stores/mobiusStore.ts",
