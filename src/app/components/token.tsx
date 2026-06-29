@@ -5,9 +5,9 @@
  */
 import React from 'react';
 import { motion } from 'motion/react';
-import { useLocation, useNavigate } from 'react-router';
 import hds from '../design-system/tokens';
 import { warnOnce } from '../../lib/deprecation';
+import { useHdsRouter } from '../context/RouterContext';
 import { useTokenDisplay } from '../context/TokenDisplayContext';
 import { allTokens } from './lab/tokenUtils';
 import styles from './Token.module.css';
@@ -303,8 +303,7 @@ function TokenNodeSurface({
   truncateFromStart = false,
 }: TokenNodeSurfaceProps) {
   const { showCss } = useTokenDisplay();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { navigate } = useHdsRouter();
 
   const tokenPathInput =
     tokenPath?.trim() ?? (typeof children === 'string' ? children.trim() : null);
@@ -328,7 +327,10 @@ function TokenNodeSurface({
     onClick ??
     (isLinkable
       ? () => {
-          const from = location.pathname + location.search + location.hash;
+          // Click handler is browser-only, so reading window.location directly is
+          // safe and preserves search+hash in the `from` deep-link round-trip.
+          const { pathname, search, hash } = window.location;
+          const from = pathname + search + hash;
           navigate(
             `/tokens?token=${encodeURIComponent(tokenPathInput as string)}&from=${encodeURIComponent(from)}#interactive-token-explorer`,
             { state: { fromScrollY: window.scrollY } },
