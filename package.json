@@ -100,7 +100,7 @@
     "build": "pnpm sync:health && node scripts/sync-icons.mjs && vite build --configLoader native",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr-cache --configLoader native",
     "build:prerender": "pnpm build && pnpm build:ssr && node scripts/prerender.mjs",
-    "build:lib": "vite build -c vite.config.lib.ts",
+    "build:lib": "vite build -c vite.config.lib.ts && node scripts/embed-fonts.mjs",
     "catalog": "node scripts/generate-visual-catalog.mjs",
     "changelog:generate": "node scripts/generate-changelog.mjs",
     "changeset": "changeset",

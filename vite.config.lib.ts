@@ -58,16 +58,16 @@ const hdsManifestVirtualPlugin = {
 export default defineConfig({
   plugins: [react(), tailwindcss(), hdsManifestVirtualPlugin],
   // Do NOT copy the `public/` directory into the library output. The app build
-  // (vite.config.mjs) serves portfolio assets and manifests from public/, but
-  // the published package must not carry ~47MB of portfolio PNGs and JSON.
-  // Web fonts for the library live under `src/styles/fonts/` and are referenced
-  // by RELATIVE url() in fonts.css. Vite's library build inlines CSS-referenced
-  // assets as base64 (it ignores assetsInlineLimit in lib mode), so the three
-  // woff2 are embedded directly into dist/tokens.css. A consumer importing
-  // `@hirobius/design-system/tokens.css` therefore gets the real typefaces with
-  // ZERO extra setup — fully self-contained (P0.3, option a). The trade-off is
-  // a larger tokens.css (~226KB raw / ~111KB gzip); woff2 is already compressed
-  // so gzip recovers most of the base64 overhead.
+  // (vite.config.mjs) serves portfolio assets, fonts, and manifests from
+  // public/, but the published package must not carry ~47MB of portfolio PNGs
+  // and JSON. fonts.css references fonts by absolute `/fonts/...` URLs (served
+  // from public/ by the app, identical to before — no app render/CLS change).
+  // Those URLs don't resolve here (publicDir is off), so Vite leaves them as-is;
+  // the `scripts/embed-fonts.mjs` post-build step then base64-inlines the three
+  // woff2 into dist/tokens.css so a consumer importing
+  // `@hirobius/design-system/tokens.css` gets self-contained fonts with ZERO
+  // setup (P0.3, option a). Trade-off: a larger tokens.css (~111KB gzip);
+  // woff2 is already compressed so gzip recovers most of the base64 overhead.
   publicDir: false,
   resolve: {
     alias: {

@@ -5257,6 +5257,7 @@
       "consumers": [
         "src/app/components/doc-sections.tsx",
         "src/app/components/not-found-pattern.tsx",
+        "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -6179,7 +6180,9 @@
         "exportName": "Avatar",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/avatar.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -6230,6 +6233,7 @@
       },
       "consumers": [
         "src/app/components/card.tsx",
+        "src/app/components/progress.test.tsx",
         "src/app/data/projects.ts",
         "src/stories/table.stories.tsx"
       ],
@@ -6278,7 +6282,9 @@
         "exportName": "Skeleton",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/skeleton.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -6324,7 +6330,9 @@
         "exportName": "Spinner",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/spinner.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -6366,7 +6374,9 @@
         "exportName": "Breadcrumb",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/breadcrumb.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -6402,7 +6412,9 @@
         "exportName": "Pagination",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/pagination.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
