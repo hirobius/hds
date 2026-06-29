@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.6.0
+
+### Minor Changes
+
+- 82fbcf0: Alert: unify the feedback prop with Badge/Card/Callout. `variant` is renamed to
+  `tone`, and the destructive value `"error"` is renamed to `"danger"` (the
+  feedback red is `danger` everywhere now). The token CSS variables are unchanged.
+
+  Migration: `pnpm codemod -t codemods/alert-tone-to-danger.cjs <path>`
+
+- 82fbcf0: Button / IconButton: remove the deprecated `isDark` prop. Button chrome is
+  theme-aware via CSS variables, so the prop was a no-op. Remove it from call
+  sites.
+
+  Migration: `pnpm codemod -t codemods/remove-button-isdark.cjs <path>`
+
+- 82fbcf0: SegmentedControl: move `size` onto the shared `sm | md | lg` ramp used by
+  Button/Input/IconButton. `size="default"` → `size="md"`, `size="compact"` →
+  `size="sm"`. Rendering is unchanged.
+
+  Migration: `pnpm codemod -t codemods/segmentedcontrol-size.cjs <path>`
+
 ## 0.5.0
 
 ### Minor Changes
