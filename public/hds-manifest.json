@@ -39,6 +39,7 @@
   },
   "componentInventory": [
     "Alert",
+    "Avatar",
     "Badge",
     "Callout",
     "Card",
@@ -65,9 +66,12 @@
     "NavGroup",
     "NavItem",
     "Page",
+    "Progress",
     "SegmentedControl",
+    "Skeleton",
     "Sketch",
     "SpecimenBlock",
+    "Spinner",
     "Stack",
     "Stat",
     "StatusListItem",
@@ -527,6 +531,10 @@
         "filePath": "src/app/components/componentPreviewRegistry.tsx"
       },
       {
+        "name": "Avatar",
+        "filePath": "src/app/components/avatar.tsx"
+      },
+      {
         "name": "Badge",
         "filePath": "src/app/components/badge.tsx"
       },
@@ -799,6 +807,10 @@
         "filePath": "src/app/components/preview-frame.tsx"
       },
       {
+        "name": "Progress",
+        "filePath": "src/app/components/progress.tsx"
+      },
+      {
         "name": "projectGithubBlobUrl",
         "filePath": "src/app/components/doc-page-header.tsx"
       },
@@ -825,6 +837,10 @@
       {
         "name": "SideNav",
         "filePath": "src/app/components/side-nav.tsx"
+      },
+      {
+        "name": "Skeleton",
+        "filePath": "src/app/components/skeleton.tsx"
       },
       {
         "name": "Sketch",
@@ -857,6 +873,10 @@
       {
         "name": "SpecimenBlock",
         "filePath": "src/app/components/specimen-block.tsx"
+      },
+      {
+        "name": "Spinner",
+        "filePath": "src/app/components/spinner.tsx"
       },
       {
         "name": "Stack",
@@ -6125,6 +6145,193 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "TODO:hds-master:HdsToggle"
+    },
+    "Avatar": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/avatar.tsx",
+      "description": "Circular avatar. Renders the image when available, else initials from `alt`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Avatar",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Avatar",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "alt": {
+          "type": "string"
+        },
+        "initials": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "src": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Progress": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/progress.tsx",
+      "description": "Linear progress. Determinate when `value` is a number, else indeterminate.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Progress",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Progress",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/card.tsx",
+        "src/app/data/projects.ts",
+        "src/stories/table.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "Progress"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "value": {
+          "type": "number",
+          "default": "null"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Skeleton": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/skeleton.tsx",
+      "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Skeleton",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Skeleton",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "height": {
+          "type": "string | number",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "text",
+            "rectangular",
+            "circular"
+          ],
+          "default": "rectangular"
+        },
+        "width": {
+          "type": "string | number",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Spinner": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/spinner.tsx",
+      "description": "Indeterminate spinner. Inherits the surrounding text color via currentColor.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Spinner",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Spinner",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "Loading"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
     },
     "HdsPhosphor": {
       "category": "Compiler",
