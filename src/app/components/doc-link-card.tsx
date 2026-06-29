@@ -4,10 +4,10 @@
  * @tier primitive
  */
 import { useEffect, useState, type CSSProperties } from 'react';
-import { useNavigate } from 'react-router';
 import { ArrowRight, ArrowUpRight, type LucideIcon } from 'lucide-react';
 import { motion, useAnimationControls } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { useHdsRouter } from '../context/RouterContext';
 import hds from '../design-system/tokens';
 import { Icon } from './icon';
 
@@ -66,7 +66,7 @@ export function DocLinkCard({
   disabled = false,
   affordance = 'up-right',
 }: DocLinkCardProps) {
-  const navigate = useNavigate();
+  const { navigate } = useHdsRouter();
   const { isRtl } = useLanguage();
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);

@@ -16,3 +16,5 @@ export * from './TenantContext';
 export * from './FontContext';
 export * from './DemoStateContext';
 export * from './TokenDisplayContext';
+// RouterContext — router-adapter seam; ReactRouterBridge is intentionally excluded (app-internal)
+export * from './RouterContext';

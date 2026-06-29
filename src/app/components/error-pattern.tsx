@@ -3,8 +3,8 @@
  * @category Feedback
  * @tier template
  */
-import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
+import { useHdsRouter } from '../context/RouterContext';
 import hds from '../design-system/tokens';
 import { Button } from './button';
 import { Stack } from './stack';
@@ -31,7 +31,7 @@ export function ErrorPattern({
   displayText = 'Oops',
   message = 'Something went wrong',
 }: ErrorPatternProps) {
-  const navigate = useNavigate();
+  const { navigate } = useHdsRouter();
 
   return (
     <div style={recoveryWrapStyle} data-role="error-recovery">
@@ -60,7 +60,10 @@ export function ErrorPattern({
               {message}
             </Text>
 
-            <Button variant="primary" onClick={() => navigate(-1)}>
+            <Button variant="primary" onClick={() => {
+              if (typeof window !== 'undefined') window.history.back();
+              else navigate('/');
+            }}>
               Back
             </Button>
           </Stack>

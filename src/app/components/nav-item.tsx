@@ -13,7 +13,7 @@ import type {
   MouseEvent as ReactMouseEvent,
   PointerEvent as ReactPointerEvent,
 } from 'react';
-import { useNavigate } from 'react-router';
+import { useHdsRouter } from '../context/RouterContext';
 import hds from '../design-system/tokens';
 import { useLanguage } from '../context/LanguageContext';
 import { useFrozenState } from '../context/DemoStateContext';
@@ -117,7 +117,7 @@ export function NavItem({
   ...rest
 }: NavProps) {
   const { isRtl } = useLanguage();
-  const navigate = useNavigate();
+  const { navigate } = useHdsRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   // Modality-aware focus ring — shared seam with side-nav (ADR-015).

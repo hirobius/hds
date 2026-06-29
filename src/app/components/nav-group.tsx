@@ -5,7 +5,7 @@
  */
 import { useEffect, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import { useLocation } from 'react-router';
+import { useHdsRouter } from '../context/RouterContext';
 import hds from '../design-system/tokens';
 import { getNavLevelLeadingPadding, getNextNavLevel, type NavLevel } from '../lib/navLevels';
 import { Disclosure } from './disclosure';
@@ -46,15 +46,15 @@ export function NavGroup({
   style,
   contentStyle,
 }: NavGroupProps) {
-  const location = useLocation();
+  const { currentPath } = useHdsRouter();
   const resolvedItems = items ?? [];
-  const forceCollapsedOnOverview = collapsible && location.pathname === '/';
+  const forceCollapsedOnOverview = collapsible && currentPath === '/';
   const hasActive =
     collapsible &&
     resolvedItems.some((item) =>
       getExact?.(item)
-        ? location.pathname === item.path
-        : location.pathname === item.path || location.pathname.startsWith(`${item.path}/`),
+        ? currentPath === item.path
+        : currentPath === item.path || currentPath.startsWith(`${item.path}/`),
     );
   const [open, setOpen] = useState(() => {
     if (!collapsible) return true;

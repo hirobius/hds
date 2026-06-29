@@ -76,6 +76,17 @@ export * from './app/components/error-pattern';
 export * from './app/components/info-page';
 export * from './app/pages/hds/HdsSystemDocLayout';
 
+// ── Router adapter — router-free by default; inject react-router / Next / any router ──
+export {
+  HdsRouterProvider,
+  useHdsRouter,
+} from './app/context/RouterContext';
+export type {
+  HdsRouterAdapter,
+  HdsLinkComponent,
+  HdsLinkProps,
+} from './app/context/RouterContext';
+
 // ── Token bridge (CSS variables wrapped as TS constants + raw DTCG JSON) ──
 export { default as hds } from './app/design-system/tokens';
 export { default as tokens } from '../hirobius.tokens.json';
