@@ -17,7 +17,7 @@
 /* Satoshi — Indian Type Foundry, OFL via Fontshare. */
 @font-face {
   font-family: 'Satoshi';
-  src: url('/fonts/satoshi/satoshi-500.woff2') format('woff2');
+  src: url('./fonts/satoshi/satoshi-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -26,7 +26,7 @@
 /* Clash Display — Indian Type Foundry, OFL via Fontshare. */
 @font-face {
   font-family: 'Clash Display';
-  src: url('/fonts/clash-display/clash-display-500.woff2') format('woff2');
+  src: url('./fonts/clash-display/clash-display-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -35,7 +35,7 @@
 /* Geist Mono — Vercel, OFL-1.1. */
 @font-face {
   font-family: 'Geist Mono';
-  src: url('/fonts/geist-mono/geist-mono-400.woff2') format('woff2');
+  src: url('./fonts/geist-mono/geist-mono-400.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;

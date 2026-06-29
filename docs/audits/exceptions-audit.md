@@ -39,7 +39,7 @@
 | `src/app/components/morph-card.tsx` | 373 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps -- render is stable; re-running on render identity change is unnecessary` | justified |
 | `src/app/components/nav-group.tsx` | 68 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/preview-frame.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
-| `src/app/components/shell-controls.tsx` | 149 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/shell-controls.tsx` | 151 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/stepper-field.tsx` | 59 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/surface.tsx` | 36 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/tile-grid.tsx` | 35 | `eslint-disable-next-line` | `no-restricted-syntax -- TileGrid IS the grid primitive; auto-fill template is its raison d'être` | justified |
