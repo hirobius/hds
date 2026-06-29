@@ -32,6 +32,7 @@ import { HdsCheckbox } from '../../components/checkbox';
 import { Popover } from '../../components/popover';
 import { Menu } from '../../components/menu';
 import { ToastProvider, useToast } from '../../components/toast';
+import { Combobox } from '../../components/combobox';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -61,6 +62,24 @@ function ToastDemo() {
     <ToastProvider>
       <ToastFire />
     </ToastProvider>
+  );
+}
+
+// Combobox is controlled; a tiny stateful wrapper gives the sandbox a live demo.
+function ComboboxDemo() {
+  const [value, setValue] = useState<string | null>('us');
+  return (
+    <Combobox
+      aria-label="Country"
+      value={value}
+      onChange={setValue}
+      options={[
+        { value: 'us', label: 'United States' },
+        { value: 'ca', label: 'Canada' },
+        { value: 'mx', label: 'Mexico' },
+        { value: 'uk', label: 'United Kingdom' },
+      ]}
+    />
   );
 }
 
@@ -142,6 +161,10 @@ const REGISTRY: Record<string, ComponentEntry> = {
 
   Toast: {
     default: () => <ToastDemo />,
+  },
+
+  Combobox: {
+    default: () => <ComboboxDemo />,
   },
 
   Menu: {

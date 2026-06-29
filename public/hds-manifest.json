@@ -46,6 +46,7 @@
     "Card",
     "CinematicLink",
     "CodeBlock",
+    "Combobox",
     "ComponentInstanceMatrix",
     "Container",
     "Dialog",
@@ -601,6 +602,10 @@
       {
         "name": "CodeBlock",
         "filePath": "src/app/components/code-block.tsx"
+      },
+      {
+        "name": "Combobox",
+        "filePath": "src/app/components/combobox.tsx"
       },
       {
         "name": "CommandPalette",
@@ -2031,6 +2036,7 @@
         "src/app/components/breadcrumb.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
+        "src/app/components/combobox.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/disclosure.tsx",
@@ -5195,6 +5201,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/input.tsx",
         "src/app/pages/docs/patterns/HdsField.tsx"
       ],
@@ -6521,6 +6528,70 @@
         "swipeDirection": {
           "type": "SwipeDirection",
           "default": "right"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Combobox": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/combobox.tsx",
+      "description": "Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Combobox",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Combobox",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/combobox.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "emptyMessage": {
+          "type": "string",
+          "default": "No results"
+        },
+        "onChange": {
+          "type": "(value: string) => void"
+        },
+        "options": {
+          "type": "ComboboxOption[]"
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Select…"
+        },
+        "searchPlaceholder": {
+          "type": "string",
+          "default": "Search…"
+        },
+        "value": {
+          "type": "string"
         }
       },
       "allowedChildren": [
