@@ -77,6 +77,11 @@
     "react-dom": "^18.3.0 || ^19.0.0",
     "react-router": "^7.0.0"
   },
+  "peerDependenciesMeta": {
+    "react-router": {
+      "optional": true
+    }
+  },
   "scripts": {
     "_comment:a11y-high-value": "The following check:* validators are high-value accessibility checks that catch real violations (check:focus found 1 missing focus class). Kept dormant/manual-only to avoid pre-commit performance regression. Candidates to wire into pretest after CI stability review.",
     "_comment:link-integrity": "check:doc-refs and check:routes both validate internal link integrity (different surfaces: doc refs vs route links). Kept dormant/manual-only to prevent pre-commit cascade.",
@@ -95,7 +100,7 @@
     "build": "pnpm sync:health && node scripts/sync-icons.mjs && vite build --configLoader native",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr-cache --configLoader native",
     "build:prerender": "pnpm build && pnpm build:ssr && node scripts/prerender.mjs",
-    "build:lib": "vite build -c vite.config.lib.ts",
+    "build:lib": "vite build -c vite.config.lib.ts && node scripts/embed-fonts.mjs",
     "catalog": "node scripts/generate-visual-catalog.mjs",
     "changelog:generate": "node scripts/generate-changelog.mjs",
     "changeset": "changeset",

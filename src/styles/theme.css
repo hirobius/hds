@@ -801,46 +801,60 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
 
 /* --- Base layer --------------------------------------------------------------- */
 @layer base {
-  * {
+  /* ── HDS base styles are scoped to the [data-hds] subtree (P0.5) ───────────
+   * Every element/global rule below is wrapped in :where([data-hds]) so the
+   * design system can drop into a section of a non-HDS app (e.g. one running
+   * MUI <CssBaseline> + Emotion) without competing resets or font-cascade
+   * fights. :where() contributes ZERO specificity, so these rules keep the
+   * exact weight they had as bare element selectors — no specificity drift.
+   *
+   * The docs site marks <html data-hds>, so the whole page stays in scope and
+   * renders identically. External consumers add data-hds to their app root or
+   * the section hosting HDS. NOTE: Tailwind v4 preflight (the *,::before reset)
+   * is still emitted globally; scoping it is the documented follow-up in
+   * docs/adr/016-scoped-base-styles.md. */
+
+  :where([data-hds]),
+  :where([data-hds]) * {
     border-color: var(--semantic-color-border-default);
     outline-color: color-mix(in srgb, var(--semantic-color-border-accent) 50%, transparent);
   }
 
   /* Reset browser default button background — Tailwind preflight is not present */
-  button { background: transparent; }
+  :where([data-hds]) button { background: transparent; }
 
   /* Interactive cursor affordance — every actionable element gets a pointer.
    * Browsers default <button> to cursor:default; this rule restores the
    * affordance system-wide so buttons, role=button, links, summaries, and
    * form controls all signal interactivity consistently. Disabled state
    * gets not-allowed so the affordance reads "off" rather than "active". */
-  button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]),
-  a[href],
-  summary,
-  label[for],
-  select:not(:disabled),
-  input[type="checkbox"]:not(:disabled),
-  input[type="radio"]:not(:disabled),
-  input[type="submit"]:not(:disabled),
-  input[type="button"]:not(:disabled),
-  input[type="reset"]:not(:disabled) {
+  :where([data-hds]) button:not(:disabled),
+  :where([data-hds]) [role="button"]:not([aria-disabled="true"]),
+  :where([data-hds]) a[href],
+  :where([data-hds]) summary,
+  :where([data-hds]) label[for],
+  :where([data-hds]) select:not(:disabled),
+  :where([data-hds]) input[type="checkbox"]:not(:disabled),
+  :where([data-hds]) input[type="radio"]:not(:disabled),
+  :where([data-hds]) input[type="submit"]:not(:disabled),
+  :where([data-hds]) input[type="button"]:not(:disabled),
+  :where([data-hds]) input[type="reset"]:not(:disabled) {
     cursor: pointer;
   }
-  button:disabled,
-  [role="button"][aria-disabled="true"],
-  [disabled] {
+  :where([data-hds]) button:disabled,
+  :where([data-hds]) [role="button"][aria-disabled="true"],
+  :where([data-hds]) [disabled] {
     cursor: not-allowed;
   }
 
   /* Show focus rings only on keyboard navigation */
-  *:focus:not(:focus-visible) { outline: none; }
-  button:focus:not(:focus-visible),
-  a:focus:not(:focus-visible),
-  [tabindex]:focus:not(:focus-visible),
-  [role="button"]:focus:not(:focus-visible) { box-shadow: none; }
+  :where([data-hds]) *:focus:not(:focus-visible) { outline: none; }
+  :where([data-hds]) button:focus:not(:focus-visible),
+  :where([data-hds]) a:focus:not(:focus-visible),
+  :where([data-hds]) [tabindex]:focus:not(:focus-visible),
+  :where([data-hds]) [role="button"]:focus:not(:focus-visible) { box-shadow: none; }
 
-  html {
+  :where([data-hds]) {
     /* Type rendering hardening (Adrian directive 2026-05-04 — fix sub-pixel
      * fuzz on heavy weights at fractional grid positions).
      *
@@ -854,24 +868,32 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
      * gives the rasterizer permission to spend cycles on glyph quality.
      *
      * font-feature-settings: explicit kerning + standard ligatures so the
-     * browser can't disable them as a performance shortcut. */
+     * browser can't disable them as a performance shortcut.
+     *
+     * font-family + color are applied here on the scope ROOT so a section-
+     * scoped consumer (data-hds on a wrapper, not <html>) still inherits the
+     * HDS typeface and text color. font-size is deliberately NOT set here:
+     * setting it on <html> would rebase rem units and shift every layout. */
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern" 1, "liga" 1;
     -moz-osx-font-smoothing: grayscale;
     scrollbar-gutter: stable;
+    font-family: var(--semantic-typography-body-font-family);
+    color: var(--semantic-color-content-primary);
   }
   @media (min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 2) {
-    html {
+    :where([data-hds]) {
       -webkit-font-smoothing: antialiased;
     }
   }
 
   /*
-   * Global type baseline — everything inherits from here.
-   * Font properties from semantic typography tokens (W3C vars).
-   * Color roles from --hds-* vars — no JS needed, dark mode is CSS-only.
+   * Page-level type baseline. Kept on `body` (not the scope root) so the docs
+   * site's rem base stays anchored to the browser default and layouts don't
+   * shift. For the docs site data-hds is on <html>, so this matches <body>
+   * exactly. Color roles from --hds-* vars — dark mode is CSS-only.
    */
-  body {
+  :where([data-hds]) body {
     font-family:    var(--semantic-typography-body-font-family);
     font-size:      var(--semantic-typography-body-font-size);
     font-weight:    var(--semantic-typography-body-font-weight);
@@ -885,28 +907,28 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
   /* Heading elements — map to the semantic typography composite tokens.
    * Single-weight policy (Adrian directive 2026-05-04): every face ships at
    * 500 only; using bold/semibold here would faux-bold and look fuzzy. */
-  h1 {
+  :where([data-hds]) h1 {
     font-family:    var(--semantic-typography-h1-font-family);
     font-size:      var(--semantic-typography-h1-font-size);
     font-weight:    var(--semantic-typography-h1-font-weight);
     line-height:    var(--semantic-typography-h1-line-height);
     letter-spacing: var(--semantic-typography-h1-letter-spacing);
   }
-  h2 {
+  :where([data-hds]) h2 {
     font-family:    var(--semantic-typography-h2-font-family);
     font-size:      var(--semantic-typography-h2-font-size);
     font-weight:    var(--semantic-typography-h2-font-weight);
     line-height:    var(--semantic-typography-h2-line-height);
     letter-spacing: var(--semantic-typography-h2-letter-spacing);
   }
-  h3 {
+  :where([data-hds]) h3 {
     font-family:    var(--semantic-typography-h3-font-family);
     font-size:      var(--semantic-typography-h3-font-size);
     font-weight:    var(--semantic-typography-h3-font-weight);
     line-height:    var(--semantic-typography-h3-line-height);
     letter-spacing: var(--semantic-typography-h3-letter-spacing);
   }
-  h4 {
+  :where([data-hds]) h4 {
     font-family:    var(--semantic-typography-body-font-family);
     font-size:      var(--primitive-typography-size-lg);
     font-weight:    var(--semantic-typography-body-font-weight);
@@ -915,10 +937,10 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
   }
 
   /* Inline and block text — inherit body by default, no overrides needed */
-  p, span, li, td, th { margin: 0; }
+  :where([data-hds]) :is(p, span, li, td, th) { margin: 0; }
 
   /* Form elements inherit the body type stack */
-  button, input, select, textarea {
+  :where([data-hds]) :is(button, input, select, textarea) {
     font-family: inherit;
     font-size:   inherit;
     font-weight: inherit;

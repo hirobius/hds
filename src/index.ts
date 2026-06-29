@@ -16,6 +16,7 @@ import './styles/index.css';
 // ── primitives (29) ──
 export * from './app/components/alert';
 export * from './app/components/asset-img';
+export * from './app/components/avatar';
 export * from './app/components/badge';
 export * from './app/components/button';
 export * from './app/components/callout';
@@ -38,6 +39,9 @@ export * from './app/components/inline-code';
 export * from './app/components/inline-link';
 export * from './app/components/input';
 export * from './app/components/nav-item';
+export * from './app/components/progress';
+export * from './app/components/skeleton';
+export * from './app/components/spinner';
 export * from './app/components/segmented-control';
 export * from './app/components/stack';
 export * from './app/components/surface';
@@ -57,10 +61,12 @@ export * from './app/components/status-tile';
 
 // ── patterns (8) ──
 export * from './app/components/activity-feed';
+export * from './app/components/breadcrumb';
 export * from './app/components/disclosure';
 export * from './app/components/foundation-swatch';
 export * from './app/components/icon-button';
 export * from './app/components/nav-group';
+export * from './app/components/pagination';
 export * from './app/components/sketch';
 export * from './app/components/stepper-field';
 export * from './app/components/text-lockup';
@@ -82,3 +88,13 @@ export { default as tokens } from '../hirobius.tokens.json';
 
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
+
+// ── Router adapter seam (router-free by default; inject your router once) ──
+export { HdsRouterProvider, useHdsRouter } from './app/context/RouterContext';
+export type {
+  HdsRouterAdapter,
+  HdsRouterProviderProps,
+  HdsLinkComponent,
+  HdsLinkProps,
+  HdsNavigateOptions,
+} from './app/context/RouterContext';

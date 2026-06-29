@@ -39,7 +39,7 @@
 | `src/app/components/morph-card.tsx` | 373 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps -- render is stable; re-running on render identity change is unnecessary` | justified |
 | `src/app/components/nav-group.tsx` | 68 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/preview-frame.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
-| `src/app/components/shell-controls.tsx` | 149 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/shell-controls.tsx` | 151 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/stepper-field.tsx` | 59 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/surface.tsx` | 36 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/tile-grid.tsx` | 35 | `eslint-disable-next-line` | `no-restricted-syntax -- TileGrid IS the grid primitive; auto-fill template is its raison d'être` | justified |
@@ -142,8 +142,8 @@
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 126 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 127 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/SandboxPage.tsx` | 12 | `hds-bypass` | `error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 199 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 202 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 257 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 260 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
 | `src/app/pages/hds/SpacingPage.tsx` | 255 | `hds-bypass` | `demo-grid-visualization — explicit pixel values intentionally show the 8px grid step */}` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 1 | `hds-bypass` | `test page with hardcoded demo styles for visual audit */` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 2 | `font-ok` | `spacing test page intentionally uses monospace demo labels during visual inspection` | justified |

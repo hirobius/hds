@@ -39,7 +39,9 @@
   },
   "componentInventory": [
     "Alert",
+    "Avatar",
     "Badge",
+    "Breadcrumb",
     "Callout",
     "Card",
     "CinematicLink",
@@ -65,9 +67,13 @@
     "NavGroup",
     "NavItem",
     "Page",
+    "Pagination",
+    "Progress",
     "SegmentedControl",
+    "Skeleton",
     "Sketch",
     "SpecimenBlock",
+    "Spinner",
     "Stack",
     "Stat",
     "StatusListItem",
@@ -527,6 +533,10 @@
         "filePath": "src/app/components/componentPreviewRegistry.tsx"
       },
       {
+        "name": "Avatar",
+        "filePath": "src/app/components/avatar.tsx"
+      },
+      {
         "name": "Badge",
         "filePath": "src/app/components/badge.tsx"
       },
@@ -541,6 +551,10 @@
       {
         "name": "BLUE_STEPS",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "Breadcrumb",
+        "filePath": "src/app/components/breadcrumb.tsx"
       },
       {
         "name": "buildApiRowsFromManifest",
@@ -795,8 +809,20 @@
         "filePath": "src/app/components/page-footer.tsx"
       },
       {
+        "name": "Pagination",
+        "filePath": "src/app/components/pagination.tsx"
+      },
+      {
+        "name": "paginationRange",
+        "filePath": "src/app/components/pagination.tsx"
+      },
+      {
         "name": "PreviewFrame",
         "filePath": "src/app/components/preview-frame.tsx"
+      },
+      {
+        "name": "Progress",
+        "filePath": "src/app/components/progress.tsx"
       },
       {
         "name": "projectGithubBlobUrl",
@@ -825,6 +851,10 @@
       {
         "name": "SideNav",
         "filePath": "src/app/components/side-nav.tsx"
+      },
+      {
+        "name": "Skeleton",
+        "filePath": "src/app/components/skeleton.tsx"
       },
       {
         "name": "Sketch",
@@ -857,6 +887,10 @@
       {
         "name": "SpecimenBlock",
         "filePath": "src/app/components/specimen-block.tsx"
+      },
+      {
+        "name": "Spinner",
+        "filePath": "src/app/components/spinner.tsx"
       },
       {
         "name": "Stack",
@@ -1984,6 +2018,7 @@
       "consumers": [
         "src/app/components/activity-feed.tsx",
         "src/app/components/alert.tsx",
+        "src/app/components/breadcrumb.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
@@ -2135,6 +2170,7 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/page-footer.tsx",
+        "src/app/components/pagination.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -5221,6 +5257,8 @@
       "consumers": [
         "src/app/components/doc-sections.tsx",
         "src/app/components/not-found-pattern.tsx",
+        "src/app/components/pagination.test.tsx",
+        "src/app/components/pagination.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/ErrorPage.tsx",
@@ -6125,6 +6163,286 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "TODO:hds-master:HdsToggle"
+    },
+    "Avatar": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/avatar.tsx",
+      "description": "Circular avatar. Renders the image when available, else initials from `alt`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Avatar",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Avatar",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/avatar.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "alt": {
+          "type": "string"
+        },
+        "initials": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "src": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Progress": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/progress.tsx",
+      "description": "Linear progress. Determinate when `value` is a number, else indeterminate.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Progress",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Progress",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/card.tsx",
+        "src/app/components/progress.test.tsx",
+        "src/app/data/projects.ts",
+        "src/stories/table.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "Progress"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "value": {
+          "type": "number",
+          "default": "null"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Skeleton": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/skeleton.tsx",
+      "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Skeleton",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Skeleton",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/skeleton.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "height": {
+          "type": "string | number",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "text",
+            "rectangular",
+            "circular"
+          ],
+          "default": "rectangular"
+        },
+        "width": {
+          "type": "string | number",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Spinner": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/spinner.tsx",
+      "description": "Indeterminate spinner. Inherits the surrounding text color via currentColor.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Spinner",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Spinner",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/spinner.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "Loading"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Breadcrumb": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/breadcrumb.tsx",
+      "description": "Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is marked aria-current=\"page\".",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Breadcrumb",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Breadcrumb",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/breadcrumb.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "items": {
+          "type": "BreadcrumbItem[]"
+        },
+        "label": {
+          "type": "string",
+          "default": "Breadcrumb"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Pagination": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/pagination.tsx",
+      "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Pagination",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Pagination",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/pagination.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "count": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string",
+          "default": "Pagination"
+        },
+        "onPageChange": {
+          "type": "(page: number) => void"
+        },
+        "page": {
+          "type": "number"
+        },
+        "siblingCount": {
+          "type": "number",
+          "default": 1
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
     },
     "HdsPhosphor": {
       "category": "Compiler",

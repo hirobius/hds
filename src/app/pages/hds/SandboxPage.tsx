@@ -12,6 +12,7 @@
 /* hds-bypass: error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */
 
 import { useSearchParams } from 'react-router';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Button } from '../../components/button';
 import { Badge } from '../../components/badge';
@@ -21,6 +22,12 @@ import { Surface } from '../../components/surface';
 import { Stack } from '../../components/stack';
 import { TextLockup } from '../../components/text-lockup';
 import { Input } from '../../components/input';
+import { Spinner } from '../../components/spinner';
+import { Skeleton } from '../../components/skeleton';
+import { Progress } from '../../components/progress';
+import { Avatar } from '../../components/avatar';
+import { Breadcrumb } from '../../components/breadcrumb';
+import { Pagination } from '../../components/pagination';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -29,7 +36,58 @@ import { Input } from '../../components/input';
 type RenderFn = () => ReactNode;
 type ComponentEntry = { default: RenderFn; [variant: string]: RenderFn };
 
+// Pagination is controlled; a tiny stateful wrapper gives the sandbox a live demo.
+function PaginationDemo() {
+  const [page, setPage] = useState(3);
+  return <Pagination page={page} count={10} onPageChange={setPage} />;
+}
+
 const REGISTRY: Record<string, ComponentEntry> = {
+  Spinner: {
+    default: () => <Spinner />,
+    sm: () => <Spinner size="sm" />,
+    md: () => <Spinner size="md" />,
+    lg: () => <Spinner size="lg" />,
+  },
+
+  Skeleton: {
+    default: () => <Skeleton width={240} height={16} />,
+    text: () => <Skeleton variant="text" width={200} />,
+    rectangular: () => <Skeleton variant="rectangular" width={240} height={120} />,
+    circular: () => <Skeleton variant="circular" width={48} height={48} />,
+  },
+
+  Progress: {
+    default: () => <Progress value={60} />,
+    determinate: () => <Progress value={40} />,
+    indeterminate: () => <Progress value={null} />,
+    sm: () => <Progress value={60} size="sm" />,
+    lg: () => <Progress value={60} size="lg" />,
+  },
+
+  Avatar: {
+    default: () => <Avatar alt="Adrian Milsap" />,
+    initials: () => <Avatar alt="Adrian Milsap" />,
+    sm: () => <Avatar alt="Adrian Milsap" size="sm" />,
+    lg: () => <Avatar alt="Adrian Milsap" size="lg" />,
+  },
+
+  Breadcrumb: {
+    default: () => (
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Components', href: '/components' },
+          { label: 'Breadcrumb' },
+        ]}
+      />
+    ),
+  },
+
+  Pagination: {
+    default: () => <PaginationDemo />,
+  },
+
   Button: {
     default: () => <Button variant="primary">Label</Button>,
     primary: () => <Button variant="primary">Label</Button>,

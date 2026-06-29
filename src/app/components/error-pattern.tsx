@@ -3,7 +3,6 @@
  * @category Feedback
  * @tier template
  */
-import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import hds from '../design-system/tokens';
 import { Button } from './button';
@@ -31,8 +30,6 @@ export function ErrorPattern({
   displayText = 'Oops',
   message = 'Something went wrong',
 }: ErrorPatternProps) {
-  const navigate = useNavigate();
-
   return (
     <div style={recoveryWrapStyle} data-role="error-recovery">
       <Surface padding="component">
@@ -60,7 +57,14 @@ export function ErrorPattern({
               {message}
             </Text>
 
-            <Button variant="primary" onClick={() => navigate(-1)}>
+            <Button
+              variant="primary"
+              onClick={() => {
+                // History "back" — router-agnostic and identical to react-router's
+                // navigate(-1) since both drive window.history.
+                if (typeof window !== 'undefined') window.history.back();
+              }}
+            >
               Back
             </Button>
           </Stack>

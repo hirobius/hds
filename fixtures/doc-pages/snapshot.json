@@ -85,7 +85,7 @@
       "sha256": "fa87647d6e07f3f1db711e2816e9e8c9ac7909dcc3f4c2c16cd87cbb0e64e13b"
     },
     {
-      "bytes": 6778,
+      "bytes": 6534,
       "exports": [
         "PatternDocPage"
       ],
@@ -96,16 +96,17 @@
         "../../../components/heading-anchor",
         "../../../components/stack",
         "../../../components/text",
+        "../../../data/manifest-types",
         "../../hds/HdsSystemDocLayout",
         "react",
         "react-router",
         "virtual:hds-manifest"
       ],
       "path": "src/app/pages/docs/patterns/_template.tsx",
-      "sha256": "f34a4d584805ac9e7618b2faf2e4445b3e861f5c166236c8ff9ab905e80329cf"
+      "sha256": "93c170fae66ad75c14e0ffb2233e0505d4b98762d501166678191e71151e6607"
     },
     {
-      "bytes": 6185,
+      "bytes": 5839,
       "exports": [
         "TemplateDocPage"
       ],
@@ -114,13 +115,14 @@
         "../../../components/doc-page-header",
         "../../../components/heading-anchor",
         "../../../components/stack",
+        "../../../data/manifest-types",
         "../../hds/HdsSystemDocLayout",
         "react",
         "react-router",
         "virtual:hds-manifest"
       ],
       "path": "src/app/pages/docs/templates/_template.tsx",
-      "sha256": "16a6bc160261f4a45d0b195de904ece5d5c82f7e1094552783c75a93e4ecf26b"
+      "sha256": "0d31b10ab949202f7e65625c0d8a9cf29aaebd62a9b2bb590fc4522107b11ee5"
     }
   ]
 }
