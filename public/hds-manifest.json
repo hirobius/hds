@@ -3815,6 +3815,7 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/lab/token-list.tsx",
         "src/app/components/lab/tokenUtils.ts",
+        "src/app/components/popover.tsx",
         "src/app/components/preview-frame.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/sketch-controls.tsx",
@@ -4628,6 +4629,7 @@
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
+        "src/app/components/popover.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/table.stories.tsx"
       ],

@@ -29,6 +29,7 @@ import { Avatar } from '../../components/avatar';
 import { Breadcrumb } from '../../components/breadcrumb';
 import { Pagination } from '../../components/pagination';
 import { HdsCheckbox } from '../../components/checkbox';
+import { Popover } from '../../components/popover';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -102,6 +103,21 @@ const REGISTRY: Record<string, ComponentEntry> = {
       <HdsCheckbox label="Select all" checked={false} indeterminate onChange={() => {}} />
     ),
     disabled: () => <HdsCheckbox label="Unavailable" checked={false} disabled onChange={() => {}} />,
+  },
+
+  Popover: {
+    default: () => (
+      <Popover defaultOpen>
+        <Popover.Trigger asChild>
+          <Button variant="secondary">Open popover</Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <Stack gap="tight">
+            <TextLockup title="Popover" description="Anchored floating surface." size="detail" />
+          </Stack>
+        </Popover.Content>
+      </Popover>
+    ),
   },
 
   Button: {
