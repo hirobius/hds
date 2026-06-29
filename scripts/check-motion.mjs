@@ -105,6 +105,9 @@ function scanDir(dir) {
     const stat = statSync(full);
     if (stat.isDirectory()) { scanDir(full); continue; }
     if (extname(entry) !== '.tsx' && extname(entry) !== '.ts') continue;
+    // Test/spec files are not components — their JSX may reference interactive
+    // props (onChange/onClick) for assertions without being a real surface.
+    if (/\.(test|spec)\.tsx?$/.test(entry)) continue;
     if (SKIP.has(entry)) continue;
 
     const content = readFileSync(full, 'utf-8');

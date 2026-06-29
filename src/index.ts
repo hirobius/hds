@@ -30,6 +30,8 @@ export * from './app/components/component-instance-matrix';
 export * from './app/components/container';
 export * from './app/components/dialog';
 export * from './app/components/divider';
+export * from './app/components/menu';
+export * from './app/components/popover';
 export * from './app/components/doc-link-card';
 export * from './app/components/grid';
 export * from './app/components/heading-stack';
@@ -38,6 +40,10 @@ export * from './app/components/icon';
 export * from './app/components/inline-code';
 export * from './app/components/inline-link';
 export * from './app/components/input';
+export * from './app/components/checkbox';
+export * from './app/components/radio';
+export * from './app/components/slider';
+export * from './app/components/toggle';
 export * from './app/components/nav-item';
 export * from './app/components/progress';
 export * from './app/components/skeleton';
@@ -70,6 +76,7 @@ export * from './app/components/pagination';
 export * from './app/components/sketch';
 export * from './app/components/stepper-field';
 export * from './app/components/text-lockup';
+export * from './app/components/toast';
 
 // ── templates (4) ──
 // NOTE: ComponentDocPage and HdsSpecimenBlock are intentionally NOT part of the
