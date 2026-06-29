@@ -2,14 +2,14 @@
 /**
  * @tier utility
  */
-﻿// @doc-exempt: shell-only controls used by the app chrome, not consumer-facing HDS components.
+// @doc-exempt: shell-only controls used by the app chrome, not consumer-facing HDS components.
 /**
  * ShellControls - shell-only navigation controls documented as maintenance utilities.
  * @category Utilities
  */
 import React, { useState, useEffect, useRef } from 'react';
 import { Languages, Menu, X, Moon, Sun, type LucideIcon } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { useHdsRouter } from '../context/RouterContext';
 import { useLanguage } from '../context/LanguageContext';
 import hds from '../design-system/tokens';
 import { Grid } from './grid';
@@ -59,12 +59,14 @@ export function HdsSidebarUtilityButton({
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
-    background: variant === 'secondary'
-      ? 'var(--semantic-color-surface-overlay)'
-      : 'var(--semantic-color-surface-page)',
-    border: variant === 'secondary'
-      ? `${hds.borderWidth.default} solid var(--semantic-color-border-default)`
-      : 'none',
+    background:
+      variant === 'secondary'
+        ? 'var(--semantic-color-surface-overlay)'
+        : 'var(--semantic-color-surface-page)',
+    border:
+      variant === 'secondary'
+        ? `${hds.borderWidth.default} solid var(--semantic-color-border-default)`
+        : 'none',
   };
 
   const content = (
@@ -135,7 +137,7 @@ export function HdsMobileTopBar({
 }) {
   const { isRtl, toggleDirection } = useLanguage();
   const copy = shellCopy;
-  const navigate = useNavigate();
+  const { navigate } = useHdsRouter();
 
   // -- Scroll-aware show/hide --
   const [visible, setVisible] = useState(true);
@@ -156,8 +158,9 @@ export function HdsMobileTopBar({
       if (sidebarOpenRef.current) return; // locked while drawer is open
       const currentY = window.scrollY;
       const diff = currentY - lastScrollY.current;
-      if (diff > 8)       setVisible(false);   // scrolling down
-      else if (diff < -4) setVisible(true);    // scrolling up
+      if (diff > 8)
+        setVisible(false); // scrolling down
+      else if (diff < -4) setVisible(true); // scrolling up
       lastScrollY.current = currentY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -177,7 +180,8 @@ export function HdsMobileTopBar({
         left: 0,
         right: 0,
         height: mobileTopbarHeight,
-        background: 'color-mix(in srgb, var(--semantic-color-surface-page) 94%, var(--semantic-color-surface-accentSubtle) 6%)',
+        background:
+          'color-mix(in srgb, var(--semantic-color-surface-page) 94%, var(--semantic-color-surface-accentSubtle) 6%)',
         border: 'none',
         borderRadius: 0,
         backdropFilter: `blur(${hds.effect.blur.lightboxBackdrop})`,
@@ -189,10 +193,7 @@ export function HdsMobileTopBar({
       };
 
   return (
-    <Surface
-      padding="none"
-      style={shellStyle}
-    >
+    <Surface padding="none" style={shellStyle}>
       <Grid
         columns={2}
         gap="tight"

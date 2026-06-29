@@ -4,9 +4,9 @@
  * @tier primitive
  */
 import { useEffect, useState, type CSSProperties } from 'react';
-import { useNavigate } from 'react-router';
 import { ArrowRight, ArrowUpRight, type LucideIcon } from 'lucide-react';
 import { motion, useAnimationControls } from 'motion/react';
+import { useHdsRouter } from '../context/RouterContext';
 import { useLanguage } from '../context/LanguageContext';
 import hds from '../design-system/tokens';
 import { Icon } from './icon';
@@ -66,42 +66,35 @@ export function DocLinkCard({
   disabled = false,
   affordance = 'up-right',
 }: DocLinkCardProps) {
-  const navigate = useNavigate();
+  const { navigate } = useHdsRouter();
   const { isRtl } = useLanguage();
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const config = VARIANT_STYLES[variant];
-  const HeaderIcon = variant === 'pager'
-    ? (affordance === 'up-right' ? ArrowUpRight : ArrowRight)
-    : CardIcon;
+  const HeaderIcon =
+    variant === 'pager' ? (affordance === 'up-right' ? ArrowUpRight : ArrowRight) : CardIcon;
   const isInteractive = hovered || focused;
-  const affordanceRotation = affordance === 'left' ? (isRtl ? 0 : 180) : affordance === 'right' ? (isRtl ? 180 : 0) : 0;
+  const affordanceRotation =
+    affordance === 'left' ? (isRtl ? 0 : 180) : affordance === 'right' ? (isRtl ? 180 : 0) : 0;
   const headerIconControls = useAnimationControls();
   const pagerIconControls = useAnimationControls();
-  const metaTextStyle =
-    metaStyle === 'ui'
-      ? hds.typeStyles.ui
-      : hds.typeStyles.caption;
+  const metaTextStyle = metaStyle === 'ui' ? hds.typeStyles.ui : hds.typeStyles.caption;
 
   useEffect(() => {
-    const transition = { duration: hds.motion.productive.duration, ease: hds.motion.productive.easing };
+    const transition = {
+      duration: hds.motion.productive.duration,
+      ease: hds.motion.productive.easing,
+    };
 
     if (variant === 'pager') {
       void pagerIconControls.start(
-        isInteractive
-          ? { x: affordance === 'left' ? -4 : 4 }
-          : { x: 0 },
+        isInteractive ? { x: affordance === 'left' ? -4 : 4 } : { x: 0 },
         transition,
       );
       return;
     }
 
-    void headerIconControls.start(
-      isInteractive
-        ? { y: -3 }
-        : { y: 0 },
-      transition,
-    );
+    void headerIconControls.start(isInteractive ? { y: -3 } : { y: 0 }, transition);
   }, [affordance, headerIconControls, isInteractive, pagerIconControls, variant]);
 
   const headerRowStyle: CSSProperties = {
@@ -130,25 +123,43 @@ export function DocLinkCard({
       };
   const isLeftAffordance = affordance === 'left';
   const pagerTextAlign: CSSProperties['textAlign'] = isPager
-    ? (isLeftAffordance ? (isRtl ? 'right' : 'left') : (isRtl ? 'left' : 'right'))
+    ? isLeftAffordance
+      ? isRtl
+        ? 'right'
+        : 'left'
+      : isRtl
+        ? 'left'
+        : 'right'
     : undefined;
   const pagerContentStyle: CSSProperties = isPager
     ? {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-end',
-      textAlign: pagerTextAlign,
-      flex: 1,
-      minWidth: 0,
-      paddingTop: hds.semantic.space.layout.gap,
-    }
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        textAlign: pagerTextAlign,
+        flex: 1,
+        minWidth: 0,
+        paddingTop: hds.semantic.space.layout.gap,
+      }
     : {};
   const pagerIconWrapStyle: CSSProperties = isPager
     ? {
         position: 'absolute',
         top: config.padding,
-        left: isLeftAffordance ? (isRtl ? undefined : config.padding) : (isRtl ? config.padding : undefined),
-        right: isLeftAffordance ? (isRtl ? config.padding : undefined) : (isRtl ? undefined : config.padding),
+        left: isLeftAffordance
+          ? isRtl
+            ? undefined
+            : config.padding
+          : isRtl
+            ? config.padding
+            : undefined,
+        right: isLeftAffordance
+          ? isRtl
+            ? config.padding
+            : undefined
+          : isRtl
+            ? undefined
+            : config.padding,
       }
     : {};
 
@@ -180,15 +191,14 @@ export function DocLinkCard({
     >
       {isPager ? (
         <>
-          <motion.span
-            style={pagerIconWrapStyle}
-            animate={pagerIconControls}
-          >
+          <motion.span style={pagerIconWrapStyle} animate={pagerIconControls}>
             <Icon
               icon={HeaderIcon}
               size="small"
               color="var(--semantic-color-content-accent)"
-              style={affordanceRotation ? { transform: `rotate(${affordanceRotation}deg)` } : undefined}
+              style={
+                affordanceRotation ? { transform: `rotate(${affordanceRotation}deg)` } : undefined
+              }
             />
           </motion.span>
           <div style={pagerContentStyle}>
@@ -217,15 +227,17 @@ export function DocLinkCard({
               >
                 {meta}
               </p>
-            ) : <span />}
-            <motion.span
-              animate={headerIconControls}
-            >
+            ) : (
+              <span />
+            )}
+            <motion.span animate={headerIconControls}>
               <Icon
                 icon={HeaderIcon}
                 size="small"
                 color="var(--semantic-color-content-accent)"
-                style={affordanceRotation ? { transform: `rotate(${affordanceRotation}deg)` } : undefined}
+                style={
+                  affordanceRotation ? { transform: `rotate(${affordanceRotation}deg)` } : undefined
+                }
               />
             </motion.span>
           </div>
@@ -240,7 +252,14 @@ export function DocLinkCard({
               {title}
             </p>
             {description ? (
-              <p style={{ ...bodyTextStyle, margin: 0, maxWidth: variant === 'feature' ? 500 : undefined, color: 'var(--semantic-color-content-secondary)' }}>
+              <p
+                style={{
+                  ...bodyTextStyle,
+                  margin: 0,
+                  maxWidth: variant === 'feature' ? 500 : undefined,
+                  color: 'var(--semantic-color-content-secondary)',
+                }}
+              >
                 {description}
               </p>
             ) : null}

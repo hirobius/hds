@@ -4,6 +4,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import ErrorPage from './pages/ErrorPage';
 import InfoPageWrapper from './pages/InfoPageWrapper';
 import HDSLayout from './pages/hds/HDSLayout';
+import { ReactRouterBridge } from './context/ReactRouterBridge';
 
 // ── HDS doc pages — lazy loaded ───────────────────────────────────────────────
 // This is the standalone Hirobius Design System documentation site. Each page
@@ -79,7 +80,15 @@ function LegacyPrefixRedirect() {
 export const routeTree = [
   {
     path: '/',
-    Component: HDSLayout,
+    // ReactRouterBridge mounts the HDS RouterContext adapter at the root so every
+    // HDS component below gets client-side navigation in both the client
+    // (createBrowserRouter) and SSR (createMemoryRouter) trees. It MUST sit
+    // inside the router (it reads useNavigate/useLocation) and wrap HDSLayout.
+    element: (
+      <ReactRouterBridge>
+        <HDSLayout />
+      </ReactRouterBridge>
+    ),
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Navigate to="/color" replace /> },

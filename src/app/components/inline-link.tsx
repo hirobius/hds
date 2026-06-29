@@ -4,9 +4,9 @@
  * @tier primitive
  */
 import React from 'react';
-import { Link } from 'react-router';
 import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';
 import hds from '../design-system/tokens';
+import { useHdsRouter } from '../context/RouterContext';
 import { Icon } from './icon';
 
 interface InlineLinkProps {
@@ -35,11 +35,12 @@ interface InlineLinkProps {
 
 /** @public */
 export function InlineLink({ href, children, externalIcon = true }: InlineLinkProps) {
+  const { LinkComponent } = useHdsRouter();
   if (href.startsWith('/')) {
     return (
-      <Link to={href} className="hds-link">
+      <LinkComponent to={href} className="hds-link">
         {children}
-      </Link>
+      </LinkComponent>
     );
   }
 

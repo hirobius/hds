@@ -82,3 +82,13 @@ export { default as tokens } from '../hirobius.tokens.json';
 
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
+
+// ── Router adapter seam (router-free by default; inject your router once) ──
+export { HdsRouterProvider, useHdsRouter } from './app/context/RouterContext';
+export type {
+  HdsRouterAdapter,
+  HdsRouterProviderProps,
+  HdsLinkComponent,
+  HdsLinkProps,
+  HdsNavigateOptions,
+} from './app/context/RouterContext';

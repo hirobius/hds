@@ -25,9 +25,9 @@
  */
 
 import * as React from 'react';
-import { useNavigate } from 'react-router';
 import systemManifestData from 'virtual:hds-manifest';
 import { cn } from '../../lib/utils';
+import { useHdsRouter } from '../context/RouterContext';
 import {
   buildIndex,
   rank,
@@ -55,7 +55,7 @@ export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteP
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = React.useState('');
     const [activeIndex, setActiveIndex] = React.useState(0);
-    const navigate = useNavigate();
+    const { navigate } = useHdsRouter();
 
     const index = React.useMemo(() => buildIndex(MANIFEST), []);
     const results = React.useMemo(() => rank(query, index), [query, index]);
