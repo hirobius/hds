@@ -76,6 +76,7 @@ export * from './app/components/pagination';
 export * from './app/components/sketch';
 export * from './app/components/stepper-field';
 export * from './app/components/text-lockup';
+export * from './app/components/toast';
 
 // ── templates (4) ──
 // NOTE: ComponentDocPage and HdsSpecimenBlock are intentionally NOT part of the

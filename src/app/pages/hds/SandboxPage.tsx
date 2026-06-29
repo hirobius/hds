@@ -12,7 +12,7 @@
 /* hds-bypass: error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */
 
 import { useSearchParams } from 'react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Button } from '../../components/button';
 import { Badge } from '../../components/badge';
@@ -31,6 +31,7 @@ import { Pagination } from '../../components/pagination';
 import { HdsCheckbox } from '../../components/checkbox';
 import { Popover } from '../../components/popover';
 import { Menu } from '../../components/menu';
+import { ToastProvider, useToast } from '../../components/toast';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -43,6 +44,24 @@ type ComponentEntry = { default: RenderFn; [variant: string]: RenderFn };
 function PaginationDemo() {
   const [page, setPage] = useState(3);
   return <Pagination page={page} count={10} onPageChange={setPage} />;
+}
+
+// Toast is imperative; fire one on mount so the sandbox shows a live specimen.
+function ToastFire() {
+  const { toast } = useToast();
+  useEffect(() => {
+    toast({ title: 'Saved', description: 'Your changes were saved.', tone: 'success' });
+  }, [toast]);
+  return <Button variant="secondary" onClick={() => toast({ title: 'Saved', tone: 'success' })}>
+    Show toast
+  </Button>;
+}
+function ToastDemo() {
+  return (
+    <ToastProvider>
+      <ToastFire />
+    </ToastProvider>
+  );
 }
 
 // Checkbox is controlled; small stateful wrappers give the sandbox live demos.
@@ -119,6 +138,10 @@ const REGISTRY: Record<string, ComponentEntry> = {
         </Popover.Content>
       </Popover>
     ),
+  },
+
+  Toast: {
+    default: () => <ToastDemo />,
   },
 
   Menu: {

@@ -5,9 +5,9 @@
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
 | eslint-disable | 49 | 49 | 0 |
-| @ts-ignore/@ts-expect-error | 2 | 2 | 0 |
+| @ts-ignore/@ts-expect-error | 4 | 4 | 0 |
 | custom-sentinels (*-ok / hds-bypass) | 126 | 124 | 2 |
-| **Total** | **177** | **175** | **2** |
+| **Total** | **179** | **177** | **2** |
 
 ## eslint-disable
 
@@ -69,6 +69,8 @@
 |------|------|------|--------|--------|
 | `src/app/components/menu.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/popover.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
+| `src/app/components/toast.test.tsx` | 12 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix Toast.` | justified |
+| `src/app/components/toast.test.tsx` | 19 | `@ts-expect-error` | `— partial matchMedia stub.` | justified |
 
 ## custom-sentinels (*-ok / hds-bypass)
 
@@ -149,8 +151,8 @@
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 126 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 127 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/SandboxPage.tsx` | 12 | `hds-bypass` | `error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 307 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 310 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 330 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 333 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
 | `src/app/pages/hds/SpacingPage.tsx` | 255 | `hds-bypass` | `demo-grid-visualization — explicit pixel values intentionally show the 8px grid step */}` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 1 | `hds-bypass` | `test page with hardcoded demo styles for visual audit */` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 2 | `font-ok` | `spacing test page intentionally uses monospace demo labels during visual inspection` | justified |
@@ -203,8 +205,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 177
-- **Justified (reason >= 10 chars):** 175
+- **Total suppressions:** 179
+- **Justified (reason >= 10 chars):** 177
 - **Untriaged (reason < 10 chars or missing):** 2
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.
