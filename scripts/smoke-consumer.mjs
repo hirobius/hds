@@ -13,6 +13,12 @@
  *   3. From inside that scratch app, RESOLVE every public subpath against the
  *      package `exports` map, and IMPORT every JS subpath, asserting the headline
  *      symbols are present.
+ *   3b. RENDER probe (jsdom): mount real components (Button, Spinner) via
+ *      renderToStaticMarkup, exercise the router seam (anchor fallback with no
+ *      provider + custom LinkComponent injection + window.location currentPath),
+ *      and assert tokens.css still ships the token vars, embedded woff2 fonts,
+ *      and [data-hds] scoping. Catches the font/CSS/router-context regressions
+ *      the resolve+import probe cannot see.
  *
  * Subpaths covered (must stay in sync with package.json#exports):
  *   '.'            → main barrel (Button, Card, …)
@@ -100,6 +106,9 @@ run(
     'react@^18.3',
     'react-dom@^18.3',
     'react-router@^7',
+    // jsdom backs the render probe below (real browser globals so the router
+    // fallback's window.location path executes as a consumer would hit it).
+    'jsdom@^25',
     '--no-audit',
     '--no-fund',
     '--loglevel',
@@ -167,12 +176,107 @@ console.log('\\n[probe] all subpaths resolved + imported.');
 
 writeFileSync(join(app, 'probe.mjs'), probe);
 
+// ── 3b. Render probe — mount components in a jsdom DOM ────────────────────────
+// The resolve+import probe above proves the package wires up; it does NOT prove
+// a component actually renders, that the router seam works without a router, or
+// that tokens.css still carries the tokens/fonts/scoping a consumer depends on.
+// This probe closes those gaps (catches the font/CSS/router-context regressions
+// the import-only smoke missed). It uses renderToStaticMarkup under a jsdom
+// window so the browser code paths (router fallback's window.location) execute.
+const renderProbe = `
+import { strict as assert } from 'node:assert';
+import { readFileSync } from 'node:fs';
+import { JSDOM } from 'jsdom';
+
+const PKG = ${JSON.stringify(PKG)};
+const failures = [];
+function check(name, fn) {
+  try { fn(); console.log('  render ok   ' + name); }
+  catch (err) { failures.push(name + ': ' + err.message); console.log('  render FAIL ' + name + ': ' + err.message); }
+}
+
+// Real browser globals — the router fallback reads window.location, so a
+// consumer with no <HdsRouterProvider> exercises this exact path.
+const dom = new JSDOM('<!doctype html><html data-hds><body></body></html>', { url: 'https://example.test/job/42' });
+globalThis.window = dom.window;
+globalThis.document = dom.window.document;
+
+const React = (await import('react')).default;
+const { renderToStaticMarkup } = await import('react-dom/server');
+const hds = await import(PKG);
+
+check('Button mounts and renders its label', () => {
+  const html = renderToStaticMarkup(React.createElement(hds.Button, null, 'Click me'));
+  assert.ok(html.includes('Click me'), 'button label missing');
+  assert.ok(html.includes('<button'), 'no <button> element rendered');
+});
+
+check('Spinner mounts with role=status', () => {
+  const html = renderToStaticMarkup(React.createElement(hds.Spinner, null));
+  assert.ok(html.includes('role="status"'), 'spinner role missing');
+});
+
+check('InlineLink falls back to a real anchor with no router', () => {
+  const html = renderToStaticMarkup(React.createElement(hds.InlineLink, { href: '/docs' }, 'Docs'));
+  assert.ok(/<a [^>]*href="\\/docs"/.test(html), 'anchor href fallback missing: ' + html);
+});
+
+check('HdsRouterProvider injects a custom LinkComponent', () => {
+  const adapter = {
+    navigate: () => {},
+    currentPath: '/job/42',
+    LinkComponent: ({ to, children }) =>
+      React.createElement('a', { 'data-injected': 'yes', href: to }, children),
+  };
+  const tree = React.createElement(
+    hds.HdsRouterProvider,
+    { adapter },
+    React.createElement(hds.InlineLink, { href: '/x' }, 'X'),
+  );
+  assert.ok(renderToStaticMarkup(tree).includes('data-injected="yes"'), 'custom LinkComponent not used');
+});
+
+check('useHdsRouter reads window.location for currentPath (no provider)', () => {
+  const Probe = () => {
+    const { currentPath } = hds.useHdsRouter();
+    return React.createElement('span', null, currentPath);
+  };
+  assert.ok(renderToStaticMarkup(React.createElement(Probe)).includes('/job/42'), 'currentPath did not read window.location');
+});
+
+check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
+  const cssPath = decodeURIComponent(import.meta.resolve(PKG + '/tokens.css').replace(/^file:\\/\\//, ''));
+  const css = readFileSync(cssPath, 'utf8');
+  assert.ok(css.includes('--semantic-color-surface-page'), 'token var missing from tokens.css');
+  assert.ok(css.includes('@font-face'), 'no @font-face in tokens.css');
+  assert.ok(css.includes('data:font/woff2'), 'fonts not embedded (P0.3 regression)');
+  assert.ok(css.includes('[data-hds]'), 'base styles not scoped to [data-hds] (P0.5 regression)');
+});
+
+if (failures.length) {
+  console.error('\\n[render-probe] ' + failures.length + ' failure(s).');
+  process.exit(1);
+}
+console.log('\\n[render-probe] component mount + router-seam + CSS/font checks passed.');
+`;
+
+writeFileSync(join(app, 'probe-render.mjs'), renderProbe);
+
 log('running consumer probe…');
 let ok = true;
 try {
   run('node', ['probe.mjs'], { cwd: app, stdio: 'inherit' });
 } catch {
   ok = false;
+}
+
+if (ok) {
+  log('running render probe (jsdom mount + router seam + CSS)…');
+  try {
+    run('node', ['probe-render.mjs'], { cwd: app, stdio: 'inherit' });
+  } catch {
+    ok = false;
+  }
 }
 
 // ── 4. Report + cleanup ──────────────────────────────────────────────────────
