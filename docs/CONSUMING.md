@@ -6,10 +6,17 @@ is the canonical consumption guide — point other teams here.
 | | |
 |---|---|
 | **Package** | `@hirobius/design-system` |
-| **Current version** | `0.4.0` |
+| **Min. version for this guide** | `0.7.0` (router optional, fonts bundled, scoped base styles) |
 | **Module format** | ESM only (`"type": "module"`) |
 | **Registry** | **GitHub Packages** (`https://npm.pkg.github.com`) — *not* public npm |
-| **Peers** | `react` ^18.3 ‖ ^19 · `react-dom` (match) · `react-router` ^7 |
+| **Peers** | `react` ^18.3 ‖ ^19 · `react-dom` (match) · `react-router` ^7 *(optional)* |
+
+> **What changed in 0.7.0** — three things make HDS drop-in for a plain app:
+> 1. **`react-router` is now optional** — components route through an adapter and
+>    fall back to plain anchors when no router is provided (§5).
+> 2. **Fonts are bundled** — `tokens.css` embeds the typefaces; no font files to copy (§3).
+> 3. **Base styles are scoped to `[data-hds]`** — add that attribute to your root
+>    or section so HDS doesn't fight a host app's resets/fonts (§4, §6).
 
 ---
 
@@ -45,26 +52,106 @@ export NODE_AUTH_TOKEN=ghp_your_token_here
 
 ```bash
 npm install @hirobius/design-system
-npm install react react-dom react-router      # peer dependencies
+npm install react react-dom            # required peers
 ```
 
 (`pnpm add` / `yarn add` work identically and read the same `.npmrc`.)
 
-`react-router` ^7 is a **hard peer**: nav/link components import from it, and the
-consuming app must mount a `<Router>` (e.g. `BrowserRouter`) somewhere above any
-HDS component that links — even apps that don't otherwise route.
+`react-router` is an **optional** peer. You only install it if you want HDS's
+nav/link components to drive client-side navigation through your router — see
+§5. With no router, links render as plain `<a>` and work everywhere.
 
 ## 3. Import the base stylesheet (once, at the app root)
-
-Base styles (tokens + theme + utilities) auto-load as a side-effect of importing
-any component, but importing the token stylesheet explicitly at your entry point
-is the canonical, order-stable setup:
 
 ```ts
 import '@hirobius/design-system/tokens.css';
 ```
 
-## 4. Use it
+`tokens.css` is the **complete** style bundle — design tokens (CSS custom
+properties), the light/dark theme, the utility classes the components use, and
+`@font-face` rules with the **Satoshi / Clash Display / Geist Mono** typefaces
+**embedded** in the file. Consequences:
+
+- **No Tailwind config required** in the consumer — the utilities ship compiled.
+- **No font files to copy** — the woff2 are bundled into `tokens.css` (the file
+  is correspondingly larger, ~110KB gzipped). Fonts render with zero setup.
+
+Importing any component also pulls the styles in as a side-effect, but importing
+`tokens.css` explicitly at the entry point is the canonical, order-stable setup.
+
+## 4. Mark your HDS scope with `data-hds`
+
+As of 0.7.0 the base styles (element resets, the body/heading type baseline, the
+theme-change transition) are scoped to a **`[data-hds]`** subtree so they don't
+collide with a host app's own resets or fonts. Add the attribute to the element
+that should host HDS:
+
+```html
+<!-- whole app uses HDS -->
+<html data-hds> … </html>
+```
+
+```tsx
+// or just a section of an otherwise non-HDS app
+<div data-hds>
+  <Button>Inside HDS scope</Button>
+</div>
+```
+
+Without `data-hds`, components still get their own token-driven styling, but the
+global type baseline and resets won't apply (text falls back to the host font).
+Put `data-hds` as high as makes sense — on `<html>`/`<body>` for an
+HDS-first app, or on a wrapper for a section. (Overlays that portal to
+`document.body` — Dialog, Tooltip, Popover — sit outside a `<div>` scope; for
+those, scope at `<html>`/`<body>` or add `data-hds` to your portal container.
+See [ADR-016](adr/016-scoped-base-styles.md).)
+
+## 5. Routing — optional, via the adapter seam
+
+HDS components never import a router. Navigation comes from an injectable
+adapter:
+
+- **No router (default).** Do nothing. Links are real `<a href>`; in-app
+  navigation falls back to `window.location`. Perfect for a plain Vite/React
+  app or any page that doesn't need SPA nav.
+- **react-router / Next.js / any router.** Wrap your app once and bridge your
+  router into the adapter:
+
+```tsx
+import { HdsRouterProvider, type HdsRouterAdapter } from '@hirobius/design-system';
+import { useNavigate, useLocation, Link } from 'react-router';
+
+function HdsRouting({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const adapter: HdsRouterAdapter = {
+    navigate: (href, opts) => navigate(href, opts),
+    currentPath: pathname,
+    LinkComponent: ({ to, children, ...rest }) => <Link to={to} {...rest}>{children}</Link>,
+  };
+  return <HdsRouterProvider adapter={adapter}>{children}</HdsRouterProvider>;
+}
+```
+
+`useHdsRouter()` is also exported if you build your own components on the seam.
+
+## 6. Coexisting with MUI / Emotion / another global CSS
+
+If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
+**don't** apply HDS globally:
+
+- Scope HDS to a section with `data-hds` (§4) rather than `<html>`, so HDS's
+  base styles only affect that subtree.
+- Don't expect HDS and `<CssBaseline>` to share `<body>` cleanly — pick one type
+  system per surface. HDS's namespaced custom properties (`--semantic-*`,
+  `--primitive-*`, `--hds-*`) won't collide with MUI's, but the two opinionated
+  resets will fight if both target `body`.
+- **Known limitation (this release):** Tailwind's preflight reset still ships
+  globally in `tokens.css` (it resets `margin`/`padding`/`border` on all
+  elements). Scoping it is a documented follow-up (ADR-016). Until then, in a
+  shared-page setup, load `tokens.css` knowing the preflight is global.
+
+## 7. Use it
 
 ```tsx
 import { Button, Card, Badge } from '@hirobius/design-system';
@@ -74,10 +161,12 @@ import manifest from '@hirobius/design-system/manifest';
 
 export function Example() {
   return (
-    <Card>
-      <Badge tone="accent">New</Badge>
-      <Button className={cn('mt-4')}>Get started</Button>
-    </Card>
+    <div data-hds>
+      <Card>
+        <Badge tone="accent">New</Badge>
+        <Button className={cn('mt-4')}>Get started</Button>
+      </Card>
+    </div>
   );
 }
 ```
@@ -86,14 +175,14 @@ export function Example() {
 
 | Import | What you get |
 |---|---|
-| `@hirobius/design-system` | All public components (primitives, patterns, templates) |
-| `@hirobius/design-system/tokens.css` | The base stylesheet (CSS custom properties + theme) |
+| `@hirobius/design-system` | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`) |
+| `@hirobius/design-system/tokens.css` | The complete stylesheet (tokens + theme + utilities + embedded fonts) |
 | `@hirobius/design-system/tokens` | Design-token values as typed TS |
 | `@hirobius/design-system/cn` | The `cn()` className-merge helper |
 | `@hirobius/design-system/manifest` | Machine-readable component inventory (`hds-manifest.json`) |
-| `@hirobius/design-system/contexts` | React context providers (see below) |
+| `@hirobius/design-system/contexts` | React context providers, incl. the router seam (see below) |
 
-## 5. Optional providers — theming / i18n / multi-tenant / fonts
+## 8. Optional providers — theming / i18n / multi-tenant / fonts
 
 Only needed if you use those features. Mount them above your app:
 
@@ -111,7 +200,10 @@ import {
 </TenantProvider>;
 ```
 
-## 6. TypeScript & bundler requirements
+`ThemeProvider` toggles light/dark by setting `data-theme` + `.dark` on
+`<html>`. It does not set `data-hds` — add that yourself (§4).
+
+## 9. TypeScript & bundler requirements
 
 - **ESM-only.** Use a modern bundler (Vite, Next, Rspack, etc.). `require()` /
   CommonJS resolution will not work.
@@ -124,6 +216,8 @@ import {
 | Symptom | Cause / fix |
 |---|---|
 | `npm ERR! 404` on install | `.npmrc` scope/registry not set, or token missing `read:packages` (see §1). |
-| `ERR_REQUIRE_ESM` / `require() of ES Module` | Consumer is CommonJS — switch to an ESM bundler (§6). |
-| `useNavigate()/<Link> … outside a <Router>` | Mount a Router above HDS components, and install `react-router` ^7 (§2). |
-| Components render unstyled | Import `@hirobius/design-system/tokens.css` at the app root (§3). |
+| `ERR_REQUIRE_ESM` / `require() of ES Module` | Consumer is CommonJS — switch to an ESM bundler (§9). |
+| Components render unstyled / wrong font | Import `@hirobius/design-system/tokens.css` at the app root (§3) **and** add `data-hds` to your root or section (§4). |
+| Text uses the host font, not Satoshi | Missing `data-hds` on an ancestor (§4). |
+| In-app links do a full page reload | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5). |
+| Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible. |

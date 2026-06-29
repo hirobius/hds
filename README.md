@@ -15,13 +15,26 @@ The short version:
 ```
 
 ```bash
-npm install @hirobius/design-system react react-dom react-router
+npm install @hirobius/design-system react react-dom
+# react-router is an OPTIONAL peer — only if you want HDS links to drive your router
 ```
 
-```ts
+```tsx
+// once at the app root — full bundle: tokens + theme + utilities + embedded fonts
 import '@hirobius/design-system/tokens.css';
 import { Button } from '@hirobius/design-system';
+
+// add data-hds to the root (or any section) so the scoped base styles apply
+export const App = () => (
+  <div data-hds>
+    <Button>Get started</Button>
+  </div>
+);
 ```
+
+No router, Tailwind config, or font files needed. With a router, inject it once
+via `<HdsRouterProvider>`. See **[docs/CONSUMING.md](docs/CONSUMING.md)** for the
+router seam, `data-hds` scoping, and MUI coexistence.
 
 ## Developing this repo
 
