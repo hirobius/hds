@@ -16,6 +16,7 @@ import './styles/index.css';
 // ── primitives (29) ──
 export * from './app/components/alert';
 export * from './app/components/asset-img';
+export * from './app/components/avatar';
 export * from './app/components/badge';
 export * from './app/components/button';
 export * from './app/components/callout';
@@ -38,6 +39,9 @@ export * from './app/components/inline-code';
 export * from './app/components/inline-link';
 export * from './app/components/input';
 export * from './app/components/nav-item';
+export * from './app/components/progress';
+export * from './app/components/skeleton';
+export * from './app/components/spinner';
 export * from './app/components/segmented-control';
 export * from './app/components/stack';
 export * from './app/components/surface';

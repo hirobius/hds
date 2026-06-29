@@ -21,6 +21,10 @@ import { Surface } from '../../components/surface';
 import { Stack } from '../../components/stack';
 import { TextLockup } from '../../components/text-lockup';
 import { Input } from '../../components/input';
+import { Spinner } from '../../components/spinner';
+import { Skeleton } from '../../components/skeleton';
+import { Progress } from '../../components/progress';
+import { Avatar } from '../../components/avatar';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -30,6 +34,35 @@ type RenderFn = () => ReactNode;
 type ComponentEntry = { default: RenderFn; [variant: string]: RenderFn };
 
 const REGISTRY: Record<string, ComponentEntry> = {
+  Spinner: {
+    default: () => <Spinner />,
+    sm: () => <Spinner size="sm" />,
+    md: () => <Spinner size="md" />,
+    lg: () => <Spinner size="lg" />,
+  },
+
+  Skeleton: {
+    default: () => <Skeleton width={240} height={16} />,
+    text: () => <Skeleton variant="text" width={200} />,
+    rectangular: () => <Skeleton variant="rectangular" width={240} height={120} />,
+    circular: () => <Skeleton variant="circular" width={48} height={48} />,
+  },
+
+  Progress: {
+    default: () => <Progress value={60} />,
+    determinate: () => <Progress value={40} />,
+    indeterminate: () => <Progress value={null} />,
+    sm: () => <Progress value={60} size="sm" />,
+    lg: () => <Progress value={60} size="lg" />,
+  },
+
+  Avatar: {
+    default: () => <Avatar alt="Adrian Milsap" />,
+    initials: () => <Avatar alt="Adrian Milsap" />,
+    sm: () => <Avatar alt="Adrian Milsap" size="sm" />,
+    lg: () => <Avatar alt="Adrian Milsap" size="lg" />,
+  },
+
   Button: {
     default: () => <Button variant="primary">Label</Button>,
     primary: () => <Button variant="primary">Label</Button>,
