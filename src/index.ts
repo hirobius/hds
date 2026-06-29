@@ -30,6 +30,7 @@ export * from './app/components/component-instance-matrix';
 export * from './app/components/container';
 export * from './app/components/dialog';
 export * from './app/components/divider';
+export * from './app/components/menu';
 export * from './app/components/popover';
 export * from './app/components/doc-link-card';
 export * from './app/components/grid';

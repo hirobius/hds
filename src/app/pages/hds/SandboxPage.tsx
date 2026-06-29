@@ -30,6 +30,7 @@ import { Breadcrumb } from '../../components/breadcrumb';
 import { Pagination } from '../../components/pagination';
 import { HdsCheckbox } from '../../components/checkbox';
 import { Popover } from '../../components/popover';
+import { Menu } from '../../components/menu';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -117,6 +118,23 @@ const REGISTRY: Record<string, ComponentEntry> = {
           </Stack>
         </Popover.Content>
       </Popover>
+    ),
+  },
+
+  Menu: {
+    default: () => (
+      <Menu defaultOpen>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Actions</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          <Menu.Label>Account</Menu.Label>
+          <Menu.Item>Profile</Menu.Item>
+          <Menu.Item>Settings</Menu.Item>
+          <Menu.Separator />
+          <Menu.Item disabled>Sign out</Menu.Item>
+        </Menu.Content>
+      </Menu>
     ),
   },
 

@@ -2034,6 +2034,7 @@
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/components/lab/token-detail.tsx",
         "src/app/components/lab/tokenUtils.ts",
+        "src/app/components/menu.tsx",
         "src/app/components/select.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/text-lockup.tsx",
@@ -4629,6 +4630,7 @@
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
+        "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/table.stories.tsx"
