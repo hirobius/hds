@@ -7,10 +7,7 @@ import { Table } from '../../components/table';
 import { Stack } from '../../components/stack';
 import { Surface } from '../../components/surface';
 import { Text } from '../../components/text';
-import {
-  HdsFoundationSection,
-  useIsMobile,
-} from './HdsDocPrimitives';
+import { HdsFoundationSection, useIsMobile } from './HdsDocPrimitives';
 import { FoundationDocPage } from './FoundationDocPage';
 
 type BreakpointRow = {
@@ -34,39 +31,39 @@ const BP_TRACK_HEIGHT = 4;
 const BP_TICK_WIDTH = 2;
 
 const breakpointRulerStyle = {
-  position:     'relative',
-  width:        '100%',
-  height:       72,
+  position: 'relative',
+  width: '100%',
+  height: 72,
   marginBottom: hds.semantic.space.layout.gap,
 } as const;
 
 const bpTrackStyle = {
-  position:     'absolute' as const,
-  top:          hds.semantic.space.layout.gap,
-  left:         0,
-  height:       BP_TRACK_HEIGHT,
+  position: 'absolute' as const,
+  top: hds.semantic.space.layout.gap,
+  left: 0,
+  height: BP_TRACK_HEIGHT,
   borderRadius: hds.borderRadius[2],
 } as const;
 
 const breakpointMarkerStyle = {
-  position:      'absolute' as const,
-  top:           0,
-  transform:     'translateX(-50%)',
-  display:       'flex',
+  position: 'absolute' as const,
+  top: 0,
+  transform: 'translateX(-50%)',
+  display: 'flex',
   flexDirection: 'column' as const,
-  alignItems:    'center',
-  gap:           hds.semantic.space.subgrid.gap,
+  alignItems: 'center',
+  gap: hds.semantic.space.subgrid.gap,
 } as const;
 
 const breakpointTickStyle = {
-  width:      BP_TICK_WIDTH,
-  height:     hds.size[20],
+  width: BP_TICK_WIDTH,
+  height: hds.size[20],
 } as const;
 
 const breakpointMetaRowStyle = {
-  display:      'flex',
-  alignItems:   'baseline',
-  gap:          hds.semantic.space.subgrid.gap,
+  display: 'flex',
+  alignItems: 'baseline',
+  gap: hds.semantic.space.subgrid.gap,
   marginBottom: hds.semantic.space.subgrid.gap,
 } as const;
 
@@ -98,7 +95,12 @@ function BreakpointRuler({ isDark }: { isDark: boolean }) {
           <div key={bp.name} style={{ ...breakpointMarkerStyle, left: `${pct}%` }}>
             <span style={{ ...hds.typeStyles.technical, whiteSpace: 'nowrap' }}>{bp.name}</span>
             <Surface padding="item" style={{ ...breakpointTickStyle, background: tickColor }} />
-            <span className="text-primary" style={{ ...hds.typeStyles.technical, whiteSpace: 'nowrap' }}>{bp.px}</span>
+            <span
+              className="text-primary"
+              style={{ ...hds.typeStyles.technical, whiteSpace: 'nowrap' }}
+            >
+              {bp.px}
+            </span>
           </div>
         );
       })}
@@ -120,48 +122,96 @@ export default function BreakpointsPage() {
         intro="The responsive scale is small on purpose so layout changes stay predictable across documentation and product surfaces."
         marginTop={0}
       >
-          <BreakpointRuler isDark={isDark} />
+        <BreakpointRuler isDark={isDark} />
 
-          {isMobile ? (
-            <Stack gap="gap">
-              {BP_ROWS.map((bp) => (
-                <Stack key={bp.name} gap="xs">
-                  <div style={breakpointMetaRowStyle}>
-                    <Text variant="heading3" as="span" style={{ color: 'var(--semantic-color-content-primary)' }}>{bp.name}</Text>
-                    <Text variant="body" as="span" style={{ color: 'var(--semantic-color-content-secondary)', fontVariantNumeric: 'tabular-nums' }}>{bp.px}px</Text>
-                    {bp.utility !== '-' && <Text variant="caption" as="span" style={{ color: 'var(--semantic-color-content-disabled)', marginLeft: 'auto' }}>{bp.utility}</Text>}
-                  </div>
-                  <div>
-                    <Token variant="node">{bp.token}</Token>
-                  </div>
-                  <Text variant="caption" as="p" style={{ color: 'var(--semantic-color-content-secondary)' }}>{bp.notes}</Text>
-                </Stack>
-              ))}
-            </Stack>
-          ) : (
-            <>
-              <Table
-                caption="Breakpoint reference"
-                columns={[
-                  { key: 'token', label: 'Token', width: '36%' },
-                  { key: 'px', label: 'Min width', width: '14%' },
-                  { key: 'notes', label: 'Layout behavior', width: '50%' },
-                ]}
-                rows={BP_ROWS.map((bp) => ({
-                  key: bp.name,
-                  cells: [
-                    { slot: 'token', content: <Token variant="node">{bp.token}</Token> },
-                    { slot: 'code', content: bp.px },
-                    { slot: 'description', content: bp.notes },
-                  ],
-                }))}
-              />
-            </>
-          )}
-          <Text variant="body" as="p" style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: hds.size.width['760'] }}>
-            Breakpoints control layout shifts, not component identity. Use the same named values in CSS and JS, and avoid page-specific width rules when a named breakpoint already exists.
-          </Text>
+        {isMobile ? (
+          <Stack gap="gap">
+            {BP_ROWS.map((bp) => (
+              <Stack key={bp.name} gap="xs">
+                <div style={breakpointMetaRowStyle}>
+                  <Text
+                    variant="heading3"
+                    as="span"
+                    style={{ color: 'var(--semantic-color-content-primary)' }}
+                  >
+                    {bp.name}
+                  </Text>
+                  <Text
+                    variant="body"
+                    as="span"
+                    style={{
+                      color: 'var(--semantic-color-content-secondary)',
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {bp.px}px
+                  </Text>
+                  {bp.utility !== '-' && (
+                    <Text
+                      variant="caption"
+                      as="span"
+                      style={{
+                        color: 'var(--semantic-color-content-disabled)',
+                        marginLeft: 'auto',
+                      }}
+                    >
+                      {bp.utility}
+                    </Text>
+                  )}
+                </div>
+                <div>
+                  <Token variant="node">{bp.token}</Token>
+                </div>
+                <Text
+                  variant="caption"
+                  as="p"
+                  style={{ color: 'var(--semantic-color-content-secondary)' }}
+                >
+                  {bp.notes}
+                </Text>
+              </Stack>
+            ))}
+          </Stack>
+        ) : (
+          <>
+            <Table
+              caption="Breakpoint reference"
+              columns={[
+                { key: 'token', label: 'Token', width: '36%' },
+                { key: 'px', label: 'Min width', width: '14%' },
+                { key: 'notes', label: 'Layout behavior', width: '50%' },
+              ]}
+              rows={BP_ROWS.map((bp) => ({
+                key: bp.name,
+                cells: [
+                  { slot: 'token', content: <Token variant="node">{bp.token}</Token> },
+                  { slot: 'code', content: bp.px },
+                  { slot: 'description', content: bp.notes },
+                ],
+              }))}
+            />
+          </>
+        )}
+        <Text
+          variant="body"
+          as="p"
+          style={{
+            color: 'var(--semantic-color-content-secondary)',
+            maxWidth: hds.size.width['760'],
+          }}
+        >
+          Breakpoints control layout shifts, not component identity. Use the same named values in
+          CSS and JS, and avoid page-specific width rules when a named breakpoint already exists.
+        </Text>
       </HdsFoundationSection>
     </FoundationDocPage>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/breakpoints',
+  title: 'Breakpoints',
+  section: 'Foundations',
+  order: 7,
+} satisfies import('../../data/nav-model').HdsPageMeta;

@@ -145,3 +145,11 @@ export default function ActionsPage() {
     </ComponentDocPageShell>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/components/actions',
+  title: 'Actions',
+  section: 'Components',
+  order: 1,
+} satisfies import('../../../data/nav-model').HdsPageMeta;

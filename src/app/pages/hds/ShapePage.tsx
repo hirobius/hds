@@ -4,11 +4,7 @@ import { FoundationSwatch } from '../../components/foundation-swatch';
 import { Grid } from '../../components/grid';
 import { Table } from '../../components/table';
 import { Token } from '../../components/token';
-import {
-  HdsFoundationSection,
-  HdsFoundationTableStack,
-  useIsMobile,
-} from './HdsDocPrimitives';
+import { HdsFoundationSection, HdsFoundationTableStack, useIsMobile } from './HdsDocPrimitives';
 import { FoundationDocPage } from './FoundationDocPage';
 
 const BORDER_USE: Record<string, string> = {
@@ -64,13 +60,7 @@ const RADIUS_ALIAS_ROWS = [
   },
 ] as const;
 
-function RadiusPreview({
-  radius,
-  resolvesTo,
-}: {
-  radius: string;
-  resolvesTo: string;
-}) {
+function RadiusPreview({ radius, resolvesTo }: { radius: string; resolvesTo: string }) {
   const isPill = resolvesTo === '9999px';
 
   return (
@@ -218,3 +208,11 @@ export default function ShapePage() {
     </FoundationDocPage>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/shape',
+  title: 'Shape',
+  section: 'Foundations',
+  order: 4,
+} satisfies import('../../data/nav-model').HdsPageMeta;

@@ -21,16 +21,7 @@ const {
   letterSpacings: LETTER_SPACINGS,
 } = typographyData;
 
-const TYPE_RAMP_KEYS = new Set([
-  'display',
-  'h1',
-  'h2',
-  'h3',
-  'body',
-  'small',
-  'caption',
-  'mono',
-]);
+const TYPE_RAMP_KEYS = new Set(['display', 'h1', 'h2', 'h3', 'body', 'small', 'caption', 'mono']);
 
 const FONT_FAMILIES = [
   {
@@ -44,7 +35,10 @@ const FONT_FAMILIES = [
     token: 'primitive.typography.family.display',
     specimen: 'Clash Display',
     // tier-ok: typography reference page renders the display-family primitive directly to specimen the font itself
-    style: { ...hds.typeStyles.h2, fontFamily: 'var(--primitive-typography-family-display)' } as CSSProperties,
+    style: {
+      ...hds.typeStyles.h2,
+      fontFamily: 'var(--primitive-typography-family-display)',
+    } as CSSProperties,
   },
   {
     key: 'mono',
@@ -153,9 +147,9 @@ function primitiveLineHeightVar(key: string) {
 }
 
 function useMaxWidth(maxWidth: number) {
-  const [matches, setMatches] = useState(() => (
-    typeof window === 'undefined' ? false : window.innerWidth <= maxWidth
-  ));
+  const [matches, setMatches] = useState(() =>
+    typeof window === 'undefined' ? false : window.innerWidth <= maxWidth,
+  );
 
   useEffect(() => {
     const handleResize = () => setMatches(window.innerWidth <= maxWidth);
@@ -284,153 +278,162 @@ export default function TypographyPage() {
 
       <TypographySection title="Primitives">
         <DocFinePrint label="Primitive token tables">
-        <HdsFoundationTableStack marginTop={0}>
-          <Table
-            caption="Font family"
-            columns={[
-              { key: 'token', label: 'Token' },
-              { key: 'value', label: 'Preview' },
-            ]}
-            rows={FONT_FAMILIES.map((family) => ({
-              key: family.key,
-              cells: [
-                { slot: 'token', content: <PrimitiveTokenName path={family.token} /> },
-                {
-                  slot: 'value',
-                  content: (
-                    <span
-                      style={{
-                        ...family.style,
-                        color: 'var(--semantic-color-content-primary)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {family.specimen}
-                    </span>
-                  ),
-                },
-              ],
-            }))}
-          />
+          <HdsFoundationTableStack marginTop={0}>
+            <Table
+              caption="Font family"
+              columns={[
+                { key: 'token', label: 'Token' },
+                { key: 'value', label: 'Preview' },
+              ]}
+              rows={FONT_FAMILIES.map((family) => ({
+                key: family.key,
+                cells: [
+                  { slot: 'token', content: <PrimitiveTokenName path={family.token} /> },
+                  {
+                    slot: 'value',
+                    content: (
+                      <span
+                        style={{
+                          ...family.style,
+                          color: 'var(--semantic-color-content-primary)',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {family.specimen}
+                      </span>
+                    ),
+                  },
+                ],
+              }))}
+            />
 
-          <Table
-            caption="Line height"
-            columns={[
-              { key: 'token', label: 'Token' },
-              { key: 'value', label: 'Preview' },
-            ]}
-            rows={LINE_HEIGHTS.map((lineHeight) => ({
-              key: lineHeight.key,
-              cells: [
-                { slot: 'token', content: <PrimitiveTokenName path={lineHeight.token} /> },
-                {
-                  slot: 'value',
-                  content: (
-                    <span
-                      style={{
-                        ...hds.typeStyles.body,
-                        lineHeight: primitiveLineHeightVar(lineHeight.key),
-                        color: 'var(--semantic-color-content-primary)',
-                        flexShrink: 0,
-                        whiteSpace: 'pre',
-                      }}
-                    >
-                      {lineHeight.specimen}
-                    </span>
-                  ),
-                },
-              ],
-            }))}
-          />
+            <Table
+              caption="Line height"
+              columns={[
+                { key: 'token', label: 'Token' },
+                { key: 'value', label: 'Preview' },
+              ]}
+              rows={LINE_HEIGHTS.map((lineHeight) => ({
+                key: lineHeight.key,
+                cells: [
+                  { slot: 'token', content: <PrimitiveTokenName path={lineHeight.token} /> },
+                  {
+                    slot: 'value',
+                    content: (
+                      <span
+                        style={{
+                          ...hds.typeStyles.body,
+                          lineHeight: primitiveLineHeightVar(lineHeight.key),
+                          color: 'var(--semantic-color-content-primary)',
+                          flexShrink: 0,
+                          whiteSpace: 'pre',
+                        }}
+                      >
+                        {lineHeight.specimen}
+                      </span>
+                    ),
+                  },
+                ],
+              }))}
+            />
 
-          <Table
-            caption="Weight"
-            columns={[
-              { key: 'token', label: 'Token' },
-              { key: 'value', label: 'Preview' },
-            ]}
-            rows={FONT_WEIGHTS.map((weight) => ({
-              key: weight.key,
-              cells: [
-                { slot: 'token', content: <PrimitiveTokenName path={weight.token} /> },
-                {
-                  slot: 'value',
-                  content: (
-                    <span
-                      style={{
-                        ...hds.typeStyles.body,
-                        fontWeight: primitiveFontWeightVar(weight.key) as CSSProperties['fontWeight'],
-                        color: 'var(--semantic-color-content-primary)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      Ag
-                    </span>
-                  ),
-                },
-              ],
-            }))}
-          />
+            <Table
+              caption="Weight"
+              columns={[
+                { key: 'token', label: 'Token' },
+                { key: 'value', label: 'Preview' },
+              ]}
+              rows={FONT_WEIGHTS.map((weight) => ({
+                key: weight.key,
+                cells: [
+                  { slot: 'token', content: <PrimitiveTokenName path={weight.token} /> },
+                  {
+                    slot: 'value',
+                    content: (
+                      <span
+                        style={{
+                          ...hds.typeStyles.body,
+                          fontWeight: primitiveFontWeightVar(
+                            weight.key,
+                          ) as CSSProperties['fontWeight'],
+                          color: 'var(--semantic-color-content-primary)',
+                          flexShrink: 0,
+                        }}
+                      >
+                        Ag
+                      </span>
+                    ),
+                  },
+                ],
+              }))}
+            />
 
-          <Table
-            caption="Letter spacing"
-            columns={[
-              { key: 'token', label: 'Token' },
-              { key: 'value', label: 'Preview' },
-            ]}
-            rows={LETTER_SPACINGS.map((spacing) => ({
-              key: spacing.key,
-              cells: [
-                { slot: 'token', content: <PrimitiveTokenName path={spacing.token} /> },
-                {
-                  slot: 'value',
-                  content: (
-                    <span
-                      style={{
-                        ...hds.typeStyles.body,
-                        letterSpacing: spacing.css,
-                        color: 'var(--semantic-color-content-primary)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      Ag Bg Cg
-                    </span>
-                  ),
-                },
-              ],
-            }))}
-          />
+            <Table
+              caption="Letter spacing"
+              columns={[
+                { key: 'token', label: 'Token' },
+                { key: 'value', label: 'Preview' },
+              ]}
+              rows={LETTER_SPACINGS.map((spacing) => ({
+                key: spacing.key,
+                cells: [
+                  { slot: 'token', content: <PrimitiveTokenName path={spacing.token} /> },
+                  {
+                    slot: 'value',
+                    content: (
+                      <span
+                        style={{
+                          ...hds.typeStyles.body,
+                          letterSpacing: spacing.css,
+                          color: 'var(--semantic-color-content-primary)',
+                          flexShrink: 0,
+                        }}
+                      >
+                        Ag Bg Cg
+                      </span>
+                    ),
+                  },
+                ],
+              }))}
+            />
 
-          <Table
-            caption="Font size"
-            columns={[
-              { key: 'token', label: 'Token' },
-              { key: 'value', label: 'Preview' },
-            ]}
-            rows={FONT_SIZES.map((size) => ({
-              key: size.key,
-              cells: [
-                { slot: 'token', content: <PrimitiveTokenName path={size.token} /> },
-                {
-                  slot: 'value',
-                  content: (
-                    <span
-                      style={{
-                        fontFamily: hds.fontFamily,
-                        fontSize: tokenValues.primitive.typography.size[size.key as keyof typeof tokenValues.primitive.typography.size],
-                        lineHeight: 1,
-                        fontWeight: hds.fontWeight.regular,
-                        color: 'var(--semantic-color-content-primary)',
-                      }}
-                    >
-                      {tokenValues.primitive.typography.size[size.key as keyof typeof tokenValues.primitive.typography.size]}
-                    </span>
-                  ),
-                },
-              ],
-            }))}
-          />
-        </HdsFoundationTableStack>
+            <Table
+              caption="Font size"
+              columns={[
+                { key: 'token', label: 'Token' },
+                { key: 'value', label: 'Preview' },
+              ]}
+              rows={FONT_SIZES.map((size) => ({
+                key: size.key,
+                cells: [
+                  { slot: 'token', content: <PrimitiveTokenName path={size.token} /> },
+                  {
+                    slot: 'value',
+                    content: (
+                      <span
+                        style={{
+                          fontFamily: hds.fontFamily,
+                          fontSize:
+                            tokenValues.primitive.typography.size[
+                              size.key as keyof typeof tokenValues.primitive.typography.size
+                            ],
+                          lineHeight: 1,
+                          fontWeight: hds.fontWeight.regular,
+                          color: 'var(--semantic-color-content-primary)',
+                        }}
+                      >
+                        {
+                          tokenValues.primitive.typography.size[
+                            size.key as keyof typeof tokenValues.primitive.typography.size
+                          ]
+                        }
+                      </span>
+                    ),
+                  },
+                ],
+              }))}
+            />
+          </HdsFoundationTableStack>
         </DocFinePrint>
       </TypographySection>
     </>
@@ -438,10 +441,15 @@ export default function TypographyPage() {
 
   return (
     <div className="hds-page-enter">
-      <DocLayout
-        contentSlot={contentSlot}
-        contentMaxWidth="content"
-      />
+      <DocLayout contentSlot={contentSlot} contentMaxWidth="content" />
     </div>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/typography',
+  title: 'Typography',
+  section: 'Foundations',
+  order: 2,
+} satisfies import('../../data/nav-model').HdsPageMeta;

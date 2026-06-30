@@ -9,11 +9,7 @@ import { Stack } from '../../components/stack';
 import { useTheme } from '../../context/ThemeContext';
 import hds from '../../design-system/tokens';
 import { resolveTokenLiteralValue } from '../../components/lab/tokenUtils';
-import {
-  HdsFoundationSection,
-  FoundationSwatchGrid,
-  useIsMobile,
-} from './HdsDocPrimitives';
+import { HdsFoundationSection, FoundationSwatchGrid, useIsMobile } from './HdsDocPrimitives';
 import { FoundationDocPage } from './FoundationDocPage';
 
 const SURFACE_SWATCHES = [
@@ -65,7 +61,12 @@ function ElevationInteractiveDemo() {
               padding: hds.semantic.space.component.padding,
             }}
           >
-            <span style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-secondary)' }}>
+            <span
+              style={{
+                ...hds.typeStyles.technical,
+                color: 'var(--semantic-color-content-secondary)',
+              }}
+            >
               raised
             </span>
             <IconButton
@@ -104,7 +105,12 @@ function ElevationInteractiveDemo() {
                 padding: hds.semantic.space.component.padding,
               }}
             >
-              <span style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-secondary)' }}>
+              <span
+                style={{
+                  ...hds.typeStyles.technical,
+                  color: 'var(--semantic-color-content-secondary)',
+                }}
+              >
                 overlay
               </span>
             </motion.div>
@@ -130,34 +136,34 @@ export default function ElevationPage() {
         intro="Each role bundles a surface color, shadow, and border. Cards default to flat (border, no shadow). Interactive cards lift to raised. Popovers use floating. Dialogs use overlay."
         marginTop={0}
       >
-          <FoundationSwatchGrid columns={isMobile ? 1 : 4}>
-            {SURFACE_SWATCHES.map(({ tier, tokenPath }) => {
-              const resolvedValue = resolveTokenLiteralValue(tokenPath, mode);
-              return (
-                <FoundationSwatch
-                  key={tier}
-                  label={tier}
-                  hidePreviewLabel
-                  tokenPath={tokenPath}
-                  tokenDisplayPreset="depth1"
-                  previewPosition="bottom-left"
-                  value={typeof resolvedValue === 'string' ? resolvedValue.toLowerCase() : undefined}
-                  background={`var(--semantic-color-surface-${tier})`}
-                   foreground="var(--semantic-color-content-primary)"
-                  swatchVar={`var(--semantic-color-surface-${tier})`}
-                />
-              );
-            })}
-          </FoundationSwatchGrid>
+        <FoundationSwatchGrid columns={isMobile ? 1 : 4}>
+          {SURFACE_SWATCHES.map(({ tier, tokenPath }) => {
+            const resolvedValue = resolveTokenLiteralValue(tokenPath, mode);
+            return (
+              <FoundationSwatch
+                key={tier}
+                label={tier}
+                hidePreviewLabel
+                tokenPath={tokenPath}
+                tokenDisplayPreset="depth1"
+                previewPosition="bottom-left"
+                value={typeof resolvedValue === 'string' ? resolvedValue.toLowerCase() : undefined}
+                background={`var(--semantic-color-surface-${tier})`}
+                foreground="var(--semantic-color-content-primary)"
+                swatchVar={`var(--semantic-color-surface-${tier})`}
+              />
+            );
+          })}
+        </FoundationSwatchGrid>
       </HdsFoundationSection>
 
       <HdsFoundationSection
         title="Overlay behavior"
         intro="Motion introduces overlay depth without changing the underlying surface language."
       >
-          <Stack gap="normal">
-            <ElevationInteractiveDemo />
-          </Stack>
+        <Stack gap="normal">
+          <ElevationInteractiveDemo />
+        </Stack>
       </HdsFoundationSection>
 
       <HdsFoundationSection
@@ -203,3 +209,11 @@ export default function ElevationPage() {
     </FoundationDocPage>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/elevation',
+  title: 'Elevation',
+  section: 'Foundations',
+  order: 5,
+} satisfies import('../../data/nav-model').HdsPageMeta;
