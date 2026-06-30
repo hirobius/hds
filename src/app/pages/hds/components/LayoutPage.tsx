@@ -226,10 +226,7 @@ export default function LayoutPage() {
                 { label: 'paddingY="none"', detail: 'no vertical padding' },
               ] as const
             ).map(({ label, detail }) => (
-              <div
-                key={label}
-                style={layoutPageStyles.slotRow}
-              >
+              <div key={label} style={layoutPageStyles.slotRow}>
                 <span
                   style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-primary)' }}
                 >
@@ -285,10 +282,7 @@ export default function LayoutPage() {
                 { slot: 'contentSlot', width: 'max', desc: 'chapters + galleries' },
               ] as const
             ).map(({ slot, width, desc }) => (
-              <div
-                key={slot}
-                style={layoutPageStyles.slotRow}
-              >
+              <div key={slot} style={layoutPageStyles.slotRow}>
                 <div
                   style={{
                     display: 'flex',
@@ -354,3 +348,11 @@ export default function LayoutPage() {
     </ComponentDocPageShell>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/components/layout',
+  title: 'Layout',
+  section: 'Components',
+  order: 6,
+} satisfies import('../../../data/nav-model').HdsPageMeta;

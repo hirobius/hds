@@ -76,12 +76,7 @@ export default function NavigationPage() {
               href="/tokens"
               icon={Layers}
             />
-            <DocLinkCard
-              title="Components"
-              href="/components/actions"
-              icon={Layers}
-              accent
-            />
+            <DocLinkCard title="Components" href="/components/actions" icon={Layers} accent />
           </Stack>
         </DemoBlock>
       ),
@@ -167,3 +162,11 @@ export default function NavigationPage() {
     </ComponentDocPageShell>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/components/navigation',
+  title: 'Navigation',
+  section: 'Components',
+  order: 5,
+} satisfies import('../../../data/nav-model').HdsPageMeta;

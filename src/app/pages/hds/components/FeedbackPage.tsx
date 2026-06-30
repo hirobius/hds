@@ -95,3 +95,11 @@ export default function FeedbackPage() {
     </ComponentDocPageShell>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/components/feedback',
+  title: 'Feedback',
+  section: 'Components',
+  order: 4,
+} satisfies import('../../../data/nav-model').HdsPageMeta;
