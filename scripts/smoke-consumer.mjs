@@ -347,6 +347,61 @@ if (ok) {
   }
 }
 
+// ── 3e. Consumer vite build (no router/form/zod installed) ───────────────────
+// Proves a leaf import builds in a real consumer WITHOUT the optional peers
+// (react-router / react-hook-form / zod / @hookform/resolvers). Uses a separate
+// clean app so those peers are genuinely absent.
+if (ok) {
+  log('running consumer vite build (Button only, no router/form/zod)…');
+  const viteApp = join(scratch, 'vite-app');
+  mkdirSync(join(viteApp, 'src'), { recursive: true });
+  writeFileSync(
+    join(viteApp, 'package.json'),
+    `${JSON.stringify({ name: 'hds-vite-consumer', private: true, version: '0.0.0', type: 'module' }, null, 2)}\n`,
+  );
+  writeFileSync(
+    join(viteApp, 'vite.config.js'),
+    "import react from '@vitejs/plugin-react';\nexport default { plugins: [react()], logLevel: 'warn' };\n",
+  );
+  writeFileSync(
+    join(viteApp, 'index.html'),
+    '<!doctype html><html><body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body></html>\n',
+  );
+  writeFileSync(
+    join(viteApp, 'src', 'main.jsx'),
+    [
+      "import { createRoot } from 'react-dom/client';",
+      "import { Button } from '@hirobius/design-system';",
+      "import '@hirobius/design-system/tokens.css';",
+      "createRoot(document.getElementById('root')).render(<Button>Hi</Button>);",
+      '',
+    ].join('\n'),
+  );
+  try {
+    run(
+      'npm',
+      [
+        'install',
+        tarballPath,
+        'react@^18.3',
+        'react-dom@^18.3',
+        'vite@^6',
+        '@vitejs/plugin-react@^4',
+        '--no-audit',
+        '--no-fund',
+        '--loglevel',
+        'error',
+      ],
+      { cwd: viteApp, stdio: 'inherit' },
+    );
+    run('npx', ['vite', 'build'], { cwd: viteApp, stdio: 'inherit' });
+    console.log('  build ok   consumer vite build succeeded without router/form/zod');
+  } catch {
+    console.error('  build FAIL consumer vite build errored');
+    ok = false;
+  }
+}
+
 // ── 4. Report + cleanup ──────────────────────────────────────────────────────
 
 if (ok) {
