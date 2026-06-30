@@ -49,11 +49,12 @@ function buildContentSwatches(
 ) {
   return contentTokens.map((token) => {
     const key = tokenKey(token);
-    const backgroundToken = key === 'inverse'
-      ? getColor('semantic.color.surface.inverse')
-      : key === 'onAccent'
-        ? getColor('semantic.color.surface.accent')
-        : getColor('semantic.color.surface.page');
+    const backgroundToken =
+      key === 'inverse'
+        ? getColor('semantic.color.surface.inverse')
+        : key === 'onAccent'
+          ? getColor('semantic.color.surface.accent')
+          : getColor('semantic.color.surface.page');
 
     return {
       key,
@@ -85,9 +86,7 @@ function localContrastRatio(fg: [number, number, number], bg: [number, number, n
   const luminance = ([r, g, b]: [number, number, number]) => {
     const channel = (value: number) => {
       const normalized = value / 255;
-      return normalized <= 0.03928
-        ? normalized / 12.92
-        : ((normalized + 0.055) / 1.055) ** 2.4;
+      return normalized <= 0.03928 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
     };
 
     return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
@@ -110,7 +109,8 @@ function resolveColorForContrast(color: string): [number, number, number] | null
     return [r, g, b];
   }
 
-  const oklchMatch = /^oklch\(\s*([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)(?:\s*\/\s*([0-9.]+))?\s*\)$/i.exec(trimmed);
+  const oklchMatch =
+    /^oklch\(\s*([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)(?:\s*\/\s*([0-9.]+))?\s*\)$/i.exec(trimmed);
   if (!oklchMatch) return null;
 
   const l = parseFloat(oklchMatch[1]);
@@ -130,11 +130,8 @@ function resolveColorForContrast(color: string): [number, number, number] | null
   const s3 = sPrime ** 3;
 
   const clamp = (value: number) => Math.max(0, Math.min(1, value));
-  const gamma = (value: number) => (
-    value <= 0.0031308
-      ? value * 12.92
-      : 1.055 * (value ** (1 / 2.4)) - 0.055
-  );
+  const gamma = (value: number) =>
+    value <= 0.0031308 ? value * 12.92 : 1.055 * value ** (1 / 2.4) - 0.055;
 
   const r = clamp(gamma(clamp(4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3)));
   const g = clamp(gamma(clamp(-1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3)));
@@ -177,35 +174,82 @@ type WcagPairing = {
 };
 
 const WCAG_PAIRINGS: WcagPairing[] = [
-  { fgPath: 'semantic.color.content.primary',   fgHex: '#111111', bgPath: 'semantic.color.surface.page',      bgHex: '#ffffff' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.content.secondary',  fgHex: '#525252', bgPath: 'semantic.color.surface.page',      bgHex: '#ffffff' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.content.primary',   fgHex: '#111111', bgPath: 'semantic.color.surface.raised',     bgHex: '#fafafa' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.content.inverse',   fgHex: '#f5f5f5', bgPath: 'semantic.color.surface.inverse',    bgHex: '#000000' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.content.onAccent',  fgHex: '#ffffff', bgPath: 'semantic.color.surface.accent',     bgHex: '#1e2efd' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.content.accent',    fgHex: '#1e2efd', bgPath: 'semantic.color.surface.page',       bgHex: '#ffffff' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.feedback.error',    fgHex: '#b91c1c', bgPath: 'semantic.color.surface.page',       bgHex: '#ffffff' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.feedback.warning',  fgHex: '#92400e', bgPath: 'semantic.color.surface.page',       bgHex: '#ffffff' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.feedback.success',  fgHex: '#047857', bgPath: 'semantic.color.surface.page',       bgHex: '#ffffff' }, // audit-ok: token value showcase
-  { fgPath: 'semantic.color.feedback.error',    fgHex: '#b91c1c', bgPath: 'semantic.color.feedback.bg.error',  bgHex: '#fef2f2' }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.content.primary',
+    fgHex: '#111111',
+    bgPath: 'semantic.color.surface.page',
+    bgHex: '#ffffff',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.content.secondary',
+    fgHex: '#525252',
+    bgPath: 'semantic.color.surface.page',
+    bgHex: '#ffffff',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.content.primary',
+    fgHex: '#111111',
+    bgPath: 'semantic.color.surface.raised',
+    bgHex: '#fafafa',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.content.inverse',
+    fgHex: '#f5f5f5',
+    bgPath: 'semantic.color.surface.inverse',
+    bgHex: '#000000',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.content.onAccent',
+    fgHex: '#ffffff',
+    bgPath: 'semantic.color.surface.accent',
+    bgHex: '#1e2efd',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.content.accent',
+    fgHex: '#1e2efd',
+    bgPath: 'semantic.color.surface.page',
+    bgHex: '#ffffff',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.feedback.error',
+    fgHex: '#b91c1c',
+    bgPath: 'semantic.color.surface.page',
+    bgHex: '#ffffff',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.feedback.warning',
+    fgHex: '#92400e',
+    bgPath: 'semantic.color.surface.page',
+    bgHex: '#ffffff',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.feedback.success',
+    fgHex: '#047857',
+    bgPath: 'semantic.color.surface.page',
+    bgHex: '#ffffff',
+  }, // audit-ok: token value showcase
+  {
+    fgPath: 'semantic.color.feedback.error',
+    fgHex: '#b91c1c',
+    bgPath: 'semantic.color.feedback.bg.error',
+    bgHex: '#fef2f2',
+  }, // audit-ok: token value showcase
 ];
 
 const WCAG_COLUMNS: TableColumn[] = [
-  { key: 'fg',    label: 'Foreground', width: '1.8fr' },
-  { key: 'bg',    label: 'Background', width: '1.8fr' },
-  { key: 'ratio', label: 'Ratio',      width: '0.6fr', align: 'right' },
-  { key: 'aa',    label: 'AA',         width: '0.5fr', align: 'center' },
-  { key: 'aaLg',  label: 'AA large',   width: '0.6fr', align: 'center' },
-  { key: 'aaa',   label: 'AAA',        width: '0.5fr', align: 'center' },
-  { key: 'aaaLg', label: 'AAA large',  width: '0.6fr', align: 'center' },
+  { key: 'fg', label: 'Foreground', width: '1.8fr' },
+  { key: 'bg', label: 'Background', width: '1.8fr' },
+  { key: 'ratio', label: 'Ratio', width: '0.6fr', align: 'right' },
+  { key: 'aa', label: 'AA', width: '0.5fr', align: 'center' },
+  { key: 'aaLg', label: 'AA large', width: '0.6fr', align: 'center' },
+  { key: 'aaa', label: 'AAA', width: '0.5fr', align: 'center' },
+  { key: 'aaaLg', label: 'AAA large', width: '0.6fr', align: 'center' },
 ];
 
 function TokenPairCell({ path, hex }: { path: string; hex: string }) {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: hds.space.px8 }}>
-      <span
-        aria-hidden="true"
-        style={{ ...colorPageStyles.tokenPairSwatch, background: hex }}
-      />
+      <span aria-hidden="true" style={{ ...colorPageStyles.tokenPairSwatch, background: hex }} />
       <span
         style={{
           ...hds.typeStyles.technical,
@@ -221,30 +265,26 @@ function TokenPairCell({ path, hex }: { path: string; hex: string }) {
 }
 
 function PassFail({ pass }: { pass: boolean }) {
-  return (
-    <Badge tone={pass ? 'success' : 'danger'}>
-      {pass ? 'Pass' : 'Fail'}
-    </Badge>
-  );
+  return <Badge tone={pass ? 'success' : 'danger'}>{pass ? 'Pass' : 'Fail'}</Badge>;
 }
 
 function buildWcagRows(pairings: WcagPairing[]): TableRow[] {
   return pairings.map((p, i) => {
     const ratio = contrastRatio(p.fgHex, p.bgHex);
-    const aa    = ratio >= 4.5;
-    const aaLg  = ratio >= 3.0;
-    const aaa   = ratio >= 7.0;
+    const aa = ratio >= 4.5;
+    const aaLg = ratio >= 3.0;
+    const aaa = ratio >= 7.0;
     const aaaLg = ratio >= 4.5;
     return {
       key: `wcag-${i}`,
       cells: [
         { slot: 'custom' as const, content: <TokenPairCell path={p.fgPath} hex={p.fgHex} /> },
         { slot: 'custom' as const, content: <TokenPairCell path={p.bgPath} hex={p.bgHex} /> },
-        { slot: 'value'  as const, content: `${ratio.toFixed(2)}:1`, align: 'right'  as const },
-        { slot: 'badge'  as const, content: <PassFail pass={aa} />,    align: 'center' as const },
-        { slot: 'badge'  as const, content: <PassFail pass={aaLg} />,  align: 'center' as const },
-        { slot: 'badge'  as const, content: <PassFail pass={aaa} />,   align: 'center' as const },
-        { slot: 'badge'  as const, content: <PassFail pass={aaaLg} />, align: 'center' as const },
+        { slot: 'value' as const, content: `${ratio.toFixed(2)}:1`, align: 'right' as const },
+        { slot: 'badge' as const, content: <PassFail pass={aa} />, align: 'center' as const },
+        { slot: 'badge' as const, content: <PassFail pass={aaLg} />, align: 'center' as const },
+        { slot: 'badge' as const, content: <PassFail pass={aaa} />, align: 'center' as const },
+        { slot: 'badge' as const, content: <PassFail pass={aaaLg} />, align: 'center' as const },
       ],
     };
   });
@@ -252,14 +292,7 @@ function buildWcagRows(pairings: WcagPairing[]): TableRow[] {
 
 function WcagContrastTable() {
   const rows = buildWcagRows(WCAG_PAIRINGS);
-  return (
-    <Table
-      columns={WCAG_COLUMNS}
-      rows={rows}
-      density="compact"
-      minWidth={640}
-    />
-  );
+  return <Table columns={WCAG_COLUMNS} rows={rows} density="compact" minWidth={640} />;
 }
 
 function ColorRoleGroup({
@@ -312,8 +345,14 @@ export default function ColorPage() {
   const swatchColSpan = isMobile ? 6 : 3;
   const neutralSteps = manifest.colors.primitive.neutral.map(toPrimitiveStep);
   const blueSteps = manifest.colors.primitive.blue.map(toPrimitiveStep);
-  const contentSwatches = buildContentSwatches(manifest.colors.semantic.content, manifest.colors.get);
-  const feedbackSwatches = buildFeedbackSwatches(manifest.colors.semantic.feedback, manifest.colors.get);
+  const contentSwatches = buildContentSwatches(
+    manifest.colors.semantic.content,
+    manifest.colors.get,
+  );
+  const feedbackSwatches = buildFeedbackSwatches(
+    manifest.colors.semantic.feedback,
+    manifest.colors.get,
+  );
 
   return (
     <FoundationDocPage
@@ -385,3 +424,11 @@ export default function ColorPage() {
     </FoundationDocPage>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/color',
+  title: 'Color',
+  section: 'Foundations',
+  order: 1,
+} satisfies import('../../data/nav-model').HdsPageMeta;

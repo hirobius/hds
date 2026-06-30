@@ -64,7 +64,11 @@ function StepList({ steps }: { steps: Step[] }) {
           }}
         >
           <div
-            style={{ ...contributionStyles.stepNumberBubble, ...hds.typeStyles.eyebrow, marginTop: 2 }}
+            style={{
+              ...contributionStyles.stepNumberBubble,
+              ...hds.typeStyles.eyebrow,
+              marginTop: 2,
+            }}
           >
             {idx + 1}
           </div>
@@ -72,7 +76,11 @@ function StepList({ steps }: { steps: Step[] }) {
             <Text
               variant="body"
               as="span"
-              style={{ color: 'var(--semantic-color-content-primary)', display: 'block', marginBottom: hds.semantic.space.subgrid.hairline }}
+              style={{
+                color: 'var(--semantic-color-content-primary)',
+                display: 'block',
+                marginBottom: hds.semantic.space.subgrid.hairline,
+              }}
             >
               {step.label}
             </Text>
@@ -98,10 +106,7 @@ function Checklist({ items }: { items: CheckItem[] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {items.map((item, idx) => (
-        <div
-          key={idx}
-          style={contributionStyles.checklistItemRow}
-        >
+        <div key={idx} style={contributionStyles.checklistItemRow}>
           <div style={{ flexShrink: 0, marginTop: hds.semantic.space.subgrid.hairline }}>
             <Icon
               icon={item.required !== false ? CheckCircle2 : AlertCircle}
@@ -160,7 +165,7 @@ const COMPONENT_STEPS: Step[] = [
   {
     label: 'Create the component file',
     detail:
-      'New components live in src/app/components/Hds<Name>.tsx. Use the HDS token object (import hds from \'../../design-system/tokens\') for all values. Never hardcode hex, px, or font strings — use semantic tokens first, primitive tokens only in documented SVG/canvas exceptions.',
+      "New components live in src/app/components/Hds<Name>.tsx. Use the HDS token object (import hds from '../../design-system/tokens') for all values. Never hardcode hex, px, or font strings — use semantic tokens first, primitive tokens only in documented SVG/canvas exceptions.",
   },
   {
     label: 'Follow the component rules',
@@ -180,7 +185,7 @@ const COMPONENT_STEPS: Step[] = [
   {
     label: 'Write a doc section',
     detail:
-      'Each component family has a docs page in src/app/pages/hds/components/. Add a section using HdsComponentDoc with the component\'s props from src/app/data/component-api.json. The prop table is generated — do not hand-edit component-api.json.',
+      "Each component family has a docs page in src/app/pages/hds/components/. Add a section using HdsComponentDoc with the component's props from src/app/data/component-api.json. The prop table is generated — do not hand-edit component-api.json.",
   },
   {
     label: 'Run type and layout gates',
@@ -193,17 +198,32 @@ const DOC_CHECKLIST: CheckItem[] = [
   { label: 'DocPageHeader with group label, title, and a one-sentence intro' },
   { label: 'At least one DocSection with a descriptive title' },
   { label: 'Lazy-loaded in src/app/routes.tsx under the correct path' },
-  { label: 'Route path added to SIDEBAR_PAGER_PAGES if it belongs in the prev/next sequence', required: false },
-  { label: 'Nav entry added to HDS_NAV in HDSLayout.tsx if it should appear in the sidebar', required: false },
+  {
+    label: 'Route path added to SIDEBAR_PAGER_PAGES if it belongs in the prev/next sequence',
+    required: false,
+  },
+  {
+    label: 'Nav entry added to HDS_NAV in HDSLayout.tsx if it should appear in the sidebar',
+    required: false,
+  },
   { label: 'pnpm typecheck passes with zero errors' },
   { label: 'No hardcoded colors, font strings, or pixel values outside tier-ok exemptions' },
 ];
 
 const GATE_ORDER = [
   { cmd: 'pnpm typecheck', note: 'TypeScript — zero errors required' },
-  { cmd: 'pnpm check:tokens', note: 'Token pipeline — hardcoded values, tier violations, missing descriptions' },
-  { cmd: 'node scripts/validate-manifest.mjs', note: 'Manifest sync — inventory, descriptions, categories' },
-  { cmd: 'node scripts/validate-orchestration.mjs', note: 'Orchestration — unit schema, dep cycles, stale claims' },
+  {
+    cmd: 'pnpm check:tokens',
+    note: 'Token pipeline — hardcoded values, tier violations, missing descriptions',
+  },
+  {
+    cmd: 'node scripts/validate-manifest.mjs',
+    note: 'Manifest sync — inventory, descriptions, categories',
+  },
+  {
+    cmd: 'node scripts/validate-orchestration.mjs',
+    note: 'Orchestration — unit schema, dep cycles, stale claims',
+  },
   { cmd: 'pnpm test:layout', note: 'Layout suite — box-model regression tests' },
 ];
 
@@ -230,9 +250,9 @@ export default function ContributionGuidePage() {
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
             Tokens are the shared language between Figma and code. Every visual value in the system
-            resolves through the three-tier cascade: primitive → semantic → component. Adding a token
-            means choosing the right tier, following the naming convention, and keeping the pipeline
-            in sync.
+            resolves through the three-tier cascade: primitive → semantic → component. Adding a
+            token means choosing the right tier, following the naming convention, and keeping the
+            pipeline in sync.
           </Text>
           <StepList steps={TOKEN_STEPS} />
         </Stack>
@@ -245,9 +265,9 @@ export default function ContributionGuidePage() {
             as="p"
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
-            Components are production primitives. They must consume tokens correctly, export cleanly,
-            appear in the manifest, and have a corresponding doc section. Skipping any step leaves
-            the system partially documented or partially tested.
+            Components are production primitives. They must consume tokens correctly, export
+            cleanly, appear in the manifest, and have a corresponding doc section. Skipping any step
+            leaves the system partially documented or partially tested.
           </Text>
           <StepList steps={COMPONENT_STEPS} />
         </Stack>
@@ -261,8 +281,7 @@ export default function ContributionGuidePage() {
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
             Doc pages live in <InlineCode>src/app/pages/hds/</InlineCode>. Use{' '}
-            <InlineCode>DocPageHeader</InlineCode> and{' '}
-            <InlineCode>DocSection</InlineCode> from{' '}
+            <InlineCode>DocPageHeader</InlineCode> and <InlineCode>DocSection</InlineCode> from{' '}
             <InlineCode>./HdsDocPrimitives</InlineCode> for consistent layout. All pages must be
             lazy-loaded in <InlineCode>src/app/routes.tsx</InlineCode>.
           </Text>
@@ -282,10 +301,7 @@ export default function ContributionGuidePage() {
           </Text>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {GATE_ORDER.map((gate, idx) => (
-              <div
-                key={idx}
-                style={contributionStyles.gateOrderRow}
-              >
+              <div key={idx} style={contributionStyles.gateOrderRow}>
                 <InlineCode style={{ flexShrink: 0 }}>{gate.cmd}</InlineCode>
                 <Text
                   variant="body"
@@ -313,12 +329,30 @@ export default function ContributionGuidePage() {
           <Surface padding="component" style={{ maxWidth: 720 }}>
             <Stack gap="gap">
               {[
-                ['kebab-case only', 'No camelCase, no underscores, no uppercase in token path segments.'],
-                ['Tier prefix', 'Primitive tokens start with primitive.. Semantic tokens start with semantic.. Component tokens start with component..'],
-                ['Color palette segments', 'primitive.color.<palette>.<step> — e.g. primitive.color.blue.500. Step is always a numeric string.'],
-                ['Semantic color roles', 'semantic.color.<role>.<variant> — e.g. semantic.color.content.primary. Role is a noun; variant qualifies it.'],
-                ['Space scale', 'primitive.space.<n> — where <n> is the numeric index in the spacing scale. semantic.space.<context>.<slot> for named roles.'],
-                ['No vendor prefixes', 'Do not embed brand or product names in token paths. Tenant overrides happen at runtime, not at the token definition layer.'],
+                [
+                  'kebab-case only',
+                  'No camelCase, no underscores, no uppercase in token path segments.',
+                ],
+                [
+                  'Tier prefix',
+                  'Primitive tokens start with primitive.. Semantic tokens start with semantic.. Component tokens start with component..',
+                ],
+                [
+                  'Color palette segments',
+                  'primitive.color.<palette>.<step> — e.g. primitive.color.blue.500. Step is always a numeric string.',
+                ],
+                [
+                  'Semantic color roles',
+                  'semantic.color.<role>.<variant> — e.g. semantic.color.content.primary. Role is a noun; variant qualifies it.',
+                ],
+                [
+                  'Space scale',
+                  'primitive.space.<n> — where <n> is the numeric index in the spacing scale. semantic.space.<context>.<slot> for named roles.',
+                ],
+                [
+                  'No vendor prefixes',
+                  'Do not embed brand or product names in token paths. Tenant overrides happen at runtime, not at the token definition layer.',
+                ],
               ].map(([rule, desc], idx) => (
                 <div key={idx}>
                   <Text
@@ -349,10 +383,10 @@ export default function ContributionGuidePage() {
             as="p"
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
-            The full set of architectural rules lives in{' '}
-            <InlineCode>docs/ai/rules/</InlineCode>. When in doubt about a decision, check
-            the rules file for the relevant domain before writing code. The rules exist to keep AI
-            output correct and human review fast — do not bypass them without recording a decision.
+            The full set of architectural rules lives in <InlineCode>docs/ai/rules/</InlineCode>.
+            When in doubt about a decision, check the rules file for the relevant domain before
+            writing code. The rules exist to keep AI output correct and human review fast — do not
+            bypass them without recording a decision.
           </Text>
           <Text
             variant="body"
@@ -360,12 +394,20 @@ export default function ContributionGuidePage() {
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
             Scope questions (what belongs in HDS vs. in a consuming app) are answered in the{' '}
-            <InlineCode>/hds/scope</InlineCode> page. The system contract is strict: tokens
-            are the single source of truth, components stay declarative and testable, and Figma
-            masters reflect live code.
+            <InlineCode>/hds/scope</InlineCode> page. The system contract is strict: tokens are the
+            single source of truth, components stay declarative and testable, and Figma masters
+            reflect live code.
           </Text>
         </Stack>
       </DocSection>
     </article>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/contribution-guide',
+  title: 'ContributionGuide',
+  section: 'Foundations',
+  order: 8,
+} satisfies import('../../data/nav-model').HdsPageMeta;

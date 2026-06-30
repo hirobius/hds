@@ -83,22 +83,22 @@ const BRANDS: { id: string; name: string; tagline: string; overrides: BrandOverr
     overrides: {
       // Lilac Insurance Group: violet/indigo brand palette
       vars: {
-        '--semantic-accent-rest':                 '#7C3AED', // audit-ok: brand palette demo content
-        '--semantic-accent-hover':                '#6D28D9', // audit-ok: brand palette demo content
-        '--semantic-accent-pressed':              '#5B21B6', // audit-ok: brand palette demo content
-        '--semantic-accent-inactive':             '#C4B5FD', // audit-ok: brand palette demo content
-        '--semantic-accent-disabled':             '#EDE9FE', // audit-ok: brand palette demo content
-        '--semantic-accent-content':              '#7C3AED', // audit-ok: brand palette demo content
-        '--semantic-accent-contentHover':         '#6D28D9', // audit-ok: brand palette demo content
-        '--semantic-accent-subtle':               '#EDE9FE', // audit-ok: brand palette demo content
-        '--semantic-color-surface-accent':        '#7C3AED', // audit-ok: brand palette demo content
-        '--semantic-color-surface-accentSubtle':  '#EDE9FE', // audit-ok: brand palette demo content
-        '--semantic-color-border-accent':         '#7C3AED', // audit-ok: brand palette demo content
-        '--semantic-color-content-accent':        '#7C3AED', // audit-ok: brand palette demo content
-        '--component-button-bg':                  '#7C3AED', // audit-ok: brand palette demo content
-        '--component-button-bgHover':             '#6D28D9', // audit-ok: brand palette demo content
-        '--role-primary':                         '#7C3AED', // audit-ok: brand palette demo content
-        '--role-primary-foreground':              '#FFFFFF', // audit-ok: brand palette demo content
+        '--semantic-accent-rest': '#7C3AED', // audit-ok: brand palette demo content
+        '--semantic-accent-hover': '#6D28D9', // audit-ok: brand palette demo content
+        '--semantic-accent-pressed': '#5B21B6', // audit-ok: brand palette demo content
+        '--semantic-accent-inactive': '#C4B5FD', // audit-ok: brand palette demo content
+        '--semantic-accent-disabled': '#EDE9FE', // audit-ok: brand palette demo content
+        '--semantic-accent-content': '#7C3AED', // audit-ok: brand palette demo content
+        '--semantic-accent-contentHover': '#6D28D9', // audit-ok: brand palette demo content
+        '--semantic-accent-subtle': '#EDE9FE', // audit-ok: brand palette demo content
+        '--semantic-color-surface-accent': '#7C3AED', // audit-ok: brand palette demo content
+        '--semantic-color-surface-accentSubtle': '#EDE9FE', // audit-ok: brand palette demo content
+        '--semantic-color-border-accent': '#7C3AED', // audit-ok: brand palette demo content
+        '--semantic-color-content-accent': '#7C3AED', // audit-ok: brand palette demo content
+        '--component-button-bg': '#7C3AED', // audit-ok: brand palette demo content
+        '--component-button-bgHover': '#6D28D9', // audit-ok: brand palette demo content
+        '--role-primary': '#7C3AED', // audit-ok: brand palette demo content
+        '--role-primary-foreground': '#FFFFFF', // audit-ok: brand palette demo content
       },
     },
   },
@@ -109,22 +109,22 @@ const BRANDS: { id: string; name: string; tagline: string; overrides: BrandOverr
     overrides: {
       // The Ranch Foundation: forest-green, earthy palette
       vars: {
-        '--semantic-accent-rest':                 '#166534', // audit-ok: brand palette demo content
-        '--semantic-accent-hover':                '#14532D', // audit-ok: brand palette demo content
-        '--semantic-accent-pressed':              '#052E16', // audit-ok: brand palette demo content
-        '--semantic-accent-inactive':             '#86EFAC', // audit-ok: brand palette demo content
-        '--semantic-accent-disabled':             '#DCFCE7', // audit-ok: brand palette demo content
-        '--semantic-accent-content':              '#166534', // audit-ok: brand palette demo content
-        '--semantic-accent-contentHover':         '#14532D', // audit-ok: brand palette demo content
-        '--semantic-accent-subtle':               '#DCFCE7', // audit-ok: brand palette demo content
-        '--semantic-color-surface-accent':        '#166534', // audit-ok: brand palette demo content
-        '--semantic-color-surface-accentSubtle':  '#DCFCE7', // audit-ok: brand palette demo content
-        '--semantic-color-border-accent':         '#166534', // audit-ok: brand palette demo content
-        '--semantic-color-content-accent':        '#166534', // audit-ok: brand palette demo content
-        '--component-button-bg':                  '#166534', // audit-ok: brand palette demo content
-        '--component-button-bgHover':             '#14532D', // audit-ok: brand palette demo content
-        '--role-primary':                         '#166534', // audit-ok: brand palette demo content
-        '--role-primary-foreground':              '#FFFFFF', // audit-ok: brand palette demo content
+        '--semantic-accent-rest': '#166534', // audit-ok: brand palette demo content
+        '--semantic-accent-hover': '#14532D', // audit-ok: brand palette demo content
+        '--semantic-accent-pressed': '#052E16', // audit-ok: brand palette demo content
+        '--semantic-accent-inactive': '#86EFAC', // audit-ok: brand palette demo content
+        '--semantic-accent-disabled': '#DCFCE7', // audit-ok: brand palette demo content
+        '--semantic-accent-content': '#166534', // audit-ok: brand palette demo content
+        '--semantic-accent-contentHover': '#14532D', // audit-ok: brand palette demo content
+        '--semantic-accent-subtle': '#DCFCE7', // audit-ok: brand palette demo content
+        '--semantic-color-surface-accent': '#166534', // audit-ok: brand palette demo content
+        '--semantic-color-surface-accentSubtle': '#DCFCE7', // audit-ok: brand palette demo content
+        '--semantic-color-border-accent': '#166534', // audit-ok: brand palette demo content
+        '--semantic-color-content-accent': '#166534', // audit-ok: brand palette demo content
+        '--component-button-bg': '#166534', // audit-ok: brand palette demo content
+        '--component-button-bgHover': '#14532D', // audit-ok: brand palette demo content
+        '--role-primary': '#166534', // audit-ok: brand palette demo content
+        '--role-primary-foreground': '#FFFFFF', // audit-ok: brand palette demo content
       },
     },
   },
@@ -140,7 +140,7 @@ const LEGEND_TOKENS = [
 
 // ── BrandPanel ────────────────────────────────────────────────────────────────
 
-function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
+function BrandPanel({ brand }: { brand: (typeof BRANDS)[number] }) {
   const cssVarStyle = brand.overrides.vars as React.CSSProperties;
 
   return (
@@ -160,15 +160,14 @@ function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
         <Text
           variant="heading3"
           as="h3"
-          style={{ color: 'var(--semantic-color-content-primary)', marginBottom: hds.semantic.space.subgrid.gap }}
+          style={{
+            color: 'var(--semantic-color-content-primary)',
+            marginBottom: hds.semantic.space.subgrid.gap,
+          }}
         >
           {brand.name}
         </Text>
-        <Text
-          variant="caption"
-          as="p"
-          style={{ color: 'var(--semantic-color-content-secondary)' }}
-        >
+        <Text variant="caption" as="p" style={{ color: 'var(--semantic-color-content-secondary)' }}>
           {brand.tagline}
         </Text>
       </div>
@@ -177,7 +176,6 @@ function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
 
       {/* ── Components ── */}
       <Stack gap="normal">
-
         {/* Buttons */}
         <div>
           <Text
@@ -191,8 +189,12 @@ function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
             Buttons
           </Text>
           <div style={{ display: 'flex', gap: hds.semantic.space.component.gap, flexWrap: 'wrap' }}>
-            <Button variant="primary" size="md">Get started</Button>
-            <Button variant="secondary" size="md">Learn more</Button>
+            <Button variant="primary" size="md">
+              Get started
+            </Button>
+            <Button variant="secondary" size="md">
+              Learn more
+            </Button>
           </div>
         </div>
 
@@ -208,11 +210,7 @@ function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
           >
             Input
           </Text>
-          <Input
-            label="Email address"
-            placeholder="you@example.com"
-            type="email"
-          />
+          <Input label="Email address" placeholder="you@example.com" type="email" />
         </div>
 
         {/* Surface card */}
@@ -243,7 +241,9 @@ function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
               >
                 Full-service plan with quarterly reviews and dedicated support.
               </Text>
-              <Button variant="primary" size="sm">View details</Button>
+              <Button variant="primary" size="sm">
+                View details
+              </Button>
             </Stack>
           </Surface>
         </div>
@@ -260,7 +260,13 @@ function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
           >
             Token values
           </Text>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.subgrid.gap }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: hds.semantic.space.subgrid.gap,
+            }}
+          >
             {LEGEND_TOKENS.map((t) => (
               <div
                 key={t.varName}
@@ -288,7 +294,6 @@ function BrandPanel({ brand }: { brand: typeof BRANDS[number] }) {
             ))}
           </div>
         </div>
-
       </Stack>
     </div>
   );
@@ -307,9 +312,9 @@ export default function MultiBrandThemingPage() {
         isDark={isDark}
         intro={
           <>
-            The same HDS components rendered under three brand token sets simultaneously.
-            Overrides are applied via CSS custom properties scoped to a container element —
-            no component-level logic required.
+            The same HDS components rendered under three brand token sets simultaneously. Overrides
+            are applied via CSS custom properties scoped to a container element — no component-level
+            logic required.
           </>
         }
       />
@@ -321,9 +326,9 @@ export default function MultiBrandThemingPage() {
             as="p"
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
-            Each panel scopes its brand token overrides to a container div via inline CSS
-            custom properties. The components themselves are identical; only the accent-tier
-            vars change. The neutral content and border palette is untouched.
+            Each panel scopes its brand token overrides to a container div via inline CSS custom
+            properties. The components themselves are identical; only the accent-tier vars change.
+            The neutral content and border palette is untouched.
           </Text>
 
           {/* Panels */}
@@ -349,12 +354,14 @@ export default function MultiBrandThemingPage() {
             as="p"
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
-            Token overrides follow the same cascade pattern documented in ADR-0001.
-            Setting CSS custom properties on any ancestor element shadows the root defaults
-            for all descendants. The vars used here are the semantic accent tier:
+            Token overrides follow the same cascade pattern documented in ADR-0001. Setting CSS
+            custom properties on any ancestor element shadows the root defaults for all descendants.
+            The vars used here are the semantic accent tier:
           </Text>
           <div style={multiBrandStyles.codeBlock}>
-            <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{`/* Scoped to a container, not <html> */
+            <pre
+              style={{ margin: 0, whiteSpace: 'pre-wrap' }}
+            >{`/* Scoped to a container, not <html> */
 .brand-scope {
   --semantic-accent-rest:               #7C3AED;
   --semantic-accent-hover:              #6D28D9;
@@ -426,3 +433,11 @@ export default function MultiBrandThemingPage() {
     </article>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/brand-theming',
+  title: 'Brand Theming',
+  section: 'Internal',
+  order: 99,
+} satisfies import('../../data/nav-model').HdsPageMeta;
