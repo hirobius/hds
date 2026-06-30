@@ -22,6 +22,8 @@ export interface HdsPageMeta {
   section: string;
   /** Sort order within the section. */
   order: number;
+  /** Short description — used by the Cmd-K search corpus. */
+  description?: string;
   /** Lifecycle status — drives a metadata slot, never a decorative badge. */
   status?: 'stable' | 'beta' | 'draft' | 'internal';
 }
@@ -30,6 +32,8 @@ export interface HdsPageMeta {
 export interface NavLink {
   path: string;
   label: string;
+  /** Short description — surfaced by the Cmd-K search corpus (not the sidebar). */
+  description?: string;
   /** Match this route exactly (not by prefix) for active state. */
   exact?: boolean;
   /** Render with sub-item indentation. */

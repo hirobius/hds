@@ -438,6 +438,7 @@ export default function MultiBrandThemingPage() {
 export const meta = {
   path: '/brand-theming',
   title: 'Brand Theming',
+  description: 'Multi-brand theming',
   section: 'Internal',
   order: 99,
 } satisfies import('../../data/nav-model').HdsPageMeta;

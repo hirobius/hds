@@ -188,6 +188,7 @@ export default function InputsPage() {
 export const meta = {
   path: '/components/inputs',
   title: 'Inputs',
+  description: 'Form inputs and controls',
   section: 'Components',
   order: 2,
 } satisfies import('../../../data/nav-model').HdsPageMeta;

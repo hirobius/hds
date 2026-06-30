@@ -429,6 +429,7 @@ export default function ColorPage() {
 export const meta = {
   path: '/color',
   title: 'Color',
+  description: 'Color tokens and roles',
   section: 'Foundations',
   order: 1,
 } satisfies import('../../data/nav-model').HdsPageMeta;

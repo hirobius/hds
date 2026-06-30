@@ -450,6 +450,7 @@ export default function TypographyPage() {
 export const meta = {
   path: '/typography',
   title: 'Typography',
+  description: 'Type ramp and pairings',
   section: 'Foundations',
   order: 2,
 } satisfies import('../../data/nav-model').HdsPageMeta;

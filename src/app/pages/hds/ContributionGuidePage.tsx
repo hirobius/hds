@@ -408,6 +408,7 @@ export default function ContributionGuidePage() {
 export const meta = {
   path: '/contribution-guide',
   title: 'ContributionGuide',
+  description: 'How to contribute to HDS',
   section: 'Foundations',
   order: 8,
 } satisfies import('../../data/nav-model').HdsPageMeta;

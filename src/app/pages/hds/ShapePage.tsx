@@ -213,6 +213,7 @@ export default function ShapePage() {
 export const meta = {
   path: '/shape',
   title: 'Shape',
+  description: 'Radius and shape tokens',
   section: 'Foundations',
   order: 4,
 } satisfies import('../../data/nav-model').HdsPageMeta;

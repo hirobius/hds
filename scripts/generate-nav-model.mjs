@@ -70,6 +70,7 @@ export function parseMeta(source) {
     title: readString('title'),
     section: readString('section'),
     order: readNumber('order'),
+    description: readString('description'),
     status: readString('status'),
   };
   if (!meta.path || !meta.title || !meta.section || meta.order == null) return null;
@@ -99,7 +100,9 @@ export function buildNavModel(repoRoot) {
     if (!sectionMap.has(entry.section)) sectionMap.set(entry.section, []);
     if (!seenPaths.has(entry.path)) {
       seenPaths.add(entry.path);
-      sectionMap.get(entry.section).push({ path: entry.path, label: entry.title });
+      const item = { path: entry.path, label: entry.title };
+      if (entry.description) item.description = entry.description;
+      sectionMap.get(entry.section).push(item);
     }
   }
 

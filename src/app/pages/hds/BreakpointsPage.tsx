@@ -212,6 +212,7 @@ export default function BreakpointsPage() {
 export const meta = {
   path: '/breakpoints',
   title: 'Breakpoints',
+  description: 'Responsive breakpoints',
   section: 'Foundations',
   order: 7,
 } satisfies import('../../data/nav-model').HdsPageMeta;

@@ -34,6 +34,20 @@ describe('HDS_NAV_SECTIONS', () => {
         return link;
       }),
     }));
-    expect(rendered).toEqual(navModel.sections);
+    // Compare the sidebar-relevant fields only — the model also carries
+    // `description` (a search-corpus field the sidebar ignores).
+    const expected = navModel.sections.map((section) => ({
+      label: section.label,
+      items: section.items.map(({ path, label, exact, indent }) => {
+        const link: { path: string; label: string; exact?: boolean; indent?: boolean } = {
+          path,
+          label,
+        };
+        if (exact) link.exact = true;
+        if (indent) link.indent = true;
+        return link;
+      }),
+    }));
+    expect(rendered).toEqual(expected);
   });
 });
