@@ -55,6 +55,8 @@
     "DocLinkCard",
     "EmptyState",
     "Field",
+    "Form",
+    "FormField",
     "FoundationSwatch",
     "Grid",
     "HdsCheckbox",
@@ -710,6 +712,14 @@
       {
         "name": "FONT_SIZES",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "Form",
+        "filePath": "src/app/components/form.tsx"
+      },
+      {
+        "name": "FormField",
+        "filePath": "src/app/components/form.tsx"
       },
       {
         "name": "FoundationSwatch",
@@ -5202,6 +5212,7 @@
       },
       "consumers": [
         "src/app/components/combobox.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/pages/docs/patterns/HdsField.tsx"
       ],
@@ -6554,7 +6565,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/combobox.test.tsx"
+        "src/app/components/combobox.test.tsx",
+        "src/app/components/form.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6592,6 +6604,95 @@
         },
         "value": {
           "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Form": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/form.tsx",
+      "description": "Styled `<form>` with consistent vertical field rhythm.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Form",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Form",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/doc-sections.tsx",
+        "src/app/components/form.test.tsx",
+        "src/app/data/hdsEditorial.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "FormField": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/form.tsx",
+      "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control. Validation-library agnostic — pass `error` from whatever you use.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:FormField",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "FormField",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/form.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactElement<any, string | JSXElementConstructor<any>>"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
+        "error": {
+          "type": "string",
+          "optional": true
+        },
+        "htmlFor": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
         }
       },
       "allowedChildren": [

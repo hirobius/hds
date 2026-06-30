@@ -70,6 +70,7 @@ export * from './app/components/activity-feed';
 export * from './app/components/breadcrumb';
 export * from './app/components/combobox';
 export * from './app/components/disclosure';
+export * from './app/components/form';
 export * from './app/components/foundation-swatch';
 export * from './app/components/icon-button';
 export * from './app/components/nav-group';
