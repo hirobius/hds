@@ -8,6 +8,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { getNavLevelLeadingPadding, getNextNavLevel, type NavLevel } from '../lib/navLevels';
+import { isNavItemActive } from '../lib/nav-active';
 import { Disclosure } from './disclosure';
 import { NavItem } from './nav-item';
 import { Stack } from './stack';
@@ -51,11 +52,7 @@ export function NavGroup({
   const forceCollapsedOnOverview = collapsible && currentPath === '/';
   const hasActive =
     collapsible &&
-    resolvedItems.some((item) =>
-      getExact?.(item)
-        ? currentPath === item.path
-        : currentPath === item.path || currentPath.startsWith(`${item.path}/`),
-    );
+    resolvedItems.some((item) => isNavItemActive(currentPath, item.path, getExact?.(item)));
   const [open, setOpen] = useState(() => {
     if (!collapsible) return true;
     if (forceCollapsedOnOverview) return false;
