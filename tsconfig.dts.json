@@ -1,0 +1,28 @@
+{
+  "//": "Emits bundled-tree .d.ts for the published package (ADR: ship built types, not source). Driven by the real subpath entry points; tsc follows their imports. Output → dist/types, repointed from package.json#exports. Run via `pnpm build:types` (part of build:lib).",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "allowImportingTsExtensions": false,
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": false,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist/types",
+    "skipLibCheck": true,
+    "types": ["vite/client"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "src/vite-env.d.ts",
+    "src/index.ts",
+    "src/lib/utils.ts",
+    "src/app/design-system/tokens.ts",
+    "src/lib/manifest-entry.ts",
+    "src/app/context/index.ts",
+    "src/form/index.ts"
+  ],
+  "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*", "**/*.stories.*"]
+}

@@ -15,7 +15,7 @@
     ]
   },
   "module": "./dist/hirobius-ui.js",
-  "types": "./src/index.ts",
+  "types": "./dist/types/src/index.d.ts",
   "sideEffects": [
     "**/*.css",
     "./src/styles/**",
@@ -23,33 +23,33 @@
   ],
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/types/src/index.d.ts",
       "import": "./dist/hirobius-ui.js",
       "default": "./dist/hirobius-ui.js"
     },
     "./tokens.css": "./dist/tokens.css",
     "./tokens": {
-      "types": "./src/app/design-system/tokens.ts",
+      "types": "./dist/types/src/app/design-system/tokens.d.ts",
       "import": "./dist/tokens.js",
       "default": "./dist/tokens.js"
     },
     "./cn": {
-      "types": "./src/lib/utils.ts",
+      "types": "./dist/types/src/lib/utils.d.ts",
       "import": "./dist/cn.js",
       "default": "./dist/cn.js"
     },
     "./manifest": {
-      "types": "./public/hds-manifest.json",
+      "types": "./dist/types/src/lib/manifest-entry.d.ts",
       "import": "./dist/manifest.js",
       "default": "./dist/manifest.js"
     },
     "./contexts": {
-      "types": "./src/app/context/index.ts",
+      "types": "./dist/types/src/app/context/index.d.ts",
       "import": "./dist/contexts.js",
       "default": "./dist/contexts.js"
     },
     "./form": {
-      "types": "./src/form/index.ts",
+      "types": "./dist/types/src/form/index.d.ts",
       "import": "./dist/form.js",
       "default": "./dist/form.js"
     },
@@ -61,14 +61,6 @@
   },
   "files": [
     "dist",
-    "src",
-    "!src/stories",
-    "!src/app/components/lab",
-    "!src/app/components/mobius-distortion.ts",
-    "!src/app/components/mobius-constants.ts",
-    "!src/app/components/shaders",
-    "!src/app/stores/mobiusStore.ts",
-    "!src/app/stores/mobiusCurve.ts",
     "protocol/envelope.mjs",
     "protocol/figma-snapshot.schema.json",
     "hirobius.tokens.json",
@@ -78,12 +70,12 @@
     "registry": "https://npm.pkg.github.com"
   },
   "peerDependencies": {
+    "@hookform/resolvers": "^3.9.0 || ^4.0.0 || ^5.0.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0",
-    "react-router": "^7.0.0",
     "react-hook-form": "^7.0.0",
-    "zod": "^3.23.0 || ^4.0.0",
-    "@hookform/resolvers": "^3.9.0 || ^4.0.0 || ^5.0.0"
+    "react-router": "^7.0.0",
+    "zod": "^3.23.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
     "react-router": {
@@ -118,7 +110,8 @@
     "build": "pnpm sync:health && node scripts/sync-icons.mjs && vite build --configLoader native",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr-cache --configLoader native",
     "build:prerender": "pnpm build && pnpm build:ssr && node scripts/prerender.mjs",
-    "build:lib": "vite build -c vite.config.lib.ts && node scripts/embed-fonts.mjs",
+    "build:lib": "vite build -c vite.config.lib.ts && pnpm build:types && node scripts/embed-fonts.mjs",
+    "build:types": "tsc -p tsconfig.dts.json && node scripts/strip-dts-side-effects.mjs",
     "catalog": "node scripts/generate-visual-catalog.mjs",
     "changelog:generate": "node scripts/generate-changelog.mjs",
     "changeset": "changeset",
@@ -273,6 +266,7 @@
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.4",
     "@axe-core/playwright": "^4.11.1",
     "@changesets/cli": "^2.27.10",
     "@cyclonedx/cyclonedx-npm": "^4.2.1",
@@ -322,6 +316,7 @@
     "playwright": "^1.58.2",
     "pngjs": "^7.0.0",
     "prettier": "^3.8.3",
+    "publint": "^0.3.21",
     "react": "18.3.1",
     "react-docgen-typescript": "^2.4.0",
     "react-dom": "18.3.1",

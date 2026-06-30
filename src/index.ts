@@ -93,7 +93,14 @@ export * from './app/pages/hds/HdsSystemDocLayout';
 
 // ── Token bridge (CSS variables wrapped as TS constants + raw DTCG JSON) ──
 export { default as hds } from './app/design-system/tokens';
-export { default as tokens } from '../hirobius.tokens.json';
+// Re-export the raw DTCG tokens via a typed const (not a direct JSON re-export)
+// so the emitted .d.ts INLINES the token shape instead of importing
+// `../hirobius.tokens.json` — that path doesn't exist under dist/types in the
+// published package (attw InternalResolutionError). Runtime is unchanged: vite
+// inlines the JSON into the bundle.
+import tokensJson from '../hirobius.tokens.json';
+/** Raw DTCG design tokens (the contents of `hirobius.tokens.json`). */
+export const tokens = tokensJson;
 
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';

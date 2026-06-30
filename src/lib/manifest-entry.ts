@@ -11,5 +11,12 @@
  * ESM bundle. In dev (TypeScript path resolution), the import resolves to
  * the JSON file directly via `resolveJsonModule`.
  */
-import manifest from '../../public/hds-manifest.json';
+import manifestJson from '../../public/hds-manifest.json';
+import type { SystemManifest } from '../app/data/manifest-types';
+
+// Typed as SystemManifest so the emitted .d.ts exports a clean named type
+// instead of importing the raw JSON path (which doesn't exist under dist/types
+// in the published package — attw InternalResolutionError). Runtime is
+// unchanged: vite inlines the JSON into dist/manifest.js at build time.
+const manifest = manifestJson as unknown as SystemManifest;
 export default manifest;

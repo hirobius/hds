@@ -109,6 +109,10 @@ run(
     // jsdom backs the render probe below (real browser globals so the router
     // fallback's window.location path executes as a consumer would hit it).
     'jsdom@^25',
+    // Dev deps for the TypeScript consumer typecheck (section 3c).
+    'typescript@^5.7',
+    '@types/react@^18',
+    '@types/react-dom@^18',
     '--no-audit',
     '--no-fund',
     '--loglevel',
@@ -279,6 +283,66 @@ if (ok) {
   try {
     run('node', ['probe-render.mjs'], { cwd: app, stdio: 'inherit' });
   } catch {
+    ok = false;
+  }
+}
+
+// ── 3c. TypeScript consumer typecheck (the headline acceptance) ───────────────
+// A real consumer compiles with strict + skipLibCheck + bundler resolution
+// (the Vite/Next default). Types must resolve from the package's built dist/*.d.ts
+// — NOT from source — and importing a primitive from the root AND a subpath must
+// typecheck with only react/react-dom present (no router/form/zod peers).
+if (ok) {
+  log('running TypeScript consumer typecheck (tsc --noEmit, strict, bundler)…');
+  writeFileSync(
+    join(app, 'tsconfig.consumer.json'),
+    `${JSON.stringify(
+      {
+        compilerOptions: {
+          strict: true,
+          skipLibCheck: true,
+          noEmit: true,
+          module: 'ESNext',
+          moduleResolution: 'Bundler',
+          target: 'ES2022',
+          jsx: 'react-jsx',
+          lib: ['ES2022', 'DOM', 'DOM.Iterable'],
+          types: [],
+        },
+        files: ['consumer-typecheck.tsx'],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  writeFileSync(
+    join(app, 'consumer-typecheck.tsx'),
+    [
+      "import { Button, hds } from '@hirobius/design-system';",
+      "import { cn } from '@hirobius/design-system/cn';",
+      "import manifest from '@hirobius/design-system/manifest';",
+      '// Types must resolve from dist/*.d.ts (not source) under skipLibCheck.',
+      'export const a = <Button className={cn(String(hds ? 1 : 0))}>Hi</Button>;',
+      'export const b = Object.keys(manifest).length;',
+      '',
+    ].join('\n'),
+  );
+  try {
+    run('npx', ['tsc', '-p', 'tsconfig.consumer.json'], { cwd: app, stdio: 'inherit' });
+    console.log('  typecheck ok   consumer tsc --noEmit passed (types resolved from dist)');
+  } catch {
+    console.error('  typecheck FAIL consumer tsc --noEmit reported errors');
+    ok = false;
+  }
+}
+
+// ── 3d. publint — package export/types correctness ───────────────────────────
+if (ok) {
+  log('running publint (export/types correctness)…');
+  try {
+    run('npx', ['--yes', 'publint@latest'], { cwd: ROOT, stdio: 'inherit' });
+  } catch {
+    console.error('  publint FAIL');
     ok = false;
   }
 }
