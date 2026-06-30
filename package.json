@@ -2,7 +2,7 @@
   "name": "@hirobius/design-system",
   "description": "Hirobius Design Systems Architecture: token-governed React components, documentation surfaces, and distribution tooling.",
   "private": false,
-  "version": "0.7.0",
+  "version": "0.8.0",
   "engines": {
     "node": ">=20",
     "pnpm": ">=8"

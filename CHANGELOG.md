@@ -1,5 +1,47 @@
 # Changelog
 
+## 0.8.0
+
+### Minor Changes
+
+- 3f48fc9: Ship built TypeScript declarations instead of source, so the package typechecks
+  cleanly in a consumer.
+  - `types` and every `exports[*].types` now point at emitted `dist/types/**/*.d.ts`
+    (via a new `build:types` step using `tsconfig.dts.json`), not raw `.ts`/`.tsx`
+    source. Consumers no longer compile our source, so the prior errors
+    (`import.meta.env`, `Cannot find module './lab/tokenUtils'`/`'./Token.module.css'`)
+    are gone — under `skipLibCheck`, `.d.ts` are skipped.
+  - Source is no longer published (`files` drops `src`); the tarball ships only
+    `dist/` (+ protocol, tokens json, manifest). Nothing published references a
+    pruned path.
+  - The `manifest` and raw-`tokens` exports are typed (`SystemManifest` / inlined
+    DTCG shape) so the emitted `.d.ts` is self-contained (no JSON-path imports);
+    CSS side-effect imports are stripped from `.d.ts`.
+  - Verified: a Vite-style consumer (strict, `skipLibCheck`, bundler resolution)
+    can `import { Button } from '@hirobius/design-system'` (and from subpaths) and
+    pass `tsc --noEmit` with only react/react-dom installed. `smoke:consumer` now
+    gates on that consumer typecheck plus `publint`.
+
+- 2c8ca1c: Host-safe CSS + verified consumer build (packaging task C-partial / D / E).
+  - **New `@hirobius/design-system/variables.css`** — design tokens as CSS custom
+    properties ONLY (no Tailwind preflight, no `@layer base` reset, no utilities).
+    Importing it cannot restyle a host app's elements, so it's the safe path for
+    embedding HDS tokens inside MUI/another design system. The full `tokens.css`
+    is unchanged (greenfield).
+  - **`sideEffects`** tightened to `["**/*.css"]` (source no longer ships), so
+    bundlers tree-shake unused JS exports while keeping CSS side-effectful.
+  - **`smoke:consumer` now also runs a consumer `vite build`** of a `Button`-only
+    app with NONE of `react-router`/`react-hook-form`/`zod`/`@hookform/resolvers`
+    installed — proving leaf imports don't drag in the router/form stack (they're
+    optional peers, absent from the main bundle graph). Plus the consumer
+    `tsc --noEmit` + `publint` gates added previously.
+  - **docs/CONSUMING.md** documents the vars-only path for MUI coexistence and the
+    verified "leaf imports stay light" guarantee.
+
+  Note: scoping the full stylesheet's global Tailwind **preflight** reset is a
+  tracked follow-up (needs visual-regression verification); `variables.css` is the
+  host-safe path in the meantime.
+
 ## 0.7.0
 
 ### Minor Changes
