@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "30acc80fb5c94eb2bdf0fb96b453267af33e909e9084371e1d880fd869fccc9a",
-  "precommitStructureHashUpdatedAt": "2026-06-19T02:40:22.376Z",
+  "precommitStructureHash": "e7b883f1b3f0b0fc6f3d0005fff36b4283670994eb03182f1518ee0a6ad121a4",
+  "precommitStructureHashUpdatedAt": "2026-06-30T01:14:06.105Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",

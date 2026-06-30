@@ -31,7 +31,7 @@ echo "Checking lockfile integrity (pnpm install --frozen-lockfile)..."
 pnpm install --frozen-lockfile --offline --prefer-offline --ignore-scripts --silent 2>/dev/null || (echo "Lockfile drift detected: run 'pnpm install' to resync pnpm-lock.yaml" && exit 1)
 
 echo "Checking file encoding (editorconfig-checker — charset utf-8 enforcement)..."
-pnpm exec editorconfig-checker
+pnpm check:mojibake
 
 echo "Running all pre-commit registry gates (15 gates, declaration order)..."
 # Single source of truth: reads docs/guardrails/registry.json --channel pre-commit.
