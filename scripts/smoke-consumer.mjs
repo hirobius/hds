@@ -200,6 +200,10 @@ function check(name, fn) {
 const dom = new JSDOM('<!doctype html><html data-hds><body></body></html>', { url: 'https://example.test/job/42' });
 globalThis.window = dom.window;
 globalThis.document = dom.window.document;
+// react-dom's dev build reads navigator.userAgent at import time. Node < 21
+// has no global navigator (CI pins Node 20), so provide jsdom's. Guarded so it
+// is a no-op on Node >= 21, where navigator is a read-only global.
+if (!globalThis.navigator) globalThis.navigator = dom.window.navigator;
 
 const React = (await import('react')).default;
 const { renderToStaticMarkup } = await import('react-dom/server');
