@@ -4,10 +4,10 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 50 | 50 | 0 |
-| @ts-ignore/@ts-expect-error | 5 | 5 | 0 |
+| eslint-disable | 52 | 52 | 0 |
+| @ts-ignore/@ts-expect-error | 6 | 6 | 0 |
 | custom-sentinels (*-ok / hds-bypass) | 126 | 124 | 2 |
-| **Total** | **181** | **179** | **2** |
+| **Total** | **184** | **182** | **2** |
 
 ## eslint-disable
 
@@ -62,6 +62,8 @@
 | `src/app/pages/hds/LegacyTokenExplorerPanel.tsx` | 265 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
 | `src/app/pages/hds/TokensPage.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/pages/hds/components/IconGallery.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
+| `src/stories/field.stories.tsx` | 111 | `eslint-disable-next-line` | `no-restricted-syntax -- story demo: a raw grid is the point of the layout showcase` | justified |
+| `src/stories/status-tile.stories.tsx` | 113 | `eslint-disable-next-line` | `no-restricted-syntax -- story demo: a raw 2-col grid is the dashboard layout being shown` | justified |
 | `src/stories/surface.stories.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 
 ## @ts-ignore/@ts-expect-error
@@ -73,6 +75,7 @@
 | `src/app/components/popover.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/toast.test.tsx` | 12 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix Toast.` | justified |
 | `src/app/components/toast.test.tsx` | 19 | `@ts-expect-error` | `— partial matchMedia stub.` | justified |
+| `src/app/data/nav-model.test.ts` | 11 | `@ts-expect-error` | `— .mjs generator without type declarations; runtime import is fine.` | justified |
 
 ## custom-sentinels (*-ok / hds-bypass)
 
@@ -207,8 +210,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 181
-- **Justified (reason >= 10 chars):** 179
+- **Total suppressions:** 184
+- **Justified (reason >= 10 chars):** 182
 - **Untriaged (reason < 10 chars or missing):** 2
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.
