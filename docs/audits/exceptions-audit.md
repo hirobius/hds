@@ -47,8 +47,8 @@
 | `src/app/context/__tests__/context.test.tsx` | 18 | `eslint-disable-next-line` | `@typescript-eslint/no-explicit-any` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 399 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 843 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 876 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 850 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 883 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 182 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-tabindex` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 216 | `eslint-disable-next-line` | `@typescript-eslint/no-unused-vars` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 506 | `eslint-disable-next-line` | `react-hooks/exhaustive-deps` | justified |
@@ -120,7 +120,7 @@
 | `src/app/pages/hds/ColorPage.tsx` | 224 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 230 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 236 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/HDSLayout.tsx` | 1248 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
+| `src/app/pages/hds/HDSLayout.tsx` | 1255 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 50 | `hds-bypass` | `primitive documentation */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, DATA_TENANT, INLINE_STRUCTURAL_BORDER */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 86 | `audit-ok` | `brand palette demo content` | justified |
