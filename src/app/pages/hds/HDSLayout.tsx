@@ -30,6 +30,7 @@ import { DocPageSpec } from '../../components/DocPageSpec';
 import type { PageSpec } from '../../components/DocPageSpec';
 import registryData from '../../data/hds-registry.json';
 import { HDS_NAV_SECTIONS, toAppPath } from '../../data/hds-nav-data';
+import { isNavItemActive } from '../../lib/nav-active';
 import { TocProvider, TocItem, useToc, useTocActiveId } from './HdsTocContext';
 
 const HDS_REGISTRY = registryData as PageSpec[];
@@ -383,9 +384,7 @@ function NestedNavGroup({
   const location = useLocation();
   const storageKey = `hds-nav-subgroup:${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   const hasActive = items.some((item) =>
-    getExact?.(item)
-      ? location.pathname === item.path
-      : location.pathname === item.path || location.pathname.startsWith(item.path + '/'),
+    isNavItemActive(location.pathname, item.path, getExact?.(item)),
   );
   const [open, setOpen] = useState(() => {
     if (typeof window === 'undefined') return hasActive;
@@ -490,9 +489,7 @@ function SideNavItem({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const isActive = exact
-    ? location.pathname === path
-    : location.pathname === path || location.pathname.startsWith(`${path}/`);
+  const isActive = isNavItemActive(location.pathname, path, exact);
 
   return (
     <SideNav
