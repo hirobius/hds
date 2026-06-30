@@ -57,6 +57,7 @@
     "Field",
     "Form",
     "FormField",
+    "FormFieldShell",
     "FoundationSwatch",
     "Grid",
     "HdsCheckbox",
@@ -722,6 +723,10 @@
         "filePath": "src/app/components/form.tsx"
       },
       {
+        "name": "FormFieldShell",
+        "filePath": "src/app/components/form.tsx"
+      },
+      {
         "name": "FoundationSwatch",
         "filePath": "src/app/components/foundation-swatch.tsx"
       },
@@ -1040,6 +1045,10 @@
       {
         "name": "TYPE_PRESETS",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "useFieldWiring",
+        "filePath": "src/app/components/form.tsx"
       },
       {
         "name": "useToast",
@@ -1931,6 +1940,7 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/segmented-control.test.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/sketch-controls.tsx",
         "src/app/components/stack.tsx",
@@ -3007,6 +3017,7 @@
       "consumers": [
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/segmented-control.test.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.ts",
@@ -3946,6 +3957,7 @@
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
+        "src/app/components/radio.test.tsx",
         "src/app/components/stacked-card-rail.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
@@ -4687,6 +4699,7 @@
       },
       "consumers": [
         "src/app/components/command-palette.tsx",
+        "src/app/components/dialog.test.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
@@ -5254,6 +5267,7 @@
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/pages/docs/patterns/HdsField.tsx",
+        "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
         "src/stories/sketch.stories.tsx"
       ],
@@ -6056,6 +6070,7 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls.tsx",
+        "src/app/components/radio.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
@@ -6113,6 +6128,7 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls.tsx",
+        "src/app/components/select.test.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {
@@ -6228,6 +6244,7 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls.tsx",
         "src/app/components/radio.tsx",
+        "src/app/components/toggle.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
@@ -6714,6 +6731,9 @@
         "src/app/components/doc-sections.tsx",
         "src/app/components/form.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/form/hds-form.tsx",
+        "src/form/index.ts",
+        "src/form/use-hds-form.ts",
         "src/stories/form.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6734,7 +6754,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/form.tsx",
-      "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control. Validation-library agnostic — pass `error` from whatever you use.",
+      "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement. Validation-library agnostic — pass `error` from whatever you use. For controls with an externally-managed callback ref (e.g. react-hook-form), use `FormFieldShell` + `useFieldWiring` instead.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": "TODO:hds-master:FormField",
@@ -6745,6 +6765,8 @@
       },
       "consumers": [
         "src/app/components/form.test.tsx",
+        "src/form/form-adapter.test.tsx",
+        "src/form/hds-form.tsx",
         "src/stories/form.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6767,6 +6789,62 @@
           "optional": true
         },
         "htmlFor": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "FormFieldShell": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/form.tsx",
+      "description": "Presentational label + control slot + helper/error markup. Renders `children` verbatim — it does NOT clone — so it is safe to use with controls that own a callback ref. Pair it with `useFieldWiring` to apply ids/aria yourself.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:FormFieldShell",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "FormFieldShell",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/form/hds-form.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "controlId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
+        "error": {
           "type": "string",
           "optional": true
         },

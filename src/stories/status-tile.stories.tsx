@@ -42,7 +42,19 @@ export const WithTrailingBadge: Story = {
     tone: 'success',
     title: 'CI pipeline',
     notes: ['All checks passed', 'Last run 4 min ago'],
-    trailing: <span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-success)', color: '#fff' }}>Pass</span>,
+    trailing: (
+      <span
+        style={{
+          fontSize: '11px',
+          padding: '2px 6px',
+          borderRadius: '4px',
+          background: 'var(--semantic-color-feedback-success)',
+          color: '#fff',
+        }}
+      >
+        Pass
+      </span>
+    ),
   },
 };
 
@@ -51,7 +63,19 @@ export const Warning: Story = {
     tone: 'warning',
     title: 'Bundle size',
     notes: ['213 kB gzipped', 'Target: 200 kB'],
-    trailing: <span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-warning)', color: '#fff' }}>Over</span>,
+    trailing: (
+      <span
+        style={{
+          fontSize: '11px',
+          padding: '2px 6px',
+          borderRadius: '4px',
+          background: 'var(--semantic-color-feedback-warning)',
+          color: '#fff',
+        }}
+      >
+        Over
+      </span>
+    ),
   },
 };
 
@@ -60,7 +84,19 @@ export const Danger: Story = {
     tone: 'danger',
     title: 'Snapshot tests',
     notes: ['3 snapshots out of date', 'Blocking merge'],
-    trailing: <span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-error)', color: '#fff' }}>Fail</span>,
+    trailing: (
+      <span
+        style={{
+          fontSize: '11px',
+          padding: '2px 6px',
+          borderRadius: '4px',
+          background: 'var(--semantic-color-feedback-error)',
+          color: '#fff',
+        }}
+      >
+        Fail
+      </span>
+    ),
   },
 };
 
@@ -74,30 +110,79 @@ export const TileGrid: Story = {
     },
   },
   render: () => (
+    // eslint-disable-next-line no-restricted-syntax -- story demo: a raw 2-col grid is the dashboard layout being shown
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '560px' }}>
       <StatusTile
         tone="success"
         title="Design tokens"
         notes={['Last synced: today']}
-        trailing={<span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-success)', color: '#fff' }}>Synced</span>}
+        trailing={
+          <span
+            style={{
+              fontSize: '11px',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: 'var(--semantic-color-feedback-success)',
+              color: '#fff',
+            }}
+          >
+            Synced
+          </span>
+        }
       />
       <StatusTile
         tone="success"
         title="Accessibility"
         notes={['Score: 98 / 100']}
-        trailing={<span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-success)', color: '#fff' }}>Pass</span>}
+        trailing={
+          <span
+            style={{
+              fontSize: '11px',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: 'var(--semantic-color-feedback-success)',
+              color: '#fff',
+            }}
+          >
+            Pass
+          </span>
+        }
       />
       <StatusTile
         tone="warning"
         title="Bundle size"
         notes={['213 kB gzipped', 'Target: 200 kB']}
-        trailing={<span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-warning)', color: '#fff' }}>Over</span>}
+        trailing={
+          <span
+            style={{
+              fontSize: '11px',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: 'var(--semantic-color-feedback-warning)',
+              color: '#fff',
+            }}
+          >
+            Over
+          </span>
+        }
       />
       <StatusTile
         tone="danger"
         title="Snapshot tests"
         notes={['3 outdated']}
-        trailing={<span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-error)', color: '#fff' }}>Fail</span>}
+        trailing={
+          <span
+            style={{
+              fontSize: '11px',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: 'var(--semantic-color-feedback-error)',
+              color: '#fff',
+            }}
+          >
+            Fail
+          </span>
+        }
       />
     </div>
   ),

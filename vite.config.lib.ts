@@ -91,6 +91,10 @@ export default defineConfig({
         // Subpath: app-shell context providers (theme/language/tenant/font)
         // shared with consuming apps like the ops dashboard.
         contexts: path.resolve(__dirname, 'src/app/context/index.ts'),
+        // Subpath: optional React Hook Form + Zod adapter. RHF/zod/resolvers are
+        // optional peer deps externalized below, so this entry is empty of them
+        // and the main barrel never pulls them in.
+        form: path.resolve(__dirname, 'src/form/index.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],
@@ -119,6 +123,11 @@ export default defineConfig({
         'class-variance-authority',
         'clsx',
         'tailwind-merge',
+        // Optional peer deps for the ./form subpath — never bundled; resolved
+        // against the consumer's install when they import that entry.
+        'react-hook-form',
+        'zod',
+        /^@hookform\//,
       ],
       output: {
         // Stable chunk names for shared internal helpers between entries.

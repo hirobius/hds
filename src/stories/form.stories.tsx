@@ -27,7 +27,9 @@ function BasicFormDemo() {
             placeholder="adrian@hirobius.com"
           />
         </FormField>
-        <Button type="submit" variant="primary">Submit</Button>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
       </Form>
     </div>
   );
@@ -37,11 +39,7 @@ function WithErrorDemo() {
   return (
     <div style={{ width: '360px' }}>
       <Form onSubmit={(e) => e.preventDefault()}>
-        <FormField
-          label="Email"
-          error="Please enter a valid email address."
-          required
-        >
+        <FormField label="Email" error="Please enter a valid email address." required>
           <input
             type="email"
             aria-invalid
@@ -49,7 +47,9 @@ function WithErrorDemo() {
             className="flex h-10 w-full rounded-md border border-destructive bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
           />
         </FormField>
-        <Button type="submit" variant="primary">Save changes</Button>
+        <Button type="submit" variant="primary">
+          Save changes
+        </Button>
       </Form>
     </div>
   );
@@ -76,7 +76,9 @@ function WithDescriptionDemo() {
             placeholder="Product designer building design systems at scale…"
           />
         </FormField>
-        <Button type="submit" variant="secondary">Save profile</Button>
+        <Button type="submit" variant="secondary">
+          Save profile
+        </Button>
       </Form>
     </div>
   );
@@ -108,9 +110,11 @@ function ControlledDemo() {
             placeholder="Hirobius Design System"
           />
         </FormField>
-        <Button type="submit" variant="primary">Create project</Button>
+        <Button type="submit" variant="primary">
+          Create project
+        </Button>
         {submitted && name && (
-          <p className="text-sm text-muted-foreground">Project "{name}" created.</p>
+          <p className="text-sm text-muted-foreground">Project &quot;{name}&quot; created.</p>
         )}
       </Form>
     </div>
@@ -143,7 +147,8 @@ export const WithError: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'FormField with an error string — control gets aria-invalid and a destructive error message.',
+        story:
+          'FormField with an error string — control gets aria-invalid and a destructive error message.',
       },
     },
   },
@@ -165,7 +170,8 @@ export const Controlled: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Controlled form with inline validation on submit — demonstrates error appearing and clearing.',
+        story:
+          'Controlled form with inline validation on submit — demonstrates error appearing and clearing.',
       },
     },
   },

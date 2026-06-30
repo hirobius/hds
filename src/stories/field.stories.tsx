@@ -108,6 +108,7 @@ export const MetadataGrid: Story = {
   render: () => (
     <div
       style={{
+        // eslint-disable-next-line no-restricted-syntax -- story demo: a raw grid is the point of the layout showcase
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '24px',
