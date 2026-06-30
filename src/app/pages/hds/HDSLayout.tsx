@@ -692,8 +692,15 @@ function HDSDocRoot() {
   const sidebarScrollTopRef = useRef(0);
   const previousRouteRef = useRef<{ pathname: string; hash: string } | null>(null);
 
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < NAV_OVERLAY_BP);
-  const [showToc, setShowToc] = useState(() => window.innerWidth >= TOC_BP);
+  // SSR/Astro-safe: `window` is absent during server render, so default to a
+  // desktop-first layout (no mobile overlay, TOC visible). The resize effect
+  // below re-measures on mount and corrects the client immediately.
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window === 'undefined' ? false : window.innerWidth < NAV_OVERLAY_BP,
+  );
+  const [showToc, setShowToc] = useState(() =>
+    typeof window === 'undefined' ? true : window.innerWidth >= TOC_BP,
+  );
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const setNavScrollVisible = useMobiusStore((s) => s.setNavScrollVisible);
