@@ -1,15 +1,17 @@
 /**
- * hds-nav-data — derives HDS sidebar navigation sections from the component registry.
+ * hds-nav-data — the HDS sidebar navigation sections.
  *
- * Registry entries opt into the sidebar via `navSection` + `navOrder` fields.
- * Internal routes not in the registry (e.g. /ops, /brand-theming) are
- * appended as static entries in the `INTERNAL_NAV_ITEMS` array below.
+ * ADR-017, Phase 3: `HDS_NAV_SECTIONS` is now derived from the single generated
+ * `nav-model.json` (whose source is each page's colocated `meta` — see
+ * `scripts/generate-nav-model.mjs`), NOT from `hds-registry.json`. The model's
+ * serializable `exact`/`indent` flags are rehydrated into the `getExact`/
+ * `getIndent` predicates the sidebar consumes, so `HDSLayout` is unchanged.
  *
- * This module is the single source of truth for HDS_NAV_SECTIONS in HDSLayout.
- * Add a new page to the sidebar by setting navSection + navOrder in hds-registry.json.
+ * Add or move a sidebar page by editing that page's `meta` and running
+ * `pnpm nav:generate` — there is no separate list to keep in sync here.
  */
 
-import registryData from './hds-registry.json';
+import { navModel } from './nav-model';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -25,88 +27,45 @@ export type HdsNavSection = {
   getIndent?: (item: { path: string }) => boolean;
 };
 
-// ── Registry entry shape (minimal) ────────────────────────────────────────────
-
-type RegistryEntry = {
-  page: string;
-  path: string;
-  category: string;
-  navSection?: string;
-  navOrder?: number;
-  [key: string]: unknown;
-};
-
-// ── Static additions (routes not in the registry) ────────────────────────────
-
-const INTERNAL_NAV_ITEMS: NavItem[] = [{ path: '/brand-theming', label: 'Brand Theming' }];
-
 /**
  * Map a registry path to its standalone route. The registry carries the
  * monorepo's /hds/* prefix; the standalone site serves every doc page at root
  * (see src/app/routes.tsx). e.g. "/hds/components/actions" → "/components/actions".
+ *
+ * Nav paths in the model are already root-relative, so this is no longer used
+ * for the sidebar — it remains for callers that still resolve raw registry
+ * paths (e.g. HDSLayout's current-page lookup against `hds-registry.json`).
  */
 export function toAppPath(registryPath: string): string {
   if (registryPath === '/hds') return '/';
   return registryPath.startsWith('/hds/') ? registryPath.slice(4) : registryPath;
 }
 
-// ── Derivation ────────────────────────────────────────────────────────────────
+// ── Derivation from the generated model ────────────────────────────────────────
 
 /**
- * Build HDS_NAV_SECTIONS from registry metadata.
- *
- * Registry entries with `navSection` set are grouped by that label and sorted
- * by `navOrder`. Duplicate paths (e.g. the two Shape entries) are de-duped,
- * keeping the first occurrence of each path in order.
+ * Rehydrate the sidebar sections from `nav-model.json`. The model stores
+ * `exact`/`indent` as per-item booleans; here they become the predicate
+ * functions the sidebar calls, preserving the exact behavior of the previous
+ * registry-derived sections.
  */
 function buildNavSections(): HdsNavSection[] {
-  const registry = registryData as RegistryEntry[];
+  return navModel.sections.map((section) => {
+    const exactPaths = new Set(section.items.filter((i) => i.exact).map((i) => i.path));
+    const indentPaths = new Set(section.items.filter((i) => i.indent).map((i) => i.path));
 
-  // Collect entries that opt into the nav
-  const navEntries = registry
-    .filter((e) => e.navSection != null)
-    .sort((a, b) => (a.navOrder ?? 999) - (b.navOrder ?? 999));
-
-  // Group by navSection while preserving insertion order and de-duping paths
-  const sectionMap = new Map<string, NavItem[]>();
-  const seenPaths = new Set<string>();
-
-  for (const entry of navEntries) {
-    const section = entry.navSection!;
-    if (!sectionMap.has(section)) {
-      sectionMap.set(section, []);
-    }
-    if (!seenPaths.has(entry.path)) {
-      seenPaths.add(entry.path);
-      sectionMap.get(section)!.push({ path: toAppPath(entry.path), label: entry.page });
-    }
-  }
-
-  // Build result, adding special-case flags where the original code needed them
-  const sections: HdsNavSection[] = [];
-
-  for (const [label, items] of sectionMap) {
-    const section: HdsNavSection = { label, items };
-
-    if (label === 'Foundations') {
-      section.getExact = (item) => item.path === '/color';
-    }
-
-    if (label === 'Components') {
-      section.getIndent = (item) => item.path.startsWith('/components');
-    }
-
-    sections.push(section);
-  }
-
-  // Append internal section (routes not tracked in the registry)
-  sections.push({ label: 'Internal', items: INTERNAL_NAV_ITEMS });
-
-  return sections;
+    const result: HdsNavSection = {
+      label: section.label,
+      items: section.items.map((i) => ({ path: i.path, label: i.label })),
+    };
+    if (exactPaths.size > 0) result.getExact = (item) => exactPaths.has(item.path);
+    if (indentPaths.size > 0) result.getIndent = (item) => indentPaths.has(item.path);
+    return result;
+  });
 }
 
 /**
- * Pre-built HDS_NAV_SECTIONS — import this in HDSLayout instead of the
- * hardcoded array.
+ * Pre-built HDS_NAV_SECTIONS — import this in HDSLayout instead of a hardcoded
+ * array. Derived from the generated nav model.
  */
 export const HDS_NAV_SECTIONS: ReadonlyArray<HdsNavSection> = buildNavSections();
