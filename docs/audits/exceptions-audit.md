@@ -4,10 +4,10 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 49 | 49 | 0 |
-| @ts-ignore/@ts-expect-error | 4 | 4 | 0 |
+| eslint-disable | 50 | 50 | 0 |
+| @ts-ignore/@ts-expect-error | 5 | 5 | 0 |
 | custom-sentinels (*-ok / hds-bypass) | 126 | 124 | 2 |
-| **Total** | **179** | **177** | **2** |
+| **Total** | **181** | **179** | **2** |
 
 ## eslint-disable
 
@@ -23,6 +23,7 @@
 | `src/app/components/button.tsx` | 17 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; Tailwind has no single utility for transition-[colors,filter]` | justified |
 | `src/app/components/callout.tsx` | 19 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven padding + accent/surface vars have no Tailwind-theme utility` | justified |
 | `src/app/components/code-block.tsx` | 6 | `eslint-disable*` | `jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation` | justified |
+| `src/app/components/combobox.tsx` | 151 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus -- combobox search field is the expected focus target on open` | justified |
 | `src/app/components/command-palette.tsx` | 130 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- 10px is the standard shadcn cmd-palette kbd metadata size` | justified |
 | `src/app/components/command-palette.tsx` | 132 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- kbd shortcut hint` | justified |
 | `src/app/components/command-palette.tsx` | 136 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- kbd shortcut hint` | justified |
@@ -67,6 +68,7 @@
 
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
+| `src/app/components/combobox.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/menu.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/popover.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/toast.test.tsx` | 12 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix Toast.` | justified |
@@ -151,8 +153,8 @@
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 126 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 127 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/SandboxPage.tsx` | 12 | `hds-bypass` | `error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 330 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 333 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 373 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 376 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
 | `src/app/pages/hds/SpacingPage.tsx` | 255 | `hds-bypass` | `demo-grid-visualization — explicit pixel values intentionally show the 8px grid step */}` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 1 | `hds-bypass` | `test page with hardcoded demo styles for visual audit */` | justified |
 | `src/app/pages/hds/SpacingTestPage.tsx` | 2 | `font-ok` | `spacing test page intentionally uses monospace demo labels during visual inspection` | justified |
@@ -205,8 +207,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 179
-- **Justified (reason >= 10 chars):** 177
+- **Total suppressions:** 181
+- **Justified (reason >= 10 chars):** 179
 - **Untriaged (reason < 10 chars or missing):** 2
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.

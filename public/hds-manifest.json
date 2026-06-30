@@ -46,6 +46,7 @@
     "Card",
     "CinematicLink",
     "CodeBlock",
+    "Combobox",
     "ComponentInstanceMatrix",
     "Container",
     "Dialog",
@@ -54,6 +55,8 @@
     "DocLinkCard",
     "EmptyState",
     "Field",
+    "Form",
+    "FormField",
     "FoundationSwatch",
     "Grid",
     "HdsCheckbox",
@@ -603,6 +606,10 @@
         "filePath": "src/app/components/code-block.tsx"
       },
       {
+        "name": "Combobox",
+        "filePath": "src/app/components/combobox.tsx"
+      },
+      {
         "name": "CommandPalette",
         "filePath": "src/app/components/command-palette.tsx"
       },
@@ -705,6 +712,14 @@
       {
         "name": "FONT_SIZES",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "Form",
+        "filePath": "src/app/components/form.tsx"
+      },
+      {
+        "name": "FormField",
+        "filePath": "src/app/components/form.tsx"
       },
       {
         "name": "FoundationSwatch",
@@ -2031,6 +2046,7 @@
         "src/app/components/breadcrumb.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
+        "src/app/components/combobox.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/disclosure.tsx",
@@ -5195,6 +5211,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/pages/docs/patterns/HdsField.tsx"
       ],
@@ -6521,6 +6539,160 @@
         "swipeDirection": {
           "type": "SwipeDirection",
           "default": "right"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Combobox": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/combobox.tsx",
+      "description": "Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Combobox",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Combobox",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/combobox.test.tsx",
+        "src/app/components/form.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "emptyMessage": {
+          "type": "string",
+          "default": "No results"
+        },
+        "onChange": {
+          "type": "(value: string) => void"
+        },
+        "options": {
+          "type": "ComboboxOption[]"
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Select…"
+        },
+        "searchPlaceholder": {
+          "type": "string",
+          "default": "Search…"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Form": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/form.tsx",
+      "description": "Styled `<form>` with consistent vertical field rhythm.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Form",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Form",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/doc-sections.tsx",
+        "src/app/components/form.test.tsx",
+        "src/app/data/hdsEditorial.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "FormField": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/form.tsx",
+      "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control. Validation-library agnostic — pass `error` from whatever you use.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:FormField",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "FormField",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/form.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactElement<any, string | JSXElementConstructor<any>>"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
+        "error": {
+          "type": "string",
+          "optional": true
+        },
+        "htmlFor": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
         }
       },
       "allowedChildren": [

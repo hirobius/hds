@@ -68,6 +68,9 @@ for (const full of entries) {
   const entry = basename(full);
   if (SKIP_FILES.has(entry)) continue;
   if (!entry.endsWith('.tsx') && !entry.endsWith('.ts')) continue;
+  // Test/spec files are not components — their JSX may render bare <input> etc.
+  // for assertions without being a form-control primitive.
+  if (/\.(test|spec)\.tsx?$/.test(entry)) continue;
 
   const stat = statSync(full);
   if (!stat.isFile()) continue;

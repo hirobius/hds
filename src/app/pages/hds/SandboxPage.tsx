@@ -32,6 +32,8 @@ import { HdsCheckbox } from '../../components/checkbox';
 import { Popover } from '../../components/popover';
 import { Menu } from '../../components/menu';
 import { ToastProvider, useToast } from '../../components/toast';
+import { Combobox } from '../../components/combobox';
+import { Form, FormField } from '../../components/form';
 
 // ── Sandbox Registry ───────────────────────────────────────────────────────────
 // Each entry: a render function that returns the component with demo props.
@@ -61,6 +63,24 @@ function ToastDemo() {
     <ToastProvider>
       <ToastFire />
     </ToastProvider>
+  );
+}
+
+// Combobox is controlled; a tiny stateful wrapper gives the sandbox a live demo.
+function ComboboxDemo() {
+  const [value, setValue] = useState<string | null>('us');
+  return (
+    <Combobox
+      aria-label="Country"
+      value={value}
+      onChange={setValue}
+      options={[
+        { value: 'us', label: 'United States' },
+        { value: 'ca', label: 'Canada' },
+        { value: 'mx', label: 'Mexico' },
+        { value: 'uk', label: 'United Kingdom' },
+      ]}
+    />
   );
 }
 
@@ -142,6 +162,29 @@ const REGISTRY: Record<string, ComponentEntry> = {
 
   Toast: {
     default: () => <ToastDemo />,
+  },
+
+  Combobox: {
+    default: () => <ComboboxDemo />,
+  },
+
+  Form: {
+    default: () => (
+      <Form style={{ minWidth: 280 }}>
+        <FormField label="Workspace name" description="Shown to your teammates.">
+          <input
+            className="hds-focus h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
+            defaultValue="Hirobius"
+          />
+        </FormField>
+        <FormField label="Subdomain" error="That subdomain is taken." required>
+          <input
+            className="hds-focus h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
+            defaultValue="hirobius"
+          />
+        </FormField>
+      </Form>
+    ),
   },
 
   Menu: {
