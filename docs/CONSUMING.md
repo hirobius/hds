@@ -3,15 +3,16 @@
 How to install and use the Hirobius Design System (HDS) in another project. This
 is the canonical consumption guide — point other teams here.
 
-| | |
-|---|---|
-| **Package** | `@hirobius/design-system` |
-| **Min. version for this guide** | `0.7.0` (router optional, fonts bundled, scoped base styles) |
-| **Module format** | ESM only (`"type": "module"`) |
-| **Registry** | **GitHub Packages** (`https://npm.pkg.github.com`) — *not* public npm |
-| **Peers** | `react` ^18.3 ‖ ^19 · `react-dom` (match) · `react-router` ^7 *(optional)* |
+|                                 |                                                                            |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| **Package**                     | `@hirobius/design-system`                                                  |
+| **Min. version for this guide** | `0.7.0` (router optional, fonts bundled, scoped base styles)               |
+| **Module format**               | ESM only (`"type": "module"`)                                              |
+| **Registry**                    | **GitHub Packages** (`https://npm.pkg.github.com`) — _not_ public npm      |
+| **Peers**                       | `react` ^18.3 ‖ ^19 · `react-dom` (match) · `react-router` ^7 _(optional)_ |
 
 > **What changed in 0.7.0** — three things make HDS drop-in for a plain app:
+>
 > 1. **`react-router` is now optional** — components route through an adapter and
 >    fall back to plain anchors when no router is provided (§5).
 > 2. **Fonts are bundled** — `tokens.css` embeds the typefaces; no font files to copy (§3).
@@ -88,7 +89,9 @@ that should host HDS:
 
 ```html
 <!-- whole app uses HDS -->
-<html data-hds> … </html>
+<html data-hds>
+  …
+</html>
 ```
 
 ```tsx
@@ -127,7 +130,11 @@ function HdsRouting({ children }: { children: React.ReactNode }) {
   const adapter: HdsRouterAdapter = {
     navigate: (href, opts) => navigate(href, opts),
     currentPath: pathname,
-    LinkComponent: ({ to, children, ...rest }) => <Link to={to} {...rest}>{children}</Link>,
+    LinkComponent: ({ to, children, ...rest }) => (
+      <Link to={to} {...rest}>
+        {children}
+      </Link>
+    ),
   };
   return <HdsRouterProvider adapter={adapter}>{children}</HdsRouterProvider>;
 }
@@ -173,14 +180,15 @@ export function Example() {
 
 ### Subpath exports
 
-| Import | What you get |
-|---|---|
-| `@hirobius/design-system` | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`) |
-| `@hirobius/design-system/tokens.css` | The complete stylesheet (tokens + theme + utilities + embedded fonts) |
-| `@hirobius/design-system/tokens` | Design-token values as typed TS |
-| `@hirobius/design-system/cn` | The `cn()` className-merge helper |
-| `@hirobius/design-system/manifest` | Machine-readable component inventory (`hds-manifest.json`) |
-| `@hirobius/design-system/contexts` | React context providers, incl. the router seam (see below) |
+| Import                               | What you get                                                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------- |
+| `@hirobius/design-system`            | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`) |
+| `@hirobius/design-system/tokens.css` | The complete stylesheet (tokens + theme + utilities + embedded fonts)         |
+| `@hirobius/design-system/tokens`     | Design-token values as typed TS                                               |
+| `@hirobius/design-system/cn`         | The `cn()` className-merge helper                                             |
+| `@hirobius/design-system/manifest`   | Machine-readable component inventory (`hds-manifest.json`)                    |
+| `@hirobius/design-system/contexts`   | React context providers, incl. the router seam (see below)                    |
+| `@hirobius/design-system/form`       | Optional React Hook Form + Zod form adapter (see §8.5)                        |
 
 ## 8. Optional providers — theming / i18n / multi-tenant / fonts
 
@@ -188,7 +196,10 @@ Only needed if you use those features. Mount them above your app:
 
 ```tsx
 import {
-  TenantProvider, LanguageProvider, ThemeProvider, FontProvider,
+  TenantProvider,
+  LanguageProvider,
+  ThemeProvider,
+  FontProvider,
 } from '@hirobius/design-system/contexts';
 
 <TenantProvider>
@@ -203,6 +214,66 @@ import {
 `ThemeProvider` toggles light/dark by setting `data-theme` + `.dark` on
 `<html>`. It does not set `data-hds` — add that yourself (§4).
 
+## 8.5 Optional — typed, schema-validated forms (React Hook Form + Zod)
+
+The main barrel is validation-agnostic: `FormField` takes a plain `error`
+string, so you bring your own validation. If you want a batteries-included
+layer, the `/form` subpath wires [React Hook Form](https://react-hook-form.com)
+to [Zod](https://zod.dev). It's opt-in — `react-hook-form`, `zod`, and
+`@hookform/resolvers` are **optional peer deps**, so they only land in your
+bundle if you import this entry.
+
+```bash
+pnpm add react-hook-form zod @hookform/resolvers
+```
+
+```tsx
+import { z } from 'zod';
+import { useHdsForm, HdsForm, HdsFormField } from '@hirobius/design-system/form';
+import { Button } from '@hirobius/design-system';
+
+const schema = z.object({
+  email: z.string().email('Enter a valid email'),
+  role: z.string().min(1, 'Pick a role'),
+});
+
+function ApplyForm() {
+  const form = useHdsForm(schema, { defaultValues: { email: '', role: '' } });
+  return (
+    <HdsForm form={form} onSubmit={(values) => save(values)}>
+      <HdsFormField name="email" label="Email" description="We never share it.">
+        {(props) => <input type="email" {...props} />}
+      </HdsFormField>
+      <HdsFormField name="role" label="Role">
+        {(props) => (
+          <select {...props}>
+            <option value="">Choose…</option>
+            <option value="ic">Individual contributor</option>
+            <option value="lead">Lead</option>
+          </select>
+        )}
+      </HdsFormField>
+      <Button type="submit">Apply</Button>
+    </HdsForm>
+  );
+}
+```
+
+- `useHdsForm(schema, options?)` — RHF's `useForm` with the Zod resolver and
+  `onTouched` validation pre-wired; the schema's parsed type drives the field
+  types so `onSubmit` gets a fully-typed, validated value object.
+- `HdsForm` — wraps the form in RHF's `FormProvider`, routes submit through
+  `handleSubmit`, and sets `noValidate` so Zod is the single source of
+  validation (no native browser popups racing your schema).
+- `HdsFormField` — a **render-prop**: spread the supplied props onto your
+  control. It binds the control to RHF by `name` and shows the field's Zod
+  error through the same label/error/aria markup as the core `FormField`. (It's
+  a render-prop, not a cloned child, so RHF's callback ref attaches cleanly.)
+
+**SSR / Astro / Next.js RSC:** this layer is client-only (RHF uses hooks +
+refs). In Next's app router it carries a `'use client'` marker; in Astro, mount
+the form inside a hydrated island (e.g. `client:load`).
+
 ## 9. TypeScript & bundler requirements
 
 - **ESM-only.** Use a modern bundler (Vite, Next, Rspack, etc.). `require()` /
@@ -213,11 +284,11 @@ import {
 
 ## Troubleshooting
 
-| Symptom | Cause / fix |
-|---|---|
-| `npm ERR! 404` on install | `.npmrc` scope/registry not set, or token missing `read:packages` (see §1). |
-| `ERR_REQUIRE_ESM` / `require() of ES Module` | Consumer is CommonJS — switch to an ESM bundler (§9). |
-| Components render unstyled / wrong font | Import `@hirobius/design-system/tokens.css` at the app root (§3) **and** add `data-hds` to your root or section (§4). |
-| Text uses the host font, not Satoshi | Missing `data-hds` on an ancestor (§4). |
-| In-app links do a full page reload | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5). |
-| Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible. |
+| Symptom                                            | Cause / fix                                                                                                           |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `npm ERR! 404` on install                          | `.npmrc` scope/registry not set, or token missing `read:packages` (see §1).                                           |
+| `ERR_REQUIRE_ESM` / `require() of ES Module`       | Consumer is CommonJS — switch to an ESM bundler (§9).                                                                 |
+| Components render unstyled / wrong font            | Import `@hirobius/design-system/tokens.css` at the app root (§3) **and** add `data-hds` to your root or section (§4). |
+| Text uses the host font, not Satoshi               | Missing `data-hds` on an ancestor (§4).                                                                               |
+| In-app links do a full page reload                 | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5).                               |
+| Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible.                 |

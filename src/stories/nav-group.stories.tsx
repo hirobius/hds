@@ -3,7 +3,6 @@
  * @see src/app/components/nav-group.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { NavGroup } from '../app/components/nav-group';
 
 const COMPONENTS_ITEMS = [
@@ -96,7 +95,8 @@ export const Collapsible: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Collapsible group wraps items in a Disclosure. Defaults to open when an item is active.',
+        story:
+          'Collapsible group wraps items in a Disclosure. Defaults to open when an item is active.',
       },
     },
   },

@@ -46,11 +46,13 @@ export const Default: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">Page shell — default padding</Text>
+            <Text variant="heading2" as="h1">
+              Page shell — default padding
+            </Text>
             <Text variant="body">
-              This is the standard page shell with maxWidth "max" (1200 px) and
-              default vertical padding (48 px top / 64 px bottom). Use it as the
-              outermost wrapper for every new page in the system.
+              This is the standard page shell with maxWidth &quot;max&quot; (1200 px) and default
+              vertical padding (48 px top / 64 px bottom). Use it as the outermost wrapper for every
+              new page in the system.
             </Text>
           </Stack>
         </Surface>
@@ -69,10 +71,12 @@ export const ContentWidth: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">Content width (760 px)</Text>
+            <Text variant="heading2" as="h1">
+              Content width (760 px)
+            </Text>
             <Text variant="body">
-              Prose-optimised max-width for documentation, case studies, and
-              long-form article layouts.
+              Prose-optimised max-width for documentation, case studies, and long-form article
+              layouts.
             </Text>
           </Stack>
         </Surface>
@@ -98,10 +102,12 @@ export const CompactPadding: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">Compact padding</Text>
+            <Text variant="heading2" as="h1">
+              Compact padding
+            </Text>
             <Text variant="body">
-              paddingY="compact" uses 24 px top / 32 px bottom — useful for
-              dense dashboard views or secondary pages.
+              paddingY=&quot;compact&quot; uses 24 px top / 32 px bottom — useful for dense
+              dashboard views or secondary pages.
             </Text>
           </Stack>
         </Surface>
@@ -127,10 +133,12 @@ export const NoPadding: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">No padding</Text>
+            <Text variant="heading2" as="h1">
+              No padding
+            </Text>
             <Text variant="body">
-              paddingY="none" removes all vertical padding. Use for full-bleed
-              hero sections or canvas surfaces that own their own spacing.
+              paddingY=&quot;none&quot; removes all vertical padding. Use for full-bleed hero
+              sections or canvas surfaces that own their own spacing.
             </Text>
           </Stack>
         </Surface>
