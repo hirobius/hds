@@ -22,14 +22,19 @@ const systemContractStyles = {
 
 type ContractRow = { label: string; description: string };
 
-function ContractTable({ rows, iconEl, iconColor }: { rows: ContractRow[]; iconEl: LucideIcon; iconColor: string }) {
+function ContractTable({
+  rows,
+  iconEl,
+  iconColor,
+}: {
+  rows: ContractRow[];
+  iconEl: LucideIcon;
+  iconColor: string;
+}) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {rows.map((row, idx) => (
-        <div
-          key={idx}
-          style={systemContractStyles.tableRow}
-        >
+        <div key={idx} style={systemContractStyles.tableRow}>
           <div style={{ flexShrink: 0, marginTop: hds.semantic.space.subgrid.hairline }}>
             <Icon icon={iconEl} size="small" color={iconColor} />
           </div>
@@ -182,12 +187,13 @@ export default function SystemContractPage() {
           </Text>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {BREAKING_CHANGE_POLICY.map((item, idx) => (
-              <div
-                key={idx}
-                style={systemContractStyles.tableRow}
-              >
+              <div key={idx} style={systemContractStyles.tableRow}>
                 <div style={{ flexShrink: 0, marginTop: hds.semantic.space.subgrid.hairline }}>
-                  <Icon icon={AlertTriangle} size="small" color="var(--semantic-color-feedback-warning)" />
+                  <Icon
+                    icon={AlertTriangle}
+                    size="small"
+                    color="var(--semantic-color-feedback-warning)"
+                  />
                 </div>
                 <div style={{ flex: 1 }}>
                   <Text
@@ -218,14 +224,24 @@ export default function SystemContractPage() {
             as="p"
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
-            HDS is a solo-maintained system. All merges to <InlineCode>fix/ui-pipeline</InlineCode> and{' '}
-            <InlineCode>main</InlineCode> go through Adrian Milsap or an autonomous agent
+            HDS is a solo-maintained system. All merges to <InlineCode>fix/ui-pipeline</InlineCode>{' '}
+            and <InlineCode>main</InlineCode> go through Adrian Milsap or an autonomous agent
             operating under an approved orchestration unit.
           </Text>
           <Surface padding="component" style={{ maxWidth: 720 }}>
             <Stack gap="gap">
-              <div style={{ display: 'flex', gap: hds.semantic.space.subgrid.gap, alignItems: 'flex-start' }}>
-                <Icon icon={ShieldCheck} size="small" color="var(--semantic-color-feedback-success)" />
+              <div
+                style={{
+                  display: 'flex',
+                  gap: hds.semantic.space.subgrid.gap,
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Icon
+                  icon={ShieldCheck}
+                  size="small"
+                  color="var(--semantic-color-feedback-success)"
+                />
                 <div>
                   <Text
                     variant="body"
@@ -234,14 +250,28 @@ export default function SystemContractPage() {
                   >
                     Additive changes (new tokens, new components, new doc pages)
                   </Text>
-                  <Text variant="body" as="span" style={{ color: 'var(--semantic-color-content-secondary)' }}>
-                    May be merged by any autonomous agent operating on an approved orchestration unit,
-                    provided all quality gates pass.
+                  <Text
+                    variant="body"
+                    as="span"
+                    style={{ color: 'var(--semantic-color-content-secondary)' }}
+                  >
+                    May be merged by any autonomous agent operating on an approved orchestration
+                    unit, provided all quality gates pass.
                   </Text>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: hds.semantic.space.subgrid.gap, alignItems: 'flex-start' }}>
-                <Icon icon={ShieldCheck} size="small" color="var(--semantic-color-feedback-warning)" />
+              <div
+                style={{
+                  display: 'flex',
+                  gap: hds.semantic.space.subgrid.gap,
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Icon
+                  icon={ShieldCheck}
+                  size="small"
+                  color="var(--semantic-color-feedback-warning)"
+                />
                 <div>
                   <Text
                     variant="body"
@@ -250,14 +280,28 @@ export default function SystemContractPage() {
                   >
                     Deletions and renames
                   </Text>
-                  <Text variant="body" as="span" style={{ color: 'var(--semantic-color-content-secondary)' }}>
+                  <Text
+                    variant="body"
+                    as="span"
+                    style={{ color: 'var(--semantic-color-content-secondary)' }}
+                  >
                     Require a Sonnet-class agent (or Adrian directly) to audit live consumers before
                     the deletion lands. Haiku agents are not permitted to delete stable exports.
                   </Text>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: hds.semantic.space.subgrid.gap, alignItems: 'flex-start' }}>
-                <Icon icon={ShieldCheck} size="small" color="var(--semantic-color-feedback-error)" />
+              <div
+                style={{
+                  display: 'flex',
+                  gap: hds.semantic.space.subgrid.gap,
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Icon
+                  icon={ShieldCheck}
+                  size="small"
+                  color="var(--semantic-color-feedback-error)"
+                />
                 <div>
                   <Text
                     variant="body"
@@ -266,9 +310,13 @@ export default function SystemContractPage() {
                   >
                     Breaking changes to the stable API surface
                   </Text>
-                  <Text variant="body" as="span" style={{ color: 'var(--semantic-color-content-secondary)' }}>
-                    Require Adrian&apos;s explicit sign-off. Autonomous agents must stop and report when
-                    they detect a proposed change would break the stable contract.
+                  <Text
+                    variant="body"
+                    as="span"
+                    style={{ color: 'var(--semantic-color-content-secondary)' }}
+                  >
+                    Require Adrian&apos;s explicit sign-off. Autonomous agents must stop and report
+                    when they detect a proposed change would break the stable contract.
                   </Text>
                 </div>
               </div>
@@ -279,12 +327,21 @@ export default function SystemContractPage() {
             as="p"
             style={{ color: 'var(--semantic-color-content-secondary)', maxWidth: 720 }}
           >
-            Quality gates are non-negotiable for every merge: <InlineCode>pnpm typecheck</InlineCode>,{' '}
-            <InlineCode>pnpm check:tokens</InlineCode>, and the validate scripts must all pass.
-            A failing gate is a merge blocker regardless of who is merging.
+            Quality gates are non-negotiable for every merge:{' '}
+            <InlineCode>pnpm typecheck</InlineCode>, <InlineCode>pnpm check:tokens</InlineCode>, and
+            the validate scripts must all pass. A failing gate is a merge blocker regardless of who
+            is merging.
           </Text>
         </Stack>
       </DocSection>
     </article>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/system-contract',
+  title: 'SystemContract',
+  section: 'Foundations',
+  order: 9,
+} satisfies import('../../data/nav-model').HdsPageMeta;

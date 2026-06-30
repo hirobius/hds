@@ -12,10 +12,13 @@ import { HdsFoundationSection, HdsFoundationTableStack, DocFinePrint } from './H
 import { FoundationDocPage } from './FoundationDocPage';
 
 type MotionPrinciple = { title: string; body: string; description: string; token: string };
-type MotionDuration  = { key: string; value: string; ms: number; description: string };
-type MotionCurve     = {
-  key: string; label: string; values: string;
-  curve: [number, number, number, number]; description: string;
+type MotionDuration = { key: string; value: string; ms: number; description: string };
+type MotionCurve = {
+  key: string;
+  label: string;
+  values: string;
+  curve: [number, number, number, number];
+  description: string;
   spring?: { stiffness: number; damping: number; mass: number };
 };
 type MotionFoundationData = {
@@ -25,52 +28,52 @@ type MotionFoundationData = {
   uiSamples: unknown[];
 };
 
-const DATA    = motionData as MotionFoundationData;
+const DATA = motionData as MotionFoundationData;
 const MOTION_STAGE_PADDING = hds.semantic.space.component.padding;
 const MOTION_CAPTION_OFFSET = hds.semantic.space.component.gap;
 const MOTION_LABEL_CLEARANCE = hds.size[32];
 const motionCenterStageStyle = {
-  display:        'flex',
-  alignItems:     'center',
+  display: 'flex',
+  alignItems: 'center',
   justifyContent: 'center',
-  width:          '100%',
-  height:         '100%',
+  width: '100%',
+  height: '100%',
 } as const;
 const motionSpatialStageStyle = {
   ...motionCenterStageStyle,
   overflow: 'hidden',
 } as const;
 const motionPrincipleFigureStyle = {
-  display:       'flex',
+  display: 'flex',
   flexDirection: 'column',
-  minWidth:      0,
-  gap:           MOTION_CAPTION_OFFSET,
-  margin:        0,
+  minWidth: 0,
+  gap: MOTION_CAPTION_OFFSET,
+  margin: 0,
 } as const;
 const motionStageStyle = {
-  position:        'absolute',
-  top:             MOTION_STAGE_PADDING,
-  right:           MOTION_STAGE_PADDING,
-  bottom:          `calc(${MOTION_STAGE_PADDING} + ${MOTION_LABEL_CLEARANCE})`,
-  left:            MOTION_STAGE_PADDING,
-  display:         'flex',
-  alignItems:      'center',
-  justifyContent:  'center',
-  minWidth:        0,
+  position: 'absolute',
+  top: MOTION_STAGE_PADDING,
+  right: MOTION_STAGE_PADDING,
+  bottom: `calc(${MOTION_STAGE_PADDING} + ${MOTION_LABEL_CLEARANCE})`,
+  left: MOTION_STAGE_PADDING,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minWidth: 0,
 } as const;
 const motionTokenDockStyle = {
-  position:        'absolute',
-  left:            MOTION_STAGE_PADDING,
-  bottom:          MOTION_STAGE_PADDING,
-  display:         'flex',
-  alignItems:      'flex-end',
-  justifyContent:  'flex-start',
-  minWidth:        0,
+  position: 'absolute',
+  left: MOTION_STAGE_PADDING,
+  bottom: MOTION_STAGE_PADDING,
+  display: 'flex',
+  alignItems: 'flex-end',
+  justifyContent: 'flex-start',
+  minWidth: 0,
 } as const;
 const motionCaptionStyle = {
   ...hds.typeStyles.caption,
   margin: 0,
-  color:  'var(--semantic-color-content-secondary)',
+  color: 'var(--semantic-color-content-secondary)',
 } as const;
 
 // ── Cycle hook ────────────────────────────────────────────────────────────────
@@ -81,16 +84,18 @@ function useToggleCycle(visibleMs: number, hiddenMs: number) {
     let active = true;
     const run = async () => {
       while (active) {
-        await new Promise<void>(r => setTimeout(r, visibleMs));
+        await new Promise<void>((r) => setTimeout(r, visibleMs));
         if (!active) break;
         setVisible(false);
-        await new Promise<void>(r => setTimeout(r, hiddenMs));
+        await new Promise<void>((r) => setTimeout(r, hiddenMs));
         if (!active) break;
         setVisible(true);
       }
     };
     run();
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [visibleMs, hiddenMs]);
   return visible;
 }
@@ -119,7 +124,10 @@ function ProductivePreview() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+            transition={{
+              duration: hds.motion.productive.duration,
+              ease: hds.motion.productive.easing,
+            }}
             style={ASSET_STYLE}
           />
         )}
@@ -192,19 +200,15 @@ function getPreview(token: string) {
   const key = token.split('.').pop();
   if (key === 'productive') return <ProductivePreview />;
   if (key === 'expressive') return <ExpressivePreview />;
-  if (key === 'spatial')    return <SpatialPreview />;
+  if (key === 'spatial') return <SpatialPreview />;
   return <ExitPreview />;
 }
 
 function MotionPrincipleCard({ principle }: { principle: MotionPrinciple }) {
   return (
-    <figure
-      style={motionPrincipleFigureStyle}
-    >
+    <figure style={motionPrincipleFigureStyle}>
       <Surface padding="component" style={{ position: 'relative', minHeight: 220 }}>
-        <div style={motionStageStyle}>
-          {getPreview(principle.token)}
-        </div>
+        <div style={motionStageStyle}>{getPreview(principle.token)}</div>
 
         <Surface padding="item" style={motionTokenDockStyle}>
           <Token variant="node" pathDisplayMode="compressed" pathDisplayDepth={1}>
@@ -225,7 +229,6 @@ function MotionPrincipleCard({ principle }: { principle: MotionPrinciple }) {
   );
 }
 
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function MotionPage() {
@@ -242,69 +245,82 @@ export default function MotionPage() {
         intro="Semantic intents keep interaction timing consistent without inventing page-level animation rules."
         marginTop={0}
       >
-            <Stack gap="px24">
-              {DATA.principles.map(p => (
-                <MotionPrincipleCard key={p.token} principle={p} />
-              ))}
-            </Stack>
+        <Stack gap="px24">
+          {DATA.principles.map((p) => (
+            <MotionPrincipleCard key={p.token} principle={p} />
+          ))}
+        </Stack>
       </HdsFoundationSection>
 
       <HdsFoundationSection
         title="Primitives"
         intro="Primitive durations and easing curves power the semantic layer without drifting from a governed timing scale."
       >
-            <DocFinePrint label="Primitive token tables">
-            <HdsFoundationTableStack marginTop={0}>
-              <Table
-                caption="Duration scale"
-                description="The base timing steps stay small and predictable."
-                columns={[
-                  { key: 'token', label: 'Token', width: '40%' },
-                  { key: 'description', label: 'Description', width: '60%' },
-                ]}
-                rows={DATA.durationSteps.map(step => ({
-                  key: step.key,
+        <DocFinePrint label="Primitive token tables">
+          <HdsFoundationTableStack marginTop={0}>
+            <Table
+              caption="Duration scale"
+              description="The base timing steps stay small and predictable."
+              columns={[
+                { key: 'token', label: 'Token', width: '40%' },
+                { key: 'description', label: 'Description', width: '60%' },
+              ]}
+              rows={DATA.durationSteps.map((step) => ({
+                key: step.key,
+                cells: [
+                  {
+                    slot: 'token',
+                    content: (
+                      <Token variant="node" pathDisplayMode="compressed" pathDisplayDepth={1}>
+                        primitive.duration.{step.key}
+                      </Token>
+                    ),
+                  },
+                  { slot: 'description', content: step.description },
+                ],
+              }))}
+            />
+
+            <Table
+              caption="Easing curves"
+              description="Primitive easing values that semantic motion tokens reference."
+              columns={[
+                { key: 'token', label: 'Token', width: '40%' },
+                { key: 'description', label: 'Description', width: '60%' },
+              ]}
+              rows={DATA.easingCurves.map((curve) => {
+                return {
+                  key: curve.key,
                   cells: [
                     {
                       slot: 'token',
                       content: (
-                        <Token variant="node" pathDisplayMode="compressed" pathDisplayDepth={1}>
-                          primitive.duration.{step.key}
+                        <Token
+                          variant="node"
+                          pathDisplayMode="compressed"
+                          pathDisplayDepth={1}
+                          tokenPath={`primitive.easing.${curve.key}`}
+                        >
+                          primitive.easing.{curve.key}
                         </Token>
                       ),
                     },
-                    { slot: 'description', content: step.description },
+                    { slot: 'description', content: curve.description },
                   ],
-                }))}
-              />
-
-              <Table
-                caption="Easing curves"
-                description="Primitive easing values that semantic motion tokens reference."
-                columns={[
-                  { key: 'token', label: 'Token', width: '40%' },
-                  { key: 'description', label: 'Description', width: '60%' },
-                ]}
-                rows={DATA.easingCurves.map(curve => {
-                  return ({
-                    key: curve.key,
-                    cells: [
-                      {
-                        slot: 'token',
-                        content: (
-                          <Token variant="node" pathDisplayMode="compressed" pathDisplayDepth={1} tokenPath={`primitive.easing.${curve.key}`}>
-                            primitive.easing.{curve.key}
-                          </Token>
-                        ),
-                      },
-                      { slot: 'description', content: curve.description },
-                    ],
-                  });
-                })}
-              />
-            </HdsFoundationTableStack>
-            </DocFinePrint>
+                };
+              })}
+            />
+          </HdsFoundationTableStack>
+        </DocFinePrint>
       </HdsFoundationSection>
     </FoundationDocPage>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/motion',
+  title: 'Motion',
+  section: 'Foundations',
+  order: 6,
+} satisfies import('../../data/nav-model').HdsPageMeta;

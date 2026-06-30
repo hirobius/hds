@@ -278,3 +278,11 @@ export default function DisplayPage() {
     </ComponentDocPageShell>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/components/display',
+  title: 'Display',
+  section: 'Components',
+  order: 3,
+} satisfies import('../../../data/nav-model').HdsPageMeta;

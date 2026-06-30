@@ -183,3 +183,11 @@ export default function InputsPage() {
     </ComponentDocPageShell>
   );
 }
+
+// ADR-017 nav metadata — drives the generated nav-model.json (see scripts/generate-nav-model.mjs).
+export const meta = {
+  path: '/components/inputs',
+  title: 'Inputs',
+  section: 'Components',
+  order: 2,
+} satisfies import('../../../data/nav-model').HdsPageMeta;

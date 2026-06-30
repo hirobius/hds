@@ -110,16 +110,16 @@
 | `src/app/components/text-lockup.tsx` | 9 | `font-ok` | `inline technical affordances within this lockup intentionally use monospace for code-like references` | justified |
 | `src/app/data/hdsEditorial.tsx` | 55 | `audit-ok` | `*/) now supported. Self-healing policy documented: new violation classes must be added to script in same commit as fix.' },` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 1 | `hds-bypass` | `foundation color doc — WCAG_PAIRINGS contains intentional raw hex literals for contrast-ratio math data; values are not used as CSS color properties */` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 180 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 181 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 182 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 183 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 184 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 185 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 186 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 187 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 188 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 189 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 194 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 200 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 206 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 212 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 218 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 224 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 230 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 236 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1251 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 50 | `hds-bypass` | `primitive documentation */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, DATA_TENANT, INLINE_STRUCTURAL_BORDER */` | justified |
