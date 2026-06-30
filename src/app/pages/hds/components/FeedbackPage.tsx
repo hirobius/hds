@@ -100,6 +100,7 @@ export default function FeedbackPage() {
 export const meta = {
   path: '/components/feedback',
   title: 'Feedback',
+  description: 'Status, alerts, and feedback',
   section: 'Components',
   order: 4,
 } satisfies import('../../../data/nav-model').HdsPageMeta;

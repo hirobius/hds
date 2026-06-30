@@ -214,6 +214,7 @@ export default function ElevationPage() {
 export const meta = {
   path: '/elevation',
   title: 'Elevation',
+  description: 'Shadow and z-index',
   section: 'Foundations',
   order: 5,
 } satisfies import('../../data/nav-model').HdsPageMeta;

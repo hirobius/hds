@@ -167,6 +167,7 @@ export default function NavigationPage() {
 export const meta = {
   path: '/components/navigation',
   title: 'Navigation',
+  description: 'Navigation components',
   section: 'Components',
   order: 5,
 } satisfies import('../../../data/nav-model').HdsPageMeta;

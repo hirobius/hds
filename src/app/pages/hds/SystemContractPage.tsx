@@ -342,6 +342,7 @@ export default function SystemContractPage() {
 export const meta = {
   path: '/system-contract',
   title: 'SystemContract',
+  description: 'The HDS system contract and guarantees',
   section: 'Foundations',
   order: 9,
 } satisfies import('../../data/nav-model').HdsPageMeta;

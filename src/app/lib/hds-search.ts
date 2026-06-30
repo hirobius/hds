@@ -20,6 +20,7 @@
 // that already import from this module (e.g. command-palette.tsx) keep working
 // unchanged.
 import type { ManifestSpec, RoleToken, SystemManifest } from '../data/manifest-types';
+import { navModel } from '../data/nav-model';
 
 export type { ManifestSpec, RoleToken, SystemManifest };
 
@@ -69,15 +70,18 @@ export function sanitize(text: string): string {
 
 // ── Index build ───────────────────────────────────────────────────────────────
 
-const FOUNDATION_SECTIONS: Array<{ label: string; to: string; description: string }> = [
-  { label: 'Overview', to: '/color', description: 'HDS landing page' },
-  { label: 'Color', to: '/color', description: 'Color tokens and roles' },
-  { label: 'Typography', to: '/typography', description: 'Type ramp and pairings' },
-  { label: 'Spacing', to: '/spacing', description: 'Spacing scale' },
-  { label: 'Shape', to: '/shape', description: 'Radius and shape tokens' },
-  { label: 'Elevation', to: '/elevation', description: 'Shadow and z-index' },
-  { label: 'Motion', to: '/motion', description: 'Easing and duration' },
-  { label: 'Breakpoints', to: '/breakpoints', description: 'Responsive breakpoints' },
+// Section anchors are derived from the single nav model (ADR-017) so the Cmd-K
+// search corpus can never drift from the sidebar: every nav page is searchable,
+// with its `meta.description`. The token catalog (/tokens) is not a nav page, so
+// it stays as an explicit extra.
+const SECTION_ANCHORS: Array<{ label: string; to: string; description: string }> = [
+  ...navModel.sections.flatMap((section) =>
+    section.items.map((item) => ({
+      label: item.label,
+      to: item.path,
+      description: item.description ?? section.label,
+    })),
+  ),
   { label: 'Token Reference', to: '/tokens', description: 'Full token catalog' },
 ];
 
@@ -161,7 +165,7 @@ export function buildIndex(manifest: SystemManifest): PaletteResult[] {
   }
 
   // 4. section anchors (foundations + tokens)
-  for (const section of FOUNDATION_SECTIONS) {
+  for (const section of SECTION_ANCHORS) {
     out.push({
       id: `section:${section.to}`,
       label: section.label,

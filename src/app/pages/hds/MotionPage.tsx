@@ -321,6 +321,7 @@ export default function MotionPage() {
 export const meta = {
   path: '/motion',
   title: 'Motion',
+  description: 'Easing and duration',
   section: 'Foundations',
   order: 6,
 } satisfies import('../../data/nav-model').HdsPageMeta;

@@ -150,6 +150,7 @@ export default function ActionsPage() {
 export const meta = {
   path: '/components/actions',
   title: 'Actions',
+  description: 'Buttons and action controls',
   section: 'Components',
   order: 1,
 } satisfies import('../../../data/nav-model').HdsPageMeta;

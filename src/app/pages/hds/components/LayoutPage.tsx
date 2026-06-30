@@ -353,6 +353,7 @@ export default function LayoutPage() {
 export const meta = {
   path: '/components/layout',
   title: 'Layout',
+  description: 'Layout primitives',
   section: 'Components',
   order: 6,
 } satisfies import('../../../data/nav-model').HdsPageMeta;

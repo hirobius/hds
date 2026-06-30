@@ -283,6 +283,7 @@ export default function DisplayPage() {
 export const meta = {
   path: '/components/display',
   title: 'Display',
+  description: 'Data display and media',
   section: 'Components',
   order: 3,
 } satisfies import('../../../data/nav-model').HdsPageMeta;

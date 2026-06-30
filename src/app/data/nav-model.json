@@ -7,39 +7,48 @@
         {
           "path": "/color",
           "label": "Color",
+          "description": "Color tokens and roles",
           "exact": true
         },
         {
           "path": "/typography",
-          "label": "Typography"
+          "label": "Typography",
+          "description": "Type ramp and pairings"
         },
         {
           "path": "/spacing",
-          "label": "Spacing"
+          "label": "Spacing",
+          "description": "Spacing scale"
         },
         {
           "path": "/shape",
-          "label": "Shape"
+          "label": "Shape",
+          "description": "Radius and shape tokens"
         },
         {
           "path": "/elevation",
-          "label": "Elevation"
+          "label": "Elevation",
+          "description": "Shadow and z-index"
         },
         {
           "path": "/motion",
-          "label": "Motion"
+          "label": "Motion",
+          "description": "Easing and duration"
         },
         {
           "path": "/breakpoints",
-          "label": "Breakpoints"
+          "label": "Breakpoints",
+          "description": "Responsive breakpoints"
         },
         {
           "path": "/contribution-guide",
-          "label": "ContributionGuide"
+          "label": "ContributionGuide",
+          "description": "How to contribute to HDS"
         },
         {
           "path": "/system-contract",
-          "label": "SystemContract"
+          "label": "SystemContract",
+          "description": "The HDS system contract and guarantees"
         }
       ]
     },
@@ -49,31 +58,37 @@
         {
           "path": "/components/actions",
           "label": "Actions",
+          "description": "Buttons and action controls",
           "indent": true
         },
         {
           "path": "/components/inputs",
           "label": "Inputs",
+          "description": "Form inputs and controls",
           "indent": true
         },
         {
           "path": "/components/display",
           "label": "Display",
+          "description": "Data display and media",
           "indent": true
         },
         {
           "path": "/components/feedback",
           "label": "Feedback",
+          "description": "Status, alerts, and feedback",
           "indent": true
         },
         {
           "path": "/components/navigation",
           "label": "Navigation",
+          "description": "Navigation components",
           "indent": true
         },
         {
           "path": "/components/layout",
           "label": "Layout",
+          "description": "Layout primitives",
           "indent": true
         }
       ]
@@ -83,7 +98,8 @@
       "items": [
         {
           "path": "/brand-theming",
-          "label": "Brand Theming"
+          "label": "Brand Theming",
+          "description": "Multi-brand theming"
         }
       ]
     }

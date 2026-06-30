@@ -463,6 +463,7 @@ export default function SpacingPage() {
 export const meta = {
   path: '/spacing',
   title: 'Spacing',
+  description: 'Spacing scale',
   section: 'Foundations',
   order: 3,
 } satisfies import('../../data/nav-model').HdsPageMeta;
