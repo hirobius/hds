@@ -153,10 +153,22 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
   system per surface. HDS's namespaced custom properties (`--semantic-*`,
   `--primitive-*`, `--hds-*`) won't collide with MUI's, but the two opinionated
   resets will fight if both target `body`.
-- **Known limitation (this release):** Tailwind's preflight reset still ships
-  globally in `tokens.css` (it resets `margin`/`padding`/`border` on all
-  elements). Scoping it is a documented follow-up (ADR-016). Until then, in a
-  shared-page setup, load `tokens.css` knowing the preflight is global.
+- **Vars-only path (recommended for MUI/host embedding):** import
+  `@hirobius/design-system/variables.css` instead of `tokens.css`. It ships the
+  design-token **custom properties only** — no Tailwind preflight, no `@layer
+base` reset, no utilities — so it **cannot** restyle your host's buttons,
+  headings, or anything else. HDS components still read those vars for their
+  token-driven colors/spacing. (Components that lean on Tailwind utility classes
+  need the full `tokens.css`; for those, scope with `data-hds` per §4.)
+- **Leaf imports stay light:** importing a primitive (e.g. `Button`) does **not**
+  pull `react-router`, `react-hook-form`, `zod`, or `@hookform/resolvers` into
+  your bundle — those are optional peers used only by the router seam / the
+  `/form` subpath, and aren't in the main bundle graph. A consumer with only
+  `react`/`react-dom` installed builds cleanly (verified in `smoke:consumer`).
+- **Known limitation (this release):** the **full** `tokens.css` still carries
+  Tailwind's global preflight reset (resets `margin`/`padding`/`border` on all
+  elements). Use `variables.css` (above) to avoid it, or scope `tokens.css`
+  under `data-hds`. Scoping preflight itself is a tracked follow-up (ADR-016).
 
 ## 7. Use it
 
@@ -180,15 +192,16 @@ export function Example() {
 
 ### Subpath exports
 
-| Import                               | What you get                                                                  |
-| ------------------------------------ | ----------------------------------------------------------------------------- |
-| `@hirobius/design-system`            | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`) |
-| `@hirobius/design-system/tokens.css` | The complete stylesheet (tokens + theme + utilities + embedded fonts)         |
-| `@hirobius/design-system/tokens`     | Design-token values as typed TS                                               |
-| `@hirobius/design-system/cn`         | The `cn()` className-merge helper                                             |
-| `@hirobius/design-system/manifest`   | Machine-readable component inventory (`hds-manifest.json`)                    |
-| `@hirobius/design-system/contexts`   | React context providers, incl. the router seam (see below)                    |
-| `@hirobius/design-system/form`       | Optional React Hook Form + Zod form adapter (see §8.5)                        |
+| Import                                  | What you get                                                                  |
+| --------------------------------------- | ----------------------------------------------------------------------------- |
+| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`) |
+| `@hirobius/design-system/tokens.css`    | The complete stylesheet (tokens + theme + utilities + embedded fonts)         |
+| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)  |
+| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                               |
+| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                             |
+| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                    |
+| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                    |
+| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                        |
 
 ## 8. Optional providers — theming / i18n / multi-tenant / fonts
 
