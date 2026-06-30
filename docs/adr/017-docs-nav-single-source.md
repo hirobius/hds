@@ -1,6 +1,12 @@
 # ADR-017: Single-source, derived docs-site navigation
 
-**Status:** Proposed (2026-06-30)
+**Status:** Accepted (2026-06-30) — implemented in PRs #28–#33.
+
+> Implementation status: Phases 1, 2, 3, 3b, 5 landed in full. Phase 4 landed
+> partially — the active-state predicate is centralized (`isNavItemActive`), but
+> the full `NestedNavGroup`→ public `NavGroup` renderer swap is deferred: it
+> changes live sidebar UX (localStorage open-state persistence + mobile drawer)
+> and needs a browser to verify, which the build sandbox lacks.
 
 ## Context
 
