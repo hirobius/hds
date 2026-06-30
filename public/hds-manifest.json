@@ -1295,7 +1295,8 @@
       },
       "consumers": [
         "src/app/components/animated-label.tsx",
-        "src/app/components/componentPreviewRegistry.tsx"
+        "src/app/components/componentPreviewRegistry.tsx",
+        "src/stories/cinematic-link.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -1336,7 +1337,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx"
+        "src/app/pages/docs/templates/_template.tsx",
+        "src/stories/code-block.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
@@ -1406,7 +1408,8 @@
         "src/app/data/projects.ts",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
-        "src/stories/container.stories.tsx"
+        "src/stories/container.stories.tsx",
+        "src/stories/page.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -1465,7 +1468,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/pages/docs/patterns/HdsDisclosure.tsx",
-        "src/stories/disclosure.stories.tsx"
+        "src/stories/disclosure.stories.tsx",
+        "src/stories/nav-group.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
@@ -1694,7 +1698,8 @@
       "figmaLink": "TODO:hds-master:DocLinkCard",
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/doc-link-card.stories.tsx"
       ],
       "variantAxes": [],
       "componentProperties": []
@@ -1714,7 +1719,9 @@
       },
       "consumers": [
         "src/app/components/not-found-pattern.tsx",
-        "src/app/pages/ErrorPage.tsx"
+        "src/app/pages/ErrorPage.tsx",
+        "src/stories/error-pattern.stories.tsx",
+        "src/stories/not-found-pattern.stories.tsx"
       ],
       "tokenMapping": {
         "Headline typography": "semantic.typography.display",
@@ -2070,8 +2077,10 @@
         "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
         "src/app/pages/docs/patterns/HdsDisclosure.tsx",
         "src/app/pages/docs/patterns/HdsIconButton.tsx",
+        "src/stories/activity-feed.stories.tsx",
         "src/stories/icon-button.stories.tsx",
-        "src/stories/icon.stories.tsx"
+        "src/stories/icon.stories.tsx",
+        "src/stories/nav-group.stories.tsx"
       ],
       "tokenMapping": {
         "Small icon size": "primitive.typography.size.base",
@@ -2329,7 +2338,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/pages/docs/templates/_template.tsx",
-        "src/app/pages/InfoPageWrapper.tsx"
+        "src/app/pages/InfoPageWrapper.tsx",
+        "src/stories/info-page.stories.tsx"
       ],
       "tokenMapping": {
         "Layout gap": "semantic.space.layout.gap",
@@ -2478,7 +2488,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
-        "src/app/components/lab/legacy-token-detail.tsx"
+        "src/app/components/lab/legacy-token-detail.tsx",
+        "src/stories/inline-link.stories.tsx"
       ],
       "tokenMapping": {
         "Link text": "semantic.color.content.accent",
@@ -2811,7 +2822,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
+        "src/app/components/componentPreviewRegistry.tsx",
+        "src/stories/nav-group.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -2923,7 +2935,9 @@
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx"
+        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
+        "src/stories/nav-group.stories.tsx",
+        "src/stories/nav-item.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -3090,7 +3104,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/data/projects.ts"
+        "src/app/data/projects.ts",
+        "src/stories/sketch.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -3191,7 +3206,9 @@
         "src/app/pages/docs/patterns/HdsIconButton.tsx",
         "src/app/pages/docs/templates/_template.tsx",
         "src/app/pages/lab/IncubatorPage.tsx",
+        "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/page.stories.tsx",
         "src/stories/stack.stories.tsx"
       ],
       "tokenMapping": {
@@ -3351,7 +3368,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
+        "src/app/components/componentPreviewRegistry.tsx",
+        "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -3446,6 +3464,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/propTableUtils.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/stories/nav-group.stories.tsx",
+        "src/stories/nav-item.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
@@ -3692,12 +3712,18 @@
         "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/app/stores/mobiusStore.ts",
         "src/index.ts",
+        "src/stories/activity-feed.stories.tsx",
         "src/stories/card.stories.tsx",
         "src/stories/foundation-swatch.stories.tsx",
+        "src/stories/heading-stack.stories.tsx",
         "src/stories/input.stories.tsx",
+        "src/stories/status-list-item.stories.tsx",
         "src/stories/table.stories.tsx",
+        "src/stories/tabs.stories.tsx",
         "src/stories/text-lockup.stories.tsx",
-        "src/stories/text.stories.tsx"
+        "src/stories/text.stories.tsx",
+        "src/stories/toast.stories.tsx",
+        "src/stories/token.stories.tsx"
       ],
       "tokenMapping": {
         "Node label text": "semantic.color.content.primary",
@@ -3861,6 +3887,7 @@
         "src/stories/card.stories.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/page.stories.tsx",
         "src/stories/surface.stories.tsx",
         "src/stories/text-lockup.stories.tsx"
       ],
@@ -4248,7 +4275,8 @@
         "sizing": "full"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
+        "src/app/components/componentPreviewRegistry.tsx",
+        "src/stories/component-instance-matrix.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {},
@@ -4312,7 +4340,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/pages/docs/patterns/HdsActivityFeed.tsx"
+        "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
+        "src/stories/activity-feed.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -4387,7 +4416,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/heading-anchor.tsx"
+        "src/app/components/heading-anchor.tsx",
+        "src/stories/heading-stack.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -4622,9 +4652,13 @@
         "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/disclosure.stories.tsx",
+        "src/stories/error-boundary.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/inline-code.stories.tsx",
         "src/stories/input.stories.tsx",
+        "src/stories/page.stories.tsx",
+        "src/stories/skeleton.stories.tsx",
+        "src/stories/sketch.stories.tsx",
         "src/stories/surface.stories.tsx",
         "src/stories/text.stories.tsx"
       ],
@@ -4659,6 +4693,8 @@
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
         "src/stories/alert.stories.tsx",
+        "src/stories/combobox.stories.tsx",
+        "src/stories/dialog.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5104,7 +5140,9 @@
         "exportName": "Callout",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/callout.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5169,7 +5207,8 @@
       },
       "consumers": [
         "src/app/components/lab/legacy-token-detail.tsx",
-        "src/app/components/lab/token-detail.tsx"
+        "src/app/components/lab/token-detail.tsx",
+        "src/stories/empty-state.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5214,7 +5253,9 @@
         "src/app/components/combobox.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
-        "src/app/pages/docs/patterns/HdsField.tsx"
+        "src/app/pages/docs/patterns/HdsField.tsx",
+        "src/stories/field.stories.tsx",
+        "src/stories/sketch.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5299,6 +5340,11 @@
         "src/app/pages/ErrorPage.tsx",
         "src/app/pages/lab/IncubatorPage.tsx",
         "src/app/route-tree.tsx",
+        "src/stories/error-pattern.stories.tsx",
+        "src/stories/heading-stack.stories.tsx",
+        "src/stories/not-found-pattern.stories.tsx",
+        "src/stories/page.stories.tsx",
+        "src/stories/pagination.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5354,7 +5400,9 @@
         "exportName": "Stat",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/stat.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5423,7 +5471,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/status-tile.tsx"
+        "src/app/components/status-tile.tsx",
+        "src/stories/status-list-item.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5491,7 +5540,10 @@
         "exportName": "StatusTile",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/status-list-item.stories.tsx",
+        "src/stories/status-tile.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5542,7 +5594,10 @@
         "exportName": "TileGrid",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/status-tile.stories.tsx",
+        "src/stories/tile-grid.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5613,6 +5668,10 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/badge.stories.tsx",
+        "src/stories/code-block.stories.tsx",
+        "src/stories/combobox.stories.tsx",
+        "src/stories/component-instance-matrix.stories.tsx",
+        "src/stories/nav-group.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {}
@@ -5856,7 +5915,10 @@
         "exportName": "Tabs",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/combobox.stories.tsx",
+        "src/stories/tabs.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5889,7 +5951,9 @@
         "exportName": "TabsContent",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/tabs.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5922,7 +5986,9 @@
         "exportName": "TabsList",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/tabs.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5955,7 +6021,9 @@
         "exportName": "TabsTrigger",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/tabs.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5990,7 +6058,8 @@
         "src/app/components/controls.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
-        "src/app/hooks/useInteractionState.ts"
+        "src/app/hooks/useInteractionState.ts",
+        "src/stories/radio.stories.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -6100,7 +6169,8 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/slider.stories.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -6160,7 +6230,8 @@
         "src/app/components/radio.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
-        "src/app/hooks/useInteractionState.ts"
+        "src/app/hooks/useInteractionState.ts",
+        "src/stories/toggle.stories.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -6216,7 +6287,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/avatar.test.tsx"
+        "src/app/components/avatar.test.tsx",
+        "src/stories/avatar.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6270,6 +6342,7 @@
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
         "src/app/data/projects.ts",
+        "src/stories/progress.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6318,7 +6391,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/skeleton.test.tsx"
+        "src/app/components/skeleton.test.tsx",
+        "src/stories/skeleton.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6366,7 +6440,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/spinner.test.tsx"
+        "src/app/components/spinner.test.tsx",
+        "src/stories/spinner.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6410,7 +6485,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/breadcrumb.test.tsx"
+        "src/app/components/breadcrumb.test.tsx",
+        "src/stories/breadcrumb.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6448,7 +6524,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/pagination.test.tsx"
+        "src/app/components/pagination.test.tsx",
+        "src/stories/pagination.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6504,7 +6581,8 @@
       "figmaId": null,
       "figmaLink": "TODO:hds-master:HdsCheckbox",
       "consumers": [
-        "src/app/components/checkbox.test.tsx"
+        "src/app/components/checkbox.test.tsx",
+        "src/stories/checkbox.stories.tsx"
       ],
       "variantAxes": [],
       "componentProperties": []
@@ -6526,7 +6604,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/toast.test.tsx"
+        "src/app/components/toast.test.tsx",
+        "src/stories/toast.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6566,7 +6645,9 @@
       },
       "consumers": [
         "src/app/components/combobox.test.tsx",
-        "src/app/components/form.tsx"
+        "src/app/components/form.tsx",
+        "src/stories/combobox.stories.tsx",
+        "src/stories/popover.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6632,7 +6713,8 @@
       "consumers": [
         "src/app/components/doc-sections.tsx",
         "src/app/components/form.test.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/form.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6662,7 +6744,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form.test.tsx"
+        "src/app/components/form.test.tsx",
+        "src/stories/form.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7345,7 +7428,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
+        "src/app/components/componentPreviewRegistry.tsx",
+        "src/stories/history-card.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -7815,7 +7899,9 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/pages/NotFoundPage.tsx"
+        "src/app/pages/NotFoundPage.tsx",
+        "src/stories/error-pattern.stories.tsx",
+        "src/stories/not-found-pattern.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {},
@@ -8197,7 +8283,8 @@
       "consumers": [
         "src/app/App.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
-        "src/app/layouts/DocLayout.tsx"
+        "src/app/layouts/DocLayout.tsx",
+        "src/stories/error-boundary.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
