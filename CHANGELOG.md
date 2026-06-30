@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.7.0
+
+### Minor Changes
+
+- a37eef7: Bundle web fonts into the package. `@hirobius/design-system/tokens.css` now embeds the Satoshi, Clash Display, and Geist Mono `woff2` files directly (base64), so a fresh consumer importing `tokens.css` renders the real typefaces with zero extra setup — no need to copy font files into a web root. Self-contained at the cost of a larger `tokens.css`.
+- 06df9d6: Add **HdsCheckbox** — a custom-drawn checkbox primitive with `checked`, `indeterminate` (aria-checked="mixed" + DOM property), disabled, and label support, on the shared interaction-state seam.
+
+  Also export the existing input-family primitives that were built but missing from the public barrel: **HdsToggle**, **HdsRadio**, and **HdsSlider**. Consumers can now import the full form-control set (`Input`, `Field`, `Select`, `SegmentedControl`, `HdsCheckbox`, `HdsToggle`, `HdsRadio`, `HdsSlider`) from the package root.
+
+- 76aed0a: Add **Combobox** — a searchable single-select built on the HDS Popover. The trigger shows the current selection; opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close), listbox/option ARIA, and controlled `value`/`onChange`. Closes the autocomplete gap in the form-control family.
+- 9223f6a: Add **Form** + **FormField** — a validation-agnostic form seam. `Form` is a styled `<form>` with consistent field rhythm; `FormField` owns the a11y wiring (label↔control association, `aria-invalid`, `aria-describedby` for description + error, required marker) and accepts a plain `error` string. HDS takes **no** form/validation dependency — the validation source is whatever the consumer brings (native constraint validation, react-hook-form, zod, Formik). Mirrors the router-adapter philosophy: works with zero deps, richer when you inject your own. (The `Input` primitive already self-wires its label/error, so use its props directly; `FormField` is for controls that don't, e.g. native inputs, `Select`, `Combobox`, checkboxes.)
+- 9adfe22: Add an optional React Hook Form + Zod form adapter on a new subpath:
+  `@hirobius/design-system/form`. It exports `useHdsForm(schema)` (RHF's `useForm`
+  pre-wired with a Zod resolver and `onTouched` validation), `HdsForm` (wraps the
+  presentational `Form` in RHF's `FormProvider` and routes submit through
+  `handleSubmit` + `noValidate`), and `HdsFormField` (a render-prop that binds a
+  control to RHF by `name` and surfaces the field's Zod error through the existing
+  HDS label/error/aria markup).
+
+  `react-hook-form`, `zod`, and `@hookform/resolvers` are **optional** peer
+  dependencies — only apps importing this subpath pull them in, so the main barrel
+  stays validation-agnostic and zero-dependency. The core `form` module also now
+  exports `FormFieldShell` + `useFieldWiring` (a non-cloning field-markup shell and
+  the shared id/aria computation) for controls that manage their own callback ref.
+
+- 8b3fe5b: Add four presentational primitives that consumers hit immediately: **Spinner** (indeterminate loading indicator), **Skeleton** (content-loading shimmer, `text`/`rectangular`/`circular`), **Progress** (linear determinate/indeterminate bar), and **Avatar** (image with initials fallback). All token-driven, accessible (`role="status"`/`progressbar"`/`img`), and honor `prefers-reduced-motion`.
+- f444c6e: Add **Menu** — a Radix-backed dropdown-menu primitive (compound parts: `Menu`, `Menu.Trigger`, `Menu.Content`, `Menu.Item`, `Menu.CheckboxItem`, `Menu.RadioGroup`/`RadioItem`, `Menu.Label`, `Menu.Separator`, `Menu.Group`, `Menu.Sub`/`SubTrigger`/`SubContent`) themed with the overlay role tokens to match Dialog/Popover. Roving focus, type-ahead, checkbox/radio items, submenus, and dismissal come from Radix. Promotes the dropdown that previously lived privately inside the theme-toggle into a public component (no new dependency — `@radix-ui/react-dropdown-menu` was already present).
+- 8529e25: Add **Popover** — a Radix-backed floating-surface primitive (compound parts: `Popover`, `Popover.Trigger`, `Popover.Anchor`, `Popover.Content`, `Popover.Close`) themed with the overlay role tokens to match Dialog. Collision-aware positioning, outside-click + ESC dismissal, focus management, and portal mounting out of the box. Adds `@radix-ui/react-popover` as a dependency.
+- 93171e1: Components no longer require react-router. Navigation is sourced from an injectable adapter (`RouterContext`): by default links render as plain anchors and navigation falls back to `window.location`, so HDS works with zero router. react-router / Next.js consumers inject their router once at the app root via `<HdsRouterProvider adapter={...}>`. `react-router` is now an optional peer dependency.
+- 45fe9ab: Scope the design-system base styles (element resets, body/heading type baseline, theme transition) to a `[data-hds]` subtree so HDS can drop into a section of a non-HDS app (e.g. one running MUI `<CssBaseline>`) without competing resets or font-cascade fights. Namespaced token custom properties stay on `:root` (harmless).
+
+  **Migration:** add `data-hds` to your app root (or the section that hosts HDS) so the base styles apply — e.g. `<html data-hds>` or `<div data-hds>…</div>`. Without it, components still receive their token-driven styling but the global type baseline/resets won't apply. See `docs/adr/016-scoped-base-styles.md`. Tailwind preflight remains global for now (documented follow-up).
+
+- 01cdcd9: Add **Toast** — transient feedback notifications backed by Radix Toast. Wrap the app once in `<ToastProvider>`, then call `useToast().toast({ title, description, tone })` imperatively from anywhere. Tones (`neutral`/`info`/`success`/`danger`/`warning`) tint the leading icon via the feedback tokens; auto-dismiss, swipe-to-dismiss, the a11y live region, and the viewport portal come from Radix. Adds `@radix-ui/react-toast`.
+
 ## 0.6.0
 
 ### Minor Changes
