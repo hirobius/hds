@@ -4,15 +4,9 @@ Hirobius is a portfolio-grade design-system product surface: a React and TypeScr
 
 ## Using the published package
 
-Installing HDS in another project? It ships to **GitHub Packages** as
-`@hirobius/design-system` (ESM). Full guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**.
-The short version:
-
-```ini
-# .npmrc in the consuming project — routes the @hirobius scope + auth
-@hirobius:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-```
+Installing HDS in another project? It ships to the **public npm registry** as
+`@hirobius/design-system` (ESM) — no `.npmrc`, no token, no registry config. Full
+guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**. The short version:
 
 ```bash
 npm install @hirobius/design-system react react-dom
