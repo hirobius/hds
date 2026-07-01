@@ -1,16 +1,24 @@
 name: Release
 
-# Publishes @hirobius/design-system to GitHub Packages.
+# Publishes @hirobius/design-system to the PUBLIC npm registry
+# (https://registry.npmjs.org). Anyone can `npm install @hirobius/design-system`
+# with no auth — the package is public and unscoped-registry.
 #
 # Flow (Changesets):
 #   1. Feature PRs add a changeset (`pnpm changeset add`) describing the bump.
 #   2. On merge to main, this workflow opens/updates a "Version Packages" PR
 #      that applies the bumps + updates CHANGELOG.md.
 #   3. Merging that PR runs `pnpm release` (build:lib + changeset publish),
-#      publishing the new version to GitHub Packages.
+#      publishing the new version to public npm.
 #
-# Auth uses the built-in GITHUB_TOKEN — no extra secrets required for the
-# hirobius org's own GitHub Packages registry.
+# Auth: publishing to public npm needs an npm token (GITHUB_TOKEN cannot publish
+# outside GitHub Packages). Provision it as the repo secret NPM_TOKEN:
+#   - npmjs.com → your account → Access Tokens → Generate → "Automation"
+#     (Automation tokens bypass 2FA, required for CI publishes).
+#   - The @hirobius scope/org must exist on npmjs.com and the token's account
+#     must be a member with publish rights.
+#   - Add the value as the GitHub repo secret NPM_TOKEN (Settings → Secrets and
+#     variables → Actions).
 
 on:
   push:
@@ -21,7 +29,6 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 permissions:
   contents: write
   pull-requests: write
-  packages: write
 
 jobs:
   release:
@@ -35,26 +42,23 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-          registry-url: https://npm.pkg.github.com
+          registry-url: https://registry.npmjs.org
           scope: '@hirobius'
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Create release PR or publish to GitHub Packages
+      - name: Create release PR or publish to npm
         uses: changesets/action@v1
         with:
           version: pnpm changeset:version
           publish: pnpm release
         env:
+          # GITHUB_TOKEN authors/updates the "Version Packages" PR and pushes tags.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # GitHub Packages write. The default GITHUB_TOKEN can only publish a
-          # package that is LINKED to this repo. @hirobius/design-system 0.4.0/0.4.1
-          # were published manually, so the package isn't linked and the token gets
-          # 403 write_package. Fix EITHER by linking the package to this repo
-          # (Package settings → Manage Actions access → add this repo, Write), OR
-          # by adding a PAT with write:packages as the repo secret PACKAGES_PAT —
-          # this expression prefers it when present and falls back to GITHUB_TOKEN.
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_PAT || secrets.GITHUB_TOKEN }}
+          # NPM_TOKEN publishes to public npm. Must be an npm "Automation" token
+          # for an account with publish rights on the @hirobius scope (see the
+          # header comment for provisioning steps).
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           # Skip husky git hooks ONLY for the bot "Version Packages" commit this
           # action makes. The hooks are local-dev guards (typecheck/lint/registry)
           # that assume gitignored generated data artifacts exist, which they

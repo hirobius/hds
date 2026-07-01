@@ -8,7 +8,7 @@ is the canonical consumption guide — point other teams here.
 | **Package**                     | `@hirobius/design-system`                                                  |
 | **Min. version for this guide** | `0.7.0` (router optional, fonts bundled, scoped base styles)               |
 | **Module format**               | ESM only (`"type": "module"`)                                              |
-| **Registry**                    | **GitHub Packages** (`https://npm.pkg.github.com`) — _not_ public npm      |
+| **Registry**                    | **Public npm** (`https://registry.npmjs.org`) — no auth, no `.npmrc`       |
 | **Peers**                       | `react` ^18.3 ‖ ^19 · `react-dom` (match) · `react-router` ^7 _(optional)_ |
 
 > **What changed in 0.7.0** — three things make HDS drop-in for a plain app:
@@ -21,42 +21,17 @@ is the canonical consumption guide — point other teams here.
 
 ---
 
-## 1. Point the `@hirobius` scope at GitHub Packages & authenticate
+## 1–2. Install
 
-The package lives on GitHub Packages, so the consuming project must route the
-`@hirobius` scope there and authenticate — otherwise `npm install` will 404
-(it looks on public npm, where the package doesn't exist).
-
-Add an `.npmrc` at the **root of the consuming project**:
-
-```ini
-@hirobius:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-```
-
-Then provide a GitHub token (classic PAT or CI token) with the **`read:packages`**
-scope and access to the `hirobius` org. Reference it via env var — never commit a
-literal token:
-
-```bash
-# local dev
-export NODE_AUTH_TOKEN=ghp_your_token_here
-
-# GitHub Actions: the built-in GITHUB_TOKEN works if the workflow has
-#   permissions: { packages: read }
-#   env: { NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
-```
-
-> Docs: [Installing a package from GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-a-package).
-
-## 2. Install
+HDS publishes to the **public npm registry**. There is no `.npmrc`, no token, and
+no registry configuration — install it like any other package:
 
 ```bash
 npm install @hirobius/design-system
 npm install react react-dom            # required peers
 ```
 
-(`pnpm add` / `yarn add` work identically and read the same `.npmrc`.)
+(`pnpm add` / `yarn add` work identically.)
 
 `react-router` is an **optional** peer. You only install it if you want HDS's
 nav/link components to drive client-side navigation through your router — see
@@ -297,11 +272,11 @@ the form inside a hydrated island (e.g. `client:load`).
 
 ## Troubleshooting
 
-| Symptom                                            | Cause / fix                                                                                                           |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `npm ERR! 404` on install                          | `.npmrc` scope/registry not set, or token missing `read:packages` (see §1).                                           |
-| `ERR_REQUIRE_ESM` / `require() of ES Module`       | Consumer is CommonJS — switch to an ESM bundler (§9).                                                                 |
-| Components render unstyled / wrong font            | Import `@hirobius/design-system/tokens.css` at the app root (§3) **and** add `data-hds` to your root or section (§4). |
-| Text uses the host font, not Satoshi               | Missing `data-hds` on an ancestor (§4).                                                                               |
-| In-app links do a full page reload                 | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5).                               |
-| Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible.                 |
+| Symptom                                            | Cause / fix                                                                                                                                                             |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm ERR! 404` on install                          | Check the package name spelling; if pinning a version, confirm it's published on npm (`npm view @hirobius/design-system version`). Public npm needs no auth (see §1–2). |
+| `ERR_REQUIRE_ESM` / `require() of ES Module`       | Consumer is CommonJS — switch to an ESM bundler (§9).                                                                                                                   |
+| Components render unstyled / wrong font            | Import `@hirobius/design-system/tokens.css` at the app root (§3) **and** add `data-hds` to your root or section (§4).                                                   |
+| Text uses the host font, not Satoshi               | Missing `data-hds` on an ancestor (§4).                                                                                                                                 |
+| In-app links do a full page reload                 | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5).                                                                                 |
+| Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible.                                                                   |
