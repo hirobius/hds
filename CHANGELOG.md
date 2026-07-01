@@ -1,5 +1,55 @@
 # Changelog
 
+## 0.9.0
+
+### Minor Changes
+
+- 27e293a: Add a reset-free component stylesheet on a new subpath:
+  `@hirobius/design-system/styles.css`. It ships the full component styling
+  (design tokens + Tailwind utilities + embedded fonts) but **no global reset** —
+  HDS's own base styles are scoped to `[data-hds]`, so importing `styles.css`
+  styles every HDS component and changes **zero** host-element styles (`*`,
+  `html`, `body`, headings, `button`, `a`, form controls are untouched). This is
+  the clean way to run HDS alongside MUI `<CssBaseline>` / Emotion or any host with
+  its own global CSS.
+
+  `tokens.css` is unchanged (batteries-included: `styles.css` **plus** the global
+  Tailwind preflight) and remains the default for HDS-first apps. A scoped
+  box-model reset was added to the `[data-hds]` base so components keep their
+  border-box model without the global preflight. The `smoke:consumer` gate now
+  asserts `styles.css` carries components/utilities/fonts and no global reset.
+
+- 27e293a: Add a semantic **`tone`** axis to `Button` (`neutral | danger | success |
+warning | info`), driven by the feedback tokens, so destructive and status
+  actions read as first-class buttons instead of falling back to a host framework:
+  `<Button tone="danger">Delete</Button>`. Tones apply a token-driven tonal fill
+  (tinted surface + matching feedback text) that clears WCAG AA in **both** light
+  and dark, composes with any `variant`, and defaults to `neutral` (no change to
+  existing buttons). `Badge` gains the matching `inProgress` tone, completing its
+  status set. Backed by named `feedback-*` Tailwind utilities (no arbitrary color
+  values).
+- 27e293a: Add an **in-progress / secondary** semantic feedback hue and gate the feedback
+  palette for accessibility. New `--semantic-color-feedback-inProgress` (violet:
+  `#6d28d9` light / `#a78bfa` dark) plus its tinted-surface pair
+  `--semantic-color-feedback-bg-inProgress`, backed by a new `violet` primitive
+  ramp. This completes the status palette (success / warning / info / error /
+  in-progress) so consumers can theme status UI — Saved / Applied / Interviewing /
+  Offer / Rejected — from HDS tokens alone, with no local status hex.
+
+  `scripts/check-contrast.mjs` now asserts every hex feedback token clears WCAG AA
+  for small text on **both** the page and card (`raised`) surfaces, in light and
+  dark. `docs/CONSUMING.md` publishes the feedback token names for downstream
+  mapping.
+
+- 27e293a: Add an optional Material UI theme preset on a new subpath:
+  `@hirobius/design-system/mui`. `hdsMuiThemeOptions()` returns an MUI
+  `ThemeOptions`-shaped object whose palette is wired to HDS token CSS variables
+  (`error`/`warning`/`info`/`success` map to the same feedback tokens as
+  `<Button tone>` / `<Badge tone>`), so MUI-based apps theme from HDS without a
+  local token-copy step. It imports no MUI code (structural return type), so it
+  adds zero weight and no peer requirement unless imported. Designed for MUI v6+
+  CSS-variables mode: `createTheme({ cssVariables: true, ...hdsMuiThemeOptions() })`.
+
 ## 0.8.1
 
 ### Patch Changes
