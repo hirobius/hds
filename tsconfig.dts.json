@@ -22,7 +22,8 @@
     "src/app/design-system/tokens.ts",
     "src/lib/manifest-entry.ts",
     "src/app/context/index.ts",
-    "src/form/index.ts"
+    "src/form/index.ts",
+    "src/mui/index.ts"
   ],
   "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*", "**/*.stories.*"]
 }

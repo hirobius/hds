@@ -149,6 +149,25 @@
         },
         "$description": "Discrete values within the green range at defined lightness steps."
       },
+      "violet": {
+        "50": {
+          "$value": "#f5f3ff",
+          "$description": "Specific value within the violet range at a defined lightness step."
+        },
+        "400": {
+          "$value": "#a78bfa",
+          "$description": "Specific value within the violet range at a defined lightness step."
+        },
+        "700": {
+          "$value": "#6d28d9",
+          "$description": "Specific value within the violet range at a defined lightness step."
+        },
+        "950": {
+          "$value": "#2e1065",
+          "$description": "Specific value within the violet range at a defined lightness step."
+        },
+        "$description": "Discrete values within the violet range at defined lightness steps."
+      },
       "amber": {
         "50": {
           "$value": "#fffbeb",
@@ -1170,6 +1189,18 @@
             }
           }
         },
+        "inProgress": {
+          "$type": "color",
+          "$value": "{primitive.color.violet.700}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.violet.700}",
+                "Dark": "{primitive.color.violet.400}"
+              }
+            }
+          }
+        },
         "bg": {
           "error": {
             "$type": "color",
@@ -1215,6 +1246,18 @@
                 "modes": {
                   "Light": "{primitive.color.blue.50}",
                   "Dark": "{primitive.color.blue.900}"
+                }
+              }
+            }
+          },
+          "inProgress": {
+            "$type": "color",
+            "$value": "{primitive.color.violet.50}",
+            "$extensions": {
+              "com.figma.variables": {
+                "modes": {
+                  "Light": "{primitive.color.violet.50}",
+                  "Dark": "{primitive.color.violet.950}"
                 }
               }
             }

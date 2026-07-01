@@ -9,10 +9,14 @@
  * Baseline (gzip, post three.js split, 2026-05-01):
  *   index (main entry)   : 66.81 kB  -> budget 75 kB
  *   vendor-react         : 77.78 kB  -> budget 86 kB
- *   vendor-three         : 267.35 kB -> budget 295 kB
  *   vendor-motion        : 41.46 kB  -> budget 46 kB
  *   vendor-icons         : 5.43 kB   -> budget 6 kB
  *   _virtual_hds-manifest: 36.81 kB  -> budget 41 kB
+ *
+ * NOTE: the former `vendor-three` budget was removed — the 3D Möbius visual and
+ * three.js were dropped from the app graph (see vite.config.mjs manualChunks),
+ * so no `vendor-three-*.js` chunk is emitted. size-limit hard-fails on a missing
+ * path, so a stale entry breaks CI; re-add a budget here if three.js returns.
  *
  * Architecture decisions: docs/architecture/bundle-budget-decision.md
  */
@@ -28,12 +32,6 @@ module.exports = [
     name: 'vendor-react',
     path: 'dist/assets/vendor-react-*.js',
     limit: '86 kB',
-    gzip: true,
-  },
-  {
-    name: 'vendor-three (lazy)',
-    path: 'dist/assets/vendor-three-*.js',
-    limit: '295 kB',
     gzip: true,
   },
   {

@@ -8,7 +8,20 @@ test-results/
 
 # Generated artifacts
 DESIGN.md
-src/design-system/tokens/**
+# Generated token outputs — build-tokens.mjs owns their format (double-quoted
+# JS/TS constants + raw CSS). Prettier's singleQuote reformat diverges from the
+# generator output, which breaks check-token-rebake-needed on every token commit
+# (it compares the raw build-tokens output to the staged files) and forced
+# --no-verify. Let the generator own the format, same as exceptions-audit.md
+# below. NB: the old `src/design-system/tokens/**` glob was a stale path and
+# never matched these — that's what caused the churn.
+src/app/design-system/generated-tokens.ts
+src/app/design-system/generated-token-values.ts
+src/app/design-system/generated-token-descriptions.ts
+src/app/design-system/generated-token-vars.d.ts
+src/app/design-system/generated-token-refs.ts
+src/styles/tokens.css
+src/styles/tokens.generated.css
 src/app/data/**.json
 public/hds-manifest.json
 public/llms.txt

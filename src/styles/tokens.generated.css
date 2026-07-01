@@ -45,6 +45,10 @@
   --primitive-color-green-400: #34d399;
   --primitive-color-green-700: #047857;
   --primitive-color-green-950: #022c22;
+  --primitive-color-violet-50: #f5f3ff;
+  --primitive-color-violet-400: #a78bfa;
+  --primitive-color-violet-700: #6d28d9;
+  --primitive-color-violet-950: #2e1065;
   --primitive-color-amber-50: #fffbeb;
   --primitive-color-amber-400: #fbbf24;
   --primitive-color-amber-800: #92400e;
@@ -194,10 +198,12 @@
   --semantic-color-feedback-success: var(--primitive-color-green-700);
   --semantic-color-feedback-warning: var(--primitive-color-amber-800);
   --semantic-color-feedback-info: var(--primitive-color-blue-500);
+  --semantic-color-feedback-inProgress: var(--primitive-color-violet-700);
   --semantic-color-feedback-bg-error: var(--primitive-color-red-50);
   --semantic-color-feedback-bg-success: var(--primitive-color-green-50);
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-50);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-50);
+  --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
   --semantic-space-subgrid-hairline: var(--primitive-space-px1);
   --semantic-space-subgrid-xs: var(--primitive-space-px2);
   --semantic-space-subgrid-gap: var(--primitive-space-1);
@@ -441,10 +447,12 @@
   --semantic-color-feedback-success: var(--primitive-color-green-400);
   --semantic-color-feedback-warning: var(--primitive-color-amber-400);
   --semantic-color-feedback-info: var(--primitive-color-blue-300);
+  --semantic-color-feedback-inProgress: var(--primitive-color-violet-400);
   --semantic-color-feedback-bg-error: var(--primitive-color-red-950);
   --semantic-color-feedback-bg-success: var(--primitive-color-green-950);
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-950);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-900);
+  --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-950);
   --semantic-accent-rest: var(--primitive-color-blue-500);
   --semantic-accent-hover: var(--primitive-color-blue-450);
   --semantic-accent-pressed: var(--primitive-color-blue-400);

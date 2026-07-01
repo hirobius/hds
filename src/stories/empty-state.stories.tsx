@@ -2,8 +2,21 @@
  * EmptyState stories — title, description, and layout demos.
  * @see src/app/components/empty-state.tsx
  */
+import type { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { EmptyState } from '../app/components/empty-state';
+
+// Story-only demo frame — extracted to a const so it isn't a dense inline
+// style={{ }} on a demo element (check-style-discipline).
+const demoFrameStyle: CSSProperties = {
+  border: '1px dashed var(--semantic-color-border-default, #ccc)',
+  borderRadius: '4px',
+  padding: '32px',
+  minWidth: '320px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
 
 const meta = {
   title: 'Primitives/empty-state',
@@ -62,22 +75,13 @@ export const InGrid: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Empty state inside a simple grid container, showing how it fills the available space.',
+        story:
+          'Empty state inside a simple grid container, showing how it fills the available space.',
       },
     },
   },
   render: () => (
-    <div
-      style={{
-        border: '1px dashed var(--semantic-color-border-default, #ccc)',
-        borderRadius: '4px',
-        padding: '32px',
-        minWidth: '320px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <div style={demoFrameStyle}>
       <EmptyState
         title="No results match your filters"
         description="Clear one or more filters to see more components."

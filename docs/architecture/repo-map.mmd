@@ -1,0 +1,71 @@
+%%{init: {'theme':'neutral','flowchart':{'nodeSpacing':30,'rankSpacing':45}}}%%
+graph TB
+  consumer([External consumer app<br/>e.g. Apply Board / job-hunt]):::ext
+
+  subgraph CORE["📦 PUBLISHED PACKAGE — @hirobius/design-system (KEEP · this is the DS)"]
+    idx["src/index.ts<br/>public API barrel"]:::keep
+    comps["src/app/components/<br/>114 component .tsx"]:::keep
+    ds["src/app/design-system/<br/>token bridge (hds, generated-*)"]:::keep
+    tok["hirobius.tokens.json<br/>(DTCG source of truth)"]:::keep
+    lib["src/lib/ · cn(), utils, manifest-entry"]:::keep
+    form["src/form/ · RHF+Zod adapter (opt)"]:::keep
+    mui["src/mui/ · MUI preset (opt)"]:::keep
+    ctx["src/app/context/ · Router + Theme seams"]:::keep
+    sty["src/styles/ → dist/<br/>styles.css · tokens.css · variables.css"]:::keep
+  end
+
+  subgraph BUILD["⚙️ TOKEN & LIB BUILD PIPELINE (KEEP — but lean)"]
+    bt["build-tokens · embed-fonts<br/>build-styles-css · build-vars-css"]:::keep
+    mg["generate-manifest · component-api"]:::trim
+  end
+
+  subgraph DOCS["📖 DOCS SITE — in-repo, NOT published (KEEP, slim)"]
+    pages["src/app/pages/hds/ · 48 pages"]:::trim
+    route["route-tree.tsx · HDSLayout · nav-model"]:::keep
+    stories["src/stories/ · 64 Storybook stories"]:::trim
+  end
+
+  subgraph OPS["🖥️ /ops DASHBOARD (CUT — you said kill it)"]
+    ops["ops pages · VITE_OPS_GATE_HASH gating<br/>Web-Vitals #18 · lighthouse /ops budget"]:::cut
+  end
+
+  subgraph PORT["🎨 PORTFOLIO / MARKETING (CUT? — not a DS concern)"]
+    apps["apps/concrete · /portfolio · /atlas"]:::cut
+    assets["public/ · 47 MB portfolio PNG/webp<br/>hero/asset slot manifests"]:::cut
+  end
+
+  subgraph GUARD["🛡️ GUARDRAIL SYSTEM — 128 scripts (TRIM HARD)"]
+    chk["44 check-* · 12 audit-* validators"]:::trim
+    reg["guardrail registry · fixture proof-of-firing<br/>run-gates (pre-commit/pre-push)"]:::trim
+    wf["11 GitHub workflows<br/>(visual, perf, a11y, collision, responsive…)"]:::trim
+  end
+
+  subgraph FIGMA["🎭 FIGMA BRIDGE (CUT? — external tooling)"]
+    plug["figma-agent-plugin/ · code.js · ui.html"]:::cut
+    proto["protocol/ · envelope · figma-snapshot schema"]:::cut
+    fbr["hds-bridge · figma-bridge-smoke<br/>sync-figma-variables workflow"]:::cut
+  end
+
+  subgraph AI["🤖 LOCAL-AI / LLM / AGENT LAYER (CUT? — dev-time only)"]
+    mf["Modelfile · ask-hds.sh · LOCAL_AI_PROMPT.md"]:::cut
+    llm["llm-stream-bridge · generate-llms-txt · llms.txt"]:::cut
+    agent["claude-config/ · AGENTS.md · pipeline/<br/>codemods/ · docs/ai/ orchestration"]:::cut
+  end
+
+  subgraph MISC["📄 SPRAWL (CONSOLIDATE / DELETE)"]
+    md["27 top-level .md (migration/process/log/ideas)"]:::trim
+    sk["starter-kit/ · sales scripts · Modelfile"]:::cut
+  end
+
+  consumer -->|npm install| CORE
+  tok --> bt --> sty
+  CORE --> DOCS
+  mg -.feeds.-> DOCS
+  proto -.-> fbr
+  DOCS -. showcases .-> CORE
+  ops -. hosted-by .-> DOCS
+
+  classDef keep fill:#d7f0dc,stroke:#0f7a34,color:#08301a;
+  classDef trim fill:#fdf1cf,stroke:#b8860b,color:#4a3800;
+  classDef cut  fill:#fbdad6,stroke:#c0392b,color:#5b1710;
+  classDef ext  fill:#e6eefc,stroke:#2f5fbf,color:#122b57;

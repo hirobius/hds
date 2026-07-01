@@ -48,18 +48,18 @@ pnpm tokens:verify
 ```
 
 <!-- auto:start:token-count -->
-Checks all 361 tokens, aliases, and TS refs in one shot.
+Checks all 375 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
 
-| Rule | Detail |
-|---|---|
-| Semantic/component tokens must alias upstream | No inline raw values except derived `oklch()` color tints |
+| Rule                                           | Detail                                                              |
+| ---------------------------------------------- | ------------------------------------------------------------------- |
+| Semantic/component tokens must alias upstream  | No inline raw values except derived `oklch()` color tints           |
 | Color tokens must alias or use `oklch()` tints | Primitive colors stay hex; semantic/component tints may be computed |
-| Responsive clamp() lives in `theme.css` | Not in tokens.json - Figma can't parse CSS functions |
-| Token JSON stores static desktop-max values | e.g. `display-xl` = `80px` (the max of `clamp(48px, 6vw, 80px)`) |
-| Source of truth is the JSON, not Figma | Code-first. Figma is synced from code, not upstream. |
+| Responsive clamp() lives in `theme.css`        | Not in tokens.json - Figma can't parse CSS functions                |
+| Token JSON stores static desktop-max values    | e.g. `display-xl` = `80px` (the max of `clamp(48px, 6vw, 80px)`)    |
+| Source of truth is the JSON, not Figma         | Code-first. Figma is synced from code, not upstream.                |
 
 ### W3C / Figma compatibility
 
@@ -111,10 +111,22 @@ Checks all 361 tokens, aliases, and TS refs in one shot.
 | `primitive.color.green.400` | `#34d399` | Specific value within the green range at a defined lightness step. |
 | `primitive.color.green.700` | `#047857` | Specific value within the green range at a defined lightness step. |
 | `primitive.color.green.950` | `#022c22` | Specific value within the green range at a defined lightness step. |
+| `primitive.color.violet.50` | `#f5f3ff` | Specific value within the violet range at a defined lightness step. |
+| `primitive.color.violet.400` | `#a78bfa` | Specific value within the violet range at a defined lightness step. |
+| `primitive.color.violet.700` | `#6d28d9` | Specific value within the violet range at a defined lightness step. |
+| `primitive.color.violet.950` | `#2e1065` | Specific value within the violet range at a defined lightness step. |
 | `primitive.color.amber.50` | `#fffbeb` | Specific value within the amber range at a defined lightness step. |
 | `primitive.color.amber.400` | `#fbbf24` | Specific value within the amber range at a defined lightness step. |
 | `primitive.color.amber.800` | `#92400e` | Specific value within the amber range at a defined lightness step. |
 | `primitive.color.amber.950` | `#451a03` | Specific value within the amber range at a defined lightness step. |
+| `primitive.color.stone.100` | `#F5EFE7` | Stone 100 — near-white warm tint; accent-subtle surface. |
+| `primitive.color.stone.400` | `#D0B492` | Stone 400 — light warm tone; dark-mode pressed accent. |
+| `primitive.color.stone.450` | `#BC9D7E` | Stone 450 — medium warm tone; dark-mode hover accent. |
+| `primitive.color.stone.500` | `#A8896A` | Stone 500 — mid warm tone; dark-mode rest accent. |
+| `primitive.color.stone.600` | `#8B6F47` | Stone 600 — primary warm stone; light-mode rest accent and CTA surface. |
+| `primitive.color.stone.700` | `#75593A` | Stone 700 — darker warm stone; light-mode hover accent. |
+| `primitive.color.stone.800` | `#5C432A` | Stone 800 — deep warm stone; light-mode pressed accent. |
+| `primitive.color.stone.950` | `#3A2E1F` | Stone 950 — near-black warm tone; dark-mode subtle accent surface. |
 | `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC` | Light support tone for the Microsoft Game Dev project brand. |
 | `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb` | Primary accent tone for the Microsoft Game Dev project brand. |
 | `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)` | Dark support tone for the Microsoft Game Dev project brand. |
@@ -125,18 +137,17 @@ Checks all 361 tokens, aliases, and TS refs in one shot.
 <!-- auto:start:semantic-accent -->
 | Token | Light | Dark | Role |
 | --- | --- | --- | --- |
-| `semantic.accent.rest` | `{primitive.color.blue.500}` | `{primitive.color.blue.500}` |  |
-| `semantic.accent.hover` | `{primitive.color.blue.600}` | `{primitive.color.blue.450}` |  |
-| `semantic.accent.pressed` | `{primitive.color.blue.700}` | `{primitive.color.blue.400}` |  |
-| `semantic.accent.inactive` | `{primitive.color.blue.200}` | `{primitive.color.blue.200}` |  |
-| `semantic.accent.disabled` | `{primitive.color.blue.100}` | `{primitive.color.blue.100}` |  |
-| `semantic.accent.content` | `{primitive.color.blue.500}` | `{primitive.color.blue.300}` |  |
-| `semantic.accent.contentHover` | `{primitive.color.blue.600}` | `{primitive.color.blue.200}` |  |
-| `semantic.accent.subtle` | `{primitive.color.blue.50}` | `{primitive.color.blue.900}` |  |
+| `semantic.accent.rest` | `{primitive.color.blue.500}` | `{primitive.color.blue.500}` | Default accent fill for interactive elements at rest. |
+| `semantic.accent.hover` | `{primitive.color.blue.600}` | `{primitive.color.blue.450}` | Accent fill on pointer hover. |
+| `semantic.accent.pressed` | `{primitive.color.blue.700}` | `{primitive.color.blue.400}` | Accent fill during active press. |
+| `semantic.accent.inactive` | `{primitive.color.blue.200}` | `{primitive.color.blue.200}` | Accent fill for inactive or unselected accent elements. |
+| `semantic.accent.disabled` | `{primitive.color.blue.100}` | `{primitive.color.blue.100}` | Accent fill for disabled accent elements. |
+| `semantic.accent.content` | `{primitive.color.blue.500}` | `{primitive.color.blue.300}` | Text and icon color on neutral surfaces with accent intent. |
+| `semantic.accent.contentHover` | `{primitive.color.blue.600}` | `{primitive.color.blue.200}` | Accent content color on pointer hover. |
+| `semantic.accent.subtle` | `{primitive.color.blue.50}` | `{primitive.color.blue.900}` | Low-emphasis accent tint for hover backgrounds and selection highlights. |
 <!-- auto:end:semantic-accent -->
 
 These semantic states alias the original `primitive.color.blue.*` tones in OKLCH. The separate `primitive.color.accent.*` branch was removed, and the legacy `--hds-accent-*` helpers remain only as backward-compat bridges to the semantic layer above. <!-- token-path-ok: prose documents a historical removal -->
-
 
 ### Semantic colors (light -> dark)
 
@@ -164,13 +175,16 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.feedback.success` | {primitive.color.green.700} | {primitive.color.green.400} |  |
 | `semantic.color.feedback.warning` | {primitive.color.amber.800} | {primitive.color.amber.400} |  |
 | `semantic.color.feedback.info` | {primitive.color.blue.500} | {primitive.color.blue.300} |  |
+| `semantic.color.feedback.inProgress` | {primitive.color.violet.700} | {primitive.color.violet.400} |  |
 | `semantic.color.feedback.bg.error` | {primitive.color.red.50} | {primitive.color.red.950} |  |
 | `semantic.color.feedback.bg.success` | {primitive.color.green.50} | {primitive.color.green.950} |  |
 | `semantic.color.feedback.bg.warning` | {primitive.color.amber.50} | {primitive.color.amber.950} |  |
 | `semantic.color.feedback.bg.info` | {primitive.color.blue.50} | {primitive.color.blue.900} |  |
+| `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50} | {primitive.color.violet.950} |  |
 <!-- auto:end:semantic-color -->
 
 ---
+
 ## Tertiary Fill Helpers
 
 CSS helper vars such as hds.hover and hds.fill are implementation-only aliases for solid surface colors. They are not peer semantic tokens. Use solid semantic content, border, and background roles first; reach for the helpers only when a component needs a reusable surface alias.
@@ -186,12 +200,12 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | --- | --- | --- | --- | --- | --- |
 | `display` | 72px | 500 | 1 | -0.01em | Display headline. 72px / Clash Display 500 / leading-none. |
 | `h1` | 48px | 500 | 1.25 | -0.01em | Primary section headings (h1). 48px / Clash Display medium 500 / leading-tight. |
-| `h2` | 30px | 500 | 42px | -0.01em | Secondary section headings (h2). 30px / Clash Display medium 500 / line-height 42px (integer-pixel snap; was snug 1.375 ratio = 41.25px fractional, the source of upstream sub-pixel drift in main content). |
+| `h2` | 30px | 500 | 42px | -0.01em | Secondary section headings (h2). Clash Display medium, 30px, line-height 42px. |
 | `h3` | 20px | 500 | 28px | 0em | Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug. |
-| `body` | 17px | 500 | 28px | 0em | Body prose. 17px / Satoshi medium 500 / line-height 28px (was 1.625 ratio = 27.625px fractional → caused sub-pixel rendering at heavier weights) / measure capped at 60ch. |
-| `ui` | 15px | 500 | 24px | 0em | never uppercase |
-| `eyebrow` | 13px | 500 | 20px | 0.06em | never sentences, never inline within prose |
-| `mono` | 13px | 400 | 20px | 0em | Monospace: code, token names, keyboard shortcuts. 13px / Geist Mono regular 400 / line-height 20px (integer-pixel snap; was 1.625 ratio = 21.125px fractional). Sits one ramp step below body to compensate for mono's optical heaviness. Stays at 400, exempt from the 500-only Satoshi/Clash rule. |
+| `body` | 17px | 500 | 28px | 0em | Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure. |
+| `ui` | 15px | 500 | 24px | 0em | UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px. |
+| `eyebrow` | 13px | 500 | 20px | 0.06em | Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase. |
+| `mono` | 13px | 400 | 20px | 0em | Monospace for code, token names, shortcuts. Geist Mono regular, 13px. |
 | `lineHeight.none` |  |  |  |  | Semantic alias for leading-none (1). Display text and badge spans. |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
@@ -216,15 +230,17 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 ## Iconography
 
 <!-- auto:start:iconography -->
-| Attribute | Value | Notes |
-| --- | --- | --- |
-| Icon set | Lucide React | System standard for HDS interactive and editorial icons |
-| Stroke width | Default 2 (override via `strokeWidth` prop) | Lucide icons use stroke-width instead of fill-weight variants |
-| Small size | 16px | Paired with 14px label text |
-| Medium size | 20px | Paired with 16px body or control text |
-| Large size | 24px | Paired with 20px+ display or emphasis text |
-| Optical alignment | Centered flex placement | Slight vertical nudge only when needed for cap-height balance |
-| Label pairing | `semantic.typography.small`, `semantic.typography.mono`, and `semantic.typography.caption` | Descriptive labels, technical labels, and compact supporting text each keep a distinct visual lane |
+
+| Attribute         | Value                                                                                      | Notes                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| Icon set          | Lucide React                                                                               | System standard for HDS interactive and editorial icons                                            |
+| Stroke width      | Default 2 (override via `strokeWidth` prop)                                                | Lucide icons use stroke-width instead of fill-weight variants                                      |
+| Small size        | 16px                                                                                       | Paired with 14px label text                                                                        |
+| Medium size       | 20px                                                                                       | Paired with 16px body or control text                                                              |
+| Large size        | 24px                                                                                       | Paired with 20px+ display or emphasis text                                                         |
+| Optical alignment | Centered flex placement                                                                    | Slight vertical nudge only when needed for cap-height balance                                      |
+| Label pairing     | `semantic.typography.small`, `semantic.typography.mono`, and `semantic.typography.caption` | Descriptive labels, technical labels, and compact supporting text each keep a distinct visual lane |
+
 <!-- auto:end:iconography -->
 
 ---
@@ -286,11 +302,11 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 
 ## Filter
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `primitive.blur.8` | `8px` | Compact frosted blur for slot badges and small overlay labels. |
-| `primitive.blur.16` | `16px` | Fullscreen backdrop blur for portfolio lightboxes. |
-| `component.lightbox.backdrop.blur` | `16px` | Shared blur strength for fullscreen portfolio image overlays. |
+| Token                              | Value  | Use                                                            |
+| ---------------------------------- | ------ | -------------------------------------------------------------- |
+| `primitive.blur.8`                 | `8px`  | Compact frosted blur for slot badges and small overlay labels. |
+| `primitive.blur.16`                | `16px` | Fullscreen backdrop blur for portfolio lightboxes.             |
+| `component.lightbox.backdrop.blur` | `16px` | Shared blur strength for fullscreen portfolio image overlays.  |
 
 <!-- auto:start:size -->
 | Token | Value | Notes |
@@ -389,26 +405,28 @@ Or via `useTheme().setDensity('compact')`
 ## Layer
 
 <!-- auto:start:layer -->
-| Token | Value | Use |
-| --- | --- | --- |
-| `primitive.zIndex.0` | `0` | Base stacking layer for in-flow content |
-| `primitive.zIndex.10` | `10` | Focused controls and active lifted surfaces |
-| `primitive.zIndex.100` | `100` | Dropdowns, popovers, and floating panels |
-| `primitive.zIndex.1000` | `1000` | Global modals and blocking overlays |
+
+| Token                   | Value  | Use                                         |
+| ----------------------- | ------ | ------------------------------------------- |
+| `primitive.zIndex.0`    | `0`    | Base stacking layer for in-flow content     |
+| `primitive.zIndex.10`   | `10`   | Focused controls and active lifted surfaces |
+| `primitive.zIndex.100`  | `100`  | Dropdowns, popovers, and floating panels    |
+| `primitive.zIndex.1000` | `1000` | Global modals and blocking overlays         |
+
 <!-- auto:end:layer -->
 
 ---
 
 ## Component Tokens (Quick Reference)
 
-| Component | Key tokens |
-|---|---|
-| Button | `component.button.*` surface tokens, action radius for interactive corners, `min-width` 80, `padding-x/y` 16x12, `font-size` 14, `font-weight` 500, centered short labels, disabled primary text via `component.button.primary.textDisabled` -> Light `{semantic.color.content.onAccent}` / Dark `{semantic.color.content.disabled}` |
-| Badge | `component.badge.bg` -> brand, `component.badge.radius` -> `4px` rounded corner, `height/min-width` 20 |
-| Tag | `component.tag.*` pill tokens, `padding-x/y` 12x8, `min-width` 48, `min-height` 24, transparent `primitive.size.interactive.min` hit target |
-| Nav | `component.nav.paddingX` / `component.nav.paddingY` (24px / 12px), `color.brand` active indicator |
-| Lightbox | `component.lightbox.backdrop.blur` -> `primitive.blur.16` for fullscreen media overlays |
-| Container | `semantic.layout.container.maxWidth` -> `primitive.size.width.1200` (1200px) |
+| Component | Key tokens                                                                                                                                                                                                                                                                                                                           |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Button    | `component.button.*` surface tokens, action radius for interactive corners, `min-width` 80, `padding-x/y` 16x12, `font-size` 14, `font-weight` 500, centered short labels, disabled primary text via `component.button.primary.textDisabled` -> Light `{semantic.color.content.onAccent}` / Dark `{semantic.color.content.disabled}` |
+| Badge     | `component.badge.bg` -> brand, `component.badge.radius` -> `4px` rounded corner, `height/min-width` 20                                                                                                                                                                                                                               |
+| Tag       | `component.tag.*` pill tokens, `padding-x/y` 12x8, `min-width` 48, `min-height` 24, transparent `primitive.size.interactive.min` hit target                                                                                                                                                                                          |
+| Nav       | `component.nav.paddingX` / `component.nav.paddingY` (24px / 12px), `color.brand` active indicator                                                                                                                                                                                                                                    |
+| Lightbox  | `component.lightbox.backdrop.blur` -> `primitive.blur.16` for fullscreen media overlays                                                                                                                                                                                                                                              |
+| Container | `semantic.layout.container.maxWidth` -> `primitive.size.width.1200` (1200px)                                                                                                                                                                                                                                                         |
 
 ### Definition of Done
 
@@ -438,20 +456,20 @@ Use tokenized values when a suitable primitive, semantic, or component token exi
 Primitive layout dimensions live in `primitive.breakpoint.*`, `primitive.size.*`, `primitive.size.width.*`, and `primitive.grid.columns.*`.
 Semantic layout tokens exist for layout decisions only: readable content widths, section rhythm, gutters, and grid spacing.
 
-| Token | Resolves to | Use |
-|---|---|---|
-| `semantic.layout.content.maxWidth` | `primitive.size.width.760` (760px) | Broader readable content width for long-form docs and case studies |
-| `semantic.layout.prose.maxWidth` | `primitive.size.width.50ch` (50ch) | Canonical prose measure for body copy and narrative text |
-| `semantic.layout.section.paddingY` | `primitive.space.20` (80px) | Airier top-level page section spacing |
-| `semantic.layout.grid.gap` | `primitive.space.8` (32px) | Two-up and three-up editorial grid spacing |
-| `semantic.space.layout.tight` | `primitive.space.4` (16px) | Compact rhythm for dense lists and tight pairings |
-| `semantic.space.layout.normal` | `primitive.space.6` (24px) | Default vertical rhythm between layout blocks and grids |
-| `semantic.space.layout.gutter` | `primitive.space.6` (24px) | Horizontal gutter for full-width page sections; density-aware `--hds-space-*` vars handle responsive scaling |
-| `semantic.space.layout.inset` | `primitive.space.8` (32px) | Block inset padding inside layout containers |
-| `semantic.space.layout.spacious` | `primitive.space.12` (48px) | Generous rhythm for hero sections and split layouts |
-| `semantic.space.section.stack` | `primitive.space.20` (80px) | Vertical stack between top-level page sections |
-| `semantic.space.section.inset` | `primitive.space.24` (96px) | Outer section padding for overview headers and chrome blocks |
-| `semantic.space.section.heroMax` | `primitive.space.32` (128px) | Maximum hero section padding |
+| Token                              | Resolves to                        | Use                                                                                                          |
+| ---------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `semantic.layout.content.maxWidth` | `primitive.size.width.760` (760px) | Broader readable content width for long-form docs and case studies                                           |
+| `semantic.layout.prose.maxWidth`   | `primitive.size.width.50ch` (50ch) | Canonical prose measure for body copy and narrative text                                                     |
+| `semantic.layout.section.paddingY` | `primitive.space.20` (80px)        | Airier top-level page section spacing                                                                        |
+| `semantic.layout.grid.gap`         | `primitive.space.8` (32px)         | Two-up and three-up editorial grid spacing                                                                   |
+| `semantic.space.layout.tight`      | `primitive.space.4` (16px)         | Compact rhythm for dense lists and tight pairings                                                            |
+| `semantic.space.layout.normal`     | `primitive.space.6` (24px)         | Default vertical rhythm between layout blocks and grids                                                      |
+| `semantic.space.layout.gutter`     | `primitive.space.6` (24px)         | Horizontal gutter for full-width page sections; density-aware `--hds-space-*` vars handle responsive scaling |
+| `semantic.space.layout.inset`      | `primitive.space.8` (32px)         | Block inset padding inside layout containers                                                                 |
+| `semantic.space.layout.spacious`   | `primitive.space.12` (48px)        | Generous rhythm for hero sections and split layouts                                                          |
+| `semantic.space.section.stack`     | `primitive.space.20` (80px)        | Vertical stack between top-level page sections                                                               |
+| `semantic.space.section.inset`     | `primitive.space.24` (96px)        | Outer section padding for overview headers and chrome blocks                                                 |
+| `semantic.space.section.heroMax`   | `primitive.space.32` (128px)       | Maximum hero section padding                                                                                 |
 
 ---
 
@@ -479,4 +497,4 @@ Semantic layout tokens exist for layout decisions only: readable content widths,
 
 ---
 
-*Mirror of `hirobius.tokens.json`. Update this file in the same commit as any token change.*
+_Mirror of `hirobius.tokens.json`. Update this file in the same commit as any token change._

@@ -11,12 +11,14 @@ const feedbackColors = {
     success: 'var(--semantic-color-feedback-success)',
     danger: 'var(--semantic-color-feedback-error)',
     warning: 'var(--semantic-color-feedback-warning)',
+    inProgress: 'var(--semantic-color-feedback-inProgress)',
   },
   'feedback-bg': {
     info: 'var(--semantic-color-feedback-bg-info)',
     success: 'var(--semantic-color-feedback-bg-success)',
     danger: 'var(--semantic-color-feedback-bg-error)',
     warning: 'var(--semantic-color-feedback-bg-warning)',
+    inProgress: 'var(--semantic-color-feedback-bg-inProgress)',
   },
 };
 
