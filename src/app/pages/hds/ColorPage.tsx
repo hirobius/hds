@@ -176,64 +176,64 @@ type WcagPairing = {
 const WCAG_PAIRINGS: WcagPairing[] = [
   {
     fgPath: 'semantic.color.content.primary',
-    fgHex: '#111111',
+    fgHex: '#111111', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.page',
-    bgHex: '#ffffff',
-  }, // audit-ok: token value showcase
+    bgHex: '#ffffff', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.content.secondary',
-    fgHex: '#525252',
+    fgHex: '#525252', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.page',
-    bgHex: '#ffffff',
-  }, // audit-ok: token value showcase
+    bgHex: '#ffffff', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.content.primary',
-    fgHex: '#111111',
+    fgHex: '#111111', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.raised',
-    bgHex: '#fafafa',
-  }, // audit-ok: token value showcase
+    bgHex: '#fafafa', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.content.inverse',
-    fgHex: '#f5f5f5',
+    fgHex: '#f5f5f5', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.inverse',
-    bgHex: '#000000',
-  }, // audit-ok: token value showcase
+    bgHex: '#000000', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.content.onAccent',
-    fgHex: '#ffffff',
+    fgHex: '#ffffff', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.accent',
-    bgHex: '#1e2efd',
-  }, // audit-ok: token value showcase
+    bgHex: '#1e2efd', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.content.accent',
-    fgHex: '#1e2efd',
+    fgHex: '#1e2efd', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.page',
-    bgHex: '#ffffff',
-  }, // audit-ok: token value showcase
+    bgHex: '#ffffff', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.feedback.error',
-    fgHex: '#b91c1c',
+    fgHex: '#b91c1c', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.page',
-    bgHex: '#ffffff',
-  }, // audit-ok: token value showcase
+    bgHex: '#ffffff', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.feedback.warning',
-    fgHex: '#92400e',
+    fgHex: '#92400e', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.page',
-    bgHex: '#ffffff',
-  }, // audit-ok: token value showcase
+    bgHex: '#ffffff', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.feedback.success',
-    fgHex: '#047857',
+    fgHex: '#047857', // audit-ok: token value showcase
     bgPath: 'semantic.color.surface.page',
-    bgHex: '#ffffff',
-  }, // audit-ok: token value showcase
+    bgHex: '#ffffff', // audit-ok: token value showcase
+  },
   {
     fgPath: 'semantic.color.feedback.error',
-    fgHex: '#b91c1c',
+    fgHex: '#b91c1c', // audit-ok: token value showcase
     bgPath: 'semantic.color.feedback.bg.error',
-    bgHex: '#fef2f2',
-  }, // audit-ok: token value showcase
+    bgHex: '#fef2f2', // audit-ok: token value showcase
+  },
 ];
 
 const WCAG_COLUMNS: TableColumn[] = [
