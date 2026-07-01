@@ -57,8 +57,9 @@ Consolidated 2026-05-11 from `docs/ai/orchestration.json`,
 - `idea` **figma-plugin-planning-docs-save** — Save Figma DesignOps planning dumps to docs/figma-plugin/
 - `idea` **atlas-absorb-hds-docs** — Absorb HDS documentation into /ops/atlas
 
-## Ops / Agents _(14)_
+## Ops / Agents _(15)_
 
+- `ready` **t_gmail_ci_triage** — Triage failed-run emails in adrian@hirobius.com Gmail: identify which repos/workflows they come from (likely the since-fixed/retired HDS lanes, scheduled workflows slated for sterilization, or job-hunt CI), diagnose, then fix or remove the noise source. Deferred 2026-07-01 in favor of the Figma build-out.
 - `ready` **t_be5c5b75** — AI-powered Build skills bundle (6 sub-skills)
 - `ready` **t_bc7081a8** — Daily task picker view — pick from 474 units, queue for today
 - `ready` **t_4ddf8e05** — Quality-gate skills (designer-engineer routine checks)

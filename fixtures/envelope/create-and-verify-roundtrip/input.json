@@ -1,9 +1,0 @@
-{
-  "scenario": "roundtrip",
-  "secret": "test-secret-roundtrip",
-  "type": "selection.update",
-  "payload": {
-    "nodeIds": ["1:2", "3:4"],
-    "page": "Page 1"
-  }
-}
