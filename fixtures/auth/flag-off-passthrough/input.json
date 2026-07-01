@@ -1,5 +1,0 @@
-{
-  "scenario": "flag-off",
-  "secret": "shared-bridge-secret-fixture",
-  "authEnabled": false
-}

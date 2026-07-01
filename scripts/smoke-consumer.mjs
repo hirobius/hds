@@ -27,7 +27,6 @@
  *   './cn'         → cn() class-merge helper
  *   './manifest'   → hds-manifest.json as ESM (default export)
  *   './contexts'   → React context providers (ThemeProvider, …)
- *   './protocol'   → bridge envelope protocol (createEnvelope, verifyEnvelope)
  *
  * Any unresolved subpath, missing symbol, or unresolvable bare import inside the
  * bundle (e.g. a phantom dependency that isn't declared) FAILS the run. This is
@@ -131,7 +130,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './cn', './manifest', './contexts', './mui', './protocol']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './cn', './manifest', './contexts', './mui']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -158,10 +157,6 @@ const importChecks = [
     assert.equal(typeof m.hdsMuiThemeOptions, 'function', 'hdsMuiThemeOptions missing');
     const opts = m.hdsMuiThemeOptions();
     assert.ok(opts.palette && opts.palette.error && String(opts.palette.error.main).startsWith('var(--'), 'mui palette not token-wired');
-  }],
-  [PKG + '/protocol', (m) => {
-    assert.equal(typeof m.createEnvelope, 'function', 'createEnvelope missing');
-    assert.equal(typeof m.verifyEnvelope, 'function', 'verifyEnvelope missing');
   }],
 ];
 

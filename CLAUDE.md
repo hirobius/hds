@@ -53,12 +53,9 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
 
 - **Design Token & Manifest Rules:** Read `docs/rules/MANIFEST_SYNC.md`
 - **React Component Rules:** Read `docs/rules/REACT_COMPONENTS.md`
-- **Figma Plugin / Bridge Rules:** Read `docs/rules/FIGMA_BRIDGE.md`
-
-## 🛠️ Core Commands
-
-- Start Bridge: `node scripts/hds-bridge.mjs`
-- LLM Stream Bridge: `node scripts/llm-stream-bridge.mjs`
+- **Figma Sync (MCP):** Read `docs/adr/019-figma-sync-via-mcp.md` — the legacy
+  WebSocket bridge/plugin is archived on `archive/figma-bridge` (ADR-018 §2);
+  Figma work goes through the official Figma MCP server + Code Connect.
 
 ## 🧬 SUB-AGENT DISPATCH RULES
 

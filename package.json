@@ -58,16 +58,10 @@
       "import": "./dist/mui.js",
       "default": "./dist/mui.js"
     },
-    "./protocol": {
-      "import": "./protocol/envelope.mjs",
-      "default": "./protocol/envelope.mjs"
-    },
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "protocol/envelope.mjs",
-    "protocol/figma-snapshot.schema.json",
     "hirobius.tokens.json",
     "public/hds-manifest.json"
   ],
@@ -112,7 +106,6 @@
     "audit:sbom": "node scripts/audit-sbom.mjs",
     "audit:sidecar": "node scripts/generate-security-posture.mjs",
     "audit:style-dictionary": "bash scripts/poc/style-dictionary-poc/run.sh",
-    "bridge": "node --env-file=.env.local scripts/hds-bridge.mjs",
     "build": "pnpm sync:health && node scripts/sync-icons.mjs && vite build --configLoader native",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr-cache --configLoader native",
     "build:prerender": "pnpm build && pnpm build:ssr && node scripts/prerender.mjs",
@@ -192,7 +185,6 @@
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
     "figma-variables": "node scripts/build-figma-variables.mjs",
-    "figma:bridge:smoke": "node scripts/figma-bridge-smoke.mjs",
     "figma:diff": "node scripts/figma-diff.mjs",
     "figma:snapshot": "node scripts/normalize-figma-snapshot.mjs",
     "figma:stream": "node scripts/llm-stream-bridge.mjs",
