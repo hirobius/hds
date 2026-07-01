@@ -55,6 +55,12 @@ export const tokenRefs = {
         "700": "var(--primitive-color-green-700)",
         "950": "var(--primitive-color-green-950)"
       },
+      violet: {
+        "50": "var(--primitive-color-violet-50)",
+        "400": "var(--primitive-color-violet-400)",
+        "700": "var(--primitive-color-violet-700)",
+        "950": "var(--primitive-color-violet-950)"
+      },
       amber: {
         "50": "var(--primitive-color-amber-50)",
         "400": "var(--primitive-color-amber-400)",
@@ -267,11 +273,13 @@ export const tokenRefs = {
         success: "var(--semantic-color-feedback-success)",
         warning: "var(--semantic-color-feedback-warning)",
         info: "var(--semantic-color-feedback-info)",
+        inProgress: "var(--semantic-color-feedback-inProgress)",
         bg: {
           error: "var(--semantic-color-feedback-bg-error)",
           success: "var(--semantic-color-feedback-bg-success)",
           warning: "var(--semantic-color-feedback-bg-warning)",
-          info: "var(--semantic-color-feedback-bg-info)"
+          info: "var(--semantic-color-feedback-bg-info)",
+          inProgress: "var(--semantic-color-feedback-bg-inProgress)"
         }
       }
     },

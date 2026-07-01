@@ -24,6 +24,7 @@ const badgeVariants = cva(
         success: 'bg-feedback-bg-success text-feedback-success',
         danger: 'bg-feedback-bg-danger text-feedback-danger',
         warning: 'bg-feedback-bg-warning text-feedback-warning',
+        inProgress: 'bg-feedback-bg-inProgress text-feedback-inProgress',
       },
     },
     defaultVariants: { tone: 'neutral' },

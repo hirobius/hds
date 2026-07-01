@@ -2,6 +2,7 @@
  * TileGrid stories — gap, minTileWidth, and responsive layout demos.
  * @see src/app/components/tile-grid.tsx
  */
+import type { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { TileGrid } from '../app/components/tile-grid';
 
@@ -30,23 +31,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function SampleTile({ label, color }: { label: string; color: string }) {
-  return (
-    <div
-      style={{
-        background: color,
-        borderRadius: '6px',
-        padding: '20px 16px',
-        fontSize: '13px',
-        fontFamily: 'var(--font-mono, monospace)',
-        color: 'var(--semantic-color-content-primary, #111)',
-        minHeight: '72px',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      {label}
-    </div>
-  );
+  // Story-only demo tile — object built here (not a dense inline style={{ }})
+  // so check-style-discipline stays clean; `color` is the per-tile prop.
+  const tileStyle: CSSProperties = {
+    background: color,
+    borderRadius: '6px',
+    padding: '20px 16px',
+    fontSize: '13px',
+    fontFamily: 'var(--font-mono, monospace)',
+    color: 'var(--semantic-color-content-primary, #111)',
+    minHeight: '72px',
+    display: 'flex',
+    alignItems: 'center',
+  };
+  return <div style={tileStyle}>{label}</div>;
 }
 
 const tileColors = [

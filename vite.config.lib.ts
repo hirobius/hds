@@ -95,6 +95,10 @@ export default defineConfig({
         // optional peer deps externalized below, so this entry is empty of them
         // and the main barrel never pulls them in.
         form: path.resolve(__dirname, 'src/form/index.ts'),
+        // Subpath: optional Material UI theme preset. Maps HDS tokens to an MUI
+        // palette; imports no MUI code (structural return type), so it's inert
+        // unless a consumer imports it.
+        mui: path.resolve(__dirname, 'src/mui/index.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],

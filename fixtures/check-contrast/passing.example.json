@@ -88,6 +88,40 @@
             }
           }
         }
+      },
+      "feedback": {
+        "success": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.black}", "Dark": "{primitive.color.black}" }
+            }
+          }
+        },
+        "warning": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.black}", "Dark": "{primitive.color.black}" }
+            }
+          }
+        },
+        "error": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.black}", "Dark": "{primitive.color.black}" }
+            }
+          }
+        },
+        "inProgress": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.black}", "Dark": "{primitive.color.black}" }
+            }
+          }
+        }
       }
     }
   }

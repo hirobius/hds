@@ -25,6 +25,23 @@ const buttonVariants = cva(
           'border border-input bg-background text-foreground hover:bg-accent hover:border-ring',
         tertiary: 'text-foreground hover:bg-accent',
       },
+      // Semantic action color. `neutral` (default) keeps the variant's own
+      // colors; the status tones apply a token-driven tonal fill (tinted
+      // surface + matching feedback text) that clears AA in BOTH light and dark
+      // because the fg/bg feedback token pair flips together per theme. `!`
+      // (important) lets the tone override whichever `variant` colors are set,
+      // so `tone` composes with any variant. Drives the destructive/status
+      // actions consumers previously kept on MUI.
+      tone: {
+        neutral: '',
+        danger:
+          '!border-transparent !bg-feedback-bg-danger !text-feedback-danger hover:!brightness-95 dark:hover:!brightness-110',
+        success:
+          '!border-transparent !bg-feedback-bg-success !text-feedback-success hover:!brightness-95 dark:hover:!brightness-110',
+        warning:
+          '!border-transparent !bg-feedback-bg-warning !text-feedback-warning hover:!brightness-95 dark:hover:!brightness-110',
+        info: '!border-transparent !bg-feedback-bg-info !text-feedback-info hover:!brightness-95 dark:hover:!brightness-110',
+      },
       size: {
         sm: 'h-8 px-3 text-xs [&_svg]:size-3.5',
         md: 'h-10 px-4 py-2 text-sm [&_svg]:size-4',
@@ -42,6 +59,7 @@ const buttonVariants = cva(
     ],
     defaultVariants: {
       variant: 'secondary',
+      tone: 'neutral',
       size: 'md',
       iconOnly: false,
     },
@@ -82,6 +100,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
   {
     className,
     variant,
+    tone,
     size,
     iconOnly = false,
     asChild = false,
@@ -103,11 +122,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
     return (
       <Slot
         ref={ref as React.Ref<HTMLElement>}
-        className={cn(buttonVariants({ variant, size, iconOnly, className }))}
+        className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
         aria-disabled={isDisabled || undefined}
         aria-busy={loading || undefined}
         data-state={loading ? 'loading' : undefined}
         data-variant={variant ?? undefined}
+        data-tone={tone ?? undefined}
         data-size={size ?? undefined}
         {...(props as React.HTMLAttributes<HTMLElement>)}
       >
@@ -124,8 +144,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
       aria-busy={loading || undefined}
       data-state={loading ? 'loading' : undefined}
       data-variant={variant ?? undefined}
+      data-tone={tone ?? undefined}
       data-size={size ?? undefined}
-      className={cn(buttonVariants({ variant, size, iconOnly, className }))}
+      className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
       {...props}
     >
       {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : iconLeft}

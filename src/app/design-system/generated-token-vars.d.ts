@@ -44,6 +44,10 @@ declare module 'react' {
     '--primitive-color-green-400'?: string | undefined;
     '--primitive-color-green-700'?: string | undefined;
     '--primitive-color-green-950'?: string | undefined;
+    '--primitive-color-violet-50'?: string | undefined;
+    '--primitive-color-violet-400'?: string | undefined;
+    '--primitive-color-violet-700'?: string | undefined;
+    '--primitive-color-violet-950'?: string | undefined;
     '--primitive-color-amber-50'?: string | undefined;
     '--primitive-color-amber-400'?: string | undefined;
     '--primitive-color-amber-800'?: string | undefined;
@@ -187,10 +191,12 @@ declare module 'react' {
     '--semantic-color-feedback-success'?: string | undefined;
     '--semantic-color-feedback-warning'?: string | undefined;
     '--semantic-color-feedback-info'?: string | undefined;
+    '--semantic-color-feedback-inProgress'?: string | undefined;
     '--semantic-color-feedback-bg-error'?: string | undefined;
     '--semantic-color-feedback-bg-success'?: string | undefined;
     '--semantic-color-feedback-bg-warning'?: string | undefined;
     '--semantic-color-feedback-bg-info'?: string | undefined;
+    '--semantic-color-feedback-bg-inProgress'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;

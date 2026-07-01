@@ -34,9 +34,9 @@ const FONT_FAMILIES = [
     key: 'display',
     token: 'primitive.typography.family.display',
     specimen: 'Clash Display',
-    // tier-ok: typography reference page renders the display-family primitive directly to specimen the font itself
     style: {
       ...hds.typeStyles.h2,
+      // tier-ok: type reference page specimens the display-family primitive directly
       fontFamily: 'var(--primitive-typography-family-display)',
     } as CSSProperties,
   },

@@ -153,6 +153,24 @@ const PAIRS = [
     text: 'semantic.color.content.onAccent',
     bg: 'semantic.color.surface.accent',
   },
+  // Semantic feedback text on both the page ("background") and raised ("card")
+  // surfaces. Consumers theme status UI (Saved / Applied / Interviewing / …)
+  // from these tokens, so each must clear AA for small text on both surfaces in
+  // light and dark. `info` is omitted here because its dark stop (blue.300) is
+  // expressed in oklch, which this hex-only checker can't evaluate; its AA is
+  // held by the token pipeline's own verification. The other four are hex.
+  ...['success', 'warning', 'error', 'inProgress'].flatMap((tone) => [
+    {
+      label: `feedback.${tone} / surface.page`,
+      text: `semantic.color.feedback.${tone}`,
+      bg: 'semantic.color.surface.page',
+    },
+    {
+      label: `feedback.${tone} / surface.raised`,
+      text: `semantic.color.feedback.${tone}`,
+      bg: 'semantic.color.surface.raised',
+    },
+  ]),
 ];
 
 // ── Main ──────────────────────────────────────────────────────

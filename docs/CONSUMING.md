@@ -37,23 +37,44 @@ npm install react react-dom            # required peers
 nav/link components to drive client-side navigation through your router — see
 §5. With no router, links render as plain `<a>` and work everywhere.
 
-## 3. Import the base stylesheet (once, at the app root)
+## 3. Import a stylesheet (once, at the app root)
+
+HDS ships **three** stylesheets. Pick one by how much you want HDS to own:
 
 ```ts
+// RECOMMENDED for embedding in an existing app (e.g. MUI): tokens + component
+// styles + utilities + embedded fonts, with NO global reset. Styles every HDS
+// component and changes ZERO host-element styles.
+import '@hirobius/design-system/styles.css';
+
+// OR batteries-included: everything in styles.css PLUS a global reset
+// (Tailwind preflight). Best for an HDS-first app you fully own.
 import '@hirobius/design-system/tokens.css';
+
+// OR vars-only: just the design-token custom properties, no components,
+// no utilities, no reset. For theming another system from HDS tokens.
+import '@hirobius/design-system/variables.css';
 ```
 
-`tokens.css` is the **complete** style bundle — design tokens (CSS custom
-properties), the light/dark theme, the utility classes the components use, and
-`@font-face` rules with the **Satoshi / Clash Display / Geist Mono** typefaces
-**embedded** in the file. Consequences:
+| Stylesheet          | Tokens | Components + utilities | Embedded fonts |     Global reset      |
+| ------------------- | :----: | :--------------------: | :------------: | :-------------------: |
+| **`styles.css`**    |   ✅   |           ✅           |       ✅       |        ❌ none        |
+| **`tokens.css`**    |   ✅   |           ✅           |       ✅       | ⚠️ Tailwind preflight |
+| **`variables.css`** |   ✅   |           ❌           |       ❌       |        ❌ none        |
 
-- **No Tailwind config required** in the consumer — the utilities ship compiled.
-- **No font files to copy** — the woff2 are bundled into `tokens.css` (the file
-  is correspondingly larger, ~110KB gzipped). Fonts render with zero setup.
+All three:
 
-Importing any component also pulls the styles in as a side-effect, but importing
-`tokens.css` explicitly at the entry point is the canonical, order-stable setup.
+- **Need no Tailwind config** in the consumer — utilities ship compiled.
+- **Need no font files** — the woff2 are inlined (the file is correspondingly
+  larger; woff2 is already compressed so gzip recovers most of it).
+
+HDS's own base styles (type baseline, resets) are scoped to the `[data-hds]`
+subtree (§4) in **all** bundles, so they never touch host elements. The only
+difference is `tokens.css`'s **global** Tailwind preflight, which `styles.css`
+omits — so `styles.css` is the safe default when HDS shares a page with another
+framework's CSS (§6). Importing any component also pulls a stylesheet in as a
+side-effect, but importing one explicitly at the entry point is the canonical,
+order-stable setup.
 
 ## 4. Mark your HDS scope with `data-hds`
 
@@ -128,22 +149,41 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
   system per surface. HDS's namespaced custom properties (`--semantic-*`,
   `--primitive-*`, `--hds-*`) won't collide with MUI's, but the two opinionated
   resets will fight if both target `body`.
-- **Vars-only path (recommended for MUI/host embedding):** import
-  `@hirobius/design-system/variables.css` instead of `tokens.css`. It ships the
-  design-token **custom properties only** — no Tailwind preflight, no `@layer
-base` reset, no utilities — so it **cannot** restyle your host's buttons,
-  headings, or anything else. HDS components still read those vars for their
-  token-driven colors/spacing. (Components that lean on Tailwind utility classes
-  need the full `tokens.css`; for those, scope with `data-hds` per §4.)
+- **Styled path (recommended for MUI/host embedding):** import
+  `@hirobius/design-system/styles.css` instead of `tokens.css`. It ships the full
+  component styling (tokens + utilities + fonts) but **no global reset** — HDS's
+  own base is scoped to `[data-hds]`, so it styles every HDS component and
+  **cannot** restyle your host's `*`, `body`, headings, `button`, `a`, or form
+  controls. This is the clean way to run HDS next to `<CssBaseline>`: no reset
+  fight, full component fidelity.
+- **Vars-only path:** import `@hirobius/design-system/variables.css` for just the
+  design-token custom properties — no components, no utilities, no reset. Use
+  when you only want to theme another system (MUI palette, etc.) from HDS tokens
+  and aren't rendering HDS components on that surface.
+- **MUI theme preset:** `@hirobius/design-system/mui` maps HDS tokens to an MUI
+  palette so MUI and HDS share one source of truth (status colors line up with
+  `<Button tone>`). It imports no MUI code — the return type is structural:
+
+  ```tsx
+  import { createTheme, ThemeProvider } from '@mui/material';
+  import { hdsMuiThemeOptions } from '@hirobius/design-system/mui';
+
+  const theme = createTheme({ cssVariables: true, ...hdsMuiThemeOptions() });
+  // render inside a `data-hds` scope (+ variables.css/styles.css) so the vars resolve
+  ```
+
+  Palette values are HDS token `var(--…)` references, so light/dark follow
+  `[data-theme]` automatically. Requires MUI v6+ (`cssVariables: true`).
+
 - **Leaf imports stay light:** importing a primitive (e.g. `Button`) does **not**
   pull `react-router`, `react-hook-form`, `zod`, or `@hookform/resolvers` into
   your bundle — those are optional peers used only by the router seam / the
   `/form` subpath, and aren't in the main bundle graph. A consumer with only
   `react`/`react-dom` installed builds cleanly (verified in `smoke:consumer`).
-- **Known limitation (this release):** the **full** `tokens.css` still carries
-  Tailwind's global preflight reset (resets `margin`/`padding`/`border` on all
-  elements). Use `variables.css` (above) to avoid it, or scope `tokens.css`
-  under `data-hds`. Scoping preflight itself is a tracked follow-up (ADR-016).
+- **Only `tokens.css` carries a global reset.** If you specifically want HDS's
+  batteries-included reset (Tailwind preflight, resets `margin`/`padding`/`border`
+  globally), import `tokens.css`. Otherwise prefer `styles.css` — same components,
+  no host reset.
 
 ## 7. Use it
 
@@ -167,16 +207,52 @@ export function Example() {
 
 ### Subpath exports
 
-| Import                                  | What you get                                                                  |
-| --------------------------------------- | ----------------------------------------------------------------------------- |
-| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`) |
-| `@hirobius/design-system/tokens.css`    | The complete stylesheet (tokens + theme + utilities + embedded fonts)         |
-| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)  |
-| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                               |
-| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                             |
-| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                    |
-| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                    |
-| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                        |
+| Import                                  | What you get                                                                                    |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`)                   |
+| `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding) |
+| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                     |
+| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                    |
+| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                 |
+| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                               |
+| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                      |
+| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                      |
+| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                          |
+| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                  |
+
+### Semantic feedback / status tokens
+
+For status UI (Saved / Applied / Interviewing / Offer / Rejected, or any
+success/warning/error/in-progress state), theme from HDS's feedback tokens
+instead of hardcoding hex. Each is a CSS custom property that auto-switches
+light/dark and is AA-verified for small text on both the page and card
+(`raised`) surfaces (asserted by `scripts/check-contrast.mjs`):
+
+| Intent      | Text color var                         | Tinted-surface var                        |
+| ----------- | -------------------------------------- | ----------------------------------------- |
+| success     | `--semantic-color-feedback-success`    | `--semantic-color-feedback-bg-success`    |
+| warning     | `--semantic-color-feedback-warning`    | `--semantic-color-feedback-bg-warning`    |
+| info        | `--semantic-color-feedback-info`       | `--semantic-color-feedback-bg-info`       |
+| error       | `--semantic-color-feedback-error`      | `--semantic-color-feedback-bg-error`      |
+| in-progress | `--semantic-color-feedback-inProgress` | `--semantic-color-feedback-bg-inProgress` |
+
+```css
+.status-offer {
+  color: var(--semantic-color-feedback-success);
+}
+.status-pending {
+  color: var(--semantic-color-feedback-inProgress);
+}
+```
+
+The same values are available as typed TS via `@hirobius/design-system/tokens`
+(`hds.color.feedback.*`), and the `Button` and `Badge` components expose them
+directly through a `tone` prop so you rarely need the raw vars:
+
+```tsx
+<Button tone="danger">Delete</Button>        {/* AA in light + dark */}
+<Badge tone="inProgress">Interviewing</Badge>
+```
 
 ## 8. Optional providers — theming / i18n / multi-tenant / fonts
 
@@ -276,7 +352,7 @@ the form inside a hydrated island (e.g. `client:load`).
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `npm ERR! 404` on install                          | Check the package name spelling; if pinning a version, confirm it's published on npm (`npm view @hirobius/design-system version`). Public npm needs no auth (see §1–2). |
 | `ERR_REQUIRE_ESM` / `require() of ES Module`       | Consumer is CommonJS — switch to an ESM bundler (§9).                                                                                                                   |
-| Components render unstyled / wrong font            | Import `@hirobius/design-system/tokens.css` at the app root (§3) **and** add `data-hds` to your root or section (§4).                                                   |
+| Components render unstyled / wrong font            | Import `@hirobius/design-system/styles.css` (or `tokens.css`) at the app root (§3) **and** add `data-hds` to your root or section (§4).                                 |
 | Text uses the host font, not Satoshi               | Missing `data-hds` on an ancestor (§4).                                                                                                                                 |
 | In-app links do a full page reload                 | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5).                                                                                 |
 | Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible.                                                                   |

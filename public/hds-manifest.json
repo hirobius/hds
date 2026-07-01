@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-06-18T07:22:17.015Z",
+  "generated": "2026-07-01T06:53:00.024Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -2833,6 +2833,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/lib/nav-active.ts",
         "src/stories/nav-group.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5681,6 +5682,7 @@
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/mui/index.ts",
         "src/stories/badge.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/combobox.stories.tsx",
@@ -8809,6 +8811,34 @@
         "value": "#022c22"
       },
       {
+        "path": "primitive.color.violet.50",
+        "cssVar": "--primitive-color-violet-50",
+        "type": "color",
+        "description": "Specific value within the violet range at a defined lightness step.",
+        "value": "#f5f3ff"
+      },
+      {
+        "path": "primitive.color.violet.400",
+        "cssVar": "--primitive-color-violet-400",
+        "type": "color",
+        "description": "Specific value within the violet range at a defined lightness step.",
+        "value": "#a78bfa"
+      },
+      {
+        "path": "primitive.color.violet.700",
+        "cssVar": "--primitive-color-violet-700",
+        "type": "color",
+        "description": "Specific value within the violet range at a defined lightness step.",
+        "value": "#6d28d9"
+      },
+      {
+        "path": "primitive.color.violet.950",
+        "cssVar": "--primitive-color-violet-950",
+        "type": "color",
+        "description": "Specific value within the violet range at a defined lightness step.",
+        "value": "#2e1065"
+      },
+      {
         "path": "primitive.color.amber.50",
         "cssVar": "--primitive-color-amber-50",
         "type": "color",
@@ -9825,6 +9855,17 @@
         }
       },
       {
+        "path": "semantic.color.feedback.inProgress",
+        "cssVar": "--semantic-color-feedback-inProgress",
+        "type": "color",
+        "alias": "{primitive.color.violet.700}",
+        "resolvedValue": "#6d28d9",
+        "dark": {
+          "alias": "{primitive.color.violet.400}",
+          "resolvedValue": "#a78bfa"
+        }
+      },
+      {
         "path": "semantic.color.feedback.bg.error",
         "cssVar": "--semantic-color-feedback-bg-error",
         "type": "color",
@@ -9866,6 +9907,17 @@
         "dark": {
           "alias": "{primitive.color.blue.900}",
           "resolvedValue": "oklch(0.22 0.05 266.54)"
+        }
+      },
+      {
+        "path": "semantic.color.feedback.bg.inProgress",
+        "cssVar": "--semantic-color-feedback-bg-inProgress",
+        "type": "color",
+        "alias": "{primitive.color.violet.50}",
+        "resolvedValue": "#f5f3ff",
+        "dark": {
+          "alias": "{primitive.color.violet.950}",
+          "resolvedValue": "#2e1065"
         }
       },
       {

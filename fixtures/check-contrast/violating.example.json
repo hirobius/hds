@@ -88,6 +88,40 @@
             }
           }
         }
+      },
+      "feedback": {
+        "success": {
+          "$value": "{primitive.color.midgray}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.midgray}", "Dark": "{primitive.color.midgray}" }
+            }
+          }
+        },
+        "warning": {
+          "$value": "{primitive.color.midgray}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.midgray}", "Dark": "{primitive.color.midgray}" }
+            }
+          }
+        },
+        "error": {
+          "$value": "{primitive.color.midgray}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.midgray}", "Dark": "{primitive.color.midgray}" }
+            }
+          }
+        },
+        "inProgress": {
+          "$value": "{primitive.color.midgray}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.midgray}", "Dark": "{primitive.color.midgray}" }
+            }
+          }
+        }
       }
     }
   }

@@ -438,6 +438,8 @@ function deriveFallbackDescription(path) {
     return 'Feedback green ramp step for success states.';
   if (normalized.startsWith('primitive.color.amber'))
     return 'Feedback amber ramp step for warning states.';
+  if (normalized.startsWith('primitive.color.violet'))
+    return 'Feedback violet ramp step for in-progress states.';
   if (normalized.startsWith('primitive.space')) return 'Spacing step on the 4px grid.';
   if (normalized.startsWith('primitive.radius'))
     return 'Corner radius step for controls and surfaces.';

@@ -48,8 +48,8 @@ Available subpaths:
 | `@hirobius/design-system/contexts`   | Theme / language / tenant / font providers       |
 
 The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,
-Remix, Webpack 5+) or a Node ≥ 20 ESM runtime. Types are shipped from source, so
-TypeScript consumers get full types with no extra config.
+Remix, Webpack 5+) or a Node ≥ 20 ESM runtime. Built `.d.ts` declarations ship in
+`dist/types`, so TypeScript consumers get full types with no extra config.
 
 ## 3. Receiving updates
 

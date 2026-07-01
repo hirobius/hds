@@ -6,8 +6,8 @@
 |----------|-------|-----------|----------|
 | eslint-disable | 52 | 52 | 0 |
 | @ts-ignore/@ts-expect-error | 6 | 6 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 126 | 124 | 2 |
-| **Total** | **184** | **182** | **2** |
+| custom-sentinels (*-ok / hds-bypass) | 136 | 134 | 2 |
+| **Total** | **194** | **192** | **2** |
 
 ## eslint-disable
 
@@ -110,16 +110,26 @@
 | `src/app/components/text-lockup.tsx` | 9 | `font-ok` | `inline technical affordances within this lockup intentionally use monospace for code-like references` | justified |
 | `src/app/data/hdsEditorial.tsx` | 55 | `audit-ok` | `*/) now supported. Self-healing policy documented: new violation classes must be added to script in same commit as fix.' },` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 1 | `hds-bypass` | `foundation color doc — WCAG_PAIRINGS contains intentional raw hex literals for contrast-ratio math data; values are not used as CSS color properties */` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 182 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 188 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 194 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 200 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 206 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 212 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 218 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 224 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 230 | `audit-ok` | `token value showcase` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 236 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 179 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 181 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 185 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 187 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 191 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 193 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 197 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 199 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 203 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 205 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 209 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 211 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 215 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 217 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 221 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 223 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 227 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 229 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 233 | `audit-ok` | `token value showcase` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 235 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/HDSLayout.tsx` | 1255 | `audit-ok` | `main is tabIndex={-1} — programmatic skip-link target only, never receives keyboard Tab focus` | justified |
 | `src/app/pages/hds/HdsDocPrimitives.tsx` | 50 | `hds-bypass` | `primitive documentation */` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, DATA_TENANT, INLINE_STRUCTURAL_BORDER */` | justified |
@@ -210,8 +220,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 184
-- **Justified (reason >= 10 chars):** 182
+- **Total suppressions:** 194
+- **Justified (reason >= 10 chars):** 192
 - **Untriaged (reason < 10 chars or missing):** 2
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.
