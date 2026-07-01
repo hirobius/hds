@@ -3,6 +3,9 @@ name: Visual regression
 on:
   pull_request:
     branches: [main]
+    # `labeled` so adding the `update-snapshots` label fires a re-baseline run
+    # (default types are opened/synchronize/reopened, which exclude labeling).
+    types: [opened, synchronize, reopened, labeled]
 
 concurrency:
   group: visual-${{ github.ref }}
