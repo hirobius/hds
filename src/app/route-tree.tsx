@@ -55,14 +55,14 @@ function LazyHDS({ Page }: { Page: ComponentType }) {
   );
 }
 
-// Legacy deep-links from the monorepo used /ops/hds/*, /hds/*, and /ops/*
-// prefixes. The standalone site serves every page at root, so strip the legacy
-// prefix and forward to the equivalent route (preserving search + hash) instead
-// of dumping every old link on /color.
+// Legacy deep-links used a /hds/* prefix. The standalone site serves every
+// page at root, so strip the legacy prefix and forward to the equivalent route
+// (preserving search + hash) instead of dumping every old link on /color.
+// (/ops/* redirects were removed with the ops dashboard — ADR-018 §6.)
 function LegacyPrefixRedirect() {
   const { pathname, search, hash } = useLocation();
   let next = pathname;
-  for (const prefix of ['/ops/hds', '/hds', '/ops']) {
+  for (const prefix of ['/hds']) {
     if (next === prefix || next.startsWith(`${prefix}/`)) {
       next = next.slice(prefix.length) || '/';
       break;
@@ -136,9 +136,8 @@ export const routeTree = [
       { path: 'typography-test', element: <LazyHDS Page={TypographyTestPage} /> },
       { path: 'spacing-test', element: <LazyHDS Page={SpacingTestPage} /> },
 
-      // ── Legacy /hds/*, /ops/hds/*, /ops/* deep links → root equivalents ────
+      // ── Legacy /hds/* deep links → root equivalents ───────────────────────
       { path: 'hds/*', element: <LegacyPrefixRedirect /> },
-      { path: 'ops/*', element: <LegacyPrefixRedirect /> },
 
       { path: '*', Component: NotFoundPage },
     ],

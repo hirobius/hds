@@ -5,7 +5,6 @@
 - **NEVER read, write, create, or delete `.env*` files.** Keys are set by the human only. If a task needs a new key, document it in a comment in the script and stop — do not touch `.env.local`.
 - **NEVER git push.** Local commits only.
 - **NEVER run `pnpm check:release` or deploy commands.**
-- **`/ops` is gated in production** by `VITE_OPS_GATE_HASH` (SHA-256 hex). Adrian sets this locally in `.env.local` AND in the Vercel dashboard env vars (production scope). Computing the hash: `echo -n "<password>" | shasum -a 256`. Claude must never read or write `.env*` files.
 
 ---
 

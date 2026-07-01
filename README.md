@@ -90,7 +90,6 @@ Typical loop:
 ## Bundle and release hygiene
 
 - `pnpm check:size` builds the library bundle and runs `size-limit`.
-- `pnpm perf:budget` runs Lighthouse CI assertions for page performance budgets.
 - `pnpm check:release` runs the full release gate (accessibility, responsive, collision, visual, and bundle-size checks).
 
 Releases are cut with [Changesets](https://github.com/changesets/changesets): a merged changeset opens a "Version Packages" PR, and merging that PR publishes the new version to public npm via `.github/workflows/release.yml`.
