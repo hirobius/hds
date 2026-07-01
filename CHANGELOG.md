@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.1
+
+### Patch Changes
+
+- ab78052: Publish to the **public npm registry** instead of GitHub Packages. Consumers now
+  install with a plain `npm install @hirobius/design-system` — no `.npmrc`, no auth
+  token, and no registry configuration. The package `exports`, build output, styles,
+  and API are unchanged; only the distribution target moved.
+
 ## 0.8.0
 
 ### Minor Changes
