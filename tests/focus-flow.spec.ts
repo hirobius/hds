@@ -25,13 +25,7 @@ import { test, expect, type Page } from '@playwright/test';
 // ── Configuration ─────────────────────────────────────────────────────────────
 
 /** Routes under test.  Keep to 5 to avoid long CI runtimes. */
-const ROUTES = [
-  '/',
-  '/hds/color',
-  '/hds/components/actions',
-  '/hds/components/inputs',
-  '/ops',
-] as const;
+const ROUTES = ['/', '/hds/color', '/hds/components/actions', '/hds/components/inputs'] as const;
 
 /** Maximum Tab presses per route. Prevents infinite looping on large pages. */
 const MAX_TABS = 80;
@@ -42,7 +36,13 @@ const MAX_TABS = 80;
  * Describes the currently focused element in a serialisable form.
  * Runs inside page.evaluate — no Playwright APIs here.
  */
-function describeActiveElement(): { tag: string; role: string | null; name: string; tabIndex: number; hidden: boolean } {
+function describeActiveElement(): {
+  tag: string;
+  role: string | null;
+  name: string;
+  tabIndex: number;
+  hidden: boolean;
+} {
   const el = document.activeElement as HTMLElement | null;
   if (!el || el === document.body) {
     return { tag: 'BODY', role: null, name: '', tabIndex: 0, hidden: false };
@@ -104,7 +104,9 @@ function getDomFocusOrder(): Array<{ tag: string; name: string; tabIndex: number
  * Tab through the page up to MAX_TABS times and collect the focus sequence.
  * Returns an array of element descriptors in the order focus visited them.
  */
-async function collectFocusSequence(page: Page): Promise<ReturnType<typeof describeActiveElement>[]> {
+async function collectFocusSequence(
+  page: Page,
+): Promise<ReturnType<typeof describeActiveElement>[]> {
   const sequence: ReturnType<typeof describeActiveElement>[] = [];
   const seen = new Set<string>();
 
@@ -161,8 +163,10 @@ for (const route of ROUTES) {
       if (customOrder.length > 0) {
         console.warn(
           `  [focus-flow] [${route}] WARNING: ${customOrder.length} element(s) have tabIndex > 0 ` +
-          `(custom focus order). Review intent:\n` +
-          customOrder.map((el) => `    tabIndex=${el.tabIndex} <${el.tag}> "${el.name}"`).join('\n'),
+            `(custom focus order). Review intent:\n` +
+            customOrder
+              .map((el) => `    tabIndex=${el.tabIndex} <${el.tag}> "${el.name}"`)
+              .join('\n'),
         );
       }
 
@@ -186,7 +190,7 @@ for (const route of ROUTES) {
           // is a structural difference (dialog overlay) not a bug.
           console.warn(
             `  [focus-flow] [${route}] NOTE: visited <${visited.tag}> "${visited.name}" ` +
-            `not found in static DOM order scan (portal/overlay?). Skipping position check.`,
+              `not found in static DOM order scan (portal/overlay?). Skipping position check.`,
           );
           continue;
         }
@@ -218,7 +222,7 @@ for (const route of ROUTES) {
       expect(
         hiddenElements,
         `Route ${route}: found ${hiddenElements.length} focused element(s) that are visually hidden:\n` +
-        hiddenElements.map((el) => `  <${el.tag}> "${el.name}"`).join('\n'),
+          hiddenElements.map((el) => `  <${el.tag}> "${el.name}"`).join('\n'),
       ).toHaveLength(0);
     });
   });

@@ -43,11 +43,9 @@ Archived helper docs are not part of normal startup context.
 
 If this file starts restating detailed policy, trim it and move the real rule back to the owning document.
 
-## Surfaces: `/hds` (public) vs `/ops/atlas` (operator)
+## Surfaces
 
-The HDS doc surface has two front doors. They share content; they do not duplicate it.
-
-- **`/hds/*`** — the public-facing design-system reference. Used in recruiter/client demos. Canonical home of foundation pages (typography, color, spacing, shape, elevation, motion, breakpoints) and the component catalog. Owns visual presentation of those docs.
-- **`/ops/atlas`** — the gated operator command center (sits behind `VITE_OPS_GATE_HASH`). Mirrors the design-system axes as tabs (Foundations / Components / Tokens / Pipeline) but route-throughs into `/hds/*` rather than duplicating the public layout. Atlas additionally surfaces operator-only views (component graph, token-hierarchy explorer, pipeline DAG).
-
-Rule: a foundation/component doc page is authored once under `/hds`. Atlas may link to it, embed a summary, or build operator-only visualisations on top of the same data — but never fork the doc itself.
+The docs surface has one front door: the design-system reference (foundation
+pages — typography, color, spacing, shape, elevation, motion, breakpoints —
+and the component catalog), served at root with legacy `/hds/*` deep-links
+redirected. The gated `/ops` operator surface was removed (ADR-018 §6).
