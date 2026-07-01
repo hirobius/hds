@@ -33,22 +33,21 @@
  *   stay in sync.
  */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 @config "../../tailwind.config.ts";
 
 @import './tokens.generated.css';
 @import './tenants.css';
 
 :root {
-
   /* -- Responsive typography overrides ---------------------------------------- */
   /* The token JSON stores static (desktop-max) font sizes for Figma compatibility. */
   /* These clamp() overrides restore fluid responsive scaling in the browser.      */
   /* 10t-5: Swiss-canon ramp (display 72px, h1 48px, h2 30px, h3 20px). */
-  --semantic-typography-display-font-size:      clamp(40px, 8vw, 72px);
-  --semantic-typography-h1-font-size:           clamp(32px, 6vw, 48px);
-  --semantic-typography-h2-font-size:           clamp(24px, 3.5vw, 30px);
-  --semantic-typography-h3-font-size:           clamp(18px, 2vw, 20px);
+  --semantic-typography-display-font-size: clamp(40px, 8vw, 72px);
+  --semantic-typography-h1-font-size: clamp(32px, 6vw, 48px);
+  --semantic-typography-h2-font-size: clamp(24px, 3.5vw, 30px);
+  --semantic-typography-h3-font-size: clamp(18px, 2vw, 20px);
 
   /* -- Responsive layout rhythm ----------------------------------------------- */
   /* Keep shell rhythm adaptive without pushing breakpoint logic into components. */
@@ -65,45 +64,46 @@
 
   /* -- Display-hero scale — extra-large single-use type (e.g. 404 page) ------- */
   --hds-display-hero-size: clamp(8rem, 25vw, 20rem);
-  --hds-display-hero-lh:   0.8;
+  --hds-display-hero-lh: 0.8;
 
   /* -- Font ------------------------------------------------------------------- */
-  --hds-font-family: 'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --hds-font-family:
+    'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --hds-font-family-mono: 'Geist Mono', 'Courier New', monospace;
   /* -- Font sizes ------------------------------------------------------------- */
-  --hds-font-size-xs:   11px;
-  --hds-font-size-sm:   13px;
+  --hds-font-size-xs: 11px;
+  --hds-font-size-sm: 13px;
   --hds-font-size-base: 16px;
-  --hds-font-size-lg:   20px;
-  --hds-font-size-xl:   28px;
-  --hds-lineHeight-none:    var(--primitive-typography-lineHeight-none);
+  --hds-font-size-lg: 20px;
+  --hds-font-size-xl: 28px;
+  --hds-lineHeight-none: var(--primitive-typography-lineHeight-none);
   --hds-letterSpacing-normal: var(--primitive-typography-letterSpacing-normal);
 
   /* -- Icon sizes ------------------------------------------------------------- */
-  --hds-icon-small:  var(--primitive-typography-size-base);  /* 16px */
-  --hds-icon-medium: var(--primitive-typography-size-lg);    /* 20px */
-  --hds-icon-large:  var(--primitive-typography-size-xl);    /* 24px */
+  --hds-icon-small: var(--primitive-typography-size-base); /* 16px */
+  --hds-icon-medium: var(--primitive-typography-size-lg); /* 20px */
+  --hds-icon-large: var(--primitive-typography-size-xl); /* 24px */
 
   /* -- Border radius ---------------------------------------------------------- */
-  --hds-radius-0:      var(--primitive-radius-0);
-  --hds-radius-2:      var(--primitive-radius-2);
-  --hds-radius-4:      var(--primitive-radius-4);
-  --hds-radius-8:      var(--primitive-radius-8);
-  --hds-radius-full:   var(--primitive-radius-full);
+  --hds-radius-0: var(--primitive-radius-0);
+  --hds-radius-2: var(--primitive-radius-2);
+  --hds-radius-4: var(--primitive-radius-4);
+  --hds-radius-8: var(--primitive-radius-8);
+  --hds-radius-full: var(--primitive-radius-full);
   --hds-radius-circle: 50%;
 
   /* -- Border width ----------------------------------------------------------- */
   --hds-borderWidth-hairline: 1px;
-  --hds-borderWidth-default:  1px;
-  --hds-borderWidth-thick:    2px;
-  --hds-borderWidth-heavy:    4px;
+  --hds-borderWidth-default: 1px;
+  --hds-borderWidth-thick: 2px;
+  --hds-borderWidth-heavy: 4px;
 
   /* -- Spacing — explicit px aliases ----------------------------------------- */
-  --hds-space-px1:  1px;
-  --hds-space-px2:  2px;
-  --hds-space-px4:  4px;
-  --hds-space-px6:  6px;
-  --hds-space-px8:  8px;
+  --hds-space-px1: 1px;
+  --hds-space-px2: 2px;
+  --hds-space-px4: 4px;
+  --hds-space-px6: 6px;
+  --hds-space-px8: 8px;
   --hds-space-px10: 10px;
   --hds-space-px12: 12px;
   --hds-space-px16: 16px;
@@ -114,38 +114,37 @@
   --hds-space-px48: 48px;
 
   /* -- Layout tokens ---------------------------------------------------------- */
-  --semantic-layout-page-gutter-x:               clamp(1rem, 4vw, 4rem);
-  --semantic-layout-page-gutter-x-mobile:        clamp(0.75rem, 3vw, 1.25rem);
-  --semantic-layout-section-padding-y-shell:     clamp(1rem, 2vh, 1.5rem);
+  --semantic-layout-page-gutter-x: clamp(1rem, 4vw, 4rem);
+  --semantic-layout-page-gutter-x-mobile: clamp(0.75rem, 3vw, 1.25rem);
+  --semantic-layout-section-padding-y-shell: clamp(1rem, 2vh, 1.5rem);
   --semantic-layout-section-padding-y-shell-tight: clamp(0.75rem, 1.5vh, 1rem);
-  --semantic-layout-panel-gap:                   clamp(1.5rem, 2.5vw, 3rem);
-  --semantic-layout-panel-gap-mobile:            clamp(1.5rem, 4vw, 2.5rem);
-  --hds-breakpoint-sm:   var(--primitive-breakpoint-sm);
-  --hds-doc-toc-padding:         212px;   /* HDS doc TOC rail (180px) + content padding (32px) */
+  --semantic-layout-panel-gap: clamp(1.5rem, 2.5vw, 3rem);
+  --semantic-layout-panel-gap-mobile: clamp(1.5rem, 4vw, 2.5rem);
+  --hds-breakpoint-sm: var(--primitive-breakpoint-sm);
+  --hds-doc-toc-padding: 212px; /* HDS doc TOC rail (180px) + content padding (32px) */
   --hds-local-sketchbookCanvas-maxWidth-stage: 1200px;
 
   /* -- Z-index scale ---------------------------------------------------------- */
-  --hds-z-base:     0;
-  --hds-z-raised:   10;
+  --hds-z-base: 0;
+  --hds-z-raised: 10;
   --hds-z-dropdown: 100;
-  --hds-z-sticky:   200;
-  --hds-z-overlay:  300;
-  --hds-z-modal:    400;
-  --hds-z-popover:  500;
-  --hds-z-toast:    600;
-  --hds-z-tooltip:  700;
+  --hds-z-sticky: 200;
+  --hds-z-overlay: 300;
+  --hds-z-modal: 400;
+  --hds-z-popover: 500;
+  --hds-z-toast: 600;
+  --hds-z-tooltip: 700;
 
   /* -- Animation presets ------------------------------------------------------ */
   --hds-motion-productive: var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
-  --hds-anim-appear:   var(--hds-motion-productive-duration) var(--hds-motion-expressive-easing);
-  --hds-anim-enter:    var(--hds-motion-spatial-duration)    var(--hds-motion-spatial-easing);
+  --hds-anim-appear: var(--hds-motion-productive-duration) var(--hds-motion-expressive-easing);
+  --hds-anim-enter: var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing);
   --hds-anim-entrance: var(--hds-motion-expressive-duration) var(--hds-motion-expressive-easing);
   --hds-anim-skeleton: var(--hds-motion-spatial-duration) ease-in-out infinite;
-  --hds-anim-spin:     calc(var(--hds-motion-spatial-duration) * 8) var(--hds-motion-expressive-easing);
-
+  --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) var(--hds-motion-expressive-easing);
 
   /* -- Accent ramp (blue scale aliases — raw stop access) --------------------- */
-  --hds-accent-50:  var(--primitive-color-blue-50);
+  --hds-accent-50: var(--primitive-color-blue-50);
   --hds-accent-100: var(--primitive-color-blue-100);
   --hds-accent-200: var(--primitive-color-blue-200);
   --hds-accent-300: var(--primitive-color-blue-300);
@@ -159,61 +158,60 @@
   /* -- Density-aware spacing (comfortable = default) ------------------------- */
   /* Components that adapt to density use these vars. Toggle via data-density="compact" on <html>. */
   /* Component scale */
-  --hds-space-xs:  var(--primitive-space-1);   /* 4px  */
-  --hds-space-sm:  var(--primitive-space-2);   /* 8px  */
-  --hds-space-md:  var(--primitive-space-4);   /* 16px */
-  --hds-space-lg:  var(--primitive-space-6);   /* 24px */
-  --hds-space-xl:  var(--primitive-space-8);   /* 32px */
+  --hds-space-xs: var(--primitive-space-1); /* 4px  */
+  --hds-space-sm: var(--primitive-space-2); /* 8px  */
+  --hds-space-md: var(--primitive-space-4); /* 16px */
+  --hds-space-lg: var(--primitive-space-6); /* 24px */
+  --hds-space-xl: var(--primitive-space-8); /* 32px */
   /* Layout scale */
-  --hds-space-2xl: var(--primitive-space-12);  /* 48px */
-  --hds-space-3xl: var(--primitive-space-16);  /* 64px */
-  --hds-space-4xl: var(--primitive-space-20);  /* 80px */
+  --hds-space-2xl: var(--primitive-space-12); /* 48px */
+  --hds-space-3xl: var(--primitive-space-16); /* 64px */
+  --hds-space-4xl: var(--primitive-space-20); /* 80px */
 
-  --hds-accent-bar:      var(--primitive-color-blue-300);
-  --hds-text-on-image:   var(--semantic-color-content-inverse);
+  --hds-accent-bar: var(--primitive-color-blue-300);
+  --hds-text-on-image: var(--semantic-color-content-inverse);
 
   /* -- Semantic accent bridges (legacy) ---------------------------------------- */
-  --hds-accent:            var(--semantic-accent-rest);
-  --hds-accent-hover:      var(--semantic-accent-hover);
-  --hds-accent-pressed:    var(--semantic-accent-pressed);
-  --hds-accent-inactive:   var(--semantic-accent-inactive);
-  --hds-accent-disabled:   var(--semantic-accent-disabled);
-  --hds-accent-content:    var(--semantic-accent-content);
+  --hds-accent: var(--semantic-accent-rest);
+  --hds-accent-hover: var(--semantic-accent-hover);
+  --hds-accent-pressed: var(--semantic-accent-pressed);
+  --hds-accent-inactive: var(--semantic-accent-inactive);
+  --hds-accent-disabled: var(--semantic-accent-disabled);
+  --hds-accent-content: var(--semantic-accent-content);
   --hds-accent-content-hover: var(--semantic-accent-contentHover);
-  --hds-accent-subtle:     var(--semantic-accent-subtle);
-  --hds-color-brand:       var(--semantic-accent-rest);
+  --hds-accent-subtle: var(--semantic-accent-subtle);
+  --hds-color-brand: var(--semantic-accent-rest);
   --hds-color-brand-pressed: var(--semantic-accent-pressed);
 
   /* -- Component badge bridge vars ------------------------------------------ */
 
   /* -- Light mode: feedback — aliases to semantic token vars ------------------- */
   --hds-feedback-success: var(--semantic-color-feedback-success);
-  --hds-feedback-danger:  var(--semantic-color-feedback-error);
+  --hds-feedback-danger: var(--semantic-color-feedback-error);
   --hds-feedback-warning: var(--semantic-color-feedback-warning);
-  --hds-feedback-info:    var(--semantic-color-feedback-info);
+  --hds-feedback-info: var(--semantic-color-feedback-info);
   --hds-feedback-neutral: var(--semantic-color-content-secondary);
 
   --hds-feedback-success-bg: var(--semantic-color-feedback-bg-success);
-  --hds-feedback-danger-bg:  var(--semantic-color-feedback-bg-error);
+  --hds-feedback-danger-bg: var(--semantic-color-feedback-bg-error);
   --hds-feedback-warning-bg: var(--semantic-color-feedback-bg-warning);
-  --hds-feedback-info-bg:    var(--semantic-color-feedback-bg-info);
+  --hds-feedback-info-bg: var(--semantic-color-feedback-bg-info);
 
   /* -- Shadow vars — no token backing. Legacy aliases only; do not use in new components. -- */
-  --hds-shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.08);
-  --hds-shadow-md:   0 2px 8px rgba(0, 0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --hds-shadow-lg:   0 4px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --hds-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --hds-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --hds-shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
   --hds-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
   --hds-shadow-none: none;
 
   /* -- Ecommerce: price & badge — mapped to W3C DTCG semantic tokens ---------- */
-  --hds-price-default:  var(--semantic-color-content-primary);
-  --hds-price-sale:     var(--semantic-color-feedback-error);
+  --hds-price-default: var(--semantic-color-content-primary);
+  --hds-price-sale: var(--semantic-color-feedback-error);
   --hds-price-original: var(--semantic-color-content-secondary);
-  --hds-badge-new:      var(--semantic-accent-rest);
-  --hds-badge-sale:     var(--semantic-color-feedback-error);
+  --hds-badge-new: var(--semantic-accent-rest);
+  --hds-badge-sale: var(--semantic-color-feedback-error);
   --hds-badge-sold-out: var(--semantic-color-content-secondary);
   --hds-badge-featured: var(--semantic-color-feedback-warning);
-
 }
 
 @media (max-width: 639px) {
@@ -247,7 +245,7 @@
   .h-8 {
     min-height: var(--primitive-size-interactive-min);
   }
-  .w-8[class*="h-8"] {
+  .w-8[class*='h-8'] {
     min-width: var(--primitive-size-interactive-min);
   }
 
@@ -256,27 +254,27 @@
   .h-10 {
     min-height: var(--primitive-size-interactive-min);
   }
-  .w-10[class*="h-10"] {
+  .w-10[class*='h-10'] {
     min-width: var(--primitive-size-interactive-min);
   }
 }
 
 /* --- Dark mode --------------------------------------------------------------- */
 /* Both selectors are kept in sync so legacy .dark hooks still follow the active theme. */
-[data-theme="dark"],
+[data-theme='dark'],
 .dark {
   /* Text colors: --semantic-color-content-* resolved via tokens.css (dark mode auto-switches) */
-  --hds-accent-bar:      var(--primitive-color-blue-400);
-  --hds-text-on-image:   var(--semantic-color-content-inverse);
+  --hds-accent-bar: var(--primitive-color-blue-400);
+  --hds-text-on-image: var(--semantic-color-content-inverse);
 
   /* Feedback — dark mode vars resolve automatically from tokens.css */
   /* --hds-feedback-neutral auto-resolves from :root via semantic-color-content-secondary */
 
   /* Shadow vars — dark mode legacy aliases */
-  --hds-shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.32);
-  --hds-shadow-md:   0 2px 8px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.24);
-  --hds-shadow-lg:   0 4px 24px rgba(0, 0, 0, 0.56), 0 2px 8px rgba(0, 0, 0, 0.36);
-  --hds-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.30), 0 2px 6px rgba(0, 0, 0, 0.20);
+  --hds-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.32);
+  --hds-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --hds-shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.56), 0 2px 8px rgba(0, 0, 0, 0.36);
+  --hds-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2);
   --hds-shadow-none: none;
 
   /* Ecommerce — dark overrides resolved from :root semantic token bridges */
@@ -340,9 +338,15 @@
 
 /* --- Skeleton shimmer animation ---------------------------------------------- */
 @keyframes hds-skeleton-shimmer {
-  0%   { opacity: 0.5; }
-  50%  { opacity: 1.0; }
-  100% { opacity: 0.5; }
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 
 .hds-skeleton {
@@ -355,8 +359,14 @@
  * Same values: 300ms, cubic-bezier(0.42, 0, 0.58, 1) (easing.standard), y 2px.
  * Respects prefers-reduced-motion via the existing @media block at the bottom. */
 @keyframes hds-page-enter {
-  from { opacity: 0; transform: translateY(2px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hds-page-enter {
   animation: hds-page-enter var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing) both;
@@ -477,14 +487,16 @@
     grid-row: span var(--hds-local-visualsBento-rowSpan);
     min-height: calc(
       (var(--hds-local-visualsBento-rowSpan) * var(--hds-local-visualsBento-rowUnit)) +
-      ((var(--hds-local-visualsBento-rowSpan) - 1) * var(--semantic-space-layout-gap))
+        ((var(--hds-local-visualsBento-rowSpan) - 1) * var(--semantic-space-layout-gap))
     );
   }
 }
 
 /* --- Audit overlay --------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .hds-page-enter { animation: none; }
+  .hds-page-enter {
+    animation: none;
+  }
   :root {
     --primitive-duration-instant: 0s;
     --primitive-duration-short: 0s;
@@ -511,7 +523,9 @@
   color: var(--semantic-accent-content);
   text-decoration: underline;
   text-decoration-color: color-mix(in oklch, var(--semantic-accent-content) 40%, transparent);
-  transition: color var(--hds-motion-productive-duration), text-decoration-color var(--hds-motion-productive-duration);
+  transition:
+    color var(--hds-motion-productive-duration),
+    text-decoration-color var(--hds-motion-productive-duration);
 }
 .hds-link:hover {
   color: var(--semantic-accent-contentHover);
@@ -536,7 +550,7 @@
   background: var(--semantic-color-surface-accentSubtle);
   color: var(--semantic-accent-content);
 }
-[data-theme="dark"] .hds-token-chip:hover {
+[data-theme='dark'] .hds-token-chip:hover {
   color: var(--semantic-accent-hover);
 }
 .hds-token-chip:active {
@@ -553,10 +567,10 @@
   background: var(--semantic-color-border-default);
   transition: background var(--hds-motion-productive-duration);
 }
-.hds-text-hover:hover .hds-nav-indicator:not([data-active="true"]) {
+.hds-text-hover:hover .hds-nav-indicator:not([data-active='true']) {
   background: var(--semantic-color-border-strong);
 }
-.hds-nav-indicator[data-active="true"] {
+.hds-nav-indicator[data-active='true'] {
   background: var(--semantic-color-border-accent);
 }
 
@@ -575,49 +589,52 @@
  * keeps the visible surface compact. */
 .hds-tag-btn {
   background: transparent;
-  border:     0;
-  color:      inherit;
+  border: 0;
+  color: inherit;
   transition: color var(--hds-motion-productive-duration);
-  min-width:  var(--primitive-size-interactive-min);
+  min-width: var(--primitive-size-interactive-min);
 }
 .hds-tag-pill {
-  background:   var(--semantic-color-surface-raised);
+  background: var(--semantic-color-surface-raised);
   border-color: var(--semantic-color-border-default);
-  color:        var(--semantic-color-content-secondary);
-  transition:   background-color var(--hds-motion-productive-duration), border-color var(--hds-motion-productive-duration), color var(--hds-motion-productive-duration);
-  box-sizing:   border-box;
+  color: var(--semantic-color-content-secondary);
+  transition:
+    background-color var(--hds-motion-productive-duration),
+    border-color var(--hds-motion-productive-duration),
+    color var(--hds-motion-productive-duration);
+  box-sizing: border-box;
 }
-.hds-tag-btn[data-active="true"] {
+.hds-tag-btn[data-active='true'] {
   color: var(--component-tag-activeText);
 }
-.hds-tag-btn[data-active="true"] .hds-tag-pill {
-  background:   var(--component-tag-activeBackground);
+.hds-tag-btn[data-active='true'] .hds-tag-pill {
+  background: var(--component-tag-activeBackground);
   border-color: var(--component-tag-activeBorder);
-  color:        var(--component-tag-activeText);
+  color: var(--component-tag-activeText);
 }
-.hds-tag-btn:not([data-active="true"]):hover .hds-tag-pill {
-  background:   var(--semantic-color-surface-accentSubtle);
+.hds-tag-btn:not([data-active='true']):hover .hds-tag-pill {
+  background: var(--semantic-color-surface-accentSubtle);
   border-color: var(--semantic-color-border-accent);
-  color:        var(--semantic-color-content-primary);
+  color: var(--semantic-color-content-primary);
 }
-.hds-tag-btn:not([data-active="true"]):active .hds-tag-pill,
-.hds-tag-btn:not([data-active="true"])[data-pressed="true"] .hds-tag-pill {
+.hds-tag-btn:not([data-active='true']):active .hds-tag-pill,
+.hds-tag-btn:not([data-active='true'])[data-pressed='true'] .hds-tag-pill {
   border-color: var(--semantic-color-border-accent);
 }
-.hds-tag-btn[data-active="true"]:hover .hds-tag-pill {
+.hds-tag-btn[data-active='true']:hover .hds-tag-pill {
   background: var(--component-tag-activeHover);
 }
 
-input[data-search-input="true"]::-webkit-search-cancel-button,
-input[data-search-input="true"]::-webkit-search-decoration,
-input[data-search-input="true"]::-webkit-search-results-button,
-input[data-search-input="true"]::-webkit-search-results-decoration {
+input[data-search-input='true']::-webkit-search-cancel-button,
+input[data-search-input='true']::-webkit-search-decoration,
+input[data-search-input='true']::-webkit-search-results-button,
+input[data-search-input='true']::-webkit-search-results-decoration {
   -webkit-appearance: none;
   appearance: none;
   display: none;
 }
 
-input[data-search-input="true"] {
+input[data-search-input='true'] {
   -webkit-appearance: none;
   appearance: none;
 }
@@ -651,7 +668,7 @@ input[data-search-input="true"] {
 .hds-doc-section-header:focus-within .hds-doc-section-copy-icon {
   opacity: 0.82;
 }
-.hds-doc-section-header .hds-doc-section-copy-icon[data-copied="true"] {
+.hds-doc-section-header .hds-doc-section-copy-icon[data-copied='true'] {
   opacity: 1;
 }
 
@@ -686,18 +703,18 @@ input[data-search-input="true"] {
 .hds-doc-link-card:focus-visible {
   background: var(--semantic-color-surface-raised);
 }
-.hds-doc-link-card[data-accent="true"] {
+.hds-doc-link-card[data-accent='true'] {
   background: color-mix(in srgb, transparent 80%, var(--semantic-color-surface-accentSubtle) 20%);
 }
-.hds-doc-link-card[data-disabled="true"] {
+.hds-doc-link-card[data-disabled='true'] {
   background: transparent;
   opacity: 0.45;
   filter: grayscale(100%);
   pointer-events: none;
   cursor: default;
 }
-.hds-doc-link-card[data-disabled="true"]:hover,
-.hds-doc-link-card[data-disabled="true"]:focus-visible {
+.hds-doc-link-card[data-disabled='true']:hover,
+.hds-doc-link-card[data-disabled='true']:focus-visible {
   background: transparent;
 }
 
@@ -726,21 +743,22 @@ input[data-search-input="true"] {
 
 .hds-sidebar-utility-button {
   color: var(--semantic-color-content-primary);
-  transition: background-color var(--hds-motion-productive), color var(--hds-motion-productive);
+  transition:
+    background-color var(--hds-motion-productive),
+    color var(--hds-motion-productive);
 }
 .hds-sidebar-utility-button:hover {
   color: var(--semantic-accent-content);
 }
-.hds-sidebar-utility-button[data-variant="tertiary"]:hover {
+.hds-sidebar-utility-button[data-variant='tertiary']:hover {
   background: var(--semantic-color-surface-accentSubtle);
 }
-.hds-sidebar-utility-button[data-variant="secondary"] {
+.hds-sidebar-utility-button[data-variant='secondary'] {
   background: var(--semantic-color-surface-overlay);
 }
-.hds-sidebar-utility-button[data-variant="secondary"]:hover {
+.hds-sidebar-utility-button[data-variant='secondary']:hover {
   background: var(--semantic-color-surface-raised);
 }
-
 
 .hds-dropdown-item {
   background: var(--semantic-color-surface-page);
@@ -754,10 +772,10 @@ input[data-search-input="true"] {
   transition: color var(--hds-motion-productive-duration);
 }
 .hds-dropdown-item:hover .hds-dropdown-label,
-.hds-dropdown-item[data-active="true"] .hds-dropdown-label {
+.hds-dropdown-item[data-active='true'] .hds-dropdown-label {
   color: var(--semantic-color-content-primary);
 }
-.hds-dropdown-item[data-active="true"] .hds-dropdown-label {
+.hds-dropdown-item[data-active='true'] .hds-dropdown-label {
   color: var(--semantic-accent-rest);
 }
 .hds-dropdown-indicator {
@@ -769,13 +787,13 @@ input[data-search-input="true"] {
     background-color var(--hds-motion-productive-duration);
 }
 .hds-dropdown-item:hover .hds-dropdown-indicator,
-.hds-dropdown-item[data-active="true"] .hds-dropdown-indicator {
+.hds-dropdown-item[data-active='true'] .hds-dropdown-indicator {
   transform: scaleY(1);
 }
 .hds-dropdown-item:hover .hds-dropdown-indicator {
   opacity: 0.4;
 }
-.hds-dropdown-item[data-active="true"] .hds-dropdown-indicator {
+.hds-dropdown-item[data-active='true'] .hds-dropdown-indicator {
   opacity: 1;
   background-color: var(--semantic-accent-rest);
 }
@@ -787,12 +805,12 @@ input[data-search-input="true"] {
 .hds-desktop-nav-button:hover {
   color: var(--semantic-color-content-primary);
 }
-.hds-desktop-nav-button[data-active="true"] {
+.hds-desktop-nav-button[data-active='true'] {
   color: var(--semantic-accent-rest);
 }
 
 /* --- Focus ring utility ------------------------------------------------------- */
-html[data-input-modality="keyboard"] .hds-focus:focus-visible {
+html[data-input-modality='keyboard'] .hds-focus:focus-visible {
   outline: var(--hds-borderWidth-thick) solid var(--semantic-color-border-accent);
   outline-offset: 2px;
   position: relative;
@@ -820,8 +838,41 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
     outline-color: color-mix(in srgb, var(--semantic-color-border-accent) 50%, transparent);
   }
 
+  /* Scoped box-model reset — a [data-hds]-local equivalent of the essential
+   * parts of Tailwind preflight (box model + zeroed margins/padding + a
+   * utility-ready border baseline). This is what lets the reset-free
+   * `styles.css` bundle (which ships WITHOUT the global preflight) still give
+   * HDS components the border-box model and margin baseline they assume. In
+   * the full `tokens.css` bundle these declarations are identical to the global
+   * preflight already applied inside the scope, so they are inert there — the
+   * docs site and app render pixel-identically. `border-width`/`border-style`
+   * are set (not the `border` shorthand) so the token-driven `border-color`
+   * rule above is never clobbered. See docs/adr/016-scoped-base-styles.md. */
+  :where([data-hds]) *,
+  :where([data-hds]) *::before,
+  :where([data-hds]) *::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    margin: 0;
+    padding: 0;
+  }
+  :where([data-hds]) :is(ol, ul, menu) {
+    list-style: none;
+  }
+  :where([data-hds]) :is(button, input, select, optgroup, textarea) {
+    background-color: transparent;
+    border-radius: var(--hds-radius-0);
+  }
+  :where([data-hds]) a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
   /* Reset browser default button background — Tailwind preflight is not present */
-  :where([data-hds]) button { background: transparent; }
+  :where([data-hds]) button {
+    background: transparent;
+  }
 
   /* Interactive cursor affordance — every actionable element gets a pointer.
    * Browsers default <button> to cursor:default; this rule restores the
@@ -829,30 +880,34 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
    * form controls all signal interactivity consistently. Disabled state
    * gets not-allowed so the affordance reads "off" rather than "active". */
   :where([data-hds]) button:not(:disabled),
-  :where([data-hds]) [role="button"]:not([aria-disabled="true"]),
+  :where([data-hds]) [role='button']:not([aria-disabled='true']),
   :where([data-hds]) a[href],
   :where([data-hds]) summary,
   :where([data-hds]) label[for],
   :where([data-hds]) select:not(:disabled),
-  :where([data-hds]) input[type="checkbox"]:not(:disabled),
-  :where([data-hds]) input[type="radio"]:not(:disabled),
-  :where([data-hds]) input[type="submit"]:not(:disabled),
-  :where([data-hds]) input[type="button"]:not(:disabled),
-  :where([data-hds]) input[type="reset"]:not(:disabled) {
+  :where([data-hds]) input[type='checkbox']:not(:disabled),
+  :where([data-hds]) input[type='radio']:not(:disabled),
+  :where([data-hds]) input[type='submit']:not(:disabled),
+  :where([data-hds]) input[type='button']:not(:disabled),
+  :where([data-hds]) input[type='reset']:not(:disabled) {
     cursor: pointer;
   }
   :where([data-hds]) button:disabled,
-  :where([data-hds]) [role="button"][aria-disabled="true"],
+  :where([data-hds]) [role='button'][aria-disabled='true'],
   :where([data-hds]) [disabled] {
     cursor: not-allowed;
   }
 
   /* Show focus rings only on keyboard navigation */
-  :where([data-hds]) *:focus:not(:focus-visible) { outline: none; }
+  :where([data-hds]) *:focus:not(:focus-visible) {
+    outline: none;
+  }
   :where([data-hds]) button:focus:not(:focus-visible),
   :where([data-hds]) a:focus:not(:focus-visible),
   :where([data-hds]) [tabindex]:focus:not(:focus-visible),
-  :where([data-hds]) [role="button"]:focus:not(:focus-visible) { box-shadow: none; }
+  :where([data-hds]) [role='button']:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
 
   :where([data-hds]) {
     /* Type rendering hardening (Adrian directive 2026-05-04 — fix sub-pixel
@@ -875,7 +930,9 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
      * HDS typeface and text color. font-size is deliberately NOT set here:
      * setting it on <html> would rebase rem units and shift every layout. */
     text-rendering: optimizeLegibility;
-    font-feature-settings: "kern" 1, "liga" 1;
+    font-feature-settings:
+      'kern' 1,
+      'liga' 1;
     -moz-osx-font-smoothing: grayscale;
     scrollbar-gutter: stable;
     font-family: var(--semantic-typography-body-font-family);
@@ -894,55 +951,57 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
    * exactly. Color roles from --hds-* vars — dark mode is CSS-only.
    */
   :where([data-hds]) body {
-    font-family:    var(--semantic-typography-body-font-family);
-    font-size:      var(--semantic-typography-body-font-size);
-    font-weight:    var(--semantic-typography-body-font-weight);
-    line-height:    var(--semantic-typography-body-line-height);
+    font-family: var(--semantic-typography-body-font-family);
+    font-size: var(--semantic-typography-body-font-size);
+    font-weight: var(--semantic-typography-body-font-weight);
+    line-height: var(--semantic-typography-body-line-height);
     letter-spacing: var(--semantic-typography-body-letter-spacing);
-    color:          var(--semantic-color-content-primary);
-    background:     var(--semantic-color-surface-page);
-    min-height:     100vh;
+    color: var(--semantic-color-content-primary);
+    background: var(--semantic-color-surface-page);
+    min-height: 100vh;
   }
 
   /* Heading elements — map to the semantic typography composite tokens.
    * Single-weight policy (Adrian directive 2026-05-04): every face ships at
    * 500 only; using bold/semibold here would faux-bold and look fuzzy. */
   :where([data-hds]) h1 {
-    font-family:    var(--semantic-typography-h1-font-family);
-    font-size:      var(--semantic-typography-h1-font-size);
-    font-weight:    var(--semantic-typography-h1-font-weight);
-    line-height:    var(--semantic-typography-h1-line-height);
+    font-family: var(--semantic-typography-h1-font-family);
+    font-size: var(--semantic-typography-h1-font-size);
+    font-weight: var(--semantic-typography-h1-font-weight);
+    line-height: var(--semantic-typography-h1-line-height);
     letter-spacing: var(--semantic-typography-h1-letter-spacing);
   }
   :where([data-hds]) h2 {
-    font-family:    var(--semantic-typography-h2-font-family);
-    font-size:      var(--semantic-typography-h2-font-size);
-    font-weight:    var(--semantic-typography-h2-font-weight);
-    line-height:    var(--semantic-typography-h2-line-height);
+    font-family: var(--semantic-typography-h2-font-family);
+    font-size: var(--semantic-typography-h2-font-size);
+    font-weight: var(--semantic-typography-h2-font-weight);
+    line-height: var(--semantic-typography-h2-line-height);
     letter-spacing: var(--semantic-typography-h2-letter-spacing);
   }
   :where([data-hds]) h3 {
-    font-family:    var(--semantic-typography-h3-font-family);
-    font-size:      var(--semantic-typography-h3-font-size);
-    font-weight:    var(--semantic-typography-h3-font-weight);
-    line-height:    var(--semantic-typography-h3-line-height);
+    font-family: var(--semantic-typography-h3-font-family);
+    font-size: var(--semantic-typography-h3-font-size);
+    font-weight: var(--semantic-typography-h3-font-weight);
+    line-height: var(--semantic-typography-h3-line-height);
     letter-spacing: var(--semantic-typography-h3-letter-spacing);
   }
   :where([data-hds]) h4 {
-    font-family:    var(--semantic-typography-body-font-family);
-    font-size:      var(--primitive-typography-size-lg);
-    font-weight:    var(--semantic-typography-body-font-weight);
-    line-height:    var(--primitive-typography-lineHeight-normal);
+    font-family: var(--semantic-typography-body-font-family);
+    font-size: var(--primitive-typography-size-lg);
+    font-weight: var(--semantic-typography-body-font-weight);
+    line-height: var(--primitive-typography-lineHeight-normal);
     letter-spacing: var(--primitive-typography-letterSpacing-normal);
   }
 
   /* Inline and block text — inherit body by default, no overrides needed */
-  :where([data-hds]) :is(p, span, li, td, th) { margin: 0; }
+  :where([data-hds]) :is(p, span, li, td, th) {
+    margin: 0;
+  }
 
   /* Form elements inherit the body type stack */
   :where([data-hds]) :is(button, input, select, textarea) {
     font-family: inherit;
-    font-size:   inherit;
+    font-size: inherit;
     font-weight: inherit;
     line-height: inherit;
   }
@@ -966,13 +1025,13 @@ html[data-input-modality="keyboard"] .hds-focus:focus-visible {
  * Inspired by: IBM Carbon (condensed/extra-condensed density), Material Design 3,
  * Salesforce Lightning (comfy/compact), GitHub Primer (condensed/spacious).
  * --------------------------------------------------------------------------- */
-[data-density="compact"] {
-  --hds-space-xs:  var(--primitive-space-px2); /* 2px  (was 4px)  */
-  --hds-space-sm:  var(--primitive-space-px6); /* 6px  (was 8px)  */
-  --hds-space-md:  var(--primitive-space-3);   /* 12px (was 16px) */
-  --hds-space-lg:  var(--primitive-space-5);   /* 20px (was 24px) */
-  --hds-space-xl:  var(--primitive-space-6);   /* 24px (was 32px) */
-  --hds-space-2xl: var(--primitive-space-10);  /* 40px (was 48px) */
-  --hds-space-3xl: var(--primitive-space-12);  /* 48px (was 64px) */
-  --hds-space-4xl: var(--primitive-space-16);  /* 64px (was 80px) */
+[data-density='compact'] {
+  --hds-space-xs: var(--primitive-space-px2); /* 2px  (was 4px)  */
+  --hds-space-sm: var(--primitive-space-px6); /* 6px  (was 8px)  */
+  --hds-space-md: var(--primitive-space-3); /* 12px (was 16px) */
+  --hds-space-lg: var(--primitive-space-5); /* 20px (was 24px) */
+  --hds-space-xl: var(--primitive-space-6); /* 24px (was 32px) */
+  --hds-space-2xl: var(--primitive-space-10); /* 40px (was 48px) */
+  --hds-space-3xl: var(--primitive-space-12); /* 48px (was 64px) */
+  --hds-space-4xl: var(--primitive-space-16); /* 64px (was 80px) */
 }

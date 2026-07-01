@@ -26,6 +26,7 @@
       "default": "./dist/hirobius-ui.js"
     },
     "./tokens.css": "./dist/tokens.css",
+    "./styles.css": "./dist/styles.css",
     "./variables.css": "./dist/variables.css",
     "./tokens": {
       "types": "./dist/types/src/app/design-system/tokens.d.ts",
@@ -110,7 +111,7 @@
     "build": "pnpm sync:health && node scripts/sync-icons.mjs && vite build --configLoader native",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr-cache --configLoader native",
     "build:prerender": "pnpm build && pnpm build:ssr && node scripts/prerender.mjs",
-    "build:lib": "vite build -c vite.config.lib.ts && pnpm build:types && node scripts/build-vars-css.mjs && node scripts/embed-fonts.mjs",
+    "build:lib": "vite build -c vite.config.lib.ts && pnpm build:types && node scripts/build-vars-css.mjs && node scripts/embed-fonts.mjs && node scripts/build-styles-css.mjs",
     "build:types": "tsc -p tsconfig.dts.json && node scripts/strip-dts-side-effects.mjs",
     "catalog": "node scripts/generate-visual-catalog.mjs",
     "changelog:generate": "node scripts/generate-changelog.mjs",

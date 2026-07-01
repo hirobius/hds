@@ -131,7 +131,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './cn', './manifest', './contexts', './protocol']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './cn', './manifest', './contexts', './protocol']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -259,6 +259,25 @@ check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
   assert.ok(css.includes('@font-face'), 'no @font-face in tokens.css');
   assert.ok(css.includes('data:font/woff2'), 'fonts not embedded (P0.3 regression)');
   assert.ok(css.includes('[data-hds]'), 'base styles not scoped to [data-hds] (P0.5 regression)');
+});
+
+// Gap 1: styles.css = tokens + components + utilities + fonts, but NO global
+// preflight. It must style HDS components (utilities + scoped base) while
+// changing ZERO host-element styles (no unscoped reset). Structural assertion
+// stands in for a browser: the global preflight signatures must be ABSENT and
+// the scoped base + utilities + fonts must be PRESENT.
+check('styles.css ships components/utilities/fonts with NO global reset', () => {
+  const cssPath = decodeURIComponent(import.meta.resolve(PKG + '/styles.css').replace(/^file:\\/\\//, ''));
+  const css = readFileSync(cssPath, 'utf8');
+  // present: components can render + fonts + scoped base
+  assert.ok(css.includes('@layer utilities'), 'utilities layer missing — components would be unstyled');
+  assert.ok(css.includes(':where([data-hds])'), 'scoped [data-hds] base missing from styles.css');
+  assert.ok(css.includes('data:font/woff2'), 'fonts not embedded in styles.css');
+  assert.ok(css.includes('--semantic-color-surface-page'), 'token vars missing from styles.css');
+  // absent: global preflight that would restyle host elements
+  assert.ok(!css.includes('border:0 solid;margin:0;padding:0'), 'global universal reset leaked into styles.css');
+  assert.ok(!css.includes('html,:host{'), 'global html/:host reset leaked into styles.css');
+  assert.ok(!css.includes('h1,h2,h3,h4,h5,h6{font-size:inherit'), 'global heading reset leaked into styles.css');
 });
 
 if (failures.length) {
