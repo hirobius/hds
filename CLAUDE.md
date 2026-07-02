@@ -3,7 +3,7 @@
 ## 0. HARD RULES (no exceptions, apply to all agents including Claude)
 
 - **NEVER read, write, create, or delete `.env*` files.** Keys are set by the human only. If a task needs a new key, document it in a comment in the script and stop — do not touch `.env.local`.
-- **NEVER git push.** Local commits only.
+- **NEVER git push from local machines.** Local commits only — with one exception: remote Claude Code sessions (Claude Code on the web / GitHub integration) may push to their designated `claude/*` working branch. Pushing to `main` or any other branch remains forbidden everywhere.
 - **NEVER run `pnpm check:release` or deploy commands.**
 
 ---
@@ -103,3 +103,15 @@ Safe-to-auto-fix rules: `@typescript-eslint/no-unused-vars`, `prefer-const`,
 NEVER auto-fix: `react-hooks/exhaustive-deps` (introduces stale-closure bugs),
 anything that rewrites code blocks rather than tweaking declarations, anything
 touching more than one statement.
+
+## Fleet hub
+
+This repo is part of the Hirobius fleet. The operations hub is the
+hirobius/ops repo: fleet state at /api/projects, consolidated tasks at
+/ops/tasks (this repo's GitHub Issues sync there), current cross-project
+state in docs/ai/HANDOFF.md (in ops). Conventions for every session here:
+(a) track new work as GitHub Issues in THIS repo — never a local TODO
+file; (b) before ending any session that changed project state, update
+root status.json (updatedAt, phase, headline, next, blocked) — the ops
+dashboard renders it; (c) read the ops HANDOFF before cross-project
+decisions.
