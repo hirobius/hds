@@ -3,7 +3,7 @@
 ## 0. HARD RULES (no exceptions, apply to all agents including Claude)
 
 - **NEVER read, write, create, or delete `.env*` files.** Keys are set by the human only. If a task needs a new key, document it in a comment in the script and stop — do not touch `.env.local`.
-- **NEVER git push.** Local commits only.
+- **NEVER git push from local machines.** Local commits only — with one exception: remote Claude Code sessions (Claude Code on the web / GitHub integration) may push to their designated `claude/*` working branch. Pushing to `main` or any other branch remains forbidden everywhere.
 - **NEVER run `pnpm check:release` or deploy commands.**
 
 ---
