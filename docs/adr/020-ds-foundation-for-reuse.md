@@ -127,3 +127,41 @@ Code Connect stub. New components arrive standardized and hand-off-ready.
   - #64 Astro consumption: per-component exports + CSS-only layer + docs
 - Supersedes nothing; refines ADR-001 (tenant → brand) and ADR-015
   (interaction states now Radix-backed).
+
+## Phase 2 — two surfaces, one core (after core hardening)
+
+Core is the invariant substrate (tokens, theming contract, accessible
+primitives, tooling). On top of it sit **two skins that share that core**, and
+the sequence is **harden the core first (#59–#64), then build the layers**:
+
+1. **Product surface** — the current disciplined HDS look (Swiss-canon, single
+   weight, no arbitrary values). Optimised for consistency and reuse across
+   app/product UI.
+2. **Expression surface** (#66) — a sibling for art-directed / marketing sites
+   (the Aura reference tier): looser type presets, a section/pattern kit, and
+   motion presets. It sits *beside* the product library, not inside its canon —
+   the rules that make Core great for product deliberately forbid the
+   expressive moves, so expression is a separate surface, never an override of
+   Core.
+
+### Harvest pipeline — cannibalise one-shots into reusable assets
+
+Expressive one-shots are built fast in an AI site builder (Aura), then their
+**design intelligence is harvested, not their code**. Aura emits a Google
+`design.md` (YAML front matter of colours / typography / rounded / spacing /
+components). `scripts/harvest-design-md.mjs` (the inverse of
+`build-design-md.mjs`) distils that into a candidate `tenants/<slug>/tokens.json`
+brand overlay + a `HARVEST.md` rationale capture. Governed by the **rule of
+three**: first sighting → reference only; recurs ~3× → graduate into the
+expression layer. Every harvested site leaves three durable artifacts — a brand
+overlay, 0–N section recipes, any graduated component — and *that stack is the
+compounding library*. First ~5 sites pay in; reuse compounds after. (#67)
+
+### Niche demo reskins — the overlay system's first payoff
+
+The multi-brand overlay's killer application is **outreach**: hold
+hirobius.io's content fixed and ship per-niche reskins (realtor, insurance,
+tradesman/concrete) as `data-brand` overlays, so a prospect is sent "their kind
+of site" without building theirs. Each niche is one overlay + a URL/deploy
+variant; each is simultaneously a sales asset and a reusable brand preset —
+dogfooding the runtime brand switch (#62). (#68)
