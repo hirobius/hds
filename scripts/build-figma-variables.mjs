@@ -267,8 +267,9 @@ function getScopes(path, type) {
     if (p.includes('radius')) return ['CORNER_RADIUS'];
     if (p.includes('font') && p.includes('size')) return ['FONT_SIZE'];
     if (p.includes('letter-spacing')) return ['LETTER_SPACING'];
-    if (p.includes('space'))
-      return ['GAP', 'WIDTH_HEIGHT', 'HORIZONTAL_PADDING', 'VERTICAL_PADDING'];
+    // Padding-specific scopes don't exist in the VariableScope enum (the
+    // Plugin API rejects HORIZONTAL_PADDING/VERTICAL_PADDING outright).
+    if (p.includes('space')) return ['GAP', 'WIDTH_HEIGHT'];
     return ['ALL_SCOPES'];
   }
   if (type === 'fontWeight') return ['FONT_WEIGHT'];
