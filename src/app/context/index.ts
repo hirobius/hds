@@ -11,6 +11,7 @@
  *   </FontProvider></ThemeProvider></LanguageProvider></TenantProvider>
  */
 export * from './ThemeContext';
+export * from './HdsThemeProvider';
 export * from './LanguageContext';
 export * from './TenantContext';
 export * from './FontContext';
