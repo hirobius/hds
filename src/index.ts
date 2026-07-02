@@ -114,3 +114,13 @@ export type {
   HdsLinkProps,
   HdsNavigateOptions,
 } from './app/context/RouterContext';
+
+// ── Theming contract (declarative brand / theme / density / font dials) ──
+export { HdsThemeProvider, useHdsTheme } from './app/context/HdsThemeProvider';
+export type {
+  HdsThemeValue,
+  HdsThemeProviderProps,
+  HdsThemeMode,
+  HdsDensity,
+  HdsFontOverrides,
+} from './app/context/HdsThemeProvider';

@@ -435,3 +435,83 @@ describe('TocContext', () => {
     expect(items).toHaveLength(1);
   });
 });
+
+// ── HdsThemeProvider ────────────────────────────────────────────────────────────
+
+describe('HdsThemeProvider', () => {
+  let container: HTMLDivElement;
+  let root: Root;
+
+  beforeEach(() => {
+    container = makeContainer();
+    root = createRoot(container);
+  });
+  afterEach(() => cleanup(container, root));
+
+  it('scoped mode: renders a [data-hds] wrapper carrying every dial + font vars', async () => {
+    const { HdsThemeProvider } = await import('../HdsThemeProvider');
+    await act(async () => {
+      root.render(
+        <HdsThemeProvider
+          brand="acme"
+          theme="dark"
+          density="compact"
+          fonts={{ sans: 'Canela', mono: 'IBM Plex Mono' }}
+        >
+          <span>child</span>
+        </HdsThemeProvider>,
+      );
+    });
+    const el = container.querySelector('[data-hds]') as HTMLElement;
+    expect(el).not.toBeNull();
+    expect(el.getAttribute('data-brand')).toBe('acme');
+    // brand bridges to data-tenant so current overlay CSS activates
+    expect(el.getAttribute('data-tenant')).toBe('acme');
+    expect(el.getAttribute('data-theme')).toBe('dark');
+    expect(el.getAttribute('data-density')).toBe('compact');
+    expect(el.style.getPropertyValue('--hds-font-family')).toBe('Canela');
+    expect(el.style.getPropertyValue('--hds-font-family-mono')).toBe('IBM Plex Mono');
+  });
+
+  it('omits attributes for unset dials', async () => {
+    const { HdsThemeProvider } = await import('../HdsThemeProvider');
+    await act(async () => {
+      root.render(
+        <HdsThemeProvider brand="realtor">
+          <span />
+        </HdsThemeProvider>,
+      );
+    });
+    const el = container.querySelector('[data-hds]') as HTMLElement;
+    expect(el.getAttribute('data-brand')).toBe('realtor');
+    expect(el.hasAttribute('data-theme')).toBe(false);
+    expect(el.hasAttribute('data-density')).toBe(false);
+  });
+
+  it('useHdsTheme reads the active dials; returns {} with no provider', async () => {
+    const { HdsThemeProvider, useHdsTheme } = await import('../HdsThemeProvider');
+    let seen: import('../HdsThemeProvider').HdsThemeValue | null = null;
+    function Probe() {
+      seen = useHdsTheme();
+      return null;
+    }
+    await act(async () => {
+      root.render(
+        <HdsThemeProvider brand="insurance" density="comfortable">
+          <Probe />
+        </HdsThemeProvider>,
+      );
+    });
+    expect(seen!).toMatchObject({ brand: 'insurance', density: 'comfortable' });
+
+    let bare: import('../HdsThemeProvider').HdsThemeValue | null = null;
+    function BareProbe() {
+      bare = useHdsTheme();
+      return null;
+    }
+    await act(async () => {
+      root.render(<BareProbe />);
+    });
+    expect(bare!).toEqual({});
+  });
+});
