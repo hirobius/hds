@@ -24,9 +24,9 @@ import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT      = join(__dirname, '..');
+const ROOT = join(__dirname, '..');
 const PAGES_DIR = join(ROOT, 'src', 'app', 'pages', 'hds');
-const REGISTRY  = join(ROOT, 'src', 'app', 'data', 'hds-registry.json');
+const REGISTRY = join(ROOT, 'src', 'app', 'data', 'hds-registry.json');
 
 const PRUNE = process.argv.includes('--prune');
 
@@ -57,9 +57,7 @@ const PATH_OVERRIDES = {
 
 /** Converts PascalCase to kebab-case. "GettingStarted" → "getting-started". */
 function toKebab(str) {
-  return str
-    .replace(/([A-Z])/g, m => `-${m.toLowerCase()}`)
-    .replace(/^-/, '');
+  return str.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`).replace(/^-/, '');
 }
 
 /** Derives the route path from a page file's path relative to PAGES_DIR. */
@@ -68,7 +66,7 @@ function derivePath(relFile) {
   // Strip .tsx, strip trailing "Page" suffix
   const name = basename(relFile, '.tsx').replace(/Page$/, '');
   const slug = toKebab(name);
-  const dir  = dirname(relFile);
+  const dir = dirname(relFile);
   if (dir === '.' || dir === '') return `/hds/${slug}`;
   // e.g. "components/Actions" → /hds/components/actions
   return `/hds/${dir}/${slug}`;
@@ -91,7 +89,7 @@ function collectTsx(dir, base = '') {
   const results = [];
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
-    const rel  = base ? `${base}/${entry}` : entry;
+    const rel = base ? `${base}/${entry}` : entry;
     if (statSync(full).isDirectory()) {
       results.push(...collectTsx(full, rel));
     } else if (entry.endsWith('.tsx')) {
@@ -103,11 +101,14 @@ function collectTsx(dir, base = '') {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-const registry  = JSON.parse(readFileSync(REGISTRY, 'utf8'));
-const allFiles  = collectTsx(PAGES_DIR);
-const pageFiles = allFiles.filter(f => !EXCLUDE.has(basename(f)));
+const registry = JSON.parse(readFileSync(REGISTRY, 'utf8'));
+const allFiles = collectTsx(PAGES_DIR);
+// Test/spec files live alongside pages but are never registry pages.
+const pageFiles = allFiles.filter(
+  (f) => !EXCLUDE.has(basename(f)) && !/\.(test|spec)\.tsx?$/.test(f),
+);
 
-const registryPaths = new Set(registry.map(e => e.path));
+const registryPaths = new Set(registry.map((e) => e.path));
 
 // ── 1. Add stubs for pages missing from registry ──────────────────────────────
 
@@ -117,14 +118,14 @@ for (const relFile of pageFiles) {
   if (registryPaths.has(path)) continue;
 
   const stub = {
-    page:     deriveName(relFile),
+    page: deriveName(relFile),
     path,
     category: deriveCategory(relFile),
-    summary:  `TODO: Add a summary for the ${deriveName(relFile)} page.`,
+    summary: `TODO: Add a summary for the ${deriveName(relFile)} page.`,
   };
 
   // Insert in alphabetical path order for readability
-  const insertIdx = registry.findIndex(e => e.path > path);
+  const insertIdx = registry.findIndex((e) => e.path > path);
   if (insertIdx === -1) registry.push(stub);
   else registry.splice(insertIdx, 0, stub);
 
@@ -138,7 +139,7 @@ let removed = 0;
 if (PRUNE) {
   const derivedPaths = new Set(pageFiles.map(derivePath));
   const before = registry.length;
-  const pruned = registry.filter(e => derivedPaths.has(e.path));
+  const pruned = registry.filter((e) => derivedPaths.has(e.path));
   removed = before - pruned.length;
   if (removed > 0) {
     pruned.forEach((e) => {
@@ -152,7 +153,9 @@ if (PRUNE) {
 
 if (added > 0 || removed > 0) {
   writeFileSync(REGISTRY, JSON.stringify(registry, null, 2) + '\n');
-  console.log(`✓ hds-registry.json: +${added} added, -${removed} removed (${registry.length} total)`);
+  console.log(
+    `✓ hds-registry.json: +${added} added, -${removed} removed (${registry.length} total)`,
+  );
 } else {
   console.log('✓ hds-registry.json: already in sync');
 }

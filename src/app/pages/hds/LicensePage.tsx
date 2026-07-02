@@ -11,13 +11,7 @@ const CREDITS = [
   {
     name: 'Satoshi',
     href: undefined as string | undefined,
-    role: 'Body and UI typeface - the voice of the entire system',
-    license: 'OFL (Fontshare)',
-  }, // security-ok: font credit only, no self-hosted equivalent available
-  {
-    name: 'Clash Display',
-    href: undefined as string | undefined,
-    role: 'Display and heading typeface - hero and section headings',
+    role: 'Body, UI, and heading typeface - the single voice of the system (500 body / UI, 700 headings)',
     license: 'OFL (Fontshare)',
   }, // security-ok: font credit only, no self-hosted equivalent available
   {
