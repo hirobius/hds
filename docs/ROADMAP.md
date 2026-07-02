@@ -24,9 +24,15 @@ check, CI workflow) is coherent. Recent repairs + remaining cleanup:
   `/orchestration/approve`, `/build-status` and `scripts/test-bridge-endpoints.mjs`
   are ops-domain functionality embedded in the Figma bridge. Strip them so the
   bridge is purely Figma (token/component sync).
-- 🔴 **Reconcile env var names** — `scripts/figma-sync.ts` expects
-  `FIGMA_PAT` / `FIGMA_FILE_ID`; CI (`sync-figma-variables.yml`) uses
-  `FIGMA_PERSONAL_ACCESS_TOKEN` / `FIGMA_FILE_KEY`. Document or unify.
+- ✅ **Reconcile env var names** — unified on `FIGMA_API_KEY` (token) +
+  `FIGMA_FILE_KEY` (file), with `FIGMA_PAT` / `FIGMA_PERSONAL_ACCESS_TOKEN` /
+  `FIGMA_FILE_ID` accepted as deprecated fallbacks across `figma-sync.ts`, the
+  CI workflow, and `vite.config.mjs`. Documented in `docs/figma-mcp.md`; the
+  redundant broken `hds-sync.js` (ADR-018 "Cut") was removed.
+- ✅ **Official Figma MCP + Code Connect (ADR-019)** — repo-root `.mcp.json`
+  wires `mcp.figma.com`; `figma.config.json` + `code-connect/` scaffold Code
+  Connect (Button exemplar; `pnpm figma:connect` validates). Remaining: point
+  at the canonical library file + map the rest (#47).
 - 🔴 **Refresh stale docs** — `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP}.md`
   still reference the retired `orchestration.json`.
 
