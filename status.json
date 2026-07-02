@@ -1,11 +1,13 @@
 {
-  "updatedAt": "2026-07-02T05:48:13Z",
+  "updatedAt": "2026-07-02T19:55:04Z",
   "phase": "active",
-  "headline": "0.10.0 live on public npm; sterilization (ADR-018) 3/7 done; Figma library v1 built — 339 variables, 11 styles, 22 components (88 variants), QA clean.",
+  "headline": "0.10.0 live on npm; Figma library v1 built. Next arc: DS reuse foundation (ADR-020) — Radix behavioral layer, framework-agnostic theming for Astro + multi-brand, component ingestion; toward 1.0.0.",
   "next": [
-    "Code Connect mappings for the Figma library (#47)",
-    "Sterilize 2-7: portfolio deletion through docs consolidation (#49-#53)",
-    "Consolidate typography to Satoshi-only (#48)"
+    "Radix conversion of 6 custom controls + variant contract (#59, #60)",
+    "HdsThemeProvider + data-brand/density/font theming; multi-brand runtime (#61, #62)",
+    "hds:new ingestion recipe + Astro per-component/CSS-only consumption (#63, #64)"
   ],
-  "blocked": ["Satoshi upload to Figma team fonts (human step) gates the text-style swap (#48)"]
+  "blocked": [
+    "Satoshi upload to Figma team fonts (human step) gates the text-style swap (#48)"
+  ]
 }
