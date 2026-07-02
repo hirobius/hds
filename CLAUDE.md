@@ -103,3 +103,15 @@ Safe-to-auto-fix rules: `@typescript-eslint/no-unused-vars`, `prefer-const`,
 NEVER auto-fix: `react-hooks/exhaustive-deps` (introduces stale-closure bugs),
 anything that rewrites code blocks rather than tweaking declarations, anything
 touching more than one statement.
+
+## Fleet hub
+
+This repo is part of the Hirobius fleet. The operations hub is the
+hirobius/ops repo: fleet state at /api/projects, consolidated tasks at
+/ops/tasks (this repo's GitHub Issues sync there), current cross-project
+state in docs/ai/HANDOFF.md (in ops). Conventions for every session here:
+(a) track new work as GitHub Issues in THIS repo — never a local TODO
+file; (b) before ending any session that changed project state, update
+root status.json (updatedAt, phase, headline, next, blocked) — the ops
+dashboard renders it; (c) read the ops HANDOFF before cross-project
+decisions.

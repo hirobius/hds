@@ -1,0 +1,11 @@
+{
+  "updatedAt": "2026-07-02T05:16:04Z",
+  "phase": "active",
+  "headline": "0.10.0 live on public npm; sterilization (ADR-018) 3/7 done; Figma library (ADR-019) in flight — 339 variables + 9 of 13 component sets built.",
+  "next": [
+    "Finish Figma component library v1 + Code Connect (#46, #47)",
+    "Sterilize 2-7: portfolio deletion through docs consolidation (#49-#53)",
+    "Consolidate typography to Satoshi-only (#48)"
+  ],
+  "blocked": ["Satoshi upload to Figma team fonts (human step) gates the text-style swap (#48)"]
+}

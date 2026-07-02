@@ -1,4 +1,11 @@
-# Backlog
+# Backlog (SUPERSEDED for this repo — see GitHub Issues)
+
+> **2026-07-02:** This repo's task source of truth is now **GitHub Issues**
+> (label `backlog`) per the fleet-hub convention in CLAUDE.md. All live
+> HDS-repo items below were filed as issues #46–#57. Remaining entries here
+> are cross-project (Concrete Creations, Client Work, ops dashboards,
+> portfolio) and await migration to the hirobius/ops hub — do not add new
+> items to this file.
 
 Single source of truth for open work. Plain markdown — any tool (humans, AI,
 IDE) can read or edit. Items grouped by area; tags show status.
