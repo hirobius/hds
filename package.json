@@ -210,6 +210,7 @@
     "roadmap:watch": "node scripts/watch-roadmap.mjs",
     "scaffold:component": "node scripts/scaffold-component.mjs",
     "scaffold:tenant": "node scripts/scaffold-tenant.mjs",
+    "harvest:design-md": "node scripts/harvest-design-md.mjs",
     "sitemap:generate": "node scripts/generate-sitemap.mjs",
     "size-limit": "size-limit --config .size-limit.cjs",
     "smoke:consumer": "node scripts/smoke-consumer.mjs",
