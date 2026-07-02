@@ -1,13 +1,11 @@
 {
-  "updatedAt": "2026-07-02T19:55:04Z",
+  "updatedAt": "2026-07-02T22:37:35Z",
   "phase": "active",
-  "headline": "0.10.0 live on npm; Figma library v1 built. Next arc: DS reuse foundation (ADR-020) — Radix behavioral layer, framework-agnostic theming for Astro + multi-brand, component ingestion; toward 1.0.0.",
+  "headline": "Code↔Figma converged: Satoshi consolidated (headings→Satoshi Bold, #48), HdsThemeProvider (#61) + Radix Slider (#59) landed on PR #65; Figma library repaired + parity-complete. Toward 1.0.0.",
   "next": [
-    "Radix conversion of 6 custom controls + variant contract (#59, #60)",
-    "HdsThemeProvider + data-brand/density/font theming; multi-brand runtime (#61, #62)",
-    "hds:new ingestion recipe + Astro per-component/CSS-only consumption (#63, #64)"
+    "data-brand overlays for runtime multi-brand / niche-reskin demos (#62, #68)",
+    "hds:new ingestion recipe (#63) + Astro per-component/CSS-only consumption (#64)",
+    "Merge PR #65; re-baseline visual regression for Satoshi headings (#18)"
   ],
-  "blocked": [
-    "Satoshi upload to Figma team fonts (human step) gates the text-style swap (#48)"
-  ]
+  "blocked": []
 }
