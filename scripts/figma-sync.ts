@@ -39,16 +39,18 @@ function loadEnvLocal() {
 async function main() {
   loadEnvLocal();
 
-  const figmaPat = process.env.FIGMA_PAT;
-  const figmaFileId = process.env.FIGMA_FILE_ID;
+  // Canonical names: FIGMA_API_KEY + FIGMA_FILE_KEY. Legacy FIGMA_PAT /
+  // FIGMA_FILE_ID are still accepted as fallbacks. See docs/figma-mcp.md.
+  const figmaToken = process.env.FIGMA_API_KEY ?? process.env.FIGMA_PAT;
+  const figmaFileKey = process.env.FIGMA_FILE_KEY ?? process.env.FIGMA_FILE_ID;
 
-  if (!figmaPat || !figmaFileId) {
-    throw new Error("Missing FIGMA_PAT or FIGMA_FILE_ID in .env.local.");
+  if (!figmaToken || !figmaFileKey) {
+    throw new Error("Missing FIGMA_API_KEY or FIGMA_FILE_KEY in .env.local.");
   }
 
-  const response = await fetch(`https://api.figma.com/v1/files/${figmaFileId}`, {
+  const response = await fetch(`https://api.figma.com/v1/files/${figmaFileKey}`, {
     headers: {
-      "X-Figma-Token": figmaPat,
+      "X-Figma-Token": figmaToken,
     },
   });
 

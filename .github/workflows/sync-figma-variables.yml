@@ -32,16 +32,17 @@ jobs:
         run: node scripts/build-figma-variables.mjs
 
       # ── Push to Figma Variables REST API ─────────────────────────────────
-      # Requires GitHub Secrets:
-      #   FIGMA_PERSONAL_ACCESS_TOKEN — from figma.com/settings > Security > Personal access tokens
-      #   FIGMA_FILE_KEY              — from your Figma file URL: figma.com/design/{FILE_KEY}/...
+      # Requires GitHub Secrets (see docs/figma-mcp.md):
+      #   FIGMA_API_KEY  — Figma personal access token (figma.com/settings > Security).
+      #                    Falls back to the legacy FIGMA_PERSONAL_ACCESS_TOKEN secret.
+      #   FIGMA_FILE_KEY — from your Figma file URL: figma.com/design/{FILE_KEY}/...
       #
       # First-time setup: this creates all variables fresh.
       # Subsequent runs: Figma treats existing variable names as updates (no duplicates within a collection).
       - name: Push variables to Figma API
         env:
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
-          FIGMA_TOKEN:    ${{ secrets.FIGMA_PERSONAL_ACCESS_TOKEN }}
+          FIGMA_TOKEN:    ${{ secrets.FIGMA_API_KEY || secrets.FIGMA_PERSONAL_ACCESS_TOKEN }}
         run: |
           RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
             "https://api.figma.com/v1/files/${FIGMA_FILE_KEY}/variables" \

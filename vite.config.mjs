@@ -14,7 +14,8 @@ export default defineConfig(({ mode }) => {
 
   return {
     define: {
-      __FIGMA_FILE_ID__: JSON.stringify(env.FIGMA_FILE_ID ?? ''),
+      // Canonical FIGMA_FILE_KEY, with legacy FIGMA_FILE_ID as a fallback.
+      __FIGMA_FILE_ID__: JSON.stringify(env.FIGMA_FILE_KEY ?? env.FIGMA_FILE_ID ?? ''),
     },
     plugins: [
       {

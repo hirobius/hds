@@ -17,12 +17,16 @@ const config: KnipConfig = {
     // Storybook stories — entries to a separate harness; knip can't trace
     // them via routes.tsx but they are real consumers of HDS components.
     'src/stories/**/*.stories.{ts,tsx}!',
+    // Figma Code Connect mappings — parsed by the `figma connect` CLI, not the
+    // app graph. Entry so knip sees them consume @figma/code-connect + Button.
+    'code-connect/**/*.figma.tsx!',
   ],
   project: [
     'src/**/*.{ts,tsx}!',
     'scripts/**/*.mjs!',
     'validators/**/*.mjs!',
     'tests/**/*.{ts,tsx}!',
+    'code-connect/**/*.figma.tsx!',
   ],
   ignore: [
     // Canvas sketches are intentional experiments — treat as live
