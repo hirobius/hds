@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-01T06:53:00.024Z",
+  "generated": "2026-07-02T22:13:41.070Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -3885,7 +3885,6 @@
         "src/app/components/shell-controls.tsx",
         "src/app/components/sketch-controls.tsx",
         "src/app/components/sketch.tsx",
-        "src/app/components/slider.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
@@ -6177,7 +6176,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/slider.tsx",
-      "description": "HdsSlider — range slider with label and value display.",
+      "description": "HdsSlider — range slider with label and value display, on Radix Slider. ADR-020 §1: wraps @radix-ui/react-slider for consistent cross-browser styling, keyboard, and ARIA (native <input type=range> can't be styled reliably and can't render a two-thumb range). The public API is unchanged for the single-value case (`value: number`, `onChange: (v) => void`); the visual skin stays bound to HDS tokens.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -6858,104 +6857,6 @@
           "default": false
         }
       },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsPhosphor": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized icon alias stub for JSX normalization.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsFrame": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-internal frame primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsHeading": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized heading primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsLabel": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized label primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsCaption": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsChip": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized chip instance stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsAvatar": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized avatar instance stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
       "allowedChildren": [
         "*"
       ],
@@ -9118,8 +9019,8 @@
         "path": "primitive.typography.family.display",
         "cssVar": "--primitive-typography-family-display",
         "type": "fontFamily",
-        "description": "Display face: Clash Display ITF, bound to display/h1/h2/h3 composites.",
-        "value": "\"Clash Display\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+        "description": "Display face: Satoshi (ITF) at 700/bold, bound to display/h1/h2/h3 composites. Single-family system — Satoshi Bold for headings, Satoshi 500 for body/UI.",
+        "value": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
         "path": "primitive.typography.family.mono",
@@ -10140,11 +10041,11 @@
         "path": "semantic.typography.display",
         "cssVar": "--semantic-typography-display",
         "type": "typography",
-        "description": "Display headline. 72px / Clash Display 500 / leading-none.",
+        "description": "Display headline. 72px / Satoshi Bold 700 / leading-none.",
         "composite": {
-          "fontFamily": "\"Clash Display\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "72px",
-          "fontWeight": "500",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1"
         }
@@ -10153,11 +10054,11 @@
         "path": "semantic.typography.h1",
         "cssVar": "--semantic-typography-h1",
         "type": "typography",
-        "description": "Primary section headings (h1). 48px / Clash Display medium 500 / leading-tight.",
+        "description": "Primary section headings (h1). 48px / Satoshi Bold 700 / leading-tight.",
         "composite": {
-          "fontFamily": "\"Clash Display\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "48px",
-          "fontWeight": "500",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -10166,11 +10067,11 @@
         "path": "semantic.typography.h2",
         "cssVar": "--semantic-typography-h2",
         "type": "typography",
-        "description": "Secondary section headings (h2). Clash Display medium, 30px, line-height 42px.",
+        "description": "Secondary section headings (h2). Satoshi Bold, 30px, line-height 42px.",
         "composite": {
-          "fontFamily": "\"Clash Display\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "30px",
-          "fontWeight": "500",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "42px"
         }
@@ -10179,11 +10080,11 @@
         "path": "semantic.typography.h3",
         "cssVar": "--semantic-typography-h3",
         "type": "typography",
-        "description": "Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug.",
+        "description": "Component and card headers (h3). 20px / Satoshi Bold 700 / leading-snug.",
         "composite": {
-          "fontFamily": "\"Clash Display\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "20px",
-          "fontWeight": "500",
+          "fontWeight": "700",
           "letterSpacing": "0em",
           "lineHeight": "28px"
         }

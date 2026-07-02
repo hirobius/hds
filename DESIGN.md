@@ -28,7 +28,7 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 <!-- auto:start:typography -->
 HDS ships three typefaces — each with a distinct and exclusive role:
 
-- **Display / Heading font**: Clash Display. Bound exclusively to `display`, `h1`, `h2`, and `h3` styles. Never used for body copy or UI labels.
+- **Display / Heading font**: Satoshi. Bound exclusively to `display`, `h1`, `h2`, and `h3` styles. Never used for body copy or UI labels.
 - **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: Geist Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
@@ -38,10 +38,10 @@ Weights in use: `400` regular, `500` medium, `600` semibold, `700` bold. All hea
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
-| `semantic.typography.display` | 72px | 500 | Display headline |
-| `semantic.typography.h1` | 48px | 500 | Primary section headings (h1) |
-| `semantic.typography.h2` | 30px | 500 | Secondary section headings (h2) |
-| `semantic.typography.h3` | 20px | 500 | Component and card headers (h3) |
+| `semantic.typography.display` | 72px | 700 | Display headline |
+| `semantic.typography.h1` | 48px | 700 | Primary section headings (h1) |
+| `semantic.typography.h2` | 30px | 700 | Secondary section headings (h2) |
+| `semantic.typography.h3` | 20px | 700 | Component and card headers (h3) |
 | `semantic.typography.body` | 17px | 500 | Body prose |
 | `semantic.typography.ui` | 15px | 500 | UI text for nav, labels, captions |
 | `semantic.typography.eyebrow` | 13px | 500 | Eyebrow / kicker label |

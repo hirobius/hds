@@ -1,17 +1,18 @@
 /* Hirobius Design System — font-face declarations.
  *
- * Single-weight policy (Adrian directive 2026-05-04):
+ * Single-family policy (Adrian directive 2026-07-02 — supersedes 2026-05-04):
  *   - Satoshi 500 — body / UI / eyebrow
- *   - Clash Display 500 — display + h1/h2/h3 only
+ *   - Satoshi 700 — display + h1/h2/h3 (headings; replaces Clash Display)
  *   - Geist Mono 400 — code / token paths / technical metadata
  *
- * Emphasis is conveyed via color (semantic.color.content.primary vs .secondary)
- * and spacing — never by adding weight or changing case. Casing is reserved
- * for the eyebrow composite, which bakes text-transform: uppercase into the
- * token value (see semantic.typography.eyebrow in hirobius.tokens.json).
+ * One family (Satoshi) across the system; headings gain presence via weight
+ * (700) and size, body stays 500. Geist Mono remains for code. Casing is
+ * reserved for the eyebrow composite, which bakes text-transform: uppercase
+ * into the token value (see semantic.typography.eyebrow in hirobius.tokens.json).
  *
  * Audit gate: scripts/audit-typography-overrides.mjs fails on inline
- * fontWeight / textTransform outside the sketches lab and a small allowlist.
+ * fontWeight / textTransform outside the sketches lab and a small allowlist —
+ * heading weight is set via the typography composite tokens, not inline.
  */
 
 /* Satoshi — Indian Type Foundry, OFL via Fontshare. */
@@ -23,11 +24,11 @@
   font-display: swap;
 }
 
-/* Clash Display — Indian Type Foundry, OFL via Fontshare. */
+/* Satoshi Bold — headings (display / h1 / h2 / h3). */
 @font-face {
-  font-family: 'Clash Display';
-  src: url('/fonts/clash-display/clash-display-500.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/satoshi-700.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
