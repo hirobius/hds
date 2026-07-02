@@ -48,12 +48,26 @@ pre-1.0, only first-party consumers) in **staged PRs**.
 
 ### 1. Behavioral layer — Radix everywhere it has a primitive
 
-Convert the six custom controls (checkbox, radio, switch, slider, tooltip,
-accordion/disclosure) to thin **Radix wrappers with the existing token-bound
-visual skin kept intact**. Radix owns behavior/ARIA/focus; HDS owns the paint,
+Adopt Radix wrappers with the existing token-bound visual skin kept intact,
+where Radix earns its place. Radix owns behavior/ARIA/focus; HDS owns the paint,
 which stays bound to variables. `Slot`/`asChild` stays the composition seam.
-Rationale: free a11y, delete hand-rolled state machines, one consistent
-interaction model (ADR-015).
+
+**Amendment (2026-07-02, after reading the components).** The original
+"convert all six" was based on a shallow grep. In fact checkbox, radio, and
+toggle are already accessible native `<input>`s (real `aria-checked`, keyboard),
+and disclosure already has `aria-expanded`/`aria-controls` + focus management —
+so converting them is lateral churn with visual-regression risk for little a11y
+gain. "Tooltip" is not a tooltip at all: an `@internal` image-expand pill bound
+to `AssetImg` (portfolio, deletion-slated in #49). Refined scope:
+
+- **Slider → Radix** — *done.* Native `<input type=range>` can't be styled
+  reliably cross-browser and can't do a two-thumb range; Radix fixes both. API
+  preserved (`value: number`, `onChange`); ref type is now the Radix root.
+- **New `HdsTooltip` on Radix** — HDS lacks a real tooltip; net-new, additive.
+- **Disclosure → Radix Collapsible** — optional; already accessible, so
+  standardization-only. Deferred.
+- **checkbox / radio / toggle — kept native.** Already accessible; a Radix
+  rewrite is lateral risk, not a win.
 
 ### 2. Variant contract — `cva`, standardized axes, complete-states matrix
 

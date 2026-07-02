@@ -1,13 +1,19 @@
 /**
- * HdsSlider — range slider with label and value display.
+ * HdsSlider — range slider with label and value display, on Radix Slider.
  * @category Inputs
  * @tier primitive
+ *
+ * ADR-020 §1: wraps @radix-ui/react-slider for consistent cross-browser
+ * styling, keyboard, and ARIA (native <input type=range> can't be styled
+ * reliably and can't render a two-thumb range). The public API is unchanged
+ * for the single-value case (`value: number`, `onChange: (v) => void`); the
+ * visual skin stays bound to HDS tokens.
  */
 
-import { useState, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { motion } from 'motion/react';
+import * as RadixSlider from '@radix-ui/react-slider';
 import hds from '../design-system/tokens';
-import { Surface } from './surface';
 
 /** HdsSlider — range slider with label and value display. */
 interface SliderProps {
@@ -17,7 +23,7 @@ interface SliderProps {
   min: number;
   /** Maximum value in the range. */
   max: number;
-  /** Step increment for the range input. */
+  /** Step increment. */
   step?: number;
   /** Current slider value. */
   value: number;
@@ -25,15 +31,10 @@ interface SliderProps {
   onChange: (v: number) => void;
 }
 
-export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsSlider(
+export const HdsSlider = forwardRef<HTMLSpanElement, SliderProps>(function HdsSlider(
   { label, min, max, step = 1, value, onChange },
   ref,
 ) {
-  const [isActive, setIsActive] = useState(false);
-  const range = max - min;
-  const progress = range <= 0 ? 0 : Math.min(Math.max((value - min) / range, 0), 1);
-  const progressPercent = `${progress * 100}%`;
-
   return (
     <div
       style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.component.gap }}
@@ -68,70 +69,57 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
           {value}
         </motion.span>
       </div>
-      <motion.div
+      <RadixSlider.Root
+        ref={ref}
+        aria-label={label}
+        min={min}
+        max={max}
+        step={step}
+        value={[value]}
+        onValueChange={(vals) => onChange(vals[0] ?? value)}
         style={{
           position: 'relative',
-          height: hds.size[20],
-          ['display']: 'grid',
+          display: 'flex',
           alignItems: 'center',
+          width: '100%',
+          height: hds.size[20],
+          touchAction: 'none',
+          userSelect: 'none',
         }}
       >
-        <Surface
-          aria-hidden="true"
-          padding="component"
+        <RadixSlider.Track
           style={{
-            position: 'absolute',
-            insetInline: 0,
-            top: '50%',
+            position: 'relative',
+            flexGrow: 1,
             height: hds.size[8],
-            transform: 'translateY(-50%)',
+            borderRadius: hds.borderRadius.full,
             background: 'var(--semantic-color-border-default)',
             overflow: 'hidden',
           }}
         >
-          <motion.div
-            animate={{
-              width: progressPercent,
-              opacity: isActive ? 1 : 0.92,
-            }}
-            transition={{
-              duration: hds.motion.expressive.duration,
-              ease: hds.motion.productive.easing,
-            }}
+          <RadixSlider.Range
             style={{
+              position: 'absolute',
               height: '100%',
               borderRadius: hds.borderRadius.full,
               background: 'var(--semantic-color-surface-accent)',
             }}
           />
-        </Surface>
-        <input
-          ref={ref}
-          type="range"
+        </RadixSlider.Track>
+        <RadixSlider.Thumb
+          className="hds-focus"
           aria-label={label}
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          onPointerDown={() => setIsActive(true)}
-          onPointerUp={() => setIsActive(false)}
-          onPointerCancel={() => setIsActive(false)}
-          onBlur={() => setIsActive(false)}
-          className="hds-focus hds-slider-input"
           style={{
-            width: '100%',
-            height: '100%',
             display: 'block',
-            margin: 0,
-            background: 'transparent',
-            accentColor: 'var(--semantic-color-surface-accent)',
+            width: hds.size[16],
+            height: hds.size[16],
+            borderRadius: hds.borderRadius.full,
+            background: 'var(--semantic-color-surface-accent)',
+            border: `${hds.borderWidth.sm} solid var(--semantic-color-surface-page)`,
             cursor: 'pointer',
-            position: 'relative',
-            zIndex: hds.zIndex.focus,
           }}
         />
-      </motion.div>
+      </RadixSlider.Root>
     </div>
   );
 });
