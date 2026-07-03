@@ -4668,6 +4668,7 @@
         "src/app/components/nav-item.tsx",
         "src/app/components/preview-frame.tsx",
         "src/app/components/text-lockup.tsx",
+        "src/app/components/text.test.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
