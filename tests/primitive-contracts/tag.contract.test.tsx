@@ -1,7 +1,9 @@
 /**
  * Contract test: Tag
- * Verifies that Tag emits the expected BEM class names and data attributes
- * for active/inactive states.
+ * Verifies Tag's structure (button hit target + inner pill), focus hook, and
+ * active/inactive data + ARIA attributes. Colors/states moved to a cva pill in
+ * the Wave 2 migration — the former .hds-tag-btn/.hds-tag-pill BEM classes are
+ * gone, so this asserts the structural contract instead.
  *
  * @primitive Tag
  * @unit 12p-test-contract-tests-primitives
@@ -22,16 +24,17 @@ describe('Tag contract', () => {
     expect(btn?.tagName.toLowerCase()).toBe('button');
   });
 
-  it('root button carries hds-tag-btn class', () => {
+  it('root button carries the group hover hook', () => {
     const { container } = render(<Tag>Label</Tag>);
     const btn = container.querySelector('button');
-    expect(btn?.classList.contains('hds-tag-btn')).toBe(true);
+    expect(btn?.classList.contains('group')).toBe(true);
   });
 
-  it('inner pill carries hds-tag-pill class', () => {
+  it('renders an inner pill span inside the button', () => {
     const { container } = render(<Tag>Label</Tag>);
-    const pill = container.querySelector('.hds-tag-pill');
+    const pill = container.querySelector('button > span');
     expect(pill).not.toBeNull();
+    expect(pill?.textContent).toBe('Label');
   });
 
   it('active=false sets aria-pressed="false"', () => {
