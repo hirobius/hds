@@ -59,10 +59,3 @@ export const Sides: Story = {
   ),
 };
 
-export const AlwaysOpen: Story = {
-  args: {
-    content: 'Pinned open for preview',
-    defaultOpen: true,
-    children: <Button>Trigger</Button>,
-  },
-};
