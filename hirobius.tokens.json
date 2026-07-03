@@ -1515,6 +1515,16 @@
         },
         "$description": "Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase."
       },
+      "caption": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.primary}",
+          "fontSize": { "value": 12, "unit": "px" },
+          "fontWeight": "{primitive.typography.weight.medium}",
+          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "lineHeight": "16px"
+        },
+        "$description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches Figma typography/caption."
+      },
       "mono": {
         "$value": {
           "fontFamily": "{primitive.typography.family.mono}",
