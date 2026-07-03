@@ -3,12 +3,13 @@
   "phase": "active",
   "headline": "Figma MCP wired + configured (ADR-019): repo-root .mcp.json (mcp.figma.com), env vars unified on FIGMA_API_KEY/FIGMA_FILE_KEY, Code Connect scaffolded (Button exemplar). 0.10.0 live on npm; sterilization (ADR-018) 3/7.",
   "next": [
-    "Confirm canonical HDS Figma library file key, then finish Code Connect mappings (#47)",
+    "Fill Button node-id in code-connect/button.figma.tsx, then map remaining components (#47)",
     "Add FIGMA_API_KEY GitHub secret to complete the CI token migration",
     "Sterilize 2-7: portfolio deletion through docs consolidation (#49-#53)",
     "Consolidate typography to Satoshi-only (#48)"
   ],
   "blocked": [
+    "Code Connect publish requires an Org/Enterprise plan + Dev seat — Hirobius team is on pro; authoring works, going live is plan-gated",
     "Satoshi upload to Figma team fonts (human step) gates the text-style swap (#48)",
     "api.figma.com blocked by remote-session egress policy — REST sync/verify only runnable in CI or a network-open env"
   ]
