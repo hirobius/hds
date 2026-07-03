@@ -8076,6 +8076,7 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/doc-sections.tsx",
+        "src/app/components/hds-tooltip.test.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],

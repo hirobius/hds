@@ -1,9 +1,9 @@
 {
   "updatedAt": "2026-07-03T00:40:46Z",
   "phase": "active",
-  "headline": "Component-hardening loop started (docs/COMPONENT_HARDENING.md). Wave 0 done: fixed Figma Light/Dark modes bug (was pushing base-only), Alert drift #72, caption typography token #71, Button reference test. Figma MCP configured (ADR-019); 0.10.0 live on npm.",
+  "headline": "Component-hardening loop (docs/COMPONENT_HARDENING.md): Wave 0 (Figma modes bug, Alert #72, caption #71, Button test) + Wave 1 (Textarea, HdsTooltip on Radix #69; FormField already covered by form.tsx) done. Figma MCP configured (ADR-019); 0.10.0 live on npm.",
   "next": [
-    "Wave 1 hardening: Textarea, real HdsTooltip (Radix, #69), FormField wrapper",
+    "Wave 2: legacy→cva migration (tag, card, table, checkbox, radio, toggle, slider, segmented-control, disclosure, text, breadcrumb)",
     "Fill Button node-id in code-connect/button.figma.tsx (needs Figma re-auth)",
     "Add FIGMA_API_KEY GitHub secret to complete the CI token migration",
     "Sterilize 2-7: portfolio deletion through docs consolidation (#49-#53)"
