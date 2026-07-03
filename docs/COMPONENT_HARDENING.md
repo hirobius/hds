@@ -77,8 +77,14 @@ pnpm typecheck && pnpm check:fast && pnpm test && pnpm test:layout
   #69). `FormField` was already covered by `components/form.tsx`
   (`Form` + `FormField` + `FormFieldShell` + `useFieldWiring`, with test +
   story) — no new component added.
-- **Wave 2 — legacy→cva migration** (value order): tag, card, table, checkbox,
-  radio, toggle, slider, segmented-control, disclosure, text, breadcrumb.
+- **Wave 2 — legacy→cva migration** *(done, refined by prior ADR decisions)*:
+  **Tag** and **Table** were genuine legacy → migrated to cva (token-faithful),
+  tests added. **Card** and **Text** were already appropriate (justified dynamic
+  / typography composites) → tests added, no rewrite. Left per ADRs:
+  checkbox/radio/toggle (accessible natives, #59 "don't churn"), slider
+  (in-flight in PR #65), disclosure (Radix deferred, #59), breadcrumb (already
+  modern). Lesson: classify before migrating — an `hds.` count over-flags
+  components that use tokens for composites or dynamic values.
 - **Wave 3 — coverage + Code Connect breadth**: missing stories (select,
   side-nav, tooltip), tests for untested components, Code Connect mappings for
   all mapped components.
