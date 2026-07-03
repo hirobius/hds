@@ -41,6 +41,7 @@ export * from './app/components/icon';
 export * from './app/components/inline-code';
 export * from './app/components/inline-link';
 export * from './app/components/input';
+export * from './app/components/textarea';
 export * from './app/components/checkbox';
 export * from './app/components/radio';
 export * from './app/components/slider';
