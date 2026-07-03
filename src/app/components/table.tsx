@@ -2,59 +2,33 @@
  * Table - structured data table primitive for documentation and compact UI matrices.
  * @category Display
  * @tier primitive
+ *
+ * Fixed cell chrome (padding, density height, base alignment, header
+ * background) lives in the `tableCell` cva. Data-driven styling — grid column
+ * template, per-cell horizontal alignment, the last-row border, the sticky
+ * header offset, and per-slot typography composites — stays inline because it
+ * is computed from props, not a static style axis.
  */
 import { Fragment, useId, type ReactNode, type CSSProperties } from 'react';
+import { cva } from 'class-variance-authority';
 import hds from '../design-system/tokens';
 import { Surface } from './surface';
 
-function makeHeaderCellStyle(opts: {
-  justifyContent: string;
-  textAlign: React.CSSProperties['textAlign'];
-  paddingY: string | number;
-  minHeight: string | number;
-  stickyHeader: boolean;
-  zIndex: string | number;
-}): React.CSSProperties {
-  return {
-    ...hds.typeStyles.technical,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: opts.justifyContent,
-    textAlign: opts.textAlign,
-    background: 'var(--semantic-color-surface-overlay)',
-    paddingTop: opts.paddingY,
-    paddingRight: hds.semantic.space.component.padding,
-    paddingBottom: opts.paddingY,
-    paddingLeft: hds.semantic.space.component.padding,
-    minHeight: opts.minHeight,
-    position: opts.stickyHeader ? 'sticky' : undefined,
-    top: opts.stickyHeader ? 0 : undefined,
-    zIndex: opts.stickyHeader ? opts.zIndex : undefined,
-  };
-}
-
-function makeDataCellStyle(opts: {
-  justifyContent: string;
-  minHeight: string | number;
-  paddingY: string | number;
-  borderBottom: string;
-  textAlign: React.CSSProperties['textAlign'];
-  slotStyle?: React.CSSProperties;
-}): React.CSSProperties {
-  return {
-    ...opts.slotStyle,
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: opts.justifyContent,
-    minHeight: opts.minHeight,
-    paddingTop: opts.paddingY,
-    paddingRight: hds.semantic.space.component.padding,
-    paddingBottom: opts.paddingY,
-    paddingLeft: hds.semantic.space.component.padding,
-    borderBottom: opts.borderBottom,
-    textAlign: opts.textAlign,
-  };
-}
+// ── Cell chrome ─────────────────────────────────────────────────────────────
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic/primitive space + color tokens have no Tailwind-theme utility; var()-based so still token-driven
+const tableCell = cva('flex box-border px-[var(--semantic-space-component-padding)]', {
+  variants: {
+    kind: {
+      header: 'items-center bg-[var(--semantic-color-surface-overlay)]',
+      data: 'items-start',
+    },
+    density: {
+      compact: 'py-[var(--semantic-space-component-gap)] min-h-[var(--primitive-size-40)]',
+      comfortable: 'py-[var(--primitive-space-3)] min-h-[var(--primitive-size-48)]',
+    },
+  },
+  defaultVariants: { kind: 'data', density: 'comfortable' },
+});
 
 /** @public */
 export type TableColumnAlign = 'left' | 'center' | 'right';
@@ -92,6 +66,7 @@ export type TableRow = {
 
 type TableDensity = 'compact' | 'comfortable';
 
+// Per-slot typography composites (kept inline — composites, not a static axis).
 const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   label: hds.typeStyles.ui,
   value: hds.typeStyles.technical,
@@ -106,24 +81,6 @@ const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   badge: hds.typeStyles.caption,
   action: hds.typeStyles.ui,
 };
-
-function alignToTextAlign(align: TableColumnAlign = 'left') {
-  return align;
-}
-
-function getDensityMetrics(density: TableDensity) {
-  if (density === 'compact') {
-    return {
-      paddingY: hds.semantic.space.component.gap,
-      minHeight: hds.size[40],
-    };
-  }
-
-  return {
-    paddingY: hds.space.px12,
-    minHeight: hds.size[48],
-  };
-}
 
 function cellJustifyContent(align: TableColumnAlign = 'left') {
   if (align === 'center') return 'center';
@@ -153,7 +110,6 @@ export function Table({
   flush?: boolean;
   stickyHeader?: boolean;
 }) {
-  const metrics = getDensityMetrics(density);
   const captionId = useId();
   const hasCaption = Boolean(caption);
 
@@ -162,20 +118,11 @@ export function Table({
       {caption || description ? (
         <div>
           {caption ? (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
+            <div className="flex items-center justify-between">
               <div
                 id={hasCaption ? captionId : undefined}
-                style={{
-                  ...hds.typeStyles.ui,
-                  color: 'var(--semantic-color-content-primary)',
-                  margin: 0,
-                }}
+                // inline-ok: ui typography composite + token color
+                style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-primary)', margin: 0 }}
               >
                 {caption}
               </div>
@@ -184,10 +131,8 @@ export function Table({
           ) : null}
           {description ? (
             <div
-              style={{
-                ...hds.typeStyles.ui,
-                color: 'var(--semantic-color-content-secondary)',
-              }}
+              // inline-ok: ui typography composite + token color
+              style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)' }}
             >
               {description}
             </div>
@@ -200,23 +145,27 @@ export function Table({
         tabIndex={0}
         aria-labelledby={hasCaption ? captionId : undefined}
         aria-label={hasCaption ? undefined : 'Scrollable table content'}
-        style={{
-          overflowX: 'auto',
-          overflowY: 'visible',
-          background: 'var(--semantic-color-surface-raised)',
-        }}
+        className="overflow-x-auto overflow-y-visible bg-[var(--semantic-color-surface-raised)]"
       >
         <div
+          className="grid"
+          // inline-ok: grid template + min width are data-driven
           style={{
             minWidth,
-            ['display']: 'grid',
             gridTemplateColumns: columns.map((column) => column.width ?? 'minmax(0, 1fr)').join(' '),
           }}
         >
           {columns.map((column) => (
             <div
               key={column.key}
-              style={makeHeaderCellStyle({ justifyContent: cellJustifyContent(column.align), textAlign: alignToTextAlign(column.align), paddingY: metrics.paddingY, minHeight: metrics.minHeight, stickyHeader: Boolean(stickyHeader), zIndex: hds.zIndex.overlay })}
+              className={tableCell({ kind: 'header', density })}
+              // inline-ok: technical typography composite + data-driven alignment/sticky
+              style={{
+                ...hds.typeStyles.technical,
+                justifyContent: cellJustifyContent(column.align),
+                textAlign: column.align ?? 'left',
+                ...(stickyHeader ? { position: 'sticky', top: 0, zIndex: hds.zIndex.overlay } : {}),
+              }}
             >
               {column.label}
             </div>
@@ -226,7 +175,17 @@ export function Table({
               {row.cells.map((cell, cellIndex) => (
                 <div
                   key={`${row.key ?? rowIndex}-${cellIndex}`}
-                  style={makeDataCellStyle({ justifyContent: cellJustifyContent(cell.align), minHeight: metrics.minHeight, paddingY: metrics.paddingY, borderBottom: rowIndex < rows.length - 1 ? `${hds.borderWidth.default} solid var(--semantic-color-border-subdued)` : 'none', textAlign: alignToTextAlign(cell.align), slotStyle: SLOT_STYLES[cell.slot] })}
+                  className={tableCell({ kind: 'data', density })}
+                  // inline-ok: slot typography composite + data-driven alignment/border
+                  style={{
+                    ...SLOT_STYLES[cell.slot],
+                    justifyContent: cellJustifyContent(cell.align),
+                    textAlign: cell.align ?? 'left',
+                    borderBottom:
+                      rowIndex < rows.length - 1
+                        ? `${hds.borderWidth.default} solid var(--semantic-color-border-subdued)`
+                        : undefined,
+                  }}
                 >
                   {cell.content}
                 </div>
@@ -238,4 +197,3 @@ export function Table({
     </div>
   );
 }
-
