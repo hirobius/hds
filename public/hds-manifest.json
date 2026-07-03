@@ -2216,6 +2216,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/page-footer.tsx",
         "src/app/components/pagination.tsx",
@@ -4652,6 +4653,7 @@
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/heading-anchor.tsx",
         "src/app/components/info-page.tsx",
         "src/app/components/nav-item.tsx",
@@ -6864,6 +6866,104 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": []
+    },
+    "HdsPhosphor": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized icon alias stub for JSX normalization.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsFrame": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-internal frame primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsHeading": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized heading primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsLabel": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized label primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsCaption": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsChip": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized chip instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsAvatar": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized avatar instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
     }
   },
   "utilities": {
@@ -7860,7 +7960,9 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/doc-sections.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/components/hds-tooltip.tsx",
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/hds-tooltip.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
