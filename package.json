@@ -208,6 +208,7 @@
     "roadmap:data": "node scripts/build-roadmap-data.mjs && node scripts/verify-roadmap-sync.mjs",
     "roadmap:verify": "node scripts/verify-roadmap-sync.mjs",
     "roadmap:watch": "node scripts/watch-roadmap.mjs",
+    "hds:new": "node scripts/scaffold-component.mjs",
     "scaffold:component": "node scripts/scaffold-component.mjs",
     "scaffold:tenant": "node scripts/scaffold-tenant.mjs",
     "sitemap:generate": "node scripts/generate-sitemap.mjs",
