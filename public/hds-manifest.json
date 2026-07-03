@@ -988,6 +988,10 @@
         "filePath": "src/app/components/text.tsx"
       },
       {
+        "name": "Textarea",
+        "filePath": "src/app/components/textarea.tsx"
+      },
+      {
         "name": "TextLockup",
         "filePath": "src/app/components/text-lockup.tsx"
       },
@@ -5270,6 +5274,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
+        "src/app/components/textarea.tsx",
         "src/app/pages/docs/patterns/HdsField.tsx",
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
@@ -6134,7 +6139,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls.tsx",
         "src/app/components/select.test.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/select.stories.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -8100,7 +8106,9 @@
       "description": "SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child page link. Keeps the same full-width hit area and label type treatment, with indentation handled via inner padding only. No indicator bar (reserved for HdsTocNav). Idle text = content-secondary → primary on hover/active. Accent surface fill on active state.",
       "figmaUrl": null,
       "figmaId": null,
-      "consumers": [],
+      "consumers": [
+        "src/stories/side-nav.stories.tsx"
+      ],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
