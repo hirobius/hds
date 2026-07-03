@@ -56,6 +56,13 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
 - **Figma Sync (MCP):** Read `docs/adr/019-figma-sync-via-mcp.md` — the legacy
   WebSocket bridge/plugin is archived on `archive/figma-bridge` (ADR-018 §2);
   Figma work goes through the official Figma MCP server + Code Connect.
+  - **Code Connect PUBLISH is NOT available on the current Figma membership**
+    (needs Org/Enterprise + Dev seat). Do NOT rely on `figma connect publish`
+    or build workflows around it. Authoring/parsing mappings (`pnpm figma:connect`)
+    still works and mappings are kept forward-compatible, but the code↔Figma
+    link is maintained via other workarounds (ask Adrian) until membership
+    changes. Token→Figma *variable* sync (REST, `sync-figma-variables.yml`) is
+    unaffected and remains the primary automated Figma channel.
 
 ## 🧬 SUB-AGENT DISPATCH RULES
 
