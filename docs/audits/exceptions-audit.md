@@ -6,8 +6,8 @@
 |----------|-------|-----------|----------|
 | eslint-disable | 52 | 52 | 0 |
 | @ts-ignore/@ts-expect-error | 6 | 6 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 136 | 134 | 2 |
-| **Total** | **194** | **192** | **2** |
+| custom-sentinels (*-ok / hds-bypass) | 120 | 120 | 0 |
+| **Total** | **178** | **178** | **0** |
 
 ## eslint-disable
 
@@ -109,7 +109,7 @@
 | `src/app/components/surface.tsx` | 43 | `spacing-ok` | `16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to` | justified |
 | `src/app/components/text-lockup.tsx` | 9 | `font-ok` | `inline technical affordances within this lockup intentionally use monospace for code-like references` | justified |
 | `src/app/data/hdsEditorial.tsx` | 55 | `audit-ok` | `*/) now supported. Self-healing policy documented: new violation classes must be added to script in same commit as fix.' },` | justified |
-| `src/app/pages/hds/ColorPage.tsx` | 1 | `hds-bypass` | `foundation color doc — WCAG_PAIRINGS contains intentional raw hex literals for contrast-ratio math data; values are not used as CSS color properties */` | justified |
+| `src/app/pages/hds/ColorPage.tsx` | 1 | `hds-bypass` | `BG_WHITE_BLACK, INLINE_STRUCTURAL_BORDER — foundation color doc: WCAG_PAIRINGS holds intentional raw #fff/#000 literals for contrast-ratio math (data, not CSS color props); the 16px swatch chip carries a 1px subdued border for edge definition against same-tone surfaces */` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 179 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 181 | `audit-ok` | `token value showcase` | justified |
 | `src/app/pages/hds/ColorPage.tsx` | 185 | `audit-ok` | `token value showcase` | justified |
@@ -165,19 +165,16 @@
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 125 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 126 | `audit-ok` | `brand palette demo content` | justified |
 | `src/app/pages/hds/MultiBrandThemingPage.tsx` | 127 | `audit-ok` | `brand palette demo content` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 12 | `hds-bypass` | `error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 373 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
-| `src/app/pages/hds/SandboxPage.tsx` | 376 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 372 | `font-ok` | `sandbox error fallback intentionally uses raw monospace so registry diagnostics render even when the design-system context is unavailable` | justified |
+| `src/app/pages/hds/SandboxPage.tsx` | 375 | `spacing-ok` | `error-fallback when hds context unavailable — raw 24px preserves diagnostic legibility` | justified |
 | `src/app/pages/hds/SpacingPage.tsx` | 255 | `hds-bypass` | `demo-grid-visualization — explicit pixel values intentionally show the 8px grid step */}` | justified |
-| `src/app/pages/hds/SpacingTestPage.tsx` | 1 | `hds-bypass` | `test page with hardcoded demo styles for visual audit */` | justified |
-| `src/app/pages/hds/SpacingTestPage.tsx` | 2 | `font-ok` | `spacing test page intentionally uses monospace demo labels during visual inspection` | justified |
+| `src/app/pages/hds/SpacingTestPage.tsx` | 1 | `font-ok` | `spacing test page intentionally uses monospace demo labels during visual inspection` | justified |
 | `src/app/pages/hds/TokenCascadeDiagram.tsx` | 108 | `audit-ok` | `CSS var references only` | justified |
 | `src/app/pages/hds/TokensPage.tsx` | 272 | `audit-ok` | `content rail minimum height is derived from viewport inset math` | justified |
 | `src/app/pages/hds/TypographyPage.tsx` | 14 | `hds-bypass` | `typography reference page intentionally exposes primitive specimen values` | justified |
-| `src/app/pages/hds/TypographyTestPage.tsx` | 1 | `hds-bypass` | `test page with hardcoded demo styles for visual audit */` | justified |
-| `src/app/pages/hds/TypographyTestPage.tsx` | 2 | `font-ok` | `typography test page intentionally uses monospace demo labels during visual inspection` | justified |
-| `src/app/pages/hds/TypographyTestPage.tsx` | 106 | `audit-ok` | `code-block surface — theme-aware fallback` | justified |
-| `src/app/pages/hds/TypographyTestPage.tsx` | 120 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: '0.25rem 0.5rem', borderRadius: hds.borderRadius[2], display: 'inline-block' }}>` | justified |
+| `src/app/pages/hds/TypographyTestPage.tsx` | 1 | `font-ok` | `typography test page intentionally uses monospace demo labels during visual inspection` | justified |
+| `src/app/pages/hds/TypographyTestPage.tsx` | 105 | `audit-ok` | `code-block surface — theme-aware fallback` | justified |
+| `src/app/pages/hds/TypographyTestPage.tsx` | 119 | `audit-ok` | `code-block surface — theme-aware fallback */ padding: '0.25rem 0.5rem', borderRadius: hds.borderRadius[2], display: 'inline-block' }}>` | justified |
 | `src/app/pages/hds/components/LayoutPage.tsx` | 63 | `audit-ok` | `demo placeholder div illustrating Stack layout — fixed px intentional for visual demo` | justified |
 | `src/app/pages/hds/components/LayoutPage.tsx` | 64 | `audit-ok` | `demo placeholder div illustrating Stack layout — fixed px intentional for visual demo` | justified |
 | `src/app/pages/hds/components/LayoutPage.tsx` | 69 | `audit-ok` | `demo placeholder — not a component dimension */}` | justified |
@@ -191,37 +188,24 @@
 | `scripts/__tests__/build-token-index.test.mjs` | 286 | `audit-ok` | `reason with leading space  \n';` | justified |
 | `scripts/audit-component-integrity.mjs` | 143 | `audit-ok` | `')) continue;` | justified |
 | `scripts/audit-component-integrity.mjs` | 144 | `audit-ok` | `')) continue;` | justified |
-| `scripts/audit-pages.mjs` | 12 | `audit-ok` | `<reason>` | untriaged |
 | `scripts/audit-pages.mjs` | 111 | `audit-ok` | `')) continue;` | justified |
 | `scripts/audit-pages.mjs` | 112 | `audit-ok` | `')) continue;` | justified |
-| `scripts/audit-pages.mjs` | 136 | `audit-ok` | `<reason> for an intentional editorial exception.\n',` | justified |
 | `scripts/audit-tokens.mjs` | 607 | `audit-ok` | `reason */ or /* hds-bypass: reason */ or /* spacing-ok: reason */` | justified |
 | `scripts/audit-tokens.mjs` | 607 | `hds-bypass` | `reason */ or /* spacing-ok: reason */` | justified |
-| `scripts/audit-tokens.mjs` | 607 | `spacing-ok` | `reason */` | untriaged |
 | `scripts/build-token-index.mjs` | 181 | `audit-ok` | `reason` comments in a file's content.` | justified |
-| `scripts/check-dimensions.mjs` | 15 | `audit-ok` | `<reason> on the same line to suppress.` | justified |
-| `scripts/check-dimensions.mjs` | 125 | `audit-ok` | `<reason>\n',` | justified |
 | `scripts/check-doc-structure.mjs` | 186 | `hds-bypass` | `third-party-link both accepted)` | justified |
-| `scripts/check-focus-states.mjs` | 23 | `audit-ok` | `<reason> to suppress a specific line` | justified |
 | `scripts/check-focus-states.mjs` | 74 | `audit-ok` | `')) continue;` | justified |
 | `scripts/check-focus-states.mjs` | 108 | `audit-ok` | `')) continue;` | justified |
-| `scripts/check-hardcoded-spacing.mjs` | 15 | `spacing-ok` | `<reason> exemption pattern.` | justified |
 | `scripts/check-hardcoded-spacing.mjs` | 27 | `spacing-ok` | `reason  (explicit exemption)` | justified |
-| `scripts/check-hardcoded-spacing.mjs` | 33 | `spacing-ok` | `<reason> on the same line to suppress.` | justified |
-| `scripts/check-hardcoded-spacing.mjs` | 160 | `spacing-ok` | `<reason>\n`);` | justified |
-| `scripts/check-mono-roles.mjs` | 11 | `font-ok` | `<reason>` on the offending line.` | justified |
 | `scripts/check-source-canon.mjs` | 102 | `hds-bypass` | `CODE1, CODE2, ... */` | justified |
 | `scripts/check-source-canon.mjs` | 107 | `font-ok` | `...          — file intentionally uses bold/heavy weights` | justified |
-| `scripts/check-source-canon.mjs` | 119 | `hds-bypass` | `<body> */  or  /* hds-bypass: <body>  (unclosed is fine)` | justified |
 | `scripts/check-source-canon.mjs` | 139 | `hds-bypass` | `CODE1, CODE2 */ using codes from: ${[...ALL_RULE_CODES].join(', ')}\n`,` | justified |
-| `scripts/check-typography-discipline.mjs` | 21 | `font-ok` | `<reason>` on the offending line.` | justified |
 | `scripts/check-typography-discipline.mjs` | 299 | `audit-ok` | `are intentional.` | justified |
-| `scripts/check-typography-discipline.mjs` | 383 | `font-ok` | `<reason>" to annotate intentional exceptions.',` | justified |
 
 ## Summary Stats
 
-- **Total suppressions:** 194
-- **Justified (reason >= 10 chars):** 192
-- **Untriaged (reason < 10 chars or missing):** 2
+- **Total suppressions:** 178
+- **Justified (reason >= 10 chars):** 178
+- **Untriaged (reason < 10 chars or missing):** 0
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.

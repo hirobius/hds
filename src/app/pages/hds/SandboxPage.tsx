@@ -9,7 +9,6 @@
  *
  * URL: /hds/sandbox?component=Button&variant=primary
  */
-/* hds-bypass: error-fallback path renders raw monospace 12px when the design-system context is unavailable — defensive on purpose so registry diagnostics still surface. Not user-facing canon. */
 
 import { useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
