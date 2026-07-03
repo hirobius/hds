@@ -76,7 +76,8 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert
         icon={IconGlyph}
         size="small"
         color={colorVar}
-        className={cn('shrink-0', hasTitle ? 'self-start' : 'self-center')}
+        weight="light"
+        className={cn('shrink-0', hasTitle ? 'self-start mt-0.5' : 'self-center')}
       />
 
       {hasTitle ? (
