@@ -1182,6 +1182,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert.test.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -1481,6 +1482,7 @@
       "consumers": [
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/disclosure.test.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/pages/docs/patterns/HdsDisclosure.tsx",
         "src/stories/disclosure.stories.tsx",
@@ -5691,6 +5693,7 @@
       },
       "consumers": [
         "src/app/components/alert.tsx",
+        "src/app/components/badge.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -6145,7 +6148,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls.tsx",
         "src/app/components/select.test.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/select.stories.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
