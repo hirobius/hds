@@ -73,10 +73,13 @@ integrity gates that scan that tree.
   `code-connect/button.figma.tsx` — open the Button component set in Figma and
   copy the node-id from the URL (`?node-id=123-4` → `123:4`).
 
-> **⚠️ Code Connect requires an Org/Enterprise plan + Dev/Full seat.** The
-> Hirobius team is currently on `pro`, so `figma connect publish` returns a
-> seat error. Authoring/parsing mappings (`pnpm figma:connect`) works now;
-> going live is gated on the plan upgrade.
+> **⚠️ Code Connect publish is NOT available on the current Figma membership**
+> (needs Org/Enterprise + Dev seat). Do not build workflows around
+> `figma connect publish`. Authoring/parsing mappings (`pnpm figma:connect`)
+> still works and the `code-connect/*.figma.tsx` files are kept
+> forward-compatible, but the code↔Figma component link is maintained via other
+> workarounds until membership changes. Token→Figma **variable** sync (the REST
+> workflow) is unaffected and remains the primary automated Figma channel.
 
 ## Environment note
 

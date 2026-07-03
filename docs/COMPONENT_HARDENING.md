@@ -26,8 +26,10 @@ A component is "hardened" when it has all of:
    `src/stories/<name>.stories.tsx`.
 6. **Tokens** — component-specific values live under the `component.*` tier in
    `hirobius.tokens.json`, aliasing an upstream semantic/primitive token.
-7. **Figma** — a Code Connect mapping at `code-connect/<name>.figma.tsx`;
-   token changes flow to Figma variables via the CI sync.
+7. **Figma** — token changes flow to Figma variables via the CI sync (primary
+   channel). A Code Connect mapping at `code-connect/<name>.figma.tsx` is
+   authored as a forward-compatible artifact, but Code Connect **publish is not
+   available on the current membership** — do not depend on it (see below).
 
 ## Per-iteration loop
 
@@ -53,9 +55,10 @@ pnpm typecheck && pnpm check:fast && pnpm test && pnpm test:layout
 - `pnpm figma:connect` parses Code Connect mappings.
 - Figma **variable** sync runs in CI on merge to `main` (`sync-figma-variables.yml`);
   `api.figma.com` is blocked in remote sessions, so REST verification is CI-side.
-- Code Connect **publish** (`figma connect publish`) is gated on an
-  Org/Enterprise plan + Dev seat (team is on `pro`) — author mappings now,
-  publish after the upgrade. See `docs/figma-mcp.md`.
+- Code Connect **publish is not available on the current Figma membership** —
+  do not build around `figma connect publish`; mappings stay authored-only and
+  forward-compatible, and the code↔Figma link uses other workarounds. See
+  `docs/figma-mcp.md`.
 
 ## Constraints
 
