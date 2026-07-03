@@ -54,6 +54,7 @@ export * from './app/components/surface';
 export * from './app/components/table';
 export * from './app/components/tag';
 export * from './app/components/text';
+export * from './app/components/textarea';
 export * from './app/components/token';
 
 // ── app-shell + layout primitives consumed by the ops dashboard ──
