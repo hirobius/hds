@@ -3470,7 +3470,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/table.tsx",
-      "description": "Table - structured data table primitive for documentation and compact UI matrices.",
+      "description": "Table - structured data table primitive for documentation and compact UI matrices. Fixed cell chrome (padding, density height, base alignment, header background) lives in the `tableCell` cva. Data-driven styling — grid column template, per-cell horizontal alignment, the last-row border, the sticky header offset, and per-slot typography composites — stays inline because it is computed from props, not a static style axis.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -3482,6 +3482,7 @@
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/propTableUtils.tsx",
+        "src/app/components/table.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx",
@@ -3724,6 +3725,7 @@
         "src/app/components/lab/legacy-token-list.tsx",
         "src/app/components/lab/token-collection-list.tsx",
         "src/app/components/lab/token-detail.tsx",
+        "src/app/components/table.test.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/data/projects.ts",
@@ -3963,6 +3965,7 @@
       "figmaUrl": null,
       "figmaId": null,
       "consumers": [
+        "src/app/components/card.test.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
@@ -6368,6 +6371,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
         "src/app/data/projects.ts",
