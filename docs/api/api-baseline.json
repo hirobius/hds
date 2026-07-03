@@ -126,6 +126,11 @@
     "./app/components/inline-link": [
       "InlineLink"
     ],
+    "./app/components/hds-tooltip": [
+      "HdsTooltip",
+      "HdsTooltipProps",
+      "HdsTooltipProvider"
+    ],
     "./app/components/input": [
       "Input",
       "InputProps",
