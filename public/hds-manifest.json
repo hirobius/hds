@@ -64,6 +64,8 @@
     "HdsRadio",
     "HdsSlider",
     "HdsToggle",
+    "HdsTooltip",
+    "HdsTooltipProvider",
     "HeadingStack",
     "Icon",
     "IconButton",
@@ -2220,6 +2222,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/page-footer.tsx",
         "src/app/components/pagination.tsx",
@@ -4705,6 +4708,7 @@
       "consumers": [
         "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
@@ -6870,6 +6874,115 @@
       "requiredProps": [],
       "a11yRules": []
     },
+    "HdsTooltip": {
+      "category": "Internal",
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-tooltip.tsx",
+      "description": "HdsTooltip — accessible hover/focus tooltip (shadcn baseline, Radix-backed). Radix Tooltip (@radix-ui/react-tooltip) themed with role tokens. Provides hover + keyboard-focus triggering, ESC dismissal, collision-aware positioning, portal mounting, and `role=\"tooltip\"` + `aria-describedby` wiring out of the box. Distinct from the @internal image-expand `Tooltip` in tooltip.tsx. <HdsTooltip content=\"Copy to clipboard\"> <IconButton icon={Copy} aria-label=\"Copy\" /> </HdsTooltip> Bubble uses the inverse surface (`bg-foreground` / `text-background`) so it reads as an ephemeral hint, not a persistent overlay like Popover/Dialog. Each instance carries its own Provider so it is drop-in without app-level setup; wrap a subtree in `HdsTooltipProvider` to share delay timing.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsTooltip",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsTooltip",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-tooltip.test.tsx",
+        "src/stories/hds-tooltip.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "center",
+            "end",
+            "start"
+          ],
+          "default": "center"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "content": {
+          "type": "ReactNode"
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "delayDuration": {
+          "type": "number",
+          "default": 200
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        },
+        "side": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left",
+            "top",
+            "bottom"
+          ],
+          "default": "top"
+        },
+        "sideOffset": {
+          "type": "number",
+          "default": 6
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsTooltipProvider": {
+      "category": "Internal",
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-tooltip.tsx",
+      "description": "HdsTooltip — accessible hover/focus tooltip (shadcn baseline, Radix-backed). Radix Tooltip (@radix-ui/react-tooltip) themed with role tokens. Provides hover + keyboard-focus triggering, ESC dismissal, collision-aware positioning, portal mounting, and `role=\"tooltip\"` + `aria-describedby` wiring out of the box. Distinct from the @internal image-expand `Tooltip` in tooltip.tsx. <HdsTooltip content=\"Copy to clipboard\"> <IconButton icon={Copy} aria-label=\"Copy\" /> </HdsTooltip> Bubble uses the inverse surface (`bg-foreground` / `text-background`) so it reads as an ephemeral hint, not a persistent overlay like Popover/Dialog. Each instance carries its own Provider so it is drop-in without app-level setup; wrap a subtree in `HdsTooltipProvider` to share delay timing.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsTooltipProvider",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsTooltipProvider",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -7963,6 +8076,7 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/doc-sections.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {},
