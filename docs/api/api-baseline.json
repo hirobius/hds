@@ -3,16 +3,22 @@
   "generatedAt": "baseline",
   "modules": {
     "(barrel)": [
+      "HdsDensity",
       "HdsLinkComponent",
       "HdsLinkProps",
       "HdsNavigateOptions",
       "HdsRouterAdapter",
       "HdsRouterProvider",
       "HdsRouterProviderProps",
+      "HdsTheme",
+      "HdsThemeProvider",
+      "HdsThemeProviderProps",
+      "HdsThemeValue",
       "cn",
       "hds",
       "tokens",
-      "useHdsRouter"
+      "useHdsRouter",
+      "useHdsTheme"
     ],
     "./app/components/alert": [
       "Alert"

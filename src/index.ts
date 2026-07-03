@@ -106,6 +106,15 @@ export const tokens = tokensJson;
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
 
+// ── Theming contract (framework-agnostic data-* dials; zero-JS compatible) ──
+export { HdsThemeProvider, useHdsTheme } from './app/context/hds-theme';
+export type {
+  HdsTheme,
+  HdsDensity,
+  HdsThemeValue,
+  HdsThemeProviderProps,
+} from './app/context/hds-theme';
+
 // ── Router adapter seam (router-free by default; inject your router once) ──
 export { HdsRouterProvider, useHdsRouter } from './app/context/RouterContext';
 export type {

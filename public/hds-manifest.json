@@ -63,6 +63,7 @@
     "HdsCheckbox",
     "HdsRadio",
     "HdsSlider",
+    "HdsThemeProvider",
     "HdsToggle",
     "HeadingStack",
     "Icon",
@@ -6858,6 +6859,77 @@
         "required": {
           "type": "boolean",
           "default": false
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsThemeProvider": {
+      "category": "Theming",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/context/hds-theme.tsx",
+      "description": "Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsThemeProvider",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsThemeProvider",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/index.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "brand": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "density": {
+          "type": "enum",
+          "values": [
+            "comfortable",
+            "compact"
+          ],
+          "optional": true
+        },
+        "fontFamily": {
+          "type": "string",
+          "optional": true
+        },
+        "fontFamilyMono": {
+          "type": "string",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "theme": {
+          "type": "enum",
+          "values": [
+            "light",
+            "dark"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
