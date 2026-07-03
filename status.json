@@ -1,11 +1,10 @@
 {
   "updatedAt": "2026-07-03T02:51:48Z",
   "phase": "active",
-  "headline": "Component-hardening loop (docs/COMPONENT_HARDENING.md): Waves 0-2 done. W0 fixes (Figma modes bug, Alert #72, caption #71); W1 new components (Textarea, HdsTooltip on Radix #69); W2 migrations (Tag + Table → cva; Card + Text tests). 960 unit tests green. Figma MCP configured (ADR-019); 0.10.0 on npm.",
+  "headline": "Component-hardening loop (docs/COMPONENT_HARDENING.md): Waves 0-3 done. W0 fixes (Figma modes bug, Alert #72, caption #71); W1 new components (Textarea, HdsTooltip #69); W2 migrations (Tag + Table → cva; Card + Text tests); W3 coverage (Select story + Disclosure/Badge/Alert tests). 978 unit tests green. Figma MCP configured (ADR-019); 0.10.0 on npm.",
   "next": [
-    "Wave 3: coverage + Code Connect breadth (needs Figma re-auth for node-ids)",
-    "Fill Button node-id in code-connect/button.figma.tsx (needs Figma re-auth)",
-    "Add FIGMA_API_KEY GitHub secret to complete the CI token migration",
+    "Code Connect breadth: fill component node-ids + map remaining (BLOCKED on Figma re-auth)",
+    "Add FIGMA_API_KEY GitHub secret to complete the CI token migration (human)",
     "Sterilize 2-7: portfolio deletion through docs consolidation (#49-#53)"
   ],
   "blocked": [
