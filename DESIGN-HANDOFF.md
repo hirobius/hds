@@ -48,7 +48,7 @@ pnpm tokens:verify
 ```
 
 <!-- auto:start:token-count -->
-Checks all 375 tokens, aliases, and TS refs in one shot.
+Checks all 380 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -204,6 +204,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `h3` | 20px | 500 | 28px | 0em | Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug. |
 | `body` | 17px | 500 | 28px | 0em | Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure. |
 | `ui` | 15px | 500 | 24px | 0em | UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px. |
+| `caption` | 12px | 500 | 16px | 0em | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style. |
 | `eyebrow` | 13px | 500 | 20px | 0.06em | Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase. |
 | `mono` | 13px | 400 | 20px | 0em | Monospace for code, token names, shortcuts. Geist Mono regular, 13px. |
 | `lineHeight.none` |  |  |  |  | Semantic alias for leading-none (1). Display text and badge spans. |

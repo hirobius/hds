@@ -257,6 +257,11 @@ declare module 'react' {
     '--semantic-typography-ui-letter-spacing'?: string | undefined;
     '--semantic-typography-ui-line-height'?: string | undefined;
     '--semantic-typography-ui-max-width'?: string | undefined;
+    '--semantic-typography-caption-font-family'?: string | undefined;
+    '--semantic-typography-caption-font-size'?: string | undefined;
+    '--semantic-typography-caption-font-weight'?: string | undefined;
+    '--semantic-typography-caption-letter-spacing'?: string | undefined;
+    '--semantic-typography-caption-line-height'?: string | undefined;
     '--semantic-typography-eyebrow-font-family'?: string | undefined;
     '--semantic-typography-eyebrow-font-size'?: string | undefined;
     '--semantic-typography-eyebrow-font-weight'?: string | undefined;

@@ -44,6 +44,7 @@ Weights in use: `400` regular, `500` medium, `600` semibold, `700` bold. All hea
 | `semantic.typography.h3` | 20px | 500 | Component and card headers (h3) |
 | `semantic.typography.body` | 17px | 500 | Body prose |
 | `semantic.typography.ui` | 15px | 500 | UI text for nav, labels, captions |
+| `semantic.typography.caption` | 12px | 500 | Caption / helper text |
 | `semantic.typography.eyebrow` | 13px | 500 | Eyebrow / kicker label |
 | `semantic.typography.mono` | 13px | 400 | Monospace for code, token names, shortcuts |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
@@ -171,6 +172,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (339 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (340 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
