@@ -73,8 +73,10 @@ pnpm typecheck && pnpm check:fast && pnpm test && pnpm test:layout
 
 - **Wave 0 — fixes + prereqs** *(done)*: Figma Light/Dark modes bug, Alert drift
   (#72), caption typography token (#71), Button reference test, this doc.
-- **Wave 1 — missing components**: Textarea, real `HdsTooltip` (Radix, #69),
-  `FormField` input wrapper (P2 form layer).
+- **Wave 1 — missing components** *(done)*: Textarea, real `HdsTooltip` (Radix,
+  #69). `FormField` was already covered by `components/form.tsx`
+  (`Form` + `FormField` + `FormFieldShell` + `useFieldWiring`, with test +
+  story) — no new component added.
 - **Wave 2 — legacy→cva migration** (value order): tag, card, table, checkbox,
   radio, toggle, slider, segmented-control, disclosure, text, breadcrumb.
 - **Wave 3 — coverage + Code Connect breadth**: missing stories (select,
