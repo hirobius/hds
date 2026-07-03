@@ -123,6 +123,14 @@ function findSuppressions(filePath) {
         // Only count if sentinel appears after a comment marker
         if (sentinelPos >= commentStart) {
           const reason = (match[1] || '').trim();
+          // Skip documentation of the sentinel FORMAT rather than a real use of
+          // it, e.g. `* Exemption: // audit-ok: <reason>` in a checker's JSDoc
+          // or `... via /* spacing-ok: reason */` in an inline comment. The
+          // captured "reason" there is a metavariable placeholder (`<reason>`,
+          // the bare word `reason`), not a justification — counting it produces
+          // phantom untriaged suppressions in the tooling that defines them.
+          const isFormatDoc = reason.startsWith('<') || /^reason\b\s*(\*\/)?\s*$/.test(reason);
+          if (isFormatDoc) continue;
           suppressions.push({
             line: lineNum,
             category: CATEGORIES.CUSTOM_SENTINELS,
