@@ -64,13 +64,19 @@ integrity gates that scan that tree.
 
 ### Canonical Figma file
 
-> **⚠️ TODO — confirm the library file key.** The audit in issue #73 cited
-> `c8MaVgwxOlxm4wr8wnH0Z4`, but that file currently resolves to a single
-> "Copy Over" page with a shadcn-style button taxonomy that does **not** match
-> the code's `variant` / `tone` / `size` API or the "library v1" recorded in
-> `status.json` (22 components / 88 variants). Set `FIGMA_FILE_KEY` to the real
-> HDS library file and replace the `<FIGMA_FILE_KEY>` / `<BUTTON_NODE_ID>`
-> placeholders in `code-connect/button.figma.tsx` before publishing.
+- **File key:** `c8MaVgwxOlxm4wr8wnH0Z4` — "HDS Tokens & Components". This is the
+  value for `FIGMA_FILE_KEY`. (Confirmed 2026-07-03; the file was rebuilt that
+  day — an earlier scratch "Copy Over" page with a shadcn button taxonomy is
+  gone, and the live Button component set now matches the code's
+  `variant`/`tone`/`size` API.)
+- **Remaining fill-in:** the `<BUTTON_NODE_ID>` in
+  `code-connect/button.figma.tsx` — open the Button component set in Figma and
+  copy the node-id from the URL (`?node-id=123-4` → `123:4`).
+
+> **⚠️ Code Connect requires an Org/Enterprise plan + Dev/Full seat.** The
+> Hirobius team is currently on `pro`, so `figma connect publish` returns a
+> seat error. Authoring/parsing mappings (`pnpm figma:connect`) works now;
+> going live is gated on the plan upgrade.
 
 ## Environment note
 
