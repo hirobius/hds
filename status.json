@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-07-02T23:55:39Z",
+  "updatedAt": "2026-07-03T00:40:46Z",
   "phase": "active",
-  "headline": "Figma MCP wired + configured (ADR-019): repo-root .mcp.json (mcp.figma.com), env vars unified on FIGMA_API_KEY/FIGMA_FILE_KEY, Code Connect scaffolded (Button exemplar). 0.10.0 live on npm; sterilization (ADR-018) 3/7.",
+  "headline": "Component-hardening loop started (docs/COMPONENT_HARDENING.md). Wave 0 done: fixed Figma Light/Dark modes bug (was pushing base-only), Alert drift #72, caption typography token #71, Button reference test. Figma MCP configured (ADR-019); 0.10.0 live on npm.",
   "next": [
-    "Fill Button node-id in code-connect/button.figma.tsx, then map remaining components (#47)",
+    "Wave 1 hardening: Textarea, real HdsTooltip (Radix, #69), FormField wrapper",
+    "Fill Button node-id in code-connect/button.figma.tsx (needs Figma re-auth)",
     "Add FIGMA_API_KEY GitHub secret to complete the CI token migration",
-    "Sterilize 2-7: portfolio deletion through docs consolidation (#49-#53)",
-    "Consolidate typography to Satoshi-only (#48)"
+    "Sterilize 2-7: portfolio deletion through docs consolidation (#49-#53)"
   ],
   "blocked": [
     "Code Connect publish requires an Org/Enterprise plan + Dev seat — Hirobius team is on pro; authoring works, going live is plan-gated",

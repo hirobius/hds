@@ -380,9 +380,9 @@ function buildPluginFormat() {
         name: COLLECTION.semantic,
         modes: ['Light', 'Dark'],
         variables: semantics.map(({ path, type, value, extensions, description }) => {
-          const modes = extensions?.['com.hirobius.modes'];
-          const lightRef = modes?.light ?? value;
-          const darkRef = modes?.dark ?? value;
+          const modes = extensions?.['com.figma.variables']?.modes;
+          const lightRef = modes?.Light ?? value;
+          const darkRef = modes?.Dark ?? value;
           return {
             name: toFigmaName(path),
             resolvedType: figmaType(type),
@@ -400,9 +400,9 @@ function buildPluginFormat() {
         name: COLLECTION.component,
         modes: ['Light', 'Dark'],
         variables: components.map(({ path, type, value, extensions, description }) => {
-          const modes = extensions?.['com.hirobius.modes'];
-          const lightRef = modes?.light ?? value;
-          const darkRef = modes?.dark ?? value;
+          const modes = extensions?.['com.figma.variables']?.modes;
+          const lightRef = modes?.Light ?? value;
+          const darkRef = modes?.Dark ?? value;
           return {
             name: toFigmaName(path),
             resolvedType: figmaType(type),
@@ -525,7 +525,7 @@ function buildAPIFormat() {
   // Semantics
   for (const { path, type, value, extensions, description } of semantics) {
     const id = tempId('sem', path);
-    const modes = extensions?.['com.hirobius.modes'];
+    const modes = extensions?.['com.figma.variables']?.modes;
     variables.push({
       action: 'CREATE',
       id,
@@ -540,12 +540,12 @@ function buildAPIFormat() {
       {
         variableId: id,
         modeId: modeId('semantic', 'light'),
-        value: apiValue(modes?.light ?? value, type),
+        value: apiValue(modes?.Light ?? value, type),
       },
       {
         variableId: id,
         modeId: modeId('semantic', 'dark'),
-        value: apiValue(modes?.dark ?? value, type),
+        value: apiValue(modes?.Dark ?? value, type),
       },
     );
   }
@@ -553,7 +553,7 @@ function buildAPIFormat() {
   // Components
   for (const { path, type, value, extensions, description } of components) {
     const id = tempId('comp', path);
-    const modes = extensions?.['com.hirobius.modes'];
+    const modes = extensions?.['com.figma.variables']?.modes;
     variables.push({
       action: 'CREATE',
       id,
@@ -568,12 +568,12 @@ function buildAPIFormat() {
       {
         variableId: id,
         modeId: modeId('component', 'light'),
-        value: apiValue(modes?.light ?? value, type),
+        value: apiValue(modes?.Light ?? value, type),
       },
       {
         variableId: id,
         modeId: modeId('component', 'dark'),
-        value: apiValue(modes?.dark ?? value, type),
+        value: apiValue(modes?.Dark ?? value, type),
       },
     );
   }

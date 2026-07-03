@@ -1,6 +1,6 @@
 /**
- * Alert stories — variant and title demos.
- * @see src/app/components/Alert.tsx
+ * Alert stories — tone and title demos.
+ * @see src/app/components/alert.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Alert } from '../app/components/alert';
@@ -14,14 +14,14 @@ const meta = {
     docs: {
       description: {
         component:
-          'Compact feedback surface with contextual severity. Variants: success | error | warning | info. Non-blocking status messages; use Dialog for blocking responses.',
+          'Compact feedback surface with contextual severity. Tones: success | danger | warning | info. Non-blocking status messages; use Dialog for blocking responses.',
       },
     },
   },
   argTypes: {
-    variant: {
+    tone: {
       control: { type: 'select' },
-      options: ['success', 'error', 'warning', 'info'],
+      options: ['success', 'danger', 'warning', 'info'],
     },
     title: { control: 'text' },
   },
@@ -32,35 +32,35 @@ type Story = StoryObj<typeof meta>;
 
 export const Info: Story = {
   args: {
-    variant: 'info',
+    tone: 'info',
     children: 'Your account settings have been updated.',
   },
 };
 
 export const Success: Story = {
   args: {
-    variant: 'success',
+    tone: 'success',
     children: 'Component exported successfully.',
   },
 };
 
 export const Warning: Story = {
   args: {
-    variant: 'warning',
+    tone: 'warning',
     children: 'This action cannot be undone.',
   },
 };
 
-export const Error: Story = {
+export const Danger: Story = {
   args: {
-    variant: 'error',
+    tone: 'danger',
     children: 'Failed to connect to the token bridge.',
   },
 };
 
 export const WithTitle: Story = {
   args: {
-    variant: 'error',
+    tone: 'danger',
     title: 'Export Failed',
     children: 'The Figma plugin could not export this token batch. Check your API key.',
   },
@@ -71,7 +71,7 @@ export const AllVariants: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'All four severity variants stacked.',
+        story: 'All four severity tones stacked.',
       },
     },
   },

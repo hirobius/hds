@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-01T06:53:00.024Z",
+  "generated": "2026-07-03T00:34:44.169Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -10228,6 +10228,19 @@
           "letterSpacing": "0.06em",
           "lineHeight": "20px",
           "textTransform": "uppercase"
+        }
+      },
+      {
+        "path": "semantic.typography.caption",
+        "cssVar": "--semantic-typography-caption",
+        "type": "typography",
+        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches Figma typography/caption.",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "16px"
         }
       },
       {
