@@ -270,6 +270,12 @@
   --semantic-typography-ui-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-ui-line-height: 24px;
   --semantic-typography-ui-max-width: 60ch;
+  /* semantic.typography.caption */
+  --semantic-typography-caption-font-family: var(--primitive-typography-family-primary);
+  --semantic-typography-caption-font-size: 12px;
+  --semantic-typography-caption-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-caption-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-caption-line-height: 16px;
   /* semantic.typography.eyebrow */
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-xs);

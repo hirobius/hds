@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-01T06:53:00.024Z",
+  "generated": "2026-07-03T08:57:17.539Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -6864,104 +6864,6 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": []
-    },
-    "HdsPhosphor": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized icon alias stub for JSX normalization.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsFrame": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-internal frame primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsHeading": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized heading primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsLabel": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized label primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsCaption": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsChip": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized chip instance stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsAvatar": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized avatar instance stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
     }
   },
   "utilities": {
@@ -10214,6 +10116,19 @@
           "letterSpacing": "0em",
           "lineHeight": "24px",
           "maxWidth": "60ch"
+        }
+      },
+      {
+        "path": "semantic.typography.caption",
+        "cssVar": "--semantic-typography-caption",
+        "type": "typography",
+        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style.",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "16px"
         }
       },
       {

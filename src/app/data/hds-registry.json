@@ -72,6 +72,12 @@
     "summary": "Internal HDS documentation layout primitive that composes the shared sidebar, content column, and context-aware table of contents for system-authored doc pages."
   },
   {
+    "page": "HdsTocContext.test",
+    "path": "/hds/hds-toc-context.test",
+    "category": "foundations",
+    "summary": "TODO: Add a summary for the HdsTocContext.test page."
+  },
+  {
     "page": "LegacyTokenExplorerPanel",
     "path": "/hds/legacy-token-explorer-panel",
     "category": "foundations",

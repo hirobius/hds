@@ -1504,6 +1504,19 @@
         },
         "$description": "UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px."
       },
+      "caption": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.primary}",
+          "fontSize": {
+            "value": 12,
+            "unit": "px"
+          },
+          "fontWeight": "{primitive.typography.weight.medium}",
+          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "lineHeight": "16px"
+        },
+        "$description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style."
+      },
       "eyebrow": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
