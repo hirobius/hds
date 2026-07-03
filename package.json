@@ -189,6 +189,7 @@
     "figma:snapshot": "node scripts/normalize-figma-snapshot.mjs",
     "figma:stream": "node scripts/llm-stream-bridge.mjs",
     "guardrail:firing-stats": "node scripts/refresh-firing-stats.mjs",
+    "harvest:design-md": "node scripts/harvest-design-md.mjs",
     "heal": "node scripts/self-heal.mjs",
     "heal:smoke": "node scripts/self-heal.mjs --smoke",
     "health-commit": "pnpm check:semantic-report && node scripts/print-health-commit.mjs",
@@ -331,6 +332,7 @@
     "vite": "6.4.2",
     "vite-bundle-visualizer": "^1.2.1",
     "vitest": "^4.1.0",
+    "yaml": "^2.8.1",
     "zod": "^4.4.3",
     "zustand": "^5.0.12"
   },
