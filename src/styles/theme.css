@@ -586,46 +586,8 @@
   color: var(--semantic-color-content-primary);
 }
 
-/* Tag button — interactive Tag hit target. The outer button stays compact
- * while the invisible overlay owns the 44px tap target and the inner pill
- * keeps the visible surface compact. */
-.hds-tag-btn {
-  background: transparent;
-  border: 0;
-  color: inherit;
-  transition: color var(--hds-motion-productive-duration);
-  min-width: var(--primitive-size-interactive-min);
-}
-.hds-tag-pill {
-  background: var(--semantic-color-surface-raised);
-  border-color: var(--semantic-color-border-default);
-  color: var(--semantic-color-content-secondary);
-  transition:
-    background-color var(--hds-motion-productive-duration),
-    border-color var(--hds-motion-productive-duration),
-    color var(--hds-motion-productive-duration);
-  box-sizing: border-box;
-}
-.hds-tag-btn[data-active='true'] {
-  color: var(--component-tag-activeText);
-}
-.hds-tag-btn[data-active='true'] .hds-tag-pill {
-  background: var(--component-tag-activeBackground);
-  border-color: var(--component-tag-activeBorder);
-  color: var(--component-tag-activeText);
-}
-.hds-tag-btn:not([data-active='true']):hover .hds-tag-pill {
-  background: var(--semantic-color-surface-accentSubtle);
-  border-color: var(--semantic-color-border-accent);
-  color: var(--semantic-color-content-primary);
-}
-.hds-tag-btn:not([data-active='true']):active .hds-tag-pill,
-.hds-tag-btn:not([data-active='true'])[data-pressed='true'] .hds-tag-pill {
-  border-color: var(--semantic-color-border-accent);
-}
-.hds-tag-btn[data-active='true']:hover .hds-tag-pill {
-  background: var(--component-tag-activeHover);
-}
+/* Tag colors + hit target now live in the cva classes in tag.tsx (the former
+ * .hds-tag-btn/.hds-tag-pill rules were retired in the Wave 2 cva migration). */
 
 input[data-search-input='true']::-webkit-search-cancel-button,
 input[data-search-input='true']::-webkit-search-decoration,

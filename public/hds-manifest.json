@@ -3557,7 +3557,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/tag.tsx",
-      "description": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) are owned by .hds-tag-btn / .hds-tag-pill in theme.css so :hover transitions work — inline styles beat :hover selectors and would silently break the effect. Active state: brand fill via [data-active=\"true\"] in theme.css. Hover states: inactive → subtle tint + brand border; active → brand-hover fill.",
+      "description": "Tag — interactive filter and category chip. The outer <button> owns the accessible 44px hit target; the inner pill keeps the visible surface compact. Colors reference the same semantic / component-tag tokens as before (parity with the retired .hds-tag-btn/.hds-tag-pill rules in theme.css), now driven through cva: hover via `group-hover`, pressed via `group-active`, and the selected state via the `active` variant.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -3574,6 +3574,7 @@
         "src/app/components/lab/token-detail.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/surface.tsx",
+        "src/app/components/tag.test.tsx",
         "src/app/components/text.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
