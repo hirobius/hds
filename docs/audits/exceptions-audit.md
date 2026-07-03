@@ -4,10 +4,10 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 52 | 52 | 0 |
+| eslint-disable | 53 | 53 | 0 |
 | @ts-ignore/@ts-expect-error | 6 | 6 | 0 |
 | custom-sentinels (*-ok / hds-bypass) | 120 | 120 | 0 |
-| **Total** | **178** | **178** | **0** |
+| **Total** | **179** | **179** | **0** |
 
 ## eslint-disable
 
@@ -33,6 +33,7 @@
 | `src/app/components/componentPreviewRegistry.tsx` | 487 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/doc-page-header.tsx` | 272 | `eslint-disable-next-line` | `react-hooks/refs -- `ref` is a string prop (git branch), not a React ref` | justified |
 | `src/app/components/doc-toc.tsx` | 48 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/hds-tooltip.tsx` | 63 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- inverse-surface fill matches the bubble; var()-based` | justified |
 | `src/app/components/health-rail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/history-card.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/lab/legacy-token-detail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
@@ -204,8 +205,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 178
-- **Justified (reason >= 10 chars):** 178
+- **Total suppressions:** 179
+- **Justified (reason >= 10 chars):** 179
 - **Untriaged (reason < 10 chars or missing):** 0
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.
