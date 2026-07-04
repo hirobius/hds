@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-01T06:53:00.024Z",
+  "generated": "2026-07-03T08:57:17.539Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -63,6 +63,7 @@
     "HdsCheckbox",
     "HdsRadio",
     "HdsSlider",
+    "HdsThemeProvider",
     "HdsToggle",
     "HeadingStack",
     "Icon",
@@ -985,6 +986,10 @@
       {
         "name": "Text",
         "filePath": "src/app/components/text.tsx"
+      },
+      {
+        "name": "Textarea",
+        "filePath": "src/app/components/textarea.tsx"
       },
       {
         "name": "TextLockup",
@@ -2216,6 +2221,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/page-footer.tsx",
         "src/app/components/pagination.tsx",
@@ -4652,6 +4658,7 @@
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/heading-anchor.tsx",
         "src/app/components/info-page.tsx",
         "src/app/components/nav-item.tsx",
@@ -5267,6 +5274,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
+        "src/app/components/textarea.tsx",
         "src/app/pages/docs/patterns/HdsField.tsx",
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
@@ -6131,7 +6139,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls.tsx",
         "src/app/components/select.test.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/select.stories.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -6856,6 +6865,77 @@
         "required": {
           "type": "boolean",
           "default": false
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsThemeProvider": {
+      "category": "Theming",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/context/hds-theme.tsx",
+      "description": "Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsThemeProvider",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsThemeProvider",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/index.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "brand": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "density": {
+          "type": "enum",
+          "values": [
+            "comfortable",
+            "compact"
+          ],
+          "optional": true
+        },
+        "fontFamily": {
+          "type": "string",
+          "optional": true
+        },
+        "fontFamilyMono": {
+          "type": "string",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "theme": {
+          "type": "enum",
+          "values": [
+            "light",
+            "dark"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -7958,7 +8038,9 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/doc-sections.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/components/hds-tooltip.tsx",
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/hds-tooltip.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8024,7 +8106,9 @@
       "description": "SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child page link. Keeps the same full-width hit area and label type treatment, with indentation handled via inner padding only. No indicator bar (reserved for HdsTocNav). Idle text = content-secondary → primary on hover/active. Accent surface fill on active state.",
       "figmaUrl": null,
       "figmaId": null,
-      "consumers": [],
+      "consumers": [
+        "src/stories/side-nav.stories.tsx"
+      ],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -10214,6 +10298,19 @@
           "letterSpacing": "0em",
           "lineHeight": "24px",
           "maxWidth": "60ch"
+        }
+      },
+      {
+        "path": "semantic.typography.caption",
+        "cssVar": "--semantic-typography-caption",
+        "type": "typography",
+        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style.",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "16px"
         }
       },
       {

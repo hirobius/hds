@@ -1,14 +1,17 @@
 #!/usr/bin/env sh
 set -e
 
-echo "Running full HDS checks..."
-pnpm check:full
+# ── Lean pre-push gate set (ADR-018 §5 / #52) ────────────────────────────────
+# Deterministic and environment-agnostic: no live-site fetches (was:
+# visual-ingest → hirobius.io), no browser-dependent steps (was: test:a11y via
+# Playwright), no self-heal, no 56-gate check:full chain. Ends the push-time
+# --no-verify workaround.
+#
+# The heavier lean gates that need a full toolchain — Storybook build and
+# size-limit — run in CI (chromatic.yml / quality.yml), not at push time.
 
-echo "Running a11y tests..."
-pnpm test:a11y
+echo "Unit + contract tests (vitest)…"
+pnpm exec vitest run
 
-echo "Running HDS self-heal..."
-pnpm run heal
-
-echo "Running foundation visual parity..."
-node scripts/visual-ingest.mjs --foundation-parity
+echo "Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)…"
+pnpm smoke:consumer

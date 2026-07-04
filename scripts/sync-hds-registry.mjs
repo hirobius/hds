@@ -94,7 +94,8 @@ function collectTsx(dir, base = '') {
     const rel  = base ? `${base}/${entry}` : entry;
     if (statSync(full).isDirectory()) {
       results.push(...collectTsx(full, rel));
-    } else if (entry.endsWith('.tsx')) {
+    } else if (entry.endsWith('.tsx') && !/\.(test|spec|stories)\.tsx$/.test(entry)) {
+      // Colocated test/spec/story files are not pages — never register them.
       results.push(rel);
     }
   }

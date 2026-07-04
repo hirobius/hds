@@ -1,4 +1,4 @@
-/* hds-bypass: foundation color doc — WCAG_PAIRINGS contains intentional raw hex literals for contrast-ratio math data; values are not used as CSS color properties */
+/* hds-bypass: BG_WHITE_BLACK, INLINE_STRUCTURAL_BORDER — foundation color doc: WCAG_PAIRINGS holds intentional raw #fff/#000 literals for contrast-ratio math (data, not CSS color props); the 16px swatch chip carries a 1px subdued border for edge definition against same-tone surfaces */
 import hds from '../../design-system/tokens';
 import { FoundationSwatch } from '../../components/foundation-swatch';
 import { Grid } from '../../components/grid';
