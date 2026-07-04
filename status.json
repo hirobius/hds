@@ -1,14 +1,14 @@
 {
-  "updatedAt": "2026-07-03T10:00:00Z",
+  "updatedAt": "2026-07-04T23:45:00Z",
   "phase": "active",
-  "headline": "8 autonomous issues landed on claude/auth-correction-pending-lkewb8 (#72 #71 #57 #69 #61 #73 #63 #67): Alert Figma sync, caption type token, HdsTooltip, HdsThemeProvider, Textarea, pnpm hds:new recipe, design.md harvester. 0.10.0 still live; the 16 remaining open issues need Adrian's input (decisions/deletions/human steps).",
+  "headline": "PR-1 of the Astryx coverage build (#76) shipped to claude/design-system-build-plan-xrj5qm: 9 zero-dependency Tier-1 native primitives (Kbd, StatusDot, Timestamp, Blockquote, VisuallyHidden, AvatarGroup, ButtonGroup, InputGroup, CircularProgress) with tests, stories, Code Connect stubs, and Swiss-canon fixtures. All Lean-gate-set gates green (typecheck, lint --max-warnings=0, 980 vitest, contrast, app build + size-limit, smoke:consumer, storybook). Minor changeset queued for 0.12.0.",
   "next": [
-    "Review + merge branch claude/auth-correction-pending-lkewb8 (8 issues)",
-    "Rotate overdue quarterly tokens (GitHub/Vercel/Anthropic/Discord, due 2026-07-01) — untracked auth item",
-    "Decision-gated: Sterilize 2-7 (#49-#53), typography Satoshi-only (#48), cva variant contract (#60), data-brand rename (#62)"
+    "PR-2: Tier-1 Radix skins (HdsToggleButton, HdsAlertDialog, HdsHoverCard, HdsContextMenu, HdsAspectRatio) — adds 5 @radix-ui deps",
+    "PR-3: promote internals (SideNav, CommandPalette, HdsLightbox) to public API",
+    "PR-4+: Tier-2 pattern layer (0.13.0); Tier-3 date/time family needs a date-lib ADR first",
+    "Review + merge claude/design-system-build-plan-xrj5qm when ready"
   ],
   "blocked": [
-    "Satoshi upload to Figma team fonts (human step) gates the text-style swap (#48)",
-    "Quarterly token rotation is a human/vendor-dashboard step (cannot be automated)"
+    "Tier-3 date/time components blocked on a date-lib ADR (react-day-picker v9 + date-fns recommended)"
   ]
 }
