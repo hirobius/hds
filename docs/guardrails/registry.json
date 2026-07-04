@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
   "precommitStructureHash": "e7b883f1b3f0b0fc6f3d0005fff36b4283670994eb03182f1518ee0a6ad121a4",
-  "precommitStructureHashUpdatedAt": "2026-06-30T01:14:06.105Z",
+  "precommitStructureHashUpdatedAt": "(archived: pre-commit gates leaned to direct hook calls per #52)",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -39,8 +39,10 @@
       "lastViolationAt": "2026-05-06T17:07:25.450Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
-      "scope": "full-tree"
+      "firingChannel": "manual",
+      "scope": "full-tree",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "audit-deps",
@@ -65,7 +67,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "audit-gate-purity",
@@ -141,8 +145,10 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
-      "supportsJson": true
+      "firingChannel": "manual",
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-deprecations",
@@ -154,7 +160,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-prop-vocabulary",
@@ -166,7 +174,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-no-style-prop",
@@ -178,7 +188,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-typography-discipline",
@@ -190,9 +202,11 @@
       "lastViolationAt": "2026-05-08T02:21:52.904Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
-      "supportsJson": true
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-asset-manifest",
@@ -204,7 +218,9 @@
       "lastViolationAt": "2026-05-07T23:50:55.504Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-attributions",
@@ -216,7 +232,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-binding-drift",
@@ -228,8 +246,10 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
-      "scope": "full-tree"
+      "firingChannel": "manual",
+      "scope": "full-tree",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-brand",
@@ -265,7 +285,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-dimensions",
@@ -277,7 +299,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-doc-structure",
@@ -289,7 +313,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-link-integrity",
@@ -327,7 +353,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-focus-states",
@@ -351,7 +379,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-hardcoded-breakpoints",
@@ -363,7 +393,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-hardcoded-colors",
@@ -375,9 +407,11 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
-      "supportsJson": true
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-hardcoded-spacing",
@@ -389,9 +423,11 @@
       "lastViolationAt": "2026-05-08T02:21:54.151Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
-      "supportsJson": true
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-style-discipline",
@@ -416,9 +452,11 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "scope": "full-tree",
-      "supportsJson": true
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-manifest-drift",
@@ -430,8 +468,10 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
-      "scope": "full-tree"
+      "firingChannel": "manual",
+      "scope": "full-tree",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-manifest-schema-semver",
@@ -467,7 +507,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-og-meta",
@@ -492,7 +534,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-reduced-motion",
@@ -504,7 +548,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-ref-forwarding",
@@ -516,7 +562,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-registry",
@@ -528,7 +576,9 @@
       "lastViolationAt": "2026-05-06T20:50:02.717Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-route-coverage",
@@ -552,9 +602,11 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "scope": "full-tree",
-      "supportsJson": true
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-security-baseline",
@@ -578,9 +630,11 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "glob": "src/**/*.{ts,tsx,jsx,js}",
-      "supportsJson": true
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-template-source-of-truth",
@@ -592,8 +646,10 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
-      "scope": "full-tree"
+      "firingChannel": "manual",
+      "scope": "full-tree",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-tenant-tokens",
@@ -605,7 +661,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-tier-bypass",
@@ -642,11 +700,13 @@
       "lastViolationAt": "2026-05-06T16:43:17.203Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "ratchetChannel": "ci-pr",
-      "ratchetFlag": "--ratchet"
+      "ratchetFlag": "--ratchet",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-token-rebake-needed",
@@ -658,8 +718,10 @@
       "lastViolationAt": "2026-05-10T16:46:35.937Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
-      "glob": ["hirobius.tokens.json", "src/styles/**", "src/app/data/**"]
+      "firingChannel": "manual",
+      "glob": ["hirobius.tokens.json", "src/styles/**", "src/app/data/**"],
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-token-renames",
@@ -695,7 +757,9 @@
       "lastViolationAt": "2026-05-08T02:21:58.794Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-validator-wiring",
@@ -707,8 +771,10 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit",
-      "scope": "full-tree"
+      "firingChannel": "manual",
+      "scope": "full-tree",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "validate-fixture-proof-of-firing",
@@ -720,9 +786,11 @@
       "lastViolationAt": "2026-05-08T02:25:17.952Z",
       "owner": "Adrian",
       "source": "generated",
-      "firingChannel": "pre-commit",
+      "firingChannel": "manual",
       "scope": "full-tree",
-      "supportsJson": true
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     }
   ]
 }
