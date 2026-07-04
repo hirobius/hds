@@ -32,6 +32,7 @@ export * from './app/components/dialog';
 export * from './app/components/divider';
 export * from './app/components/menu';
 export * from './app/components/popover';
+export * from './app/components/hds-tooltip';
 export * from './app/components/doc-link-card';
 export * from './app/components/grid';
 export * from './app/components/heading-stack';
@@ -40,6 +41,7 @@ export * from './app/components/icon';
 export * from './app/components/inline-code';
 export * from './app/components/inline-link';
 export * from './app/components/input';
+export * from './app/components/textarea';
 export * from './app/components/checkbox';
 export * from './app/components/radio';
 export * from './app/components/slider';
@@ -104,6 +106,15 @@ export const tokens = tokensJson;
 
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
+
+// ── Theming contract (framework-agnostic data-* dials; zero-JS compatible) ──
+export { HdsThemeProvider, useHdsTheme } from './app/context/hds-theme';
+export type {
+  HdsTheme,
+  HdsDensity,
+  HdsThemeValue,
+  HdsThemeProviderProps,
+} from './app/context/hds-theme';
 
 // ── Router adapter seam (router-free by default; inject your router once) ──
 export { HdsRouterProvider, useHdsRouter } from './app/context/RouterContext';

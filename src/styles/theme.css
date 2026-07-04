@@ -31,6 +31,16 @@
  *   ThemeContext sets BOTH [data-theme] and .dark on <html> simultaneously
  *   so Tailwind's `class`-based dark variant and the [data-theme] selector
  *   stay in sync.
+ *
+ * Public override contract — the four theming "dials" (ADR-020 §3):
+ *   Consumers style HDS with ZERO JavaScript by setting these on a root/scope
+ *   element (or via the typed <HdsThemeProvider> convenience — see
+ *   src/app/context/hds-theme.tsx). This is the documented seam; keep the
+ *   attribute/var names below stable.
+ *     • theme    → data-theme="dark"        (light = unset)
+ *     • density  → data-density="compact"   (comfortable = unset)
+ *     • brand    → data-brand="<slug>"      (+ data-tenant alias; base = unset)
+ *     • font     → --hds-font-family / --hds-font-family-mono  (defaults below)
  */
 
 @import 'tailwindcss';

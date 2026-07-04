@@ -1,5 +1,14 @@
 name: CI
 
+# ── Lean gate set (ADR-018 §5 / #52) ─────────────────────────────────────────
+# The single quality workflow: the deterministic, environment-agnostic lean set
+# — typecheck, eslint, token-pipeline validity, unit/type tests, app build +
+# bundle budgets, consumer smoke (+ publint), Storybook build. No Playwright /
+# browser lanes, no live-site fetches, no 56-gate check:full chain. Prettier is
+# enforced pre-commit (lint-staged); the heavier/browser/network lanes
+# (a11y, visual, responsive, collision, chromatic, figma-sync, llm-synthetic)
+# are archived in .github/workflows-archive/ — recoverable, not deleted.
+
 on:
   push:
     branches: [main]
@@ -11,10 +20,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
-    name: Typecheck, validators, build, and Playwright (desktop)
+  gates:
+    name: Lean gate set
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,26 +42,30 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # Generated data files (src/app/data/*.json) are gitignored but imported
-      # by source, so they must exist before typecheck. Regenerate them here.
+      # by source, so they must exist before typecheck/build. Regenerate here.
       - name: Generate data artifacts
         run: node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
 
       - name: Typecheck
         run: pnpm typecheck
 
-      # Unit + contract tests (vitest). Includes tests/primitive-contracts/*.contract.test.tsx
-      # (React Testing Library); Playwright (testMatch '**/*.spec.ts') runs the e2e/visual specs.
-      - name: Unit tests (vitest)
+      - name: ESLint (zero warnings)
+        run: pnpm lint --max-warnings=0
+
+      - name: Token pipeline validity (verify-tokens + check-contrast)
+        run: node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs
+
+      - name: Unit + contract tests (vitest)
         run: pnpm exec vitest run
 
-      - name: Full checks
-        run: pnpm check:full
-
-      - name: Build
+      - name: App build
         run: pnpm build
 
-      - name: Install Playwright (chromium only)
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Bundle budgets (size-limit)
+        run: pnpm size-limit
 
-      - name: Playwright — desktop (chromium project)
-        run: pnpm exec playwright test --project=chromium
+      - name: Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)
+        run: pnpm smoke:consumer
+
+      - name: Storybook build
+        run: pnpm build-storybook

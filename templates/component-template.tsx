@@ -3,55 +3,70 @@
 /**
  * __NAME__ — Swiss-canonical component scaffold.
  * @category Component
+ * @tier primitive
  *
  * Body emphasis is font-medium (500), never bold. Color hierarchy uses
  * opacity on a single hue (semantic.color.content.{primary,secondary,
  * tertiary}), never a second hue. Spacing on the 8px grid only.
+ *
+ * For interactive/overlay components, wrap a Radix primitive here (see
+ * popover.tsx / hds-tooltip.tsx for the token-skinned pattern) and keep this
+ * cva block as the class contract.
  */
 
-import type { CSSProperties, ReactNode } from 'react';
-import hds from '../design-system/tokens';
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 
-interface __NAME__Props {
+// ── Variants ───────────────────────────────────────────────────────────────────
+
+const __CAMEL__Variants = cva(
+  'flex flex-col gap-2 rounded-md bg-muted p-4 font-sans font-medium text-foreground',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-muted text-foreground',
+        secondary: 'bg-background text-muted-foreground',
+        tertiary: 'bg-transparent text-muted-foreground',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+    },
+  },
+);
+
+// ── Types ──────────────────────────────────────────────────────────────────────
+
+/** @public */
+export type __NAME__Variant = NonNullable<VariantProps<typeof __CAMEL__Variants>['variant']>;
+
+export interface __NAME__Props extends React.HTMLAttributes<HTMLDivElement> {
   /** Variant — primary | secondary | tertiary. */
-  variant?: 'primary' | 'secondary' | 'tertiary';
+  variant?: __NAME__Variant;
   /** Slot content. */
-  children?: ReactNode;
-  /** Optional inline styles for one-off layout adjustments. */
-  style?: CSSProperties;
-  /** Optional class hook for parent-level styling. */
-  className?: string;
+  children?: React.ReactNode;
 }
 
-const baseStyle = {
-  display: 'flex',
-  flexDirection: 'column' as const,
-  gap: hds.space.gap.md,
-  padding: hds.space.layout.tight,
-  background: 'var(--semantic-color-surface-raised)',
-  color: 'var(--semantic-color-content-primary)',
-  borderRadius: 'var(--semantic-radius-action)',
-  fontFamily: 'var(--primitive-typography-family-primary)',
-  fontWeight: 400,
-  boxSizing: 'border-box' as const,
-} satisfies CSSProperties;
+// ── Component ──────────────────────────────────────────────────────────────────
 
-export function __NAME__({
-  variant = 'primary',
-  children,
-  style,
-  className,
-}: __NAME__Props) {
+/** @public */
+export const __NAME__ = React.forwardRef<HTMLDivElement, __NAME__Props>(function __NAME__(
+  { variant = 'primary', className, children, ...rest },
+  ref,
+) {
   return (
     <div
+      ref={ref}
       data-component="__NAME__"
       data-variant={variant}
-      className={className}
-      style={{ ...baseStyle, ...style }}
+      className={cn(__CAMEL__Variants({ variant }), className)}
+      {...rest}
     >
       {children}
     </div>
   );
-}
+});
 
-export default __NAME__;
+/** @internal — CVA variant helper; compose via __NAME__ props instead. */
+export { __CAMEL__Variants };

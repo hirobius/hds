@@ -1,4 +1,3 @@
-/* hds-bypass: test page with hardcoded demo styles for visual audit */
 // font-ok: spacing test page intentionally uses monospace demo labels during visual inspection
 import { useTheme } from '../../context/ThemeContext';
 import hds from '../../design-system/tokens';

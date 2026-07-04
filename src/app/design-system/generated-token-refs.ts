@@ -384,6 +384,13 @@ export const tokenRefs = {
         lineHeight: "var(--semantic-typography-ui-line-height)",
         maxWidth: "var(--semantic-typography-ui-max-width)"
       },
+      caption: {
+        fontFamily: "var(--semantic-typography-caption-font-family)",
+        fontSize: "var(--semantic-typography-caption-font-size)",
+        fontWeight: "var(--semantic-typography-caption-font-weight)",
+        letterSpacing: "var(--semantic-typography-caption-letter-spacing)",
+        lineHeight: "var(--semantic-typography-caption-line-height)"
+      },
       eyebrow: {
         fontFamily: "var(--semantic-typography-eyebrow-font-family)",
         fontSize: "var(--semantic-typography-eyebrow-font-size)",

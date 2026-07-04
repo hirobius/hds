@@ -133,6 +133,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.typography.h3": "Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug.",
   "semantic.typography.body": "Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure.",
   "semantic.typography.ui": "UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px.",
+  "semantic.typography.caption": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style.",
   "semantic.typography.eyebrow": "Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase.",
   "semantic.typography.mono": "Monospace for code, token names, shortcuts. Geist Mono regular, 13px.",
   "semantic.typography.lineHeight.none": "Semantic alias for leading-none (1). Display text and badge spans.",

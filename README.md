@@ -30,6 +30,39 @@ No router, Tailwind config, or font files needed. With a router, inject it once
 via `<HdsRouterProvider>`. See **[docs/CONSUMING.md](docs/CONSUMING.md)** for the
 router seam, `data-hds` scoping, and MUI coexistence.
 
+### Theming: the four dials
+
+HDS theming is driven by root attributes + CSS variables, so it works with **zero
+JavaScript** — set them on any element (React, Astro, plain HTML) and every HDS
+descendant re-skins:
+
+| Dial | Attribute / var | Values | Default |
+| --- | --- | --- | --- |
+| theme | `data-theme` | `dark` | light (unset) |
+| density | `data-density` | `compact` | comfortable (unset) |
+| brand | `data-brand` (+ `data-tenant` alias) | overlay slug | base (unset) |
+| font | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Satoshi / Geist Mono |
+
+```html
+<!-- zero-JS: static markup (e.g. an Astro layout) -->
+<div data-hds data-theme="dark" data-density="compact" data-brand="acme"
+     style="--hds-font-family: 'Inter', sans-serif">
+  …
+</div>
+```
+
+React apps can set the same contract declaratively with the typed
+`<HdsThemeProvider>` (renders the `data-hds` scope wrapper) and read it back with
+`useHdsTheme()` — it is a convenience, not a requirement:
+
+```tsx
+import { HdsThemeProvider } from '@hirobius/design-system';
+
+<HdsThemeProvider theme="dark" density="compact" brand="acme">
+  <App />
+</HdsThemeProvider>;
+```
+
 ## Developing this repo
 
 ```bash

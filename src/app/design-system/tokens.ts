@@ -182,11 +182,12 @@ const hds = {
     eyebrow:   tokenRefs.semantic.typography.eyebrow as React.CSSProperties,
     mono:      tokenRefs.semantic.typography.mono    as React.CSSProperties,
     // ── Migration aliases → canonical composites ──────────────────────────────
-    // Pre-2026-05-04 names map to the new roles. small → ui; caption → ui
-    // (sentence-case secondary text); the eyebrow-pattern callsites migrate
-    // explicitly to typeStyles.eyebrow as part of the ops-dashboard sweep.
+    // Pre-2026-05-04 names map to the new roles. small → ui; the eyebrow-pattern
+    // callsites migrate explicitly to typeStyles.eyebrow as part of the
+    // ops-dashboard sweep. caption now resolves to its own 12/16 composite
+    // (semantic.typography.caption, matching Figma) rather than aliasing ui.
     small:     tokenRefs.semantic.typography.ui      as React.CSSProperties,
-    caption:   tokenRefs.semantic.typography.ui      as React.CSSProperties,
+    caption:   tokenRefs.semantic.typography.caption as React.CSSProperties,
     heading1:  tokenRefs.semantic.typography.h1      as React.CSSProperties,
     heading2:  tokenRefs.semantic.typography.h2      as React.CSSProperties,
     heading3:  tokenRefs.semantic.typography.h3      as React.CSSProperties,
