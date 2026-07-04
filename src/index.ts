@@ -58,6 +58,17 @@ export * from './app/components/tag';
 export * from './app/components/text';
 export * from './app/components/token';
 
+// ── Astryx-gap coverage — Tier 1 native primitives (0.12.0) ──
+export * from './app/components/kbd';
+export * from './app/components/status-dot';
+export * from './app/components/timestamp';
+export * from './app/components/blockquote';
+export * from './app/components/visually-hidden';
+export * from './app/components/avatar-group';
+export * from './app/components/button-group';
+export * from './app/components/input-group';
+export * from './app/components/circular-progress';
+
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
 export * from './app/components/empty-state';

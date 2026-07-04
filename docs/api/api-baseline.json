@@ -20,41 +20,14 @@
       "useHdsRouter",
       "useHdsTheme"
     ],
-    "./app/components/alert": [
-      "Alert"
-    ],
-    "./app/components/asset-img": [
-      "AssetImg"
-    ],
-    "./app/components/avatar": [
-      "Avatar",
-      "AvatarProps"
-    ],
-    "./app/components/badge": [
-      "Badge",
-      "BadgeProps",
-      "badgeVariants"
-    ],
-    "./app/components/button": [
-      "Button",
-      "ButtonProps",
-      "buttonVariants"
-    ],
-    "./app/components/callout": [
-      "Callout",
-      "CalloutProps",
-      "default"
-    ],
-    "./app/components/field": [
-      "Field",
-      "FieldProps",
-      "FieldTone"
-    ],
-    "./app/components/stat": [
-      "Stat",
-      "StatProps",
-      "StatTone"
-    ],
+    "./app/components/alert": ["Alert"],
+    "./app/components/asset-img": ["AssetImg"],
+    "./app/components/avatar": ["Avatar", "AvatarProps"],
+    "./app/components/badge": ["Badge", "BadgeProps", "badgeVariants"],
+    "./app/components/button": ["Button", "ButtonProps", "buttonVariants"],
+    "./app/components/callout": ["Callout", "CalloutProps", "default"],
+    "./app/components/field": ["Field", "FieldProps", "FieldTone"],
+    "./app/components/stat": ["Stat", "StatProps", "StatTone"],
     "./app/components/status-list-item": [
       "StatusListItem",
       "StatusListItemProps",
@@ -71,18 +44,10 @@
       "CardProps",
       "CardTitle"
     ],
-    "./app/components/cinematic-link": [
-      "CinematicLink"
-    ],
-    "./app/components/code-block": [
-      "CodeBlock"
-    ],
-    "./app/components/component-instance-matrix": [
-      "ComponentInstanceMatrix"
-    ],
-    "./app/components/container": [
-      "Container"
-    ],
+    "./app/components/cinematic-link": ["CinematicLink"],
+    "./app/components/code-block": ["CodeBlock"],
+    "./app/components/component-instance-matrix": ["ComponentInstanceMatrix"],
+    "./app/components/container": ["Container"],
     "./app/components/dialog": [
       "Dialog",
       "DialogClose",
@@ -97,100 +62,35 @@
       "DialogTitle",
       "DialogTrigger"
     ],
-    "./app/components/divider": [
-      "Divider"
-    ],
-    "./app/components/menu": [
-      "Menu"
-    ],
-    "./app/components/popover": [
-      "Popover",
-      "PopoverContentProps"
-    ],
-    "./app/components/hds-tooltip": [
-      "HdsTooltip",
-      "HdsTooltipContentProps"
-    ],
-    "./app/components/doc-link-card": [
-      "DocLinkCard"
-    ],
-    "./app/components/grid": [
-      "Grid"
-    ],
-    "./app/components/heading-stack": [
-      "HeadingStack"
-    ],
-    "./app/components/history-card": [
-      "HistoryCard",
-      "HistoryCardCommit",
-      "HistoryCardProps"
-    ],
-    "./app/components/icon": [
-      "Icon",
-      "IconProps",
-      "IconSize"
-    ],
-    "./app/components/inline-code": [
-      "InlineCode"
-    ],
-    "./app/components/inline-link": [
-      "InlineLink"
-    ],
-    "./app/components/input": [
-      "Input",
-      "InputProps",
-      "InputSize",
-      "inputVariants"
-    ],
+    "./app/components/divider": ["Divider"],
+    "./app/components/menu": ["Menu"],
+    "./app/components/popover": ["Popover", "PopoverContentProps"],
+    "./app/components/hds-tooltip": ["HdsTooltip", "HdsTooltipContentProps"],
+    "./app/components/doc-link-card": ["DocLinkCard"],
+    "./app/components/grid": ["Grid"],
+    "./app/components/heading-stack": ["HeadingStack"],
+    "./app/components/history-card": ["HistoryCard", "HistoryCardCommit", "HistoryCardProps"],
+    "./app/components/icon": ["Icon", "IconProps", "IconSize"],
+    "./app/components/inline-code": ["InlineCode"],
+    "./app/components/inline-link": ["InlineLink"],
+    "./app/components/input": ["Input", "InputProps", "InputSize", "inputVariants"],
     "./app/components/textarea": [
       "Textarea",
       "TextareaProps",
       "TextareaResize",
       "textareaVariants"
     ],
-    "./app/components/checkbox": [
-      "HdsCheckbox",
-      "HdsCheckboxDemoState"
-    ],
-    "./app/components/radio": [
-      "HdsRadio",
-      "HdsRadioDemoState"
-    ],
-    "./app/components/slider": [
-      "HdsSlider"
-    ],
-    "./app/components/toggle": [
-      "HdsToggle",
-      "HdsToggleDemoState"
-    ],
-    "./app/components/nav-item": [
-      "NavItem"
-    ],
-    "./app/components/progress": [
-      "Progress",
-      "ProgressProps",
-      "progressTrackVariants"
-    ],
-    "./app/components/skeleton": [
-      "Skeleton",
-      "SkeletonProps",
-      "skeletonVariants"
-    ],
-    "./app/components/spinner": [
-      "Spinner",
-      "SpinnerProps",
-      "spinnerVariants"
-    ],
-    "./app/components/segmented-control": [
-      "SegmentedControl"
-    ],
-    "./app/components/stack": [
-      "Stack"
-    ],
-    "./app/components/surface": [
-      "Surface",
-      "surfaceVariants"
-    ],
+    "./app/components/checkbox": ["HdsCheckbox", "HdsCheckboxDemoState"],
+    "./app/components/radio": ["HdsRadio", "HdsRadioDemoState"],
+    "./app/components/slider": ["HdsSlider"],
+    "./app/components/toggle": ["HdsToggle", "HdsToggleDemoState"],
+    "./app/components/nav-item": ["NavItem"],
+    "./app/components/progress": ["Progress", "ProgressProps", "progressTrackVariants"],
+    "./app/components/skeleton": ["Skeleton", "SkeletonProps", "skeletonVariants"],
+    "./app/components/spinner": ["Spinner", "SpinnerProps", "spinnerVariants"],
+    "./app/components/segmented-control": ["SegmentedControl"],
+    "./app/components/stack": ["Stack"],
+    "./app/components/surface": ["Surface", "surfaceVariants"],
     "./app/components/table": [
       "Table",
       "TableCell",
@@ -199,44 +99,25 @@
       "TableColumnAlign",
       "TableRow"
     ],
-    "./app/components/tag": [
-      "Tag"
-    ],
-    "./app/components/text": [
-      "Text",
-      "TextProps"
-    ],
-    "./app/components/token": [
-      "Token"
-    ],
-    "./app/components/page": [
-      "Page"
-    ],
-    "./app/components/empty-state": [
-      "EmptyState",
-      "EmptyStateProps"
-    ],
-    "./app/components/error-boundary": [
-      "ErrorBoundary"
-    ],
-    "./app/components/not-found-pattern": [
-      "NotFoundPattern"
-    ],
-    "./app/components/tabs": [
-      "Tabs",
-      "TabsContent",
-      "TabsList",
-      "TabsTrigger"
-    ],
-    "./app/components/tile-grid": [
-      "TileGrid",
-      "TileGridProps"
-    ],
-    "./app/components/status-tile": [
-      "StatusTile",
-      "StatusTileProps",
-      "StatusTileTone"
-    ],
+    "./app/components/tag": ["Tag"],
+    "./app/components/text": ["Text", "TextProps"],
+    "./app/components/token": ["Token"],
+    "./app/components/kbd": ["Kbd", "KbdProps", "kbdVariants"],
+    "./app/components/status-dot": ["StatusDot", "StatusDotProps", "statusDotVariants"],
+    "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
+    "./app/components/blockquote": ["Blockquote", "BlockquoteProps", "blockquoteVariants"],
+    "./app/components/visually-hidden": ["VisuallyHidden", "VisuallyHiddenProps"],
+    "./app/components/avatar-group": ["AvatarGroup", "AvatarGroupProps"],
+    "./app/components/button-group": ["ButtonGroup", "ButtonGroupProps", "buttonGroupVariants"],
+    "./app/components/input-group": ["InputGroup", "InputGroupProps"],
+    "./app/components/circular-progress": ["CircularProgress", "CircularProgressProps"],
+    "./app/components/page": ["Page"],
+    "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
+    "./app/components/error-boundary": ["ErrorBoundary"],
+    "./app/components/not-found-pattern": ["NotFoundPattern"],
+    "./app/components/tabs": ["Tabs", "TabsContent", "TabsList", "TabsTrigger"],
+    "./app/components/tile-grid": ["TileGrid", "TileGridProps"],
+    "./app/components/status-tile": ["StatusTile", "StatusTileProps", "StatusTileTone"],
     "./app/components/activity-feed": [
       "ActivityEvent",
       "ActivityFeed",
@@ -244,19 +125,9 @@
       "ActivityStatus",
       "defaultActivityEvents"
     ],
-    "./app/components/breadcrumb": [
-      "Breadcrumb",
-      "BreadcrumbItem",
-      "BreadcrumbProps"
-    ],
-    "./app/components/combobox": [
-      "Combobox",
-      "ComboboxOption",
-      "ComboboxProps"
-    ],
-    "./app/components/disclosure": [
-      "Disclosure"
-    ],
+    "./app/components/breadcrumb": ["Breadcrumb", "BreadcrumbItem", "BreadcrumbProps"],
+    "./app/components/combobox": ["Combobox", "ComboboxOption", "ComboboxProps"],
+    "./app/components/disclosure": ["Disclosure"],
     "./app/components/form": [
       "FieldWiring",
       "FieldWiringInput",
@@ -268,32 +139,13 @@
       "FormProps",
       "useFieldWiring"
     ],
-    "./app/components/foundation-swatch": [
-      "FoundationSwatch",
-      "FoundationSwatchProps"
-    ],
-    "./app/components/icon-button": [
-      "IconButton"
-    ],
-    "./app/components/nav-group": [
-      "NavGroup"
-    ],
-    "./app/components/pagination": [
-      "Pagination",
-      "PaginationProps",
-      "paginationRange"
-    ],
-    "./app/components/sketch": [
-      "Sketch",
-      "SketchProps"
-    ],
-    "./app/components/stepper-field": [
-      "StepperField"
-    ],
-    "./app/components/text-lockup": [
-      "TextLockup",
-      "TextLockupProps"
-    ],
+    "./app/components/foundation-swatch": ["FoundationSwatch", "FoundationSwatchProps"],
+    "./app/components/icon-button": ["IconButton"],
+    "./app/components/nav-group": ["NavGroup"],
+    "./app/components/pagination": ["Pagination", "PaginationProps", "paginationRange"],
+    "./app/components/sketch": ["Sketch", "SketchProps"],
+    "./app/components/stepper-field": ["StepperField"],
+    "./app/components/text-lockup": ["TextLockup", "TextLockupProps"],
     "./app/components/toast": [
       "ToastOptions",
       "ToastProvider",
@@ -301,29 +153,12 @@
       "ToastTone",
       "useToast"
     ],
-    "./app/layouts/CaseStudyLayout": [
-      "CaseStudyLayout"
-    ],
-    "./app/components/error-pattern": [
-      "ErrorPattern"
-    ],
-    "./app/components/info-page": [
-      "InfoPage",
-      "InfoPageProps"
-    ],
-    "./app/pages/hds/HdsSystemDocLayout": [
-      "HdsSystemDocLayout"
-    ],
-    "@subpath/cn": [
-      "cn"
-    ],
-    "@subpath/tokens": [
-      "ct",
-      "default",
-      "tokenValues"
-    ],
-    "@subpath/manifest": [
-      "default"
-    ]
+    "./app/layouts/CaseStudyLayout": ["CaseStudyLayout"],
+    "./app/components/error-pattern": ["ErrorPattern"],
+    "./app/components/info-page": ["InfoPage", "InfoPageProps"],
+    "./app/pages/hds/HdsSystemDocLayout": ["HdsSystemDocLayout"],
+    "@subpath/cn": ["cn"],
+    "@subpath/tokens": ["ct", "default", "tokenValues"],
+    "@subpath/manifest": ["default"]
   }
 }

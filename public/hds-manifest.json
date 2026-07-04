@@ -40,11 +40,15 @@
   "componentInventory": [
     "Alert",
     "Avatar",
+    "AvatarGroup",
     "Badge",
+    "Blockquote",
     "Breadcrumb",
+    "ButtonGroup",
     "Callout",
     "Card",
     "CinematicLink",
+    "CircularProgress",
     "CodeBlock",
     "Combobox",
     "ComponentInstanceMatrix",
@@ -70,6 +74,8 @@
     "IconButton",
     "InlineCode",
     "InlineLink",
+    "InputGroup",
+    "Kbd",
     "NavGroup",
     "NavItem",
     "Page",
@@ -82,6 +88,7 @@
     "Spinner",
     "Stack",
     "Stat",
+    "StatusDot",
     "StatusListItem",
     "StatusTile",
     "StepperField",
@@ -95,8 +102,10 @@
     "Text",
     "TextLockup",
     "TileGrid",
+    "Timestamp",
     "ToastProvider",
-    "Token"
+    "Token",
+    "VisuallyHidden"
   ],
   "typographyRamp": {
     "status": "active",
@@ -544,12 +553,20 @@
         "filePath": "src/app/components/avatar.tsx"
       },
       {
+        "name": "AvatarGroup",
+        "filePath": "src/app/components/avatar-group.tsx"
+      },
+      {
         "name": "Badge",
         "filePath": "src/app/components/badge.tsx"
       },
       {
         "name": "bezierPath",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "Blockquote",
+        "filePath": "src/app/components/blockquote.tsx"
       },
       {
         "name": "BLUE_HEX",
@@ -580,6 +597,10 @@
         "filePath": "src/app/components/doc-sections.tsx"
       },
       {
+        "name": "ButtonGroup",
+        "filePath": "src/app/components/button-group.tsx"
+      },
+      {
         "name": "Callout",
         "filePath": "src/app/components/callout.tsx"
       },
@@ -602,6 +623,10 @@
       {
         "name": "CinematicLink",
         "filePath": "src/app/components/cinematic-link.tsx"
+      },
+      {
+        "name": "CircularProgress",
+        "filePath": "src/app/components/circular-progress.tsx"
       },
       {
         "name": "CodeBlock",
@@ -788,6 +813,14 @@
         "filePath": "src/app/components/input.tsx"
       },
       {
+        "name": "InputGroup",
+        "filePath": "src/app/components/input-group.tsx"
+      },
+      {
+        "name": "Kbd",
+        "filePath": "src/app/components/kbd.tsx"
+      },
+      {
         "name": "LAYOUT_NOTES",
         "filePath": "src/app/components/doc-sections.tsx"
       },
@@ -928,6 +961,10 @@
         "filePath": "src/app/components/stat.tsx"
       },
       {
+        "name": "StatusDot",
+        "filePath": "src/app/components/status-dot.tsx"
+      },
+      {
         "name": "StatusListItem",
         "filePath": "src/app/components/status-list-item.tsx"
       },
@@ -1004,6 +1041,10 @@
         "filePath": "src/app/components/tile-grid.tsx"
       },
       {
+        "name": "Timestamp",
+        "filePath": "src/app/components/timestamp.tsx"
+      },
+      {
         "name": "ToastProvider",
         "filePath": "src/app/components/toast.tsx"
       },
@@ -1070,6 +1111,10 @@
       {
         "name": "VariantStrip",
         "filePath": "src/app/components/variant-strip.tsx"
+      },
+      {
+        "name": "VisuallyHidden",
+        "filePath": "src/app/components/visually-hidden.tsx"
       }
     ]
   },
@@ -3574,6 +3619,7 @@
         "src/app/components/stack.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/text.tsx",
+        "src/app/components/visually-hidden.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/tag.stories.tsx"
@@ -6315,7 +6361,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/avatar-group.test.tsx",
+        "src/app/components/avatar-group.tsx",
         "src/app/components/avatar.test.tsx",
+        "src/stories/avatar-group.stories.tsx",
         "src/stories/avatar.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6370,6 +6419,7 @@
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
         "src/app/data/projects.ts",
+        "src/stories/circular-progress.stories.tsx",
         "src/stories/progress.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
@@ -6936,6 +6986,440 @@
             "dark"
           ],
           "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "AvatarGroup": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/avatar-group.tsx",
+      "description": "Renders up to `max` overlapping avatars followed by a `+N` overflow chip.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:AvatarGroup",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "AvatarGroup",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/avatar-group.figma.tsx",
+        "src/app/components/avatar-group.test.tsx",
+        "src/stories/avatar-group.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "max": {
+          "type": "number",
+          "optional": true
+        },
+        "size": {
+          "type": "AvatarGroupSize",
+          "default": "md"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Blockquote": {
+      "category": "Typography",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/blockquote.tsx",
+      "description": "A quoted passage; pass `cite` for the source URL and `attribution` for a byline.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Blockquote",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Blockquote",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/blockquote.figma.tsx",
+        "src/app/components/blockquote.test.tsx",
+        "src/stories/blockquote.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "attribution": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "ButtonGroup": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/button-group.tsx",
+      "description": "Groups Button (or button-like) children into a single attached segment.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:ButtonGroup",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "ButtonGroup",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/button-group.figma.tsx",
+        "src/app/components/button-group.test.tsx",
+        "src/stories/button-group.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "InputGroup": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/input-group.tsx",
+      "description": "A single-line input with optional `leading`/`trailing` adornments.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:InputGroup",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "InputGroup",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/input-group.figma.tsx",
+        "src/app/components/input-group.test.tsx",
+        "src/stories/input-group.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "leading": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "trailing": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Kbd": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/kbd.tsx",
+      "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Kbd",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Kbd",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/kbd.figma.tsx",
+        "src/app/components/kbd.test.tsx",
+        "src/stories/kbd.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "StatusDot": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/status-dot.tsx",
+      "description": "A small solid dot conveying a semantic status via `tone`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:StatusDot",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "StatusDot",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/status-dot.figma.tsx",
+        "src/app/components/status-dot.test.tsx",
+        "src/stories/status-dot.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info",
+            "neutral",
+            "inProgress"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Timestamp": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/timestamp.tsx",
+      "description": "Presents a date/time with a machine-readable `dateTime` for accessibility.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Timestamp",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Timestamp",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/timestamp.figma.tsx",
+        "src/app/components/timestamp.test.tsx",
+        "src/stories/timestamp.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "date": {
+          "type": "string | number | Date"
+        },
+        "format": {
+          "type": "enum",
+          "values": [
+            "date",
+            "time",
+            "datetime",
+            "relative"
+          ],
+          "default": "datetime"
+        },
+        "locale": {
+          "type": "string",
+          "optional": true
+        },
+        "now": {
+          "type": "string | number | Date",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "VisuallyHidden": {
+      "category": "Utility",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/visually-hidden.tsx",
+      "description": "Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:VisuallyHidden",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "VisuallyHidden",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/visually-hidden.figma.tsx",
+        "src/app/components/visually-hidden.test.tsx",
+        "src/stories/visually-hidden.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "span"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "CircularProgress": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/circular-progress.tsx",
+      "description": "A circular progress ring; pass `value`/`max` or set `indeterminate`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:CircularProgress",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "CircularProgress",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/circular-progress.figma.tsx",
+        "src/app/components/circular-progress.test.tsx",
+        "src/stories/circular-progress.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "indeterminate": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "max": {
+          "type": "number",
+          "default": 100
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md"
+        },
+        "value": {
+          "type": "number",
+          "default": 0
         }
       },
       "allowedChildren": [
