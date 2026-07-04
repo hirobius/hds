@@ -41,7 +41,7 @@ jobs:
       - name: Push variables to Figma API
         env:
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
-          FIGMA_TOKEN:    ${{ secrets.FIGMA_PERSONAL_ACCESS_TOKEN }}
+          FIGMA_TOKEN: ${{ secrets.FIGMA_PERSONAL_ACCESS_TOKEN }}
         run: |
           RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
             "https://api.figma.com/v1/files/${FIGMA_FILE_KEY}/variables" \
