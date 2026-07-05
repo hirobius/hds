@@ -9,9 +9,9 @@
  * a Code Connect stub — plus a Swiss-canon fixture. Makes "ingest a new
  * component" a single standardized step (ADR-020 §5).
  *
- *   pnpm hds:new HdsExample
- *   pnpm hds:new HdsExample --dry-run
- *   pnpm scaffold:component HdsExample      # legacy alias, identical behaviour
+ *   pnpm hds:new Example
+ *   pnpm hds:new Example --dry-run
+ *   pnpm scaffold:component Example      # legacy alias, identical behaviour
  *
  * --dry-run     prints the planned writes without touching disk (CI-safe; this
  *               is what the unit's validationCmd uses).
@@ -20,8 +20,8 @@
  *
  * Manifest mutation is atomic — read once, mutate in memory, write once — and
  * is then reconciled by the real `generate-manifest` extraction on finalize.
- * Component name must be PascalCase and start with `Hds` (the project prefix,
- * read implicitly from the Swiss-canon convention).
+ * Component name must be plain PascalCase — the `Hds` prefix is retired
+ * (fleet-wide de-prefix migration; see CHANGELOG).
  */
 
 import fs from 'fs';
@@ -38,8 +38,8 @@ const FIXTURE_ROOT = path.join(ROOT, 'fixtures/swiss-canon');
 
 function usage() {
   console.error('Usage: pnpm hds:new <PascalCaseName> [--dry-run] [--no-generate]');
-  console.error('  Component name must be PascalCase, prefixed with Hds');
-  console.error('  e.g. pnpm hds:new HdsExample');
+  console.error('  Component name must be plain PascalCase (the Hds prefix is retired)');
+  console.error('  e.g. pnpm hds:new Example');
 }
 
 function parseArgs(argv) {
@@ -53,17 +53,20 @@ function parseArgs(argv) {
 function validateName(name) {
   if (!name) return 'name required';
   if (!/^_*[A-Z][A-Za-z0-9]+$/.test(name)) {
-    return 'name must be PascalCase (e.g. HdsExample). Leading underscores allowed for sandbox/dry-run names.';
+    return 'name must be PascalCase (e.g. Example). Leading underscores allowed for sandbox/dry-run names.';
   }
   const stripped = name.replace(/^_+/, '');
-  if (!stripped.startsWith('Hds')) {
-    return 'name must start with the Hds prefix';
+  if (stripped.startsWith('Hds')) {
+    return 'the Hds prefix is retired — use a plain PascalCase name (e.g. Example, not HdsExample)';
   }
   return null;
 }
 
 function kebabCase(name) {
-  return name.replace(/^_+/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  return name
+    .replace(/^_+/, '')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 }
 
 function camelCase(name) {
@@ -240,7 +243,9 @@ function main() {
   const manifest = readManifest();
 
   if (manifest.componentSpecs?.[name]) {
-    console.error(`Error: componentSpecs["${name}"] already exists in manifest. Pick a different name or update by hand.`);
+    console.error(
+      `Error: componentSpecs["${name}"] already exists in manifest. Pick a different name or update by hand.`,
+    );
     process.exit(1);
   }
   for (const p of [paths.componentPath, paths.storyPath, paths.testPath, paths.codeConnectPath]) {
@@ -253,14 +258,25 @@ function main() {
   const spec = buildSpecStub(name);
 
   if (dryRun) {
-    console.log('[dry-run] would write component:  ', rel(paths.componentPath), `(${componentSource.length} bytes)`);
+    console.log(
+      '[dry-run] would write component:  ',
+      rel(paths.componentPath),
+      `(${componentSource.length} bytes)`,
+    );
     console.log('[dry-run] would write story:      ', rel(paths.storyPath));
     console.log('[dry-run] would write test:       ', rel(paths.testPath));
     console.log('[dry-run] would write code-connect:', rel(paths.codeConnectPath));
-    console.log('[dry-run] would add manifest entry:', name, `(desc ${spec.description.length} chars)`);
+    console.log(
+      '[dry-run] would add manifest entry:',
+      name,
+      `(desc ${spec.description.length} chars)`,
+    );
     console.log('[dry-run] would write fixture:    ', rel(paths.fixtureInputPath));
     console.log('[dry-run] would write fixture:    ', rel(paths.fixtureExpectedPath));
-    console.log('[dry-run] would run:              ', 'generate-manifest + generate-component-api (unless --no-generate)');
+    console.log(
+      '[dry-run] would run:              ',
+      'generate-manifest + generate-component-api (unless --no-generate)',
+    );
     return;
   }
 
@@ -291,7 +307,11 @@ function main() {
   }
 
   console.log('\nNext steps:');
-  console.log('  1. Add', `export * from './app/components/${kebabCase(name)}';`, 'to src/index.ts');
+  console.log(
+    '  1. Add',
+    `export * from './app/components/${kebabCase(name)}';`,
+    'to src/index.ts',
+  );
   console.log('  2. Flesh out variant logic in', rel(paths.componentPath));
   console.log('  3. pnpm typecheck && pnpm test && pnpm api:update');
 }

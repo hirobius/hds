@@ -111,18 +111,18 @@
     "./app/components/button-group": ["ButtonGroup", "ButtonGroupProps", "buttonGroupVariants"],
     "./app/components/input-group": ["InputGroup", "InputGroupProps"],
     "./app/components/circular-progress": ["CircularProgress", "CircularProgressProps"],
-    "./app/components/hds-toggle-button": [
-      "HdsToggleButton",
-      "HdsToggleButtonProps",
+    "./app/components/toggle-button": [
+      "ToggleButton",
+      "ToggleButtonProps",
       "hdsToggleButtonVariants"
     ],
-    "./app/components/hds-aspect-ratio": ["HdsAspectRatio", "HdsAspectRatioProps"],
-    "./app/components/hds-alert-dialog": ["HdsAlertDialog"],
-    "./app/components/hds-hover-card": ["HdsHoverCard"],
-    "./app/components/hds-context-menu": ["HdsContextMenu"],
+    "./app/components/aspect-ratio": ["AspectRatio", "AspectRatioProps"],
+    "./app/components/alert-dialog": ["AlertDialog"],
+    "./app/components/hover-card": ["HoverCard"],
+    "./app/components/context-menu": ["ContextMenu"],
     "./app/components/side-nav": ["SideNav", "SideNavLevel", "SideNavProps"],
     "./app/components/command-palette": ["CommandPalette", "CommandPaletteProps"],
-    "./app/components/image-lightbox": ["HdsLightbox"],
+    "./app/components/image-lightbox": ["Lightbox"],
     "./app/components/metadata-list": [
       "MetadataList",
       "MetadataListItem",
@@ -139,24 +139,20 @@
     ],
     "./app/components/tokenizer": ["Tokenizer", "TokenizerProps"],
     "./app/components/file-input": ["FileInput", "FileInputProps"],
-    "./app/components/hds-multi-selector": [
-      "HdsMultiSelector",
-      "HdsMultiSelectorOption",
-      "HdsMultiSelectorProps"
+    "./app/components/multi-selector": [
+      "MultiSelector",
+      "MultiSelectorOption",
+      "MultiSelectorProps"
     ],
     "./app/components/toolbar": ["Toolbar"],
     "./app/components/tree-list": ["TreeList", "TreeListProps", "TreeNode"],
     "./app/components/stepper": ["Step", "Stepper", "StepperProps", "stepMarkerVariants"],
     "./app/components/carousel": ["Carousel", "CarouselProps"],
-    "./app/components/hds-calendar": ["HdsCalendar", "HdsCalendarProps"],
-    "./app/components/hds-time-input": [
-      "HdsTimeInput",
-      "HdsTimeInputProps",
-      "hdsTimeInputVariants"
-    ],
-    "./app/components/hds-date-input": ["HdsDateInput", "HdsDateInputProps"],
-    "./app/components/hds-date-range-input": ["HdsDateRangeInput", "HdsDateRangeInputProps"],
-    "./app/components/hds-date-time-input": ["HdsDateTimeInput", "HdsDateTimeInputProps"],
+    "./app/components/calendar": ["Calendar", "CalendarProps"],
+    "./app/components/time-input": ["TimeInput", "TimeInputProps", "hdsTimeInputVariants"],
+    "./app/components/date-input": ["DateInput", "DateInputProps"],
+    "./app/components/date-range-input": ["DateRangeInput", "DateRangeInputProps"],
+    "./app/components/date-time-input": ["DateTimeInput", "DateTimeInputProps"],
     "./app/components/page": ["Page"],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
     "./app/components/error-boundary": ["ErrorBoundary"],

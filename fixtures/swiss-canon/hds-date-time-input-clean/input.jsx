@@ -1,1 +1,1 @@
-<HdsDateTimeInput />;
+<DateTimeInput />;

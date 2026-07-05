@@ -14,13 +14,12 @@ const DOC_EXEMPT_PATTERN = /@doc-exempt:\s*(.+)/i;
 const TAG_PATTERN = /@(category|internal|doc-ignore|figma|tier)\b(?:\s+([^\r\n*]+))?/g;
 const TIER_VALUES = new Set(['primitive', 'pattern', 'template', 'utility']);
 
-const SKIP_DIRS = new Set([
-  '__tests__',
-  'figma',
-]);
+const SKIP_DIRS = new Set(['__tests__', 'figma']);
 
 function cleanText(value) {
-  return String(value ?? '').replace(/\s+/g, ' ').trim();
+  return String(value ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function toRelativePath(path) {
@@ -144,7 +143,9 @@ function parseTags(block, source) {
     if (key === 'figma') {
       const figmaCandidate = cleanText(value);
       if (/^(https?:\/\/|figma\.com\/)/i.test(figmaCandidate)) {
-        tags.figmaUrl = figmaCandidate.startsWith('http') ? figmaCandidate : `https://${figmaCandidate}`;
+        tags.figmaUrl = figmaCandidate.startsWith('http')
+          ? figmaCandidate
+          : `https://${figmaCandidate}`;
       }
     }
     if (key === 'tier') {
@@ -163,7 +164,13 @@ export function discoverHdsComponents() {
 
   for (const filePath of files) {
     const source = readFileSync(filePath, 'utf8');
-    const sourceFile = ts.createSourceFile(filePath, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+    const sourceFile = ts.createSourceFile(
+      filePath,
+      source,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX,
+    );
     const exportedNames = getExportedValueNames(sourceFile);
 
     if (exportedNames.length === 0) continue;
@@ -190,12 +197,13 @@ export function discoverHdsComponents() {
       // Filters out exported constants (ALL_UPPERCASE) and exported helper
       // functions (camelCase / lowercase-start) that share a doc-exempt source file.
       const isComponentShapeName = /^[A-Z]/.test(name) && /[a-z]/.test(name);
-      const shouldInclude = isComponentShapeName
-        && (/^Hds[A-Z]/.test(name) || Boolean(category) || internal || docExempt);
+      const shouldInclude =
+        isComponentShapeName &&
+        (/^Hds[A-Z]/.test(name) || Boolean(category) || internal || docExempt);
 
       if (docIgnore) continue;
 
-      if (filePath.startsWith(COMPONENTS_DIR) && !name.startsWith('Hds')) {
+      if (filePath.startsWith(COMPONENTS_DIR) && name.startsWith('Hds')) {
         namespaceViolations.push({
           name,
           filePath: toRelativePath(filePath),
@@ -216,14 +224,22 @@ export function discoverHdsComponents() {
         docExempt,
         figmaUrl,
         tier,
-        namespaceViolation: !name.startsWith('Hds'),
-        tagState: docExempt ? 'doc-exempt' : internal ? 'internal' : category ? 'category' : 'uncategorized',
+        namespaceViolation: name.startsWith('Hds'),
+        tagState: docExempt
+          ? 'doc-exempt'
+          : internal
+            ? 'internal'
+            : category
+              ? 'category'
+              : 'uncategorized',
       });
     }
   }
 
   components.sort((a, b) => a.name.localeCompare(b.name) || a.filePath.localeCompare(b.filePath));
-  namespaceViolations.sort((a, b) => a.name.localeCompare(b.name) || a.filePath.localeCompare(b.filePath));
+  namespaceViolations.sort(
+    (a, b) => a.name.localeCompare(b.name) || a.filePath.localeCompare(b.filePath),
+  );
 
   return {
     components,

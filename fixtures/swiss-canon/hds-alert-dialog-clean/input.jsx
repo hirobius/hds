@@ -1,1 +1,1 @@
-<HdsAlertDialog />;
+<AlertDialog />;

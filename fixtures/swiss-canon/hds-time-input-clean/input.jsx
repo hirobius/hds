@@ -1,1 +1,1 @@
-<HdsTimeInput aria-label="Start time" />;
+<TimeInput aria-label="Start time" />;
