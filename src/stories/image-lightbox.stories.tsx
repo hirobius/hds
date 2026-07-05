@@ -1,18 +1,18 @@
 /**
- * HdsLightbox stories. Interactive open via a trigger (closed on mount).
+ * Lightbox stories. Interactive open via a trigger (closed on mount).
  * @see src/app/components/image-lightbox.tsx
  */
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { HdsLightbox } from '../app/components/image-lightbox';
+import { Lightbox } from '../app/components/image-lightbox';
 import { Button } from '../app/components/button';
 
 const meta = {
   title: 'Primitives/image-lightbox',
-  component: HdsLightbox,
+  component: Lightbox,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
-} satisfies Meta<typeof HdsLightbox>;
+} satisfies Meta<typeof Lightbox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -22,7 +22,7 @@ function LightboxDemo() {
   return (
     <>
       <Button onClick={() => setOpen(true)}>Open lightbox</Button>
-      <HdsLightbox
+      <Lightbox
         open={open}
         onClose={() => setOpen(false)}
         src="/assets/example.webp"
