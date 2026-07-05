@@ -1,6 +1,8 @@
-/** @internal — utility-tier component; not part of @hirobius/design-system public API. */
 /**
- * @tier utility
+ * HdsLightbox — full-bleed image viewer built on Radix Dialog.
+ * @category Overlays
+ * @tier primitive
+ * @public
  *
  * Full-bleed image viewer built on Radix Dialog (raw primitives, not the card
  * `Dialog` wrapper — a lightbox is a transparent full-screen surface, not a
@@ -10,7 +12,7 @@
  * Motion is retained via `forceMount` + AnimatePresence + `asChild`: the
  * backdrop fades and the image panel scales/translates in, exactly as before.
  */
-// @doc-exempt: portfolio lightbox utility used by case-study media, not a consumer-facing HDS component
+// motion-ok: motion/react AnimatePresence drives the backdrop fade + panel scale; Radix owns the modal contract.
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'motion/react';
 import { X } from 'lucide-react';
@@ -23,7 +25,7 @@ import { InlineLink } from './inline-link';
 import { Stack } from './stack';
 import { Surface } from './surface';
 
-interface ImageLightboxProps {
+interface HdsLightboxProps {
   open: boolean;
   onClose: () => void;
   src: string;
@@ -35,7 +37,7 @@ interface ImageLightboxProps {
   captionLabel?: string;
 }
 
-export function ImageLightbox({
+export function HdsLightbox({
   open,
   onClose,
   src,
@@ -45,7 +47,7 @@ export function ImageLightbox({
   caption,
   captionHref,
   captionLabel,
-}: ImageLightboxProps) {
+}: HdsLightboxProps) {
   const overlayInset = hds.semantic.space.layout.gap;
 
   return (

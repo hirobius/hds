@@ -1,0 +1,1 @@
+<Toolbar aria-label="Formatting" />;

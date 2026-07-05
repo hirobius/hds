@@ -1,14 +1,11 @@
 {
-  "updatedAt": "2026-07-03T10:00:00Z",
+  "updatedAt": "2026-07-05T02:00:00Z",
   "phase": "active",
-  "headline": "8 autonomous issues landed on claude/auth-correction-pending-lkewb8 (#72 #71 #57 #69 #61 #73 #63 #67): Alert Figma sync, caption type token, HdsTooltip, HdsThemeProvider, Textarea, pnpm hds:new recipe, design.md harvester. 0.10.0 still live; the 16 remaining open issues need Adrian's input (decisions/deletions/human steps).",
+  "headline": "Astryx coverage build (#76) COMPLETE on claude/design-system-build-plan-xrj5qm — all tiers shipped and green across 6 commits: 14 Tier-1 (9 native + 5 Radix skins), 3 promotions, 12 Tier-2 patterns, 5 Tier-3 date/time components (react-day-picker v10 + date-fns per ADR-020). 34 components total. 1108 vitest passing; every Lean-gate-set gate green (typecheck, lint --max-warnings=0, contrast, app build + size-limit, smoke:consumer, storybook). Awaiting review + merge.",
   "next": [
-    "Review + merge branch claude/auth-correction-pending-lkewb8 (8 issues)",
-    "Rotate overdue quarterly tokens (GitHub/Vercel/Anthropic/Discord, due 2026-07-01) — untracked auth item",
-    "Decision-gated: Sterilize 2-7 (#49-#53), typography Satoshi-only (#48), cva variant contract (#60), data-brand rename (#62)"
+    "Review + merge claude/design-system-build-plan-xrj5qm (6 commits; changesets aggregate to a single minor bump)",
+    "Optional follow-ups: add an Overlays doc page (unblocks @doc-exempt overlays incl. HdsAlertDialog/HdsHoverCard/HdsContextMenu/HdsMultiSelector), wire Figma Code Connect stubs, add visual-regression coverage for the date family",
+    "Monitor the virtual-hds-manifest size budget (now 42.7/46 kB) as more components land"
   ],
-  "blocked": [
-    "Satoshi upload to Figma team fonts (human step) gates the text-style swap (#48)",
-    "Quarterly token rotation is a human/vendor-dashboard step (cannot be automated)"
-  ]
+  "blocked": []
 }

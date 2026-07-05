@@ -40,13 +40,19 @@
   "componentInventory": [
     "Alert",
     "Avatar",
+    "AvatarGroup",
     "Badge",
+    "Blockquote",
     "Breadcrumb",
+    "ButtonGroup",
     "Callout",
     "Card",
+    "Carousel",
     "CinematicLink",
+    "CircularProgress",
     "CodeBlock",
     "Combobox",
+    "CommandPalette",
     "ComponentInstanceMatrix",
     "Container",
     "Dialog",
@@ -55,35 +61,56 @@
     "DocLinkCard",
     "EmptyState",
     "Field",
+    "FileInput",
     "Form",
     "FormField",
     "FormFieldShell",
     "FoundationSwatch",
     "Grid",
+    "HdsAlertDialog",
+    "HdsAspectRatio",
+    "HdsCalendar",
     "HdsCheckbox",
+    "HdsContextMenu",
+    "HdsDateInput",
+    "HdsDateRangeInput",
+    "HdsDateTimeInput",
+    "HdsHoverCard",
+    "HdsLightbox",
+    "HdsMultiSelector",
     "HdsRadio",
     "HdsSlider",
     "HdsThemeProvider",
+    "HdsTimeInput",
     "HdsToggle",
+    "HdsToggleButton",
     "HeadingStack",
     "Icon",
     "IconButton",
     "InlineCode",
     "InlineLink",
+    "InputGroup",
+    "Kbd",
+    "MetadataList",
     "NavGroup",
     "NavItem",
+    "OverflowList",
     "Page",
     "Pagination",
     "Progress",
     "SegmentedControl",
+    "SelectableCard",
+    "SideNav",
     "Skeleton",
     "Sketch",
     "SpecimenBlock",
     "Spinner",
     "Stack",
     "Stat",
+    "StatusDot",
     "StatusListItem",
     "StatusTile",
+    "Stepper",
     "StepperField",
     "Surface",
     "Table",
@@ -95,8 +122,14 @@
     "Text",
     "TextLockup",
     "TileGrid",
+    "Timestamp",
     "ToastProvider",
-    "Token"
+    "Token",
+    "Tokenizer",
+    "Toolbar",
+    "TopNav",
+    "TreeList",
+    "VisuallyHidden"
   ],
   "typographyRamp": {
     "status": "active",
@@ -532,6 +565,10 @@
         "filePath": "src/app/components/api-reference.tsx"
       },
       {
+        "name": "AppShell",
+        "filePath": "src/app/components/app-shell.tsx"
+      },
+      {
         "name": "AssetImg",
         "filePath": "src/app/components/asset-img.tsx"
       },
@@ -544,12 +581,20 @@
         "filePath": "src/app/components/avatar.tsx"
       },
       {
+        "name": "AvatarGroup",
+        "filePath": "src/app/components/avatar-group.tsx"
+      },
+      {
         "name": "Badge",
         "filePath": "src/app/components/badge.tsx"
       },
       {
         "name": "bezierPath",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "Blockquote",
+        "filePath": "src/app/components/blockquote.tsx"
       },
       {
         "name": "BLUE_HEX",
@@ -580,12 +625,20 @@
         "filePath": "src/app/components/doc-sections.tsx"
       },
       {
+        "name": "ButtonGroup",
+        "filePath": "src/app/components/button-group.tsx"
+      },
+      {
         "name": "Callout",
         "filePath": "src/app/components/callout.tsx"
       },
       {
         "name": "Card",
         "filePath": "src/app/components/card.tsx"
+      },
+      {
+        "name": "Carousel",
+        "filePath": "src/app/components/carousel.tsx"
       },
       {
         "name": "CascadePreview",
@@ -602,6 +655,10 @@
       {
         "name": "CinematicLink",
         "filePath": "src/app/components/cinematic-link.tsx"
+      },
+      {
+        "name": "CircularProgress",
+        "filePath": "src/app/components/circular-progress.tsx"
       },
       {
         "name": "CodeBlock",
@@ -712,6 +769,10 @@
         "filePath": "src/app/components/field.tsx"
       },
       {
+        "name": "FileInput",
+        "filePath": "src/app/components/file-input.tsx"
+      },
+      {
         "name": "FONT_SIZES",
         "filePath": "src/app/components/doc-sections.tsx"
       },
@@ -768,10 +829,6 @@
         "filePath": "src/app/components/icon-button.tsx"
       },
       {
-        "name": "ImageLightbox",
-        "filePath": "src/app/components/image-lightbox.tsx"
-      },
-      {
         "name": "InfoPage",
         "filePath": "src/app/components/info-page.tsx"
       },
@@ -788,6 +845,14 @@
         "filePath": "src/app/components/input.tsx"
       },
       {
+        "name": "InputGroup",
+        "filePath": "src/app/components/input-group.tsx"
+      },
+      {
+        "name": "Kbd",
+        "filePath": "src/app/components/kbd.tsx"
+      },
+      {
         "name": "LAYOUT_NOTES",
         "filePath": "src/app/components/doc-sections.tsx"
       },
@@ -802,6 +867,10 @@
       {
         "name": "LETTER_SPACING",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "MetadataList",
+        "filePath": "src/app/components/metadata-list.tsx"
       },
       {
         "name": "MorphCard",
@@ -822,6 +891,10 @@
       {
         "name": "NotFoundPattern",
         "filePath": "src/app/components/not-found-pattern.tsx"
+      },
+      {
+        "name": "OverflowList",
+        "filePath": "src/app/components/overflow-list.tsx"
       },
       {
         "name": "Page",
@@ -870,6 +943,10 @@
       {
         "name": "SegmentedControl",
         "filePath": "src/app/components/segmented-control.tsx"
+      },
+      {
+        "name": "SelectableCard",
+        "filePath": "src/app/components/selectable-card.tsx"
       },
       {
         "name": "SideNav",
@@ -928,12 +1005,20 @@
         "filePath": "src/app/components/stat.tsx"
       },
       {
+        "name": "StatusDot",
+        "filePath": "src/app/components/status-dot.tsx"
+      },
+      {
         "name": "StatusListItem",
         "filePath": "src/app/components/status-list-item.tsx"
       },
       {
         "name": "StatusTile",
         "filePath": "src/app/components/status-tile.tsx"
+      },
+      {
+        "name": "Stepper",
+        "filePath": "src/app/components/stepper.tsx"
       },
       {
         "name": "StepperField",
@@ -1004,6 +1089,10 @@
         "filePath": "src/app/components/tile-grid.tsx"
       },
       {
+        "name": "Timestamp",
+        "filePath": "src/app/components/timestamp.tsx"
+      },
+      {
         "name": "ToastProvider",
         "filePath": "src/app/components/toast.tsx"
       },
@@ -1028,6 +1117,10 @@
         "filePath": "src/app/components/TokenDisplayToggle.tsx"
       },
       {
+        "name": "Tokenizer",
+        "filePath": "src/app/components/tokenizer.tsx"
+      },
+      {
         "name": "TokenList",
         "filePath": "src/app/components/lab/token-list.tsx"
       },
@@ -1040,12 +1133,24 @@
         "filePath": "src/app/components/health-rail.tsx"
       },
       {
+        "name": "Toolbar",
+        "filePath": "src/app/components/toolbar.tsx"
+      },
+      {
         "name": "Tooltip",
         "filePath": "src/app/components/tooltip.tsx"
       },
       {
         "name": "TooltipDemo",
         "filePath": "src/app/components/doc-sections.tsx"
+      },
+      {
+        "name": "TopNav",
+        "filePath": "src/app/components/top-nav.tsx"
+      },
+      {
+        "name": "TreeList",
+        "filePath": "src/app/components/tree-list.tsx"
       },
       {
         "name": "TYPE_PRESETS",
@@ -1070,6 +1175,10 @@
       {
         "name": "VariantStrip",
         "filePath": "src/app/components/variant-strip.tsx"
+      },
+      {
+        "name": "VisuallyHidden",
+        "filePath": "src/app/components/visually-hidden.tsx"
       }
     ]
   },
@@ -2074,6 +2183,8 @@
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/doc-sections.tsx",
+        "src/app/components/hds-context-menu.tsx",
+        "src/app/components/hds-multi-selector.tsx",
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
@@ -2502,6 +2613,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/hds-hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -2948,7 +3060,6 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
-        "src/app/components/side-nav.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
@@ -3574,6 +3685,8 @@
         "src/app/components/stack.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/text.tsx",
+        "src/app/components/tokenizer.tsx",
+        "src/app/components/visually-hidden.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/tag.stories.tsx"
@@ -4658,6 +4771,9 @@
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
+        "src/app/components/hds-alert-dialog.tsx",
+        "src/app/components/hds-date-input.tsx",
+        "src/app/components/hds-date-time-input.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/heading-anchor.tsx",
         "src/app/components/info-page.tsx",
@@ -4665,6 +4781,7 @@
         "src/app/components/preview-frame.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/tokenTableUtils.ts",
+        "src/app/components/toolbar.test.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/docs/patterns/_template.tsx",
@@ -4680,7 +4797,8 @@
         "src/stories/skeleton.stories.tsx",
         "src/stories/sketch.stories.tsx",
         "src/stories/surface.stories.tsx",
-        "src/stories/text.stories.tsx"
+        "src/stories/text.stories.tsx",
+        "src/stories/toolbar.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4708,6 +4826,8 @@
       "consumers": [
         "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
+        "src/app/components/hds-alert-dialog.test.tsx",
+        "src/app/components/hds-alert-dialog.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
@@ -6315,7 +6435,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/avatar-group.test.tsx",
+        "src/app/components/avatar-group.tsx",
         "src/app/components/avatar.test.tsx",
+        "src/stories/avatar-group.stories.tsx",
         "src/stories/avatar.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6370,6 +6493,7 @@
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
         "src/app/data/projects.ts",
+        "src/stories/circular-progress.stories.tsx",
         "src/stories/progress.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
@@ -6674,6 +6798,8 @@
       "consumers": [
         "src/app/components/combobox.test.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/hds-date-range-input.tsx",
+        "src/app/components/hds-multi-selector.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/popover.stories.tsx"
       ],
@@ -6934,6 +7060,1574 @@
           "values": [
             "light",
             "dark"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "AvatarGroup": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/avatar-group.tsx",
+      "description": "Renders up to `max` overlapping avatars followed by a `+N` overflow chip.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:AvatarGroup",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "AvatarGroup",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/avatar-group.figma.tsx",
+        "src/app/components/avatar-group.test.tsx",
+        "src/stories/avatar-group.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "max": {
+          "type": "number",
+          "optional": true
+        },
+        "size": {
+          "type": "AvatarGroupSize",
+          "default": "md"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Blockquote": {
+      "category": "Typography",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/blockquote.tsx",
+      "description": "A quoted passage; pass `cite` for the source URL and `attribution` for a byline.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Blockquote",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Blockquote",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/blockquote.figma.tsx",
+        "src/app/components/blockquote.test.tsx",
+        "src/stories/blockquote.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "attribution": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "ButtonGroup": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/button-group.tsx",
+      "description": "Groups Button (or button-like) children into a single attached segment.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:ButtonGroup",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "ButtonGroup",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/button-group.figma.tsx",
+        "src/app/components/button-group.test.tsx",
+        "src/stories/button-group.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "InputGroup": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/input-group.tsx",
+      "description": "A single-line input with optional `leading`/`trailing` adornments.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:InputGroup",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "InputGroup",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/input-group.figma.tsx",
+        "src/app/components/input-group.test.tsx",
+        "src/stories/input-group.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "leading": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "trailing": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Kbd": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/kbd.tsx",
+      "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Kbd",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Kbd",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/kbd.figma.tsx",
+        "src/app/components/kbd.test.tsx",
+        "src/stories/kbd.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "StatusDot": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/status-dot.tsx",
+      "description": "A small solid dot conveying a semantic status via `tone`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:StatusDot",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "StatusDot",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/status-dot.figma.tsx",
+        "src/app/components/status-dot.test.tsx",
+        "src/stories/status-dot.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info",
+            "neutral",
+            "inProgress"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Timestamp": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/timestamp.tsx",
+      "description": "Presents a date/time with a machine-readable `dateTime` for accessibility.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Timestamp",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Timestamp",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/timestamp.figma.tsx",
+        "src/app/components/timestamp.test.tsx",
+        "src/stories/timestamp.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "date": {
+          "type": "string | number | Date"
+        },
+        "format": {
+          "type": "enum",
+          "values": [
+            "date",
+            "time",
+            "datetime",
+            "relative"
+          ],
+          "default": "datetime"
+        },
+        "locale": {
+          "type": "string",
+          "optional": true
+        },
+        "now": {
+          "type": "string | number | Date",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "VisuallyHidden": {
+      "category": "Utility",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/visually-hidden.tsx",
+      "description": "Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:VisuallyHidden",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "VisuallyHidden",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/visually-hidden.figma.tsx",
+        "src/app/components/visually-hidden.test.tsx",
+        "src/stories/visually-hidden.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "span"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "CircularProgress": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/circular-progress.tsx",
+      "description": "A circular progress ring; pass `value`/`max` or set `indeterminate`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:CircularProgress",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "CircularProgress",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/circular-progress.figma.tsx",
+        "src/app/components/circular-progress.test.tsx",
+        "src/stories/circular-progress.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "indeterminate": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "max": {
+          "type": "number",
+          "default": 100
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md"
+        },
+        "value": {
+          "type": "number",
+          "default": 0
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsAspectRatio": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-aspect-ratio.tsx",
+      "description": "Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsAspectRatio",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsAspectRatio",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-aspect-ratio.figma.tsx",
+        "src/app/components/hds-aspect-ratio.test.tsx",
+        "src/stories/hds-aspect-ratio.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "ratio": {
+          "type": "number",
+          "default": 1
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsToggleButton": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-toggle-button.tsx",
+      "description": "A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsToggleButton",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsToggleButton",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-toggle-button.figma.tsx",
+        "src/app/components/hds-toggle-button.test.tsx",
+        "src/stories/hds-toggle-button.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "secondary",
+            "ghost"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsAlertDialog": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-alert-dialog.tsx",
+      "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsAlertDialog",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsAlertDialog",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-alert-dialog.figma.tsx",
+        "src/app/components/hds-alert-dialog.test.tsx",
+        "src/stories/hds-alert-dialog.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsContextMenu": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-context-menu.tsx",
+      "description": "ContextMenu root + parts. Wrap the right-clickable area in `HdsContextMenu.Trigger`. Controlled via `onOpenChange`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsContextMenu",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsContextMenu",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-context-menu.figma.tsx",
+        "src/app/components/hds-context-menu.test.tsx",
+        "src/stories/hds-context-menu.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsHoverCard": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-hover-card.tsx",
+      "description": "HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsHoverCard",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsHoverCard",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-hover-card.figma.tsx",
+        "src/app/components/hds-hover-card.test.tsx",
+        "src/stories/hds-hover-card.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "SideNav": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "filePath": "src/app/components/side-nav.tsx",
+      "description": "SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child page link. Keeps the same full-width hit area and label type treatment, with indentation handled via inner padding only. No indicator bar (reserved for HdsTocNav). Idle text = content-secondary → primary on hover/active. Accent surface fill on active state.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "consumers": [
+        "src/app/components/side-nav.figma.tsx",
+        "src/stories/side-nav.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "preview": {
+        "exportName": "SideNav",
+        "sizing": "panel"
+      },
+      "tier": "primitive",
+      "docExempt": false,
+      "variantAxes": [],
+      "componentProperties": [],
+      "figmaLink": "TODO:hds-master:SideNav"
+    },
+    "CommandPalette": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/command-palette.tsx",
+      "description": "Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:CommandPalette",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "CommandPalette",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/command-palette.figma.tsx",
+        "src/app/lib/hds-search.ts",
+        "src/stories/command-palette.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsLightbox": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/image-lightbox.tsx",
+      "description": "HdsLightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a lightbox is a transparent full-screen surface, not a centered card). Radix owns the modal a11y contract the hand-rolled version was missing: focus trap, focus restore on close, Escape, and scroll-lock. Motion is retained via `forceMount` + AnimatePresence + `asChild`: the backdrop fades and the image panel scales/translates in, exactly as before.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsLightbox",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsLightbox",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/image-lightbox.figma.tsx",
+        "src/app/components/image-lightbox.test.tsx",
+        "src/stories/image-lightbox.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "alt": {
+          "type": "string",
+          "optional": true
+        },
+        "caption": {
+          "type": "string",
+          "optional": true
+        },
+        "captionHref": {
+          "type": "string",
+          "optional": true
+        },
+        "captionLabel": {
+          "type": "string",
+          "optional": true
+        },
+        "naturalHeight": {
+          "type": "number",
+          "optional": true
+        },
+        "naturalWidth": {
+          "type": "number",
+          "optional": true
+        },
+        "onClose": {
+          "type": "() => void"
+        },
+        "open": {
+          "type": "boolean"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "AppShell": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/app-shell.tsx",
+      "description": "Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:AppShell",
+      "tier": "template",
+      "preview": {
+        "exportName": "AppShell",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/app-shell.figma.tsx",
+        "src/app/components/app-shell.test.tsx",
+        "src/stories/app-shell.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "FileInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/file-input.tsx",
+      "description": "A dashed dropzone that opens the native file picker or accepts a drag-and-drop.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:FileInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "FileInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/file-input.figma.tsx",
+        "src/app/components/file-input.test.tsx",
+        "src/stories/file-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "accept": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "label": {
+          "type": "ReactNode",
+          "default": "Click to upload or drag and drop"
+        },
+        "multiple": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onFiles": {
+          "type": "(files: File[]) => void",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsMultiSelector": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-multi-selector.tsx",
+      "description": "HdsMultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new dependency — built entirely on the HDS Popover. The trigger reads like a secondary Button, showing a placeholder or a `${n} selected` count; the content is a token-skinned list where each row is a checkbox toggling membership in `value`. <HdsMultiSelector options={[{ value: 'a', label: 'Apple' }, { value: 'b', label: 'Banana' }]} value={fruits} onChange={setFruits} />",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsMultiSelector",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsMultiSelector",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-multi-selector.figma.tsx",
+        "src/app/components/hds-multi-selector.test.tsx",
+        "src/stories/hds-multi-selector.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "onChange": {
+          "type": "(next: string[]) => void"
+        },
+        "options": {
+          "type": "HdsMultiSelectorOption[]"
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Select…"
+        },
+        "value": {
+          "type": "string[]"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "MetadataList": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/metadata-list.tsx",
+      "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:MetadataList",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "MetadataList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/metadata-list.figma.tsx",
+        "src/app/components/metadata-list.test.tsx",
+        "src/stories/metadata-list.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "items": {
+          "type": "MetadataListItem[]"
+        },
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "vertical"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "OverflowList": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/overflow-list.tsx",
+      "description": "Renders up to `max` children followed by a `+N` overflow chip (or custom node).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:OverflowList",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "OverflowList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/overflow-list.figma.tsx",
+        "src/app/components/overflow-list.test.tsx",
+        "src/stories/overflow-list.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "max": {
+          "type": "number",
+          "optional": true
+        },
+        "renderOverflow": {
+          "type": "(count: number) => ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "SelectableCard": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/selectable-card.tsx",
+      "description": "A card-shaped single checkbox — click or activate to toggle selection.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:SelectableCard",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "SelectableCard",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/selectable-card.figma.tsx",
+        "src/app/components/selectable-card.test.tsx",
+        "src/stories/selectable-card.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onSelectedChange": {
+          "type": "(selected: boolean) => void",
+          "optional": true
+        },
+        "selected": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Tokenizer": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/tokenizer.tsx",
+      "description": "A bordered field of Tag chips followed by a text input for adding more.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Tokenizer",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Tokenizer",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/tokenizer.figma.tsx",
+        "src/app/components/tokenizer.test.tsx",
+        "src/stories/tokenizer.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(next: string[]) => void"
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "string[]"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "TopNav": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/top-nav.tsx",
+      "description": "Top navigation bar with brand, nav, and trailing action slots.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:TopNav",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "TopNav",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/top-nav.figma.tsx",
+        "src/app/components/top-nav.test.tsx",
+        "src/stories/top-nav.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "brand": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "sticky": {
+          "type": "boolean",
+          "optional": true
+        },
+        "trailing": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Carousel": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/carousel.tsx",
+      "description": "Renders children as a snap-scrolling track with Prev/Next scroll buttons.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Carousel",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Carousel",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/carousel.figma.tsx",
+        "src/app/components/carousel.test.tsx",
+        "src/stories/carousel.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "ariaLabel": {
+          "type": "string",
+          "default": "Carousel"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "showControls": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Stepper": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/stepper.tsx",
+      "description": "Step indicator for multi-step flows. Purely presentational — no navigation.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Stepper",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Stepper",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/stepper.figma.tsx",
+        "src/app/components/stepper.test.tsx",
+        "src/stories/stepper.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "activeStep": {
+          "type": "number"
+        },
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "horizontal"
+        },
+        "steps": {
+          "type": "Step[]"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Toolbar": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/toolbar.tsx",
+      "description": "Toolbar root. Groups related controls with a single roving tab-stop. Supports the native `orientation` prop (`horizontal` | `vertical`).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Toolbar",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Toolbar",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/toolbar.figma.tsx",
+        "src/app/components/toolbar.test.tsx",
+        "src/stories/toolbar.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "TreeList": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/tree-list.tsx",
+      "description": "Renders a hierarchical `role=\"tree\"` list; nodes with children get an expand/collapse toggle.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:TreeList",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "TreeList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/tree-list.figma.tsx",
+        "src/app/components/tree-list.test.tsx",
+        "src/stories/tree-list.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "defaultExpandedIds": {
+          "type": "string[]",
+          "optional": true
+        },
+        "items": {
+          "type": "TreeNode[]"
+        },
+        "onSelect": {
+          "type": "(id: string) => void",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsCalendar": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-calendar.tsx",
+      "description": "Renders an accessible month grid; compose it inside a Popover for the date inputs.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsCalendar",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsCalendar",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-calendar.figma.tsx",
+        "src/app/components/hds-calendar.test.tsx",
+        "src/app/components/hds-date-input.tsx",
+        "src/app/components/hds-date-range-input.tsx",
+        "src/app/components/hds-date-time-input.tsx",
+        "src/stories/hds-calendar.stories.tsx",
+        "src/stories/hds-date-input.stories.tsx",
+        "src/stories/hds-date-range-input.stories.tsx",
+        "src/stories/hds-date-time-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsDateInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-date-input.tsx",
+      "description": "Text field + calendar popover for picking a single date.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsDateInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsDateInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-input.figma.tsx",
+        "src/app/components/hds-date-input.test.tsx",
+        "src/stories/hds-date-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "displayFormat": {
+          "type": "string",
+          "default": "yyyy-MM-dd"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(date: Date) => void",
+          "optional": true
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "Date",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsDateRangeInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-date-range-input.tsx",
+      "description": "HdsDateRangeInput — date-range field composing the existing Popover with HdsCalendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new primitive — built entirely on the HDS Popover + HdsCalendar. The trigger reads like a secondary input, showing a placeholder or the formatted `from – to` range; the content is a two-month range calendar. <HdsDateRangeInput value={range} onChange={setRange} />",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsDateRangeInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsDateRangeInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-range-input.figma.tsx",
+        "src/app/components/hds-date-range-input.test.tsx",
+        "src/stories/hds-date-range-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "displayFormat": {
+          "type": "string",
+          "default": "yyyy-MM-dd"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "numberOfMonths": {
+          "type": "number",
+          "default": 2
+        },
+        "onChange": {
+          "type": "(range: DateRange) => void",
+          "optional": true
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Select date range"
+        },
+        "value": {
+          "type": "DateRange",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsDateTimeInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-date-time-input.tsx",
+      "description": "Text date field + calendar popover, paired with a native time field, producing one Date.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsDateTimeInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsDateTimeInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-time-input.figma.tsx",
+        "src/app/components/hds-date-time-input.test.tsx",
+        "src/stories/hds-date-time-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "dateFormat": {
+          "type": "string",
+          "default": "yyyy-MM-dd"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(date: Date) => void",
+          "optional": true
+        },
+        "value": {
+          "type": "Date",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsTimeInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-time-input.tsx",
+      "description": "A native time field skinned with HDS input chrome. Value is a `HH:mm` string.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsTimeInput",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsTimeInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-time-input.tsx",
+        "src/app/components/hds-time-input.figma.tsx",
+        "src/app/components/hds-time-input.test.tsx",
+        "src/stories/hds-date-time-input.stories.tsx",
+        "src/stories/hds-time-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
           ],
           "optional": true
         }
@@ -8097,36 +9791,6 @@
       "preview": {},
       "tier": "utility"
     },
-    "SideNav": {
-      "category": "Navigation",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/side-nav.tsx",
-      "description": "SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child page link. Keeps the same full-width hit area and label type treatment, with indentation handled via inner padding only. No indicator bar (reserved for HdsTocNav). Idle text = content-secondary → primary on hover/active. Accent surface fill on active state.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "consumers": [
-        "src/stories/side-nav.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {
-        "exportName": "SideNav",
-        "sizing": "panel"
-      },
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SideNav"
-    },
     "CascadeText": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -8474,29 +10138,6 @@
       "consumers": [
         "src/app/pages/docs/patterns/_template.tsx",
         "src/app/pages/docs/templates/_template.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "CommandPalette": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/command-palette.tsx",
-      "description": "Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:CommandPalette",
-      "tier": "utility",
-      "preview": {
-        "exportName": "CommandPalette",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/lib/hds-search.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
