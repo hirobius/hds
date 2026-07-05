@@ -51,6 +51,7 @@
     "CircularProgress",
     "CodeBlock",
     "Combobox",
+    "CommandPalette",
     "ComponentInstanceMatrix",
     "Container",
     "Dialog",
@@ -69,6 +70,7 @@
     "HdsCheckbox",
     "HdsContextMenu",
     "HdsHoverCard",
+    "HdsLightbox",
     "HdsRadio",
     "HdsSlider",
     "HdsThemeProvider",
@@ -87,6 +89,7 @@
     "Pagination",
     "Progress",
     "SegmentedControl",
+    "SideNav",
     "Skeleton",
     "Sketch",
     "SpecimenBlock",
@@ -796,10 +799,6 @@
       {
         "name": "IconButton",
         "filePath": "src/app/components/icon-button.tsx"
-      },
-      {
-        "name": "ImageLightbox",
-        "filePath": "src/app/components/image-lightbox.tsx"
       },
       {
         "name": "InfoPage",
@@ -3000,7 +2999,6 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
-        "src/app/components/side-nav.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
@@ -7630,6 +7628,140 @@
       "requiredProps": [],
       "a11yRules": []
     },
+    "SideNav": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "filePath": "src/app/components/side-nav.tsx",
+      "description": "SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child page link. Keeps the same full-width hit area and label type treatment, with indentation handled via inner padding only. No indicator bar (reserved for HdsTocNav). Idle text = content-secondary → primary on hover/active. Accent surface fill on active state.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "consumers": [
+        "src/app/components/side-nav.figma.tsx",
+        "src/stories/side-nav.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "preview": {
+        "exportName": "SideNav",
+        "sizing": "panel"
+      },
+      "tier": "primitive",
+      "docExempt": false,
+      "variantAxes": [],
+      "componentProperties": [],
+      "figmaLink": "TODO:hds-master:SideNav"
+    },
+    "CommandPalette": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/command-palette.tsx",
+      "description": "Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:CommandPalette",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "CommandPalette",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/command-palette.figma.tsx",
+        "src/app/lib/hds-search.ts",
+        "src/stories/command-palette.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsLightbox": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/image-lightbox.tsx",
+      "description": "HdsLightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a lightbox is a transparent full-screen surface, not a centered card). Radix owns the modal a11y contract the hand-rolled version was missing: focus trap, focus restore on close, Escape, and scroll-lock. Motion is retained via `forceMount` + AnimatePresence + `asChild`: the backdrop fades and the image panel scales/translates in, exactly as before.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsLightbox",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsLightbox",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/image-lightbox.figma.tsx",
+        "src/app/components/image-lightbox.test.tsx",
+        "src/stories/image-lightbox.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "alt": {
+          "type": "string",
+          "optional": true
+        },
+        "caption": {
+          "type": "string",
+          "optional": true
+        },
+        "captionHref": {
+          "type": "string",
+          "optional": true
+        },
+        "captionLabel": {
+          "type": "string",
+          "optional": true
+        },
+        "naturalHeight": {
+          "type": "number",
+          "optional": true
+        },
+        "naturalWidth": {
+          "type": "number",
+          "optional": true
+        },
+        "onClose": {
+          "type": "() => void"
+        },
+        "open": {
+          "type": "boolean"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -8782,36 +8914,6 @@
       "preview": {},
       "tier": "utility"
     },
-    "SideNav": {
-      "category": "Navigation",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/side-nav.tsx",
-      "description": "SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child page link. Keeps the same full-width hit area and label type treatment, with indentation handled via inner padding only. No indicator bar (reserved for HdsTocNav). Idle text = content-secondary → primary on hover/active. Accent surface fill on active state.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "consumers": [
-        "src/stories/side-nav.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {
-        "exportName": "SideNav",
-        "sizing": "panel"
-      },
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SideNav"
-    },
     "CascadeText": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -9159,29 +9261,6 @@
       "consumers": [
         "src/app/pages/docs/patterns/_template.tsx",
         "src/app/pages/docs/templates/_template.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "CommandPalette": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/command-palette.tsx",
-      "description": "Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:CommandPalette",
-      "tier": "utility",
-      "preview": {
-        "exportName": "CommandPalette",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/lib/hds-search.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],

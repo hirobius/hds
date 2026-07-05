@@ -76,6 +76,11 @@ export * from './app/components/hds-alert-dialog';
 export * from './app/components/hds-hover-card';
 export * from './app/components/hds-context-menu';
 
+// ── Astryx-gap coverage — promoted internals (0.12.0) ──
+export * from './app/components/side-nav';
+export * from './app/components/command-palette';
+export * from './app/components/image-lightbox';
+
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
 export * from './app/components/empty-state';
