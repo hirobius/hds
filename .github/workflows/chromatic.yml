@@ -36,6 +36,12 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Storybook stories import gitignored generated artifacts
+      # (src/app/data/component-api.json, token-audit-report.json). Regenerate
+      # them before the build, mirroring ci.yml's "Generate data artifacts" step
+      # so Chromatic builds the same Storybook the lean gate does.
+      - name: Generate data artifacts
+        run: node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
       - uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
