@@ -64,11 +64,16 @@
     "FormFieldShell",
     "FoundationSwatch",
     "Grid",
+    "HdsAlertDialog",
+    "HdsAspectRatio",
     "HdsCheckbox",
+    "HdsContextMenu",
+    "HdsHoverCard",
     "HdsRadio",
     "HdsSlider",
     "HdsThemeProvider",
     "HdsToggle",
+    "HdsToggleButton",
     "HeadingStack",
     "Icon",
     "IconButton",
@@ -2119,6 +2124,7 @@
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/doc-sections.tsx",
+        "src/app/components/hds-context-menu.tsx",
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
@@ -2547,6 +2553,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/hds-hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -4704,6 +4711,7 @@
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
+        "src/app/components/hds-alert-dialog.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/heading-anchor.tsx",
         "src/app/components/info-page.tsx",
@@ -4754,6 +4762,8 @@
       "consumers": [
         "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
+        "src/app/components/hds-alert-dialog.test.tsx",
+        "src/app/components/hds-alert-dialog.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
@@ -7422,6 +7432,197 @@
           "default": 0
         }
       },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsAspectRatio": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-aspect-ratio.tsx",
+      "description": "Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsAspectRatio",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsAspectRatio",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-aspect-ratio.figma.tsx",
+        "src/app/components/hds-aspect-ratio.test.tsx",
+        "src/stories/hds-aspect-ratio.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "ratio": {
+          "type": "number",
+          "default": 1
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsToggleButton": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-toggle-button.tsx",
+      "description": "A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsToggleButton",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsToggleButton",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-toggle-button.figma.tsx",
+        "src/app/components/hds-toggle-button.test.tsx",
+        "src/stories/hds-toggle-button.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "secondary",
+            "ghost"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsAlertDialog": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-alert-dialog.tsx",
+      "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsAlertDialog",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsAlertDialog",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-alert-dialog.figma.tsx",
+        "src/app/components/hds-alert-dialog.test.tsx",
+        "src/stories/hds-alert-dialog.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsContextMenu": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-context-menu.tsx",
+      "description": "ContextMenu root + parts. Wrap the right-clickable area in `HdsContextMenu.Trigger`. Controlled via `onOpenChange`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsContextMenu",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsContextMenu",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-context-menu.figma.tsx",
+        "src/app/components/hds-context-menu.test.tsx",
+        "src/stories/hds-context-menu.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsHoverCard": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/hds-hover-card.tsx",
+      "description": "HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsHoverCard",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsHoverCard",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-hover-card.figma.tsx",
+        "src/app/components/hds-hover-card.test.tsx",
+        "src/stories/hds-hover-card.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
       "allowedChildren": [
         "*"
       ],

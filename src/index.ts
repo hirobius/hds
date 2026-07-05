@@ -69,6 +69,13 @@ export * from './app/components/button-group';
 export * from './app/components/input-group';
 export * from './app/components/circular-progress';
 
+// ── Astryx-gap coverage — Tier 1 Radix skins (0.12.0) ──
+export * from './app/components/hds-toggle-button';
+export * from './app/components/hds-aspect-ratio';
+export * from './app/components/hds-alert-dialog';
+export * from './app/components/hds-hover-card';
+export * from './app/components/hds-context-menu';
+
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
 export * from './app/components/empty-state';
