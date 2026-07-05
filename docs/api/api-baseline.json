@@ -148,6 +148,15 @@
     "./app/components/tree-list": ["TreeList", "TreeListProps", "TreeNode"],
     "./app/components/stepper": ["Step", "Stepper", "StepperProps", "stepMarkerVariants"],
     "./app/components/carousel": ["Carousel", "CarouselProps"],
+    "./app/components/hds-calendar": ["HdsCalendar", "HdsCalendarProps"],
+    "./app/components/hds-time-input": [
+      "HdsTimeInput",
+      "HdsTimeInputProps",
+      "hdsTimeInputVariants"
+    ],
+    "./app/components/hds-date-input": ["HdsDateInput", "HdsDateInputProps"],
+    "./app/components/hds-date-range-input": ["HdsDateRangeInput", "HdsDateRangeInputProps"],
+    "./app/components/hds-date-time-input": ["HdsDateTimeInput", "HdsDateTimeInputProps"],
     "./app/components/page": ["Page"],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
     "./app/components/error-boundary": ["ErrorBoundary"],

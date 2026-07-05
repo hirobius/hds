@@ -69,14 +69,19 @@
     "Grid",
     "HdsAlertDialog",
     "HdsAspectRatio",
+    "HdsCalendar",
     "HdsCheckbox",
     "HdsContextMenu",
+    "HdsDateInput",
+    "HdsDateRangeInput",
+    "HdsDateTimeInput",
     "HdsHoverCard",
     "HdsLightbox",
     "HdsMultiSelector",
     "HdsRadio",
     "HdsSlider",
     "HdsThemeProvider",
+    "HdsTimeInput",
     "HdsToggle",
     "HdsToggleButton",
     "HeadingStack",
@@ -4767,6 +4772,8 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/hds-alert-dialog.tsx",
+        "src/app/components/hds-date-input.tsx",
+        "src/app/components/hds-date-time-input.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/heading-anchor.tsx",
         "src/app/components/info-page.tsx",
@@ -6791,6 +6798,7 @@
       "consumers": [
         "src/app/components/combobox.test.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/hds-date-range-input.tsx",
         "src/app/components/hds-multi-selector.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/popover.stories.tsx"
@@ -8356,6 +8364,271 @@
         },
         "onSelect": {
           "type": "(id: string) => void",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsCalendar": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-calendar.tsx",
+      "description": "Renders an accessible month grid; compose it inside a Popover for the date inputs.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsCalendar",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsCalendar",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-calendar.figma.tsx",
+        "src/app/components/hds-calendar.test.tsx",
+        "src/app/components/hds-date-input.tsx",
+        "src/app/components/hds-date-range-input.tsx",
+        "src/app/components/hds-date-time-input.tsx",
+        "src/stories/hds-calendar.stories.tsx",
+        "src/stories/hds-date-input.stories.tsx",
+        "src/stories/hds-date-range-input.stories.tsx",
+        "src/stories/hds-date-time-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsDateInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-date-input.tsx",
+      "description": "Text field + calendar popover for picking a single date.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsDateInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsDateInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-input.figma.tsx",
+        "src/app/components/hds-date-input.test.tsx",
+        "src/stories/hds-date-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "displayFormat": {
+          "type": "string",
+          "default": "yyyy-MM-dd"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(date: Date) => void",
+          "optional": true
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "Date",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsDateRangeInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-date-range-input.tsx",
+      "description": "HdsDateRangeInput — date-range field composing the existing Popover with HdsCalendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new primitive — built entirely on the HDS Popover + HdsCalendar. The trigger reads like a secondary input, showing a placeholder or the formatted `from – to` range; the content is a two-month range calendar. <HdsDateRangeInput value={range} onChange={setRange} />",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsDateRangeInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsDateRangeInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-range-input.figma.tsx",
+        "src/app/components/hds-date-range-input.test.tsx",
+        "src/stories/hds-date-range-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "displayFormat": {
+          "type": "string",
+          "default": "yyyy-MM-dd"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "numberOfMonths": {
+          "type": "number",
+          "default": 2
+        },
+        "onChange": {
+          "type": "(range: DateRange) => void",
+          "optional": true
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Select date range"
+        },
+        "value": {
+          "type": "DateRange",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsDateTimeInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-date-time-input.tsx",
+      "description": "Text date field + calendar popover, paired with a native time field, producing one Date.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsDateTimeInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsDateTimeInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-time-input.figma.tsx",
+        "src/app/components/hds-date-time-input.test.tsx",
+        "src/stories/hds-date-time-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "dateFormat": {
+          "type": "string",
+          "default": "yyyy-MM-dd"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(date: Date) => void",
+          "optional": true
+        },
+        "value": {
+          "type": "Date",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "HdsTimeInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/hds-time-input.tsx",
+      "description": "A native time field skinned with HDS input chrome. Value is a `HH:mm` string.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HdsTimeInput",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsTimeInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hds-date-time-input.tsx",
+        "src/app/components/hds-time-input.figma.tsx",
+        "src/app/components/hds-time-input.test.tsx",
+        "src/stories/hds-date-time-input.stories.tsx",
+        "src/stories/hds-time-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
           "optional": true
         }
       },
