@@ -6,7 +6,17 @@ A publishable React + TypeScript component library, backed by a governed design-
 
 Installing HDS in another project? It ships to the **public npm registry** as
 `@hirobius/design-system` (ESM) — no `.npmrc`, no token, no registry config. Full
-guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**. The short version:
+guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**.
+
+> **Not on GitHub Packages.** This repo's **Packages** sidebar still shows an old
+> `@hirobius/design-system` entry under GitHub Packages
+> (`/pkgs/npm/design-system`). That listing is **frozen and no longer updated** —
+> publishing moved to the public npm registry in
+> [#39](https://github.com/hirobius/hirobius-design-system/pull/39). Always
+> install from npm:
+> **[npmjs.com/package/@hirobius/design-system](https://www.npmjs.com/package/@hirobius/design-system)**.
+
+The short version:
 
 ```bash
 npm install @hirobius/design-system react react-dom
