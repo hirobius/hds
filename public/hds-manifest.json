@@ -47,6 +47,7 @@
     "ButtonGroup",
     "Callout",
     "Card",
+    "Carousel",
     "CinematicLink",
     "CircularProgress",
     "CodeBlock",
@@ -104,6 +105,7 @@
     "StatusDot",
     "StatusListItem",
     "StatusTile",
+    "Stepper",
     "StepperField",
     "Surface",
     "Table",
@@ -119,7 +121,9 @@
     "ToastProvider",
     "Token",
     "Tokenizer",
+    "Toolbar",
     "TopNav",
+    "TreeList",
     "VisuallyHidden"
   ],
   "typographyRamp": {
@@ -628,6 +632,10 @@
         "filePath": "src/app/components/card.tsx"
       },
       {
+        "name": "Carousel",
+        "filePath": "src/app/components/carousel.tsx"
+      },
+      {
         "name": "CascadePreview",
         "filePath": "src/app/components/doc-sections.tsx"
       },
@@ -1004,6 +1012,10 @@
         "filePath": "src/app/components/status-tile.tsx"
       },
       {
+        "name": "Stepper",
+        "filePath": "src/app/components/stepper.tsx"
+      },
+      {
         "name": "StepperField",
         "filePath": "src/app/components/stepper-field.tsx"
       },
@@ -1116,6 +1128,10 @@
         "filePath": "src/app/components/health-rail.tsx"
       },
       {
+        "name": "Toolbar",
+        "filePath": "src/app/components/toolbar.tsx"
+      },
+      {
         "name": "Tooltip",
         "filePath": "src/app/components/tooltip.tsx"
       },
@@ -1126,6 +1142,10 @@
       {
         "name": "TopNav",
         "filePath": "src/app/components/top-nav.tsx"
+      },
+      {
+        "name": "TreeList",
+        "filePath": "src/app/components/tree-list.tsx"
       },
       {
         "name": "TYPE_PRESETS",
@@ -4754,6 +4774,7 @@
         "src/app/components/preview-frame.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/tokenTableUtils.ts",
+        "src/app/components/toolbar.test.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/pages/docs/patterns/_template.tsx",
@@ -4769,7 +4790,8 @@
         "src/stories/skeleton.stories.tsx",
         "src/stories/sketch.stories.tsx",
         "src/stories/surface.stories.tsx",
-        "src/stories/text.stories.tsx"
+        "src/stories/text.stories.tsx",
+        "src/stories/toolbar.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8162,6 +8184,178 @@
         },
         "trailing": {
           "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Carousel": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/carousel.tsx",
+      "description": "Renders children as a snap-scrolling track with Prev/Next scroll buttons.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Carousel",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Carousel",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/carousel.figma.tsx",
+        "src/app/components/carousel.test.tsx",
+        "src/stories/carousel.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "ariaLabel": {
+          "type": "string",
+          "default": "Carousel"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "showControls": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Stepper": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/stepper.tsx",
+      "description": "Step indicator for multi-step flows. Purely presentational — no navigation.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Stepper",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Stepper",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/stepper.figma.tsx",
+        "src/app/components/stepper.test.tsx",
+        "src/stories/stepper.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "activeStep": {
+          "type": "number"
+        },
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "horizontal"
+        },
+        "steps": {
+          "type": "Step[]"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Toolbar": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/toolbar.tsx",
+      "description": "Toolbar root. Groups related controls with a single roving tab-stop. Supports the native `orientation` prop (`horizontal` | `vertical`).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Toolbar",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Toolbar",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/toolbar.figma.tsx",
+        "src/app/components/toolbar.test.tsx",
+        "src/stories/toolbar.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "TreeList": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/tree-list.tsx",
+      "description": "Renders a hierarchical `role=\"tree\"` list; nodes with children get an expand/collapse toggle.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:TreeList",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "TreeList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/tree-list.figma.tsx",
+        "src/app/components/tree-list.test.tsx",
+        "src/stories/tree-list.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "defaultExpandedIds": {
+          "type": "string[]",
+          "optional": true
+        },
+        "items": {
+          "type": "TreeNode[]"
+        },
+        "onSelect": {
+          "type": "(id: string) => void",
           "optional": true
         }
       },
