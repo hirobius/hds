@@ -144,6 +144,10 @@
       "HdsMultiSelectorOption",
       "HdsMultiSelectorProps"
     ],
+    "./app/components/toolbar": ["Toolbar"],
+    "./app/components/tree-list": ["TreeList", "TreeListProps", "TreeNode"],
+    "./app/components/stepper": ["Step", "Stepper", "StepperProps", "stepMarkerVariants"],
+    "./app/components/carousel": ["Carousel", "CarouselProps"],
     "./app/components/page": ["Page"],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
     "./app/components/error-boundary": ["ErrorBoundary"],

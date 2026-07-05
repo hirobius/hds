@@ -90,6 +90,10 @@ export * from './app/components/selectable-card';
 export * from './app/components/tokenizer';
 export * from './app/components/file-input';
 export * from './app/components/hds-multi-selector';
+export * from './app/components/toolbar';
+export * from './app/components/tree-list';
+export * from './app/components/stepper';
+export * from './app/components/carousel';
 
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
