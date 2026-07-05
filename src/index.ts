@@ -95,6 +95,13 @@ export * from './app/components/tree-list';
 export * from './app/components/stepper';
 export * from './app/components/carousel';
 
+// ── Astryx-gap coverage — Tier 3 date/time family (ADR-020) ──
+export * from './app/components/hds-calendar';
+export * from './app/components/hds-time-input';
+export * from './app/components/hds-date-input';
+export * from './app/components/hds-date-range-input';
+export * from './app/components/hds-date-time-input';
+
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
 export * from './app/components/empty-state';
