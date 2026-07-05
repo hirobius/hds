@@ -111,6 +111,15 @@
     "./app/components/button-group": ["ButtonGroup", "ButtonGroupProps", "buttonGroupVariants"],
     "./app/components/input-group": ["InputGroup", "InputGroupProps"],
     "./app/components/circular-progress": ["CircularProgress", "CircularProgressProps"],
+    "./app/components/hds-toggle-button": [
+      "HdsToggleButton",
+      "HdsToggleButtonProps",
+      "hdsToggleButtonVariants"
+    ],
+    "./app/components/hds-aspect-ratio": ["HdsAspectRatio", "HdsAspectRatioProps"],
+    "./app/components/hds-alert-dialog": ["HdsAlertDialog"],
+    "./app/components/hds-hover-card": ["HdsHoverCard"],
+    "./app/components/hds-context-menu": ["HdsContextMenu"],
     "./app/components/page": ["Page"],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
     "./app/components/error-boundary": ["ErrorBoundary"],
