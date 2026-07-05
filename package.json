@@ -119,6 +119,7 @@
     "codemod": "jscodeshift --parser=tsx --extensions=tsx,ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "storybook:deploy": "node scripts/deploy-storybook.mjs",
     "chromatic": "chromatic --exit-zero-on-changes",
     "release": "pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish",
     "check": "pnpm check:full",
