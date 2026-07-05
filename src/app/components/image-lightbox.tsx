@@ -1,5 +1,5 @@
 /**
- * HdsLightbox — full-bleed image viewer built on Radix Dialog.
+ * Lightbox — full-bleed image viewer built on Radix Dialog.
  * @category Overlays
  * @tier primitive
  * @public
@@ -25,7 +25,7 @@ import { InlineLink } from './inline-link';
 import { Stack } from './stack';
 import { Surface } from './surface';
 
-interface HdsLightboxProps {
+interface LightboxProps {
   open: boolean;
   onClose: () => void;
   src: string;
@@ -37,7 +37,7 @@ interface HdsLightboxProps {
   captionLabel?: string;
 }
 
-export function HdsLightbox({
+export function Lightbox({
   open,
   onClose,
   src,
@@ -47,7 +47,7 @@ export function HdsLightbox({
   caption,
   captionHref,
   captionLabel,
-}: HdsLightboxProps) {
+}: LightboxProps) {
   const overlayInset = hds.semantic.space.layout.gap;
 
   return (

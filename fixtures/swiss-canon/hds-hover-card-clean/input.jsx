@@ -1,1 +1,1 @@
-<HdsHoverCard />;
+<HoverCard />;

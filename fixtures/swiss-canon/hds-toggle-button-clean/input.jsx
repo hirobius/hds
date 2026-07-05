@@ -1,3 +1,3 @@
-<HdsToggleButton variant="secondary" size="md">
+<ToggleButton variant="secondary" size="md">
   Bold
-</HdsToggleButton>;
+</ToggleButton>;

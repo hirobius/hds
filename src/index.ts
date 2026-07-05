@@ -70,11 +70,11 @@ export * from './app/components/input-group';
 export * from './app/components/circular-progress';
 
 // ── Astryx-gap coverage — Tier 1 Radix skins (0.12.0) ──
-export * from './app/components/hds-toggle-button';
-export * from './app/components/hds-aspect-ratio';
-export * from './app/components/hds-alert-dialog';
-export * from './app/components/hds-hover-card';
-export * from './app/components/hds-context-menu';
+export * from './app/components/toggle-button';
+export * from './app/components/aspect-ratio';
+export * from './app/components/alert-dialog';
+export * from './app/components/hover-card';
+export * from './app/components/context-menu';
 
 // ── Astryx-gap coverage — promoted internals (0.12.0) ──
 export * from './app/components/side-nav';
@@ -89,18 +89,18 @@ export * from './app/components/app-shell';
 export * from './app/components/selectable-card';
 export * from './app/components/tokenizer';
 export * from './app/components/file-input';
-export * from './app/components/hds-multi-selector';
+export * from './app/components/multi-selector';
 export * from './app/components/toolbar';
 export * from './app/components/tree-list';
 export * from './app/components/stepper';
 export * from './app/components/carousel';
 
 // ── Astryx-gap coverage — Tier 3 date/time family (ADR-020) ──
-export * from './app/components/hds-calendar';
-export * from './app/components/hds-time-input';
-export * from './app/components/hds-date-input';
-export * from './app/components/hds-date-range-input';
-export * from './app/components/hds-date-time-input';
+export * from './app/components/calendar';
+export * from './app/components/time-input';
+export * from './app/components/date-input';
+export * from './app/components/date-range-input';
+export * from './app/components/date-time-input';
 
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';

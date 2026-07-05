@@ -39,12 +39,15 @@
   },
   "componentInventory": [
     "Alert",
+    "AlertDialog",
+    "AspectRatio",
     "Avatar",
     "AvatarGroup",
     "Badge",
     "Blockquote",
     "Breadcrumb",
     "ButtonGroup",
+    "Calendar",
     "Callout",
     "Card",
     "Carousel",
@@ -55,6 +58,10 @@
     "CommandPalette",
     "ComponentInstanceMatrix",
     "Container",
+    "ContextMenu",
+    "DateInput",
+    "DateRangeInput",
+    "DateTimeInput",
     "Dialog",
     "Disclosure",
     "Divider",
@@ -67,31 +74,22 @@
     "FormFieldShell",
     "FoundationSwatch",
     "Grid",
-    "HdsAlertDialog",
-    "HdsAspectRatio",
-    "HdsCalendar",
     "HdsCheckbox",
-    "HdsContextMenu",
-    "HdsDateInput",
-    "HdsDateRangeInput",
-    "HdsDateTimeInput",
-    "HdsHoverCard",
-    "HdsLightbox",
-    "HdsMultiSelector",
     "HdsRadio",
     "HdsSlider",
     "HdsThemeProvider",
-    "HdsTimeInput",
     "HdsToggle",
-    "HdsToggleButton",
     "HeadingStack",
+    "HoverCard",
     "Icon",
     "IconButton",
     "InlineCode",
     "InlineLink",
     "InputGroup",
     "Kbd",
+    "Lightbox",
     "MetadataList",
+    "MultiSelector",
     "NavGroup",
     "NavItem",
     "OverflowList",
@@ -122,8 +120,10 @@
     "Text",
     "TextLockup",
     "TileGrid",
+    "TimeInput",
     "Timestamp",
     "ToastProvider",
+    "ToggleButton",
     "Token",
     "Tokenizer",
     "Toolbar",
@@ -549,636 +549,40 @@
     ],
     "namespaceViolations": [
       {
-        "name": "ActivityFeed",
-        "filePath": "src/app/components/activity-feed.tsx"
+        "name": "HdsCheckbox",
+        "filePath": "src/app/components/checkbox.tsx"
       },
       {
-        "name": "Alert",
-        "filePath": "src/app/components/alert.tsx"
+        "name": "HdsComponentDoc",
+        "filePath": "src/app/components/ComponentDocPage.tsx"
       },
       {
-        "name": "AnimatedLabel",
-        "filePath": "src/app/components/animated-label.tsx"
-      },
-      {
-        "name": "ApiReference",
-        "filePath": "src/app/components/api-reference.tsx"
-      },
-      {
-        "name": "AppShell",
-        "filePath": "src/app/components/app-shell.tsx"
-      },
-      {
-        "name": "AssetImg",
-        "filePath": "src/app/components/asset-img.tsx"
-      },
-      {
-        "name": "AutoPreviewSpecimen",
-        "filePath": "src/app/components/componentPreviewRegistry.tsx"
-      },
-      {
-        "name": "Avatar",
-        "filePath": "src/app/components/avatar.tsx"
-      },
-      {
-        "name": "AvatarGroup",
-        "filePath": "src/app/components/avatar-group.tsx"
-      },
-      {
-        "name": "Badge",
-        "filePath": "src/app/components/badge.tsx"
-      },
-      {
-        "name": "bezierPath",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Blockquote",
-        "filePath": "src/app/components/blockquote.tsx"
-      },
-      {
-        "name": "BLUE_HEX",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "BLUE_STEPS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Breadcrumb",
-        "filePath": "src/app/components/breadcrumb.tsx"
-      },
-      {
-        "name": "buildApiRowsFromManifest",
-        "filePath": "src/app/components/api-reference.tsx"
-      },
-      {
-        "name": "buildPropTableRows",
-        "filePath": "src/app/components/propTableUtils.tsx"
-      },
-      {
-        "name": "Button",
-        "filePath": "src/app/components/button.tsx"
-      },
-      {
-        "name": "BUTTON_DEMO_STATES",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "ButtonGroup",
-        "filePath": "src/app/components/button-group.tsx"
-      },
-      {
-        "name": "Callout",
-        "filePath": "src/app/components/callout.tsx"
-      },
-      {
-        "name": "Card",
-        "filePath": "src/app/components/card.tsx"
-      },
-      {
-        "name": "Carousel",
-        "filePath": "src/app/components/carousel.tsx"
-      },
-      {
-        "name": "CascadePreview",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "CascadeText",
-        "filePath": "src/app/components/CascadeText.tsx"
-      },
-      {
-        "name": "CategoryComponentDocs",
-        "filePath": "src/app/components/CategoryComponentDocs.tsx"
-      },
-      {
-        "name": "CinematicLink",
-        "filePath": "src/app/components/cinematic-link.tsx"
-      },
-      {
-        "name": "CircularProgress",
-        "filePath": "src/app/components/circular-progress.tsx"
-      },
-      {
-        "name": "CodeBlock",
-        "filePath": "src/app/components/code-block.tsx"
-      },
-      {
-        "name": "Combobox",
-        "filePath": "src/app/components/combobox.tsx"
-      },
-      {
-        "name": "CommandPalette",
-        "filePath": "src/app/components/command-palette.tsx"
-      },
-      {
-        "name": "ComponentInstanceMatrix",
-        "filePath": "src/app/components/component-instance-matrix.tsx"
-      },
-      {
-        "name": "ComponentPreview",
-        "filePath": "src/app/components/component-preview.tsx"
-      },
-      {
-        "name": "Container",
-        "filePath": "src/app/components/container.tsx"
-      },
-      {
-        "name": "ControlsPanel",
-        "filePath": "src/app/components/controls-panel.tsx"
-      },
-      {
-        "name": "ControlsSection",
-        "filePath": "src/app/components/controls-panel.tsx"
-      },
-      {
-        "name": "defaultActivityEvents",
-        "filePath": "src/app/components/activity-feed.tsx"
-      },
-      {
-        "name": "DemoBlock",
-        "filePath": "src/app/components/demo-block.tsx"
-      },
-      {
-        "name": "DemoButton",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "DemoTag",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Dialog",
-        "filePath": "src/app/components/dialog.tsx"
-      },
-      {
-        "name": "Disclosure",
-        "filePath": "src/app/components/disclosure.tsx"
-      },
-      {
-        "name": "Divider",
-        "filePath": "src/app/components/divider.tsx"
-      },
-      {
-        "name": "DocLabel",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "DocLinkCard",
-        "filePath": "src/app/components/doc-link-card.tsx"
-      },
-      {
-        "name": "DocPageHeader",
-        "filePath": "src/app/components/doc-page-header.tsx"
-      },
-      {
-        "name": "DocPageSpec",
-        "filePath": "src/app/components/DocPageSpec.tsx"
-      },
-      {
-        "name": "DocTOC",
-        "filePath": "src/app/components/doc-toc.tsx"
-      },
-      {
-        "name": "DURATION_STEPS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "EASING_CURVES",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "EmptyState",
-        "filePath": "src/app/components/empty-state.tsx"
-      },
-      {
-        "name": "ErrorBoundary",
-        "filePath": "src/app/components/error-boundary.tsx"
-      },
-      {
-        "name": "ErrorPattern",
-        "filePath": "src/app/components/error-pattern.tsx"
-      },
-      {
-        "name": "FEEDBACK_COLORS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Field",
-        "filePath": "src/app/components/field.tsx"
-      },
-      {
-        "name": "FileInput",
-        "filePath": "src/app/components/file-input.tsx"
-      },
-      {
-        "name": "FONT_SIZES",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Form",
-        "filePath": "src/app/components/form.tsx"
-      },
-      {
-        "name": "FormField",
-        "filePath": "src/app/components/form.tsx"
-      },
-      {
-        "name": "FormFieldShell",
-        "filePath": "src/app/components/form.tsx"
-      },
-      {
-        "name": "FoundationSwatch",
-        "filePath": "src/app/components/foundation-swatch.tsx"
-      },
-      {
-        "name": "getCategoryComponentNames",
-        "filePath": "src/app/components/CategoryComponentDocs.tsx"
-      },
-      {
-        "name": "getPreviewVariantGroups",
-        "filePath": "src/app/components/componentPreviewRegistry.tsx"
-      },
-      {
-        "name": "Grid",
-        "filePath": "src/app/components/grid.tsx"
-      },
-      {
-        "name": "HeadingAnchor",
-        "filePath": "src/app/components/heading-anchor.tsx"
-      },
-      {
-        "name": "HeadingStack",
-        "filePath": "src/app/components/heading-stack.tsx"
-      },
-      {
-        "name": "HistoryCard",
-        "filePath": "src/app/components/history-card.tsx"
-      },
-      {
-        "name": "HRule",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Icon",
-        "filePath": "src/app/components/icon.tsx"
-      },
-      {
-        "name": "IconButton",
-        "filePath": "src/app/components/icon-button.tsx"
-      },
-      {
-        "name": "InfoPage",
-        "filePath": "src/app/components/info-page.tsx"
-      },
-      {
-        "name": "InlineCode",
-        "filePath": "src/app/components/inline-code.tsx"
-      },
-      {
-        "name": "InlineLink",
-        "filePath": "src/app/components/inline-link.tsx"
-      },
-      {
-        "name": "Input",
-        "filePath": "src/app/components/input.tsx"
-      },
-      {
-        "name": "InputGroup",
-        "filePath": "src/app/components/input-group.tsx"
-      },
-      {
-        "name": "Kbd",
-        "filePath": "src/app/components/kbd.tsx"
-      },
-      {
-        "name": "LAYOUT_NOTES",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "LegacyTokenDetail",
+        "name": "HdsLegacyTokenGovernancePanel",
         "filePath": "src/app/components/lab/legacy-token-detail.tsx"
       },
       {
-        "name": "LegacyTokenList",
-        "filePath": "src/app/components/lab/legacy-token-list.tsx"
+        "name": "HdsMobileTopBar",
+        "filePath": "src/app/components/shell-controls.tsx"
       },
       {
-        "name": "LETTER_SPACING",
-        "filePath": "src/app/components/doc-sections.tsx"
+        "name": "HdsRadio",
+        "filePath": "src/app/components/radio.tsx"
       },
       {
-        "name": "MetadataList",
-        "filePath": "src/app/components/metadata-list.tsx"
+        "name": "HdsSelect",
+        "filePath": "src/app/components/select.tsx"
       },
       {
-        "name": "MorphCard",
-        "filePath": "src/app/components/morph-card.tsx"
+        "name": "HdsSidebarUtilityButton",
+        "filePath": "src/app/components/shell-controls.tsx"
       },
       {
-        "name": "NavGroup",
-        "filePath": "src/app/components/nav-group.tsx"
+        "name": "HdsSlider",
+        "filePath": "src/app/components/slider.tsx"
       },
       {
-        "name": "NavItem",
-        "filePath": "src/app/components/nav-item.tsx"
-      },
-      {
-        "name": "NEUTRAL_STEPS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "NotFoundPattern",
-        "filePath": "src/app/components/not-found-pattern.tsx"
-      },
-      {
-        "name": "OverflowList",
-        "filePath": "src/app/components/overflow-list.tsx"
-      },
-      {
-        "name": "Page",
-        "filePath": "src/app/components/page.tsx"
-      },
-      {
-        "name": "PageFooter",
-        "filePath": "src/app/components/page-footer.tsx"
-      },
-      {
-        "name": "Pagination",
-        "filePath": "src/app/components/pagination.tsx"
-      },
-      {
-        "name": "paginationRange",
-        "filePath": "src/app/components/pagination.tsx"
-      },
-      {
-        "name": "PreviewFrame",
-        "filePath": "src/app/components/preview-frame.tsx"
-      },
-      {
-        "name": "Progress",
-        "filePath": "src/app/components/progress.tsx"
-      },
-      {
-        "name": "projectGithubBlobUrl",
-        "filePath": "src/app/components/doc-page-header.tsx"
-      },
-      {
-        "name": "projectLede",
-        "filePath": "src/app/components/doc-page-header.tsx"
-      },
-      {
-        "name": "PROP_TABLE_COLUMNS",
-        "filePath": "src/app/components/propTableUtils.tsx"
-      },
-      {
-        "name": "resolveFigmaTarget",
-        "filePath": "src/app/components/doc-page-header.tsx"
-      },
-      {
-        "name": "resolveStability",
-        "filePath": "src/app/components/doc-page-header.tsx"
-      },
-      {
-        "name": "SegmentedControl",
-        "filePath": "src/app/components/segmented-control.tsx"
-      },
-      {
-        "name": "SelectableCard",
-        "filePath": "src/app/components/selectable-card.tsx"
-      },
-      {
-        "name": "SideNav",
-        "filePath": "src/app/components/side-nav.tsx"
-      },
-      {
-        "name": "Skeleton",
-        "filePath": "src/app/components/skeleton.tsx"
-      },
-      {
-        "name": "Sketch",
-        "filePath": "src/app/components/sketch.tsx"
-      },
-      {
-        "name": "SketchButton",
-        "filePath": "src/app/components/sketch-controls.tsx"
-      },
-      {
-        "name": "SketchCheckbox",
-        "filePath": "src/app/components/sketch-controls.tsx"
-      },
-      {
-        "name": "SketchPanelToggle",
-        "filePath": "src/app/components/sketch-controls.tsx"
-      },
-      {
-        "name": "SketchRange",
-        "filePath": "src/app/components/sketch-controls.tsx"
-      },
-      {
-        "name": "SketchTextarea",
-        "filePath": "src/app/components/sketch-controls.tsx"
-      },
-      {
-        "name": "SPACE_ENTRIES",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "SpecimenBlock",
-        "filePath": "src/app/components/specimen-block.tsx"
-      },
-      {
-        "name": "Spinner",
-        "filePath": "src/app/components/spinner.tsx"
-      },
-      {
-        "name": "Stack",
-        "filePath": "src/app/components/stack.tsx"
-      },
-      {
-        "name": "StackedCardRail",
-        "filePath": "src/app/components/stacked-card-rail.tsx"
-      },
-      {
-        "name": "Stat",
-        "filePath": "src/app/components/stat.tsx"
-      },
-      {
-        "name": "StatusDot",
-        "filePath": "src/app/components/status-dot.tsx"
-      },
-      {
-        "name": "StatusListItem",
-        "filePath": "src/app/components/status-list-item.tsx"
-      },
-      {
-        "name": "StatusTile",
-        "filePath": "src/app/components/status-tile.tsx"
-      },
-      {
-        "name": "Stepper",
-        "filePath": "src/app/components/stepper.tsx"
-      },
-      {
-        "name": "StepperField",
-        "filePath": "src/app/components/stepper-field.tsx"
-      },
-      {
-        "name": "Surface",
-        "filePath": "src/app/components/surface.tsx"
-      },
-      {
-        "name": "SURFACE_TIERS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "SurfaceSwatch",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Swatch",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Table",
-        "filePath": "src/app/components/table.tsx"
-      },
-      {
-        "name": "Tabs",
-        "filePath": "src/app/components/tabs.tsx"
-      },
-      {
-        "name": "TabsContent",
-        "filePath": "src/app/components/tabs.tsx"
-      },
-      {
-        "name": "TabsList",
-        "filePath": "src/app/components/tabs.tsx"
-      },
-      {
-        "name": "TabsTrigger",
-        "filePath": "src/app/components/tabs.tsx"
-      },
-      {
-        "name": "Tag",
-        "filePath": "src/app/components/tag.tsx"
-      },
-      {
-        "name": "TAGS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "Text",
-        "filePath": "src/app/components/text.tsx"
-      },
-      {
-        "name": "Textarea",
-        "filePath": "src/app/components/textarea.tsx"
-      },
-      {
-        "name": "TextLockup",
-        "filePath": "src/app/components/text-lockup.tsx"
-      },
-      {
-        "name": "ThemeToggle",
-        "filePath": "src/app/components/theme-toggle.tsx"
-      },
-      {
-        "name": "TileGrid",
-        "filePath": "src/app/components/tile-grid.tsx"
-      },
-      {
-        "name": "Timestamp",
-        "filePath": "src/app/components/timestamp.tsx"
-      },
-      {
-        "name": "ToastProvider",
-        "filePath": "src/app/components/toast.tsx"
-      },
-      {
-        "name": "Token",
-        "filePath": "src/app/components/token.tsx"
-      },
-      {
-        "name": "TOKEN_REF_GROUPS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "TokenCollectionList",
-        "filePath": "src/app/components/lab/token-collection-list.tsx"
-      },
-      {
-        "name": "TokenDetail",
-        "filePath": "src/app/components/lab/token-detail.tsx"
-      },
-      {
-        "name": "TokenDisplayToggle",
-        "filePath": "src/app/components/TokenDisplayToggle.tsx"
-      },
-      {
-        "name": "Tokenizer",
-        "filePath": "src/app/components/tokenizer.tsx"
-      },
-      {
-        "name": "TokenList",
-        "filePath": "src/app/components/lab/token-list.tsx"
-      },
-      {
-        "name": "TOKENS_RAIL_MIN_W",
-        "filePath": "src/app/components/health-rail.tsx"
-      },
-      {
-        "name": "TokensRail",
-        "filePath": "src/app/components/health-rail.tsx"
-      },
-      {
-        "name": "Toolbar",
-        "filePath": "src/app/components/toolbar.tsx"
-      },
-      {
-        "name": "Tooltip",
-        "filePath": "src/app/components/tooltip.tsx"
-      },
-      {
-        "name": "TooltipDemo",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "TopNav",
-        "filePath": "src/app/components/top-nav.tsx"
-      },
-      {
-        "name": "TreeList",
-        "filePath": "src/app/components/tree-list.tsx"
-      },
-      {
-        "name": "TYPE_PRESETS",
-        "filePath": "src/app/components/doc-sections.tsx"
-      },
-      {
-        "name": "useFieldWiring",
-        "filePath": "src/app/components/form.tsx"
-      },
-      {
-        "name": "useToast",
-        "filePath": "src/app/components/toast.tsx"
-      },
-      {
-        "name": "VariantPreviewDeck",
-        "filePath": "src/app/components/componentPreviewRegistry.tsx"
-      },
-      {
-        "name": "VariantPreviewDeck",
-        "filePath": "src/app/components/variant-preview-deck.tsx"
-      },
-      {
-        "name": "VariantStrip",
-        "filePath": "src/app/components/variant-strip.tsx"
-      },
-      {
-        "name": "VisuallyHidden",
-        "filePath": "src/app/components/visually-hidden.tsx"
+        "name": "HdsToggle",
+        "filePath": "src/app/components/toggle.tsx"
       }
     ]
   },
@@ -2180,11 +1584,10 @@
         "src/app/components/combobox.tsx",
         "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/context-menu.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/doc-sections.tsx",
-        "src/app/components/hds-context-menu.tsx",
-        "src/app/components/hds-multi-selector.tsx",
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
@@ -2193,6 +1596,7 @@
         "src/app/components/lab/token-detail.tsx",
         "src/app/components/lab/tokenUtils.ts",
         "src/app/components/menu.tsx",
+        "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/app/components/shell-controls.tsx",
         "src/app/components/text-lockup.tsx",
@@ -2613,7 +2017,7 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/hds-hover-card.tsx",
+        "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -4766,14 +4170,14 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert-dialog.tsx",
         "src/app/components/animated-label.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/date-input.tsx",
+        "src/app/components/date-time-input.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
-        "src/app/components/hds-alert-dialog.tsx",
-        "src/app/components/hds-date-input.tsx",
-        "src/app/components/hds-date-time-input.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/heading-anchor.tsx",
         "src/app/components/info-page.tsx",
@@ -4824,10 +4228,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert-dialog.test.tsx",
+        "src/app/components/alert-dialog.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
-        "src/app/components/hds-alert-dialog.test.tsx",
-        "src/app/components/hds-alert-dialog.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/info-page.tsx",
@@ -6797,9 +6201,9 @@
       },
       "consumers": [
         "src/app/components/combobox.test.tsx",
+        "src/app/components/date-range-input.tsx",
         "src/app/components/form.tsx",
-        "src/app/components/hds-date-range-input.tsx",
-        "src/app/components/hds-multi-selector.tsx",
+        "src/app/components/multi-selector.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/popover.stories.tsx"
       ],
@@ -7505,197 +6909,6 @@
       "requiredProps": [],
       "a11yRules": []
     },
-    "HdsAspectRatio": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/hds-aspect-ratio.tsx",
-      "description": "Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsAspectRatio",
-      "tier": "primitive",
-      "preview": {
-        "exportName": "HdsAspectRatio",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/hds-aspect-ratio.figma.tsx",
-        "src/app/components/hds-aspect-ratio.test.tsx",
-        "src/stories/hds-aspect-ratio.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "asChild": {
-          "type": "boolean",
-          "optional": true
-        },
-        "ratio": {
-          "type": "number",
-          "default": 1
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsToggleButton": {
-      "category": "Actions",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/hds-toggle-button.tsx",
-      "description": "A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsToggleButton",
-      "tier": "primitive",
-      "preview": {
-        "exportName": "HdsToggleButton",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/hds-toggle-button.figma.tsx",
-        "src/app/components/hds-toggle-button.test.tsx",
-        "src/stories/hds-toggle-button.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "asChild": {
-          "type": "boolean",
-          "optional": true
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "optional": true
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "secondary",
-            "ghost"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsAlertDialog": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/hds-alert-dialog.tsx",
-      "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsAlertDialog",
-      "tier": "primitive",
-      "preview": {
-        "exportName": "HdsAlertDialog",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/hds-alert-dialog.figma.tsx",
-        "src/app/components/hds-alert-dialog.test.tsx",
-        "src/stories/hds-alert-dialog.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsContextMenu": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/hds-context-menu.tsx",
-      "description": "ContextMenu root + parts. Wrap the right-clickable area in `HdsContextMenu.Trigger`. Controlled via `onOpenChange`.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsContextMenu",
-      "tier": "primitive",
-      "preview": {
-        "exportName": "HdsContextMenu",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/hds-context-menu.figma.tsx",
-        "src/app/components/hds-context-menu.test.tsx",
-        "src/stories/hds-context-menu.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsHoverCard": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/hds-hover-card.tsx",
-      "description": "HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsHoverCard",
-      "tier": "primitive",
-      "preview": {
-        "exportName": "HdsHoverCard",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/hds-hover-card.figma.tsx",
-        "src/app/components/hds-hover-card.test.tsx",
-        "src/stories/hds-hover-card.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
     "SideNav": {
       "category": "Navigation",
       "categorySource": "jsdoc",
@@ -7764,25 +6977,27 @@
       "requiredProps": [],
       "a11yRules": []
     },
-    "HdsLightbox": {
+    "Lightbox": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/image-lightbox.tsx",
-      "description": "HdsLightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a lightbox is a transparent full-screen surface, not a centered card). Radix owns the modal a11y contract the hand-rolled version was missing: focus trap, focus restore on close, Escape, and scroll-lock. Motion is retained via `forceMount` + AnimatePresence + `asChild`: the backdrop fades and the image panel scales/translates in, exactly as before.",
+      "description": "Lightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a lightbox is a transparent full-screen surface, not a centered card). Radix owns the modal a11y contract the hand-rolled version was missing: focus trap, focus restore on close, Escape, and scroll-lock. Motion is retained via `forceMount` + AnimatePresence + `asChild`: the backdrop fades and the image panel scales/translates in, exactly as before.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsLightbox",
+      "figmaLink": "TODO:hds-master:Lightbox",
       "tier": "primitive",
       "preview": {
-        "exportName": "HdsLightbox",
+        "exportName": "Lightbox",
         "sizing": "panel"
       },
       "consumers": [
         "src/app/components/image-lightbox.figma.tsx",
         "src/app/components/image-lightbox.test.tsx",
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/asset-img.stories.tsx",
         "src/stories/image-lightbox.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7906,60 +7121,6 @@
         "onFiles": {
           "type": "(files: File[]) => void",
           "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsMultiSelector": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/hds-multi-selector.tsx",
-      "description": "HdsMultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new dependency — built entirely on the HDS Popover. The trigger reads like a secondary Button, showing a placeholder or a `${n} selected` count; the content is a token-skinned list where each row is a checkbox toggling membership in `value`. <HdsMultiSelector options={[{ value: 'a', label: 'Apple' }, { value: 'b', label: 'Banana' }]} value={fruits} onChange={setFruits} />",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsMultiSelector",
-      "tier": "pattern",
-      "preview": {
-        "exportName": "HdsMultiSelector",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/hds-multi-selector.figma.tsx",
-        "src/app/components/hds-multi-selector.test.tsx",
-        "src/stories/hds-multi-selector.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "onChange": {
-          "type": "(next: string[]) => void"
-        },
-        "options": {
-          "type": "HdsMultiSelectorOption[]"
-        },
-        "placeholder": {
-          "type": "string",
-          "default": "Select…"
-        },
-        "value": {
-          "type": "string[]"
         }
       },
       "allowedChildren": [
@@ -8374,32 +7535,26 @@
       "requiredProps": [],
       "a11yRules": []
     },
-    "HdsCalendar": {
-      "category": "Inputs",
+    "AlertDialog": {
+      "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/hds-calendar.tsx",
-      "description": "Renders an accessible month grid; compose it inside a Popover for the date inputs.",
+      "docExempt": true,
+      "filePath": "src/app/components/alert-dialog.tsx",
+      "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsCalendar",
+      "figmaLink": "TODO:hds-master:AlertDialog",
       "tier": "primitive",
       "preview": {
-        "exportName": "HdsCalendar",
+        "exportName": "AlertDialog",
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/hds-calendar.figma.tsx",
-        "src/app/components/hds-calendar.test.tsx",
-        "src/app/components/hds-date-input.tsx",
-        "src/app/components/hds-date-range-input.tsx",
-        "src/app/components/hds-date-time-input.tsx",
-        "src/stories/hds-calendar.stories.tsx",
-        "src/stories/hds-date-input.stories.tsx",
-        "src/stories/hds-date-range-input.stories.tsx",
-        "src/stories/hds-date-time-input.stories.tsx"
+        "src/app/components/alert-dialog.figma.tsx",
+        "src/app/components/alert-dialog.test.tsx",
+        "src/stories/alert-dialog.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8412,26 +7567,137 @@
       "requiredProps": [],
       "a11yRules": []
     },
-    "HdsDateInput": {
+    "AspectRatio": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/aspect-ratio.tsx",
+      "description": "Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:AspectRatio",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "AspectRatio",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/aspect-ratio.figma.tsx",
+        "src/app/components/aspect-ratio.test.tsx",
+        "src/stories/aspect-ratio.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "ratio": {
+          "type": "number",
+          "default": 1
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Calendar": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "docExempt": false,
-      "filePath": "src/app/components/hds-date-input.tsx",
-      "description": "Text field + calendar popover for picking a single date.",
+      "filePath": "src/app/components/calendar.tsx",
+      "description": "Renders an accessible month grid; compose it inside a Popover for the date inputs.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsDateInput",
-      "tier": "pattern",
+      "figmaLink": "TODO:hds-master:Calendar",
+      "tier": "primitive",
       "preview": {
-        "exportName": "HdsDateInput",
+        "exportName": "Calendar",
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/hds-date-input.figma.tsx",
-        "src/app/components/hds-date-input.test.tsx",
-        "src/stories/hds-date-input.stories.tsx"
+        "src/app/components/calendar.figma.tsx",
+        "src/app/components/calendar.test.tsx",
+        "src/app/components/date-input.tsx",
+        "src/app/components/date-range-input.tsx",
+        "src/app/components/date-time-input.tsx",
+        "src/stories/calendar.stories.tsx",
+        "src/stories/date-input.stories.tsx",
+        "src/stories/date-range-input.stories.tsx",
+        "src/stories/date-time-input.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "ContextMenu": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/context-menu.tsx",
+      "description": "ContextMenu root + parts. Wrap the right-clickable area in `ContextMenu.Trigger`. Controlled via `onOpenChange`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:ContextMenu",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "ContextMenu",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/context-menu.figma.tsx",
+        "src/app/components/context-menu.test.tsx",
+        "src/stories/context-menu.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "DateInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/date-input.tsx",
+      "description": "Text field + calendar popover for picking a single date.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:DateInput",
+      "tier": "pattern",
+      "preview": {
+        "exportName": "DateInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/date-input.figma.tsx",
+        "src/app/components/date-input.test.tsx",
+        "src/stories/date-input.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8473,26 +7739,26 @@
       "requiredProps": [],
       "a11yRules": []
     },
-    "HdsDateRangeInput": {
+    "DateRangeInput": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "docExempt": false,
-      "filePath": "src/app/components/hds-date-range-input.tsx",
-      "description": "HdsDateRangeInput — date-range field composing the existing Popover with HdsCalendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new primitive — built entirely on the HDS Popover + HdsCalendar. The trigger reads like a secondary input, showing a placeholder or the formatted `from – to` range; the content is a two-month range calendar. <HdsDateRangeInput value={range} onChange={setRange} />",
+      "filePath": "src/app/components/date-range-input.tsx",
+      "description": "DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new primitive — built entirely on the HDS Popover + Calendar. The trigger reads like a secondary input, showing a placeholder or the formatted `from – to` range; the content is a two-month range calendar. <DateRangeInput value={range} onChange={setRange} />",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsDateRangeInput",
+      "figmaLink": "TODO:hds-master:DateRangeInput",
       "tier": "pattern",
       "preview": {
-        "exportName": "HdsDateRangeInput",
+        "exportName": "DateRangeInput",
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/hds-date-range-input.figma.tsx",
-        "src/app/components/hds-date-range-input.test.tsx",
-        "src/stories/hds-date-range-input.stories.tsx"
+        "src/app/components/date-range-input.figma.tsx",
+        "src/app/components/date-range-input.test.tsx",
+        "src/stories/date-range-input.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8538,26 +7804,26 @@
       "requiredProps": [],
       "a11yRules": []
     },
-    "HdsDateTimeInput": {
+    "DateTimeInput": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "docExempt": false,
-      "filePath": "src/app/components/hds-date-time-input.tsx",
+      "filePath": "src/app/components/date-time-input.tsx",
       "description": "Text date field + calendar popover, paired with a native time field, producing one Date.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsDateTimeInput",
+      "figmaLink": "TODO:hds-master:DateTimeInput",
       "tier": "pattern",
       "preview": {
-        "exportName": "HdsDateTimeInput",
+        "exportName": "DateTimeInput",
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/hds-date-time-input.figma.tsx",
-        "src/app/components/hds-date-time-input.test.tsx",
-        "src/stories/hds-date-time-input.stories.tsx"
+        "src/app/components/date-time-input.figma.tsx",
+        "src/app/components/date-time-input.test.tsx",
+        "src/stories/date-time-input.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8595,28 +7861,114 @@
       "requiredProps": [],
       "a11yRules": []
     },
-    "HdsTimeInput": {
+    "HoverCard": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/hover-card.tsx",
+      "description": "HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:HoverCard",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HoverCard",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/hover-card.figma.tsx",
+        "src/app/components/hover-card.test.tsx",
+        "src/stories/hover-card.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "MultiSelector": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "docExempt": false,
-      "filePath": "src/app/components/hds-time-input.tsx",
-      "description": "A native time field skinned with HDS input chrome. Value is a `HH:mm` string.",
+      "filePath": "src/app/components/multi-selector.tsx",
+      "description": "MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new dependency — built entirely on the HDS Popover. The trigger reads like a secondary Button, showing a placeholder or a `${n} selected` count; the content is a token-skinned list where each row is a checkbox toggling membership in `value`. <MultiSelector options={[{ value: 'a', label: 'Apple' }, { value: 'b', label: 'Banana' }]} value={fruits} onChange={setFruits} />",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsTimeInput",
-      "tier": "primitive",
+      "figmaLink": "TODO:hds-master:MultiSelector",
+      "tier": "pattern",
       "preview": {
-        "exportName": "HdsTimeInput",
+        "exportName": "MultiSelector",
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/hds-date-time-input.tsx",
-        "src/app/components/hds-time-input.figma.tsx",
-        "src/app/components/hds-time-input.test.tsx",
-        "src/stories/hds-date-time-input.stories.tsx",
-        "src/stories/hds-time-input.stories.tsx"
+        "src/app/components/multi-selector.figma.tsx",
+        "src/app/components/multi-selector.test.tsx",
+        "src/stories/multi-selector.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "onChange": {
+          "type": "(next: string[]) => void"
+        },
+        "options": {
+          "type": "MultiSelectorOption[]"
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Select…"
+        },
+        "value": {
+          "type": "string[]"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "TimeInput": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/time-input.tsx",
+      "description": "A native time field skinned with HDS input chrome. Value is a `HH:mm` string.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:TimeInput",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "TimeInput",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/date-time-input.tsx",
+        "src/app/components/time-input.figma.tsx",
+        "src/app/components/time-input.test.tsx",
+        "src/stories/date-time-input.stories.tsx",
+        "src/stories/time-input.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8628,6 +7980,60 @@
             "sm",
             "md",
             "lg"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "ToggleButton": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/toggle-button.tsx",
+      "description": "A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:ToggleButton",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "ToggleButton",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/toggle-button.figma.tsx",
+        "src/app/components/toggle-button.test.tsx",
+        "src/stories/toggle-button.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "secondary",
+            "ghost"
           ],
           "optional": true
         }

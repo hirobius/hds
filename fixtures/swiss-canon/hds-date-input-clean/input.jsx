@@ -1,1 +1,1 @@
-<HdsDateInput placeholder="yyyy-mm-dd" />;
+<DateInput placeholder="yyyy-mm-dd" />;

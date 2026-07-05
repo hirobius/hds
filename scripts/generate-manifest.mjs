@@ -30,6 +30,11 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['ControlsPanel', 'ControlsPanel'],
   ['Divider', 'Divider'],
   ['ExpandTooltip', 'Tooltip'],
+  // Lightbox was de-prefixed (HdsLightbox → Lightbox) but keeps its filename
+  // (image-lightbox.tsx), so the filePath-based orphan prune can't clear the
+  // old spec. Remap it here so the curated metadata migrates and no ghost
+  // HdsLightbox entry survives regen.
+  ['HdsLightbox', 'Lightbox'],
   ['Icon', 'Icon'],
   ['Input', 'Input'],
   ['InlineCode', 'InlineCode'],

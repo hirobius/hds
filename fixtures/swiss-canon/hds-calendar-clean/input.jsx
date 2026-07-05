@@ -1,1 +1,1 @@
-<HdsCalendar mode="single" />;
+<Calendar mode="single" />;
