@@ -5,10 +5,28 @@
  */
 import { defineConfig } from 'vitest/config';
 import path from 'path';
+import { readFileSync } from 'fs';
 import react from '@vitejs/plugin-react';
+
+// Mirror the app/lib `virtual:hds-manifest` plugin so components that import the
+// manifest (e.g. CommandPalette) resolve it under vitest — including the
+// story-render smoke gate that renders every story.
+const hdsManifestModuleId = 'virtual:hds-manifest';
+const resolvedHdsManifestModuleId = `\0${hdsManifestModuleId}`;
 
 export default defineConfig({
   plugins: [
+    {
+      name: 'hds-manifest-virtual-module',
+      resolveId(id: string) {
+        return id === hdsManifestModuleId ? resolvedHdsManifestModuleId : null;
+      },
+      load(id: string) {
+        if (id !== resolvedHdsManifestModuleId) return null;
+        const manifest = readFileSync(path.resolve(__dirname, 'public/hds-manifest.json'), 'utf8');
+        return `export default ${manifest};`;
+      },
+    },
     // React plugin for JSX transform in component tests
     react(),
   ],

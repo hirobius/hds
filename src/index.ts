@@ -58,6 +58,50 @@ export * from './app/components/tag';
 export * from './app/components/text';
 export * from './app/components/token';
 
+// ── Astryx-gap coverage — Tier 1 native primitives (0.12.0) ──
+export * from './app/components/kbd';
+export * from './app/components/status-dot';
+export * from './app/components/timestamp';
+export * from './app/components/blockquote';
+export * from './app/components/visually-hidden';
+export * from './app/components/avatar-group';
+export * from './app/components/button-group';
+export * from './app/components/input-group';
+export * from './app/components/circular-progress';
+
+// ── Astryx-gap coverage — Tier 1 Radix skins (0.12.0) ──
+export * from './app/components/hds-toggle-button';
+export * from './app/components/hds-aspect-ratio';
+export * from './app/components/hds-alert-dialog';
+export * from './app/components/hds-hover-card';
+export * from './app/components/hds-context-menu';
+
+// ── Astryx-gap coverage — promoted internals (0.12.0) ──
+export * from './app/components/side-nav';
+export * from './app/components/command-palette';
+export * from './app/components/image-lightbox';
+
+// ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
+export * from './app/components/metadata-list';
+export * from './app/components/overflow-list';
+export * from './app/components/top-nav';
+export * from './app/components/app-shell';
+export * from './app/components/selectable-card';
+export * from './app/components/tokenizer';
+export * from './app/components/file-input';
+export * from './app/components/hds-multi-selector';
+export * from './app/components/toolbar';
+export * from './app/components/tree-list';
+export * from './app/components/stepper';
+export * from './app/components/carousel';
+
+// ── Astryx-gap coverage — Tier 3 date/time family (ADR-020) ──
+export * from './app/components/hds-calendar';
+export * from './app/components/hds-time-input';
+export * from './app/components/hds-date-input';
+export * from './app/components/hds-date-range-input';
+export * from './app/components/hds-date-time-input';
+
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
 export * from './app/components/empty-state';

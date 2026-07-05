@@ -1,0 +1,1 @@
+<HdsDateRangeInput placeholder="Select range" />;

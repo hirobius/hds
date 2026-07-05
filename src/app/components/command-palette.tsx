@@ -1,10 +1,8 @@
-// motion-ok: Radix Dialog manages enter/exit motion; results list non-animated by design
-/** @internal — utility-tier component; not part of @hirobius/design-system public API. */
 /**
  * CommandPalette — Cmd-K / Ctrl-K fuzzy-search over the HDS manifest.
  * @category Overlays
- * @tier utility
- * @doc-exempt: doc-shell scaffolding (9d-2); not part of the public authoring surface
+ * @tier primitive
+ * @public
  *
  * Built on Dialog (8s-7 / Radix) with a custom listbox + input. NO new
  * npm deps — search is a hand-rolled subsequence + token-Levenshtein scorer
@@ -23,6 +21,7 @@
  * URL fragments that may leak from upstream description fields) are
  * stripped before render.
  */
+// motion-ok: Radix Dialog manages enter/exit motion; results list non-animated by design
 
 import * as React from 'react';
 import systemManifestData from 'virtual:hds-manifest';
