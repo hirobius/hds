@@ -1,5 +1,5 @@
 /**
- * HdsLightbox — Figma Code Connect stub (ADR-019 phase c / #47).
+ * Lightbox — Figma Code Connect stub (ADR-019 phase c / #47).
  *
  * Code Connect is not wired in this repo yet. When it is:
  *   1. add @figma/code-connect as a devDependency,
@@ -8,10 +8,10 @@
  */
 
 // import figma from '@figma/code-connect';
-// import { HdsLightbox } from './image-lightbox';
+// import { Lightbox } from './image-lightbox';
 //
-// figma.connect(HdsLightbox, 'FIGMA_NODE_URL', {
-//   example: () => <HdsLightbox />,
+// figma.connect(Lightbox, 'FIGMA_NODE_URL', {
+//   example: () => <Lightbox />,
 // });
 
 export {};

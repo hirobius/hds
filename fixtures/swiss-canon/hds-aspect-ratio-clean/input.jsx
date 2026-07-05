@@ -1,1 +1,1 @@
-<HdsAspectRatio ratio={1} />;
+<AspectRatio ratio={1} />;
