@@ -1,0 +1,50 @@
+name: Chromatic
+
+# Visual-regression snapshots + hosted publish of the Storybook primitive tier.
+#
+# SETUP (one-time, manual — Adrian, not automatable):
+#   1. Create a project at chromatic.com linked to this repo.
+#   2. Add its token as the `CHROMATIC_PROJECT_TOKEN` Actions *secret*
+#      (Settings → Secrets and variables → Actions → Secrets). Claude cannot
+#      set this — it lives in the repo secret store, not `.env*`.
+#   3. Add a repo *variable* `CHROMATIC_ENABLED = true` (same page → Variables)
+#      to switch the job on.
+#
+# Once enabled this runs on every PR (visual diff) and on pushes to main
+# (baseline update + the published library at the project's chromatic.com URL).
+# The `if:` guard keeps the job green-skipped until the variable is set, so PRs
+# never go red for a missing token before setup is done.
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    # Skip (green) until the token + CHROMATIC_ENABLED variable are configured.
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.CHROMATIC_ENABLED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Chromatic needs full git history for baselines
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Storybook stories import gitignored generated artifacts
+      # (src/app/data/component-api.json, token-audit-report.json). Regenerate
+      # them before the build, mirroring ci.yml's "Generate data artifacts" step
+      # so Chromatic builds the same Storybook the lean gate does.
+      - name: Generate data artifacts
+        run: node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          buildScriptName: build-storybook
+          exitZeroOnChanges: true
+          autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
