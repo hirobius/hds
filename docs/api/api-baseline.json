@@ -123,6 +123,27 @@
     "./app/components/side-nav": ["SideNav", "SideNavLevel", "SideNavProps"],
     "./app/components/command-palette": ["CommandPalette", "CommandPaletteProps"],
     "./app/components/image-lightbox": ["HdsLightbox"],
+    "./app/components/metadata-list": [
+      "MetadataList",
+      "MetadataListItem",
+      "MetadataListProps",
+      "metadataListVariants"
+    ],
+    "./app/components/overflow-list": ["OverflowList", "OverflowListProps"],
+    "./app/components/top-nav": ["TopNav", "TopNavProps"],
+    "./app/components/app-shell": ["AppShell", "AppShellProps", "appShellVariants"],
+    "./app/components/selectable-card": [
+      "SelectableCard",
+      "SelectableCardProps",
+      "selectableCardVariants"
+    ],
+    "./app/components/tokenizer": ["Tokenizer", "TokenizerProps"],
+    "./app/components/file-input": ["FileInput", "FileInputProps"],
+    "./app/components/hds-multi-selector": [
+      "HdsMultiSelector",
+      "HdsMultiSelectorOption",
+      "HdsMultiSelectorProps"
+    ],
     "./app/components/page": ["Page"],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
     "./app/components/error-boundary": ["ErrorBoundary"],

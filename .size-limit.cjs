@@ -47,9 +47,14 @@ module.exports = [
     gzip: true,
   },
   {
+    // Bumped 41 -> 46 kB (2026-07-05, Astryx coverage build #76): the manifest
+    // chunk is the serialized componentSpecs, which grew as ~27 new components
+    // (Tier 1 natives + Radix skins + promotions + Tier 2 patterns) were added
+    // to the public surface. 46 kB leaves headroom for the remaining Tier 2 /
+    // Tier 3 additions without a per-batch bump. Measured baseline: ~41.6 kB.
     name: 'virtual hds-manifest',
     path: 'dist/assets/_virtual_hds-manifest-*.js',
-    limit: '41 kB',
+    limit: '46 kB',
     gzip: true,
   },
 ];

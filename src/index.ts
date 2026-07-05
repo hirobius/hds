@@ -81,6 +81,16 @@ export * from './app/components/side-nav';
 export * from './app/components/command-palette';
 export * from './app/components/image-lightbox';
 
+// ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
+export * from './app/components/metadata-list';
+export * from './app/components/overflow-list';
+export * from './app/components/top-nav';
+export * from './app/components/app-shell';
+export * from './app/components/selectable-card';
+export * from './app/components/tokenizer';
+export * from './app/components/file-input';
+export * from './app/components/hds-multi-selector';
+
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
 export * from './app/components/empty-state';
