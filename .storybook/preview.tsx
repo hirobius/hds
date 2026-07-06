@@ -26,10 +26,15 @@ const preview: Preview = {
     // react-router hooks (useNavigate/useLocation), which throw outside a
     // Router. Without this, any story rendering a Token (e.g. FoundationSwatch
     // with a tokenPath) errors in Chromatic. See src/app/components/token.tsx.
+    // `data-hds` scopes the HDS base styles (Satoshi type baseline, resets,
+    // theme-change transition) — they live under `:where([data-hds])`, so
+    // without it every story falls back to the system sans and skips the base
+    // baseline. The real docs site carries `data-hds` on <html>; mirror that
+    // here so Storybook (and Chromatic) render stories in the true typeface.
     (Story) => (
       <MemoryRouter>
         <ThemeProvider>
-          <div style={{ padding: '24px', minHeight: '100vh' }}>
+          <div data-hds style={{ padding: '24px', minHeight: '100vh' }}>
             <Story />
           </div>
         </ThemeProvider>
