@@ -1,0 +1,30 @@
+{
+  "$schema": "../../hirobius.tenant-metadata.schema.json",
+  "slug": "lilac-bonds",
+  "displayName": "Lilac Bonds",
+  "tagline": "Surety-bond microsite + guided intake for Lilac Insurance.",
+  "tier": 2,
+  "deployment": {
+    "vercelProject": "lilac-bonds",
+    "primaryDomain": null,
+    "previewDomain": "lilac-bonds.vercel.app"
+  },
+  "brand": {
+    "primaryHex": "#6f3fd4",
+    "accentName": "lilac",
+    "logoPath": null
+  },
+  "legal": {
+    "entity": "Lilac Insurance",
+    "jurisdiction": null,
+    "stripeAccountKind": null
+  },
+  "createdAt": "2026-07-06",
+  "status": "scaffold",
+  "_notes": [
+    "Hirobius' first external client (Conrad Milsap / Lilac Insurance, lilacinsure.com). Surety-bond microsite; first external consumer of @hirobius/design-system.",
+    "Accent overlay aliases primitive.color.lilac.* (added to base tokens in the same change). Semantic tier only, per R1.",
+    "Overlay authored in hirobius/lilac-bonds (design-system/lilac-bonds.tenant-tokens.json); upstreamed here verbatim.",
+    "Brand hex #6f3fd4 = primitive.color.lilac.500 (AA for white text on page + card surfaces)."
+  ]
+}

@@ -61,6 +61,19 @@ export const tokenRefs = {
         "700": "var(--primitive-color-violet-700)",
         "950": "var(--primitive-color-violet-950)"
       },
+      lilac: {
+        "50": "var(--primitive-color-lilac-50)",
+        "100": "var(--primitive-color-lilac-100)",
+        "200": "var(--primitive-color-lilac-200)",
+        "300": "var(--primitive-color-lilac-300)",
+        "400": "var(--primitive-color-lilac-400)",
+        "450": "var(--primitive-color-lilac-450)",
+        "500": "var(--primitive-color-lilac-500)",
+        "600": "var(--primitive-color-lilac-600)",
+        "700": "var(--primitive-color-lilac-700)",
+        "800": "var(--primitive-color-lilac-800)",
+        "900": "var(--primitive-color-lilac-900)"
+      },
       amber: {
         "50": "var(--primitive-color-amber-50)",
         "400": "var(--primitive-color-amber-400)",

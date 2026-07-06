@@ -168,6 +168,53 @@
         },
         "$description": "Discrete values within the violet range at defined lightness steps."
       },
+      "lilac": {
+        "50": {
+          "$value": "#f7f4fe",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "100": {
+          "$value": "#efe9fd",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "200": {
+          "$value": "#ddd0fb",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "300": {
+          "$value": "#c3aef6",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "400": {
+          "$value": "#a585ee",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "450": {
+          "$value": "#9a6fe8",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "500": {
+          "$value": "#6f3fd4",
+          "$description": "Lilac Bonds accent rest — AA for white text on page and card surfaces."
+        },
+        "600": {
+          "$value": "#5f33c0",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "700": {
+          "$value": "#4f2aa3",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "800": {
+          "$value": "#3a1f78",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "900": {
+          "$value": "#2a1659",
+          "$description": "Specific value within the lilac range at a defined lightness step."
+        },
+        "$description": "Discrete values within the lilac range at defined lightness steps. Mirrors the blue ramp's stop set; consumed by the lilac-bonds tenant overlay."
+      },
       "amber": {
         "50": {
           "$value": "#fffbeb",

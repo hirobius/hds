@@ -346,6 +346,74 @@ the form inside a hydrated island (e.g. `client:load`).
   TypeScript (no emitted `.d.ts`), so the consuming `tsconfig.json` should use
   `"moduleResolution": "bundler"` (or `"node16"`/`"nodenext"`).
 
+## 10. Extending HDS — the consumption contract
+
+HDS is **authoritative**. Consumers conform to its structure, extend in their
+own namespace, and route gaps upstream — never the reverse. Follow these four
+rules and token collisions between the package and your app become **structurally
+impossible** — no shared registry, no coordination, no luck required.
+
+The line is namespace ownership:
+
+| DS-owned (never declare here)                                                 | Consumer-owned (yours to define)               |
+| ----------------------------------------------------------------------------- | ---------------------------------------------- |
+| `--primitive-*` · `--semantic-*` · `--component-*` · `--role-*` · `--hds-*`   | `--<prefix>-*` (pick one prefix for your app)  |
+| `data-hds` · `data-theme` · `data-tenant`                                     | your own `data-*` attributes                   |
+
+Any release may add names inside DS-owned space; consumers may never declare
+there. That single invariant is what makes overlap impossible by construction.
+
+### C1 — The DS owns its namespaces
+
+`--primitive-*`, `--semantic-*`, `--component-*`, `--role-*`, `--hds-*` and the
+`data-hds` / `data-theme` / `data-tenant` attributes belong to the package.
+**Never declare a token inside them**, and treat every release as free to add
+names there. Declaring `--primitive-color-lilac-*` in your app, for example,
+would silently override package tokens the day the DS ships its own — with no
+error anywhere.
+
+### C2 — Extend under your own prefix
+
+App-local tokens, aliases, and component styles live in a **consumer namespace**
+and may reference DS tokens freely:
+
+```css
+:root {
+  --lb-lilac-500: #6f3fd4;                    /* app-owned value */
+  --lb-cta-radius: var(--semantic-radius-action); /* references a DS token */
+}
+```
+
+Pick one prefix for your app (`--lb-*` here, for lilac-bonds) and keep every
+local declaration inside it.
+
+### C3 — Brand through the tenant mechanism
+
+Re-theming goes through the DS's own structure, not around it: author a **tenant
+overlay** conforming to
+[`hirobius.tenant-tokens.schema.json`](../hirobius.tenant-tokens.schema.json)
+(**semantic tier only** — the primitive tier is off-limits, per rule R1), and
+activate it with `data-tenant`. A local mirror of a not-yet-merged overlay is
+fine as a stopgap, but mark it temporary and delete it once the overlay ships in
+the package.
+
+### C4 — Route gaps upstream, don't patch around them
+
+A missing primitive, a token you need, or a fundamental flaw becomes an **issue
+and PR against the DS** — not a permanent downstream fork. Every alias target
+must exist in the base `hirobius.tokens.json` (rule R5), so a new brand ramp is
+added upstream first, then the tenant overlay aliases it.
+
+> **Optional (no DS obligation):** keep a downstream **drift-guard test** that
+> pins the token paths your app consumes, so your CI fails when an upgrade moves
+> something. The consumer adapts; it never gates a DS release.
+
+**Reference implementation:** `hirobius/lilac-bonds` (the first external
+consumer) follows all four — it consumes tokens via
+`@hirobius/design-system/variables.css`, keeps every extension under `--lb-*`,
+mirrors its brand through a tenant overlay, and pins consumed paths with a
+CI-enforced drift guard.
+
 ## Troubleshooting
 
 | Symptom                                            | Cause / fix                                                                                                                                                             |

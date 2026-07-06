@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, type ReactNode } from 'react';
 
-export type TenantSlug = 'hirobius' | 'concrete-creations' | (string & {});
+export type TenantSlug = 'hirobius' | 'concrete-creations' | 'lilac-bonds' | (string & {});
 
 interface TenantCtx {
   /** Active tenant slug, or null in single-tenant mode. */
@@ -29,14 +29,12 @@ export function TenantProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!slug) return;
     document.documentElement.setAttribute('data-tenant', slug);
-    return () => { document.documentElement.removeAttribute('data-tenant'); };
+    return () => {
+      document.documentElement.removeAttribute('data-tenant');
+    };
   }, [slug]);
 
-  return (
-    <TenantContext.Provider value={{ tenantSlug: slug }}>
-      {children}
-    </TenantContext.Provider>
-  );
+  return <TenantContext.Provider value={{ tenantSlug: slug }}>{children}</TenantContext.Provider>;
 }
 
 /** Returns the active tenant slug (null in single-tenant mode). */

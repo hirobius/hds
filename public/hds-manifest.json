@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-03T08:57:17.539Z",
+  "generated": "2026-07-06T20:58:55.543Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -9968,6 +9968,83 @@
         "type": "color",
         "description": "Specific value within the violet range at a defined lightness step.",
         "value": "#2e1065"
+      },
+      {
+        "path": "primitive.color.lilac.50",
+        "cssVar": "--primitive-color-lilac-50",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#f7f4fe"
+      },
+      {
+        "path": "primitive.color.lilac.100",
+        "cssVar": "--primitive-color-lilac-100",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#efe9fd"
+      },
+      {
+        "path": "primitive.color.lilac.200",
+        "cssVar": "--primitive-color-lilac-200",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#ddd0fb"
+      },
+      {
+        "path": "primitive.color.lilac.300",
+        "cssVar": "--primitive-color-lilac-300",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#c3aef6"
+      },
+      {
+        "path": "primitive.color.lilac.400",
+        "cssVar": "--primitive-color-lilac-400",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#a585ee"
+      },
+      {
+        "path": "primitive.color.lilac.450",
+        "cssVar": "--primitive-color-lilac-450",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#9a6fe8"
+      },
+      {
+        "path": "primitive.color.lilac.500",
+        "cssVar": "--primitive-color-lilac-500",
+        "type": "color",
+        "description": "Lilac Bonds accent rest — AA for white text on page and card surfaces.",
+        "value": "#6f3fd4"
+      },
+      {
+        "path": "primitive.color.lilac.600",
+        "cssVar": "--primitive-color-lilac-600",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#5f33c0"
+      },
+      {
+        "path": "primitive.color.lilac.700",
+        "cssVar": "--primitive-color-lilac-700",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#4f2aa3"
+      },
+      {
+        "path": "primitive.color.lilac.800",
+        "cssVar": "--primitive-color-lilac-800",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#3a1f78"
+      },
+      {
+        "path": "primitive.color.lilac.900",
+        "cssVar": "--primitive-color-lilac-900",
+        "type": "color",
+        "description": "Specific value within the lilac range at a defined lightness step.",
+        "value": "#2a1659"
       },
       {
         "path": "primitive.color.amber.50",
