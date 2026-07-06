@@ -79,7 +79,7 @@ export const MetadataList = React.forwardRef<HTMLDListElement, MetadataListProps
           {items.map((item, index) => (
             <div key={index} className="flex flex-col gap-2 p-5">
               <dt className="text-sm font-medium text-muted-foreground">{item.term}</dt>
-              <dd className="m-0 text-foreground">{item.description}</dd>
+              <dd className="m-0 text-sm text-foreground">{item.description}</dd>
             </div>
           ))}
           {footer != null && (
