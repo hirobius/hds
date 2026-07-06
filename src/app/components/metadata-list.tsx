@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import hds from '../design-system/tokens';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Orientation is the only styling axis. Vertical stacks each term above its
@@ -70,20 +71,51 @@ export const MetadataList = React.forwardRef<HTMLDListElement, MetadataListProps
           ref={ref}
           data-variant="divided"
           data-orientation="vertical"
-          className={cn(
-            'flex flex-col overflow-hidden rounded-lg border border-border divide-y divide-border',
-            className,
-          )}
+          className={cn('flex flex-col overflow-hidden rounded-lg', className)}
+          // Semantic tokens (not the --role-* utility layer) so colours resolve
+          // correctly in both themes — matching Divider/Card/InlineCode.
+          style={{
+            border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
+          }}
           {...rest}
         >
           {items.map((item, index) => (
-            <div key={index} className="flex flex-col gap-2 p-5">
-              <dt className="text-sm font-medium text-muted-foreground">{item.term}</dt>
-              <dd className="m-0 text-sm text-foreground">{item.description}</dd>
+            <div
+              key={index}
+              className="flex flex-col gap-2 p-5"
+              style={
+                index === 0
+                  ? undefined
+                  : {
+                      borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-subtle)`,
+                    }
+              }
+            >
+              <dt
+                className="text-sm font-medium"
+                style={{ color: 'var(--semantic-color-content-secondary)' }}
+              >
+                {item.term}
+              </dt>
+              <dd
+                className="m-0 text-sm"
+                style={{ color: 'var(--semantic-color-content-primary)' }}
+              >
+                {item.description}
+              </dd>
             </div>
           ))}
           {footer != null && (
-            <div className="bg-muted p-5 text-sm text-muted-foreground">{footer}</div>
+            <div
+              className="p-5 text-sm"
+              style={{
+                borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-subtle)`,
+                background: 'var(--semantic-color-surface-raised)',
+                color: 'var(--semantic-color-content-secondary)',
+              }}
+            >
+              {footer}
+            </div>
           )}
         </dl>
       );
