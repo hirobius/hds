@@ -33,4 +33,23 @@ describe('MetadataList', () => {
     expect(container.querySelectorAll('dt')).toHaveLength(2);
     expect(container.querySelectorAll('dd')).toHaveLength(2);
   });
+
+  it('marks the divided variant on the data attribute and stays a <dl>', () => {
+    const { container } = render(<MetadataList items={items} variant="divided" />);
+    const dl = container.querySelector('dl');
+    expect(dl?.getAttribute('data-variant')).toBe('divided');
+    expect(container.querySelectorAll('dt')).toHaveLength(2);
+    expect(container.querySelectorAll('dd')).toHaveLength(2);
+  });
+
+  it('renders a footer band only in the divided variant', () => {
+    const { rerender } = render(
+      <MetadataList items={items} variant="divided" footer="42 tokens total" />,
+    );
+    expect(screen.getByText('42 tokens total')).not.toBeNull();
+
+    // footer is ignored by the plain variant
+    rerender(<MetadataList items={items} footer="42 tokens total" />);
+    expect(screen.queryByText('42 tokens total')).toBeNull();
+  });
 });
