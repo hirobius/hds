@@ -260,22 +260,22 @@
       {
         "name": "display",
         "token": "semantic.typography.display",
-        "description": "Display headline (Swiss canon). Clash Display medium weight. 72px."
+        "description": "Display headline (Swiss canon). Satoshi Bold (700). 72px."
       },
       {
         "name": "h1",
         "token": "semantic.typography.h1",
-        "description": "Page title (Swiss canon). Clash Display medium weight. 48px."
+        "description": "Page title (Swiss canon). Satoshi Bold (700). 48px."
       },
       {
         "name": "h2",
         "token": "semantic.typography.h2",
-        "description": "Section heading (Swiss canon). Clash Display medium weight. 30px."
+        "description": "Section heading (Swiss canon). Satoshi Bold (700). 30px."
       },
       {
         "name": "h3",
         "token": "semantic.typography.h3",
-        "description": "Sub-section heading (Swiss canon). Clash Display medium weight. 20px."
+        "description": "Sub-section heading (Swiss canon). Satoshi Bold (700). 20px."
       },
       {
         "name": "body",
@@ -308,7 +308,7 @@
         "rationale": "Token JSON stores static desktop-max primitive refs; clamp overrides live in CSS"
       },
       {
-        "rule": "Three typefaces: Satoshi (body / UI), Clash Display (display + h1, h2, h3 headings only), Geist Mono (code / technical metadata).",
+        "rule": "Three typefaces: Satoshi (body / UI), Satoshi (display + h1, h2, h3 headings only), Geist Mono (code / technical metadata).",
         "rationale": "Self-hosted only; Clash gives editorial weight on display and a clean grotesk on body, Geist Mono carries token paths and technical readouts."
       }
     ]

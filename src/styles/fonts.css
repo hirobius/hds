@@ -2,7 +2,7 @@
  *
  * Single-weight policy (Adrian directive 2026-05-04):
  *   - Satoshi 500 — body / UI / eyebrow
- *   - Clash Display 500 — display + h1/h2/h3 only
+ *   - Satoshi 700 (Bold) — display + h1/h2/h3 (replaces Clash Display, #48)
  *   - Geist Mono 400 — code / token paths / technical metadata
  *
  * Emphasis is conveyed via color (semantic.color.content.primary vs .secondary)
@@ -23,11 +23,11 @@
   font-display: swap;
 }
 
-/* Clash Display — Indian Type Foundry, OFL via Fontshare. */
+/* Satoshi Bold — display/heading weight (700), replaces Clash Display (#48). */
 @font-face {
-  font-family: 'Clash Display';
-  src: url('/fonts/clash-display/clash-display-500.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/satoshi-700.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }

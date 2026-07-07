@@ -26,7 +26,7 @@
  *
  * 3. typography-overrides (from audit-typography-overrides.mjs):
  *    Enforces single-weight + casing-via-eyebrow policy:
- *    - Satoshi 500 / Clash Display 500 / Geist Mono 400 are the only weights.
+ *    - Satoshi 500 / Satoshi 700 (Bold) / Geist Mono 400 are the only weights.
  *    - textTransform overrides must use hds.typeStyles.eyebrow composite.
  *    Escape hatch: add "// eyebrow-ok: <reason>" or "audit-ok: typography" comments.
  *

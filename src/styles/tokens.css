@@ -103,7 +103,7 @@
   --primitive-radius-12: 12px;
   --primitive-radius-full: 9999px;
   --primitive-typography-family-primary: Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --primitive-typography-family-display: "Clash Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --primitive-typography-family-display: Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-mono: "Geist Mono", "Courier New", monospace;
   --primitive-typography-size-2xs: 10px;
   --primitive-typography-size-xs: 13px;
@@ -246,25 +246,25 @@
   /* semantic.typography.display */
   --semantic-typography-display-font-family: var(--primitive-typography-family-display);
   --semantic-typography-display-font-size: var(--primitive-typography-size-7xl);
-  --semantic-typography-display-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-display-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-display-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-display-line-height: var(--primitive-typography-lineHeight-none);
   /* semantic.typography.h1 */
   --semantic-typography-h1-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h1-font-size: var(--primitive-typography-size-4xl);
-  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-h1-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h1-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.h2 */
   --semantic-typography-h2-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-h2-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h2-line-height: 42px;
   /* semantic.typography.h3 */
   --semantic-typography-h3-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h3-font-size: var(--primitive-typography-size-lg);
-  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-h3-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-h3-line-height: 28px;
   /* semantic.typography.body */

@@ -135,7 +135,7 @@ export const tokenValues = {
     typography: {
       family: {
         primary: ["Satoshi", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
-        display: ["Clash Display", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
+        display: ["Satoshi", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
         mono: ["Geist Mono", "Courier New", "monospace"] as const
       },
       size: {
