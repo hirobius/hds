@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-07-05T07:15:00Z",
+  "updatedAt": "2026-07-07T00:00:00Z",
   "phase": "active",
-  "headline": "DS PR-1 (Hds-prefix retirement, step 1) COMPLETE on claude/deprefix-hds — dropped the Hds prefix from the 12 net-new leaf families (ToggleButton/AlertDialog/HoverCard/ContextMenu/AspectRatio/MultiSelector/Lightbox/Calendar/TimeInput/DateInput/DateRangeInput/DateTimeInput), renamed their hds-*.tsx source files, flipped scaffold-component.mjs + component-discovery.mjs so Hds is now the namespace violation going forward. All 5 mandated gates green (typecheck, check-manifest-drift, check-source-canon, validate-manifest, vite build); full vitest suite 1108 passing. Committed locally, not pushed — awaiting lead review.",
+  "headline": "DS wind-down run (epic #80): 5 issues closed — #83 (token-contrast violations fixed), #59 (HdsTooltip on Radix), #54 (CI-email triage), #62 (data-brand primary + data-tenant alias), #48 (Satoshi-only typography; Satoshi Bold replaces Clash Display). Chromatic Storybook publishing pipeline, lilac-bonds tenant contract + tokens, and MetadataList `divided` variant + footer all live at 0.11.0. Deletion/teardown cluster (#49/#50/#51/#53) scoped as a coordinated ATTENDED teardown; archive/* branches (archive/docs-app, archive/portfolio, archive/local-ai) preserved server-side before any removal.",
   "next": [
-    "Review + push claude/deprefix-hds, then land follow-on PRs retiring Hds from the remaining components (the 4 collision families Form/FormField/ThemeProvider/Tooltip need alias handling; the provider/theme surface and JSX-compiler DSL tags stay prefixed by design)",
-    "Optional follow-ups: add an Overlays doc page (unblocks @doc-exempt overlays incl. AlertDialog/HoverCard/ContextMenu/MultiSelector), wire Figma Code Connect stubs, add visual-regression coverage for the date family",
-    "Monitor the virtual-hds-manifest size budget (now 42.7/46 kB) as more components land"
+    "Execute the teardown cluster: #51 (strip the docs app + resolve #56 — relocate HdsSystemDocLayout pages/hds → layouts/ first, dead-code-separate, unwire the ~23 page-scanning scripts + guardrail registry, repoint vercel.json to Storybook), #49 (delete portfolio assets/apps outright), #50 (archive+strip local-AI), #53 (consolidate 27 md docs → ~5). Attended — lead reviews before merge.",
+    "Deferred post-freeze: #60 (cva rollout), #64 (Astro evaluation)",
+    "Human-owned, out of scope for autonomous work: #47 (Figma Code Connect), #48 Figma text-style swap"
   ],
   "blocked": []
 }
