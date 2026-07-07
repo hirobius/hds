@@ -111,7 +111,6 @@
     "changeset": "changeset",
     "changeset:add": "changeset",
     "changeset:version": "changeset version",
-    "codemod": "jscodeshift --parser=tsx --extensions=tsx,ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "storybook:deploy": "node scripts/deploy-storybook.mjs",
@@ -178,7 +177,6 @@
     "figma-variables": "node scripts/build-figma-variables.mjs",
     "figma:diff": "node scripts/figma-diff.mjs",
     "figma:snapshot": "node scripts/normalize-figma-snapshot.mjs",
-    "figma:stream": "node scripts/llm-stream-bridge.mjs",
     "guardrail:firing-stats": "node scripts/refresh-firing-stats.mjs",
     "harvest:design-md": "node scripts/harvest-design-md.mjs",
     "heal": "node scripts/self-heal.mjs",
@@ -228,10 +226,7 @@
     "validate:manifest": "node scripts/validate-manifest.mjs",
     "visual-ingest": "node scripts/visual-ingest.mjs",
     "watch:guardrails": "nodemon --watch CLAUDE.md --watch .cursorrules --watch eslint.config.js --watch .github/workflows -e md,json,js,yml,yaml --exec \"node scripts/audit-guardrails.js\"",
-    "watch:metrics": "nodemon --watch src/app/components --watch src/app/pages --watch src/app/design-system --watch src/app/styles -e tsx,ts,css --exec \"node scripts/audit-tokens.mjs --full && node scripts/generate-manifest.mjs\"",
-    "loop:validate": "node scripts/loop/loop-cli.mjs validate",
-    "loop:next": "node scripts/loop/loop-cli.mjs next",
-    "loop:status": "node scripts/loop/loop-cli.mjs status"
+    "watch:metrics": "nodemon --watch src/app/components --watch src/app/pages --watch src/app/design-system --watch src/app/styles -e tsx,ts,css --exec \"node scripts/audit-tokens.mjs --full && node scripts/generate-manifest.mjs\""
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.18",
