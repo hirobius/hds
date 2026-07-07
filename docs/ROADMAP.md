@@ -30,8 +30,10 @@ check, CI workflow) is coherent. Recent repairs + remaining cleanup:
 - 🔴 **Reconcile env var names** — `scripts/figma-sync.ts` expects
   `FIGMA_PAT` / `FIGMA_FILE_ID`; CI (`sync-figma-variables.yml`) uses
   `FIGMA_PERSONAL_ACCESS_TOKEN` / `FIGMA_FILE_KEY`. Document or unify.
-- 🔴 **Refresh stale docs** — `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP}.md`
-  still reference the retired `orchestration.json`.
+- ✅ **Refresh stale docs — done.** `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP,STATE-2026-05-09}.md`
+  referenced the retired `orchestration.json` and the already-archived Figma
+  bridge (`archive/figma-bridge`, ADR-018 §2); deleted rather than refreshed —
+  nothing durable to salvage, superseded by ADR-019 (Figma MCP + Code Connect).
 
 ---
 

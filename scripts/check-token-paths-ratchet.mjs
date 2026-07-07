@@ -99,8 +99,16 @@ function closestMatch(needle, haystack, maxDistance = 3) {
 }
 
 const SKIP_DIRS = new Set([
-  'node_modules', '.git', '.next', 'dist', 'build', 'coverage',
-  'test-results', '.cache', '.turbo', '.pnpm-store',
+  'node_modules',
+  '.git',
+  '.next',
+  'dist',
+  'build',
+  'coverage',
+  'test-results',
+  '.cache',
+  '.turbo',
+  '.pnpm-store',
 ]);
 const SKIP_PATH_FRAGMENTS = [
   '.claude/worktrees',
@@ -122,11 +130,8 @@ const SKIP_PATH_FRAGMENTS = [
   'docs/ops/',
   'docs/superpowers/',
   'docs/knowledge/',
-  'docs/LLM_STREAM_SCHEMA.md',
 ];
-const ALLOWED_EXTENSIONS = new Set([
-  '.ts', '.tsx', '.js', '.mjs', '.cjs', '.json', '.md', '.css',
-]);
+const ALLOWED_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.json', '.md', '.css']);
 
 function shouldSkipPath(rel) {
   return SKIP_PATH_FRAGMENTS.some((frag) => rel.includes(frag));
@@ -155,7 +160,8 @@ function walkFiles(dir, out) {
   }
 }
 
-const PATH_PATTERN = /\b(?:primitive|semantic|component|role)\.[a-zA-Z][a-zA-Z0-9_-]*(?:\.[a-zA-Z][a-zA-Z0-9_-]*)+\b/g;
+const PATH_PATTERN =
+  /\b(?:primitive|semantic|component|role)\.[a-zA-Z][a-zA-Z0-9_-]*(?:\.[a-zA-Z][a-zA-Z0-9_-]*)+\b/g;
 const ALLOWLIST_RE = /(?:token-path-ok:|@token-path-ok)/;
 
 function scanFile(file, validPaths) {
@@ -174,7 +180,10 @@ function scanFile(file, validPaths) {
       if (validPaths.has(ref)) continue;
       let isPrefix = false;
       for (const p of validPaths) {
-        if (p.startsWith(`${ref}.`)) { isPrefix = true; break; }
+        if (p.startsWith(`${ref}.`)) {
+          isPrefix = true;
+          break;
+        }
       }
       if (isPrefix) continue;
       violations.push({ file, line: i + 1, ref });
@@ -187,9 +196,10 @@ function loadBaseline() {
   try {
     const text = readFileSync(BASELINE_FILE, 'utf8');
     return new Set(
-      text.split('\n')
+      text
+        .split('\n')
         .map((l) => l.trim())
-        .filter((l) => l && !l.startsWith('#'))
+        .filter((l) => l && !l.startsWith('#')),
     );
   } catch {
     return new Set();
@@ -202,7 +212,13 @@ function violationKey(v) {
 
 // ─── Ratchet helpers ──────────────────────────────────────────────────────────
 
-const CANONICAL_FILE = join(ROOT, 'docs', 'guardrails', 'baselines', 'check-token-paths-count.json');
+const CANONICAL_FILE = join(
+  ROOT,
+  'docs',
+  'guardrails',
+  'baselines',
+  'check-token-paths-count.json',
+);
 
 function readBaselineCount() {
   if (!existsSync(BASELINE_FILE)) return 0;
@@ -261,11 +277,14 @@ if (isRatchetMode) {
     writeStored(current);
     const msg = `check-token-paths-ratchet: bootstrapped stored count = ${current}`;
     if (!jsonMode) console.log(msg);
-    emitResult({
-      violations: [],
-      summary: { current, stored: current, delta: 0, bootstrapped: true },
-      ok: true,
-    }, jsonMode);
+    emitResult(
+      {
+        violations: [],
+        summary: { current, stored: current, delta: 0, bootstrapped: true },
+        ok: true,
+      },
+      jsonMode,
+    );
     process.exit(0);
   }
 
@@ -282,27 +301,38 @@ if (isRatchetMode) {
     };
     if (!jsonMode) {
       process.stderr.write(`\nX check-token-paths-ratchet FAILED\n`);
-      process.stderr.write(`  Token-path baseline grew from ${storedCount} to ${current} (+${delta}).\n`);
-      process.stderr.write(`  Fix the dead token references — do NOT add new entries to .token-path-baseline.txt.\n\n`);
+      process.stderr.write(
+        `  Token-path baseline grew from ${storedCount} to ${current} (+${delta}).\n`,
+      );
+      process.stderr.write(
+        `  Fix the dead token references — do NOT add new entries to .token-path-baseline.txt.\n\n`,
+      );
     }
-    emitResult({
-      violations: [violation],
-      summary: { current, stored: storedCount, delta },
-      ok: false,
-    }, jsonMode);
+    emitResult(
+      {
+        violations: [violation],
+        summary: { current, stored: storedCount, delta },
+        ok: false,
+      },
+      jsonMode,
+    );
     process.exit(1);
   }
 
   writeStored(current);
-  const msg = delta < 0
-    ? `check-token-paths-ratchet: OK — burned down ${Math.abs(delta)} baseline entry(ies) (${storedCount} → ${current})`
-    : `check-token-paths-ratchet: OK — no change (${current} baseline entries)`;
+  const msg =
+    delta < 0
+      ? `check-token-paths-ratchet: OK — burned down ${Math.abs(delta)} baseline entry(ies) (${storedCount} → ${current})`
+      : `check-token-paths-ratchet: OK — no change (${current} baseline entries)`;
   if (!jsonMode) console.log(msg);
-  emitResult({
-    violations: [],
-    summary: { current, stored: storedCount, delta },
-    ok: true,
-  }, jsonMode);
+  emitResult(
+    {
+      violations: [],
+      summary: { current, stored: storedCount, delta },
+      ok: true,
+    },
+    jsonMode,
+  );
   process.exit(0);
 }
 
@@ -335,7 +365,9 @@ if (isUpdateBaseline) {
     ...[...new Set(allViolations.map(violationKey))].sort(),
   ];
   await fs.writeFile(BASELINE_FILE, lines.join('\n') + '\n');
-  console.log(`✓ wrote ${lines.length - 7} baselined violation(s) to ${relative(ROOT, BASELINE_FILE)}`);
+  console.log(
+    `✓ wrote ${lines.length - 7} baselined violation(s) to ${relative(ROOT, BASELINE_FILE)}`,
+  );
   process.exit(0);
 }
 
@@ -387,10 +419,11 @@ if (jsonMode) {
 }
 
 if (newViolations.length === 0) {
-  const status = baseline.size > 0
-    ? ` (${baselinedViolations.length} baselined — burn down via unit 12g)`
-    : '';
-  console.log(`✓ check-token-paths-ratchet — ${files.length} files scanned, ${validPaths.size} valid paths, 0 new violations${status}`);
+  const status =
+    baseline.size > 0 ? ` (${baselinedViolations.length} baselined — burn down via unit 12g)` : '';
+  console.log(
+    `✓ check-token-paths-ratchet — ${files.length} files scanned, ${validPaths.size} valid paths, 0 new violations${status}`,
+  );
   if (isFullReport && baselinedViolations.length > 0) {
     console.log('\nBaselined violations:');
     for (const v of baselinedViolations) {
@@ -400,7 +433,9 @@ if (newViolations.length === 0) {
   process.exit(0);
 }
 
-console.error(`✗ check-token-paths-ratchet — ${newViolations.length} NEW unresolved token-path reference(s):\n`);
+console.error(
+  `✗ check-token-paths-ratchet — ${newViolations.length} NEW unresolved token-path reference(s):\n`,
+);
 for (const v of newViolations) {
   const rel = relative(ROOT, v.file);
   const suggestion = closestMatch(v.ref, validPaths);
