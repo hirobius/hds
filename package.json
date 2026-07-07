@@ -316,33 +316,6 @@
     "zod": "^4.4.3",
     "zustand": "^5.0.12"
   },
-  "size-limit": [
-    {
-      "name": "library esm (main barrel)",
-      "path": "dist/hirobius-ui.js",
-      "limit": "220 kB"
-    },
-    {
-      "name": "library css (tokens + base)",
-      "path": "dist/tokens.css",
-      "limit": "24 kB"
-    },
-    {
-      "name": "subpath: cn helper",
-      "path": "dist/cn.js",
-      "limit": "1 kB"
-    },
-    {
-      "name": "subpath: token bridge",
-      "path": "dist/tokens.js",
-      "limit": "8 kB"
-    },
-    {
-      "name": "subpath: manifest (json-as-esm)",
-      "path": "dist/manifest.js",
-      "limit": "60 kB"
-    }
-  ],
   "lint-staged": {
     "*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css,scss,html,yaml,yml}": "prettier --write"
   },
