@@ -1501,10 +1501,14 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
 
     const bar = '─'.repeat(Math.max(0, 68 - slug.length));
     let block = `\n/* ── ${slug} ${bar} */\n`;
-    block += `[data-tenant="${slug}"] {\n${lightVars.join('\n')}\n}\n`;
+    // #62: data-brand is the primary attribute; data-tenant is kept as a
+    // supported alias. The grouped selector activates the overlay for either.
+    block += `[data-brand="${slug}"],\n[data-tenant="${slug}"] {\n${lightVars.join('\n')}\n}\n`;
 
     if (darkVars.length > 0) {
-      block += `[data-tenant="${slug}"][data-theme="dark"] {\n${darkVars.join('\n')}\n}\n`;
+      block +=
+        `[data-brand="${slug}"][data-theme="dark"],\n` +
+        `[data-tenant="${slug}"][data-theme="dark"] {\n${darkVars.join('\n')}\n}\n`;
     }
 
     blocks.push(block);
@@ -1516,10 +1520,10 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
     ' * Source: tenants/*/tokens.json (W3C DTCG overlay format)',
     ' * Regenerate: node scripts/build-tokens.mjs',
     ' *',
-    ' * Per-tenant token overrides using [data-tenant="slug"] attribute selectors.',
-    ' * Strategy: ADR-0001 (docs/architecture/ADR-0001-multi-tenant-scope.md)',
-    ' * Set <html data-tenant="slug"> at the app root to activate a tenant theme.',
-    ' * Dark overrides: [data-tenant="slug"][data-theme="dark"] (specificity 0,2,0).',
+    ' * Per-brand token overrides using [data-brand="slug"] attribute selectors',
+    ' * (data-tenant kept as a supported alias — #62). Strategy: ADR-0001.',
+    ' * Set <html data-brand="slug"> at the app root to activate a brand overlay.',
+    ' * Dark overrides: [data-brand="slug"][data-theme="dark"] (specificity 0,2,0).',
     ' */',
   ].join('\n');
 
