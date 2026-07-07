@@ -99,18 +99,6 @@
       "scope": "full-tree"
     },
     {
-      "id": "audit-pages",
-      "description": "Token compliance auditor for page surfaces. This is intentionally looser than audit-components.mjs — reusable components must be strict, pages must still avoid raw design values but can keep justified editorial layout.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-pages.mjs",
-      "fixturePath": "fixtures/audit-pages",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pnpm-meta"
-    },
-    {
       "id": "audit-sbom",
       "description": "Generates a CycloneDX Software Bill of Materials at docs/security/sbom.json. Manual channel — produces an artifact, not a gate. Useful for the GRC narrative and supply-chain review.",
       "severity": "warn",
@@ -304,20 +292,6 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
-      "id": "check-doc-structure",
-      "description": "Validates structural invariants of HDS documentation pages. Checks that foundation pages have DocPageHeader and at least one section.",
-      "severity": "warn",
-      "gateScript": "scripts/check-doc-structure.mjs",
-      "fixturePath": "fixtures/check-doc-structure",
-      "lastFiringAt": "2026-06-19T02:45:50.015Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
       "id": "check-link-integrity",
       "description": "Unified link integrity gate: (1) active docs do not point at missing local files, (2) external href URLs return non-4xx, (3) internal route targets are known app routes. Merged from check-doc-references, check-external-links, check-route-links (13z-6).",
       "severity": "warn",
@@ -368,20 +342,6 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "ci-pr"
-    },
-    {
-      "id": "check-frozen-demos",
-      "description": "Guardrail for docs preview surfaces. Consumer component docs pages should not hand-author bespoke preview demos; those previews must stay default-state renders.",
-      "severity": "warn",
-      "gateScript": "scripts/check-frozen-demos.mjs",
-      "fixturePath": "fixtures/check-frozen-demos",
-      "lastFiringAt": "2026-06-19T02:45:50.253Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-hardcoded-breakpoints",
@@ -486,51 +446,12 @@
       "firingChannel": "ci-pr"
     },
     {
-      "id": "check-mono-roles",
-      "description": "Prevents ornamental/raw monospace from creeping back into prose-heavy surfaces that should rely on InlineCode or normal body/caption styling instead.",
-      "severity": "warn",
-      "gateScript": "scripts/check-mono-roles.mjs",
-      "fixturePath": "fixtures/check-mono-roles",
-      "lastFiringAt": "2026-06-19T02:45:51.682Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-pr"
-    },
-    {
       "id": "check-motion",
       "description": "Verifies that interactive components ship with motion feedback — the HDS standard that every user action has a visible, token-timed response.",
       "severity": "warn",
       "gateScript": "scripts/check-motion.mjs",
       "fixturePath": "fixtures/check-motion",
       "lastFiringAt": "2026-06-19T02:45:51.734Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-og-meta",
-      "description": "Static analysis validator for OG meta tags in index.html. This project is a React Router SPA with a single index.html (no per-route meta tags).",
-      "severity": "warn",
-      "gateScript": "scripts/check-og-meta.mjs",
-      "fixturePath": "fixtures/check-og-meta",
-      "lastFiringAt": "2026-06-19T02:45:51.779Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-pr",
-      "wiringTodo": "should be ci-pr or ci-scheduled — not yet wired into a workflow that actually triggers it"
-    },
-    {
-      "id": "check-page-shell",
-      "description": "Forbids direct Container usage in src/app/pages/**. Pages must use Page (which wraps Container + applies the canonical vertical padding) so every page receives consistent layout.",
-      "severity": "warn",
-      "gateScript": "scripts/check-page-shell.mjs",
-      "fixturePath": "fixtures/check-page-shell",
-      "lastFiringAt": "2026-06-19T02:45:51.830Z",
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
@@ -579,18 +500,6 @@
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-route-coverage",
-      "description": "Route coverage gate — every routable page must appear in the layout-integrity test set.",
-      "severity": "warn",
-      "gateScript": "scripts/check-route-coverage.mjs",
-      "fixturePath": "fixtures/check-route-coverage",
-      "lastFiringAt": "2026-06-19T02:45:52.410Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-pr"
     },
     {
       "id": "check-secrets",

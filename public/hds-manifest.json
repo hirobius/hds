@@ -553,10 +553,6 @@
         "filePath": "src/app/components/checkbox.tsx"
       },
       {
-        "name": "HdsComponentDoc",
-        "filePath": "src/app/components/ComponentDocPage.tsx"
-      },
-      {
         "name": "HdsLegacyTokenGovernancePanel",
         "filePath": "src/app/components/lab/legacy-token-detail.tsx"
       },
@@ -694,7 +690,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/alert.stories.tsx"
@@ -863,8 +858,6 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx",
         "src/stories/code-block.stories.tsx"
       ],
       "tokenMapping": {
@@ -991,10 +984,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
         "src/stories/disclosure.stories.tsx",
         "src/stories/nav-group.stories.tsx"
       ],
@@ -1247,7 +1238,6 @@
       },
       "consumers": [
         "src/app/components/not-found-pattern.tsx",
-        "src/app/pages/ErrorPage.tsx",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx"
       ],
@@ -1335,7 +1325,6 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/stories/foundation-swatch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -1465,7 +1454,6 @@
         "src/app/components/stack.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/data/projects.ts",
-        "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/stories/foundation-swatch.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
@@ -1583,18 +1571,15 @@
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/context-menu.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-link-card.tsx",
-        "src/app/components/doc-sections.tsx",
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
-        "src/app/components/lab/token-detail.tsx",
         "src/app/components/lab/tokenUtils.ts",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
@@ -1605,9 +1590,6 @@
         "src/app/components/toast.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/data/hdsEditorial.tsx",
-        "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
-        "src/app/pages/docs/patterns/HdsIconButton.tsx",
         "src/stories/activity-feed.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/icon.stories.tsx",
@@ -1744,7 +1726,6 @@
         "src/app/components/shell-controls.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/data/hdsEditorial.tsx",
-        "src/app/pages/docs/patterns/HdsIconButton.tsx",
         "src/stories/icon-button.stories.tsx"
       ],
       "tokenMapping": {
@@ -1869,8 +1850,6 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
-        "src/app/pages/docs/templates/_template.tsx",
-        "src/app/pages/InfoPageWrapper.tsx",
         "src/stories/info-page.stories.tsx"
       ],
       "tokenMapping": {
@@ -2470,7 +2449,6 @@
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx"
       ],
@@ -2540,7 +2518,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
@@ -2712,8 +2689,6 @@
       },
       "consumers": [
         "src/app/components/activity-feed.tsx",
-        "src/app/components/CategoryComponentDocs.tsx",
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/disclosure.tsx",
@@ -2735,13 +2710,6 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
-        "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
-        "src/app/pages/docs/patterns/HdsIconButton.tsx",
-        "src/app/pages/docs/templates/_template.tsx",
-        "src/app/pages/lab/IncubatorPage.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/page.stories.tsx",
@@ -2996,7 +2964,6 @@
       },
       "consumers": [
         "src/app/components/api-reference.tsx",
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/propTableUtils.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -3085,10 +3052,7 @@
         "src/app/components/badge.tsx",
         "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/doc-sections.tsx",
         "src/app/components/grid.tsx",
-        "src/app/components/heading-anchor.tsx",
-        "src/app/components/lab/token-detail.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/text.tsx",
@@ -3233,21 +3197,17 @@
       "consumers": [
         "src/app/components/activity-feed.tsx",
         "src/app/components/code-block.tsx",
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/doc-sections.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/health-rail.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/components/lab/legacy-token-list.tsx",
         "src/app/components/lab/token-collection-list.tsx",
-        "src/app/components/lab/token-detail.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/lib/hds-search.ts",
-        "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/app/stores/mobiusStore.ts",
         "src/index.ts",
         "src/stories/activity-feed.stories.tsx",
@@ -3392,13 +3352,10 @@
       "consumers": [
         "src/app/components/api-reference.tsx",
         "src/app/components/component-preview.tsx",
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-page-header.tsx",
-        "src/app/components/doc-sections.tsx",
-        "src/app/components/doc-toc.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
@@ -3419,9 +3376,6 @@
         "src/app/components/tooltip.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
-        "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
-        "src/app/pages/lab/IncubatorPage.tsx",
         "src/stories/card.stories.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/grid.stories.tsx",
@@ -3492,7 +3446,6 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
         "src/stories/card.stories.tsx",
         "src/stories/grid.stories.tsx"
       ],
@@ -3671,136 +3624,6 @@
       ],
       "figmaLink": "TODO:hds-master:Card"
     },
-    "HdsComponentDoc": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/app/components/ComponentDocPage.tsx",
-      "description": "HdsComponentDoc — manifest-backed component documentation shell.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "HdsComponentDoc",
-        "sizing": "full"
-      },
-      "consumers": [
-        "src/app/components/CategoryComponentDocs.tsx",
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
-      "tokenMapping": {
-        "Tab panel duration": "motion.productive.duration",
-        "Tab panel easing": "motion.productive.easing",
-        "Component gap": "semantic.space.component.gap"
-      },
-      "props": {
-        "componentName": {
-          "type": "string"
-        },
-        "demo": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "matrix": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "props": {
-          "type": "ComponentPropRow[]",
-          "optional": true
-        },
-        "description": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "layout": {
-          "type": "enum",
-          "values": [
-            "default",
-            "utility"
-          ],
-          "default": "default"
-        },
-        "isDark": {
-          "type": "boolean",
-          "optional": true
-        },
-        "children": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "childrenPlacement": {
-          "type": "enum",
-          "values": [
-            "beforeDetails",
-            "afterDetails"
-          ],
-          "default": "afterDetails"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "componentName": {
-          "type": "string"
-        },
-        "layout": {
-          "type": "enum",
-          "values": [
-            "default",
-            "utility"
-          ]
-        },
-        "childrenPlacement": {
-          "type": "enum",
-          "values": [
-            "beforeDetails",
-            "afterDetails"
-          ]
-        }
-      },
-      "requiredProps": [
-        "componentName"
-      ],
-      "a11yRules": [
-        {
-          "rule": "componentName must match a manifest entry — drives accessible heading text",
-          "required": true
-        },
-        {
-          "rule": "Tab panels are announced via segmented control aria-label",
-          "required": true
-        }
-      ],
-      "tier": "template",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root"
-        },
-        {
-          "name": "header",
-          "figmaSlotName": "Header"
-        },
-        {
-          "name": "specimen",
-          "figmaSlotName": "Specimen"
-        },
-        {
-          "name": "tabs",
-          "figmaSlotName": "Tabs"
-        },
-        {
-          "name": "panel",
-          "figmaSlotName": "Panel"
-        }
-      ],
-      "figmaLink": null
-    },
     "ComponentInstanceMatrix": {
       "category": "Utilities",
       "categorySource": "jsdoc",
@@ -3848,7 +3671,6 @@
       },
       "consumers": [
         "src/app/components/api-reference.tsx",
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx"
       ],
       "tokenMapping": {},
@@ -3880,7 +3702,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
         "src/stories/activity-feed.stories.tsx"
       ],
       "tokenMapping": {},
@@ -3956,7 +3777,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/heading-anchor.tsx",
         "src/stories/heading-stack.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4046,7 +3866,7 @@
       "categorySource": "missing-jsdoc",
       "governedCategory": false,
       "hidden": false,
-      "filePath": "src/app/pages/hds/HdsSystemDocLayout.tsx",
+      "filePath": "src/app/layouts/HdsSystemDocLayout.tsx",
       "description": "HdsSystemDocLayout — three-column doc layout with sidebar, nav, and content.",
       "figmaUrl": null,
       "figmaId": null,
@@ -4055,8 +3875,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {
@@ -4183,7 +4001,6 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/heading-anchor.tsx",
         "src/app/components/info-page.tsx",
         "src/app/components/nav-item.tsx",
         "src/app/components/preview-frame.tsx",
@@ -4192,9 +4009,6 @@
         "src/app/components/toolbar.test.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/patterns/HdsDisclosure.tsx",
-        "src/app/pages/docs/patterns/HdsFoundationSwatch.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/disclosure.stories.tsx",
         "src/stories/error-boundary.stories.tsx",
@@ -4756,7 +4570,6 @@
       },
       "consumers": [
         "src/app/components/lab/legacy-token-detail.tsx",
-        "src/app/components/lab/token-detail.tsx",
         "src/stories/empty-state.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4803,7 +4616,6 @@
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/textarea.tsx",
-        "src/app/pages/docs/patterns/HdsField.tsx",
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
         "src/stories/sketch.stories.tsx"
@@ -4881,16 +4693,12 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/doc-sections.tsx",
         "src/app/components/not-found-pattern.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/toast.tsx",
         "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/pages/ErrorPage.tsx",
-        "src/app/pages/lab/IncubatorPage.tsx",
-        "src/app/route-tree.tsx",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx",
@@ -5280,9 +5088,7 @@
         "sizing": "compact"
       },
       "consumers": [
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/pages/lab/IncubatorPage.tsx",
         "src/stories/text-lockup.stories.tsx"
       ],
       "tokenMapping": {}
@@ -6273,7 +6079,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/doc-sections.tsx",
         "src/app/components/form.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/form/hds-form.tsx",
@@ -6962,6 +6767,7 @@
       },
       "consumers": [
         "src/app/components/command-palette.figma.tsx",
+        "src/app/data/nav-model.test.ts",
         "src/app/lib/hds-search.ts",
         "src/stories/command-palette.stories.tsx"
       ],
@@ -8476,177 +8282,6 @@
       "variantAxes": [],
       "componentProperties": []
     },
-    "CascadePreview": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:CascadePreview",
-      "tier": "utility",
-      "preview": {
-        "exportName": "CascadePreview",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "DemoButton": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:DemoButton",
-      "tier": "utility",
-      "preview": {
-        "exportName": "DemoButton",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "DemoTag": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:DemoTag",
-      "tier": "utility",
-      "preview": {
-        "exportName": "DemoTag",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "DocLabel": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:DocLabel",
-      "tier": "utility",
-      "preview": {
-        "exportName": "DocLabel",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "TooltipDemo": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:TooltipDemo",
-      "tier": "utility",
-      "preview": {
-        "exportName": "TooltipDemo",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "HRule": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HRule",
-      "tier": "utility",
-      "preview": {
-        "exportName": "HRule",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "SurfaceSwatch": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:SurfaceSwatch",
-      "tier": "utility",
-      "preview": {
-        "exportName": "SurfaceSwatch",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "Swatch": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-sections.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:Swatch",
-      "tier": "utility",
-      "preview": {
-        "exportName": "Swatch",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/data/projects.ts",
-        "src/stories/stack.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
     "VariantPreviewDeck": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -8884,7 +8519,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/ComponentDocPage.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/demo-block.tsx",
         "src/app/components/specimen-block.tsx"
@@ -9141,7 +8775,6 @@
       },
       "consumers": [
         "src/app/components/asset-img.tsx",
-        "src/app/components/doc-sections.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/hds-tooltip.stories.tsx"
@@ -9165,7 +8798,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/pages/NotFoundPage.tsx",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx"
       ],
@@ -9183,24 +8815,6 @@
       "docExempt": true,
       "figmaLink": "TODO:hds-master:NotFoundPattern"
     },
-    "HdsDocPrimitives": {
-      "category": "Doc Utilities",
-      "categorySource": "legacy-manifest",
-      "hidden": false,
-      "description": "Use HdsDocPrimitives as the shared documentation primitive module that powers HDS reflection.",
-      "figmaUrl": null,
-      "tokenMapping": {},
-      "filePath": "src/app/pages/hds/HdsDocPrimitives.tsx",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {},
-      "tier": "utility"
-    },
     "CascadeText": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -9216,34 +8830,11 @@
         "exportName": "CascadeText",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/doc-sections.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "TODO:hds-master:CascadeText"
-    },
-    "CategoryComponentDocs": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/CategoryComponentDocs.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "CategoryComponentDocs",
-        "sizing": "panel"
-      },
       "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:CategoryComponentDocs"
+      "figmaLink": "TODO:hds-master:CascadeText"
     },
     "DocPageSpec": {
       "category": "Uncategorized",
@@ -9422,36 +9013,6 @@
       "docExempt": false,
       "figmaLink": "TODO:hds-master:TokenCollectionList"
     },
-    "TokenDetail": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/app/components/lab/token-detail.tsx",
-      "description": "TokenDetail - canonical token detail inspector for the live token explorer and lab tooling.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "TokenDetail",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "TODO:hds-master:TokenDetail"
-    },
     "TokenList": {
       "category": "Uncategorized",
       "categorySource": "missing-jsdoc",
@@ -9482,27 +9043,6 @@
       "componentProperties": [],
       "figmaLink": "TODO:hds-master:TokenList"
     },
-    "HdsFoundationSection": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/app/pages/hds/HdsDocPrimitives.tsx",
-      "description": "HdsDocPrimitives â€” shared doc-page building blocks. Previously embedded in HDSLayout.tsx. Extracted so page files can import from a single, focused module without pulling in the entire shell. Import pattern (from a sibling hds/ page): import { DocPageHeader, DocSection, useIsMobile } from './HdsDocPrimitives'; Import pattern (from hds/components/ sub-page): import { DocPageHeader, DocSection, ComponentBlock } from '../HdsDocPrimitives';",
-      "figmaUrl": null,
-      "figmaId": null,
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {},
-      "tier": "utility"
-    },
     "ErrorBoundary": {
       "category": "Uncategorized",
       "categorySource": "missing-jsdoc",
@@ -9519,7 +9059,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/App.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
         "src/stories/error-boundary.stories.tsx"
@@ -9545,10 +9084,7 @@
         "exportName": "ApiReference",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []
@@ -9573,54 +9109,6 @@
         "src/app/pages/docs/patterns/_template.tsx",
         "src/app/pages/docs/templates/_template.tsx",
         "src/app/pages/SketchPage.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "DocTOC": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/doc-toc.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:DocTOC",
-      "tier": "utility",
-      "preview": {
-        "exportName": "DocTOC",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/heading-anchor.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "HeadingAnchor": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/heading-anchor.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": "TODO:hds-master:HeadingAnchor",
-      "tier": "utility",
-      "preview": {
-        "exportName": "HeadingAnchor",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/doc-toc.tsx",
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],

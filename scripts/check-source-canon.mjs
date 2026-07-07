@@ -64,11 +64,12 @@ const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
-const SCAN_DIRS = ['src/app/components', 'src/app/pages', 'src/app/layouts'];
+const SCAN_DIRS = ['src/app/components', 'src/app/layouts'];
 
-// Per src/app/pages/sketches/CLAUDE.md, the sketches directory is the
-// "Expressive Zone" and explicitly suspends global HDS rules. Don't flag
-// generative-art code for canon violations.
+// The sketches directory (formerly src/app/pages/sketches, removed with the
+// docs SPA teardown, #51) was the "Expressive Zone" and explicitly suspended
+// global HDS rules. Kept as a defensive skip in case generative-art code is
+// reintroduced elsewhere under a /sketches/ path.
 const SKIP_PATH_PARTS = ['/sketches/'];
 
 function* walk(dir) {
