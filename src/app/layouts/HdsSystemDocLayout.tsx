@@ -1,6 +1,6 @@
 // @doc-exempt: internal HDS documentation shell wrapper, not a standalone component artifact
 import type { ReactNode } from 'react';
-import { DocLayout, type DocLayoutContentMaxWidth } from '../../layouts/DocLayout';
+import { DocLayout, type DocLayoutContentMaxWidth } from './DocLayout';
 
 /** @public */
 export function HdsSystemDocLayout({
@@ -12,10 +12,7 @@ export function HdsSystemDocLayout({
 }) {
   return (
     <div className="hds-page-enter" style={{ marginTop: 0, paddingTop: 0 }}>
-      <DocLayout
-        contentSlot={contentSlot}
-        contentMaxWidth={contentMaxWidth}
-      />
+      <DocLayout contentSlot={contentSlot} contentMaxWidth={contentMaxWidth} />
     </div>
   );
 }

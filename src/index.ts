@@ -135,7 +135,7 @@ export * from './app/components/toast';
 export * from './app/layouts/CaseStudyLayout';
 export * from './app/components/error-pattern';
 export * from './app/components/info-page';
-export * from './app/pages/hds/HdsSystemDocLayout';
+export * from './app/layouts/HdsSystemDocLayout';
 
 // ── Token bridge (CSS variables wrapped as TS constants + raw DTCG JSON) ──
 export { default as hds } from './app/design-system/tokens';
