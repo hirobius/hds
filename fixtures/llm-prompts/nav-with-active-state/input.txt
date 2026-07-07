@@ -1,1 +1,0 @@
-a vertical nav with 4 items, the second one is active

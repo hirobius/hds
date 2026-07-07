@@ -33,7 +33,6 @@ Use it to answer:
 | `pnpm tokens:verify`      | Verify token pipeline integrity                                                                     | Fix token or compiler issues before proceeding                                   |
 | `pnpm tokens:audit`       | Audit component token compliance                                                                    | Refactor components or add justified suppressions                                |
 | `pnpm tokens:audit:pages` | Audit page surfaces for raw design values                                                           | Route page-level visual decisions through tokens or justify editorial exceptions |
-| `pnpm figma:snapshot`     | Normalize a raw Figma export into the stable snapshot shape used by the audit path                  | Inspect the normalized snapshot before running `pnpm figma:audit`                |
 | `pnpm figma:audit`        | Compare repo truth against generated Figma variable exports and optional normalized Figma snapshots | Fix token/manifest/API drift before attempting write-back sync                   |
 
 ## Check Suite
@@ -178,15 +177,14 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 
 ## Supporting Scripts
 
-| Script                         | Purpose                                                                         |
-| ------------------------------ | ------------------------------------------------------------------------------- |
-| `build-handoff.mjs`            | keeps the design handoff material in sync with token outputs                    |
-| `build-design-md.mjs`          | keeps the lean visual spec in sync with token outputs                           |
-| `build-token-index.mjs`        | builds token-index artifacts                                                    |
-| `build-figma-variables.mjs`    | creates Figma variable export artifacts                                         |
-| `normalize-figma-snapshot.mjs` | normalizes transport-specific Figma export JSON into the stable snapshot format |
-| `audit-figma-system.mjs`       | compares repo truth to Figma-facing exports and snapshots                       |
-| `batch-scan.mjs`               | scanning utility for broader inspection workflows                               |
+| Script                      | Purpose                                                      |
+| --------------------------- | ------------------------------------------------------------ |
+| `build-handoff.mjs`         | keeps the design handoff material in sync with token outputs |
+| `build-design-md.mjs`       | keeps the lean visual spec in sync with token outputs        |
+| `build-token-index.mjs`     | builds token-index artifacts                                 |
+| `build-figma-variables.mjs` | creates Figma variable export artifacts                      |
+| `audit-figma-system.mjs`    | compares repo truth to Figma-facing exports and snapshots    |
+| `batch-scan.mjs`            | scanning utility for broader inspection workflows            |
 
 ## Token Scan Architecture
 

@@ -46,7 +46,8 @@ export const Dark: Story = {
     backgrounds: { default: 'dark' },
     docs: {
       description: {
-        story: 'isDark flag passed — tokenized CSS swap drives the visual theme; flag itself is for route-wrapper parity.',
+        story:
+          'isDark flag passed — tokenized CSS swap drives the visual theme; flag itself is for route-wrapper parity.',
       },
     },
   },
