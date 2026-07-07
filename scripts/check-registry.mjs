@@ -7,13 +7,16 @@
  *
  * Checks:
  *   1. No stub summaries (entries with "TODO:" in their summary field)
- *   2. No page files are missing a registry entry
+ *   2. No page files are missing a registry entry (src/app/pages/hds was
+ *      removed with the docs SPA teardown, #51 — hds-registry.json is now a
+ *      frozen data artifact, still consumed by hds-nav-data.ts, so this
+ *      check degrades to a no-op rather than erroring when the dir is gone)
  *
  * Run: node scripts/check-registry.mjs
  * Or:  pnpm check:registry
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -64,6 +67,7 @@ function derivePath(relFile) {
 }
 
 function collectTsx(dir, base = '') {
+  if (!base && !existsSync(dir)) return [];
   const results = [];
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);

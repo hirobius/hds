@@ -24,17 +24,28 @@ import motionPerfValidator from './motion-perf.mjs';
 async function validate(jsxString) {
   const parsed = parse(jsxString);
   if (!parsed.ok) {
-    return { ok: false, errors: [{ path: '', code: 'PARSE_ERROR', message: parsed.error, suggestion: 'Fix JSX syntax before re-validating' }] };
+    return {
+      ok: false,
+      errors: [
+        {
+          path: '',
+          code: 'PARSE_ERROR',
+          message: parsed.error,
+          suggestion: 'Fix JSX syntax before re-validating',
+        },
+      ],
+    };
   }
 
-  const [manifestResult, tokenResult, a11yResult, swissResult, bindingResult, motionResult] = await Promise.all([
-    manifestValidator(jsxString),
-    tokenValidator(jsxString),
-    a11yValidator(jsxString),
-    swissCanonValidator(jsxString),
-    bindingCompletenessValidator(jsxString),
-    motionPerfValidator(jsxString),
-  ]);
+  const [manifestResult, tokenResult, a11yResult, swissResult, bindingResult, motionResult] =
+    await Promise.all([
+      manifestValidator(jsxString),
+      tokenValidator(jsxString),
+      a11yValidator(jsxString),
+      swissCanonValidator(jsxString),
+      bindingCompletenessValidator(jsxString),
+      motionPerfValidator(jsxString),
+    ]);
 
   const errors = [
     ...manifestResult.errors,
@@ -51,5 +62,6 @@ async function validate(jsxString) {
 // Default export so fixture test loader (scripts/run-validator-tests.mjs) can
 // call it as a function via the `.default ?? module` fallback.
 export default validate;
-// Named export for consumers that import as { validate } (e.g. pipeline/retry-loop.mjs)
+// Named export for consumers that import as { validate } (formerly pipeline/retry-loop.mjs,
+// retired #50).
 export { validate };

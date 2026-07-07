@@ -11,15 +11,13 @@ Do not use it as a second policy file.
 
 ## Where Things Go
 
-| If you have...                                                 | Put it in...            |
-| -------------------------------------------------------------- | ----------------------- |
-| a new task or follow-up                                        | `TASKS.md`              |
-| a page-review or docs-shell finding                            | `HDS_COMPLIANCE_LOG.md` |
-| a process lesson or milestone Adrian explicitly wants archived | `PROCESS.md`            |
-| a token-rule change                                            | `TOKEN_GOVERNANCE.md`   |
-| a visual/brand rule change                                     | `DESIGN.md`             |
-| a scripts/checks inventory update                              | `SYSTEMS_REGISTRY.md`   |
-| a long-term memory item                                        | `claude-config/memory/` |
+| If you have...                           | Put it in...                                                        |
+| ---------------------------------------- | ------------------------------------------------------------------- |
+| a new task or follow-up                  | a GitHub Issue in this repo (fleet-hub convention, see `CLAUDE.md`) |
+| a token-rule change                      | `TOKEN_GOVERNANCE.md`                                               |
+| a visual/brand rule change               | `DESIGN.md`                                                         |
+| a scripts/checks inventory update        | `SYSTEMS_REGISTRY.md`                                               |
+| a long-term memory or cross-project item | the ops repo's HANDOFF doc (fleet hub, see `CLAUDE.md`)             |
 
 ## Typical Flow
 

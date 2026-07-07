@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /** @internal — not part of @hirobius/design-system public API surface. */
 // Zero-dependency HTML / HDS JSX → ADD_NODE compiler.
-// Called by generate-to-figma.mjs when the LLM emits markup instead of JSON.
+// Formerly called by generate-to-figma.mjs (LLM markup path); that generation
+// pipeline was cut (#50). Retained — still used by validators/compiler.mjs
+// and the manifest tooling (scripts/enrich-manifest.mjs, check-manifest-drift.mjs).
 //
 // Accepted input formats:
 //   HDS JSX:  <HdsFrame fill="semantic.color.surface.raised" layout="VERTICAL" padding="24" gap="16">
@@ -23,7 +25,9 @@ function getComponentSpec(componentName) {
   if (_manifestSpecs === null) {
     try {
       _manifestSpecs = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')).componentSpecs || {};
-    } catch { _manifestSpecs = {}; }
+    } catch {
+      _manifestSpecs = {};
+    }
   }
   return _manifestSpecs[componentName] || null;
 }
@@ -107,11 +111,25 @@ function preprocessChildExpressions(src) {
   let inTag = false;
   while (i < src.length) {
     const c = src[i];
-    if (!inTag && c === '<') { inTag = true; out += c; i++; continue; }
-    if (inTag && c === '>') { inTag = false; out += c; i++; continue; }
+    if (!inTag && c === '<') {
+      inTag = true;
+      out += c;
+      i++;
+      continue;
+    }
+    if (inTag && c === '>') {
+      inTag = false;
+      out += c;
+      i++;
+      continue;
+    }
     if (!inTag && c === '{') {
       const close = src.indexOf('}', i + 1);
-      if (close === -1) { out += c; i++; continue; }
+      if (close === -1) {
+        out += c;
+        i++;
+        continue;
+      }
       const expr = src.slice(i + 1, close);
       const cond = expr.match(/^[^&]*&&\s*(<[A-Za-z][^>]*\/>)\s*$/);
       if (cond) {
@@ -205,18 +223,58 @@ function buildTree(tokens) {
 const ICON_TAGS = new Set(['Icon', 'HdsPhosphor', 'PhosphorIcon', 'Icon']);
 
 const FRAME_TAGS = new Set([
-  'HdsFrame', 'Card', 'Container', 'Grid', 'Stack',
-  'div', 'section', 'article', 'header', 'footer', 'main', 'nav', 'aside',
-  'form', 'ul', 'ol', 'figure', 'fieldset',
+  'HdsFrame',
+  'Card',
+  'Container',
+  'Grid',
+  'Stack',
+  'div',
+  'section',
+  'article',
+  'header',
+  'footer',
+  'main',
+  'nav',
+  'aside',
+  'form',
+  'ul',
+  'ol',
+  'figure',
+  'fieldset',
 ]);
 const TEXT_TAGS = new Set([
-  'Text', 'HdsHeading', 'HdsLabel', 'HdsCaption',
-  'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-  'label', 'li', 'dt', 'dd', 'blockquote', 'figcaption', 'small', 'strong', 'em',
+  'Text',
+  'HdsHeading',
+  'HdsLabel',
+  'HdsCaption',
+  'p',
+  'span',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'label',
+  'li',
+  'dt',
+  'dd',
+  'blockquote',
+  'figcaption',
+  'small',
+  'strong',
+  'em',
 ]);
 const INSTANCE_TAGS = new Set([
-  'Button', 'Input', 'Badge', 'Tag', 'Icon',
-  'button', 'input', 'select', 'textarea',
+  'Button',
+  'Input',
+  'Badge',
+  'Tag',
+  'Icon',
+  'button',
+  'input',
+  'select',
+  'textarea',
 ]);
 
 function inferNodeType(name) {
@@ -244,26 +302,26 @@ function attrsToProps(tagName, attrs, textContent) {
 
   // HDS JSX direct attribute pass-through.
   // resolveVar() expands var:X → semantic.X so authors can write short aliases.
-  if (attrs.fill || attrs.background)  p.fill       = resolveVar(attrs.fill || attrs.background);
-  if (attrs.stroke || attrs.border)    p.stroke     = resolveVar(attrs.stroke || attrs.border);
-  if (attrs.layout)    p.layoutMode  = String(attrs.layout).toUpperCase();
+  if (attrs.fill || attrs.background) p.fill = resolveVar(attrs.fill || attrs.background);
+  if (attrs.stroke || attrs.border) p.stroke = resolveVar(attrs.stroke || attrs.border);
+  if (attrs.layout) p.layoutMode = String(attrs.layout).toUpperCase();
   if (attrs.layoutMode) p.layoutMode = String(attrs.layoutMode).toUpperCase();
-  if (attrs.gap        != null) p.itemSpacing = resolveDim(attrs.gap);
+  if (attrs.gap != null) p.itemSpacing = resolveDim(attrs.gap);
   if (attrs.itemSpacing != null) p.itemSpacing = resolveDim(attrs.itemSpacing);
-  if (attrs.padding    != null) p.padding     = resolveDim(attrs.padding);
-  if (attrs.paddingX   != null) p.paddingX    = resolveDim(attrs.paddingX);
-  if (attrs.paddingY   != null) p.paddingY    = resolveDim(attrs.paddingY);
-  if (attrs.radius     != null) p.radius      = resolveDim(attrs.radius);
-  if (attrs.width      != null && attrs.width !== 'fill') p.width  = Number(attrs.width)  || undefined;
-  if (attrs.height     != null && attrs.height !== 'fill') p.height = Number(attrs.height) || undefined;
+  if (attrs.padding != null) p.padding = resolveDim(attrs.padding);
+  if (attrs.paddingX != null) p.paddingX = resolveDim(attrs.paddingX);
+  if (attrs.paddingY != null) p.paddingY = resolveDim(attrs.paddingY);
+  if (attrs.radius != null) p.radius = resolveDim(attrs.radius);
+  if (attrs.width != null && attrs.width !== 'fill') p.width = Number(attrs.width) || undefined;
+  if (attrs.height != null && attrs.height !== 'fill') p.height = Number(attrs.height) || undefined;
   if (attrs.typography) p.typography = resolveVar(attrs.typography);
-  if (attrs.variant)    p.variant    = attrs.variant;
-  if (attrs.size)       p.size       = attrs.size;
-  if (attrs.label)      p.label      = attrs.label;
+  if (attrs.variant) p.variant = attrs.variant;
+  if (attrs.size) p.size = attrs.size;
+  if (attrs.label) p.label = attrs.label;
   if (attrs.placeholder) p.placeholder = attrs.placeholder;
-  if (attrs.component)  p.component  = attrs.component;
-  if (attrs.name)       p.name       = attrs.name;
-  if (attrs.text)       p.text       = attrs.text;
+  if (attrs.component) p.component = attrs.component;
+  if (attrs.name) p.name = attrs.name;
+  if (attrs.text) p.text = attrs.text;
 
   // ICON: emit the Iconify reference and size; fill is optional for tinting.
   if (inferNodeType(tagName) === 'ICON') {
@@ -271,7 +329,14 @@ function attrsToProps(tagName, attrs, textContent) {
     // Normalize: 'gear-bold' → 'ph:gear-bold', 'ph:gear' → 'ph:gear-bold' (auto-bold for Phosphor)
     let qualified = iconRef;
     if (iconRef && !iconRef.includes(':')) qualified = 'ph:' + iconRef;
-    if (qualified.startsWith('ph:') && !qualified.endsWith('-bold') && !qualified.endsWith('-fill') && !qualified.endsWith('-light') && !qualified.endsWith('-thin') && !qualified.endsWith('-duotone')) {
+    if (
+      qualified.startsWith('ph:') &&
+      !qualified.endsWith('-bold') &&
+      !qualified.endsWith('-fill') &&
+      !qualified.endsWith('-light') &&
+      !qualified.endsWith('-thin') &&
+      !qualified.endsWith('-duotone')
+    ) {
       qualified = qualified + '-bold';
     }
     p.icon = qualified || 'ph:question-bold';
@@ -284,26 +349,28 @@ function attrsToProps(tagName, attrs, textContent) {
   const cls = String(attrs.class || attrs.className || '');
   if (cls) {
     if (!p.fill) {
-      if (/\bcard\b|\bsurface\b|\braised\b/.test(cls))         p.fill = 'semantic.color.surface.raised';
-      else if (/\bpage\b|\bbackground\b/.test(cls))            p.fill = 'semantic.color.surface.page';
-      else if (/\baction\b|\bbtn\b|\bbutton\b/.test(cls))      p.fill = 'semantic.color.surface.action';
+      if (/\bcard\b|\bsurface\b|\braised\b/.test(cls)) p.fill = 'semantic.color.surface.raised';
+      else if (/\bpage\b|\bbackground\b/.test(cls)) p.fill = 'semantic.color.surface.page';
+      else if (/\baction\b|\bbtn\b|\bbutton\b/.test(cls)) p.fill = 'semantic.color.surface.action';
     }
     // Card containers: emit token paths so Figma variable binding fires.
     // The LLM puts padding/radius in CSS (stripped by compiler), so we inject
     // the canonical HDS tokens here instead of raw numbers.
     if (/\bcard\b/.test(cls)) {
       if (p.padding == null) p.padding = 'semantic.space.component.padding';
-      if (p.radius  == null) p.radius  = 'semantic.radius.action';
+      if (p.radius == null) p.radius = 'semantic.radius.action';
     }
     if (!p.stroke && /\bborder\b/.test(cls)) p.stroke = 'semantic.color.border.default';
     if (!p.layoutMode) {
-      if (/\brow\b|\bflex-row\b|\bhorizontal\b/.test(cls))     p.layoutMode = 'HORIZONTAL';
-      else if (/\bcol\b|\bstack\b|\bvertical\b/.test(cls))     p.layoutMode = 'VERTICAL';
+      if (/\brow\b|\bflex-row\b|\bhorizontal\b/.test(cls)) p.layoutMode = 'HORIZONTAL';
+      else if (/\bcol\b|\bstack\b|\bvertical\b/.test(cls)) p.layoutMode = 'VERTICAL';
     }
     if (!p.radius && /\brounded\b/.test(cls)) p.radius = 8;
     if (!p.padding && /\bp-\d|\bpadding\b/.test(cls)) p.padding = 24;
-    if (/\bheading\b|\bheader\b|\btitle\b/.test(cls) && !p.fill) p.fill = 'semantic.color.content.primary';
-    if (/\bbody\b|\bdescription\b|\btext\b/.test(cls) && !p.fill) p.fill = 'semantic.color.content.secondary';
+    if (/\bheading\b|\bheader\b|\btitle\b/.test(cls) && !p.fill)
+      p.fill = 'semantic.color.content.primary';
+    if (/\bbody\b|\bdescription\b|\btext\b/.test(cls) && !p.fill)
+      p.fill = 'semantic.color.content.secondary';
   }
 
   // HTML heading → typography + primary content fill
@@ -376,7 +443,18 @@ function normalizeComponentName(tagName, attrs) {
 // Attrs that map to Figma component properties rather than frame geometry.
 // These are emitted in the `attributes` bag on INSTANCE commands so the plugin
 // can forward them to setProperties() without conflating them with layout props.
-const INSTANCE_PROP_KEYS = ['variant', 'size', 'type', 'state', 'disabled', 'checked', 'icon', 'color', 'placeholder', 'label'];
+const INSTANCE_PROP_KEYS = [
+  'variant',
+  'size',
+  'type',
+  'state',
+  'disabled',
+  'checked',
+  'icon',
+  'color',
+  'placeholder',
+  'label',
+];
 
 // Manifest-aware attrs that, when present on a component's spec, should also
 // be preserved through to figmaProperties even if they aren't in the static
@@ -419,7 +497,7 @@ function mapInstanceAttrsToFigma(componentName, attrs) {
     const cp = bySourceProp[key];
     if (cp) {
       const figmaKey = cp.name || (mapping && mapping[key]) || key;
-      const figmaValue = (cp.invert && typeof value === 'boolean') ? !value : value;
+      const figmaValue = cp.invert && typeof value === 'boolean' ? !value : value;
       out[figmaKey] = figmaValue;
       translated++;
       continue;
@@ -441,14 +519,14 @@ function treeToCommands(nodes, parentId = 'root', out = []) {
     // Fragments are transparent: emit no command, attach their element
     // children to the current parentId.
     if (node.name === '__fragment__') {
-      const fragKids = node.children.filter(c => c.name !== '__text__');
+      const fragKids = node.children.filter((c) => c.name !== '__text__');
       if (fragKids.length > 0) treeToCommands(fragKids, parentId, out);
       continue;
     }
 
     const textContent = node.children
-      .filter(c => c.name === '__text__')
-      .map(c => c.text)
+      .filter((c) => c.name === '__text__')
+      .map((c) => c.text)
       .join(' ')
       .trim();
 
@@ -486,7 +564,7 @@ function treeToCommands(nodes, parentId = 'root', out = []) {
       out.push(cmd);
     }
 
-    const elementKids = node.children.filter(c => c.name !== '__text__');
+    const elementKids = node.children.filter((c) => c.name !== '__text__');
     if (elementKids.length > 0) treeToCommands(elementKids, id, out);
   }
   return out;

@@ -7,7 +7,6 @@
  *   ThemeContext  — system mode responds to matchMedia change events
  *   LanguageContext — RTL direction flips html[dir] attribute
  *   FontContext   — CSS var applied on mount
- *   TocContext    — register / unregister / activeId interaction
  *
  * @testing-library/react is not installed; tests use act + createRoot directly.
  * Each test creates its own container and unmounts after to avoid state leaks.
@@ -31,7 +30,9 @@ function makeContainer(): HTMLDivElement {
 }
 
 function cleanup(container: HTMLDivElement, root: Root) {
-  act(() => { root.unmount(); });
+  act(() => {
+    root.unmount();
+  });
   container.remove();
 }
 
@@ -53,12 +54,14 @@ describe('ThemeContext', () => {
   } {
     const mqObject = { matches: defaultMatches };
     const mockFn = vi.fn().mockReturnValue({
-      get matches() { return mqObject.matches; },
+      get matches() {
+        return mqObject.matches;
+      },
       addEventListener: vi.fn((_event: string, cb: (e: { matches: boolean }) => void) => {
         mqListeners.push(cb);
       }),
       removeEventListener: vi.fn((_event: string, cb: (e: { matches: boolean }) => void) => {
-        mqListeners = mqListeners.filter(l => l !== cb);
+        mqListeners = mqListeners.filter((l) => l !== cb);
       }),
     });
     return { mockFn, mqObject };
@@ -98,7 +101,7 @@ describe('ThemeContext', () => {
       root.render(
         <ThemeProvider>
           <Consumer />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
     });
 
@@ -139,11 +142,17 @@ describe('ThemeContext', () => {
     }
 
     await act(async () => {
-      root.render(<ThemeProvider><Consumer /></ThemeProvider>);
+      root.render(
+        <ThemeProvider>
+          <Consumer />
+        </ThemeProvider>,
+      );
     });
 
     // Switch to explicit light mode
-    await act(async () => { setMode?.('light'); });
+    await act(async () => {
+      setMode?.('light');
+    });
     expect(isDark).toBe(false);
 
     // Simulate OS switching to dark — should NOT change isDark in light mode
@@ -172,7 +181,9 @@ describe('LanguageContext', () => {
     container = makeContainer();
     root = createRoot(container);
     // Clear localStorage direction
-    try { localStorage.removeItem('hds-direction'); } catch {}
+    try {
+      localStorage.removeItem('hds-direction');
+    } catch {}
   });
 
   afterEach(() => {
@@ -184,7 +195,11 @@ describe('LanguageContext', () => {
     const { LanguageProvider } = await import('../LanguageContext');
 
     await act(async () => {
-      root.render(<LanguageProvider><div /></LanguageProvider>);
+      root.render(
+        <LanguageProvider>
+          <div />
+        </LanguageProvider>,
+      );
     });
 
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
@@ -202,12 +217,18 @@ describe('LanguageContext', () => {
     }
 
     await act(async () => {
-      root.render(<LanguageProvider><Consumer /></LanguageProvider>);
+      root.render(
+        <LanguageProvider>
+          <Consumer />
+        </LanguageProvider>,
+      );
     });
 
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
 
-    await act(async () => { toggle?.(); });
+    await act(async () => {
+      toggle?.();
+    });
 
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
     expect(document.documentElement.getAttribute('data-reading-direction')).toBe('rtl');
@@ -227,10 +248,16 @@ describe('LanguageContext', () => {
     }
 
     await act(async () => {
-      root.render(<LanguageProvider><Consumer /></LanguageProvider>);
+      root.render(
+        <LanguageProvider>
+          <Consumer />
+        </LanguageProvider>,
+      );
     });
 
-    await act(async () => { setDirection?.('rtl'); });
+    await act(async () => {
+      setDirection?.('rtl');
+    });
 
     expect(isRtl).toBe(true);
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
@@ -248,14 +275,22 @@ describe('LanguageContext', () => {
     }
 
     await act(async () => {
-      root.render(<LanguageProvider><Consumer /></LanguageProvider>);
+      root.render(
+        <LanguageProvider>
+          <Consumer />
+        </LanguageProvider>,
+      );
     });
 
     // toggle to rtl, then back to ltr
-    await act(async () => { toggle?.(); });
+    await act(async () => {
+      toggle?.();
+    });
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
 
-    await act(async () => { toggle?.(); });
+    await act(async () => {
+      toggle?.();
+    });
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
   });
 });
@@ -284,154 +319,17 @@ describe('FontContext', () => {
     const { FontProvider } = await import('../FontContext');
 
     await act(async () => {
-      root.render(<FontProvider><div data-testid="child" /></FontProvider>);
+      root.render(
+        <FontProvider>
+          <div data-testid="child" />
+        </FontProvider>,
+      );
     });
 
     expect(container.querySelector('[data-testid="child"]')).toBeTruthy();
     const inlineOverride = document.documentElement.style.getPropertyValue(
-      '--primitive-typography-family-primary'
+      '--primitive-typography-family-primary',
     );
     expect(inlineOverride).toBe('');
-  });
-});
-
-// ── TocContext ────────────────────────────────────────────────────────────────
-
-describe('TocContext', () => {
-  let container: HTMLDivElement;
-  let root: Root;
-
-  beforeEach(() => {
-    container = makeContainer();
-    root = createRoot(container);
-  });
-
-  afterEach(() => {
-    cleanup(container, root);
-  });
-
-  it('register adds an item; unregister removes it', async () => {
-    const { TocProvider, useToc } = await import('../../pages/hds/HdsTocContext');
-
-    let items: import('../../pages/hds/HdsTocContext').TocItem[] = [];
-    let registerFn: ((i: import('../../pages/hds/HdsTocContext').TocItem) => void) | undefined;
-    let unregisterFn: ((id: string) => void) | undefined;
-
-    function Consumer() {
-      const ctx = useToc();
-      items = ctx.items;
-      registerFn = ctx.register;
-      unregisterFn = ctx.unregister;
-      return null;
-    }
-
-    await act(async () => {
-      root.render(<TocProvider><Consumer /></TocProvider>);
-    });
-
-    expect(items).toHaveLength(0);
-
-    await act(async () => {
-      registerFn?.({ id: 'section-1', title: 'Introduction' });
-    });
-
-    expect(items).toHaveLength(1);
-    expect(items[0]).toMatchObject({ id: 'section-1', title: 'Introduction' });
-
-    await act(async () => {
-      unregisterFn?.('section-1');
-    });
-
-    expect(items).toHaveLength(0);
-  });
-
-  it('register is idempotent — duplicate id does not add twice', async () => {
-    const { TocProvider, useToc } = await import('../../pages/hds/HdsTocContext');
-
-    let items: import('../../pages/hds/HdsTocContext').TocItem[] = [];
-    let registerFn: ((i: import('../../pages/hds/HdsTocContext').TocItem) => void) | undefined;
-
-    function Consumer() {
-      const ctx = useToc();
-      items = ctx.items;
-      registerFn = ctx.register;
-      return null;
-    }
-
-    await act(async () => {
-      root.render(<TocProvider><Consumer /></TocProvider>);
-    });
-
-    await act(async () => {
-      registerFn?.({ id: 'section-a', title: 'Section A' });
-    });
-
-    await act(async () => {
-      registerFn?.({ id: 'section-a', title: 'Section A (duplicate)' });
-    });
-
-    // Should still only have 1 item
-    expect(items).toHaveLength(1);
-    // Title from first registration wins (idempotent check preserves first entry)
-    expect(items[0]!.title).toBe('Section A');
-  });
-
-  it('register multiple items preserves insertion order', async () => {
-    const { TocProvider, useToc } = await import('../../pages/hds/HdsTocContext');
-
-    let items: import('../../pages/hds/HdsTocContext').TocItem[] = [];
-    let registerFn: ((i: import('../../pages/hds/HdsTocContext').TocItem) => void) | undefined;
-
-    function Consumer() {
-      const ctx = useToc();
-      items = ctx.items;
-      registerFn = ctx.register;
-      return null;
-    }
-
-    await act(async () => {
-      root.render(<TocProvider><Consumer /></TocProvider>);
-    });
-
-    await act(async () => {
-      registerFn?.({ id: 'first', title: 'First' });
-      registerFn?.({ id: 'second', title: 'Second' });
-      registerFn?.({ id: 'third', title: 'Third' });
-    });
-
-    expect(items.map(i => i.id)).toEqual(['first', 'second', 'third']);
-  });
-
-  it('unregister of non-existent id is a no-op', async () => {
-    const { TocProvider, useToc } = await import('../../pages/hds/HdsTocContext');
-
-    let items: import('../../pages/hds/HdsTocContext').TocItem[] = [];
-    let registerFn: ((i: import('../../pages/hds/HdsTocContext').TocItem) => void) | undefined;
-    let unregisterFn: ((id: string) => void) | undefined;
-
-    function Consumer() {
-      const ctx = useToc();
-      items = ctx.items;
-      registerFn = ctx.register;
-      unregisterFn = ctx.unregister;
-      return null;
-    }
-
-    await act(async () => {
-      root.render(<TocProvider><Consumer /></TocProvider>);
-    });
-
-    await act(async () => {
-      registerFn?.({ id: 'item-1', title: 'Item 1' });
-    });
-
-    expect(items).toHaveLength(1);
-
-    // Unregister something that doesn't exist
-    await act(async () => {
-      unregisterFn?.('does-not-exist');
-    });
-
-    expect(items).toHaveLength(1);
   });
 });

@@ -58,11 +58,8 @@ jobs:
       - name: Unit + contract tests (vitest)
         run: pnpm exec vitest run
 
-      - name: App build
-        run: pnpm build
-
       - name: Bundle budgets (size-limit)
-        run: pnpm size-limit
+        run: pnpm check:size
 
       - name: Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)
         run: pnpm smoke:consumer

@@ -1,60 +1,66 @@
 /**
- * .size-limit.cjs — per-chunk bundle budgets for the Hirobius portfolio app.
+ * .size-limit.cjs — bundle budgets for the PUBLISHED @hirobius/design-system
+ * LIBRARY (dist/*.js + dist/*.css from `pnpm build:lib`, vite.config.lib.ts).
  *
- * HARD-FAIL MODE: promoted from warn-mode after 2 clean PRs confirmed headroom
- * (2026-05-03, unit 12o-perf-bundle-budget-hard-fail-promote).
- * CI will fail the merge if any chunk exceeds its budget — this is intentional.
- * To update a budget, measure a new baseline and justify the change in the PR.
+ * The portfolio APP build (dist/assets/index-*.js, vendor-react-*, etc.) was
+ * removed in the ADR-018 teardown (#49/#51) — `pnpm build` and the app's
+ * `dist/assets/*` output no longer exist, so those budgets are gone.
+ * size-limit now measures the actual published product: the entries listed
+ * in package.json#exports, produced by `pnpm build:lib`. Always run this
+ * through `pnpm check:size` (= `pnpm build:lib && size-limit`), which builds
+ * `dist/` first so these paths exist.
  *
- * Baseline (gzip, post three.js split, 2026-05-01):
- *   index (main entry)   : 66.81 kB  -> budget 75 kB
- *   vendor-react         : 77.78 kB  -> budget 86 kB
- *   vendor-motion        : 41.46 kB  -> budget 46 kB
- *   vendor-icons         : 5.43 kB   -> budget 6 kB
- *   _virtual_hds-manifest: 36.81 kB  -> budget 41 kB
+ * HARD-FAIL MODE (carried over from the app-build config): CI fails the merge
+ * if any entry exceeds its budget — this is intentional. To update a budget,
+ * measure a new baseline and justify the change in the PR.
  *
- * NOTE: the former `vendor-three` budget was removed — the 3D Möbius visual and
- * three.js were dropped from the app graph (see vite.config.mjs manualChunks),
- * so no `vendor-three-*.js` chunk is emitted. size-limit hard-fails on a missing
- * path, so a stale entry breaks CI; re-add a budget here if three.js returns.
+ * Baseline (gzip, library build, 2026-07-07, ADR-018 teardown cleanup):
+ *   hirobius-ui.js (main barrel)     : 157.29 kB -> budget 185 kB
+ *   manifest.js (hds-manifest.json)  :  40.34 kB -> budget  47 kB
+ *   tokens.css (fonts embedded)      : 120.74 kB -> budget 140 kB
+ *   styles.css (scoped-only bundle)  : 120.15 kB -> budget 140 kB
+ *   tokens.js (token bridge consts)  :   5.67 kB -> budget   7 kB
+ *
+ * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
+ * form.js, contexts.js. Add a budget for one of these if it grows to carry
+ * real weight.
+ *
+ * Note: unlike the old app build, library entry filenames are NOT
+ * content-hashed (vite.config.lib.ts `fileName: (_, name) => \`${name}.js\`),
+ * so paths below are exact, not globs.
  *
  * Architecture decisions: docs/architecture/bundle-budget-decision.md
  */
 
 module.exports = [
   {
-    name: 'main entry',
-    path: 'dist/assets/index-*.js',
-    limit: '75 kB',
+    name: 'main entry (hirobius-ui.js)',
+    path: 'dist/hirobius-ui.js',
+    limit: '185 kB',
     gzip: true,
   },
   {
-    name: 'vendor-react',
-    path: 'dist/assets/vendor-react-*.js',
-    limit: '86 kB',
+    name: 'manifest (hds-manifest.json ESM)',
+    path: 'dist/manifest.js',
+    limit: '47 kB',
     gzip: true,
   },
   {
-    name: 'vendor-motion',
-    path: 'dist/assets/vendor-motion-*.js',
-    limit: '46 kB',
+    name: 'tokens.css (CSS bundle, fonts embedded)',
+    path: 'dist/tokens.css',
+    limit: '140 kB',
     gzip: true,
   },
   {
-    name: 'vendor-icons',
-    path: 'dist/assets/vendor-icons-*.js',
-    limit: '6 kB',
+    name: 'styles.css (scoped-only CSS bundle)',
+    path: 'dist/styles.css',
+    limit: '140 kB',
     gzip: true,
   },
   {
-    // Bumped 41 -> 46 kB (2026-07-05, Astryx coverage build #76): the manifest
-    // chunk is the serialized componentSpecs, which grew as ~27 new components
-    // (Tier 1 natives + Radix skins + promotions + Tier 2 patterns) were added
-    // to the public surface. 46 kB leaves headroom for the remaining Tier 2 /
-    // Tier 3 additions without a per-batch bump. Measured baseline: ~41.6 kB.
-    name: 'virtual hds-manifest',
-    path: 'dist/assets/_virtual_hds-manifest-*.js',
-    limit: '46 kB',
+    name: 'tokens.js (token bridge constants)',
+    path: 'dist/tokens.js',
+    limit: '7 kB',
     gzip: true,
   },
 ];

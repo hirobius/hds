@@ -66,7 +66,10 @@ const a11yDefaults = {
   ],
   HdsButtonGroup: [
     { rule: 'Buttons in group must each have accessible names', required: true },
-    { rule: 'Group role (role="group") should be set when buttons are semantically related', required: false },
+    {
+      rule: 'Group role (role="group") should be set when buttons are semantically related',
+      required: false,
+    },
   ],
   IconButton: [
     { rule: 'Must have aria-label (icon-only buttons have no visible text)', required: true },
@@ -75,19 +78,34 @@ const a11yDefaults = {
   // ── Inputs ───────────────────────────────────────────────────────────────────
   Input: [
     { rule: 'Must have associated label via label prop or aria-labelledby', required: true },
-    { rule: 'Error state must be communicated via aria-describedby or aria-invalid', required: true },
+    {
+      rule: 'Error state must be communicated via aria-describedby or aria-invalid',
+      required: true,
+    },
   ],
   SegmentedControl: [
-    { rule: 'Must have accessible group label (aria-label or aria-labelledby on the container)', required: true },
-    { rule: 'Selected option must be communicated via aria-pressed or aria-selected', required: true },
+    {
+      rule: 'Must have accessible group label (aria-label or aria-labelledby on the container)',
+      required: true,
+    },
+    {
+      rule: 'Selected option must be communicated via aria-pressed or aria-selected',
+      required: true,
+    },
   ],
   StepperField: [
     { rule: 'Must have associated label via label prop or aria-labelledby', required: true },
     { rule: 'Decrement/increment buttons must have aria-label', required: true },
   ],
   Tag: [
-    { rule: 'When used as interactive chip (onClick), must have role="button" and keyboard activation', required: true },
-    { rule: 'When used as status indicator (no onClick), role should be "status" or omitted', required: false },
+    {
+      rule: 'When used as interactive chip (onClick), must have role="button" and keyboard activation',
+      required: true,
+    },
+    {
+      rule: 'When used as status indicator (no onClick), role should be "status" or omitted',
+      required: false,
+    },
   ],
   // ── Navigation ───────────────────────────────────────────────────────────────
   DocLinkCard: [
@@ -96,23 +114,38 @@ const a11yDefaults = {
   ],
   InlineLink: [
     { rule: 'Link text must be descriptive — avoid "click here" or "read more"', required: true },
-    { rule: 'External links must signal new-tab behavior via aria-label or visually hidden text', required: false },
+    {
+      rule: 'External links must signal new-tab behavior via aria-label or visually hidden text',
+      required: false,
+    },
   ],
   NavGroup: [
-    { rule: 'Navigation group must have accessible label (aria-label on the nav element)', required: true },
+    {
+      rule: 'Navigation group must have accessible label (aria-label on the nav element)',
+      required: true,
+    },
     { rule: 'Expanded/collapsed state communicated via aria-expanded', required: true },
   ],
   NavItem: [
-    { rule: 'Active item must be communicated via aria-current="page" or aria-selected', required: true },
+    {
+      rule: 'Active item must be communicated via aria-current="page" or aria-selected',
+      required: true,
+    },
     { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
   ],
   // ── Display / Media ──────────────────────────────────────────────────────────
   AssetImg: [
     { rule: 'Must have alt text (decorative images use alt="")', required: true },
-    { rule: 'Caption or description should be associated via aria-describedby when present', required: false },
+    {
+      rule: 'Caption or description should be associated via aria-describedby when present',
+      required: false,
+    },
   ],
   Table: [
-    { rule: 'Column headers must use <th> with scope="col", row headers with scope="row"', required: true },
+    {
+      rule: 'Column headers must use <th> with scope="col", row headers with scope="row"',
+      required: true,
+    },
     { rule: 'Table must have caption or aria-label describing its contents', required: false },
   ],
   // ── Overlays ─────────────────────────────────────────────────────────────────
@@ -120,25 +153,38 @@ const a11yDefaults = {
     { rule: 'Must have aria-label when used without adjacent text', required: true },
     { rule: 'Decorative icons must have aria-hidden="true"', required: true },
   ],
-  Alert: [
-    { rule: 'role=alert is set by the component — do not override', required: false },
-  ],
+  Alert: [{ rule: 'role=alert is set by the component — do not override', required: false }],
   Callout: [
-    { rule: 'Callout is decorative; tone is signaled visually — pair with semantic role when meaning matters', required: false },
+    {
+      rule: 'Callout is decorative; tone is signaled visually — pair with semantic role when meaning matters',
+      required: false,
+    },
   ],
   // ── Display ──────────────────────────────────────────────────────────────────
   Field: [
-    { rule: 'Label must describe the value; pair with aria-describedby when value is non-trivial', required: false },
+    {
+      rule: 'Label must describe the value; pair with aria-describedby when value is non-trivial',
+      required: false,
+    },
   ],
   Stat: [
-    { rule: 'Provide an accessible name for the stat when value is symbolic (—, ✓, etc.)', required: false },
+    {
+      rule: 'Provide an accessible name for the stat when value is symbolic (—, ✓, etc.)',
+      required: false,
+    },
   ],
   StatusListItem: [
-    { rule: 'Status dot is decorative (aria-hidden); convey status meaning via title or trailing badge', required: true },
+    {
+      rule: 'Status dot is decorative (aria-hidden); convey status meaning via title or trailing badge',
+      required: true,
+    },
   ],
   Dialog: [
     { rule: 'Must have an accessible name via Dialog.Title or aria-label', required: true },
-    { rule: 'Description should be associated via Dialog.Description when present', required: false },
+    {
+      rule: 'Description should be associated via Dialog.Description when present',
+      required: false,
+    },
     { rule: 'Focus must be trapped within dialog while open', required: true },
     { rule: 'Escape key must close the dialog', required: true },
   ],
@@ -214,7 +260,6 @@ const legacyFilePaths = {
   AssetImg: 'src/app/components/AssetImg.tsx',
   DocLinkCard: 'src/app/components/DocLinkCard.tsx',
   ComponentDocPage: 'src/app/components/ComponentDocPage.tsx',
-  HdsDocPrimitives: 'src/app/pages/hds/HdsDocPrimitives.tsx',
   ReflectiveTokenTable: '',
 };
 
@@ -335,7 +380,10 @@ function ensureProps(spec, apiComponent) {
 function deriveRequiredProps(props) {
   return Object.entries(props)
     .filter(([, config]) => isPlainObject(config))
-    .filter(([, config]) => config.optional !== true && !Object.prototype.hasOwnProperty.call(config, 'default'))
+    .filter(
+      ([, config]) =>
+        config.optional !== true && !Object.prototype.hasOwnProperty.call(config, 'default'),
+    )
     .map(([propName]) => propName);
 }
 
@@ -401,7 +449,10 @@ for (const [name, spec] of Object.entries(componentSpecs)) {
   }
 
   // Apply a11yRules: set if not present, or if empty and we have defaults for this component
-  if (!('a11yRules' in spec) || (spec.a11yRules.length === 0 && targets.has(name) && a11yDefaults[name])) {
+  if (
+    !('a11yRules' in spec) ||
+    (spec.a11yRules.length === 0 && targets.has(name) && a11yDefaults[name])
+  ) {
     spec.a11yRules = targets.has(name) ? [...(a11yDefaults[name] ?? [])] : (spec.a11yRules ?? []);
   }
 }

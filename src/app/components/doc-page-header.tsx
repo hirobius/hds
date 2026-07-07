@@ -9,7 +9,8 @@
  * @category Layout
  * @tier utility
  *
- * 9d-4 contract (from `docs/ai/orchestration.json`):
+ * 9d-4 contract (historical spec; the orchestration store it was tracked in
+ * was removed under #50 — this comment preserves the contract as reference):
  *   - H1: component name
  *   - Lede: single-line summary derived from `componentSpec.description`
  *     (truncated at the first newline / sentence break for the header zone;
@@ -39,7 +40,11 @@
  */
 
 import * as React from 'react';
-import { SquareArrowOutUpRight as ArrowSquareOut, Code as CodeIcon, Figma as FigmaLogo } from 'lucide-react';
+import {
+  SquareArrowOutUpRight as ArrowSquareOut,
+  Code as CodeIcon,
+  Figma as FigmaLogo,
+} from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Stack } from './stack';
 
@@ -219,8 +224,7 @@ function Chip({ children, tone = 'neutral', className }: ChipProps) {
       className={cn(
         'inline-flex h-5 items-center rounded-md border px-1.5',
         'text-xs font-medium uppercase tracking-wide',
-        tone === 'neutral' &&
-          'border-border bg-muted text-muted-foreground',
+        tone === 'neutral' && 'border-border bg-muted text-muted-foreground',
         // Beta uses the warning role tokens already established by 8e-2.
         tone === 'beta' &&
           'border-[color:var(--semantic-color-feedback-warning)]/40 bg-[color:var(--semantic-color-feedback-bg-warning)] text-[color:var(--semantic-color-feedback-warning)]',
@@ -277,51 +281,33 @@ export function DocPageHeader({
   return (
     <header
       data-hds-component="DocPageHeader"
-      className={cn(
-        'border-b border-border pb-8',
-        className,
-      )}
+      className={cn('border-b border-border pb-8', className)}
     >
       <Stack gap="tight">
         {/* Title row */}
         <h1
-          className={cn(
-            'm-0 text-3xl font-semibold tracking-tight text-foreground',
-            'sm:text-4xl',
-          )}
+          className={cn('m-0 text-3xl font-semibold tracking-tight text-foreground', 'sm:text-4xl')}
         >
           {spec.name}
         </h1>
 
         {/* Lede — single line / paragraph derived from componentSpec.description */}
         {lede ? (
-          <p className="m-0 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            {lede}
-          </p>
+          <p className="m-0 max-w-2xl text-base leading-relaxed text-muted-foreground">{lede}</p>
         ) : null}
 
         {/* Metadata row — chips + external links. Sits in a dedicated zone
             below the lede per CLAUDE.md (no decorative stickers in prose). */}
-        <div
-          data-hds-slot="metadata"
-          className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1"
-        >
+        <div data-hds-slot="metadata" className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1">
           <Chip tone={stability === 'beta' ? 'beta' : 'neutral'}>
             {stability === 'beta' ? 'Beta' : 'Stable'}
           </Chip>
           {tier ? <Chip tone="neutral">{tier}</Chip> : null}
-          {(sourceUrl || figmaTarget.kind !== 'none') ? (
-            <span
-              aria-hidden="true"
-              className="hidden h-3 w-px bg-border sm:inline-block"
-            />
+          {sourceUrl || figmaTarget.kind !== 'none' ? (
+            <span aria-hidden="true" className="hidden h-3 w-px bg-border sm:inline-block" />
           ) : null}
           {sourceUrl ? (
-            <MetaLink
-              href={sourceUrl}
-              icon={<CodeIcon size={14} />}
-              label="Source"
-            />
+            <MetaLink href={sourceUrl} icon={<CodeIcon size={14} />} label="Source" />
           ) : null}
           {figmaTarget.kind === 'link' ? (
             <MetaLink
@@ -339,7 +325,10 @@ export function DocPageHeader({
                 'text-muted-foreground/70',
               )}
             >
-              <span aria-hidden="true" className="inline-flex h-3.5 w-3.5 items-center justify-center">
+              <span
+                aria-hidden="true"
+                className="inline-flex h-3.5 w-3.5 items-center justify-center"
+              >
                 <FigmaLogo size={14} />
               </span>
               <span>Figma — TODO</span>

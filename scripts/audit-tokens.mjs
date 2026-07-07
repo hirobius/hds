@@ -292,7 +292,6 @@ const COLOR_LITERAL_RE =
   /(?:#(?:[0-9a-f]{3,8})\b|\brgba?\(|\bhsla?\(|\boklch\(|\boklab\(|\blab\(|\blch\(|\bhwb\()/i;
 const SEMANTIC_SCOPE_DIRS = [
   join(INPUT_ROOT, 'src', 'app', 'components'),
-  join(INPUT_ROOT, 'src', 'app', 'pages'),
   join(INPUT_ROOT, 'src', 'app', 'design-system'),
 ];
 const PRIMITIVE_SPACE_RE = /\b(?:hds|primitive)\.space\.[A-Za-z0-9_-]+/g;

@@ -17,7 +17,13 @@ cuts.
 | `collision.yml`            | PR collision check — folded out of the lean set.                                                                                          |
 | `quality.yml`              | Ran `run-gates --channel ci-pr`, type-coverage, and Playwright `test:layout`; its bundle-budget step (`size-limit`) folded into `ci.yml`. |
 | `sync-figma-variables.yml` | Figma token push — part of the Figma bridge cut (ADR-018 §2, `archive/figma-bridge`).                                                     |
-| `llm-daily-synthetic.yml`  | Scheduled LLM synthetic regression — part of the local-AI layer cut (ADR-018 §3).                                                         |
+
+> **Deleted, not archived:** `llm-daily-synthetic.yml` (scheduled LLM synthetic
+> regression, local-AI layer cut, ADR-018 §3) was removed outright rather than
+> parked here — unlike its siblings above, its underlying scripts
+> (`scripts/test-prompt-regression.mjs`, `scripts/telemetry-report.mjs`,
+> `scripts/llm-stream-bridge.mjs`) were deleted in the teardown, so the "move
+> it back and it works immediately" guarantee below doesn't hold for it.
 
 > **Restored:** `chromatic.yml` was moved back into `.github/workflows/` to make
 > the Storybook primitive tier publishable (hosted library + PR visual diffs).

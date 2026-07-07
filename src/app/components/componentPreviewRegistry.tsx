@@ -167,9 +167,6 @@ const DEFAULT_PREVIEW_PROPS: Record<string, Record<string, unknown>> = {
     href: '#',
     children: 'Preview link',
   },
-  InfoPage: {
-    isDark: false,
-  },
   StepperField: {
     label: 'Density',
     value: 8,

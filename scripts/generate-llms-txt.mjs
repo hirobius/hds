@@ -43,7 +43,7 @@ const tokenRules = [
   'Token source of truth: read `hirobius.tokens.json` (W3C DTCG). Prefer `semantic.*` and `component.*` tokens over `primitive.*` for product UI.',
   'CSS variables: token path `semantic.color.surface.page` maps to `var(--semantic-color-surface-page)` (see generated token refs).',
   'Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.',
-  'Load `TOKEN_GOVERNANCE.md`, `SYSTEMS_REGISTRY.md`, and `BACKLOG.md` only on-demand (when explicitly requested or required by the task).',
+  'Load `TOKEN_GOVERNANCE.md` and `SYSTEMS_REGISTRY.md` only on-demand (when explicitly requested or required by the task).',
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
 
@@ -66,12 +66,11 @@ export function generateLlmsTxt() {
     })
     .join('\n');
 
-  const patternLines = Array.isArray(manifest.patternInventory) && manifest.patternInventory.length > 0
-    ? manifest.patternInventory.map((name) => `- ${name}`).join('\n')
-    : '';
-  const patternSection = patternLines
-    ? `## Pattern Inventory\n\n${patternLines}\n\n`
-    : '';
+  const patternLines =
+    Array.isArray(manifest.patternInventory) && manifest.patternInventory.length > 0
+      ? manifest.patternInventory.map((name) => `- ${name}`).join('\n')
+      : '';
+  const patternSection = patternLines ? `## Pattern Inventory\n\n${patternLines}\n\n` : '';
 
   const generated = new Date().toISOString();
 
@@ -161,7 +160,6 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 - \`DESIGN-HANDOFF.md\`
 - \`TOKEN_GOVERNANCE.md\`
 - \`SYSTEMS_REGISTRY.md\`
-- \`BACKLOG.md\`
 
 ${patternSection}## Token Rules
 

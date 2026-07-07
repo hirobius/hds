@@ -3,9 +3,9 @@ import type { KnipConfig } from 'knip';
 const config: KnipConfig = {
   entry: [
     // src/index.ts is auto-detected as the package entry; explicit entry was redundant.
-    // src/main.tsx is auto-detected via index.html; no explicit entry needed.
-    'src/app/App.tsx!',
-    'src/app/routes.tsx!',   // lazy import() calls for all pages
+    // The portfolio app (App.tsx, routes.tsx, index.html, src/main.tsx) was
+    // removed in the ADR-018 teardown (#49/#51) — this is a library-only
+    // package now, so there is no app entry to declare.
     'scripts/**/*.mjs!',
     // Validator pipeline — entries to surface acorn/acorn-jsx + AST helpers
     // that knip's project graph cannot reach via the React app alone.
@@ -25,38 +25,9 @@ const config: KnipConfig = {
     'tests/**/*.{ts,tsx}!',
   ],
   ignore: [
-    // Canvas sketches are intentional experiments — treat as live
-    'src/app/pages/sketches/**',
     // Library subpath build entry — referenced by vite.config.lib.ts as a
     // rollup entry, not via TS imports, so Knip can't trace it.
     'src/lib/manifest-entry.ts',
-    // Pattern / template doc scaffolds — kept as authoring templates for new
-    // pattern + template doc pages. Not consumed yet; do not delete on cleanup.
-    'src/app/pages/docs/patterns/_template.tsx',
-    'src/app/pages/docs/templates/_template.tsx',
-    // Draft HDS doc pages tracked by src/app/data/hds-registry.json but not
-    // wired into routes.tsx yet. Each is a structured surface awaiting route
-    // promotion in a future doc-pages cluster (9d-* line). Keeping them out
-    // of knip noise — sync-hds-registry.mjs is the source of truth for status.
-    'src/app/pages/hds/GettingStartedPage.tsx',
-    'src/app/pages/hds/GuidancePage.tsx',
-    'src/app/pages/hds/LicensePage.tsx',
-    'src/app/pages/hds/TechStackPage.tsx',
-    'src/app/pages/hds/TokenCascadeDiagram.tsx',
-    'src/app/pages/hds/IconsPage.tsx',
-    'src/app/pages/hds/portfolioData.tsx',
-    'src/app/pages/SketchPage.tsx',
-    // Admin/ops dashboard pages — in-flight Workspace HQ surfaces, not yet
-    // wired into routes.tsx. Tracked by ops dashboard manifest.
-    'src/app/pages/admin/**',
-    // Pattern doc draft pages — same intent as the HDS draft pages above:
-    // structured surfaces awaiting route promotion. Source of truth is the
-    // hds-registry.json + pattern manifest, not knip's reachability graph.
-    'src/app/pages/docs/patterns/HdsActivityFeed.tsx',
-    'src/app/pages/docs/patterns/HdsDisclosure.tsx',
-    'src/app/pages/docs/patterns/HdsField.tsx',
-    'src/app/pages/docs/patterns/HdsFoundationSwatch.tsx',
-    'src/app/pages/docs/patterns/HdsIconButton.tsx',
     // Generated files — knip should not report these as orphans
     'src/app/design-system/generated-tokens.ts',
     // Generated token descriptions — read directly from disk by
