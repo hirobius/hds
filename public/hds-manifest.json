@@ -925,7 +925,6 @@
       },
       "consumers": [
         "src/app/components/page.tsx",
-        "src/app/data/projects.ts",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
         "src/stories/container.stories.tsx",
@@ -1102,7 +1101,6 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/data/hdsEditorial.tsx",
-        "src/app/data/projects.ts",
         "src/stories/divider.stories.tsx"
       ],
       "tokenMapping": {
@@ -1453,7 +1451,6 @@
         "src/app/components/sketch-controls.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/data/projects.ts",
         "src/stories/foundation-swatch.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
@@ -1834,101 +1831,6 @@
       "sourcePath": "src/app/components/IconButton.tsx",
       "figmaLink": "TODO:hds-master:IconButton"
     },
-    "InfoPage": {
-      "category": "Branding",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/info-page.tsx",
-      "description": "InfoPage - branded profile surface used for the portfolio landing page.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "InfoPage",
-        "sizing": "full"
-      },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/data/hdsEditorial.tsx",
-        "src/stories/info-page.stories.tsx"
-      ],
-      "tokenMapping": {
-        "Layout gap": "semantic.space.layout.gap",
-        "Name typography": "semantic.typography.h3",
-        "Role typography": "semantic.typography.small",
-        "Bio typography": "semantic.typography.small",
-        "Caption typography": "semantic.typography.caption",
-        "Border stroke": "semantic.color.border.default"
-      },
-      "props": {
-        "isDark": {
-          "type": "boolean"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "isDark": {
-          "type": "boolean"
-        }
-      },
-      "requiredProps": [
-        "isDark"
-      ],
-      "a11yRules": [
-        {
-          "rule": "Author name renders as <h1> via Text variant=heading3 — only one InfoPage per page",
-          "required": true
-        },
-        {
-          "rule": "Profile image must have a non-empty alt describing the subject",
-          "required": true
-        }
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {
-            "gap": "semantic.space.layout.gap"
-          }
-        },
-        {
-          "name": "portrait",
-          "figmaSlotName": "Portrait"
-        },
-        {
-          "name": "name",
-          "figmaSlotName": "Name",
-          "tokenBinding": {
-            "typography": "semantic.typography.h3",
-            "color": "semantic.color.content.primary"
-          }
-        },
-        {
-          "name": "role",
-          "figmaSlotName": "Role",
-          "tokenBinding": {
-            "typography": "semantic.typography.small",
-            "color": "semantic.color.content.secondary"
-          }
-        },
-        {
-          "name": "bio",
-          "figmaSlotName": "Bio",
-          "tokenBinding": {
-            "typography": "semantic.typography.small",
-            "color": "semantic.color.content.secondary"
-          }
-        }
-      ],
-      "tier": "template",
-      "docExempt": false,
-      "figmaLink": null
-    },
     "InlineCode": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -2001,7 +1903,6 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/info-page.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/stories/inline-link.stories.tsx"
       ],
@@ -2617,7 +2518,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/data/projects.ts",
         "src/stories/sketch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -2699,7 +2599,6 @@
         "src/app/components/grid.tsx",
         "src/app/components/heading-stack.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/info-page.tsx",
         "src/app/components/lab/token-collection-list.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/components/page.tsx",
@@ -3205,7 +3104,6 @@
         "src/app/components/lab/token-collection-list.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
-        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/lib/hds-search.ts",
         "src/app/stores/mobiusStore.ts",
@@ -3444,7 +3342,6 @@
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/data/hdsEditorial.tsx",
-        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/card.stories.tsx",
         "src/stories/grid.stories.tsx"
@@ -4001,13 +3898,11 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/info-page.tsx",
         "src/app/components/nav-item.tsx",
         "src/app/components/preview-frame.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/components/toolbar.test.tsx",
-        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/container.stories.tsx",
         "src/stories/disclosure.stories.tsx",
@@ -4052,7 +3947,6 @@
         "src/app/components/dialog.test.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/info-page.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
         "src/stories/alert.stories.tsx",
@@ -4697,7 +4591,6 @@
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/toast.tsx",
-        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
@@ -5706,7 +5599,6 @@
       "consumers": [
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
-        "src/app/data/projects.ts",
         "src/stories/circular-progress.stories.tsx",
         "src/stories/progress.stories.tsx",
         "src/stories/table.stories.tsx"
