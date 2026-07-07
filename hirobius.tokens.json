@@ -479,14 +479,14 @@
         },
         "display": {
           "$value": [
-            "Clash Display",
+            "Satoshi",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display face: Clash Display ITF, bound to display/h1/h2/h3 composites."
+          "$description": "Display face: Satoshi Bold (ITF), bound to display/h1/h2/h3 composites."
         },
         "mono": {
           "$value": ["Geist Mono", "Courier New", "monospace"],
@@ -1463,11 +1463,11 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.7xl}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.none}"
         },
-        "$description": "Display headline. 72px / Clash Display 500 / leading-none.",
+        "$description": "Display headline. 72px / Satoshi bold 700 / leading-none.",
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(40px, 8vw, 72px)",
@@ -1479,11 +1479,11 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.4xl}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
-        "$description": "Primary section headings (h1). 48px / Clash Display medium 500 / leading-tight.",
+        "$description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.",
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(32px, 6vw, 48px)",
@@ -1495,11 +1495,11 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "42px"
         },
-        "$description": "Secondary section headings (h2). Clash Display medium, 30px, line-height 42px.",
+        "$description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 42px.",
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(24px, 3.5vw, 30px)",
@@ -1511,11 +1511,11 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.lg}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "28px"
         },
-        "$description": "Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug.",
+        "$description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug.",
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(18px, 2vw, 20px)",
