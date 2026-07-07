@@ -4,6 +4,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { AppShell } from '../app/components/app-shell';
+import hds from '../app/design-system/tokens';
 
 const meta = {
   title: 'Patterns/app-shell',
@@ -20,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 const Header = (
   <div style={{ display: 'flex', alignItems: 'center', height: '56px', padding: '0 16px' }}>
-    <span style={{ fontWeight: 600 }}>Hirobius</span>
+    <span style={{ ...hds.typeStyles.ui }}>Hirobius</span>
   </div>
 );
 
