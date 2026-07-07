@@ -47,21 +47,21 @@ export const TENANT_REGISTRY: TenantDefinition[] = [
     slug: 'hirobius',
     name: 'Hirobius',
     description:
-      'Default Hirobius Design System brand — electric blue accent, Satoshi / Clash Display.',
+      'Default Hirobius Design System brand — electric blue accent, Satoshi (Bold for headings).',
     tokens: {
       // Hirobius uses the base tokens; no overrides needed.
       // Listed here so tooling can enumerate all tenants uniformly.
       '--primitive-typography-family-primary':
         '"Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       '--primitive-typography-family-display':
-        '"Clash Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        '"Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     },
   },
   {
     slug: 'concrete-creations',
     name: 'Concrete Creations',
     description:
-      'WA State LLC e-commerce pilot — handmade concrete products. Warm stone/brown accent, Satoshi body / Clash Display headings.',
+      'WA State LLC e-commerce pilot — handmade concrete products. Warm stone/brown accent, Satoshi body + Satoshi Bold headings.',
     tokens: {
       // Accent ramp: warm stone-brown replacing the default blue.
       // Light-mode accent (mid-tone warm brown)
@@ -76,11 +76,11 @@ export const TENANT_REGISTRY: TenantDefinition[] = [
       '--primitive-color-blue-700': 'oklch(0.36 0.10 42)',
       '--primitive-color-blue-800': 'oklch(0.28 0.07 40)',
       '--primitive-color-blue-900': 'oklch(0.20 0.05 38)',
-      // Typography: Satoshi body + Clash Display headings (matches Hirobius default)
+      // Typography: Satoshi body + Satoshi Bold headings (matches Hirobius default)
       '--primitive-typography-family-primary':
         '"Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       '--primitive-typography-family-display':
-        '"Clash Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        '"Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     },
   },
   {

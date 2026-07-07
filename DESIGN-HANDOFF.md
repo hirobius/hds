@@ -220,10 +220,10 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 | Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                                     |
 | ----------------- | ---------- | ------ | ----------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
-| `display`         | 72px       | 500    | 1           | -0.01em        | Display headline. 72px / Clash Display 500 / leading-none.                                                      |
-| `h1`              | 48px       | 500    | 1.25        | -0.01em        | Primary section headings (h1). 48px / Clash Display medium 500 / leading-tight.                                 |
-| `h2`              | 30px       | 500    | 42px        | -0.01em        | Secondary section headings (h2). Clash Display medium, 30px, line-height 42px.                                  |
-| `h3`              | 20px       | 500    | 28px        | 0em            | Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug.                                |
+| `display`         | 72px       | 700    | 1           | -0.01em        | Display headline. 72px / Satoshi bold 700 / leading-none.                                                       |
+| `h1`              | 48px       | 700    | 1.25        | -0.01em        | Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.                                         |
+| `h2`              | 30px       | 700    | 42px        | -0.01em        | Secondary section headings (h2). Satoshi bold 700, 30px, line-height 42px.                                      |
+| `h3`              | 20px       | 700    | 28px        | 0em            | Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug.                                    |
 | `body`            | 17px       | 500    | 28px        | 0em            | Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure.                                           |
 | `ui`              | 15px       | 500    | 24px        | 0em            | UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px.                                      |
 | `caption`         | 12px       | 500    | 16px        | 0em            | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style. |
@@ -513,7 +513,7 @@ Semantic layout tokens exist for layout decisions only: readable content widths,
 <!-- auto:start:agent-constraints -->
 
 - **One accent color:** `#1E2EFD` only — no other hues
-- **Body / UI typeface:** Satoshi — pair with Clash Display for headings only and Geist Mono for code; no other faces
+- **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and Geist Mono for code; no other faces
 - **Action radius:** `4px` for interactive controls; `8px` cards
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale
 - **True monochromatic neutrals:** No warm/cool tint in neutral scale

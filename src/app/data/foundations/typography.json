@@ -9,7 +9,7 @@
   "rules": [
     {
       "id": "one-typeface",
-      "rule": "Use Satoshi for body and UI text only. Clash Display is reserved for display, h1, h2, h3 headings.",
+      "rule": "Use Satoshi for body and UI text. Satoshi Bold (700) is used for display, h1, h2, h3 headings.",
       "enforceable": false,
       "valid": "fontFamily: hds.fontFamily",
       "invalid": "fontFamily: 'Georgia, serif'"
@@ -78,17 +78,12 @@
     {
       "name": "BODY COPY - React inline style",
       "code": "<p style={{ ...hds.typeStyles.body, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-primary)' }}>\n  All prose uses hds.typeStyles.body - no class overrides.\n</p>",
-      "tokensUsed": [
-        "semantic.typography.body",
-        "semantic.color.content.primary"
-      ]
+      "tokensUsed": ["semantic.typography.body", "semantic.color.content.primary"]
     },
     {
       "name": "HEADING - React inline style",
       "code": "<h2 style={{ ...hds.typeStyles.h2, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-primary)' }}>\n  Sub-section title\n</h2>",
-      "tokensUsed": [
-        "semantic.typography.h2"
-      ]
+      "tokensUsed": ["semantic.typography.h2"]
     },
     {
       "name": "LABEL - React inline style",
@@ -104,9 +99,7 @@
     {
       "name": "CSS VAR EXPANSION - semantic composite",
       "code": "/* Each semantic.typography.* expands to 5 CSS custom properties */\n--semantic-typography-display-fontFamily\n--semantic-typography-display-fontSize\n--semantic-typography-display-fontWeight\n--semantic-typography-display-letterSpacing\n--semantic-typography-display-lineHeight",
-      "tokensUsed": [
-        "semantic.typography.display"
-      ]
+      "tokensUsed": ["semantic.typography.display"]
     }
   ],
   "mappings": [
@@ -184,7 +177,7 @@
       "weightToken": "primitive.typography.weight.medium",
       "lhToken": "primitive.typography.lineHeight.none",
       "lsToken": "primitive.typography.letterSpacing.tight",
-      "usage": "Display headline (Swiss canon). 72px / Clash Display medium 500 / leading-none / unconstrained measure.",
+      "usage": "Display headline (Swiss canon). 72px / Satoshi bold 700 / leading-none / unconstrained measure.",
       "specimen": "Ag"
     },
     {
@@ -193,7 +186,7 @@
       "weightToken": "primitive.typography.weight.medium",
       "lhToken": "primitive.typography.lineHeight.tight",
       "lsToken": "primitive.typography.letterSpacing.tight",
-      "usage": "Primary section headings (h1). 48px / Clash Display medium 500 / leading-tight.",
+      "usage": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.",
       "specimen": "Ag"
     },
     {
@@ -202,7 +195,7 @@
       "weightToken": "primitive.typography.weight.medium",
       "lhToken": "primitive.typography.lineHeight.snug",
       "lsToken": "primitive.typography.letterSpacing.tight",
-      "usage": "Secondary section headings (h2). 30px / Clash Display medium 500 / leading-snug.",
+      "usage": "Secondary section headings (h2). 30px / Satoshi bold 700 / leading-snug.",
       "specimen": "Ag"
     },
     {
@@ -211,7 +204,7 @@
       "weightToken": "primitive.typography.weight.medium",
       "lhToken": "primitive.typography.lineHeight.snug",
       "lsToken": "primitive.typography.letterSpacing.normal",
-      "usage": "Component and card headers (h3). 20px / Clash Display medium 500 / leading-snug.",
+      "usage": "Component and card headers (h3). 20px / Satoshi bold 700 / leading-snug.",
       "specimen": "Ag"
     },
     {

@@ -29,7 +29,7 @@ const PUBLIC = join(ROOT, 'public');
 // Keep in sync with the @font-face URLs in src/styles/fonts.css.
 const FONTS = [
   '/fonts/satoshi/satoshi-500.woff2',
-  '/fonts/clash-display/clash-display-500.woff2',
+  '/fonts/satoshi/satoshi-700.woff2',
   '/fonts/geist-mono/geist-mono-400.woff2',
 ];
 
@@ -54,7 +54,10 @@ for (const url of FONTS) {
   const b64 = readFileSync(file).toString('base64');
   const dataUri = `data:font/woff2;base64,${b64}`;
   // Match url('/fonts/..'), url("/fonts/.."), and url(/fonts/..).
-  const pattern = new RegExp(`url\\((['"]?)${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\1\\)`, 'g');
+  const pattern = new RegExp(
+    `url\\((['"]?)${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\1\\)`,
+    'g',
+  );
   const before = css;
   css = css.replace(pattern, `url(${dataUri})`);
   if (css === before) {
