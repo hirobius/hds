@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "e7b883f1b3f0b0fc6f3d0005fff36b4283670994eb03182f1518ee0a6ad121a4",
-  "precommitStructureHashUpdatedAt": "(archived: pre-commit gates leaned to direct hook calls per #52)",
+  "precommitStructureHash": "a3e8080e12cc8cf7edf95a12c7e2e538d95eaacc6bce0e30b27c549bcc0e5300",
+  "precommitStructureHashUpdatedAt": "2026-07-07T18:31:52.102Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -14,7 +14,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "manual"
     },
     {
       "id": "audit-bundle",
@@ -81,7 +81,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr",
+      "firingChannel": "manual",
       "supportsJson": true
     },
     {
@@ -94,7 +94,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr",
+      "firingChannel": "manual",
       "supportsJson": true,
       "scope": "full-tree"
     },
@@ -121,7 +121,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "manual"
     },
     {
       "id": "audit-tokens",
@@ -133,7 +133,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "manual",
+      "firingChannel": "ci-pr",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
@@ -235,7 +235,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-contrast",
@@ -247,7 +247,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pre-commit"
     },
     {
       "id": "check-css-integrity",
@@ -327,7 +327,7 @@
       "lastViolationAt": "2026-05-08T02:21:53.642Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-hardcoded-breakpoints",
@@ -429,7 +429,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-motion",
@@ -513,7 +513,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-source-canon",
@@ -628,7 +628,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-token-structure",
@@ -640,7 +640,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-unresponsive-grids",
