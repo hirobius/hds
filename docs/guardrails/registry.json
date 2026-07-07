@@ -197,20 +197,6 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
-      "id": "check-asset-manifest",
-      "description": "Guards the asset layer before large-scale visual population begins. Checks that every real file in public/assets has a manifest entry and every manifest entry uses normalized paths and valid metadata.",
-      "severity": "warn",
-      "gateScript": "scripts/check-asset-manifest.mjs",
-      "fixturePath": "fixtures/check-asset-manifest",
-      "lastFiringAt": "2026-06-19T02:45:49.615Z",
-      "lastViolationAt": "2026-05-07T23:50:55.504Z",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
       "id": "check-attributions",
       "description": "Keeps the attribution registry machine-checkable. Checks that registry IDs in ATTRIBUTIONS.md are present and unique, and that asset manifest sourceId values resolve to known registry IDs.",
       "severity": "warn",
