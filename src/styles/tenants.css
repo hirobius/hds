@@ -4,12 +4,13 @@
 tokens.json (W3C DTCG overlay format)
  * Regenerate: node scripts/build-tokens.mjs
  *
- * Per-tenant token overrides using [data-tenant="slug"] attribute selectors.
- * Strategy: ADR-0001 (docs/architecture/ADR-0001-multi-tenant-scope.md)
- * Set <html data-tenant="slug"> at the app root to activate a tenant theme.
- * Dark overrides: [data-tenant="slug"][data-theme="dark"] (specificity 0,2,0).
+ * Per-brand token overrides using [data-brand="slug"] attribute selectors
+ * (data-tenant kept as a supported alias — #62). Strategy: ADR-0001.
+ * Set <html data-brand="slug"> at the app root to activate a brand overlay.
+ * Dark overrides: [data-brand="slug"][data-theme="dark"] (specificity 0,2,0).
  */
 /* ── concrete-creations ────────────────────────────────────────────────── */
+[data-brand="concrete-creations"],
 [data-tenant="concrete-creations"] {
   --semantic-accent-rest: var(
     --primitive-color-stone-600
@@ -36,6 +37,7 @@ tokens.json (W3C DTCG overlay format)
     --primitive-color-stone-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
 }
+[data-brand='concrete-creations'][data-theme='dark'],
 [data-tenant='concrete-creations'][data-theme='dark'] {
   --semantic-accent-rest: var(
     --primitive-color-stone-500
@@ -61,6 +63,7 @@ tokens.json (W3C DTCG overlay format)
 }
 
 /* ── lilac-bonds ───────────────────────────────────────────────────────── */
+[data-brand='lilac-bonds'],
 [data-tenant='lilac-bonds'] {
   --semantic-accent-rest: var(
     --primitive-color-lilac-500
@@ -99,6 +102,7 @@ tokens.json (W3C DTCG overlay format)
     --primitive-color-lilac-500
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
 }
+[data-brand='lilac-bonds'][data-theme='dark'],
 [data-tenant='lilac-bonds'][data-theme='dark'] {
   --semantic-accent-hover: var(
     --primitive-color-lilac-450

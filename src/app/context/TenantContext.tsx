@@ -10,6 +10,19 @@ interface TenantCtx {
 const TenantContext = createContext<TenantCtx>({ tenantSlug: null });
 
 /**
+ * #62: the brand-scope attributes written to `<html>`. `data-brand` is the
+ * primary attribute; `data-tenant` is retained as a supported alias so existing
+ * consumers keep working. The compiled overlay CSS targets both selectors.
+ */
+const BRAND_ATTRS = ['data-brand', 'data-tenant'] as const;
+function applyBrandAttrs(slug: string): void {
+  for (const attr of BRAND_ATTRS) document.documentElement.setAttribute(attr, slug);
+}
+function clearBrandAttrs(): void {
+  for (const attr of BRAND_ATTRS) document.documentElement.removeAttribute(attr);
+}
+
+/**
  * TenantProvider
  *
  * Reads VITE_TENANT_SLUG from the Vite environment and, if set, writes
@@ -28,10 +41,8 @@ export function TenantProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!slug) return;
-    document.documentElement.setAttribute('data-tenant', slug);
-    return () => {
-      document.documentElement.removeAttribute('data-tenant');
-    };
+    applyBrandAttrs(slug);
+    return () => clearBrandAttrs();
   }, [slug]);
 
   return <TenantContext.Provider value={{ tenantSlug: slug }}>{children}</TenantContext.Provider>;
@@ -50,13 +61,13 @@ export function useTenant(): TenantCtx {
  */
 export function useTenantOnDocument(slug: TenantSlug): void {
   useEffect(() => {
-    const prev = document.documentElement.getAttribute('data-tenant');
-    document.documentElement.setAttribute('data-tenant', slug);
+    const prev = document.documentElement.getAttribute('data-brand');
+    applyBrandAttrs(slug);
     return () => {
       if (prev !== null) {
-        document.documentElement.setAttribute('data-tenant', prev);
+        applyBrandAttrs(prev);
       } else {
-        document.documentElement.removeAttribute('data-tenant');
+        clearBrandAttrs();
       }
     };
   }, [slug]);
