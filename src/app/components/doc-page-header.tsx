@@ -212,6 +212,10 @@ export function resolveStability(spec: DocPageHeaderSpec): DocPageHeaderStabilit
 
 // ── Inline chip + badge surfaces (component-local; not exported) ──────────────
 
+// vocab-ok: 'beta' predates the #60 fixed tone vocabulary (neutral | danger |
+// success | warning | info) — this internal utility-tier chip names a
+// stability marker, not feedback intent. Tracked for a future rollout phase
+// rather than force-renamed here.
 interface ChipProps {
   children: React.ReactNode;
   tone?: 'neutral' | 'beta';

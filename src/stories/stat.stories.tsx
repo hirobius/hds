@@ -14,14 +14,14 @@ const meta = {
     docs: {
       description: {
         component:
-          'Headline metric tile: large value, uppercase caption label, and an optional muted sub-line. Tones: default | success | warning | danger.',
+          'Headline metric tile: large value, uppercase caption label, and an optional muted sub-line. Tones: neutral | success | warning | danger | info.',
       },
     },
   },
   argTypes: {
     tone: {
       control: { type: 'select' },
-      options: ['default', 'success', 'warning', 'danger'],
+      options: ['neutral', 'success', 'warning', 'danger', 'info'],
     },
   },
 } satisfies Meta<typeof Stat>;
@@ -33,7 +33,7 @@ export const Default: Story = {
   args: {
     label: 'Components shipped',
     value: '42',
-    tone: 'default',
+    tone: 'neutral',
   },
 };
 
@@ -42,7 +42,7 @@ export const WithSub: Story = {
     label: 'Applications sent',
     value: '18',
     sub: '+3 this week',
-    tone: 'default',
+    tone: 'neutral',
   },
 };
 
@@ -78,16 +78,17 @@ export const AllTones: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'All four tones rendered side-by-side.',
+        story: 'All five tones rendered side-by-side.',
       },
     },
   },
   render: () => (
     <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-      <Stat label="Components" value="42" tone="default" />
+      <Stat label="Components" value="42" tone="neutral" />
       <Stat label="Offer rate" value="94%" tone="success" sub="Above avg" />
       <Stat label="Open reviews" value="7" tone="warning" sub="2 past due" />
       <Stat label="Failures" value="3" tone="danger" sub="Last 24h" />
+      <Stat label="In review" value="5" tone="info" sub="Awaiting signoff" />
     </div>
   ),
 };

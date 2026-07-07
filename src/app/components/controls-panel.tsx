@@ -2,7 +2,7 @@
 /**
  * @tier utility
  */
-﻿// @doc-exempt: sketch control shell helper used by tooling surfaces, not a consumer-facing HDS component.
+// @doc-exempt: sketch control shell helper used by tooling surfaces, not a consumer-facing HDS component.
 /**
  * ControlsPanel - shared controls shell for system maintenance surfaces and sketch tooling.
  * @category Utilities
@@ -22,6 +22,11 @@ interface ControlsPanelProps {
   outlined?: boolean;
 }
 
+// vocab-ok: 'primary'/'secondary' predate the #60 fixed tone vocabulary
+// (neutral | danger | success | warning | info) — this is an internal
+// utility-tier dev-tool shell (sketch/tooling surfaces, not consumer-facing
+// HDS), and its `tone` names a heading-weight treatment, not feedback intent.
+// Tracked for a future rename/rollout phase rather than force-renamed here.
 interface ControlsSectionProps {
   title: string;
   description?: ReactNode;
@@ -60,10 +65,7 @@ export function ControlsPanel({
       >
         <Stack gap="normal">
           {title && (
-            <p
-              className="text-secondary"
-              style={hds.typeStyles.ui}
-            >
+            <p className="text-secondary" style={hds.typeStyles.ui}>
               {title}
             </p>
           )}
@@ -74,31 +76,30 @@ export function ControlsPanel({
   );
 }
 
-export function ControlsSection({ title, description, children, tone = 'secondary' }: ControlsSectionProps) {
-  const titleColor = tone === 'primary'
-    ? 'var(--semantic-color-content-primary)'
-    : 'var(--semantic-color-content-secondary)';
+export function ControlsSection({
+  title,
+  description,
+  children,
+  tone = 'secondary',
+}: ControlsSectionProps) {
+  const titleColor =
+    tone === 'primary'
+      ? 'var(--semantic-color-content-primary)'
+      : 'var(--semantic-color-content-secondary)';
 
   return (
     <section>
       <Stack gap="gap">
         <Stack gap="gap">
-          <p
-            style={{ ...hds.typeStyles.ui, color: titleColor, margin: 0 }}
-          >
-            {title}
-          </p>
+          <p style={{ ...hds.typeStyles.ui, color: titleColor, margin: 0 }}>{title}</p>
           {description && (
             <p className="text-secondary" style={{ ...supportingTextStyle, margin: 0 }}>
               {description}
             </p>
           )}
         </Stack>
-        <Stack gap="gap">
-          {children}
-        </Stack>
+        <Stack gap="gap">{children}</Stack>
       </Stack>
     </section>
   );
 }
-
