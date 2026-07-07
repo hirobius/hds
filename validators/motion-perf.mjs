@@ -10,8 +10,9 @@
  * strings, and CSS-in-JS literal values for forbidden patterns.
  *
  * Returns the standard { ok, errors } shape; each error has
- * { path, code, message, suggestion } and gets fed back to the LLM by
- * pipeline/format-correction.mjs on retry.
+ * { path, code, message, suggestion }. Formerly fed back to the LLM by
+ * pipeline/format-correction.mjs on retry; that generation pipeline was
+ * cut (#50).
  *
  * Rules:
  *   MOTION_TRANSITION_ALL      — transition: all | transition-property: all
@@ -49,7 +50,8 @@ function scan(src, re) {
  * e.g. "transition: all 0.3s ease" or "transitionProperty: 'all'"
  *       also Tailwind: "transition-all"
  */
-const TRANSITION_ALL_RE = /\btransition(?:-property)?:\s*['"]?all\b|['"]transition:\s*all\b|(?<![a-z])transition-all(?![a-z-])/gi;
+const TRANSITION_ALL_RE =
+  /\btransition(?:-property)?:\s*['"]?all\b|['"]transition:\s*all\b|(?<![a-z])transition-all(?![a-z-])/gi;
 
 /**
  * Animating layout-triggering properties inside a transition or animation
@@ -61,7 +63,8 @@ const TRANSITION_ALL_RE = /\btransition(?:-property)?:\s*['"]?all\b|['"]transiti
  *
  * We flag transition/animation shorthand strings containing these props.
  */
-const LAYOUT_PROP_ANIMATE_RE = /\btransition(?:-property)?:\s*['"]?(?:width|height|top|left|right|bottom|margin[\w-]*|padding[\w-]*|flex-basis)\b|'transition':\s*'(?:width|height|top|left|right|bottom|margin|padding|flex-basis)/gi;
+const LAYOUT_PROP_ANIMATE_RE =
+  /\btransition(?:-property)?:\s*['"]?(?:width|height|top|left|right|bottom|margin[\w-]*|padding[\w-]*|flex-basis)\b|'transition':\s*'(?:width|height|top|left|right|bottom|margin|padding|flex-basis)/gi;
 
 /**
  * scroll event listener used for animation (direct DOM scrollTop/scrollY reads
@@ -119,7 +122,8 @@ export default async function validate(src) {
       path: 'css.transition',
       code: 'MOTION_TRANSITION_ALL',
       message: `"transition: all" detected ("${hit.match.trim()}") — animates every property including layout-triggering ones`,
-      suggestion: 'Enumerate only compositor-safe properties: "transition: transform 0.3s ease, opacity 0.3s ease". Avoid width, height, top, left.',
+      suggestion:
+        'Enumerate only compositor-safe properties: "transition: transform 0.3s ease, opacity 0.3s ease". Avoid width, height, top, left.',
     });
   }
 
@@ -130,7 +134,8 @@ export default async function validate(src) {
       path: 'css.transition',
       code: 'MOTION_LAYOUT_ANIMATE',
       message: `Layout-triggering property animated in transition ("${hit.match.trim()}")`,
-      suggestion: 'Prefer transform for positional changes: translateX/Y instead of left/top, scaleX/Y instead of width/height. Use FLIP for layout-like transitions.',
+      suggestion:
+        'Prefer transform for positional changes: translateX/Y instead of left/top, scaleX/Y instead of width/height. Use FLIP for layout-like transitions.',
     });
   }
 
@@ -141,7 +146,8 @@ export default async function validate(src) {
       path: 'js.scroll',
       code: 'MOTION_SCROLL_EVENT',
       message: `Scroll event listener detected for animation ("${hit.match.trim()}") — drives animation from scroll events which can cause layout thrash`,
-      suggestion: 'Use CSS Scroll Timelines (animation-timeline: scroll()) or View Timelines (animation-timeline: view()) for scroll-linked motion. Use IntersectionObserver for enter/exit triggers.',
+      suggestion:
+        'Use CSS Scroll Timelines (animation-timeline: scroll()) or View Timelines (animation-timeline: view()) for scroll-linked motion. Use IntersectionObserver for enter/exit triggers.',
     });
   }
 
@@ -152,7 +158,8 @@ export default async function validate(src) {
       path: 'css.will-change',
       code: 'MOTION_WILL_CHANGE_ALL',
       message: `"will-change: all" is too broad — promotes every property to its own compositor layer`,
-      suggestion: 'Use will-change: transform or will-change: opacity. Only add will-change immediately before an animation; remove it after. Avoid on large/many elements.',
+      suggestion:
+        'Use will-change: transform or will-change: opacity. Only add will-change immediately before an animation; remove it after. Avoid on large/many elements.',
     });
   }
 
@@ -169,7 +176,8 @@ export default async function validate(src) {
         path: 'css.filter',
         code: 'MOTION_BLUR_LARGE',
         message: `blur(${blurMatch[1]}${unit}) exceeds the 8px ceiling — large blur is paint-heavy and causes jank on animated surfaces`,
-        suggestion: 'Keep blur ≤ 8px. Use blur only for short one-shot effects on small, isolated elements. Prefer opacity + translate over blur for entrance/exit motion.',
+        suggestion:
+          'Keep blur ≤ 8px. Use blur only for short one-shot effects on small, isolated elements. Prefer opacity + translate over blur for entrance/exit motion.',
       });
     }
   }
@@ -191,7 +199,8 @@ export default async function validate(src) {
       path: 'css.transition',
       code: 'MOTION_CSS_VAR_ANIMATE',
       message: `CSS custom property animated in transition ("${hit.match.trim()}") — CSS variable transitions trigger style recalc cascades`,
-      suggestion: 'Animate transform and opacity directly instead of CSS variables. Scope animated CSS variables locally and avoid inheritance.',
+      suggestion:
+        'Animate transform and opacity directly instead of CSS variables. Scope animated CSS variables locally and avoid inheritance.',
     });
   }
 
@@ -202,8 +211,10 @@ export default async function validate(src) {
     errors.push({
       path: 'css.accessibility',
       code: 'MOTION_REDUCED_MOTION',
-      message: 'Animation/transition declarations present but no @media (prefers-reduced-motion) guard found',
-      suggestion: 'Wrap motion declarations in @media (prefers-reduced-motion: no-preference) { ... } or add @media (prefers-reduced-motion: reduce) { animation: none; transition: none; } to disable motion for users who request reduced motion.',
+      message:
+        'Animation/transition declarations present but no @media (prefers-reduced-motion) guard found',
+      suggestion:
+        'Wrap motion declarations in @media (prefers-reduced-motion: no-preference) { ... } or add @media (prefers-reduced-motion: reduce) { animation: none; transition: none; } to disable motion for users who request reduced motion.',
     });
   }
 

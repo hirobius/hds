@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-06-18T07:22:21.335Z
+Generated: 2026-07-07T16:44:58.688Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -98,7 +98,6 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 - `DESIGN-HANDOFF.md`
 - `TOKEN_GOVERNANCE.md`
 - `SYSTEMS_REGISTRY.md`
-- `BACKLOG.md`
 
 ## Token Rules
 
@@ -107,7 +106,7 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 - Token source of truth: read `hirobius.tokens.json` (W3C DTCG). Prefer `semantic.*` and `component.*` tokens over `primitive.*` for product UI.
 - CSS variables: token path `semantic.color.surface.page` maps to `var(--semantic-color-surface-page)` (see generated token refs).
 - Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.
-- Load `TOKEN_GOVERNANCE.md`, `SYSTEMS_REGISTRY.md`, and `BACKLOG.md` only on-demand (when explicitly requested or required by the task).
+- Load `TOKEN_GOVERNANCE.md` and `SYSTEMS_REGISTRY.md` only on-demand (when explicitly requested or required by the task).
 - Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.
 
 ## Agent Workflow

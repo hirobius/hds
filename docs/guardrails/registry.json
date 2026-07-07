@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "e7b883f1b3f0b0fc6f3d0005fff36b4283670994eb03182f1518ee0a6ad121a4",
-  "precommitStructureHashUpdatedAt": "(archived: pre-commit gates leaned to direct hook calls per #52)",
+  "precommitStructureHash": "a3e8080e12cc8cf7edf95a12c7e2e538d95eaacc6bce0e30b27c549bcc0e5300",
+  "precommitStructureHashUpdatedAt": "2026-07-07T18:31:52.102Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -14,7 +14,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "manual"
     },
     {
       "id": "audit-bundle",
@@ -81,7 +81,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr",
+      "firingChannel": "manual",
       "supportsJson": true
     },
     {
@@ -94,21 +94,9 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr",
+      "firingChannel": "manual",
       "supportsJson": true,
       "scope": "full-tree"
-    },
-    {
-      "id": "audit-pages",
-      "description": "Token compliance auditor for page surfaces. This is intentionally looser than audit-components.mjs — reusable components must be strict, pages must still avoid raw design values but can keep justified editorial layout.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-pages.mjs",
-      "fixturePath": "fixtures/audit-pages",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pnpm-meta"
     },
     {
       "id": "audit-sbom",
@@ -133,7 +121,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "manual"
     },
     {
       "id": "audit-tokens",
@@ -145,7 +133,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "manual",
+      "firingChannel": "ci-pr",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
@@ -209,20 +197,6 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
-      "id": "check-asset-manifest",
-      "description": "Guards the asset layer before large-scale visual population begins. Checks that every real file in public/assets has a manifest entry and every manifest entry uses normalized paths and valid metadata.",
-      "severity": "warn",
-      "gateScript": "scripts/check-asset-manifest.mjs",
-      "fixturePath": "fixtures/check-asset-manifest",
-      "lastFiringAt": "2026-06-19T02:45:49.615Z",
-      "lastViolationAt": "2026-05-07T23:50:55.504Z",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
       "id": "check-attributions",
       "description": "Keeps the attribution registry machine-checkable. Checks that registry IDs in ATTRIBUTIONS.md are present and unique, and that asset manifest sourceId values resolve to known registry IDs.",
       "severity": "warn",
@@ -261,7 +235,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-contrast",
@@ -273,7 +247,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pre-commit"
     },
     {
       "id": "check-css-integrity",
@@ -296,20 +270,6 @@
       "gateScript": "scripts/check-dimensions.mjs",
       "fixturePath": "fixtures/check-dimensions",
       "lastFiringAt": "2026-06-19T02:45:49.963Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-doc-structure",
-      "description": "Validates structural invariants of HDS documentation pages. Checks that foundation pages have DocPageHeader and at least one section.",
-      "severity": "warn",
-      "gateScript": "scripts/check-doc-structure.mjs",
-      "fixturePath": "fixtures/check-doc-structure",
-      "lastFiringAt": "2026-06-19T02:45:50.015Z",
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
@@ -367,21 +327,7 @@
       "lastViolationAt": "2026-05-08T02:21:53.642Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
-    },
-    {
-      "id": "check-frozen-demos",
-      "description": "Guardrail for docs preview surfaces. Consumer component docs pages should not hand-author bespoke preview demos; those previews must stay default-state renders.",
-      "severity": "warn",
-      "gateScript": "scripts/check-frozen-demos.mjs",
-      "fixturePath": "fixtures/check-frozen-demos",
-      "lastFiringAt": "2026-06-19T02:45:50.253Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-hardcoded-breakpoints",
@@ -483,19 +429,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
-    },
-    {
-      "id": "check-mono-roles",
-      "description": "Prevents ornamental/raw monospace from creeping back into prose-heavy surfaces that should rely on InlineCode or normal body/caption styling instead.",
-      "severity": "warn",
-      "gateScript": "scripts/check-mono-roles.mjs",
-      "fixturePath": "fixtures/check-mono-roles",
-      "lastFiringAt": "2026-06-19T02:45:51.682Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-motion",
@@ -504,33 +438,6 @@
       "gateScript": "scripts/check-motion.mjs",
       "fixturePath": "fixtures/check-motion",
       "lastFiringAt": "2026-06-19T02:45:51.734Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-og-meta",
-      "description": "Static analysis validator for OG meta tags in index.html. This project is a React Router SPA with a single index.html (no per-route meta tags).",
-      "severity": "warn",
-      "gateScript": "scripts/check-og-meta.mjs",
-      "fixturePath": "fixtures/check-og-meta",
-      "lastFiringAt": "2026-06-19T02:45:51.779Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-pr",
-      "wiringTodo": "should be ci-pr or ci-scheduled — not yet wired into a workflow that actually triggers it"
-    },
-    {
-      "id": "check-page-shell",
-      "description": "Forbids direct Container usage in src/app/pages/**. Pages must use Page (which wraps Container + applies the canonical vertical padding) so every page receives consistent layout.",
-      "severity": "warn",
-      "gateScript": "scripts/check-page-shell.mjs",
-      "fixturePath": "fixtures/check-page-shell",
-      "lastFiringAt": "2026-06-19T02:45:51.830Z",
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
@@ -581,18 +488,6 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
-      "id": "check-route-coverage",
-      "description": "Route coverage gate — every routable page must appear in the layout-integrity test set.",
-      "severity": "warn",
-      "gateScript": "scripts/check-route-coverage.mjs",
-      "fixturePath": "fixtures/check-route-coverage",
-      "lastFiringAt": "2026-06-19T02:45:52.410Z",
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-pr"
-    },
-    {
       "id": "check-secrets",
       "description": "Pre-commit secrets scanner wrapping the gitleaks binary. Registers gitleaks in the guardrail registry so it shows up in audits and fixture-proof runs.",
       "severity": "error",
@@ -618,7 +513,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-source-canon",
@@ -733,7 +628,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-token-structure",
@@ -745,7 +640,7 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ci-pr"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-unresponsive-grids",

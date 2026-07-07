@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Report a defect in the Hirobius Design System
-title: "[bug] "
+title: '[bug] '
 labels: bug
 assignees: ''
 ---
@@ -40,11 +40,11 @@ $ pnpm typecheck
 <paste>
 ```
 
-## Related unit
+## Related issue
 
-<!-- If this maps to or blocks a unit in docs/ai/orchestration.json, link it. -->
+<!-- If this maps to or blocks another GitHub Issue, link it. -->
 
-Related unit: `<unit-id-or-N/A>`
+Related issue: `#<issue-number-or-N/A>`
 
 ## Additional context
 

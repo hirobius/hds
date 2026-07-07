@@ -1,18 +1,17 @@
 <!--
 Thanks for contributing to the Hirobius Design System (HDS).
 
-Before opening this PR, please confirm you've read CONTRIBUTING.md and
-docs/ai/AGENT_GUIDELINES.md (if you used AI agents to produce this PR).
+Before opening this PR, please confirm you've read CONTRIBUTING.md.
 
 Required checks: see docs/operations/required-checks.md
 -->
 
-## Linked unit
+## Linked issue
 
-<!-- Link to the unit in docs/ai/orchestration.json this PR closes (e.g. `12s-infra-foo`). -->
-<!-- If this PR is not driven by a unit, briefly explain why. -->
+<!-- Link to the GitHub Issue this PR closes (e.g. `Closes #123`). -->
+<!-- If this PR is not driven by an issue, briefly explain why. -->
 
-Unit: `<unit-id>`
+Issue: `#<issue-number-or-N/A>`
 
 ## Summary
 
@@ -37,9 +36,6 @@ $ node scripts/check-source-canon.mjs
 
 $ node scripts/validate-manifest.mjs
 <paste output>
-
-$ node scripts/validate-orchestration.mjs
-<paste output>
 ```
 
 Reference: `docs/operations/required-checks.md`
@@ -62,8 +58,6 @@ If checked, please describe the migration path below.
 
 ## Checklist
 
-- [ ] Commit message follows `<scope>(<area>): <unit-id> <summary>` format
+- [ ] Commit message follows `<scope>(<area>): <summary>` format
       with the `Co-Authored-By` trailer (see CONTRIBUTING.md).
-- [ ] Orchestration entry status was updated in the SAME commit as the
-      deliverable (per `docs/ai/AGENT_GUIDELINES.md` §6).
 - [ ] No `--no-verify` was used to bypass gates.

@@ -4,8 +4,9 @@
  *
  * Detects the most common AI-generation aesthetic tells against the project's
  * Swiss / IBM Plex / stone-palette / 8px-grid canon. Returns the standard
- * { ok, errors } shape; each error has { path, code, message, suggestion } and
- * gets fed back to the LLM by pipeline/format-correction.mjs on retry.
+ * { ok, errors } shape; each error has { path, code, message, suggestion }.
+ * Formerly fed back to the LLM by pipeline/format-correction.mjs on retry;
+ * that generation pipeline was cut (#50).
  *
  * Rules:
  *   SWISS_BOLD            — font-bold / weight=700+ / fontWeight: bold
@@ -40,23 +41,36 @@ import {
 } from './canon-rules.mjs';
 
 const SPACING_PROPS = new Set([
-  'padding', 'paddingX', 'paddingY', 'paddingTop', 'paddingBottom',
-  'paddingLeft', 'paddingRight', 'gap', 'rowGap', 'columnGap',
-  'margin', 'marginTop', 'marginBottom', 'marginLeft', 'marginRight',
+  'padding',
+  'paddingX',
+  'paddingY',
+  'paddingTop',
+  'paddingBottom',
+  'paddingLeft',
+  'paddingRight',
+  'gap',
+  'rowGap',
+  'columnGap',
+  'margin',
+  'marginTop',
+  'marginBottom',
+  'marginLeft',
+  'marginRight',
 ]);
 
-const RADIUS_PROPS = new Set([
-  'radius', 'borderRadius', 'cornerRadius',
-]);
+const RADIUS_PROPS = new Set(['radius', 'borderRadius', 'cornerRadius']);
 
 const TEXT_CONTENT_PROPS = new Set([
-  'children', 'label', 'placeholder', 'title', 'description', 'helperText',
+  'children',
+  'label',
+  'placeholder',
+  'title',
+  'description',
+  'helperText',
   'aria-label',
 ]);
 
-const COLOR_PROPS = new Set([
-  'color', 'textColor', 'tone', 'fill', 'colorToken',
-]);
+const COLOR_PROPS = new Set(['color', 'textColor', 'tone', 'fill', 'colorToken']);
 
 function getAttrValue(attr) {
   if (!attr || attr.type === 'JSXSpreadAttribute') return null;
@@ -116,7 +130,9 @@ function colorFamily(value) {
   if (!v) return null;
   const semanticMatch = v.match(/^(?:semantic|tokens|theme)\.color\.([^.]+)\./);
   if (semanticMatch) return semanticMatch[1].toLowerCase();
-  const tailwindMatch = v.match(/^(?:text|bg|border|from|to|via|ring)-([a-z]+)(?:-\d+)?(?:\/\d+)?$/);
+  const tailwindMatch = v.match(
+    /^(?:text|bg|border|from|to|via|ring)-([a-z]+)(?:-\d+)?(?:\/\d+)?$/,
+  );
   if (tailwindMatch) return tailwindMatch[1];
   const tailwindBareMatch = v.match(/^([a-z]+)-\d+(?:\/\d+)?$/);
   if (tailwindBareMatch) return tailwindBareMatch[1];
@@ -130,7 +146,7 @@ function walkJsx(node, visitor) {
   if (node.type === 'JSXElement') visitor(node);
   for (const key of Object.keys(node)) {
     const child = node[key];
-    if (Array.isArray(child)) child.forEach(c => walkJsx(c, visitor));
+    if (Array.isArray(child)) child.forEach((c) => walkJsx(c, visitor));
     else if (child && typeof child === 'object') walkJsx(child, visitor);
   }
 }
@@ -144,7 +160,9 @@ export default async function validate(jsxString) {
   if (!parsed.ok) {
     return {
       ok: false,
-      errors: [{ path: '', code: 'PARSE_ERROR', message: parsed.error, suggestion: 'Fix JSX syntax' }],
+      errors: [
+        { path: '', code: 'PARSE_ERROR', message: parsed.error, suggestion: 'Fix JSX syntax' },
+      ],
     };
   }
 
@@ -164,12 +182,17 @@ export default async function validate(jsxString) {
       const valNum = asNumber(value);
 
       // ── SWISS_BOLD ────────────────────────────────────────────────
-      if ((attrName === 'weight' || attrName === 'fontWeight') && valStr && BOLD_VALUE_RE.test(valStr)) {
+      if (
+        (attrName === 'weight' || attrName === 'fontWeight') &&
+        valStr &&
+        BOLD_VALUE_RE.test(valStr)
+      ) {
         errors.push({
           path: `${tagName}.${attrName}`,
           code: 'SWISS_BOLD',
           message: `${tagName} uses bold weight "${valStr}" — bold is forbidden`,
-          suggestion: 'Headings use font-light (display, h1) or font-normal (h2, h3). Body emphasis uses font-medium (500). Never bold.',
+          suggestion:
+            'Headings use font-light (display, h1) or font-normal (h2, h3). Body emphasis uses font-medium (500). Never bold.',
         });
       }
 
@@ -180,18 +203,25 @@ export default async function validate(jsxString) {
             path: `${tagName}.${attrName}`,
             code: 'SWISS_OFF_GRID',
             message: `${tagName}.${attrName}=${valNum} is not on the 4/8px scale`,
-            suggestion: 'Use {0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128}. Prefer multiples of 8 for layout, multiples of 4 for component-internal padding.',
+            suggestion:
+              'Use {0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128}. Prefer multiples of 8 for layout, multiples of 4 for component-internal padding.',
           });
         }
       }
 
       // ── SWISS_OVERSIZED_RADIUS ────────────────────────────────────
-      if (RADIUS_PROPS.has(attrName) && STRUCTURAL_COMPONENTS.has(tagName) && valNum !== null && valNum >= 16) {
+      if (
+        RADIUS_PROPS.has(attrName) &&
+        STRUCTURAL_COMPONENTS.has(tagName) &&
+        valNum !== null &&
+        valNum >= 16
+      ) {
         errors.push({
           path: `${tagName}.${attrName}`,
           code: 'SWISS_OVERSIZED_RADIUS',
           message: `${tagName}.${attrName}=${valNum} is too round for a structural element`,
-          suggestion: 'Cards, inputs, frames, containers use radius 0/2/4/8 only. Pills (HdsBadge) may use larger radii.',
+          suggestion:
+            'Cards, inputs, frames, containers use radius 0/2/4/8 only. Pills (HdsBadge) may use larger radii.',
         });
       }
 
@@ -201,7 +231,8 @@ export default async function validate(jsxString) {
           path: `${tagName}.${attrName}`,
           code: 'SWISS_BG_WHITE_BLACK',
           message: `${tagName}.${attrName}="${valStr}" uses pure white/black`,
-          suggestion: 'Use semantic.color.surface.{raised,page,dark,overlay} or semantic.color.content.{primary,secondary} — never bg-white or bg-black.',
+          suggestion:
+            'Use semantic.color.surface.{raised,page,dark,overlay} or semantic.color.content.{primary,secondary} — never bg-white or bg-black.',
         });
       }
 
@@ -211,7 +242,8 @@ export default async function validate(jsxString) {
           path: `${tagName}.${attrName}`,
           code: 'SWISS_GRADIENT',
           message: `${tagName}.${attrName}="${valStr}" uses a gradient`,
-          suggestion: 'Flat surfaces only. Use a single semantic surface token. If accent is needed, full-opacity solid only — no gradients.',
+          suggestion:
+            'Flat surfaces only. Use a single semantic surface token. If accent is needed, full-opacity solid only — no gradients.',
         });
       }
 
@@ -221,7 +253,8 @@ export default async function validate(jsxString) {
           path: `${tagName}.${attrName}`,
           code: 'SWISS_PURPLE_INDIGO',
           message: `${tagName}.${attrName}="${valStr}" uses purple/indigo/violet/fuchsia`,
-          suggestion: 'Project palette is stone neutrals + Swiss Red accent. Replace with semantic.color.surface.* / .content.* / .accent.*.',
+          suggestion:
+            'Project palette is stone neutrals + Swiss Red accent. Replace with semantic.color.surface.* / .content.* / .accent.*.',
         });
       }
 
@@ -231,7 +264,8 @@ export default async function validate(jsxString) {
           path: `${tagName}.${attrName}`,
           code: 'SWISS_LOREM',
           message: `${tagName}.${attrName} contains lorem ipsum placeholder copy`,
-          suggestion: 'Use realistic copy. Placeholder text hides wrap, length, and overflow defects.',
+          suggestion:
+            'Use realistic copy. Placeholder text hides wrap, length, and overflow defects.',
         });
       }
 
@@ -255,7 +289,8 @@ export default async function validate(jsxString) {
             path: `${tagName}.children`,
             code: 'SWISS_LOREM',
             message: `${tagName} contains lorem ipsum placeholder copy`,
-            suggestion: 'Use realistic copy. Placeholder text hides wrap, length, and overflow defects.',
+            suggestion:
+              'Use realistic copy. Placeholder text hides wrap, length, and overflow defects.',
           });
         }
         if (TRIPLE_DOT_RE.test(text)) {
@@ -263,7 +298,8 @@ export default async function validate(jsxString) {
             path: `${tagName}.children`,
             code: 'SWISS_ELLIPSIS',
             message: `${tagName} uses three-period ellipsis "..."`,
-            suggestion: 'Use the single-character ellipsis "…" (U+2026) for typographic correctness.',
+            suggestion:
+              'Use the single-character ellipsis "…" (U+2026) for typographic correctness.',
           });
         }
         if (STRAIGHT_DOUBLE_QUOTE_RE.test(text) || STRAIGHT_SINGLE_QUOTE_RE.test(text)) {
@@ -271,7 +307,8 @@ export default async function validate(jsxString) {
             path: `${tagName}.children`,
             code: 'SWISS_STRAIGHT_QUOTES',
             message: `${tagName} uses straight quotes in user-visible text`,
-            suggestion: 'Use curly quotation marks: “ … ” for double, ‘ … ’ for single. Apostrophes inside contractions (don’t) should also be curly.',
+            suggestion:
+              'Use curly quotation marks: “ … ” for double, ‘ … ’ for single. Apostrophes inside contractions (don’t) should also be curly.',
           });
         }
       }
@@ -282,8 +319,7 @@ export default async function validate(jsxString) {
     // carry explicit color attributes belonging to different hue families,
     // hierarchy is being driven by hue instead of opacity — flag it.
     const textSiblings = (element.children || []).filter(
-      c => c.type === 'JSXElement'
-        && TEXT_BEARING_COMPONENTS.has(c.openingElement?.name?.name),
+      (c) => c.type === 'JSXElement' && TEXT_BEARING_COMPONENTS.has(c.openingElement?.name?.name),
     );
     if (textSiblings.length >= 2) {
       const families = [];
@@ -296,18 +332,25 @@ export default async function validate(jsxString) {
           const aVal = asString(getAttrValue(a));
           if (!aVal) continue;
           const fam = colorFamily(aVal);
-          if (fam) families.push({ tag: sib.openingElement.name.name, attr: aName, value: aVal, family: fam });
+          if (fam)
+            families.push({
+              tag: sib.openingElement.name.name,
+              attr: aName,
+              value: aVal,
+              family: fam,
+            });
         }
       }
       if (families.length >= 2) {
-        const distinct = new Set(families.map(f => f.family));
+        const distinct = new Set(families.map((f) => f.family));
         if (distinct.size >= 2) {
           const offender = families[families.length - 1];
           errors.push({
             path: `${offender.tag}.${offender.attr}`,
             code: 'SWISS_MULTI_HUE_TEXT',
             message: `Sibling text-bearing elements use different hue families (${[...distinct].join(', ')}) for hierarchy`,
-            suggestion: 'Drive hierarchy with opacity on a single hue: semantic.color.content.{primary,secondary,tertiary}. One accent token per layout, not per text node.',
+            suggestion:
+              'Drive hierarchy with opacity on a single hue: semantic.color.content.{primary,secondary,tertiary}. One accent token per layout, not per text node.',
           });
         }
       }

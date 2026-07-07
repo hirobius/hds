@@ -2,13 +2,13 @@
 /**
  * validators/binding-completeness.mjs
  *
- * Manifest-level invariant exposed to the LLM retry loop. If a
+ * Manifest-level invariant, formerly exposed to the LLM retry loop. If a
  * componentSpec declares any tokens (`tokens` object or legacy
  * `tokenMapping`), it MUST also have a non-empty slots[] entry whose
  * tokenBinding has at least one resolved token-path value. Without
- * that, the masters pipeline (pipeline/figma-masters-batch.mjs) can't
- * project a Figma binding for the spec — declared tokens become
- * orphans that never reach the canvas.
+ * that, the (now-retired, #50) masters pipeline couldn't project a
+ * Figma binding for the spec — declared tokens became orphans that
+ * never reached the canvas.
  *
  * Walks the JSX, looks up each Hds* element in componentSpecs, and
  * emits BINDING_INCOMPLETE for any reference whose spec violates the
@@ -47,7 +47,7 @@ function walkJsx(node, visitor) {
   if (node.type === 'JSXElement') visitor(node);
   for (const key of Object.keys(node)) {
     const child = node[key];
-    if (Array.isArray(child)) child.forEach(c => walkJsx(c, visitor));
+    if (Array.isArray(child)) child.forEach((c) => walkJsx(c, visitor));
     else if (child && typeof child === 'object') walkJsx(child, visitor);
   }
 }
@@ -62,10 +62,10 @@ function getElementName(node) {
 
 function specHasTokens(spec) {
   const tokens = spec.tokens && typeof spec.tokens === 'object' ? spec.tokens : null;
-  const mapping = spec.tokenMapping && typeof spec.tokenMapping === 'object' ? spec.tokenMapping : null;
+  const mapping =
+    spec.tokenMapping && typeof spec.tokenMapping === 'object' ? spec.tokenMapping : null;
   return Boolean(
-    (tokens && Object.keys(tokens).length > 0) ||
-    (mapping && Object.keys(mapping).length > 0),
+    (tokens && Object.keys(tokens).length > 0) || (mapping && Object.keys(mapping).length > 0),
   );
 }
 
@@ -73,9 +73,8 @@ function specHasNonEmptySlotBindings(spec) {
   const slots = Array.isArray(spec.slots) ? spec.slots : [];
   if (slots.length === 0) return false;
   return slots.some((slot) => {
-    const tb = slot && slot.tokenBinding && typeof slot.tokenBinding === 'object'
-      ? slot.tokenBinding
-      : null;
+    const tb =
+      slot && slot.tokenBinding && typeof slot.tokenBinding === 'object' ? slot.tokenBinding : null;
     if (!tb) return false;
     return Object.values(tb).some((v) => typeof v === 'string' && v.length > 0);
   });
@@ -118,7 +117,9 @@ export default async function validate(input) {
   if (!parsed.ok) {
     return {
       ok: false,
-      errors: [{ path: '', code: 'PARSE_ERROR', message: parsed.error, suggestion: 'Fix JSX syntax' }],
+      errors: [
+        { path: '', code: 'PARSE_ERROR', message: parsed.error, suggestion: 'Fix JSX syntax' },
+      ],
     };
   }
 

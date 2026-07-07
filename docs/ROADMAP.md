@@ -13,9 +13,12 @@ Priority: **P1** = highest leverage.
 The Figma stack (bridge, token/variable sync, snapshot/diff/audit, Code Connect
 check, CI workflow) is coherent. Recent repairs + remaining cleanup:
 
-- ✅ **Generative pipeline** — added `telemetry/logger.mjs` no-op stub; `pnpm
-  ui:masters` / `ui:gen` / `ui:fix` work again (`build-figma-masters.mjs`,
-  `pipeline/retry-loop.mjs` import it).
+- ✅ **Generative pipeline — cut (#50).** `pipeline/`, `scripts/generate-to-figma.mjs`,
+  `scripts/build-figma-masters.mjs`, `scripts/test-figma-masters-snapshot.mjs`,
+  and the no-longer-needed `telemetry/logger.mjs` stub are removed; `ui:masters`
+  / `ui:gen` / `ui:fix` are gone from `package.json`. LLM-to-Figma generation is
+  not coming back on this path — future Figma work goes through the official
+  Figma MCP server + Code Connect (ADR-019).
 - ✅ **Bridge crash guard** — `hds-bridge.mjs` `readOrchestration()` degrades to
   `{ units: [] }` when `docs/ai/orchestration.json` is absent (it moved to ops),
   so `/orchestration/*` + `/build-status` no longer 500. `figma:bridge:smoke`
@@ -27,17 +30,21 @@ check, CI workflow) is coherent. Recent repairs + remaining cleanup:
 - 🔴 **Reconcile env var names** — `scripts/figma-sync.ts` expects
   `FIGMA_PAT` / `FIGMA_FILE_ID`; CI (`sync-figma-variables.yml`) uses
   `FIGMA_PERSONAL_ACCESS_TOKEN` / `FIGMA_FILE_KEY`. Document or unify.
-- 🔴 **Refresh stale docs** — `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP}.md`
-  still reference the retired `orchestration.json`.
+- ✅ **Refresh stale docs — done.** `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP,STATE-2026-05-09}.md`
+  referenced the retired `orchestration.json` and the already-archived Figma
+  bridge (`archive/figma-bridge`, ADR-018 §2); deleted rather than refreshed —
+  nothing durable to salvage, superseded by ADR-019 (Figma MCP + Code Connect).
 
 ---
 
 ## 2. Component library — technical debt
 
 ### P1 🔴 Adopt accessible primitives (foundation: **Radix UI**)
+
 Only 3 Radix primitives are in use (dialog, slot, tabs); the rest are hand-rolled
 with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
 **and** closes ~6 coverage gaps.
+
 - `HdsSelect` (`controls.tsx:472`) — no `aria-activedescendant` (screen-reader
   failure) → Radix Select / Combobox.
 - `Disclosure` (`disclosure.tsx`) — not `<details>`/Radix → Radix Accordion/Collapsible.
@@ -49,12 +56,14 @@ with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
   shadcn-compatible for copy-paste velocity._
 
 ### P2 🔴 Real form layer
+
 - `Field` (`field.tsx`) is read-only metadata, **not** an input wrapper. Add a
   `FormField` (label + description + error + `aria-describedby`/`aria-invalid` wiring).
 - Add missing inputs: **Checkbox** (with `indeterminate`), **Textarea**.
 - Optional: a `react-hook-form` adapter (`Controller` wrappers).
 
 ### P3 🔴 Unify the styling model
+
 - Two parallel systems: new CVA + Tailwind v4 (Button/Input/Dialog/Tabs) vs old
   inline-style `hds` token bridge (Select/Toggle/Radio/Slider/SegmentedControl/
   Surface/Card) + a hand-written `utilities.css` fallback. Pick CVA+Tailwind v4
@@ -64,6 +73,7 @@ with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
   `isDark`. Make every `hds.*` reference a CSS var.
 
 ### P4 🔴 Curate the public API
+
 - Stop exporting doc-infra from the barrel (`src/index.ts`): `SpecimenBlock`,
   `ComponentDocPage`, `FoundationSwatch`, `ComponentInstanceMatrix`,
   `HdsSystemDocLayout`, `DocLinkCard`.
@@ -71,6 +81,7 @@ with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
   Vite/React-Router; decide RSC posture explicitly before re-adding.
 
 ### P5 🔴 Governance
+
 - Storybook coverage ~37% of components — raise it; lift unit-test thresholds.
 - The manifest + existing gates can enforce a per-component story/test baseline.
 

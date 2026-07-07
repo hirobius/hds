@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Propose a new component, token, validator, or workflow improvement
-title: "[feature] "
+title: '[feature] '
 labels: enhancement
 assignees: ''
 ---
@@ -25,11 +25,11 @@ assignees: ''
 - [ ] Pilot tenants (e.g. concrete-creations)
 - [ ] AI agents driving autonomous builds
 
-## Related unit
+## Related issue
 
-<!-- If this overlaps with or extends an existing unit in docs/ai/orchestration.json, link it. -->
+<!-- If this overlaps with or extends an existing GitHub Issue, link it. -->
 
-Related unit: `<unit-id-or-N/A>`
+Related issue: `#<issue-number-or-N/A>`
 
 ## Additional context
 
