@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-07-07T00:00:00Z",
+  "updatedAt": "2026-07-07T01:00:00Z",
   "phase": "active",
-  "headline": "DS wind-down run (epic #80): 5 issues closed — #83 (token-contrast violations fixed), #59 (HdsTooltip on Radix), #54 (CI-email triage), #62 (data-brand primary + data-tenant alias), #48 (Satoshi-only typography; Satoshi Bold replaces Clash Display). Chromatic Storybook publishing pipeline, lilac-bonds tenant contract + tokens, and MetadataList `divided` variant + footer all live at 0.11.0. Deletion/teardown cluster (#49/#50/#51/#53) scoped as a coordinated ATTENDED teardown; archive/* branches (archive/docs-app, archive/portfolio, archive/local-ai) preserved server-side before any removal.",
+  "headline": "Teardown in progress (epic #80). #51 DONE + pushed green on claude/storybook-publishable-9tdovm (2 commits): legacy docs SPA stripped (src/app/pages/** + app entry + prerender + 6 docs-shell components, −15k LOC), HdsSystemDocLayout relocated to layouts/, vercel.json repointed to build Storybook, page-scanning guardrails unwired + registry pruned (56→49 gates), a hidden audit-tokens ENOENT + broken `pnpm build` CI step fixed, manifest regenerated. Library build (build:lib), Storybook build, vitest (1078), smoke:consumer, and CI-critical manifest/registry gates all green. Resolves #56. Earlier this run: 5 issues closed (#83/#59/#54/#62/#48); Chromatic publishing + lilac-bonds + MetadataList divided + Satoshi-only all live at 0.11.0.",
   "next": [
-    "Execute the teardown cluster: #51 (strip the docs app + resolve #56 — relocate HdsSystemDocLayout pages/hds → layouts/ first, dead-code-separate, unwire the ~23 page-scanning scripts + guardrail registry, repoint vercel.json to Storybook), #49 (delete portfolio assets/apps outright), #50 (archive+strip local-AI), #53 (consolidate 27 md docs → ~5). Attended — lead reviews before merge.",
-    "Deferred post-freeze: #60 (cva rollout), #64 (Astro evaluation)",
-    "Human-owned, out of scope for autonomous work: #47 (Figma Code Connect), #48 Figma text-style swap"
+    "Remaining teardown cluster: #49 (delete portfolio assets/apps outright — note portfolio PAGES already removed with #51), #50 (archive+strip local-AI bridge/bot tooling; archive/local-ai preserved), #53 (consolidate ~27 md docs → ~5). Attended — lead reviews before merge.",
+    "Follow-up hygiene surfaced by #51 (non-blocking): reconcile the 13 pre-existing check-validator-wiring firingChannel/precommit-hash drifts; prune stale paths from knip.config.ts; decide check-reduced-motion Layer-2 semantics for a library (no App.tsx root).",
+    "Deferred post-freeze: #60 (cva rollout), #64 (Astro evaluation). Human-owned: #47 (Figma Code Connect), #48 Figma text-style swap."
   ],
   "blocked": []
 }
