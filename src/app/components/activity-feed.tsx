@@ -25,15 +25,24 @@ import {
   Rocket,
   Lock,
 } from 'lucide-react';
-import hds from '../design-system/tokens';
+import { cva } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 import { Stack } from './stack';
 import { Button } from './button';
 import { Icon } from './icon';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-/** @public */
+/**
+ * @deprecated Use `ActivityTone` instead — values are renamed to match the
+ * fixed HDS tone vocabulary (`neutral | danger | success | warning | info`,
+ * see docs/architecture/variant-contract.md). `'error'` remains supported
+ * here as a back-compat alias for `'danger'`; new code should use `tone`.
+ */
 export type ActivityStatus = 'success' | 'error' | 'warning' | 'info' | 'neutral';
+
+/** @public */
+export type ActivityTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 
 export interface ActivityEvent {
   id: string;
@@ -42,7 +51,16 @@ export interface ActivityEvent {
   timestamp: string;
   category: string;
   icon: ReactNode;
-  status: ActivityStatus;
+  /**
+   * Semantic tone for this event's icon and category color.
+   * `neutral | danger | success | warning | info`. Supersedes `status`.
+   */
+  tone?: ActivityTone;
+  /**
+   * @deprecated Use `tone` instead. Retained for back-compat; `'error'`
+   * resolves to the `danger` tone.
+   */
+  status?: ActivityStatus;
   action?: { label: string; onClick?: () => void };
   /** Optional structured metadata rendered between description and action.
    *  Reserved for compact metadata clusters like AgentTag (assignee,
@@ -54,89 +72,98 @@ export interface ActivityFeedProps {
   events: ActivityEvent[];
 }
 
-// ── Status palette ─────────────────────────────────────────────────────────────
+// ── Tone resolution ────────────────────────────────────────────────────────────
+// `tone` wins when present; otherwise fall back to the deprecated `status`
+// field, mapping its 'error' value onto 'danger'. Neither present → neutral.
 
-const statusColor: Record<ActivityStatus, string> = {
-  success: 'var(--semantic-color-feedback-success)',
-  error: 'var(--semantic-color-feedback-error)',
-  warning: 'var(--semantic-color-feedback-warning)',
-  info: 'var(--semantic-accent-rest)',
-  neutral: 'var(--semantic-color-content-secondary)',
-};
+function resolveTone(event: Pick<ActivityEvent, 'tone' | 'status'>): ActivityTone {
+  if (event.tone) return event.tone;
+  if (event.status === 'error') return 'danger';
+  if (event.status) return event.status;
+  return 'neutral';
+}
 
-const activityAvatarStyle = {
-  width: hds.size[40],
-  height: hds.size[40],
-  borderRadius: hds.borderRadius.full,
-  backgroundColor: 'var(--semantic-color-surface-raised)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0,
-} as const;
+// ── Variants ───────────────────────────────────────────────────────────────────
+// Non-interactive — no hover/active/focus states. `tone` drives the icon
+// avatar and category text color; the fixed vocabulary matches the removed
+// `statusColor` map 1:1, including `info`'s `--semantic-accent-rest` binding
+// (deliberately not `--semantic-color-feedback-info`, a different token) and
+// `neutral`'s `--semantic-color-content-secondary` binding (which is exactly
+// what `text-muted-foreground` resolves to — see tokens.css `--role-muted-foreground`).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- info's accent-rest token has no matching Tailwind-theme utility (text-feedback-info binds to a different var); var()-based so still token-driven
+const activityToneVariants = cva('', {
+  variants: {
+    tone: {
+      neutral: 'text-muted-foreground',
+      danger: 'text-feedback-danger',
+      success: 'text-feedback-success',
+      warning: 'text-feedback-warning',
+      info: 'text-[var(--semantic-accent-rest)]',
+    },
+  },
+  defaultVariants: { tone: 'neutral' },
+});
 
-const activityFeedListStyle = {
-  listStyle: 'none',
-  padding: 0,
-  margin: 0,
-} as const;
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- size-40/radius-full/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+const activityAvatarVariants = cva(
+  'flex h-[var(--primitive-size-40)] w-[var(--primitive-size-40)] shrink-0 items-center justify-center rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-raised)]',
+);
+
+// Typography composites — var()-based, no matching Tailwind-theme utility
+// (see code-block.tsx's TECHNICAL_TYPE_CLASSES for the same idiom). These are
+// arbitrary CSS *properties* (`[property:value]`), not arbitrary values on a
+// known utility, so `tailwindcss/no-arbitrary-value` does not flag them.
+const HEADING3_TYPE_CLASSES =
+  '[font-family:var(--semantic-typography-h3-font-family)] [font-size:var(--semantic-typography-h3-font-size)] [font-weight:var(--semantic-typography-h3-font-weight)] [letter-spacing:var(--semantic-typography-h3-letter-spacing)] [line-height:var(--semantic-typography-h3-line-height)]';
+
+const BODY_TYPE_CLASSES =
+  '[font-family:var(--semantic-typography-body-font-family)] [font-size:var(--semantic-typography-body-font-size)] [font-weight:var(--semantic-typography-body-font-weight)] [letter-spacing:var(--semantic-typography-body-letter-spacing)] [line-height:var(--semantic-typography-body-line-height)] max-w-[var(--semantic-typography-body-max-width)]';
+
+const UI_TYPE_CLASSES =
+  '[font-family:var(--semantic-typography-ui-font-family)] [font-size:var(--semantic-typography-ui-font-size)] [font-weight:var(--semantic-typography-ui-font-weight)] [letter-spacing:var(--semantic-typography-ui-letter-spacing)] [line-height:var(--semantic-typography-ui-line-height)] max-w-[var(--semantic-typography-ui-max-width)]';
+
+const TECHNICAL_TYPE_CLASSES =
+  '[font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)] [line-height:var(--semantic-typography-mono-line-height)] max-w-[var(--semantic-typography-mono-max-width)]';
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
-function ActivityAvatar({ icon, status }: { icon: ReactNode; status: ActivityStatus }) {
+function ActivityAvatar({ icon, tone }: { icon: ReactNode; tone: ActivityTone }) {
   return (
-    <div
-      style={{
-        ...activityAvatarStyle,
-        color: statusColor[status],
-      }}
-    >
+    <div data-tone={tone} className={cn(activityAvatarVariants(), activityToneVariants({ tone }))}>
       {icon}
     </div>
   );
 }
 
 function ActivityItem({ event }: { event: ActivityEvent }) {
+  const tone = resolveTone(event);
+
   return (
     <Stack direction="row" gap="tight" align="start" as="article">
-      <ActivityAvatar icon={event.icon} status={event.status} />
+      <ActivityAvatar icon={event.icon} tone={tone} />
 
       {/* Content block — 16px gap between heading/body/action tiers */}
       <Stack gap="tight" style={{ flex: 1, minWidth: 0 }}>
         {/* Title + timestamp row — 8px gap for the icon/label cluster */}
         <Stack direction="row" gap="gap" align="start" justify="space-between">
           <Stack gap="gap">
-            <span
-              style={{ ...hds.typeStyles.heading3, color: 'var(--semantic-color-content-primary)' }}
-            >
-              {event.title}
-            </span>
-            <span style={{ ...hds.typeStyles.ui, color: statusColor[event.status] }}>
+            <span className={cn('text-foreground', HEADING3_TYPE_CLASSES)}>{event.title}</span>
+            <span className={cn(activityToneVariants({ tone }), UI_TYPE_CLASSES)}>
               {event.category}
             </span>
           </Stack>
           <span
-            style={{
-              ...hds.typeStyles.technical,
-              color: 'var(--semantic-color-content-secondary)',
-              flexShrink: 0,
-              whiteSpace: 'nowrap',
-            }}
+            className={cn(
+              'shrink-0 whitespace-nowrap text-muted-foreground',
+              TECHNICAL_TYPE_CLASSES,
+            )}
           >
             {event.timestamp}
           </span>
         </Stack>
 
         {/* Description — body, 1.5 line-height from token */}
-        <p
-          style={{
-            ...hds.typeStyles.body,
-            color: 'var(--semantic-color-content-secondary)',
-            margin: 0,
-          }}
-        >
-          {event.description}
-        </p>
+        <p className={cn('m-0 text-muted-foreground', BODY_TYPE_CLASSES)}>{event.description}</p>
 
         {/* Optional metadata cluster (AgentTag, etc.) — rendered between
             description and action so it stays adjacent to its event context. */}
@@ -167,7 +194,7 @@ export const defaultActivityEvents: ActivityEvent[] = [
     timestamp: '2026-04-22 · 08:14',
     category: 'Storage',
     icon: <Icon icon={UploadSimple} size="medium" />,
-    status: 'neutral',
+    tone: 'neutral',
   },
   {
     id: 'evt-002',
@@ -177,7 +204,7 @@ export const defaultActivityEvents: ActivityEvent[] = [
     timestamp: '2026-04-22 · 07:52',
     category: 'Security',
     icon: <Icon icon={ShieldCheck} size="medium" />,
-    status: 'info',
+    tone: 'info',
     action: { label: 'View Details' },
   },
   {
@@ -188,7 +215,7 @@ export const defaultActivityEvents: ActivityEvent[] = [
     timestamp: '2026-04-22 · 06:30',
     category: 'CI/CD',
     icon: <Icon icon={XCircle} size="medium" />,
-    status: 'error',
+    tone: 'danger',
     action: { label: 'View Details' },
   },
   {
@@ -199,7 +226,7 @@ export const defaultActivityEvents: ActivityEvent[] = [
     timestamp: '2026-04-21 · 23:05',
     category: 'CI/CD',
     icon: <Icon icon={Rocket} size="medium" />,
-    status: 'success',
+    tone: 'success',
   },
   {
     id: 'evt-005',
@@ -209,7 +236,7 @@ export const defaultActivityEvents: ActivityEvent[] = [
     timestamp: '2026-04-21 · 18:41',
     category: 'Security',
     icon: <Icon icon={Lock} size="medium" />,
-    status: 'warning',
+    tone: 'warning',
   },
 ];
 
@@ -217,7 +244,7 @@ export const defaultActivityEvents: ActivityEvent[] = [
 
 export function ActivityFeed({ events = defaultActivityEvents }: ActivityFeedProps) {
   return (
-    <Stack gap="spacious" as="ol" style={activityFeedListStyle}>
+    <Stack gap="spacious" as="ol" className="m-0 list-none p-0">
       {events.map((event) => (
         <li key={event.id}>
           <ActivityItem event={event} />
@@ -226,3 +253,6 @@ export function ActivityFeed({ events = defaultActivityEvents }: ActivityFeedPro
     </Stack>
   );
 }
+
+/** @internal — CVA variant helpers; compose via ActivityFeed/ActivityEvent props instead. */
+export { activityToneVariants, activityAvatarVariants };
