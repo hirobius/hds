@@ -111,6 +111,9 @@ export * from './app/components/switcher';
 export * from './app/components/cover';
 export * from './app/components/frame';
 export * from './app/components/bleed';
+// Scroll-motion primitives — CSS scroll-driven, zero JS/deps (#116).
+export * from './app/components/reveal';
+export * from './app/components/pin';
 
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';

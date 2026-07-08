@@ -2,6 +2,7 @@
 @import './theme.css';
 @import './utilities.css';
 @import './xray.css';
+@import './scroll-motion.css';
 
 /* Smooth theme switching — scoped to the HDS subtree (:where keeps zero
  * specificity) so toggling theme never animates a host app's own elements.

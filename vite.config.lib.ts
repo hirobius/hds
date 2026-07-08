@@ -103,6 +103,10 @@ export default defineConfig({
         // React/Node), so a static Astro build or edge runtime can theme itself
         // from a brand palette while inheriting HDS semantics. See #64.
         brand: path.resolve(__dirname, 'src/brand/index.ts'),
+        // Subpath: opt-in scroll-motion primitives (SmoothScroll/Lenis +
+        // useScrollProgress). `lenis` is an OPTIONAL peer, externalized below, so
+        // this never lands in the main barrel. See ADR-021 / #116.
+        scroll: path.resolve(__dirname, 'src/scroll/index.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],
@@ -136,6 +140,9 @@ export default defineConfig({
         'react-hook-form',
         'zod',
         /^@hookform\//,
+        // Optional peer dep for the ./scroll subpath — `lenis` and its subpaths
+        // (lenis/react) resolve against the consumer's install; never bundled.
+        /^lenis(\/.*)?$/,
       ],
       output: {
         // Stable chunk names for shared internal helpers between entries.
