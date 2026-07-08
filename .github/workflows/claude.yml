@@ -1,0 +1,47 @@
+name: Claude
+
+# Fleet executor (hirobius/ops epic #41). When an issue/comment @-mentions Claude,
+# this workflow runs a Claude Code session on Adrian's Max subscription (via
+# CLAUDE_CODE_OAUTH_TOKEN, NOT a metered API key) to work the task on a branch and
+# open a PR. Mirrors the same workflow in hirobius/ops and hirobius/clients.
+#
+# Safety: the action only ever opens a PR — it never pushes to main — so even in
+# the design system (consumed by every client site + ops) every change is
+# reviewable at merge.
+#
+# Setup (one-time, Adrian): the Claude GitHub App (github.com/apps/claude) must be
+# installed on this repo, and the CLAUDE_CODE_OAUTH_TOKEN secret set at
+# https://github.com/hirobius/hirobius-design-system/settings/secrets/actions
+# (already done). Because `hirobius` is a personal account, the secret is per-repo
+# — the same `claude setup-token` value used in ops/clients.
+
+on:
+  issues:
+    types: [opened, assigned]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  claude:
+    # Only run when @claude is actually mentioned (in a new issue body or a comment).
+    if: |
+      contains(github.event.issue.body, '@claude') ||
+      contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          # Auth via the Max subscription (no ANTHROPIC_API_KEY). Generate with
+          # `claude setup-token`; store as the CLAUDE_CODE_OAUTH_TOKEN secret.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
