@@ -142,6 +142,7 @@
     "check:inline-styles": "node scripts/check-style-discipline.mjs --inline-only",
     "check:knip": "knip",
     "check:knip-ratchet": "knip --max-issues 60",
+    "check:layout-discipline": "node scripts/check-layout-discipline.mjs",
     "check:licenses": "node scripts/check-licenses.mjs",
     "check:lockfile": "pnpm install --frozen-lockfile --offline --prefer-offline --ignore-scripts --silent 2>/dev/null || (echo 'Lockfile drift: run pnpm install' && exit 1)",
     "check:manifest-drift": "node scripts/check-manifest-drift.mjs",

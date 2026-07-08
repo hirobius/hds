@@ -376,6 +376,20 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-layout-discipline",
+      "description": "Flags raw px/number layout values (margin*, padding*, position, top/right/bottom/left/inset, gap/rowGap/columnGap, flexBasis) inside inline style={{…}} in src/app/components. Points violators at Box sx (the sanctioned escape hatch) or a named layout primitive (Stack/Grid/Container) instead of check-hardcoded-spacing's generic token-var fix. Introduced with #98 (layout-consistency epic #95, workstream 4).",
+      "severity": "warn",
+      "gateScript": "scripts/check-layout-discipline.mjs",
+      "fixturePath": "fixtures/check-layout-discipline",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "glob": "src/app/components/**/*.{ts,tsx}",
+      "supportsJson": true
+    },
+    {
       "id": "check-style-discipline",
       "description": "Merged gate (13z-6): (1) catches plain HTML elements with 6+ inline style properties; (2) catches suspicious style prop values (function/string references); (3) catches raw color literals in hand-authored CSS files. Sub-mode flags: --inline-only, --style-props-only, --css-values-only. Merged from: check-inline-styles + check-style-prop-values + check-css-values.",
       "severity": "warn",
