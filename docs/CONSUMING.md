@@ -355,10 +355,10 @@ impossible** — no shared registry, no coordination, no luck required.
 
 The line is namespace ownership:
 
-| DS-owned (never declare here)                                                 | Consumer-owned (yours to define)               |
-| ----------------------------------------------------------------------------- | ---------------------------------------------- |
-| `--primitive-*` · `--semantic-*` · `--component-*` · `--role-*` · `--hds-*`   | `--<prefix>-*` (pick one prefix for your app)  |
-| `data-hds` · `data-theme` · `data-tenant`                                     | your own `data-*` attributes                   |
+| DS-owned (never declare here)                                               | Consumer-owned (yours to define)              |
+| --------------------------------------------------------------------------- | --------------------------------------------- |
+| `--primitive-*` · `--semantic-*` · `--component-*` · `--role-*` · `--hds-*` | `--<prefix>-*` (pick one prefix for your app) |
+| `data-hds` · `data-theme` · `data-tenant`                                   | your own `data-*` attributes                  |
 
 Any release may add names inside DS-owned space; consumers may never declare
 there. That single invariant is what makes overlap impossible by construction.
@@ -379,7 +379,7 @@ and may reference DS tokens freely:
 
 ```css
 :root {
-  --lb-lilac-500: #6f3fd4;                    /* app-owned value */
+  --lb-lilac-500: #6f3fd4; /* app-owned value */
   --lb-cta-radius: var(--semantic-radius-action); /* references a DS token */
 }
 ```
@@ -413,6 +413,41 @@ consumer) follows all four — it consumes tokens via
 `@hirobius/design-system/variables.css`, keeps every extension under `--lb-*`,
 mirrors its brand through a tenant overlay, and pins consumed paths with a
 CI-enforced drift guard.
+
+## 11. Lint discipline — the consumer ESLint plugin
+
+The design system's own token/layout discipline is enforced inside this repo
+by `scripts/check-hardcoded-colors.mjs`, `scripts/check-hardcoded-spacing.mjs`,
+and `scripts/check-layout-discipline.mjs` — internal scripts that only run
+here. `@hirobius/eslint-plugin-hds` (`scripts/eslint-plugin-hds/`) ships the
+same discipline as an installable ESLint plugin for consumer apps, flagging
+raw hex/px values in `style`, `className`, and `Box` `sx` props before they
+reach code review.
+
+```bash
+pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hirobius-design-system#path:/scripts/eslint-plugin-hds"
+```
+
+```js
+// eslint.config.mjs
+import hds from '@hirobius/eslint-plugin-hds';
+
+export default [
+  {
+    files: ['**/*.{ts,tsx,jsx}'],
+    languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+  },
+  ...hds.configs.recommended,
+];
+```
+
+Four rules ship in `recommended`: `no-raw-hex` (error), `no-raw-px-spacing`
+(error), `sx-token-first` (error — raw hex/px inside `Box` `sx`, where token
+keys are mandatory), and `prefer-hds-layout-primitive` (warn — ad-hoc
+`display: flex`/`grid` where Stack/Grid likely fits). Full rule docs, examples,
+and the "why `scripts/eslint-plugin-hds/` and not a top-level workspace
+package" packaging note live in
+[`scripts/eslint-plugin-hds/README.md`](../scripts/eslint-plugin-hds/README.md).
 
 ## Troubleshooting
 
