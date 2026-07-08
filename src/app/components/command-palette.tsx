@@ -25,6 +25,7 @@
 
 import * as React from 'react';
 import systemManifestData from 'virtual:hds-manifest';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { useHdsRouter } from '../context/RouterContext';
 import {
@@ -37,6 +38,45 @@ import {
 import { Dialog } from './dialog';
 
 const MANIFEST = systemManifestData as SystemManifest;
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `active` (keyboard/mouse-highlighted result row) is a component-specific
+// state flag — not one of the contract's four axes — mirroring Menu's
+// data-[highlighted] treatment but driven by React state instead of a Radix
+// data-attribute, since results are a hand-rolled listbox.
+const cmdkRowVariants = cva('flex w-full items-start gap-3 px-4 py-2 text-left hds-focus', {
+  variants: {
+    active: {
+      true: 'bg-accent text-accent-foreground',
+      false: 'text-foreground',
+    },
+  },
+  defaultVariants: { active: false },
+});
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- kind-label badge metadata size (10px), no semantic Tailwind text-size utility
+const cmdkKindBadgeVariants = cva(
+  'mt-0.5 inline-flex h-5 shrink-0 items-center rounded-sm border px-1.5 text-[10px] uppercase tracking-wide',
+  {
+    variants: {
+      active: {
+        true: 'border-accent-foreground/30 text-accent-foreground',
+        false: 'border-border text-muted-foreground',
+      },
+    },
+    defaultVariants: { active: false },
+  },
+);
+
+const cmdkDescriptionVariants = cva('truncate text-xs', {
+  variants: {
+    active: {
+      true: 'text-accent-foreground/80',
+      false: 'text-muted-foreground',
+    },
+  },
+  defaultVariants: { active: false },
+});
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -193,31 +233,15 @@ export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteP
                         aria-selected={active}
                         onMouseEnter={() => setActiveIndex(i)}
                         onClick={() => commit(item)}
-                        className={cn(
-                          'flex w-full items-start gap-3 px-4 py-2 text-left hds-focus',
-                          active ? 'bg-accent text-accent-foreground' : 'text-foreground',
-                        )}
+                        className={cmdkRowVariants({ active })}
                       >
-                        <span
-                          className={cn(
-                            // tw-ok: kind-label badge metadata size
-                            'mt-0.5 inline-flex h-5 shrink-0 items-center rounded-sm border px-1.5 text-[10px] uppercase tracking-wide',
-                            active
-                              ? 'border-accent-foreground/30 text-accent-foreground'
-                              : 'border-border text-muted-foreground',
-                          )}
-                        >
+                        <span className={cmdkKindBadgeVariants({ active })}>
                           {KIND_LABEL[item.kind]}
                         </span>
                         <span className="flex min-w-0 flex-col">
                           <span className="truncate text-sm font-medium">{item.label}</span>
                           {item.description ? (
-                            <span
-                              className={cn(
-                                'truncate text-xs',
-                                active ? 'text-accent-foreground/80' : 'text-muted-foreground',
-                              )}
-                            >
+                            <span className={cmdkDescriptionVariants({ active })}>
                               {item.description}
                             </span>
                           ) : null}
@@ -256,3 +280,6 @@ export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteP
 );
 
 CommandPalette.displayName = 'CommandPalette';
+
+/** @internal — CVA variant helpers; compose via CommandPalette instead. */
+export { cmdkRowVariants, cmdkKindBadgeVariants, cmdkDescriptionVariants };

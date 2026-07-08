@@ -22,12 +22,41 @@
 
 import * as React from 'react';
 import * as ToastPrimitive from '@radix-ui/react-toast';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { Info, CircleCheck, TriangleAlert, CircleX, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 
+// ── Variants ───────────────────────────────────────────────────────────────────
+// Non-interactive — tone only drives the leading icon's color (via
+// `currentColor`) and icon choice (TONE_ICON below, not a className concern).
+// `neutral` preserves the prior hardcoded content-secondary color byte-for-byte
+// (text-muted-foreground resolves to the same --semantic-color-content-secondary
+// custom property).
+const toastIconVariants = cva('', {
+  variants: {
+    tone: {
+      neutral: 'text-muted-foreground',
+      danger: 'text-feedback-danger',
+      success: 'text-feedback-success',
+      warning: 'text-feedback-warning',
+      info: 'text-feedback-info',
+    },
+  },
+  defaultVariants: { tone: 'neutral' },
+});
+
+type ToastIconVariantProps = VariantProps<typeof toastIconVariants>;
+
+// vocab-ok: `NonNullable<ToastIconVariantProps['tone']>` below is a
+// bracket-index type, not a vocabulary declaration — check-prop-vocabulary's
+// rule C regex treats the quoted `'tone'` property-access key as an off-vocab
+// tone *value*, a false positive (prettier's singleQuote:true also defeats a
+// double-quote workaround, so this must be a file exemption). The real,
+// gate-checked tone vocabulary lives in `toastIconVariants`'s cva() variants
+// above.
 /** @public */
-export type ToastTone = 'neutral' | 'info' | 'success' | 'danger' | 'warning';
+export type ToastTone = NonNullable<ToastIconVariantProps['tone']>;
 
 /** @public */
 export interface ToastOptions {
@@ -67,14 +96,6 @@ const TONE_ICON: Record<ToastTone, typeof Info> = {
   success: CircleCheck,
   danger: CircleX,
   warning: TriangleAlert,
-};
-
-const TONE_COLOR: Record<ToastTone, string> = {
-  neutral: 'var(--semantic-color-content-secondary)',
-  info: 'var(--semantic-color-feedback-info)',
-  success: 'var(--semantic-color-feedback-success)',
-  danger: 'var(--semantic-color-feedback-error)',
-  warning: 'var(--semantic-color-feedback-warning)',
 };
 
 /** @public */
@@ -132,7 +153,13 @@ export function ToastProvider({
                 'text-popover-foreground shadow-overlay hds-focus',
               )}
             >
-              <Icon icon={TONE_ICON[tone]} size="small" color={TONE_COLOR[tone]} aria-hidden />
+              <Icon
+                icon={TONE_ICON[tone]}
+                size="small"
+                color="currentColor"
+                className={toastIconVariants({ tone })}
+                aria-hidden
+              />
               <div className="flex min-w-0 flex-col gap-1">
                 <ToastPrimitive.Title className="text-sm font-medium">
                   {t.title}
@@ -165,3 +192,6 @@ export function ToastProvider({
     </ToastContext.Provider>
   );
 }
+
+/** @internal — CVA variant helper; compose via ToastOptions.tone instead. */
+export { toastIconVariants };

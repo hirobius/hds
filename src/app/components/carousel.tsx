@@ -10,7 +10,24 @@
 
 import * as React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `variant` is the structural axis: the Prev/Next scroll affordances share
+// every visual treatment except which edge they anchor to.
+const carouselControlVariants = cva(
+  'hds-focus absolute top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-input bg-background hover:bg-accent',
+  {
+    variants: {
+      variant: {
+        prev: 'left-2',
+        next: 'right-2',
+      },
+    },
+    defaultVariants: { variant: 'prev' },
+  },
+);
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -66,7 +83,7 @@ export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Ca
             type="button"
             aria-label="Previous"
             onClick={() => scrollByTrack(-1)}
-            className="hds-focus absolute left-2 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-input bg-background hover:bg-accent"
+            className={carouselControlVariants({ variant: 'prev' })}
           >
             <ChevronLeft className="size-4" aria-hidden="true" />
           </button>
@@ -74,7 +91,7 @@ export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Ca
             type="button"
             aria-label="Next"
             onClick={() => scrollByTrack(1)}
-            className="hds-focus absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-input bg-background hover:bg-accent"
+            className={carouselControlVariants({ variant: 'next' })}
           >
             <ChevronRight className="size-4" aria-hidden="true" />
           </button>
@@ -83,3 +100,6 @@ export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Ca
     </section>
   );
 });
+
+/** @internal — CVA variant helper; compose via Carousel instead. */
+export { carouselControlVariants };
