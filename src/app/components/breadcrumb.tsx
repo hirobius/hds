@@ -6,10 +6,25 @@
 
 import * as React from 'react';
 import { ChevronRight } from 'lucide-react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { Icon } from './icon';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `current` is a component-specific state flag (not one of the contract's four
+// axes) — like Tag's `selected`, it distinguishes the trailing crumb (the
+// current page, plain text) from the linkable crumbs before it.
+const crumbLabelVariants = cva('', {
+  variants: {
+    current: {
+      true: 'text-foreground',
+      false: 'text-muted-foreground',
+    },
+  },
+  defaultVariants: { current: false },
+});
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -62,7 +77,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(functio
                 <span
                   aria-current={isLast ? 'page' : undefined}
                   style={hds.typeStyles.ui}
-                  className={isLast ? 'text-foreground' : 'text-muted-foreground'}
+                  className={crumbLabelVariants({ current: isLast })}
                 >
                   {item.label}
                 </span>
@@ -82,3 +97,6 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(functio
     </nav>
   );
 });
+
+/** @internal — CVA variant helper; compose via Breadcrumb instead. */
+export { crumbLabelVariants };
