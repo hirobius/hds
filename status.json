@@ -1,14 +1,15 @@
 {
-  "updatedAt": "2026-07-08T00:00:00Z",
+  "updatedAt": "2026-07-08T15:25:00Z",
   "phase": "active",
-  "headline": "Layout-consistency epic #95 SHIPPED (all 4 workstreams merged to main): #92 first-class Box + token-first sx resolver (spacing→--primitive-space, colors→semantic vars, responsive breakpoints→media queries, &-selectors, djb2-hashed SSR-safe injection); #96 every-layout primitives (cluster/center/sidebar/switcher/cover/frame/bleed); #97 AI layout guidance (llms.txt 'How To Lay Out A Screen' recipe + patterns-layout golden-path stories); #98 check-layout-discipline gate + consumer eslint-plugin-hds (no-raw-hex/no-raw-px-spacing/prefer-hds-layout-primitive/sx-token-first). #93 CSS-in-JS→Tailwind migration COMPLETE across 6 parallel worktree-agent PRs (#103 text+text-lockup, #104 nav-item+nav-group, #105 checkbox/radio/toggle+slider keeping framer-motion, #106 code-block, #107 table+disclosure, #108 segmented-control+token — deleted Token.module.css); every migrated component pixel-verified (each Tailwind class binds the same CSS custom property the removed inline style referenced). #60 variant contract advanced: cva coverage 36→48/131 (36.6%). Origin: #92 filed from a real consumer (job-hunt MUI→HDS cutover) needing Box/sx. All PRs squash-merged green (typecheck, lean gate set incl. audit-tokens --full, chromatic, Vercel preview).",
+  "headline": "#64 Astro consumption — HDS-side SHIPPED on branch (claude/storybook-publishable-9tdovm), pending 0.12.0 release: new /brand subpath = a framework-free palette→HDS-semantic overlay bridge (brandOverlayVars/Style/Css, color-mix-derived accent states, 9 tests, minor changeset) + docs/CONSUMING.md §12 static-Astro recipe (variables.css + data-brand + hydrate-only-islands). Per-component subpath exports DROPPED (bundlers already tree-shake the ESM barrel). #64-B PROVEN in hirobius/clients#30: the Astro client factory now themes off the HDS spine (@theme maps --color-* → --semantic-*, brandStyle() uses the bridge) — all 6 apps build green, each keeps its distinct palette, output carries the full HDS spine (119 semantic + 162 primitive vars), pixel-identical; proven against a pnpm-pack tarball. PRIOR (merged to main): layout-consistency epic #95 (all 4 workstreams — #92 Box+sx, #96 every-layout primitives, #97 AI guidance, #98 discipline gate + eslint-plugin) and #93 CSS-in-JS→Tailwind migration (6 PRs #103-#108); #60 cva coverage 36→48/131.",
   "next": [
-    "#60 Phase 4+: continue per-component cva review for remaining primitives with a genuine prop-driven className axis; the bounded ceiling is architectural (many components are fixed Radix skins or CSS-in-JS with no variant axis).",
-    "#48 Figma text-style swap (Inter→Satoshi Bold/Medium, 9 typography/* styles): script ready, BLOCKED on the flaky use_figma tool ('permission stream closed'); file key c8MaVgwxOlxm4wr8wnH0Z4.",
-    "#80 Chromatic baseline review — needs human eyes on the visual diffs before accepting.",
-    "Deferred: #64 (Astro evaluation). Human-owned: #47 (Figma Code Connect)."
+    "Publish @hirobius/design-system 0.12.0 (minor changeset carries /brand + overlay bridge). check:release/publish is human-only. Then hirobius/clients#30 runs pnpm install to wire the factory against the published version.",
+    "#60 Phase 4+: continue per-component cva review for primitives with a genuine prop-driven className axis; bounded ceiling is architectural (fixed Radix skins / no variant axis).",
+    "#48 Figma text-style swap (Inter→Satoshi, 9 typography/* styles): script ready, BLOCKED on flaky use_figma; file key c8MaVgwxOlxm4wr8wnH0Z4.",
+    "#80 Chromatic baseline review — needs human eyes. Human-owned: #47 (Figma Code Connect)."
   ],
   "blocked": [
+    "#64 clients wiring (clients#30) waits on the 0.12.0 npm release (proven locally against a pnpm-pack tarball).",
     "#48 Figma text-style swap — use_figma MCP tool repeatedly drops with 'permission stream closed'; needs a stable Figma session or human run."
   ]
 }
