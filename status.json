@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-07-08T15:25:00Z",
+  "updatedAt": "2026-07-08T16:40:00Z",
   "phase": "active",
-  "headline": "#64 Astro consumption — HDS-side SHIPPED on branch (claude/storybook-publishable-9tdovm), pending 0.12.0 release: new /brand subpath = a framework-free palette→HDS-semantic overlay bridge (brandOverlayVars/Style/Css, color-mix-derived accent states, 9 tests, minor changeset) + docs/CONSUMING.md §12 static-Astro recipe (variables.css + data-brand + hydrate-only-islands). Per-component subpath exports DROPPED (bundlers already tree-shake the ESM barrel). #64-B PROVEN in hirobius/clients#30: the Astro client factory now themes off the HDS spine (@theme maps --color-* → --semantic-*, brandStyle() uses the bridge) — all 6 apps build green, each keeps its distinct palette, output carries the full HDS spine (119 semantic + 162 primitive vars), pixel-identical; proven against a pnpm-pack tarball. PRIOR (merged to main): layout-consistency epic #95 (all 4 workstreams — #92 Box+sx, #96 every-layout primitives, #97 AI guidance, #98 discipline gate + eslint-plugin) and #93 CSS-in-JS→Tailwind migration (6 PRs #103-#108); #60 cva coverage 36→48/131.",
+  "headline": "Pre-release issue burndown (before cutting 0.12.0). CLOSED this session: #62 (multi-brand data-brand overlays + HdsThemeProvider runtime switch — verified shipping in dist + test-locked, unblocks #68); #48 (Satoshi typography — code-side complete/shipping, Figma text-style swap split to #109). #60 audited: coverage 48/131 is an architectural ceiling — remaining non-cva components are thin wrappers, metadata-only tone, numeric-sized, or CSS-in-JS/motion needing a #93-style migration first; recommended as post-release migration PRs, not a blocker. #64 Astro consumption HDS-side SHIPPED on branch (/brand overlay bridge + CONSUMING.md §12), proven in clients#30 (all 6 apps green, pixel-identical, full HDS spine), pending 0.12.0 release. PRIOR (merged to main): layout epic #95 (#92/#96/#97/#98) + #93 CSS-in-JS→Tailwind migration (#103-#108).",
   "next": [
-    "Publish @hirobius/design-system 0.12.0 (minor changeset carries /brand + overlay bridge). check:release/publish is human-only. Then hirobius/clients#30 runs pnpm install to wire the factory against the published version.",
-    "#60 Phase 4+: continue per-component cva review for primitives with a genuine prop-driven className axis; bounded ceiling is architectural (fixed Radix skins / no variant axis).",
-    "#48 Figma text-style swap (Inter→Satoshi, 9 typography/* styles): script ready, BLOCKED on flaky use_figma; file key c8MaVgwxOlxm4wr8wnH0Z4.",
-    "#80 Chromatic baseline review — needs human eyes. Human-owned: #47 (Figma Code Connect)."
+    "CUT @hirobius/design-system 0.12.0 (minor changeset carries /brand + overlay bridge). check:release/publish is human-only. Then clients#30 runs pnpm install to wire the factory against the published version.",
+    "Post-release: #60 stateful CSS-in-JS→Tailwind+cva migrations, one PR per component (side-nav, doc-link-card, …) with pixel-parity verification.",
+    "Human/Figma-gated (not release blockers): #109 Figma Satoshi text-style swap (use_figma flaky); #47 Figma Code Connect; #80 Chromatic baseline review + freeze; #86 secrets standard (Bitwarden classification).",
+    "Deferred Phase 2: #66 expression layer; #68 niche reskins (now unblocked by #62)."
   ],
   "blocked": [
     "#64 clients wiring (clients#30) waits on the 0.12.0 npm release (proven locally against a pnpm-pack tarball).",
-    "#48 Figma text-style swap — use_figma MCP tool repeatedly drops with 'permission stream closed'; needs a stable Figma session or human run."
+    "#109 Figma Satoshi text-style swap — use_figma MCP tool repeatedly drops with 'permission stream closed'; needs a stable Figma session or human run."
   ]
 }
