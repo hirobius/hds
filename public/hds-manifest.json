@@ -45,6 +45,7 @@
     "AvatarGroup",
     "Badge",
     "Blockquote",
+    "Box",
     "Breadcrumb",
     "ButtonGroup",
     "Calendar",
@@ -924,9 +925,11 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box.tsx",
         "src/app/components/page.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
+        "src/stories/box.stories.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/page.stories.tsx"
       ],
@@ -1443,6 +1446,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
@@ -1451,6 +1455,7 @@
         "src/app/components/sketch-controls.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/tooltip.tsx",
+        "src/stories/box.stories.tsx",
         "src/stories/foundation-swatch.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
@@ -2589,6 +2594,7 @@
       },
       "consumers": [
         "src/app/components/activity-feed.tsx",
+        "src/app/components/box.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/disclosure.tsx",
@@ -2609,6 +2615,7 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
+        "src/stories/box.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/page.stories.tsx",
@@ -2949,6 +2956,7 @@
       },
       "consumers": [
         "src/app/components/badge.tsx",
+        "src/app/components/box.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
@@ -3097,6 +3105,8 @@
       },
       "consumers": [
         "src/app/components/activity-feed.tsx",
+        "src/app/components/box-sx.ts",
+        "src/app/components/box.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
@@ -7739,6 +7749,51 @@
             "secondary",
             "ghost"
           ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Box": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/box.tsx",
+      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. named primitive covers, without inviting ad hoc inline styles or raw hex/px values back into the system — the `sx` engine only accepts HDS token keys and a small, deliberate CSS subset. Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) resolve numbers off the 4px HDS scale (`--primitive-space-<n>`) and named steps ('tight'|'normal'|'inset'|'spacious') off `--semantic-space-layout-*`. - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ xs, sm, md, lg, xl }` objects compile to `min-width` media queries off the HDS breakpoint scale. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Box",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Box",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/box-sx.ts",
+        "src/app/components/box.test.tsx",
+        "src/stories/box.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "sx": {
+          "type": "SxObject",
           "optional": true
         }
       },
