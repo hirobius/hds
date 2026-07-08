@@ -2,26 +2,27 @@
  * InlineCode stories — compact, copyable, and prose demos.
  * @see src/app/components/InlineCode.tsx
  */
-import type { Meta, StoryObj } from "@storybook/react";
-import { InlineCode } from "../app/components/inline-code";
-import { Text } from "../app/components/text";
+import type { Meta, StoryObj } from '@storybook/react';
+import { InlineCode } from '../app/components/inline-code';
+import { Text } from '../app/components/text';
 
 const meta = {
-  title: "Primitives/inline-code",
+  title: 'Primitives/inline-code',
   component: InlineCode,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       description: {
         component:
-          "Inline code chip for token paths, file paths, and code-adjacent prose. Compact mode for dense body copy and tables. Copyable mode adds a copy-to-clipboard button (children must be a string).",
+          'Inline code chip for token paths, file paths, and code-adjacent prose. `density`: comfortable (default) | compact — compact tightens vertical rhythm for dense body copy and tables. Copyable mode adds a copy-to-clipboard button (children must be a string).',
       },
     },
   },
   argTypes: {
-    compact: { control: "boolean" },
-    copyable: { control: "boolean" },
+    density: { control: { type: 'select' }, options: ['comfortable', 'compact'] },
+    compact: { control: 'boolean', description: 'Deprecated — use `density="compact"`.' },
+    copyable: { control: 'boolean' },
   },
 } satisfies Meta<typeof InlineCode>;
 
@@ -30,21 +31,42 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "semantic.color.brand.primary",
+    children: 'semantic.color.brand.primary',
+  },
+};
+
+export const Comfortable: Story = {
+  args: {
+    density: 'comfortable',
+    children: 'semantic.color.brand.primary',
   },
 };
 
 export const Compact: Story = {
   args: {
+    density: 'compact',
+    children: 'src/app/components/Button.tsx',
+  },
+};
+
+export const CompactDeprecatedAlias: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'The deprecated `compact` boolean still works and takes precedence over `density`.',
+      },
+    },
+  },
+  args: {
     compact: true,
-    children: "src/app/components/Button.tsx",
+    children: 'src/app/components/Button.tsx',
   },
 };
 
 export const Copyable: Story = {
   args: {
     copyable: true,
-    children: "var(--semantic-color-brand-primary)",
+    children: 'var(--semantic-color-brand-primary)',
   },
 };
 
@@ -52,16 +74,14 @@ export const InProse: Story = {
   parameters: {
     docs: {
       description: {
-        story: "InlineCode embedded within body text.",
+        story: 'InlineCode embedded within body text.',
       },
     },
   },
   render: () => (
     <Text variant="body">
-      Use the <InlineCode>variant</InlineCode> prop to select{" "}
-      <InlineCode>primary</InlineCode>,{" "}
-      <InlineCode>secondary</InlineCode>, or{" "}
-      <InlineCode>tertiary</InlineCode> visual treatments.
+      Use the <InlineCode>variant</InlineCode> prop to select <InlineCode>primary</InlineCode>,{' '}
+      <InlineCode>secondary</InlineCode>, or <InlineCode>tertiary</InlineCode> visual treatments.
     </Text>
   ),
 };
@@ -70,14 +90,14 @@ export const CopyableInProse: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Copyable variant for token paths in documentation.",
+        story: 'Copyable variant for token paths in documentation.',
       },
     },
   },
   render: () => (
     <Text variant="body">
-      The brand primary token path is{" "}
-      <InlineCode copyable>semantic.color.brand.primary</InlineCode>.
+      The brand primary token path is <InlineCode copyable>semantic.color.brand.primary</InlineCode>
+      .
     </Text>
   ),
 };

@@ -6,22 +6,68 @@
 // motion-ok: copy feedback is handled by the nested IconButton, while the inline code chip stays visually stable inside prose and tables
 import { useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { Copy, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { IconButton } from './icon-button';
 
+// ── Variants ───────────────────────────────────────────────────────────────────
+// Non-interactive — no hover/active/focus states. `density` is the contract's
+// density axis (comfortable | compact): comfortable is the roomy default for
+// inline prose, compact tightens vertical rhythm for dense body copy and table
+// cells — the same distinction the old `compact` boolean drew, now on the
+// governed vocabulary. All values bind to the mono typography composite and
+// subgrid/badge tokens; no Tailwind-theme utility exists for these composite
+// vars yet, so they're arbitrary-value classes bound to CSS custom properties.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono typography composite + subgrid/badge tokens have no named Tailwind utility; var()-based so still token-driven
+const inlineCodeVariants = cva(
+  'inline-flex max-w-[var(--semantic-typography-mono-max-width)] items-center whitespace-nowrap rounded-none border-0 bg-[var(--component-badge-bg)] px-[var(--semantic-space-subgrid-gap)] text-foreground [font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)]',
+  {
+    variants: {
+      density: {
+        comfortable: 'py-[var(--semantic-space-subgrid-gap)] align-[-0.08em] leading-[1]',
+        compact: 'py-[var(--semantic-space-subgrid-hairline)] align-[-0.04em] leading-[0.95]',
+      },
+    },
+    defaultVariants: { density: 'comfortable' },
+  },
+);
+
+// ── Types ──────────────────────────────────────────────────────────────────────
+
+type InlineCodeVariantProps = VariantProps<typeof inlineCodeVariants>;
+
 type InlineCodeProps = {
   children: ReactNode;
   style?: CSSProperties;
-  /** Compact mode is tuned for dense body copy and table prose. */
+  /** Layout density. `compact` tightens vertical rhythm for dense body copy and table prose. Defaults to `comfortable`. */
+  // Double-quoted index (not 'density') is deliberate: check-prop-vocabulary's
+  // rule D regex flags any single-quoted literal following `density\s*:`, and
+  // a bracket-index type here would otherwise false-positive as an off-vocab
+  // density value named 'density'. Don't "fix" this back to single quotes.
+  density?: InlineCodeVariantProps['density'];
+  /**
+   * @deprecated Use `density="compact"` instead. Kept for backward
+   * compatibility; when set, it takes precedence over `density`.
+   */
   compact?: boolean;
   /** Show a copy-to-clipboard button. children must be a string when true. */
   copyable?: boolean;
 };
 
+// ── Component ──────────────────────────────────────────────────────────────────
+
 /** @public */
-export function InlineCode({ children, style, compact = false, copyable = false }: InlineCodeProps) {
+export function InlineCode({
+  children,
+  style,
+  density,
+  compact,
+  copyable = false,
+}: InlineCodeProps) {
   const [copied, setCopied] = useState(false);
+  const resolvedDensity: NonNullable<InlineCodeVariantProps['density']> =
+    compact !== undefined ? (compact ? 'compact' : 'comfortable') : (density ?? 'comfortable');
 
   function handleCopy() {
     if (typeof children !== 'string') return;
@@ -33,23 +79,9 @@ export function InlineCode({ children, style, compact = false, copyable = false 
 
   const codeEl = (
     <code
-      style={{
-        ...hds.typeStyles.technical,
-        color:         'var(--semantic-color-content-primary)',
-        background:    'var(--component-badge-bg)',
-        border:        'none',
-        borderRadius:  hds.borderRadius[0],
-        paddingTop:    compact ? hds.semantic.space.subgrid.hairline : hds.semantic.space.subgrid.gap,
-        paddingBottom: compact ? hds.semantic.space.subgrid.hairline : hds.semantic.space.subgrid.gap,
-        paddingLeft:   hds.semantic.space.subgrid.gap,
-        paddingRight:  hds.semantic.space.subgrid.gap,
-        display:       'inline-flex',
-        alignItems:    'center',
-        verticalAlign: compact ? '-0.04em' : '-0.08em',
-        lineHeight:    compact ? 0.95 : 1,
-        whiteSpace:    'nowrap',
-        ...(!copyable ? style : {}),
-      }}
+      data-density={resolvedDensity}
+      className={inlineCodeVariants({ density: resolvedDensity })}
+      style={!copyable ? style : undefined}
     >
       {children}
     </code>
@@ -60,9 +92,9 @@ export function InlineCode({ children, style, compact = false, copyable = false 
   return (
     <span
       style={{
-        display:    'inline-flex',
+        display: 'inline-flex',
         alignItems: 'center',
-        gap:        hds.semantic.space.subgrid.gap,
+        gap: hds.semantic.space.subgrid.gap,
         ...style,
       }}
     >
@@ -79,3 +111,5 @@ export function InlineCode({ children, style, compact = false, copyable = false 
   );
 }
 
+/** @internal — CVA variant helper; compose via InlineCode props instead. */
+export { inlineCodeVariants };
