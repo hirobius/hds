@@ -51,6 +51,21 @@ const layoutNegativeRules = [
   'No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.',
 ];
 
+const scrollRecipeSteps = [
+  '`Reveal` (CSS `animation-timeline: view()`) for fade/slide/scale-in-on-enter — zero JS, zero deps. Pick `animation` from `fade | fade-up | fade-down | scale`. Content is visible by DEFAULT; the effect applies only where `animation-timeline` is supported and the user has not requested reduced motion — never gate visibility behind either.',
+  '`Pin` (`position: sticky`) for a pinned scroll scene — the dependency-free basis for the "tall section + sticky child" pattern (GSAP\'s `pin: true`, done with zero JS). Give the pinned element a TALLER scrolling parent (e.g. `height: 300vh`) so it has room to travel; `top` is a CSS length offset, not a spacing token.',
+  '`useScrollProgress` (from `@hirobius/design-system/scroll`) only when the 0→1 scroll value is needed in React — cross-element choreography, canvas/WebGL, or a Motion (`motion/react`) `useTransform` binding that CSS `animation-timeline` cannot express. Thin, SSR-guarded wrapper over Motion `useScroll`; adds no new dependency.',
+  '`SmoothScroll` (from `@hirobius/design-system/scroll`, `lenis` as an OPTIONAL peer dep) only for opt-in momentum ("inertia") scrolling, mounted once at the app/site root. Never imported from the main barrel — consumers who skip it pay nothing. Reduced-motion-first: Lenis is not instantiated when the user prefers reduced motion, unless `ignoreReducedMotion` is set for a deliberate art-directed exception.',
+  'Do not adopt GSAP/ScrollTrigger, and do not wire Lenis directly outside `SmoothScroll`, inside the core library — the CSS + Motion stack above covers reveal/pin/scrub without new dependencies. Bespoke GSAP/Lenis/WebGL scenes stay app-level/downstream (marketing sites, the clients factory), composed from these primitives (ADR-021, #116).',
+];
+
+const scrollNegativeRules = [
+  'No hand-rolled IntersectionObserver reveal-on-scroll logic — use `Reveal`.',
+  'No hand-rolled `position: sticky` scroll scenes — use `Pin`.',
+  'No GSAP/ScrollTrigger or bespoke Lenis wiring inside `@hirobius/design-system` — those stay app-level/downstream, composed from `Reveal`/`Pin`/`useScrollProgress`/`SmoothScroll`.',
+  'Every scroll effect must degrade to fully visible/static content — never gate content visibility behind `animation-timeline` support or a scroll listener with no fallback.',
+];
+
 const tokenRules = [
   'Component inventory: read `public/hds-manifest.json`. Do not duplicate inventories in markdown.',
   'Component prop API: read `src/app/data/component-api.json`. Do not inline prop tables in `llms.txt`.',
@@ -142,6 +157,18 @@ Negative rules (apply everywhere, checked by \`scripts/audit-tokens.mjs --full\`
 ${layoutNegativeRules.map((rule) => `- ${rule}`).join('\n')}
 
 Reference: \`docs/architecture/variant-contract.md\` for structural/semantic/size/density variance; \`src/app/data/component-api.json\` for every layout primitive's full prop table and \`@ai-rules\` guidance.
+
+## How To Build A Scroll-Driven Section
+
+Canonical primitives, cheapest-first (CSS before JS, JS before an opt-in dependency):
+
+${scrollRecipeSteps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
+
+Negative rules:
+
+${scrollNegativeRules.map((rule) => `- ${rule}`).join('\n')}
+
+Reference: \`src/app/components/reveal.tsx\`, \`src/app/components/pin.tsx\`, \`src/scroll/\` (\`use-scroll-progress.ts\`, \`smooth-scroll.tsx\`), ADR-021, and \`src/stories/patterns-scroll.stories.tsx\` for golden-path examples.
 
 ## HDS Card Anatomy (mandatory — every property is non-negotiable)
 
