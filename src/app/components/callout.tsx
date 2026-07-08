@@ -7,6 +7,10 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
+// vocab-ok: 'accent' predates the #60 fixed tone vocabulary (neutral | danger |
+// success | warning | info) — Callout's accent tone is a deliberate 5th
+// decorative/informational treatment, not a feedback state. Tracked for a
+// future variant-contract rollout phase rather than force-renamed here.
 type CalloutTone = 'accent' | 'info' | 'success' | 'warning' | 'danger';
 
 // ── Variants ───────────────────────────────────────────────────────────────────

@@ -12,6 +12,10 @@ const meta = {
   parameters: { layout: 'padded' },
   argTypes: {
     size: { control: { type: 'select' }, options: ['sm', 'md', 'lg'] },
+    tone: {
+      control: { type: 'select' },
+      options: ['neutral', 'danger', 'success', 'warning', 'info'],
+    },
     value: { control: { type: 'range', min: 0, max: 100 } },
   },
 } satisfies Meta<typeof CircularProgress>;
@@ -27,6 +31,16 @@ export const Sizes: Story = {
       <CircularProgress value={65} size="sm" label="Progress" />
       <CircularProgress value={65} size="md" label="Progress" />
       <CircularProgress value={65} size="lg" label="Progress" />
+    </div>
+  ),
+};
+
+export const Tones: Story = {
+  render: () => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      {(['neutral', 'danger', 'success', 'warning', 'info'] as const).map((tone) => (
+        <CircularProgress key={tone} value={65} tone={tone} label={tone} />
+      ))}
     </div>
   ),
 };

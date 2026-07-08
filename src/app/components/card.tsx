@@ -66,6 +66,11 @@ function resolveGap(g: GapOption): string {
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 
+// vocab-ok: 'default'/'accent' predate the #60 fixed tone vocabulary (neutral |
+// danger | success | warning | info) — Card's outline-rule tone is a distinct,
+// documented anatomy concept (12d-3, see the borderless/outlined rule below),
+// not a feedback state. Tracked for a future variant-contract rollout phase
+// rather than force-renamed here.
 type CardTone = 'default' | 'accent' | 'success' | 'warning' | 'danger';
 
 // 12d-3 outline rule: tone="default" is BORDERLESS by default. Outlines are

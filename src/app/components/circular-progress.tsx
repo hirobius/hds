@@ -6,20 +6,44 @@
 // motion-ok: indeterminate spin via Tailwind animate-spin (gate accepts only hds.duration refs; the SVG sweep has no token duration equivalent)
 
 import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 // ── Config ─────────────────────────────────────────────────────────────────────
-// Numeric SVG geometry (viewBox coordinates + stroke widths), not layout spacing.
+// Numeric SVG geometry (viewBox coordinates + stroke widths). `size` drives
+// these directly rather than through cva — the ring's dimensions are SVG
+// attributes, not classes — but stays typed against the same sm/md/lg ramp
+// the rest of HDS uses.
 const DIMENSIONS: Record<'sm' | 'md' | 'lg', { box: number; stroke: number }> = {
   sm: { box: 16, stroke: 2 },
   md: { box: 24, stroke: 3 },
   lg: { box: 32, stroke: 3 },
 };
 
+// ── Variants ───────────────────────────────────────────────────────────────────
+// Non-interactive — no hover/active/focus states. Tone drives the indicator
+// stroke color via currentColor; `neutral` (default) preserves the prior
+// hardcoded `text-primary` look byte-for-byte.
+const circularProgressVariants = cva('inline-flex', {
+  variants: {
+    tone: {
+      neutral: 'text-primary',
+      danger: 'text-feedback-danger',
+      success: 'text-feedback-success',
+      warning: 'text-feedback-warning',
+      info: 'text-feedback-info',
+    },
+  },
+  defaultVariants: { tone: 'neutral' },
+});
+
 // ── Types ──────────────────────────────────────────────────────────────────────
 
+type CircularProgressVariantProps = VariantProps<typeof circularProgressVariants>;
+
 /** @public */
-export interface CircularProgressProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface CircularProgressProps
+  extends React.HTMLAttributes<HTMLSpanElement>, CircularProgressVariantProps {
   /** Current value. Ignored (and the ring animates) when `indeterminate`. */
   value?: number;
   /** Upper bound for `value`. Defaults to 100. */
@@ -37,7 +61,7 @@ export interface CircularProgressProps extends React.HTMLAttributes<HTMLSpanElem
 /** A circular progress ring; pass `value`/`max` or set `indeterminate`. */
 export const CircularProgress = React.forwardRef<HTMLSpanElement, CircularProgressProps>(
   function CircularProgress(
-    { className, value = 0, max = 100, size = 'md', indeterminate = false, label, ...props },
+    { className, value = 0, max = 100, size = 'md', tone, indeterminate = false, label, ...props },
     ref,
   ) {
     const { box, stroke } = DIMENSIONS[size];
@@ -57,7 +81,8 @@ export const CircularProgress = React.forwardRef<HTMLSpanElement, CircularProgre
         aria-valuemax={indeterminate ? undefined : max}
         aria-valuenow={indeterminate ? undefined : clamped}
         data-size={size}
-        className={cn('inline-flex text-primary', className)}
+        data-tone={tone ?? 'neutral'}
+        className={cn(circularProgressVariants({ tone }), className)}
         {...props}
       >
         <svg
@@ -90,3 +115,6 @@ export const CircularProgress = React.forwardRef<HTMLSpanElement, CircularProgre
     );
   },
 );
+
+/** @internal — CVA variant helper; compose via CircularProgress props instead. */
+export { circularProgressVariants };
