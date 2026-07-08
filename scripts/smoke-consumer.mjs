@@ -130,7 +130,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './cn', './manifest', './contexts', './mui']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -278,6 +278,22 @@ check('styles.css ships components/utilities/fonts with NO global reset', () => 
   assert.ok(!css.includes('border:0 solid;margin:0;padding:0'), 'global universal reset leaked into styles.css');
   assert.ok(!css.includes('html,:host{'), 'global html/:host reset leaked into styles.css');
   assert.ok(!css.includes('h1,h2,h3,h4,h5,h6{font-size:inherit'), 'global heading reset leaked into styles.css');
+});
+
+// #64: static.css = plain .hds-* classes for Badge/Card/Alert/Divider/Tag,
+// no React, no reset — the CSS-only static-primitive layer for Astro/HTML
+// pages. Structural assertion: every one of the five primitive classes is
+// present, it's token-bound (references design-token custom properties), and
+// it carries no global reset that would leak into a host page.
+check('static.css ships the five .hds-* static primitives, host-safe', () => {
+  const cssPath = decodeURIComponent(import.meta.resolve(PKG + '/static.css').replace(/^file:\\/\\//, ''));
+  const css = readFileSync(cssPath, 'utf8');
+  for (const cls of ['.hds-badge', '.hds-card', '.hds-alert', '.hds-divider', '.hds-tag']) {
+    assert.ok(css.includes(cls), 'static.css missing ' + cls);
+  }
+  assert.ok(css.includes('var(--semantic-') || css.includes('var(--component-'), 'static.css is not token-bound');
+  assert.ok(!css.includes('border:0 solid;margin:0;padding:0'), 'global universal reset leaked into static.css');
+  assert.ok(!css.includes('html,:host{'), 'global html/:host reset leaked into static.css');
 });
 
 if (failures.length) {
