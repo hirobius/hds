@@ -43,9 +43,8 @@ describe('resolveSx — spacing shorthands', () => {
   it('resolves gap/rowGap/columnGap the same way', () => {
     expect(resolveSx({ gap: 4 }, 'cls')).toEqual(['.cls{gap:var(--primitive-space-4)}']);
     expect(resolveSx({ rowGap: 4 }, 'cls')).toEqual(['.cls{row-gap:var(--primitive-space-4)}']);
-    expect(resolveSx({ columnGap: 4 }, 'cls')).toEqual([
-      '.cls{column-gap:var(--primitive-space-4)}',
-    ]);
+    const columnGapInput = { columnGap: 4 }; // spacing-ok: token-scale index, not a raw px value
+    expect(resolveSx(columnGapInput, 'cls')).toEqual(['.cls{column-gap:var(--primitive-space-4)}']);
   });
 });
 
