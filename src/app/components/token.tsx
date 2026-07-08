@@ -2,15 +2,119 @@
  * Token - reflective token specimen for unified node-based token views.
  * @category Display
  * @tier primitive
+ *
+ * The `variant` axis (node | diagram — diagram is a deprecated alias that
+ * resolves to the same node treatment) plus the `selected` / `fullWidth` /
+ * `asButton` / `nowrap` / `sourceNode` states used to be a
+ * Token.module.css `[data-*]` attribute stylesheet, with a duplicate
+ * `isSelected` branch re-painted inline on top of it. Both now live as one
+ * `cva` variant set — same `--semantic-*`/`--component-*`/`--primitive-*`
+ * custom properties, same pixels, no CSS module.
  */
 import React from 'react';
 import { motion } from 'motion/react';
-import hds from '../design-system/tokens';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 import { warnOnce } from '../../lib/deprecation';
 import { useHdsRouter } from '../context/RouterContext';
 import { useTokenDisplay } from '../context/TokenDisplayContext';
 import { allTokens } from './lab/tokenUtils';
-import styles from './Token.module.css';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-button-secondary-* / semantic-radius-action / primitive-space-* tokens have no Tailwind-theme utility; var()-based so still token-driven
+const tokenShellVariants = cva(
+  // tier-ok: primitive.space.2 (8px shell padding) has no semantic alias — same primitive ref Token.module.css used
+  '[font:inherit] mb-0 box-border flex items-center whitespace-normal border border-solid border-[var(--component-button-secondary-border-rest)] rounded-[var(--semantic-radius-action)] bg-[var(--component-button-secondary-bg-rest)] p-[var(--primitive-space-2)] text-left text-inherit',
+  {
+    variants: {
+      variant: {
+        // tier-ok: primitive.space.px2 (2px node gap) has no semantic alias — same primitive ref Token.module.css used
+        node: 'w-fit max-w-full min-w-0 flex-row gap-[var(--primitive-space-px2)]',
+        // tier-ok: primitive.space.1 (4px diagram gap) has no semantic alias — same primitive ref Token.module.css used
+        diagram: 'w-max flex-col gap-[var(--primitive-space-1)]',
+      },
+      sourceNode: {
+        true: '',
+        false: '',
+      },
+      selected: {
+        true: 'border-[var(--semantic-color-border-accent)] bg-[var(--semantic-accent-rest)] text-[var(--semantic-color-content-onAccent)] shadow-[inset_0_0_0_1px_var(--semantic-color-border-accent)]',
+        false: '',
+      },
+      fullWidth: {
+        true: 'w-full',
+        false: '',
+      },
+      asButton: {
+        true: 'cursor-pointer appearance-none transition-[background-color,border-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:border-[var(--semantic-color-border-accent)] hover:bg-[var(--semantic-color-surface-accentSubtle)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--semantic-color-border-accent)] active:translate-y-px',
+        false: '',
+      },
+      nowrap: {
+        true: 'whitespace-nowrap',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      // Source-node instances left-align their (multi-line) content instead of centering.
+      { variant: 'node', sourceNode: true, className: 'items-start' },
+    ],
+    defaultVariants: {
+      variant: 'node',
+      sourceNode: false,
+      selected: false,
+      fullWidth: false,
+      asButton: false,
+      nowrap: false,
+    },
+  },
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven
+const tokenNodeInlineVariants = cva(
+  'flex w-full min-w-0 max-w-full gap-[var(--semantic-space-subgrid-gap)]',
+  {
+    variants: {
+      sourceNode: {
+        true: 'items-start',
+        false: 'items-center',
+      },
+    },
+    defaultVariants: { sourceNode: false },
+  },
+);
+
+// The token path/value label. `sourceNode` swaps from single-line ellipsis
+// truncation to wrapping (multi-line diagram labels); `truncateFromStart`
+// flips text direction so the ellipsis lands at the start instead of the end;
+// `selected` inverts the label color to sit on the accent fill.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono technical-typography composite (13px/1/regular/mono-family) + direction/overflow-wrap + content-* colors have no Tailwind-theme utility; var()-based so still token-driven
+const tokenLabelVariants = cva(
+  // tier-ok: primitive.typography.family.mono (Geist Mono stack) has no semantic alias — same primitive ref hds.typeStyles.technical used
+  'relative block w-full max-w-full min-w-0 font-normal leading-none text-[13px] [font-family:var(--primitive-typography-family-mono)]',
+  {
+    variants: {
+      sourceNode: {
+        true: 'h-auto overflow-visible whitespace-pre-wrap text-clip [overflow-wrap:anywhere] break-words',
+        false: 'overflow-hidden whitespace-nowrap text-ellipsis',
+      },
+      truncateFromStart: {
+        true: 'text-left [direction:rtl]',
+        false: '',
+      },
+      selected: {
+        true: 'text-[var(--semantic-color-content-onAccent)]',
+        false: 'text-[var(--semantic-color-content-primary)]',
+      },
+    },
+    defaultVariants: { sourceNode: false, truncateFromStart: false, selected: false },
+  },
+);
+
+// ── Types ──────────────────────────────────────────────────────────────────────
+
+type TokenShellVariantProps = VariantProps<typeof tokenShellVariants>;
+type TokenVariant = NonNullable<TokenShellVariantProps['variant']>;
 
 type TokenBaseProps = {
   className?: string;
@@ -57,7 +161,6 @@ type TokenDiagramProps = TokenBaseProps & {
 };
 
 type TokenProps = TokenNodeSurfaceProps | TokenDiagramProps;
-type TokenVariant = NonNullable<TokenProps['variant']>;
 
 /** Dot-notation token paths that can deep-link into the Tokens explorer. */
 function isDeepLinkablePath(val: unknown): val is string {
@@ -67,33 +170,9 @@ function isDeepLinkablePath(val: unknown): val is string {
 
 const TOKEN_BY_PATH = new Map(allTokens.map((token) => [token.path, token] as const));
 
-const tokenTextStyle: React.CSSProperties = {
-  ...hds.typeStyles.technical,
-  lineHeight: 1,
-  color: 'var(--semantic-color-content-primary)',
-};
-
-// Mono now sits at 13px (was 15px) — Geist's optical center already lands
-// near the visual middle at this size, so no baseline nudge is needed.
-const tokenTextNudgeStyle: React.CSSProperties = {};
-
-const tokenSwatchTextGap = hds.semantic.space.subgrid.gap;
-
-const tokenStyles = {
-  toneSwatchBase: {
-    borderRadius: hds.borderRadius[2],
-    flexShrink: 0,
-    alignSelf: 'center',
-    marginLeft: `calc(${hds.semantic.space.subgrid.hairline} * -1)`,
-  } satisfies React.CSSProperties,
-  nodeInlineWrapperBase: {
-    display: 'flex',
-    gap: tokenSwatchTextGap,
-    minWidth: 0,
-    width: '100%',
-    maxWidth: '100%',
-  } satisfies React.CSSProperties,
-} as const;
+const tokenToneSwatchClassName =
+  // tier-ok: primitive.space.px1 (1px hairline swatch offset) / primitive.radius.2 (swatch corner radius) have no semantic alias — same primitive refs tokenStyles.toneSwatchBase used
+  'ml-[calc(var(--primitive-space-px1)*-1)] shrink-0 self-center rounded-[var(--primitive-radius-2)]';
 
 /** Convert dot-notation path to CSS var string. */
 function toCssVar(path: string): string {
@@ -133,13 +212,9 @@ function TokenTone({
   return (
     <div
       data-inspector-ignore="token-swatch"
-      style={{
-        ...tokenStyles.toneSwatchBase,
-        width: size,
-        height: size,
-        marginTop: offsetTop,
-        background: tone,
-      }}
+      className={tokenToneSwatchClassName}
+      // inline-ok: swatch size/offset/background are runtime numeric props and an arbitrary resolved token color, not a fixed variant — no static Tailwind class can express them
+      style={{ width: size, height: size, marginTop: offsetTop, background: tone }}
     />
   );
 }
@@ -168,12 +243,7 @@ function TokenNodeInline({
   truncateFromStart = false,
 }: TokenNodeInlineProps) {
   return (
-    <div
-      style={{
-        ...tokenStyles.nodeInlineWrapperBase,
-        alignItems: isSourceNode ? 'flex-start' : 'center',
-      }}
-    >
+    <div className={tokenNodeInlineVariants({ sourceNode: isSourceNode })}>
       {leadingSlot ? (
         leadingSlot
       ) : isColorValue && swatchVar ? (
@@ -184,26 +254,11 @@ function TokenNodeInline({
       ) : null}
       <span
         data-inspector-ignore="token-node-label"
-        // inline-ok: token label — overflow/whiteSpace/wordBreak/direction all depend on isSourceNode+truncateFromStart+isSelected props
-        style={{
-          ...tokenTextStyle,
-          ...tokenTextNudgeStyle,
-          display: 'block',
-          minWidth: 0,
-          overflow: isSourceNode ? 'visible' : 'hidden',
-          textOverflow: isSourceNode ? 'clip' : 'ellipsis',
-          whiteSpace: isSourceNode ? 'pre-wrap' : 'nowrap',
-          overflowWrap: isSourceNode ? 'anywhere' : 'normal',
-          wordBreak: isSourceNode ? 'break-word' : 'normal',
-          height: isSourceNode ? 'auto' : undefined,
-          color: isSelected
-            ? 'var(--semantic-color-content-onAccent)'
-            : 'var(--semantic-color-content-primary)',
-          width: '100%',
-          maxWidth: '100%',
-          direction: truncateFromStart ? 'rtl' : undefined,
-          textAlign: truncateFromStart ? 'left' : undefined,
-        }}
+        className={tokenLabelVariants({
+          sourceNode: isSourceNode,
+          truncateFromStart,
+          selected: isSelected,
+        })}
       >
         {label}
       </span>
@@ -223,7 +278,6 @@ type TokenShellProps = {
   variant?: TokenVariant;
   onClick?: () => void;
   ariaLabel?: string;
-  style?: React.CSSProperties;
 };
 
 function TokenShell({
@@ -238,9 +292,18 @@ function TokenShell({
   variant = 'node',
   onClick,
   ariaLabel,
-  style,
 }: TokenShellProps) {
-  const wrapperClassName = className ? `${styles['wrapper']} ${className}` : styles['wrapper'];
+  const wrapperClassName = cn(
+    tokenShellVariants({
+      variant,
+      sourceNode: isSourceNode,
+      selected: isSelected,
+      fullWidth,
+      asButton,
+      nowrap,
+    }),
+    className,
+  );
 
   if (asButton) {
     return (
@@ -259,7 +322,6 @@ function TokenShell({
         data-source-node={isSourceNode}
         onClick={onClick}
         whileTap={{ scale: 0.98 }}
-        style={style}
       >
         {children}
       </motion.button>
@@ -277,7 +339,6 @@ function TokenShell({
       data-as-button={asButton}
       data-nowrap={nowrap}
       data-source-node={isSourceNode}
-      style={style}
     >
       {children}
     </div>
@@ -337,14 +398,6 @@ function TokenNodeSurface({
           );
         }
       : undefined);
-  const selectedStyle: React.CSSProperties | undefined = isSelected
-    ? {
-        borderColor: 'var(--semantic-color-border-accent)',
-        background: 'var(--semantic-accent-rest)',
-        boxShadow: 'inset 0 0 0 1px var(--semantic-color-border-accent)',
-        color: 'var(--semantic-color-content-onAccent)',
-      }
-    : undefined;
 
   return (
     <TokenShell
@@ -358,7 +411,6 @@ function TokenNodeSurface({
       variant="node"
       onClick={handleClick}
       ariaLabel={ariaLabel}
-      style={selectedStyle}
     >
       <TokenNodeInline
         label={displayText}
@@ -415,3 +467,6 @@ export function Token(props: TokenProps) {
   }
   return <TokenNodeSurface {...props} />;
 }
+
+/** @internal — CVA variant helpers; compose via Token props instead. */
+export { tokenShellVariants, tokenNodeInlineVariants, tokenLabelVariants };

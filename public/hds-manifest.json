@@ -2430,7 +2430,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/segmented-control.tsx",
-      "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices.",
+      "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed through `cva` compound variants keyed by `active` / `interaction` (the live-or-frozen-demo hover/pressed/rest sub-state) / `variant` / `disabled`, each resolving to the same `--semantic-*` custom properties the pre-Tailwind inline styles referenced — same tokens, same pixels, just Tailwind classes instead of a `style` object. Per ADR-015 this control keeps its own hover/focus tracking (per-segment `string | null` cardinality) rather than the shared `useInteractionState` single-element machine; only the class composition changed, not the state machine feeding it.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -3121,7 +3121,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/token.tsx",
-      "description": "Token - reflective token specimen for unified node-based token views.",
+      "description": "Token - reflective token specimen for unified node-based token views. The `variant` axis (node | diagram — diagram is a deprecated alias that resolves to the same node treatment) plus the `selected` / `fullWidth` / `asButton` / `nowrap` / `sourceNode` states used to be a Token.module.css `[data-*]` attribute stylesheet, with a duplicate `isSelected` branch re-painted inline on top of it. Both now live as one `cva` variant set — same `--semantic-*`/`--component-*`/`--primitive-*` custom properties, same pixels, no CSS module.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
