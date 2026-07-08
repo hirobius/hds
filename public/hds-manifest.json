@@ -924,7 +924,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/container.tsx",
-      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+      "description": "Container — semantic width-constrained layout. semantic max-width scale, so agents stop hand-rolling `marginInline: auto` plus an ad hoc max-width pixel value for page shells. use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. Use Center instead when you also need a horizontal gutter, which Container does not support. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -941,7 +941,8 @@
         "src/app/layouts/DocLayout.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/container.stories.tsx",
-        "src/stories/page.stories.tsx"
+        "src/stories/page.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -1470,6 +1471,7 @@
         "src/stories/box.stories.tsx",
         "src/stories/foundation-swatch.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
         "src/stories/surface.stories.tsx"
       ],
@@ -2609,6 +2611,7 @@
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/container.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/cover.tsx",
         "src/app/components/disclosure.tsx",
@@ -2633,6 +2636,7 @@
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/page.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/stack.stories.tsx"
       ],
       "tokenMapping": {
@@ -3146,6 +3150,7 @@
         "src/stories/foundation-swatch.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/input.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/status-list-item.stories.tsx",
         "src/stories/table.stories.tsx",
         "src/stories/tabs.stories.tsx",
@@ -3283,6 +3288,7 @@
       "consumers": [
         "src/app/components/api-reference.tsx",
         "src/app/components/component-preview.tsx",
+        "src/app/components/container.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/disclosure.tsx",
@@ -3311,6 +3317,7 @@
         "src/stories/container.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/page.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/surface.stories.tsx",
         "src/stories/text-lockup.stories.tsx"
       ],
@@ -3944,6 +3951,7 @@
         "src/stories/inline-code.stories.tsx",
         "src/stories/input.stories.tsx",
         "src/stories/page.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/skeleton.stories.tsx",
         "src/stories/sketch.stories.tsx",
         "src/stories/surface.stories.tsx",
@@ -4497,7 +4505,8 @@
       },
       "consumers": [
         "src/app/components/lab/legacy-token-detail.tsx",
-        "src/stories/empty-state.stories.tsx"
+        "src/stories/empty-state.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4545,6 +4554,7 @@
         "src/app/components/textarea.tsx",
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/sketch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4620,6 +4630,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/container.tsx",
         "src/app/components/not-found-pattern.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
@@ -4630,6 +4641,7 @@
         "src/stories/not-found-pattern.stories.tsx",
         "src/stories/page.stories.tsx",
         "src/stories/pagination.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4958,6 +4970,7 @@
         "src/stories/combobox.stories.tsx",
         "src/stories/component-instance-matrix.stories.tsx",
         "src/stories/nav-group.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {}
@@ -5683,6 +5696,7 @@
       },
       "consumers": [
         "src/app/components/skeleton.test.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/skeleton.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6009,7 +6023,8 @@
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts",
-        "src/stories/form.stories.tsx"
+        "src/stories/form.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6042,7 +6057,8 @@
         "src/app/components/form.test.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx",
-        "src/stories/form.stories.tsx"
+        "src/stories/form.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7804,11 +7820,13 @@
         "src/app/components/box.test.tsx",
         "src/app/components/center.tsx",
         "src/app/components/cluster.tsx",
+        "src/app/components/container.tsx",
         "src/app/components/cover.tsx",
         "src/app/components/frame.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/switcher.tsx",
-        "src/stories/box.stories.tsx"
+        "src/stories/box.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7919,8 +7937,10 @@
       "consumers": [
         "src/app/components/bleed.tsx",
         "src/app/components/center.test.tsx",
+        "src/app/components/container.tsx",
         "src/stories/button-group.stories.tsx",
-        "src/stories/center.stories.tsx"
+        "src/stories/center.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7986,7 +8006,8 @@
       "consumers": [
         "src/app/components/cluster.test.tsx",
         "src/app/components/switcher.tsx",
-        "src/stories/cluster.stories.tsx"
+        "src/stories/cluster.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8064,7 +8085,8 @@
       "consumers": [
         "src/app/components/cover.test.tsx",
         "src/app/components/stacked-card-rail.tsx",
-        "src/stories/cover.stories.tsx"
+        "src/stories/cover.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8189,7 +8211,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/sidebar.tsx",
-      "description": "Sidebar — fixed-width rail beside fluid content, no media query. problem with the flex-basis/flex-grow disparity technique — the rail holds `sideWidth` and the content flex-basis 0 with an overwhelming flex-grow, so the pair wraps to stacked automatically once the container can no longer fit both without squeezing content below `contentMin`. No `@media` query, no JS resize observer. EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
+      "description": "Sidebar — fixed-width rail beside fluid content, no media query. problem with the flex-basis/flex-grow disparity technique — the rail holds `sideWidth` and the content flex-basis 0 with an overwhelming flex-grow, so the pair wraps to stacked automatically once the container can no longer fit both without squeezing content below `contentMin`. No CSS media query, no JS resize observer. EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": "TODO:hds-master:Sidebar",
@@ -8204,6 +8226,7 @@
         "src/app/data/nav-model.ts",
         "src/stories/app-shell.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
         "src/stories/side-nav.stories.tsx",
         "src/stories/sidebar.stories.tsx"
       ],
