@@ -31,11 +31,14 @@ const statusListItemDotVariants = cva('mt-1.5 h-2 w-2 shrink-0 rounded-full', {
 
 type StatusListItemVariantProps = VariantProps<typeof statusListItemDotVariants>;
 
+// vocab-ok: `NonNullable<StatusListItemVariantProps['tone']>` below is a
+// bracket-index type, not a vocabulary declaration — check-prop-vocabulary's
+// rule C regex treats the quoted `'tone'` property-access key as an off-vocab
+// tone *value*, a false positive (prettier's singleQuote:true also defeats a
+// double-quote workaround, so this must be a file exemption). The real,
+// gate-checked tone vocabulary lives in `statusListItemDotVariants`'s cva()
+// variants above.
 /** @public */
-// Double-quoted index (not 'tone') is deliberate: check-prop-vocabulary's rule
-// C regex flags any single-quoted literal following `type X Tone =`, and a
-// bracket-index type here would otherwise false-positive as an off-vocab
-// tone value named 'tone'. Don't "fix" this back to single quotes.
 export type StatusListItemTone = NonNullable<StatusListItemVariantProps['tone']>;
 
 /** @public */

@@ -34,6 +34,12 @@ const inlineCodeVariants = cva(
 );
 
 // ── Types ──────────────────────────────────────────────────────────────────────
+// vocab-ok: `InlineCodeVariantProps['density']` bracket-index types below are
+// not vocabulary declarations — check-prop-vocabulary's rule D regex treats
+// the quoted `'density'` property-access key as an off-vocab density *value*,
+// a false positive (prettier's singleQuote:true defeats a double-quote
+// workaround, so this must be a file exemption). The real, gate-checked
+// density vocabulary lives in `inlineCodeVariants`'s cva() variants above.
 
 type InlineCodeVariantProps = VariantProps<typeof inlineCodeVariants>;
 
@@ -41,10 +47,6 @@ type InlineCodeProps = {
   children: ReactNode;
   style?: CSSProperties;
   /** Layout density. `compact` tightens vertical rhythm for dense body copy and table prose. Defaults to `comfortable`. */
-  // Double-quoted index (not 'density') is deliberate: check-prop-vocabulary's
-  // rule D regex flags any single-quoted literal following `density\s*:`, and
-  // a bracket-index type here would otherwise false-positive as an off-vocab
-  // density value named 'density'. Don't "fix" this back to single quotes.
   density?: InlineCodeVariantProps['density'];
   /**
    * @deprecated Use `density="compact"` instead. Kept for backward
