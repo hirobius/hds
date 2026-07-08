@@ -333,3 +333,61 @@ describe('FontContext', () => {
     expect(inlineOverride).toBe('');
   });
 });
+
+// ── HdsThemeProvider (ADR-020 §4 — brand/theme/density dials) ──────────────────
+
+describe('HdsThemeProvider', () => {
+  let container: HTMLDivElement;
+  let root: Root;
+
+  beforeEach(() => {
+    container = makeContainer();
+    root = createRoot(container);
+  });
+
+  afterEach(() => {
+    cleanup(container, root);
+  });
+
+  async function renderProvider(props: Record<string, unknown>) {
+    const { HdsThemeProvider } = await import('../hds-theme');
+    await act(async () => {
+      root.render(
+        <HdsThemeProvider {...props}>
+          <div data-testid="child" />
+        </HdsThemeProvider>,
+      );
+    });
+    return container.querySelector('[data-hds]') as HTMLElement;
+  }
+
+  it('writes the brand slug onto BOTH data-brand and the data-tenant alias (#62)', async () => {
+    const scope = await renderProvider({ brand: 'concrete-creations' });
+    expect(scope.getAttribute('data-brand')).toBe('concrete-creations');
+    // data-tenant is mirrored for back-compat with today's compiled overlays.
+    expect(scope.getAttribute('data-tenant')).toBe('concrete-creations');
+  });
+
+  it('omits the brand attributes when no brand is given (base brand)', async () => {
+    const scope = await renderProvider({});
+    expect(scope.getAttribute('data-brand')).toBeNull();
+    expect(scope.getAttribute('data-tenant')).toBeNull();
+  });
+
+  it('sets data-theme/data-density only for the non-default values', async () => {
+    const dark = await renderProvider({ theme: 'dark', density: 'compact' });
+    expect(dark.getAttribute('data-theme')).toBe('dark');
+    expect(dark.getAttribute('data-density')).toBe('compact');
+
+    const light = await renderProvider({ theme: 'light', density: 'comfortable' });
+    // light/comfortable are the defaults — the attributes stay unset.
+    expect(light.getAttribute('data-theme')).toBeNull();
+    expect(light.getAttribute('data-density')).toBeNull();
+  });
+
+  it('exposes font-family overrides as CSS vars on the scope', async () => {
+    const scope = await renderProvider({ fontFamily: 'Inter', fontFamilyMono: 'Fira Code' });
+    expect(scope.style.getPropertyValue('--hds-font-family')).toBe('Inter');
+    expect(scope.style.getPropertyValue('--hds-font-family-mono')).toBe('Fira Code');
+  });
+});
