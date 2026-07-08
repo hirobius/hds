@@ -1,9 +1,10 @@
-# ADR-021: Animation engine — Motion in core, GSAP/Lenis kept downstream-only
+# ADR-021: Animation engine — Motion in core, GSAP rejected, Lenis as an opt-in `/scroll` subpath
 
 - **Status:** Accepted
 - **Date:** 2026-07-08
 - **Decider:** Adrian
 - **Related:** #116 (scroll-driven motion primitives), #66 (expression layer + motion presets), `.size-limit.cjs` (bundle budgets), ADR-013 (escape-hatch policy), hirobius/clients#22 (`brand.motion` scroll-reveal)
+- **Supersedes note:** the initial draft kept Lenis downstream-only; Adrian's call (2026-07-08) is to ship Lenis **in** the library as an opt-in subpath (see Decision §2 and the `/scroll` implementation note). GSAP remains rejected.
 
 ## Context
 
@@ -34,18 +35,20 @@ surface (#66) is secondary.
 
 ## Decision
 
-1. **Motion remains the single animation engine inside the published library.**
-2. **GSAP and Lenis are NOT added to `@hirobius/design-system`.** They are
-   **app-level / downstream tools** — used in marketing sites and the
-   `hirobius/clients` factory when bespoke scroll choreography is genuinely
-   required, initialized once at the site root, never shipped to every consumer.
+1. **Motion remains the single animation engine inside the published library** for
+   component-scoped, lifecycle-tied animation.
+2. **GSAP is NOT added.** **Lenis IS added — but never to the main barrel.** It
+   ships behind the dedicated **`@hirobius/design-system/scroll`** subpath with
+   `lenis` as an **optional peer dependency** (the same pattern as `/form` and
+   `/mui`). Consumers who don't import `/scroll` install nothing and pay nothing;
+   the main barrel is byte-for-byte unchanged, so the 185 KB budget is untouched.
 3. **Core scroll effects use CSS scroll-driven animation first**
    (`animation-timeline: view()/scroll()`, `position: sticky`), and **Motion's
    `useScroll`/`useTransform`** where JS is genuinely needed — both ~0 KB
    net-new. Every scroll primitive is reduced-motion-gated and SSR/island-safe.
-4. **No smooth-scroll momentum (Lenis) in core.** If a specific site wants the
-   momentum feel, Lenis is an **optional root-level dependency of that app**, not
-   of the library.
+4. **Smooth-scroll momentum is opt-in via `SmoothScroll`** (the `/scroll`
+   subpath). It skips Lenis entirely under `prefers-reduced-motion`, falling back
+   to native scroll.
 
 ## Consequences
 
@@ -76,8 +79,21 @@ surface's needs.
 Astro). Declarative `<motion.div animate={…}>` is also far more AI-legible for
 this self-building system than imperative GSAP timelines with manual teardown.
 
-**Net:** one engine in the library (Motion), zero engine duplication, no budget
-breach, and GSAP/Lenis available downstream where they earn their weight.
+**Net:** one animation _engine_ in the library (Motion); GSAP stays out; Lenis
+is available as an opt-in `/scroll` subpath that costs zero to non-users.
+
+## Implementation (the `/scroll` subpath)
+
+- `@hirobius/design-system/scroll` exports `SmoothScroll` (Lenis provider,
+  reduced-motion-first, SSR-safe, built on `lenis/react`), `useLenis`
+  (re-exported), and `useScrollProgress` (Motion-based `0→1` progress — no new
+  dep, works with or without `SmoothScroll`).
+- `lenis` is an **optional peer dependency** + externalized in the lib build, so
+  `dist/scroll.js` is ~0.6 KB gzip (a thin wrapper) and the main barrel is
+  unchanged. `publint` + `smoke:consumer` confirm every subpath resolves.
+- CSS scroll-driven animation + `useScrollProgress` remain the default for
+  reveal/pin/parallax; `SmoothScroll` adds the momentum feel on top when a site
+  opts in.
 
 ## Alternatives considered
 
@@ -87,8 +103,10 @@ breach, and GSAP/Lenis available downstream where they earn their weight.
 - **B. Swap Motion → GSAP entirely** — rejected: 38-file rewrite of the most
   interaction-sensitive components, loses `AnimatePresence`/declarative
   gestures/springs, no bundle win, optimizes the core for the secondary surface.
-- **C. Motion + CSS scroll-driven animation in core; GSAP/Lenis downstream-only**
-  — **Accepted.**
+- **C. Motion + CSS scroll in core; GSAP out; Lenis as an opt-in, optional-peer
+  `/scroll` subpath** — **Accepted.** (An earlier variant kept Lenis strictly
+  downstream; superseded — the subpath gives it a first-class home without
+  forcing weight on any consumer.)
 
 ## When this flips
 

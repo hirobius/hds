@@ -207,19 +207,20 @@ export function Example() {
 
 ### Subpath exports
 
-| Import                                  | What you get                                                                                    |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`)                   |
-| `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding) |
-| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                     |
-| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                    |
-| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                 |
-| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                               |
-| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                      |
-| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                      |
-| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                          |
-| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                  |
-| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)           |
+| Import                                  | What you get                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`)                                |
+| `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding)              |
+| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                  |
+| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                 |
+| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                              |
+| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                                            |
+| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                                   |
+| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                                   |
+| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                                       |
+| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                               |
+| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                        |
+| `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13) |
 
 ### Semantic feedback / status tokens
 
@@ -564,3 +565,42 @@ Import `@hirobius/design-system/styles.css` once (alongside `variables.css`, or
 instead of it) when you hydrate components that need HDS's compiled component
 CSS. For a purely static page, `variables.css` + your own Tailwind utilities is
 enough.
+
+## 13. Scroll motion — the `/scroll` subpath
+
+Opt-in scroll-motion primitives. `lenis` is an **optional peer dependency** — install it only if you use `SmoothScroll`:
+
+```bash
+pnpm add lenis   # required only for SmoothScroll; useScrollProgress needs nothing extra
+```
+
+**Layering (cheapest first):**
+
+1. **CSS scroll-driven animation** (`animation-timeline: view()/scroll()` + `position: sticky`) — reveal / pin / parallax / scale with **zero JS**. Prefer this.
+2. **`useScrollProgress(ref)`** — a Motion-based `0→1` MotionValue for effects you need in React (canvas/WebGL, cross-element choreography). No new dependency; works with or without `SmoothScroll`.
+3. **`SmoothScroll`** — Lenis momentum ("inertia") scrolling, the one thing CSS/Motion can't do. Wrap the app/site root once. It **skips Lenis entirely under `prefers-reduced-motion`** (native scroll) and is SSR-safe.
+
+```tsx
+import { SmoothScroll, useScrollProgress } from '@hirobius/design-system/scroll';
+import { motion, useTransform } from 'motion/react';
+import { useRef } from 'react';
+
+function Root() {
+  return (
+    <SmoothScroll>
+      {' '}
+      {/* momentum scroll; reduced-motion aware */}
+      <Hero />
+    </SmoothScroll>
+  );
+}
+
+function Hero() {
+  const ref = useRef<HTMLDivElement>(null);
+  const progress = useScrollProgress(ref); // 0 → 1 through the viewport
+  const scale = useTransform(progress, [0, 1], [0.4, 1]);
+  return <motion.div ref={ref} style={{ scale }} />;
+}
+```
+
+`SmoothScroll` drives the real scroll position, so CSS `animation-timeline` and `useScrollProgress` keep working underneath it unchanged. See `docs/adr/021-animation-engine-motion-core-gsap-downstream.md` for why Lenis is opt-in and GSAP is out.
