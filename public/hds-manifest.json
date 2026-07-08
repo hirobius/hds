@@ -3714,6 +3714,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/heading-stack.test.tsx",
         "src/stories/heading-stack.stories.tsx"
       ],
       "tokenMapping": {},
