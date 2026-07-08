@@ -3,9 +3,11 @@
  * @category Navigation
  * @tier primitive
  */
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, ArrowUpRight, type LucideIcon } from 'lucide-react';
 import { motion, useAnimationControls } from 'motion/react';
+import { cva } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 import { useHdsRouter } from '../context/RouterContext';
 import { useLanguage } from '../context/LanguageContext';
 import hds from '../design-system/tokens';
@@ -36,22 +38,26 @@ interface DocLinkCardProps {
   affordance?: 'up-right' | 'right' | 'left';
 }
 
-const VARIANT_STYLES = {
-  feature: {
-    padding: hds.semantic.space.layout.gap,
-    gap: hds.semantic.space.component.gap,
-    titleStyle: { ...hds.typeStyles.heading3, color: 'var(--semantic-color-content-primary)' },
-    titleMargin: hds.semantic.space.component.gap,
-    iconGap: hds.semantic.space.subgrid.gap,
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `variant` is the structural axis (feature | pager). Both currently resolve
+// to the same root chrome — the actual structural divergence lives in the
+// conditionally-rendered JSX below (feature: header row + title + description;
+// pager: absolutely-positioned icon + trailing title). Formalized as cva per
+// the variant contract (docs/architecture/variant-contract.md) so the axis is
+// discoverable/typed and future per-variant root styling has a home.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding; var()-based, no Tailwind-theme utility exists
+const docLinkCardVariants = cva(
+  'hds-focus hds-doc-link-card relative flex w-full h-full flex-col cursor-pointer p-[var(--semantic-space-layout-gap)] disabled:cursor-default',
+  {
+    variants: {
+      variant: {
+        feature: '',
+        pager: '',
+      },
+    },
+    defaultVariants: { variant: 'feature' },
   },
-  pager: {
-    padding: hds.semantic.space.layout.gap,
-    gap: hds.semantic.space.component.gap,
-    titleStyle: { ...hds.typeStyles.heading3, color: 'var(--semantic-color-content-primary)' },
-    titleMargin: hds.semantic.space.component.gap,
-    iconGap: hds.semantic.space.subgrid.gap,
-  },
-} as const;
+);
 
 /** @public */
 export function DocLinkCard({
@@ -70,7 +76,7 @@ export function DocLinkCard({
   const { isRtl } = useLanguage();
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const config = VARIANT_STYLES[variant];
+  const isPager = variant === 'pager';
   const HeaderIcon =
     variant === 'pager' ? (affordance === 'up-right' ? ArrowUpRight : ArrowRight) : CardIcon;
   const isInteractive = hovered || focused;
@@ -79,6 +85,12 @@ export function DocLinkCard({
   const headerIconControls = useAnimationControls();
   const pagerIconControls = useAnimationControls();
   const metaTextStyle = metaStyle === 'ui' ? hds.typeStyles.ui : hds.typeStyles.caption;
+  const isLeftAffordance = affordance === 'left';
+  // Pager icon/title share one physical-side decision: the icon sits on the
+  // "left" (and title mirrors that as its text alignment) whenever the
+  // logical-left affordance and the current direction don't cancel out.
+  // Equivalent to the original nested left/right + textAlign ternaries.
+  const pagerLeftAligned = isLeftAffordance ? !isRtl : isRtl;
 
   useEffect(() => {
     const transition = {
@@ -97,72 +109,6 @@ export function DocLinkCard({
     void headerIconControls.start(isInteractive ? { y: -3 } : { y: 0 }, transition);
   }, [affordance, headerIconControls, isInteractive, pagerIconControls, variant]);
 
-  const headerRowStyle: CSSProperties = {
-    display: 'flex',
-    flexDirection: isRtl ? 'row-reverse' : 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: config.gap,
-  };
-  const isPager = variant === 'pager';
-  const featureShellStyle: CSSProperties = isPager
-    ? {}
-    : {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        minWidth: 0,
-        justifyContent: 'flex-start',
-      };
-  const featureBodyStyle: CSSProperties = isPager
-    ? {}
-    : {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: hds.semantic.space.subgrid.gap,
-      };
-  const isLeftAffordance = affordance === 'left';
-  const pagerTextAlign: CSSProperties['textAlign'] = isPager
-    ? isLeftAffordance
-      ? isRtl
-        ? 'right'
-        : 'left'
-      : isRtl
-        ? 'left'
-        : 'right'
-    : undefined;
-  const pagerContentStyle: CSSProperties = isPager
-    ? {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        textAlign: pagerTextAlign,
-        flex: 1,
-        minWidth: 0,
-        paddingTop: hds.semantic.space.layout.gap,
-      }
-    : {};
-  const pagerIconWrapStyle: CSSProperties = isPager
-    ? {
-        position: 'absolute',
-        top: config.padding,
-        left: isLeftAffordance
-          ? isRtl
-            ? undefined
-            : config.padding
-          : isRtl
-            ? config.padding
-            : undefined,
-        right: isLeftAffordance
-          ? isRtl
-            ? config.padding
-            : undefined
-          : isRtl
-            ? undefined
-            : config.padding,
-      }
-    : {};
-
   return (
     <button
       type="button"
@@ -172,26 +118,22 @@ export function DocLinkCard({
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-      className="hds-focus hds-doc-link-card"
+      className={cn(docLinkCardVariants({ variant }), isRtl ? 'text-right' : 'text-left')}
       data-accent={accent ? 'true' : undefined}
       data-disabled={disabled ? 'true' : undefined}
-      style={{
-        width: '100%',
-        height: '100%',
-        textAlign: isRtl ? 'right' : 'left',
-        paddingTop: config.padding,
-        paddingBottom: config.padding,
-        paddingLeft: config.padding,
-        paddingRight: config.padding,
-        cursor: disabled ? 'default' : 'pointer',
-        display: 'flex',
-        flexDirection: 'column' as const,
-        position: 'relative',
-      }}
+      data-variant={variant}
     >
       {isPager ? (
         <>
-          <motion.span style={pagerIconWrapStyle} animate={pagerIconControls}>
+          <motion.span
+            className={cn(
+              'absolute top-[var(--semantic-space-layout-gap)]',
+              pagerLeftAligned
+                ? 'left-[var(--semantic-space-layout-gap)]'
+                : 'right-[var(--semantic-space-layout-gap)]',
+            )}
+            animate={pagerIconControls}
+          >
             <Icon
               icon={HeaderIcon}
               size="small"
@@ -201,30 +143,30 @@ export function DocLinkCard({
               }
             />
           </motion.span>
-          <div style={pagerContentStyle}>
+          <div
+            className={cn(
+              'flex flex-1 min-w-0 flex-col justify-end pt-[var(--semantic-space-layout-gap)]',
+              pagerLeftAligned ? 'text-left' : 'text-right',
+            )}
+          >
             <p
-              style={{
-                ...config.titleStyle,
-                marginTop: 0,
-                marginBottom: 0,
-                textAlign: pagerTextAlign,
-              }}
+              className={cn('m-0 text-primary', pagerLeftAligned ? 'text-left' : 'text-right')}
+              style={hds.typeStyles.heading3}
             >
               {title}
             </p>
           </div>
         </>
       ) : (
-        <div style={featureShellStyle}>
-          <div style={headerRowStyle}>
+        <div className="flex flex-1 min-w-0 flex-col justify-start">
+          <div
+            className={cn(
+              'flex items-center justify-between gap-[var(--semantic-space-component-gap)]',
+              isRtl ? 'flex-row-reverse' : 'flex-row',
+            )}
+          >
             {meta ? (
-              <p
-                style={{
-                  ...metaTextStyle,
-                  margin: 0,
-                  color: 'var(--semantic-color-content-secondary)',
-                }}
-              >
+              <p className="m-0 text-secondary" style={metaTextStyle}>
                 {meta}
               </p>
             ) : (
@@ -241,24 +183,23 @@ export function DocLinkCard({
               />
             </motion.span>
           </div>
-          <div style={featureBodyStyle}>
+          <div
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
+            className="flex flex-col gap-[var(--semantic-space-subgrid-gap)]"
+          >
             <p
-              style={{
-                ...config.titleStyle,
-                marginTop: config.titleMargin,
-                marginBottom: description ? hds.semantic.space.subgrid.gap : 0,
-              }}
+              className={cn(
+                'mt-[var(--semantic-space-component-gap)] text-primary',
+                description ? 'mb-[var(--semantic-space-subgrid-gap)]' : 'mb-0',
+              )}
+              style={hds.typeStyles.heading3}
             >
               {title}
             </p>
             {description ? (
               <p
-                style={{
-                  ...bodyTextStyle,
-                  margin: 0,
-                  maxWidth: variant === 'feature' ? 500 : undefined,
-                  color: 'var(--semantic-color-content-secondary)',
-                }}
+                className="m-0 text-secondary"
+                style={{ ...bodyTextStyle, maxWidth: variant === 'feature' ? 500 : undefined }}
               >
                 {description}
               </p>
@@ -269,3 +210,6 @@ export function DocLinkCard({
     </button>
   );
 }
+
+/** @internal — CVA variant helper; compose via DocLinkCard props instead. */
+export { docLinkCardVariants };
