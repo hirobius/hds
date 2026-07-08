@@ -7,12 +7,56 @@
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { motion } from 'motion/react';
+import { cva } from 'class-variance-authority';
 import hds from '../design-system/tokens';
+import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 
 /** HdsToggle — boolean on/off toggle with animated thumb. */
 export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `state` mirrors InteractionVisualState (see checkbox.tsx for the rationale on
+// keeping this a JS-driven cva axis rather than Tailwind pseudo-classes — the
+// frozen demo state feature needs a JS-resolved state, not real CSS pseudo-classes).
+
+/** Root label chrome — hover/press tint, focus ring, cursor affordance. */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
+const toggleRootVariants = cva(
+  'flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-[var(--semantic-radius-action)] py-[var(--semantic-space-subgrid-gap)] px-[var(--semantic-space-component-gap)] outline-offset-2 select-none',
+  {
+    variants: {
+      state: {
+        rest: 'cursor-pointer bg-transparent',
+        hover: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
+        focused:
+          'cursor-pointer bg-transparent [outline:var(--primitive-borderWidth-sm)_solid_var(--semantic-color-border-accent)]',
+        pressed: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
+        disabled: 'cursor-default bg-[var(--semantic-color-surface-raised)]',
+      },
+    },
+    defaultVariants: { state: 'rest' },
+  },
+);
+
+/** Native checkbox — static token sizing + cursor affordance. */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/color; var()-based, no Tailwind-theme utility exists
+const toggleInputVariants = cva(
+  'w-[var(--primitive-size-16)] h-[var(--primitive-size-16)] shrink-0 accent-[var(--semantic-color-surface-accent)]',
+  {
+    variants: {
+      state: {
+        rest: 'cursor-pointer',
+        hover: 'cursor-pointer',
+        focused: 'cursor-pointer',
+        pressed: 'cursor-pointer',
+        disabled: 'cursor-default',
+      },
+    },
+    defaultVariants: { state: 'rest' },
+  },
+);
 
 interface ToggleProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -33,7 +77,7 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
   const frozenState = useFrozenState();
   // Shared single-element interaction machine (ADR-015). The hook honors the
   // real `disabled` prop as well as the frozen demo state.
-  const { isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
+  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
     disabled,
     frozenState: frozenState as InteractionVisualState | null,
   });
@@ -50,27 +94,7 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
       animate={{
         y: isPressed ? hds.space.px1 : 0,
       }}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: hds.semantic.space.subgrid.gap,
-        paddingTop: hds.semantic.space.subgrid.gap,
-        paddingBottom: hds.semantic.space.subgrid.gap,
-        paddingLeft: hds.semantic.space.component.gap,
-        paddingRight: hds.semantic.space.component.gap,
-        borderRadius: hds.borderRadius.action,
-        cursor: isDisabled ? 'default' : 'pointer',
-        userSelect: 'none',
-        background: isDisabled
-          ? 'var(--semantic-color-surface-raised)'
-          : isHover || isPressed
-            ? 'var(--semantic-color-surface-accentSubtle)'
-            : 'transparent',
-        outline: isFocused
-          ? `${hds.borderWidth.sm} solid var(--semantic-color-border-accent)`
-          : 'none',
-        outlineOffset: '2px',
-      }}
+      className={toggleRootVariants({ state: visualState })}
     >
       <motion.span
         animate={{
@@ -80,7 +104,7 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
           duration: hds.motion.productive.duration,
           ease: hds.motion.productive.easing,
         }}
-        style={{ display: 'inline-flex', flexShrink: 0 }}
+        className="inline-flex shrink-0"
       >
         <input
           ref={ref}
@@ -96,14 +120,7 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
             handlers.onBlur();
             onBlur?.(e);
           }}
-          className="hds-focus"
-          style={{
-            accentColor: 'var(--semantic-color-surface-accent)',
-            width: hds.size[16],
-            height: hds.size[16],
-            cursor: isDisabled ? 'default' : 'pointer',
-            flexShrink: 0,
-          }}
+          className={cn('hds-focus', toggleInputVariants({ state: visualState }))}
           {...rest}
         />
       </motion.span>
