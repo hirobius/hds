@@ -1,5 +1,166 @@
 # Changelog
 
+## 0.12.0
+
+### Minor Changes
+
+- aba78d2: Promote three previously-internal components to the public API surface (#76):
+  - **SideNav** (`Navigation`) — sidebar navigation row primitive (root/nested levels).
+  - **CommandPalette** (`Overlays`) — Cmd-K / Ctrl-K fuzzy search over the HDS manifest.
+  - **HdsLightbox** (`Overlays`, was internal `ImageLightbox`) — full-bleed image viewer on Radix Dialog.
+
+  Each flips `@internal`→`@public`, drops `@doc-exempt`, moves from `utility`→`primitive` tier, and gains a Storybook story, a Code Connect stub, and a public barrel export. `ImageLightbox` is renamed to `HdsLightbox` to match the Radix-overlay naming convention.
+
+  The vitest config now resolves the `virtual:hds-manifest` module (mirroring the app/lib builds) so manifest-consuming components like CommandPalette render under the story-render smoke gate.
+
+- aba78d2: Add Tier-1 native primitives closing the Astryx coverage gap (#76), with zero new runtime dependencies:
+  - **Kbd** — inline keyboard key / shortcut hint (`<kbd>`).
+  - **StatusDot** — compact solid status indicator with semantic tones.
+  - **Timestamp** — semantic `<time>` with date/time/datetime/relative formatting.
+  - **Blockquote** — quoted passage with optional attribution.
+  - **VisuallyHidden** — screen-reader-only content (`sr-only`), polymorphic `as`.
+  - **AvatarGroup** — overlapping avatar cluster with a `+N` overflow chip.
+  - **ButtonGroup** — attaches Button children into one segmented control.
+  - **InputGroup** — text input framed with leading/trailing adornments.
+  - **CircularProgress** — SVG progress ring (determinate + indeterminate).
+
+  Each ships with tokens-only styling, colocated tests, a Storybook story, a Code Connect stub, and a Swiss-canon fixture.
+
+- aba78d2: Add Tier-1 Radix-skinned interactive/overlay primitives closing the Astryx coverage gap (#76). Each wraps a Radix primitive themed with the HDS overlay role tokens (matching Menu/Dialog/HdsTooltip), adding these `@radix-ui` dependencies:
+  - **HdsToggleButton** (`@radix-ui/react-toggle`) — single two-state pressable button (`aria-pressed`).
+  - **HdsAlertDialog** (`@radix-ui/react-alert-dialog`) — modal confirmation dialog for destructive actions; Dialog-matched skin, no dismiss-on-outside-click.
+  - **HdsHoverCard** (`@radix-ui/react-hover-card`) — hover/focus preview card (not a substitute for an accessible tooltip).
+  - **HdsContextMenu** (`@radix-ui/react-context-menu`) — right-click menu sharing Menu's exact SURFACE/ITEM token skin.
+  - **HdsAspectRatio** (`@radix-ui/react-aspect-ratio`) — width:height ratio box that prevents media layout shift.
+
+  Each ships colocated tests (Radix jsdom polyfills), a Storybook story (overlays render closed on mount), a Code Connect stub, and a Swiss-canon fixture.
+
+- aba78d2: Add the Tier-2 pattern layer closing the Astryx coverage gap (#76) — 8 composite/pattern components, zero new runtime dependencies:
+  - **MetadataList** (`Display`) — semantic `<dl>` of term/description pairs; the canonical metadata slot (horizontal/vertical).
+  - **OverflowList** (`Layout`) — count-based list that collapses overflow into a `+N` chip (SSR/test-safe, not width-measured).
+  - **TopNav** (`Navigation`) — top navigation bar with brand / links / trailing slots and optional sticky.
+  - **AppShell** (`Layout`) — application scaffold with header, sidebar, and main regions (semantic `<header>`/`<aside>`/`<main>`).
+  - **SelectableCard** (`Actions`) — card that behaves as a selectable option (`role="checkbox"`, full keyboard/ARIA).
+  - **Tokenizer** (`Inputs`) — token/chip input composing `Tag`; Enter to add, Backspace to remove.
+  - **FileInput** (`Inputs`) — styled file picker / dropzone over a real native `<input type="file">`, with drag-and-drop.
+  - **HdsMultiSelector** (`Inputs`) — multi-select dropdown composing `Popover` + a checkbox option list (no new dep).
+
+  Each ships colocated tests, a Storybook story, a Code Connect stub, and a Swiss-canon fixture. The `virtual hds-manifest` size-limit budget was bumped 41→46 kB to accommodate the enlarged public component surface (justified in `.size-limit.cjs`).
+
+- aba78d2: Complete the Tier-2 pattern layer (Astryx coverage, #76) with 4 more components:
+  - **Toolbar** (`Actions`) — control group with roving focus on `@radix-ui/react-toolbar`; compound `Toolbar.Button` / `Separator` / `ToggleGroup` / `ToggleItem` / `Link`, skinned to match Menu.
+  - **TreeList** (`Navigation`) — hierarchical expand/collapse list with correct `role="tree"` / `treeitem` / `group` ARIA (native, no dep).
+  - **Stepper** (`Navigation`) — wizard/progress step indicator with complete/current/upcoming states (distinct from the existing `StepperField` number input).
+  - **Carousel** (`Display`) — native CSS scroll-snap track with Prev/Next affordances (no carousel library).
+
+  Adds one dependency: `@radix-ui/react-toolbar`. Each ships colocated tests, a Storybook story, a Code Connect stub, and a Swiss-canon fixture.
+
+  Also lands **ADR-020** (date/time components on react-day-picker v10 + date-fns) and installs those dependencies as groundwork for the Tier-3 date/time family — no Tier-3 components ship in this change yet.
+
+- aba78d2: Add the Tier-3 date/time family, completing the Astryx coverage build (#76) per ADR-020 (react-day-picker v10 + date-fns):
+  - **HdsCalendar** (`Inputs`, primitive) — HDS-token-skinned month calendar over `react-day-picker`; passes through `mode` (single/range/multiple), `selected`, `onSelect`, disabled/min/max, locale. The foundation the date inputs compose.
+  - **HdsTimeInput** (`Inputs`, primitive) — token-skinned native `<input type="time">` (no calendar dependency).
+  - **HdsDateInput** (`Inputs`, pattern) — single-date text field with a calendar Popover; date-fns parse/format.
+  - **HdsDateRangeInput** (`Inputs`, pattern) — date-range trigger + range calendar Popover.
+  - **HdsDateTimeInput** (`Inputs`, pattern) — combined date (calendar Popover) + time (`HdsTimeInput`) producing one `Date`.
+
+  Each ships colocated tests (Radix Popover jsdom polyfills), a Storybook story, a Code Connect stub, and a Swiss-canon fixture. Dependencies `react-day-picker` and `date-fns` (added as ADR-020 groundwork) are now in use; they tree-shake out of consumer bundles that don't import a date component (verified by `smoke:consumer`, and the app `size-limit` main-entry budget is unchanged).
+
+- f8f9e1f: Add `Box` — a polymorphic layout primitive with a token-first `sx` engine (#92), a deliberate subset of MUI's `sx`: spacing shorthands (`m`/`p`/`gap` family) resolve off the HDS 4px scale and named layout steps, `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys to semantic CSS vars, responsive `{ xs, sm, md, lg, xl }` values compile to `min-width` media queries, and `&`-prefixed keys compose nested selectors. Resolves to a deterministic, hash-cached, SSR-safe injected CSS class (`src/app/components/box-sx.ts`).
+- 0b3738f: Add the `@hirobius/design-system/brand` subpath (#64): a framework-free palette → HDS-semantic overlay bridge. `brandOverlayVars` / `brandOverlayStyle` / `brandOverlayCss` map a small brand palette (six colours + optional font/radius) onto the HDS semantic custom properties, so a downstream render target (a static Astro site, an SSR shell, an email) can theme itself from a brand palette while inheriting HDS's contrast-checked semantics, accent states, and radius. Interactive accent states are derived with CSS `color-mix()` — no colour-math dependency. Imports no React and no Node built-ins. This is the seam that lets the `hirobius/clients` Astro factory consume HDS instead of maintaining a parallel `--brand-*` token system.
+- 6a4f0f6: CSS-in-JS → Tailwind (#60): migrate `ActivityFeed` to Tailwind + `cva`, formalizing the status axis as a `tone` variant (`activityToneVariants` / `activityAvatarVariants`). Typography composites (`heading3`/`body`/`ui`/`technical`) and the avatar/list resets move from inline `style` objects onto var()-bound Tailwind classes on the exact same `--semantic-*`/`--primitive-*` custom properties — no visual change.
+
+  **Value rename (non-breaking):** `ActivityEvent`'s color axis now follows the HDS tone vocabulary (`neutral | danger | success | warning | info`) via a new optional `tone` prop, matching the fixed contract in `docs/architecture/variant-contract.md`. The old `status` prop (`ActivityStatus`, including `'error'`) is deprecated but still fully supported: `status="error"` resolves to the same `danger` tone as `tone="danger"` (proven by a byte-for-byte render-output test). New code should use `tone`; `status`/`ActivityStatus` will be removed in a future major.
+
+- 254d9eb: Drop the `Hds` prefix from 12 net-new leaf component families — step 1 of retiring the `Hds` prefix fleet-wide. **Breaking rename shipped as a `minor` per the pre-1.0 semver-zero convention (0.x: breaking changes bump the minor)** — safe now because these families are new in this release cycle with only fresh, first-party consumers. These families shipped in 0.12.0/0.13.0 with zero external consumers, so the rename is safe to land as the first cut. Compound sub-exports (e.g. `HdsAlertDialog.Trigger`), `*Props`/`*Component` types, and source filenames (`hds-*.tsx` → `*.tsx`) all moved together. `scripts/scaffold-component.mjs` and `scripts/component-discovery.mjs` were flipped in the same PR: new components must now be plain PascalCase, and a leading `Hds` is the namespace violation going forward (not the absence of one).
+
+  | Old                                                                                                                                                             | New                                       |
+  | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+  | `HdsToggleButton`                                                                                                                                               | `ToggleButton`                            |
+  | `HdsAlertDialog` (+ `.Trigger`/`.Portal`/`.Overlay`/`.Content`/`.Header`/`.Footer`/`.Title`/`.Description`/`.Action`/`.Cancel`)                                 | `AlertDialog` (same compounds)            |
+  | `HdsHoverCard` (+ `.Trigger`/`.Content`)                                                                                                                        | `HoverCard` (same compounds)              |
+  | `HdsContextMenu` (+ `.Trigger`/`.Content`/`.Item`/`.CheckboxItem`/`.RadioGroup`/`.RadioItem`/`.Label`/`.Separator`/`.Group`/`.Sub`/`.SubTrigger`/`.SubContent`) | `ContextMenu` (same compounds)            |
+  | `HdsAspectRatio`                                                                                                                                                | `AspectRatio`                             |
+  | `HdsMultiSelector` (+ `HdsMultiSelectorOption`)                                                                                                                 | `MultiSelector` (+ `MultiSelectorOption`) |
+  | `HdsLightbox`                                                                                                                                                   | `Lightbox`                                |
+  | `HdsCalendar`                                                                                                                                                   | `Calendar`                                |
+  | `HdsTimeInput`                                                                                                                                                  | `TimeInput`                               |
+  | `HdsDateInput`                                                                                                                                                  | `DateInput`                               |
+  | `HdsDateRangeInput`                                                                                                                                             | `DateRangeInput`                          |
+  | `HdsDateTimeInput`                                                                                                                                              | `DateTimeInput`                           |
+
+  Consumers importing any of the above must update to the new names; there is no compatibility alias. Everything else — the `hds-` CSS class namespace, `data-*` attributes, the JSX-compiler DSL tags (`HdsFrame`/`HdsHeading`/`HdsLabel`/`HdsPhosphor`/`HdsCaption`), the provider/theme surface, the manifest type surface, and the `Form`/`FormField`/`ThemeProvider`/`Tooltip` collision families — is unchanged and out of scope for this PR.
+
+- 7f48641: Add the "every-layout" layout primitives (#96): `Cluster` (wrapping flex row with tokenized gap/align/justify), `Center` (max-width column with auto margins and an optional tokenized gutter), `Sidebar` (fixed-width rail + fluid content that wraps to stacked via flex-basis/flex-grow disparity, no media query), `Switcher` (flips a row to a column below a `threshold` via the flex-basis calc() technique, with a `limit` to force stacking), `Cover` (vertical shell with an optional header/footer and an auto-margin-centered main region), `Frame` (aspect-ratio-locked, token-clipped media box — a thin radius/overflow skin over `AspectRatio`), and `Bleed` (controlled negative-margin full-bleed within a padded container). All seven are `as`-polymorphic, `forwardRef`, and token-driven — spacing resolves off the `--semantic-space-layout-*` scale, never raw px.
+- 3faaea9: CSS-in-JS→Tailwind migration (#93): convert `Table` and `Disclosure` off inline
+  `CSSProperties` objects onto Tailwind semantic classNames, then adopt `cva`.
+  - `Table`: `density` (`comfortable | compact`) — the variant contract's
+    canonical density example — plus column `align` and `stickyHeader` are now
+    `cva` axes (`tableHeaderCellVariants`, `tableDataCellVariants`) driving
+    Tailwind padding/min-height/position utilities bound to the same semantic
+    tokens the previous inline styles referenced. Sort/selection are not
+    implemented on `Table` (none existed pre-migration); `stickyHeader`
+    positioning behavior is unchanged.
+  - `Disclosure`: the `variant` (`panel | nav | card`) trigger styling is now
+    `cva`-driven (`disclosureTriggerVariants`). Open/closed state moved from a
+    JS `hovered`-state-driven inline style to a Radix-style
+    `data-state="open"|"closed"` attribute with `data-[state=open]:` Tailwind
+    selectors — same visual result, no more mousemove-triggered re-renders. The
+    `motion/react` height/opacity/chevron-rotation animation is untouched (still
+    JS-driven, not a CSS transition).
+
+  No public prop or export renames — both components keep their existing prop
+  API. `tableHeaderCellVariants`/`tableDataCellVariants`/
+  `disclosureTriggerVariants` are new `@internal` cva-helper exports (same
+  pattern as `buttonVariants`) — compose via component props, not directly.
+
+- e1a127c: CSS-in-JS → Tailwind (#93): migrate `Token` fully to Tailwind + `cva` (`tokenShellVariants` / `tokenNodeInlineVariants` / `tokenLabelVariants`), replacing `Token.module.css` (deleted) and a duplicate inline-style `isSelected` override with one variant set on the same `--semantic-*`/`--component-*`/`--primitive-*` custom properties — no visual or prop changes.
+
+  `SegmentedControl`'s active×hover×pressed×disabled×secondary state matrix is also converted to `cva` compound variants (`segmentedControlWrapperVariants` / `segmentedControlRailVariants` / `segmentedControlItemVariants` / `segmentedControlIndicatorVariants` / `segmentedControlDescriptionVariants` / `segmentedControlLabelVariants` / `segmentedControlFocusRingVariants`), replacing the inline `style` objects with the same tokens. Per ADR-015 the component keeps its own hover/focus tracking (not the shared `useInteractionState` hook, out of scope here) — only the class composition changed.
+
+  No breaking changes: all public props, prop vocabularies, and rendered DOM/ARIA structure are unchanged for both components. The new `*Variants` exports are additive (compose via component props instead, per the variant-contract convention).
+
+- 36e3eb1: Remove `InfoPage` from the public API (#49) — a breaking change, bumped as
+  `minor` per the pre-1.0 semver-zero convention (0.x.y: breaking changes
+  increment the minor).
+
+  `InfoPage` was dead-portfolio scaffolding: a branded profile surface built
+  for the portfolio landing page that hardcoded the (already-deleted)
+  `/assets/adrian.webp` asset. It had no design-system-consumer use. Also
+  removes `src/app/data/projects.ts`, the portfolio project data it and the
+  now-deleted portfolio pages depended on — it has zero remaining importers.
+
+  Migration: none. `InfoPage` was never intended for consumption outside the
+  portfolio landing page; there is no drop-in replacement.
+
+- b1057ac: Add `Reveal` and `Pin` scroll primitives (#116) to the core library — CSS scroll-driven, **zero JS and zero dependencies**. `Reveal` fades/slides/scales content in as it enters the viewport via `animation-timeline: view()` (`animation`: `fade | fade-up | fade-down | scale`); `Pin` is a token-friendly `position: sticky` wrapper (`top` offset) for pinned scroll scenes. Both are progressive-enhancement-safe: content is fully visible by default and the effect applies only where `animation-timeline` is supported and the user has not requested reduced motion (a `@media (prefers-reduced-motion: reduce)` + `@supports` fallback). Composes with the opt-in `@hirobius/design-system/scroll` primitives (`SmoothScroll`, `useScrollProgress`) for the full "pinned scale-reveal" hero effect on our own stack — no GSAP, no Lenis required (Lenis remains an optional add-on for momentum). See ADR-021.
+- b1057ac: Add the `@hirobius/design-system/scroll` subpath (#116): opt-in scroll-motion primitives. `SmoothScroll` is a Lenis momentum-scroll provider (reduced-motion-first — skips Lenis entirely when the user prefers reduced motion — and SSR-safe), `useLenis` re-exports Lenis's React hook, and `useScrollProgress` is a Motion-based `0→1` scroll-progress hook (no new dependency; works with or without `SmoothScroll`). `lenis` is an **optional peer dependency** (`pnpm add lenis` to use `SmoothScroll`) and is externalized from the build, so it never lands in the main barrel and consumers who don't import `/scroll` pay nothing. Refines ADR-021: GSAP stays out of the library; Lenis is in as an opt-in subpath rather than downstream-only.
+- 4420596: Variant contract (#60, Phase 1): establish the standard `cva` axis vocabulary — `variant` (structural), `tone` (`neutral | danger | success | warning | info`), `size` (`sm | md | lg`), `density` (`comfortable | compact`) — documented in `docs/architecture/variant-contract.md` and enforced by the extended `check-prop-vocabulary` gate (new tone/density allowlist rules). Converts the first reference batch to the contract: `Tag`, `Divider`, `Stat`, `Field`, `AvatarGroup`, `CircularProgress`.
+
+  Breaking (value rename): `Stat` and `Field` rename their `tone="default"` value to `tone="neutral"` to align with the fixed tone set — pass `neutral`, or omit it (it remains the default). `Divider` gains a `variant="default" | "strong"` axis; the existing `strong` boolean is retained as deprecated back-compat and still works.
+
+- cca9ba0: Variant contract (#60, Phase 3): convert className-based composites/overlays to `cva`. New cva adopters: `Card`, `Breadcrumb`, `Carousel`, `CommandPalette` (coverage: 35/123, was 31/123). `AlertDialog`, `Dialog`, `Tabs`, `Menu`, `ContextMenu`, `HoverCard`, `Popover`, `HdsTooltip` were reviewed and have no prop-driven className branching to formalize (their Radix `data-[state=…]` styling already lives directly in a single class string, contract-compliant as-is) — skipped, nothing to convert. `AspectRatio` has no className surface at all (thin Radix passthrough). The legacy `Tooltip` (image-expand pill) is CSS-in-JS/`framer-motion`-driven — flagged for a future inline-style→Tailwind migration before it can adopt `cva`. `ToggleButton` was already cva-converted in an earlier phase.
+
+  Breaking (value rename): `Card`'s single `tone` prop is now two axes — `variant` (`'default' | 'accent'`, the former structural values) and `tone` (fixed `neutral | danger | success | warning | info`). Migrate:
+  - `<Card tone="default">` → `<Card variant="default">` (or omit both — same default)
+  - `<Card tone="accent">` → `<Card variant="accent">`
+  - `<Card tone="success" | "warning" | "danger">` → unchanged (still valid on `tone`)
+
+  `Card.Progress` and `Card.Metric`'s `tone` prop drops the `'accent'` value (no known internal consumers) and renames `'default'` → `'neutral'` (same default rendering — content-accent fill for Progress, content-primary color for Metric). Both gain a new `'info'` tone value for fixed-vocab completeness.
+
+### Patch Changes
+
+- 157990d: Variant contract (#60): migrate `HeadingStack` from CSS-in-JS (inline `style` + a `LEVEL_STYLES` `CSSProperties` map) to Tailwind + `cva`, formalizing `level` (`heading1 | heading2 | heading3`) as a cva variant and `gap` (`px4 | px8`) as a second, layout-axis variant (mirroring `Divider`'s `orientation`). Every emitted class binds the exact same `--semantic-typography-*`/`--semantic-color-content-*`/`--primitive-space-*` custom property the removed inline styles referenced — zero visual change. Public prop API, defaults, and tag overrides (`as`/`headingAs`/`subheadingAs`) are unchanged; non-breaking.
+- f86ab1a: CSS-in-JS → Tailwind (#60): migrate `SideNav` to Tailwind + `cva` (`sideNavVariants`), formalizing the `level` (`root` | `nested`) axis as a cva variant alongside the existing rest/hover/focus/active/disabled `state` matrix. Replaces the inline `style` object and the removed `BG`/`TEXT` token maps with the same `--semantic-*`/`--component-*`/`--primitive-*` custom properties, bound 1:1.
+
+  The `useFrozenState` (Storybook demo-state freeze) override is preserved exactly, including its pre-existing quirks: only `hover`/`active`/`disabled`/`pressed`/`press` freeze values are recognized (unlike `NavItem`, `focused`/`rest` fall through to live interaction state), and a frozen `pressed` state shares `active`'s visual tokens but does not set `aria-current="page"` the way a frozen `active` state does. Resolved state is now exposed via `data-state`/`data-level` attributes for testability, mirroring `nav-item.tsx`'s established pattern (ADR-015). Modality-aware focus-visible detection now goes through the shared `useFocusVisible` hook instead of a duplicated inline implementation.
+
+  No breaking changes: the public prop API, defaults, RTL-aware indent math, the titleLabel/button/anchor branching, and the 44px minimum interactive size are all unchanged.
+
+- 4c72ebc: CSS-in-JS → Tailwind (#60): migrate `DocLinkCard` to Tailwind + `cva` (`docLinkCardVariants`), formalizing the `variant` (`feature` | `pager`) axis. Inline `style` objects for layout (padding, gap, flex direction, absolute positioning, margins) are replaced with Tailwind classes bound to the same `--semantic-space-*` custom properties; typography composites (`heading3`/`ui`/`caption`) stay inline per the existing HDS pattern, with color/margin moved onto the shared `text-primary`/`text-secondary` utility classes. RTL (`isRtl`) and directional-affordance logic are preserved exactly — the pager icon/title left-right decision is now a single derived boolean equivalent to the prior nested ternaries. `motion/react` icon-nudge animations (`headerIconControls` / `pagerIconControls`) are untouched.
+
+  No breaking changes: all public props, defaults, and rendered DOM/ARIA structure are unchanged. `docLinkCardVariants` is an additive `@internal` export (compose via `DocLinkCard` props instead, per the variant-contract convention).
+
 ## 0.11.0
 
 ### Minor Changes
