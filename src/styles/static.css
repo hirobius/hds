@@ -1,0 +1,381 @@
+/**
+ * static.css — CSS-only static-primitive layer (#64).
+ *
+ * A hand-authored, framework-free stylesheet that lets a page with ZERO React
+ * (a plain `.astro`/`.html` file) render Badge, Card, Alert, Divider, and Tag
+ * using plain semantic classes (`.hds-badge`, `.hds-card`, `.hds-alert`,
+ * `.hds-divider`, `.hds-tag`) instead of the React components in
+ * `src/app/components/{badge,card,alert,divider,tag}.tsx`.
+ *
+ * Every declaration below binds to the SAME `--semantic-*` / `--component-*` /
+ * `--role-*` custom properties the React cva variants reference (see the
+ * per-primitive header comments for the exact source mapping) — this is a
+ * markup-only reskin of the token graph, not a parallel design decision. It
+ * therefore auto-themes via `[data-theme]`/`.dark`/`data-brand` exactly like
+ * the React components, with zero JS.
+ *
+ * Rules:
+ *   - Every selector is scoped under `.hds-*` (or `[data-theme='dark'] .hds-*`
+ *     / `.dark .hds-*` for the one non-token color flip below) — no bare
+ *     element selectors, no `*`, no `:root`. Safe to drop into any host page.
+ *   - Reset-free: no margin/padding/box-sizing resets outside what a given
+ *     primitive itself owns. Pair with `@hirobius/design-system/variables.css`
+ *     (tokens only, also host-safe) — see docs/CONSUMING.md §14.
+ *   - `--primitive-*` is referenced exactly once (Tag's WCAG hit-target size),
+ *     annotated `tier-ok` — mirrors the same primitive-tier reference already
+ *     present in tag.tsx (no semantic alias exists for it yet).
+ *   - Two declarations reference a raw `rgb()` overlay (Badge's neutral tone
+ *     tint) — annotated `css-ok`; it mirrors badge.tsx's own `bg-black/[0.04]`
+ *     / `dark:bg-white/[0.04]` exactly, which has no semantic token either
+ *     (documented as an intentional exemption at the source, badge.tsx:15).
+ *   - Two font-size/weight pairs (Badge, Tag) bind to the already-registered
+ *     `--component-badge-*` / `--component-tag-*` typography tokens rather
+ *     than mirroring the raw untokened Tailwind utilities the current React
+ *     render happens to use (`text-[11px]`, `text-xs`) — those tokens exist
+ *     precisely to describe these components (see REACT_COMPONENTS.md's Tag
+ *     recipe) and keep this static layer 100% token-bound with no numeric
+ *     literals to justify.
+ *
+ * Emitted as `dist/static.css` by scripts/build-static-css.mjs (part of
+ * `pnpm build:lib`) and published as the `@hirobius/design-system/static.css`
+ * subpath export.
+ */
+
+/* ── Badge — src/app/components/badge.tsx ──────────────────────────────────── */
+
+.hds-badge {
+  display: inline-flex;
+  width: fit-content;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  line-height: 1;
+  text-transform: uppercase;
+  font-size: var(--component-badge-fontSize);
+  font-weight: var(--component-badge-fontWeight);
+  height: var(--component-badge-height);
+  min-width: var(--component-badge-minWidth);
+  padding: var(--component-badge-paddingY) var(--component-badge-paddingX);
+  border-radius: var(--component-badge-radius);
+  /* neutral tone (default) */
+  background-color: rgb(
+    0 0 0 / 0.04
+  ); /* css-ok: mirrors badge.tsx's bg-black/[0.04] neutral-tone overlay — no semantic token exists for this tint (source-exempted, badge.tsx:15) */
+  color: var(--semantic-color-content-secondary);
+}
+
+[data-theme='dark'] .hds-badge,
+.dark .hds-badge {
+  background-color: rgb(
+    255 255 255 / 0.04
+  ); /* css-ok: mirrors badge.tsx's dark:bg-white/[0.04] neutral-tone overlay */
+}
+
+.hds-badge--neutral {
+  /* Explicit alias for the default — see .hds-badge above. */
+  background-color: rgb(
+    0 0 0 / 0.04
+  ); /* css-ok: same neutral-tone overlay as the .hds-badge base rule */
+  color: var(--semantic-color-content-secondary);
+}
+
+[data-theme='dark'] .hds-badge--neutral,
+.dark .hds-badge--neutral {
+  background-color: rgb(
+    255 255 255 / 0.04
+  ); /* css-ok: same dark-mode neutral-tone overlay as the .hds-badge base rule */
+}
+
+.hds-badge--info {
+  background-color: var(--semantic-color-feedback-bg-info);
+  color: var(--semantic-color-feedback-info);
+}
+
+.hds-badge--success {
+  background-color: var(--semantic-color-feedback-bg-success);
+  color: var(--semantic-color-feedback-success);
+}
+
+.hds-badge--danger {
+  background-color: var(--semantic-color-feedback-bg-error);
+  color: var(--semantic-color-feedback-error);
+}
+
+.hds-badge--warning {
+  background-color: var(--semantic-color-feedback-bg-warning);
+  color: var(--semantic-color-feedback-warning);
+}
+
+.hds-badge--in-progress {
+  background-color: var(--semantic-color-feedback-bg-inProgress);
+  color: var(--semantic-color-feedback-inProgress);
+}
+
+/* ── Card — src/app/components/card.tsx ─────────────────────────────────────
+ * Root surface only (variant + tone), matching the deliverable scope. Compose
+ * header/body/footer content with your own markup inside `.hds-card`; reach
+ * for the real <Card> compound parts (Card.Header/.Progress/.Metric, …) if you
+ * need the full slot anatomy — that requires React.
+ *
+ * Cascade order below is intentional and mirrors card.tsx's "tone always wins
+ * over variant" contract (card.tsx:97-101): `--accent`/`--bordered` are
+ * declared before the `--danger/--success/--warning/--info` tone modifiers, so
+ * combining a tone class with `--accent` lets the tone's border win by source
+ * order (both are single-class selectors, so specificity is equal).
+ */
+
+.hds-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: var(
+    --primitive-radius-8
+  ); /* tier-ok: REACT_COMPONENTS.md Card recipe mandates var(--primitive-radius-8) directly (no semantic radius alias for the 8px card corner) */
+  background-color: var(--role-card);
+  color: var(--role-card-foreground);
+  border-style: solid;
+  border-width: 1px;
+  border-color: transparent;
+  padding: var(--semantic-space-component-padding);
+  gap: var(--semantic-space-layout-tight);
+}
+
+.hds-card--no-padding {
+  padding: 0;
+  gap: 0;
+}
+
+.hds-card--accent {
+  border-width: 2px;
+  border-color: var(--semantic-color-border-accent);
+}
+
+.hds-card--bordered {
+  border-color: var(--semantic-color-border-default);
+}
+
+.hds-card--danger {
+  border-width: 1px;
+  border-color: var(--semantic-color-feedback-error);
+}
+
+.hds-card--success {
+  border-width: 1px;
+  border-color: var(--semantic-color-feedback-success);
+}
+
+.hds-card--warning {
+  border-width: 1px;
+  border-color: var(--semantic-color-feedback-warning);
+}
+
+.hds-card--info {
+  border-width: 1px;
+  border-color: var(--semantic-color-feedback-info);
+}
+
+/* ── Alert — src/app/components/alert.tsx ───────────────────────────────────
+ * `role="alert"` still belongs on the markup (an ARIA live-region role, not a
+ * styling concern) — see docs/CONSUMING.md §14. No entrance-motion equivalent
+ * ships here: alert.tsx's opacity/y motion is a React (motion/react) nicety,
+ * not required for a static page to read correctly.
+ */
+
+.hds-alert {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--semantic-space-component-gap);
+  padding: var(--semantic-space-component-gap);
+  border-radius: var(
+    --primitive-radius-4
+  ); /* tier-ok: alert.tsx itself carries the identical exemption ("tier-ok: 4px primitive radius, no semantic 4px token", alert.tsx:24) */
+  background-color: var(--semantic-color-feedback-bg-info);
+}
+
+.hds-alert--with-title {
+  /* Add alongside a tone modifier when the alert has a title element
+   * (.hds-alert__title) above the body — mirrors alert.tsx's hasTitle:true
+   * cross-axis switch from items-center to items-start. */
+  align-items: flex-start;
+}
+
+.hds-alert--success {
+  background-color: var(--semantic-color-feedback-bg-success);
+}
+
+.hds-alert--danger {
+  background-color: var(--semantic-color-feedback-bg-error);
+}
+
+.hds-alert--warning {
+  background-color: var(--semantic-color-feedback-bg-warning);
+}
+
+.hds-alert--info {
+  background-color: var(--semantic-color-feedback-bg-info);
+}
+
+.hds-alert__icon {
+  flex-shrink: 0;
+  width: var(
+    --primitive-typography-size-base
+  ); /* tier-ok: mirrors Icon size="small" (hds.iconSize.small = var(--primitive-typography-size-base)), Icon has no semantic size alias */
+  height: var(--primitive-typography-size-base); /* tier-ok: see above */
+  color: var(--semantic-color-feedback-info);
+}
+
+.hds-alert--success .hds-alert__icon {
+  color: var(--semantic-color-feedback-success);
+}
+
+.hds-alert--danger .hds-alert__icon {
+  color: var(--semantic-color-feedback-error);
+}
+
+.hds-alert--warning .hds-alert__icon {
+  color: var(--semantic-color-feedback-warning);
+}
+
+.hds-alert--info .hds-alert__icon {
+  color: var(--semantic-color-feedback-info);
+}
+
+.hds-alert__title {
+  display: block;
+  font-family: var(--semantic-typography-ui-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--semantic-typography-ui-font-weight);
+  line-height: var(--semantic-typography-ui-line-height);
+  color: var(--semantic-color-content-primary);
+}
+
+.hds-alert__body {
+  display: block;
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  line-height: var(--semantic-typography-caption-line-height);
+  color: var(--semantic-color-content-primary);
+}
+
+/* ── Divider — src/app/components/divider.tsx ───────────────────────────────
+ * Decorative + non-interactive, so no hover/focus states. `<hr>` carries
+ * browser-agent defaults (border, height, color) that a reset-free stylesheet
+ * can't zero globally — `.hds-divider` resets them itself (class-scoped, not
+ * a bare `hr` rule) so the primitive is correct with or without a host reset.
+ */
+
+.hds-divider {
+  box-sizing: border-box;
+  margin: 0;
+  flex-shrink: 0;
+  height: 0;
+  color: inherit;
+  overflow: visible;
+  border-style: solid;
+  border-width: 0;
+  border-color: var(--semantic-color-border-default);
+}
+
+.hds-divider--horizontal {
+  width: 100%;
+  align-self: stretch;
+  border-top-width: 1px;
+}
+
+.hds-divider--vertical {
+  height: 100%;
+  border-left-width: 1px;
+}
+
+.hds-divider--strong {
+  border-color: var(--semantic-color-border-strong);
+}
+
+/* ── Tag — src/app/components/tag.tsx ────────────────────────────────────────
+ * Two-part anatomy: `.hds-tag` is the accessible 44px hit-target button;
+ * `.hds-tag__pill` is the compact visible surface inside it — same split as
+ * tag.tsx's outer <button> + inner pill <span>.
+ */
+
+.hds-tag {
+  display: inline-flex;
+  box-sizing: border-box;
+  min-width: var(
+    --primitive-size-interactive-min
+  ); /* tier-ok: mirrors tag.tsx's own var(--primitive-size-interactive-min) hit-target size (tag.tsx:25) — no semantic alias exists */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.hds-tag:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.hds-tag:focus-visible {
+  outline: var(--semantic-borderWidth-emphasis) solid var(--semantic-color-border-accent);
+  outline-offset: 2px;
+  position: relative;
+}
+
+.hds-tag__pill {
+  pointer-events: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  min-height: var(--component-tag-minHeight);
+  min-width: var(--component-tag-minWidth);
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  line-height: 1;
+  font-size: var(--component-tag-fontSize);
+  font-weight: var(--component-tag-fontWeight);
+  border-radius: var(--component-tag-radius);
+  border-style: solid;
+  border-width: 1px;
+  padding: var(--component-tag-paddingY) var(--component-tag-paddingX);
+  border-color: var(--semantic-color-border-default);
+  background-color: var(--semantic-color-surface-raised);
+  color: var(--semantic-color-content-secondary);
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hds-tag__pill {
+    transition: none;
+  }
+}
+
+.hds-tag:hover .hds-tag__pill {
+  border-color: var(--semantic-color-border-accent);
+  background-color: var(--semantic-color-surface-accentSubtle);
+  color: var(--semantic-color-content-primary);
+}
+
+.hds-tag:active .hds-tag__pill {
+  border-color: var(--semantic-color-border-accent);
+}
+
+.hds-tag--active .hds-tag__pill {
+  border-color: var(--component-tag-activeBorder);
+  background-color: var(--component-tag-activeBackground);
+  color: var(--component-tag-activeText);
+}
+
+.hds-tag--active:hover .hds-tag__pill {
+  background-color: var(--component-tag-activeHover);
+}
