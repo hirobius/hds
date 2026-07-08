@@ -52,7 +52,11 @@ describe('Text contract', () => {
   });
 
   it('as prop overrides the default tag', () => {
-    const { container } = render(<Text variant="body" as="span">Body as span</Text>);
+    const { container } = render(
+      <Text variant="body" as="span">
+        Body as span
+      </Text>,
+    );
     expect(container.querySelector('span')).not.toBeNull();
     expect(container.querySelector('p')).toBeNull();
   });
@@ -63,14 +67,18 @@ describe('Text contract', () => {
   });
 
   it('className prop is forwarded', () => {
-    const { container } = render(<Text variant="body" className="custom-text">Text</Text>);
+    const { container } = render(
+      <Text variant="body" className="custom-text">
+        Text
+      </Text>,
+    );
     const el = container.firstChild as HTMLElement;
     expect(el?.classList.contains('custom-text')).toBe(true);
   });
 
-  it('margin is set to 0 via inline style', () => {
+  it('margin is zeroed via the m-0 utility class', () => {
     const { container } = render(<Text variant="body">Text</Text>);
     const el = container.firstChild as HTMLElement;
-    expect(el?.style.margin).toBe('0px');
+    expect(el?.classList.contains('m-0')).toBe(true);
   });
 });
