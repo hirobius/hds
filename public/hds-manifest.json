@@ -44,6 +44,7 @@
     "Avatar",
     "AvatarGroup",
     "Badge",
+    "Bleed",
     "Blockquote",
     "Box",
     "Breadcrumb",
@@ -52,14 +53,17 @@
     "Callout",
     "Card",
     "Carousel",
+    "Center",
     "CinematicLink",
     "CircularProgress",
+    "Cluster",
     "CodeBlock",
     "Combobox",
     "CommandPalette",
     "ComponentInstanceMatrix",
     "Container",
     "ContextMenu",
+    "Cover",
     "DateInput",
     "DateRangeInput",
     "DateTimeInput",
@@ -74,6 +78,7 @@
     "FormField",
     "FormFieldShell",
     "FoundationSwatch",
+    "Frame",
     "Grid",
     "HdsCheckbox",
     "HdsRadio",
@@ -99,6 +104,7 @@
     "Progress",
     "SegmentedControl",
     "SelectableCard",
+    "Sidebar",
     "SideNav",
     "Skeleton",
     "Sketch",
@@ -112,6 +118,7 @@
     "Stepper",
     "StepperField",
     "Surface",
+    "Switcher",
     "Table",
     "Tabs",
     "TabsContent",
@@ -925,8 +932,11 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/bleed.tsx",
         "src/app/components/box.tsx",
+        "src/app/components/center.tsx",
         "src/app/components/page.tsx",
+        "src/app/components/switcher.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
         "src/stories/box.stories.tsx",
@@ -1447,11 +1457,13 @@
       },
       "consumers": [
         "src/app/components/box.tsx",
+        "src/app/components/cluster.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/shell-controls.tsx",
+        "src/app/components/sidebar.tsx",
         "src/app/components/sketch-controls.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/tooltip.tsx",
@@ -2595,8 +2607,10 @@
       "consumers": [
         "src/app/components/activity-feed.tsx",
         "src/app/components/box.tsx",
+        "src/app/components/cluster.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/controls-panel.tsx",
+        "src/app/components/cover.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-page-header.tsx",
         "src/app/components/error-boundary.tsx",
@@ -2956,14 +2970,21 @@
       },
       "consumers": [
         "src/app/components/badge.tsx",
+        "src/app/components/bleed.tsx",
         "src/app/components/box.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/center.tsx",
+        "src/app/components/cluster.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/cover.tsx",
         "src/app/components/file-input.tsx",
+        "src/app/components/frame.tsx",
         "src/app/components/grid.tsx",
+        "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/surface.tsx",
+        "src/app/components/switcher.tsx",
         "src/app/components/text.tsx",
         "src/app/components/tokenizer.tsx",
         "src/app/components/visually-hidden.tsx",
@@ -7300,7 +7321,9 @@
       "consumers": [
         "src/app/components/aspect-ratio.figma.tsx",
         "src/app/components/aspect-ratio.test.tsx",
-        "src/stories/aspect-ratio.stories.tsx"
+        "src/app/components/frame.tsx",
+        "src/stories/aspect-ratio.stories.tsx",
+        "src/stories/frame.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7776,8 +7799,15 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/bleed.tsx",
         "src/app/components/box-sx.ts",
         "src/app/components/box.test.tsx",
+        "src/app/components/center.tsx",
+        "src/app/components/cluster.tsx",
+        "src/app/components/cover.tsx",
+        "src/app/components/frame.tsx",
+        "src/app/components/sidebar.tsx",
+        "src/app/components/switcher.tsx",
         "src/stories/box.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7795,6 +7825,497 @@
         "sx": {
           "type": "SxObject",
           "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Bleed": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/bleed.tsx",
+      "description": "Bleed — controlled negative-margin full-bleed within a padded container. padding\" (a full-width image inside a padded card, a divider that should touch both edges) with a single tokenized negative-margin wrapper, so agents stop hand-rolling `margin: -24px` guesses that drift from the parent's actual padding token. use a semantic space step, never raw px, and MUST match the ancestor padding it is meant to cancel out. Do NOT use Bleed to fake extra spacing — its only job is canceling a specific known padding value on a specific axis. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inverse of a padded Center/Container — HDS names it separately since \"every-layout\" itself does not ship a dedicated Bleed recipe).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Bleed",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Bleed",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/bleed.test.tsx",
+        "src/stories/bleed.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "amount": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "default": "normal"
+        },
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "axis": {
+          "type": "enum",
+          "values": [
+            "x",
+            "y",
+            "both"
+          ],
+          "default": "x"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Center": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/center.tsx",
+      "description": "Center — max-width column, auto-centered horizontally. max-width box with auto horizontal margins and, optionally, matching horizontal gutters — so agents stop hand-rolling `marginInline: auto` plus an ad hoc max-width value. use the semantic width scale ('content' | 'max'), never a raw px value. gutter, when set, MUST use a semantic space step, never raw px. Do NOT use Center for full-bleed page shells — use Container. Do NOT use Center when you need the deprecated Container padding prop — gutter replaces it. Every Layout reference: https://every-layout.dev/layouts/center/",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Center",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Center",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/bleed.tsx",
+        "src/app/components/center.test.tsx",
+        "src/stories/button-group.stories.tsx",
+        "src/stories/center.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "gutter": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "optional": true
+        },
+        "maxWidth": {
+          "type": "enum",
+          "values": [
+            "content",
+            "max"
+          ],
+          "default": "content"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Cluster": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/cluster.tsx",
+      "description": "Cluster — wrapping horizontal group with even gaps. (tag rows, button groups, chip lists, filter pills) with a single flex-wrap wrapper and a tokenized gap in both axes, so agents stop hand-rolling `flexWrap` + `gap` + alignment combinations inline. horizontal groups that should wrap as a unit. Spacing MUST use semantic steps, never raw px. Do NOT use Cluster for a strict single-line row — use Stack with `direction=\"row\"` when wrapping is never desired. Do NOT use Cluster for two-dimensional grid layouts — use Grid. Every Layout reference: https://every-layout.dev/layouts/cluster/",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Cluster",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Cluster",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/cluster.test.tsx",
+        "src/app/components/switcher.tsx",
+        "src/stories/cluster.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "stretch"
+          ],
+          "default": "center"
+        },
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "default": "tight"
+        },
+        "justify": {
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "space-between"
+          ],
+          "default": "start"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Cover": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/cover.tsx",
+      "description": "Cover — vertical shell with an auto-centered main region. centered hero/main region that absorbs the remaining space, and an optional footer\" problem via the flex auto-margin centering technique, so agents stop hand-rolling `position: absolute` centering or a fixed 50vh split. semantic space step, never raw px. minHeight is a CSS length dimension (not spacing) — defaults to '100svh' (small viewport height, safe against mobile browser chrome). Pass minHeight=\"100vh\" explicitly if you need the classic viewport unit for a target that predates svh support. Do NOT use Cover for ordinary page content flow — use Stack. Every Layout reference: https://every-layout.dev/layouts/cover/",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Cover",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Cover",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/cover.test.tsx",
+        "src/app/components/stacked-card-rail.tsx",
+        "src/stories/cover.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "centerSlot": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "footer": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "default": "normal"
+        },
+        "header": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "minHeight": {
+          "type": "string",
+          "default": "100svh"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Frame": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/frame.tsx",
+      "description": "Frame — aspect-ratio-locked, token-clipped media box. cause layout shift while it loads, cropped to a token-governed corner radius\" — a thin, token-skinned wrapper over `AspectRatio` (`@radix-ui/react-aspect-ratio`), which already owns the ratio-lock mechanics. Frame adds the overflow-hidden clip and semantic radius that a bare media frame needs and `AspectRatio` deliberately leaves undecorated. media (image, video, embed, map tile). radius MUST use a semantic borderRadius token, never a raw px value. Do NOT reach for bare `AspectRatio` in product code just to add a border-radius by hand — use Frame. Do NOT use Frame for non-media layout — it exists purely as a media clipping frame. Every Layout reference: https://every-layout.dev/layouts/frame/",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Frame",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Frame",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/frame.test.tsx",
+        "src/app/components/mobius-distortion.ts",
+        "src/stories/frame.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "radius": {
+          "type": "enum",
+          "values": [
+            "none",
+            "sm",
+            "md",
+            "full"
+          ],
+          "default": "md"
+        },
+        "ratio": {
+          "type": "number",
+          "default": "16 / 9"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Sidebar": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sidebar.tsx",
+      "description": "Sidebar — fixed-width rail beside fluid content, no media query. problem with the flex-basis/flex-grow disparity technique — the rail holds `sideWidth` and the content flex-basis 0 with an overwhelming flex-grow, so the pair wraps to stacked automatically once the container can no longer fit both without squeezing content below `contentMin`. No `@media` query, no JS resize observer. EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Sidebar",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Sidebar",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/app-shell.tsx",
+        "src/app/components/sidebar.test.tsx",
+        "src/app/data/nav-model.ts",
+        "src/stories/app-shell.stories.tsx",
+        "src/stories/grid.stories.tsx",
+        "src/stories/side-nav.stories.tsx",
+        "src/stories/sidebar.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "[ReactNode, ReactNode]"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "contentMin": {
+          "type": "string",
+          "default": "50%"
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "default": "normal"
+        },
+        "side": {
+          "type": "enum",
+          "values": [
+            "start",
+            "end"
+          ],
+          "default": "start"
+        },
+        "sideWidth": {
+          "type": "string",
+          "default": "16rem"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Switcher": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/switcher.tsx",
+      "description": "Switcher — flips a row to a column below a width threshold, no media query. vertical stack once the container gets narrow\" without a breakpoint or a resize observer, using the flex-basis calc() technique: each item's flex-basis resolves to a huge negative or huge positive number depending on whether the container is above or below `threshold`, forcing every item onto its own line once it flips. semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Cluster. Every Layout reference: https://every-layout.dev/layouts/the-switcher/",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Switcher",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Switcher",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/switcher.test.tsx",
+        "src/stories/switcher.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ],
+          "default": "normal"
+        },
+        "limit": {
+          "type": "number",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "threshold": {
+          "type": "string",
+          "default": "30rem"
         }
       },
       "allowedChildren": [

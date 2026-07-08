@@ -103,6 +103,15 @@ export * from './app/components/date-input';
 export * from './app/components/date-range-input';
 export * from './app/components/date-time-input';
 
+// ── every-layout primitives (#96) ──
+export * from './app/components/cluster';
+export * from './app/components/center';
+export * from './app/components/sidebar';
+export * from './app/components/switcher';
+export * from './app/components/cover';
+export * from './app/components/frame';
+export * from './app/components/bleed';
+
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/page';
 export * from './app/components/empty-state';
