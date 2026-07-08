@@ -1581,6 +1581,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/activity-feed.test.tsx",
         "src/app/components/activity-feed.tsx",
         "src/app/components/alert.tsx",
         "src/app/components/breadcrumb.tsx",
@@ -3639,6 +3640,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/activity-feed.test.tsx",
         "src/stories/activity-feed.stories.tsx"
       ],
       "tokenMapping": {},
