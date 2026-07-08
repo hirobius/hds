@@ -18,6 +18,7 @@ export * from './app/components/alert';
 export * from './app/components/asset-img';
 export * from './app/components/avatar';
 export * from './app/components/badge';
+export * from './app/components/box';
 export * from './app/components/button';
 export * from './app/components/callout';
 export * from './app/components/field';
