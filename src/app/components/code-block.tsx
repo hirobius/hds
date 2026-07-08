@@ -6,85 +6,111 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation */
 
 import { useId, useRef, useState, type ReactNode } from 'react';
+import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
-import hds from '../design-system/tokens';
+import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 
-const codeBlockStyles = {
-  inlineWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: hds.semantic.space.subgrid.gap,
-    width: '100%',
-    minWidth: 0,
-    minHeight: hds.size[32],
-    border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-    background: 'var(--semantic-color-surface-raised)',
-    borderRadius: hds.borderRadius.action,
-    overflow: 'hidden',
-    paddingTop: hds.semantic.space.subgrid.gap,
-    paddingBottom: hds.semantic.space.subgrid.gap,
-    paddingLeft: hds.semantic.space.component.gap,
-    paddingRight: hds.semantic.space.subgrid.gap,
-  } satisfies React.CSSProperties,
-  inlineCopyBtn: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: hds.semantic.space.subgrid.gap,
-    background: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    paddingTop: hds.semantic.space.subgrid.gap,
-    paddingBottom: hds.semantic.space.subgrid.gap,
-    paddingLeft: hds.semantic.space.component.gap,
-    paddingRight: hds.semantic.space.subgrid.gap,
-    flexShrink: 0,
-    transition: `background-color ${hds.motion.productive.duration}s ease, color ${hds.motion.productive.duration}s ease, transform ${hds.motion.productive.duration}s ease`,
-  } satisfies React.CSSProperties,
-  blockHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: hds.semantic.space.component.padding,
-    paddingRight: hds.semantic.space.subgrid.gap,
-    paddingTop: hds.semantic.space.subgrid.gap,
-    paddingBottom: hds.semantic.space.subgrid.gap,
-    borderBottom: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-  } satisfies React.CSSProperties,
-  blockCopyBtn: {
-    position: 'absolute',
-    top: hds.semantic.space.subgrid.gap,
-    right: hds.semantic.space.subgrid.gap,
-    display: 'flex',
-    alignItems: 'center',
-    gap: hds.semantic.space.subgrid.gap,
-    background: 'var(--semantic-color-surface-raised)',
-    border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-    borderRadius: hds.borderRadius.action,
-    cursor: 'pointer',
-    paddingTop: hds.semantic.space.subgrid.gap,
-    paddingBottom: hds.semantic.space.subgrid.gap,
-    paddingLeft: hds.semantic.space.component.gap,
-    paddingRight: hds.semantic.space.component.gap,
-    transition: `background-color ${hds.motion.productive.duration}s ease, color ${hds.motion.productive.duration}s ease`,
-  } satisfies React.CSSProperties,
-  collapsibleToggleBtn: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    background: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    paddingLeft: hds.semantic.space.component.padding,
-    paddingRight: hds.semantic.space.component.padding,
-    paddingTop: hds.semantic.space.component.gap,
-    paddingBottom: hds.semantic.space.component.gap,
-    color: 'var(--semantic-color-content-primary)',
-    ...hds.typeStyles.technical,
-  } satisfies React.CSSProperties,
-};
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `variant` here mirrors CodeBlockProps.variant 1:1 — it is only used on the
+// copy button, the one piece of chrome shared verbatim between the `block`
+// and `inline` render trees (the rest of the two modes have no structural
+// overlap, so there is no single root `cva` to key off `variant`).
+
+// semantic.typography.mono composite (formerly hds.typeStyles.technical) — var()-based, no matching Tailwind-theme utility.
+const TECHNICAL_TYPE_CLASSES =
+  '[font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)] [line-height:var(--semantic-typography-mono-line-height)] max-w-[var(--semantic-typography-mono-max-width)]';
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+const blockContainerVariants = cva(
+  'overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + size-32 + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+const inlineWrapperVariants = cva(
+  'flex w-full min-w-0 min-h-[var(--primitive-size-32)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-gap)] pr-[var(--semantic-space-subgrid-gap)]',
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
+const blockHeaderVariants = cva(
+  'flex items-center justify-between border-b border-solid border-[var(--semantic-color-border-default)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-padding)] pr-[var(--semantic-space-subgrid-gap)]',
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
+const headerGroupVariants = cva('flex items-center gap-[var(--semantic-space-component-gap)]');
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-padding/component-gap spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven
+const collapsibleToggleVariants = cva(
+  `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-component-padding)] py-[var(--semantic-space-component-gap)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default token has no matching Tailwind-theme utility; var()-based so still token-driven
+const collapsiblePanelVariants = cva(
+  'border-t border-solid border-[var(--semantic-color-border-default)]',
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- motion.productive.duration token has no matching Tailwind-theme utility; var()-based so still token-driven
+const chevronVariants = cva(
+  'inline-flex transition-transform duration-[var(--hds-motion-productive-duration)] ease',
+  {
+    variants: {
+      expanded: {
+        true: 'rotate-180',
+        false: 'rotate-0',
+      },
+    },
+    defaultVariants: { expanded: false },
+  },
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + radius-action + border-default/surface-raised tokens + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven
+const copyButtonVariants = cva(
+  'flex cursor-pointer items-center gap-[var(--semantic-space-subgrid-gap)]',
+  {
+    variants: {
+      variant: {
+        inline:
+          'shrink-0 border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-gap)] pr-[var(--semantic-space-subgrid-gap)] transition-[background-color,color,transform] duration-[var(--hds-motion-productive-duration)] ease',
+        block:
+          'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-component-gap)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
+      },
+    },
+    defaultVariants: { variant: 'block' },
+  },
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono typography composite + content-primary token have no matching Tailwind-theme utility; var()-based so still token-driven
+const inlineCodeTextVariants = cva(
+  `block min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap not-italic text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
+  {
+    variants: {
+      truncateFromStart: {
+        true: '[direction:rtl] [text-align:left]',
+        false: '[direction:ltr] [text-align:inherit]',
+      },
+    },
+    defaultVariants: { truncateFromStart: false },
+  },
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono typography composite + content-primary token have no matching Tailwind-theme utility; var()-based so still token-driven
+const blockCodeTextVariants = cva(
+  `whitespace-pre text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- section-stack/size-32 spacing + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+const prePanelVariants = cva(
+  'm-0 overflow-x-auto p-[var(--semantic-space-section-stack)] pr-[calc(var(--semantic-space-section-stack)_+_var(--primitive-size-32))]',
+  {
+    variants: {
+      panelBackground: {
+        true: 'bg-[var(--role-muted,var(--semantic-color-surface-raised))]',
+        false: '',
+      },
+    },
+    defaultVariants: { panelBackground: false },
+  },
+);
 
 interface CodeBlockProps {
   /** Code string displayed in the block. */
@@ -144,30 +170,15 @@ export function CodeBlock({
 
   if (variant === 'inline') {
     return (
-      <div className={className} style={codeBlockStyles.inlineWrapper}>
-        <code
-          style={{
-            ...hds.typeStyles.technical,
-            color: 'var(--semantic-color-content-primary)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            minWidth: 0,
-            display: 'block',
-            flex: 1,
-            fontStyle: 'normal',
-            direction: truncateFromStart ? 'rtl' : 'ltr',
-            textAlign: truncateFromStart ? 'left' : 'inherit',
-          }}
-        >
+      <div className={cn(inlineWrapperVariants(), className)}>
+        <code className={inlineCodeTextVariants({ truncateFromStart })}>
           {copied ? 'Copied' : code}
         </code>
 
         <button
           onClick={handleCopy}
           aria-label={copied ? 'Copied' : 'Copy code'}
-          className="hds-focus"
-          style={codeBlockStyles.inlineCopyBtn}
+          className={cn('hds-focus', copyButtonVariants({ variant: 'inline' }))}
         >
           {copied ? (
             <Icon icon={Check} size="small" color="var(--semantic-color-content-primary)" />
@@ -182,26 +193,21 @@ export function CodeBlock({
   // Block variant
   const headerEl =
     filename || language ? (
-      <div style={codeBlockStyles.blockHeader}>
-        <div
-          style={{ display: 'flex', gap: hds.semantic.space.component.gap, alignItems: 'center' }}
-        >
+      <div className={blockHeaderVariants()}>
+        <div className={headerGroupVariants()}>
           {filename && (
             <span
-              style={{
-                ...hds.typeStyles.technical,
-                color: 'var(--semantic-color-content-primary)',
-              }}
+              className={cn(TECHNICAL_TYPE_CLASSES, 'text-[var(--semantic-color-content-primary)]')}
             >
               {filename}
             </span>
           )}
           {language && (
             <span
-              style={{
-                ...hds.typeStyles.technical,
-                color: 'var(--semantic-color-content-secondary)',
-              }}
+              className={cn(
+                TECHNICAL_TYPE_CLASSES,
+                'text-[var(--semantic-color-content-secondary)]',
+              )}
             >
               {language.toLowerCase()}
             </span>
@@ -214,8 +220,7 @@ export function CodeBlock({
     <button
       onClick={handleCopy}
       aria-label={copied ? 'Copied' : 'Copy code'}
-      className="hds-focus"
-      style={codeBlockStyles.blockCopyBtn}
+      className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
     >
       {copied ? (
         <Icon icon={Check} size="small" color="var(--semantic-color-content-primary)" />
@@ -226,28 +231,14 @@ export function CodeBlock({
   );
 
   const codePanel = (
-    <div style={{ position: 'relative' }}>
+    <div className="relative">
       <pre
         tabIndex={0}
         role="region"
         aria-label="Code sample"
-        style={{
-          margin: 0,
-          padding: hds.semantic.space.section.stack,
-          paddingRight: `calc(${hds.semantic.space.section.stack} + ${hds.size[32]})`,
-          overflowX: 'auto',
-          background: 'var(--role-muted, var(--semantic-color-surface-raised))',
-        }}
+        className={prePanelVariants({ panelBackground: true })}
       >
-        <code
-          style={{
-            ...hds.typeStyles.technical,
-            color: 'var(--semantic-color-content-primary)',
-            whiteSpace: 'pre',
-          }}
-        >
-          {renderHighlighted(code, language)}
-        </code>
+        <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
       </pre>
       {copyBtn}
     </div>
@@ -255,55 +246,34 @@ export function CodeBlock({
 
   if (collapsible) {
     return (
-      <div
-        className={className}
-        style={{
-          border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-          background: 'var(--semantic-color-surface-raised)',
-          borderRadius: hds.borderRadius.action,
-          overflow: 'hidden',
-        }}
-      >
+      <div className={cn(blockContainerVariants(), className)}>
         <button
           ref={toggleRef}
           type="button"
           onClick={handleToggle}
           aria-expanded={expanded}
           aria-controls={panelId}
-          className="hds-focus"
-          style={codeBlockStyles.collapsibleToggleBtn}
+          className={cn('hds-focus', collapsibleToggleVariants())}
         >
-          <span
-            style={{ display: 'flex', gap: hds.semantic.space.component.gap, alignItems: 'center' }}
-          >
+          <span className={headerGroupVariants()}>
             <span>{expanded ? 'Hide code' : 'Show code'}</span>
             {filename && (
-              <span style={{ color: 'var(--semantic-color-content-secondary)' }}>{filename}</span>
+              // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven
+              <span className="text-[var(--semantic-color-content-secondary)]">{filename}</span>
             )}
             {language && (
-              <span style={{ color: 'var(--semantic-color-content-secondary)' }}>
+              // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven
+              <span className="text-[var(--semantic-color-content-secondary)]">
                 {language.toLowerCase()}
               </span>
             )}
           </span>
-          <span
-            style={{
-              display: 'inline-flex',
-              transition: `transform ${hds.motion.productive.duration}s ease`,
-              transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-            }}
-          >
+          <span className={chevronVariants({ expanded })}>
             <Icon icon={ChevronDown} size="small" color="var(--semantic-color-content-secondary)" />
           </span>
         </button>
         {expanded && (
-          <div
-            ref={panelRef}
-            id={panelId}
-            style={{
-              borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-            }}
-          >
+          <div ref={panelRef} id={panelId} className={collapsiblePanelVariants()}>
             {codePanel}
           </div>
         )}
@@ -312,43 +282,35 @@ export function CodeBlock({
   }
 
   return (
-    <div
-      className={className}
-      style={{
-        border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-        background: 'var(--semantic-color-surface-raised)',
-        borderRadius: hds.borderRadius.action,
-        overflow: 'hidden',
-      }}
-    >
+    <div className={cn(blockContainerVariants(), className)}>
       {headerEl}
-      <div style={{ position: 'relative' }}>
+      <div className="relative">
         <pre
           tabIndex={0}
           role="region"
           aria-label="Code sample"
-          style={{
-            margin: 0,
-            padding: hds.semantic.space.section.stack,
-            paddingRight: `calc(${hds.semantic.space.section.stack} + ${hds.size[32]})`,
-            overflowX: 'auto',
-          }}
+          className={prePanelVariants({ panelBackground: false })}
         >
-          <code
-            style={{
-              ...hds.typeStyles.technical,
-              color: 'var(--semantic-color-content-primary)',
-              whiteSpace: 'pre',
-            }}
-          >
-            {renderHighlighted(code, language)}
-          </code>
+          <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
         </pre>
         {copyBtn}
       </div>
     </div>
   );
 }
+
+/** @internal — CVA variant helpers; compose via CodeBlock props instead. */
+export {
+  blockContainerVariants,
+  inlineWrapperVariants,
+  blockHeaderVariants,
+  collapsibleToggleVariants,
+  copyButtonVariants,
+  inlineCodeTextVariants,
+  blockCodeTextVariants,
+  prePanelVariants,
+  chevronVariants,
+};
 
 // ---------------------------------------------------------------------------
 // Regex-based syntax coloring (no new dep). Returns either a string (no lang
@@ -413,20 +375,21 @@ type Token = {
   value: string;
 };
 
-function tokenColor(kind: Token['kind']): string {
+// feedback/content tokens for syntax-highlight coloring — var()-based, no matching Tailwind-theme utility.
+function tokenColorClassName(kind: Token['kind']): string {
   switch (kind) {
     case 'keyword':
-      return 'var(--semantic-color-content-accent, var(--semantic-color-content-primary))';
+      return 'text-[var(--semantic-color-content-accent,var(--semantic-color-content-primary))]';
     case 'string':
-      return 'var(--semantic-color-feedback-success)';
+      return 'text-[var(--semantic-color-feedback-success)]';
     case 'comment':
-      return 'var(--semantic-color-content-secondary)';
+      return 'text-[var(--semantic-color-content-secondary)]';
     case 'number':
-      return 'var(--semantic-color-feedback-warning)';
+      return 'text-[var(--semantic-color-feedback-warning)]';
     case 'type':
-      return 'var(--semantic-color-feedback-info)';
+      return 'text-[var(--semantic-color-feedback-info)]';
     default:
-      return 'var(--semantic-color-content-primary)';
+      return 'text-[var(--semantic-color-content-primary)]';
   }
 }
 
@@ -546,7 +509,7 @@ function renderHighlighted(code: string, language?: string): ReactNode {
     t.kind === 'plain' ? (
       <span key={i}>{t.value}</span>
     ) : (
-      <span key={i} style={{ color: tokenColor(t.kind) }}>
+      <span key={i} className={tokenColorClassName(t.kind)}>
         {t.value}
       </span>
     ),
