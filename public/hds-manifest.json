@@ -3140,6 +3140,7 @@
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/components/lab/legacy-token-list.tsx",
         "src/app/components/lab/token-collection-list.tsx",
+        "src/app/components/side-nav.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
