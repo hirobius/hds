@@ -101,7 +101,9 @@
     "OverflowList",
     "Page",
     "Pagination",
+    "Pin",
     "Progress",
+    "Reveal",
     "SegmentedControl",
     "SelectableCard",
     "Sidebar",
@@ -1229,6 +1231,7 @@
       "figmaLink": "TODO:hds-master:DocLinkCard",
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/doc-link-card.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/doc-link-card.stories.tsx"
       ],
@@ -2986,6 +2989,8 @@
         "src/app/components/file-input.tsx",
         "src/app/components/frame.tsx",
         "src/app/components/grid.tsx",
+        "src/app/components/pin.tsx",
+        "src/app/components/reveal.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/surface.tsx",
@@ -3949,6 +3954,7 @@
         "src/app/components/tokenTableUtils.ts",
         "src/app/components/toolbar.test.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/brand/overlay.ts",
         "src/stories/container.stories.tsx",
         "src/stories/disclosure.stories.tsx",
         "src/stories/error-boundary.stories.tsx",
@@ -4641,6 +4647,7 @@
         "src/app/components/pagination.tsx",
         "src/app/components/toast.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/brand/overlay.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx",
@@ -6177,6 +6184,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/context/__tests__/context.test.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -6676,6 +6684,7 @@
       "figmaId": null,
       "consumers": [
         "src/app/components/side-nav.figma.tsx",
+        "src/app/components/side-nav.test.tsx",
         "src/stories/side-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8345,6 +8354,110 @@
         "threshold": {
           "type": "string",
           "default": "30rem"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Pin": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/pin.tsx",
+      "description": "Pin — sticky-pin an element within its scroll region. section scrolls — the dependency-free basis for pinned scroll scenes (the \"tall section + sticky child\" pattern that GSAP's `pin: true` solves imperatively). Reach for this before hand-rolling sticky positioning. Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Pin",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Pin",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "top": {
+          "type": "string",
+          "default": 0
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
+    "Reveal": {
+      "category": "Motion",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/reveal.tsx",
+      "description": "Reveal — reveal-on-scroll primitive via CSS scroll-driven animation. purely by scroll position (`animation-timeline: view()`) — no JS, no deps, no IntersectionObserver. Reach for this before hand-rolling reveal logic. `animation-timeline` is supported AND the user has not requested reduced motion (both fall back to visible, never stuck hidden). Pick `animation` from the fixed set — do not hand-roll keyframes. For momentum/inertia scrolling wrap the app in `SmoothScroll`; for a scroll-progress value in JS use `useScrollProgress` — both from `@hirobius/design-system/scroll`. See ADR-021.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Reveal",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Reveal",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/pin.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "animation": {
+          "type": "enum",
+          "values": [
+            "fade",
+            "fade-up",
+            "fade-down",
+            "scale"
+          ],
+          "default": "fade-up"
+        },
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
         }
       },
       "allowedChildren": [
