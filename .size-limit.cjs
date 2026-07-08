@@ -63,4 +63,10 @@ module.exports = [
     limit: '7 kB',
     gzip: true,
   },
+  {
+    name: 'static.css (CSS-only static-primitive layer)',
+    path: 'dist/static.css',
+    limit: '5 kB',
+    gzip: true,
+  },
 ];
