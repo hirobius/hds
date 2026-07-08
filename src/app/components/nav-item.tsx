@@ -3,6 +3,9 @@
  * @category Navigation
  * @tier primitive
  */
+// motion-ok: motion delivered via Tailwind transition-colors on the state-keyed
+// cva classes below; timing matches hds.motion.productive (150ms) via Tailwind's
+// default transition-colors duration.
 import { useState } from 'react';
 import type {
   AnchorHTMLAttributes,
@@ -13,6 +16,8 @@ import type {
   MouseEvent as ReactMouseEvent,
   PointerEvent as ReactPointerEvent,
 } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -20,20 +25,65 @@ import { useFrozenState } from '../context/DemoStateContext';
 import { useFocusVisible } from '../hooks/useFocusVisible';
 import { getNavLevelInset, type NavLevel } from '../lib/navLevels';
 
-const navItemStyles = {
-  tocIndicatorBase: {
-    position: 'absolute' as const,
-    top: 0,
-    bottom: 0,
-    width: 2,
-  } satisfies React.CSSProperties,
-} as const;
+// ── Variants ───────────────────────────────────────────────────────────────────
+// State colors previously lived in a NAV_STATE_TOKENS inline-style map (#93).
+// `state` is the internal rest/hover/focus/active/disabled matrix — computed in
+// JS (below) because it must also reflect Storybook's demo-state freeze
+// (useFrozenState), not just real pointer/keyboard interaction, so it can't be
+// expressed as bare `hover:`/`focus-visible:` pseudo-classes alone.
 
-type NavVariant = 'side' | 'toc';
-type NavState = 'default' | 'hover' | 'focus' | 'active' | 'disabled';
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-size-interactive-min a11y touch target + --semantic-color-* state tokens have no Tailwind-theme utility; var()-based so still token-driven
+const navItemVariants = cva(
+  'relative flex min-h-[var(--primitive-size-interactive-min)] min-w-0 items-center no-underline transition-colors',
+  {
+    variants: {
+      variant: {
+        side: '',
+        toc: '',
+      },
+      state: {
+        default:
+          'cursor-pointer bg-transparent text-[var(--semantic-color-content-secondary)] outline-none',
+        hover:
+          'cursor-pointer bg-[var(--semantic-color-surface-raised)] text-[var(--semantic-color-content-primary)] outline-none',
+        focus:
+          'cursor-pointer bg-transparent text-[var(--semantic-color-content-secondary)] outline outline-[length:var(--primitive-borderWidth-sm)] outline-[color:var(--semantic-color-border-accent)] outline-offset-2',
+        active:
+          'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)] text-[var(--semantic-color-content-accent)] outline-none',
+        disabled:
+          'cursor-default bg-transparent text-[var(--semantic-color-content-disabled)] outline-none',
+      },
+    },
+    defaultVariants: { variant: 'side', state: 'default' },
+  },
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-borderWidth-sm indicator width + --semantic-color-border-* state tokens have no Tailwind-theme utility; var()-based so still token-driven
+const navIndicatorVariants = cva(
+  'absolute inset-y-0 w-[length:var(--primitive-borderWidth-sm)] transition-colors',
+  {
+    variants: {
+      state: {
+        default: 'bg-[var(--semantic-color-border-default)]',
+        hover: 'bg-[var(--semantic-color-border-strong)]',
+        focus: 'bg-[var(--semantic-color-border-default)]',
+        active: 'bg-[var(--semantic-color-border-accent)]',
+        disabled: 'bg-transparent',
+      },
+    },
+    defaultVariants: { state: 'default' },
+  },
+);
+
+// ── Types ──────────────────────────────────────────────────────────────────────
+
+type NavItemVariantProps = VariantProps<typeof navItemVariants>;
+type NavVariant = NonNullable<NavItemVariantProps['variant']>;
+type NavState = NonNullable<NavItemVariantProps['state']>;
+/** Internal visual state matrix — `pressed` collapses into `active` (identical tokens). */
+type NavVisualState = NavState | 'pressed';
 
 type NavNativeProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'children' | 'onClick'>;
-type NavVisualState = NavState | 'pressed';
 
 interface NavProps extends NavNativeProps {
   /** Visual layout variant for side nav or table of contents usage. */
@@ -49,26 +99,6 @@ interface NavProps extends NavNativeProps {
   /** Navigation callback fired before the browser follows the link. */
   onNavigate?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }
-
-const NAV_STATE_TOKENS = {
-  indicator: {
-    idle: 'var(--semantic-color-border-default)',
-    hover: 'var(--semantic-color-border-strong)',
-    active: 'var(--semantic-color-border-accent)',
-  },
-  background: {
-    idle: 'transparent',
-    hover: 'var(--semantic-color-surface-raised)',
-    pressed: 'var(--semantic-color-surface-accentSubtle)',
-    active: 'var(--semantic-color-surface-accentSubtle)',
-    disabled: 'transparent',
-  },
-  text: {
-    idle: 'var(--semantic-color-content-secondary)',
-    active: 'var(--semantic-color-content-accent)',
-    disabled: 'var(--semantic-color-content-disabled)',
-  },
-} as const;
 
 const NAV_VARIANT_LAYOUT: Record<
   NavVariant,
@@ -133,73 +163,37 @@ export function NavItem({
       ? 'active'
       : (normalizedDemoState ??
         (isPressed ? 'pressed' : isFocusVisible ? 'focus' : isHovered ? 'hover' : 'default'));
+  // `pressed` shares active's tokens (background/text/indicator) — collapse for
+  // both the data-state attribute and the cva state lookup.
+  const state: NavState = visualState === 'pressed' ? 'active' : visualState;
+  const showActive = active || visualState === 'active' || visualState === 'pressed';
 
-  const showHover = visualState === 'hover';
-  const showFocus = visualState === 'focus';
-  const showPressed = visualState === 'pressed';
-  const showActive = active || visualState === 'active';
-  const indicatorColor =
-    visualState === 'disabled'
-      ? 'transparent'
-      : showActive || showPressed
-        ? NAV_STATE_TOKENS.indicator.active
-        : showHover
-          ? NAV_STATE_TOKENS.indicator.hover
-          : NAV_STATE_TOKENS.indicator.idle;
-  const backgroundColor =
-    visualState === 'disabled'
-      ? NAV_STATE_TOKENS.background.disabled
-      : showActive
-        ? NAV_STATE_TOKENS.background.active
-        : showPressed
-          ? NAV_STATE_TOKENS.background.pressed
-          : showHover
-            ? NAV_STATE_TOKENS.background.hover
-            : NAV_STATE_TOKENS.background.idle;
-  const idleTextColor =
-    variant === 'side' ? 'var(--semantic-color-content-secondary)' : NAV_STATE_TOKENS.text.idle;
-  const textColor =
-    visualState === 'disabled'
-      ? NAV_STATE_TOKENS.text.disabled
-      : showActive || showPressed
-        ? NAV_STATE_TOKENS.text.active
-        : showHover
-          ? 'var(--semantic-color-content-primary)'
-          : idleTextColor;
   const inset = variant === 'side' ? getNavLevelInset(level) : '0px';
+  const rowClassName = cn(
+    navItemVariants({ variant, state }),
+    isRtl ? 'text-right' : 'text-left',
+    className,
+  );
   const baseStyle: CSSProperties = {
     ...layout.typeStyle,
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
     marginLeft: isRtl ? 0 : inset,
     marginRight: isRtl ? inset : 0,
     width: layout.width(inset),
-    minWidth: 0,
-    minHeight: 'var(--primitive-size-interactive-min)', // tier-ok: a11y touch target — 44px min interactive size has no semantic alias
     paddingTop: layout.paddingY,
     paddingBottom: layout.paddingY,
     paddingLeft: isRtl ? layout.trailingPaddingX : layout.leadingPaddingX,
     paddingRight: isRtl ? layout.leadingPaddingX : layout.trailingPaddingX,
-    textDecoration: 'none',
-    textAlign: isRtl ? 'right' : 'left',
-    color: textColor,
-    backgroundColor,
-    outline: showFocus ? `${hds.borderWidth.sm} solid var(--semantic-color-border-accent)` : 'none',
-    outlineOffset: showFocus ? '2px' : undefined,
-    cursor: visualState === 'disabled' ? 'default' : 'pointer',
     pointerEvents: frozenState !== null ? 'none' : undefined,
-    transition: `background-color ${hds.motion.productive.duration}s ease, color ${hds.motion.productive.duration}s ease`,
     ...style,
   };
-  const mergedClassName = className ? `hds-focus ${className}` : 'hds-focus';
   const isInternalHref = typeof href === 'string' && href.startsWith('/');
 
   const sharedProps = {
     style: baseStyle,
+    className: rowClassName,
     'data-disabled': disabled ? 'true' : undefined,
     'data-level': level,
-    'data-state': visualState === 'pressed' ? 'active' : visualState,
+    'data-state': state,
     'data-variant': variant,
     onFocus: (event: ReactFocusEvent<HTMLAnchorElement | HTMLButtonElement>) => {
       onFocusVisible(event.currentTarget);
@@ -237,32 +231,15 @@ export function NavItem({
   const content = (
     <>
       {variant === 'toc' && (
-        <div
-          className="hds-nav-indicator"
-          data-active={showActive ? 'true' : undefined}
-          style={{
-            ...navItemStyles.tocIndicatorBase,
-            left: isRtl ? 'auto' : 0,
-            right: isRtl ? 0 : 'auto',
-            background: indicatorColor,
-          }}
-        />
+        <div className={cn(navIndicatorVariants({ state }), isRtl ? 'right-0' : 'left-0')} />
       )}
-      <span
-        style={{
-          ...layout.typeStyle,
-          color: textColor,
-        }}
-      >
-        {label}
-      </span>
+      <span style={layout.typeStyle}>{label}</span>
     </>
   );
 
   if (!href) {
     return (
-      <button // audit-ok: hds-focus applied via mergedClassName
-        className={mergedClassName}
+      <button // audit-ok: focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible
         type="button"
         disabled={disabled}
         aria-disabled={disabled || undefined}
@@ -282,8 +259,7 @@ export function NavItem({
   }
 
   return (
-    <a // audit-ok: hds-focus applied via mergedClassName
-      className={mergedClassName}
+    <a // audit-ok: focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible
       href={disabled ? undefined : href}
       aria-disabled={disabled || undefined}
       aria-current={
@@ -318,3 +294,6 @@ export function NavItem({
     </a>
   );
 }
+
+/** @internal — CVA variant helpers; compose via NavItem props instead. */
+export { navItemVariants, navIndicatorVariants };
