@@ -410,7 +410,7 @@ const DEFAULT_PREVIEW_PROPS: Record<string, Record<string, unknown>> = {
           {
             slot: 'action',
             content: (
-              <div style={{ display: 'flex', gap: hds.space.px8 }}>
+              <div style={{ display: 'flex', gap: hds.semantic.space.component.gap }}>
                 <Button size="sm">Copy</Button>
                 <Button variant="secondary" size="sm">
                   Open
