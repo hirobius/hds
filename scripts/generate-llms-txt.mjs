@@ -37,6 +37,20 @@ function phasePercent(criteria = []) {
   return Math.round((weightedCount / criteria.length) * 100);
 }
 
+const layoutRecipeSteps = [
+  '`Page` (or `Container`/`Center` for a full-bleed, non-page surface) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.',
+  '`Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.',
+  'Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).',
+  '`Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.',
+  '`Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.',
+];
+
+const layoutNegativeRules = [
+  'No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Cluster/Switcher/Sidebar/Cover) owns rhythm, not margin on the child.',
+  'No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.',
+  'No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.',
+];
+
 const tokenRules = [
   'Component inventory: read `public/hds-manifest.json`. Do not duplicate inventories in markdown.',
   'Component prop API: read `src/app/data/component-api.json`. Do not inline prop tables in `llms.txt`.',
@@ -116,6 +130,18 @@ This file intentionally does not embed prop tables or long-form API docs.
 ## Quick Token Reference
 
 ${quickTokenReference}
+
+## How To Lay Out A Screen
+
+Canonical skeleton, outermost to innermost:
+
+${layoutRecipeSteps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
+
+Negative rules (apply everywhere, checked by \`scripts/audit-tokens.mjs --full\`, \`check-hardcoded-spacing.mjs\`, \`check-hardcoded-colors.mjs\`):
+
+${layoutNegativeRules.map((rule) => `- ${rule}`).join('\n')}
+
+Reference: \`docs/architecture/variant-contract.md\` for structural/semantic/size/density variance; \`src/app/data/component-api.json\` for every layout primitive's full prop table and \`@ai-rules\` guidance.
 
 ## HDS Card Anatomy (mandatory — every property is non-negotiable)
 
