@@ -5709,6 +5709,7 @@
       "consumers": [
         "src/app/components/skeleton.test.tsx",
         "src/stories/patterns-layout.stories.tsx",
+        "src/stories/patterns-scroll.stories.tsx",
         "src/stories/skeleton.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8242,6 +8243,7 @@
         "src/stories/app-shell.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
+        "src/stories/pin.stories.tsx",
         "src/stories/side-nav.stories.tsx",
         "src/stories/sidebar.stories.tsx"
       ],
@@ -8379,7 +8381,12 @@
         "exportName": "Pin",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/pin.test.tsx",
+        "src/stories/patterns-scroll.stories.tsx",
+        "src/stories/pin.stories.tsx",
+        "src/stories/reveal.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8428,7 +8435,10 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/pin.tsx"
+        "src/app/components/pin.tsx",
+        "src/app/components/reveal.test.tsx",
+        "src/stories/patterns-scroll.stories.tsx",
+        "src/stories/reveal.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
