@@ -5,6 +5,7 @@
  */
 import { useEffect, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
+import { cva } from 'class-variance-authority';
 import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { getNavLevelLeadingPadding, getNextNavLevel, type NavLevel } from '../lib/navLevels';
@@ -19,9 +20,29 @@ type NavItem = {
   disabled?: boolean;
 };
 
+type NavGroupVariant = 'side' | 'toc';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// The label's color previously lived in a `labelStyle`/`staticLabelStyle`
+// inline-style object keyed off `variant` (#93). NavGroup carries no
+// interactive state of its own — the label is a static heading, not a control
+// — so `variant` (registered per docs/architecture/variant-contract.md, even
+// though side/toc don't currently diverge on color) is the only cva axis.
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- --semantic-color-content-secondary has no Tailwind-theme utility; var()-based so still token-driven
+const navGroupLabelVariants = cva('text-[var(--semantic-color-content-secondary)]', {
+  variants: {
+    variant: {
+      side: '',
+      toc: '',
+    },
+  },
+  defaultVariants: { variant: 'side' },
+});
+
 type NavGroupProps = {
   label?: string;
-  variant?: 'side' | 'toc';
+  variant?: NavGroupVariant;
   level?: NavLevel;
   items?: NavItem[];
   children?: ReactNode;
@@ -69,10 +90,8 @@ export function NavGroup({
     if (hasActive) setOpen(true);
   }, [collapsible, forceCollapsedOnOverview, hasActive]);
 
-  const labelStyle: CSSProperties = {
-    ...(variant === 'side' ? hds.typeStyles.ui : hds.typeStyles.caption),
-    color: 'var(--semantic-color-content-secondary)',
-  };
+  const labelClassName = navGroupLabelVariants({ variant });
+  const labelStyle: CSSProperties = variant === 'side' ? hds.typeStyles.ui : hds.typeStyles.caption;
   const staticLabelStyle: CSSProperties = {
     ...labelStyle,
     paddingLeft:
@@ -95,7 +114,11 @@ export function NavGroup({
         ...style,
       }}
     >
-      {label ? <p style={{ ...staticLabelStyle, margin: 0 }}>{label}</p> : null}
+      {label ? (
+        <p className={labelClassName} style={{ ...staticLabelStyle, margin: 0 }}>
+          {label}
+        </p>
+      ) : null}
       <nav>
         {children ??
           resolvedItems.map((item) => (
@@ -119,12 +142,19 @@ export function NavGroup({
 
   return (
     <Disclosure
-      label={label ? <span style={labelStyle}>{label}</span> : ''}
+      label={
+        label ? (
+          <span className={labelClassName} style={labelStyle}>
+            {label}
+          </span>
+        ) : (
+          ''
+        )
+      }
       variant="nav"
       open={open}
       onOpenChange={setOpen}
       triggerStyle={{
-        color: 'var(--semantic-color-content-secondary)',
         paddingLeft: triggerPaddingLeft,
         paddingRight: 'var(--component-nav-paddingX)',
         marginTop: 0,
@@ -146,3 +176,6 @@ export function NavGroup({
     </Disclosure>
   );
 }
+
+/** @internal — CVA variant helper; compose via NavGroup props instead. */
+export { navGroupLabelVariants };
