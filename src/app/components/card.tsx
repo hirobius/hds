@@ -6,7 +6,7 @@
  * Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are
  * layout-bearing — they live in slots, never inline next to prose.
  *
- *   <Card tone="accent">
+ *   <Card variant="accent">
  *     <Card.Header metadata={<Badge tone="warning">in-progress</Badge>}>
  *       <Card.Title>Discovery phase</Card.Title>
  *       <Card.Description>Stakeholder interviews and audit prep.</Card.Description>
@@ -28,9 +28,12 @@
  *   thin colored bars. Group sections via separate <Card.Body> blocks.
  * - Footer: actions, secondary metadata, timestamps.
  *
- * Tone prop: 'default' (neutral border) | 'accent' (border-accent + raised bg)
- * for highlighted variants like "recommended package", or feedback tones for
- * status-driven cards. Tone replaces hand-rolled `pkgHighlight`-style overrides.
+ * `variant`: 'default' (borderless) | 'accent' (2px accent border) — the
+ * structural axis, for highlighted entries like "recommended package".
+ * `tone`: neutral | danger | success | warning | info — the fixed feedback
+ * axis (#60 variant contract), for status-driven cards where the border IS
+ * the signal. `variant`/`tone` together replace hand-rolled
+ * `pkgHighlight`-style overrides.
  *
  * Legacy props (padding / gap / noPadding / as / style) are retained.
  * Existing callers that pass raw children continue to work; new callers
@@ -42,6 +45,7 @@
  */
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Text } from './text';
@@ -66,16 +70,21 @@ function resolveGap(g: GapOption): string {
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 
-// vocab-ok: 'default'/'accent' predate the #60 fixed tone vocabulary (neutral |
-// danger | success | warning | info) — Card's outline-rule tone is a distinct,
-// documented anatomy concept (12d-3, see the borderless/outlined rule below),
-// not a feedback state. Tracked for a future variant-contract rollout phase
-// rather than force-renamed here.
-type CardTone = 'default' | 'accent' | 'success' | 'warning' | 'danger';
+// #60 Phase 3: resolved the prior 'default'/'accent' tone vocab-ok exemption.
+// `variant` is the structural axis (Card's own concept of visual treatment —
+// free vocabulary per the contract): `default` is the 12d-3 borderless
+// anatomy, `accent` is the highlighted "recommended package" 2px-border
+// treatment. `tone` is now the FIXED feedback vocabulary (neutral | danger |
+// success | warning | info), shared with Card.Progress / Card.Metric below so
+// one tone name means the same thing everywhere on Card.
+/** @public */
+export type CardVariant = 'default' | 'accent';
+/** @public */
+export type CardTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 
-// 12d-3 outline rule: tone="default" is BORDERLESS by default. Outlines are
+// 12d-3 outline rule: variant="default" is BORDERLESS by default. Outlines are
 // signal-bearing — they appear when the card carries a feedback meaning
-// (accent / success / warning / danger). Repeated default cards in a grid
+// (tone) or the structural `accent` variant. Repeated default cards in a grid
 // no longer create the outlined-grid look that crowded the dashboards.
 //
 // For the legitimate "discrete repeated object that benefits from explicit
@@ -84,21 +93,41 @@ type CardTone = 'default' | 'accent' | 'success' | 'warning' | 'danger';
 // "avoid repeated outlined cards as the default structure. Use open bands,
 // dividers, rails, disclosures, and whitespace unless the content is a
 // genuinely discrete repeated object."
-const TONE_BORDER_COLOR: Record<CardTone, string> = {
-  default: 'transparent', // borderless by default
-  accent: 'var(--semantic-color-border-accent)',
-  success: 'var(--semantic-color-feedback-success)',
-  warning: 'var(--semantic-color-feedback-warning)',
-  danger: 'var(--semantic-color-feedback-error)',
-};
-
-const TONE_BORDER_WIDTH: Record<CardTone, string> = {
-  default: '1px', // 1px transparent preserves layout box
-  accent: '2px',
-  success: '1px',
-  warning: '1px',
-  danger: '1px',
-};
+//
+// `tone` uses `!border-[…]` (important) so a feedback tone always wins over
+// `variant`'s border treatment, the same tone-overrides-variant precedent as
+// Button. `bordered` only takes effect via the compound below (variant is
+// still `default` and tone is still `neutral`) so it never fights `accent`'s
+// border for the border-color utility group.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven
+const cardVariants = cva('flex h-full flex-col rounded-lg bg-card text-card-foreground', {
+  variants: {
+    variant: {
+      default: 'border border-transparent', // 1px transparent preserves the layout box
+      accent: 'border-2 border-[var(--semantic-color-border-accent)]',
+    },
+    tone: {
+      neutral: '',
+      danger: '!border !border-[var(--semantic-color-feedback-error)]',
+      success: '!border !border-[var(--semantic-color-feedback-success)]',
+      warning: '!border !border-[var(--semantic-color-feedback-warning)]',
+      info: '!border !border-[var(--semantic-color-feedback-info)]',
+    },
+    bordered: {
+      true: '',
+      false: '',
+    },
+  },
+  compoundVariants: [
+    {
+      variant: 'default',
+      tone: 'neutral',
+      bordered: true,
+      className: 'border-[var(--semantic-color-border-default)]',
+    },
+  ],
+  defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
+});
 
 /** @public */
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -110,13 +139,15 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: GapOption;
   /** Legacy convenience flag that removes inner padding. */
   noPadding?: boolean;
-  /** Visual tone — controls border color/weight. Default is BORDERLESS;
-   *  `accent` for highlighted entries (e.g. recommended package);
-   *  semantic tones for status-driven cards (border IS the signal).
-   *  For a neutral-bordered card without semantic meaning, pass
-   *  `bordered` instead of overloading tone. */
+  /** Structural treatment — `default` (borderless) or `accent` (2px accent
+   *  border) for highlighted entries (e.g. recommended package). For a
+   *  neutral-bordered card without semantic meaning, pass `bordered`
+   *  instead of `accent`. */
+  variant?: CardVariant;
+  /** Feedback tone — border IS the signal for status-driven cards. Defaults
+   *  to `neutral` (no feedback border; falls back to `variant`/`bordered`). */
   tone?: CardTone;
-  /** Opt in to a neutral 1px border on the default tone. Use for genuinely
+  /** Opt in to a neutral 1px border on the default variant. Use for genuinely
    *  discrete standalone records in sparse layouts where containment helps
    *  legibility. Default false — repeated cards in grids should stay
    *  borderless and rely on whitespace, rails, or section dividers. */
@@ -143,7 +174,8 @@ const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
     noPadding = false,
     as,
     style,
-    tone = 'default',
+    variant = 'default',
+    tone = 'neutral',
     bordered = false,
     children,
     ...rest
@@ -155,28 +187,18 @@ const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
   const paddingValue = resolvePaddingValue(resolvedPadding);
   const gapValue = resolvedPadding === 'none' ? '0' : resolveGap(gap);
 
-  // Border resolution: explicit feedback tone always wins; otherwise
-  // `bordered` opts into a neutral 1px border; otherwise transparent
-  // (layout-preserving but invisible).
-  const borderColor =
-    tone === 'default'
-      ? bordered
-        ? 'var(--semantic-color-border-default)'
-        : 'transparent'
-      : TONE_BORDER_COLOR[tone];
-
   return (
     <Comp
       ref={ref}
       data-padding={resolvedPadding}
+      data-variant={variant}
       data-tone={tone}
       data-bordered={bordered ? 'true' : 'false'}
-      className={cn('flex h-full flex-col rounded-lg bg-card text-card-foreground', className)}
-      // inline-ok: token-driven padding/gap legacy contract + tone-driven border
+      className={cn(cardVariants({ variant, tone, bordered, className }))}
+      // inline-ok: token-driven padding/gap legacy contract (not a variant-contract axis)
       style={{
         padding: paddingValue,
         gap: gapValue,
-        border: `${TONE_BORDER_WIDTH[tone]} solid ${borderColor}`,
         ...style,
       }}
       {...rest}
@@ -261,9 +283,13 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 
 // ── Progress slot ─────────────────────────────────────────────────────────────
 
+// `neutral` maps to the same content-accent fill the removed `default`/`accent`
+// keys shared before #60 Phase 3 — the progress bar's un-toned fill has always
+// read as "accent blue", independent of Card's own variant/tone. `info` is new
+// (fixed-vocab completeness); no prior behavior to preserve for it.
 const PROGRESS_TONE_FILL: Record<CardTone, string> = {
-  default: 'var(--semantic-color-content-accent)',
-  accent: 'var(--semantic-color-content-accent)',
+  neutral: 'var(--semantic-color-content-accent)',
+  info: 'var(--semantic-color-feedback-info)',
   success: 'var(--semantic-color-feedback-success)',
   warning: 'var(--semantic-color-feedback-warning)',
   danger: 'var(--semantic-color-feedback-error)',
@@ -280,13 +306,14 @@ interface CardProgressProps extends Omit<
   /** Optional caption rendered beneath the bar. Reserved baseline so it
    *  never crowds the slot above. Accepts strings or react nodes. */
   label?: React.ReactNode;
-  /** Visual tone for the fill. Defaults to accent. Use feedback tones to
-   *  signal status without a separate badge (e.g. red bar for over-budget). */
+  /** Visual tone for the fill. Defaults to `neutral` (accent-blue fill). Use
+   *  feedback tones to signal status without a separate badge (e.g. red bar
+   *  for over-budget). */
   tone?: CardTone;
 }
 
 const CardProgress = React.forwardRef<HTMLDivElement, CardProgressProps>(function CardProgress(
-  { className, value, max = 100, label, tone = 'default', style, ...props },
+  { className, value, max = 100, label, tone = 'neutral', style, ...props },
   ref,
 ) {
   const clamped = Math.max(0, Math.min(value, max));
@@ -343,9 +370,12 @@ const CardProgress = React.forwardRef<HTMLDivElement, CardProgressProps>(functio
 
 // ── Metric slot ───────────────────────────────────────────────────────────────
 
+// `neutral` preserves the removed `default` key's content-primary color (no
+// prior consumer passed `tone="accent"` on Card.Metric — see the #60 Phase 3
+// changeset for the removal note). `info` is new (fixed-vocab completeness).
 const METRIC_TONE_VALUE_COLOR: Record<CardTone, string> = {
-  default: 'var(--semantic-color-content-primary)',
-  accent: 'var(--semantic-color-content-accent)',
+  neutral: 'var(--semantic-color-content-primary)',
+  info: 'var(--semantic-color-feedback-info)',
   success: 'var(--semantic-color-feedback-success)',
   warning: 'var(--semantic-color-feedback-warning)',
   danger: 'var(--semantic-color-feedback-error)',
@@ -363,7 +393,7 @@ interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const CardMetric = React.forwardRef<HTMLDivElement, CardMetricProps>(function CardMetric(
-  { className, label, value, sub, tone = 'default', style, ...props },
+  { className, label, value, sub, tone = 'neutral', style, ...props },
   ref,
 ) {
   return (
@@ -415,3 +445,6 @@ Card.Progress = CardProgress;
 Card.Metric = CardMetric;
 
 export { CardHeader, CardTitle, CardDescription, CardBody, CardFooter, CardProgress, CardMetric };
+
+/** @internal — CVA variant helper; compose via Card props instead. */
+export { cardVariants };
