@@ -551,8 +551,10 @@ const css = brands.map((b) => brandOverlayCss(`[data-brand="${b.slug}"]`, b.pale
 ### 12.4 Hydrate only what's interactive
 
 Static primitives (badge, card, alert, divider, tag, the layout primitives, and
-`Box`/`sx`) render from tokens with no JS. Reach for a React island **only** for
-genuinely interactive components:
+`Box`/`sx`) render from tokens with no JS — either as React (unhydrated SSR
+output) or, for a page with **zero React at all**, via the semantic classes in
+`@hirobius/design-system/static.css` (§14). Reach for a React island **only**
+for genuinely interactive components:
 
 ```astro
 ---
@@ -604,3 +606,86 @@ function Hero() {
 ```
 
 `SmoothScroll` drives the real scroll position, so CSS `animation-timeline` and `useScrollProgress` keep working underneath it unchanged. See `docs/adr/021-animation-engine-motion-core-gsap-downstream.md` for why Lenis is opt-in and GSAP is out.
+
+## 14. CSS-only static primitives — `/static.css` (zero React)
+
+`Badge`, `Card`, `Alert`, `Divider`, and `Tag` are React components internally,
+but their visual surface is just tokens. `@hirobius/design-system/static.css`
+ships that same surface as plain, semantic `.hds-*` classes so a static `.astro`
+page — or any HTML with no React runtime at all — can use them directly. This
+is the layer §12.4 points to for "static primitives, no JS."
+
+```astro
+---
+// src/layouts/Base.astro
+import '@hirobius/design-system/variables.css'; // token spine (§12.1)
+import '@hirobius/design-system/static.css'; // the 5 static-primitive classes
+---
+<html lang="en" data-theme="light">
+  ...
+</html>
+```
+
+Every declaration resolves to an HDS semantic/component custom property — no
+raw hex/px — and every selector is `.hds-*` scoped, so importing this file
+cannot restyle anything outside the classes it defines (no reset, no
+preflight, no bare-element rules). `data-theme="light" | "dark"` on an
+ancestor re-themes all of it, same as the React components.
+
+```html
+<!-- Badge — tone is the only styling axis -->
+<span class="hds-badge">Neutral</span>
+<span class="hds-badge hds-badge--danger">Failed</span>
+<span class="hds-badge hds-badge--success">Shipped</span>
+
+<!-- Card — root + header/title/description/body/footer parts -->
+<div class="hds-card hds-card--bordered">
+  <div class="hds-card__header">
+    <div class="hds-card__header-meta">
+      <span class="hds-badge hds-badge--info">In progress</span>
+    </div>
+    <h3 class="hds-card__title">Discovery phase</h3>
+    <p class="hds-card__description">Stakeholder interviews and audit prep.</p>
+  </div>
+  <div class="hds-card__body">
+    <p>Body copy goes here.</p>
+  </div>
+  <div class="hds-card__footer">
+    <span class="hds-card__description">Updated 2 days ago</span>
+  </div>
+</div>
+
+<!-- Alert — tone drives the background; icon is caller-supplied (currentColor) -->
+<div class="hds-alert hds-alert--warning" role="alert">
+  <svg class="hds-alert__icon" width="16" height="16" aria-hidden="true"><!-- glyph --></svg>
+  <span class="hds-alert__body">Your session expires in 5 minutes.</span>
+</div>
+
+<!-- Divider -->
+<hr class="hds-divider" />
+<hr class="hds-divider hds-divider--strong" />
+
+<!-- Tag — a static (non-toggling) chip; add your own click handling if needed -->
+<button type="button" class="hds-tag" aria-pressed="false">
+  <span class="hds-tag__pill">Design</span>
+</button>
+<button type="button" class="hds-tag hds-tag--active" aria-pressed="true">
+  <span class="hds-tag__pill">Engineering</span>
+</button>
+```
+
+Modifier reference:
+
+| Primitive | Base class  | Modifiers                                                                                        |
+| --------- | ----------- | -------------------------------------------------------------------------------------------------- |
+| Badge     | `hds-badge` | `--info` `--success` `--danger` `--warning` `--in-progress` (unmodified = neutral)                 |
+| Card      | `hds-card`  | `--bordered` `--accent` `--tone-danger` `--tone-success` `--tone-warning` `--tone-info`             |
+| Alert     | `hds-alert` | `--success` `--danger` `--warning` `--info` (unmodified = info) · `--has-title` for a two-line body |
+| Divider   | `hds-divider` | `--vertical` `--strong`                                                                          |
+| Tag       | `hds-tag` (+ inner `hds-tag__pill`) | `--active` for the selected state                                          |
+
+These classes are a hand-authored analog of the React components, not a
+compiled export of them — behavior (focus rings, `aria-pressed` toggling,
+motion) still needs your own JS if you reach for it. For anything beyond
+these 5 primitives, or once a page needs real interactivity, hydrate a React
+island instead (§12.4).

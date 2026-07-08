@@ -28,6 +28,7 @@
     "./tokens.css": "./dist/tokens.css",
     "./styles.css": "./dist/styles.css",
     "./variables.css": "./dist/variables.css",
+    "./static.css": "./dist/static.css",
     "./tokens": {
       "types": "./dist/types/src/app/design-system/tokens.d.ts",
       "import": "./dist/tokens.js",
@@ -118,7 +119,7 @@
     "audit:sbom": "node scripts/audit-sbom.mjs",
     "audit:sidecar": "node scripts/generate-security-posture.mjs",
     "audit:style-dictionary": "bash scripts/poc/style-dictionary-poc/run.sh",
-    "build:lib": "vite build -c vite.config.lib.ts && pnpm build:types && node scripts/build-vars-css.mjs && node scripts/embed-fonts.mjs && node scripts/build-styles-css.mjs",
+    "build:lib": "vite build -c vite.config.lib.ts && pnpm build:types && node scripts/build-vars-css.mjs && node scripts/embed-fonts.mjs && node scripts/build-styles-css.mjs && node scripts/build-static-css.mjs",
     "build:types": "tsc -p tsconfig.dts.json && node scripts/strip-dts-side-effects.mjs",
     "catalog": "node scripts/generate-visual-catalog.mjs",
     "changelog:generate": "node scripts/generate-changelog.mjs",

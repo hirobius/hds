@@ -1,0 +1,291 @@
+/**
+ * static.css — CSS-only classes for the 5 static primitives (Badge, Card,
+ * Alert, Divider, Tag), for consumers with ZERO React (static Astro pages,
+ * server-rendered HTML, email-adjacent surfaces). See ADR-020 §6 / #64.
+ *
+ * Every declaration resolves to an HDS semantic/primitive/component custom
+ * property (imported separately via `@hirobius/design-system/variables.css`)
+ * — no raw hex/px. All selectors are `.hds-*` prefixed so this file cannot
+ * restyle a host page's own elements (no bare-element or `*` selectors).
+ *
+ * These classes are a hand-authored analog of the React components in
+ * src/app/components/{badge,card,alert,divider,tag}.tsx — same token
+ * bindings, same visual result, no JS. The React components remain the
+ * source of truth for behavior (focus/aria/interaction); this file only
+ * reproduces their visual surface for markup with no React runtime.
+ *
+ * Pair with `@hirobius/design-system/variables.css` (token spine) and
+ * optionally `@hirobius/design-system/brand` (palette overlay). See
+ * docs/CONSUMING.md §14.
+ */
+
+/* ── Badge ─────────────────────────────────────────────────────────────────── */
+
+.hds-badge {
+  display: inline-flex;
+  box-sizing: border-box;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-family: var(--primitive-typography-family-primary);
+  font-size: var(--component-badge-fontSize);
+  font-weight: var(--component-badge-fontWeight);
+  line-height: var(--primitive-typography-lineHeight-none);
+  letter-spacing: var(--primitive-typography-letterSpacing-wide);
+  height: var(--component-badge-height);
+  min-width: var(--component-badge-minWidth);
+  padding: var(--component-badge-paddingY) var(--component-badge-paddingX);
+  border-radius: var(--component-badge-radius);
+  /* neutral (default) tone — a 4% content-on-surface tint, light/dark-safe */
+  background-color: color-mix(in srgb, var(--semantic-color-content-primary) 4%, transparent);
+  color: var(--semantic-color-content-secondary);
+}
+
+.hds-badge--info {
+  background-color: var(--semantic-color-feedback-bg-info);
+  color: var(--semantic-color-feedback-info);
+}
+.hds-badge--success {
+  background-color: var(--semantic-color-feedback-bg-success);
+  color: var(--semantic-color-feedback-success);
+}
+.hds-badge--danger {
+  background-color: var(--semantic-color-feedback-bg-error);
+  color: var(--semantic-color-feedback-error);
+}
+.hds-badge--warning {
+  background-color: var(--semantic-color-feedback-bg-warning);
+  color: var(--semantic-color-feedback-warning);
+}
+.hds-badge--in-progress {
+  background-color: var(--semantic-color-feedback-bg-inProgress);
+  color: var(--semantic-color-feedback-inProgress);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────── */
+
+.hds-card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--component-card-radius);
+  background-color: var(--component-card-bg);
+  color: var(--semantic-color-content-primary);
+}
+
+.hds-card--bordered {
+  border-color: var(--component-card-border);
+}
+.hds-card--accent {
+  border-width: 2px;
+  border-color: var(--semantic-color-border-accent);
+}
+.hds-card--tone-danger {
+  border-color: var(--semantic-color-feedback-error);
+}
+.hds-card--tone-success {
+  border-color: var(--semantic-color-feedback-success);
+}
+.hds-card--tone-warning {
+  border-color: var(--semantic-color-feedback-warning);
+}
+.hds-card--tone-info {
+  border-color: var(--semantic-color-feedback-info);
+}
+
+.hds-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-px6);
+  padding: var(--semantic-space-component-padding);
+}
+.hds-card__header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--primitive-space-2);
+}
+.hds-card__title {
+  margin: 0;
+  font-family: var(--semantic-typography-h3-font-family);
+  font-size: var(--semantic-typography-h3-font-size);
+  font-weight: var(--semantic-typography-h3-font-weight);
+  letter-spacing: var(--semantic-typography-h3-letter-spacing);
+  line-height: var(--semantic-typography-h3-line-height);
+}
+.hds-card__description {
+  margin: 0;
+  color: var(--semantic-color-content-secondary);
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+  line-height: var(--semantic-typography-caption-line-height);
+}
+.hds-card__body {
+  padding: var(--semantic-space-component-padding);
+  padding-top: 0;
+}
+.hds-card__footer {
+  display: flex;
+  align-items: center;
+  padding: var(--semantic-space-component-padding);
+  padding-top: 0;
+}
+
+/* ── Alert ─────────────────────────────────────────────────────────────────── */
+
+.hds-alert {
+  display: flex;
+  align-items: center;
+  gap: var(--semantic-space-component-gap);
+  padding: var(--semantic-space-component-gap);
+  border-radius: var(--primitive-radius-4);
+  /* default tone is `info`, matching the React component's defaultVariants */
+  background-color: var(--semantic-color-feedback-bg-info);
+}
+.hds-alert--has-title {
+  align-items: flex-start;
+}
+.hds-alert--success {
+  background-color: var(--semantic-color-feedback-bg-success);
+}
+.hds-alert--danger {
+  background-color: var(--semantic-color-feedback-bg-error);
+}
+.hds-alert--warning {
+  background-color: var(--semantic-color-feedback-bg-warning);
+}
+.hds-alert--info {
+  background-color: var(--semantic-color-feedback-bg-info);
+}
+
+.hds-alert__icon {
+  flex-shrink: 0;
+  color: var(--semantic-color-feedback-info);
+}
+.hds-alert--success .hds-alert__icon {
+  color: var(--semantic-color-feedback-success);
+}
+.hds-alert--danger .hds-alert__icon {
+  color: var(--semantic-color-feedback-error);
+}
+.hds-alert--warning .hds-alert__icon {
+  color: var(--semantic-color-feedback-warning);
+}
+.hds-alert--info .hds-alert__icon {
+  color: var(--semantic-color-feedback-info);
+}
+
+.hds-alert__title {
+  display: block;
+  color: var(--semantic-color-content-primary);
+  font-family: var(--semantic-typography-ui-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--semantic-typography-ui-font-weight);
+  letter-spacing: var(--semantic-typography-ui-letter-spacing);
+  line-height: var(--semantic-typography-ui-line-height);
+}
+.hds-alert__body {
+  display: block;
+  color: var(--semantic-color-content-primary);
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+  line-height: var(--semantic-typography-caption-line-height);
+}
+
+/* ── Divider ───────────────────────────────────────────────────────────────── */
+
+.hds-divider {
+  margin: 0;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 100%;
+  border-style: solid;
+  border-width: 0;
+  border-top-width: 1px;
+  border-color: var(--semantic-color-border-default);
+}
+.hds-divider--vertical {
+  width: auto;
+  height: 100%;
+  border-top-width: 0;
+  border-left-width: 1px;
+}
+.hds-divider--strong {
+  border-color: var(--semantic-color-border-strong);
+}
+
+/* ── Tag ───────────────────────────────────────────────────────────────────── */
+
+.hds-tag {
+  display: inline-flex;
+  box-sizing: border-box;
+  min-width: var(--primitive-size-interactive-min);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.hds-tag:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.hds-tag__pill {
+  pointer-events: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  min-height: var(--component-tag-minHeight);
+  min-width: var(--component-tag-minWidth);
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border: 1px solid var(--semantic-color-border-default);
+  border-radius: var(--component-tag-radius);
+  padding: var(--component-tag-paddingY) var(--component-tag-paddingX);
+  font-family: var(--primitive-typography-family-primary);
+  font-size: var(--component-tag-fontSize);
+  font-weight: var(--component-tag-fontWeight);
+  line-height: var(--component-tag-lineHeight);
+  background-color: var(--semantic-color-surface-raised);
+  color: var(--semantic-color-content-secondary);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+.hds-tag:hover .hds-tag__pill {
+  border-color: var(--semantic-color-border-accent);
+  background-color: var(--semantic-color-surface-accentSubtle);
+  color: var(--semantic-color-content-primary);
+}
+.hds-tag:active .hds-tag__pill {
+  border-color: var(--semantic-color-border-accent);
+}
+.hds-tag--active .hds-tag__pill {
+  border-color: var(--component-tag-activeBorder);
+  background-color: var(--component-tag-activeBackground);
+  color: var(--component-tag-activeText);
+}
+.hds-tag--active:hover .hds-tag__pill {
+  background-color: var(--component-tag-activeHover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hds-tag__pill {
+    transition: none;
+  }
+}

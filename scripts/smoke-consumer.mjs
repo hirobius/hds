@@ -24,6 +24,7 @@
  *   '.'            → main barrel (Button, Card, …)
  *   './tokens'     → design-token bridge (default export)
  *   './tokens.css' → base stylesheet (resolve-only; Node can't import CSS)
+ *   './static.css' → CSS-only static-primitive layer (resolve-only; #64)
  *   './cn'         → cn() class-merge helper
  *   './manifest'   → hds-manifest.json as ESM (default export)
  *   './contexts'   → React context providers (ThemeProvider, …)
@@ -130,7 +131,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './cn', './manifest', './contexts', './mui']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -278,6 +279,20 @@ check('styles.css ships components/utilities/fonts with NO global reset', () => 
   assert.ok(!css.includes('border:0 solid;margin:0;padding:0'), 'global universal reset leaked into styles.css');
   assert.ok(!css.includes('html,:host{'), 'global html/:host reset leaked into styles.css');
   assert.ok(!css.includes('h1,h2,h3,h4,h5,h6{font-size:inherit'), 'global heading reset leaked into styles.css');
+});
+
+// static.css (#64): the CSS-only static-primitive layer. Must ship semantic
+// classes for all 5 static primitives, bound to token vars, with NO reset —
+// every selector is .hds-* scoped so it can never restyle host markup.
+check('static.css ships the 5 static-primitive classes with NO reset/preflight', () => {
+  const cssPath = decodeURIComponent(import.meta.resolve(PKG + '/static.css').replace(/^file:\\/\\//, ''));
+  const css = readFileSync(cssPath, 'utf8');
+  for (const cls of ['.hds-badge', '.hds-card', '.hds-alert', '.hds-divider', '.hds-tag']) {
+    assert.ok(css.includes(cls + ' {') || css.includes(cls + '{'), cls + ' class missing from static.css');
+  }
+  assert.ok(css.includes('--semantic-color-feedback-bg-danger') || css.includes('--semantic-color-feedback-bg-error'), 'badge/alert danger tone not token-bound');
+  assert.ok(!css.includes('border:0 solid;margin:0;padding:0'), 'global universal reset leaked into static.css');
+  assert.ok(!css.includes('html,:host{'), 'global html/:host reset leaked into static.css');
 });
 
 if (failures.length) {
