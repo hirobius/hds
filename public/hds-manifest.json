@@ -3940,6 +3940,7 @@
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/nav-item.tsx",
         "src/app/components/preview-frame.tsx",
+        "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/components/toolbar.test.tsx",
@@ -5791,6 +5792,7 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.test.tsx",
+        "src/app/components/table.tsx",
         "src/stories/breadcrumb.stories.tsx"
       ],
       "tokenMapping": {},
