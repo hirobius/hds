@@ -35,17 +35,10 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
   const progressPercent = `${progress * 100}%`;
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.component.gap }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-          gap: hds.semantic.space.component.gap,
-        }}
-      >
+    // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
+    <div className="flex flex-col gap-[var(--semantic-space-component-gap)]">
+      {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists */}
+      <div className="flex justify-between items-baseline gap-[var(--semantic-space-component-gap)]">
         <label
           style={{
             ...hds.typeStyles.ui,
@@ -56,38 +49,25 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
         </label>
         <motion.span
           key={value}
-          className="text-secondary"
+          className="text-secondary shrink-0"
           initial={{ opacity: 0.72, y: hds.space.px2 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
             duration: hds.motion.productive.duration,
             ease: hds.motion.productive.easing,
           }}
-          style={{ ...hds.typeStyles.technical, flexShrink: 0 }}
+          style={{ ...hds.typeStyles.technical }}
         >
           {value}
         </motion.span>
       </div>
-      <motion.div
-        style={{
-          position: 'relative',
-          height: hds.size[20],
-          ['display']: 'grid',
-          alignItems: 'center',
-        }}
-      >
+      {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven height; var()-based, no Tailwind-theme utility exists */}
+      <motion.div className="relative h-[var(--primitive-size-20)] grid items-center">
         <Surface
           aria-hidden="true"
           padding="component"
-          style={{
-            position: 'absolute',
-            insetInline: 0,
-            top: '50%',
-            height: hds.size[8],
-            transform: 'translateY(-50%)',
-            background: 'var(--semantic-color-border-default)',
-            overflow: 'hidden',
-          }}
+          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven inset/height/color; var()-based, no Tailwind-theme utility exists
+          className="absolute [inset-inline:0] top-1/2 h-[var(--primitive-size-8)] -translate-y-1/2 bg-[var(--semantic-color-border-default)] overflow-hidden"
         >
           <motion.div
             animate={{
@@ -98,11 +78,8 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
               duration: hds.motion.expressive.duration,
               ease: hds.motion.productive.easing,
             }}
-            style={{
-              height: '100%',
-              borderRadius: hds.borderRadius.full,
-              background: 'var(--semantic-color-surface-accent)',
-            }}
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/color; var()-based, no Tailwind-theme utility exists
+            className="h-full rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-accent)]"
           />
         </Surface>
         <input
@@ -118,18 +95,8 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
           onPointerUp={() => setIsActive(false)}
           onPointerCancel={() => setIsActive(false)}
           onBlur={() => setIsActive(false)}
-          className="hds-focus hds-slider-input"
-          style={{
-            width: '100%',
-            height: '100%',
-            display: 'block',
-            margin: 0,
-            background: 'transparent',
-            accentColor: 'var(--semantic-color-surface-accent)',
-            cursor: 'pointer',
-            position: 'relative',
-            zIndex: hds.zIndex.focus,
-          }}
+          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven accent-color/z-index; var()-based, no Tailwind-theme utility exists
+          className="hds-focus hds-slider-input w-full h-full block m-0 bg-transparent accent-[var(--semantic-color-surface-accent)] cursor-pointer relative z-[var(--primitive-zIndex-10)]"
         />
       </motion.div>
     </div>

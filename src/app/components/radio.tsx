@@ -7,12 +7,47 @@
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { motion } from 'motion/react';
+import { cva } from 'class-variance-authority';
 import hds from '../design-system/tokens';
+import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 
 /** HdsRadio — radio button with animated selection indicator. */
 export type HdsRadioDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `state` mirrors InteractionVisualState (see checkbox.tsx for the rationale on
+// keeping this a JS-driven cva axis rather than Tailwind pseudo-classes).
+
+/** Visually-hidden native input overlay — cursor affordance only. */
+const radioInputVariants = cva('absolute inset-0 m-0 opacity-0', {
+  variants: {
+    state: {
+      rest: 'cursor-pointer',
+      hover: 'cursor-pointer',
+      focused: 'cursor-pointer',
+      pressed: 'cursor-pointer',
+      disabled: 'cursor-default',
+    },
+  },
+  defaultVariants: { state: 'rest' },
+});
+
+/** Selected-state inner dot — static sizing; color is disabled-only (no animation). */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists
+const radioDotVariants = cva(
+  'w-[var(--primitive-size-8)] h-[var(--primitive-size-8)] rounded-[var(--primitive-radius-full)]',
+  {
+    variants: {
+      disabled: {
+        true: 'bg-[var(--semantic-color-content-disabled)]',
+        false: 'bg-[var(--semantic-color-content-onAccent)]',
+      },
+    },
+    defaultVariants: { disabled: false },
+  },
+);
 
 interface RadioProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -47,7 +82,7 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
 ) {
   const frozenState = useFrozenState();
   // Shared single-element interaction machine (ADR-015), identical to HdsToggle.
-  const { isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
+  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
     disabled,
     frozenState: frozenState as InteractionVisualState | null,
   });
@@ -91,14 +126,7 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
           handlers.onBlur();
           onBlur?.(e);
         }}
-        className="hds-focus"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          margin: 0,
-          opacity: 0,
-          cursor: isDisabled ? 'default' : 'pointer',
-        }}
+        className={cn('hds-focus', radioInputVariants({ state: visualState }))}
         {...rest}
       />
       <motion.span
@@ -126,14 +154,7 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
               duration: hds.motion.expressive.duration,
               ease: hds.motion.productive.easing,
             }}
-            style={{
-              width: hds.size[8],
-              height: hds.size[8],
-              borderRadius: hds.borderRadius.full,
-              background: isDisabled
-                ? 'var(--semantic-color-content-disabled)'
-                : 'var(--semantic-color-content-onAccent)',
-            }}
+            className={radioDotVariants({ disabled: isDisabled })}
           />
         )}
       </motion.span>

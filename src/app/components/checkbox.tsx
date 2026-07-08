@@ -7,6 +7,7 @@
 import { forwardRef, useEffect, useRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { motion } from 'motion/react';
+import { cva } from 'class-variance-authority';
 import { Check, Minus } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
@@ -16,8 +17,100 @@ import { Icon } from './icon';
 /** HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph. */
 export type HdsCheckboxDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
-interface CheckboxProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked' | 'onChange'> {
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `state` mirrors useInteractionState's InteractionVisualState — the shared
+// hover/press/focus/disabled machine (ADR-015) that also drives the frozen
+// demo state used by Storybook/docs screenshots. Kept as a JS-driven cva axis
+// (not Tailwind pseudo-classes) so freezing an arbitrary visual state for
+// docs still works — see docs/architecture/variant-contract.md "State matrix"
+// for the general rule and why this component is the documented exception.
+
+/** Root label chrome — hover/press tint + cursor affordance. */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
+const checkboxRootVariants = cva(
+  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-[var(--semantic-radius-action)] py-[var(--semantic-space-subgrid-gap)] px-[var(--semantic-space-component-gap)] select-none',
+  {
+    variants: {
+      state: {
+        rest: 'cursor-pointer bg-transparent',
+        hover: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
+        focused: 'cursor-pointer bg-transparent',
+        pressed: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
+        disabled: 'cursor-default bg-transparent',
+      },
+    },
+    defaultVariants: { state: 'rest' },
+  },
+);
+
+/** Visually-hidden native input overlay — cursor affordance only. */
+const checkboxInputVariants = cva('absolute inset-0 m-0 opacity-0', {
+  variants: {
+    state: {
+      rest: 'cursor-pointer',
+      hover: 'cursor-pointer',
+      focused: 'cursor-pointer',
+      pressed: 'cursor-pointer',
+      disabled: 'cursor-default',
+    },
+  },
+  defaultVariants: { state: 'rest' },
+});
+
+/** Glyph box — border/background driven by `state` (interaction) x `on` (checked/indeterminate). */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/color; var()-based, no Tailwind-theme utility exists
+const checkboxGlyphVariants = cva(
+  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-4)] border-solid border-[length:var(--primitive-borderWidth-sm)] outline-offset-2',
+  {
+    variants: {
+      state: {
+        rest: '',
+        hover: '',
+        focused:
+          '[outline:var(--primitive-borderWidth-sm)_solid_var(--semantic-color-border-accent)]',
+        pressed: '',
+        disabled: '',
+      },
+      on: {
+        true: '',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      {
+        state: 'disabled',
+        className: 'border-[color:var(--semantic-color-border-default)] bg-transparent',
+      },
+      {
+        state: 'rest',
+        on: false,
+        className: 'border-[color:var(--semantic-color-content-secondary)]',
+      },
+      {
+        state: ['hover', 'pressed'],
+        className: 'border-[color:var(--semantic-color-border-accent)]',
+      },
+      { state: 'focused', className: 'border-[color:var(--semantic-color-border-accent)]' },
+      { state: 'rest', on: true, className: 'border-[color:var(--semantic-color-border-accent)]' },
+      {
+        on: true,
+        state: ['rest', 'hover', 'focused', 'pressed'],
+        className: 'bg-[var(--semantic-color-surface-accent)]',
+      },
+      {
+        on: false,
+        state: ['rest', 'hover', 'focused', 'pressed'],
+        className: 'bg-transparent',
+      },
+    ],
+    defaultVariants: { state: 'rest', on: false },
+  },
+);
+
+interface CheckboxProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type' | 'checked' | 'onChange'
+> {
   /** Checkbox label displayed next to the control. */
   label: string;
   /** Current checked state. */
@@ -41,7 +134,7 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const frozenState = useFrozenState();
   // Shared single-element interaction machine (ADR-015) — same seam as Toggle/Radio.
-  const { isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
+  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
     disabled,
     frozenState: frozenState as InteractionVisualState | null,
   });
@@ -52,12 +145,6 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
   }, [indeterminate]);
 
   const isOn = checked || indeterminate;
-  const borderColor = isDisabled
-    ? 'var(--semantic-color-border-default)'
-    : isOn || isHover || isFocused || isPressed
-      ? 'var(--semantic-color-border-accent)'
-      : 'var(--semantic-color-content-secondary)';
-  const background = isOn && !isDisabled ? 'var(--semantic-color-surface-accent)' : 'transparent';
   const glyphColor = isDisabled
     ? 'var(--semantic-color-content-disabled)'
     : 'var(--semantic-color-content-onAccent)';
@@ -71,21 +158,7 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
       onPointerDown={handlers.onPointerDown}
       onPointerUp={handlers.onPointerUp}
       onPointerCancel={handlers.onPointerCancel}
-      style={{
-        position: 'relative',
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: hds.semantic.space.subgrid.gap,
-        paddingTop: hds.semantic.space.subgrid.gap,
-        paddingBottom: hds.semantic.space.subgrid.gap,
-        paddingLeft: hds.semantic.space.component.gap,
-        paddingRight: hds.semantic.space.component.gap,
-        borderRadius: hds.borderRadius.action,
-        cursor: isDisabled ? 'default' : 'pointer',
-        userSelect: 'none',
-        background:
-          isHover || isPressed ? 'var(--semantic-color-surface-accentSubtle)' : 'transparent',
-      }}
+      className={checkboxRootVariants({ state: visualState })}
     >
       {/* Visually-hidden native input drives state, keyboard, and a11y. */}
       <input
@@ -106,33 +179,21 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
           handlers.onBlur();
           onBlur?.(e);
         }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          margin: 0,
-          opacity: 0,
-          cursor: isDisabled ? 'default' : 'pointer',
-        }}
+        className={checkboxInputVariants({ state: visualState })}
         {...rest}
       />
       <motion.span
         aria-hidden="true"
         animate={{ scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1 }}
-        transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+        transition={{
+          duration: hds.motion.productive.duration,
+          ease: hds.motion.productive.easing,
+        }}
+        className={checkboxGlyphVariants({ state: visualState, on: isOn })}
+        // motion-ok: background-color/border-color swap on state change; the CSS
+        // transition (not a framer `animate` target) is left inline so the color
+        // fade keeps working even though the colors themselves now live in cva.
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          width: hds.size[20],
-          height: hds.size[20],
-          borderRadius: hds.borderRadius[4],
-          border: `${hds.borderWidth.sm} solid ${borderColor}`,
-          background,
-          outline: isFocused
-            ? `${hds.borderWidth.sm} solid var(--semantic-color-border-accent)`
-            : 'none',
-          outlineOffset: '2px',
           transition: `background-color ${hds.motion.productive.duration}s ease, border-color ${hds.motion.productive.duration}s ease`,
         }}
       >
@@ -145,7 +206,10 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
       <motion.span
         className="text-secondary"
         animate={{ x: isPressed ? hds.space.px1 : 0 }}
-        transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+        transition={{
+          duration: hds.motion.productive.duration,
+          ease: hds.motion.productive.easing,
+        }}
         style={{
           ...hds.typeStyles.ui,
           color: isDisabled
