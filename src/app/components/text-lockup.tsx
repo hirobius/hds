@@ -7,25 +7,61 @@
  */
 // motion-ok: numbered lockup copy actions intentionally keep the heading static so anchor affordances do not introduce editorial layout jitter
 // font-ok: inline technical affordances within this lockup intentionally use monospace for code-like references
+// vocab-ok: `size` (hero|heroXl|section|metric|detail|numbered) is a pre-existing structural preset ramp choosing a title+description type pairing — the same kind of component-specific "structural shape" concept the variant-contract's `variant` axis describes — not the physical sm|md|lg scale the contract's `size` axis expects. Kept as `size` (established public API, CLAUDE.md "preserve prop names unless genuinely off contract") rather than force a breaking rename for a single-axis pattern component.
 
 import { forwardRef, useState, type CSSProperties, type ElementType, type ReactNode } from 'react';
+import { cva } from 'class-variance-authority';
 import { Link, Check } from 'lucide-react';
-import hds from '../design-system/tokens';
+import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 import { Text } from './text';
 
-const textLockupStyles = {
-  anchorCopyBtn: {
-    all: 'unset' as const,
-    display: 'flex',
-    alignItems: 'center',
-    gap: hds.semantic.space.subgrid.gap,
-    cursor: 'pointer',
-    userSelect: 'none' as const,
-    color: 'var(--semantic-color-content-primary)',
-    textAlign: 'left' as const,
-  } satisfies React.CSSProperties,
-} as const;
+// ── Variants ───────────────────────────────────────────────────────────────────
+
+// The `all: unset` reset below must stay a single inline style object: `all`
+// resets literally every CSS property (including ones a sibling Tailwind
+// class would try to set), and inline `style` always outranks any class
+// regardless of source order, so any property this button needs (layout,
+// cursor, color) has to be re-declared *after* `all: 'unset'` inside the same
+// style object to win the cascade — splitting it across class + inline would
+// let `all: unset` silently clobber the class-based properties. Not
+// expressible as Tailwind classes without breaking the reset; kept inline.
+const anchorCopyBtnStyle = {
+  all: 'unset',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 'var(--semantic-space-subgrid-gap)',
+  cursor: 'pointer',
+  userSelect: 'none',
+  color: 'var(--semantic-color-content-primary)',
+  textAlign: 'left',
+} satisfies CSSProperties;
+
+// Root wrapper layout. `size` drives only the gap (component vs subgrid
+// rhythm); `align` drives the cross-axis alignment + text-align pairing.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component/subgrid gap composite tokens have no Tailwind-theme spacing utility; var()-based so still token-driven
+const textLockupRootVariants = cva('flex w-full min-w-0 flex-col', {
+  variants: {
+    size: {
+      hero: 'gap-[var(--semantic-space-component-gap)]',
+      heroXl: 'gap-[var(--semantic-space-component-gap)]',
+      section: 'gap-[var(--semantic-space-component-gap)]',
+      metric: 'gap-[var(--semantic-space-subgrid-gap)]',
+      detail: 'gap-[var(--semantic-space-subgrid-gap)]',
+      numbered: 'gap-[var(--semantic-space-subgrid-gap)]',
+    },
+    align: {
+      left: 'items-stretch text-left',
+      center: 'items-center text-center',
+    },
+  },
+  defaultVariants: { align: 'left' },
+});
+
+// Centered lockups clamp the eyebrow/description to a fixed reading measure —
+// pre-existing behavior (640, not a token) carried over from the old inline
+// `maxWidth: centered ? 640 : ...` override.
+const CENTERED_MAX_WIDTH_CLASS = 'max-w-[640px]';
 
 type TextLockupSize = 'hero' | 'heroXl' | 'section' | 'metric' | 'detail' | 'numbered';
 type TextLockupAlign = 'left' | 'center';
@@ -58,97 +94,81 @@ export type TextLockupProps = {
 };
 
 // D6: the type ramp is owned by Text via `variant`. SIZE_MAP keeps only the
-// variant + tag + gap + layout-only overrides (color, max-width, and `detail`'s
-// deliberate metric deviations) — the redundant `...hds.typeStyles.*` spreads
-// (which Text already applies for the same variant) are gone. The anchor-span
-// case inherits its font from the surrounding <Text variant>.
-const EYEBROW_STYLE: CSSProperties = {
-  color: 'var(--semantic-color-content-secondary)',
-  margin: 0,
-};
+// variant + tag + className overrides (color, max-width, and `detail`'s
+// deliberate metric deviations) — Text's own cva variants already carry the
+// base font-family/size/weight/letter-spacing/line-height/max-width for the
+// same variant, so these overrides only touch the properties that genuinely
+// differ. The anchor-span case inherits its font from the surrounding
+// <Text variant>.
+const TITLE_COLOR_CLASS = 'text-foreground'; // role-foreground === --semantic-color-content-primary
+const DESC_COLOR_CLASS = 'text-muted-foreground'; // role-muted-foreground === --semantic-color-content-secondary
 
-const TITLE_OVERRIDE: CSSProperties = { color: 'var(--semantic-color-content-primary)', margin: 0 };
-const DESC_OVERRIDE: CSSProperties = {
-  color: 'var(--semantic-color-content-secondary)',
-  margin: 0,
-  maxWidth: hds.layout.proseMaxWidth,
-};
+const DESC_MAX_WIDTH_CLASS = 'max-w-[var(--semantic-layout-prose-maxWidth)]';
+
+// Deliberate deviation from the variant: `body`/`technical` Text variants but
+// ui/mono composite metrics for the dense data-readout layout (leading-none
+// overrides mono's own line-height). fontFamily stays the literal `monospace`
+// keyword (not the branded mono token) — see the file-level `font-ok` note.
+const DETAIL_TITLE_CLASS =
+  'text-foreground [font-size:var(--semantic-typography-ui-font-size)] [font-weight:var(--semantic-typography-ui-font-weight)] [line-height:var(--semantic-typography-ui-line-height)]';
+const DETAIL_DESCRIPTION_CLASS =
+  'text-muted-foreground leading-none [font-family:monospace] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)]';
 
 const SIZE_MAP: Record<
   TextLockupSize,
   {
-    title: CSSProperties;
-    description: CSSProperties;
+    titleClassName: string;
+    descriptionClassName: string;
     titleTag: TextLockupTitleTag;
     titleVariant: 'display' | 'heading1' | 'heading2' | 'body';
     descriptionVariant: 'body' | 'ui' | 'technical';
-    gap: string;
   }
 > = {
   hero: {
-    title: TITLE_OVERRIDE,
-    description: DESC_OVERRIDE,
+    titleClassName: TITLE_COLOR_CLASS,
+    descriptionClassName: cn(DESC_COLOR_CLASS, DESC_MAX_WIDTH_CLASS),
     titleTag: 'h1',
     titleVariant: 'heading1',
     descriptionVariant: 'body',
-    gap: hds.semantic.space.component.gap,
   },
   heroXl: {
-    title: TITLE_OVERRIDE,
-    description: DESC_OVERRIDE,
+    titleClassName: TITLE_COLOR_CLASS,
+    descriptionClassName: cn(DESC_COLOR_CLASS, DESC_MAX_WIDTH_CLASS),
     titleTag: 'h1',
     titleVariant: 'display',
     descriptionVariant: 'body',
-    gap: hds.semantic.space.component.gap,
   },
   section: {
-    title: TITLE_OVERRIDE,
-    description: DESC_OVERRIDE,
+    titleClassName: TITLE_COLOR_CLASS,
+    descriptionClassName: cn(DESC_COLOR_CLASS, DESC_MAX_WIDTH_CLASS),
     titleTag: 'h2',
     titleVariant: 'heading2',
     descriptionVariant: 'ui',
-    gap: hds.semantic.space.component.gap,
   },
   metric: {
-    title: TITLE_OVERRIDE,
-    description: DESC_OVERRIDE,
+    titleClassName: TITLE_COLOR_CLASS,
+    descriptionClassName: cn(DESC_COLOR_CLASS, DESC_MAX_WIDTH_CLASS),
     titleTag: 'h2',
     titleVariant: 'heading1',
     descriptionVariant: 'ui',
-    gap: hds.semantic.space.subgrid.gap,
   },
   detail: {
-    // Deliberate deviation from the variant: `body`/`technical` variants but
-    // ui/mono metrics for the dense data-readout layout (lh:1 overrides mono).
-    title: {
-      fontSize: 'var(--semantic-typography-ui-font-size)',
-      fontWeight: 'var(--semantic-typography-ui-font-weight)',
-      color: 'var(--semantic-color-content-primary)',
-      margin: 0,
-      lineHeight: 'var(--semantic-typography-ui-line-height)',
-    },
-    description: {
-      fontSize: 'var(--semantic-typography-mono-font-size)',
-      fontWeight: 'var(--semantic-typography-mono-font-weight)',
-      fontFamily: 'monospace',
-      color: 'var(--semantic-color-content-secondary)',
-      margin: 0,
-      lineHeight: 1.0,
-    },
+    titleClassName: DETAIL_TITLE_CLASS,
+    descriptionClassName: DETAIL_DESCRIPTION_CLASS,
     titleTag: 'p',
     titleVariant: 'body',
     descriptionVariant: 'technical',
-    gap: hds.semantic.space.subgrid.gap,
   },
   numbered: {
-    title: TITLE_OVERRIDE,
-    description: DESC_OVERRIDE,
+    titleClassName: TITLE_COLOR_CLASS,
+    descriptionClassName: cn(DESC_COLOR_CLASS, DESC_MAX_WIDTH_CLASS),
     titleTag: 'h2',
     titleVariant: 'heading2',
     descriptionVariant: 'ui',
-    gap: hds.semantic.space.subgrid.gap,
   },
 };
+
+// ── Component ──────────────────────────────────────────────────────────────────
 
 export const TextLockup = forwardRef<HTMLElement, TextLockupProps>(function TextLockup(
   {
@@ -178,49 +198,32 @@ export const TextLockup = forwardRef<HTMLElement, TextLockupProps>(function Text
   const showAnchor = size === 'numbered' && Boolean(id);
 
   return (
-    <RootTag
-      ref={ref}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: config.gap,
-        alignItems: centered ? 'center' : undefined,
-        minWidth: 0,
-        textAlign: centered ? 'center' : 'left',
-        width: '100%',
-      }}
-    >
+    <RootTag ref={ref} className={textLockupRootVariants({ size, align })}>
       {eyebrow ? (
         <Text
           variant="ui"
           as="p"
-          style={{ ...EYEBROW_STYLE, maxWidth: centered ? 640 : undefined }}
+          className={cn(DESC_COLOR_CLASS, centered && CENTERED_MAX_WIDTH_CLASS)}
         >
           {eyebrow}
         </Text>
       ) : null}
 
       {showAnchor ? (
-        <div className="hds-doc-section-header" style={{ display: 'flex' }}>
+        <div className="hds-doc-section-header flex">
           <Text variant={config.titleVariant} as={TitleTag}>
             <button
               type="button"
               onClick={copyLink}
               className="hds-focus"
               aria-label={`Copy link to ${title}`}
-              style={textLockupStyles.anchorCopyBtn}
+              style={anchorCopyBtnStyle}
             >
-              <span style={config.title}>{title}</span>
+              <span className={config.titleClassName}>{title}</span>
               <span
                 aria-hidden="true"
                 data-copied={copied ? 'true' : undefined}
-                className="hds-doc-section-copy-icon"
-                style={{
-                  color: 'var(--semantic-color-content-accent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexShrink: 0,
-                }}
+                className="hds-doc-section-copy-icon flex flex-shrink-0 items-center text-accent-foreground"
               >
                 {copied ? (
                   <Icon icon={Check} size="small" color="var(--semantic-color-content-accent)" />
@@ -232,7 +235,7 @@ export const TextLockup = forwardRef<HTMLElement, TextLockupProps>(function Text
           </Text>
         </div>
       ) : (
-        <Text variant={config.titleVariant} as={TitleTag} style={config.title}>
+        <Text variant={config.titleVariant} as={TitleTag} className={config.titleClassName}>
           {title}
         </Text>
       )}
@@ -241,10 +244,7 @@ export const TextLockup = forwardRef<HTMLElement, TextLockupProps>(function Text
         <Text
           variant={config.descriptionVariant}
           as={DescriptionTag}
-          style={{
-            ...config.description,
-            maxWidth: centered ? 640 : config.description.maxWidth,
-          }}
+          className={cn(config.descriptionClassName, centered && CENTERED_MAX_WIDTH_CLASS)}
         >
           {description}
         </Text>
