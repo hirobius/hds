@@ -58,6 +58,11 @@
       "import": "./dist/mui.js",
       "default": "./dist/mui.js"
     },
+    "./brand": {
+      "types": "./dist/types/src/brand/index.d.ts",
+      "import": "./dist/brand.js",
+      "default": "./dist/brand.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [

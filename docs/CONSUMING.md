@@ -219,6 +219,7 @@ export function Example() {
 | `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                      |
 | `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                          |
 | `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                  |
+| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)           |
 
 ### Semantic feedback / status tokens
 
@@ -459,3 +460,107 @@ package" packaging note live in
 | Text uses the host font, not Satoshi               | Missing `data-hds` on an ancestor (§4).                                                                                                                                 |
 | In-app links do a full page reload                 | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5).                                                                                 |
 | Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible.                                                                   |
+| Brand overlay has no effect on an Astro page       | Inject the overlay on an ancestor of the themed markup (usually `<html>`), and ensure `variables.css` is imported once (§12).                                           |
+
+## 12. Static Astro sites + the brand overlay bridge
+
+HDS is built for a React runtime, but its **tokens are just CSS custom
+properties**, so a static Astro site can render HDS-consistent UI with **zero
+React** — import the vars, set a few attributes, and let per-page markup read the
+tokens through Tailwind utilities or plain CSS. Interactive pieces hydrate as
+`client:*` islands only where you actually need them.
+
+This is the path the `hirobius/clients` factory uses: one HDS token spine, many
+brand skins, no parallel token system.
+
+### 12.1 Wire the token spine once (in your base layout)
+
+```astro
+---
+// src/layouts/Base.astro
+import '@hirobius/design-system/variables.css'; // tokens only — no reset, host-safe
+import { brandOverlayStyle } from '@hirobius/design-system/brand';
+import { client } from '../client.config';
+
+// Map the site's brand palette onto HDS semantics (see §12.2).
+const style = brandOverlayStyle(client.palette);
+---
+<html lang="en" data-hds data-theme="light" style={style}>
+  <head><slot name="head" /></head>
+  <body><slot /></body>
+</html>
+```
+
+- `data-hds` opts the subtree into HDS's base type/reset (§4).
+- `data-theme="light|dark"` picks the mode; `data-brand="slug"` is available too
+  if you prefer a checked-in overlay block over the inline style (§12.3).
+- The inline `style` wins the cascade, so the brand always overrides defaults.
+
+### 12.2 The brand bridge — palette → HDS semantics
+
+`@hirobius/design-system/brand` is **framework-free** (no React, no Node), so it
+runs in an Astro build or an edge function. Give it a small palette; it returns
+the HDS semantic custom properties, deriving interactive accent states with CSS
+`color-mix()`:
+
+```ts
+import {
+  brandOverlayStyle,
+  brandOverlayCss,
+  brandOverlayVars,
+} from '@hirobius/design-system/brand';
+
+const palette = {
+  primary: '#2f6f3e', // → --semantic-accent-rest + surface/border-accent
+  onPrimary: '#ffffff', // → --semantic-color-content-onAccent
+  bg: '#f7f8f3', // → --semantic-color-surface-page
+  fg: '#1f2a1c', // → --semantic-color-content-primary
+  muted: '#e7ecdd', // → --semantic-color-surface-raised
+  accent: '#a7c957', // optional — kept brand-level (--brand-accent)
+  radius: '8px', // optional — --semantic-radius-action
+  fontHeading: '"Work Sans", sans-serif', // optional → display family
+  fontBody: 'Inter, sans-serif', // optional → primary family
+};
+
+brandOverlayStyle(palette); // "…k:v;k:v" for <html style>
+brandOverlayCss('[data-brand="acme"]', palette); // a scoped CSS rule block
+brandOverlayVars(palette); // the raw { --var: value } record
+```
+
+Only the accent ramp, page/content colours, and (when given) radius + fonts are
+overridden; everything else inherits HDS defaults, so a partial palette still
+yields a coherent theme. `color-mix()` is Baseline-supported (evergreen engines
+since 2023).
+
+### 12.3 Multi-brand: `data-brand` blocks
+
+For several brands on one deploy (per-niche reskins), emit a `data-brand` block
+per brand with `brandOverlayCss` into a global stylesheet and switch by
+attribute — no inline style, no rebuild:
+
+```ts
+// build a static stylesheet from your brand registry
+const css = brands.map((b) => brandOverlayCss(`[data-brand="${b.slug}"]`, b.palette)).join('\n');
+```
+
+```astro
+<html data-hds data-brand={Astro.url.searchParams.get('brand') ?? 'default'}>
+```
+
+### 12.4 Hydrate only what's interactive
+
+Static primitives (badge, card, alert, divider, tag, the layout primitives, and
+`Box`/`sx`) render from tokens with no JS. Reach for a React island **only** for
+genuinely interactive components:
+
+```astro
+---
+import { ContactForm } from '@hirobius/design-system';
+---
+<ContactForm client:visible />
+```
+
+Import `@hirobius/design-system/styles.css` once (alongside `variables.css`, or
+instead of it) when you hydrate components that need HDS's compiled component
+CSS. For a purely static page, `variables.css` + your own Tailwind utilities is
+enough.

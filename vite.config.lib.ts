@@ -99,6 +99,10 @@ export default defineConfig({
         // palette; imports no MUI code (structural return type), so it's inert
         // unless a consumer imports it.
         mui: path.resolve(__dirname, 'src/mui/index.ts'),
+        // Subpath: palette → HDS-semantic overlay bridge. Framework-free (no
+        // React/Node), so a static Astro build or edge runtime can theme itself
+        // from a brand palette while inheriting HDS semantics. See #64.
+        brand: path.resolve(__dirname, 'src/brand/index.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],

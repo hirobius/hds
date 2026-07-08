@@ -23,7 +23,8 @@
     "src/lib/manifest-entry.ts",
     "src/app/context/index.ts",
     "src/form/index.ts",
-    "src/mui/index.ts"
+    "src/mui/index.ts",
+    "src/brand/index.ts"
   ],
   "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*", "**/*.stories.*"]
 }
