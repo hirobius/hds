@@ -8,7 +8,29 @@
 // motion-ok: dropzone border/background feedback via Tailwind transition-colors (gate accepts only hds.duration refs)
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// Decorative dropzone chrome only — `dragging` and `disabled` are the two
+// boolean states the dropzone reacts to (not one of the contract's four
+// axes; like Tag's `selected`, this is a component-specific state flag).
+const fileInputVariants = cva(
+  'flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-border bg-background p-6 text-center text-sm text-muted-foreground transition-colors hover:border-ring hover:bg-accent hds-focus',
+  {
+    variants: {
+      dragging: {
+        true: 'border-ring bg-accent',
+        false: '',
+      },
+      disabled: {
+        true: 'pointer-events-none opacity-50',
+        false: '',
+      },
+    },
+    defaultVariants: { dragging: false, disabled: false },
+  },
+);
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -59,12 +81,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(func
         if (disabled) return;
         onFiles?.(Array.from(event.dataTransfer.files ?? []));
       }}
-      className={cn(
-        'flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-border bg-background p-6 text-center text-sm text-muted-foreground transition-colors hover:border-ring hover:bg-accent hds-focus',
-        dragging && 'border-ring bg-accent',
-        disabled && 'pointer-events-none opacity-50',
-        className,
-      )}
+      className={cn(fileInputVariants({ dragging, disabled, className }))}
     >
       {label}
       <input
@@ -80,3 +97,6 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(func
     </label>
   );
 });
+
+/** @internal — CVA variant helper; compose via FileInput props instead. */
+export { fileInputVariants };

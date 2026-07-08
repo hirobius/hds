@@ -26,3 +26,9 @@ export const MultipleImages: Story = {
     multiple: true,
   },
 };
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
