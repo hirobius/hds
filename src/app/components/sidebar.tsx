@@ -6,8 +6,8 @@
  * problem with the flex-basis/flex-grow disparity technique — the rail holds
  * `sideWidth` and the content flex-basis 0 with an overwhelming flex-grow, so
  * the pair wraps to stacked automatically once the container can no longer
- * fit both without squeezing content below `contentMin`. No `@media` query,
- * no JS resize observer.
+ * fit both without squeezing content below `contentMin`. No CSS media
+ * query, no JS resize observer.
  * @ai-rules Reach for this named layout intent before Box/sx. Sidebar expects
  * EXACTLY two children — the rail and the content — passed in that order.
  * `side` controls which one visually renders as the rail; DOM order is
