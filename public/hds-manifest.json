@@ -2940,7 +2940,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/tag.tsx",
-      "description": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) are owned by .hds-tag-btn / .hds-tag-pill in theme.css so :hover transitions work — inline styles beat :hover selectors and would silently break the effect. Active state: brand fill via [data-active=\"true\"] in theme.css. Hover states: inactive → subtle tint + brand border; active → brand-hover fill.",
+      "description": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {

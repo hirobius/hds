@@ -40,3 +40,21 @@ export const WithOverflow: Story = {
     </AvatarGroup>
   ),
 };
+
+export const Sizes: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div
+      style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}
+    >
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <AvatarGroup key={size} size={size} max={3}>
+          <Avatar alt="Ada Lovelace" />
+          <Avatar alt="Alan Turing" />
+          <Avatar alt="Grace Hopper" />
+          <Avatar alt="Katherine Johnson" />
+        </AvatarGroup>
+      ))}
+    </div>
+  ),
+};

@@ -22,7 +22,7 @@ const meta = {
   argTypes: {
     tone: {
       control: { type: 'select' },
-      options: ['default', 'success', 'warning', 'danger'],
+      options: ['neutral', 'success', 'warning', 'danger', 'info'],
     },
     mono: { control: 'boolean' },
   },
@@ -60,6 +60,34 @@ export const Danger: Story = {
     value: '3 critical',
     tone: 'danger',
   },
+};
+
+export const Info: Story = {
+  args: {
+    label: 'Note',
+    value: 'Pending review',
+    tone: 'info',
+  },
+};
+
+export const AllTones: Story = {
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        story: 'All five tones rendered side-by-side.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+      <Field label="Status" value="Active" tone="neutral" />
+      <Field label="Build" value="Passing" tone="success" />
+      <Field label="Coverage" value="61%" tone="warning" />
+      <Field label="Errors" value="3 critical" tone="danger" />
+      <Field label="Note" value="Pending review" tone="info" />
+    </div>
+  ),
 };
 
 export const Mono: Story = {

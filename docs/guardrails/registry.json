@@ -154,7 +154,7 @@
     },
     {
       "id": "check-prop-vocabulary",
-      "description": "Enforces HDS prop-value vocabulary on component primitives: feedback tone/variant unions use danger (never error); size unions stay on the sm|md|lg ramp (no default/compact).",
+      "description": "Enforces HDS prop-value vocabulary on component primitives: feedback tone/variant unions use danger (never error); size unions stay on the sm|md|lg ramp (no default/compact); tone is drawn from neutral|danger|success|warning|info; density is drawn from comfortable|compact. --coverage prints the cva-adoption rollout tracker (informational, always exit 0).",
       "severity": "warn",
       "gateScript": "scripts/check-prop-vocabulary.mjs",
       "fixturePath": "fixtures/check-prop-vocabulary",

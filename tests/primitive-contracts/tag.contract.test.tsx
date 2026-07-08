@@ -1,7 +1,8 @@
 /**
  * Contract test: Tag
- * Verifies that Tag emits the expected BEM class names and data attributes
- * for active/inactive states.
+ * Verifies that Tag emits the expected cva-driven classes and data attributes
+ * for active/inactive states (converted off the former .hds-tag-btn/
+ * .hds-tag-pill theme.css classes for #60 — see src/app/components/tag.tsx).
  *
  * @primitive Tag
  * @unit 12p-test-contract-tests-primitives
@@ -22,16 +23,17 @@ describe('Tag contract', () => {
     expect(btn?.tagName.toLowerCase()).toBe('button');
   });
 
-  it('root button carries hds-tag-btn class', () => {
+  it('root button carries the shared group interaction class (tagButtonVariants)', () => {
     const { container } = render(<Tag>Label</Tag>);
     const btn = container.querySelector('button');
-    expect(btn?.classList.contains('hds-tag-btn')).toBe(true);
+    expect(btn?.classList.contains('group')).toBe(true);
   });
 
-  it('inner pill carries hds-tag-pill class', () => {
+  it('inner pill (tagPillVariants) is a span carrying the tag radius token class', () => {
     const { container } = render(<Tag>Label</Tag>);
-    const pill = container.querySelector('.hds-tag-pill');
+    const pill = container.querySelector('button > span');
     expect(pill).not.toBeNull();
+    expect(pill?.className).toContain('rounded-[var(--component-tag-radius)]');
   });
 
   it('active=false sets aria-pressed="false"', () => {

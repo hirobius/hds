@@ -1,7 +1,9 @@
 /**
  * Contract test: Divider
- * Verifies that orientation and strong props produce the expected inline style
- * and aria attributes.
+ * Verifies that orientation and strong/variant props produce the expected
+ * cva-driven border-token class and aria attributes (converted off inline
+ * `style.borderTop`/`style.borderLeft` for #60 — see
+ * src/app/components/divider.tsx).
  *
  * @primitive Divider
  * @unit 12p-test-contract-tests-primitives
@@ -40,16 +42,22 @@ describe('Divider contract', () => {
     expect(el?.getAttribute('aria-orientation')).toBe('horizontal');
   });
 
-  it('strong=false uses default border token', () => {
+  it('strong=false uses the default border token class', () => {
     const { container } = render(<Divider strong={false} />);
     const el = container.querySelector('hr') as HTMLElement;
-    expect(el?.style.borderTop).toContain('semantic-color-border-default');
+    expect(el?.className).toContain('semantic-color-border-default');
   });
 
-  it('strong=true uses strong border token', () => {
+  it('strong=true uses the strong border token class', () => {
     const { container } = render(<Divider strong={true} />);
     const el = container.querySelector('hr') as HTMLElement;
-    expect(el?.style.borderTop).toContain('semantic-color-border-strong');
+    expect(el?.className).toContain('semantic-color-border-strong');
+  });
+
+  it('variant="strong" uses the strong border token class (new prop, same as strong=true)', () => {
+    const { container } = render(<Divider variant="strong" />);
+    const el = container.querySelector('hr') as HTMLElement;
+    expect(el?.className).toContain('semantic-color-border-strong');
   });
 
   it('className prop is applied to the hr element', () => {
