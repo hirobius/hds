@@ -1,0 +1,78 @@
+/*
+ * scroll-motion.css — CSS scroll-driven reveal + sticky pin primitives (#116).
+ *
+ * Zero JS, zero dependencies. Content is fully visible by DEFAULT; the reveal
+ * animation applies only where `animation-timeline` is supported AND the user
+ * has not requested reduced motion — so nothing is ever stuck hidden on an
+ * unsupported browser or for a reduced-motion visitor (progressive enhancement).
+ *
+ * Consumed by the Reveal and Pin primitives
+ * (src/app/components/{reveal,pin}.tsx). See ADR-021.
+ */
+
+@supports (animation-timeline: view()) {
+  @media not (prefers-reduced-motion: reduce) {
+    .hds-reveal {
+      animation: hds-reveal-fade linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+    .hds-reveal[data-reveal='fade-up'] {
+      animation-name: hds-reveal-fade-up;
+    }
+    .hds-reveal[data-reveal='fade-down'] {
+      animation-name: hds-reveal-fade-down;
+    }
+    .hds-reveal[data-reveal='scale'] {
+      animation-name: hds-reveal-scale;
+    }
+  }
+}
+
+@keyframes hds-reveal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes hds-reveal-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--primitive-space-6)); /* css-ok: token-bound reveal offset */
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hds-reveal-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(
+      calc(-1 * var(--primitive-space-6))
+    ); /* css-ok: token-bound reveal offset */
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hds-reveal-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Sticky pin — keeps an element fixed within its parent's scroll region so a
+   pinned scroll scene can scrub while the surrounding section scrolls past. */
+.hds-pin {
+  position: sticky;
+  top: var(--hds-pin-top, 0);
+}

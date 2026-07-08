@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "types": ["vite/client"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "lenis/react": ["./node_modules/lenis/dist/lenis-react"]
     }
   },
   "include": [
@@ -24,7 +25,8 @@
     "src/app/context/index.ts",
     "src/form/index.ts",
     "src/mui/index.ts",
-    "src/brand/index.ts"
+    "src/brand/index.ts",
+    "src/scroll/index.ts"
   ],
   "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*", "**/*.stories.*"]
 }

@@ -38,15 +38,16 @@ export function Example() {
 
 Available subpaths:
 
-| Import                               | What                                                                                                                                                           |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`            | All components (primitives, patterns, templates)                                                                                                               |
-| `@hirobius/design-system/tokens.css` | Token CSS variables (import once at app root)                                                                                                                  |
-| `@hirobius/design-system/tokens`     | Token values as TS constants                                                                                                                                   |
-| `@hirobius/design-system/cn`         | `cn()` class-merge helper                                                                                                                                      |
-| `@hirobius/design-system/manifest`   | The HDS manifest JSON                                                                                                                                          |
-| `@hirobius/design-system/contexts`   | Theme / language / tenant / font providers                                                                                                                     |
-| `@hirobius/design-system/brand`      | Palette → HDS-semantic overlay bridge (static / SSR / Astro; see [`docs/CONSUMING.md` §12](docs/CONSUMING.md#12-static-astro-sites--the-brand-overlay-bridge)) |
+| Import                               | What                                                                                                                                                                                                             |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@hirobius/design-system`            | All components (primitives, patterns, templates)                                                                                                                                                                 |
+| `@hirobius/design-system/tokens.css` | Token CSS variables (import once at app root)                                                                                                                                                                    |
+| `@hirobius/design-system/tokens`     | Token values as TS constants                                                                                                                                                                                     |
+| `@hirobius/design-system/cn`         | `cn()` class-merge helper                                                                                                                                                                                        |
+| `@hirobius/design-system/manifest`   | The HDS manifest JSON                                                                                                                                                                                            |
+| `@hirobius/design-system/contexts`   | Theme / language / tenant / font providers                                                                                                                                                                       |
+| `@hirobius/design-system/brand`      | Palette → HDS-semantic overlay bridge (static / SSR / Astro; see [`docs/CONSUMING.md` §12](docs/CONSUMING.md#12-static-astro-sites--the-brand-overlay-bridge))                                                   |
+| `@hirobius/design-system/scroll`     | Opt-in scroll-motion primitives — `SmoothScroll` (Lenis), `useScrollProgress` (Motion). Requires the optional peer `lenis`. See [`docs/CONSUMING.md` §13](docs/CONSUMING.md#13-scroll-motion-the-scroll-subpath) |
 
 The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,
 Remix, Webpack 5+) or a Node ≥ 20 ESM runtime. Built `.d.ts` declarations ship in

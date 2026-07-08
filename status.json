@@ -1,15 +1,16 @@
 {
-  "updatedAt": "2026-07-08T16:40:00Z",
+  "updatedAt": "2026-07-08T17:20:00Z",
   "phase": "active",
-  "headline": "Pre-release issue burndown (before cutting 0.12.0). CLOSED this session: #62 (multi-brand data-brand overlays + HdsThemeProvider runtime switch — verified shipping in dist + test-locked, unblocks #68); #48 (Satoshi typography — code-side complete/shipping, Figma text-style swap split to #109). #60 audited: coverage 48/131 is an architectural ceiling — remaining non-cva components are thin wrappers, metadata-only tone, numeric-sized, or CSS-in-JS/motion needing a #93-style migration first; recommended as post-release migration PRs, not a blocker. #64 Astro consumption HDS-side SHIPPED on branch (/brand overlay bridge + CONSUMING.md §12), proven in clients#30 (all 6 apps green, pixel-identical, full HDS spine), pending 0.12.0 release. PRIOR (merged to main): layout epic #95 (#92/#96/#97/#98) + #93 CSS-in-JS→Tailwind migration (#103-#108).",
+  "headline": "MAIN is release-ready for 0.12.0 — everything merged. This session CLOSED: #64 (Astro consumption — /brand overlay bridge + CONSUMING.md §12, PR #111; proven in clients#30 pixel-identical); #62 (multi-brand data-brand + HdsThemeProvider runtime switch, test-locked); #60 (variant contract — the 4 remaining public components with a real paint axis migrated to Tailwind+cva: heading-stack #112, activity-feed #113 [status→tone, error→danger alias], side-nav #114, doc-link-card #115 [motion preserved]; Chromatic '433 tests unchanged' = zero visual diffs; utility-tier dev-shell explicitly exempt); #48 + #109 (Satoshi typography — swapped in Figma via use_figma Plugin API: flipped typography/family/display variable Clash Display→Satoshi, all heading roles alias it, also fixed a missing-font fallback; awaits a library Publish click). #109's swap was a single variable edit. PRIOR merged: layout epic #95 (#92/#96/#97/#98), #93 CSS-in-JS→Tailwind (#103-#108).",
   "next": [
-    "CUT @hirobius/design-system 0.12.0 (minor changeset carries /brand + overlay bridge). check:release/publish is human-only. Then clients#30 runs pnpm install to wire the factory against the published version.",
-    "Post-release: #60 stateful CSS-in-JS→Tailwind+cva migrations, one PR per component (side-nav, doc-link-card, …) with pixel-parity verification.",
-    "Human/Figma-gated (not release blockers): #109 Figma Satoshi text-style swap (use_figma flaky); #47 Figma Code Connect; #80 Chromatic baseline review + freeze; #86 secrets standard (Bitwarden classification).",
-    "Deferred Phase 2: #66 expression layer; #68 niche reskins (now unblocked by #62)."
+    "CUT @hirobius/design-system 0.12.0 — main carries the minor changeset (/brand + overlay bridge) plus 6 patch/minor changesets from the #60 migrations. check:release/publish is human-only. Then clients#30 runs pnpm install to wire the factory against the published version.",
+    "Figma: click Publish on the HDS Tokens & Components library so the Satoshi display-family change (#109) propagates to consuming files.",
+    "Repo-wide: the Vercel *deployment* status errors on every PR (non-required; the required 'Vercel Preview Comments' check passes) — worth a separate look at the Vercel project config, not a blocker.",
+    "Human-gated (not release blockers): #47 Figma Code Connect; #80 Chromatic baseline review + freeze; #86 secrets standard (Bitwarden classification).",
+    "Deferred Phase 2: #66 expression layer; #68 niche reskins (targets hirobius.io repo; unblocked by #62)."
   ],
   "blocked": [
     "#64 clients wiring (clients#30) waits on the 0.12.0 npm release (proven locally against a pnpm-pack tarball).",
-    "#109 Figma Satoshi text-style swap — use_figma MCP tool repeatedly drops with 'permission stream closed'; needs a stable Figma session or human run."
+    "#109 propagation waits on a manual Figma library Publish (the variable edit itself is done)."
   ]
 }
