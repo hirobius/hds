@@ -6,12 +6,46 @@
 import React, { useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { cva } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Icon } from './icon';
 import { Stack } from './stack';
 import { Surface } from './surface';
 
 type DisclosureVariant = 'panel' | 'nav' | 'card';
+
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `variant` is the structural axis (panel | nav | card). Open/closed state is
+// expressed the Radix way — a `data-state="open"|"closed"` attribute on the
+// trigger driving `data-[state=open]:` selectors — instead of the previous JS
+// `hovered` boolean re-rendering an inline style object on every mousemove.
+// Height/opacity/chevron-rotation stay motion/react-driven (JS spring/tween
+// timing an accordion needs, not a CSS transition), so that animation is
+// untouched by this migration — only the static layout/color styling moved.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
+const disclosureTriggerVariants = cva(
+  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-primary transition-[border-color,box-shadow,color]',
+  {
+    variants: {
+      variant: {
+        panel: 'min-w-0 justify-between',
+        nav: 'justify-between rounded-[var(--semantic-radius-action)] border-0 px-0 py-[var(--component-nav-paddingY)] hover:bg-[var(--semantic-color-surface-raised)] data-[state=open]:bg-[var(--semantic-color-surface-raised)]',
+        // grid-ok: label + caret row; minmax(0,1fr) lets label shrink to any viewport, caret is a small auto column
+        card: 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[var(--semantic-space-component-gap)] gap-y-0 data-[state=open]:gap-y-[var(--semantic-space-component-gap)]',
+      },
+    },
+    defaultVariants: { variant: 'panel' },
+  },
+);
+
+const disclosureContainerGap: Record<DisclosureVariant, string> = {
+  panel: hds.semantic.space.sidebar.gap,
+  nav: hds.semantic.space.sidebar.sectionGap,
+  card: hds.semantic.space.component.gap,
+};
+
+// ── Types ──────────────────────────────────────────────────────────────────────
 
 type DisclosureProps = {
   /** Summary label rendered in the disclosure trigger. Accepts a string or ReactNode for icon+label combos. */
@@ -36,6 +70,8 @@ type DisclosureProps = {
   children: ReactNode;
 };
 
+// ── Component ──────────────────────────────────────────────────────────────────
+
 /** @public */
 export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(function Disclosure(
   {
@@ -53,11 +89,11 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
   ref,
 ) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const [hovered, setHovered] = useState(false);
   const panelId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const resolvedOpen = open ?? internalOpen;
+  const state = resolvedOpen ? 'open' : 'closed';
 
   function handleToggle() {
     const nextOpen = !resolvedOpen;
@@ -72,69 +108,20 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
     onOpenChange?.(nextOpen);
   }
 
-  const triggerClassName = [
+  const triggerClassName = cn(
     'hds-focus',
+    disclosureTriggerVariants({ variant }),
     variant === 'nav' ? 'hds-text-hover hds-bg-hover-neutral' : '',
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+    className,
+  );
 
-  const baseTriggerStyle: CSSProperties = {
-    display: variant === 'card' ? 'grid' : 'flex',
-    alignItems: 'center',
-    justifyContent: variant === 'card' ? undefined : 'space-between',
-    width: '100%',
-    gap: hds.semantic.space.sidebar.gap,
-    color: 'var(--semantic-color-content-primary)',
-    cursor: 'pointer',
-    textAlign: 'left',
-    transition: [
-      `border-color ${hds.motion.productive.duration}s ${hds.motion.productive.easing}`,
-      `box-shadow ${hds.motion.productive.duration}s ${hds.motion.productive.easing}`,
-      `color ${hds.motion.productive.duration}s ${hds.motion.productive.easing}`,
-    ].join(', '),
-  };
-
-  const variantTriggerStyle: Record<DisclosureVariant, CSSProperties> = {
-    panel: {
-      minWidth: 0,
-    },
-    nav: {
-      paddingBlock: 'var(--component-nav-paddingY)',
-      paddingInline: 0,
-      border: 'none',
-      borderRadius: hds.borderRadius.action,
-      background: resolvedOpen || hovered ? 'var(--semantic-color-surface-raised)' : 'transparent',
-    },
-    card: {
-      gridTemplateColumns: 'minmax(0, 1fr) auto', // grid-ok: label + caret row; minmax(0,1fr) lets label shrink to any viewport, caret is small auto column
-      columnGap: hds.semantic.space.component.gap,
-      rowGap: resolvedOpen ? hds.semantic.space.component.gap : 0,
-    },
-  };
-
-  const containerGap =
-    variant === 'panel'
-      ? resolvedOpen
-        ? hds.semantic.space.sidebar.gap
-        : 0
-      : variant === 'card'
-        ? resolvedOpen
-          ? hds.semantic.space.component.gap
-          : 0
-        : resolvedOpen
-          ? hds.semantic.space.sidebar.sectionGap
-          : 0;
+  const containerGap = resolvedOpen ? disclosureContainerGap[variant] : 0;
 
   const labelContent =
     typeof label === 'string' ? (
       <span
-        style={{
-          ...(variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption),
-          margin: 0,
-          color: 'currentColor',
-        }}
+        className="m-0 text-current"
+        style={variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption}
       >
         {label}
       </span>
@@ -148,26 +135,14 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
         ref={triggerRef}
         type="button"
         onClick={handleToggle}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
         aria-expanded={resolvedOpen}
         aria-controls={panelId}
+        data-state={state}
         className={triggerClassName}
-        style={{
-          ...baseTriggerStyle,
-          ...variantTriggerStyle[variant],
-          ...triggerStyle,
-        }}
+        style={triggerStyle}
       >
-        <div
-          style={{
-            minWidth: 0,
-            flex: 1,
-            ['display']: 'grid',
-            gap: hds.semantic.space.subgrid.gap,
-            alignItems: 'start',
-          }}
-        >
+        {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven */}
+        <div className="grid min-w-0 flex-1 items-start gap-[var(--semantic-space-subgrid-gap)]">
           {labelContent}
         </div>
         <motion.span
@@ -177,17 +152,8 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
             duration: hds.motion.productive.duration,
             ease: hds.motion.productive.easing,
           }}
-          style={{
-            display: 'inline-grid',
-            placeItems: 'center',
-            width: hds.iconSize.small,
-            height: hds.iconSize.small,
-            flexShrink: 0,
-            alignSelf: 'center',
-            lineHeight: 0,
-            transformOrigin: '50% 50%',
-            overflow: 'hidden',
-          }}
+          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
+          className="inline-grid size-[var(--primitive-typography-size-base)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
         >
           <Icon icon={ChevronDown} size="small" color="currentColor" />
         </motion.span>
@@ -205,7 +171,7 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
               duration: hds.motion.productive.duration,
               ease: hds.motion.productive.easing,
             }}
-            style={{ overflow: 'hidden' }}
+            className="overflow-hidden"
           >
             <div
               style={{
@@ -232,9 +198,7 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
     <Surface
       ref={ref}
       padding="component"
-      style={{
-        overflow: variant === 'card' ? 'hidden' : undefined,
-      }}
+      className={variant === 'card' ? 'overflow-hidden' : undefined}
     >
       <Stack gap="tight" style={{ gap: containerGap }}>
         {disclosureBody}
@@ -242,3 +206,6 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
     </Surface>
   );
 });
+
+/** @internal — CVA variant helper; compose via Disclosure props instead. */
+export { disclosureTriggerVariants };

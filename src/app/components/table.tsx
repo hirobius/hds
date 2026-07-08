@@ -3,58 +3,64 @@
  * @category Display
  * @tier primitive
  */
-import { Fragment, useId, type ReactNode, type CSSProperties } from 'react';
+import { Fragment, useId, type CSSProperties, type ReactNode } from 'react';
+import { cva } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Surface } from './surface';
 
-function makeHeaderCellStyle(opts: {
-  justifyContent: string;
-  textAlign: React.CSSProperties['textAlign'];
-  paddingY: string | number;
-  minHeight: string | number;
-  stickyHeader: boolean;
-  zIndex: string | number;
-}): React.CSSProperties {
-  return {
-    ...hds.typeStyles.technical,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: opts.justifyContent,
-    textAlign: opts.textAlign,
-    background: 'var(--semantic-color-surface-overlay)',
-    paddingTop: opts.paddingY,
-    paddingRight: hds.semantic.space.component.padding,
-    paddingBottom: opts.paddingY,
-    paddingLeft: hds.semantic.space.component.padding,
-    minHeight: opts.minHeight,
-    position: opts.stickyHeader ? 'sticky' : undefined,
-    top: opts.stickyHeader ? 0 : undefined,
-    zIndex: opts.stickyHeader ? opts.zIndex : undefined,
-  };
-}
+// ── Variants ───────────────────────────────────────────────────────────────────
+// `density` is the variant contract's canonical density example (comfortable |
+// compact, docs/architecture/variant-contract.md). It drives paddingY + row
+// minHeight for both header and data cells. `align` mirrors each column's
+// `TableColumnAlign` (left | center | right) and `sticky`/`divider` express the
+// header-pin and row-separator states. All four are cva axes bound to Tailwind
+// arbitrary-value classes over the same CSS custom properties the previous
+// inline styles referenced — same tokens, pixel-parity.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
+const tableHeaderCellVariants = cva(
+  'flex items-center bg-[var(--semantic-color-surface-overlay)] px-[var(--semantic-space-component-padding)]',
+  {
+    variants: {
+      align: {
+        left: 'justify-start text-left',
+        center: 'justify-center text-center',
+        right: 'justify-end text-right',
+      },
+      density: {
+        comfortable: 'min-h-[var(--primitive-size-48)] py-[var(--primitive-space-3)]',
+        compact: 'min-h-[var(--primitive-size-40)] py-[var(--semantic-space-component-gap)]',
+      },
+      sticky: {
+        true: 'sticky top-0 z-[var(--primitive-zIndex-100)]',
+        false: '',
+      },
+    },
+    defaultVariants: { align: 'left', density: 'comfortable', sticky: false },
+  },
+);
 
-function makeDataCellStyle(opts: {
-  justifyContent: string;
-  minHeight: string | number;
-  paddingY: string | number;
-  borderBottom: string;
-  textAlign: React.CSSProperties['textAlign'];
-  slotStyle?: React.CSSProperties;
-}): React.CSSProperties {
-  return {
-    ...opts.slotStyle,
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: opts.justifyContent,
-    minHeight: opts.minHeight,
-    paddingTop: opts.paddingY,
-    paddingRight: hds.semantic.space.component.padding,
-    paddingBottom: opts.paddingY,
-    paddingLeft: hds.semantic.space.component.padding,
-    borderBottom: opts.borderBottom,
-    textAlign: opts.textAlign,
-  };
-}
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
+const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-component-padding)]', {
+  variants: {
+    align: {
+      left: 'justify-start text-left',
+      center: 'justify-center text-center',
+      right: 'justify-end text-right',
+    },
+    density: {
+      comfortable: 'min-h-[var(--primitive-size-48)] py-[var(--primitive-space-3)]',
+      compact: 'min-h-[var(--primitive-size-40)] py-[var(--semantic-space-component-gap)]',
+    },
+    divider: {
+      true: '[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
+      false: '',
+    },
+  },
+  defaultVariants: { align: 'left', density: 'comfortable', divider: true },
+});
+
+// ── Types ──────────────────────────────────────────────────────────────────────
 
 /** @public */
 export type TableColumnAlign = 'left' | 'center' | 'right';
@@ -92,6 +98,12 @@ export type TableRow = {
 
 type TableDensity = 'compact' | 'comfortable';
 
+// Per-slot typography. Kept as CSSProperties (not Tailwind classes) — the
+// composite semantic.typography.* tokens (fontFamily/size/weight/letterSpacing/
+// lineHeight) aren't yet bridged to Tailwind theme utilities anywhere in HDS
+// (see Text primitive, src/app/components/text.tsx), so this mirrors the
+// established `style={hds.typeStyles.X}` pattern used by already-converted
+// cva components like Breadcrumb.
 const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   label: hds.typeStyles.ui,
   value: hds.typeStyles.technical,
@@ -106,30 +118,6 @@ const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   badge: hds.typeStyles.caption,
   action: hds.typeStyles.ui,
 };
-
-function alignToTextAlign(align: TableColumnAlign = 'left') {
-  return align;
-}
-
-function getDensityMetrics(density: TableDensity) {
-  if (density === 'compact') {
-    return {
-      paddingY: hds.semantic.space.component.gap,
-      minHeight: hds.size[40],
-    };
-  }
-
-  return {
-    paddingY: hds.space.px12,
-    minHeight: hds.size[48],
-  };
-}
-
-function cellJustifyContent(align: TableColumnAlign = 'left') {
-  if (align === 'center') return 'center';
-  if (align === 'right') return 'flex-end';
-  return 'flex-start';
-}
 
 export function Table({
   columns,
@@ -153,7 +141,6 @@ export function Table({
   flush?: boolean;
   stickyHeader?: boolean;
 }) {
-  const metrics = getDensityMetrics(density);
   const captionId = useId();
   const hasCaption = Boolean(caption);
 
@@ -162,20 +149,11 @@ export function Table({
       {caption || description ? (
         <div>
           {caption ? (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
+            <div className="flex items-center justify-between">
               <div
                 id={hasCaption ? captionId : undefined}
-                style={{
-                  ...hds.typeStyles.ui,
-                  color: 'var(--semantic-color-content-primary)',
-                  margin: 0,
-                }}
+                className="m-0 text-primary"
+                style={hds.typeStyles.ui}
               >
                 {caption}
               </div>
@@ -183,12 +161,7 @@ export function Table({
             </div>
           ) : null}
           {description ? (
-            <div
-              style={{
-                ...hds.typeStyles.ui,
-                color: 'var(--semantic-color-content-secondary)',
-              }}
-            >
+            <div className="text-secondary" style={hds.typeStyles.ui}>
               {description}
             </div>
           ) : null}
@@ -200,23 +173,28 @@ export function Table({
         tabIndex={0}
         aria-labelledby={hasCaption ? captionId : undefined}
         aria-label={hasCaption ? undefined : 'Scrollable table content'}
-        style={{
-          overflowX: 'auto',
-          overflowY: 'visible',
-          background: 'var(--semantic-color-surface-raised)',
-        }}
+        style={{ overflowX: 'auto', overflowY: 'visible' }}
       >
         <div
+          className="grid"
           style={{
             minWidth,
-            ['display']: 'grid',
-            gridTemplateColumns: columns.map((column) => column.width ?? 'minmax(0, 1fr)').join(' '),
+            gridTemplateColumns: columns
+              .map((column) => column.width ?? 'minmax(0, 1fr)')
+              .join(' '),
           }}
         >
           {columns.map((column) => (
             <div
               key={column.key}
-              style={makeHeaderCellStyle({ justifyContent: cellJustifyContent(column.align), textAlign: alignToTextAlign(column.align), paddingY: metrics.paddingY, minHeight: metrics.minHeight, stickyHeader: Boolean(stickyHeader), zIndex: hds.zIndex.overlay })}
+              className={cn(
+                tableHeaderCellVariants({
+                  align: column.align ?? 'left',
+                  density,
+                  sticky: Boolean(stickyHeader),
+                }),
+              )}
+              style={hds.typeStyles.technical}
             >
               {column.label}
             </div>
@@ -226,7 +204,14 @@ export function Table({
               {row.cells.map((cell, cellIndex) => (
                 <div
                   key={`${row.key ?? rowIndex}-${cellIndex}`}
-                  style={makeDataCellStyle({ justifyContent: cellJustifyContent(cell.align), minHeight: metrics.minHeight, paddingY: metrics.paddingY, borderBottom: rowIndex < rows.length - 1 ? `${hds.borderWidth.default} solid var(--semantic-color-border-subdued)` : 'none', textAlign: alignToTextAlign(cell.align), slotStyle: SLOT_STYLES[cell.slot] })}
+                  className={cn(
+                    tableDataCellVariants({
+                      align: cell.align ?? 'left',
+                      density,
+                      divider: rowIndex < rows.length - 1,
+                    }),
+                  )}
+                  style={SLOT_STYLES[cell.slot]}
                 >
                   {cell.content}
                 </div>
@@ -239,3 +224,5 @@ export function Table({
   );
 }
 
+/** @internal — CVA variant helpers; compose via Table props instead. */
+export { tableHeaderCellVariants, tableDataCellVariants };
