@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.13.0
+
+### Minor Changes
+
+- ee7232a: Add `@hirobius/design-system/static.css` — a CSS-only static-primitive layer so pages with no React (e.g. a static Astro/HTML page) can render `Badge`, `Card`, `Alert`, `Divider`, and `Tag` via plain `.hds-badge` / `.hds-card` / `.hds-alert` / `.hds-divider` / `.hds-tag` classes. Every class binds to the same `--semantic-*` / `--component-*` / `--role-*` tokens the React components use, so it stays theme-aware via `data-theme`/`data-brand` with zero JS. Pair it with `@hirobius/design-system/variables.css`. See `docs/CONSUMING.md` §14.
+
+### Patch Changes
+
+- 2b98567: Add the AI-legibility recipe and golden-path stories for #116's scroll primitives. `llms.txt` gains a "How To Build A Scroll-Driven Section" recipe naming `Reveal` and `Pin` (CSS, zero JS) first, `useScrollProgress` (from `@hirobius/design-system/scroll`) for JS-driven values, and `SmoothScroll` for opt-in Lenis momentum — with progressive-enhancement and `prefers-reduced-motion` guidance. `src/stories/patterns-scroll.stories.tsx` adds three golden-path stories: a `Reveal` sequence, a pinned scale-reveal scene (`Pin` + `useScrollProgress` + `motion/react`), and a simple parallax built from `useScrollProgress`. No new component/API surface — that stays scoped to #66.
+
 ## 0.12.0
 
 ### Minor Changes
