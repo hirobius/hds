@@ -207,20 +207,21 @@ export function Example() {
 
 ### Subpath exports
 
-| Import                                  | What you get                                                                                                 |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`)                                |
-| `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding)              |
-| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                  |
-| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                 |
-| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                              |
-| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                                            |
-| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                                   |
-| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                                   |
-| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                                       |
-| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                               |
-| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                        |
-| `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13) |
+| Import                                  | What you get                                                                                                                  |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`)                                                 |
+| `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding)                               |
+| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                   |
+| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                  |
+| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                               |
+| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                                                             |
+| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                                                    |
+| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                                                    |
+| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                                                        |
+| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                                                |
+| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                         |
+| `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                  |
+| `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14) |
 
 ### Semantic feedback / status tokens
 
@@ -604,3 +605,115 @@ function Hero() {
 ```
 
 `SmoothScroll` drives the real scroll position, so CSS `animation-timeline` and `useScrollProgress` keep working underneath it unchanged. See `docs/adr/021-animation-engine-motion-core-gsap-downstream.md` for why Lenis is opt-in and GSAP is out.
+
+## 14. CSS-only static primitives — Badge/Card/Alert/Divider/Tag with NO React
+
+§12.4 promised that "static primitives (badge, card, alert, divider, tag, …)
+render from tokens with no JS" — `@hirobius/design-system/static.css` is that
+promise, made concrete. It ships plain `.hds-badge` / `.hds-card` /
+`.hds-alert` / `.hds-divider` / `.hds-tag` classes bound to the **same**
+`--semantic-*` / `--component-*` / `--role-*` custom properties the React
+`Badge`/`Card`/`Alert`/`Divider`/`Tag` components use — so a `.astro`/`.html`
+page with zero React still renders on-token, theme-aware UI. This is the path
+the `hirobius/clients` factory uses for non-interactive primitives on its
+static Astro pages.
+
+Import it once alongside `variables.css` (both are host-safe — no reset, no
+bare element selectors, every rule scoped to `.hds-*`):
+
+```astro
+---
+// src/layouts/Base.astro
+import '@hirobius/design-system/variables.css'; // tokens only
+import '@hirobius/design-system/static.css';    // .hds-* primitive classes
+---
+<html lang="en" data-hds data-theme="light">
+  <body><slot /></body>
+</html>
+```
+
+`data-theme="dark"` (or `data-brand="slug"` via the brand overlay bridge, §12)
+retheme every class below automatically — no JS, no rebuild.
+
+### Badge
+
+```html
+<span class="hds-badge">Neutral</span>
+<span class="hds-badge hds-badge--info">Info</span>
+<span class="hds-badge hds-badge--success">Success</span>
+<span class="hds-badge hds-badge--danger">Danger</span>
+<span class="hds-badge hds-badge--warning">Warning</span>
+<span class="hds-badge hds-badge--in-progress">In progress</span>
+```
+
+### Card
+
+Root surface only — `variant` (`--accent`) and `tone` (`--danger`/`--success`/
+`--warning`/`--info`), matching the React `Card`'s structural axis. Compose
+header/body/footer with your own markup inside it; reach for the real
+`<Card>` compound parts (`Card.Header`, `Card.Progress`, `Card.Metric`, …) if
+you need the full slot anatomy — that still requires React.
+
+```html
+<div class="hds-card">Borderless default.</div>
+<div class="hds-card hds-card--bordered">Opt-in neutral 1px border.</div>
+<div class="hds-card hds-card--accent">Highlighted / "recommended" entry.</div>
+<div class="hds-card hds-card--danger">Status-driven — the border is the signal.</div>
+```
+
+### Alert
+
+`role="alert"` is an ARIA live-region role, not a styling concern — keep it on
+the markup. Add `.hds-alert--with-title` alongside a tone modifier when using
+the title + body pattern (it switches the cross-axis alignment from centered
+to top-aligned, matching the React component's `hasTitle` behavior).
+
+```html
+<div class="hds-alert hds-alert--info" role="alert">
+  <span class="hds-alert__body">Heads up — this is an info alert.</span>
+</div>
+
+<div class="hds-alert hds-alert--danger hds-alert--with-title" role="alert">
+  <span>
+    <span class="hds-alert__title">Something went wrong</span>
+    <span class="hds-alert__body">The build failed on step 3.</span>
+  </span>
+</div>
+```
+
+### Divider
+
+```html
+<hr class="hds-divider hds-divider--horizontal" />
+<hr class="hds-divider hds-divider--horizontal hds-divider--strong" />
+
+<div style="display: flex; align-items: center; gap: 12px;">
+  <span>Left</span>
+  <hr class="hds-divider hds-divider--vertical" aria-orientation="vertical" />
+  <span>Right</span>
+</div>
+```
+
+### Tag
+
+Two-part anatomy — a 44px accessible hit-target button (`.hds-tag`) wrapping
+the compact visible pill (`.hds-tag__pill`), same split as the React
+component. `.hds-tag--active` is the selected/pressed state (`aria-pressed`
+still belongs on the markup):
+
+```html
+<button type="button" class="hds-tag" aria-pressed="false">
+  <span class="hds-tag__pill">Filter</span>
+</button>
+
+<button type="button" class="hds-tag hds-tag--active" aria-pressed="true">
+  <span class="hds-tag__pill">Selected</span>
+</button>
+```
+
+### What's out of scope
+
+`static.css` covers non-interactive/CSS-only-interactive primitives. Anything
+with real state (forms, dialogs, dropdowns, `ContactForm`) still needs a React
+island (§12.4) — this layer doesn't attempt to reimplement component logic in
+CSS, only the visual surface of the five primitives above.
