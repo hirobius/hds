@@ -1280,7 +1280,27 @@ export function buildManifest(allTokens, raw) {
  * @param {Array} shadows - tokens with path[0]==='semantic' && path[1]==='shadow' && type==='shadow'
  * @returns {{ colors: object, borderRadius: object, boxShadow: object }}
  */
-export function buildTailwindThemeExtend(roles, shadows) {
+// borderWidth token path → Tailwind utility key. Semantic default/emphasis are
+// tenant-overridable (`border` / `border-emphasis`); numeric primitive stops
+// give exact `border-2` / `border-4`. See #125.
+const BORDER_WIDTH_KEY = {
+  'semantic.borderWidth.default': 'DEFAULT',
+  'semantic.borderWidth.emphasis': 'emphasis',
+  'primitive.borderWidth.sm': '2',
+  'primitive.borderWidth.md': '4',
+};
+
+/**
+ * @param {Array} roles    role-tier tokens (colors + radius)
+ * @param {Array} shadows  semantic.shadow tokens → boxShadow
+ * @param {object} [extras]
+ * @param {Array} [extras.spaces]        primitive.space.* → spacing (var refs)
+ * @param {Array} [extras.breakpoints]   primitive.breakpoint.* → screens (CONCRETE px — var() is illegal in @media)
+ * @param {Array} [extras.borderWidths]  semantic/primitive borderWidth → borderWidth (var refs)
+ * @param {Array} [extras.fontSizes]     primitive.typography.size.* → fontSize (var refs)
+ */
+export function buildTailwindThemeExtend(roles, shadows, extras = {}) {
+  const { spaces = [], breakpoints = [], borderWidths = [], fontSizes = [] } = extras;
   const FOREGROUND_SUFFIX = '-foreground';
   const foregroundBases = new Set();
   for (const t of roles) {
@@ -1327,7 +1347,34 @@ export function buildTailwindThemeExtend(roles, shadows) {
     boxShadow[name] = `var(${pathToCSSVar(t.path)})`;
   }
 
-  return { colors, borderRadius, boxShadow };
+  // ── Token-scale utilities (#125) ──────────────────────────────────────────
+  // spacing / fontSize: var(--…) refs keyed by the token leaf name, so p-4 /
+  // text-base resolve to the token and the tenant/theme cascade is preserved.
+  const spacing = {};
+  for (const t of spaces) {
+    spacing[t.path[t.path.length - 1]] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  const fontSize = {};
+  for (const t of fontSizes) {
+    fontSize[t.path[t.path.length - 1]] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  // screens: CONCRETE px, never var() — CSS custom properties are invalid inside
+  // @media (min-width: …). Resolve the primitive dimension at build time.
+  const screens = {};
+  for (const t of breakpoints) {
+    screens[t.path[t.path.length - 1]] = dimensionToCSS(t.value);
+  }
+
+  // borderWidth: semantic default/emphasis (tenant-overridable) + numeric stops.
+  const borderWidth = {};
+  for (const t of borderWidths) {
+    const key = BORDER_WIDTH_KEY[t.path.join('.')];
+    if (key) borderWidth[key] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  return { colors, borderRadius, boxShadow, spacing, screens, borderWidth, fontSize };
 }
 
 // ── Tenant overlay validator ────────────────────────────────────────────────
@@ -1723,7 +1770,24 @@ ${serialize(refsTree)}
   const semanticShadows = allTokens.filter(
     (t) => t.path[0] === 'semantic' && t.path[1] === 'shadow' && t.type === 'shadow',
   );
-  const tailwindExtend = buildTailwindThemeExtend(roles, semanticShadows);
+  // Token-scale utilities (#125): surface spacing / breakpoints / borderWidth /
+  // fontSize as Tailwind utilities. Spacing/fontSize point at primitive vars;
+  // borderWidth prefers the tenant-overridable semantic tier for default/emphasis.
+  const spaces = primitives.filter((t) => t.path[1] === 'space' && t.type === 'dimension');
+  const breakpoints = primitives.filter((t) => t.path[1] === 'breakpoint');
+  const fontSizes = primitives.filter((t) => t.path[1] === 'typography' && t.path[2] === 'size');
+  const borderWidths = [
+    ...semantics.filter(
+      (t) => t.path[1] === 'borderWidth' && ['default', 'emphasis'].includes(t.path[2]),
+    ),
+    ...primitives.filter((t) => t.path[1] === 'borderWidth' && ['sm', 'md'].includes(t.path[2])),
+  ];
+  const tailwindExtend = buildTailwindThemeExtend(roles, semanticShadows, {
+    spaces,
+    breakpoints,
+    borderWidths,
+    fontSizes,
+  });
   const tailwindConfigCjs = `// GENERATED FILE — do not edit; mutate hirobius.tokens.json instead.
 // Emitted by scripts/build-tokens.mjs.
 //

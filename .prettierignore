@@ -22,6 +22,7 @@ src/app/design-system/generated-token-vars.d.ts
 src/app/design-system/generated-token-refs.ts
 src/styles/tokens.css
 src/styles/tokens.generated.css
+tailwind.config.tokens.cjs
 src/app/data/**.json
 public/hds-manifest.json
 public/llms.txt
