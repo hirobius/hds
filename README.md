@@ -13,10 +13,10 @@
 > only component consumer (the internal `hirobius/ops` dashboard) is dormant.
 >
 > **What "frozen" means:** no new development. `0.13.0` is the **final clean cut**
-> (it folds in the icon fix + the static-primitive CSS layer + the scroll recipe);
-> the release workflow was re-enabled just to ship it and may be re-frozen after.
-> Chromatic stays manual-only. The published package stays installable. All future
-> work is tracked in the wind-down epic **#80**.
+> (it folded in the icon fix + the static-primitive CSS layer + the scroll recipe)
+> and is published on npm; the Chromatic + release workflows are back to
+> manual-only. The published package stays installable. All future work is
+> tracked in the wind-down epic **#80**.
 >
 > **To take it off the shelf:** restore the `pull_request`/`push` triggers in
 > `.github/workflows/{chromatic,release}.yml`, resume from `main`, and pick work
