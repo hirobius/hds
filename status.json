@@ -1,16 +1,11 @@
 {
-  "updatedAt": "2026-07-08T17:20:00Z",
-  "phase": "active",
-  "headline": "MAIN is release-ready for 0.12.0 — everything merged. This session CLOSED: #64 (Astro consumption — /brand overlay bridge + CONSUMING.md §12, PR #111; proven in clients#30 pixel-identical); #62 (multi-brand data-brand + HdsThemeProvider runtime switch, test-locked); #60 (variant contract — the 4 remaining public components with a real paint axis migrated to Tailwind+cva: heading-stack #112, activity-feed #113 [status→tone, error→danger alias], side-nav #114, doc-link-card #115 [motion preserved]; Chromatic '433 tests unchanged' = zero visual diffs; utility-tier dev-shell explicitly exempt); #48 + #109 (Satoshi typography — swapped in Figma via use_figma Plugin API: flipped typography/family/display variable Clash Display→Satoshi, all heading roles alias it, also fixed a missing-font fallback; awaits a library Publish click). #109's swap was a single variable edit. PRIOR merged: layout epic #95 (#92/#96/#97/#98), #93 CSS-in-JS→Tailwind (#103-#108).",
+  "updatedAt": "2026-07-09T02:00:00Z",
+  "phase": "frozen",
+  "headline": "HDS is FROZEN / on the shelf (2026-07-09). A complete, tested, shelved package: 133 components (Radix + cva), 351 DTCG tokens, ~110 Storybook stories, full guardrail suite, published @hirobius/design-system@0.12.0 on npm. Decision (build-vs-buy audit, verdict SPLIT): the DS was absorbing more maintenance than its two consumers justify — the clients marketing factory uses only the token spine (no React components), the only component consumer (internal ops dashboard) is dormant and already drift-broken. Final work folded in before freezing: #116 scroll recipe + stories (PR #119) and #64 CSS-only static-primitive layer (PR #120), both merged to main. Chromatic + release workflows set to manual-only; published 0.12.0 stays installable. All future work tracked in epic #80. Not ditched — checkoutable later.",
   "next": [
-    "CUT @hirobius/design-system 0.12.0 — main carries the minor changeset (/brand + overlay bridge) plus 6 patch/minor changesets from the #60 migrations. check:release/publish is human-only. Then clients#30 runs pnpm install to wire the factory against the published version.",
-    "Figma: click Publish on the HDS Tokens & Components library so the Satoshi display-family change (#109) propagates to consuming files.",
-    "Repo-wide: the Vercel *deployment* status errors on every PR (non-required; the required 'Vercel Preview Comments' check passes) — worth a separate look at the Vercel project config, not a blocker.",
-    "Human-gated (not release blockers): #47 Figma Code Connect; #80 Chromatic baseline review + freeze; #86 secrets standard (Bitwarden classification).",
-    "Deferred Phase 2: #66 expression layer; #68 niche reskins (targets hirobius.io repo; unblocked by #62)."
+    "Off-the-shelf trigger: restore pull_request/push triggers in .github/workflows/{chromatic,release}.yml and pick work from epic #80",
+    "Optional human step (credential-gated): npm deprecate @hirobius/design-system with a 'frozen' pointer",
+    "When ops resumes: vendor the ~26 used HDS components into ops/src/ui (per the build-vs-buy plan), drop the file: dep"
   ],
-  "blocked": [
-    "#64 clients wiring (clients#30) waits on the 0.12.0 npm release (proven locally against a pnpm-pack tarball).",
-    "#109 propagation waits on a manual Figma library Publish (the variable edit itself is done)."
-  ]
+  "blocked": ["All active DS development intentionally paused (frozen). Future work lives in #80."]
 }
