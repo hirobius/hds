@@ -5,7 +5,9 @@ cd "$(dirname "$0")/.."
 
 # Repos WITH the loop system:
 # GATE="pnpm loop:validate"
-# Default:
-GATE="pnpm typecheck && pnpm test && pnpm lint"
+# design-system: manifest:generate first materializes the gitignored
+# src/app/data/component-api.json a fresh clone lacks, else typecheck fails
+# (the #138 fresh-clone bootstrap). Then the standard trio.
+GATE="pnpm manifest:generate && pnpm typecheck && pnpm test && pnpm lint"
 
 eval "$GATE"
