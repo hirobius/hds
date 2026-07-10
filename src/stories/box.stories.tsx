@@ -109,7 +109,7 @@ export const AmpersandWithResponsive: Story = {
 export const PolymorphicAs: Story = {
   render: () => (
     <Box as="section" sx={{ p: 6, bgcolor: 'surface.raised' }}>
-      <Box as="h2" sx={{ color: 'content.primary', fontWeight: 600 }}>
+      <Box as="h2" sx={{ color: 'content.primary' }}>
         Rendered as &lt;section&gt; / &lt;h2&gt;
       </Box>
     </Box>

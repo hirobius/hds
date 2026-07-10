@@ -171,6 +171,21 @@ const PAIRS = [
       bg: 'semantic.color.surface.raised',
     },
   ]),
+  // content.{success,warning,danger} — new status-toned content tokens (ISSUE-03,
+  // #127) decoupled from the feedback.* banner tokens. Same AA bar applies since
+  // these are used directly as text/icon color.
+  ...['success', 'warning', 'danger'].flatMap((tone) => [
+    {
+      label: `content.${tone} / surface.page`,
+      text: `semantic.color.content.${tone}`,
+      bg: 'semantic.color.surface.page',
+    },
+    {
+      label: `content.${tone} / surface.raised`,
+      text: `semantic.color.content.${tone}`,
+      bg: 'semantic.color.surface.raised',
+    },
+  ]),
 ];
 
 // ── Main ──────────────────────────────────────────────────────

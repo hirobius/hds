@@ -172,6 +172,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (351 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (361 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

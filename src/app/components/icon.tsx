@@ -71,10 +71,17 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(function Icon(
     ...(style && typeof style === 'object' ? style : undefined),
   } satisfies React.CSSProperties;
 
+  // Lucide's `size` prop is written to the SVG `width`/`height` *attributes*,
+  // which only accept a raw length — a token like `var(--primitive-*)` is
+  // invalid there and the browser rejects it (console error). Our `style` below
+  // already sizes the icon via those same vars (valid as CSS), so only forward
+  // `size` when it's a real number; otherwise let the style drive it.
+  const numericSizeProp = typeof numericSize === 'number' ? numericSize : undefined;
+
   return (
     <IconComponent
       ref={ref}
-      size={numericSize}
+      size={numericSizeProp}
       color={color}
       className={className}
       style={resolvedStyle}

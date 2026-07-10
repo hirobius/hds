@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-07T05:40:59.475Z",
+  "generated": "2026-07-10T04:00:37.758Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -702,7 +702,8 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
-        "src/stories/alert.stories.tsx"
+        "src/stories/alert.stories.tsx",
+        "src/stories/static-primitives.stories.tsx"
       ],
       "tokenMapping": {
         "Success accent": "semantic.color.feedback.success",
@@ -1117,7 +1118,8 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/data/hdsEditorial.tsx",
-        "src/stories/divider.stories.tsx"
+        "src/stories/divider.stories.tsx",
+        "src/stories/static-primitives.stories.tsx"
       ],
       "tokenMapping": {
         "Default stroke": "semantic.color.border.default",
@@ -3000,6 +3002,7 @@
         "src/app/components/visually-hidden.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/stories/static-primitives.stories.tsx",
         "src/stories/tag.stories.tsx"
       ],
       "tokenMapping": {
@@ -3391,7 +3394,8 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/card.stories.tsx",
-        "src/stories/grid.stories.tsx"
+        "src/stories/grid.stories.tsx",
+        "src/stories/static-primitives.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "role.card",
@@ -4983,6 +4987,7 @@
         "src/stories/component-instance-matrix.stories.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
+        "src/stories/static-primitives.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {}
@@ -11011,6 +11016,66 @@
         }
       },
       {
+        "path": "semantic.color.surface.hover",
+        "cssVar": "--semantic-color-surface-hover",
+        "type": "color",
+        "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
+        "alias": "{primitive.color.blue.50}",
+        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "dark": {
+          "alias": "{primitive.color.blue.900}",
+          "resolvedValue": "oklch(0.22 0.05 266.54)"
+        }
+      },
+      {
+        "path": "semantic.color.surface.pressed",
+        "cssVar": "--semantic-color-surface-pressed",
+        "type": "color",
+        "description": "Background for an actively pressed interactive surface.",
+        "alias": "{primitive.color.neutral.50}",
+        "resolvedValue": "#fafafa",
+        "dark": {
+          "alias": "{primitive.color.neutral.950}",
+          "resolvedValue": "#0a0a0a"
+        }
+      },
+      {
+        "path": "semantic.color.surface.selected",
+        "cssVar": "--semantic-color-surface-selected",
+        "type": "color",
+        "description": "Background for a persistently selected item (active tab, checked row).",
+        "alias": "{primitive.color.blue.100}",
+        "resolvedValue": "oklch(0.92 0.04 266.54)",
+        "dark": {
+          "alias": "{primitive.color.blue.800}",
+          "resolvedValue": "oklch(0.30 0.07 266.54)"
+        }
+      },
+      {
+        "path": "semantic.color.surface.muted",
+        "cssVar": "--semantic-color-surface-muted",
+        "type": "color",
+        "description": "Muted background for low-emphasis content blocks.",
+        "alias": "{primitive.color.neutral.100}",
+        "resolvedValue": "#f5f5f5",
+        "dark": {
+          "alias": "{primitive.color.neutral.900}",
+          "resolvedValue": "#111111"
+        }
+      },
+      {
+        "path": "semantic.color.surface.sunken",
+        "cssVar": "--semantic-color-surface-sunken",
+        "type": "color",
+        "description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
+        "alias": "{primitive.color.neutral.200}",
+        "resolvedValue": "#e5e5e5",
+        "dark": {
+          "alias": "{primitive.color.neutral.850}",
+          "resolvedValue": "#1a1a1a"
+        }
+      },
+      {
         "path": "semantic.color.content.primary",
         "cssVar": "--semantic-color-content-primary",
         "type": "color",
@@ -11077,6 +11142,42 @@
         }
       },
       {
+        "path": "semantic.color.content.success",
+        "cssVar": "--semantic-color-content-success",
+        "type": "color",
+        "description": "Success-toned text/icon color, independent of feedback banners.",
+        "alias": "{primitive.color.green.700}",
+        "resolvedValue": "#047857",
+        "dark": {
+          "alias": "{primitive.color.green.400}",
+          "resolvedValue": "#34d399"
+        }
+      },
+      {
+        "path": "semantic.color.content.warning",
+        "cssVar": "--semantic-color-content-warning",
+        "type": "color",
+        "description": "Warning-toned text/icon color, independent of feedback banners.",
+        "alias": "{primitive.color.amber.800}",
+        "resolvedValue": "#92400e",
+        "dark": {
+          "alias": "{primitive.color.amber.400}",
+          "resolvedValue": "#fbbf24"
+        }
+      },
+      {
+        "path": "semantic.color.content.danger",
+        "cssVar": "--semantic-color-content-danger",
+        "type": "color",
+        "description": "Danger-toned text/icon color, independent of feedback banners.",
+        "alias": "{primitive.color.red.700}",
+        "resolvedValue": "#b91c1c",
+        "dark": {
+          "alias": "{primitive.color.red.400}",
+          "resolvedValue": "#f87171"
+        }
+      },
+      {
         "path": "semantic.color.border.default",
         "cssVar": "--semantic-color-border-default",
         "type": "color",
@@ -11130,6 +11231,30 @@
         "dark": {
           "alias": "{primitive.color.blue.500}",
           "resolvedValue": "#1E2EFD"
+        }
+      },
+      {
+        "path": "semantic.color.border.success",
+        "cssVar": "--semantic-color-border-success",
+        "type": "color",
+        "description": "Success-toned border for status outlines and success-state inputs.",
+        "alias": "{primitive.color.green.400}",
+        "resolvedValue": "#34d399",
+        "dark": {
+          "alias": "{primitive.color.green.400}",
+          "resolvedValue": "#34d399"
+        }
+      },
+      {
+        "path": "semantic.color.border.warning",
+        "cssVar": "--semantic-color-border-warning",
+        "type": "color",
+        "description": "Warning-toned border for status outlines and warning-state inputs.",
+        "alias": "{primitive.color.amber.400}",
+        "resolvedValue": "#fbbf24",
+        "dark": {
+          "alias": "{primitive.color.amber.400}",
+          "resolvedValue": "#fbbf24"
         }
       },
       {
