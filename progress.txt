@@ -134,3 +134,29 @@ Notes for next iteration:
 - #138 DoD now fully met (gate fix from #141 + hook here). Close on merge.
 - Remaining ralph-ready queue after this: #131 (ADR-024 slice — ADR-022 blocked
   on open #128; ADR-023 shipped in PR #144).
+
+=== Issue #131 (ISSUE-07: ADRs 022/023/024) — cleanup, no new code ===
+Dispatched with target issue #131. Found it already fully resolved: PR #151
+(merged, commit 078e5ab) shipped all three ADRs (022 shape/density, 023
+four-dials, 024 token-utility scope) and fixed theme.css's stale ADR-020
+citation to ADR-023. DoD fully met per issue body.
+
+GitHub had not auto-closed #131 despite #151's "Closes #131" — closed it
+manually with a comment pointing to #151.
+
+Also found PR #149 (an earlier ADR-024-only slice) still open and stale,
+superseded by #151's refined version of the same ADR (diffed the two —
+content differs, #151's is the newer rewrite). Commented + closed #149
+without merging.
+
+No code changes, no gate run (nothing to build/test) — this iteration was
+reconciliation of already-completed work, not implementation.
+
+Files changed: none (progress.txt only).
+
+Notes for next iteration:
+- ralph-ready queue should be re-polled fresh; #131 is done. Next run should
+  `gh issue list --label "ralph-ready" --state open` and pick the true
+  highest-priority remaining item (e.g. #128 ADR-022's implementation target,
+  #125/#130 token-bridge follow-ups, or whatever ranks highest per prompt.md's
+  order).
