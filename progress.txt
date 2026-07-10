@@ -54,3 +54,29 @@ Notes for next iteration:
   once a design decision picks which existing UI should use them.
 - Follow-up needed: the guardrail extension (flag literal surface values in
   .hds-* hover rules) is unbuilt — worth its own issue.
+
+=== Issue #131 (ISSUE-07: ADRs) slice — ADR-024 token→utility bridge scope ===
+Third ADR of the trio. ADR-023 shipped in PR #144 (open). ADR-022 blocked on
+#128. ADR-024 has no blocker (decision already settled in #124 epic body +
+style-dictionary-migration-plan.md) — this is that slice.
+
+Decisions captured in the ADR:
+- Bridge scope: colors/borderRadius/boxShadow (ADR-002) + spacing/screens/
+  borderWidth/fontSize (#125 keystone). Emission rule: all var(--..) refs except
+  screens (concrete px — @media can't read custom props). That var() emission is
+  what makes the data-density/data-brand dials reach utility-authored components.
+- Boundary: composites (typography beyond size, motion, elevation), arbitrary
+  values (#130), stay OUT. Adding a family is ADR-worthy, not a silent edit.
+- Style Dictionary: not now — ratifies migration-plan verdict, with 2 revisit
+  triggers (major build-tokens feature add / new native platform target).
+
+Files changed: docs/adr/024-token-utility-bridge-scope.md (new, doc-only).
+
+Validation: bash ralph/gate.sh green (manifest:generate + audit-tokens --full +
+typecheck + 1258 tests + lint). No generated-file drift (doc-only).
+
+Notes for next iteration:
+- #131 still open: ADR-022 remains (blocked on #128 landing). Two of three ADRs
+  now drafted (023 in #144, 024 here). Don't close #131 until 022 lands.
+- After this, ralph-ready queue is dry (only #138 + #131 were labelled; #138
+  completed via PR #148, #131 down to its blocked slice).
