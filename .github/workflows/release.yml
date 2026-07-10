@@ -21,9 +21,9 @@ name: Release
 #     variables → Actions).
 
 on:
-  # FROZEN 2026-07-09 — HDS is shelved (see README). No auto-release on push to
-  # main; the published package is pinned at 0.12.0. Runnable manually via the
-  # Actions tab if a release is ever needed. Restore the push trigger to resume.
+  # RE-FROZEN 2026-07-09 — the final clean 0.13.0 shipped; HDS is shelved again.
+  # No auto-release on push to main; the published package is pinned at 0.13.0.
+  # Runnable manually via the Actions tab. Restore the push trigger to resume.
   workflow_dispatch: {}
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}

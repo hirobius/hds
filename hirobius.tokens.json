@@ -1059,6 +1059,66 @@
               }
             }
           }
+        },
+        "hover": {
+          "$value": "{primitive.color.blue.50}",
+          "$description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.blue.50}",
+                "Dark": "{primitive.color.blue.900}"
+              }
+            }
+          }
+        },
+        "pressed": {
+          "$value": "{primitive.color.neutral.50}",
+          "$description": "Background for an actively pressed interactive surface.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.50}",
+                "Dark": "{primitive.color.neutral.950}"
+              }
+            }
+          }
+        },
+        "selected": {
+          "$value": "{primitive.color.blue.100}",
+          "$description": "Background for a persistently selected item (active tab, checked row).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.blue.100}",
+                "Dark": "{primitive.color.blue.800}"
+              }
+            }
+          }
+        },
+        "muted": {
+          "$value": "{primitive.color.neutral.100}",
+          "$description": "Muted background for low-emphasis content blocks.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.100}",
+                "Dark": "{primitive.color.neutral.900}"
+              }
+            }
+          }
+        },
+        "sunken": {
+          "$value": "{primitive.color.neutral.200}",
+          "$description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.200}",
+                "Dark": "{primitive.color.neutral.850}"
+              }
+            }
+          }
         }
       },
       "content": {
@@ -1127,6 +1187,42 @@
               }
             }
           }
+        },
+        "success": {
+          "$value": "{primitive.color.green.700}",
+          "$description": "Success-toned text/icon color, independent of feedback banners.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.green.700}",
+                "Dark": "{primitive.color.green.400}"
+              }
+            }
+          }
+        },
+        "warning": {
+          "$value": "{primitive.color.amber.800}",
+          "$description": "Warning-toned text/icon color, independent of feedback banners.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.amber.800}",
+                "Dark": "{primitive.color.amber.400}"
+              }
+            }
+          }
+        },
+        "danger": {
+          "$value": "{primitive.color.red.700}",
+          "$description": "Danger-toned text/icon color, independent of feedback banners.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.red.700}",
+                "Dark": "{primitive.color.red.400}"
+              }
+            }
+          }
         }
       },
       "border": {
@@ -1182,6 +1278,30 @@
               "modes": {
                 "Light": "{primitive.color.blue.500}",
                 "Dark": "{primitive.color.blue.500}"
+              }
+            }
+          }
+        },
+        "success": {
+          "$value": "{primitive.color.green.400}",
+          "$description": "Success-toned border for status outlines and success-state inputs.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.green.400}",
+                "Dark": "{primitive.color.green.400}"
+              }
+            }
+          }
+        },
+        "warning": {
+          "$value": "{primitive.color.amber.400}",
+          "$description": "Warning-toned border for status outlines and warning-state inputs.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.amber.400}",
+                "Dark": "{primitive.color.amber.400}"
               }
             }
           }
