@@ -54,3 +54,34 @@ Notes for next iteration:
   once a design decision picks which existing UI should use them.
 - Follow-up needed: the guardrail extension (flag literal surface values in
   .hds-* hover rules) is unbuilt — worth its own issue.
+
+=== Issue #138 (ISSUE-00: fresh-clone SessionStart hook) — completing the DoD ===
+PR #141 already landed the gate.sh fix + typography-discipline fixes. Remaining
+DoD piece was the SessionStart hook (prior run couldn't write .claude/settings.json
+— permission-gated in that sandbox). This run adds it.
+
+Decisions:
+- Used a dedicated .claude/hooks/session-start.sh script (per session-start-hook
+  skill) rather than inlining the command in settings.json — cleaner, testable
+  standalone, matches the skill's recommended layout.
+- Synchronous (not async): guarantees deps + generated artifacts (component-api.json,
+  token-audit-report.json — both gitignored) exist before the agent loop starts,
+  so typecheck is green from turn 1. No race.
+- Guarded on CLAUDE_CODE_REMOTE=true — only bootstraps web/clone sessions; local
+  devs already have deps + generated files. Verified: unset => exit 0 immediately.
+- matcher startup|resume|clear|compact; timeout 180.
+
+Files changed: .claude/settings.json (merged SessionStart alongside existing
+PostToolUse), .claude/hooks/session-start.sh (new, chmod +x).
+
+Validation:
+- Ran hook directly w/ CLAUDE_CODE_REMOTE=true => exit 0, materializes both files.
+- Ran hook w/ CLAUDE_CODE_REMOTE unset => exit 0 (guard).
+- bash ralph/gate.sh => green (manifest:generate + audit-tokens --full + typecheck
+  + 1258 tests pass + lint).
+- settings.json validated as JSON.
+
+Notes for next iteration:
+- #138 DoD now fully met (gate fix from #141 + hook here). Close on merge.
+- Remaining ralph-ready queue after this: #131 (ADR-024 slice — ADR-022 blocked
+  on open #128; ADR-023 shipped in PR #144).
