@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 391 tokens, aliases, and TS refs in one shot.
+Checks all 401 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -172,35 +172,45 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 
 <!-- auto:start:semantic-color -->
 
-| Token                                   | Light                           | Dark                            | Notes                                                               |
-| --------------------------------------- | ------------------------------- | ------------------------------- | ------------------------------------------------------------------- |
-| `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                |
-| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Subtle elevated surface (cards, sections)                           |
-| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Deeper surface layer                                                |
-| `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                           |
-| `semantic.color.surface.accent`         | {primitive.color.blue.500}      | {primitive.color.blue.500}      | Accent-colored background                                           |
-| `semantic.color.surface.accentSubtle`   | {primitive.color.blue.50}       | {primitive.color.blue.900}      | Faint accent tint for hover states or highlights                    |
-| `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                     |
-| `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.400}   |                                                                     |
-| `semantic.color.content.disabled`       | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                     |
-| `semantic.color.content.inverse`        | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   |                                                                     |
-| `semantic.color.content.accent`         | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                     |
-| `semantic.color.content.onAccent`       | {primitive.color.neutral.white} | {primitive.color.neutral.white} |                                                                     |
-| `semantic.color.border.default`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   |                                                                     |
-| `semantic.color.border.subdued`         | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   |                                                                     |
-| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Lowest-contrast border for resting hairline edges on flat surfaces. |
-| `semantic.color.border.strong`          | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                     |
-| `semantic.color.border.accent`          | {primitive.color.blue.500}      | {primitive.color.blue.500}      |                                                                     |
-| `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                     |
-| `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                     |
-| `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                     |
-| `semantic.color.feedback.info`          | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                     |
-| `semantic.color.feedback.inProgress`    | {primitive.color.violet.700}    | {primitive.color.violet.400}    |                                                                     |
-| `semantic.color.feedback.bg.error`      | {primitive.color.red.50}        | {primitive.color.red.950}       |                                                                     |
-| `semantic.color.feedback.bg.success`    | {primitive.color.green.50}      | {primitive.color.green.950}     |                                                                     |
-| `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.950}     |                                                                     |
-| `semantic.color.feedback.bg.info`       | {primitive.color.blue.50}       | {primitive.color.blue.900}      |                                                                     |
-| `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.950}    |                                                                     |
+| Token                                   | Light                           | Dark                            | Notes                                                                               |
+| --------------------------------------- | ------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------- |
+| `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                                |
+| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Subtle elevated surface (cards, sections)                                           |
+| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Deeper surface layer                                                                |
+| `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                           |
+| `semantic.color.surface.accent`         | {primitive.color.blue.500}      | {primitive.color.blue.500}      | Accent-colored background                                                           |
+| `semantic.color.surface.accentSubtle`   | {primitive.color.blue.50}       | {primitive.color.blue.900}      | Faint accent tint for hover states or highlights                                    |
+| `semantic.color.surface.hover`          | {primitive.color.blue.50}       | {primitive.color.blue.900}      | Background for a hovered interactive surface (menu items, chips, tertiary buttons). |
+| `semantic.color.surface.pressed`        | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Background for an actively pressed interactive surface.                             |
+| `semantic.color.surface.selected`       | {primitive.color.blue.100}      | {primitive.color.blue.800}      | Background for a persistently selected item (active tab, checked row).              |
+| `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Muted background for low-emphasis content blocks.                                   |
+| `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.850}   | Recessed background for inset wells (inputs, code blocks, nested panels).           |
+| `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                     |
+| `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.400}   |                                                                                     |
+| `semantic.color.content.disabled`       | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                     |
+| `semantic.color.content.inverse`        | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   |                                                                                     |
+| `semantic.color.content.accent`         | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                                     |
+| `semantic.color.content.onAccent`       | {primitive.color.neutral.white} | {primitive.color.neutral.white} |                                                                                     |
+| `semantic.color.content.success`        | {primitive.color.green.700}     | {primitive.color.green.400}     | Success-toned text/icon color, independent of feedback banners.                     |
+| `semantic.color.content.warning`        | {primitive.color.amber.800}     | {primitive.color.amber.400}     | Warning-toned text/icon color, independent of feedback banners.                     |
+| `semantic.color.content.danger`         | {primitive.color.red.700}       | {primitive.color.red.400}       | Danger-toned text/icon color, independent of feedback banners.                      |
+| `semantic.color.border.default`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   |                                                                                     |
+| `semantic.color.border.subdued`         | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   |                                                                                     |
+| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Lowest-contrast border for resting hairline edges on flat surfaces.                 |
+| `semantic.color.border.strong`          | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                     |
+| `semantic.color.border.accent`          | {primitive.color.blue.500}      | {primitive.color.blue.500}      |                                                                                     |
+| `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                  |
+| `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                  |
+| `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                     |
+| `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                     |
+| `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                                     |
+| `semantic.color.feedback.info`          | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                                     |
+| `semantic.color.feedback.inProgress`    | {primitive.color.violet.700}    | {primitive.color.violet.400}    |                                                                                     |
+| `semantic.color.feedback.bg.error`      | {primitive.color.red.50}        | {primitive.color.red.950}       |                                                                                     |
+| `semantic.color.feedback.bg.success`    | {primitive.color.green.50}      | {primitive.color.green.950}     |                                                                                     |
+| `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.950}     |                                                                                     |
+| `semantic.color.feedback.bg.info`       | {primitive.color.blue.50}       | {primitive.color.blue.900}      |                                                                                     |
+| `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.950}    |                                                                                     |
 
 <!-- auto:end:semantic-color -->
 
