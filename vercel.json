@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm build-storybook",
+  "buildCommand": "pnpm manifest:generate && node scripts/audit-tokens.mjs --full && pnpm build-storybook",
   "outputDirectory": "storybook-static",
   "cleanUrls": true,
   "trailingSlash": false
