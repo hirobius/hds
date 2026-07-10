@@ -264,7 +264,12 @@ export const tokenRefs = {
         overlay: "var(--semantic-color-surface-overlay)",
         inverse: "var(--semantic-color-surface-inverse)",
         accent: "var(--semantic-color-surface-accent)",
-        accentSubtle: "var(--semantic-color-surface-accentSubtle)"
+        accentSubtle: "var(--semantic-color-surface-accentSubtle)",
+        hover: "var(--semantic-color-surface-hover)",
+        pressed: "var(--semantic-color-surface-pressed)",
+        selected: "var(--semantic-color-surface-selected)",
+        muted: "var(--semantic-color-surface-muted)",
+        sunken: "var(--semantic-color-surface-sunken)"
       },
       content: {
         primary: "var(--semantic-color-content-primary)",
@@ -272,14 +277,19 @@ export const tokenRefs = {
         disabled: "var(--semantic-color-content-disabled)",
         inverse: "var(--semantic-color-content-inverse)",
         accent: "var(--semantic-color-content-accent)",
-        onAccent: "var(--semantic-color-content-onAccent)"
+        onAccent: "var(--semantic-color-content-onAccent)",
+        success: "var(--semantic-color-content-success)",
+        warning: "var(--semantic-color-content-warning)",
+        danger: "var(--semantic-color-content-danger)"
       },
       border: {
         default: "var(--semantic-color-border-default)",
         subdued: "var(--semantic-color-border-subdued)",
         subtle: "var(--semantic-color-border-subtle)",
         strong: "var(--semantic-color-border-strong)",
-        accent: "var(--semantic-color-border-accent)"
+        accent: "var(--semantic-color-border-accent)",
+        success: "var(--semantic-color-border-success)",
+        warning: "var(--semantic-color-border-warning)"
       },
       feedback: {
         error: "var(--semantic-color-feedback-error)",
