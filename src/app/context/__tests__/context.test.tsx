@@ -334,7 +334,7 @@ describe('FontContext', () => {
   });
 });
 
-// ── HdsThemeProvider (ADR-020 §4 — brand/theme/density dials) ──────────────────
+// ── HdsThemeProvider (ADR-023 — brand/theme/density dials) ──────────────────
 
 describe('HdsThemeProvider', () => {
   let container: HTMLDivElement;
