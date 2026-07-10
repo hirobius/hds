@@ -1,0 +1,56 @@
+## Issue #127 — ISSUE-03: Tokenize interactive surface states + fill semantic color gaps
+
+Decisions + why:
+- Added semantic.color.surface.{hover,pressed,selected,muted,sunken},
+  content.{success,warning,danger}, border.{success,warning} to
+  hirobius.tokens.json (Light/Dark modes + $description each).
+- surface.hover = blue.50/900 (identical to accentSubtle's current value) and
+  surface.pressed = neutral.50/950 (identical to raised's current value) —
+  chosen so wiring existing call sites is a zero-visual-diff swap (DoD:
+  "Base-theme hover snapshots unchanged").
+- Wired the accentSubtle-on-hover group in theme.css to surface-hover:
+  .hds-token-chip:hover, .hds-tag-btn:hover .hds-tag-pill, .hds-bg-hover:hover,
+  .hds-sidebar-utility-button[data-variant='tertiary']:hover,
+  .hds-dropdown-item:hover (the one the issue's red test targets).
+  Wired .hds-token-chip:active (raised) to surface-pressed.
+- Did NOT touch the OTHER hover group that resolves to surface-raised
+  (.hds-bg-hover-neutral, .portfolio-impact-card, .hds-doc-link-card,
+  .hds-soft-nav-card, .hds-mobius-acrylic, sidebar-utility[secondary]) — these
+  read as a distinct "neutral elevate" hover treatment, not the accent-tinted
+  interaction hover. Collapsing them into surface-hover would visibly retint
+  them blue, which is a design call, not a mechanical detokenization. Left as
+  follow-up (see issue comment).
+- surface.selected/muted/sunken tokens added per the issue's "Green" spec but
+  not wired to any call site yet — no existing literal in theme.css maps 1:1
+  to them without a visual change, so wiring is left as follow-up too.
+- Did NOT build the "guardrail extension: flag literal surface values in
+  .hds-* hover rules" mentioned in the issue — that's a new validator with
+  real false-positive risk against the neutral-hover group above; punted to
+  a separate issue/iteration rather than rushed.
+- Added content.{success,warning,danger} contrast pairs to
+  scripts/check-contrast.mjs (mirrors the existing feedback.* pairs) — all
+  pass AA.
+- Added a vitest contract test (src/styles/__tests__/interactive-surface-tokens.test.ts)
+  asserting .hds-dropdown-item:hover reads var(--semantic-color-surface-hover)
+  (was red against the accentSubtle literal, green after the theme.css edit),
+  plus existence checks for the new generated CSS vars.
+- Ran `pnpm tokens` pipeline; build-handoff/build-design-md/generate-llms-txt
+  had to be run manually since check-typography-discipline (pre-existing,
+  unrelated failure in src/stories/box.stories.tsx + src/styles/static.css)
+  blocks the full `pnpm tokens` chain on main already — not caused by this
+  change, left alone.
+
+Files changed: hirobius.tokens.json, src/styles/theme.css,
+scripts/check-contrast.mjs, src/styles/__tests__/interactive-surface-tokens.test.ts,
++ generated: public/hds-manifest.json, DESIGN.md, DESIGN-HANDOFF.md,
+src/styles/tokens.css, src/styles/tokens.generated.css,
+src/app/design-system/generated-token-{descriptions,refs,vars.d,tokens}.ts
+
+Notes for next iteration:
+- Follow-up needed: decide whether the "neutral elevate" hover group should
+  get its own token (e.g. surface.hoverNeutral) or collapse into
+  surface.hover — a real design decision, commented back on #127.
+- Follow-up needed: wire surface.selected/muted/sunken into real call sites
+  once a design decision picks which existing UI should use them.
+- Follow-up needed: the guardrail extension (flag literal surface values in
+  .hds-* hover rules) is unbuilt — worth its own issue.
