@@ -1,3 +1,52 @@
+## Issue #131 — ISSUE-07: ADRs for the architectural decisions (022 / 023 / 024)
+
+Decisions + why:
+- ADR-022 (per-tenant shape/density overlay axis, ISSUE-04/#128): chose
+  combinatorial `[data-brand="slug"][data-density="compact"]` CSS blocks
+  (mirrors the existing `[data-brand][data-theme="dark"]` precedent) over a
+  flat baked-in override, a new standalone `data-shape` dial, or a
+  component-level `shape` prop. Depth mirrors ADR-0001's 4-option comparison
+  table per the issue ask. Documents the four new tenant-overlay permitted
+  paths (`semantic.radius.*`, `semantic.space.*`, `semantic.borderWidth.*`,
+  `role.radius`) that #128 will need to add to
+  `tenant-token-overlay-format.md` R1 — this ADR does not implement #128,
+  only ratifies the architecture ahead of it (issue says "write alongside
+  implementation," but #128/#125 aren't started yet, so this documents the
+  already-settled epic-level decision).
+- ADR-023 (four theming dials contract): ratifies
+  `data-theme`/`data-density`/`data-brand`(+`data-tenant` alias)/
+  `--hds-font-family(-mono)` as stable public API, formalizing what
+  `theme.css` already implements and depends on. Fixes the DoD'd stale
+  citation.
+- ADR-024 (token→utility bridge scope, ISSUE-01/#125 + Style Dictionary
+  "not now"): scopes the Tailwind `theme.extend` bridge to exactly 4 new
+  keys (`spacing`, `screens`, `borderWidth`, `fontSize`), all `var()`-ref
+  only (never resolved literals) to preserve the dark/tenant/density
+  cascade — explicitly out of scope: colors restructuring,
+  animation/transition utilities, container queries, arbitrary-property
+  support. Separately ratifies the epic's already-settled "Style Dictionary:
+  not now" call, pointing at the existing
+  `docs/architecture/style-dictionary-migration-plan.md` verdict.
+- Fixed `src/styles/theme.css:35` stale "ADR-020 §3" citation → "ADR-023"
+  (ADR-020 is actually the date/time component library decision, unrelated).
+- DoD said "three ADRs merged; theme.css citation updated" — both done. No
+  code/behavior change in this PR; #125/#128 implementations are separate,
+  already-tracked issues these ADRs unblock/scope.
+
+Files changed:
+- docs/adr/022-per-tenant-shape-density-axis.md (new)
+- docs/adr/023-four-theming-dials-contract.md (new)
+- docs/adr/024-token-utility-bridge-scope.md (new)
+- src/styles/theme.css (1-line citation fix)
+
+Notes for next iteration:
+- #125 (ISSUE-01) and #128 (ISSUE-04) are still unimplemented — their Green
+  specs still need to land; ADR-022/024 describe the target architecture,
+  not current behavior.
+- No existing ADR index/registry file needed updating (docs/adr has no
+  auto-generated table of contents; registry.json only tracks
+  scripts/check-*.mjs validators, not ADRs).
+
 ## Issue #127 — ISSUE-03: Tokenize interactive surface states + fill semantic color gaps
 
 Decisions + why:
