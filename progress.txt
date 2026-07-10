@@ -54,3 +54,43 @@ Notes for next iteration:
   once a design decision picks which existing UI should use them.
 - Follow-up needed: the guardrail extension (flag literal surface values in
   .hds-* hover rules) is unbuilt — worth its own issue.
+
+## Issue #131 — ISSUE-07: ADRs for the architectural decisions (022 / 023 / 024)
+
+Issue asks for three ADRs (022 shape/density, 023 four-dials, 024
+token-utility-scope). Per Ralph "smallest complete slice" rule, shipped ONE
+this iteration: ADR-023 only. Commented the other two back on #131.
+
+Decisions + why:
+- Picked ADR-023 first because it documents a contract that's ALREADY shipped
+  (theme.css `data-theme`/`data-density`/`data-brand`/`--hds-font-family`,
+  hds-theme.tsx `HdsThemeProvider`) — no dependency on unfinished work.
+  ADR-022 (shape/density axis) depends on #128 (ISSUE-04), which is still
+  open/unimplemented — writing that ADR now would be speccing an
+  not-yet-built surface, riskier for a Ralph iteration. ADR-024
+  (token→utility scope) is lower priority than fixing the stale citation
+  the issue's DoD explicitly calls out.
+- Found the citation bug is worse than the issue described: it's not just
+  `theme.css:35` citing "ADR-020 §3" — `hds-theme.tsx:107` and
+  `context.test.tsx:337` both cite "ADR-020 §4" for the same non-existent
+  section (ADR-020 is the react-day-picker/date-fns decision, unrelated).
+  Fixed all three citations to point at ADR-023, not just the one the issue
+  named.
+- New ADR-023 ratifies the four dials as stable public API (attribute/var
+  names frozen, renaming = breaking change) since this is a published npm
+  package (AGENTS.md quality bar).
+
+Files changed: docs/adr/023-four-theming-dials-contract.md (new),
+src/styles/theme.css, src/app/context/hds-theme.tsx,
+src/app/context/__tests__/context.test.tsx (citation fixes only, no
+generated-file regen needed — doc-only change plus 3 comment edits).
+
+Notes for next iteration:
+- ADR-022 (shape/density axis) — write once #128 lands (or is far enough
+  along to spec accurately); should cite ADR-023 as the dial contract it
+  extends.
+- ADR-024 (token→utility bridge scope + "Style Dictionary: not now") — ready
+  to write now; the decision is already settled in #124's epic body and
+  `docs/architecture/style-dictionary-migration-plan.md`. Good next slice.
+- #131 stays open until all three ADRs land; this PR only closes the
+  ADR-023 portion (commented on the issue, not using "Closes #131").

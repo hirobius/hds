@@ -104,7 +104,7 @@ export function HdsThemeProvider({
         // ("dark"/"compact"); the comfortable/light defaults leave them unset.
         data-theme={theme === 'dark' ? 'dark' : undefined}
         data-density={density === 'compact' ? 'compact' : undefined}
-        // Brand keys off `data-brand` (the ADR-020 §4 public attribute) with
+        // Brand keys off `data-brand` (the ADR-023 public attribute) with
         // `data-tenant` mirrored for back-compat with today's compiled overlays.
         data-brand={brand}
         data-tenant={brand}

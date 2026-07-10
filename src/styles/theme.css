@@ -32,7 +32,7 @@
  *   so Tailwind's `class`-based dark variant and the [data-theme] selector
  *   stay in sync.
  *
- * Public override contract — the four theming "dials" (ADR-020 §3):
+ * Public override contract — the four theming "dials" (ADR-023):
  *   Consumers style HDS with ZERO JavaScript by setting these on a root/scope
  *   element (or via the typed <HdsThemeProvider> convenience — see
  *   src/app/context/hds-theme.tsx). This is the documented seam; keep the
