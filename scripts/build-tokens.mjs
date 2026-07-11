@@ -1288,10 +1288,11 @@ export function buildManifest(allTokens, raw) {
  *     semantic tier) — only the named semantic entries are.
  *   - screens: `primitive.breakpoint.*` under a name+value key (`xs375`,
  *     `sm640`, `md768`, `lg1024`, `xl1280` — deliberately not colliding with
- *     Tailwind's own `sm`/`md`/`lg`/`xl` defaults), value a `var(--…)` ref,
- *     per ADR-024. NOTE: `@media` conditions cannot reference CSS custom
- *     properties in any browser, so these entries are not yet functional
- *     breakpoints — flagged in hirobius/hds#125, not resolved by this change.
+ *     Tailwind's own `sm`/`md`/`lg`/`xl` defaults), value a **resolved px
+ *     literal** (e.g. `375px`) — the one documented exception to the
+ *     var()-ref rule the other three keys follow, per ADR-024's amendment:
+ *     `@media` conditions can't evaluate CSS custom properties in any
+ *     browser, so a var() ref here was never a functional breakpoint.
  *   - borderWidth: `semantic.borderWidth.default` → `DEFAULT` (bare
  *     `border`), `semantic.borderWidth.emphasis` → both `emphasis` and `2`
  *     (so `border-2` resolves through the tenant-themeable semantic tier),
@@ -1376,17 +1377,15 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
     spacing[t.path[2]] = `var(${pathToCSSVar(t.path)})`;
   }
 
-  // screens — per ADR-024, keyed by name+value (xs375, sm640, ...) so these
-  // don't collide with Tailwind's own sm/md/lg/xl defaults, value is a
-  // var(--…) ref like every other category. NOTE (flagged in hirobius/hds#125,
-  // not resolved by this change): @media conditions cannot reference CSS
-  // custom properties in any browser, so a var() screen value never actually
-  // matches — these entries satisfy ADR-024 and check-tailwind-token-coverage
-  // but are not yet functional breakpoints.
+  // screens — per ADR-024's amendment, keyed by name+value (xs375, sm640,
+  // ...) so these don't collide with Tailwind's own sm/md/lg/xl defaults,
+  // value is a resolved px literal (not a var(--…) ref like the other three
+  // categories): @media conditions can't evaluate CSS custom properties in
+  // any browser, so a var() ref here was never a functional breakpoint.
   const screens = {};
   for (const t of primitiveBreakpoint) {
     const name = t.path[t.path.length - 1];
-    screens[`${name}${t.value.value}`] = `var(${pathToCSSVar(t.path)})`;
+    screens[`${name}${t.value.value}`] = dimensionToCSS(t.value);
   }
 
   // borderWidth — semantic.default → DEFAULT (bare `border`),

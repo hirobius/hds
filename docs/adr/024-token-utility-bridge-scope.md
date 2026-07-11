@@ -1,6 +1,6 @@
 # ADR-024: Token→Utility Bridge Scope, and Style Dictionary: Not Now
 
-**Status:** Accepted (2026-07-10)
+**Status:** Accepted (2026-07-10); amended (2026-07-11) — `screens` exception
 
 ## Context
 
@@ -44,11 +44,13 @@ sourced as:
 | `fontSize`    | `primitive.typography.size.*`             | —                                                 |
 
 Every emitted value is a `var(--…)` reference produced by the existing
-`pathToCSSVar` helper (~line 27) — **never a resolved literal**. This is the
-one non-negotiable constraint: resolving to literals at build time would
-sever the dark-mode/tenant-overlay/density cascade the moment a component
-switches from a hand-written CSS var to a Tailwind utility, silently
-regressing exactly the theming behavior ISSUE-01 exists to fix.
+`pathToCSSVar` helper (~line 27) — **never a resolved literal** — with one
+documented exception, `screens` (see "Amendment (2026-07-11)" below). For the
+other three keys this is a non-negotiable constraint: resolving to literals
+at build time would sever the dark-mode/tenant-overlay/density cascade the
+moment a component switches from a hand-written CSS var to a Tailwind
+utility, silently regressing exactly the theming behavior ISSUE-01 exists to
+fix.
 
 **Explicitly out of scope for this bridge** (left as future, separately
 scoped work if ever needed): `colors` restructuring, animation/transition
@@ -121,3 +123,35 @@ value is immediate) has not occurred.
 - Future ADRs proposing new Tailwind-reachable token categories should cite
   this ADR's scope table and extend it explicitly, rather than growing
   `buildTailwindThemeExtend()` ad hoc.
+
+## Amendment (2026-07-11): `screens` emits concrete px, not `var()` refs
+
+**Decision (Adrian, 2026-07-11 planning interview):** the `screens` half of
+the bridge is a documented exception to the `var()`-ref-only rule above. It
+emits **concrete px values**, resolved from `primitive.breakpoint.*` at
+build time, instead of `var(--…)` references.
+
+**Why:** `@media` conditions cannot evaluate CSS custom properties in any
+browser — this was already flagged as an open question when the original
+decision above was written (see the `screens` JSDoc note in
+`buildTailwindThemeExtend()`). Emitting `var(--…)` refs there anyway (per
+the original non-negotiable rule) produced entries that satisfied this ADR
+and `check-tailwind-token-coverage.mjs` on paper but were never functional
+breakpoints, and caused `Unexpected token Function("var")` warnings in
+`pnpm build:lib` (flagged in PR #159) once Tailwind tried to compile them
+into real `@media (min-width: …)` conditions.
+
+**Scope of the exception:** `screens` only. `spacing`, `borderWidth`, and
+`fontSize` keep `var(--…)` refs — those three are consumed as property
+values (`padding: var(--…)`), which custom properties support fine, so the
+dark-mode/tenant-overlay/density cascade through those keys is unaffected.
+`screens` values are consumed as `@media` conditions, a context where a
+`var()` reference was always inert; resolving to a literal px value here
+loses nothing the `var()` form actually provided.
+
+**Consequence:** `screens` breakpoints are not tenant-themeable (a tenant
+overlay changing `primitive.breakpoint.*` requires a token rebuild, not a
+runtime CSS var override) — this was already true in practice under the
+`var()` form (the breakpoints never fired), so no cascade behavior actually
+regresses; the change only makes the existing behavior functional instead
+of decorative.

@@ -11,17 +11,17 @@
  * defaults — untouched by the dark/tenant/density cascade — and the
  * `data-density` dial is a no-op for utility-authored components.
  *
- * Per ADR-024 (docs/adr/024-token-utility-bridge-scope.md), every value in
- * all 4 keys must be a `var(--…)` reference (optionally wrapped in
- * `calc(...)`) — never a resolved literal — so the value tracks token edits
- * and, for semantic-tier entries, the tenant/density cascade.
+ * Per ADR-024 (docs/adr/024-token-utility-bridge-scope.md), `spacing`,
+ * `borderWidth`, and `fontSize` values must be a `var(--…)` reference
+ * (optionally wrapped in `calc(...)`) — never a resolved literal — so the
+ * value tracks token edits and, for semantic-tier entries, the
+ * tenant/density cascade.
  *
- * NOTE on `screens`: `@media` conditions cannot reference CSS custom
- * properties in any browser (see check-hardcoded-breakpoints.mjs v2), so a
- * var()-valued screen entry is not yet a functional breakpoint. ADR-024
- * requires var() refs here anyway (non-negotiable, applies to all 4 keys);
- * this gate enforces the ADR as written. Flagged as an open question in
- * hirobius/hds#125, not resolved by this gate.
+ * NOTE on `screens`: per ADR-024's 2026-07-11 amendment, `screens` is the
+ * one documented exception — it must be a resolved px literal, not a
+ * var(--…) ref, because `@media` conditions cannot evaluate CSS custom
+ * properties in any browser (a var() ref there is never a functional
+ * breakpoint).
  *
  * Exit codes:
  *   0 — all 4 keys present and populated per the rules above
@@ -51,14 +51,19 @@ const CONFIG_PATH = FIXTURE_DIR
   : join(ROOT, 'tailwind.config.tokens.cjs');
 
 const VAR_REF = /^(calc\()?var\(--[\w-]+\)/;
+const PX_LITERAL = /^\d+(\.\d+)?px$/;
 
 function isVarRef(value) {
   return typeof value === 'string' && VAR_REF.test(value);
 }
 
+function isPxLiteral(value) {
+  return typeof value === 'string' && PX_LITERAL.test(value);
+}
+
 const RULES = {
   spacing: { require: isVarRef, label: 'a var(--…) reference' },
-  screens: { require: isVarRef, label: 'a var(--…) reference (ADR-024)' },
+  screens: { require: isPxLiteral, label: 'a resolved px literal (ADR-024 amendment)' },
   borderWidth: { require: isVarRef, label: 'a var(--…) reference' },
   fontSize: { require: isVarRef, label: 'a var(--…) reference' },
 };
