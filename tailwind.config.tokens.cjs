@@ -93,11 +93,11 @@ const config = {
         px10: 'var(--primitive-space-px10)',
       },
       screens: {
-        xs375: 'var(--primitive-breakpoint-xs)',
-        sm640: 'var(--primitive-breakpoint-sm)',
-        md768: 'var(--primitive-breakpoint-md)',
-        lg1024: 'var(--primitive-breakpoint-lg)',
-        xl1280: 'var(--primitive-breakpoint-xl)',
+        xs375: '375px',
+        sm640: '640px',
+        md768: '768px',
+        lg1024: '1024px',
+        xl1280: '1280px',
       },
       borderWidth: {
         2: 'var(--semantic-borderWidth-emphasis)',

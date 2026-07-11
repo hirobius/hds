@@ -8,10 +8,10 @@ const config = {
       spacing: {
         4: '1rem',
       },
-      // resolved literal instead of a var(--…) ref (ADR-024 requires var()
-      // for screens too, despite @media's own var() limitation).
+      // var(--…) ref instead of a resolved px literal — ADR-024's amendment
+      // requires screens to be concrete px (var() is inert inside @media).
       screens: {
-        sm640: '640px',
+        sm640: 'var(--primitive-breakpoint-sm)',
       },
       // missing entirely.
       borderWidth: {},

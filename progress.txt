@@ -283,3 +283,67 @@ Notes for next iteration:
 - Epic #80 (old wind-down epic) should probably be closed-as-superseded-by
   #124 by a human, per #155's own recommendation — left as a status.json
   next[] item, not actioned (judgment call, not this issue's DoD).
+
+---
+
+Issue #160: tokens: amend ADR-024 — screens emit concrete px, not var()
+refs (follow-up to #159).
+
+Decision (documented in issue body, Adrian 2026-07-11): screens is a
+one-key exception to ADR-024's var()-ref-only rule. @media conditions
+can't evaluate CSS custom properties in any browser, so var(--…) refs
+in theme.extend.screens produced entries that satisfied the ADR/gate on
+paper but were never functional breakpoints, and caused `Unexpected
+token Function("var")` warnings in pnpm build:lib (confirmed: 5
+occurrences on main, 0 after this fix). spacing/borderWidth/fontSize
+are consumed as property values (var() works fine there) and keep
+var(--…) refs unchanged.
+
+Changes:
+- docs/adr/024-token-utility-bridge-scope.md: added "Amendment
+  (2026-07-11)" section documenting the screens exception + rationale;
+  updated the intro var()-ref rule to flag the one exception.
+- scripts/build-tokens.mjs: buildTailwindThemeExtend()'s screens block
+  now emits dimensionToCSS(t.value) (a resolved px literal, e.g.
+  "375px") instead of a var(--…) ref. Reused the existing
+  dimensionToCSS() helper rather than hand-rolling `${value}${unit}`.
+  Updated JSDoc.
+- scripts/check-tailwind-token-coverage.mjs: RULES.screens now requires
+  a resolved px literal (new isPxLiteral / PX_LITERAL regex) instead of
+  isVarRef; updated header comment.
+- fixtures/check-tailwind-token-coverage/{passing,violating}.example.d:
+  swapped which form (px vs var()) is the violation for screens, to
+  match the amended rule.
+- scripts/__tests__/build-tokens.test.mjs: updated the screens test's
+  expected output from var(--…) to resolved px.
+- docs/guardrails/registry.json: reworded the gate's description to
+  reflect the screens exception.
+- tailwind.config.tokens.cjs: regenerated screens block only (hand-
+  isolated from unrelated pre-existing formatting drift in
+  DESIGN-HANDOFF.md/tenants.css that `pnpm tokens` also produces on
+  unmodified main — confirmed via stash-and-diff that drift predates
+  this change, so left out of this PR).
+
+Full gate green (bash ralph/gate.sh: manifest:generate, audit-tokens
+--full, typecheck, 102 test files / 1263 tests / 5 skipped, lint).
+Also ran scripts/validate-fixture-proof-of-firing.mjs (only the two
+pre-existing unrelated failures — check-contrast,
+validate-fixture-proof-of-firing itself — both present identically on
+unmodified main) and pnpm build:lib (confirmed the var() warning is
+gone).
+
+Files changed: docs/adr/024-token-utility-bridge-scope.md,
+docs/guardrails/registry.json, scripts/build-tokens.mjs,
+scripts/check-tailwind-token-coverage.mjs,
+scripts/__tests__/build-tokens.test.mjs,
+fixtures/check-tailwind-token-coverage/{passing,violating}.example.d/
+tailwind.config.tokens.cjs, tailwind.config.tokens.cjs.
+
+Notes for next iteration:
+- Pre-existing formatting drift in DESIGN-HANDOFF.md/tenants.css/
+  public/hds-manifest.json surfaces every time `pnpm tokens` runs on
+  unmodified main (confirmed reproducible) — likely a prettier or
+  dependency version drift between the last commit that ran `pnpm
+  tokens` and the current toolchain. Worth a separate small issue to
+  re-sync those generated files intentionally, so future token PRs
+  don't have to hand-isolate their diff like this one did.
