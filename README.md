@@ -1,30 +1,6 @@
 # Hirobius Design System
 
-> ## 🧊 FROZEN — on the shelf (2026-07-09)
->
-> **HDS is a complete, shelved package. Active development is paused.** It is not
-> being ditched — it's a finished, tested body of work kept in git to check out
-> later: 133 components (Radix + `cva`), 351 DTCG tokens, ~110 Storybook stories,
-> a full guardrail suite, and the published `@hirobius/design-system@0.13.0` on npm.
->
-> **Why:** the design system was absorbing more maintenance (its highest-commit
-> month) than its two consumers justified — the marketing-site factory
-> (`hirobius/clients`) uses only its token spine (no React components), and the
-> only component consumer (the internal `hirobius/ops` dashboard) is dormant.
->
-> **What "frozen" means:** no new development. `0.13.0` is the **final clean cut**
-> (it folded in the icon fix + the static-primitive CSS layer + the scroll recipe)
-> and is published on npm; the Chromatic + release workflows are back to
-> manual-only. The published package stays installable. All future work is
-> tracked in the wind-down epic **#80**.
->
-> **To take it off the shelf:** restore the `pull_request`/`push` triggers in
-> `.github/workflows/{chromatic,release}.yml`, resume from `main`, and pick work
-> from #80.
->
-> **One human step (credential-gated, not automatable):** optionally run `npm
-deprecate "@hirobius/design-system@<=0.12.0" "Frozen — see the repo README"` to
-> flag the package as paused for npm browsers. It does not break installs.
+HDS is under active development (unfrozen 2026-07-10; see [#155](https://github.com/hirobius/hds/issues/155)), currently burning down [epic #124](https://github.com/hirobius/hds/issues/124), the Tailwind × multi-tenant token-utility hardening pass. 133 components (Radix + `cva`), 351+ DTCG tokens, ~110 Storybook stories, a full guardrail suite, and the published `@hirobius/design-system` on npm.
 
 A publishable React + TypeScript component library, backed by a governed design-token pipeline, a documentation site, and an automated verification suite — all in one repository.
 

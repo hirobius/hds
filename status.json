@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-07-09T02:00:00Z",
-  "phase": "frozen",
-  "headline": "HDS is FROZEN / on the shelf (2026-07-09). A complete, tested, shelved package: 133 components (Radix + cva), 351 DTCG tokens, ~110 Storybook stories, full guardrail suite, published @hirobius/design-system@0.13.0 on npm. Decision (build-vs-buy audit, verdict SPLIT): the DS was absorbing more maintenance than its two consumers justify — the clients marketing factory uses only the token spine (no React components), the only component consumer (internal ops dashboard) is dormant and already drift-broken. Final work folded in before freezing: #116 scroll recipe + stories (PR #119) and #64 CSS-only static-primitive layer (PR #120), both merged to main. Chromatic + release workflows set to manual-only; published 0.12.0 stays installable. All future work tracked in epic #80. Not ditched — checkoutable later.",
+  "updatedAt": "2026-07-11T00:00:00Z",
+  "phase": "active",
+  "headline": "HDS is UNFROZEN (Adrian, 2026-07-10; see #155) and back to active development under epic #124, the Tailwind × multi-tenant token-utility burndown. The Ralph loop has been merging PRs continuously since the freeze (#135–#159), including epic #124 children #125 (spacing/breakpoints/border-width/font-size token utilities), #127 (interactive surface state tokens), and the ADR ratification in #131. Package remains published as @hirobius/design-system on npm.",
   "next": [
-    "Off-the-shelf trigger: restore pull_request/push triggers in .github/workflows/{chromatic,release}.yml and pick work from epic #80",
-    "Optional human step (credential-gated): npm deprecate @hirobius/design-system with a 'frozen' pointer",
-    "When ops resumes: vendor the ~26 used HDS components into ops/src/ui (per the build-vs-buy plan), drop the file: dep"
+    "Continue burning down epic #124's remaining children: #126, #128, #129, #130, #132, #133, #134",
+    "Restore pull_request/push triggers in .github/workflows/{chromatic,release}.yml — still manual-dispatch-only from the freeze, now stale",
+    "Reconcile the superseded wind-down epic #80 now that #124 is the active roadmap"
   ],
-  "blocked": ["All active DS development intentionally paused (frozen). Future work lives in #80."]
+  "blocked": []
 }
