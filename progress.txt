@@ -347,3 +347,30 @@ Notes for next iteration:
   tokens` and the current toolchain. Worth a separate small issue to
   re-sync those generated files intentionally, so future token PRs
   don't have to hand-isolate their diff like this one did.
+
+---
+
+Issue #156 (re-claim, 2026-07-11T17:04) — reconciliation, no new code.
+
+Re-picked by the harness even though the DoD was already fully delivered in
+PR #165 (merged to main at 646c41e, 2026-07-11T07:55:39Z — status.json phase
+frozen->active, README banner stripped, repo-wide frozen/shelf grep already
+done). Verified via `gh pr view 165 --json closingIssuesReferences,mergeCommit`
+that GitHub correctly resolved the "Closes #156" reference and the merge
+landed on main, but the issue never auto-closed (state stayed OPEN,
+closedAt null) — a bot-token/App-permissions gap on the close step, not
+unfinished work.
+
+No code/status changes needed (re-diffed status.json/README.md against the
+issue DoD — nothing left to do), so no gate run and no PR this iteration.
+Commented on #156 pointing at #165/646c41e and closed it manually to stop
+the harness from re-claiming a completed issue every cycle.
+
+Files changed: none (progress.txt only).
+
+Notes for next iteration:
+- If other closed-in-practice-but-still-OPEN issues turn up (same
+  "Closes #N" non-auto-close symptom), same reconciliation pattern applies:
+  verify via `closingIssuesReferences` + merge commit on main, comment, close
+  manually — don't re-implement.
+- ralph-ready queue should be re-polled fresh next run.
