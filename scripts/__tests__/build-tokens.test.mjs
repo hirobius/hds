@@ -57,14 +57,14 @@ describe('resolveAlias', () => {
   });
 
   it('resolves a simple {ref} alias to its leaf $value', () => {
-    const root = { primitive: { color: { blue: { '500': { $value: '#1e2fff' } } } } };
+    const root = { primitive: { color: { blue: { 500: { $value: '#1e2fff' } } } } };
     expect(resolveAlias('{primitive.color.blue.500}', root)).toBe('#1e2fff');
   });
 
   it('resolves chained aliases transitively', () => {
     const root = {
-      primitive: { color: { blue: { '500': { $value: '#1e2fff' } } } },
-      semantic:  { accent: { $value: '{primitive.color.blue.500}' } },
+      primitive: { color: { blue: { 500: { $value: '#1e2fff' } } } },
+      semantic: { accent: { $value: '{primitive.color.blue.500}' } },
     };
     expect(resolveAlias('{semantic.accent}', root)).toBe('#1e2fff');
   });
@@ -138,7 +138,9 @@ describe('fontFamilyToCSS', () => {
   });
 
   it('wraps multi-word family names in double quotes', () => {
-    expect(fontFamilyToCSS(['Source Sans Pro', 'sans-serif'])).toBe('"Source Sans Pro", sans-serif');
+    expect(fontFamilyToCSS(['Source Sans Pro', 'sans-serif'])).toBe(
+      '"Source Sans Pro", sans-serif',
+    );
   });
 
   it('accepts a plain string (non-array) and returns it', () => {
@@ -154,8 +156,8 @@ describe('walkTokens', () => {
     const tokens = [...walkTokens(tree)];
     expect(tokens).toHaveLength(1);
     expect(tokens[0]).toMatchObject({
-      path:  ['primitive', 'color', 'white'],
-      type:  'color',
+      path: ['primitive', 'color', 'white'],
+      type: 'color',
       value: '#ffffff',
     });
   });
@@ -216,11 +218,13 @@ describe('valueToCSS', () => {
   });
 
   it('resolves an alias to var() when preserveAlias=true', () => {
-    expect(valueToCSS('{primitive.color.blue.500}', 'color', true, {})).toBe('var(--primitive-color-blue-500)');
+    expect(valueToCSS('{primitive.color.blue.500}', 'color', true, {})).toBe(
+      'var(--primitive-color-blue-500)',
+    );
   });
 
   it('resolves an alias to its raw value when preserveAlias=false', () => {
-    const root = { primitive: { color: { blue: { '500': { $value: '#1e2fff' } } } } };
+    const root = { primitive: { color: { blue: { 500: { $value: '#1e2fff' } } } } };
     expect(valueToCSS('{primitive.color.blue.500}', 'color', false, root)).toBe('#1e2fff');
   });
 });
@@ -241,7 +245,7 @@ describe('serialize', () => {
   });
 
   it('wraps keys that are not valid identifiers in quotes', () => {
-    const obj = { '500': 'var(--primitive-500)' };
+    const obj = { 500: 'var(--primitive-500)' };
     const result = serialize(obj);
     expect(result).toContain('"500":');
   });
@@ -251,7 +255,8 @@ describe('serialize', () => {
 
 describe('shadowToCSS', () => {
   it('passes pre-composed shadow strings through verbatim', () => {
-    const composed = '0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06)';
+    const composed =
+      '0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06)';
     expect(shadowToCSS(composed)).toBe(composed);
   });
 
@@ -259,9 +264,9 @@ describe('shadowToCSS', () => {
     const result = shadowToCSS({
       offsetX: { value: 0, unit: 'px' },
       offsetY: { value: 1, unit: 'px' },
-      blur:    { value: 2, unit: 'px' },
-      spread:  { value: 0, unit: 'px' },
-      color:   '#000000',
+      blur: { value: 2, unit: 'px' },
+      spread: { value: 0, unit: 'px' },
+      color: '#000000',
     });
     expect(result).toBe('0px 1px 2px 0px #000000');
   });
@@ -274,8 +279,8 @@ describe('expandElevation', () => {
     const path = ['semantic', 'elevation', 'raised'];
     const slots = expandElevation(path, {
       surface: '{semantic.color.surface.raised}',
-      shadow:  '{semantic.shadow.subtle}',
-      border:  null,
+      shadow: '{semantic.shadow.subtle}',
+      border: null,
     });
     expect(slots.map((s) => s.cssVar)).toEqual([
       '--semantic-elevation-raised-surface',
@@ -288,8 +293,8 @@ describe('expandElevation', () => {
   it('falls back null shadow to "none" so box-shadow consumers stay valid', () => {
     const slots = expandElevation(['semantic', 'elevation', 'flat'], {
       surface: '{semantic.color.surface.page}',
-      shadow:  null,
-      border:  '{semantic.color.border.subtle}',
+      shadow: null,
+      border: '{semantic.color.border.subtle}',
     });
     const shadowSlot = slots.find((s) => s.cssVar.endsWith('-shadow'));
     expect(shadowSlot.cssValue).toBe('none');
@@ -298,8 +303,8 @@ describe('expandElevation', () => {
   it('falls back null border to "transparent" so border-color consumers stay valid', () => {
     const slots = expandElevation(['semantic', 'elevation', 'raised'], {
       surface: '{semantic.color.surface.raised}',
-      shadow:  '{semantic.shadow.subtle}',
-      border:  null,
+      shadow: '{semantic.shadow.subtle}',
+      border: null,
     });
     const borderSlot = slots.find((s) => s.cssVar.endsWith('-border'));
     expect(borderSlot.cssValue).toBe('transparent');
@@ -308,8 +313,8 @@ describe('expandElevation', () => {
   it('resolves alias slot values to var() references', () => {
     const slots = expandElevation(['semantic', 'elevation', 'raised'], {
       surface: '{semantic.color.surface.raised}',
-      shadow:  '{semantic.shadow.subtle}',
-      border:  null,
+      shadow: '{semantic.shadow.subtle}',
+      border: null,
     });
     const surfaceSlot = slots.find((s) => s.cssVar.endsWith('-surface'));
     expect(surfaceSlot.cssValue).toBe('var(--semantic-color-surface-raised)');
@@ -344,8 +349,8 @@ describe('validateTokens shadow + elevation', () => {
           raised: {
             $value: {
               surface: '{semantic.color.surface.does-not-exist}',
-              shadow:  null,
-              border:  null,
+              shadow: null,
+              border: null,
             },
           },
         },
@@ -411,6 +416,76 @@ describe('buildTailwindThemeExtend', () => {
     const ext = buildTailwindThemeExtend([role('background')], []);
     expect(ext.borderRadius).toEqual({});
   });
+
+  it('utility keys default to empty objects when utilityTokens is omitted', () => {
+    const ext = buildTailwindThemeExtend([], []);
+    expect(ext.spacing).toEqual({});
+    expect(ext.screens).toEqual({});
+    expect(ext.borderWidth).toEqual({});
+    expect(ext.fontSize).toEqual({});
+  });
+
+  it('spacing: semantic.space.* emits dash-joined names, primitive.space.* emits native keys', () => {
+    const semanticSpace = (leafPath) => ({
+      path: ['semantic', 'space', ...leafPath],
+      type: 'dimension',
+    });
+    const primitiveSpace = (key) => ({ path: ['primitive', 'space', key], type: 'dimension' });
+    const ext = buildTailwindThemeExtend([], [], {
+      semanticSpace: [semanticSpace(['layout', 'normal']), semanticSpace(['subgrid', 'hairline'])],
+      primitiveSpace: [primitiveSpace('4'), primitiveSpace('px1')],
+    });
+    expect(ext.spacing).toEqual({
+      'layout-normal': 'var(--semantic-space-layout-normal)',
+      'subgrid-hairline': 'var(--semantic-space-subgrid-hairline)',
+      4: 'var(--primitive-space-4)',
+      px1: 'var(--primitive-space-px1)',
+    });
+  });
+
+  it('screens: primitive.breakpoint.* emits name+value keys (ADR-024) with var(...) values', () => {
+    const breakpoint = (key, value) => ({
+      path: ['primitive', 'breakpoint', key],
+      type: 'dimension',
+      value: { value, unit: 'px' },
+    });
+    const ext = buildTailwindThemeExtend([], [], {
+      primitiveBreakpoint: [breakpoint('xs', 375), breakpoint('sm', 640)],
+    });
+    expect(ext.screens).toEqual({
+      xs375: 'var(--primitive-breakpoint-xs)',
+      sm640: 'var(--primitive-breakpoint-sm)',
+    });
+  });
+
+  it('borderWidth: semantic.default → DEFAULT, semantic.emphasis → emphasis + 2, primitive.* under own key', () => {
+    const semanticBW = (leaf) => ({ path: ['semantic', 'borderWidth', leaf], type: 'dimension' });
+    const primitiveBW = (leaf) => ({ path: ['primitive', 'borderWidth', leaf], type: 'dimension' });
+    const ext = buildTailwindThemeExtend([], [], {
+      semanticBorderWidth: [semanticBW('default'), semanticBW('emphasis')],
+      primitiveBorderWidth: [primitiveBW('xs'), primitiveBW('sm'), primitiveBW('md')],
+    });
+    expect(ext.borderWidth).toEqual({
+      DEFAULT: 'var(--semantic-borderWidth-default)',
+      emphasis: 'var(--semantic-borderWidth-emphasis)',
+      2: 'var(--semantic-borderWidth-emphasis)',
+      xs: 'var(--primitive-borderWidth-xs)',
+      sm: 'var(--primitive-borderWidth-sm)',
+      md: 'var(--primitive-borderWidth-md)',
+    });
+  });
+
+  it('fontSize: primitive.typography.size.* emits every leaf under its own key', () => {
+    const size = (key) => ({ path: ['primitive', 'typography', 'size', key], type: 'dimension' });
+    const ext = buildTailwindThemeExtend([], [], {
+      primitiveFontSize: [size('xs'), size('sm'), size('base')],
+    });
+    expect(ext.fontSize).toEqual({
+      xs: 'var(--primitive-typography-size-xs)',
+      sm: 'var(--primitive-typography-size-sm)',
+      base: 'var(--primitive-typography-size-base)',
+    });
+  });
 });
 
 describe('validateTokens role tier', () => {
@@ -460,8 +535,8 @@ describe('resolveAlias deeper cycles', () => {
     const root = {
       semantic: {
         color: {
-          accent:    { $value: '{semantic.color.brand}' },
-          brand:     { $value: '{semantic.color.highlight}' },
+          accent: { $value: '{semantic.color.brand}' },
+          brand: { $value: '{semantic.color.highlight}' },
           highlight: { $value: '{semantic.color.accent}' },
         },
       },
@@ -493,7 +568,7 @@ describe('validateTokens missing reference', () => {
   it('accepts a semantic token whose alias target exists', () => {
     const tree = {
       primitive: {
-        color: { blue: { '500': { $type: 'color', $value: '#1e2fff' } } },
+        color: { blue: { 500: { $type: 'color', $value: '#1e2fff' } } },
       },
       semantic: {
         color: {
@@ -613,7 +688,7 @@ describe('validateTokens cyclic alias (V3 circular reference)', () => {
   it('allows valid chain without cycles: primitive → semantic → role', () => {
     const tree = {
       primitive: {
-        color: { blue: { '500': { $type: 'color', $value: '#1e2fff' } } },
+        color: { blue: { 500: { $type: 'color', $value: '#1e2fff' } } },
       },
       semantic: {
         color: {
@@ -676,7 +751,7 @@ describe('validateTokens missing reference (V2 unknown path)', () => {
   it('allows token that aliases to an existing primitive leaf', () => {
     const tree = {
       primitive: {
-        color: { blue: { '500': { $type: 'color', $value: '#1e2fff' } } },
+        color: { blue: { 500: { $type: 'color', $value: '#1e2fff' } } },
       },
       semantic: {
         color: {

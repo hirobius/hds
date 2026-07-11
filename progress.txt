@@ -160,3 +160,77 @@ Notes for next iteration:
   highest-priority remaining item (e.g. #128 ADR-022's implementation target,
   #125/#130 token-bridge follow-ups, or whatever ranks highest per prompt.md's
   order).
+
+=== Issue #125 (ISSUE-01: Tailwind spacing/breakpoints/border-width/font-size
+utilities) — Green + guardrail, density test deferred ===
+
+Extended buildTailwindThemeExtend() (scripts/build-tokens.mjs) to emit 4 new
+Tailwind theme.extend keys per ADR-024 (docs/adr/024-token-utility-bridge-
+scope.md, already accepted before this iteration — read it AFTER designing
+independently and found it matched almost exactly, one correction below):
+  - spacing: semantic.space.* under dash-joined names (e.g. layout-normal,
+    tenant-themeable) + primitive.space.* under native numeric/px keys
+    (fallback, not tenant-themeable — tenants may only override semantic tier).
+  - screens: primitive.breakpoint.* keyed name+value (xs375, sm640, md768,
+    lg1024, xl1280 — deliberately not colliding with Tailwind's own sm/md/lg/xl),
+    value var(--…) per ADR-024's "non-negotiable" rule.
+  - borderWidth: semantic.default -> DEFAULT (bare `border`), semantic.emphasis
+    -> both `emphasis` and `2` (so border-2 is tenant-themeable), plus
+    primitive.{xs,sm,md} under native keys.
+  - fontSize: primitive.typography.size.* under native keys (xs, sm, base...) —
+    collides with Tailwind defaults, fixes text-sm.
+
+New guardrail scripts/check-tailwind-token-coverage.mjs: asserts all 4 keys
+are non-empty and every value is a var(--…) ref (ADR-024's rule, applies to
+screens too). Registered in docs/guardrails/registry.json (firingChannel:
+pnpm-meta, wired into check:full + own pnpm check:tailwind-token-coverage
+script). Directory fixtures at fixtures/check-tailwind-token-coverage/
+{passing,violating}.example.d/.
+
+Decision + why (flagged, not silently fixed): implemented my own screens
+design first (literal px, no var()) because @media conditions cannot
+reference CSS custom properties in ANY browser (verified against
+check-hardcoded-breakpoints.mjs v2's own comment on this exact limitation) —
+a var()-valued screen entry can never actually match. Then found ADR-024
+already accepted and requiring var() for screens anyway ("non-negotiable,
+applies to all 4 keys"). Deferred to the ADR since it's a recent, deliberate,
+accepted decision — implemented per ADR, but left an explicit code comment +
+this note flagging that the screens entries (xs375:, sm640:, etc.) are not
+yet functional breakpoints. Someone with authority over ADR-024 should decide
+whether to amend it (e.g. keep the var() ref for consistency/rebake-tracking
+but have consuming code resolve it before Tailwind sees it, or just accept
+these are decorative until a follow-up addresses it).
+
+Deferred, NOT implemented (commented on issue): the Red section's density
+Playwright test ("p-4 changes computed padding when data-density=compact").
+Empirically this cannot pass with the ADR-024 Decision table alone: p-4 has
+no semantic.space alias (goes through the primitive.space fallback tier ->
+var(--primitive-space-4)), and [data-density='compact'] in theme.css only
+overrides the separate, hand-authored --hds-space-* scale — never
+--primitive-space-*. Making --primitive-space-* density-aware directly would
+have wide blast radius (Box sx, heading-stack, token.tsx, tokens.ts px* aliases
+all consume --primitive-space-N directly and are NOT meant to be density-aware
+today). This is exactly the kind of decision #128 ("Per-tenant shape/density
+overlay axis", depends on #125) is scoped for — left for that issue rather
+than guessing at a new density-wiring architecture inside #125.
+
+Files changed: scripts/build-tokens.mjs, scripts/__tests__/build-tokens.test.mjs,
+scripts/check-tailwind-token-coverage.mjs (new), fixtures/check-tailwind-token-
+coverage/ (new), docs/guardrails/registry.json, package.json,
+tailwind.config.tokens.cjs (regenerated).
+
+Full gate green (manifest:generate, audit-tokens --full, typecheck, test,
+lint). Also ran (not part of ralph gate, but CLAUDE.md UI rule + issue DoD):
+pnpm build:lib + size-limit — both pass, no budget regression. pnpm
+test:layout is broken on a clean main checkout too (webServer command
+references a "build" pnpm script that doesn't exist in package.json) —
+pre-existing, unrelated to this change, not fixed here (out of scope).
+
+Notes for next iteration:
+- #125 Green + guardrail shipped; density test + screens var()-in-@media
+  question explicitly deferred/flagged in the issue comment and PR body.
+- #126 (visual contract snapshots) and #128 (density overlay axis) both
+  depend on #125 — #128 is likely where the p-4/density tension above gets
+  resolved for real.
+- pnpm test:layout's webServer is broken on main (missing "build" pnpm
+  script) — worth its own issue if not already tracked.

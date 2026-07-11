@@ -1276,11 +1276,50 @@ export function buildManifest(allTokens, raw) {
  * top-level color strings. The radius role drives borderRadius.lg/md/sm via
  * calc() steps (shadcn convention). Shadow tokens map by name into boxShadow.
  *
+ * `utilityTokens` (all optional, default `[]`) surface the remaining
+ * primitive/semantic scales as Tailwind utilities so `p-*`, `gap-*`, `sm:`,
+ * `text-*`, `border-*` resolve to HDS tokens instead of Tailwind's built-in
+ * scale (ISSUE-01, hirobius/hds#125):
+ *   - spacing: every `semantic.space.*` leaf under its own dash-joined name
+ *     (e.g. `layout-normal`) PLUS every `primitive.space.*` leaf under its
+ *     own key (`0`,`1`,...,`px1`,...) as a fallback so the numeric Tailwind
+ *     spacing scale (`p-4`, `gap-6`) is token-sourced. The primitive
+ *     fallback entries are not tenant-themeable (tenants may only override
+ *     semantic tier) — only the named semantic entries are.
+ *   - screens: `primitive.breakpoint.*` under a name+value key (`xs375`,
+ *     `sm640`, `md768`, `lg1024`, `xl1280` — deliberately not colliding with
+ *     Tailwind's own `sm`/`md`/`lg`/`xl` defaults), value a `var(--…)` ref,
+ *     per ADR-024. NOTE: `@media` conditions cannot reference CSS custom
+ *     properties in any browser, so these entries are not yet functional
+ *     breakpoints — flagged in hirobius/hds#125, not resolved by this change.
+ *   - borderWidth: `semantic.borderWidth.default` → `DEFAULT` (bare
+ *     `border`), `semantic.borderWidth.emphasis` → both `emphasis` and `2`
+ *     (so `border-2` resolves through the tenant-themeable semantic tier),
+ *     plus every `primitive.borderWidth.*` leaf under its own key.
+ *   - fontSize: every `primitive.typography.size.*` leaf under its own key
+ *     (`xs`,`sm`,`base`,...) — collides with Tailwind's default scale so
+ *     `text-sm` resolves to the HDS token.
+ *
  * @param {Array} roles  - tokens whose path[0] === 'role'
  * @param {Array} shadows - tokens with path[0]==='semantic' && path[1]==='shadow' && type==='shadow'
- * @returns {{ colors: object, borderRadius: object, boxShadow: object }}
+ * @param {object} [utilityTokens]
+ * @param {Array} [utilityTokens.semanticSpace] - path[0]==='semantic' && path[1]==='space'
+ * @param {Array} [utilityTokens.primitiveSpace] - path[0]==='primitive' && path[1]==='space'
+ * @param {Array} [utilityTokens.primitiveBreakpoint] - path[0]==='primitive' && path[1]==='breakpoint'
+ * @param {Array} [utilityTokens.semanticBorderWidth] - path[0]==='semantic' && path[1]==='borderWidth'
+ * @param {Array} [utilityTokens.primitiveBorderWidth] - path[0]==='primitive' && path[1]==='borderWidth'
+ * @param {Array} [utilityTokens.primitiveFontSize] - path[0]==='primitive' && path[1]==='typography' && path[2]==='size'
+ * @returns {{ colors: object, borderRadius: object, boxShadow: object, spacing: object, screens: object, borderWidth: object, fontSize: object }}
  */
-export function buildTailwindThemeExtend(roles, shadows) {
+export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
+  const {
+    semanticSpace = [],
+    primitiveSpace = [],
+    primitiveBreakpoint = [],
+    semanticBorderWidth = [],
+    primitiveBorderWidth = [],
+    primitiveFontSize = [],
+  } = utilityTokens;
   const FOREGROUND_SUFFIX = '-foreground';
   const foregroundBases = new Set();
   for (const t of roles) {
@@ -1327,7 +1366,56 @@ export function buildTailwindThemeExtend(roles, shadows) {
     boxShadow[name] = `var(${pathToCSSVar(t.path)})`;
   }
 
-  return { colors, borderRadius, boxShadow };
+  // spacing — semantic named entries (tenant-themeable) + primitive numeric
+  // fallback (not tenant-themeable; primitive tier is immutable per tenant).
+  const spacing = {};
+  for (const t of semanticSpace) {
+    spacing[t.path.slice(2).join('-')] = `var(${pathToCSSVar(t.path)})`;
+  }
+  for (const t of primitiveSpace) {
+    spacing[t.path[2]] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  // screens — per ADR-024, keyed by name+value (xs375, sm640, ...) so these
+  // don't collide with Tailwind's own sm/md/lg/xl defaults, value is a
+  // var(--…) ref like every other category. NOTE (flagged in hirobius/hds#125,
+  // not resolved by this change): @media conditions cannot reference CSS
+  // custom properties in any browser, so a var() screen value never actually
+  // matches — these entries satisfy ADR-024 and check-tailwind-token-coverage
+  // but are not yet functional breakpoints.
+  const screens = {};
+  for (const t of primitiveBreakpoint) {
+    const name = t.path[t.path.length - 1];
+    screens[`${name}${t.value.value}`] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  // borderWidth — semantic.default → DEFAULT (bare `border`),
+  // semantic.emphasis → emphasis + 2 (so `border-2` is tenant-themeable),
+  // plus every primitive.borderWidth.* leaf under its own key.
+  const borderWidth = {};
+  for (const t of semanticBorderWidth) {
+    const leaf = t.path[t.path.length - 1];
+    const cssVar = `var(${pathToCSSVar(t.path)})`;
+    if (leaf === 'default') {
+      borderWidth.DEFAULT = cssVar;
+    } else if (leaf === 'emphasis') {
+      borderWidth.emphasis = cssVar;
+      borderWidth['2'] = cssVar;
+    }
+  }
+  for (const t of primitiveBorderWidth) {
+    borderWidth[t.path[t.path.length - 1]] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  // fontSize — every primitive.typography.size.* leaf under its own key;
+  // collides with Tailwind's default scale (xs, sm, base, lg, ...) so
+  // `text-sm` etc. resolve to the HDS token.
+  const fontSize = {};
+  for (const t of primitiveFontSize) {
+    fontSize[t.path[t.path.length - 1]] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  return { colors, borderRadius, boxShadow, spacing, screens, borderWidth, fontSize };
 }
 
 // ── Tenant overlay validator ────────────────────────────────────────────────
@@ -1723,7 +1811,22 @@ ${serialize(refsTree)}
   const semanticShadows = allTokens.filter(
     (t) => t.path[0] === 'semantic' && t.path[1] === 'shadow' && t.type === 'shadow',
   );
-  const tailwindExtend = buildTailwindThemeExtend(roles, semanticShadows);
+  const tailwindExtend = buildTailwindThemeExtend(roles, semanticShadows, {
+    semanticSpace: allTokens.filter((t) => t.path[0] === 'semantic' && t.path[1] === 'space'),
+    primitiveSpace: allTokens.filter((t) => t.path[0] === 'primitive' && t.path[1] === 'space'),
+    primitiveBreakpoint: allTokens.filter(
+      (t) => t.path[0] === 'primitive' && t.path[1] === 'breakpoint',
+    ),
+    semanticBorderWidth: allTokens.filter(
+      (t) => t.path[0] === 'semantic' && t.path[1] === 'borderWidth',
+    ),
+    primitiveBorderWidth: allTokens.filter(
+      (t) => t.path[0] === 'primitive' && t.path[1] === 'borderWidth',
+    ),
+    primitiveFontSize: allTokens.filter(
+      (t) => t.path[0] === 'primitive' && t.path[1] === 'typography' && t.path[2] === 'size',
+    ),
+  });
   const tailwindConfigCjs = `// GENERATED FILE — do not edit; mutate hirobius.tokens.json instead.
 // Emitted by scripts/build-tokens.mjs.
 //
