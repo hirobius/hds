@@ -234,3 +234,52 @@ Notes for next iteration:
   resolved for real.
 - pnpm test:layout's webServer is broken on main (missing "build" pnpm
   script) — worth its own issue if not already tracked.
+
+---
+
+Issue #156 — reflect HDS unfreeze in status.json + README (2026-07-11).
+
+Decision: DoD was docs/status-only, no code changes. Verified via #155's
+triage comment and by re-checking .github/workflows/{chromatic,release}.yml
+directly that those workflows are STILL manual-dispatch-only (comment blocks
+say "FROZEN 2026-07-09" / "RE-FROZEN 2026-07-09") — restoring their
+pull_request/push triggers is a CI-behavior change, out of scope for a
+docs-only DoD, so left as-is and called out as a "next" item in status.json
+instead of silently restoring them.
+
+Grepped repo-wide for "frozen"/"shelf" outside the known files: all other
+hits (docs/adr/*, docs/guardrails/full-strictness-*, CHANGELOG.md,
+hds-manifest.json, package.json's --frozen-lockfile) are unrelated uses of
+the word (frozen Safari baseline, frozen ADR folder convention,
+useFrozenState demo-state hook, pnpm's frozen-lockfile flag) — none
+reference the HDS freeze/shelf status, none touched. DESIGN.md /
+DESIGN-HANDOFF.md have zero frozen/shelf mentions — nothing to fix there.
+
+status.json: phase frozen -> active (matches the repo's own historical
+convention — "active" is the value used in every prior non-frozen entry,
+not "active development"); updatedAt refreshed to 2026-07-11; headline
+rewritten to point at epic #124 as the active roadmap; next[] now lists
+124's remaining children + the still-manual CI triggers + reconciling the
+now-superseded #80; blocked[] cleared to [].
+
+README.md: replaced the 25-line "🧊 FROZEN — on the shelf" blockquote
+banner with a single-paragraph active-development note pointing at #155
+(unfreeze decision) and #124 (current epic). Left the unrelated "GitHub
+Packages listing is frozen and no longer updated" note in the Using-the-
+published-package section untouched — that's a separate, still-true fact
+about the old GH Packages registry entry, not about HDS's dev status.
+
+Files changed: status.json, README.md.
+
+Full gate green (bash ralph/gate.sh: typecheck, 102 test files / 1263
+tests / 5 skipped, lint). No token/component/schema changes so the wider
+manifest/audit-tokens/guardrail gates weren't in the affected path.
+
+Notes for next iteration:
+- .github/workflows/{chromatic,release}.yml triggers are still
+  workflow_dispatch-only from the freeze — restoring pull_request/push
+  is a separate, slightly-higher-risk follow-up (flagged in status.json
+  next[], not done here).
+- Epic #80 (old wind-down epic) should probably be closed-as-superseded-by
+  #124 by a human, per #155's own recommendation — left as a status.json
+  next[] item, not actioned (judgment call, not this issue's DoD).
