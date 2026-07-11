@@ -443,7 +443,7 @@ describe('buildTailwindThemeExtend', () => {
     });
   });
 
-  it('screens: primitive.breakpoint.* emits name+value keys (ADR-024) with var(...) values', () => {
+  it('screens: primitive.breakpoint.* emits name+value keys (ADR-024) with resolved px values', () => {
     const breakpoint = (key, value) => ({
       path: ['primitive', 'breakpoint', key],
       type: 'dimension',
@@ -453,8 +453,8 @@ describe('buildTailwindThemeExtend', () => {
       primitiveBreakpoint: [breakpoint('xs', 375), breakpoint('sm', 640)],
     });
     expect(ext.screens).toEqual({
-      xs375: 'var(--primitive-breakpoint-xs)',
-      sm640: 'var(--primitive-breakpoint-sm)',
+      xs375: '375px',
+      sm640: '640px',
     });
   });
 
