@@ -100,6 +100,30 @@ NEVER auto-fix: `react-hooks/exhaustive-deps` (introduces stale-closure bugs),
 anything that rewrites code blocks rather than tweaking declarations, anything
 touching more than one statement.
 
+## Skill protocol — engineering skills are MANDATORY, not optional (2026-07-11)
+
+`.claude/skills/` vendors Matt Pocock's engineering skills (same set as ops and
+site-engine; `skills-lock.json` is the shared pin). They only earn their keep if
+invoked **deterministically** — a routing mandate, not a suggestion the model
+may skip:
+
+- **Building anything (component, token work, validator, fix) → `/implement` + `/tdd`**
+  (test-first, red-green-refactor). No "just write it."
+- **Epic / multi-part / fuzzy task → `/to-tickets`** (dependency-ordered
+  tickets); `/grill-me` first if the *plan* itself is unclear.
+- **Before opening ANY PR → `/code-review`** (dual-axis: standards + spec).
+- **A bug → `/diagnosing-bugs`** (reproduce → minimize → hypothesize → fix),
+  then `/tdd`.
+- **Design-touching / new module → `/codebase-design`**; periodic design-debt
+  sweep → `/improve-codebase-architecture`.
+- **Board / issue-lifecycle work → `/triage`.**
+
+**Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
+is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
+`blocked` · `needs-adrian` (+ the Ralph labels in `AGENTS.md`). Dependencies:
+**sub-issues** for epic→child, **"Depends on #N"** in the body for cross-task
+prerequisites.
+
 ## Fleet hub
 
 This repo is part of the Hirobius fleet. The operations hub is the
