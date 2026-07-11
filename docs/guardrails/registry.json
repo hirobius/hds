@@ -139,64 +139,6 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
-      "id": "check-deprecations",
-      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc in the component tier must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version).",
-      "severity": "warn",
-      "gateScript": "scripts/check-deprecations.mjs",
-      "fixturePath": "fixtures/check-deprecations",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-prop-vocabulary",
-      "description": "Enforces HDS prop-value vocabulary on component primitives: feedback tone/variant unions use danger (never error); size unions stay on the sm|md|lg ramp (no default/compact); tone is drawn from neutral|danger|success|warning|info; density is drawn from comfortable|compact. --coverage prints the cva-adoption rollout tracker (informational, always exit 0).",
-      "severity": "warn",
-      "gateScript": "scripts/check-prop-vocabulary.mjs",
-      "fixturePath": "fixtures/check-prop-vocabulary",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-no-style-prop",
-      "description": "Escape-hatch policy: the non-interactive feedback primitives (Badge, Alert, Callout) are className-only and expose no `style` prop (no explicit style member; HTMLAttributes extensions must Omit 'style').",
-      "severity": "warn",
-      "gateScript": "scripts/check-no-style-prop.mjs",
-      "fixturePath": "fixtures/check-no-style-prop",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-typography-discipline",
-      "description": "Merged gate (13z-6): (1) prevents raw font family strings in fontFamily style props; (2) verifies @font-face url() paths in fonts.css resolve to real files; (3) enforces fontWeight/textTransform override discipline (single-weight + casing-via-eyebrow policy). Sub-mode flags: --fonts-only, --font-files-only, --overrides-only. Merged from: check-hardcoded-fonts + check-font-files + audit-typography-overrides.",
-      "severity": "warn",
-      "gateScript": "scripts/check-typography-discipline.mjs",
-      "fixturePath": "fixtures/check-typography-discipline",
-      "lastFiringAt": "2026-06-19T02:45:49.569Z",
-      "lastViolationAt": "2026-05-08T02:21:52.904Z",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
-      "supportsJson": true,
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
       "id": "check-attributions",
       "description": "Keeps the attribution registry machine-checkable. Checks that registry IDs in ATTRIBUTIONS.md are present and unique, and that asset manifest sourceId values resolve to known registry IDs.",
       "severity": "warn",
@@ -264,6 +206,20 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-deprecations",
+      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc in the component tier must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version).",
+      "severity": "warn",
+      "gateScript": "scripts/check-deprecations.mjs",
+      "fixturePath": "fixtures/check-deprecations",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
       "id": "check-dimensions",
       "description": "Catches raw numeric width/height style values in app component/page files before they reach the broader audit lane. This is the narrow, fast gate for the most common component sizing mistakes.",
       "severity": "warn",
@@ -276,32 +232,6 @@
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-link-integrity",
-      "description": "Unified link integrity gate: (1) active docs do not point at missing local files, (2) external href URLs return non-4xx, (3) internal route targets are known app routes. Merged from check-doc-references, check-external-links, check-route-links (13z-6).",
-      "severity": "warn",
-      "gateScript": "scripts/check-link-integrity.mjs",
-      "fixturePath": "fixtures/check-link-integrity",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pnpm-meta",
-      "subModes": [
-        {
-          "flag": "--doc-refs-only",
-          "replaces": "check-doc-references"
-        },
-        {
-          "flag": "--external-only",
-          "replaces": "check-external-links"
-        },
-        {
-          "flag": "--route-links-only",
-          "replaces": "check-route-links"
-        }
-      ]
     },
     {
       "id": "check-exemptions",
@@ -390,19 +320,6 @@
       "supportsJson": true
     },
     {
-      "id": "check-style-discipline",
-      "description": "Merged gate (13z-6): (1) catches plain HTML elements with 6+ inline style properties; (2) catches suspicious style prop values (function/string references); (3) catches raw color literals in hand-authored CSS files. Sub-mode flags: --inline-only, --style-props-only, --css-values-only. Merged from: check-inline-styles + check-style-prop-values + check-css-values.",
-      "severity": "warn",
-      "gateScript": "scripts/check-style-discipline.mjs",
-      "fixturePath": "fixtures/check-style-discipline",
-      "lastFiringAt": null,
-      "lastViolationAt": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pnpm-meta",
-      "supportsJson": true
-    },
-    {
       "id": "check-licenses",
       "description": "License compliance gate. Runs pnpm licenses list --prod and blocks copyleft/restrictive licenses (GPL/AGPL/LGPL/SSPL/BUSL/EUPL/OSL/CC-BY-NC/CDDL).",
       "severity": "error",
@@ -417,6 +334,32 @@
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-link-integrity",
+      "description": "Unified link integrity gate: (1) active docs do not point at missing local files, (2) external href URLs return non-4xx, (3) internal route targets are known app routes. Merged from check-doc-references, check-external-links, check-route-links (13z-6).",
+      "severity": "warn",
+      "gateScript": "scripts/check-link-integrity.mjs",
+      "fixturePath": "fixtures/check-link-integrity",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "subModes": [
+        {
+          "flag": "--doc-refs-only",
+          "replaces": "check-doc-references"
+        },
+        {
+          "flag": "--external-only",
+          "replaces": "check-external-links"
+        },
+        {
+          "flag": "--route-links-only",
+          "replaces": "check-route-links"
+        }
+      ]
     },
     {
       "id": "check-manifest-drift",
@@ -452,6 +395,34 @@
       "gateScript": "scripts/check-motion.mjs",
       "fixturePath": "fixtures/check-motion",
       "lastFiringAt": "2026-06-19T02:45:51.734Z",
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-no-style-prop",
+      "description": "Escape-hatch policy: the non-interactive feedback primitives (Badge, Alert, Callout) are className-only and expose no `style` prop (no explicit style member; HTMLAttributes extensions must Omit 'style').",
+      "severity": "warn",
+      "gateScript": "scripts/check-no-style-prop.mjs",
+      "fixturePath": "fixtures/check-no-style-prop",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-prop-vocabulary",
+      "description": "Enforces HDS prop-value vocabulary on component primitives: feedback tone/variant unions use danger (never error); size unions stay on the sm|md|lg ramp (no default/compact); tone is drawn from neutral|danger|success|warning|info; density is drawn from comfortable|compact. --coverage prints the cva-adoption rollout tracker (informational, always exit 0).",
+      "severity": "warn",
+      "gateScript": "scripts/check-prop-vocabulary.mjs",
+      "fixturePath": "fixtures/check-prop-vocabulary",
+      "lastFiringAt": null,
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
@@ -544,6 +515,32 @@
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-style-discipline",
+      "description": "Merged gate (13z-6): (1) catches plain HTML elements with 6+ inline style properties; (2) catches suspicious style prop values (function/string references); (3) catches raw color literals in hand-authored CSS files. Sub-mode flags: --inline-only, --style-props-only, --css-values-only. Merged from: check-inline-styles + check-style-prop-values + check-css-values.",
+      "severity": "warn",
+      "gateScript": "scripts/check-style-discipline.mjs",
+      "fixturePath": "fixtures/check-style-discipline",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-tailwind-token-coverage",
+      "description": "Asserts tailwind.config.tokens.cjs exposes spacing/screens/borderWidth/fontSize as theme.extend keys, every value a var(--…) reference per ADR-024, instead of Tailwind's built-in scale.",
+      "severity": "warn",
+      "gateScript": "scripts/check-tailwind-token-coverage.mjs",
+      "fixturePath": "fixtures/check-tailwind-token-coverage",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "glob": "tailwind.config.tokens.cjs"
     },
     {
       "id": "check-template-source-of-truth",
@@ -655,6 +652,22 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pnpm-meta"
+    },
+    {
+      "id": "check-typography-discipline",
+      "description": "Merged gate (13z-6): (1) prevents raw font family strings in fontFamily style props; (2) verifies @font-face url() paths in fonts.css resolve to real files; (3) enforces fontWeight/textTransform override discipline (single-weight + casing-via-eyebrow policy). Sub-mode flags: --fonts-only, --font-files-only, --overrides-only. Merged from: check-hardcoded-fonts + check-font-files + audit-typography-overrides.",
+      "severity": "warn",
+      "gateScript": "scripts/check-typography-discipline.mjs",
+      "fixturePath": "fixtures/check-typography-discipline",
+      "lastFiringAt": "2026-06-19T02:45:49.569Z",
+      "lastViolationAt": "2026-05-08T02:21:52.904Z",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
+      "supportsJson": true,
+      "archivedFrom": "pre-commit",
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
       "id": "check-unresponsive-grids",
