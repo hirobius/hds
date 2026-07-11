@@ -531,7 +531,7 @@
     },
     {
       "id": "check-tailwind-token-coverage",
-      "description": "Asserts tailwind.config.tokens.cjs exposes spacing/screens/borderWidth/fontSize as theme.extend keys, every value a var(--…) reference per ADR-024, instead of Tailwind's built-in scale.",
+      "description": "Asserts tailwind.config.tokens.cjs exposes spacing/screens/borderWidth/fontSize as theme.extend keys sourced from HDS tokens instead of Tailwind's built-in scale — spacing/borderWidth/fontSize as var(--…) refs, screens as resolved px literals, per ADR-024.",
       "severity": "warn",
       "gateScript": "scripts/check-tailwind-token-coverage.mjs",
       "fixturePath": "fixtures/check-tailwind-token-coverage",

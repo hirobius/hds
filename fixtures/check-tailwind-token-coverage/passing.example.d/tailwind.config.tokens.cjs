@@ -9,8 +9,8 @@ const config = {
         'layout-normal': 'var(--semantic-space-layout-normal)',
       },
       screens: {
-        xs375: 'var(--primitive-breakpoint-xs)',
-        sm640: 'var(--primitive-breakpoint-sm)',
+        xs375: '375px',
+        sm640: '640px',
       },
       borderWidth: {
         DEFAULT: 'var(--semantic-borderWidth-default)',
