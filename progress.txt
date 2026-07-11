@@ -374,3 +374,41 @@ Notes for next iteration:
   verify via `closingIssuesReferences` + merge commit on main, comment, close
   manually — don't re-implement.
 - ralph-ready queue should be re-polled fresh next run.
+
+---
+
+Issue #162 — docs(ralph): fix vendored-kit doc drift (engine pointers +
+config.env comment).
+
+Day-one drift from the org-level Ralph migration (#158): docs still described
+the intermediate ops-hosted engine. Fixed the three DoD'd spots only —
+docs/comments, no behavior change:
+
+- ralph/README.md "Add Ralph to another hirobius repo": vendor step now says
+  "from a local clone of the hirobius/ralph kit" (was "a local ops checkout");
+  both `uses:` lines now point at `hirobius/ralph/.github/workflows/ralph-
+  {run,gate}-reusable.yml@v1` (was `hirobius/ops/...@main`); removed the
+  now-obsolete "allow org repos to call ops' reusable workflows" Actions-
+  access step (engine repo is public, per issue's rollout note).
+- AGENTS.md loop-mechanics engine pointer: `hirobius/ops/...@main` ->
+  `hirobius/ralph/...@v1`.
+- ralph/config.env header comment: "ops = PRIVATE client automation" ->
+  describes THIS repo (hds = public npm package, backward compat matters).
+
+Verified against the actual thin-caller workflows already in this repo
+(.github/workflows/ralph{,-gate,-triage}.yml, fixed for real in #167) that
+`hirobius/ralph/...@v1` is the correct, currently-true target — not
+guessing at the intended end state.
+
+Did NOT touch ralph/README.md's unrelated "copy ops' section as the
+template" line in step 5 (AGENTS.md quality-bar authoring guidance) — that's
+citing ops' AGENTS.md as a style example for other repos to copy, not an
+engine/hosting pointer, so out of scope for this DoD.
+
+Files changed: ralph/README.md, AGENTS.md, ralph/config.env.
+
+Full gate green (bash ralph/gate.sh: manifest:generate, audit-tokens --full,
+typecheck, 102 test files / 1263 tests / 5 skipped, lint). Docs-only change,
+no schema/token/component impact — gate ran clean without any fixups.
+
+Notes for next iteration: none — DoD fully met, no follow-up work identified.
