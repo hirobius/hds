@@ -56,3 +56,14 @@ tests, or its component showcase:
 - Costs accepted: the designed-publication docs site is lost in favor of
   Storybook; Figma sync and the local-AI tooling require un-archiving to
   resume; portfolio deploys are cut, recoverable from `archive/portfolio`.
+
+## Addendum (2026-07-12, #161)
+
+§4 fallout completed: the Playwright browser suite (`a11y`, `collision`,
+`focus-flow`, `keyboard-trap`, `layout-integrity`, `responsive`, `visual` +
+`playwright.config.ts`) drove the deleted docs SPA's routes and was archived
+to `tests-archive/` — its CI lanes were already in
+`.github/workflows-archive/`. `pnpm test:*` browser scripts now fail with a
+pointer; CLAUDE.md's AUTO-VALIDATE runs `typecheck` + vitest. Storybook is
+the visual verification surface; a per-story audit would be a fresh build,
+not a resurrection (see `tests-archive/README.md`).

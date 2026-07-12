@@ -12,9 +12,9 @@ import { test, expect } from '@playwright/test';
 import { auditPageLayout } from './helpers/layout-audit';
 
 const VIEWPORTS = [
-  { name: 'mobile',          width: 375,  height: 812 },
-  { name: 'narrow-desktop',  width: 1024, height: 768 },
-  { name: 'desktop',         width: 1280, height: 800 },
+  { name: 'mobile', width: 375, height: 812 },
+  { name: 'narrow-desktop', width: 1024, height: 768 },
+  { name: 'desktop', width: 1280, height: 800 },
 ] as const;
 
 const ROUTES = [
@@ -43,14 +43,14 @@ for (const viewport of VIEWPORTS) {
 
       expect(
         report.gridCollisions,
-        `UI COLLISION DETECTED: Sibling grid items are overlapping on ${route} @ ${viewport.name}\n`
-          + report.gridCollisions.map((i) => `  - ${i.target}: ${i.detail}`).join('\n'),
+        `UI COLLISION DETECTED: Sibling grid items are overlapping on ${route} @ ${viewport.name}\n` +
+          report.gridCollisions.map((i) => `  - ${i.target}: ${i.detail}`).join('\n'),
       ).toEqual([]);
 
       expect(
         report.textOverflows,
-        `OVERFLOW DETECTED: Content is bleeding out of its container on ${route} @ ${viewport.name}\n`
-          + report.textOverflows.map((i) => `  - ${i.target}: ${i.detail}`).join('\n'),
+        `OVERFLOW DETECTED: Content is bleeding out of its container on ${route} @ ${viewport.name}\n` +
+          report.textOverflows.map((i) => `  - ${i.target}: ${i.detail}`).join('\n'),
       ).toEqual([]);
     });
   }
