@@ -198,7 +198,7 @@
     "health-commit": "pnpm check:semantic-report && node scripts/print-health-commit.mjs",
     "icons:sync": "node scripts/sync-icons.mjs",
     "knip": "knip",
-    "lint": "eslint src scripts validators tests",
+    "lint": "eslint src scripts validators tests --max-warnings=0",
     "lint:fix": "eslint src scripts validators tests --fix",
     "llms:generate": "node scripts/generate-llms-txt.mjs",
     "manifest:generate": "node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs",
