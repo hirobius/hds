@@ -33,6 +33,24 @@ Use this file to track:
 - Source: [shadcn/ui](https://ui.shadcn.com/)
 - License link: [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md)
 
+### Impeccable
+
+- Registry ID: library-impeccable
+- Type: Claude Code skill + design-quality detector CLI
+- Usage: curated command subset (critique, polish, audit, harden, typeset, layout) vendored per `skills-lock.json`; `npx impeccable detect` wrapped by `scripts/check-impeccable-detect.mjs` (guardrail `check-impeccable-detect`)
+- License: Apache-2.0
+- Source: [Impeccable](https://github.com/pbakaus/impeccable)
+- License link: [Apache-2.0 license](https://github.com/pbakaus/impeccable/blob/main/LICENSE)
+
+### shadcn skill
+
+- Registry ID: skill-shadcn
+- Type: Claude Code skill
+- Usage: agent guidance for shadcn-oriented component composition, registries, and styling rules; vendored per `skills-lock.json` (source repo `shadcn-ui/ui`, `skills/shadcn/`)
+- License: MIT
+- Source: [shadcn/ui Skills](https://ui.shadcn.com/docs/skills)
+- License link: [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md)
+
 ### Unsplash
 
 - Registry ID: asset-unsplash

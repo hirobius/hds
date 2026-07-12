@@ -1,0 +1,7 @@
+/* Violating fixture: overused AI-default font + bounce easing — both are impeccable detect rules. */
+body {
+  font-family: Inter;
+}
+.btn {
+  animation: pop 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
