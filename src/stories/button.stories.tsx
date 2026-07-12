@@ -2,33 +2,34 @@
  * Button stories — variant, size, state, and a11y demos.
  * @see src/app/components/button.tsx
  */
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "../app/components/button";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '../app/components/button';
+import { MODES } from '../../.storybook/preview';
 
 const meta = {
-  title: "Primitives/Button",
+  title: 'Primitives/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component:
-          "Shared button primitive. cva-driven variants composed against role-token Tailwind utilities. Variants: primary | secondary | tertiary. Sizes: sm | md | lg.",
+          'Shared button primitive. cva-driven variants composed against role-token Tailwind utilities. Variants: primary | secondary | tertiary. Sizes: sm | md | lg.',
       },
     },
   },
   argTypes: {
     variant: {
-      control: { type: "select" },
-      options: ["primary", "secondary", "tertiary"],
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'tertiary'],
     },
     size: {
-      control: { type: "select" },
-      options: ["sm", "md", "lg"],
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
     },
-    loading: { control: "boolean" },
-    disabled: { control: "boolean" },
+    loading: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Button>;
 
@@ -39,22 +40,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    variant: "primary",
-    children: "Primary Button",
+    variant: 'primary',
+    children: 'Primary Button',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    variant: "secondary",
-    children: "Secondary Button",
+    variant: 'secondary',
+    children: 'Secondary Button',
   },
 };
 
 export const Tertiary: Story = {
   args: {
-    variant: "tertiary",
-    children: "Tertiary Button",
+    variant: 'tertiary',
+    children: 'Tertiary Button',
   },
 };
 
@@ -62,25 +63,25 @@ export const Tertiary: Story = {
 
 export const Small: Story = {
   args: {
-    variant: "primary",
-    size: "sm",
-    children: "Small",
+    variant: 'primary',
+    size: 'sm',
+    children: 'Small',
   },
 };
 
 export const Medium: Story = {
   args: {
-    variant: "primary",
-    size: "md",
-    children: "Medium",
+    variant: 'primary',
+    size: 'md',
+    children: 'Medium',
   },
 };
 
 export const Large: Story = {
   args: {
-    variant: "primary",
-    size: "lg",
-    children: "Large",
+    variant: 'primary',
+    size: 'lg',
+    children: 'Large',
   },
 };
 
@@ -88,17 +89,17 @@ export const Large: Story = {
 
 export const Loading: Story = {
   args: {
-    variant: "primary",
+    variant: 'primary',
     loading: true,
-    children: "Saving",
+    children: 'Saving',
   },
 };
 
 export const Disabled: Story = {
   args: {
-    variant: "primary",
+    variant: 'primary',
     disabled: true,
-    children: "Disabled",
+    children: 'Disabled',
   },
 };
 
@@ -106,15 +107,19 @@ export const Disabled: Story = {
 
 export const AllVariantsRow: Story = {
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       description: {
-        story: "All three variants at default size for side-by-side comparison.",
+        story: 'All three variants at default size for side-by-side comparison.',
       },
     },
+    // #126 — representative story for the per-brand/density/theme modes
+    // matrix. `primary` uses the accent-driven `bg-primary` token, so this
+    // is the story a tenant accent regression shows up on.
+    chromatic: { modes: MODES },
   },
   render: () => (
-    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="tertiary">Tertiary</Button>
