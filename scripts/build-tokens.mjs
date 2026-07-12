@@ -1479,6 +1479,12 @@ export function validateTenantOverlay(overlay, baseRaw, slug) {
  *
  * Scope strategy: [data-tenant="<slug>"] attribute selectors (ADR-0001).
  * Dark overrides emit under [data-tenant="<slug>"][data-theme="dark"].
+ * Density overrides (shape/space overlays — ADR-022) emit under
+ * [data-tenant="<slug>"][data-density="compact"], sourced from a leaf's
+ * `$extensions.com.figma.variables.modes.Compact` value — the same
+ * mode-map convention R4 already uses for Light/Dark, extended with a third
+ * named mode. Theme and density combine with brand independently (no triple
+ * brand×theme×density block), per ADR-022's chosen option.
  *
  * @param {string}   tenantsDir  - Absolute path to the tenants/ directory
  * @param {object}   baseRaw     - Parsed hirobius.tokens.json
@@ -1528,9 +1534,10 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
       if (strict) continue; // skip emitting this tenant when validation fails
     }
 
-    // Collect light and dark CSS vars for each overridden leaf
+    // Collect light, dark, and compact-density CSS vars for each overridden leaf
     const lightVars = [];
     const darkVars = [];
+    const densityVars = [];
 
     for (const { path, type, value, extensions } of walkTokens(overlay)) {
       const cssVar = pathToCSSVar(path);
@@ -1556,9 +1563,11 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
       // Prefer explicit Light mode value if present, fall back to $value
       const lightMode = extensions?.['com.figma.variables']?.modes?.Light;
       const darkMode = extensions?.['com.figma.variables']?.modes?.Dark;
+      const compactMode = extensions?.['com.figma.variables']?.modes?.Compact;
 
       const lightVal = lightMode ?? value;
       const darkVal = darkMode;
+      const compactVal = compactMode;
 
       // Emit light value. /* css-ok */ marker tells check-css-values that
       // raw hex/dimension values at the tenant primitive layer are intentional —
@@ -1580,9 +1589,19 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
             `  ${cssVar}: ${cssValue}; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */`,
           );
       }
+
+      // Emit compact-density value only when it differs from the rest value
+      // (ADR-022 — shape/density overlay axis).
+      if (compactVal != null && compactVal !== lightVal) {
+        const cssValue = valueToCSS(compactVal, type, /* preserveAlias */ true, baseRaw);
+        if (cssValue != null)
+          densityVars.push(
+            `  ${cssVar}: ${cssValue}; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */`,
+          );
+      }
     }
 
-    if (lightVars.length === 0 && darkVars.length === 0) continue;
+    if (lightVars.length === 0 && darkVars.length === 0 && densityVars.length === 0) continue;
 
     processedSlugs.push(slug);
 
@@ -1598,6 +1617,14 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
         `[data-tenant="${slug}"][data-theme="dark"] {\n${darkVars.join('\n')}\n}\n`;
     }
 
+    // Density block (ADR-022): brand × density, independent of brand × theme
+    // above — no triple-combo block, density and theme both layer on brand.
+    if (densityVars.length > 0) {
+      block +=
+        `[data-brand="${slug}"][data-density="compact"],\n` +
+        `[data-tenant="${slug}"][data-density="compact"] {\n${densityVars.join('\n')}\n}\n`;
+    }
+
     blocks.push(block);
   }
 
@@ -1611,6 +1638,7 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
     ' * (data-tenant kept as a supported alias — #62). Strategy: ADR-0001.',
     ' * Set <html data-brand="slug"> at the app root to activate a brand overlay.',
     ' * Dark overrides: [data-brand="slug"][data-theme="dark"] (specificity 0,2,0).',
+    ' * Density overrides: [data-brand="slug"][data-density="compact"] (ADR-022).',
     ' */',
   ].join('\n');
 

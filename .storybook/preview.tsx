@@ -15,20 +15,24 @@ import '../src/styles/index.css';
 // this repo ships, minus font (a free-form CSS value, not enumerable):
 //
 //   dial      values exercised here
-//   ────────  ──────────────────────────────
-//   brand     concrete-creations | lilac-bonds
+//   ────────  ──────────────────────────────────────────
+//   brand     concrete-creations | lilac-bonds | brutalist-demo
 //   density   comfortable | compact
 //   theme     light | dark
 //
 // Applied per-file, not globally: import MODES and set it on ONE
 // representative/all-variants story per component
 // (`parameters: { chromatic: { modes: MODES } }`) — never on `meta`, which
-// would multiply EVERY story in the file by 8 snapshots and blow the
-// Chromatic snapshot budget. To add a tenant or a new axis value, extend
-// BRANDS/DENSITIES/THEMES below; every file that already imports MODES picks
-// up the new combination automatically. To wire up an additional component,
-// import MODES here and apply it the same way.
-const BRANDS = ['concrete-creations', 'lilac-bonds'] as const;
+// would multiply EVERY story in the file by (BRANDS x DENSITIES x THEMES)
+// snapshots and blow the Chromatic snapshot budget. To add a tenant or a new
+// axis value, extend BRANDS/DENSITIES/THEMES below; every file that already
+// imports MODES picks up the new combination automatically. To wire up an
+// additional component, import MODES here and apply it the same way.
+//
+// brutalist-demo (ADR-022, #128) is a Storybook-only shape/density exemplar
+// — no deployment — proving role.radius/semantic.space overrides swap per
+// tenant independent of color. See tenants/brutalist-demo/.
+const BRANDS = ['concrete-creations', 'lilac-bonds', 'brutalist-demo'] as const;
 const DENSITIES = ['comfortable', 'compact'] as const;
 const THEMES = ['light', 'dark'] as const;
 
