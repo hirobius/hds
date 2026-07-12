@@ -590,3 +590,42 @@ branch would close the loop visually.
 - Files changed: package.json, eslint.config.mjs.
 - Next: none — DoD met (zero arbitrary-value warnings, lint gate
   hard-blocking, no baseline drift). #130 can close on merge.
+
+## Issue #126 (ISSUE-02: per-tenant + per-density visual contract snapshots) — second pass
+- Re-claimed after re-vehicling (Storybook/Chromatic modes matrix, #171,
+  already merged main). Re-verified today: the required Chromatic-run DoD
+  items (baseline capture + accent-break proof) are still blocked on the
+  exact same gap flagged in the prior PR comment — `gh workflow run
+  chromatic.yml --ref main` still 403s ("Resource not accessible by
+  integration"); this bot token has no Actions-write/workflow_dispatch
+  scope, and `.github/workflows/chromatic.yml` only triggers on
+  workflow_dispatch (auto pull_request/push triggers were disabled during
+  the 2026-07-09 freeze and haven't been restored even though the repo
+  README says unfrozen 2026-07-10 — that restoration is a separate,
+  human-scoped decision, not touched here). No code-level move changes that.
+- Instead shipped the issue's listed *optional* stretch item, which doesn't
+  need Chromatic at all: a vitest AA-contrast assertion in
+  tests/primitive-contracts/ for `semantic.color.content.onAccent` (fixed
+  white, never tenant-overridden) against each pilot tenant's
+  `semantic.color.surface.accent` override (concrete-creations → stone-600,
+  lilac-bonds → lilac-500), Light + Dark mode, both tenants. This is a
+  deterministic, CI-live check (unlike Chromatic) that would have caught the
+  literal "breaking a tenant accent" scenario the issue's proof step
+  describes.
+- Implementation reuses `resolveAlias` (exported from scripts/build-tokens.mjs
+  specifically for test reuse, per its own file docstring) to resolve tenant
+  overlay aliases against the base token graph, mirroring the same
+  Light/Dark `$extensions.com.figma.variables.modes` resolution
+  `buildTenantCSS` already uses — no new resolution logic invented, no
+  scripts touched.
+- Verified: all 6 new assertions pass (2 tenants x 2 modes + 2 "override
+  exists" sanity checks); `bash ralph/gate.sh` green (typecheck, 103 test
+  files / 1276 tests / 5 skipped, lint 0 warnings).
+- Files changed: tests/primitive-contracts/tenant-contrast.contract.test.ts
+  (new).
+- Next: DoD's Chromatic-run items remain genuinely blocked on a human
+  `workflow_dispatch` (Actions tab → Chromatic → Run workflow, against this
+  PR branch or main) — flagging needs-adrian again on the issue. Once run,
+  capture the baseline + the accent-break-then-revert proof and check off
+  the remaining two DoD boxes; this PR's contrast test is additive, not a
+  substitute.
