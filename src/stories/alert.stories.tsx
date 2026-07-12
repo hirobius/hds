@@ -4,6 +4,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Alert } from '../app/components/alert';
+import { MODES } from '../../.storybook/preview';
 
 const meta = {
   title: 'Primitives/alert',
@@ -74,6 +75,8 @@ export const AllVariants: Story = {
         story: 'All four severity variants stacked.',
       },
     },
+    // #126 — representative story for the per-brand/density/theme modes matrix.
+    chromatic: { modes: MODES },
   },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '480px' }}>
