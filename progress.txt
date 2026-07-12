@@ -565,3 +565,28 @@ rendering sharp+dense in a live Storybook/Chromatic run) needs the same
 `actions: write` gap noted in #126 — this bot token can't dispatch
 workflow_dispatch. Flagged in the PR body; a human dispatch against this
 branch would close the loop visually.
+
+## Issue #130 (ISSUE-06: arbitrary-value burndown + promote lint to error)
+- Investigated current state: `pnpm exec eslint src scripts validators tests`
+  already produces 0 warnings — prior PRs (ISSUE-01/#125 token utilities +
+  ongoing per-component migrations) already burned the ~229 arbitrary-value/
+  custom-classname warnings down to zero via real fixes + scoped
+  eslint-disable-next-line comments for genuine var()-token exemptions.
+  CI (.github/workflows/ci.yml) and .husky/pre-commit already append
+  `--max-warnings=0` manually to `pnpm lint`, proving the count is already 0
+  in practice — only the package.json script itself (and thus ralph/gate.sh,
+  which calls plain `pnpm lint`) lacked the hard-blocking flag.
+- Change: baked `--max-warnings=0` into the `lint` script in package.json so
+  the gate itself is hard-blocking, not just CI/pre-commit. Updated the stale
+  TODO comment block in eslint.config.mjs that described this exact pending
+  step (comment said "promote when warning count reaches 0" — it has).
+- No source migration needed this round: zero arbitrary-value sites remain
+  under src/app/components; no baseline file exists for this check (the old
+  check-tailwind-arbitrary.mjs baseline mechanism was already replaced by the
+  ESLint rule + per-line disable comments, per eslint.config.mjs's own header
+  comment).
+- Verified: `bash ralph/gate.sh` green (manifest:generate, audit-tokens,
+  typecheck, test — 102 files/1270 passed, lint — 0 warnings/0 errors).
+- Files changed: package.json, eslint.config.mjs.
+- Next: none — DoD met (zero arbitrary-value warnings, lint gate
+  hard-blocking, no baseline drift). #130 can close on merge.
