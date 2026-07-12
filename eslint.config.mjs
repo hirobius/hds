@@ -10,12 +10,9 @@
  *
  * The no-restricted-syntax guardrail for raw div grid layouts is preserved.
  *
- * TODO (promote when warning count reaches 0):
- *   Change `pnpm lint` script from:
- *     `eslint src`
- *   to:
- *     `eslint src --max-warnings=0`
- *   to make the lint gate hard-blocking in pre-commit.
+ * The `pnpm lint` script runs `eslint src scripts validators tests
+ * --max-warnings=0` — the lint gate is hard-blocking (warning count reached
+ * zero via the arbitrary-value/custom-classname burndown, ISSUE-06/#130).
  *
  * NOTE: @typescript-eslint/recommended-type-checked is intentionally NOT used
  * here — it requires a tsconfig project path (the typecheck tsconfig only covers
