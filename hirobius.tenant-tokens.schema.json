@@ -45,10 +45,14 @@
     },
     "figmaModes": {
       "type": "object",
-      "description": "Figma Variables mode map. Keys are mode names (Light, Dark). Values are token values or alias refs.",
+      "description": "Figma Variables mode map. Keys are mode names (Light, Dark, Compact). Values are token values or alias refs.",
       "properties": {
         "Light": { "$ref": "#/$defs/tokenValue" },
-        "Dark": { "$ref": "#/$defs/tokenValue" }
+        "Dark": { "$ref": "#/$defs/tokenValue" },
+        "Compact": {
+          "$ref": "#/$defs/tokenValue",
+          "description": "Density-aware value applied under [data-density=\"compact\"], combined with this tenant's [data-brand] scope (ADR-022). Emitted only when it differs from the rest/Light value."
+        }
       },
       "additionalProperties": { "$ref": "#/$defs/tokenValue" }
     },
@@ -144,10 +148,7 @@
       },
       "additionalProperties": {
         "description": "Child group or token leaf. Keys starting with $ are DTCG metadata; all other keys are token paths.",
-        "oneOf": [
-          { "$ref": "#/$defs/tokenLeaf" },
-          { "$ref": "#/$defs/tokenGroup" }
-        ]
+        "oneOf": [{ "$ref": "#/$defs/tokenLeaf" }, { "$ref": "#/$defs/tokenGroup" }]
       }
     }
   }

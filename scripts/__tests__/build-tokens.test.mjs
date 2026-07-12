@@ -1,6 +1,9 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 // @vitest-environment node
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
 import {
   pathToCSSVar,
   aliasToCSSVar,
@@ -18,6 +21,8 @@ import {
   ELEVATION_SLOTS,
   validateTokens,
   buildTailwindThemeExtend,
+  validateTenantOverlay,
+  buildTenantCSS,
 } from '../build-tokens.mjs';
 
 // ── pathToCSSVar ──────────────────────────────────────────────────────────────
@@ -840,5 +845,162 @@ describe('validateTokens mode-conditional missing mode', () => {
     const errors = validateTokens(tree);
     // V5 should still catch lowercase 'light' regardless of missing Dark
     expect(errors.some((e) => e.includes('V5') && e.includes('light'))).toBe(true);
+  });
+});
+
+// ── Tenant shape/density overlay (ADR-022, #128) ──────────────────────────────
+
+/** Minimal base token graph exercising the shape/density override surface. */
+const SHAPE_DENSITY_BASE_RAW = {
+  primitive: {
+    space: {
+      $type: 'dimension',
+      2: { $value: { value: 8, unit: 'px' } },
+      4: { $value: { value: 16, unit: 'px' } },
+      6: { $value: { value: 24, unit: 'px' } },
+    },
+    radius: {
+      $type: 'dimension',
+      12: { $value: { value: 12, unit: 'px' } },
+    },
+    borderWidth: {
+      $type: 'dimension',
+      xs: { $value: { value: 1, unit: 'px' } },
+    },
+  },
+  semantic: {
+    radius: {
+      action: { $type: 'dimension', $value: '{primitive.radius.12}' },
+    },
+    space: {
+      $type: 'dimension',
+      component: {
+        padding: { $value: '{primitive.space.6}' },
+      },
+    },
+    borderWidth: {
+      default: { $type: 'dimension', $value: '{primitive.borderWidth.xs}' },
+    },
+  },
+  role: {
+    radius: { $type: 'dimension', $value: '{semantic.radius.action}' },
+  },
+};
+
+describe('validateTenantOverlay — shape/density override surface (ADR-022)', () => {
+  it('permits role.radius overrides (role tier, not primitive)', () => {
+    const overlay = {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+    };
+    const errors = validateTenantOverlay(overlay, SHAPE_DENSITY_BASE_RAW, 'test-brand');
+    expect(errors).toHaveLength(0);
+  });
+
+  it('permits semantic.space.* overrides', () => {
+    const overlay = {
+      semantic: { space: { component: { padding: { $value: '{primitive.space.4}' } } } },
+    };
+    const errors = validateTenantOverlay(overlay, SHAPE_DENSITY_BASE_RAW, 'test-brand');
+    expect(errors).toHaveLength(0);
+  });
+
+  it('permits semantic.borderWidth.* overrides', () => {
+    const overlay = {
+      semantic: { borderWidth: { default: { $value: { value: 2, unit: 'px' } } } },
+    };
+    const errors = validateTenantOverlay(overlay, SHAPE_DENSITY_BASE_RAW, 'test-brand');
+    expect(errors).toHaveLength(0);
+  });
+});
+
+describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () => {
+  let tmpRoot;
+
+  afterEach(() => {
+    if (tmpRoot) rmSync(tmpRoot, { recursive: true, force: true });
+    tmpRoot = undefined;
+  });
+
+  /** Writes tenants/<slug>/tokens.json under a fresh temp tenants dir; returns the dir. */
+  function writeTenantFixture(slug, overlay) {
+    tmpRoot = mkdtempSync(join(tmpdir(), 'hds-tenant-css-'));
+    const tenantDir = join(tmpRoot, slug);
+    mkdirSync(tenantDir, { recursive: true });
+    writeFileSync(join(tenantDir, 'tokens.json'), JSON.stringify(overlay));
+    return tmpRoot;
+  }
+
+  it('emits a density-invariant leaf (role.radius) only in the base [data-brand] block', () => {
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+    });
+    const { css, tenants, errors } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    expect(errors).toHaveLength(0);
+    expect(tenants).toEqual(['brutalist-demo']);
+    expect(css).toContain(
+      '[data-brand="brutalist-demo"],\n[data-tenant="brutalist-demo"] {\n  --role-radius: 0px;',
+    );
+    expect(css).not.toContain('[data-brand="brutalist-demo"][data-density="compact"]');
+  });
+
+  it('emits a [data-brand][data-density="compact"] block for a leaf with a Compact mode', () => {
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+      semantic: {
+        space: {
+          component: {
+            padding: {
+              $type: 'dimension',
+              $value: '{primitive.space.4}',
+              $extensions: { 'com.figma.variables': { modes: { Compact: '{primitive.space.2}' } } },
+            },
+          },
+        },
+      },
+    });
+    const { css, errors } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    expect(errors).toHaveLength(0);
+
+    // Base block: comfortable baseline + density-invariant radius.
+    expect(css).toContain(
+      '[data-brand="brutalist-demo"],\n[data-tenant="brutalist-demo"] {\n  --role-radius: 0px;',
+    );
+    expect(css).toContain('--semantic-space-component-padding: var(--primitive-space-4);');
+
+    // Density block: only the leaf carrying a Compact mode, tightened further.
+    expect(css).toContain(
+      '[data-brand="brutalist-demo"][data-density="compact"],\n[data-tenant="brutalist-demo"][data-density="compact"] {\n  --semantic-space-component-padding: var(--primitive-space-2);',
+    );
+    // role.radius has no Compact mode — must not appear in the density block.
+    const densityBlock = css.slice(
+      css.indexOf('[data-brand="brutalist-demo"][data-density="compact"]'),
+    );
+    expect(densityBlock).not.toContain('--role-radius');
+  });
+
+  it('does not emit a density block when no leaf declares a Compact mode (existing tenants unaffected)', () => {
+    const tenantsDir = writeTenantFixture('concrete-creations', {
+      semantic: { space: { component: { padding: { $value: '{primitive.space.4}' } } } },
+    });
+    const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    expect(css).not.toContain('[data-brand="concrete-creations"][data-density="compact"]');
+  });
+
+  it('omits the Compact value when it is identical to the rest value (mirrors dark-mode dedupe)', () => {
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      semantic: {
+        space: {
+          component: {
+            padding: {
+              $type: 'dimension',
+              $value: '{primitive.space.4}',
+              $extensions: { 'com.figma.variables': { modes: { Compact: '{primitive.space.4}' } } },
+            },
+          },
+        },
+      },
+    });
+    const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    expect(css).not.toContain('[data-brand="brutalist-demo"][data-density="compact"]');
   });
 });

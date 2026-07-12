@@ -21,6 +21,36 @@
           "$description": "Accent surface fill."
         }
       }
+    },
+    "radius": {
+      "action": {
+        "$type": "dimension",
+        "$value": { "value": 12, "unit": "px" },
+        "$description": "Corner radius for interactive action elements."
+      }
+    },
+    "space": {
+      "$type": "dimension",
+      "component": {
+        "padding": {
+          "$value": { "value": 24, "unit": "px" },
+          "$description": "Default component inset."
+        }
+      }
+    },
+    "borderWidth": {
+      "default": {
+        "$type": "dimension",
+        "$value": { "value": 1, "unit": "px" },
+        "$description": "Default hairline border weight."
+      }
+    }
+  },
+  "role": {
+    "radius": {
+      "$type": "dimension",
+      "$value": "{semantic.radius.action}",
+      "$description": "Default border radius."
     }
   }
 }

@@ -8,10 +8,26 @@ tokens.json (W3C DTCG overlay format)
  * (data-tenant kept as a supported alias — #62). Strategy: ADR-0001.
  * Set <html data-brand="slug"> at the app root to activate a brand overlay.
  * Dark overrides: [data-brand="slug"][data-theme="dark"] (specificity 0,2,0).
+ * Density overrides: [data-brand="slug"][data-density="compact"] (ADR-022).
  */
+/* ── brutalist-demo ────────────────────────────────────────────────────── */
+[data-brand="brutalist-demo"],
+[data-tenant="brutalist-demo"] {
+  --role-radius: 0px; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-space-component-padding: var(
+    --primitive-space-4
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+}
+[data-brand='brutalist-demo'][data-density='compact'],
+[data-tenant='brutalist-demo'][data-density='compact'] {
+  --semantic-space-component-padding: var(
+    --primitive-space-2
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+}
+
 /* ── concrete-creations ────────────────────────────────────────────────── */
-[data-brand="concrete-creations"],
-[data-tenant="concrete-creations"] {
+[data-brand='concrete-creations'],
+[data-tenant='concrete-creations'] {
   --semantic-accent-rest: var(
     --primitive-color-stone-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
