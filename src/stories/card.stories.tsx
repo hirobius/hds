@@ -4,6 +4,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Card } from '../app/components/card';
+import { MODES } from '../../.storybook/preview';
 
 const meta = {
   title: 'Primitives/card',
@@ -134,6 +135,10 @@ export const VariantAccent: Story = {
           'variant="accent" — 2px accent border for highlighted entries (e.g. a recommended package). variant="default" (the default) is borderless.',
       },
     },
+    // #126 — representative story for the per-brand/density/theme modes
+    // matrix. The accent border is exactly the token a tenant overlay
+    // repoints, so this is the story a tenant accent regression shows up on.
+    chromatic: { modes: MODES },
   },
   render: () => (
     <div style={{ display: 'flex', gap: '16px', maxWidth: 640 }}>
