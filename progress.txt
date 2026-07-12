@@ -412,3 +412,68 @@ typecheck, 102 test files / 1263 tests / 5 skipped, lint). Docs-only change,
 no schema/token/component impact — gate ran clean without any fixups.
 
 Notes for next iteration: none — DoD fully met, no follow-up work identified.
+
+## Issue #126 — Storybook brand/density/theme Chromatic modes matrix (2026-07-12)
+
+Re-vehicled scope (issue body updated 2026-07-12 after #161 retired the
+Playwright docs-SPA suite): Storybook + Chromatic modes instead of
+tests/visual.spec.ts.
+
+Decisions + why:
+- MODES = cross product of BRANDS (concrete-creations|lilac-bonds) x
+  DENSITIES (comfortable|compact) x THEMES (light|dark), 8 combos, defined
+  once in .storybook/preview.tsx and exported for story files to import.
+  Matches ADR-0001/ADR-022/ADR-023's four-dial contract (brand/density/theme/
+  font); font excluded — free-form CSS value, not enumerable.
+- Decorator sets data-brand/data-tenant/data-density/data-theme on the
+  existing story-wrapper div (reads context.globals), not on <html> —
+  attribute selectors in tenants.css/theme.css match any element carrying
+  the attribute, not just :root, so this is sufficient (same pattern already
+  used by static-primitives.stories.tsx). Confirmed no conflict with
+  ThemeProvider's own document.documentElement writes: its CI/jsdom defaults
+  (light/comfortable) don't carry an override attribute value, only
+  data-theme=dark / data-density=compact are override selectors.
+  Also added globalTypes (brand/density/theme) with toolbar entries so the
+  same dials are hand-switchable in a running `pnpm storybook` — a real dev
+  affordance, not required for Chromatic itself.
+- Wired `parameters.chromatic.modes = MODES` onto ONE representative/
+  all-variants story per component (button: AllVariantsRow, card:
+  VariantAccent, input: Default, badge: AllTones, alert: AllVariants, table:
+  Default) — deliberately NOT on `meta`, which would multiply every story in
+  each file by 8 and blow the "not all 100+ stories" budget the issue calls
+  out. Total added: 6 x 8 = 48 snapshots.
+  card/VariantAccent and button/AllVariantsRow chosen because they render
+  --semantic-accent-* / bg-primary — the actual token tenants.css overrides
+  — so a broken tenant accent has somewhere to show up. badge/alert tones
+  route through separate feedback tokens untouched by tenant overlays today;
+  wired anyway for theme/density coverage and future-proofing.
+- Did NOT install @chromatic-com/storybook. Chromatic's CLI (17.6.0, already
+  pinned) reads `parameters.chromatic.modes` directly; the addon only adds an
+  in-Storybook "Modes" UI tab, not required for CI capture. Kept the diff to
+  zero new deps.
+- Did NOT touch chromatic.yml's `on:` trigger (still workflow_dispatch-only,
+  stale "FROZEN 2026-07-09" comment predates the 2026-07-10 unfreeze) — out
+  of scope for this issue, flagged as unrelated drift, not fixed here.
+
+Files changed: .storybook/preview.tsx, src/stories/{button,card,input,badge,
+alert,table}.stories.tsx.
+
+Full gate green (manifest:generate, audit-tokens --full, typecheck, 102 test
+files / 1263 tests / 5 skipped, lint).
+
+BLOCKED on 2 DoD items requiring live CI access this bot token doesn't have:
+`gh workflow run chromatic.yml --ref ralph/issue-126-chromatic-modes-matrix`
+-> HTTP 403 (Resource not accessible by integration) — no Actions-write
+scope to dispatch workflow_dispatch runs. Baseline capture + the
+break-a-tenant-accent proof both need a live Chromatic run against this
+branch. Commented on #126 flagging needs-adrian to manually dispatch
+Chromatic (Actions tab -> Chromatic -> Run workflow) against PR #171's
+branch. PR opened (#171) with the code-side DoD items complete; PR body
+notes the same gap.
+
+Notes for next iteration: once Adrian dispatches Chromatic on
+ralph/issue-126-chromatic-modes-matrix, capture the run URL, do the
+throwaway break-accent-revert proof commit, and update the PR/issue. If
+recurring, worth a small follow-up issue: grant the ralph GitHub App
+`actions: write` (workflow dispatch) so this class of proof doesn't need a
+human hop every time.
