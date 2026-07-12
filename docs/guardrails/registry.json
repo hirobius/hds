@@ -6,7 +6,7 @@
   "gates": [
     {
       "id": "audit-batch-deliverables",
-      "description": "TODO: add description — audit-batch-deliverables.mjs JSDoc block is empty.",
+      "description": "TODO: add description \u2014 audit-batch-deliverables.mjs JSDoc block is empty.",
       "severity": "warn",
       "gateScript": "scripts/audit-batch-deliverables.mjs",
       "fixturePath": "fixtures/audit-batch-deliverables",
@@ -18,7 +18,7 @@
     },
     {
       "id": "audit-bundle",
-      "description": "Generates a bundle composition report at docs/perf/bundle-report.html using vite-bundle-visualizer. Manual channel only — artifact, not gating.",
+      "description": "Generates a bundle composition report at docs/perf/bundle-report.html using vite-bundle-visualizer. Manual channel only \u2014 artifact, not gating.",
       "severity": "warn",
       "gateScript": "scripts/audit-bundle.mjs",
       "fixturePath": null,
@@ -42,7 +42,7 @@
       "firingChannel": "manual",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "audit-deps",
@@ -59,7 +59,7 @@
     },
     {
       "id": "audit-exceptions",
-      "description": "TODO: add description — audit-exceptions.mjs has no leading JSDoc block.",
+      "description": "TODO: add description \u2014 audit-exceptions.mjs has no leading JSDoc block.",
       "severity": "warn",
       "gateScript": "scripts/audit-exceptions.mjs",
       "fixturePath": "fixtures/audit-exceptions",
@@ -69,7 +69,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "audit-gate-purity",
@@ -100,7 +100,7 @@
     },
     {
       "id": "audit-sbom",
-      "description": "Generates a CycloneDX Software Bill of Materials at docs/security/sbom.json. Manual channel — produces an artifact, not a gate. Useful for the GRC narrative and supply-chain review.",
+      "description": "Generates a CycloneDX Software Bill of Materials at docs/security/sbom.json. Manual channel \u2014 produces an artifact, not a gate. Useful for the GRC narrative and supply-chain review.",
       "severity": "warn",
       "gateScript": "scripts/audit-sbom.mjs",
       "fixturePath": null,
@@ -136,7 +136,7 @@
       "firingChannel": "ci-pr",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-attributions",
@@ -150,7 +150,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-binding-drift",
@@ -165,7 +165,7 @@
       "firingChannel": "manual",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-brand",
@@ -203,7 +203,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-deprecations",
@@ -217,7 +217,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-dimensions",
@@ -231,7 +231,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-exemptions",
@@ -245,7 +245,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-focus-states",
@@ -261,7 +261,7 @@
     },
     {
       "id": "check-hardcoded-breakpoints",
-      "description": "Catches raw pixel comparisons against known breakpoint values in JS/TS. All JS/TS viewport comparisons must use hds.breakpoints.* — no raw px numbers that match a known breakpoint value.",
+      "description": "Catches raw pixel comparisons against known breakpoint values in JS/TS. All JS/TS viewport comparisons must use hds.breakpoints.* \u2014 no raw px numbers that match a known breakpoint value.",
       "severity": "warn",
       "gateScript": "scripts/check-hardcoded-breakpoints.mjs",
       "fixturePath": "fixtures/check-hardcoded-breakpoints",
@@ -271,7 +271,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-hardcoded-colors",
@@ -287,7 +287,7 @@
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-hardcoded-spacing",
@@ -303,11 +303,24 @@
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
+    },
+    {
+      "id": "check-impeccable-detect",
+      "description": "Design anti-pattern detector wrapping `npx impeccable detect` \u2014 46 deterministic rules (typography, color, layout tells), no LLM, no API key. Manual channel only (npx fetch needs network).",
+      "severity": "warn",
+      "gateScript": "scripts/check-impeccable-detect.mjs",
+      "fixturePath": "fixtures/check-impeccable-detect",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "supportsJson": true
     },
     {
       "id": "check-layout-discipline",
-      "description": "Flags raw px/number layout values (margin*, padding*, position, top/right/bottom/left/inset, gap/rowGap/columnGap, flexBasis) inside inline style={{…}} in src/app/components. Points violators at Box sx (the sanctioned escape hatch) or a named layout primitive (Stack/Grid/Container) instead of check-hardcoded-spacing's generic token-var fix. Introduced with #98 (layout-consistency epic #95, workstream 4).",
+      "description": "Flags raw px/number layout values (margin*, padding*, position, top/right/bottom/left/inset, gap/rowGap/columnGap, flexBasis) inside inline style={{\u2026}} in src/app/components. Points violators at Box sx (the sanctioned escape hatch) or a named layout primitive (Stack/Grid/Container) instead of check-hardcoded-spacing's generic token-var fix. Introduced with #98 (layout-consistency epic #95, workstream 4).",
       "severity": "warn",
       "gateScript": "scripts/check-layout-discipline.mjs",
       "fixturePath": "fixtures/check-layout-discipline",
@@ -333,7 +346,7 @@
       "scope": "full-tree",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-link-integrity",
@@ -363,7 +376,7 @@
     },
     {
       "id": "check-manifest-drift",
-      "description": "TODO: add description — check-manifest-drift.mjs has no leading JSDoc block.",
+      "description": "TODO: add description \u2014 check-manifest-drift.mjs has no leading JSDoc block.",
       "severity": "warn",
       "gateScript": "scripts/check-manifest-drift.mjs",
       "fixturePath": "fixtures/check-manifest-drift",
@@ -374,7 +387,7 @@
       "firingChannel": "manual",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-manifest-schema-semver",
@@ -390,7 +403,7 @@
     },
     {
       "id": "check-motion",
-      "description": "Verifies that interactive components ship with motion feedback — the HDS standard that every user action has a visible, token-timed response.",
+      "description": "Verifies that interactive components ship with motion feedback \u2014 the HDS standard that every user action has a visible, token-timed response.",
       "severity": "warn",
       "gateScript": "scripts/check-motion.mjs",
       "fixturePath": "fixtures/check-motion",
@@ -400,7 +413,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-no-style-prop",
@@ -414,7 +427,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-prop-vocabulary",
@@ -428,7 +441,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-reduced-motion",
@@ -442,7 +455,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-ref-forwarding",
@@ -456,7 +469,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-registry",
@@ -470,7 +483,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-secrets",
@@ -486,7 +499,7 @@
       "scope": "full-tree",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-security-baseline",
@@ -514,7 +527,7 @@
       "glob": "src/**/*.{ts,tsx,jsx,js}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-style-discipline",
@@ -531,7 +544,7 @@
     },
     {
       "id": "check-tailwind-token-coverage",
-      "description": "Asserts tailwind.config.tokens.cjs exposes spacing/screens/borderWidth/fontSize as theme.extend keys sourced from HDS tokens instead of Tailwind's built-in scale — spacing/borderWidth/fontSize as var(--…) refs, screens as resolved px literals, per ADR-024.",
+      "description": "Asserts tailwind.config.tokens.cjs exposes spacing/screens/borderWidth/fontSize as theme.extend keys sourced from HDS tokens instead of Tailwind's built-in scale \u2014 spacing/borderWidth/fontSize as var(--\u2026) refs, screens as resolved px literals, per ADR-024.",
       "severity": "warn",
       "gateScript": "scripts/check-tailwind-token-coverage.mjs",
       "fixturePath": "fixtures/check-tailwind-token-coverage",
@@ -555,7 +568,7 @@
       "firingChannel": "manual",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-tenant-tokens",
@@ -569,7 +582,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-tier-bypass",
@@ -598,7 +611,7 @@
     },
     {
       "id": "check-token-paths-ratchet",
-      "description": "Merged gate (13z-6): default mode scans src/** for unresolved design-token path references ({primitive,semantic,component,role}.x.y.z) against hirobius.tokens.json — fires pre-commit. With --ratchet flag: B-class monotonic-decrement ratchet asserting .token-path-baseline.txt entry count never increases — fires ci-pr. Use --update-baseline to record a new baseline. Merged from: check-token-paths (scan) + check-token-paths-ratchet (count ratchet).",
+      "description": "Merged gate (13z-6): default mode scans src/** for unresolved design-token path references ({primitive,semantic,component,role}.x.y.z) against hirobius.tokens.json \u2014 fires pre-commit. With --ratchet flag: B-class monotonic-decrement ratchet asserting .token-path-baseline.txt entry count never increases \u2014 fires ci-pr. Use --update-baseline to record a new baseline. Merged from: check-token-paths (scan) + check-token-paths-ratchet (count ratchet).",
       "severity": "error",
       "gateScript": "scripts/check-token-paths-ratchet.mjs",
       "fixturePath": "fixtures/check-token-paths-ratchet",
@@ -612,7 +625,7 @@
       "ratchetChannel": "ci-pr",
       "ratchetFlag": "--ratchet",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-token-rebake-needed",
@@ -627,7 +640,7 @@
       "firingChannel": "manual",
       "glob": ["hirobius.tokens.json", "src/styles/**", "src/app/data/**"],
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-token-renames",
@@ -667,7 +680,7 @@
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-unresponsive-grids",
@@ -681,11 +694,11 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-validator-wiring",
-      "description": "Meta-validator: every gate registered in docs/guardrails/registry.json has a firingChannel that matches actual invocation. Catches aspirational guardrails — gates registered but never really firing.",
+      "description": "Meta-validator: every gate registered in docs/guardrails/registry.json has a firingChannel that matches actual invocation. Catches aspirational guardrails \u2014 gates registered but never really firing.",
       "severity": "warn",
       "gateScript": "scripts/check-validator-wiring.mjs",
       "fixturePath": "fixtures/check-validator-wiring",
@@ -696,7 +709,7 @@
       "firingChannel": "manual",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "validate-fixture-proof-of-firing",
@@ -712,7 +725,7 @@
       "scope": "full-tree",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     }
   ]
 }

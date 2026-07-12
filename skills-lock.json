@@ -6,6 +6,49 @@
       "sourceType": "github",
       "skillPath": "skills/extract-design/SKILL.md",
       "computedHash": "a20e0950c9d1dde2047af456319416281ac4e655862f09506328ee7faca5ea91"
+    },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/impeccable/SKILL.md",
+      "computedHash": "e26ac0962e4a016a561e4317232bd23d5266b74f38e8bfc785d81f41f93e25b9",
+      "hashAlgorithm": "sha256 of the SKILL.md bytes at pinnedCommit",
+      "pinnedCommit": "630fc2682a5bd39b25a8e61f74b6b3f14f2b1e21",
+      "paths": [
+        ".claude/skills/impeccable/SKILL.md",
+        ".claude/skills/impeccable/reference/critique.md",
+        ".claude/skills/impeccable/reference/polish.md",
+        ".claude/skills/impeccable/reference/audit.md",
+        ".claude/skills/impeccable/reference/harden.md",
+        ".claude/skills/impeccable/reference/typeset.md",
+        ".claude/skills/impeccable/reference/layout.md",
+        ".claude/skills/impeccable/reference/brand.md",
+        ".claude/skills/impeccable/reference/product.md",
+        ".claude/skills/impeccable/reference/init.md",
+        ".claude/skills/impeccable/scripts/context.mjs",
+        ".claude/skills/impeccable/scripts/palette.mjs"
+      ]
+    },
+    "shadcn": {
+      "source": "shadcn-ui/ui",
+      "sourceType": "github",
+      "skillPath": "skills/shadcn/SKILL.md",
+      "computedHash": "a45cddd4511f8262df05b20506f4d52be8210a9ee05a13d9e36d4ee321bab593",
+      "hashAlgorithm": "sha256 of the SKILL.md bytes at pinnedCommit",
+      "pinnedCommit": "3cdaa6eb2f0da27aca8598cb752c32d840e06940",
+      "paths": [
+        "skills/shadcn/SKILL.md",
+        "skills/shadcn/cli.md",
+        "skills/shadcn/customization.md",
+        "skills/shadcn/mcp.md",
+        "skills/shadcn/registry.md",
+        "skills/shadcn/rules/base-vs-radix.md",
+        "skills/shadcn/rules/chat.md",
+        "skills/shadcn/rules/composition.md",
+        "skills/shadcn/rules/forms.md",
+        "skills/shadcn/rules/icons.md",
+        "skills/shadcn/rules/styling.md"
+      ]
     }
   }
 }

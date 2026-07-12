@@ -118,6 +118,46 @@ may skip:
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
 
+### Design-quality skills (2026-07-12)
+
+Two third-party skills are pinned in `skills-lock.json` alongside the
+engineering set (curated impeccable subset + the official shadcn skill —
+HDS is shadcn-oriented per ADR-001):
+
+- **UI/visual quality pass on a component, page, or docs surface →
+  `/impeccable critique <target>`** (review) or **`/impeccable polish <target>`**
+  (pre-ship). Layout/spacing problems → `/impeccable layout`; typography →
+  `/impeccable typeset`; a11y/perf/responsive checks → `/impeccable audit`;
+  edge-case hardening (overflow, i18n, error states) → `/impeccable harden`.
+- **Deterministic no-LLM anti-pattern sweep →
+  `node scripts/check-impeccable-detect.mjs`** (guardrail
+  `check-impeccable-detect`, manual channel — wraps `npx impeccable detect`).
+- **shadcn-pattern work (composition, registries, styling rules) → the
+  `shadcn` skill** (auto-loads; `npx shadcn@latest search|docs <component>`
+  for registry lookups). Note: it reads `components.json` for project
+  context — HDS has none yet (open decision), so treat its project-detection
+  features as inert here.
+
+Only the curated impeccable reference subset is pinned (see `skills-lock.json`
+`paths`) — commands outside it (e.g. `/impeccable animate`) are intentionally
+not installed; vendor the missing `reference/<command>.md` first if one is
+needed. `.claude/skills/` is gitignored — on a fresh clone re-install from the
+lock (until the fleet installer lands): for each `skills-lock.json` entry with
+`paths`, fetch every path from
+`https://raw.githubusercontent.com/<source>/<pinnedCommit>/<path>` into
+`.claude/skills/<id>/<path-relative-to-the-skill-folder>`, e.g.
+
+```bash
+# impeccable (upstream keeps the skill at .claude/skills/impeccable/ — paths map 1:1)
+for f in SKILL.md reference/{critique,polish,audit,harden,typeset,layout,brand,product,init}.md scripts/{context,palette}.mjs; do
+  curl -sSf --create-dirs -o ".claude/skills/impeccable/$f" \
+    "https://raw.githubusercontent.com/pbakaus/impeccable/<pinnedCommit>/.claude/skills/impeccable/$f"; done
+# shadcn (upstream folder skills/shadcn/ → local .claude/skills/shadcn/)
+for f in SKILL.md cli.md customization.md mcp.md registry.md rules/{base-vs-radix,chat,composition,forms,icons,styling}.md; do
+  curl -sSf --create-dirs -o ".claude/skills/shadcn/$f" \
+    "https://raw.githubusercontent.com/shadcn-ui/ui/<pinnedCommit>/skills/shadcn/$f"; done
+```
+
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
 `blocked` · `needs-adrian` (+ the Ralph labels in `AGENTS.md`). Dependencies:

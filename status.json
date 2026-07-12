@@ -1,11 +1,13 @@
 {
-  "updatedAt": "2026-07-11T00:00:00Z",
+  "updatedAt": "2026-07-12T00:00:00Z",
   "phase": "active",
-  "headline": "HDS is UNFROZEN (Adrian, 2026-07-10; see #155) and back to active development under epic #124, the Tailwind × multi-tenant token-utility burndown. The Ralph loop has been merging PRs continuously since the freeze (#135–#159), including epic #124 children #125 (spacing/breakpoints/border-width/font-size token utilities), #127 (interactive surface state tokens), and the ADR ratification in #131. Package remains published as @hirobius/design-system on npm.",
+  "headline": "Design-quality tooling landed: curated impeccable skill subset + official shadcn skill pinned in skills-lock.json (HDS stays shadcn-oriented per ADR-001), and a new manual guardrail check-impeccable-detect wraps `npx impeccable detect` (46 deterministic anti-pattern rules) with real proof-of-firing fixtures. Epic #124 token-utility burndown remains the active roadmap; package published as @hirobius/design-system on npm.",
   "next": [
     "Continue burning down epic #124's remaining children: #126, #128, #129, #130, #132, #133, #134",
     "Restore pull_request/push triggers in .github/workflows/{chromatic,release}.yml — still manual-dispatch-only from the freeze, now stale",
-    "Reconcile the superseded wind-down epic #80 now that #124 is the active roadmap"
+    "Reconcile the superseded wind-down epic #80 now that #124 is the active roadmap",
+    "Triage the 3 real check-impeccable-detect findings in src/ (card.tsx width transition, tabs.tsx border accent, fonts.css Geist Mono — last one is a deliberate brand choice, add an inline ignore)",
+    "Decide whether HDS adds a minimal components.json so the shadcn skill gets full project-awareness"
   ],
   "blocked": []
 }
