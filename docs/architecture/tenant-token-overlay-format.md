@@ -1,11 +1,11 @@
 # Per-Tenant Token Overlay Format
 
-| Field | Value |
-|---|---|
-| **Status** | Accepted |
-| **Date** | 2026-05-01 |
-| **Author** | Adrian Milsap (orchestrated; opus-class) |
-| **Unit** | `12m-mt-token-overlay-format` |
+| Field          | Value                                                                     |
+| -------------- | ------------------------------------------------------------------------- |
+| **Status**     | Accepted                                                                  |
+| **Date**       | 2026-05-01                                                                |
+| **Author**     | Adrian Milsap (orchestrated; opus-class)                                  |
+| **Unit**       | `12m-mt-token-overlay-format`                                             |
 | **Depends on** | `12m-mt-css-scope-architecture` (decision: `[data-tenant="X"]` selectors) |
 
 ---
@@ -100,13 +100,13 @@ The build pipeline emits the following block into `src/styles/tokens.css`
 (below the existing `:root` and `[data-theme="dark"]` blocks):
 
 ```css
-[data-tenant="concrete-creations"] {
-  --semantic-color-surface-accent: #8B6F47;
-  --semantic-accent-rest: #8B6F47;
+[data-tenant='concrete-creations'] {
+  --semantic-color-surface-accent: #8b6f47;
+  --semantic-accent-rest: #8b6f47;
 }
-[data-tenant="concrete-creations"][data-theme="dark"] {
-  --semantic-color-surface-accent: #6B5235;
-  --semantic-accent-rest: #6B5235;
+[data-tenant='concrete-creations'][data-theme='dark'] {
+  --semantic-color-surface-accent: #6b5235;
+  --semantic-accent-rest: #6b5235;
 }
 ```
 
@@ -135,6 +135,13 @@ Tenants may override:
   semantic to it).
 
 The validator enforces R1 fail-fast.
+
+**Shape/density override surface (ADR-022):** `semantic.radius.*`,
+`semantic.space.*`, `semantic.borderWidth.*`, and `role.radius` are
+explicitly part of the permitted semantic/role-tier override surface above —
+a tenant may pin its own corner-radius and spacing identity (e.g. sharp +
+dense) independent of every other tenant's shape. See R9 below for how a
+shape/space override varies by density.
 
 ### R2 — Path-leaf merge
 
@@ -188,6 +195,57 @@ resolution chain stays internally consistent.
 A tenant alias to `{primitive.color.brand.500}` only resolves if that path
 already exists in base. Tenants cannot smuggle new primitives in via aliases.
 
+### R9 — Density-aware overrides (ADR-022)
+
+A tenant override MAY include `$extensions.com.figma.variables.modes.Compact`
+alongside (or instead of) the existing `Light`/`Dark` mode keys — the same
+mode-map mechanism R4 uses for theme, extended with a third named mode for
+density. When present, the build pipeline emits a combinatorial
+`[data-brand="X"][data-density="compact"]` block (mirroring the existing
+`[data-brand="X"][data-theme="dark"]` block from R4) carrying the Compact
+value, in addition to the base `[data-brand="X"]` block carrying the
+`$value`/`Light` value.
+
+```json
+{
+  "role": {
+    "radius": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+  },
+  "semantic": {
+    "space": {
+      "component": {
+        "padding": {
+          "$type": "dimension",
+          "$value": "{primitive.space.4}",
+          "$extensions": {
+            "com.figma.variables": { "modes": { "Compact": "{primitive.space.2}" } }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+compiles to:
+
+```css
+[data-brand='brutalist-demo'] {
+  --role-radius: 0px;
+  --semantic-space-component-padding: var(--primitive-space-4);
+}
+[data-brand='brutalist-demo'][data-density='compact'] {
+  --semantic-space-component-padding: var(--primitive-space-2);
+}
+```
+
+Density and theme combine with brand **independently** — there is no
+`[data-brand][data-theme][data-density]` triple-combo block. `role.radius`
+above has no Compact mode, so it is density-invariant (sharp corners apply
+whether the viewer's density preference is comfortable or compact); only
+leaves that declare a Compact mode gain a density block. Same rule as R4: a
+Compact value is only emitted when it differs from the value used at rest.
+
 ---
 
 ## `metadata.json` — tenant identity
@@ -218,16 +276,16 @@ already exists in base. Tenants cannot smuggle new primitives in via aliases.
 }
 ```
 
-| Field | Required | Purpose |
-|---|---|---|
-| `slug` | yes | Verbatim `data-tenant` attribute value. Must match directory name. |
-| `displayName` | yes | UI-facing brand name; rendered in tenant-aware screens. |
-| `tagline` | no | Short brand line; used by previews, sales tooling. |
-| `tier` | yes | 1 (brand presence), 2 (e-commerce), 3 (product). Drives infra defaults. |
-| `deployment.*` | yes | Where this tenant ships. Required for the future `pnpm deploy:tenant` script. |
-| `brand.*` | yes | Quick-reference brand info. Source of truth is `tokens.json`; this is for tooling that wants brand metadata without parsing the DTCG. |
-| `legal.*` | yes for tier ≥ 2 | Entity + jurisdiction. Drives legal-page generation, Stripe wiring, attribution requirements. |
-| `status` | yes | One of: `scaffold`, `active`, `archived`. Drives validator strictness. |
+| Field          | Required         | Purpose                                                                                                                               |
+| -------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `slug`         | yes              | Verbatim `data-tenant` attribute value. Must match directory name.                                                                    |
+| `displayName`  | yes              | UI-facing brand name; rendered in tenant-aware screens.                                                                               |
+| `tagline`      | no               | Short brand line; used by previews, sales tooling.                                                                                    |
+| `tier`         | yes              | 1 (brand presence), 2 (e-commerce), 3 (product). Drives infra defaults.                                                               |
+| `deployment.*` | yes              | Where this tenant ships. Required for the future `pnpm deploy:tenant` script.                                                         |
+| `brand.*`      | yes              | Quick-reference brand info. Source of truth is `tokens.json`; this is for tooling that wants brand metadata without parsing the DTCG. |
+| `legal.*`      | yes for tier ≥ 2 | Entity + jurisdiction. Drives legal-page generation, Stripe wiring, attribution requirements.                                         |
+| `status`       | yes              | One of: `scaffold`, `active`, `archived`. Drives validator strictness.                                                                |
 
 ---
 
@@ -289,7 +347,7 @@ ability to refer to "real" blue at the primitive layer.
 accent paths) to brown. Every consumer of `semantic.accent.*` shifts; every
 consumer of `primitive.color.blue.*` is unaffected. The abstraction holds.
 
-This is the *whole point* of the three-tier token system. Overlays exist to
+This is the _whole point_ of the three-tier token system. Overlays exist to
 shift the semantic meaning of tokens for a specific brand, NOT to redefine
 the underlying palette.
 

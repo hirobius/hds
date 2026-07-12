@@ -477,3 +477,91 @@ throwaway break-accent-revert proof commit, and update the PR/issue. If
 recurring, worth a small follow-up issue: grant the ralph GitHub App
 `actions: write` (workflow dispatch) so this class of proof doesn't need a
 human hop every time.
+
+## Issue #128 — ISSUE-04: per-tenant shape + density overlay axis (2026-07-12)
+
+Implements ADR-022 (landed in #131): `role.radius`/`semantic.space.*` were
+global dials — no tenant could be "sharp + dense" while another stayed
+"round + airy."
+
+Decisions + why:
+- Extended `buildTenantCSS` (build-tokens.mjs ~1489-1650) to read a new
+  `Compact` key in a leaf's existing `$extensions.com.figma.variables.modes`
+  map — same mechanism R4 already uses for Light/Dark, just a third named
+  mode — and emit a combinatorial `[data-brand="slug"][data-density="compact"]`
+  block (mirrors the existing `[data-brand][data-theme="dark"]` block
+  exactly: only emitted when the Compact value differs from the rest value).
+  No triple brand×theme×density block — matches ADR-022's chosen option
+  ("theme and density combine with brand independently").
+- No new `validateTenantOverlay()` guard needed: R1 already only blocks
+  `primitive.*`, so `role.radius`/`semantic.space.*`/`semantic.borderWidth.*`
+  were already structurally valid overrides — this issue's validator work
+  was proving it (new fixture), not changing behavior. Added a doc R9 +
+  R1-list update instead (tenant-token-overlay-format.md), and a `Compact`
+  entry to `hirobius.tenant-tokens.schema.json`'s figmaModes for
+  self-documentation (additionalProperties already permitted it).
+- Naming deviation from the issue body: used `tenants/brutalist-demo/` (no
+  leading underscore) instead of the issue's literal `_brutalist-demo`.
+  Directories starting with `_` are unconditionally skipped by
+  `buildTenantCSS`/`check-tenant-tokens.mjs` (reserved for `_template`,
+  documented in tenant-token-overlay-format.md's slug rules) — an
+  underscore-prefixed dir would never emit CSS or appear in Storybook, which
+  contradicts the issue's own DoD ("Exemplar renders sharp+dense
+  end-to-end..."). ADR-022's own worked example also uses `brutalist-demo`
+  without the underscore. Committed a real tenant (not just an in-memory
+  test fixture) since the DoD explicitly wants it running through the real
+  `pnpm tokens` pipeline and Storybook.
+- Wired `brutalist-demo` into `.storybook/preview.tsx`'s `BRANDS` array
+  (#126's MODES matrix) rather than adding a bespoke story file — the
+  matrix was designed for exactly this ("extend BRANDS...every file that
+  already imports MODES picks up the new combination automatically").
+  Bumps existing wired stories from 8 to 12 modes each (3 brands x 2
+  densities x 2 themes).
+- `fixtures/check-tenant-tokens/{passing,violating}.example.d/hirobius.tokens.json`:
+  added `role.radius`/`semantic.space.component.padding`/
+  `semantic.borderWidth.default` to the minimal base fixture (kept both
+  copies identical, matching existing convention) so a new
+  `passing.example.d/tenants/shape-density-brand/` fixture could prove the
+  four ADR-022 paths validate — proof-of-firing coverage for
+  `check-tenant-tokens.mjs`, not a validator behavior change.
+- `tenants/_template/tokens.json`: added a commented `role`/`semantic.space`
+  block (same "leading underscore = inert" pattern as the existing accent
+  example) showing the Compact-mode convention, pointing at
+  `tenants/brutalist-demo/` as the worked exemplar.
+- Test approach: `buildTenantCSS` reads real files off disk, but every
+  existing test in `build-tokens.test.mjs` is pure in-memory — no fs
+  precedent in that file. Used `mkdtempSync` (os.tmpdir) to write a
+  synthetic tenants dir per test, asserting on the literal emitted CSS
+  string (base block, density block, density-invariant leaf absent from
+  the density block, Compact-equals-rest dedupe). Also 3 pure
+  `validateTenantOverlay` tests proving R1 already permits the new paths.
+- Caught and reverted unrelated pre-existing drift: running `pnpm tokens`/
+  `pnpm manifest:generate` in this environment reformats
+  `tailwind.config.tokens.cjs` and `DESIGN-HANDOFF.md` (JSON.stringify-style
+  vs. the committed hand-formatted style) even with ZERO code changes
+  (verified via `git stash` + regenerate-on-clean-main). Reverted those two
+  files to keep the diff scoped to this issue; ran `pnpm exec prettier
+  --write src/styles/tenants.css` on the one generated file this issue
+  legitimately touches, since the pre-commit hook's `lint-staged` is what
+  normally reformats generated CSS to the repo's quote/wrap style and I
+  wanted the diff clean before committing, not just at commit time.
+
+Files changed: scripts/build-tokens.mjs, scripts/__tests__/build-tokens.test.mjs,
+docs/architecture/tenant-token-overlay-format.md,
+hirobius.tenant-tokens.schema.json, tenants/_template/tokens.json,
+tenants/brutalist-demo/{tokens,metadata}.json + README.md,
+.storybook/preview.tsx, src/styles/tenants.css (generated),
+fixtures/check-tenant-tokens/{passing,violating}.example.d/hirobius.tokens.json,
+fixtures/check-tenant-tokens/passing.example.d/tenants/shape-density-brand/
+{tokens,metadata}.json.
+
+Full gate green (manifest:generate, audit-tokens --full, typecheck, 102 test
+files / 1270 tests / 5 skipped, lint). check-tenant-tokens.mjs verified green
+against both the passing and violating fixture dirs by hand
+(FIXTURE_DIR=... node scripts/check-tenant-tokens.mjs).
+
+Notes for next iteration: DoD's Chromatic capture (brutalist-demo actually
+rendering sharp+dense in a live Storybook/Chromatic run) needs the same
+`actions: write` gap noted in #126 — this bot token can't dispatch
+workflow_dispatch. Flagged in the PR body; a human dispatch against this
+branch would close the loop visually.
