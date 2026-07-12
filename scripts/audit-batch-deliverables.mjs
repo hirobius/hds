@@ -16,6 +16,8 @@
  *                    are honored on disk.
  *   4. ROUTE-COVER — if a new /ops/* or /portal/* route was added, it is
  *                    listed in tests/layout-integrity.spec.ts ALL_ROUTES.
+ *                    (Inert since #161: that spec is archived under
+ *                    tests-archive/, so the existsSync guard skips this level.)
  *
  * Output: a per-unit verdict (PASS / FAIL with reasons) + a batch summary.
  * Exit 0 if every unit passes; exit 1 on any failure.
