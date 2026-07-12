@@ -51,15 +51,17 @@ for (const route of ROUTES) {
       .exclude('[aria-hidden="true"][data-inspector-ignore="color-swatch"]')
       .analyze();
 
-    const critical = results.violations.filter(v => v.impact === 'critical');
-    const serious  = results.violations.filter(v => v.impact === 'serious');
+    const critical = results.violations.filter((v) => v.impact === 'critical');
+    const serious = results.violations.filter((v) => v.impact === 'serious');
     const blocking = [...critical, ...serious];
 
     const summary = blocking
-      .map((violation) => [
-        `  [${violation.impact}] ${violation.id}: ${violation.description}`,
-        ...violation.nodes.slice(0, 3).map((node) => `    -> ${node.html.slice(0, 180)}`),
-      ].join('\n'))
+      .map((violation) =>
+        [
+          `  [${violation.impact}] ${violation.id}: ${violation.description}`,
+          ...violation.nodes.slice(0, 3).map((node) => `    -> ${node.html.slice(0, 180)}`),
+        ].join('\n'),
+      )
       .join('\n\n');
 
     expect(
@@ -70,9 +72,11 @@ for (const route of ROUTES) {
     ).toHaveLength(0);
 
     // Log lower-severity for visibility without failing
-    const moderate = results.violations.filter(v => v.impact === 'moderate');
+    const moderate = results.violations.filter((v) => v.impact === 'moderate');
     if (moderate.length) {
-      console.log(`  ⚠ ${moderate.length} moderate violation(s) on ${route}: ${moderate.map(v => v.id).join(', ')}`);
+      console.log(
+        `  ⚠ ${moderate.length} moderate violation(s) on ${route}: ${moderate.map((v) => v.id).join(', ')}`,
+      );
     }
   });
 
@@ -87,7 +91,8 @@ for (const route of ROUTES) {
     // elements regardless of blur state. DOM order is the authoritative requirement
     // for "first tab stop" and is unaffected by browser focus quirks.
     const isFirstFocusable = await page.evaluate(() => {
-      const sel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      const sel =
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
       const first = document.querySelector(sel);
       return first?.classList.contains('skip-link') ?? false;
     });

@@ -44,14 +44,21 @@ export async function createVisualDiff({
   }
 
   const diff = new PNG({ width: actual.width, height: actual.height });
-  const diffPixels = pixelmatch(actual.data, baseline.data, diff.data, actual.width, actual.height, {
-    threshold: PIXELMATCH_THRESHOLD,
-    diffColor: [...NEON_PINK],
-    diffColorAlt: [...NEON_PINK],
-    alpha: 0.7,
-    diffMask: false,
-    includeAA: false,
-  });
+  const diffPixels = pixelmatch(
+    actual.data,
+    baseline.data,
+    diff.data,
+    actual.width,
+    actual.height,
+    {
+      threshold: PIXELMATCH_THRESHOLD,
+      diffColor: [...NEON_PINK],
+      diffColorAlt: [...NEON_PINK],
+      alpha: 0.7,
+      diffMask: false,
+      includeAA: false,
+    },
+  );
 
   await ensureDirectory(diffPath);
   await writeFile(diffPath, PNG.sync.write(diff));

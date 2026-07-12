@@ -13,10 +13,8 @@ const STATIC_CHECKS = [
   { name: 'Typecheck', command: 'pnpm typecheck' },
   { name: 'TokenAndLayoutAudit', command: 'pnpm check:ghost-tokens' },
   { name: 'ContrastAudit', command: 'pnpm check:contrast' },
-  // Aria-label coverage lives in the AccessibilityPages Playwright suite below;
-  // there is no standalone `check:aria` script, so it is not listed separately.
-  { name: 'AccessibilityPages', command: 'pnpm test:a11y' },
-  { name: 'LayoutIntegrity', command: 'pnpm test:layout' },
+  // AccessibilityPages + LayoutIntegrity dropped: their Playwright suite drove
+  // the docs SPA deleted in #90 and was archived per #161 (tests-archive/).
 ];
 
 const DEFAULT_SMOKE_PATHS = [

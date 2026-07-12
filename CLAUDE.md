@@ -11,7 +11,7 @@
 ## 1. AGENT EXECUTION PROTOCOL (MANDATORY)
 
 1. **PRE-FILTER:** Before writing any code, analyze if the user's request affects UI, Layout, CSS, or Components.
-2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test:layout` after writing your code changes, but BEFORE you generate your final response to the user.
+2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test` after writing your code changes, but BEFORE you generate your final response to the user. (The old `pnpm test:layout` Playwright suite was retired in #161 — Storybook is the visual verification surface.)
 3. **SELF-HEAL:** If your automated tests fail, do not ask the user for help. Read the terminal output, identify your CSS/layout math error, fix the code, and re-run the tests until they pass.
 4. **FINALIZATION:** Only report back to the user when the tests are 100% green. Do not claim a task is complete if the tests are failing.
 
@@ -110,7 +110,7 @@ may skip:
 - **Building anything (component, token work, validator, fix) → `/implement` + `/tdd`**
   (test-first, red-green-refactor). No "just write it."
 - **Epic / multi-part / fuzzy task → `/to-tickets`** (dependency-ordered
-  tickets); `/grill-me` first if the *plan* itself is unclear.
+  tickets); `/grill-me` first if the _plan_ itself is unclear.
 - **Before opening ANY PR → `/code-review`** (dual-axis: standards + spec).
 - **A bug → `/diagnosing-bugs`** (reproduce → minimize → hypothesize → fix),
   then `/tdd`.

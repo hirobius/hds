@@ -15,16 +15,26 @@ import { test, expect } from '@playwright/test';
 // ── Viewports ──────────────────────────────────────────────────────────────────
 
 const VIEWPORTS = [
-  { name: 'mobile-sm',      width: 375,  height: 812  },
-  { name: 'mobile-lg',      width: 430,  height: 932  },
-  { name: 'tablet',         width: 768,  height: 1024 },
-  { name: 'narrow-desktop', width: 1024, height: 768  },
-  { name: 'desktop',        width: 1280, height: 800  },
-  { name: 'wide',           width: 1440, height: 900  },
-  { name: 'tv',             width: 1920, height: 1080,
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edge/44.17763.1.0' },
-  { name: 'tv-4k',          width: 2560, height: 1440,
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edge/44.17763.1.0' },
+  { name: 'mobile-sm', width: 375, height: 812 },
+  { name: 'mobile-lg', width: 430, height: 932 },
+  { name: 'tablet', width: 768, height: 1024 },
+  { name: 'narrow-desktop', width: 1024, height: 768 },
+  { name: 'desktop', width: 1280, height: 800 },
+  { name: 'wide', width: 1440, height: 900 },
+  {
+    name: 'tv',
+    width: 1920,
+    height: 1080,
+    userAgent:
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edge/44.17763.1.0',
+  },
+  {
+    name: 'tv-4k',
+    width: 2560,
+    height: 1440,
+    userAgent:
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edge/44.17763.1.0',
+  },
 ];
 
 // ── Routes — all major shell surfaces ─────────────────────────────────────────
@@ -67,10 +77,10 @@ async function checkNoHorizontalOverflow(page: any, route: string, viewport: str
     const doc = document.documentElement;
     const body = document.body;
     return {
-      docScrollWidth:   doc.scrollWidth,
-      docClientWidth:   doc.clientWidth,
-      bodyScrollWidth:  body.scrollWidth,
-      bodyClientWidth:  body.clientWidth,
+      docScrollWidth: doc.scrollWidth,
+      docClientWidth: doc.clientWidth,
+      bodyScrollWidth: body.scrollWidth,
+      bodyClientWidth: body.clientWidth,
       overflow: doc.scrollWidth > doc.clientWidth + 2, // +2 for sub-pixel rounding
     };
   });
@@ -78,7 +88,7 @@ async function checkNoHorizontalOverflow(page: any, route: string, viewport: str
   expect(
     overflow.overflow,
     `Horizontal overflow on ${route} @ ${viewport}: ` +
-    `doc.scrollWidth=${overflow.docScrollWidth} > clientWidth=${overflow.docClientWidth}`
+      `doc.scrollWidth=${overflow.docScrollWidth} > clientWidth=${overflow.docClientWidth}`,
   ).toBe(false);
 }
 

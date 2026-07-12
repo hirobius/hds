@@ -92,7 +92,7 @@ Core verification commands:
 ```bash
 pnpm typecheck
 pnpm run heal
-pnpm test:layout
+pnpm test
 pnpm check:size
 ```
 

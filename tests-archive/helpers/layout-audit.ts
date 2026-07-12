@@ -36,9 +36,7 @@ export const auditPageLayout: () => IntegrityReport = () => {
   function describeEl(el: Element): string {
     const tag = el.tagName.toLowerCase();
     const id = el.id ? `#${el.id}` : '';
-    const cls = el.classList.length
-      ? `.${Array.from(el.classList).slice(0, 3).join('.')}`
-      : '';
+    const cls = el.classList.length ? `.${Array.from(el.classList).slice(0, 3).join('.')}` : '';
     return `${tag}${id}${cls}`;
   }
 
@@ -64,7 +62,7 @@ export const auditPageLayout: () => IntegrityReport = () => {
   }
 
   function findParentSurface(el: Element | null): HTMLElement | null {
-    let node = el instanceof HTMLElement ? el : el?.parentElement ?? null;
+    let node = el instanceof HTMLElement ? el : (el?.parentElement ?? null);
 
     while (node) {
       if (node.hasAttribute('data-hds-surface')) {
@@ -79,12 +77,19 @@ export const auditPageLayout: () => IntegrityReport = () => {
   // ── Trigger 1: Gap Mandate — detect overlapping siblings inside CSS grids ──
 
   const gridCollisions: IntegrityIssue[] = [];
-  const grids = Array.from(document.querySelectorAll('[data-hds-grid="true"]')).filter((el) => isVisible(el));
+  const grids = Array.from(document.querySelectorAll('[data-hds-grid="true"]')).filter((el) =>
+    isVisible(el),
+  );
 
   for (const grid of grids) {
     const children = Array.from(grid.children).filter((c) => {
       const s = window.getComputedStyle(c);
-      return c.hasAttribute('data-hds-grid-item') && isVisible(c) && s.position !== 'absolute' && s.position !== 'fixed';
+      return (
+        c.hasAttribute('data-hds-grid-item') &&
+        isVisible(c) &&
+        s.position !== 'absolute' &&
+        s.position !== 'fixed'
+      );
     });
 
     if (children.length < 2) continue;
@@ -140,21 +145,23 @@ export const auditPageLayout: () => IntegrityReport = () => {
 
     const range = document.createRange();
     range.selectNodeContents(textNode);
-    const rects = Array.from(range.getClientRects()).filter((rect) => rect.width > 0 && rect.height > 0);
+    const rects = Array.from(range.getClientRects()).filter(
+      (rect) => rect.width > 0 && rect.height > 0,
+    );
     if (rects.length === 0) continue;
 
     const surfaceRect = surface.getBoundingClientRect();
     const hasContainmentViolation = rects.some((rect) => {
       const overflow =
-        rect.left < surfaceRect.left - EPSILON_OVERFLOW
-        || rect.right > surfaceRect.right + EPSILON_OVERFLOW
-        || rect.top < surfaceRect.top - EPSILON_OVERFLOW
-        || rect.bottom > surfaceRect.bottom + EPSILON_OVERFLOW;
+        rect.left < surfaceRect.left - EPSILON_OVERFLOW ||
+        rect.right > surfaceRect.right + EPSILON_OVERFLOW ||
+        rect.top < surfaceRect.top - EPSILON_OVERFLOW ||
+        rect.bottom > surfaceRect.bottom + EPSILON_OVERFLOW;
       const missingPadding =
-        rect.left - surfaceRect.left <= MIN_INTERNAL_PADDING
-        || surfaceRect.right - rect.right <= MIN_INTERNAL_PADDING
-        || rect.top - surfaceRect.top <= MIN_INTERNAL_PADDING
-        || surfaceRect.bottom - rect.bottom <= MIN_INTERNAL_PADDING;
+        rect.left - surfaceRect.left <= MIN_INTERNAL_PADDING ||
+        surfaceRect.right - rect.right <= MIN_INTERNAL_PADDING ||
+        rect.top - surfaceRect.top <= MIN_INTERNAL_PADDING ||
+        surfaceRect.bottom - rect.bottom <= MIN_INTERNAL_PADDING;
 
       return overflow || missingPadding;
     });
@@ -170,7 +177,8 @@ export const auditPageLayout: () => IntegrityReport = () => {
   // ── Trigger 3: Stretch Rule — sibling swatches in a grid row must align ──
 
   const stretchMismatches: IntegrityIssue[] = [];
-  const SWATCH_SELECTOR = '[data-layout-role="foundation-swatch-surface"], [data-inspector-ignore="color-swatch"], [data-inspector-ignore="type-specimen"]';
+  const SWATCH_SELECTOR =
+    '[data-layout-role="foundation-swatch-surface"], [data-inspector-ignore="color-swatch"], [data-inspector-ignore="type-specimen"]';
 
   for (const grid of grids) {
     const rowGroups: Array<Array<{ surface: HTMLElement; rect: DOMRect }>> = [];
@@ -184,7 +192,9 @@ export const auditPageLayout: () => IntegrityReport = () => {
       if (!(surface instanceof HTMLElement) || !isVisible(surface)) continue;
 
       const rect = surface.getBoundingClientRect();
-      const row = rowGroups.find((group) => Math.abs(group[0].rect.top - rect.top) <= EPSILON_STRETCH);
+      const row = rowGroups.find(
+        (group) => Math.abs(group[0].rect.top - rect.top) <= EPSILON_STRETCH,
+      );
       if (row) {
         row.push({ surface, rect });
       } else {
