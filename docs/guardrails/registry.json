@@ -432,7 +432,7 @@
     },
     {
       "id": "check-reduced-motion",
-      "description": "Verifies that the HDS motion system respects prefers-reduced-motion at both layers: CSS transitions and Motion (Framer Motion) animations.",
+      "description": "Verifies that the HDS motion system respects prefers-reduced-motion via CSS transitions (theme.css @media block). JS/Motion (motion/react) per-component coverage is a known gap, not yet gated here — see #190.",
       "severity": "warn",
       "gateScript": "scripts/check-reduced-motion.mjs",
       "fixturePath": "fixtures/check-reduced-motion",

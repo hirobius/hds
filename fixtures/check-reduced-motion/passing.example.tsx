@@ -1,4 +1,6 @@
-// passing: includes @media (prefers-reduced-motion) block with all required vars and MotionConfig reducedMotion="user"
+// passing: includes @media (prefers-reduced-motion) block with all required vars.
+// (MotionConfig below illustrates the theme-toggle.tsx best-practice pattern for
+// JS animations — not gated by this check since #185; see #190.)
 import { MotionConfig, motion } from 'motion/react';
 
 /*
@@ -22,7 +24,7 @@ export function App() {
   return (
     <MotionConfig reducedMotion="user">
       <motion.div animate={{ opacity: 1 }}>
-        <p>Animations respect prefers-reduced-motion via both CSS and JS layers.</p>
+        <p>CSS custom properties above zero out durations under prefers-reduced-motion.</p>
       </motion.div>
     </MotionConfig>
   );

@@ -23,11 +23,16 @@ run_step node scripts/audit-tokens.mjs --full
 # NOT the whole suite (that's check:release territory) — so a contrast/focus
 # regression blocks auto-merge without materially slowing the gate. Each of
 # these is confirmed green on clean main before being wired in here; each
-# runs in well under a second. Only 3 of the 6 gates named in #181 landed —
-# check-reduced-motion (#185), check-tier-bypass (#186), and check-page-shell
-# (#187) are red (or, for page-shell, target a directory deleted in the
-# ADR-018 Storybook migration) on clean main for reasons out of scope for
-# this change.
+# runs in well under a second. 4 of the 6 gates named in #181 have landed —
+# check-tier-bypass (#186) and check-page-shell (#187) are still red (or, for
+# page-shell, target a directory deleted in the ADR-018 Storybook migration)
+# on clean main for reasons out of scope for this change.
+#
+# check-reduced-motion (#185) was red on clean main because its Layer 2 check
+# targeted src/app/App.tsx, deleted in the same migration; retargeted to
+# Layer 1 (CSS @media prefers-reduced-motion) only — see the script header
+# for why Layer 2 (JS/Motion per-component coverage, tracked in #190) isn't
+# gated yet.
 #
 # check-hardcoded-colors was archived off automatic gating in #52 (ADR-018
 # §5, pre-commit friction); this re-introduces automatic gating for it via a
@@ -37,6 +42,7 @@ run_step node scripts/audit-tokens.mjs --full
 run_step pnpm check:contrast
 run_step pnpm check:focus
 run_step pnpm check:colors
+run_step pnpm check:motion
 
 run_step pnpm typecheck
 run_step pnpm test
