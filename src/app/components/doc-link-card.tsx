@@ -110,7 +110,7 @@ export function DocLinkCard({
   }, [affordance, headerIconControls, isInteractive, pagerIconControls, variant]);
 
   return (
-    <button
+    <button // audit-ok: hds-focus is baked into docLinkCardVariants() base class above
       type="button"
       disabled={disabled}
       onClick={() => navigate(href)}

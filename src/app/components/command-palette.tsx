@@ -226,7 +226,7 @@ export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteP
                   const active = i === activeIndex;
                   return (
                     <li key={item.id}>
-                      <button
+                      <button // audit-ok: hds-focus is baked into cmdkRowVariants() base class above
                         id={`hds-cmdk-row-${item.id}`}
                         type="button"
                         role="option"
