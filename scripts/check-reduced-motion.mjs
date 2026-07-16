@@ -2,22 +2,38 @@
 /**
  * check-reduced-motion.mjs
  *
- * Verifies that the HDS motion system respects prefers-reduced-motion at both layers:
+ * Verifies that the HDS motion system respects prefers-reduced-motion:
  *
- *   Layer 1 — CSS transitions:
+ *   Layer 1 — CSS transitions (enforced here):
  *     src/styles/theme.css must contain an @media (prefers-reduced-motion: reduce)
  *     block that zeroes all --hds-duration-* custom properties.
  *
- *   Layer 2 — Motion (Framer Motion) animations:
- *     The app root (src/app/pages/Root.tsx) must wrap the tree with
- *     <MotionConfig reducedMotion="user"> so all motion/react animations
- *     automatically collapse to instant for affected users.
+ * Layer 2 — Motion (Framer Motion) animations — NOT enforced here (#185):
+ *   This check originally also required a single app root (src/app/App.tsx) to
+ *   wrap its tree in <MotionConfig reducedMotion="user">. That file was removed
+ *   in the ADR-018 Storybook migration (#90): this repo is a Storybook-first
+ *   component library with no single app root to instrument — `motion/react`
+ *   animations live per-component (src/app/components/*.tsx), each importing
+ *   duration/easing from static JS token constants (src/app/design-system/
+ *   tokens.ts) that are resolved once at module load and do NOT track the CSS
+ *   custom properties Layer 1 zeroes at runtime, so they don't collapse under
+ *   prefers-reduced-motion automatically.
+ *
+ *   A #185 audit found only 1 of 16 `motion/react`-consuming components
+ *   (theme-toggle.tsx) locally handles this (its own <MotionConfig
+ *   reducedMotion="user"> wrapper) — the other 15 have no reduced-motion
+ *   handling at the JS layer. Retargeting this check to a real per-component
+ *   scan would fail on that pre-existing gap, which is a separate, larger
+ *   accessibility remediation across many components — out of scope for a
+ *   gate-script bug fix. Tracked as a follow-up: #190.
+ *
+ *   Per #185's own DoD, this check now enforces Layer 1 (CSS) only until that
+ *   follow-up lands a real per-component pattern to gate on.
  *
  * Inspired by:
  *   IBM Carbon — motion.duration tokens mapped to 0ms in reduced-motion context.
  *   Apple HIG  — prefers-reduced-motion is a legal a11y requirement in many
  *                jurisdictions (WCAG 2.3.3 AAA; de facto standard for AA compliance).
- *   Adobe Spectrum — MotionContext with reducedMotion flag covers the JS layer.
  *
  * "Never assume a user wants animation. 10–35% of users report motion sensitivity."
  * — Vestibular Disorders Association (VeDA)
@@ -103,54 +119,20 @@ try {
   });
 }
 
-// ── Layer 2: MotionConfig reducedMotion="user" in App.tsx ────────────────────
-
-const ROOT_TSX =
-  isFixtureMode && fixtureFile ? resolve(fixtureFile) : join(ROOT, 'src/app/App.tsx');
-
-try {
-  const root = readFileSync(ROOT_TSX, 'utf-8');
-
-  if (!root.includes('MotionConfig')) {
-    failures.push({
-      file: isFixtureMode ? fixtureFile : 'src/app/App.tsx',
-      msg:
-        'Missing <MotionConfig reducedMotion="user">.\n' +
-        '       Import MotionConfig from "motion/react" and wrap the root tree:\n\n' +
-        '       <MotionConfig reducedMotion="user">\n' +
-        '         <ErrorBoundary>...</ErrorBoundary>\n' +
-        '       </MotionConfig>\n\n' +
-        '       This makes ALL motion/react animations respect prefers-reduced-motion\n' +
-        '       automatically — no per-component code changes needed.',
-    });
-  } else if (!root.includes('reducedMotion')) {
-    failures.push({
-      file: isFixtureMode ? fixtureFile : 'src/app/App.tsx',
-      msg:
-        'MotionConfig found but reducedMotion prop is missing.\n' +
-        '       Add reducedMotion="user" to the MotionConfig element.',
-    });
-  }
-} catch {
-  failures.push({
-    file: isFixtureMode ? fixtureFile : 'src/app/App.tsx',
-    msg: 'File not found.',
-  });
-}
-
 // ── Report ────────────────────────────────────────────────────────────────────
 
 if (failures.length === 0) {
-  console.log('\n✓ Reduced motion check passed — CSS + Motion layers both covered.\n');
+  console.log('\n✓ Reduced motion check passed — CSS layer covered.\n');
+  console.log(
+    '  Note: JS/Motion (motion/react) per-component reduced-motion coverage is a\n' +
+      '  known gap, not yet gated here — see #190.\n',
+  );
   process.exit(0);
 } else {
   console.error(`\n✗ Reduced motion check failed — ${failures.length} issue(s).\n`);
-  console.error('  Motion sensitivity affects 10–35% of users. Both layers must be covered:\n');
+  console.error('  Motion sensitivity affects 10–35% of users.\n');
   console.error(
-    '    Layer 1: @media (prefers-reduced-motion) in theme.css — fixes CSS transitions',
-  );
-  console.error(
-    '    Layer 2: <MotionConfig reducedMotion="user"> in App.tsx — fixes JS animations\n',
+    '    Layer 1: @media (prefers-reduced-motion) in theme.css — fixes CSS transitions\n',
   );
 
   for (const { file, msg } of failures) {
