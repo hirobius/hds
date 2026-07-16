@@ -41,6 +41,30 @@
               }
             }
           }
+        },
+        "success": {
+          "$value": "{primitive.color.midgray}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.midgray}", "Dark": "{primitive.color.midgray}" }
+            }
+          }
+        },
+        "warning": {
+          "$value": "{primitive.color.midgray}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.midgray}", "Dark": "{primitive.color.midgray}" }
+            }
+          }
+        },
+        "danger": {
+          "$value": "{primitive.color.midgray}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.midgray}", "Dark": "{primitive.color.midgray}" }
+            }
+          }
         }
       },
       "surface": {
