@@ -29,14 +29,27 @@
  *   ci-pr            runs on every PR via GitHub Actions (gating)
  *   ci-scheduled     scheduled CI (nightly/weekly)
  *   pnpm-meta        invoked via pnpm meta-scripts (pretest, tokens, …)
+ *   ralph-gate       runs from ralph/gate.sh, the fail-closed gate Ralph
+ *                    (the autonomous agent) must pass before opening a PR
+ *                    (gating). See #181/#188.
  *   manual           operator-only CLI tool, never auto-fires
  *
+ * A gate that fires from more than one real channel (e.g. wired into both
+ * .husky/pre-commit AND ralph/gate.sh) declares an optional `firingChannels`
+ * array alongside the single `firingChannel` (which stays the primary/
+ * back-compat value read by run-gates.mjs and older tooling). When
+ * `firingChannels` is present, EVERY channel it lists must have real wiring
+ * evidence — see `isChannelWired()`.
+ *
  * For each gate, this validator:
- *   1. Reads its declared firingChannel.
- *   2. Asserts the actual invocation site matches the declaration.
- *   3. Fails if the channel is missing or contradicts reality.
+ *   1. Reads its declared firingChannel (and firingChannels, if present).
+ *   2. Asserts the actual invocation site(s) match the declaration(s).
+ *   3. Fails if a channel is missing, unknown, or contradicts reality.
  *   4. For pre-commit gates: parses .husky/pre-commit line-by-line and
  *      detects failure-swallowing or conditional-skip patterns.
+ *   5. For ralph-gate: parses ralph/gate.sh for a direct gateScript
+ *      invocation, or a `pnpm <script>` call whose package.json script
+ *      wraps the gateScript.
  *
  * Usage:
  *   node scripts/check-validator-wiring.mjs           # hard-fail on drift
@@ -46,6 +59,7 @@
  */
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hashPrecommit } from './lib/precommit-canonical.mjs';
@@ -64,6 +78,7 @@ const PREPUSH = path.join(INPUT_ROOT, '.husky/pre-push');
 const COMMITMSG = path.join(INPUT_ROOT, '.husky/commit-msg');
 const PKG = path.join(INPUT_ROOT, 'package.json');
 const GH_DIR = path.join(INPUT_ROOT, '.github/workflows');
+const RALPH_GATE = path.join(INPUT_ROOT, 'ralph/gate.sh');
 
 const VALID_CHANNELS = new Set([
   'pre-commit',
@@ -72,6 +87,7 @@ const VALID_CHANNELS = new Set([
   'ci-pr',
   'ci-scheduled',
   'pnpm-meta',
+  'ralph-gate',
   'manual',
 ]);
 
@@ -287,6 +303,93 @@ function hasUnifiedRunnerInvocation(content, channel) {
 }
 
 /**
+ * Escape a string for safe interpolation into a RegExp source.
+ */
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Detect whether a gate is wired into ralph/gate.sh — either directly
+ * (the gateScript path/basename appears in the file) or indirectly (the
+ * file runs `pnpm <script-name>` / `pnpm run <script-name>` for a
+ * package.json script whose command invokes the gateScript). Ralph's
+ * gate.sh calls gates via their pnpm script alias (e.g. `pnpm check:contrast`),
+ * so the indirect form is the common case — see ralph/gate.sh (#181).
+ */
+function hasRalphGateWiring(gateScript, pkgObj, ralphGateContent) {
+  if (!ralphGateContent) return false;
+  const scriptBase = path.basename(gateScript);
+  if (ralphGateContent.includes(gateScript) || ralphGateContent.includes(scriptBase)) {
+    return true;
+  }
+  const scripts = pkgObj.scripts || {};
+  for (const [name, cmd] of Object.entries(scripts)) {
+    if (!cmd.includes(gateScript)) continue;
+    const re = new RegExp(`\\bpnpm(?:\\s+run)?\\s+${escapeRegExp(name)}\\b`);
+    if (re.test(ralphGateContent)) return true;
+  }
+  return false;
+}
+
+/**
+ * Evidence check for a single declared channel, used for gates that
+ * declare `firingChannels` (multiple real channels). Unlike `detectChannel`
+ * (which picks ONE "best" actual channel by precedence, for the legacy
+ * single-channel report), this asks a yes/no question per channel so every
+ * declared channel in a multi-channel gate can be verified independently.
+ */
+function isChannelWired(channel, entry, ctx) {
+  const { gateScript } = entry;
+  const {
+    precommitContent,
+    prepushContent,
+    commitmsgContent,
+    ghActionsContent,
+    pkgObj,
+    ralphGateContent,
+    precommitUsesUnifiedRunner,
+  } = ctx;
+  const scriptBase = path.basename(gateScript, '.mjs');
+
+  switch (channel) {
+    case 'pre-commit':
+      return precommitContent.includes(gateScript) || precommitUsesUnifiedRunner;
+    case 'pre-push':
+      return (
+        prepushContent.includes(gateScript) ||
+        hasUnifiedRunnerInvocation(prepushContent, 'pre-push')
+      );
+    case 'commit-msg':
+      return commitmsgContent.includes(gateScript);
+    case 'ci-pr':
+      return (
+        ghActionsContent.includes(gateScript) ||
+        ghActionsContent.includes(scriptBase) ||
+        hasUnifiedRunnerInvocation(ghActionsContent, 'ci-pr')
+      );
+    case 'ci-scheduled':
+      return (
+        ghActionsContent.includes(gateScript) ||
+        ghActionsContent.includes(scriptBase) ||
+        hasUnifiedRunnerInvocation(ghActionsContent, 'ci-scheduled')
+      );
+    case 'pnpm-meta': {
+      const scripts = pkgObj.scripts || {};
+      return Object.values(scripts).some((cmd) => cmd.includes(gateScript));
+    }
+    case 'ralph-gate':
+      return hasRalphGateWiring(gateScript, pkgObj, ralphGateContent);
+    case 'manual':
+      // No automatic invocation is required for 'manual' — a human running
+      // the script on demand is the whole point of the channel.
+      return true;
+    default:
+      return false;
+  }
+}
+
+/**
  * Run the full wiring check against a given pre-commit file path
  * and a registry object.
  *
@@ -300,6 +403,7 @@ function runWiringCheck(
   ghActionsContent,
   pkgObj,
   commitmsgPath,
+  ralphGatePath,
 ) {
   const violations = [];
   const summary = [];
@@ -308,6 +412,7 @@ function runWiringCheck(
   const parsedPrecommit = parseHookLines(precommitContent);
   const prepushContent = prepushPath ? readSafe(prepushPath) : '';
   const commitmsgContent = commitmsgPath ? readSafe(commitmsgPath) : '';
+  const ralphGateContent = ralphGatePath ? readSafe(ralphGatePath) : '';
 
   // Detect whether run-gates.mjs is itself bypassed in pre-commit
   // (if the unified runner is in use, it must not be failure-swallowed).
@@ -334,6 +439,16 @@ function runWiringCheck(
     if (prepushContent.includes(gateScript)) return 'pre-push';
     if (commitmsgContent.includes(gateScript)) return 'commit-msg';
 
+    // ralph-gate: checked before the unified-runner/CI/pnpm-meta fallbacks so
+    // a gate solely declared `"firingChannel": "ralph-gate"` (no
+    // firingChannels array) is still confirmed via the same evidence
+    // isChannelWired() uses for the multi-channel path.
+    if (
+      declaredChannel === 'ralph-gate' &&
+      hasRalphGateWiring(gateScript, pkgObj, ralphGateContent)
+    )
+      return 'ralph-gate';
+
     // Canonical unified runner invocation: run-gates.mjs --channel <channel>
     // is in the hook content AND the gate is registered for that channel.
     if (declaredChannel === 'pre-commit' && precommitUsesUnifiedRunner) return 'pre-commit';
@@ -356,6 +471,11 @@ function runWiringCheck(
     const scripts = pkgObj.scripts || {};
     const callers = Object.entries(scripts).filter(([, cmd]) => cmd.includes(gateScript));
     if (callers.length) return 'pnpm-meta';
+
+    // ralph-gate, checked again as a last-resort fallback: a gate wired into
+    // ralph/gate.sh purely via a pnpm script alias (no other automatic
+    // channel) would otherwise fall through to 'none'.
+    if (hasRalphGateWiring(gateScript, pkgObj, ralphGateContent)) return 'ralph-gate';
     return 'none';
   }
 
@@ -375,6 +495,86 @@ function runWiringCheck(
         code: 'BAD_CHANNEL',
         detail: `unknown channel '${declared}'`,
       });
+      continue;
+    }
+
+    // Multi-channel gates (e.g. wired into both pre-commit AND ralph/gate.sh)
+    // declare `firingChannels`. Every listed channel must have independent
+    // wiring evidence — this replaces the single "best match" detectChannel
+    // comparison below, which can only ever confirm one channel at a time.
+    if (Array.isArray(entry.firingChannels) && entry.firingChannels.length > 0) {
+      const channels = entry.firingChannels;
+      let entryOk = true;
+
+      if (!channels.includes(declared)) {
+        violations.push({
+          id: entry.id,
+          code: 'FIRING_CHANNEL_NOT_IN_CHANNELS',
+          detail: `firingChannel '${declared}' is not present in firingChannels [${channels.join(', ')}]`,
+        });
+        entryOk = false;
+      }
+
+      const ctx = {
+        precommitContent,
+        prepushContent,
+        commitmsgContent,
+        ghActionsContent,
+        pkgObj,
+        ralphGateContent,
+        precommitUsesUnifiedRunner,
+      };
+
+      const unwired = [];
+      for (const channel of channels) {
+        if (!VALID_CHANNELS.has(channel)) {
+          violations.push({
+            id: entry.id,
+            code: 'BAD_CHANNEL',
+            detail: `unknown channel '${channel}' in firingChannels`,
+          });
+          entryOk = false;
+          continue;
+        }
+        if (!isChannelWired(channel, entry, ctx)) {
+          unwired.push(channel);
+        }
+      }
+
+      if (unwired.length > 0) {
+        violations.push({
+          id: entry.id,
+          code: 'MULTI_CHANNEL_DRIFT',
+          detail: `declared firingChannels [${channels.join(', ')}] but no wiring evidence found for: ${unwired.join(', ')}`,
+        });
+        entryOk = false;
+      }
+
+      summary.push({
+        id: entry.id,
+        declared: channels.join('+'),
+        actual: entryOk
+          ? channels.join('+')
+          : `${channels.join('+')} (missing: ${unwired.join(', ')})`,
+      });
+
+      // Pre-commit bypass/tamper detection still applies when pre-commit is
+      // one of the declared channels and the gate is directly invoked there.
+      if (channels.includes('pre-commit') && precommitContent.includes(entry.gateScript)) {
+        const bypassViolations = detectBypassPatterns(
+          parsedPrecommit,
+          entry.gateScript,
+          entry.strictArgv || null,
+        );
+        for (const bv of bypassViolations) {
+          violations.push({
+            id: entry.id,
+            code: bv.pattern,
+            detail: `line ${bv.lineNum}: ${bv.detail}`,
+          });
+        }
+      }
+
       continue;
     }
 
@@ -482,6 +682,8 @@ if (SELF_TEST) {
       null, // no pre-push fixture
       ghActionsContent,
       pkgObj,
+      null, // no commit-msg fixture
+      RALPH_GATE, // real ralph/gate.sh — only the pre-commit file is swapped
     );
 
     const passed = violations.length === 0;
@@ -498,6 +700,159 @@ if (SELF_TEST) {
     }
   }
 
+  // ── ralph-gate channel scenarios (#188) ──────────────────────────────────
+  // Synthetic single-gate registries + synthetic ralph/gate.sh / pre-commit /
+  // package.json content, run in-memory through runWiringCheck. Unlike the
+  // fixtures above (which swap one real file against the real registry),
+  // these prove the ralph-gate detection paths themselves: single-channel
+  // direct invocation, single-channel indirect (pnpm script alias),
+  // single-channel not-wired, multi-channel pass/fail, and the
+  // BAD_CHANNEL / FIRING_CHANNEL_NOT_IN_CHANNELS guards on firingChannels.
+  const channelScenarios = [
+    {
+      name: 'ralph-gate-direct',
+      expectPass: true,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-direct',
+            gateScript: 'scripts/scenario-direct.mjs',
+            firingChannel: 'ralph-gate',
+          },
+        ],
+      },
+      ralphGate: 'run_step node scripts/scenario-direct.mjs\n',
+    },
+    {
+      name: 'ralph-gate-indirect-pnpm-alias',
+      expectPass: true,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-indirect',
+            gateScript: 'scripts/scenario-indirect.mjs',
+            firingChannel: 'ralph-gate',
+          },
+        ],
+      },
+      pkg: { scripts: { 'check:scenario': 'node scripts/scenario-indirect.mjs' } },
+      ralphGate: 'run_step pnpm check:scenario\n',
+    },
+    {
+      name: 'ralph-gate-not-wired',
+      expectPass: false,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-missing',
+            gateScript: 'scripts/scenario-missing.mjs',
+            firingChannel: 'ralph-gate',
+          },
+        ],
+      },
+      ralphGate: '',
+    },
+    {
+      name: 'multi-channel-both-wired',
+      expectPass: true,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-multi-pass',
+            gateScript: 'scripts/scenario-multi-pass.mjs',
+            firingChannel: 'pre-commit',
+            firingChannels: ['pre-commit', 'ralph-gate'],
+          },
+        ],
+      },
+      precommit: 'node scripts/scenario-multi-pass.mjs\n',
+      ralphGate: 'run_step node scripts/scenario-multi-pass.mjs\n',
+    },
+    {
+      name: 'multi-channel-ralph-gate-missing',
+      expectPass: false,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-multi-fail',
+            gateScript: 'scripts/scenario-multi-fail.mjs',
+            firingChannel: 'pre-commit',
+            firingChannels: ['pre-commit', 'ralph-gate'],
+          },
+        ],
+      },
+      precommit: 'node scripts/scenario-multi-fail.mjs\n',
+      ralphGate: '',
+    },
+    {
+      name: 'multi-channel-unknown-channel',
+      expectPass: false,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-bad-channel',
+            gateScript: 'scripts/scenario-bad-channel.mjs',
+            firingChannel: 'ralph-gate',
+            firingChannels: ['ralph-gate', 'moon-phase'],
+          },
+        ],
+      },
+      ralphGate: 'run_step node scripts/scenario-bad-channel.mjs\n',
+    },
+    {
+      name: 'firing-channel-not-in-firing-channels',
+      expectPass: false,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-not-in-channels',
+            gateScript: 'scripts/scenario-not-in-channels.mjs',
+            firingChannel: 'pre-commit',
+            firingChannels: ['ralph-gate'],
+          },
+        ],
+      },
+      ralphGate: 'run_step node scripts/scenario-not-in-channels.mjs\n',
+    },
+  ];
+
+  const channelResults = [];
+
+  for (const scenario of channelScenarios) {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'hds-wiring-scenario-'));
+    try {
+      const precommitPath = path.join(tmpDir, 'pre-commit');
+      const ralphGatePath = path.join(tmpDir, 'gate.sh');
+      fs.writeFileSync(precommitPath, scenario.precommit || '');
+      fs.writeFileSync(ralphGatePath, scenario.ralphGate || '');
+
+      const { violations } = runWiringCheck(
+        scenario.registry,
+        precommitPath,
+        null,
+        '', // no GH Actions content
+        scenario.pkg || {},
+        null,
+        ralphGatePath,
+      );
+
+      const passed = violations.length === 0;
+      const ok = (scenario.expectPass && passed) || (!scenario.expectPass && !passed);
+
+      if (!ok) {
+        allPassed = false;
+        const reason = scenario.expectPass
+          ? `expected PASS but got ${violations.length} violation(s): ${violations.map((v) => v.code).join(', ')}`
+          : `expected FAIL but got 0 violations`;
+        channelResults.push({ file: scenario.name, ok: false, reason });
+      } else {
+        channelResults.push({ file: scenario.name, ok: true });
+      }
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  }
+
   // Print summary
   console.log('\ncheck-validator-wiring --self-test');
   console.log('─'.repeat(70));
@@ -507,6 +862,14 @@ if (SELF_TEST) {
     console.log(`  ${icon} ${status}  ${r.file}`);
     if (!r.ok) console.log(`         → ${r.reason}`);
   }
+  console.log('  ── ralph-gate channel scenarios (#188) ──');
+  for (const r of channelResults) {
+    const icon = r.ok ? '✓' : '✗';
+    const status = r.ok ? 'PASS' : 'FAIL';
+    console.log(`  ${icon} ${status}  ${r.file}`);
+    if (!r.ok) console.log(`         → ${r.reason}`);
+  }
+  results.push(...channelResults);
   console.log('─'.repeat(70));
   const passed = results.filter((r) => r.ok).length;
   const total = results.length;
@@ -536,6 +899,7 @@ const { violations, summary } = runWiringCheck(
   ghActionsContent,
   pkgObj,
   COMMITMSG,
+  RALPH_GATE,
 );
 
 // ── Pre-commit structure hash check ─────────────────────────────────────────
