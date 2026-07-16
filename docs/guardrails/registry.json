@@ -189,7 +189,8 @@
       "lastViolationAt": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pre-commit"
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit", "ralph-gate"]
     },
     {
       "id": "check-css-integrity",
@@ -257,7 +258,8 @@
       "lastViolationAt": "2026-05-08T02:21:53.642Z",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "pnpm-meta"
+      "firingChannel": "pnpm-meta",
+      "firingChannels": ["pnpm-meta", "ralph-gate"]
     },
     {
       "id": "check-hardcoded-breakpoints",
@@ -284,10 +286,12 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "manual",
+      "firingChannels": ["manual", "ralph-gate"],
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 §5)",
+      "note": "Demoted off pre-commit in #52 (commit-time friction). #181 re-introduces automatic gating via ralph/gate.sh — a different, lower-friction PR-time channel, not a re-reversal of #52. See #188."
     },
     {
       "id": "check-hardcoded-spacing",

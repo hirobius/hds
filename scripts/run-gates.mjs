@@ -18,7 +18,9 @@
  *   node scripts/run-gates.mjs --gate check-hardcoded-colors
  *
  * Options:
- *   --channel <name>    Required (unless --gate). Filter by firingChannel.
+ *   --channel <name>    Required (unless --gate). Filter by firingChannel —
+ *                       also matches gates that declare that channel inside
+ *                       firingChannels: string[] (#188, multi-channel gates).
  *   --dry-run           List which gates would run; exit 0.
  *   --parallel <N>      Run up to N gates concurrently (default: 1 for
  *                       pre-commit; 4 for ci-pr). pre-commit MUST stay serial.
@@ -90,16 +92,25 @@ const emitJsonlArg = getFlag('--emit-jsonl');
 const emitInventoryArg = getFlag('--emit-inventory');
 const scopeArg = getFlag('--scope');
 const scopeFiles = scopeArg
-  ? scopeArg.split(',').map((s) => s.trim()).filter(Boolean)
+  ? scopeArg
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
   : null;
 
 const VALID_CHANNELS = new Set([
-  'pre-commit', 'pre-push', 'ci-pr', 'ci-scheduled', 'pnpm-meta', 'manual',
+  'pre-commit',
+  'pre-push',
+  'ci-pr',
+  'ci-scheduled',
+  'pnpm-meta',
+  'ralph-gate',
+  'manual',
 ]);
 
 if (!channelArg && !gateArg) {
   console.error('✗ run-gates: --channel <name> or --gate <id> is required');
-  console.error('  Valid channels: pre-commit, pre-push, ci-pr, ci-scheduled, pnpm-meta, manual');
+  console.error(`  Valid channels: ${[...VALID_CHANNELS].join(', ')}`);
   process.exit(2);
 }
 
@@ -124,14 +135,15 @@ if (emitJsonlArg) {
 
 function appendFiringLog(gate, exitCode, durationMs) {
   if (!emitJsonlArg) return;
-  const line = JSON.stringify({
-    ts: new Date().toISOString(),
-    channel: channelArg ?? null,
-    gate: gate.id,
-    exitCode,
-    durationMs,
-    commitSha,
-  }) + '\n';
+  const line =
+    JSON.stringify({
+      ts: new Date().toISOString(),
+      channel: channelArg ?? null,
+      gate: gate.id,
+      exitCode,
+      durationMs,
+      commitSha,
+    }) + '\n';
   try {
     const target = path.isAbsolute(emitJsonlArg) ? emitJsonlArg : path.join(ROOT, emitJsonlArg);
     fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -181,10 +193,7 @@ function recordInventory(gate, exitCode, durationMs, captured) {
     durationMs,
     supportsJson,
     violations,
-    outputTail: tailLines(
-      [captured?.stdout ?? '', captured?.stderr ?? ''].join('\n'),
-      50,
-    ),
+    outputTail: tailLines([captured?.stdout ?? '', captured?.stderr ?? ''].join('\n'), 50),
   });
 }
 
@@ -223,7 +232,9 @@ function writeInventory() {
 }
 
 if (isPreCommit && concurrency > 1) {
-  console.error('✗ run-gates: --parallel > 1 is not allowed for --channel pre-commit (order matters)');
+  console.error(
+    '✗ run-gates: --parallel > 1 is not allowed for --channel pre-commit (order matters)',
+  );
   process.exit(2);
 }
 
@@ -255,7 +266,14 @@ if (gateArg) {
   selectedGates = [found];
 } else {
   // Declaration order is preserved because JSON.parse preserves array order.
-  selectedGates = registry.gates.filter((g) => g.firingChannel === channelArg);
+  // Gates that fire from more than one real channel (e.g. pre-commit AND
+  // ralph-gate) declare firingChannels: string[] alongside the primary
+  // firingChannel (#188) — match on either.
+  selectedGates = registry.gates.filter(
+    (g) =>
+      g.firingChannel === channelArg ||
+      (Array.isArray(g.firingChannels) && g.firingChannels.includes(channelArg)),
+  );
   if (selectedGates.length === 0) {
     console.log(`run-gates: no gates registered for channel '${channelArg}' — nothing to do`);
     process.exit(0);
@@ -273,7 +291,9 @@ if (scopeFiles) {
     return keep;
   });
   if (skippedByScope.length > 0) {
-    console.log(`run-gates: --scope skipped ${skippedByScope.length} gate(s) (no glob match): ${skippedByScope.join(', ')}`);
+    console.log(
+      `run-gates: --scope skipped ${skippedByScope.length} gate(s) (no glob match): ${skippedByScope.join(', ')}`,
+    );
   }
   if (selectedGates.length === 0) {
     console.log(`run-gates: --scope filtered out every gate — nothing to do`);
@@ -367,8 +387,12 @@ function runGateAsync(gate) {
     if (useCapture) {
       child.stdout.setEncoding('utf8');
       child.stderr.setEncoding('utf8');
-      child.stdout.on('data', (chunk) => { stdoutBuf += chunk; });
-      child.stderr.on('data', (chunk) => { stderrBuf += chunk; });
+      child.stdout.on('data', (chunk) => {
+        stdoutBuf += chunk;
+      });
+      child.stderr.on('data', (chunk) => {
+        stderrBuf += chunk;
+      });
     }
     child.on('close', (code) => {
       const exit = code ?? 1;
@@ -385,7 +409,10 @@ function runGateAsync(gate) {
       console.error(`✗ run-gates: spawn error for gate '${gate.id}': ${err.message}`);
       const durationMs = Math.round(performance.now() - start);
       if (useCapture) {
-        recordInventory(gate, 1, durationMs, { stdout: stdoutBuf, stderr: stderrBuf + `\n${err.message}` });
+        recordInventory(gate, 1, durationMs, {
+          stdout: stdoutBuf,
+          stderr: stderrBuf + `\n${err.message}`,
+        });
       }
       appendFiringLog(gate, 1, durationMs);
       resolve(1);
