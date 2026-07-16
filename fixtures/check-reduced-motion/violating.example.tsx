@@ -1,4 +1,4 @@
-// violating: no @media (prefers-reduced-motion) block and no MotionConfig reducedMotion prop
+// violating: no @media (prefers-reduced-motion) block in theme.css
 import { motion } from 'motion/react';
 
 export function App() {
