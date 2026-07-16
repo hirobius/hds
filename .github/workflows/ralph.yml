@@ -23,15 +23,18 @@ on:
   workflow_dispatch:
     inputs:
       issue:
-        description: "Issue number to work (blank = deterministic pick via ralph/next.sh)"
+        description: 'Issue number to work (blank = deterministic pick via ralph/next.sh)'
         required: false
         type: string
   issues:
     types: [labeled]
   push:
     branches: [main] # chain: a merged Ralph PR grabs the next ralph-ready issue
-  schedule:
-    - cron: "41 * * * *" # idle watchdog (staggered minute; site-engine/ops use others)
+  # schedule: DISABLED 2026-07-16 — the hourly idle watchdog moved to the local
+  #   runner (ops#214) to stop spending GitHub Actions minutes. workflow_dispatch
+  #   stays as the manual escape hatch. Re-enable this block to revert to
+  #   CI-driven Ralph.
+  #   - cron: "41 * * * *" # idle watchdog (staggered minute; site-engine/ops use others)
 
 concurrency:
   group: ralph-${{ github.repository }}
