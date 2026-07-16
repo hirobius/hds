@@ -13,7 +13,9 @@ describe('TopNav', () => {
   it('wraps children in a <nav> alongside the trailing slot', () => {
     const { container } = render(
       <TopNav trailing={<button type="button">Sign in</button>}>
-        <a href="/docs">Docs</a>
+        <a href="/docs" className="hds-focus">
+          Docs
+        </a>
       </TopNav>,
     );
     expect(container.querySelector('nav')).not.toBeNull();
