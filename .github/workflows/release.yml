@@ -21,9 +21,12 @@ name: Release
 #     variables → Actions).
 
 on:
-  # RE-FROZEN 2026-07-09 — the final clean 0.13.0 shipped; HDS is shelved again.
-  # No auto-release on push to main; the published package is pinned at 0.13.0.
-  # Runnable manually via the Actions tab. Restore the push trigger to resume.
+  # Un-shelved 2026-09-14 (#199). The repo was unfrozen 2026-07-10 (#155) but
+  # this trigger was never restored, so nothing shipped after 0.13.0 while work
+  # kept merging. The push trigger only opens/updates the Changesets
+  # "Version Packages" PR — publishing still requires a human to merge that PR.
+  push:
+    branches: [main]
   workflow_dispatch: {}
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
