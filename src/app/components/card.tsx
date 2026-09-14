@@ -342,13 +342,17 @@ const CardProgress = React.forwardRef<HTMLDivElement, CardProgressProps>(functio
         }}
       >
         <div
-          // inline-ok: token-driven progress fill width is dynamic
+          // inline-ok: token-driven progress fill transform is dynamic.
+          // transform: scaleX (not width) so the fill animates on the compositor
+          // instead of triggering layout on every frame.
           style={{
             height: '100%',
-            width: `${pct}%`,
+            width: '100%',
+            transform: `scaleX(${pct / 100})`,
+            transformOrigin: 'left',
             background: PROGRESS_TONE_FILL[tone],
             borderRadius: hds.borderRadius[2],
-            transition: `width ${hds.motion.expressive.duration}s ease-out`,
+            transition: `transform ${hds.motion.expressive.duration}s ease-out`,
           }}
         />
       </div>
