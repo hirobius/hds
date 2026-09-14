@@ -657,3 +657,55 @@ branch would close the loop visually.
   clean). PR #203 opened, Closes #202. Issue commented.
 - Next: nothing outstanding on this slice. #199/#200/#201 are separate
   human-scoped CI-trigger restorations tracked as their own issues.
+
+## Issue #182 — check-impeccable-detect: triage the 3 findings from the first src/ run
+- Note: the check-impeccable-detect.mjs wrapper guardrail itself is NOT on
+  main (only exists, unmerged, on origin/claude/hirobius-design-skills-jr28dm
+  with no open PR) despite the issue text implying it "landed" — not a
+  blocker though, since `npx impeccable` is a real published npm package and
+  `npx impeccable detect --json src/` reproduces all 3 findings directly,
+  exactly as the issue's table lists them. Scoped to the 3-finding triage
+  only, per the issue's explicit narrowing; the ci-scheduled promotion
+  question stays untouched.
+- Finding 1 (card.tsx progress fill, layout-transition): fixed, not
+  suppressed. Switched the fill's `width: ${pct}%` + `transition: width` to
+  `width: 100%` + `transform: scaleX(pct/100)` with `transformOrigin: left`
+  + `transition: transform`, so the animation runs on the compositor instead
+  of thrashing layout every frame. Visual output is equivalent (thin 4px
+  bar; corner-radius squash at low pct is imperceptible at this scale).
+  Card.Progress isn't exercised by card.stories.tsx, so no Storybook diff.
+- Finding 2 (tabs.tsx TabsTrigger, border-accent-on-rounded): suppressed as
+  a false positive — `border-b-2` only paints the bottom edge, `rounded-t-md`
+  only rounds the top corners, so they never geometrically touch. Only a
+  trailing `impeccable-disable-line` comment was added; zero class changes,
+  so tabs.stories.tsx is pixel-identical.
+  Gotcha: first tried `impeccable-disable-next-line` on its own line above
+  the class string, but my reasoning prose restated both trigger substrings
+  ("border-b-2" + "rounded-t-md") on the same physical line as the
+  directive, which itself re-matched the regex on that line (next-line only
+  suppresses the line below, not itself) — false re-trigger.
+  Fixed by moving to a same-line `impeccable-disable-line` trailing comment
+  and shortening the reasoning so it doesn't restate both class tokens
+  together.
+- Finding 3 (fonts.css Geist Mono, overused-font): suppressed per issue's
+  explicit decision — intentional brand choice (Adrian directive
+  2026-05-04, already documented in the file header). Added
+  `impeccable-disable-line overused-font` trailing the `font-family` line.
+- Verified: `npx impeccable detect --json src/` → `[]`, exit 0 (was 3
+  findings, exit 2, before this change).
+- Environment note (not part of this change, pre-existing on clean main):
+  a fresh checkout is missing gitignored generated artifacts
+  (src/app/data/component-api.json, src/app/data/token-audit-report.json),
+  which fail `pnpm typecheck` / `pnpm test`'s pretest until
+  `pnpm manifest:generate` + `node scripts/audit-tokens.mjs --full` run
+  first — ralph/gate.sh already does this as its first two steps, so the
+  gate itself is unaffected; only matters if you run typecheck/test in
+  isolation on a fresh clone.
+- Files changed: src/app/components/card.tsx, src/app/components/tabs.tsx,
+  src/styles/fonts.css.
+- Verified: bash ralph/gate.sh green (typecheck, 103 test files / 1276
+  tests / 5 skipped, lint 0 warnings, contrast/focus/colors/motion gates
+  clean).
+- Next: nothing outstanding on this slice. The split-out ci-scheduled
+  promotion question (network-in-CI policy) remains a separate,
+  human-decision issue to file later, per this issue's own scope note.
