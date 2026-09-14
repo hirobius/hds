@@ -34,7 +34,7 @@
 
 /* Geist Mono — Vercel, OFL-1.1. */
 @font-face {
-  font-family: 'Geist Mono';
+  font-family: 'Geist Mono'; /* impeccable-disable-line overused-font -- deliberate brand choice (Adrian directive 2026-05-04, see file header) */
   src: url('/fonts/geist-mono/geist-mono-400.woff2') format('woff2');
   /* App build: served from public/fonts (unchanged). Library build:
    * scripts/embed-fonts.mjs base64-inlines these into dist/tokens.css so
