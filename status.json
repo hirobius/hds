@@ -1,11 +1,10 @@
 {
-  "updatedAt": "2026-07-11T00:00:00Z",
-  "phase": "active",
-  "headline": "HDS is UNFROZEN (Adrian, 2026-07-10; see #155) and back to active development under epic #124, the Tailwind × multi-tenant token-utility burndown. The Ralph loop has been merging PRs continuously since the freeze (#135–#159), including epic #124 children #125 (spacing/breakpoints/border-width/font-size token utilities), #127 (interactive surface state tokens), and the ADR ratification in #131. Package remains published as @hirobius/design-system on npm.",
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "phase": "stalled",
+  "headline": "HDS development has stalled since 2026-07-15 (last commit d3505fd) — two months cold. The release (#199), Chromatic (#200), and Ralph loop heartbeat (#201) workflows are all still frozen to manual dispatch from the 2026-07-09 shelving and were never restored, so nothing has published, no visual regression runs on PRs, and the loop has had no scheduled heartbeat since 2026-07-16. Package remains published as @hirobius/design-system on npm.",
   "next": [
-    "Continue burning down epic #124's remaining children: #126, #128, #129, #130, #132, #133, #134",
-    "Restore pull_request/push triggers in .github/workflows/{chromatic,release}.yml — still manual-dispatch-only from the freeze, now stale",
-    "Reconcile the superseded wind-down epic #80 now that #124 is the active roadmap"
+    "Restore CI triggers frozen since the 2026-07-09 shelving: release push trigger (#199), Chromatic pull_request/push triggers (#200), Ralph loop heartbeat (#201)",
+    "Continue burning down epic #124's remaining open children: #126, #129, #132, #133, #134"
   ],
   "blocked": []
 }

@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-HDS is under active development (unfrozen 2026-07-10; see [#155](https://github.com/hirobius/hds/issues/155)), currently burning down [epic #124](https://github.com/hirobius/hds/issues/124), the Tailwind × multi-tenant token-utility hardening pass. 133 components (Radix + `cva`), 351+ DTCG tokens, ~110 Storybook stories, a full guardrail suite, and the published `@hirobius/design-system` on npm.
+HDS development has stalled since mid-July 2026 (no commits since 2026-07-15); the release, Chromatic, and Ralph loop-heartbeat workflows are all still frozen to manual dispatch from the 2026-07-09 shelving, and revival is tracked in [#199](https://github.com/hirobius/hds/issues/199)–[#201](https://github.com/hirobius/hds/issues/201). 133 components (Radix + `cva`), 351+ DTCG tokens, ~110 Storybook stories, a full guardrail suite, and the published `@hirobius/design-system` on npm.
 
 A publishable React + TypeScript component library, backed by a governed design-token pipeline, a documentation site, and an automated verification suite — all in one repository.
 
