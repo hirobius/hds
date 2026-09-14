@@ -629,3 +629,31 @@ branch would close the loop visually.
   capture the baseline + the accent-break-then-revert proof and check off
   the remaining two DoD boxes; this PR's contrast test is additive, not a
   substitute.
+
+## Issue #202 — status.json + README claimed active dev while repo is stalled
+- Verified reality: no commits since 2026-07-15 (d3505fd); release.yml,
+  chromatic.yml, ralph.yml all still frozen to workflow_dispatch-only from
+  the 2026-07-09 shelving, never restored (#199/#200/#201 open for that).
+- status.json: phase active -> stalled, headline + updatedAt (2026-09-14)
+  rewritten to state observable reality instead of predicting a return to
+  activity. next[] rewritten against the live open-issue list: links
+  #199/#200/#201 for the frozen workflows; epic #124's currently-open
+  children (#126, #129, #132, #133, #134) replacing the stale list that
+  still named since-closed #128/#130.
+- README.md: corrected the opening "under active development / currently
+  burning down epic #124" claim to state the stall + link #199-#201; left
+  the scale/capability claims (133 components, 351+ tokens, ~110 stories,
+  npm) intact per the issue's scope.
+- Epic #80 (issue's item 3, "reconcile the superseded wind-down epic"):
+  checked first — already closed 2026-07-10 as NOT_PLANNED, superseded by
+  #124, with a closing comment saying exactly that. No action needed;
+  dropped from next[] rather than restated, noted as already-done in the
+  PR body per the issue's DoD ("done or filed and linked").
+- No .github/workflows/* touched (out of scope, and the bot can't push
+  those anyway).
+- Files changed: status.json, README.md.
+- Verified: bash ralph/gate.sh green (typecheck, 103 test files / 1276
+  tests / 5 skipped, lint 0 warnings, token pipeline + contrast checks
+  clean). PR #203 opened, Closes #202. Issue commented.
+- Next: nothing outstanding on this slice. #199/#200/#201 are separate
+  human-scoped CI-trigger restorations tracked as their own issues.
