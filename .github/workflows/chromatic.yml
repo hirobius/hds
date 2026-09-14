@@ -15,10 +15,12 @@ name: Chromatic
 # The `if:` guard keeps the job green-skipped until the variable is set, so PRs
 # never go red for a missing token before setup is done.
 on:
-  # FROZEN 2026-07-09 — HDS is shelved (see README). Auto-triggers disabled to
-  # stop Chromatic runs on a paused repo; still runnable manually via the
-  # Actions tab if HDS is ever taken off the shelf. Restore pull_request/push
-  # triggers to resume.
+  # Un-shelved 2026-09-14 (#200). The job's `if:` guard below keeps it
+  # green-skipped until CHROMATIC_ENABLED is set, so restoring these triggers
+  # cannot turn PRs red before the one-time setup above is done.
+  pull_request:
+  push:
+    branches: [main]
   workflow_dispatch: {}
 
 jobs:
