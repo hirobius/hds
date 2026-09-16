@@ -304,6 +304,16 @@ export const tokenRefs = {
           info: "var(--semantic-color-feedback-bg-info)",
           inProgress: "var(--semantic-color-feedback-bg-inProgress)"
         }
+      },
+      owner: {
+        a: {
+          surface: "var(--semantic-color-owner-a-surface)",
+          content: "var(--semantic-color-owner-a-content)"
+        },
+        b: {
+          surface: "var(--semantic-color-owner-b-surface)",
+          content: "var(--semantic-color-owner-b-content)"
+        }
       }
     },
     space: {

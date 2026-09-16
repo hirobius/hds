@@ -1430,6 +1430,64 @@
             }
           }
         }
+      },
+      "owner": {
+        "a": {
+          "surface": {
+            "$type": "color",
+            "$value": "{primitive.color.violet.50}",
+            "$description": "Owner-chip A (violet) surface — ground for a named-party tag (two-party responsibility chips).",
+            "$extensions": {
+              "com.figma.variables": {
+                "modes": {
+                  "Light": "{primitive.color.violet.50}",
+                  "Dark": "{primitive.color.violet.950}"
+                }
+              }
+            }
+          },
+          "content": {
+            "$type": "color",
+            "$value": "{primitive.color.violet.700}",
+            "$description": "Owner-chip A (violet) content/ink — AA on its own surface in both themes.",
+            "$extensions": {
+              "com.figma.variables": {
+                "modes": {
+                  "Light": "{primitive.color.violet.700}",
+                  "Dark": "{primitive.color.violet.400}"
+                }
+              }
+            }
+          }
+        },
+        "b": {
+          "surface": {
+            "$type": "color",
+            "$value": "{primitive.color.blue.50}",
+            "$description": "Owner-chip B (blue) surface.",
+            "$extensions": {
+              "com.figma.variables": {
+                "modes": {
+                  "Light": "{primitive.color.blue.50}",
+                  "Dark": "{primitive.color.blue.900}"
+                }
+              }
+            }
+          },
+          "content": {
+            "$type": "color",
+            "$value": "{primitive.color.blue.700}",
+            "$description": "Owner-chip B (blue) content/ink.",
+            "$extensions": {
+              "com.figma.variables": {
+                "modes": {
+                  "Light": "{primitive.color.blue.700}",
+                  "Dark": "{primitive.color.blue.300}"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "space": {

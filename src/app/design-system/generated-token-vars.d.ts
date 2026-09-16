@@ -218,6 +218,10 @@ declare module 'react' {
     '--semantic-color-feedback-bg-warning'?: string | undefined;
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
+    '--semantic-color-owner-a-surface'?: string | undefined;
+    '--semantic-color-owner-a-content'?: string | undefined;
+    '--semantic-color-owner-b-surface'?: string | undefined;
+    '--semantic-color-owner-b-content'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;
