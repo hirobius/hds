@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-10T04:00:37.758Z",
+  "generated": "2026-09-16T05:30:56.341Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -11365,6 +11365,54 @@
         "dark": {
           "alias": "{primitive.color.violet.950}",
           "resolvedValue": "#2e1065"
+        }
+      },
+      {
+        "path": "semantic.color.owner.a.surface",
+        "cssVar": "--semantic-color-owner-a-surface",
+        "type": "color",
+        "description": "Owner-chip A (violet) surface — ground for a named-party tag (two-party responsibility chips).",
+        "alias": "{primitive.color.violet.50}",
+        "resolvedValue": "#f5f3ff",
+        "dark": {
+          "alias": "{primitive.color.violet.950}",
+          "resolvedValue": "#2e1065"
+        }
+      },
+      {
+        "path": "semantic.color.owner.a.content",
+        "cssVar": "--semantic-color-owner-a-content",
+        "type": "color",
+        "description": "Owner-chip A (violet) content/ink — AA on its own surface in both themes.",
+        "alias": "{primitive.color.violet.700}",
+        "resolvedValue": "#6d28d9",
+        "dark": {
+          "alias": "{primitive.color.violet.400}",
+          "resolvedValue": "#a78bfa"
+        }
+      },
+      {
+        "path": "semantic.color.owner.b.surface",
+        "cssVar": "--semantic-color-owner-b-surface",
+        "type": "color",
+        "description": "Owner-chip B (blue) surface.",
+        "alias": "{primitive.color.blue.50}",
+        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "dark": {
+          "alias": "{primitive.color.blue.900}",
+          "resolvedValue": "oklch(0.22 0.05 266.54)"
+        }
+      },
+      {
+        "path": "semantic.color.owner.b.content",
+        "cssVar": "--semantic-color-owner-b-content",
+        "type": "color",
+        "description": "Owner-chip B (blue) content/ink.",
+        "alias": "{primitive.color.blue.700}",
+        "resolvedValue": "oklch(0.44 0.2903 266.54)",
+        "dark": {
+          "alias": "{primitive.color.blue.300}",
+          "resolvedValue": "oklch(0.70 0.2903 266.54)"
         }
       },
       {
