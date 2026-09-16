@@ -49,6 +49,9 @@ tokens.json (W3C DTCG overlay format)
   --semantic-color-surface-accentSubtle: var(
     --primitive-color-stone-100
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-content-onAccent: var(
+    --primitive-color-neutral-white
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-color-border-accent: var(
     --primitive-color-stone-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
@@ -116,6 +119,9 @@ tokens.json (W3C DTCG overlay format)
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-color-content-accent: var(
     --primitive-color-lilac-500
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-content-onAccent: var(
+    --primitive-color-neutral-white
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
 }
 [data-brand='lilac-bonds'][data-theme='dark'],

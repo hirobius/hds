@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-10T04:00:37.758Z",
+  "generated": "2026-09-16T06:10:50.753Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -10995,12 +10995,12 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent-colored background",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "description": "Accent-colored background (neutral/monochrome; inverts to a light neutral on dark surfaces).",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
         "dark": {
-          "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
+          "alias": "{primitive.color.neutral.100}",
+          "resolvedValue": "#f5f5f5"
         }
       },
       {
@@ -11008,11 +11008,11 @@
         "cssVar": "--semantic-color-surface-accentSubtle",
         "type": "color",
         "description": "Faint accent tint for hover states or highlights",
-        "alias": "{primitive.color.blue.50}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "alias": "{primitive.color.neutral.100}",
+        "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.blue.900}",
-          "resolvedValue": "oklch(0.22 0.05 266.54)"
+          "alias": "{primitive.color.neutral.900}",
+          "resolvedValue": "#111111"
         }
       },
       {
@@ -11020,11 +11020,11 @@
         "cssVar": "--semantic-color-surface-hover",
         "type": "color",
         "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
-        "alias": "{primitive.color.blue.50}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "alias": "{primitive.color.neutral.100}",
+        "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.blue.900}",
-          "resolvedValue": "oklch(0.22 0.05 266.54)"
+          "alias": "{primitive.color.neutral.900}",
+          "resolvedValue": "#111111"
         }
       },
       {
@@ -11044,11 +11044,11 @@
         "cssVar": "--semantic-color-surface-selected",
         "type": "color",
         "description": "Background for a persistently selected item (active tab, checked row).",
-        "alias": "{primitive.color.blue.100}",
-        "resolvedValue": "oklch(0.92 0.04 266.54)",
+        "alias": "{primitive.color.neutral.200}",
+        "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.blue.800}",
-          "resolvedValue": "oklch(0.30 0.07 266.54)"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -11123,22 +11123,24 @@
         "path": "semantic.color.content.accent",
         "cssVar": "--semantic-color-content-accent",
         "type": "color",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "description": "Accent-intent text/icon color (monochrome). Pair with underline/weight for link affordance.",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
         "dark": {
-          "alias": "{primitive.color.blue.300}",
-          "resolvedValue": "oklch(0.70 0.2903 266.54)"
+          "alias": "{primitive.color.neutral.100}",
+          "resolvedValue": "#f5f5f5"
         }
       },
       {
         "path": "semantic.color.content.onAccent",
         "cssVar": "--semantic-color-content-onAccent",
         "type": "color",
+        "description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where the accent fill is a light neutral.",
         "alias": "{primitive.color.neutral.white}",
         "resolvedValue": "#ffffff",
         "dark": {
-          "alias": "{primitive.color.neutral.white}",
-          "resolvedValue": "#ffffff"
+          "alias": "{primitive.color.neutral.900}",
+          "resolvedValue": "#111111"
         }
       },
       {
@@ -11226,11 +11228,12 @@
         "path": "semantic.color.border.accent",
         "cssVar": "--semantic-color-border-accent",
         "type": "color",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "description": "Accent border (neutral/monochrome; inverts on dark surfaces).",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
         "dark": {
-          "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
+          "alias": "{primitive.color.neutral.100}",
+          "resolvedValue": "#f5f5f5"
         }
       },
       {
@@ -11740,12 +11743,12 @@
         "path": "semantic.accent.rest",
         "cssVar": "--semantic-accent-rest",
         "type": "color",
-        "description": "Default accent fill for interactive elements at rest.",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "description": "Default accent fill for interactive elements at rest. Neutral (monochrome) accent — inverts to a light neutral on dark surfaces.",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
         "dark": {
-          "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
+          "alias": "{primitive.color.neutral.100}",
+          "resolvedValue": "#f5f5f5"
         }
       },
       {
@@ -11753,11 +11756,11 @@
         "cssVar": "--semantic-accent-hover",
         "type": "color",
         "description": "Accent fill on pointer hover.",
-        "alias": "{primitive.color.blue.600}",
-        "resolvedValue": "oklch(0.45 0.2903 266.54)",
+        "alias": "{primitive.color.neutral.800}",
+        "resolvedValue": "#262626",
         "dark": {
-          "alias": "{primitive.color.blue.450}",
-          "resolvedValue": "oklch(0.56 0.29 266.60)"
+          "alias": "{primitive.color.neutral.200}",
+          "resolvedValue": "#e5e5e5"
         }
       },
       {
@@ -11765,11 +11768,11 @@
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
         "description": "Accent fill during active press.",
-        "alias": "{primitive.color.blue.700}",
-        "resolvedValue": "oklch(0.44 0.2903 266.54)",
+        "alias": "{primitive.color.neutral.950}",
+        "resolvedValue": "#0a0a0a",
         "dark": {
-          "alias": "{primitive.color.blue.400}",
-          "resolvedValue": "oklch(0.65 0.2903 266.54)"
+          "alias": "{primitive.color.neutral.300}",
+          "resolvedValue": "#d4d4d4"
         }
       },
       {
@@ -11777,11 +11780,11 @@
         "cssVar": "--semantic-accent-inactive",
         "type": "color",
         "description": "Accent fill for inactive or unselected accent elements.",
-        "alias": "{primitive.color.blue.200}",
-        "resolvedValue": "oklch(0.88 0.07 266.54)",
+        "alias": "{primitive.color.neutral.400}",
+        "resolvedValue": "#a3a3a3",
         "dark": {
-          "alias": "{primitive.color.blue.200}",
-          "resolvedValue": "oklch(0.88 0.07 266.54)"
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -11789,23 +11792,23 @@
         "cssVar": "--semantic-accent-disabled",
         "type": "color",
         "description": "Accent fill for disabled accent elements.",
-        "alias": "{primitive.color.blue.100}",
-        "resolvedValue": "oklch(0.92 0.04 266.54)",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d4d4d4",
         "dark": {
-          "alias": "{primitive.color.blue.100}",
-          "resolvedValue": "oklch(0.92 0.04 266.54)"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
         "path": "semantic.accent.content",
         "cssVar": "--semantic-accent-content",
         "type": "color",
-        "description": "Text and icon color on neutral surfaces with accent intent.",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "description": "Text and icon color on neutral surfaces with accent intent. Monochrome — pair with underline/weight for link affordance.",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
         "dark": {
-          "alias": "{primitive.color.blue.300}",
-          "resolvedValue": "oklch(0.70 0.2903 266.54)"
+          "alias": "{primitive.color.neutral.100}",
+          "resolvedValue": "#f5f5f5"
         }
       },
       {
@@ -11813,11 +11816,11 @@
         "cssVar": "--semantic-accent-contentHover",
         "type": "color",
         "description": "Accent content color on pointer hover.",
-        "alias": "{primitive.color.blue.600}",
-        "resolvedValue": "oklch(0.45 0.2903 266.54)",
+        "alias": "{primitive.color.neutral.700}",
+        "resolvedValue": "#404040",
         "dark": {
-          "alias": "{primitive.color.blue.200}",
-          "resolvedValue": "oklch(0.88 0.07 266.54)"
+          "alias": "{primitive.color.neutral.300}",
+          "resolvedValue": "#d4d4d4"
         }
       },
       {
@@ -11825,11 +11828,11 @@
         "cssVar": "--semantic-accent-subtle",
         "type": "color",
         "description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
-        "alias": "{primitive.color.blue.50}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "alias": "{primitive.color.neutral.100}",
+        "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.blue.900}",
-          "resolvedValue": "oklch(0.22 0.05 266.54)"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -11961,7 +11964,7 @@
         "type": "color",
         "description": "Nav item background fill when active or selected.",
         "alias": "{semantic.accent.subtle}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.nav.borderActive",
@@ -11969,7 +11972,7 @@
         "type": "color",
         "description": "Nav item border color when active or selected.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.nav.text",
@@ -12017,7 +12020,7 @@
         "type": "color",
         "description": "Base tag surface color.",
         "alias": "{semantic.accent.subtle}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.tag.text",
@@ -12113,7 +12116,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.tag.activeBorder",
@@ -12121,7 +12124,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.tag.activeHover",
@@ -12129,7 +12132,7 @@
         "type": "color",
         "description": "Active tag hover fill color.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "oklch(0.45 0.2903 266.54)"
+        "resolvedValue": "#262626"
       },
       {
         "path": "component.badge.fontSize",
@@ -12213,7 +12216,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.button.bgHover",
@@ -12221,7 +12224,7 @@
         "type": "color",
         "description": "Primary button hover fill.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "oklch(0.45 0.2903 266.54)"
+        "resolvedValue": "#262626"
       },
       {
         "path": "component.button.text",
@@ -12417,7 +12420,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -12631,7 +12634,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.primary-foreground",
@@ -12679,7 +12682,7 @@
         "type": "color",
         "description": "Hover/active tinted bg. shadcn role: accent.",
         "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "role.accent-foreground",
@@ -12687,7 +12690,7 @@
         "type": "color",
         "description": "Text on accent surface. shadcn role: accent-foreground.",
         "alias": "{semantic.color.content.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.destructive",
@@ -12727,7 +12730,7 @@
         "type": "color",
         "description": "Focus ring color. shadcn role: ring.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#1E2EFD"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.radius",
