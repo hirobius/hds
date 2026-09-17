@@ -15,7 +15,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { format } from 'prettier';
 import { checkDesignLinks, computeDesignLinks, writeDesignLinks } from '../figma-links.mjs';
-import { designParameters } from '../../src/stories/design-parameters.ts';
+import { designParameters, figmaDesignParameter } from '../../src/stories/design-parameters.ts';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const NODE_URL = 'https://www.figma.com/design/FileKey123/HDS?node-id=33-34';
@@ -131,10 +131,15 @@ describe('pnpm figma:links', () => {
     ]);
   });
 
-  it('reads a missing links config as a loud error, not a default', () => {
+  it('reads a missing input as a loud error that names the file, not a default', () => {
     const root = miniRoot();
     rmSync(join(root, 'figma', 'links.json'));
-    expect(() => computeDesignLinks(root)).toThrow(/figma\/links\.json/);
+    expect(() => computeDesignLinks(root)).toThrow(/figma\/links\.json is missing.*Storybook URL/);
+    const other = miniRoot();
+    rmSync(join(other, 'public', 'hds-manifest.json'));
+    expect(() => computeDesignLinks(other)).toThrow(
+      /^public\/hds-manifest\.json is missing\. Run pnpm manifest:generate\.$/,
+    );
   });
 });
 
@@ -163,6 +168,15 @@ describe('this repository', () => {
     );
     expect(designParameters(unlinked)).toEqual({});
     expect(designParameters('NoSuchComponent')).toEqual({});
+  });
+
+  it('turns a figma.com URL (with or without www) into parameters.design, and anything else into nothing', () => {
+    const url = 'https://figma.com/design/FileKey123/HDS?node-id=1-2';
+    expect(figmaDesignParameter(url)).toEqual({ design: { type: 'figma', url } });
+    expect(figmaDesignParameter(NODE_URL)).toEqual({ design: { type: 'figma', url: NODE_URL } });
+    expect(figmaDesignParameter('TODO:hds-master:Alert')).toEqual({});
+    expect(figmaDesignParameter('https://figma.com.example.org/design/x')).toEqual({});
+    expect(figmaDesignParameter(null)).toEqual({});
   });
 
   it.each([

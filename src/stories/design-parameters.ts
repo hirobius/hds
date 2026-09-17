@@ -20,9 +20,13 @@ const specs =
   (manifest as unknown as { componentSpecs?: Record<string, { figmaUrl?: string | null }> })
     .componentSpecs ?? {};
 
+const FIGMA_URL = /^https:\/\/(www\.)?figma\.com\//;
+
+/** `parameters.design` for one Figma URL; `{}` for anything that is not a figma.com URL. */
+export function figmaDesignParameter(url: unknown): DesignParameters {
+  return typeof url === 'string' && FIGMA_URL.test(url) ? { design: { type: 'figma', url } } : {};
+}
+
 export function designParameters(component: string): DesignParameters {
-  const url = specs[component]?.figmaUrl;
-  return typeof url === 'string' && url.startsWith('https://www.figma.com/')
-    ? { design: { type: 'figma', url } }
-    : {};
+  return figmaDesignParameter(specs[component]?.figmaUrl);
 }

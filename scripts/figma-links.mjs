@@ -45,12 +45,16 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const LINKS_CONFIG = 'figma/links.json';
 
+const MISSING_HELP = {
+  [LINKS_CONFIG]:
+    'pnpm figma:links needs it for the repository URL, branch and Storybook URL (see figma/README.md).',
+  'public/hds-manifest.json': 'Run pnpm manifest:generate.',
+};
+
 const readJson = (root, path) => {
   const file = join(root, path);
   if (!existsSync(file)) {
-    throw new Error(
-      `${path} is missing. pnpm figma:links needs it for the repository URL, branch and Storybook URL.`,
-    );
+    throw new Error([`${path} is missing.`, MISSING_HELP[path]].filter(Boolean).join(' '));
   }
   return JSON.parse(readFileSync(file, 'utf8'));
 };
