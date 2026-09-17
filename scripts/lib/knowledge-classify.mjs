@@ -129,6 +129,14 @@ export function loadClientRules(file = CLIENT_RULES_FILE) {
   return clients;
 }
 
+// Read the local rules file once per process, on first use — not per classify()
+// call, which runs once per conversation during a bulk ingestion.
+let defaultClientRules;
+function getDefaultClientRules() {
+  defaultClientRules ??= loadClientRules();
+  return defaultClientRules;
+}
+
 function matchClient(haystack, clientRules) {
   const hit = clientRules.find((rule) =>
     rule.anyOf.some((group) => group.every((source) => new RegExp(source, 'i').test(haystack))),
@@ -143,10 +151,13 @@ function matchClient(haystack, clientRules) {
  * @param {string} input.title - conversation title
  * @param {string} input.text  - full concatenated message text (lowercased recommended)
  * @param {object} [options]
- * @param {{ slug: string, anyOf: string[][] }[]} [options.clientRules] - defaults to loadClientRules()
+ * @param {{ slug: string, anyOf: string[][] }[]} [options.clientRules] - defaults to the local rules file (loaded once)
  * @returns {{ pillar: 'build'|'grow'|'run'|'_unclassified', score: object, client: string|null, tags: string[] }}
  */
-export function classify({ title = '', text = '' }, { clientRules = loadClientRules() } = {}) {
+export function classify(
+  { title = '', text = '' },
+  { clientRules = getDefaultClientRules() } = {},
+) {
   const haystack = `${title}\n${text}`.toLowerCase();
 
   const client = matchClient(haystack, clientRules);
