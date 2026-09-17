@@ -250,7 +250,7 @@
     },
     {
       "id": "check-figma-drift",
-      "description": "Compares the Figma model built from hirobius.tokens.json against the committed Figma snapshot (figma/snapshot.json) and reports missing, extra and changed variables, modes and styles, warning when the snapshot is older than the tokens. Exit 0 clean, 1 drift or an edited snapshot, 2 no snapshot yet. In ci.yml with --ci: fails only on drift against a snapshot newer than the last token change; pending pushes warn, no snapshot is a notice.",
+      "description": "Compares the Figma model built from hirobius.tokens.json against the committed Figma snapshot (figma/snapshot.json) and reports missing, extra and changed variables, modes, default modes and styles. Exit 0 clean, 1 drift or an edited snapshot, 2 no snapshot yet. In ci.yml with --ci: fails only when Figma was last pushed from exactly the model the tokens build now (snapshot lastPush.modelHash) and still differs; drift that may be an unpushed change warns, no snapshot is a notice.",
       "severity": "warn",
       "gateScript": "scripts/check-figma-drift.mjs",
       "fixturePath": "fixtures/check-figma-drift",

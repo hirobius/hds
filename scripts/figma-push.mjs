@@ -36,7 +36,13 @@ import {
   buildUseFigmaSnapshotScript,
   modelHash,
 } from './lib/figma-scripts.mjs';
-import { hdsDescribePlan, hdsPlan, hdsSummarize, hdsSummaryLine } from './lib/figma-runtime.mjs';
+import {
+  hdsDescribePlan,
+  hdsPlan,
+  hdsPlanWarnings,
+  hdsSummarize,
+  hdsSummaryLine,
+} from './lib/figma-runtime.mjs';
 import { parseSnapshotFile } from './lib/figma-snapshot.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -73,7 +79,12 @@ export function writePushArtifacts({ root, outDir, prune = false }) {
 /** What a push would change, judged against a snapshot instead of the live file. */
 export function planAgainstSnapshot({ model, renames, snapshotFile, prune = false }) {
   const plan = hdsPlan(model, snapshotFile.snapshot, { prune, renames });
-  return { line: hdsSummaryLine(hdsSummarize(plan)), changes: hdsDescribePlan(plan), plan };
+  return {
+    line: hdsSummaryLine(hdsSummarize(plan)),
+    changes: hdsDescribePlan(plan),
+    warnings: hdsPlanWarnings(plan),
+    plan,
+  };
 }
 
 function formatRun({ model, prune, files }, outDir) {
@@ -89,7 +100,7 @@ function formatRun({ model, prune, files }, outDir) {
     `    Figma desktop → Plugins → Development → Import plugin from manifest… → ${rel}/plugin/manifest.json`,
     '    Run "Plan push (dry run, writes nothing)", read the plan, then run the push command.',
     '',
-    '  use_figma (Figma MCP server), in order and unmodified; a changed payload fails its checksum:',
+    '  use_figma (Figma MCP server), in order and unmodified; a script whose payload or runtime code changed stops before it reads or writes:',
     ...scripts.map((f) => `    ${rel}/${f.path}  (${kb(f.bytes)})`),
     '',
     '  Then take a snapshot (pnpm figma:snapshot) and run pnpm check:figma-drift.',
@@ -109,11 +120,12 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
         console.log('  --plan: no figma/snapshot.json yet, so there is nothing to plan against.');
       } else {
         const snapshotFile = parseSnapshotFile(readFileSync(snapshotPath, 'utf8'));
-        const { line, changes } = planAgainstSnapshot({ ...result, snapshotFile });
+        const { line, changes, warnings } = planAgainstSnapshot({ ...result, snapshotFile });
         console.log(
           `  Against figma/snapshot.json (taken ${snapshotFile.snapshot.takenAt}): ${line}`,
         );
         for (const change of changes) console.log(`    ${change}`);
+        for (const warning of warnings) console.log(`    ⚠ ${warning}`);
       }
     }
   } catch (error) {

@@ -8,8 +8,11 @@
  *     once in Figma desktop; nothing passes through a chat transcript, and it is
  *     the only plugin a Professional plan can run privately.
  *   - `use_figma` scripts for the remote Figma MCP server, one per collection plus
- *     one for styles, carrying only the out-of-scope variables they alias. A
- *     checksum makes a mistyped payload fail before any write.
+ *     one for styles, carrying only the out-of-scope variables they alias. An
+ *     agent retypes each script into the `code` parameter, so the script checks
+ *     two checksums before it reads or writes anything: one over its payload,
+ *     one over the source of every runtime function. Only the closing call
+ *     lines are not covered.
  *
  * Nothing here talks to Figma.
  */
@@ -49,16 +52,45 @@ export function runtimeSource() {
     .trim();
 }
 
+/**
+ * The runtime's top-level functions exactly as a script carries them: each
+ * name, and the source text `Function.prototype.toString` returns for it.
+ */
+export function runtimeFunctions(source = runtimeSource()) {
+  return parse(source, { ecmaVersion: 2020, sourceType: 'script' })
+    .body.filter((node) => node.type === 'FunctionDeclaration')
+    .map((node) => ({ name: node.id.name, text: source.slice(node.start, node.end) }));
+}
+
+/** hdsChecksum of the runtime source, as hdsVerifyRuntime() recomputes it inside Figma. */
+export function runtimeChecksum(source = runtimeSource()) {
+  const texts = runtimeFunctions(source).map((fn) => fn.text.replace(/\r/g, ''));
+  return hdsChecksum(texts.join('\n'));
+}
+
+/** The runtime plus the statement that checks it: what every use_figma script carries. */
+function verifiedRuntime() {
+  const source = runtimeSource();
+  const names = runtimeFunctions(source).map((fn) => fn.name);
+  return [
+    source,
+    '',
+    `hdsVerifyRuntime([${names.join(', ')}], '${runtimeChecksum(source)}');`,
+  ].join('\n');
+}
+
 /** A JSON round trip gives the key order a JS engine will see when it parses the literal. */
 const canonical = (value) => JSON.parse(JSON.stringify(value));
 
 /**
  * The model reduced to what a scoped push needs. Of the variables outside the
- * scope, only those an in-scope alias or text-style binding points at are
- * kept, and only their identity (path, name, type, codeSyntax), so the push can
- * find them in Figma; out-of-scope styles are dropped.
+ * scope, only their identity (path, name, type, codeSyntax) is kept, so the
+ * push can find them in Figma: without prune, only those an in-scope alias or
+ * text-style binding points at; with prune, all of them, so a variable the
+ * model moved out of the scope is recognised as moved and never deleted.
+ * Out-of-scope styles are dropped.
  */
-function pushModel(model, scope) {
+function pushModel(model, scope, prune) {
   const inScope = (key) => !scope || scope.includes(key);
   const referenced = new Set();
   for (const c of model.collections.filter((c) => inScope(c.key))) {
@@ -91,7 +123,7 @@ function pushModel(model, scope) {
             valuesByMode: v.valuesByMode,
           }))
         : c.variables
-            .filter((v) => referenced.has(v.path))
+            .filter((v) => prune || referenced.has(v.path))
             .map((v) => ({
               path: v.path,
               name: v.name,
@@ -124,7 +156,7 @@ export function buildPushPayload(
   const payload = canonical({
     modelHash: modelHash(model),
     options: { prune, scope, renames, dryRun },
-    model: pushModel(model, scope),
+    model: pushModel(model, scope, prune),
   });
   return { payload, checksum: hdsChecksum(JSON.stringify(payload)) };
 }
@@ -145,8 +177,7 @@ export function buildUseFigmaPushScript(model, options = {}, title = 'full push'
     `const PAYLOAD = ${JSON.stringify(payload)};`,
     `const CHECKSUM = '${checksum}';`,
     '',
-    runtimeSource(),
-    '',
+    verifiedRuntime(),
     'return await hdsRunPush(figma, PAYLOAD, CHECKSUM);',
     '',
   ].join('\n');
@@ -159,8 +190,7 @@ export function buildUseFigmaSnapshotScript() {
       'Save the returned JSON to a file, then: pnpm figma:snapshot --ingest <file>',
     ]),
     '',
-    runtimeSource(),
-    '',
+    verifiedRuntime(),
     'return await hdsRunSnapshot(figma);',
     '',
   ].join('\n');
@@ -264,7 +294,8 @@ figma.ui.onmessage = (message) => {
     }
     const dryRun = figma.command !== 'push';
     const result = await hdsRunPush(figma, PAYLOAD, CHECKSUM, { dryRun });
-    figma.ui.postMessage({ ok: true, title: (dryRun ? 'Plan (nothing written): ' : 'Pushed: ') + result.line, fileName: dryRun ? 'figma-push-plan.json' : 'figma-push-report.json', result });
+    const warned = result.warnings.length ? ' · ' + result.warnings.length + ' warning(s): read them below' : '';
+    figma.ui.postMessage({ ok: true, title: (dryRun ? 'Plan (nothing written): ' : 'Pushed: ') + result.line + warned, fileName: dryRun ? 'figma-push-plan.json' : 'figma-push-report.json', result });
   } catch (error) {
     figma.ui.postMessage({ ok: false, error: String((error && error.message) || error) });
   }

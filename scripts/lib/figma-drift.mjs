@@ -8,8 +8,10 @@
  * `pnpm check:figma-drift` can never disagree with what `pnpm figma:push` does.
  *
  * On a Professional or Organization plan the snapshot is Figma as of the last
- * `pnpm figma:snapshot`, not live: the report says when that snapshot is older
- * than the tokens.
+ * `pnpm figma:snapshot`, not live. Whether drift can be a push still to come is
+ * decided by content, not dates: the snapshot records the model hash of the
+ * last push into the file (`lastPush`), and the report compares it with the
+ * model the tokens build now (`pushedFromOtherModel`).
  */
 
 import { hdsHex, hdsPlan } from './figma-runtime.mjs';
@@ -30,9 +32,9 @@ function formatEntry(entry) {
 /**
  * @param {object} model          The Figma model (scripts/lib/figma-model.mjs).
  * @param {{snapshot: object}} snapshotFile  parseSnapshotFile() output.
- * @param {{renames?: object, tokensChangedAt?: string|null}} [options]
+ * @param {{renames?: object}} [options]
  */
-export function figmaDrift(model, snapshotFile, { renames = {}, tokensChangedAt = null } = {}) {
+export function figmaDrift(model, snapshotFile, { renames = {} } = {}) {
   const { snapshot } = snapshotFile;
   const plan = hdsPlan(model, snapshot, { prune: true, renames });
   const nameOf = Object.fromEntries(model.collections.map((c) => [c.key, c.name]));
@@ -50,6 +52,15 @@ export function figmaDrift(model, snapshotFile, { renames = {}, tokensChangedAt 
         what: 'collection',
         name: pc.previousName,
         fields: pc.changes,
+      });
+    }
+    if (pc.defaultMode) {
+      items.push({
+        kind: 'changed',
+        collection: pc.name,
+        what: 'default mode',
+        name: pc.defaultMode.expected,
+        actual: pc.defaultMode.actual,
       });
     }
     for (const r of pc.modes.rename) {
@@ -101,6 +112,17 @@ export function figmaDrift(model, snapshotFile, { renames = {}, tokensChangedAt 
       path: v.path,
     });
   }
+  // A move is never pruned, so it is not in removals, but Figma still holds it.
+  for (const m of plan.moves) {
+    items.push({
+      kind: 'extra',
+      collection: m.collection,
+      what: 'variable',
+      name: m.name,
+      path: m.path,
+      movedTo: m.to,
+    });
+  }
 
   for (const [kind, what] of [
     ['textStyles', 'text style'],
@@ -125,8 +147,9 @@ export function figmaDrift(model, snapshotFile, { renames = {}, tokensChangedAt 
     items,
     snapshot: { takenAt: snapshot.takenAt, file: snapshot.file, lastPush: snapshot.lastPush },
     modelHash: hash,
-    stale: Boolean(tokensChangedAt) && Date.parse(snapshot.takenAt) < Date.parse(tokensChangedAt),
-    tokensChangedAt,
+    // true: the tokens (or the model builder) changed since the last push, so
+    // drift may be a push still to come. null: no push is recorded in the file.
+    // false: Figma was pushed from this exact model, so drift was made in Figma.
     pushedFromOtherModel: snapshot.lastPush ? snapshot.lastPush.modelHash !== hash : null,
     unmanagedCollections: plan.unmanagedCollections,
     totals: {
@@ -140,6 +163,12 @@ export function figmaDrift(model, snapshotFile, { renames = {}, tokensChangedAt 
 function formatItem(item) {
   const label = item.kind.padEnd(8);
   const path = item.path && item.path !== item.name ? ` (${item.path})` : '';
+  if (item.what === 'default mode') {
+    return `${label} default mode: model ${item.name}, Figma ${item.actual} (a push cannot change it: make ${item.name} the first mode in Figma)`;
+  }
+  if (item.movedTo) {
+    return `${label} ${item.name}: moved to ${item.movedTo}; rebind its layers to the new variable, then delete it in Figma`;
+  }
   if (item.what === 'mode') {
     return item.actual
       ? `${label} mode ${item.name}: Figma calls it ${item.actual}`
@@ -159,17 +188,19 @@ export function formatDrift(report, { snapshotLabel = 'figma/snapshot.json' } = 
   const lines = [
     `Figma drift: hirobius.tokens.json vs ${snapshotLabel} (taken ${snapshot.takenAt} from "${snapshot.file?.name ?? 'unknown file'}")`,
   ];
-  if (report.stale) {
-    lines.push(
-      `⚠ The snapshot (taken ${snapshot.takenAt}) is older than hirobius.tokens.json (changed ${report.tokensChangedAt}). Drift below may be token changes not pushed yet: run pnpm figma:push, then take a new snapshot.`,
-    );
-  }
+  const pending = report.ok
+    ? ''
+    : ' Drift below may be changes not pushed yet: run pnpm figma:push, then take a new snapshot.';
   if (report.pushedFromOtherModel === true) {
     lines.push(
-      `ℹ Figma was last pushed from a different model (${snapshot.lastPush.modelHash} at ${snapshot.lastPush.pushedAt}; the tokens now build ${report.modelHash}).`,
+      `ℹ Figma was last pushed from a different model (${snapshot.lastPush.modelHash} at ${snapshot.lastPush.pushedAt}; the tokens now build ${report.modelHash}).${pending}`,
     );
   } else if (report.pushedFromOtherModel === null) {
-    lines.push('ℹ No pnpm figma:push is recorded in this Figma file.');
+    lines.push(`ℹ No pnpm figma:push is recorded in this Figma file.${pending}`);
+  } else if (!report.ok) {
+    lines.push(
+      `⚠ Figma was last pushed from this exact model (${report.modelHash} at ${snapshot.lastPush.pushedAt}), so the drift below was made in Figma after that push.`,
+    );
   }
   if (report.unmanagedCollections.length) {
     lines.push(`Not managed by HDS (ignored): ${report.unmanagedCollections.join(', ')}`);

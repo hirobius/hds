@@ -265,6 +265,82 @@ describe('figma:push never deletes without prune', () => {
   });
 });
 
+describe('figma:push with a token the model moved to another collection', () => {
+  // Before #213, component.button.text lived in Hirobius/Component. The Plugin
+  // API cannot move a variable between collections, so its bindings stay on
+  // the old variable until someone rebinds them.
+  const beforeTheMove = edited((m) => {
+    const semantic = m.collections.find((c) => c.key === 'semantic');
+    const component = m.collections.find((c) => c.key === 'component');
+    const text = semantic.variables.find((v) => v.path === 'component.button.text');
+    semantic.variables = semantic.variables.filter((v) => v !== text);
+    component.variables.push({ ...text, valuesByMode: { Default: text.valuesByMode.Light } });
+  });
+  const pushedBeforeTheMove = async () => {
+    const figma = newFile();
+    await push(figma, {}, beforeTheMove);
+    return { figma, old: await liveVariable(figma, 'button/text') };
+  };
+  const variablesNamed = async (figma, name) =>
+    (await figma.variables.getLocalVariablesAsync()).filter((v) => v.name === name);
+  const moved = {
+    collection: 'Hirobius/Component',
+    name: 'button/text',
+    path: 'component.button.text',
+    to: 'Hirobius/Semantic',
+  };
+
+  it('creates it in its new collection, keeps the old variable, and warns to rebind', async () => {
+    const { figma, old } = await pushedBeforeTheMove();
+    const report = await push(figma);
+
+    expect(report.changes).toContain('create variable component.button.text');
+    expect(report.moves).toEqual([{ ...moved, id: old.id }]);
+    expect(report.warnings).toEqual([
+      expect.stringMatching(
+        /Hirobius\/Component: button\/text \(component\.button\.text\) moved to Hirobius\/Semantic\..*cannot move a variable between collections.*Rebind .* then delete the old one in Figma/,
+      ),
+    ]);
+    expect((await variablesNamed(figma, 'button/text')).map((v) => v.id)).toContain(old.id);
+    expect(await variablesNamed(figma, 'button/text')).toHaveLength(2);
+  });
+
+  it('is never deleted by a prune push, full or chunked, while other extras are', async () => {
+    for (const scope of [null, ['component']]) {
+      const { figma, old } = await pushedBeforeTheMove();
+      const component = (await figma.variables.getLocalVariableCollectionsAsync()).find(
+        (c) => c.name === 'Hirobius/Component',
+      );
+      figma.variables.createVariable('legacy/unused', component, 'FLOAT');
+      if (scope) await push(figma, { scope: ['semantic'] });
+
+      const report = await push(figma, { prune: true, scope });
+      expect(report.changes).toContain('delete variable Hirobius/Component: legacy/unused');
+      expect(report.changes).not.toContain('delete variable Hirobius/Component: button/text');
+      expect(report.moves).toEqual([{ ...moved, id: old.id }]);
+      expect((await variablesNamed(figma, 'button/text')).map((v) => v.id)).toContain(old.id);
+      expect(await liveVariable(figma, 'legacy/unused')).toBeUndefined();
+    }
+  });
+});
+
+describe('figma:push with a collection whose default mode is not the model first mode', () => {
+  it('warns, since the Plugin API cannot change a default mode, and still pushes', async () => {
+    const figma = newFile();
+    const semantic = figma.variables.createVariableCollection('Hirobius/Semantic');
+    semantic.renameMode(semantic.defaultModeId, 'Dark');
+    semantic.addMode('Light');
+
+    const report = await push(figma);
+    expect(report.warnings).toEqual([
+      expect.stringMatching(
+        /Hirobius\/Semantic defaults to Dark, but the model's first mode is Light\..*cannot change a collection's default mode/,
+      ),
+    ]);
+    expect((await push(figma)).line).toBe('updated 0 · created 0 · deleted 0');
+  });
+});
+
 describe('figma:push in chunks (use_figma scripts)', () => {
   // Ids differ between two files; compare by name (aliases already carry `to`).
   const comparable = (state) => {
