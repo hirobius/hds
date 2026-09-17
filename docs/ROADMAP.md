@@ -10,8 +10,11 @@ Priority: **P1** = highest leverage.
 
 ## 1. Figma tooling
 
-The Figma stack (bridge, token/variable sync, snapshot/diff/audit, Code Connect
-check, CI workflow) is coherent. Recent repairs + remaining cleanup:
+As of 2026-09-16 there is no working Figma sync. The bridge and plugin are archived (ADR-018 §2),
+the REST variables workflow is archived and Enterprise-only, the variable exporter
+writes Dark equal to Light, nothing checks drift, and no Code Connect mapping is
+published. [ADR-025](adr/025-figma-sync-pro-architecture.md) records the Pro-plan
+architecture that replaces it. History and remaining cleanup:
 
 - ✅ **Generative pipeline — cut (#50).** `pipeline/`, `scripts/generate-to-figma.mjs`,
   `scripts/build-figma-masters.mjs`, `scripts/test-figma-masters-snapshot.mjs`,
@@ -19,17 +22,15 @@ check, CI workflow) is coherent. Recent repairs + remaining cleanup:
   / `ui:gen` / `ui:fix` are gone from `package.json`. LLM-to-Figma generation is
   not coming back on this path — future Figma work goes through the official
   Figma MCP server + Code Connect (ADR-019).
-- ✅ **Bridge crash guard** — `hds-bridge.mjs` `readOrchestration()` degrades to
-  `{ units: [] }` when `docs/ai/orchestration.json` is absent (it moved to ops),
-  so `/orchestration/*` + `/build-status` no longer 500. `figma:bridge:smoke`
-  passes.
-- 🔴 **Remove orchestration vestige from the bridge** — `/orchestration/list`,
-  `/orchestration/approve`, `/build-status` and `scripts/test-bridge-endpoints.mjs`
-  are ops-domain functionality embedded in the Figma bridge. Strip them so the
-  bridge is purely Figma (token/component sync).
-- 🔴 **Reconcile env var names** — `scripts/figma-sync.ts` expects
-  `FIGMA_PAT` / `FIGMA_FILE_ID`; CI (`sync-figma-variables.yml`) uses
-  `FIGMA_PERSONAL_ACCESS_TOKEN` / `FIGMA_FILE_KEY`. Document or unify.
+- ✅ **Bridge crash guard, then bridge archived.** `hds-bridge.mjs` got a
+  `readOrchestration()` guard, and the whole bridge was later moved to the
+  `archive/figma-bridge` branch (ADR-018 §2).
+- ✅ **Remove orchestration vestige from the bridge — obsolete.** The bridge is no
+  longer on `main`, so there is nothing to strip.
+- ✅ **Reconcile env var names — obsolete.** The `sync-figma-variables.yml` side is
+  archived (`.github/workflows-archive/`) and called the Enterprise-only REST API;
+  ADR-025 replaces it. `scripts/figma-sync.ts` (`pnpm test:figma`) remains a
+  one-file read that only checks connectivity.
 - ✅ **Refresh stale docs — done.** `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP,STATE-2026-05-09}.md`
   referenced the retired `orchestration.json` and the already-archived Figma
   bridge (`archive/figma-bridge`, ADR-018 §2); deleted rather than refreshed —

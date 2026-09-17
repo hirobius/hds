@@ -68,7 +68,7 @@ Checks all 401 tokens, aliases, and TS refs in one shot.
 ### W3C / Figma compatibility
 
 - **Color format:** Hex strings (`"#1e2fff"`) for primitives; derived semantic/component tints may use raw `oklch()`
-- **Extensions namespace:** `com.figma.variables.modes.Light/Dark` - Figma native import reads this
+- **Extensions namespace:** `com.figma.variables.modes.Light/Dark` - an HDS convention that `scripts/build-tokens.mjs` reads to emit dark-mode CSS. Figma's native variable import does not read it: that import takes one mode per file and documents only `com.figma.type` and `com.figma.aliasData` (see ADR-025)
 - **Typography fontSize:** Static primitive refs in JSON, clamp() overrides in `theme.css`
 - **Shadow type:** Supported as array for multi-layer - primitives defined in `primitive.shadow.*`
 - **Line-height:** Unitless numbers (CSS-optimal). Figma may need px - known limitation.
@@ -535,11 +535,12 @@ Semantic layout tokens exist for layout decisions only: readable content widths,
 
 ## Figma Sync Protocol
 
-- Source of truth: `hirobius.tokens.json` (code-first)
-- Figma import: Variables panel -> Import -> `hirobius.tokens.json`
-- Mode detection: `com.figma.variables.modes.Light/Dark` in `$extensions`
-- Known Figma limitations: typography composite and shadow types not fully supported in native import
-- Pending: round-trip import test to validate mode mapping
+- Source of truth: `hirobius.tokens.json` (code-first). Sync runs one way, code → Figma; a hand edit in Figma is drift, not a source change.
+- `hirobius.tokens.json` cannot be imported into Figma as-is. Figma's native variable import takes one DTCG file per collection and mode, so an import-ready file set has to be generated first.
+- Today, `pnpm figma-variables` (`scripts/build-figma-variables.mjs`) writes Figma variable export files locally. Nothing pushes them to Figma, and the export has known gaps that ADR-025 lists.
+- The CI workflow that pushed variables through the Figma REST API is archived (`.github/workflows-archive/sync-figma-variables.yml`). That API is Enterprise-only.
+- Known Figma limitations: typography composite and shadow tokens are not Figma variable types. The export flattens each typography token into scalar variables (family, size, weight, line height, letter spacing) and skips shadows; it does not generate text styles or effect styles yet.
+- Architecture, plan limits, and the Pro-plan push, import, and drift path: [ADR-025](docs/adr/025-figma-sync-pro-architecture.md).
 
 ---
 
