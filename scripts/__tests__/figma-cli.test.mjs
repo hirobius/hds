@@ -29,7 +29,7 @@ import { spawnSync } from 'child_process';
 import { planAgainstSnapshot, writePushArtifacts } from '../figma-push.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
-import { writeNativeImport } from '../build-figma-native-import.mjs';
+import { formatNativeImportSteps, writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
@@ -346,6 +346,7 @@ describe('pnpm figma:native-import', () => {
     writeFileSync(
       join(root, 'tenants', 'sharp-demo', 'tokens.json'),
       JSON.stringify({
+        role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
         semantic: {
           space: {
             $type: 'dimension',
@@ -363,14 +364,27 @@ describe('pnpm figma:native-import', () => {
     );
     const outDir = join(root, 'out');
     const { files } = writeNativeImport({ root, outDir });
-    expect(files.map((f) => f.path).slice(5)).toEqual([
-      '05-brand/Hirobius.json',
-      '05-brand/sharp-demo.json',
-      '06-density/Comfortable.json',
-      '06-density/Compact.json',
+    expect(files.map((f) => f.path)).toEqual([
+      '01-primitive/Default.json',
+      '02-brand/Hirobius.json',
+      '02-brand/sharp-demo.json',
+      '03-density/Comfortable.json',
+      '03-density/Compact.json',
+      '04-semantic/Light.json',
+      '04-semantic/Dark.json',
+      '05-component/Default.json',
+      '06-role/Default.json',
     ]);
-    const compact = JSON.parse(readFileSync(join(outDir, '05-brand', 'sharp-demo.json'), 'utf8'));
+    const compact = JSON.parse(readFileSync(join(outDir, '02-brand', 'sharp-demo.json'), 'utf8'));
     expect(compact.semantic.space.component.gap.Compact.$value).toEqual({ value: 8, unit: 'px' });
+
+    const steps = formatNativeImportSteps(files, 'out');
+    expect(steps).toMatch(
+      /Hirobius\/Primitives[\s\S]*Hirobius\/Brand[\s\S]*Hirobius\/Density[\s\S]*Hirobius\/Semantic/,
+    );
+    expect(steps).toContain(
+      'out/02-brand/Hirobius.json: role/radius aliases Hirobius/Semantic radius/action, which is imported later, so it imports as a raw value. Run pnpm figma:push afterwards to restore the alias.',
+    );
   });
 
   it('builds from the real hirobius.tokens.json', () => {

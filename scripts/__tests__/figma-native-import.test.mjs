@@ -9,8 +9,10 @@
  * Expected values are worked by hand from the fixture graph.
  */
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'fs';
 import { buildNativeImportFiles } from '../lib/figma-native-import.mjs';
-import { fixtureModel } from './helpers/figma-fixture.mjs';
+import { buildFigmaModel } from '../lib/figma-model.mjs';
+import { FIXTURE_TOKENS_PATH, fixtureModel } from './helpers/figma-fixture.mjs';
 
 const model = fixtureModel();
 const files = buildNativeImportFiles(model);
@@ -111,5 +113,93 @@ describe('buildNativeImportFiles', () => {
     const bad = JSON.parse(JSON.stringify(model));
     bad.collections[0].variables[0].name = 'space/0.5';
     expect(() => buildNativeImportFiles(bad)).toThrow(/space\/0\.5.*"\.".*DTCG/);
+  });
+});
+
+/** Every cross-collection alias in a file: [variable name, target collection, target variable]. */
+const crossAliases = (tokens, prefix = []) =>
+  Object.entries(tokens).flatMap(([key, child]) => {
+    if (key.startsWith('$')) return [];
+    if (!('$value' in child)) return crossAliases(child, [...prefix, key]);
+    const alias = child.$extensions['com.figma.aliasData'];
+    return alias
+      ? [[[...prefix, key].join('/'), alias.targetVariableSetName, alias.targetVariableName]]
+      : [];
+  });
+
+describe('buildNativeImportFiles with Brand and Density', () => {
+  // A demo tenant with a sharp radius (Brand's base mode aliases Semantic) and a
+  // Compact gap (Semantic aliases Density, which aliases Brand): aliases both ways.
+  const sharp = {
+    slug: 'sharp-demo',
+    overlay: {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+      semantic: {
+        space: {
+          $type: 'dimension',
+          component: {
+            gap: {
+              $value: '{primitive.space.4}',
+              $extensions: {
+                'com.figma.variables': { modes: { Compact: '{primitive.space.2}' } },
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+  const model = buildFigmaModel(JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8')), {
+    brands: { baseMode: 'Hirobius', tenants: [sharp] },
+  });
+  const branded = buildNativeImportFiles(model);
+  const importOrder = [...new Set(branded.map((f) => f.collection))];
+
+  it('imports Brand and Density right after Primitives, before the collections that alias them', () => {
+    expect(branded.map((f) => f.path)).toEqual([
+      '01-primitive/Default.json',
+      '02-brand/Hirobius.json',
+      '02-brand/sharp-demo.json',
+      '03-density/Comfortable.json',
+      '03-density/Compact.json',
+      '04-semantic/Light.json',
+      '04-semantic/Dark.json',
+      '05-component/Default.json',
+      '06-role/Default.json',
+    ]);
+  });
+
+  it('points every cross-collection alias at an earlier file, except the Brand base-mode aliases it reports', () => {
+    const forward = [];
+    for (const f of branded) {
+      for (const [name, target, targetName] of crossAliases(f.tokens)) {
+        if (importOrder.indexOf(target) >= importOrder.indexOf(f.collection)) {
+          forward.push({ file: f.path, variable: name, target, targetVariable: targetName });
+        }
+      }
+    }
+    expect(forward).toEqual([
+      {
+        file: '02-brand/Hirobius.json',
+        variable: 'role/radius',
+        target: 'Hirobius/Semantic',
+        targetVariable: 'radius/action',
+      },
+    ]);
+    expect(branded.flatMap((f) => f.forwardAliases.map((a) => ({ file: f.path, ...a })))).toEqual(
+      forward,
+    );
+  });
+
+  it('keeps the axes: Semantic and Role alias Density and Brand, so switching a mode still changes them', () => {
+    const semantic = crossAliases(branded.find((f) => f.path === '04-semantic/Light.json').tokens);
+    expect(semantic).toContainEqual([
+      'space/component/gap',
+      'Hirobius/Density',
+      'semantic/space/component/gap',
+    ]);
+    expect(
+      crossAliases(branded.find((f) => f.path === '06-role/Default.json').tokens),
+    ).toContainEqual(['radius', 'Hirobius/Brand', 'role/radius']);
   });
 });
