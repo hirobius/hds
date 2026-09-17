@@ -145,6 +145,7 @@
     "check:doc-refs": "node scripts/check-link-integrity.mjs --doc-refs-only",
     "check:docs": "node scripts/audit-component-integrity.mjs --docs && node scripts/check-token-descriptions.mjs --no-missing --quality",
     "check:exemptions": "node scripts/check-exemptions.mjs",
+    "check:figma-mapping": "node scripts/check-figma-mapping.mjs",
     "check:fast": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/build-tokens.mjs && node scripts/verify-tokens.mjs && node scripts/audit-tokens.mjs --full && pnpm typecheck && node scripts/check-css-integrity.mjs && node scripts/audit-component-integrity.mjs --tokens && pnpm check:docs && node scripts/check-ref-forwarding.mjs && node scripts/check-hardcoded-spacing.mjs && node scripts/check-dimensions.mjs && node scripts/check-hardcoded-breakpoints.mjs && node scripts/check-typography-discipline.mjs && pnpm check:mojibake && node scripts/check-style-discipline.mjs --style-props-only && node scripts/check-tier-bypass.mjs && node scripts/check-link-integrity.mjs --doc-refs-only && node scripts/check-brand.mjs && node scripts/check-registry.mjs && node scripts/check-template-source-of-truth.mjs",
     "check:focus": "node scripts/check-focus-states.mjs",
     "check:font-files": "node scripts/check-typography-discipline.mjs --font-files-only",

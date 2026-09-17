@@ -77,6 +77,64 @@ pre-existing drift not yet in scope for the current rollout batch — add
 `// vocab-ok: <reason>` anywhere in the file to exempt it. Don't reach for
 this to silence a real violation; it's for documented, deliberate exceptions.
 
+## Figma mapping
+
+The Figma library mirrors the same axes. A Figma component property is only
+valid if it binds to a prop the component really accepts, so design and code
+cannot drift apart silently. The machine-readable record is the component's
+manifest entry (`public/hds-manifest.json` → `componentSpecs.<Name>`: the
+`variantAxes`, `componentProperties` and `figmaPropertyMapping` fields, seeded
+in `scripts/build-tokens.mjs`). `scripts/check-figma-mapping.mjs`
+(`pnpm check:figma-mapping`, also run by `pnpm test`) checks that record against
+the source through the TypeScript checker, so a prop is real only if the
+component's props type accepts it.
+
+| Code                                                     | Figma property                                                                                                                          | Manifest record                                                                                                    |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| cva contract axis (`variant`, `tone`, `size`, `density`) | `VARIANT` named in Title Case (`Variant`, `Tone`, `Size`, `Density`). Options are the cva keys verbatim (`sm`, `danger`, `inProgress`). | Listed in `variantAxes`. The `props` / `propConstraints` enum values equal the cva keys.                           |
+| Interaction states (hover, focus, pressed)               | Figma-only `State` VARIANT. No prop.                                                                                                    | `state` in `variantAxes`. This is the only Figma-only axis allowed.                                                |
+| String prop or `children`                                | `TEXT` in Title Case (`Label`, `Title`, `Body`)                                                                                         | `componentProperties[]` with `type: TEXT` and `sourceProp`.                                                        |
+| Boolean prop                                             | `BOOLEAN`. A visibility toggle is named `Show …` and is true when the thing shows.                                                      | `type: BOOLEAN`. Negative props (`iconOnly`, `hideClose`) set `invert: true`.                                      |
+| Optional content (`title?`)                              | A `Show …` BOOLEAN that controls the TEXT property                                                                                      | The TEXT property. The Code Connect template emits the prop only when shown.                                       |
+| Icon slot (`iconLeft`, `iconRight`: `ReactNode`)         | `INSTANCE_SWAP` holding an Icon instance, plus a `Show …` BOOLEAN                                                                       | The template renders the swapped instance through its own template (`executeTemplate()`), never a hardcoded glyph. |
+| Compound part (`Dialog.Title`, `Dialog.Content`)         | A property on the composite component                                                                                                   | `sourceProp` and `figmaPropertyMapping` keys use `Part.prop` (`Title.children`, `Content.hideClose`).              |
+
+Rules the gate enforces (errors fail the check):
+
+- Every `variantAxes` entry except `state` is a real prop.
+- Every contract axis that is both a prop and a cva axis is listed in
+  `variantAxes`, and its manifest enum values equal the cva keys.
+- Every `sourceProp` and `figmaPropertyMapping` key resolves to a prop or to a
+  `Part.prop` of a compound member.
+- A prop has one Figma name: `componentProperties` and `figmaPropertyMapping`
+  agree.
+- `invert: true` only appears on a BOOLEAN named `Show …`. A `Hide …` property
+  combined with `invert` contradicts itself.
+- A component that has a Code Connect template (`figma/code-connect.json`) maps
+  the same contract axes as its manifest entry.
+
+**Title Case is the target, not yet the rule.** Some live Figma names predate
+this contract (`Show icon`, `Show close`, `Leading icon`), so the gate warns
+instead of failing on them. To fix one, rename it in Figma first and then
+mirror the new name in the manifest. Figma property lookups are
+case-sensitive, so renaming only one side breaks the mapping.
+
+**Legacy option names** (options that are not the cva keys, e.g. Button
+`Variant: Primary / Secondary / Tertiary`) are mapped explicitly in the Code
+Connect registry (`figma/code-connect.json`, `values`). Renaming the Figma
+options to the cva keys removes that mapping.
+
+### Open decisions (from the hds#73 audit)
+
+Adrian decides these. Each has a proposed default so the mapping can move
+forward:
+
+| Decision               | Evidence                                                                     | Proposed default                                                                                                        |
+| ---------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Button default variant | Figma defaults to `Primary`; code defaults to `secondary`                    | Keep code `secondary`, because changing a default breaks consumers. Set the Figma component-set default to `Secondary`. |
+| Toast text property    | Figma `Message` vs code `description`; code has a `neutral` tone Figma lacks | Rename the Figma property to `Description` and add a `neutral` Tone option in Figma.                                    |
+| "Button Tonal" set     | A separate Figma set vs the code's single Button with a `tone` axis          | Fold it into Button's `Tone` VARIANT and retire the separate set.                                                       |
+
 ## Rollout status
 
 This contract landed with #60 Phase 1: the gate (rules A–D below) plus a

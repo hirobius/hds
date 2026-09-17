@@ -716,42 +716,9 @@
         "Info surface fill": "semantic.color.feedback.bg.info",
         "Corner radius": "primitive.radius.4"
       },
-      "props": {
-        "variant": {
-          "type": "enum",
-          "values": [
-            "info",
-            "success",
-            "warning",
-            "error"
-          ],
-          "default": "info"
-        },
-        "title": {
-          "type": "string",
-          "optional": true
-        },
-        "children": {
-          "type": "ReactNode"
-        }
-      },
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {
-        "variant": {
-          "type": "enum",
-          "values": [
-            "info",
-            "success",
-            "warning",
-            "error"
-          ]
-        },
-        "title": {
-          "type": "string"
-        }
-      },
       "requiredProps": [
         "children"
       ],
@@ -762,7 +729,7 @@
         }
       ],
       "variantAxes": [
-        "variant"
+        "tone"
       ],
       "componentProperties": [
         {
@@ -811,7 +778,40 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Alert.tsx",
-      "figmaLink": "TODO:hds-master:Alert"
+      "figmaLink": "TODO:hds-master:Alert",
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info"
+          ],
+          "default": "info"
+        }
+      },
+      "propConstraints": {
+        "title": {
+          "type": "string"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info"
+          ]
+        }
+      }
     },
     "CinematicLink": {
       "category": "Branding",
@@ -1126,52 +1126,12 @@
         "Strong stroke": "semantic.color.border.strong",
         "Stroke thickness": "primitive.borderWidth.xs"
       },
-      "props": {
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ],
-          "default": "horizontal"
-        },
-        "spacing": {
-          "type": "string | number",
-          "optional": true
-        },
-        "strong": {
-          "type": "boolean",
-          "default": false
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        }
-      },
       "allowedChildren": [],
-      "propConstraints": {
-        "className": {
-          "type": "string"
-        },
-        "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ]
-        },
-        "strong": {
-          "type": "boolean"
-        }
-      },
       "requiredProps": [],
       "a11yRules": [],
       "variantAxes": [
-        "orientation"
+        "orientation",
+        "variant"
       ],
       "componentProperties": [],
       "states": [
@@ -1189,7 +1149,52 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Divider.tsx",
-      "figmaLink": "TODO:hds-master:Divider"
+      "figmaLink": "TODO:hds-master:Divider",
+      "props": {
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "horizontal"
+        },
+        "spacing": {
+          "type": "string | number",
+          "optional": true
+        },
+        "strong": {
+          "type": "boolean",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "strong",
+            "default"
+          ],
+          "optional": true
+        }
+      },
+      "propConstraints": {
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "strong": {
+          "type": "boolean"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "strong",
+            "default"
+          ]
+        }
+      }
     },
     "DocLinkCard": {
       "category": "Navigation",
@@ -3434,6 +3439,29 @@
           "type": "boolean",
           "default": false
         },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "accent"
+          ],
+          "default": "default"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "default": "neutral"
+        },
+        "bordered": {
+          "type": "boolean",
+          "default": false
+        },
         "className": {
           "type": "string",
           "optional": true
@@ -3451,7 +3479,9 @@
       },
       "figmaPropertyMapping": {
         "padding": "Padding",
-        "gap": "Gap"
+        "gap": "Gap",
+        "variant": "Variant",
+        "tone": "Tone"
       },
       "states": [
         "default"
@@ -3459,49 +3489,6 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {
-        "padding": {
-          "type": "enum",
-          "values": [
-            "component",
-            "item",
-            "none",
-            "px24",
-            "px16"
-          ]
-        },
-        "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ]
-        },
-        "noPadding": {
-          "type": "boolean"
-        },
-        "className": {
-          "type": "string"
-        },
-        "layout": {
-          "type": "enum",
-          "values": [
-            "VERTICAL",
-            "HORIZONTAL"
-          ]
-        },
-        "fill": {
-          "type": "string"
-        },
-        "stroke": {
-          "type": "string"
-        },
-        "radius": {
-          "type": "string"
-        }
-      },
       "requiredProps": [
         "children"
       ],
@@ -3511,7 +3498,9 @@
         "sizing": "panel"
       },
       "variantAxes": [
-        "padding"
+        "padding",
+        "variant",
+        "tone"
       ],
       "componentProperties": [],
       "slots": [
@@ -3570,7 +3559,57 @@
         "Body",
         "Footer"
       ],
-      "figmaLink": "TODO:hds-master:Card"
+      "figmaLink": "TODO:hds-master:Card",
+      "propConstraints": {
+        "as": {
+          "type": "string"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "none",
+            "px24",
+            "px16"
+          ]
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ]
+        },
+        "noPadding": {
+          "type": "boolean"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "accent"
+          ]
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ]
+        },
+        "bordered": {
+          "type": "boolean"
+        },
+        "className": {
+          "type": "string"
+        }
+      }
     },
     "ComponentInstanceMatrix": {
       "category": "Utilities",
@@ -3772,12 +3811,12 @@
           "targetSelector": "Heading"
         },
         {
-          "name": "Subtext",
+          "name": "Subheading",
           "type": "TEXT",
-          "defaultValue": "Supporting subtext",
-          "sourceProp": "subtext",
+          "defaultValue": "Supporting subheading",
+          "sourceProp": "subheading",
           "boundTo": "characters",
-          "targetSelector": "Subtext"
+          "targetSelector": "Subheading"
         }
       ],
       "states": [
@@ -4019,7 +4058,7 @@
           "name": "Title",
           "type": "TEXT",
           "defaultValue": "Dialog title",
-          "sourceProp": "title",
+          "sourceProp": "Title.children",
           "boundTo": "characters",
           "targetSelector": "Title"
         },
@@ -4027,15 +4066,15 @@
           "name": "Description",
           "type": "TEXT",
           "defaultValue": "Dialog description",
-          "sourceProp": "description",
+          "sourceProp": "Description.children",
           "boundTo": "characters",
           "targetSelector": "Description"
         },
         {
-          "name": "Hide close",
+          "name": "Show close",
           "type": "BOOLEAN",
-          "defaultValue": false,
-          "sourceProp": "hideClose",
+          "defaultValue": true,
+          "sourceProp": "Content.hideClose",
           "boundTo": "visibility",
           "targetSelector": "Close",
           "invert": true
@@ -4056,18 +4095,6 @@
           "type": "boolean",
           "default": true
         },
-        "title": {
-          "type": "string",
-          "optional": true
-        },
-        "description": {
-          "type": "string",
-          "optional": true
-        },
-        "hideClose": {
-          "type": "boolean",
-          "default": false
-        },
         "children": {
           "type": "ReactNode"
         }
@@ -4085,9 +4112,9 @@
         "focusRing": "role.ring"
       },
       "figmaPropertyMapping": {
-        "title": "Title",
-        "description": "Description",
-        "hideClose": "Hide close",
+        "Title.children": "Title",
+        "Description.children": "Description",
+        "Content.hideClose": "Show close",
         "modal": "Modal"
       },
       "states": [
@@ -4152,26 +4179,6 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {
-        "open": {
-          "type": "boolean"
-        },
-        "defaultOpen": {
-          "type": "boolean"
-        },
-        "modal": {
-          "type": "boolean"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "hideClose": {
-          "type": "boolean"
-        }
-      },
       "requiredProps": [
         "children"
       ],
@@ -4196,7 +4203,18 @@
         "Description",
         "Close"
       ],
-      "figmaLink": "TODO:hds-master:Dialog"
+      "figmaLink": "TODO:hds-master:Dialog",
+      "propConstraints": {
+        "open": {
+          "type": "boolean"
+        },
+        "defaultOpen": {
+          "type": "boolean"
+        },
+        "modal": {
+          "type": "boolean"
+        }
+      }
     },
     "StackedCardRail": {
       "category": "Display",
@@ -4283,6 +4301,7 @@
       "tokenMapping": {},
       "variantAxes": [
         "variant",
+        "tone",
         "size",
         "state"
       ],
@@ -4333,6 +4352,17 @@
           ],
           "default": "secondary"
         },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "default": "neutral"
+        },
         "size": {
           "type": "enum",
           "values": [
@@ -4378,13 +4408,14 @@
       },
       "figmaPropertyMapping": {
         "variant": "Variant",
+        "tone": "Tone",
         "size": "Size",
         "disabled": "Disabled",
         "loading": "Loading",
         "label": "Label",
         "iconLeft": "Leading icon",
         "iconRight": "Trailing icon",
-        "iconOnly": "Icon only"
+        "iconOnly": "Show label"
       },
       "states": [
         "default",
@@ -4395,6 +4426,17 @@
         "loading"
       ],
       "allowedChildren": [],
+      "requiredProps": [],
+      "a11yRules": [
+        {
+          "rule": "Must have accessible name via label prop or aria-label",
+          "required": true
+        },
+        {
+          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
+          "required": true
+        }
+      ],
       "propConstraints": {
         "variant": {
           "type": "enum",
@@ -4402,6 +4444,16 @@
             "primary",
             "secondary",
             "tertiary"
+          ]
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
           ]
         },
         "size": {
@@ -4424,18 +4476,7 @@
         "iconOnly": {
           "type": "boolean"
         }
-      },
-      "requiredProps": [],
-      "a11yRules": [
-        {
-          "rule": "Must have accessible name via label prop or aria-label",
-          "required": true
-        },
-        {
-          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
-          "required": true
-        }
-      ]
+      }
     },
     "Callout": {
       "category": "Feedback",
@@ -4993,7 +5034,9 @@
       "tokenMapping": {}
     },
     "TextLockup": {
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [
         {
           "name": "Eyebrow",
