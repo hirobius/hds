@@ -161,7 +161,7 @@ const discoveredPatterns = collectTsxFiles(PATTERNS_DIR)
   .filter(Boolean);
 
 // INVENTORY_TIERS must match generate-component-api.mjs exactly so that
-// componentInventory ↔ component-api.json stay in sync (pnpm figma:audit).
+// componentInventory ↔ component-api.json stay in sync.
 // template-tier components are excluded here because they are not parsed by
 // react-docgen-typescript in the API generator.
 const INVENTORY_TIERS = new Set(['primitive', 'pattern']);
