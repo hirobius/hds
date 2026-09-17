@@ -712,18 +712,18 @@ export function buildManifest(allTokens, raw) {
         focusRing: 'role.ring',
         radius: 'role.radius',
       },
+      // Figma property names follow the Code Connect registry
+      // (figma/code-connect.json, hds#73 inventory); check-figma-mapping fails
+      // if the two disagree. Disabled / Loading are options of the Figma State
+      // VARIANT, not properties, and Figma has no icon-only property, so
+      // disabled, loading and iconOnly have no entry here.
       figmaPropertyMapping: {
         variant: 'Variant',
         tone: 'Tone',
         size: 'Size',
-        disabled: 'Disabled',
-        loading: 'Loading',
         label: 'Label',
-        iconLeft: 'Leading icon',
-        iconRight: 'Trailing icon',
-        // One Figma name per prop (check-figma-mapping): the inverted
-        // visibility toggle below is the Figma property for iconOnly.
-        iconOnly: 'Show label',
+        iconLeft: 'Show icon',
+        iconRight: 'Show trail icon',
       },
       variantAxes: ['variant', 'tone', 'size', 'state'],
       componentProperties: [
@@ -736,7 +736,7 @@ export function buildManifest(allTokens, raw) {
           targetSelector: 'Label',
         },
         {
-          name: 'Leading icon',
+          name: 'Show icon',
           type: 'BOOLEAN',
           defaultValue: false,
           sourceProp: 'iconLeft',
@@ -744,21 +744,12 @@ export function buildManifest(allTokens, raw) {
           targetSelector: 'IconLeft',
         },
         {
-          name: 'Trailing icon',
+          name: 'Show trail icon',
           type: 'BOOLEAN',
           defaultValue: false,
           sourceProp: 'iconRight',
           boundTo: 'visibility',
           targetSelector: 'IconRight',
-        },
-        {
-          name: 'Show label',
-          type: 'BOOLEAN',
-          defaultValue: true,
-          sourceProp: 'iconOnly',
-          boundTo: 'visibility',
-          targetSelector: 'Label',
-          invert: true,
         },
       ],
       states: ['default', 'hover', 'focus', 'active', 'disabled', 'loading'],
@@ -836,16 +827,14 @@ export function buildManifest(allTokens, raw) {
         disabledBg: 'role.muted',
         disabledText: 'role.muted-foreground',
       },
+      // Figma property names follow the Code Connect registry
+      // (figma/code-connect.json, hds#73 inventory: State, Size, Label, Value,
+      // Show label); check-figma-mapping fails if the two disagree. Error and
+      // Disabled are options of the Figma State VARIANT, and Figma has no
+      // Type / Placeholder / Helper text / Error message / Loading property.
       figmaPropertyMapping: {
-        type: 'Type',
         size: 'Size',
         label: 'Label',
-        placeholder: 'Placeholder',
-        helperText: 'Helper text',
-        error: 'Error',
-        errorMessage: 'Error message',
-        disabled: 'Disabled',
-        loading: 'Loading',
       },
       variantAxes: ['size', 'state'],
       componentProperties: [
@@ -856,38 +845,6 @@ export function buildManifest(allTokens, raw) {
           sourceProp: 'label',
           boundTo: 'characters',
           targetSelector: 'Label',
-        },
-        {
-          name: 'Placeholder',
-          type: 'TEXT',
-          defaultValue: 'Placeholder',
-          sourceProp: 'placeholder',
-          boundTo: 'characters',
-          targetSelector: 'Placeholder',
-        },
-        {
-          name: 'Helper text',
-          type: 'TEXT',
-          defaultValue: 'Helper text',
-          sourceProp: 'helperText',
-          boundTo: 'characters',
-          targetSelector: 'Helper',
-        },
-        {
-          name: 'Error',
-          type: 'BOOLEAN',
-          defaultValue: false,
-          sourceProp: 'error',
-          boundTo: 'visibility',
-          targetSelector: 'Error',
-        },
-        {
-          name: 'Error message',
-          type: 'TEXT',
-          defaultValue: 'Error message',
-          sourceProp: 'errorMessage',
-          boundTo: 'characters',
-          targetSelector: 'Error',
         },
       ],
       states: ['default', 'focus', 'filled', 'error', 'disabled', 'loading'],

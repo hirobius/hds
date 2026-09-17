@@ -112,12 +112,20 @@ Rules the gate enforces (errors fail the check):
   combined with `invert` contradicts itself.
 - A component that has a Code Connect template (`figma/code-connect.json`) maps
   the same contract axes as its manifest entry.
+- For a templated component, the manifest and the registry do not contradict
+  each other: every Figma property name the manifest records
+  (`componentProperties`, `figmaPropertyMapping`) is a registry property of the
+  same type, and a prop the registry binds maps to the same property or to the
+  `Show …` toggle that gates it. The registry is the record with evidence (the
+  hds#73 inventory), so a manifest name it does not define fails.
 
-**Title Case is the target, not yet the rule.** Some live Figma names predate
-this contract (`Show icon`, `Show close`, `Leading icon`), so the gate warns
-instead of failing on them. To fix one, rename it in Figma first and then
-mirror the new name in the manifest. Figma property lookups are
-case-sensitive, so renaming only one side breaks the mapping.
+**Title Case is the target, not yet the rule.** Some Figma names in the hds#73
+inventory predate this contract (`Show icon`, `Show trail icon`, `Show close`),
+so the gate warns instead of failing on them. That inventory comes from an AI
+audit and is not yet verified against the live file. To fix one, rename it in
+Figma first and then mirror the new name in the registry and the manifest.
+Figma property lookups are case-sensitive, so renaming only one side breaks
+the mapping.
 
 **Legacy option names** (options that are not the cva keys, e.g. Button
 `Variant: Primary / Secondary / Tertiary`) are mapped explicitly in the Code
@@ -137,9 +145,12 @@ forward:
 
 ### Code Connect templates
 
-Figma Code Connect shows real HDS snippets in Dev Mode. The templates are v2
-parserless files (`src/app/components/<module>.figma.ts`). Nobody writes them
-by hand: `pnpm figma:connect:generate` builds them from three inputs.
+Code Connect templates are the files Figma uses to show code snippets in Dev
+Mode, but only after `figma connect publish`, which needs an Organization plan.
+Nothing is published, so **Dev Mode shows no HDS snippets today**. The
+templates are v2 parserless files (`src/app/components/<module>.figma.ts`).
+Nobody writes them by hand: `pnpm figma:connect:generate` builds them from
+three inputs.
 
 1. **`figma/code-connect.json`** records each Figma property (name, type,
    options) and how it maps onto the code. `prop` covers direct mappings;

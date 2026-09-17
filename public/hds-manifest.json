@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-10T04:00:37.758Z",
+  "generated": "2026-09-17T07:57:06.152Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -2088,15 +2088,8 @@
         "disabledText": "role.muted-foreground"
       },
       "figmaPropertyMapping": {
-        "type": "Type",
         "size": "Size",
-        "label": "Label",
-        "placeholder": "Placeholder",
-        "helperText": "Helper text",
-        "error": "Error",
-        "errorMessage": "Error message",
-        "disabled": "Disabled",
-        "loading": "Loading"
+        "label": "Label"
       },
       "states": [
         "default",
@@ -2176,38 +2169,6 @@
           "sourceProp": "label",
           "boundTo": "characters",
           "targetSelector": "Label"
-        },
-        {
-          "name": "Placeholder",
-          "type": "TEXT",
-          "defaultValue": "Placeholder",
-          "sourceProp": "placeholder",
-          "boundTo": "characters",
-          "targetSelector": "Placeholder"
-        },
-        {
-          "name": "Helper text",
-          "type": "TEXT",
-          "defaultValue": "Helper text",
-          "sourceProp": "helperText",
-          "boundTo": "characters",
-          "targetSelector": "Helper"
-        },
-        {
-          "name": "Error",
-          "type": "BOOLEAN",
-          "defaultValue": false,
-          "sourceProp": "error",
-          "boundTo": "visibility",
-          "targetSelector": "Error"
-        },
-        {
-          "name": "Error message",
-          "type": "TEXT",
-          "defaultValue": "Error message",
-          "sourceProp": "errorMessage",
-          "boundTo": "characters",
-          "targetSelector": "Error"
         }
       ],
       "slots": [
@@ -4339,7 +4300,7 @@
           "targetSelector": "Label"
         },
         {
-          "name": "Leading icon",
+          "name": "Show icon",
           "type": "BOOLEAN",
           "defaultValue": false,
           "sourceProp": "iconLeft",
@@ -4347,21 +4308,12 @@
           "targetSelector": "IconLeft"
         },
         {
-          "name": "Trailing icon",
+          "name": "Show trail icon",
           "type": "BOOLEAN",
           "defaultValue": false,
           "sourceProp": "iconRight",
           "boundTo": "visibility",
           "targetSelector": "IconRight"
-        },
-        {
-          "name": "Show label",
-          "type": "BOOLEAN",
-          "defaultValue": true,
-          "sourceProp": "iconOnly",
-          "boundTo": "visibility",
-          "targetSelector": "Label",
-          "invert": true
         }
       ],
       "sourcePath": "src/app/components/button.tsx",
@@ -4434,12 +4386,9 @@
         "variant": "Variant",
         "tone": "Tone",
         "size": "Size",
-        "disabled": "Disabled",
-        "loading": "Loading",
         "label": "Label",
-        "iconLeft": "Leading icon",
-        "iconRight": "Trailing icon",
-        "iconOnly": "Show label"
+        "iconLeft": "Show icon",
+        "iconRight": "Show trail icon"
       },
       "states": [
         "default",

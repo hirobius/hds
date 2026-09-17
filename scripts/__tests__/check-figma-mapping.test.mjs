@@ -304,6 +304,98 @@ describe('checkFigmaMapping — Code Connect registry agrees with manifest axes'
   });
 });
 
+// ── Registry cross-check (Code Connect property names vs manifest names) ─────
+describe('checkFigmaMapping — manifest Figma property names agree with the Code Connect registry', () => {
+  // Shape of the hds#73 Button inventory recorded in figma/code-connect.json.
+  const registry = {
+    templates: {
+      Button: {
+        source: 'src/app/components/button.tsx',
+        evidence: 'hds#73',
+        properties: {
+          Variant: { type: 'VARIANT', options: ['Primary'], prop: 'variant' },
+          Tone: { type: 'VARIANT', options: ['neutral'], prop: 'tone' },
+          Size: { type: 'VARIANT', options: ['sm'], prop: 'size' },
+          State: {
+            type: 'VARIANT',
+            options: ['Default', 'Disabled'],
+            set: { Default: {}, Disabled: { disabled: true } },
+          },
+          Label: { type: 'TEXT', prop: 'children' },
+          'Show icon': { type: 'BOOLEAN' },
+          Icon: { type: 'INSTANCE_SWAP', prop: 'iconLeft', visibleWhen: 'Show icon' },
+        },
+      },
+    },
+  };
+  const aligned = (overrides = {}) =>
+    buttonSpec({
+      componentProperties: [
+        { name: 'Label', type: 'TEXT', sourceProp: 'label' },
+        { name: 'Show icon', type: 'BOOLEAN', sourceProp: 'iconLeft' },
+      ],
+      figmaPropertyMapping: {
+        variant: 'Variant',
+        tone: 'Tone',
+        size: 'Size',
+        label: 'Label',
+        iconLeft: 'Show icon',
+        disabled: 'State',
+      },
+      ...overrides,
+    });
+  const check = (spec) =>
+    checkFigmaMapping({
+      manifest: { componentSpecs: { Button: spec } },
+      codeModel: fakeModel({
+        'src/app/components/button.tsx#Button': {
+          ...BUTTON_CODE,
+          props: { ...BUTTON_CODE.props, ...props('children') },
+        },
+      }),
+      registry,
+    });
+
+  it('passes when every manifest name is a registry property bound to the same prop', () => {
+    expect(check(aligned()).errors).toEqual([]);
+  });
+
+  it('flags a manifest name the registry does not define (Leading icon, Show label)', () => {
+    const result = check(
+      aligned({
+        componentProperties: [
+          { name: 'Leading icon', type: 'BOOLEAN', sourceProp: 'iconLeft' },
+          { name: 'Show label', type: 'BOOLEAN', sourceProp: 'iconOnly', invert: true },
+        ],
+        figmaPropertyMapping: { iconLeft: 'Leading icon', iconOnly: 'Show label' },
+      }),
+    );
+    const unknown = result.errors.filter((v) => v.rule === 'registry-property-unknown');
+    expect(unknown.map((v) => v.message).join('\n')).toMatch(/"Leading icon"/);
+    expect(unknown.map((v) => v.message).join('\n')).toMatch(/"Show label"/);
+    // One error per name, even when both manifest records repeat it.
+    expect(unknown).toHaveLength(2);
+  });
+
+  it('flags a manifest property whose type differs from the registry', () => {
+    const result = check(
+      aligned({
+        componentProperties: [{ name: 'Icon', type: 'BOOLEAN', sourceProp: 'iconLeft' }],
+        figmaPropertyMapping: { iconLeft: 'Icon' },
+      }),
+    );
+    expect(rules(result)).toContain('Button:registry-property-type');
+  });
+
+  it('flags a prop the registry binds to a different Figma property', () => {
+    const result = check(aligned({ figmaPropertyMapping: { tone: 'Size' } }));
+    expect(rules(result)).toContain('Button:registry-property-binding');
+    expect(result.errors.find((v) => v.rule === 'registry-property-binding').message).toMatch(
+      /Tone/,
+    );
+  });
+});
+
 // ── Integration: the committed manifest honours the contract ─────────────────
 describe('check-figma-mapping — repository', () => {
   it('finds no parity errors in the committed manifest and source', () => {
