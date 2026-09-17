@@ -220,6 +220,43 @@ describe('runChecks — BROKEN_ALIAS', () => {
   });
 });
 
+// ── Check 4: DARK_MODE_ALIAS ──────────────────────────────────────────────────
+// Theme modes live at $extensions['com.figma.variables'].modes (build-tokens V4
+// rejects any com.hirobius.* namespace), so this is the key the check must read.
+describe('runChecks — DARK_MODE_ALIAS', () => {
+  const themed = (dark) => ({
+    primitive: { color: { $type: 'color', white: { $value: '#fff' } } },
+    semantic: {
+      color: {
+        $type: 'color',
+        bg: {
+          $value: '{primitive.color.white}',
+          $extensions: {
+            'com.figma.variables': { modes: { Light: '{primitive.color.white}', Dark: dark } },
+          },
+        },
+      },
+    },
+  });
+  const css =
+    ':root {\n  --primitive-color-white: #fff;\n  --semantic-color-bg: var(--primitive-color-white);\n}';
+  const ts = '"var(--primitive-color-white)" "var(--semantic-color-bg)"';
+
+  it('warns when a Dark mode alias targets a var that does not exist', () => {
+    const { warnings } = runChecks(themed('{primitive.color.missing}'), parseCSSVarMap(css), ts);
+    expect(
+      warnings.some(
+        (w) => w.includes('DARK_MODE_ALIAS') && w.includes('--primitive-color-missing'),
+      ),
+    ).toBe(true);
+  });
+
+  it('stays quiet when the Dark mode alias resolves', () => {
+    const { warnings } = runChecks(themed('{primitive.color.white}'), parseCSSVarMap(css), ts);
+    expect(warnings.some((w) => w.includes('DARK_MODE_ALIAS'))).toBe(false);
+  });
+});
+
 // ── Check 5: MISSING_TS_REF ───────────────────────────────────────────────────
 describe('runChecks — MISSING_TS_REF', () => {
   it('warns when a CSS var is absent from generated-tokens.ts', () => {
