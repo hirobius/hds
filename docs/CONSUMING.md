@@ -411,8 +411,8 @@ added upstream first, then the tenant overlay aliases it.
 > pins the token paths your app consumes, so your CI fails when an upgrade moves
 > something. The consumer adapts; it never gates a DS release.
 
-**Reference implementation:** `hirobius/lilac-bonds` (the first external
-consumer) follows all four — it consumes tokens via
+**Reference implementation:** the first external consumer app follows all
+four — it consumes tokens via
 `@hirobius/design-system/variables.css`, keeps every extension under `--lb-*`,
 mirrors its brand through a tenant overlay, and pins consumed paths with a
 CI-enforced drift guard.
