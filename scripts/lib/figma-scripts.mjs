@@ -21,10 +21,15 @@ import { readFileSync } from 'fs';
 import { parse } from 'acorn';
 import { hdsChecksum } from './figma-runtime.mjs';
 
-/** Push order: a collection's aliases point at collections earlier in the list. */
+/**
+ * Push order: a collection's aliases point at collections in its own chunk or
+ * an earlier one. Brand and Density ride with Semantic because the aliases run
+ * both ways: Semantic variables alias Brand and Density, and a Brand base mode
+ * holds the base token's own alias (often a Semantic variable).
+ */
 export const PUSH_CHUNKS = Object.freeze([
   { id: '01-primitive', scope: ['primitive'] },
-  { id: '02-semantic', scope: ['semantic'] },
+  { id: '02-semantic', scope: ['semantic', 'brand', 'density'] },
   { id: '03-component', scope: ['component'] },
   { id: '04-role', scope: ['role'] },
   { id: '05-styles', scope: ['styles'] },
