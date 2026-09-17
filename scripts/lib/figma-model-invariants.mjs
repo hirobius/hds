@@ -5,7 +5,7 @@
  * validateFigmaModel(model) checks a model from buildFigmaModel() against what
  * Figma accepts (value types, scopes per type, modes per plan) and what HDS
  * promises about it (one theme axis, px units behind px scopes, hidden
- * primitives, unique names, bound styles). summarizeFigmaModel(model) gives the counts a reviewer
+ * primitives, unique names and codeSyntax, bound styles). summarizeFigmaModel(model) gives the counts a reviewer
  * checks first.
  */
 
@@ -170,6 +170,20 @@ export function validateFigmaModel(model) {
   const ctx = { variables, namesIn: (c) => names.get(c) };
   for (const c of model.collections) {
     for (const v of c.variables) checkVariable(v, c, ctx, flag);
+  }
+  const pathsBySyntax = new Map();
+  for (const v of variables.values()) {
+    const syntax = v.codeSyntax?.WEB;
+    if (!syntax) continue;
+    if (!pathsBySyntax.has(syntax)) pathsBySyntax.set(syntax, []);
+    pathsBySyntax.get(syntax).push(v.path);
+  }
+  for (const [syntax, paths] of pathsBySyntax) {
+    if (paths.length > 1) {
+      flag(
+        `codeSyntax ${syntax} is used by ${paths.sort().join(' and ')}; figma:push matches unkeyed Figma variables by codeSyntax, so it must be unique.`,
+      );
+    }
   }
   for (const [name, owners] of collectionsByName) {
     if (owners.length > 1) {
