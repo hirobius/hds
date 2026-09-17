@@ -114,6 +114,11 @@ hirobius.figma-variables-api.json
 # Figma model (pnpm figma:model): generated from hirobius.tokens.json by
 # scripts/build-figma-model.mjs; the golden test pins the exporter instead.
 figma/model.json
+# Figma sync carriers (pnpm figma:push / figma:snapshot) and native-import files
+# (pnpm figma:native-import): regenerated from the model on every run.
+# figma/snapshot.json IS committed: it is Figma's state, not a build output.
+figma/push/
+figma/native-import/
 
 # Auto-research findings — local LLM output, regenerated each run
 # (queries.json itself IS tracked; only the per-run findings are local-only)
