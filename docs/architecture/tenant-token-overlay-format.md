@@ -281,6 +281,7 @@ Compact value is only emitted when it differs from the value used at rest.
 | `slug`         | yes              | Verbatim `data-tenant` attribute value. Must match directory name.                                                                    |
 | `displayName`  | yes              | UI-facing brand name; rendered in tenant-aware screens.                                                                               |
 | `tagline`      | no               | Short brand line; used by previews, sales tooling.                                                                                    |
+| `demo`         | no               | `true` only for a non-client exemplar tenant; with a `figma/brand-modes.json` listing, it can become a Figma Brand mode.              |
 | `tier`         | yes              | 1 (brand presence), 2 (e-commerce), 3 (product). Drives infra defaults.                                                               |
 | `deployment.*` | yes              | Where this tenant ships. Required for the future `pnpm deploy:tenant` script.                                                         |
 | `brand.*`      | yes              | Quick-reference brand info. Source of truth is `tokens.json`; this is for tooling that wants brand metadata without parsing the DTCG. |

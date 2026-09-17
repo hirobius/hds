@@ -33,6 +33,10 @@
       "type": "string",
       "description": "Short brand line used by previews and sales tooling."
     },
+    "demo": {
+      "type": "boolean",
+      "description": "true only for a non-client exemplar tenant. Required (together with a figma/brand-modes.json listing) before a tenant becomes a mode of the shared Figma Brand collection; scaffold:tenant and tenants/_template never write it."
+    },
     "tier": {
       "enum": [1, 2, 3],
       "description": "1 = brand presence (marketing site), 2 = e-commerce (Stripe Checkout, legal pages), 3 = product (custom auth/dashboards). Drives infra defaults."
