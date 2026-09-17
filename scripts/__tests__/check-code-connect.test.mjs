@@ -24,6 +24,8 @@ import {
 } from '../check-code-connect.mjs';
 import { buildTemplateSource } from '../lib/code-connect-template.mjs';
 import { transpileLikeCli } from '../lib/code-connect-runtime.mjs';
+import { createCodeModel } from '../lib/component-code-model.mjs';
+import { loadCodeConnectInputs, registrySourceFiles } from '../generate-code-connect.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -236,6 +238,44 @@ describe('checkCodeConnect', () => {
   });
 });
 
+// ── Preview snapshot ─────────────────────────────────────────────────────────
+
+describe('renderPreviewReport', () => {
+  const previews = [
+    {
+      name: 'Badge',
+      exportName: 'Badge',
+      combinations: 3,
+      unique: 3,
+      variations: [{ label: 'default', snippet: '<Badge>Badge</Badge>' }],
+    },
+  ];
+
+  it('holds snippets only, so mapping a node URL or exempting a module does not change it', () => {
+    const before = renderPreviewReport({
+      summary: {
+        templates: 1,
+        mapped: [],
+        unmapped: ['Badge'],
+        exempt: { queued: 22 },
+        combinations: 3,
+      },
+      previews,
+    });
+    const after = renderPreviewReport({
+      summary: {
+        templates: 1,
+        mapped: ['Badge'],
+        unmapped: [],
+        exempt: { queued: 22, 'no-figma-component': 1 },
+        combinations: 3,
+      },
+      previews,
+    });
+    expect(after).toBe(before);
+  });
+});
+
 // ── Child process env ────────────────────────────────────────────────────────
 
 describe('childEnv', () => {
@@ -294,22 +334,38 @@ describe('check-code-connect — repository', () => {
     }
   }, 120_000);
 
-  it('lists the 52 public cva modules the parity rule covers', () => {
-    expect(publicCvaModules(ROOT)).toHaveLength(52);
+  // These assertions derive what they expect from figma/code-connect.json and
+  // the component source, never from a pinned count or name list, so adding a
+  // node URL or exempting a new cva module does not require editing this file.
+  it('finds the public cva modules the parity rule covers, including every templated source', () => {
+    const { registry } = loadCodeConnectInputs(ROOT);
+    const modules = publicCvaModules(ROOT);
+    const templated = Object.values(registry.templates).map((entry) => entry.source);
+    expect(modules).toEqual(expect.arrayContaining(templated));
+    expect(modules.length).toBe(templated.length + Object.keys(registry.exempt).length);
   });
 
   it('passes: parse, generator drift, parity, and every rendered combination', () => {
     expect(result.errors.map((e) => `${e.rule} ${e.component ?? ''}: ${e.message}`)).toEqual([]);
   });
 
-  it('reports what is and is not mapped', () => {
-    expect(result.summary).toMatchObject({
-      templates: 8,
-      mapped: ['Alert'],
-      unmapped: ['Avatar', 'Badge', 'Button', 'HdsCheckbox', 'HdsRadio', 'Input', 'Tag'],
-      exempt: { queued: 22, 'no-figma-component': 22 },
-    });
-  });
+  it('reports mapped templates exactly where the source has an @figma node URL', () => {
+    const { registry } = loadCodeConnectInputs(ROOT);
+    const model = createCodeModel({ root: ROOT, files: registrySourceFiles(registry) });
+    const withUrl = Object.entries(registry.templates)
+      .filter(([name, entry]) => model.component(entry.source, entry.export ?? name)?.figmaUrl)
+      .map(([name]) => name)
+      .sort();
+    const templates = Object.keys(registry.templates).sort();
+    expect(result.summary.mapped).toEqual(withUrl);
+    expect(result.summary.unmapped).toEqual(templates.filter((name) => !withUrl.includes(name)));
+    expect(
+      result.warnings
+        .filter((w) => w.rule === 'unmapped')
+        .map((w) => w.component)
+        .sort(),
+    ).toEqual(result.summary.unmapped);
+  }, 60_000);
 
   it('matches the committed local preview snapshot', async () => {
     await expect(renderPreviewReport(result)).toMatchFileSnapshot(
