@@ -204,16 +204,19 @@ describe('Figma claims in the core docs', () => {
     expect(missing).toEqual([]);
   });
 
-  it('lists no automatic Figma trigger unless an active workflow runs one', () => {
-    if (activeWorkflowsRunFigma()) return;
-    const registry = read('SYSTEMS_REGISTRY.md');
-    const triggers = registry.slice(
-      registry.indexOf('## Triggers'),
-      registry.indexOf('### Prepare step'),
-    );
-    const figmaRows = triggers.split('\n').filter((l) => l.startsWith('|') && /figma/i.test(l));
-    expect(figmaRows).toEqual([]);
-  });
+  // Skipped (not silently passed) once an active workflow really runs a Figma step.
+  it.skipIf(activeWorkflowsRunFigma())(
+    'lists no automatic Figma trigger while no active workflow runs one',
+    () => {
+      const registry = read('SYSTEMS_REGISTRY.md');
+      const triggers = registry.slice(
+        registry.indexOf('## Triggers'),
+        registry.indexOf('### Prepare step'),
+      );
+      const figmaRows = triggers.split('\n').filter((l) => l.startsWith('|') && /figma/i.test(l));
+      expect(figmaRows).toEqual([]);
+    },
+  );
 
   it('does not say Figma native import reads the token file or its mode extension', () => {
     const handoff = read('DESIGN-HANDOFF.md');
