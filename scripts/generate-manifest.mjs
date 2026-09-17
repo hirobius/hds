@@ -14,6 +14,7 @@ import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from '
 import { basename, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { discoverHdsComponents } from './component-discovery.mjs';
+import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -235,16 +236,10 @@ for (const entry of activeDiscoveredComponents) {
     // unmaps the component (and its Code Connect template) on the next regen.
     figmaUrl: entry.figmaUrl ?? null,
     figmaId: current.figmaId ?? (entry.name === 'TextLockup' ? 'text-lockup-pattern' : null),
-    // figmaLink: explicit "View in Figma" target surfaced on the doc-page
-    // header. Mirrors figmaUrl when populated; otherwise a structured
-    // `TODO:hds-master:<componentName>` marker so the link slot can render
-    // a "TODO" affordance and the figmaLink populated count stays at 100%
-    // for every non-template componentSpec. Templates may stay null. (10d-14)
-    figmaLink:
-      current.figmaLink ??
-      entry.figmaUrl ??
-      current.figmaUrl ??
-      (current.tier === 'template' ? null : `TODO:hds-master:${entry.name}`),
+    // figmaLink: explicit "View in Figma" target (10d-14). A real Figma URL or
+    // null, never a placeholder. Legacy `TODO:hds-master:<Name>` markers are
+    // dropped here so they cannot survive a regen; see scripts/lib/figma-link.mjs.
+    figmaLink: resolveFigmaLink(current.figmaLink, entry.figmaUrl, current.figmaUrl),
     // doc-exempt components surfacing for the first time fall back to 'utility' —
     // they're hidden internal helpers, so utility is the safe default until a
     // human authors a more precise @tier in the JSDoc.
@@ -279,6 +274,14 @@ for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
   }
 }
 
+// Specs that discovery does not revisit are carried over by the seed fold
+// as-is, so clear placeholder figmaLinks on those too.
+for (const spec of Object.values(manifest.componentSpecs)) {
+  if (spec && 'figmaLink' in spec) {
+    spec.figmaLink = resolveFigmaLink(spec.figmaLink, spec.figmaUrl);
+  }
+}
+
 const utilities = {};
 for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
   if (SECTION_BY_TIER[spec.tier] === 'utilities') {
@@ -306,6 +309,12 @@ const utilityCount = Object.keys(utilities).length;
 const sections = [`${componentSpecCount} components`];
 if (utilityCount > 0) sections.push(`${utilityCount} utilities`);
 console.log(`OK public/hds-manifest.json (${sections.join(', ')})`);
+
+// Honest Figma coverage: component specs whose figmaLink is a real Figma URL.
+const figmaCoverage = figmaLinkCoverage(manifest.componentSpecs);
+console.log(
+  `Figma links: ${figmaCoverage.linked} of ${figmaCoverage.total} component specs (${figmaCoverage.percent}%)`,
+);
 
 // Auto-regenerate lean agent projection
 const { execSync } = await import('child_process');

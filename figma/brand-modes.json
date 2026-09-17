@@ -1,0 +1,5 @@
+{
+  "$comment": "Modes of the Figma Brand collection (pnpm figma:model). DEMO TENANTS ONLY: the Figma library is shared, so never list a client tenant. A listed tenant needs \"demo\": true in its metadata.json (which pnpm scaffold:tenant and tenants/_template never write), tier 1, and empty deployment and legal groups, and its tokens.json must pass check-tenant-tokens; scripts/lib/figma-brand-modes.mjs refuses anything else. The marker is a person saying the tenant is not a client: check before adding it. A Professional plan allows 10 modes per collection: the base mode plus 9 tenants. Runbook: figma/README.md.",
+  "baseMode": "Hirobius",
+  "tenants": ["brutalist-demo"]
+}

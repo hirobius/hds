@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Alert } from '../app/components/alert';
 import { MODES } from '../../.storybook/preview';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/alert',
   component: Alert,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Alert'),
     layout: 'padded',
     docs: {
       description: {

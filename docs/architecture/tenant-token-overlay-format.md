@@ -281,11 +281,16 @@ Compact value is only emitted when it differs from the value used at rest.
 | `slug`         | yes              | Verbatim `data-tenant` attribute value. Must match directory name.                                                                    |
 | `displayName`  | yes              | UI-facing brand name; rendered in tenant-aware screens.                                                                               |
 | `tagline`      | no               | Short brand line; used by previews, sales tooling.                                                                                    |
+| `demo`         | no               | `true` only for a non-client exemplar tenant; with a `figma/brand-modes.json` listing, it can become a Figma Brand mode.              |
 | `tier`         | yes              | 1 (brand presence), 2 (e-commerce), 3 (product). Drives infra defaults.                                                               |
 | `deployment.*` | yes              | Where this tenant ships. Required for the future `pnpm deploy:tenant` script.                                                         |
 | `brand.*`      | yes              | Quick-reference brand info. Source of truth is `tokens.json`; this is for tooling that wants brand metadata without parsing the DTCG. |
 | `legal.*`      | yes for tier ≥ 2 | Entity + jurisdiction. Drives legal-page generation, Stripe wiring, attribution requirements.                                         |
 | `status`       | yes              | One of: `scaffold`, `active`, `archived`. Drives validator strictness.                                                                |
+
+Each `metadata.json` sets `"$schema": "../../hirobius.tenant-metadata.schema.json"`
+for editor validation; the schema encodes the table above.
+`scripts/check-tenant-tokens.mjs` enforces the M1–M3 subset.
 
 ---
 
@@ -377,9 +382,13 @@ When the build pipeline lands (`12m-mt-build-pipeline`):
   approves. Schema gets a `licensingApproved: true` flag at the metadata
   level. This is the only carve-out to R1 — and it requires explicit human
   sign-off in metadata.json.
-- **Per-tenant Figma masters** (`12m-mt-figma-master-per-tenant`): the
-  Figma plugin reads tenant metadata + overlays to swap component-set
-  colors before publishing.
+- **Per-tenant Figma masters** (`12m-mt-figma-master-per-tenant`): superseded
+  for demo tenants by the `Hirobius/Brand` and `Hirobius/Density` variable
+  collections. `pnpm figma:model` turns the overlays of the tenants listed in
+  `figma/brand-modes.json` and marked `"demo": true` in `metadata.json` into
+  one Brand mode each, after this validator passes them. Client tenants never
+  enter the shared library. See
+  `figma/README.md` (Brand and Density).
 - **Tenant-aware preview tool**: a route in the doc site
   (`/preview/<slug>`) that sets `data-tenant` at runtime so designers can
   see tenant theming without leaving the HDS doc app.
