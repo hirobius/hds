@@ -56,7 +56,19 @@ function log(msg) {
   console.log(`[smoke-consumer] ${msg}`);
 }
 
+// On Windows, npm / pnpm / npx are `.cmd` shims. CreateProcess cannot launch
+// them by bare name (spawnSync ENOENT), and Node refuses to spawn a .cmd without
+// a shell, so those three run through cmd.exe there. Arguments holding
+// whitespace or cmd.exe metacharacters are double-quoted — unquoted, cmd would
+// eat the caret in `react@^18.3` and install a narrower version range. Every
+// other platform keeps the shell-free spawn.
+const WINDOWS_CMD_SHIMS = new Set(['npm', 'pnpm', 'npx']);
+
 function run(cmd, args, opts = {}) {
+  if (process.platform === 'win32' && WINDOWS_CMD_SHIMS.has(cmd)) {
+    const line = [cmd, ...args.map((a) => (/[\s^&|<>()]/.test(a) ? `"${a}"` : a))].join(' ');
+    return execFileSync(line, { stdio: 'inherit', cwd: ROOT, shell: true, ...opts });
+  }
   return execFileSync(cmd, args, {
     stdio: 'inherit',
     cwd: ROOT,
