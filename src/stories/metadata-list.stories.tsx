@@ -68,8 +68,8 @@ export const Divided: Story = {
         term: 'Consumer-owned',
         description: (
           <>
-            <InlineCode compact>--lb-*</InlineCode>
-            <div className="mt-1">(lilac-bonds; each consumer picks its own prefix)</div>
+            <InlineCode compact>--app-*</InlineCode>
+            <div className="mt-1">(example; each consumer picks its own prefix)</div>
           </>
         ),
       },
@@ -81,7 +81,7 @@ export const Divided: Story = {
               --primitive-color-lilac-*
             </InlineCode>
             <div className="mt-1 flex items-center gap-2">
-              → moved to <InlineCode compact>--lb-lilac-*</InlineCode>
+              → moved to <InlineCode compact>--app-lilac-*</InlineCode>
             </div>
           </>
         ),

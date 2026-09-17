@@ -1,11 +1,11 @@
 {
   "$schema": "../../hirobius.tenant-metadata.schema.json",
-  "slug": "lilac-bonds",
-  "displayName": "Lilac Bonds",
-  "tagline": "Client microsite + guided intake.",
+  "slug": "accent-overlay",
+  "displayName": "Accent Overlay",
+  "tagline": "Accent-only semantic overlay on the lilac primitive ramp.",
   "tier": 2,
   "deployment": {
-    "vercelProject": "lilac-bonds",
+    "vercelProject": null,
     "primaryDomain": null,
     "previewDomain": null
   },
@@ -22,9 +22,7 @@
   "createdAt": "2026-07-06",
   "status": "scaffold",
   "_notes": [
-    "First external consumer of @hirobius/design-system. Client identity and contact details are intentionally not recorded in this public repo.",
     "Accent overlay aliases primitive.color.lilac.* (added to base tokens in the same change). Semantic tier only, per R1.",
-    "Overlay authored downstream in the consumer app; upstreamed here verbatim.",
     "Brand hex #6f3fd4 = primitive.color.lilac.500 (AA for white text on page + card surfaces)."
   ]
 }

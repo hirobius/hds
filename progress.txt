@@ -420,7 +420,7 @@ Playwright docs-SPA suite): Storybook + Chromatic modes instead of
 tests/visual.spec.ts.
 
 Decisions + why:
-- MODES = cross product of BRANDS (concrete-creations|lilac-bonds) x
+- MODES = cross product of BRANDS (concrete-creations|accent-overlay) x
   DENSITIES (comfortable|compact) x THEMES (light|dark), 8 combos, defined
   once in .storybook/preview.tsx and exported for story files to import.
   Matches ADR-0001/ADR-022/ADR-023's four-dial contract (brand/density/theme/
@@ -608,7 +608,7 @@ branch would close the loop visually.
   tests/primitive-contracts/ for `semantic.color.content.onAccent` (fixed
   white, never tenant-overridden) against each pilot tenant's
   `semantic.color.surface.accent` override (concrete-creations → stone-600,
-  lilac-bonds → lilac-500), Light + Dark mode, both tenants. This is a
+  accent-overlay → lilac-500), Light + Dark mode, both tenants. This is a
   deterministic, CI-live check (unlike Chromatic) that would have caught the
   literal "breaking a tenant accent" scenario the issue's proof step
   describes.

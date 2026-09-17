@@ -382,12 +382,12 @@ and may reference DS tokens freely:
 
 ```css
 :root {
-  --lb-lilac-500: #6f3fd4; /* app-owned value */
-  --lb-cta-radius: var(--semantic-radius-action); /* references a DS token */
+  --app-lilac-500: #6f3fd4; /* app-owned value */
+  --app-cta-radius: var(--semantic-radius-action); /* references a DS token */
 }
 ```
 
-Pick one prefix for your app (`--lb-*` here, for lilac-bonds) and keep every
+Pick one prefix for your app (`--app-*` here) and keep every
 local declaration inside it.
 
 ### C3 — Brand through the tenant mechanism
@@ -413,7 +413,7 @@ added upstream first, then the tenant overlay aliases it.
 
 **Reference implementation:** the first external consumer app follows all
 four — it consumes tokens via
-`@hirobius/design-system/variables.css`, keeps every extension under `--lb-*`,
+`@hirobius/design-system/variables.css`, keeps every extension under its own prefix,
 mirrors its brand through a tenant overlay, and pins consumed paths with a
 CI-enforced drift guard.
 
