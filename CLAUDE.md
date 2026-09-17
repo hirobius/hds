@@ -49,14 +49,20 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
 
 - **Design Token & Manifest Rules:** Read `docs/rules/MANIFEST_SYNC.md`
 - **React Component Rules:** Read `docs/rules/REACT_COMPONENTS.md`
-- **Figma Sync:** Read `docs/adr/019-figma-sync-via-mcp.md`, the accepted decision:
-  Figma work goes through first-party tools (the official Figma MCP server). Its §2
-  REST workflow is archived and needs Enterprise, so no token sync runs, and Code
-  Connect publishing needs Organization, so no mapping is live. The legacy WebSocket
+- **Figma Sync:** Read `docs/adr/025-figma-sync-pro-architecture.md` first — it is the
+  accepted architecture (2026-09-17) and supersedes ADR-019 §2. Code is the source of
+  truth and sync runs one way: `pnpm figma:model` projects the tokens into
+  `figma/model.json`; `pnpm figma:push` and `pnpm figma:native-import` apply it to a
+  Figma file by hand; `pnpm figma:snapshot --ingest` records the file into the committed
+  `figma/snapshot.json`; `pnpm check:figma-drift` compares the two. Runbook:
+  `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, demo tenants
+  only (`figma/brand-modes.json`) — a client tenant never enters the shared library, and
+  a live Figma write is Adrian's authenticated session, never an agent's. Code Connect
+  v2 templates are generated and gated locally, but publishing needs a Figma
+  Organization plan, so no mapping is live and Dev Mode shows no HDS snippets.
+  `docs/adr/019-figma-sync-via-mcp.md` still governs §1 (first-party tools, the official
+  Figma MCP server) and §3 (Code Connect); read its §2 as history. The legacy WebSocket
   bridge/plugin is archived on `archive/figma-bridge` (ADR-018 §2).
-  `docs/adr/025-figma-sync-pro-architecture.md` is Proposed, not accepted: use it for
-  what each Figma plan allows, but do not build its `figma:*` commands, snapshot, or
-  Brand modes until its Status line reads Accepted.
 
 ## 🧬 SUB-AGENT DISPATCH RULES
 

@@ -180,6 +180,19 @@
       "firingChannel": "pnpm-meta"
     },
     {
+      "id": "check-code-connect",
+      "description": "CI-safe Figma Code Connect gate (no token, no network, any Figma plan). Runs figma connect parse --exit-on-unreadable-files, fails if the committed src/app/components/*.figma.ts templates drift from scripts/generate-code-connect.mjs output, requires every public cva module to have a template or an exemption in figma/code-connect.json, and renders every VARIANT x BOOLEAN combination locally (getEnum maps are exhaustive and land on cva keys, snippets are valid JSX that only pass real props). Templates without a Figma node URL are reported as unmapped (--strict fails on them). Also runs in pnpm test through scripts/__tests__/check-code-connect.test.mjs.",
+      "severity": "error",
+      "gateScript": "scripts/check-code-connect.mjs",
+      "fixturePath": null,
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
       "id": "check-contrast",
       "description": "WCAG 2.1 contrast ratio checker for HDS semantic color pairs. Reads hirobius.tokens.json, resolves primitive + semantic color aliases, and reports contrast ratios for critical text/bg pairings in both light and dark mode.",
       "severity": "warn",
@@ -247,6 +260,32 @@
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-figma-drift",
+      "description": "Compares the Figma model built from hirobius.tokens.json against the committed Figma snapshot (figma/snapshot.json) and reports missing, extra and changed variables, modes, default modes and styles. Exit 0 clean, 1 drift or an edited snapshot, 2 no snapshot yet. In ci.yml with --ci: fails only when Figma was last pushed from exactly the model the tokens build now (snapshot lastPush.modelHash) and still differs; drift that may be an unpushed change warns, no snapshot is a notice.",
+      "severity": "warn",
+      "gateScript": "scripts/check-figma-drift.mjs",
+      "fixturePath": "fixtures/check-figma-drift",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "ci-pr",
+      "supportsJson": true
+    },
+    {
+      "id": "check-figma-mapping",
+      "description": "Enforces the component parity contract (docs/architecture/variant-contract.md#figma-mapping): manifest variantAxes, componentProperties and figmaPropertyMapping must bind to props the component really accepts (TypeScript checker), contract axes backed by cva must be declared with matching enum values, inverted booleans must be \"Show …\" toggles, and Code Connect templates must map the same contract axes. Title Case property names are advisory warnings.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-mapping.mjs",
+      "fixturePath": null,
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
     },
     {
       "id": "check-focus-states",

@@ -1,6 +1,6 @@
 # ADR-025: Figma Sync on the Pro Plan — One Way, Local Push, Snapshot Drift
 
-**Status:** Proposed (2026-09-16). If accepted, supersedes ADR-019 §2 (tokens → Figma variables through the REST workflow).
+**Status:** Accepted (2026-09-17). Supersedes ADR-019 §2 (tokens → Figma variables through the REST workflow).
 
 ## Context
 
@@ -21,11 +21,14 @@ variables: the `scripts/build-figma-variables.mjs` payload generator and the RES
    with Dark equal to Light. The export also drops the 20-token `role` tier, flattens
    typography into scalar variables, and skips shadows, so no text styles or effect styles
    come out of it.
-4. **There is no drift check.** Nothing compares the Figma library with the tokens.
-   `scripts/figma-diff.mjs --dry-run` diffs built-in synthetic data, not a Figma read.
-5. **No Code Connect mapping is live.** The 34 `*.figma.tsx` files are commented-out stubs
-   in the `figma.connect()` format that Code Connect 2 replaced with template files, and
-   publishing custom Code Connect needs an Organization or Enterprise plan.
+4. **There was no drift check.** Nothing compared the Figma library with the tokens. The
+   only diff tool, `scripts/figma-diff.mjs --dry-run`, diffed built-in synthetic data
+   rather than a Figma read.
+5. **No Code Connect mapping is live.** At the time, the 34 `*.figma.tsx` files were
+   commented-out stubs in the `figma.connect()` format that Code Connect 2 replaced with
+   template files. They have since been replaced by generated v2 templates (§4), but
+   publishing custom Code Connect still needs an Organization or Enterprise plan, so no
+   mapping is live and Dev Mode shows no HDS snippets.
 6. **The Figma side is a partial working file** ("HDS Tokens & Components"), edited by
    hand through the MCP server (hds#109). No repo file links to it.
 
@@ -34,7 +37,8 @@ What the Pro plan does allow, as checked on 2026-09-16:
 | Capability                                              | Pro                                                                                       | Organization                                      | Enterprise                       | Source                                                                                                                                                                                          |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Custom Code Connect publish (Dev Mode snippets)         | No (pricing page lists it for Figma's own UI kits only)                                   | Yes, Full or Dev seat                             | Yes                              | [Code Connect](https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect), [plans](https://help.figma.com/hc/en-us/articles/360040328273), [pricing](https://www.figma.com/pricing/) |
-| `figma connect parse` / `preview` / `migrate`           | Yes, local, no token, no network                                                          | Yes                                               | Yes                              | [CLI reference](https://developers.figma.com/docs/code-connect/cli-reference/)                                                                                                                  |
+| `figma connect parse` / `migrate`                       | Yes, local, no token, no network                                                          | Yes                                               | Yes                              | [CLI reference](https://developers.figma.com/docs/code-connect/cli-reference/)                                                                                                                  |
+| `figma connect preview`                                 | Yes, but it needs a token and a network call to render against the Figma node             | Yes                                               | Yes                              | [CLI reference](https://developers.figma.com/docs/code-connect/cli-reference/)                                                                                                                  |
 | `figma connect publish` / `create` / `unpublish`        | Needs a token and the API; rejection expected (unverified, including `publish --dry-run`) | Yes (PAT: Code Connect Write + File content Read) | Yes                              | CLI reference, [quickstart](https://developers.figma.com/docs/code-connect/quickstart-guide/)                                                                                                   |
 | Variables through REST (read and write)                 | No                                                                                        | No                                                | Yes, Full seat                   | [REST variables](https://developers.figma.com/docs/rest-api/variables/)                                                                                                                         |
 | Plugin API variables / `use_figma`                      | Yes (remote MCP on all plans; writes are a free beta that will become usage-billed)       | Yes                                               | Yes                              | [MCP guide](https://help.figma.com/hc/en-us/articles/32132100833559-Guide-to-the-Figma-MCP-server)                                                                                              |
@@ -74,8 +78,8 @@ A hand edit in Figma is drift to report, not a change to import back.
   fallback: per-collection × per-mode DTCG files → Variables ▸ Import (UI)
                                         ▼
   Figma library "HDS Tokens & Components" (published team library)
-   Primitives (1 mode, hidden) · Brand (1 mode per demo tenant, ≤10 on Pro) · Semantic + Role (Light/Dark)
-   · Density (Comfortable/Compact) · Component (aliases only)
+   Primitives (1 mode, hidden) · Brand (1 mode per demo tenant, ≤10 on Pro) · Semantic (Light/Dark)
+   · Role (1 mode) · Density (Comfortable/Compact) · Component (aliases only)
                                         │ pnpm figma:snapshot (use_figma read) → figma/snapshot.json (committed)
                                         ▼
   DRIFT: scripts/check-figma-drift.mjs  model vs snapshot, per mode, + a "snapshot older than tokens" warning
@@ -83,7 +87,8 @@ A hand edit in Figma is drift to report, not a change to import back.
 
 COMPONENTS
   cva variants + manifest ─► scripts/generate-code-connect.mjs ─► src/app/components/<name>.figma.ts (v2 template)
-        │                         │  figma connect parse / preview --all   (local, no token, any plan) ─► CI gate
+        │                         │  figma connect parse                   (local, no token, any plan) ─► CI gate
+        │                         │  figma connect preview                 (needs a token + network, any plan)
         │                         │  figma connect publish                 ◄── ORGANIZATION GATE
         │                         ▼
         │                    Dev Mode shows the real HDS snippet (Organization and up)
@@ -91,9 +96,10 @@ COMPONENTS
                                     · component description (import line + doc link)   ← the Pro substitute
 ```
 
-When this ADR was written, none of the commands or scripts in this diagram existed.
-`figma:model` replaces the existing `pnpm figma-variables` exporter. Each one lands with
-its own tests, and the core docs name a command only once it exists.
+When this ADR was written, none of the commands or scripts in this diagram existed. They
+landed over readiness-plan A4–A8, each with its own tests; `pnpm figma-variables` is now a
+projection of the same model rather than its own exporter. The rule stands: the core docs
+name a command only once it exists.
 
 - **Model.** `figma:model` is a pure function with a golden snapshot and invariants: value
   types match Figma types, `em`/`ch` dimensions and string line heights convert to px,
@@ -115,18 +121,24 @@ its own tests, and the core docs name a command only once it exists.
 ### 3. Library shape and tenants
 
 Primitives (one mode, hidden from publishing) · Brand (one mode per demo tenant, at most
-10 on Pro) · Semantic + Role (Light, Dark) · Density (Comfortable, Compact) · Component
-(aliases only). Client tenants never enter the shared library.
+10 on Pro) · Semantic (Light, Dark) · Role (one mode) · Density (Comfortable, Compact) ·
+Component (aliases only). There is one theme axis: Light and Dark live on Semantic, and
+Role carries a single mode whose values follow it. Client tenants never enter the shared
+library.
 
-**Open, Adrian decides:** Brand as modes in one library, or one collection or file per
-tenant. Choosing modes reverses the collection-per-tenant wording in #134.
+**Decided (Adrian, 2026-09-17):** Brand is modes of one `Hirobius/Brand` collection in the
+shared library, one mode per **demo** tenant, listed in `figma/brand-modes.json`. A tenant
+enters that collection only with the `demo` marker in its metadata; client tenants stay out
+of the shared library entirely. This reverses the collection-per-tenant wording in #132/#134.
 
 ### 4. Components: Code Connect v2 templates now, publish on Organization
 
 `scripts/generate-code-connect.mjs` generates `<name>.figma.ts` template files from `cva`
 variants, `defaultVariants`, and manifest props, starting with the components that exist in
-Figma. A local gate runs `figma connect parse` and `figma connect preview` with no token
-and no network, so it works on any plan. `figma connect publish` waits for Organization.
+Figma. A local gate runs `figma connect parse` with no token and no network, so it works on
+any plan and in CI. `figma connect preview` renders a template against its Figma node, so it
+needs a token and a network call and stays a hand-run check. `figma connect publish` waits
+for Organization.
 
 On Pro, links stand in for Dev Mode snippets: one `figmaUrl` per component in the manifest,
 projected into Storybook `parameters.design`, the README, Figma dev resources (story and
@@ -140,14 +152,14 @@ front), no trial is documented, and the upgrade moves existing teams into a new
 organization. Organization still does not unlock REST variables or extended collections;
 both stay Enterprise-only.
 
-What HDS may claim before that upgrade depends on what exists. As of 2026-09-16 nothing is
-ready: `@figma/code-connect` is not a dependency, `figma.config.json` does not exist, there
-are no v2 templates, and the 34 `*.figma.tsx` files are commented-out stubs in the retired
-parser format. Until the templates and their local gate land, the claim is "no Code Connect
-mapping is published; Code Connect is planned and Organization-gated". Only after the
-dependency, the config, generated `*.figma.ts` templates with a passing `parse` and `preview`
-gate, and the component-to-Figma links from §4 all exist does the claim become "Code
-Connect-ready, Organization-gated".
+What HDS may claim before that upgrade depends on what exists. As of 2026-09-17 the local
+side is in place: `@figma/code-connect` is a devDependency, `figma.config.json` exists,
+`scripts/generate-code-connect.mjs` generates 8 `*.figma.ts` v2 templates behind a `parse`
+gate, the 34 retired `*.figma.tsx` stubs are gone, and the §4 links project from one
+`figmaUrl` per component. What is still missing is the published mapping: `figma connect
+publish` needs Organization, and only one component carries a Figma node URL so far. Until
+a mapping is published, the claim stays "no Code Connect mapping is published; Dev Mode
+shows no HDS snippets; publishing is Organization-gated", never a count of live mappings.
 
 ## Rationale
 

@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Badge } from '../app/components/badge';
 import { MODES } from '../../.storybook/preview';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/badge',
   component: Badge,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Badge'),
     layout: 'centered',
     docs: {
       description: {

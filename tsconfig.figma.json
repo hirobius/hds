@@ -1,0 +1,16 @@
+{
+  "//": "Figma Code Connect templates (src/app/components/*.figma.ts). They run inside Figma's template runtime, not in the library, so they get their own program: only the `figma` module types, no DOM/React. Excluded from tsconfig.typecheck.json; `pnpm typecheck` runs both.",
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": ["ES2021"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["@figma/code-connect/figma-types"]
+  },
+  "include": ["src/app/components/*.figma.ts"]
+}
