@@ -15,6 +15,8 @@
 import { readModes, modeValue } from './token-modes.mjs';
 
 // ── Token graph ──────────────────────────────────────────────────────────────
+// build-tokens.mjs exports the same walker, but importing it reads
+// public/hds-manifest.json at module load, which would make this module impure.
 const DTCG_KEYS = new Set(['$type', '$value', '$description', '$extensions', '$schema']);
 
 function* walkTokens(node, path = [], inheritedType = null) {
@@ -47,6 +49,15 @@ const isThemed = (token) => {
 
 // ── Colors ───────────────────────────────────────────────────────────────────
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
+/**
+ * Six decimals is finer than an 8-bit channel step (1/255 ≈ 0.0039) and keeps
+ * the model byte-stable across Node versions, whose trig/pow can differ in the
+ * last bits of the OKLCH conversion.
+ */
+const roundChannels = ({ r, g, b, a }) =>
+  Object.fromEntries(
+    Object.entries({ r, g, b, a }).map(([k, v]) => [k, Math.round(v * 1e6) / 1e6]),
+  );
 
 function hexToRgb(hex) {
   const clean = hex.replace(/^#/, '');
@@ -105,19 +116,15 @@ function hslChannelsToRgb(input) {
   return { r: clamp01(r1 + m), g: clamp01(g1 + m), b: clamp01(b1 + m), a };
 }
 
+/** hex, oklch(), HSL channels, or a DTCG 2025.10 color object → Figma RGBA (0–1). */
 function colorToFigma(val) {
   if (typeof val === 'string') {
-    if (val.startsWith('#')) return hexToRgb(val);
-    if (val.startsWith('oklch(')) return oklchToRgb(val);
-    if (HSL_CHANNELS.test(val.trim())) return hslChannelsToRgb(val);
-  } else if (val && typeof val === 'object') {
-    if (Array.isArray(val.components)) {
-      const [r, g, b] = val.components;
-      return { r: clamp01(r), g: clamp01(g), b: clamp01(b), a: clamp01(val.alpha ?? 1) };
-    }
-    if ('r' in val && 'g' in val && 'b' in val) {
-      return { r: clamp01(val.r), g: clamp01(val.g), b: clamp01(val.b), a: clamp01(val.a ?? 1) };
-    }
+    if (val.startsWith('#')) return roundChannels(hexToRgb(val));
+    if (val.startsWith('oklch(')) return roundChannels(oklchToRgb(val));
+    if (HSL_CHANNELS.test(val.trim())) return roundChannels(hslChannelsToRgb(val));
+  } else if (Array.isArray(val?.components)) {
+    const [r, g, b] = val.components.map(clamp01);
+    return roundChannels({ r, g, b, a: clamp01(val.alpha ?? 1) });
   }
   throw new Error(`Unsupported color token value: ${JSON.stringify(val)}`);
 }
@@ -430,7 +437,6 @@ function expandTypography(graph, token) {
   const family = raw('fontFamily', 'fontFamily');
   const weight = raw('fontWeight', 'fontWeight');
   const direct = (key, value) => ({
-    px: value,
     entry: isAlias(v[key]) ? { alias: aliasPath(v[key]) } : { value },
   });
   const resolved = {
@@ -536,7 +542,7 @@ function shadowEffects(graph, token) {
       mode: isThemed(colorToken) ? 'Light' : SINGLE_MODE,
     };
     const base = colorToFigma(graph.resolveRef(modeValue(colorToken, 'Light'), path));
-    return { ...base, a: base.a * parseFloat(hslVar[2] ?? '1') };
+    return roundChannels({ ...base, a: base.a * parseFloat(hslVar[2] ?? '1') });
   };
 
   // HDS shadows are pre-composed CSS strings (see build-tokens V1); a
