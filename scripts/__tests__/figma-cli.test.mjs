@@ -33,7 +33,7 @@ import { writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
-import { serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
+import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { FIXTURE_TOKENS_PATH, newFixtureFile } from './helpers/figma-fixture.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -113,7 +113,6 @@ describe('pnpm figma:push', () => {
 
   it('--plan: previews a push against the committed snapshot, without Figma', async () => {
     const root = tempRoot();
-    const { parseSnapshotFile } = await import('../lib/figma-snapshot.mjs');
     const snapshotFile = parseSnapshotFile(
       await takeSnapshot(root, async (figma) => {
         (await figma.variables.getLocalVariablesAsync()).find((v) => v.name === 'ring').remove();
