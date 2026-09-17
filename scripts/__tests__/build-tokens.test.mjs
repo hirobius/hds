@@ -978,6 +978,20 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     expect(densityBlock).not.toContain('--role-radius');
   });
 
+  it('keeps the header comment closed until its own terminator, so the first tenant rule stays valid CSS', () => {
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+    });
+    const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    // A stray "*/" inside the header ends the comment early; the rest of the
+    // header then becomes part of the first rule's selector and browsers drop
+    // that whole rule.
+    const firstRule = css.indexOf('[data-brand="brutalist-demo"]');
+    const headerEnd = css.indexOf('*/') + 2;
+    const between = css.slice(headerEnd, firstRule).replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(between.trim()).toBe('');
+  });
+
   it('does not emit a density block when no leaf declares a Compact mode (existing tenants unaffected)', () => {
     const tenantsDir = writeTenantFixture('concrete-creations', {
       semantic: { space: { component: { padding: { $value: '{primitive.space.4}' } } } },
