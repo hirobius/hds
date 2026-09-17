@@ -6,8 +6,9 @@
  * Seams: demoTenantProblems(metadata) and loadBrandModes(root, baseRaw) against
  * a temporary mini-root. Tenant slugs here are synthetic. The shared Figma
  * library must never carry a client tenant, so a tenant enters only when
- * figma/brand-modes.json lists it, its metadata has no deployment, legal
- * entity or tier above 1, and its overlay passes the tenant overlay validator.
+ * figma/brand-modes.json lists it, its metadata marks it `"demo": true` (a
+ * marker nothing writes by default) with tier 1 and empty deployment and legal
+ * groups, and its overlay passes the tenant overlay validator.
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, copyFileSync, readFileSync } from 'fs';
@@ -26,6 +27,7 @@ const FIXTURE_TOKENS = join(
 const demoMetadata = (slug, patch = {}) => ({
   slug,
   displayName: 'Synthetic Demo',
+  demo: true,
   tier: 1,
   deployment: { vercelProject: null, primaryDomain: null, previewDomain: null },
   brand: { primaryHex: '#111111', accentName: 'ink', logoPath: null },
@@ -62,9 +64,34 @@ function miniRoot({ config, tenants = {} }) {
   return { root, load: (options) => loadBrandModes(root, baseRaw, options) };
 }
 
+/** What `pnpm scaffold:tenant --slug=<client>` writes for a new tier 1 client (scripts/scaffold-tenant.mjs buildMetadata). */
+const scaffoldedClientMetadata = (slug) => ({
+  slug,
+  displayName: 'Synthetic Client',
+  tier: 1,
+  deployment: { vercelProject: null, primaryDomain: null, previewDomain: null },
+  brand: { primaryHex: '#123456', accentName: 'brand-accent', logoPath: null },
+  legal: { entity: null, jurisdiction: null, stripeAccountKind: null },
+  status: 'scaffold',
+});
+
 describe('demoTenantProblems', () => {
-  it('accepts a tier 1 tenant with no deployment and no legal entity', () => {
+  it('accepts a tenant marked demo, tier 1, with empty deployment and legal groups', () => {
     expect(demoTenantProblems(demoMetadata('a-demo'))).toEqual([]);
+  });
+
+  it('rejects a freshly scaffolded tier 1 client: only the explicit demo marker admits a tenant', () => {
+    expect(demoTenantProblems(scaffoldedClientMetadata('new-client'))).toEqual([
+      'demo is not true',
+    ]);
+    expect(demoTenantProblems({ ...demoMetadata('a-demo'), demo: 'yes' })).toEqual([
+      'demo is not true',
+    ]);
+  });
+
+  it('treats a missing deployment or legal group as a problem, not as empty', () => {
+    const { deployment: _deployment, legal: _legal, ...bare } = demoMetadata('a-demo');
+    expect(demoTenantProblems(bare)).toEqual(['deployment is missing', 'legal is missing']);
   });
 
   it.each([
@@ -132,6 +159,16 @@ describe('loadBrandModes', () => {
       /live-tenant.*deployment\.vercelProject.*demo tenants only/s,
     );
     expect(calls).toEqual([]);
+  });
+
+  it('refuses a listed tenant with the scaffolder default metadata, so listing a new client by mistake fails', () => {
+    const { load } = miniRoot({
+      config: { baseMode: 'Hirobius', tenants: ['new-client'] },
+      tenants: {
+        'new-client': { metadata: scaffoldedClientMetadata('new-client'), overlay: radiusOverlay },
+      },
+    });
+    expect(() => load()).toThrow(/new-client.*demo is not true.*demo tenants only/s);
   });
 
   it('runs the tenant overlay validator and refuses an overlay it rejects', () => {

@@ -27,7 +27,11 @@ gitignored. `figma/snapshot.json` is committed: it records Figma's state.
 client tenant never goes in. `pnpm figma:model` (and every command that builds
 the model) refuses a listed tenant unless:
 
-- its `metadata.json` is tier 1, with no deployment and no legal entity set;
+- its `metadata.json` carries `"demo": true`, and is tier 1 with its deployment
+  and legal groups present and empty. A new client tenant is also tier 1 with
+  those groups empty, so the marker is what tells them apart. Neither
+  `pnpm scaffold:tenant` nor `tenants/_template` writes it, and adding it is a
+  person stating the tenant is not a client;
 - its `tokens.json` passes the tenant overlay validator (the one
   `check-tenant-tokens` and `pnpm tokens` run);
 - the base mode plus the listed tenants fit a Professional plan's 10 modes per

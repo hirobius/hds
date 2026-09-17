@@ -63,6 +63,12 @@ describe(`${BRAND_MODES_FILE}`, () => {
     }
   });
 
+  it('does not admit the tenant template, which every new client tenant starts from', () => {
+    expect(demoTenantProblems(readJson('tenants', '_template', 'metadata.json'))).toContain(
+      'demo is not true',
+    );
+  });
+
   it(`gives Hirobius/Brand the base mode plus one mode per listed tenant, at most ${PRO_MODE_LIMIT}`, () => {
     expect(brand.modes).toEqual([config.baseMode, ...config.tenants]);
     expect(brand.modes.length).toBeLessThanOrEqual(PRO_MODE_LIMIT);

@@ -380,8 +380,9 @@ When the build pipeline lands (`12m-mt-build-pipeline`):
 - **Per-tenant Figma masters** (`12m-mt-figma-master-per-tenant`): superseded
   for demo tenants by the `Hirobius/Brand` and `Hirobius/Density` variable
   collections. `pnpm figma:model` turns the overlays of the tenants listed in
-  `figma/brand-modes.json` into one Brand mode each, after this validator
-  passes them. Client tenants never enter the shared library. See
+  `figma/brand-modes.json` and marked `"demo": true` in `metadata.json` into
+  one Brand mode each, after this validator passes them. Client tenants never
+  enter the shared library. See
   `figma/README.md` (Brand and Density).
 - **Tenant-aware preview tool**: a route in the doc site
   (`/preview/<slug>`) that sets `data-tenant` at runtime so designers can
