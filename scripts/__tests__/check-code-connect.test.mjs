@@ -177,6 +177,36 @@ describe('checkCodeConnect', () => {
     expect(rules(result)).toContain('render-cva-value');
   });
 
+  it('fails when a cva key has no Figma option (code ahead of Figma)', () => {
+    const ahead = {
+      ...BADGE_CODE,
+      cva: { ...BADGE_CODE.cva, axes: { tone: ['neutral', 'info', 'danger', 'ghost'] } },
+    };
+    const result = gate({
+      codeModel: modelWith(ahead),
+      parsed: { status: 0, docs: [docFor('Badge', badgeEntry(), BADGE_CODE)], output: '' },
+    });
+    expect(rules(result)).toContain('cva-value-not-in-figma');
+    expect(result.errors.find((e) => e.rule === 'cva-value-not-in-figma').message).toMatch(
+      /tone.*ghost.*"Tone"/,
+    );
+  });
+
+  it('accepts a cva key the registry lists under codeOnly', () => {
+    const ahead = {
+      ...BADGE_CODE,
+      cva: { ...BADGE_CODE.cva, axes: { tone: ['neutral', 'info', 'danger', 'ghost'] } },
+    };
+    const entry = badgeEntry();
+    entry.properties.Tone.codeOnly = { ghost: 'Code-only tone; no Figma option yet.' };
+    const result = gate({
+      registry: registryWith({ templates: { Badge: entry } }),
+      codeModel: modelWith(ahead),
+      parsed: { status: 0, docs: [docFor('Badge', entry, BADGE_CODE)], output: '' },
+    });
+    expect(result.errors).toEqual([]);
+  });
+
   it('fails when a getEnum map does not cover the Figma options exactly', () => {
     const doc = docFor('Badge', badgeEntry(), BADGE_CODE);
     doc.template = doc.template.replace("info: 'info',", '');

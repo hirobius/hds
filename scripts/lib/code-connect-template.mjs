@@ -7,7 +7,9 @@
  * The registry (figma/code-connect.json) records, per templated component, the
  * Figma component's property definitions and how each maps onto the code:
  *
- *   VARIANT        { options, default?, prop, values? }   → getEnum → `prop="value"`
+ *   VARIANT        { options, default?, prop, values?, codeOnly? }
+ *                                                        → getEnum → `prop="value"`
+ *                  (codeOnly: { cvaKey: "<reason>" } for cva keys Figma has no option for)
  *                  { options, default?, set: { option: { prop: value } } }
  *                                                        → getEnum → props per option
  *   TEXT           { default?, prop, visibleWhen? }       → getString → `prop="…"` / children
@@ -41,6 +43,7 @@ const PROPERTY_KEYS = new Set([
   'visibleWhen',
   'invert',
   'figmaOnly',
+  'codeOnly',
 ]);
 const ENTRY_KEYS = new Set(['source', 'export', 'evidence', 'note', 'properties', 'staticProps']);
 const RESERVED = new Set([
@@ -138,6 +141,34 @@ export const sameKeys = (object, list) => {
 };
 
 /**
+ * `codeOnly` on a prop-mapped VARIANT acknowledges cva keys that have no Figma
+ * option yet, each with a reason. scripts/check-code-connect.mjs fails on any
+ * other cva key a Figma option does not map to.
+ */
+function validateCodeOnly(figmaName, def, code, fail) {
+  if (def.type !== 'VARIANT' || def.prop === undefined || !isObject(def.codeOnly)) {
+    fail(`property "${figmaName}": codeOnly needs a VARIANT mapped with prop`);
+    return;
+  }
+  const cvaKeys = code.cva?.axes?.[def.prop] ?? [];
+  const mapped = Object.values(mappedValues(def));
+  for (const [key, reason] of Object.entries(def.codeOnly)) {
+    if (!cvaKeys.includes(key)) {
+      fail(
+        `VARIANT "${figmaName}": codeOnly "${key}" is not a cva value of ${def.prop} [${cvaKeys.join(', ')}]`,
+      );
+    } else if (mapped.includes(key)) {
+      fail(
+        `VARIANT "${figmaName}": codeOnly "${key}" is mapped from a Figma option; remove it from codeOnly`,
+      );
+    }
+    if (typeof reason !== 'string' || !reason.trim()) {
+      fail(`VARIANT "${figmaName}": codeOnly "${key}" needs a reason`);
+    }
+  }
+}
+
+/**
  * Validate one registry entry against the component's code model.
  * @returns {string[]} human-readable errors (empty = valid)
  */
@@ -179,6 +210,7 @@ export function validateTemplateEntry(name, entry, code) {
         `property "${figmaName}": visibleWhen "${def.visibleWhen}" must name a BOOLEAN property`,
       );
     }
+    if (def.codeOnly !== undefined) validateCodeOnly(figmaName, def, code, fail);
     if (def.figmaOnly) continue;
 
     if (def.prop !== undefined) {

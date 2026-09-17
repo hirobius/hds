@@ -193,6 +193,47 @@ describe('validateTemplateEntry', () => {
   it('rejects a missing source component', () => {
     expect(validateTemplateEntry('Button', buttonEntry(), null).join('\n')).toMatch(/not found/);
   });
+
+  describe('codeOnly (cva keys with no Figma option)', () => {
+    const withGhost = {
+      ...BUTTON_CODE,
+      cva: {
+        ...BUTTON_CODE.cva,
+        axes: { ...BUTTON_CODE.cva.axes, variant: ['primary', 'secondary', 'tertiary', 'ghost'] },
+      },
+    };
+
+    it('accepts a cva key listed with a reason', () => {
+      const entry = buttonEntry();
+      entry.properties.Variant.codeOnly = { ghost: 'Code-only style; no Figma option yet.' };
+      expect(errorsFor(entry, withGhost)).toEqual([]);
+    });
+
+    it('rejects a key that is not a cva key of the prop', () => {
+      const entry = buttonEntry();
+      entry.properties.Variant.codeOnly = { outline: 'reason' };
+      expect(errorsFor(entry, withGhost).join('\n')).toMatch(
+        /codeOnly "outline" is not a cva value of variant/,
+      );
+    });
+
+    it('rejects a key a Figma option already maps to (stale)', () => {
+      const entry = buttonEntry();
+      entry.properties.Variant.codeOnly = { primary: 'reason' };
+      expect(errorsFor(entry, withGhost).join('\n')).toMatch(
+        /codeOnly "primary" is mapped from a Figma option/,
+      );
+    });
+
+    it('requires a reason, and a VARIANT mapped with prop', () => {
+      const entry = buttonEntry();
+      entry.properties.Variant.codeOnly = { ghost: '' };
+      entry.properties.State.codeOnly = { x: 'reason' };
+      const joined = errorsFor(entry, withGhost).join('\n');
+      expect(joined).toMatch(/codeOnly "ghost" needs a reason/);
+      expect(joined).toMatch(/"State": codeOnly needs a VARIANT mapped with prop/);
+    });
+  });
 });
 
 // ── URLs + paths ─────────────────────────────────────────────────────────────

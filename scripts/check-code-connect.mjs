@@ -23,6 +23,7 @@
  *   exemption-invalid         exemption kind/reason malformed
  *   enum-map-keys             a getEnum map does not cover the Figma options exactly
  *   enum-map-values           a getEnum map sends a Figma option to a value outside the cva keys
+ *   cva-value-not-in-figma    a cva key of a prop-mapped VARIANT has no Figma option and is not listed under codeOnly
  *   render-error              a combination threw (unknown property, wrong type, undefined…)
  *   render-syntax             a rendered snippet is not valid JSX
  *   render-tag                the snippet's root element is not the component
@@ -271,10 +272,14 @@ export function checkCodeConnect({
 
     const combinations = enumerateCombinations(properties, { cap: COMBINATION_CAP });
     const unique = new Set();
+    const enumTargets = new Map();
     for (const values of combinations) {
       const result = renderTemplate(compiled, { properties, values });
       summary.combinations += 1;
       for (const call of result.enumCalls) {
+        const targets = enumTargets.get(call.property) ?? new Set();
+        for (const value of Object.values(call.mapping)) targets.add(value);
+        enumTargets.set(call.property, targets);
         const def = properties[call.property];
         if (def?.type === 'VARIANT' && !sameKeys(call.mapping, def.options)) {
           once(
@@ -321,6 +326,23 @@ export function checkCodeConnect({
             `${attribute.name}="${attribute.value}" is not a cva value [${cvaAxes[attribute.name].join(', ')}]`,
           );
         }
+      }
+    }
+
+    // Code ahead of Figma: every cva key of a prop-mapped VARIANT must be the
+    // target of some Figma option, or be acknowledged under `codeOnly`.
+    for (const [figmaName, def] of Object.entries(properties)) {
+      if (def?.type !== 'VARIANT' || def.prop === undefined || def.figmaOnly) continue;
+      const keys = cvaAxes[def.prop];
+      if (!keys) continue;
+      const targets = enumTargets.get(figmaName) ?? new Set();
+      const acknowledged = Object.keys(def.codeOnly ?? {});
+      const missing = keys.filter((key) => !targets.has(key) && !acknowledged.includes(key));
+      if (missing.length) {
+        once(
+          'cva-value-not-in-figma',
+          `${def.prop} cva key(s) [${missing.join(', ')}] have no option on the Figma VARIANT "${figmaName}" [${(def.options ?? []).join(', ')}]. Add the option in Figma and to figma/code-connect.json, or list the key under "codeOnly" with a reason`,
+        );
       }
     }
 
