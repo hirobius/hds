@@ -70,10 +70,9 @@ export interface DocPageHeaderSpec {
   figmaUrl?: string | null;
   /**
    * Optional — explicit Figma master link (10d-14). The manifest generator
-   * writes a real Figma URL or null; it no longer emits
-   * `TODO:hds-master:<componentName>` markers. A hand-authored `TODO:` value
-   * still renders as a pending chip. Preferred over `figmaUrl` when both are
-   * present.
+   * writes a real Figma URL or null and strips `TODO:hds-master:<componentName>`
+   * markers on regen. A `TODO:` value passed to this component directly still
+   * renders as a pending chip. Preferred over `figmaUrl` when both are present.
    */
   figmaLink?: string | null;
   /** Required — drives the tier chip. */
