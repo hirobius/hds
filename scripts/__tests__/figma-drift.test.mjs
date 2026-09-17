@@ -122,18 +122,74 @@ describe('figmaDrift', () => {
     );
   });
 
-  it('warns when the snapshot is older than the tokens, and when Figma was pushed from another model', async () => {
+  it('says drift may be a pending push when Figma was last pushed from another model', async () => {
     const snapshot = await snapshotOf(await pushedFile());
     const changed = JSON.parse(JSON.stringify(model));
     changed.collections[0].variables[0].description = 'Edited after the snapshot.';
-    const later = new Date(Date.parse(snapshot.snapshot.takenAt) + 60_000).toISOString();
 
-    const report = figmaDrift(changed, snapshot, { tokensChangedAt: later });
-    expect(report.stale).toBe(true);
+    const report = figmaDrift(changed, snapshot);
     expect(report.pushedFromOtherModel).toBe(true);
     const text = formatDrift(report);
-    expect(text).toMatch(/⚠ The snapshot .* is older than hirobius\.tokens\.json/);
+    expect(text).toMatch(
+      /ℹ Figma was last pushed from a different model .*Drift below may be changes not pushed yet/,
+    );
     expect(text).toContain('changed  color/neutral/900: description');
+  });
+
+  it('says drift was made in Figma when Figma was last pushed from this exact model', async () => {
+    const figma = await pushedFile();
+    (await live(figma, 'ring')).remove();
+    const report = figmaDrift(model, await snapshotOf(figma));
+    expect(report.pushedFromOtherModel).toBe(false);
+    expect(formatDrift(report)).toMatch(
+      /⚠ Figma was last pushed from this exact model .*so the drift below was made in Figma after that push/,
+    );
+  });
+
+  it('reports a collection whose default mode is not the model first mode', async () => {
+    const figma = newFixtureFile();
+    const semantic = figma.variables.createVariableCollection('Hirobius/Semantic');
+    semantic.renameMode(semantic.defaultModeId, 'Dark');
+    semantic.addMode('Light');
+    const { payload, checksum } = buildPushPayload(model);
+    await hdsRunPush(figma, payload, checksum);
+
+    const report = figmaDrift(model, await snapshotOf(figma));
+    expect(report.ok).toBe(false);
+    expect(report.items).toEqual([
+      {
+        kind: 'changed',
+        collection: 'Hirobius/Semantic',
+        what: 'default mode',
+        name: 'Light',
+        actual: 'Dark',
+      },
+    ]);
+    expect(formatDrift(report)).toContain(
+      'changed  default mode: model Light, Figma Dark (a push cannot change it: make Light the first mode in Figma)',
+    );
+  });
+
+  it('reports a variable left behind by a cross-collection move as an extra to rebind, then delete', async () => {
+    const figma = await pushedFile();
+    const component = await collection(figma, 'Hirobius/Component');
+    const old = figma.variables.createVariable('button/text', component, 'COLOR');
+    old.setVariableCodeSyntax('WEB', 'var(--component-button-text)');
+
+    const report = figmaDrift(model, await snapshotOf(figma));
+    expect(report.items).toEqual([
+      {
+        kind: 'extra',
+        collection: 'Hirobius/Component',
+        what: 'variable',
+        name: 'button/text',
+        path: 'component.button.text',
+        movedTo: 'Hirobius/Semantic',
+      },
+    ]);
+    expect(formatDrift(report)).toContain(
+      'extra    button/text: moved to Hirobius/Semantic; rebind its layers to the new variable, then delete it in Figma',
+    );
   });
 
   it('lists collections HDS does not own as information, not drift', async () => {

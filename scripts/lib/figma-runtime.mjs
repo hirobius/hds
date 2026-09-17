@@ -20,6 +20,11 @@
  * or types, so a push updates what it owns (keeping ids, and with them every
  * binding) and creates only what is missing. Nothing is deleted unless the
  * payload asks for prune.
+ *
+ * Moves. The Plugin API cannot move a variable between collections, so a token
+ * the model moved to another collection is created there, and the old variable
+ * (with every binding to it) stays. The plan lists it under `moves`, and prune
+ * never deletes it: someone rebinds its layers, then deletes it in Figma.
  */
 
 // ── Primitives ───────────────────────────────────────────────────────────────
@@ -35,6 +40,27 @@ export function hdsChecksum(text) {
     hash = Math.imul(hash, 0x01000193) >>> 0;
   }
   return ('00000000' + hash.toString(16)).slice(-8);
+}
+
+/**
+ * Refuses a use_figma script whose runtime code changed on the way into Figma
+ * (an agent retypes the whole script into the `code` parameter). `functions`
+ * is every top-level runtime function and `checksum` is hdsChecksum of their
+ * source text joined by newlines, as `pnpm figma:push` generated it. Carriage
+ * returns are ignored, so a CRLF transport still passes.
+ */
+export function hdsVerifyRuntime(functions, checksum) {
+  const texts = functions.map((fn) => String(fn).replace(/\r/g, ''));
+  if (texts.some((text) => /\{\s*\[native code\]\s*\}\s*$/.test(text))) {
+    throw new Error(
+      'This Figma runtime does not expose function source, so the script cannot read its own code to check it. Nothing was read or written. Use the development plugin (figma/push/plugin), which Figma loads from disk.',
+    );
+  }
+  if (hdsChecksum(texts.join('\n')) !== checksum) {
+    throw new Error(
+      "The script's runtime code does not match its checksum: it changed after `pnpm figma:push` generated it (a copy or transcription error). Nothing was read or written. Regenerate with `pnpm figma:push` and run the script unmodified.",
+    );
+  }
 }
 
 /** Six decimals: below Figma's 32-bit float noise, far below an 8-bit color step. */
@@ -382,6 +408,7 @@ export function hdsPlan(model, state, options) {
     effectStyles: [],
     removals: { variables: [], textStyles: [], effectStyles: [], modes: [] },
     extras: { variables: [], textStyles: [], effectStyles: [], modes: [] },
+    moves: [],
     unmanagedCollections: state.collections
       .filter((c) => !match.claimedCollections.has(c.id))
       .map((c) => c.name),
@@ -406,6 +433,26 @@ export function hdsPlan(model, state, options) {
       );
     }
   };
+  // The model variable an unmatched Figma variable was moved to: the stable
+  // keys hdsMatch uses, strongest first, looked up in the other collections.
+  const movedTo = (sv, fromKey) => {
+    const unowned = !sv.path || !homeOf.has(sv.path);
+    const web = sv.codeSyntax.WEB;
+    const passes = [
+      (mv) => Boolean(sv.path) && sv.path === mv.path,
+      (mv) => hdsRenamedPath(sv.path, opts.renames) === mv.path,
+      (mv) => unowned && Boolean(web) && Boolean(mv.codeSyntax) && mv.codeSyntax.WEB === web,
+      (mv) => unowned && !web && sv.name === mv.name,
+    ];
+    for (const pass of passes) {
+      for (const mc of model.collections) {
+        if (mc.key === fromKey) continue;
+        const hit = mc.variables.find((mv) => mv.resolvedType === sv.resolvedType && pass(mv));
+        if (hit) return { to: mc.name, path: hit.path };
+      }
+    }
+    return null;
+  };
 
   // Collections and modes.
   const sourceModeOf = {};
@@ -421,6 +468,7 @@ export function hdsPlan(model, state, options) {
         hiddenFromPublishing: mc.hiddenFromPublishing,
         changes: [],
         modes: { initial: mc.modes[0], rename: [], add: mc.modes.slice(1), remove: [] },
+        defaultMode: null,
         stampKey: true,
       });
       continue;
@@ -446,6 +494,9 @@ export function hdsPlan(model, state, options) {
     if (sc.name !== mc.name) changes.push('name');
     if (sc.hiddenFromPublishing !== mc.hiddenFromPublishing) changes.push('hiddenFromPublishing');
     const remove = prune ? extraModes : [];
+    // Figma renders the default mode wherever no mode is set, and the Plugin API
+    // cannot change it (defaultModeId is read-only), so a wrong one is reported.
+    const defaultMode = rename.length ? mc.modes[0] : sc.defaultMode;
     plan.collections.push({
       key: mc.key,
       id: sc.id,
@@ -456,6 +507,8 @@ export function hdsPlan(model, state, options) {
       hiddenFromPublishing: mc.hiddenFromPublishing,
       changes,
       modes: { rename, add, remove },
+      defaultMode:
+        defaultMode === mc.modes[0] ? null : { expected: mc.modes[0], actual: defaultMode },
       stampKey: sc.key !== mc.key,
     });
   }
@@ -519,7 +572,18 @@ export function hdsPlan(model, state, options) {
     for (const sv of sc.variables) {
       if (match.claimedVariables.has(sv.id)) continue;
       const item = { id: sv.id, collection: mc.name, name: sv.name, path: sv.path };
-      if (prune) plan.removals.variables.push(item);
+      const move = movedTo(sv, mc.key);
+      if (move) {
+        plan.moves.push({
+          id: sv.id,
+          collection: mc.name,
+          name: sv.name,
+          path: move.path,
+          to: move.to,
+        });
+        plan.extras.variables.push(item);
+        kept.push(Object.assign({ movedTo: move.to }, item));
+      } else if (prune) plan.removals.variables.push(item);
       else {
         plan.extras.variables.push(item);
         kept.push(item);
@@ -529,7 +593,11 @@ export function hdsPlan(model, state, options) {
     kept.forEach((item) => (holders[item.name] = item));
     for (const mv of mc.variables) {
       const holder = holders[mv.name];
-      if (holder) {
+      if (holder && holder.movedTo) {
+        plan.conflicts.push(
+          `${mc.name}: "${mv.name}" (${mv.path}) is taken by ${holder.id}, a variable the model moved to ${holder.movedTo}. Rebind its layers to the new variable, then delete it in Figma.`,
+        );
+      } else if (holder) {
         plan.conflicts.push(
           `${mc.name}: "${mv.name}" (${mv.path}) is taken by a variable the model does not own (${holder.id}${holder.path ? ', path ' + holder.path : ''}). Rename or delete it in Figma, or push with --prune to remove it.`,
         );
@@ -636,6 +704,24 @@ export function hdsSummarize(plan) {
 export function hdsSummaryLine(summary) {
   const t = summary.totals;
   return `updated ${t.updated} · created ${t.created} · deleted ${t.deleted}`;
+}
+
+/** What a push cannot fix and a person must: a wrong default mode, a variable left behind by a move. */
+export function hdsPlanWarnings(plan) {
+  const warnings = [];
+  plan.collections.forEach((c) => {
+    if (!c.defaultMode) return;
+    const { expected, actual } = c.defaultMode;
+    warnings.push(
+      `${c.name} defaults to ${actual}, but the model's first mode is ${expected}. The Plugin API cannot change a collection's default mode, so frames with no mode set render ${actual}: in Figma, make ${expected} the collection's first mode.`,
+    );
+  });
+  plan.moves.forEach((m) =>
+    warnings.push(
+      `${m.collection}: ${m.name} (${m.path}) moved to ${m.to}. The Plugin API cannot move a variable between collections, so the push creates it in ${m.to} and keeps the old variable, which layers may still be bound to. Rebind them to the new variable, then delete the old one in Figma. Prune never deletes it.`,
+    ),
+  );
+  return warnings;
 }
 
 /** One line per planned change, for the plugin UI and the terminal. */
@@ -942,7 +1028,9 @@ export async function hdsRunPush(figma, payload, checksum, override) {
     summary,
     changes: hdsDescribePlan(plan),
     problems,
+    warnings: hdsPlanWarnings(plan),
     extras: plan.extras,
+    moves: plan.moves,
     unmanagedCollections: plan.unmanagedCollections,
   };
   if (options.dryRun) return report;
@@ -958,7 +1046,9 @@ export async function hdsRunPush(figma, payload, checksum, override) {
     );
   }
 
-  const after = hdsSummarize(hdsPlan(payload.model, await hdsReadState(figma), options)).totals;
+  const afterPlan = hdsPlan(payload.model, await hdsReadState(figma), options);
+  const after = hdsSummarize(afterPlan).totals;
+  report.warnings = hdsPlanWarnings(afterPlan);
   if (after.created + after.updated + after.deleted > 0) {
     throw new Error(
       `The push ran but Figma still differs from the model (${hdsSummaryLine({ totals: after })}). Run pnpm figma:snapshot and pnpm check:figma-drift to see what did not stick.`,

@@ -80,6 +80,18 @@ describe('use_figma scripts', () => {
     expect(paths('role')).toHaveLength(5);
   });
 
+  it('with prune, carry the identity of every variable, so a moved one is recognised', () => {
+    const { payload } = buildPushPayload(model, { scope: ['role'], prune: true });
+    const component = payload.model.collections.find((c) => c.key === 'component');
+    expect(component.variables).toHaveLength(6);
+    expect(Object.keys(component.variables[0]).sort()).toEqual([
+      'codeSyntax',
+      'name',
+      'path',
+      'resolvedType',
+    ]);
+  });
+
   it('push chunk by chunk in an isolated context, then converge to zero changes', async () => {
     const figma = newFixtureFile();
     const lines = [];
@@ -117,6 +129,61 @@ describe('use_figma scripts', () => {
     );
     await expect(runUseFigma(script, figma)).rejects.toThrow(/does not match its checksum/);
     expect(figma.writes).toEqual([]);
+  });
+
+  describe('verify their own runtime code before they read or write', () => {
+    // A line an agent could alter while passing the script through use_figma:
+    // with `true`, a push without prune would delete every extra variable.
+    const pruneGuard = 'if (prune) plan.removals.variables.push(item);';
+
+    it('a changed line of runtime code makes a push script fail before writing', async () => {
+      const figma = newFixtureFile();
+      await runUseFigma(buildUseFigmaPushScript(model), figma);
+      const semantic = (await figma.variables.getLocalVariableCollectionsAsync()).find(
+        (c) => c.name === 'Hirobius/Semantic',
+      );
+      figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
+      const script = buildUseFigmaPushScript(model, { scope: ['semantic'] });
+      expect(script).toContain(pruneGuard);
+      const start = figma.writes.length;
+
+      await expect(
+        runUseFigma(
+          script.replace(pruneGuard, 'if (true) plan.removals.variables.push(item);'),
+          figma,
+        ),
+      ).rejects.toThrow(/code does not match its checksum.*Nothing was read or written/);
+      expect(figma.writes.slice(start)).toEqual([]);
+    });
+
+    it('a changed snapshot script fails before reading', async () => {
+      const script = buildUseFigmaSnapshotScript().replace(
+        'takenAt: new Date().toISOString(),',
+        "takenAt: '2020-01-01T00:00:00.000Z',",
+      );
+      await expect(runUseFigma(script, newFixtureFile())).rejects.toThrow(
+        /code does not match its checksum/,
+      );
+    });
+
+    it('still run when a transport turns the line endings into CRLF', async () => {
+      const figma = newFixtureFile();
+      const report = await runUseFigma(
+        buildUseFigmaPushScript(model).replace(/\n/g, '\r\n'),
+        figma,
+      );
+      expect(report.summary.variables.created).toBe(57);
+    });
+
+    it('refuse, naming the plugin as the fix, where Figma hides function source', async () => {
+      const figma = newFixtureFile();
+      const hidden =
+        "Function.prototype.toString = function () { return 'function () { [native code] }'; };\n";
+      await expect(runUseFigma(hidden + buildUseFigmaPushScript(model), figma)).rejects.toThrow(
+        /cannot read its own code.*development plugin/,
+      );
+      expect(figma.writes).toEqual([]);
+    });
   });
 });
 

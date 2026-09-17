@@ -36,10 +36,17 @@ breaks an invariant) and writes two carriers of the same code
     prune extras (deletes)".
   - **Take snapshot**: see below.
 - **use_figma scripts** (Figma MCP server): `figma/push/use-figma/01-primitive.js`
-  … `05-styles.js`. Run them in order, unmodified. Each carries a checksum of its
-  payload; a script that was changed or mistyped stops before writing. With the
-  current tokens each script is 40–90 KB of code for the agent to pass through,
-  so the development plugin is the easier path for a full push or a snapshot.
+  … `05-styles.js`. Run them in order, unmodified. An agent retypes each script
+  into use_figma's `code` parameter, so each checks two checksums before it reads
+  or writes anything: one over its payload, and one over the source of every
+  runtime function (`Function.prototype.toString`). A script whose data or code
+  changed on the way stops there; only its last two call lines are not covered.
+  If Figma's sandbox ever hides function source, the scripts refuse and name the
+  development plugin, which Figma loads from disk. With the
+  current tokens each script is 46–96 KB of code for the agent to pass through
+  (a `--prune` build carries every variable's identity, so moved tokens are
+  recognised, and reaches 92–117 KB), so the development plugin is the easier
+  path for a full push, a prune or a snapshot.
 
 What a push does:
 
@@ -48,6 +55,13 @@ What a push does:
   `TOKEN_MIGRATION.md` rename of that path, the variable's `codeSyntax.WEB`, then
   its name. Matching stays inside one collection and one type. A matched variable
   keeps its id, so every layer bound to it stays bound.
+- **Cannot move a variable between collections** (the Plugin API has no move).
+  When the model moves a token to another collection (#213 moved themed
+  component tokens into `Hirobius/Semantic`), the push creates it in its new
+  collection and keeps the old variable, with every binding to it. The plan
+  lists it under moves and warns. Rebind its layers to the new variable, then
+  delete the old one in Figma. Prune never deletes a moved variable, and drift
+  reports it as an extra until it is gone.
 - **Updates before it creates.** Renames that collide (a swap, a chain) go through
   temporary names first.
 - **Renames a collection's initial mode** ("Mode 1", or a hand-made "Value") to
@@ -58,6 +72,11 @@ What a push does:
   push before anything is written.
 - **Refuses before writing** when a text style font is not installed, or when a
   script's aliases point at a collection that is not in the file yet.
+- **Cannot change a collection's default mode** (`defaultModeId` is read-only).
+  Figma renders the default mode wherever no mode is set, so a collection whose
+  default is not the model's first mode (Semantic defaulting to Dark) is a
+  warning on push and a `changed default mode` drift item. Fix it in Figma by
+  making the model's first mode the collection's first mode.
 - **Ignores collections it does not own**: they are listed as "not managed by HDS".
 
 Each run prints `updated N · created N · deleted N`. A second push of the same
@@ -77,19 +96,22 @@ snapshot, without Figma.
    edited by hand), 2 when there is no snapshot yet. `--json` prints the report.
 
 The drift report is the push plan read backwards, so it always agrees with what
-a push would do. It warns when the snapshot is older than the last change to
-`hirobius.tokens.json`: that drift may be token changes that were never pushed.
-It also notes when Figma was last pushed from a different model.
+a push would do. Every push records the model's hash in the file, and the
+snapshot carries it. When that hash differs from the model the tokens build now
+(the tokens or the model builder changed), or no push is recorded, the report
+says the drift may be changes not pushed yet. When it matches, the drift was
+made in Figma after the push.
 
 Fix drift in Figma (push again), never in `snapshot.json`: an edited snapshot
 fails its checksum.
 
 CI (`ci.yml`, `check-figma-drift.mjs --ci`) fails only on drift a push cannot
-explain: a snapshot newer than the last token change that still disagrees with
-the tokens (a hand edit in Figma, or a push that did not stick). Drift against an
-older snapshot means token changes are waiting to be pushed; that is a warning,
-because a change made without Figma access cannot push. Until a snapshot is
-committed the step only adds a notice.
+explain: Figma was last pushed from exactly the model the tokens build now, yet
+differs (edited in Figma after that push). Any other drift is a warning, because
+it may be a change waiting for someone with Figma access, and a PR made without
+Figma access cannot push. The rule compares model hashes, not commit dates, so a
+branch whose token commit predates a snapshot committed later is not blamed.
+Until a snapshot is committed the step only adds a notice.
 
 ## Native import (fallback)
 

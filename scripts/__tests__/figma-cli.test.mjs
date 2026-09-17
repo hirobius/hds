@@ -5,10 +5,10 @@
  * `pnpm figma:snapshot`, `pnpm check:figma-drift`, `pnpm figma:native-import`.
  *
  * Seams: the exported command functions (writePushArtifacts, ingestSnapshot,
- * runDriftCheck, tokensChangedAt, writeNativeImport) against a temporary repo
- * root, plus the drift gate's CLI exit codes in fixture mode. Tests that spawn
- * git or node strip every GIT_* variable, so a hook-exported GIT_DIR can never
- * point them at a real repository.
+ * runDriftCheck, writeNativeImport) against a temporary repo root, plus the
+ * drift gate's CLI exit codes in fixture mode. Tests that spawn node strip
+ * every GIT_* variable, so a hook-exported GIT_DIR can never point a child
+ * process at a real repository.
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import {
@@ -25,10 +25,10 @@ import {
 import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { execFileSync, spawnSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import { planAgainstSnapshot, writePushArtifacts } from '../figma-push.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
-import { runDriftCheck, tokensChangedAt } from '../check-figma-drift.mjs';
+import { runDriftCheck } from '../check-figma-drift.mjs';
 import { writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
@@ -51,9 +51,10 @@ const tempRoot = () => {
   copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
   return root;
 };
-const takeSnapshot = async (root, edit = async () => {}) => {
-  const model = buildFigmaModel(
-    JSON.parse(readFileSync(join(root, 'hirobius.tokens.json'), 'utf8')),
+/** Pushes the root's model (through `builder`, to emulate another builder) into a new file, edits it, snapshots it. */
+const takeSnapshot = async (root, edit = async () => {}, builder = (model) => model) => {
+  const model = builder(
+    buildFigmaModel(JSON.parse(readFileSync(join(root, 'hirobius.tokens.json'), 'utf8'))),
   );
   const figma = newFixtureFile();
   const { payload, checksum } = buildPushPayload(model);
@@ -123,6 +124,23 @@ describe('pnpm figma:push', () => {
     expect(line).toBe('updated 0 · created 1 · deleted 0');
     expect(changes).toEqual(['create variable role.ring']);
   });
+
+  it('--plan: also lists what a push cannot fix, such as a wrong default mode', async () => {
+    const root = tempRoot();
+    const { model, renames } = writePushArtifacts({ root, outDir: join(root, 'figma', 'push') });
+    const figma = newFixtureFile();
+    const semantic = figma.variables.createVariableCollection('Hirobius/Semantic');
+    semantic.renameMode(semantic.defaultModeId, 'Dark');
+    semantic.addMode('Light');
+    const snapshotFile = parseSnapshotFile(serializeSnapshotFile(await hdsRunSnapshot(figma)));
+
+    const { warnings } = planAgainstSnapshot({ model, renames, snapshotFile });
+    expect(warnings).toEqual([
+      expect.stringMatching(
+        /^Hirobius\/Semantic defaults to Dark, but the model's first mode is Light/,
+      ),
+    ]);
+  });
 });
 
 describe('pnpm figma:snapshot --ingest', () => {
@@ -156,7 +174,7 @@ describe('pnpm check:figma-drift', () => {
   };
 
   it('exits 2 with the next step when no snapshot has been taken', () => {
-    const { exitCode, output } = runDriftCheck({ root: tempRoot(), tokensChangedAt: null });
+    const { exitCode, output } = runDriftCheck({ root: tempRoot() });
     expect(exitCode).toBe(2);
     expect(output).toMatch(/No Figma snapshot yet.*pnpm figma:snapshot/s);
   });
@@ -164,7 +182,7 @@ describe('pnpm check:figma-drift', () => {
   it('exits 0 when Figma matches the model and 1 when it drifted', async () => {
     const root = tempRoot();
     writeSnapshot(root, await takeSnapshot(root));
-    expect(runDriftCheck({ root, tokensChangedAt: null })).toMatchObject({ exitCode: 0 });
+    expect(runDriftCheck({ root })).toMatchObject({ exitCode: 0 });
 
     writeSnapshot(
       root,
@@ -176,7 +194,7 @@ describe('pnpm check:figma-drift', () => {
         variable.setValueForMode(primitives.defaultModeId, 6);
       }),
     );
-    const drifted = runDriftCheck({ root, tokensChangedAt: null });
+    const drifted = runDriftCheck({ root });
     expect(drifted.exitCode).toBe(1);
     expect(drifted.output).toContain('changed  radius/8 [Default]: model 8, Figma 6');
   });
@@ -184,7 +202,7 @@ describe('pnpm check:figma-drift', () => {
   it('exits 1 on a hand-edited snapshot', async () => {
     const root = tempRoot();
     writeSnapshot(root, (await takeSnapshot(root)).replace('"radius/8"', '"radius/eight"'));
-    const { exitCode, output } = runDriftCheck({ root, tokensChangedAt: null });
+    const { exitCode, output } = runDriftCheck({ root });
     expect(exitCode).toBe(1);
     expect(output).toMatch(/edited after it was taken/);
   });
@@ -196,41 +214,70 @@ describe('pnpm check:figma-drift', () => {
       });
 
     it('passes with a notice while no snapshot has been committed', () => {
-      const { exitCode, output } = runDriftCheck({
-        root: tempRoot(),
-        tokensChangedAt: null,
-        ci: true,
-      });
+      const { exitCode, output } = runDriftCheck({ root: tempRoot(), ci: true });
       expect(exitCode).toBe(0);
       expect(output).toMatch(/^::notice title=Figma drift::No Figma snapshot yet/);
     });
 
-    it('warns without failing when the snapshot is older than the tokens (a push is pending)', async () => {
+    it('warns without failing when the tokens build a model other than the one last pushed, whatever the dates', async () => {
+      // A token PR whose commit (or file time) predates a snapshot committed later.
       const root = tempRoot();
-      writeSnapshot(root, await driftedSnapshot(root));
-      const later = new Date(Date.now() + 60_000).toISOString();
-      const { exitCode, output } = runDriftCheck({ root, tokensChangedAt: later, ci: true });
+      writeSnapshot(root, await takeSnapshot(root));
+      const tokens = join(root, 'hirobius.tokens.json');
+      writeFileSync(tokens, readFileSync(tokens, 'utf8').replace('#1E2EFD', '#1E2EFE'));
+      const longAgo = new Date('2020-01-01T00:00:00Z');
+      utimesSync(tokens, longAgo, longAgo);
+
+      const { exitCode, output } = runDriftCheck({ root, ci: true });
       expect(exitCode).toBe(0);
-      expect(output).toContain('missing  ring (role.ring)');
       expect(output).toMatch(
-        /::warning title=Figma drift::1 drift item\(s\) against a snapshot older than hirobius\.tokens\.json/,
+        /::warning title=Figma drift::1 drift item\(s\), and Figma was last pushed from a different model/,
       );
     });
 
-    it('fails when a snapshot newer than the tokens disagrees with them', async () => {
+    it('warns without failing when only the model builder changed, not hirobius.tokens.json', async () => {
+      const root = tempRoot();
+      const olderBuilder = (model) => {
+        const copy = JSON.parse(JSON.stringify(model));
+        copy.collections[0].variables[0].description = 'What an older builder wrote.';
+        return copy;
+      };
+      writeSnapshot(root, await takeSnapshot(root, async () => {}, olderBuilder));
+      const tokens = join(root, 'hirobius.tokens.json');
+      const longAgo = new Date('2020-01-01T00:00:00Z');
+      utimesSync(tokens, longAgo, longAgo);
+
+      const { exitCode, output } = runDriftCheck({ root, ci: true });
+      expect(exitCode).toBe(0);
+      expect(output).toMatch(/::warning title=Figma drift::1 drift item\(s\)/);
+    });
+
+    it('warns without failing when no pnpm figma:push is recorded in the Figma file', async () => {
+      const root = tempRoot();
+      const figma = newFixtureFile();
+      figma.variables.createVariableCollection('Hirobius/Primitives');
+      writeSnapshot(root, serializeSnapshotFile(await hdsRunSnapshot(figma)));
+
+      const { exitCode, output } = runDriftCheck({ root, ci: true });
+      expect(exitCode).toBe(0);
+      expect(output).toMatch(/::warning title=Figma drift::.*never pushed by pnpm figma:push/);
+    });
+
+    it('fails when Figma was last pushed from this exact model and still differs', async () => {
       const root = tempRoot();
       writeSnapshot(root, await driftedSnapshot(root));
-      const earlier = '2020-01-01T00:00:00.000Z';
-      const { exitCode, output } = runDriftCheck({ root, tokensChangedAt: earlier, ci: true });
+      const { exitCode, output } = runDriftCheck({ root, ci: true });
       expect(exitCode).toBe(1);
-      expect(output).toMatch(/::error title=Figma drift::1 drift item\(s\)/);
+      expect(output).toMatch(
+        /::error title=Figma drift::1 drift item\(s\) although Figma was last pushed from this exact model/,
+      );
     });
   });
 
   it('prints JSON with --json', async () => {
     const root = tempRoot();
     writeSnapshot(root, await takeSnapshot(root));
-    const { output } = runDriftCheck({ root, tokensChangedAt: null, json: true });
+    const { output } = runDriftCheck({ root, json: true });
     expect(JSON.parse(output)).toMatchObject({
       ok: true,
       counts: { missing: 0, extra: 0, changed: 0 },
@@ -255,32 +302,6 @@ describe('pnpm check:figma-drift', () => {
     expect(violating.status, violating.stdout + violating.stderr).toBe(1);
     const passing = run('passing.example.d');
     expect(passing.status, passing.stdout + passing.stderr).toBe(0);
-  });
-});
-
-describe('tokensChangedAt', () => {
-  const git = (cwd, args, extraEnv = {}) =>
-    execFileSync('git', ['-c', 'user.name=Test', '-c', 'user.email=test@example.com', ...args], {
-      cwd,
-      env: { ...cleanEnv(), ...extraEnv },
-      stdio: 'pipe',
-    });
-
-  it('is the last commit that touched hirobius.tokens.json, or the file time when it has uncommitted edits', () => {
-    const root = tempRoot();
-    git(root, ['init', '-q']);
-    git(root, ['add', 'hirobius.tokens.json']);
-    git(root, ['commit', '-q', '-m', 'tokens'], {
-      GIT_COMMITTER_DATE: '2026-09-01T10:00:00Z',
-      GIT_AUTHOR_DATE: '2026-09-01T10:00:00Z',
-    });
-    expect(tokensChangedAt(root)).toBe('2026-09-01T10:00:00.000Z');
-
-    const tokens = join(root, 'hirobius.tokens.json');
-    writeFileSync(tokens, `${readFileSync(tokens, 'utf8')}\n`);
-    const edited = new Date('2026-09-02T12:00:00Z');
-    utimesSync(tokens, edited, edited);
-    expect(tokensChangedAt(root)).toBe('2026-09-02T12:00:00.000Z');
   });
 });
 
