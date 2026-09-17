@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://hirobius.com/schemas/tenant-metadata.schema.json",
   "title": "Hirobius Tenant Metadata",
-  "description": "Identity, deployment and brand metadata for one tenant (tenants/<slug>/metadata.json). Token values live in the sibling tokens.json; this file is for tooling that needs tenant facts without parsing DTCG. Field contract: docs/architecture/tenant-token-overlay-format.md (metadata.json section). The required list and the tier 2+ legal rule follow that table. scripts/check-tenant-tokens.mjs enforces the M1 (slug matches the directory name), M2 (slug, displayName, tier, status present) and M3 (status value) subset.",
+  "description": "Identity, deployment and brand metadata for one tenant (tenants/<slug>/metadata.json). Token values live in the sibling tokens.json; this file is for tooling that needs tenant facts without parsing DTCG. Field contract: docs/architecture/tenant-token-overlay-format.md (metadata.json section); scripts/check-tenant-tokens.mjs enforces its M1-M3 subset.",
   "type": "object",
   "additionalProperties": false,
   "required": ["slug", "displayName", "tier", "deployment", "brand", "status"],
