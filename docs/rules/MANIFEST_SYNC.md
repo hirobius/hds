@@ -182,7 +182,7 @@ hirobius.figma-variables.json + hirobius.figma-variables-api.json  (gitignored e
        ↓  nothing automatic — no push to Figma runs today
 ```
 
-Nothing flows back from Figma into the repo. The archived CI push used the Figma REST variables API, which is Enterprise-only. ADR-025 records the Pro-plan push, import, and drift path.
+Nothing flows back from Figma into the repo. See ADR-025 for the Pro-plan push, import, and drift path.
 
 Key facts:
 
