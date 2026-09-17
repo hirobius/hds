@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-09-14T00:00:00Z",
-  "phase": "stalled",
-  "headline": "HDS development has stalled since 2026-07-15 (last commit d3505fd) — two months cold. The release (#199), Chromatic (#200), and Ralph loop heartbeat (#201) workflows are all still frozen to manual dispatch from the 2026-07-09 shelving and were never restored, so nothing has published, no visual regression runs on PRs, and the loop has had no scheduled heartbeat since 2026-07-16. Package remains published as @hirobius/design-system on npm.",
+  "updatedAt": "2026-09-17T00:00:00Z",
+  "phase": "active",
+  "headline": "CI, release, and Chromatic triggers were restored on 2026-09-14 (#204). The front door now states counts generated from source (pnpm readme:counts), ships a root MIT LICENSE plus a NOTICE.md for the embedded Satoshi and Geist Mono fonts, warns against importing the broken Figma variable export, and no longer overclaims Figma sync; ADR-025 is Proposed, not accepted. Nothing has published since 0.13.0 because no changesets exist yet (#199).",
   "next": [
-    "Restore CI triggers frozen since the 2026-07-09 shelving: release push trigger (#199), Chromatic pull_request/push triggers (#200), Ralph loop heartbeat (#201)",
-    "Continue burning down epic #124's remaining open children: #126, #129, #132, #133, #134"
+    "Adrian: accept or amend ADR-025, confirm MIT for the code, decide Satoshi redistribution (plan 1.7) before the next publish, and fill or drop the README status placeholder (front-door PR)",
+    "Figma readiness per ADR-025: exporter dark-mode fix and tested figma:model, local push, import fallback, snapshot drift, Code Connect v2 templates with a local parse/preview gate",
+    "Land the privacy cleanup (#210) before sharing the repo with reviewers",
+    "Cut 0.14.0 once changesets exist (#199)"
   ],
   "blocked": []
 }
