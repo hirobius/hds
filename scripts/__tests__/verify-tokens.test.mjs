@@ -180,10 +180,12 @@ describe('runChecks — NOT_ALIASED', () => {
       semantic: { color: { $type: 'color', bg: { $value: '#fff' } } },
     };
     const css = ':root {\n  --primitive-color-white: #fff;\n  --semantic-color-bg: #fff;\n}';
-    const ts  = '"var(--primitive-color-white)" "var(--semantic-color-bg)"';
+    const ts = '"var(--primitive-color-white)" "var(--semantic-color-bg)"';
     const cssVarMap = parseCSSVarMap(css);
     const { errors } = runChecks(raw, cssVarMap, ts);
-    expect(errors.some(e => e.includes('NOT_ALIASED') && e.includes('--semantic-color-bg'))).toBe(true);
+    expect(errors.some((e) => e.includes('NOT_ALIASED') && e.includes('--semantic-color-bg'))).toBe(
+      true,
+    );
   });
 
   it('allows oklch() values at the semantic layer', () => {
@@ -191,11 +193,12 @@ describe('runChecks — NOT_ALIASED', () => {
       primitive: { color: { $type: 'color', white: { $value: '#fff' } } },
       semantic: { color: { $type: 'color', bg: { $value: '#fff' } } },
     };
-    const css = ':root {\n  --primitive-color-white: #fff;\n  --semantic-color-bg: oklch(100% 0 0);\n}';
-    const ts  = '"var(--primitive-color-white)" "var(--semantic-color-bg)"';
+    const css =
+      ':root {\n  --primitive-color-white: #fff;\n  --semantic-color-bg: oklch(100% 0 0);\n}';
+    const ts = '"var(--primitive-color-white)" "var(--semantic-color-bg)"';
     const cssVarMap = parseCSSVarMap(css);
     const { errors } = runChecks(raw, cssVarMap, ts);
-    expect(errors.some(e => e.includes('NOT_ALIASED'))).toBe(false);
+    expect(errors.some((e) => e.includes('NOT_ALIASED'))).toBe(false);
   });
 });
 
@@ -206,11 +209,14 @@ describe('runChecks — BROKEN_ALIAS', () => {
       primitive: { color: { $type: 'color', white: { $value: '#fff' } } },
       semantic: { color: { $type: 'color', bg: { $value: '{primitive.color.white}' } } },
     };
-    const css = ':root {\n  --primitive-color-white: #fff;\n  --semantic-color-bg: var(--primitive-color-TYPO);\n}';
-    const ts  = '"var(--primitive-color-white)" "var(--semantic-color-bg)"';
+    const css =
+      ':root {\n  --primitive-color-white: #fff;\n  --semantic-color-bg: var(--primitive-color-TYPO);\n}';
+    const ts = '"var(--primitive-color-white)" "var(--semantic-color-bg)"';
     const cssVarMap = parseCSSVarMap(css);
     const { errors } = runChecks(raw, cssVarMap, ts);
-    expect(errors.some(e => e.includes('BROKEN_ALIAS') && e.includes('--semantic-color-bg'))).toBe(true);
+    expect(
+      errors.some((e) => e.includes('BROKEN_ALIAS') && e.includes('--semantic-color-bg')),
+    ).toBe(true);
   });
 });
 
@@ -221,7 +227,9 @@ describe('runChecks — MISSING_TS_REF', () => {
     const cssVarMap = parseCSSVarMap(CLEAN_CSS);
     const ts = '// no vars here';
     const { warnings } = runChecks(raw, cssVarMap, ts);
-    expect(warnings.some(w => w.includes('MISSING_TS_REF') && w.includes('--primitive-color-white'))).toBe(true);
+    expect(
+      warnings.some((w) => w.includes('MISSING_TS_REF') && w.includes('--primitive-color-white')),
+    ).toBe(true);
   });
 });
 
@@ -233,7 +241,9 @@ describe('runChecks — ORPHANED_CSS_VAR', () => {
     const cssVarMap = parseCSSVarMap(css);
     const { warnings, orphans } = runChecks(raw, cssVarMap, CLEAN_TS);
     expect(orphans).toBe(1);
-    expect(warnings.some(w => w.includes('ORPHANED_CSS_VAR') && w.includes('--orphan-var'))).toBe(true);
+    expect(warnings.some((w) => w.includes('ORPHANED_CSS_VAR') && w.includes('--orphan-var'))).toBe(
+      true,
+    );
   });
 
   it('reports zero orphans when CSS exactly matches JSON', () => {
@@ -262,7 +272,7 @@ describe('runChecks — typography composite', () => {
       },
     };
     const subVars = expandedTypoVars(['semantic', 'typography', 'body'], value);
-    const cssLines = subVars.map(v => `  ${v}: value;`).join('\n');
+    const cssLines = subVars.map((v) => `  ${v}: value;`).join('\n');
     const css = `:root {\n${cssLines}\n}`;
     const cssVarMap = parseCSSVarMap(css);
     const { skipped, checked, errors } = runChecks(raw, cssVarMap, '');
@@ -277,7 +287,13 @@ describe('runChecks — typography composite', () => {
         typography: {
           body: {
             $type: 'typography',
-            $value: { fontFamily: 'Atkinson Hyperlegible Next', fontSize: '16px', fontWeight: '400', letterSpacing: '0', lineHeight: '1.5' },
+            $value: {
+              fontFamily: 'Atkinson Hyperlegible Next',
+              fontSize: '16px',
+              fontWeight: '400',
+              letterSpacing: '0',
+              lineHeight: '1.5',
+            },
           },
         },
       },
@@ -285,7 +301,7 @@ describe('runChecks — typography composite', () => {
     const cssVarMap = parseCSSVarMap(':root {}');
     const { errors } = runChecks(raw, cssVarMap, '');
     expect(errors).toHaveLength(5);
-    errors.forEach(e => expect(e).toMatch(/MISSING_CSS_VAR.*expanded from typography/));
+    errors.forEach((e) => expect(e).toMatch(/MISSING_CSS_VAR.*expanded from typography/));
   });
 });
 
@@ -303,7 +319,7 @@ describe('runChecks — transition composite', () => {
       },
     };
     const subVars = expandedTransitionVars(['primitive', 'motion', 'ease']);
-    const cssLines = subVars.map(v => `  ${v}: value;`).join('\n');
+    const cssLines = subVars.map((v) => `  ${v}: value;`).join('\n');
     const cssVarMap = parseCSSVarMap(`:root {\n${cssLines}\n}`);
     const { skipped, checked, errors } = runChecks(raw, cssVarMap, '');
     expect(skipped).toBe(1);
