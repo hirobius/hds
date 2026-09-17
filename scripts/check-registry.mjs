@@ -40,7 +40,6 @@ const EXCLUDE = new Set([
   'TokenCascadeDiagram.tsx',
   'TokenExplorerPanel.tsx',
   'HirobiusCaseStudyPage.tsx',
-  'ClientBCaseStudyPage.tsx',
   'PrimaryCaseStudyPage.tsx',
   'PortfolioHomePage.tsx',
 ]);

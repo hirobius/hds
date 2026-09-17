@@ -1,0 +1,13 @@
+{
+  "_comment": "Copy to knowledge-clients.local.json (gitignored) and replace with real client slugs + regex patterns. Each anyOf entry is a group of case-insensitive regex sources that must ALL match; the first client with a matching group wins. Never commit real client names.",
+  "clients": [
+    {
+      "slug": "client-a",
+      "anyOf": [["\\bacme\\s+widgets\\b"], ["\\bacme\\b", "\\bwidget\\b"]]
+    },
+    {
+      "slug": "client-b",
+      "anyOf": [["\\bexample\\s+org\\b"]]
+    }
+  ]
+}

@@ -2,12 +2,12 @@
   "$schema": "../../hirobius.tenant-metadata.schema.json",
   "slug": "accent-lilac",
   "displayName": "Lilac Accent",
-  "tagline": "Surety-bond microsite + guided intake for client-a.",
+  "tagline": "Client microsite + guided intake.",
   "tier": 2,
   "deployment": {
     "vercelProject": "accent-lilac",
     "primaryDomain": null,
-    "previewDomain": "accent-lilac.vercel.app"
+    "previewDomain": null
   },
   "brand": {
     "primaryHex": "#6f3fd4",
@@ -15,16 +15,16 @@
     "logoPath": null
   },
   "legal": {
-    "entity": "client-a",
+    "entity": null,
     "jurisdiction": null,
     "stripeAccountKind": null
   },
   "createdAt": "2026-07-06",
   "status": "scaffold",
   "_notes": [
-    "Hirobius' first external client (client contact / client-a, client.example). Surety-bond microsite; first external consumer of @hirobius/design-system.",
+    "First external consumer of @hirobius/design-system. Client identity and contact details are intentionally not recorded in this public repo.",
     "Accent overlay aliases primitive.color.lilac.* (added to base tokens in the same change). Semantic tier only, per R1.",
-    "Overlay authored in hirobius/consumer-app (design-system/accent-lilac.tenant-tokens.json); upstreamed here verbatim.",
+    "Overlay authored downstream in the consumer app; upstreamed here verbatim.",
     "Brand hex #6f3fd4 = primitive.color.lilac.500 (AA for white text on page + card surfaces)."
   ]
 }

@@ -54,7 +54,7 @@ describe('computePipeline', () => {
       overdueAfterDays: 14,
     },
     {
-      slug: 'prospect-001',
+      slug: 'prospect-a',
       status: 'prospect',
       lastContactAt: '2026-04-15',
       lastContactKind: 'call',
@@ -91,7 +91,7 @@ describe('computePipeline', () => {
 
   it('marks records as overdue when ageDays > overdueAfterDays (active + prospect only)', () => {
     const r = computePipeline(records, NOW);
-    expect(r.overdue.map((x) => x.slug)).toEqual(['prospect-001', 'client-b']);
+    expect(r.overdue.map((x) => x.slug)).toEqual(['prospect-a', 'client-b']);
   });
 
   it('sorts overdue by ageDays descending (most stale first)', () => {
@@ -112,7 +112,7 @@ describe('computePipeline', () => {
 
   it('preserves nextTouchSuggestion on each output record', () => {
     const r = computePipeline(records, NOW);
-    const lilac = r.current.find((x) => x.slug === 'client-a');
-    expect(lilac.nextTouchSuggestion).toBe('call');
+    const currentRecord = r.current.find((x) => x.slug === 'client-a');
+    expect(currentRecord.nextTouchSuggestion).toBe('call');
   });
 });
