@@ -137,9 +137,12 @@ function escapeRegex(value) {
 function findConsumers(componentName, filePath, sourceFiles) {
   const pattern = new RegExp(`\\b${escapeRegex(componentName)}\\b`);
 
+  // Figma Code Connect templates (*.figma.ts) name the component in a snippet
+  // for Figma's runtime; they are not consumers of it.
   return sourceFiles
     .filter((candidate) => candidate !== filePath)
     .filter((candidate) => !candidate.startsWith(DOCS_PAGE_SEGMENT))
+    .filter((candidate) => !/\.figma\.tsx?$/.test(candidate))
     .filter((candidate) => {
       const content = readFileSync(join(ROOT, candidate), 'utf8');
       return pattern.test(content);
@@ -229,7 +232,9 @@ for (const entry of activeDiscoveredComponents) {
     docExempt: entry.docExempt,
     filePath: entry.filePath,
     description: entry.description || current.description,
-    figmaUrl: entry.figmaUrl ?? current.figmaUrl ?? null,
+    // The component's `@figma` JSDoc tag is the only source: removing the tag
+    // unmaps the component (and its Code Connect template) on the next regen.
+    figmaUrl: entry.figmaUrl ?? null,
     figmaId: current.figmaId ?? (entry.name === 'TextLockup' ? 'text-lockup-pattern' : null),
     // figmaLink: explicit "View in Figma" target (10d-14). A real Figma URL or
     // null, never a placeholder. Legacy `TODO:hds-master:<Name>` markers are

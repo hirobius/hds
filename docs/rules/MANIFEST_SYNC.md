@@ -96,24 +96,20 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
     "targetSelector": "Label"
   },
   {
-    "name": "Leading icon",
+    "name": "Show icon",
     "type": "BOOLEAN",
     "defaultValue": false,
     "sourceProp": "iconLeft",
     "boundTo": "visibility",
     "targetSelector": "IconLeft"
-  },
-  {
-    "name": "Show label",
-    "type": "BOOLEAN",
-    "defaultValue": true,
-    "sourceProp": "iconOnly",
-    "boundTo": "visibility",
-    "targetSelector": "Label",
-    "invert": true
   }
 ]
 ```
+
+For a component with a Code Connect template, every `name` here and every
+`figmaPropertyMapping` value must be a property in `figma/code-connect.json`
+(the hds#73 inventory) with the same type. `pnpm check:figma-mapping` fails
+otherwise; see `docs/architecture/variant-contract.md` → "Figma mapping".
 
 | Field            | Required | Notes                                                                                                          |
 | ---------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
@@ -123,7 +119,7 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
 | `sourceProp`     | no       | React prop the JSX compiler maps from.                                                                         |
 | `boundTo`        | no       | Defaults: `BOOLEAN→visibility`, `TEXT→characters`, `INSTANCE_SWAP→mainComponent`.                              |
 | `targetSelector` | no       | Logical name of the tree node the property attaches to. Plugin matches by `node.name`. Convention: PascalCase. |
-| `invert`         | no       | If true, the JSX compiler negates the source prop value (e.g. `iconOnly→!Show label`).                         |
+| `invert`         | no       | If true, the JSX compiler negates the source prop value (e.g. `Content.hideClose→!Show close`).                |
 
 ### When the JSX compiler emits an instance, it must:
 

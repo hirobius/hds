@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-07-10T04:00:37.758Z",
+  "generated": "2026-09-17T07:57:06.152Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -38,9 +38,11 @@
     "accentCount": 1
   },
   "componentInventory": [
+    "ActivityFeed",
     "Alert",
     "AlertDialog",
     "AspectRatio",
+    "AssetImg",
     "Avatar",
     "AvatarGroup",
     "Badge",
@@ -48,6 +50,7 @@
     "Blockquote",
     "Box",
     "Breadcrumb",
+    "Button",
     "ButtonGroup",
     "Calendar",
     "Callout",
@@ -82,6 +85,7 @@
     "Grid",
     "HdsCheckbox",
     "HdsRadio",
+    "HdsSelect",
     "HdsSlider",
     "HdsThemeProvider",
     "HdsToggle",
@@ -91,6 +95,7 @@
     "IconButton",
     "InlineCode",
     "InlineLink",
+    "Input",
     "InputGroup",
     "Kbd",
     "Lightbox",
@@ -113,6 +118,7 @@
     "SpecimenBlock",
     "Spinner",
     "Stack",
+    "StackedCardRail",
     "Stat",
     "StatusDot",
     "StatusListItem",
@@ -128,6 +134,7 @@
     "TabsTrigger",
     "Tag",
     "Text",
+    "Textarea",
     "TextLockup",
     "TileGrid",
     "TimeInput",
@@ -551,10 +558,6 @@
       {
         "name": "HdsLegacyTokenGovernancePanel",
         "filePath": "src/app/components/lab/legacy-token-detail.tsx"
-      },
-      {
-        "name": "HdsSelect",
-        "filePath": "src/app/components/select.tsx"
       }
     ],
     "namespaceViolations": [
@@ -716,42 +719,9 @@
         "Info surface fill": "semantic.color.feedback.bg.info",
         "Corner radius": "primitive.radius.4"
       },
-      "props": {
-        "variant": {
-          "type": "enum",
-          "values": [
-            "info",
-            "success",
-            "warning",
-            "error"
-          ],
-          "default": "info"
-        },
-        "title": {
-          "type": "string",
-          "optional": true
-        },
-        "children": {
-          "type": "ReactNode"
-        }
-      },
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {
-        "variant": {
-          "type": "enum",
-          "values": [
-            "info",
-            "success",
-            "warning",
-            "error"
-          ]
-        },
-        "title": {
-          "type": "string"
-        }
-      },
       "requiredProps": [
         "children"
       ],
@@ -762,7 +732,7 @@
         }
       ],
       "variantAxes": [
-        "variant"
+        "tone"
       ],
       "componentProperties": [
         {
@@ -811,7 +781,40 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Alert.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34",
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info"
+          ],
+          "default": "info"
+        }
+      },
+      "propConstraints": {
+        "title": {
+          "type": "string"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info"
+          ]
+        }
+      }
     },
     "CinematicLink": {
       "category": "Branding",
@@ -1126,52 +1129,12 @@
         "Strong stroke": "semantic.color.border.strong",
         "Stroke thickness": "primitive.borderWidth.xs"
       },
-      "props": {
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ],
-          "default": "horizontal"
-        },
-        "spacing": {
-          "type": "string | number",
-          "optional": true
-        },
-        "strong": {
-          "type": "boolean",
-          "default": false
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        }
-      },
       "allowedChildren": [],
-      "propConstraints": {
-        "className": {
-          "type": "string"
-        },
-        "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ]
-        },
-        "strong": {
-          "type": "boolean"
-        }
-      },
       "requiredProps": [],
       "a11yRules": [],
       "variantAxes": [
-        "orientation"
+        "orientation",
+        "variant"
       ],
       "componentProperties": [],
       "states": [
@@ -1189,7 +1152,52 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Divider.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "props": {
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "horizontal"
+        },
+        "spacing": {
+          "type": "string | number",
+          "optional": true
+        },
+        "strong": {
+          "type": "boolean",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "strong",
+            "default"
+          ],
+          "optional": true
+        }
+      },
+      "propConstraints": {
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "strong": {
+          "type": "boolean"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "strong",
+            "default"
+          ]
+        }
+      }
     },
     "DocLinkCard": {
       "category": "Navigation",
@@ -1976,7 +1984,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/input.tsx",
-      "description": "Input — text field primitive (shadcn baseline). shadcn-baseline implementation (8s-5): cva-driven sizing/state composed against role-token Tailwind utilities (bg-background / border-input / focus-visible:ring-ring / placeholder:text-muted-foreground / etc.) wired by 8e-2 + 8s-1. Border swaps to border-destructive on error and the focus ring follows. Theme is handled entirely by CSS custom properties. The label/helper/error wrapper is deliberately retained on this primitive so existing call sites keep working unchanged. A future 8t pass may extract those slots into an HdsField pattern (see orchestration agentNote). Variants: size — sm (32px) / md (40px, default) / lg (48px) textStyle — body (default) / mono Derived state (data-state): default | focus | filled | error | disabled | loading loading swaps the trailing area for a spinner and sets aria-busy; disabled is implied. demoState (frozen, via DemoStateContext) is honored so matrix cells still freeze visually.",
+      "description": "Input — text field primitive with label, helper, and error slots.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -1985,13 +1993,17 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/form.tsx",
+        "src/app/components/segmented-control.tsx",
         "src/app/components/stepper-field.tsx",
+        "src/app/components/textarea.tsx",
+        "src/app/components/time-input.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/patterns/HdsField.tsx",
-        "src/app/pages/sketches/private/CombatArenaLayout.tsx",
-        "src/stories/input.stories.tsx"
+        "src/stories/combobox.stories.tsx",
+        "src/stories/input.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
+        "src/stories/textarea.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "role.background",
@@ -2076,15 +2088,8 @@
         "disabledText": "role.muted-foreground"
       },
       "figmaPropertyMapping": {
-        "type": "Type",
         "size": "Size",
-        "label": "Label",
-        "placeholder": "Placeholder",
-        "helperText": "Helper text",
-        "error": "Error",
-        "errorMessage": "Error message",
-        "disabled": "Disabled",
-        "loading": "Loading"
+        "label": "Label"
       },
       "states": [
         "default",
@@ -2164,38 +2169,6 @@
           "sourceProp": "label",
           "boundTo": "characters",
           "targetSelector": "Label"
-        },
-        {
-          "name": "Placeholder",
-          "type": "TEXT",
-          "defaultValue": "Placeholder",
-          "sourceProp": "placeholder",
-          "boundTo": "characters",
-          "targetSelector": "Placeholder"
-        },
-        {
-          "name": "Helper text",
-          "type": "TEXT",
-          "defaultValue": "Helper text",
-          "sourceProp": "helperText",
-          "boundTo": "characters",
-          "targetSelector": "Helper"
-        },
-        {
-          "name": "Error",
-          "type": "BOOLEAN",
-          "defaultValue": false,
-          "sourceProp": "error",
-          "boundTo": "visibility",
-          "targetSelector": "Error"
-        },
-        {
-          "name": "Error message",
-          "type": "TEXT",
-          "defaultValue": "Error message",
-          "sourceProp": "errorMessage",
-          "boundTo": "characters",
-          "targetSelector": "Error"
         }
       ],
       "slots": [
@@ -3434,6 +3407,29 @@
           "type": "boolean",
           "default": false
         },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "accent"
+          ],
+          "default": "default"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "default": "neutral"
+        },
+        "bordered": {
+          "type": "boolean",
+          "default": false
+        },
         "className": {
           "type": "string",
           "optional": true
@@ -3451,7 +3447,9 @@
       },
       "figmaPropertyMapping": {
         "padding": "Padding",
-        "gap": "Gap"
+        "gap": "Gap",
+        "variant": "Variant",
+        "tone": "Tone"
       },
       "states": [
         "default"
@@ -3459,49 +3457,6 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {
-        "padding": {
-          "type": "enum",
-          "values": [
-            "component",
-            "item",
-            "none",
-            "px24",
-            "px16"
-          ]
-        },
-        "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ]
-        },
-        "noPadding": {
-          "type": "boolean"
-        },
-        "className": {
-          "type": "string"
-        },
-        "layout": {
-          "type": "enum",
-          "values": [
-            "VERTICAL",
-            "HORIZONTAL"
-          ]
-        },
-        "fill": {
-          "type": "string"
-        },
-        "stroke": {
-          "type": "string"
-        },
-        "radius": {
-          "type": "string"
-        }
-      },
       "requiredProps": [
         "children"
       ],
@@ -3511,7 +3466,9 @@
         "sizing": "panel"
       },
       "variantAxes": [
-        "padding"
+        "padding",
+        "variant",
+        "tone"
       ],
       "componentProperties": [],
       "slots": [
@@ -3570,7 +3527,57 @@
         "Body",
         "Footer"
       ],
-      "figmaLink": null
+      "figmaLink": null,
+      "propConstraints": {
+        "as": {
+          "type": "string"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "none",
+            "px24",
+            "px16"
+          ]
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious"
+          ]
+        },
+        "noPadding": {
+          "type": "boolean"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "accent"
+          ]
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ]
+        },
+        "bordered": {
+          "type": "boolean"
+        },
+        "className": {
+          "type": "string"
+        }
+      }
     },
     "ComponentInstanceMatrix": {
       "category": "Utilities",
@@ -3637,12 +3644,12 @@
       "figmaLink": null
     },
     "ActivityFeed": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/activity-feed.tsx",
-      "description": "ActivityFeed — chronological event log using whitespace as the sole separator between items. Use for timeline views and system audit trails; reach for Table when columnar comparison matters. Enforces 48px gap (space.12) between events and semantic typography roles throughout.",
+      "description": "ActivityFeed — chronological system event log. Renders a list of activity events using white space as the sole separator. No dividers, no borders between items. 48px gap (space.12) creates the visual grouping between events; 16px gap inside each item structures the content hierarchy. Typography mapping: title → heading3 (24px/1.25) description → body (16px/1.5) timestamp → technical (12px/1.0 mono) category → ui (14px/1.5)",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -3772,12 +3779,12 @@
           "targetSelector": "Heading"
         },
         {
-          "name": "Subtext",
+          "name": "Subheading",
           "type": "TEXT",
-          "defaultValue": "Supporting subtext",
-          "sourceProp": "subtext",
+          "defaultValue": "Supporting subheading",
+          "sourceProp": "subheading",
           "boundTo": "characters",
-          "targetSelector": "Subtext"
+          "targetSelector": "Subheading"
         }
       ],
       "states": [
@@ -4019,7 +4026,7 @@
           "name": "Title",
           "type": "TEXT",
           "defaultValue": "Dialog title",
-          "sourceProp": "title",
+          "sourceProp": "Title.children",
           "boundTo": "characters",
           "targetSelector": "Title"
         },
@@ -4027,15 +4034,15 @@
           "name": "Description",
           "type": "TEXT",
           "defaultValue": "Dialog description",
-          "sourceProp": "description",
+          "sourceProp": "Description.children",
           "boundTo": "characters",
           "targetSelector": "Description"
         },
         {
-          "name": "Hide close",
+          "name": "Show close",
           "type": "BOOLEAN",
-          "defaultValue": false,
-          "sourceProp": "hideClose",
+          "defaultValue": true,
+          "sourceProp": "Content.hideClose",
           "boundTo": "visibility",
           "targetSelector": "Close",
           "invert": true
@@ -4056,18 +4063,6 @@
           "type": "boolean",
           "default": true
         },
-        "title": {
-          "type": "string",
-          "optional": true
-        },
-        "description": {
-          "type": "string",
-          "optional": true
-        },
-        "hideClose": {
-          "type": "boolean",
-          "default": false
-        },
         "children": {
           "type": "ReactNode"
         }
@@ -4085,9 +4080,9 @@
         "focusRing": "role.ring"
       },
       "figmaPropertyMapping": {
-        "title": "Title",
-        "description": "Description",
-        "hideClose": "Hide close",
+        "Title.children": "Title",
+        "Description.children": "Description",
+        "Content.hideClose": "Show close",
         "modal": "Modal"
       },
       "states": [
@@ -4152,26 +4147,6 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {
-        "open": {
-          "type": "boolean"
-        },
-        "defaultOpen": {
-          "type": "boolean"
-        },
-        "modal": {
-          "type": "boolean"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "hideClose": {
-          "type": "boolean"
-        }
-      },
       "requiredProps": [
         "children"
       ],
@@ -4196,7 +4171,18 @@
         "Description",
         "Close"
       ],
-      "figmaLink": null
+      "figmaLink": null,
+      "propConstraints": {
+        "open": {
+          "type": "boolean"
+        },
+        "defaultOpen": {
+          "type": "boolean"
+        },
+        "modal": {
+          "type": "boolean"
+        }
+      }
     },
     "StackedCardRail": {
       "category": "Display",
@@ -4249,40 +4235,58 @@
       },
       "consumers": [
         "src/app/components/activity-feed.tsx",
+        "src/app/components/alert-dialog.tsx",
         "src/app/components/animated-label.tsx",
         "src/app/components/api-reference.tsx",
-        "src/app/components/approval-card.tsx",
-        "src/app/components/ComponentDocPage.tsx",
+        "src/app/components/button-group.test.tsx",
+        "src/app/components/button-group.tsx",
+        "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/dialog.tsx",
-        "src/app/components/doc-sections.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/menu.tsx",
+        "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.tsx",
+        "src/app/components/popover.tsx",
+        "src/app/components/segmented-control.tsx",
         "src/app/components/sketch-controls.tsx",
+        "src/app/components/toast.tsx",
+        "src/app/components/toolbar.test.tsx",
+        "src/app/components/toolbar.tsx",
         "src/app/components/variant-strip.tsx",
         "src/app/context/DemoStateContext.tsx",
-        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/design-system/searchIndex.ts",
-        "src/app/lab/shadcn-spike/Button.tsx",
-        "src/app/lab/shadcn-spike/page.tsx",
-        "src/app/pages/admin/ApprovalDetail.tsx",
-        "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
-        "src/app/pages/docs/patterns/HdsIconButton.tsx",
-        "src/app/pages/sketches/private/MetaballsLayout.tsx",
-        "src/app/pages/sketches/private/ShapeExplorerLayout.tsx",
-        "src/app/pages/sketches/private/WaveBackgroundLayout.tsx",
+        "src/form/index.ts",
+        "src/mui/index.ts",
+        "src/stories/alert-dialog.stories.tsx",
+        "src/stories/button-group.stories.tsx",
         "src/stories/button.stories.tsx",
+        "src/stories/code-block.stories.tsx",
+        "src/stories/combobox.stories.tsx",
+        "src/stories/dialog.stories.tsx",
+        "src/stories/form.stories.tsx",
+        "src/stories/hds-tooltip.stories.tsx",
         "src/stories/icon-button.stories.tsx",
+        "src/stories/image-lightbox.stories.tsx",
         "src/stories/inline-code.stories.tsx",
+        "src/stories/menu.stories.tsx",
+        "src/stories/nav-group.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
+        "src/stories/popover.stories.tsx",
         "src/stories/table.stories.tsx",
-        "src/stories/text-lockup.stories.tsx"
+        "src/stories/text-lockup.stories.tsx",
+        "src/stories/toast.stories.tsx",
+        "src/stories/toolbar.stories.tsx",
+        "src/stories/top-nav.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [
         "variant",
+        "tone",
         "size",
         "state"
       ],
@@ -4296,7 +4300,7 @@
           "targetSelector": "Label"
         },
         {
-          "name": "Leading icon",
+          "name": "Show icon",
           "type": "BOOLEAN",
           "defaultValue": false,
           "sourceProp": "iconLeft",
@@ -4304,21 +4308,12 @@
           "targetSelector": "IconLeft"
         },
         {
-          "name": "Trailing icon",
+          "name": "Show trail icon",
           "type": "BOOLEAN",
           "defaultValue": false,
           "sourceProp": "iconRight",
           "boundTo": "visibility",
           "targetSelector": "IconRight"
-        },
-        {
-          "name": "Show label",
-          "type": "BOOLEAN",
-          "defaultValue": true,
-          "sourceProp": "iconOnly",
-          "boundTo": "visibility",
-          "targetSelector": "Label",
-          "invert": true
         }
       ],
       "sourcePath": "src/app/components/button.tsx",
@@ -4332,6 +4327,17 @@
             "tertiary"
           ],
           "default": "secondary"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "default": "neutral"
         },
         "size": {
           "type": "enum",
@@ -4378,13 +4384,11 @@
       },
       "figmaPropertyMapping": {
         "variant": "Variant",
+        "tone": "Tone",
         "size": "Size",
-        "disabled": "Disabled",
-        "loading": "Loading",
         "label": "Label",
-        "iconLeft": "Leading icon",
-        "iconRight": "Trailing icon",
-        "iconOnly": "Icon only"
+        "iconLeft": "Show icon",
+        "iconRight": "Show trail icon"
       },
       "states": [
         "default",
@@ -4395,6 +4399,17 @@
         "loading"
       ],
       "allowedChildren": [],
+      "requiredProps": [],
+      "a11yRules": [
+        {
+          "rule": "Must have accessible name via label prop or aria-label",
+          "required": true
+        },
+        {
+          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
+          "required": true
+        }
+      ],
       "propConstraints": {
         "variant": {
           "type": "enum",
@@ -4402,6 +4417,16 @@
             "primary",
             "secondary",
             "tertiary"
+          ]
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
           ]
         },
         "size": {
@@ -4424,18 +4449,7 @@
         "iconOnly": {
           "type": "boolean"
         }
-      },
-      "requiredProps": [],
-      "a11yRules": [
-        {
-          "rule": "Must have accessible name via label prop or aria-label",
-          "required": true
-        },
-        {
-          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
-          "required": true
-        }
-      ]
+      }
     },
     "Callout": {
       "category": "Feedback",
@@ -4993,7 +5007,9 @@
       "tokenMapping": {}
     },
     "TextLockup": {
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [
         {
           "name": "Eyebrow",
@@ -5067,10 +5083,11 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/info-page.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/asset-img.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5413,12 +5430,12 @@
       "figmaLink": null
     },
     "HdsSelect": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/select.tsx",
-      "description": "Controls — shared input/control primitives.",
+      "description": "HdsSelect — dropdown selector built on Radix Select.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -5612,7 +5629,9 @@
         "src/stories/avatar.stories.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "alt": {
@@ -6262,7 +6281,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/avatar-group.figma.tsx",
         "src/app/components/avatar-group.test.tsx",
         "src/stories/avatar-group.stories.tsx"
       ],
@@ -6306,7 +6324,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/blockquote.figma.tsx",
         "src/app/components/blockquote.test.tsx",
         "src/stories/blockquote.stories.tsx"
       ],
@@ -6352,7 +6369,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/button-group.figma.tsx",
         "src/app/components/button-group.test.tsx",
         "src/stories/button-group.stories.tsx"
       ],
@@ -6393,7 +6409,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/input-group.figma.tsx",
         "src/app/components/input-group.test.tsx",
         "src/stories/input-group.stories.tsx"
       ],
@@ -6447,7 +6462,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/kbd.figma.tsx",
         "src/app/components/kbd.test.tsx",
         "src/stories/kbd.stories.tsx"
       ],
@@ -6489,7 +6503,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/status-dot.figma.tsx",
         "src/app/components/status-dot.test.tsx",
         "src/stories/status-dot.stories.tsx"
       ],
@@ -6547,7 +6560,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/timestamp.figma.tsx",
         "src/app/components/timestamp.test.tsx",
         "src/stories/timestamp.stories.tsx"
       ],
@@ -6601,7 +6613,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/visually-hidden.figma.tsx",
         "src/app/components/visually-hidden.test.tsx",
         "src/stories/visually-hidden.stories.tsx"
       ],
@@ -6638,7 +6649,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/circular-progress.figma.tsx",
         "src/app/components/circular-progress.test.tsx",
         "src/stories/circular-progress.stories.tsx"
       ],
@@ -6689,7 +6699,6 @@
       "figmaUrl": null,
       "figmaId": null,
       "consumers": [
-        "src/app/components/side-nav.figma.tsx",
         "src/app/components/side-nav.test.tsx",
         "src/stories/side-nav.stories.tsx"
       ],
@@ -6728,7 +6737,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/command-palette.figma.tsx",
         "src/app/data/nav-model.test.ts",
         "src/app/lib/hds-search.ts",
         "src/stories/command-palette.stories.tsx"
@@ -6766,7 +6774,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/image-lightbox.figma.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/asset-img.stories.tsx",
@@ -6834,7 +6841,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/app-shell.figma.tsx",
         "src/app/components/app-shell.test.tsx",
         "src/stories/app-shell.stories.tsx"
       ],
@@ -6866,7 +6872,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/file-input.figma.tsx",
         "src/app/components/file-input.test.tsx",
         "src/stories/file-input.stories.tsx"
       ],
@@ -6919,7 +6924,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/metadata-list.figma.tsx",
         "src/app/components/metadata-list.test.tsx",
         "src/stories/metadata-list.stories.tsx"
       ],
@@ -6963,7 +6967,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/overflow-list.figma.tsx",
         "src/app/components/overflow-list.test.tsx",
         "src/stories/overflow-list.stories.tsx"
       ],
@@ -7007,7 +7010,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/selectable-card.figma.tsx",
         "src/app/components/selectable-card.test.tsx",
         "src/stories/selectable-card.stories.tsx"
       ],
@@ -7052,7 +7054,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tokenizer.figma.tsx",
         "src/app/components/tokenizer.test.tsx",
         "src/stories/tokenizer.stories.tsx"
       ],
@@ -7103,7 +7104,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/top-nav.figma.tsx",
         "src/app/components/top-nav.test.tsx",
         "src/stories/top-nav.stories.tsx"
       ],
@@ -7152,7 +7152,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/carousel.figma.tsx",
         "src/app/components/carousel.test.tsx",
         "src/stories/carousel.stories.tsx"
       ],
@@ -7196,7 +7195,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/stepper.figma.tsx",
         "src/app/components/stepper.test.tsx",
         "src/stories/stepper.stories.tsx"
       ],
@@ -7243,7 +7241,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/toolbar.figma.tsx",
         "src/app/components/toolbar.test.tsx",
         "src/stories/toolbar.stories.tsx"
       ],
@@ -7280,7 +7277,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tree-list.figma.tsx",
         "src/app/components/tree-list.test.tsx",
         "src/stories/tree-list.stories.tsx"
       ],
@@ -7324,7 +7320,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/alert-dialog.figma.tsx",
         "src/app/components/alert-dialog.test.tsx",
         "src/stories/alert-dialog.stories.tsx"
       ],
@@ -7356,7 +7351,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/aspect-ratio.figma.tsx",
         "src/app/components/aspect-ratio.test.tsx",
         "src/app/components/frame.tsx",
         "src/stories/aspect-ratio.stories.tsx",
@@ -7399,7 +7393,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/calendar.figma.tsx",
         "src/app/components/calendar.test.tsx",
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
@@ -7437,7 +7430,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/context-menu.figma.tsx",
         "src/app/components/context-menu.test.tsx",
         "src/stories/context-menu.stories.tsx"
       ],
@@ -7469,7 +7461,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/date-input.figma.tsx",
         "src/app/components/date-input.test.tsx",
         "src/stories/date-input.stories.tsx"
       ],
@@ -7530,7 +7521,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/date-range-input.figma.tsx",
         "src/app/components/date-range-input.test.tsx",
         "src/stories/date-range-input.stories.tsx"
       ],
@@ -7595,7 +7585,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/date-time-input.figma.tsx",
         "src/app/components/date-time-input.test.tsx",
         "src/stories/date-time-input.stories.tsx"
       ],
@@ -7652,7 +7641,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/hover-card.figma.tsx",
         "src/app/components/hover-card.test.tsx",
         "src/stories/hover-card.stories.tsx"
       ],
@@ -7684,7 +7672,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/multi-selector.figma.tsx",
         "src/app/components/multi-selector.test.tsx",
         "src/stories/multi-selector.stories.tsx"
       ],
@@ -7739,7 +7726,6 @@
       },
       "consumers": [
         "src/app/components/date-time-input.tsx",
-        "src/app/components/time-input.figma.tsx",
         "src/app/components/time-input.test.tsx",
         "src/stories/date-time-input.stories.tsx",
         "src/stories/time-input.stories.tsx"
@@ -7782,7 +7768,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/toggle-button.figma.tsx",
         "src/app/components/toggle-button.test.tsx",
         "src/stories/toggle-button.stories.tsx"
       ],
@@ -8482,6 +8467,69 @@
       "requiredProps": [],
       "a11yRules": []
     },
+    "Textarea": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/textarea.tsx",
+      "description": "Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the four states Default / Focus / Error / Disabled map to the focus-ring, `error`, and `disabled` treatments below.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Textarea",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/stories/textarea.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "error": {
+          "type": "boolean",
+          "optional": true
+        },
+        "errorMessage": {
+          "type": "string",
+          "optional": true
+        },
+        "helperText": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "resize": {
+          "type": "TextareaResize",
+          "default": "vertical"
+        },
+        "textareaClassName": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -8888,9 +8936,9 @@
     },
     "AutoPreviewSpecimen": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "docExempt": true,
       "filePath": "src/app/components/componentPreviewRegistry.tsx",
       "description": "/** @internal @doc-exempt: demo-preview-helper — not part of @hirobius/design-system public API.",
@@ -9226,9 +9274,9 @@
     },
     "SketchButton": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9254,9 +9302,9 @@
     },
     "SketchCheckbox": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9282,9 +9330,9 @@
     },
     "SketchPanelToggle": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9310,9 +9358,9 @@
     },
     "SketchRange": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9338,9 +9386,9 @@
     },
     "SketchTextarea": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9672,9 +9720,9 @@
     },
     "ErrorBoundary": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "docExempt": true,
       "filePath": "src/app/components/error-boundary.tsx",
       "description": "ErrorBoundary — slot-scoped recovery surface for runtime render failures.",
@@ -9732,11 +9780,7 @@
         "exportName": "DocPageHeader",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx",
-        "src/app/pages/SketchPage.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []

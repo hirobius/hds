@@ -691,6 +691,11 @@ export function buildManifest(allTokens, raw) {
           values: ['primary', 'secondary', 'tertiary'],
           default: 'secondary',
         },
+        tone: {
+          type: 'enum',
+          values: ['neutral', 'danger', 'success', 'warning', 'info'],
+          default: 'neutral',
+        },
         size: { type: 'enum', values: ['sm', 'md', 'lg'], default: 'md' },
         disabled: { type: 'boolean', default: false },
         loading: { type: 'boolean', default: false },
@@ -708,17 +713,20 @@ export function buildManifest(allTokens, raw) {
         focusRing: 'role.ring',
         radius: 'role.radius',
       },
+      // Figma property names follow the Code Connect registry
+      // (figma/code-connect.json, hds#73 inventory); check-figma-mapping fails
+      // if the two disagree. Disabled / Loading are options of the Figma State
+      // VARIANT, not properties, and Figma has no icon-only property, so
+      // disabled, loading and iconOnly have no entry here.
       figmaPropertyMapping: {
         variant: 'Variant',
+        tone: 'Tone',
         size: 'Size',
-        disabled: 'Disabled',
-        loading: 'Loading',
         label: 'Label',
-        iconLeft: 'Leading icon',
-        iconRight: 'Trailing icon',
-        iconOnly: 'Icon only',
+        iconLeft: 'Show icon',
+        iconRight: 'Show trail icon',
       },
-      variantAxes: ['variant', 'size', 'state'],
+      variantAxes: ['variant', 'tone', 'size', 'state'],
       componentProperties: [
         {
           name: 'Label',
@@ -729,7 +737,7 @@ export function buildManifest(allTokens, raw) {
           targetSelector: 'Label',
         },
         {
-          name: 'Leading icon',
+          name: 'Show icon',
           type: 'BOOLEAN',
           defaultValue: false,
           sourceProp: 'iconLeft',
@@ -737,21 +745,12 @@ export function buildManifest(allTokens, raw) {
           targetSelector: 'IconLeft',
         },
         {
-          name: 'Trailing icon',
+          name: 'Show trail icon',
           type: 'BOOLEAN',
           defaultValue: false,
           sourceProp: 'iconRight',
           boundTo: 'visibility',
           targetSelector: 'IconRight',
-        },
-        {
-          name: 'Show label',
-          type: 'BOOLEAN',
-          defaultValue: true,
-          sourceProp: 'iconOnly',
-          boundTo: 'visibility',
-          targetSelector: 'Label',
-          invert: true,
         },
       ],
       states: ['default', 'hover', 'focus', 'active', 'disabled', 'loading'],
@@ -769,6 +768,13 @@ export function buildManifest(allTokens, raw) {
         },
         gap: { type: 'enum', values: ['tight', 'normal', 'inset', 'spacious'], default: 'tight' },
         noPadding: { type: 'boolean', default: false },
+        variant: { type: 'enum', values: ['default', 'accent'], default: 'default' },
+        tone: {
+          type: 'enum',
+          values: ['neutral', 'danger', 'success', 'warning', 'info'],
+          default: 'neutral',
+        },
+        bordered: { type: 'boolean', default: false },
         className: { type: 'string', optional: true },
         children: { type: 'ReactNode' },
       },
@@ -782,8 +788,10 @@ export function buildManifest(allTokens, raw) {
       figmaPropertyMapping: {
         padding: 'Padding',
         gap: 'Gap',
+        variant: 'Variant',
+        tone: 'Tone',
       },
-      variantAxes: ['padding'],
+      variantAxes: ['padding', 'variant', 'tone'],
       componentProperties: [],
       states: ['default'],
     },
@@ -820,16 +828,14 @@ export function buildManifest(allTokens, raw) {
         disabledBg: 'role.muted',
         disabledText: 'role.muted-foreground',
       },
+      // Figma property names follow the Code Connect registry
+      // (figma/code-connect.json, hds#73 inventory: State, Size, Label, Value,
+      // Show label); check-figma-mapping fails if the two disagree. Error and
+      // Disabled are options of the Figma State VARIANT, and Figma has no
+      // Type / Placeholder / Helper text / Error message / Loading property.
       figmaPropertyMapping: {
-        type: 'Type',
         size: 'Size',
         label: 'Label',
-        placeholder: 'Placeholder',
-        helperText: 'Helper text',
-        error: 'Error',
-        errorMessage: 'Error message',
-        disabled: 'Disabled',
-        loading: 'Loading',
       },
       variantAxes: ['size', 'state'],
       componentProperties: [
@@ -840,38 +846,6 @@ export function buildManifest(allTokens, raw) {
           sourceProp: 'label',
           boundTo: 'characters',
           targetSelector: 'Label',
-        },
-        {
-          name: 'Placeholder',
-          type: 'TEXT',
-          defaultValue: 'Placeholder',
-          sourceProp: 'placeholder',
-          boundTo: 'characters',
-          targetSelector: 'Placeholder',
-        },
-        {
-          name: 'Helper text',
-          type: 'TEXT',
-          defaultValue: 'Helper text',
-          sourceProp: 'helperText',
-          boundTo: 'characters',
-          targetSelector: 'Helper',
-        },
-        {
-          name: 'Error',
-          type: 'BOOLEAN',
-          defaultValue: false,
-          sourceProp: 'error',
-          boundTo: 'visibility',
-          targetSelector: 'Error',
-        },
-        {
-          name: 'Error message',
-          type: 'TEXT',
-          defaultValue: 'Error message',
-          sourceProp: 'errorMessage',
-          boundTo: 'characters',
-          targetSelector: 'Error',
         },
       ],
       states: ['default', 'focus', 'filled', 'error', 'disabled', 'loading'],
@@ -884,9 +858,9 @@ export function buildManifest(allTokens, raw) {
         open: { type: 'boolean', optional: true },
         defaultOpen: { type: 'boolean', optional: true },
         modal: { type: 'boolean', default: true },
-        title: { type: 'string', optional: true },
-        description: { type: 'string', optional: true },
-        hideClose: { type: 'boolean', default: false },
+        // title / description / hideClose are NOT Dialog root props: they live
+        // on the compound parts (Dialog.Title / Dialog.Description children,
+        // Dialog.Content hideClose) — bound below as `Part.prop`.
         children: { type: 'ReactNode' },
       },
       tokens: {
@@ -902,9 +876,9 @@ export function buildManifest(allTokens, raw) {
         focusRing: 'role.ring',
       },
       figmaPropertyMapping: {
-        title: 'Title',
-        description: 'Description',
-        hideClose: 'Hide close',
+        'Title.children': 'Title',
+        'Description.children': 'Description',
+        'Content.hideClose': 'Show close',
         modal: 'Modal',
       },
       variantAxes: ['state'],
@@ -913,7 +887,7 @@ export function buildManifest(allTokens, raw) {
           name: 'Title',
           type: 'TEXT',
           defaultValue: 'Dialog title',
-          sourceProp: 'title',
+          sourceProp: 'Title.children',
           boundTo: 'characters',
           targetSelector: 'Title',
         },
@@ -921,15 +895,18 @@ export function buildManifest(allTokens, raw) {
           name: 'Description',
           type: 'TEXT',
           defaultValue: 'Dialog description',
-          sourceProp: 'description',
+          sourceProp: 'Description.children',
           boundTo: 'characters',
           targetSelector: 'Description',
         },
         {
-          name: 'Hide close',
+          // Visibility toggle (true = close button shown), inverted onto
+          // Dialog.Content's hideClose. Name matches the live Figma property
+          // recorded in hds#73 ("Show close").
+          name: 'Show close',
           type: 'BOOLEAN',
-          defaultValue: false,
-          sourceProp: 'hideClose',
+          defaultValue: true,
+          sourceProp: 'Content.hideClose',
           boundTo: 'visibility',
           targetSelector: 'Close',
           invert: true,
@@ -997,7 +974,7 @@ export function buildManifest(allTokens, raw) {
     // We only seed the Figma master shape: variantAxes, componentProperties, states.
     Alert: {
       ...(SYSTEM_MANIFEST.componentSpecs?.Alert ?? {}),
-      variantAxes: ['variant'],
+      variantAxes: ['tone'],
       componentProperties: [
         {
           name: 'Title',
@@ -1039,6 +1016,12 @@ export function buildManifest(allTokens, raw) {
       ],
       states: ['default'],
     },
+    // Avatar has a Code Connect template (figma/code-connect.json), so its
+    // cva-backed `size` axis must be declared (check-figma-mapping).
+    Avatar: {
+      ...(SYSTEM_MANIFEST.componentSpecs?.Avatar ?? {}),
+      variantAxes: ['size'],
+    },
     Surface: {
       ...(SYSTEM_MANIFEST.componentSpecs?.Surface ?? {}),
       variantAxes: [],
@@ -1074,7 +1057,7 @@ export function buildManifest(allTokens, raw) {
     },
     Divider: {
       ...(SYSTEM_MANIFEST.componentSpecs?.Divider ?? {}),
-      variantAxes: ['orientation'],
+      variantAxes: ['orientation', 'variant'],
       componentProperties: [],
       states: ['default'],
     },
@@ -1091,19 +1074,19 @@ export function buildManifest(allTokens, raw) {
           targetSelector: 'Heading',
         },
         {
-          name: 'Subtext',
+          name: 'Subheading',
           type: 'TEXT',
-          defaultValue: 'Supporting subtext',
-          sourceProp: 'subtext',
+          defaultValue: 'Supporting subheading',
+          sourceProp: 'subheading',
           boundTo: 'characters',
-          targetSelector: 'Subtext',
+          targetSelector: 'Subheading',
         },
       ],
       states: ['default'],
     },
     TextLockup: {
       ...(SYSTEM_MANIFEST.componentSpecs?.TextLockup ?? {}),
-      variantAxes: [],
+      variantAxes: ['size'],
       componentProperties: [
         {
           name: 'Eyebrow',
