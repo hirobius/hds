@@ -537,6 +537,15 @@ describe('validateFigmaModel — invariants', () => {
       /semantic\.radius\.action.*codeSyntax/,
     ],
     [
+      'two variables with one codeSyntax (figma:push matches variables by it)',
+      (m, find) => {
+        const v = find('role.primary');
+        v.path = 'role-radius';
+        v.codeSyntax = { WEB: 'var(--role-radius)' };
+      },
+      /var\(--role-radius\) is used by role-radius and role\.radius/,
+    ],
+    [
       'a text style bound to a missing variable',
       (m) => (m.textStyles[0].boundVariables.fontSize = 'semantic.typography.h1.size'),
       /typography\/h1.*fontSize.*semantic\.typography\.h1\.size/,

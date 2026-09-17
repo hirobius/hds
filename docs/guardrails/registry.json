@@ -249,6 +249,19 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-figma-drift",
+      "description": "Compares the Figma model built from hirobius.tokens.json against the committed Figma snapshot (figma/snapshot.json) and reports missing, extra and changed variables, modes and styles, warning when the snapshot is older than the tokens. Exit 0 clean, 1 drift or an edited snapshot, 2 no snapshot yet. Manual (pnpm check:figma-drift) until a first live snapshot is committed; CI wiring is a workflow edit.",
+      "severity": "warn",
+      "gateScript": "scripts/check-figma-drift.mjs",
+      "fixturePath": "fixtures/check-figma-drift",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "supportsJson": true
+    },
+    {
       "id": "check-focus-states",
       "description": "A11y focus state checker for HDS components and pages. Every interactive element must have a visible focus indicator.",
       "severity": "warn",
