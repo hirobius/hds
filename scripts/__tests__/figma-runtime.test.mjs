@@ -14,27 +14,20 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import vm from 'vm';
 import { parse } from 'acorn';
-import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsChecksum, hdsRenamedPath } from '../lib/figma-runtime.mjs';
 import {
   buildUseFigmaPushScript,
   buildUseFigmaSnapshotScript,
   buildDevPlugin,
+  buildPushPayload,
   PUSH_CHUNKS,
   runtimeSource,
 } from '../lib/figma-scripts.mjs';
 import { createFakeFigma } from './helpers/fake-figma.mjs';
+import { fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const model = buildFigmaModel(
-  JSON.parse(readFileSync(join(HERE, 'fixtures', 'figma-model', 'tokens.json'), 'utf8')),
-);
-const FONTS = [
-  { family: 'Satoshi', style: 'Medium' },
-  { family: 'Satoshi', style: 'Bold' },
-  { family: 'Geist Mono', style: 'Medium' },
-  { family: 'Inter', style: 'Regular' },
-];
+const model = fixtureModel();
 
 /** Runs a use_figma script body the way the MCP server does: async, with `figma` in scope. */
 const runUseFigma = async (script, figma) => {
@@ -61,11 +54,34 @@ describe('figma-runtime.mjs can be copied into Figma', () => {
     expect(runtimeSource()).not.toMatch(/^\s*(export|import)\b/m);
     expect(() => parse(runtimeSource(), { ecmaVersion: 2020, sourceType: 'script' })).not.toThrow();
   });
+
+  it('is copied without its comments, which only cost script size', () => {
+    const comments = [];
+    parse(runtimeSource(), { ecmaVersion: 2020, sourceType: 'script', onComment: comments });
+    expect(comments).toEqual([]);
+    expect(runtimeSource()).toContain("return 'hirobius';");
+  });
 });
 
 describe('use_figma scripts', () => {
+  it('carry only the out-of-scope variables their aliases point at', () => {
+    const { payload } = buildPushPayload(model, { scope: ['role'] });
+    const paths = (key) =>
+      payload.model.collections.find((c) => c.key === key).variables.map((v) => v.path);
+    expect(paths('primitive')).toEqual([]);
+    expect(paths('component')).toEqual([]);
+    expect(paths('semantic').sort()).toEqual([
+      'semantic.color.border.default',
+      'semantic.color.content.primary',
+      'semantic.color.surface.accent',
+      'semantic.color.surface.page',
+      'semantic.radius.action',
+    ]);
+    expect(paths('role')).toHaveLength(5);
+  });
+
   it('push chunk by chunk in an isolated context, then converge to zero changes', async () => {
-    const figma = createFakeFigma({ fonts: FONTS });
+    const figma = newFixtureFile();
     const lines = [];
     for (const chunk of PUSH_CHUNKS) {
       const report = await runUseFigma(
@@ -86,7 +102,7 @@ describe('use_figma scripts', () => {
   });
 
   it('a snapshot script returns the state with a checksum that verifies', async () => {
-    const figma = createFakeFigma({ fonts: FONTS });
+    const figma = newFixtureFile();
     await runUseFigma(buildUseFigmaPushScript(model), figma);
     const { checksum, snapshot } = await runUseFigma(buildUseFigmaSnapshotScript(), figma);
     expect(checksum).toBe(hdsChecksum(JSON.stringify(snapshot)));
@@ -94,7 +110,7 @@ describe('use_figma scripts', () => {
   });
 
   it('a mistyped payload digit makes the script fail before writing', async () => {
-    const figma = createFakeFigma({ fonts: FONTS });
+    const figma = newFixtureFile();
     const script = buildUseFigmaPushScript(model, { scope: ['primitive'] }).replace(
       '"value":8}',
       '"value":9}',
@@ -130,7 +146,7 @@ describe('development plugin', () => {
   });
 
   it('plans without writing, pushes, then snapshots', async () => {
-    const figma = createFakeFigma({ fonts: FONTS });
+    const figma = newFixtureFile();
     const files = buildDevPlugin(model);
 
     const plan = await runPlugin(files, 'plan', figma);

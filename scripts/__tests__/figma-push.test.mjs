@@ -15,20 +15,14 @@ import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsRunPush, hdsReadState } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { createFakeFigma } from './helpers/fake-figma.mjs';
+import {
+  FIXTURE_FONTS,
+  fixtureModel,
+  newFixtureFile as newFile,
+} from './helpers/figma-fixture.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const fixture = JSON.parse(
-  readFileSync(join(HERE, 'fixtures', 'figma-model', 'tokens.json'), 'utf8'),
-);
-const model = buildFigmaModel(fixture);
-/** Every font the fixture's text styles use, so the fake editor can load them. */
-const FONTS = [
-  { family: 'Inter', style: 'Regular' },
-  { family: 'Satoshi', style: 'Medium' },
-  { family: 'Satoshi', style: 'Bold' },
-  { family: 'Geist Mono', style: 'Medium' },
-];
-const newFile = (options = {}) => createFakeFigma({ fonts: FONTS, ...options });
+const model = fixtureModel();
 
 const push = (figma, options = {}, from = model) => {
   const { payload, checksum } = buildPushPayload(from, options);
@@ -318,8 +312,23 @@ describe('figma:push safety checks', () => {
     expect(figma.writes).toEqual([]);
   });
 
+  it('says a failed push may be partly applied, and a re-run finishes it', async () => {
+    const figma = newFile({ modeLimit: 1 });
+    await expect(push(figma)).rejects.toThrow(
+      /Could not add mode "Dark" to Hirobius\/Semantic.*may already be applied.*run the push again/,
+    );
+    expect(figma.writes.length).toBeGreaterThan(0);
+
+    figma.setModeLimit(10);
+    const retry = await push(figma);
+    expect(retry.summary.variables.created).toBeGreaterThan(0);
+    expect((await push(figma)).line).toBe('updated 0 · created 0 · deleted 0');
+  });
+
   it('writes nothing when a text style font is not installed', async () => {
-    const figma = createFakeFigma({ fonts: FONTS.filter((f) => f.family !== 'Geist Mono') });
+    const figma = createFakeFigma({
+      fonts: FIXTURE_FONTS.filter((f) => f.family !== 'Geist Mono'),
+    });
     await expect(push(figma)).rejects.toThrow(/needs the font "Geist Mono Medium"/);
     expect(figma.writes).toEqual([]);
   });

@@ -9,16 +9,10 @@
  * Expected values are worked by hand from the fixture graph.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { buildNativeImportFiles } from '../lib/figma-native-import.mjs';
+import { fixtureModel } from './helpers/figma-fixture.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const model = buildFigmaModel(
-  JSON.parse(readFileSync(join(HERE, 'fixtures', 'figma-model', 'tokens.json'), 'utf8')),
-);
+const model = fixtureModel();
 const files = buildNativeImportFiles(model);
 const file = (path) => files.find((f) => f.path === path);
 const leaf = (tokens, name) => name.split('/').reduce((node, segment) => node?.[segment], tokens);

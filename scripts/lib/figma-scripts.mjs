@@ -2,18 +2,20 @@
 /**
  * Hirobius Design System — turns the Figma model into code that runs inside Figma.
  *
- * Two carriers, one runtime (scripts/lib/figma-runtime.mjs, copied verbatim
- * minus `export`):
+ * Two carriers, one runtime (scripts/lib/figma-runtime.mjs, copied minus
+ * `export` and comments):
  *   - a local development plugin (manifest.json + code.js + ui.html). Import it
  *     once in Figma desktop; nothing passes through a chat transcript, and it is
  *     the only plugin a Professional plan can run privately.
- *   - `use_figma` scripts for the remote Figma MCP server, one per collection so
- *     each stays small. A checksum makes a mistyped payload fail before any write.
+ *   - `use_figma` scripts for the remote Figma MCP server, one per collection plus
+ *     one for styles, carrying only the out-of-scope variables they alias. A
+ *     checksum makes a mistyped payload fail before any write.
  *
  * Nothing here talks to Figma.
  */
 
 import { readFileSync } from 'fs';
+import { parse } from 'acorn';
 import { hdsChecksum } from './figma-runtime.mjs';
 
 /** Push order: a collection's aliases point at collections earlier in the list. */
@@ -25,25 +27,52 @@ export const PUSH_CHUNKS = Object.freeze([
   { id: '05-styles', scope: ['styles'] },
 ]);
 
-/** The runtime as a script body: the same text Node imports, minus `export`. */
+/**
+ * The runtime as a script body: the same code Node imports, minus `export` and
+ * minus comments (they would only add size to every script).
+ */
 export function runtimeSource() {
   const source = readFileSync(new URL('./figma-runtime.mjs', import.meta.url), 'utf8');
-  return source.replace(
-    /^export (async )?function /gm,
-    (_m, isAsync) => `${isAsync ?? ''}function `,
-  );
+  const comments = [];
+  parse(source, { ecmaVersion: 2020, sourceType: 'module', onComment: comments });
+  let code = '';
+  let from = 0;
+  for (const comment of comments) {
+    code += source.slice(from, comment.start);
+    from = comment.end;
+  }
+  code += source.slice(from);
+  return code
+    .replace(/^export (async )?function /gm, (_m, isAsync) => `${isAsync ?? ''}function `)
+    .replace(/[ \t]+$/gm, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 /** A JSON round trip gives the key order a JS engine will see when it parses the literal. */
 const canonical = (value) => JSON.parse(JSON.stringify(value));
 
 /**
- * The model reduced to what a scoped push needs. Out-of-scope variables keep
- * only their identity (path, name, type, codeSyntax) so aliases into them can
- * still be matched; out-of-scope styles are dropped.
+ * The model reduced to what a scoped push needs. Of the variables outside the
+ * scope, only those an in-scope alias or text-style binding points at are
+ * kept, and only their identity (path, name, type, codeSyntax), so the push can
+ * find them in Figma; out-of-scope styles are dropped.
  */
 function pushModel(model, scope) {
   const inScope = (key) => !scope || scope.includes(key);
+  const referenced = new Set();
+  for (const c of model.collections.filter((c) => inScope(c.key))) {
+    for (const v of c.variables) {
+      for (const entry of Object.values(v.valuesByMode)) {
+        if ('alias' in entry) referenced.add(entry.alias);
+      }
+    }
+  }
+  if (inScope('styles')) {
+    for (const style of model.textStyles) {
+      Object.values(style.boundVariables).forEach((path) => referenced.add(path));
+    }
+  }
   return {
     collections: model.collections.map((c) => ({
       key: c.key,
@@ -61,12 +90,14 @@ function pushModel(model, scope) {
             codeSyntax: v.codeSyntax,
             valuesByMode: v.valuesByMode,
           }))
-        : c.variables.map((v) => ({
-            path: v.path,
-            name: v.name,
-            resolvedType: v.resolvedType,
-            codeSyntax: v.codeSyntax,
-          })),
+        : c.variables
+            .filter((v) => referenced.has(v.path))
+            .map((v) => ({
+              path: v.path,
+              name: v.name,
+              resolvedType: v.resolvedType,
+              codeSyntax: v.codeSyntax,
+            })),
     })),
     textStyles: inScope('styles') ? model.textStyles : [],
     // tint and pairsWith document where an effect came from; Figma stores neither.
@@ -165,7 +196,7 @@ const PLUGIN_UI = `<!doctype html>
     const msg = event.data.pluginMessage;
     if (!msg) return;
     if (!msg.ok) {
-      title.textContent = 'Failed — nothing below was applied unless it says so';
+      title.textContent = 'Push or snapshot failed';
       title.className = 'error';
       out.value = msg.error;
       return;

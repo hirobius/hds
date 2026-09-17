@@ -391,6 +391,10 @@ export function createFakeFigma({
   // ── The figma global ───────────────────────────────────────────────────────
   const figma = {
     writes,
+    /** Test control, not Plugin API: change the plan limit mid-test (e.g. after a failed push). */
+    setModeLimit(limit) {
+      modeLimit = limit;
+    },
     fileKey: undefined,
     root: { name: fileName, ...pluginData({ owner: 'root', log }) },
     notify() {
