@@ -131,7 +131,8 @@ function propsOfCallable(checker, type, location) {
  */
 export function createCodeModel({ root, files, compilerOptions }) {
   const absolute = [...new Set(files)].map((file) => path.join(root, file));
-  const program = ts.createProgram(absolute, compilerOptions ?? readCompilerOptions(root));
+  const options = compilerOptions ?? readCompilerOptions(root);
+  const program = ts.createProgram(absolute, options);
   const checker = program.getTypeChecker();
   const cache = new Map();
 
@@ -176,5 +177,86 @@ export function createCodeModel({ root, files, compilerOptions }) {
     return result;
   }
 
-  return { component };
+  /**
+   * Type-check JSX snippets against the real component types, as if a consumer
+   * pasted each one into a module that imports the component. Returns one list
+   * of diagnostic messages per snippet (empty = compiles).
+   *
+   * Free identifiers in a snippet (`setChecked`, `user.name`, `<IconInstance />`)
+   * are example bindings the consumer supplies, so "Cannot find name" is not
+   * reported; everything else the compiler says is.
+   *
+   * @param {{ source: string, exportName: string, snippet: string }[]} snippets
+   * @returns {string[][]}
+   */
+  function typecheckSnippets(snippets) {
+    const results = snippets.map(() => []);
+    if (snippets.length === 0) return results;
+
+    // One virtual module per (source, export), next to the repo root so the
+    // relative import resolves exactly as it would for a real file.
+    const modules = new Map();
+    snippets.forEach(({ source, exportName, snippet }, index) => {
+      const key = `${source}#${exportName}`;
+      if (!modules.has(key)) {
+        const specifier = `./${source.replace(/\\/g, '/').replace(/\.(tsx|ts)$/, '')}`;
+        modules.set(key, {
+          fileName: path.resolve(root, `__code_connect_snippets_${modules.size}__.tsx`),
+          text: `import { ${exportName} } from '${specifier}';\n`,
+          ranges: [],
+        });
+      }
+      const module = modules.get(key);
+      module.text += `export const __snippet${index} = (\n`;
+      module.ranges.push({
+        index,
+        start: module.text.length,
+        end: module.text.length + snippet.length,
+      });
+      module.text += `${snippet}\n);\n`;
+    });
+
+    const virtual = new Map([...modules.values()].map((m) => [m.fileName, m]));
+    const host = ts.createCompilerHost(options);
+    const getSourceFile = host.getSourceFile.bind(host);
+    const fileExists = host.fileExists.bind(host);
+    const readFile = host.readFile.bind(host);
+    host.getSourceFile = (fileName, languageVersion, onError, shouldCreate) => {
+      const module = virtual.get(path.resolve(fileName));
+      if (module) {
+        return ts.createSourceFile(fileName, module.text, languageVersion, true, ts.ScriptKind.TSX);
+      }
+      // Reuse the already-parsed component, React and lib files.
+      return (
+        program.getSourceFile(fileName) ??
+        getSourceFile(fileName, languageVersion, onError, shouldCreate)
+      );
+    };
+    host.fileExists = (fileName) => virtual.has(path.resolve(fileName)) || fileExists(fileName);
+    host.readFile = (fileName) => virtual.get(path.resolve(fileName))?.text ?? readFile(fileName);
+
+    const snippetProgram = ts.createProgram([...virtual.keys(), ...absolute], options, host);
+    for (const module of virtual.values()) {
+      const sourceFile = snippetProgram.getSourceFile(module.fileName);
+      const diagnostics = [
+        ...snippetProgram.getSyntacticDiagnostics(sourceFile),
+        ...snippetProgram.getSemanticDiagnostics(sourceFile),
+      ];
+      for (const diagnostic of diagnostics) {
+        if (PLACEHOLDER_DIAGNOSTICS.has(diagnostic.code)) continue;
+        const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, ' ');
+        const range = module.ranges.find(
+          ({ start, end }) => diagnostic.start >= start && diagnostic.start <= end,
+        );
+        // A diagnostic outside every snippet (the import line) affects them all.
+        for (const { index } of range ? [range] : module.ranges) results[index].push(message);
+      }
+    }
+    return results;
+  }
+
+  return { component, typecheckSnippets };
 }
+
+/** TS2304 "Cannot find name 'x'" and TS2552 "Cannot find name 'x'. Did you mean 'y'?". */
+const PLACEHOLDER_DIAGNOSTICS = new Set([2304, 2552]);

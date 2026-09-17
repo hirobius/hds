@@ -29,6 +29,7 @@
  *   render-tag                the snippet's root element is not the component
  *   render-unknown-prop       the snippet passes a prop the component does not accept
  *   render-cva-value          the snippet passes a cva prop a value outside its cva keys
+ *   render-type               the snippet does not type-check against the component's props (TypeScript)
  *   import-line               imports ≠ `import { X } from '<importFrom>'`
  *
  * Reported, not failing (use --strict to fail):
@@ -149,6 +150,8 @@ export function checkCodeConnect({
     combinations: 0,
   };
   const previews = [];
+  // Distinct, syntactically valid snippets, type-checked in one batch at the end.
+  const typecheckQueue = [];
 
   for (const message of generatorErrors) error('registry-invalid', message);
   for (const message of generatorDrift)
@@ -305,12 +308,17 @@ export function checkCodeConnect({
       if (JSON.stringify(result.imports) !== JSON.stringify([expectedImport])) {
         once('import-line', `imports ${JSON.stringify(result.imports)} ≠ ["${expectedImport}"]`);
       }
+      if (unique.has(result.snippet)) continue;
       unique.add(result.snippet);
       const analysis = analyzeSnippet(result.snippet);
       if (analysis.syntaxErrors.length) {
         once('render-syntax', `${result.snippet} → ${analysis.syntaxErrors[0]}`);
         continue;
       }
+      typecheckQueue.push({
+        name,
+        request: { source: doc.source, exportName, snippet: result.snippet },
+      });
       if (analysis.tag !== exportName)
         once('render-tag', `root element <${analysis.tag}> is not <${exportName}>`);
       for (const attribute of analysis.attributes) {
@@ -358,6 +366,19 @@ export function checkCodeConnect({
       variations,
     });
   }
+
+  // 4. Every distinct snippet compiles against the component's real props type
+  //    (a bare attribute on a string prop, a value outside a union, a missing
+  //    required prop).
+  const typeResults = codeModel.typecheckSnippets(typecheckQueue.map((item) => item.request));
+  const typeReported = new Set();
+  typecheckQueue.forEach(({ name, request }, i) => {
+    for (const message of typeResults[i] ?? []) {
+      if (typeReported.has(`${name}:${message}`)) continue;
+      typeReported.add(`${name}:${message}`);
+      error('render-type', `${request.snippet} → ${message}`, name);
+    }
+  });
 
   summary.mapped.sort();
   summary.unmapped.sort();
