@@ -190,6 +190,7 @@ writeFileSync(join(app, 'probe.mjs'), probe);
 const renderProbe = `
 import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
 
 const PKG = ${JSON.stringify(PKG)};
@@ -253,7 +254,7 @@ check('useHdsRouter reads window.location for currentPath (no provider)', () => 
 });
 
 check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
-  const cssPath = decodeURIComponent(import.meta.resolve(PKG + '/tokens.css').replace(/^file:\\/\\//, ''));
+  const cssPath = fileURLToPath(import.meta.resolve(PKG + '/tokens.css'));
   const css = readFileSync(cssPath, 'utf8');
   assert.ok(css.includes('--semantic-color-surface-page'), 'token var missing from tokens.css');
   assert.ok(css.includes('@font-face'), 'no @font-face in tokens.css');
@@ -267,7 +268,7 @@ check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
 // stands in for a browser: the global preflight signatures must be ABSENT and
 // the scoped base + utilities + fonts must be PRESENT.
 check('styles.css ships components/utilities/fonts with NO global reset', () => {
-  const cssPath = decodeURIComponent(import.meta.resolve(PKG + '/styles.css').replace(/^file:\\/\\//, ''));
+  const cssPath = fileURLToPath(import.meta.resolve(PKG + '/styles.css'));
   const css = readFileSync(cssPath, 'utf8');
   // present: components can render + fonts + scoped base
   assert.ok(css.includes('@layer utilities'), 'utilities layer missing — components would be unstyled');
@@ -286,7 +287,7 @@ check('styles.css ships components/utilities/fonts with NO global reset', () => 
 // present, it's token-bound (references design-token custom properties), and
 // it carries no global reset that would leak into a host page.
 check('static.css ships the five .hds-* static primitives, host-safe', () => {
-  const cssPath = decodeURIComponent(import.meta.resolve(PKG + '/static.css').replace(/^file:\\/\\//, ''));
+  const cssPath = fileURLToPath(import.meta.resolve(PKG + '/static.css'));
   const css = readFileSync(cssPath, 'utf8');
   for (const cls of ['.hds-badge', '.hds-card', '.hds-alert', '.hds-divider', '.hds-tag']) {
     assert.ok(css.includes(cls), 'static.css missing ' + cls);
