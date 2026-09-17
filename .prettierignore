@@ -34,6 +34,13 @@ docs/ai/orchestration.json
 # the post-commit re-run). Prettier-reformatting it diverged from the generator
 # output and churned the tree on every commit; let the generator own its format.
 docs/audits/exceptions-audit.md
+# Figma model golden snapshot — vitest's toMatchFileSnapshot compares it byte for
+# byte against JSON.stringify output; Prettier's inline arrays would break it.
+scripts/__tests__/fixtures/figma-model/model.golden.json
+# Figma snapshots — written by scripts/lib/figma-snapshot.mjs and verified by
+# checksum; let the writer own the layout so a re-ingest diffs only real changes.
+figma/snapshot.json
+fixtures/check-figma-drift/**/snapshot.json
 
 # Lock + node
 pnpm-lock.yaml

@@ -72,6 +72,23 @@ export function parseMigrationLog(content) {
 }
 
 /**
+ * The renames in TOKEN_MIGRATION.md as `{ oldPath: newPath }` (removals are
+ * skipped). `pnpm figma:push` uses it to keep a renamed token's Figma variable,
+ * and every binding to it, instead of creating a new one.
+ *
+ * @param {string} content - raw file text
+ * @returns {Record<string, string>}
+ */
+export function parseMigrationRenames(content) {
+  const renames = {};
+  for (const raw of content.split('\n')) {
+    const match = raw.trim().match(/^([\w.-]+)\s*->\s*([\w.-]+)/);
+    if (match && match[2] !== 'removed') renames[match[1]] = match[2];
+  }
+  return renames;
+}
+
+/**
  * Core check: given current paths, baseline paths, and migration log content,
  * return an array of undocumented removed paths.
  *

@@ -262,6 +262,19 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-figma-drift",
+      "description": "Compares the Figma model built from hirobius.tokens.json against the committed Figma snapshot (figma/snapshot.json) and reports missing, extra and changed variables, modes, default modes and styles. Exit 0 clean, 1 drift or an edited snapshot, 2 no snapshot yet. In ci.yml with --ci: fails only when Figma was last pushed from exactly the model the tokens build now (snapshot lastPush.modelHash) and still differs; drift that may be an unpushed change warns, no snapshot is a notice.",
+      "severity": "warn",
+      "gateScript": "scripts/check-figma-drift.mjs",
+      "fixturePath": "fixtures/check-figma-drift",
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "ci-pr",
+      "supportsJson": true
+    },
+    {
       "id": "check-figma-mapping",
       "description": "Enforces the component parity contract (docs/architecture/variant-contract.md#figma-mapping): manifest variantAxes, componentProperties and figmaPropertyMapping must bind to props the component really accepts (TypeScript checker), contract axes backed by cva must be declared with matching enum values, inverted booleans must be \"Show …\" toggles, and Code Connect templates must map the same contract axes. Title Case property names are advisory warnings.",
       "severity": "error",

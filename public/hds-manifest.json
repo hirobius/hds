@@ -781,7 +781,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Alert.tsx",
-      "figmaLink": "TODO:hds-master:Alert",
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34",
       "props": {
         "children": {
           "type": "ReactNode"
@@ -854,7 +854,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/CinematicLink.tsx",
-      "figmaLink": "TODO:hds-master:CinematicLink"
+      "figmaLink": null
     },
     "CodeBlock": {
       "category": "Display",
@@ -922,7 +922,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/CodeBlock.tsx",
-      "figmaLink": "TODO:hds-master:CodeBlock"
+      "figmaLink": null
     },
     "Container": {
       "category": "Layout",
@@ -987,7 +987,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Container.tsx",
-      "figmaLink": "TODO:hds-master:Container"
+      "figmaLink": null
     },
     "Disclosure": {
       "category": "Layout",
@@ -1102,7 +1102,7 @@
         }
       ],
       "sourcePath": "src/app/components/Disclosure.tsx",
-      "figmaLink": "TODO:hds-master:Disclosure"
+      "figmaLink": null
     },
     "Divider": {
       "category": "Layout",
@@ -1152,7 +1152,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Divider.tsx",
-      "figmaLink": "TODO:hds-master:Divider",
+      "figmaLink": null,
       "props": {
         "orientation": {
           "type": "enum",
@@ -1238,7 +1238,7 @@
       "hidden": false,
       "docExempt": false,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:DocLinkCard",
+      "figmaLink": null,
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/doc-link-card.test.tsx",
@@ -1454,7 +1454,7 @@
         }
       ],
       "sourcePath": "src/app/components/FoundationSwatch.tsx",
-      "figmaLink": "TODO:hds-master:FoundationSwatch"
+      "figmaLink": null
     },
     "Grid": {
       "category": "Layout",
@@ -1578,7 +1578,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Grid.tsx",
-      "figmaLink": "TODO:hds-master:Grid"
+      "figmaLink": null
     },
     "Icon": {
       "category": "Display",
@@ -1732,7 +1732,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Icon.tsx",
-      "figmaLink": "TODO:hds-master:Icon"
+      "figmaLink": null
     },
     "IconButton": {
       "category": "Actions",
@@ -1862,7 +1862,7 @@
         }
       ],
       "sourcePath": "src/app/components/IconButton.tsx",
-      "figmaLink": "TODO:hds-master:IconButton"
+      "figmaLink": null
     },
     "InlineCode": {
       "category": "Display",
@@ -1917,7 +1917,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/InlineCode.tsx",
-      "figmaLink": "TODO:hds-master:InlineCode"
+      "figmaLink": null
     },
     "InlineLink": {
       "category": "Navigation",
@@ -1976,7 +1976,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/InlineLink.tsx",
-      "figmaLink": "TODO:hds-master:InlineLink"
+      "figmaLink": null
     },
     "Input": {
       "category": "Inputs",
@@ -2219,7 +2219,7 @@
       ],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:Input"
+      "figmaLink": null
     },
     "NavGroup": {
       "category": "Navigation",
@@ -2327,7 +2327,7 @@
         }
       ],
       "sourcePath": "src/app/components/NavGroup.tsx",
-      "figmaLink": "TODO:hds-master:NavGroup"
+      "figmaLink": null
     },
     "NavItem": {
       "category": "Navigation",
@@ -2401,7 +2401,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/NavItem.tsx",
-      "figmaLink": "TODO:hds-master:NavItem"
+      "figmaLink": null
     },
     "SegmentedControl": {
       "category": "Inputs",
@@ -2500,7 +2500,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/SegmentedControl.tsx",
-      "figmaLink": "TODO:hds-master:SegmentedControl"
+      "figmaLink": null
     },
     "Sketch": {
       "category": "Layout",
@@ -2570,7 +2570,7 @@
         }
       ],
       "sourcePath": "src/app/components/Sketch.tsx",
-      "figmaLink": "TODO:hds-master:Sketch"
+      "figmaLink": null
     },
     "Stack": {
       "category": "Layout",
@@ -2759,7 +2759,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Stack.tsx",
-      "figmaLink": "TODO:hds-master:Stack"
+      "figmaLink": null
     },
     "StepperField": {
       "category": "Inputs",
@@ -2850,7 +2850,7 @@
         }
       ],
       "sourcePath": "src/app/components/StepperField.tsx",
-      "figmaLink": "TODO:hds-master:StepperField"
+      "figmaLink": null
     },
     "Table": {
       "category": "Display",
@@ -2936,7 +2936,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Table.tsx",
-      "figmaLink": "TODO:hds-master:Table"
+      "figmaLink": null
     },
     "Tag": {
       "category": "Inputs",
@@ -3095,7 +3095,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Tag.tsx",
-      "figmaLink": "TODO:hds-master:Tag"
+      "figmaLink": null
     },
     "Token": {
       "category": "Display",
@@ -3253,7 +3253,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Token.tsx",
-      "figmaLink": "TODO:hds-master:Token"
+      "figmaLink": null
     },
     "Surface": {
       "category": "Layout",
@@ -3341,7 +3341,7 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/Surface.tsx",
-      "figmaLink": "TODO:hds-master:Surface",
+      "figmaLink": null,
       "states": [
         "default"
       ]
@@ -3527,7 +3527,7 @@
         "Body",
         "Footer"
       ],
-      "figmaLink": "TODO:hds-master:Card",
+      "figmaLink": null,
       "propConstraints": {
         "as": {
           "type": "string"
@@ -3609,7 +3609,7 @@
       "variantAxes": [],
       "componentProperties": [],
       "sourcePath": "src/app/components/ComponentInstanceMatrix.tsx",
-      "figmaLink": "TODO:hds-master:ComponentInstanceMatrix"
+      "figmaLink": null
     },
     "SpecimenBlock": {
       "category": "Utilities",
@@ -3641,7 +3641,7 @@
       "variantAxes": [],
       "componentProperties": [],
       "sourcePath": "src/app/components/SpecimenBlock.tsx",
-      "figmaLink": "TODO:hds-master:SpecimenBlock"
+      "figmaLink": null
     },
     "ActivityFeed": {
       "category": "Display",
@@ -3717,7 +3717,7 @@
         }
       ],
       "sourcePath": "src/app/components/ActivityFeed.tsx",
-      "figmaLink": "TODO:hds-master:ActivityFeed"
+      "figmaLink": null
     },
     "HeadingStack": {
       "category": "Typography",
@@ -3816,7 +3816,7 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/HeadingStack.tsx",
-      "figmaLink": "TODO:hds-master:HeadingStack"
+      "figmaLink": null
     },
     "HdsSystemDocLayout": {
       "category": "Uncategorized",
@@ -3986,7 +3986,7 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/Text.tsx",
-      "figmaLink": "TODO:hds-master:Text"
+      "figmaLink": null
     },
     "Dialog": {
       "category": "Overlays",
@@ -4171,7 +4171,7 @@
         "Description",
         "Close"
       ],
-      "figmaLink": "TODO:hds-master:Dialog",
+      "figmaLink": null,
       "propConstraints": {
         "open": {
           "type": "boolean"
@@ -4194,7 +4194,7 @@
       "description": "StackedCardRail — horizontally-scrolling stacked card carousel. Scroll mechanism: vertical scroll on an absolutely-positioned inner container is mapped to horizontal scroll on a sticky inner strip via a single scroll event listener. Cards use CSS scroll-driven animation (animation-timeline: view(x …)) for the stack/unstack effect where the browser supports it; a plain horizontal rail is the graceful fallback. Browser compat note: - animation-timeline: view() — Chrome 115+, Firefox 110+ (behind flag until v114), Safari 18+ (TP only as of 2025). The @supports guard ensures the stacking animation is only applied when the feature is available; all other browsers get a clean scrollable row. - :has() selector (neighbour shift on hover) — Chrome 105+, FF 121+, Safari 15.4+. Gated with @supports selector(:has(+ *)).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:StackedCardRail",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "StackedCardRail",
@@ -4227,7 +4227,7 @@
       "description": "Triggers an action when activated.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Button",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Button",
@@ -4461,7 +4461,7 @@
       "description": "Tone-driven side-rule callout for status, quotes, hypotheses.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Callout",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Callout",
@@ -4526,7 +4526,7 @@
       "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections. communicate \"no data yet\" with consistent muted typography instead of agents inventing one-off `<p>No items.</p>` lines. use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:EmptyState",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "EmptyState",
@@ -4570,7 +4570,7 @@
       "description": "Caption label paired with a value — used in metadata grids and read-only forms.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Field",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Field",
@@ -4652,7 +4652,7 @@
       "description": "Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewport edges on scroll. Use as the outermost element of any new page so vertical rhythm is consistent across the system without per-page reinvention. Footer: every page mounted under HDSLayout (the standard route shell) gets a shared footer rendered after this component's content, with bottom space below the footer owned by the layout shell. Page intentionally does not render its own footer — the shell is the single source of truth. Use Container directly only for full-bleed surfaces (sketches, hero sections, embedded canvases) where the page owns its own vertical padding. Usage: <Page> <Stack direction=\"column\" gap=\"spacious\">...</Stack> </Page> <Page maxWidth=\"content\" paddingY=\"compact\"> <article>...</article> </Page>",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Page",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Page",
@@ -4721,7 +4721,7 @@
       "description": "Headline metric — large value, uppercase caption label, optional sub-line.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Stat",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Stat",
@@ -4791,7 +4791,7 @@
       "description": "Status dot + title row with optional muted notes and trailing slot (e.g. badge).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:StatusListItem",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "StatusListItem",
@@ -4861,7 +4861,7 @@
       "description": "Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status colour belongs in the trailing slot, never as a left rule on the tile — every tile should look the same so feedback signals stay reserved for genuinely interrupting states.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:StatusTile",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "StatusTile",
@@ -4915,7 +4915,7 @@
       "description": "Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:TileGrid",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "TileGrid",
@@ -4981,7 +4981,7 @@
       "docExempt": false,
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Badge",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Badge",
@@ -5053,7 +5053,7 @@
       "docExempt": false,
       "figmaUrl": null,
       "figmaId": "text-lockup-pattern",
-      "figmaLink": "TODO:hds-master:TextLockup",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "TextLockup",
@@ -5075,7 +5075,7 @@
       "description": "AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:AssetImg",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "AssetImg",
@@ -5240,7 +5240,7 @@
       "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Tabs",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Tabs",
@@ -5276,7 +5276,7 @@
       "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:TabsContent",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "TabsContent",
@@ -5311,7 +5311,7 @@
       "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:TabsList",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "TabsList",
@@ -5346,7 +5346,7 @@
       "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:TabsTrigger",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "TabsTrigger",
@@ -5427,7 +5427,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:HdsRadio"
+      "figmaLink": null
     },
     "HdsSelect": {
       "category": "Inputs",
@@ -5485,7 +5485,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:HdsSelect"
+      "figmaLink": null
     },
     "HdsSlider": {
       "category": "Inputs",
@@ -5543,7 +5543,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:HdsSlider"
+      "figmaLink": null
     },
     "HdsToggle": {
       "category": "Inputs",
@@ -5603,7 +5603,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:HdsToggle"
+      "figmaLink": null
     },
     "Avatar": {
       "category": "Display",
@@ -5615,7 +5615,7 @@
       "description": "Circular avatar. Renders the image when available, else initials from `alt`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Avatar",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Avatar",
@@ -5672,7 +5672,7 @@
       "description": "Linear progress. Determinate when `value` is a number, else indeterminate.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Progress",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Progress",
@@ -5724,7 +5724,7 @@
       "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Skeleton",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Skeleton",
@@ -5775,7 +5775,7 @@
       "description": "Indeterminate spinner. Inherits the surrounding text color via currentColor.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Spinner",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Spinner",
@@ -5820,7 +5820,7 @@
       "description": "Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is marked aria-current=\"page\".",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Breadcrumb",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Breadcrumb",
@@ -5860,7 +5860,7 @@
       "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Pagination",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Pagination",
@@ -5922,7 +5922,7 @@
       "docExempt": false,
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsCheckbox",
+      "figmaLink": null,
       "consumers": [
         "src/app/components/checkbox.test.tsx",
         "src/stories/checkbox.stories.tsx"
@@ -5940,7 +5940,7 @@
       "description": "Provider + viewport for the toast system. Wrap the app root once.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:ToastProvider",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "ToastProvider",
@@ -5980,7 +5980,7 @@
       "description": "Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Combobox",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Combobox",
@@ -6049,7 +6049,7 @@
       "description": "Styled `<form>` with consistent vertical field rhythm.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Form",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Form",
@@ -6085,7 +6085,7 @@
       "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement. Validation-library agnostic — pass `error` from whatever you use. For controls with an externally-managed callback ref (e.g. react-hook-form), use `FormFieldShell` + `useFieldWiring` instead.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:FormField",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "FormField",
@@ -6146,7 +6146,7 @@
       "description": "Presentational label + control slot + helper/error markup. Renders `children` verbatim — it does NOT clone — so it is safe to use with controls that own a callback ref. Pair it with `useFieldWiring` to apply ids/aria yourself.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:FormFieldShell",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "FormFieldShell",
@@ -6202,7 +6202,7 @@
       "description": "Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HdsThemeProvider",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "HdsThemeProvider",
@@ -6274,7 +6274,7 @@
       "description": "Renders up to `max` overlapping avatars followed by a `+N` overflow chip.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:AvatarGroup",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "AvatarGroup",
@@ -6317,7 +6317,7 @@
       "description": "A quoted passage; pass `cite` for the source URL and `attribution` for a byline.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Blockquote",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Blockquote",
@@ -6362,7 +6362,7 @@
       "description": "Groups Button (or button-like) children into a single attached segment.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:ButtonGroup",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "ButtonGroup",
@@ -6402,7 +6402,7 @@
       "description": "A single-line input with optional `leading`/`trailing` adornments.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:InputGroup",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "InputGroup",
@@ -6455,7 +6455,7 @@
       "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Kbd",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Kbd",
@@ -6496,7 +6496,7 @@
       "description": "A small solid dot conveying a semantic status via `tone`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:StatusDot",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "StatusDot",
@@ -6553,7 +6553,7 @@
       "description": "Presents a date/time with a machine-readable `dateTime` for accessibility.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Timestamp",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Timestamp",
@@ -6606,7 +6606,7 @@
       "description": "Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:VisuallyHidden",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "VisuallyHidden",
@@ -6642,7 +6642,7 @@
       "description": "A circular progress ring; pass `value`/`max` or set `indeterminate`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:CircularProgress",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "CircularProgress",
@@ -6718,7 +6718,7 @@
       "docExempt": false,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SideNav"
+      "figmaLink": null
     },
     "CommandPalette": {
       "category": "Overlays",
@@ -6730,7 +6730,7 @@
       "description": "Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:CommandPalette",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "CommandPalette",
@@ -6767,7 +6767,7 @@
       "description": "Lightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a lightbox is a transparent full-screen surface, not a centered card). Radix owns the modal a11y contract the hand-rolled version was missing: focus trap, focus restore on close, Escape, and scroll-lock. Motion is retained via `forceMount` + AnimatePresence + `asChild`: the backdrop fades and the image panel scales/translates in, exactly as before.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Lightbox",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Lightbox",
@@ -6834,7 +6834,7 @@
       "description": "Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:AppShell",
+      "figmaLink": null,
       "tier": "template",
       "preview": {
         "exportName": "AppShell",
@@ -6865,7 +6865,7 @@
       "description": "A dashed dropzone that opens the native file picker or accepts a drag-and-drop.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:FileInput",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "FileInput",
@@ -6917,7 +6917,7 @@
       "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:MetadataList",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "MetadataList",
@@ -6960,7 +6960,7 @@
       "description": "Renders up to `max` children followed by a `+N` overflow chip (or custom node).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:OverflowList",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "OverflowList",
@@ -7003,7 +7003,7 @@
       "description": "A card-shaped single checkbox — click or activate to toggle selection.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:SelectableCard",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "SelectableCard",
@@ -7047,7 +7047,7 @@
       "description": "A bordered field of Tag chips followed by a text input for adding more.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Tokenizer",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Tokenizer",
@@ -7097,7 +7097,7 @@
       "description": "Top navigation bar with brand, nav, and trailing action slots.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:TopNav",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "TopNav",
@@ -7145,7 +7145,7 @@
       "description": "Renders children as a snap-scrolling track with Prev/Next scroll buttons.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Carousel",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Carousel",
@@ -7188,7 +7188,7 @@
       "description": "Step indicator for multi-step flows. Purely presentational — no navigation.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Stepper",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Stepper",
@@ -7234,7 +7234,7 @@
       "description": "Toolbar root. Groups related controls with a single roving tab-stop. Supports the native `orientation` prop (`horizontal` | `vertical`).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Toolbar",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Toolbar",
@@ -7270,7 +7270,7 @@
       "description": "Renders a hierarchical `role=\"tree\"` list; nodes with children get an expand/collapse toggle.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:TreeList",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "TreeList",
@@ -7313,7 +7313,7 @@
       "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:AlertDialog",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "AlertDialog",
@@ -7344,7 +7344,7 @@
       "description": "Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:AspectRatio",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "AspectRatio",
@@ -7386,7 +7386,7 @@
       "description": "Renders an accessible month grid; compose it inside a Popover for the date inputs.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Calendar",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Calendar",
@@ -7423,7 +7423,7 @@
       "description": "ContextMenu root + parts. Wrap the right-clickable area in `ContextMenu.Trigger`. Controlled via `onOpenChange`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:ContextMenu",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "ContextMenu",
@@ -7454,7 +7454,7 @@
       "description": "Text field + calendar popover for picking a single date.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:DateInput",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "DateInput",
@@ -7514,7 +7514,7 @@
       "description": "DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new primitive — built entirely on the HDS Popover + Calendar. The trigger reads like a secondary input, showing a placeholder or the formatted `from – to` range; the content is a two-month range calendar. <DateRangeInput value={range} onChange={setRange} />",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:DateRangeInput",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "DateRangeInput",
@@ -7578,7 +7578,7 @@
       "description": "Text date field + calendar popover, paired with a native time field, producing one Date.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:DateTimeInput",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "DateTimeInput",
@@ -7634,7 +7634,7 @@
       "description": "HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:HoverCard",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "HoverCard",
@@ -7665,7 +7665,7 @@
       "description": "MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new dependency — built entirely on the HDS Popover. The trigger reads like a secondary Button, showing a placeholder or a `${n} selected` count; the content is a token-skinned list where each row is a checkbox toggling membership in `value`. <MultiSelector options={[{ value: 'a', label: 'Apple' }, { value: 'b', label: 'Banana' }]} value={fruits} onChange={setFruits} />",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:MultiSelector",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "MultiSelector",
@@ -7718,7 +7718,7 @@
       "description": "A native time field skinned with HDS input chrome. Value is a `HH:mm` string.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:TimeInput",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "TimeInput",
@@ -7761,7 +7761,7 @@
       "description": "A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:ToggleButton",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "ToggleButton",
@@ -7814,7 +7814,7 @@
       "description": "Box — polymorphic layout primitive with a token-first `sx` engine. named primitive covers, without inviting ad hoc inline styles or raw hex/px values back into the system — the `sx` engine only accepts HDS token keys and a small, deliberate CSS subset. Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) resolve numbers off the 4px HDS scale (`--primitive-space-<n>`) and named steps ('tight'|'normal'|'inset'|'spacious') off `--semantic-space-layout-*`. - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ xs, sm, md, lg, xl }` objects compile to `min-width` media queries off the HDS breakpoint scale. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Box",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Box",
@@ -7868,7 +7868,7 @@
       "description": "Bleed — controlled negative-margin full-bleed within a padded container. padding\" (a full-width image inside a padded card, a divider that should touch both edges) with a single tokenized negative-margin wrapper, so agents stop hand-rolling `margin: -24px` guesses that drift from the parent's actual padding token. use a semantic space step, never raw px, and MUST match the ancestor padding it is meant to cancel out. Do NOT use Bleed to fake extra spacing — its only job is canceling a specific known padding value on a specific axis. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inverse of a padded Center/Container — HDS names it separately since \"every-layout\" itself does not ship a dedicated Bleed recipe).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Bleed",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Bleed",
@@ -7934,7 +7934,7 @@
       "description": "Center — max-width column, auto-centered horizontally. max-width box with auto horizontal margins and, optionally, matching horizontal gutters — so agents stop hand-rolling `marginInline: auto` plus an ad hoc max-width value. use the semantic width scale ('content' | 'max'), never a raw px value. gutter, when set, MUST use a semantic space step, never raw px. Do NOT use Center for full-bleed page shells — use Container. Do NOT use Center when you need the deprecated Container padding prop — gutter replaces it. Every Layout reference: https://every-layout.dev/layouts/center/",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Center",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Center",
@@ -8003,7 +8003,7 @@
       "description": "Cluster — wrapping horizontal group with even gaps. (tag rows, button groups, chip lists, filter pills) with a single flex-wrap wrapper and a tokenized gap in both axes, so agents stop hand-rolling `flexWrap` + `gap` + alignment combinations inline. horizontal groups that should wrap as a unit. Spacing MUST use semantic steps, never raw px. Do NOT use Cluster for a strict single-line row — use Stack with `direction=\"row\"` when wrapping is never desired. Do NOT use Cluster for two-dimensional grid layouts — use Grid. Every Layout reference: https://every-layout.dev/layouts/cluster/",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Cluster",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Cluster",
@@ -8082,7 +8082,7 @@
       "description": "Cover — vertical shell with an auto-centered main region. centered hero/main region that absorbs the remaining space, and an optional footer\" problem via the flex auto-margin centering technique, so agents stop hand-rolling `position: absolute` centering or a fixed 50vh split. semantic space step, never raw px. minHeight is a CSS length dimension (not spacing) — defaults to '100svh' (small viewport height, safe against mobile browser chrome). Pass minHeight=\"100vh\" explicitly if you need the classic viewport unit for a target that predates svh support. Do NOT use Cover for ordinary page content flow — use Stack. Every Layout reference: https://every-layout.dev/layouts/cover/",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Cover",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Cover",
@@ -8158,7 +8158,7 @@
       "description": "Frame — aspect-ratio-locked, token-clipped media box. cause layout shift while it loads, cropped to a token-governed corner radius\" — a thin, token-skinned wrapper over `AspectRatio` (`@radix-ui/react-aspect-ratio`), which already owns the ratio-lock mechanics. Frame adds the overflow-hidden clip and semantic radius that a bare media frame needs and `AspectRatio` deliberately leaves undecorated. media (image, video, embed, map tile). radius MUST use a semantic borderRadius token, never a raw px value. Do NOT reach for bare `AspectRatio` in product code just to add a border-radius by hand — use Frame. Do NOT use Frame for non-media layout — it exists purely as a media clipping frame. Every Layout reference: https://every-layout.dev/layouts/frame/",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Frame",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Frame",
@@ -8220,7 +8220,7 @@
       "description": "Sidebar — fixed-width rail beside fluid content, no media query. problem with the flex-basis/flex-grow disparity technique — the rail holds `sideWidth` and the content flex-basis 0 with an overwhelming flex-grow, so the pair wraps to stacked automatically once the container can no longer fit both without squeezing content below `contentMin`. No CSS media query, no JS resize observer. EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Sidebar",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Sidebar",
@@ -8300,7 +8300,7 @@
       "description": "Switcher — flips a row to a column below a width threshold, no media query. vertical stack once the container gets narrow\" without a breakpoint or a resize observer, using the flex-basis calc() technique: each item's flex-basis resolves to a huge negative or huge positive number depending on whether the container is above or below `threshold`, forcing every item onto its own line once it flips. semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Cluster. Every Layout reference: https://every-layout.dev/layouts/the-switcher/",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Switcher",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Switcher",
@@ -8365,7 +8365,7 @@
       "description": "Pin — sticky-pin an element within its scroll region. section scrolls — the dependency-free basis for pinned scroll scenes (the \"tall section + sticky child\" pattern that GSAP's `pin: true` solves imperatively). Reach for this before hand-rolling sticky positioning. Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Pin",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Pin",
@@ -8418,7 +8418,7 @@
       "description": "Reveal — reveal-on-scroll primitive via CSS scroll-driven animation. purely by scroll position (`animation-timeline: view()`) — no JS, no deps, no IntersectionObserver. Reach for this before hand-rolling reveal logic. `animation-timeline` is supported AND the user has not requested reduced motion (both fall back to visible, never stuck hidden). Pick `animation` from the fixed set — do not hand-roll keyframes. For momentum/inertia scrolling wrap the app in `SmoothScroll`; for a scroll-progress value in JS use `useScrollProgress` — both from `@hirobius/design-system/scroll`. See ADR-021.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Reveal",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Reveal",
@@ -8477,7 +8477,7 @@
       "description": "Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the four states Default / Focus / Error / Disabled map to the focus-ring, `error`, and `disabled` treatments below.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:Textarea",
+      "figmaLink": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Textarea",
@@ -8944,7 +8944,7 @@
       "description": "/** @internal @doc-exempt: demo-preview-helper — not part of @hirobius/design-system public API.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:AutoPreviewSpecimen",
+      "figmaLink": null,
       "tier": "utility",
       "preview": {
         "exportName": "AutoPreviewSpecimen",
@@ -8986,7 +8986,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:VariantPreviewDeck"
+      "figmaLink": null
     },
     "HistoryCard": {
       "category": "Uncategorized",
@@ -9025,7 +9025,7 @@
       "tier": "utility",
       "docExempt": true,
       "sourcePath": "src/app/components/HistoryCard.tsx",
-      "figmaLink": "TODO:hds-master:HistoryCard"
+      "figmaLink": null
     },
     "ComponentPreview": {
       "category": "Uncategorized",
@@ -9056,7 +9056,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:ComponentPreview"
+      "figmaLink": null
     },
     "AnimatedLabel": {
       "category": "Uncategorized",
@@ -9086,7 +9086,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:AnimatedLabel"
+      "figmaLink": null
     },
     "ControlsPanel": {
       "category": "Uncategorized",
@@ -9117,7 +9117,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:ControlsPanel"
+      "figmaLink": null
     },
     "ControlsSection": {
       "category": "Uncategorized",
@@ -9148,7 +9148,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:ControlsSection"
+      "figmaLink": null
     },
     "HdsMobileTopBar": {
       "category": "Uncategorized",
@@ -9178,7 +9178,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:HdsMobileTopBar"
+      "figmaLink": null
     },
     "PreviewFrame": {
       "category": "Uncategorized",
@@ -9210,7 +9210,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:PreviewFrame"
+      "figmaLink": null
     },
     "HdsSidebarUtilityButton": {
       "category": "Uncategorized",
@@ -9240,7 +9240,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:HdsSidebarUtilityButton"
+      "figmaLink": null
     },
     "ImageLightbox": {
       "category": "Uncategorized",
@@ -9270,7 +9270,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:ImageLightbox"
+      "figmaLink": null
     },
     "SketchButton": {
       "category": "Uncategorized",
@@ -9298,7 +9298,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SketchButton"
+      "figmaLink": null
     },
     "SketchCheckbox": {
       "category": "Uncategorized",
@@ -9326,7 +9326,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SketchCheckbox"
+      "figmaLink": null
     },
     "SketchPanelToggle": {
       "category": "Uncategorized",
@@ -9354,7 +9354,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SketchPanelToggle"
+      "figmaLink": null
     },
     "SketchRange": {
       "category": "Uncategorized",
@@ -9382,7 +9382,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SketchRange"
+      "figmaLink": null
     },
     "SketchTextarea": {
       "category": "Uncategorized",
@@ -9410,7 +9410,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:SketchTextarea"
+      "figmaLink": null
     },
     "MorphCard": {
       "category": "Uncategorized",
@@ -9431,7 +9431,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:MorphCard"
+      "figmaLink": null
     },
     "Tooltip": {
       "category": "Uncategorized",
@@ -9457,7 +9457,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:Tooltip"
+      "figmaLink": null
     },
     "NotFoundPattern": {
       "category": "Feedback",
@@ -9488,7 +9488,7 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": true,
-      "figmaLink": "TODO:hds-master:NotFoundPattern"
+      "figmaLink": null
     },
     "CascadeText": {
       "category": "Uncategorized",
@@ -9509,7 +9509,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:CascadeText"
+      "figmaLink": null
     },
     "DocPageSpec": {
       "category": "Uncategorized",
@@ -9530,7 +9530,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:DocPageSpec"
+      "figmaLink": null
     },
     "TokenDisplayToggle": {
       "category": "Uncategorized",
@@ -9553,7 +9553,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:TokenDisplayToggle"
+      "figmaLink": null
     },
     "HdsLegacyTokenGovernancePanel": {
       "category": "Uncategorized",
@@ -9599,7 +9599,7 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:HdsLegacyTokenGovernancePanel"
+      "figmaLink": null
     },
     "LegacyTokenList": {
       "category": "Lab",
@@ -9645,7 +9645,7 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:LegacyTokenList"
+      "figmaLink": null
     },
     "TokenCollectionList": {
       "category": "Lab",
@@ -9686,7 +9686,7 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": false,
-      "figmaLink": "TODO:hds-master:TokenCollectionList"
+      "figmaLink": null
     },
     "TokenList": {
       "category": "Uncategorized",
@@ -9716,7 +9716,7 @@
       "docExempt": true,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:TokenList"
+      "figmaLink": null
     },
     "ErrorBoundary": {
       "category": "Uncategorized",
@@ -9741,7 +9741,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "TODO:hds-master:ErrorBoundary"
+      "figmaLink": null
     },
     "ApiReference": {
       "category": "Utilities",
@@ -9753,7 +9753,7 @@
       "description": "ApiReference — collapsed <details> rendering of a component's public API. Returns `null` when: - The component is missing from the manifest (nothing to render). - The component is a template and `forceForTemplate` is not set. - The component has no props AND no slots (genuinely empty surface).",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:ApiReference",
+      "figmaLink": null,
       "tier": "utility",
       "preview": {
         "exportName": "ApiReference",
@@ -9774,7 +9774,7 @@
       "description": "DocPageHeader — standardized header zone mounted at the top of every primitive / pattern / template doc page. Projected from the live HDS manifest; the unit `9d-9` batch refactor wires this component into the doc routes — this file only CREATES the surface. 9d-4 contract (from `docs/ai/orchestration.json`): - H1: component name - Lede: single-line summary derived from `componentSpec.description` (truncated at the first newline / sentence break for the header zone; the full description still flows into the doc body downstream). - Status badge: Stable / Beta — derived from a new optional `componentSpec.stability` field (additive, schema 9d-4). When absent, the default falls back to the unit-spec rule: primitives → 'stable'; patterns and templates → 'beta' when they lack `slots[]` or carry propConstraints warnings, otherwise 'stable'. - Tier chip: primitive / pattern / template / utility (manifest field). - Source link: GitHub blob URL projected from `componentSpec.filePath` against the repo's origin remote (hirobius/adrian-milsap, branch `main` for canonical permalinks). - Figma link: rendered when `componentSpec.figmaUrl` is non-null. Surface rules (component-zone CLAUDE.md): - Heavy prop restriction — one slot, no business logic. - Theming via CSS variables / role tokens only (no inline hex). - Composes Stack rather than re-implementing layout primitives. Anti-goals: - Not a doc-shell — `DocShell` already owns the wordmark, search, theme-toggle, and rail nav. This component lives INSIDE the content column, not the header bar. - Does not render badges as decorative stickers next to prose; they sit in a dedicated metadata row below the H1, per CLAUDE.md.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:DocPageHeader",
+      "figmaLink": null,
       "tier": "utility",
       "preview": {
         "exportName": "DocPageHeader",
@@ -9795,7 +9795,7 @@
       "description": "ThemeToggle — System / Light / Dark theme dropdown for the doc shell. 9d-3 baseline: a header-slot dropdown with three options: - System — follow `prefers-color-scheme`, react live to OS changes. - Light — force light mode. - Dark — force dark mode. Persistence: - Stored in localStorage under `hds-theme-mode` ('system' | 'light' | 'dark'). - Mirrored to the legacy `hds-theme` key ('light' | 'dark') so the existing ThemeContext binary toggle (if mounted) stays in sync without a hard dependency between the two. Application: - Sets `data-theme=\"light\"` or `data-theme=\"dark\"` on `<html>` so the 8e-2 `role.*` alias layer (theme-aware CSS vars) flips automatically. - Also toggles `<html>.dark` for parity with Tailwind's class-based dark variant (matching the convention already used in ThemeContext). Dependencies: - Zero new npm deps. Native button + click-outside listener. - SVG icons inlined (Sun / Moon / Monitor) — no icon-library dep added. Slot: - Renders into the `data-hds-slot=\"theme-toggle\"` zone in DocShell.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:ThemeToggle",
+      "figmaLink": null,
       "tier": "utility",
       "preview": {
         "exportName": "ThemeToggle",
@@ -9818,7 +9818,7 @@
       "description": "VariantStrip renders a horizontal family strip of component specimens with short labels. Designed for component docs to show all variants, sizes, or tones in a single scannable row.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:VariantStrip",
+      "figmaLink": null,
       "tier": "utility",
       "preview": {
         "exportName": "VariantStrip",
@@ -9838,7 +9838,7 @@
       "filePath": "src/app/components/demo-block.tsx",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:DemoBlock",
+      "figmaLink": null,
       "tier": "utility",
       "preview": {
         "exportName": "DemoBlock",
@@ -9859,7 +9859,7 @@
       "description": "PageFooter — minimal page footer rendered by the route shell. Currently houses a binary light/dark theme toggle on the left, with the footer owning its own bottom breathing room so the toggle never pins to the viewport edge. Add elements here as the page footer grows — keeping the shape in one place so every HDSLayout-mounted page gets a consistent footer surface without per-page rendering.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "TODO:hds-master:PageFooter",
+      "figmaLink": null,
       "tier": "utility",
       "preview": {
         "exportName": "PageFooter",

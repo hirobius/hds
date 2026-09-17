@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from '../app/components/input';
 import { MODES } from '../../.storybook/preview';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/input',
   component: Input,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Input'),
     layout: 'padded',
     docs: {
       description: {
