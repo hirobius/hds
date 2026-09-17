@@ -8,16 +8,66 @@ variables API is Enterprise-only), so every Figma step is a local command that a
 person, or an agent with Figma access, runs on purpose. Drift detection compares
 the model against a committed snapshot of the file, not the live file.
 
-| Command                    | What it does                                                                                   | Talks to Figma? |
-| -------------------------- | ---------------------------------------------------------------------------------------------- | --------------- |
-| `pnpm figma:model`         | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles         | No              |
-| `pnpm figma:push`          | Writes the code that upserts the model into a file, to `figma/push/`                           | No (you run it) |
-| `pnpm figma:snapshot`      | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json` | No (you run it) |
-| `pnpm check:figma-drift`   | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                              | No              |
-| `pnpm figma:native-import` | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`             | No              |
+| Command                    | What it does                                                                                                                                 | Talks to Figma? |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| `pnpm figma:model`         | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles, plus Brand and Density from `figma/brand-modes.json` | No              |
+| `pnpm figma:push`          | Writes the code that upserts the model into a file, to `figma/push/`                                                                         | No (you run it) |
+| `pnpm figma:snapshot`      | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`                                               | No (you run it) |
+| `pnpm check:figma-drift`   | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                            | No              |
+| `pnpm figma:native-import` | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                           | No              |
 
 `figma/model.json`, `figma/push/` and `figma/native-import/` are generated and
 gitignored. `figma/snapshot.json` is committed: it records Figma's state.
+
+## Brand and Density
+
+`figma/brand-modes.json` lists the tenants that become modes of the
+`Hirobius/Brand` collection. **Demo tenants only.** The library is shared, so a
+client tenant never goes in. `pnpm figma:model` (and every command that builds
+the model) refuses a listed tenant unless:
+
+- its `metadata.json` is tier 1, with no deployment and no legal entity set;
+- its `tokens.json` passes the tenant overlay validator (the one
+  `check-tenant-tokens` and `pnpm tokens` run);
+- the base mode plus the listed tenants fit a Professional plan's 10 modes per
+  collection.
+
+Errors name the field, never its value. A tenant the file does not list is
+never read.
+
+| Collection         | Modes                                  | Holds                                                                                                                                                                                                            |
+| ------------------ | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Hirobius/Brand`   | `Hirobius`, then one per listed tenant | One variable per path a listed tenant overrides: `<path>/Light` and `<path>/Dark` when the path is themed, `<path>/Comfortable` and `<path>/Compact` when a tenant gives it a Compact value, otherwise `<path>`. |
+| `Hirobius/Density` | `Comfortable`, `Compact`               | One variable per compacted path, aliasing its two Brand variants. Left out when no listed tenant has a Compact value.                                                                                            |
+
+In the `Hirobius` mode a Brand variable holds the base token's value. A tenant
+mode holds that tenant's override, or the base value where it has none. The
+token's own variable (for example `radius` in `Hirobius/Role`) keeps its name,
+id and bindings, and its value now aliases Brand or Density. A frame resolves
+theme, brand and density from three independent modes, the way `[data-theme]`,
+`[data-brand]` and `[data-density]` combine in `src/styles/tenants.css`: set
+`Hirobius/Semantic` to Dark, `Hirobius/Brand` to a demo tenant, and
+`Hirobius/Density` to Compact.
+
+Brand and Density variables have no scopes, so they stay out of every picker
+(bind the token variable), and no `codeSyntax`, since they have no CSS variable
+of their own. Aliases run both ways between them and Semantic, so the
+use_figma push carries all three in `02-semantic.js`.
+
+The model refuses, with the reason:
+
+- a tenant theming a token that lives in a single-mode collection (theme it in
+  `hirobius.tokens.json` first, which moves it to Semantic);
+- one path varying by both theme and density (build-tokens writes no brand ×
+  theme × density CSS);
+- a composite override (typography, shadow, elevation), because text and effect
+  styles have no modes;
+- a Compact mode in `hirobius.tokens.json` itself, because build-tokens writes
+  density CSS for tenant overlays only.
+
+An override of a token that is not in Figma (motion, for example) is skipped.
+The base density scale (`--hds-space-*` in `src/styles/theme.css`) is not a
+token, so Density carries only tenant Compact values today.
 
 ## Push
 
@@ -43,9 +93,9 @@ breaks an invariant) and writes two carriers of the same code
   changed on the way stops there; only its last two call lines are not covered.
   If Figma's sandbox ever hides function source, the scripts refuse and name the
   development plugin, which Figma loads from disk. With the
-  current tokens each script is 46–96 KB of code for the agent to pass through
+  current tokens each script is 46–99 KB of code for the agent to pass through
   (a `--prune` build carries every variable's identity, so moved tokens are
-  recognised, and reaches 92–117 KB), so the development plugin is the easier
+  recognised, and reaches 93–119 KB), so the development plugin is the easier
   path for a full push, a prune or a snapshot.
 
 What a push does:
@@ -118,7 +168,8 @@ Until a snapshot is committed the step only adds a notice.
 `pnpm figma:native-import` writes one DTCG file per collection × mode. For each
 collection, in the printed order: create the collection in Figma, then import
 each file as a mode. Import Primitives first, since the other collections alias
-it. An alias inside one file is a DTCG reference; an alias into another
+it. Brand and Density files come last: one file per brand mode and per density
+mode. An alias inside one file is a DTCG reference; an alias into another
 collection uses `com.figma.aliasData` and keeps the resolved value for that mode.
 
 It carries variables only: no `codeSyntax`, text styles or effect styles, and no

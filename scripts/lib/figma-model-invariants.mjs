@@ -5,11 +5,17 @@
  * validateFigmaModel(model) checks a model from buildFigmaModel() against what
  * Figma accepts (value types, scopes per type, modes per plan) and what HDS
  * promises about it (one theme axis, px units behind px scopes, hidden
- * primitives, unique names and codeSyntax, bound styles). summarizeFigmaModel(model) gives the counts a reviewer
- * checks first.
+ * primitives, unique names and codeSyntax, bound styles, scope-less Brand and
+ * Density variables, no alias cycles). summarizeFigmaModel(model) gives the
+ * counts a reviewer checks first.
  */
 
-import { ALL_SCOPES_ALLOWLIST, THEME_MODES } from './figma-model.mjs';
+import {
+  ALL_SCOPES_ALLOWLIST,
+  AXIS_COLLECTION_KEYS,
+  DENSITY_MODES,
+  THEME_MODES,
+} from './figma-model.mjs';
 
 // ── Invariants ───────────────────────────────────────────────────────────────
 /** Modes per collection on a Figma Professional plan (Organization: 20). */
@@ -118,14 +124,60 @@ function checkVariable(v, c, ctx, flag) {
   if (v.path.startsWith('primitive.') && !v.hiddenFromPublishing) {
     flag(`${where}: primitives must be hidden from publishing.`);
   }
-  const expectedSyntax = `var(--${v.path.replaceAll('.', '-')})`;
-  if (v.codeSyntax?.WEB !== expectedSyntax) {
-    flag(`${where}: codeSyntax.WEB should be ${expectedSyntax}, got ${v.codeSyntax?.WEB}.`);
+  if (AXIS_COLLECTION_KEYS.includes(c.key)) {
+    if (v.scopes.length) {
+      flag(
+        `${where}: an axis variable carries no scopes (designers bind the token variable that aliases it), got ${v.scopes}.`,
+      );
+    }
+    if (v.codeSyntax?.WEB) {
+      flag(
+        `${where}: an axis variable has no CSS variable of its own, so it carries no codeSyntax, got ${v.codeSyntax.WEB}.`,
+      );
+    }
+  } else {
+    const expectedSyntax = `var(--${v.path.replaceAll('.', '-')})`;
+    if (v.codeSyntax?.WEB !== expectedSyntax) {
+      flag(`${where}: codeSyntax.WEB should be ${expectedSyntax}, got ${v.codeSyntax?.WEB}.`);
+    }
   }
   const prefix = `${v.name}/`;
   if ([...ctx.namesIn(c)].some((name) => name.startsWith(prefix))) {
     flag(`${where}: ${v.name} is both a variable and a group in ${c.name}.`);
   }
+}
+
+/**
+ * Alias cycles over every mode at once: a frame can pair any mode of one
+ * collection with any mode of another, so Figma checks the union of edges.
+ * Each cycle is reported once, starting where the walk first entered it.
+ */
+function aliasCycles(variables) {
+  const edges = (v) =>
+    [...new Set(Object.values(v.valuesByMode).map((e) => e?.alias))].filter((t) =>
+      variables.has(t),
+    );
+  const state = new Map();
+  const cycles = [];
+  const seen = new Set();
+  const visit = (path, stack) => {
+    state.set(path, 'open');
+    stack.push(path);
+    for (const target of edges(variables.get(path))) {
+      if (state.get(target) === 'open') {
+        const cycle = [...stack.slice(stack.indexOf(target)), target];
+        const key = [...new Set(cycle)].sort().join('|');
+        if (!seen.has(key)) {
+          seen.add(key);
+          cycles.push(cycle);
+        }
+      } else if (!state.has(target)) visit(target, stack);
+    }
+    stack.pop();
+    state.set(path, 'done');
+  };
+  for (const path of variables.keys()) if (!state.has(path)) visit(path, []);
+  return cycles;
 }
 
 /**
@@ -150,6 +202,11 @@ export function validateFigmaModel(model) {
     }
     if (c.key === 'primitive' && !c.hiddenFromPublishing)
       flag(`${c.name} must be hidden from publishing.`);
+    if (c.key === 'density' && c.modes.join('|') !== DENSITY_MODES.join('|')) {
+      flag(
+        `${c.name} modes must be ${DENSITY_MODES.join(' and ')} (comfortable = no data-density, compact = [data-density="compact"]), got [${c.modes}].`,
+      );
+    }
     names.set(c, new Set(c.variables.map((v) => v.name)));
     for (const v of c.variables) {
       variables.set(v.path, v);
@@ -170,6 +227,11 @@ export function validateFigmaModel(model) {
   const ctx = { variables, namesIn: (c) => names.get(c) };
   for (const c of model.collections) {
     for (const v of c.variables) checkVariable(v, c, ctx, flag);
+  }
+  for (const cycle of aliasCycles(variables)) {
+    flag(
+      `Alias cycle across modes: ${cycle.join(' → ')}. Figma refuses an alias that closes a cycle in any mode.`,
+    );
   }
   const pathsBySyntax = new Map();
   for (const v of variables.values()) {

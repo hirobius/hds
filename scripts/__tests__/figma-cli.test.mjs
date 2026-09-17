@@ -323,6 +323,53 @@ describe('pnpm figma:native-import', () => {
     );
   });
 
+  it('adds a file per Brand and Density mode when the root lists demo tenants', () => {
+    const root = tempRoot();
+    mkdirSync(join(root, 'figma'), { recursive: true });
+    writeFileSync(
+      join(root, 'figma', 'brand-modes.json'),
+      JSON.stringify({ baseMode: 'Hirobius', tenants: ['sharp-demo'] }),
+    );
+    mkdirSync(join(root, 'tenants', 'sharp-demo'), { recursive: true });
+    writeFileSync(
+      join(root, 'tenants', 'sharp-demo', 'metadata.json'),
+      JSON.stringify({
+        slug: 'sharp-demo',
+        displayName: 'Sharp Demo',
+        tier: 1,
+        status: 'scaffold',
+      }),
+    );
+    writeFileSync(
+      join(root, 'tenants', 'sharp-demo', 'tokens.json'),
+      JSON.stringify({
+        semantic: {
+          space: {
+            $type: 'dimension',
+            component: {
+              gap: {
+                $value: '{primitive.space.4}',
+                $extensions: {
+                  'com.figma.variables': { modes: { Compact: '{primitive.space.2}' } },
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
+    const outDir = join(root, 'out');
+    const { files } = writeNativeImport({ root, outDir });
+    expect(files.map((f) => f.path).slice(5)).toEqual([
+      '05-brand/Hirobius.json',
+      '05-brand/sharp-demo.json',
+      '06-density/Comfortable.json',
+      '06-density/Compact.json',
+    ]);
+    const compact = JSON.parse(readFileSync(join(outDir, '05-brand', 'sharp-demo.json'), 'utf8'));
+    expect(compact.semantic.space.component.gap.Compact.$value).toEqual({ value: 8, unit: 'px' });
+  });
+
   it('builds from the real hirobius.tokens.json', () => {
     const root = mkdtempSync(join(tmpdir(), 'hds-figma-real-'));
     dirs.push(root);

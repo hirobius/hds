@@ -33,6 +33,28 @@ describe('pnpm figma:model', () => {
     expect(readFileSync(outPath, 'utf8')).toBe(written);
   });
 
+  it('writes the Brand and Density collections for the brand modes it is given', () => {
+    dir = mkdtempSync(join(tmpdir(), 'figma-model-'));
+    const outPath = join(dir, 'figma', 'model.json');
+    const brands = {
+      baseMode: 'Hirobius',
+      tenants: [
+        {
+          slug: 'sharp-demo',
+          overlay: { role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } } },
+        },
+      ],
+    };
+    const { summary, violations } = writeFigmaModel({ tokensPath: FIXTURE, outPath, brands });
+    expect(violations).toEqual([]);
+    expect(summary.collections.at(-1)).toEqual({
+      name: 'Hirobius/Brand',
+      modes: ['Hirobius', 'sharp-demo'],
+      variables: 1,
+    });
+    expect(JSON.parse(readFileSync(outPath, 'utf8')).collections.at(-1).key).toBe('brand');
+  });
+
   it('does not write a model that fails its invariants', () => {
     dir = mkdtempSync(join(tmpdir(), 'figma-model-'));
     const tokensPath = join(dir, 'tokens.json');

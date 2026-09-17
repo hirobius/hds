@@ -377,9 +377,12 @@ When the build pipeline lands (`12m-mt-build-pipeline`):
   approves. Schema gets a `licensingApproved: true` flag at the metadata
   level. This is the only carve-out to R1 — and it requires explicit human
   sign-off in metadata.json.
-- **Per-tenant Figma masters** (`12m-mt-figma-master-per-tenant`): the
-  Figma plugin reads tenant metadata + overlays to swap component-set
-  colors before publishing.
+- **Per-tenant Figma masters** (`12m-mt-figma-master-per-tenant`): superseded
+  for demo tenants by the `Hirobius/Brand` and `Hirobius/Density` variable
+  collections. `pnpm figma:model` turns the overlays of the tenants listed in
+  `figma/brand-modes.json` into one Brand mode each, after this validator
+  passes them. Client tenants never enter the shared library. See
+  `figma/README.md` (Brand and Density).
 - **Tenant-aware preview tool**: a route in the doc site
   (`/preview/<slug>`) that sets `data-tenant` at runtime so designers can
   see tenant theming without leaving the HDS doc app.
