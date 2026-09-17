@@ -4,10 +4,10 @@ Authoritative rules for the token architecture, manifest structure, and sync pip
 
 ## 1. Two Separate Source Files — Know Which is Which
 
-| File                       | What it is                                                        | Who writes it                                               | Who reads it                                     |
-| -------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------ |
-| `hirobius.tokens.json`     | W3C DTCG token graph. The design primitive.                       | Humans + Figma export                                       | `pnpm tokens` pipeline → CSS vars + TS constants |
-| `public/hds-manifest.json` | System inventory: components, phases, health, and token snapshot. | `scripts/generate-manifest.mjs` + bridge `/update-manifest` | Agents, docs pages, LLM context, Figma plugin    |
+| File                       | What it is                                                        | Who writes it                               | Who reads it                                     |
+| -------------------------- | ----------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| `hirobius.tokens.json`     | W3C DTCG token graph. The design primitive.                       | Humans (hand-edited; Figma never writes it) | `pnpm tokens` pipeline → CSS vars + TS constants |
+| `public/hds-manifest.json` | System inventory: components, phases, health, and token snapshot. | `scripts/generate-manifest.mjs`             | Agents, docs pages, LLM context                  |
 
 **NEVER conflate them.** A token lives in `hirobius.tokens.json`. A component spec lives in the manifest. A token _reference_ (the path string like `semantic.color.surface.raised`) may appear in both — in the token file as a node in the graph, in the manifest as a metadata field on a component spec.
 
@@ -156,9 +156,9 @@ If `optional` is absent and there is no `default`, the prop is implicitly requir
 
 ## 6. Updating the Manifest
 
-### From the bridge (token sync round-trip)
+### Not from Figma
 
-`POST /update-manifest` with `{ tokens: [...] }`. The bridge upserts by `path` first, falls back to `name`. Responds with `{ status, upserted, inserted }`. This is the canonical path for Figma→manifest token updates.
+There is no Figma → manifest path. The bridge that served `POST /update-manifest` was archived with the rest of the in-house Figma stack (ADR-018 §2, branch `archive/figma-bridge`). Sync runs one way, code → Figma (ADR-025).
 
 ### From `generate-manifest.mjs`
 
@@ -171,19 +171,18 @@ Re-generates `componentInventory`, `componentSpecs` scaffolding, `tokens` snapsh
 3. Hand-fill `tokens`, `figmaPropertyMapping`, `states`, `allowedChildren`, `propConstraints`, `requiredProps`, `a11yRules`, `variantAxes`, `componentProperties` either inline in the manifest or — preferably — in `scripts/build-tokens.mjs` so they survive re-generation.
 4. Run `pnpm validate:manifest` to confirm the spec is valid.
 5. Run `pnpm tokens` to propagate to docs and llms.txt.
-6. If the component is in the generative-subset, also run Step 5 in the Figma plugin (`pnpm hds:bridge` → click "Step 5: Build Master Components") to materialize the master in the Figma file. The plugin's batch handler reads `variantAxes` to compute the cartesian variant set and `componentProperties` to call `master.addComponentProperty()` after `combineAsVariants`.
+6. Figma masters are not generated from the manifest today. The in-house plugin that read `variantAxes` and `componentProperties` to build them is archived (ADR-018 §2); ADR-025 records the current Figma component plan.
 
-## 7. Figma Variables Round Trip
+## 7. Tokens → Figma Variables (one way)
 
 ```
 hirobius.tokens.json
-       ↓  scripts/build-figma-variables.mjs
-Figma Variables (Primitive + Semantic + Component collections)
-       ↓  SYNC_TOKENS button in plugin → sync-tokens.js
-public/hds-manifest.json (token snapshot updated)
-       ↓  POST /update-manifest (bridge)
-disk
+       ↓  scripts/build-figma-variables.mjs  (pnpm figma-variables, local)
+hirobius.figma-variables.json + hirobius.figma-variables-api.json  (gitignored export files)
+       ↓  nothing automatic — no push to Figma runs today
 ```
+
+Nothing flows back from Figma into the repo. The archived CI push used the Figma REST variables API, which is Enterprise-only. ADR-025 records the Pro-plan push, import, and drift path.
 
 Key facts:
 
@@ -203,13 +202,12 @@ Key facts:
 
 ## 9. Quick Reference — Which Script Does What
 
-| Need                                    | Command                                  |
-| --------------------------------------- | ---------------------------------------- |
-| Rebuild everything after a token edit   | `pnpm tokens`                            |
-| Rebuild just the manifest               | `pnpm manifest:generate`                 |
-| Validate manifest against schema        | `pnpm validate:manifest`                 |
-| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`                |
-| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides`         |
-| Full token + component audit            | `pnpm check:fast`                        |
-| Sync Figma Variables from tokens        | `node scripts/build-figma-variables.mjs` |
-| Audit Figma system state                | `pnpm figma:audit`                       |
+| Need                                    | Command                          |
+| --------------------------------------- | -------------------------------- |
+| Rebuild everything after a token edit   | `pnpm tokens`                    |
+| Rebuild just the manifest               | `pnpm manifest:generate`         |
+| Validate manifest against schema        | `pnpm validate:manifest`         |
+| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`        |
+| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides` |
+| Full token + component audit            | `pnpm check:fast`                |
+| Write Figma variable export files       | `pnpm figma-variables`           |

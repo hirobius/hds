@@ -1,8 +1,22 @@
 # Hirobius Design System
 
-HDS development has stalled since mid-July 2026 (no commits since 2026-07-15); the release, Chromatic, and Ralph loop-heartbeat workflows are all still frozen to manual dispatch from the 2026-07-09 shelving, and revival is tracked in [#199](https://github.com/hirobius/hds/issues/199)–[#201](https://github.com/hirobius/hds/issues/201). 133 components (Radix + `cva`), 351+ DTCG tokens, ~110 Storybook stories, a full guardrail suite, and the published `@hirobius/design-system` on npm.
+A publishable React + TypeScript component library backed by a governed design-token pipeline, published to npm as `@hirobius/design-system`.
 
-A publishable React + TypeScript component library, backed by a governed design-token pipeline, a documentation site, and an automated verification suite — all in one repository.
+<!--
+  PLACEHOLDER — ADRIAN TO WRITE (hds front-door PR).
+  If you want the README to mention the July–September 2026 pause, put one or
+  two sentences here in your own words, then delete this comment. Leaving the
+  comment in place publishes nothing. Do not restore the old status line this
+  PR removed: CI, release, and Chromatic triggers were restored in #204.
+-->
+
+- **108** public component modules, exported from `src/index.ts`
+- **361** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **442** Storybook stories in **112** story files, reviewed visually in Chromatic
+- Theming through four root attributes and CSS variables (theme, density, brand, font) that need no JavaScript
+- Deterministic gates in git hooks and CI: typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a Storybook build
+
+Those counts are checked against the source by `scripts/__tests__/front-door.test.mjs`, so a change that moves them fails the tests until this README is updated.
 
 ## Using the published package
 
@@ -80,27 +94,40 @@ import { HdsThemeProvider } from '@hirobius/design-system';
 </HdsThemeProvider>;
 ```
 
+## Figma ↔ code
+
+Code is the source of truth, and sync runs one way, from code to Figma. What exists today:
+
+- **Tokens → Figma variables:** `pnpm figma-variables` writes Figma variable export files from `hirobius.tokens.json` on your machine. Nothing pushes them to Figma automatically, and ADR-025 lists the export's known gaps.
+- **Components → Code Connect:** no Code Connect mapping is published. Publishing Code Connect needs a Figma Organization plan.
+
+The target architecture, and what each Figma plan allows, is in [ADR-025](docs/adr/025-figma-sync-pro-architecture.md).
+
 ## Developing this repo
 
 ```bash
 pnpm install
-pnpm dev
+# Generated data files are gitignored; create them once (the same step CI runs):
+node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
+pnpm storybook   # component workbench on http://localhost:6006
 ```
 
 Core verification commands:
 
 ```bash
 pnpm typecheck
-pnpm run heal
+pnpm lint
 pnpm test
+pnpm tokens:verify
 pnpm check:size
+pnpm build-storybook
 ```
 
 ## Architecture
 
 HDS is built around three structural rules:
 
-- **Strict semantics** — public surfaces prefer system primitives such as `HdsStack`, `HdsGrid`, `HdsSurface`, `HdsTextLockup`, `DocLayout`, and `CaseStudyLayout` instead of raw layout divs or ad hoc CSS.
+- **Strict semantics** — public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `TextLockup` instead of raw layout divs or ad hoc CSS.
 - **Polymorphism** — primitives preserve semantic HTML while staying composable through governed APIs such as `forwardRef`, `as`, and layout slots.
 - **12-column grid** — page structure follows a consistent editorial grid: readable center columns, intentional breakout zones, and explicit `gap` ownership rather than one-off spacing math.
 
@@ -123,26 +150,20 @@ The governing direction is "Editorial Enterprise" — enterprise rigor with edit
 
 ## Verification workflow
 
-Regression prevention is layered:
+The gates are deterministic and need no browser or live site:
 
-- `CLAUDE.md` is the operating contract — agent execution protocol, UI guardrails, required validation steps, and the self-heal requirement before a task is considered done.
-- `scripts/self-heal.mjs` (`pnpm run heal`) runs the local static and smoke checks, captures failures, and gives a consistent path to fix type, layout, and runtime drift.
-- The Playwright suite covers accessibility, layout integrity, collision detection, responsiveness, and visual regression, so changes that break containment, overlap, or responsive behavior fail automatically.
+- **pre-commit** (`.husky/pre-commit`): secrets scan, Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
+- **pre-push** (`.husky/pre-push`): Vitest unit and contract tests, then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
+- **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and a Storybook build.
+- **Visual review:** Storybook is the visual verification surface, and Chromatic (`.github/workflows/chromatic.yml`) runs it on pull requests. The earlier browser test suite drove a docs site that no longer exists; it is archived in `tests-archive/`.
 
-Typical loop:
-
-1. Change code within the token and component constraints.
-2. Run `pnpm typecheck` and `pnpm run heal`.
-3. Let Playwright catch runtime and visual regressions.
-4. If self-healing fixes a regression, log the root cause and resolution.
-5. Update the verification checklist and ship.
+`CLAUDE.md` is the operating contract for agents working in this repo.
 
 ## Bundle and release hygiene
 
 - `pnpm check:size` builds the library bundle and runs `size-limit`.
-- `pnpm check:release` runs the full release gate (accessibility, responsive, collision, visual, and bundle-size checks).
 
-Releases are cut with [Changesets](https://github.com/changesets/changesets): a merged changeset opens a "Version Packages" PR, and merging that PR publishes the new version to public npm via `.github/workflows/release.yml`.
+Releases are cut with [Changesets](https://github.com/changesets/changesets). A pull request that changes the published package adds a changeset (`pnpm changeset:add`). On a push to `main`, `.github/workflows/release.yml` opens or updates a "Version Packages" PR, and merging that PR publishes the new version to public npm.
 
 ## Repository shape
 

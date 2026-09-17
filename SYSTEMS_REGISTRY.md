@@ -1,6 +1,6 @@
 # SYSTEMS_REGISTRY
 
-Last updated: 2026-04-19
+Last updated: 2026-09-16
 Status: Central registry for scripts, checks, triggers, and follow-on actions
 
 ## Purpose
@@ -18,22 +18,22 @@ Use it to answer:
 
 ## Core Commands
 
-| Command                   | Purpose                                                                                             | Follow-on action                                                                 |
-| ------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `pnpm dev`                | Build tokens, then start local development                                                          | Preview changes locally                                                          |
-| `pnpm build`              | Build production bundle                                                                             | Validate release readiness                                                       |
-| `pnpm check:fast`         | Run the fast commit-time guardrails                                                                 | Fix drift before committing                                                      |
-| `pnpm check`              | Run the full guardrail suite                                                                        | Fix violations before PR or shipping                                             |
-| `pnpm check:release`      | Run full checks plus build                                                                          | Use before release or publish moments                                            |
-| `pnpm check:security`     | Run the local security and dependency baseline lane                                                 | Remove risky files, secrets, CDN drift, or unsafe injection patterns             |
-| `pnpm check:attributions` | Validate attribution registry IDs and manifest source links                                         | Fix `ATTRIBUTIONS.md` or manifest source IDs                                     |
-| `pnpm check:route-smoke`  | Browser-smoke key built routes through Vite preview                                                 | Repair runtime route regressions before release                                  |
-| `pnpm check:exemptions`   | Validate and summarize all repo escape hatches                                                      | Tighten weak exemptions or remove stale ones                                     |
-| `pnpm tokens`             | Build token outputs and handoff artifacts                                                           | Review downstream token outputs                                                  |
-| `pnpm tokens:verify`      | Verify token pipeline integrity                                                                     | Fix token or compiler issues before proceeding                                   |
-| `pnpm tokens:audit`       | Audit component token compliance                                                                    | Refactor components or add justified suppressions                                |
-| `pnpm tokens:audit:pages` | Audit page surfaces for raw design values                                                           | Route page-level visual decisions through tokens or justify editorial exceptions |
-| `pnpm figma:audit`        | Compare repo truth against generated Figma variable exports and optional normalized Figma snapshots | Fix token/manifest/API drift before attempting write-back sync                   |
+| Command                   | Purpose                                                                                                         | Follow-on action                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `pnpm dev`                | Build tokens, then start local development                                                                      | Preview changes locally                                                          |
+| `pnpm build`              | Build production bundle                                                                                         | Validate release readiness                                                       |
+| `pnpm check:fast`         | Run the fast commit-time guardrails                                                                             | Fix drift before committing                                                      |
+| `pnpm check`              | Run the full guardrail suite                                                                                    | Fix violations before PR or shipping                                             |
+| `pnpm check:release`      | Run full checks plus build                                                                                      | Use before release or publish moments                                            |
+| `pnpm check:security`     | Run the local security and dependency baseline lane                                                             | Remove risky files, secrets, CDN drift, or unsafe injection patterns             |
+| `pnpm check:attributions` | Validate attribution registry IDs and manifest source links                                                     | Fix `ATTRIBUTIONS.md` or manifest source IDs                                     |
+| `pnpm check:route-smoke`  | Browser-smoke key built routes through Vite preview                                                             | Repair runtime route regressions before release                                  |
+| `pnpm check:exemptions`   | Validate and summarize all repo escape hatches                                                                  | Tighten weak exemptions or remove stale ones                                     |
+| `pnpm tokens`             | Build token outputs and handoff artifacts                                                                       | Review downstream token outputs                                                  |
+| `pnpm tokens:verify`      | Verify token pipeline integrity                                                                                 | Fix token or compiler issues before proceeding                                   |
+| `pnpm tokens:audit`       | Audit component token compliance                                                                                | Refactor components or add justified suppressions                                |
+| `pnpm tokens:audit:pages` | Audit page surfaces for raw design values                                                                       | Route page-level visual decisions through tokens or justify editorial exceptions |
+| `pnpm figma-variables`    | Write Figma variable export files from `hirobius.tokens.json` locally (nothing is pushed to Figma; see ADR-025) | Review the export before any manual Figma import                                 |
 
 ## Check Suite
 
@@ -104,18 +104,20 @@ It currently adds:
 
 ### Automated check tiers
 
-Nothing runs manually. The full check system fires automatically across four tiers:
+The lean gate set (ADR-018 §5) fires at these points:
 
-| Tier       | Trigger                                             | Command                              | What it catches                                                                                           |
-| ---------- | --------------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| In-session | Claude Code hook — edit `hirobius.tokens.json`      | `pnpm tokens:verify`                 | Token pipeline drift immediately during editing                                                           |
-| In-session | Claude Code hook — edit `theme.css`                 | `pnpm check:css`                     | CSS bridge drift immediately during editing                                                               |
-| Commit     | `git commit` → `.githooks/pre-commit`               | `pnpm check:fast`                    | Fast guardrails — token, doc, semantic, spacing, font, tier-bypass                                        |
-| Push       | `git push` → `.githooks/pre-push`                   | `pnpm check:full` + `pnpm test:a11y` | Full suite — all fast checks plus contrast, motion, aria, grids, colors, security; then WCAG 2.1 AA audit |
-| Deploy     | GitHub Actions on Vercel preview                    | `pnpm scan`                          | Headless route/render token scan, posts PR comment                                                        |
-| Deploy     | GitHub Actions on push to main (token file changed) | Figma variable sync                  | Keeps Figma variables in sync with token source                                                           |
+| Tier       | Trigger                                          | Command                                                                                                               | What it catches                                                                                      |
+| ---------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| In-session | Claude Code hook — edit `hirobius.tokens.json`   | `pnpm tokens:verify`                                                                                                  | Token pipeline drift immediately during editing                                                      |
+| In-session | Claude Code hook — edit `theme.css`              | `pnpm check:css`                                                                                                      | CSS bridge drift immediately during editing                                                          |
+| Commit     | `git commit` → `.husky/pre-commit`               | `pnpm check:secrets`, lint-staged Prettier, `pnpm typecheck`, `pnpm lint`, `verify-tokens.mjs` + `check-contrast.mjs` | Secrets, formatting, type errors, lint warnings, token validity, contrast                            |
+| Push       | `git push` → `.husky/pre-push`                   | `vitest run` + `pnpm smoke:consumer`                                                                                  | Unit and contract test failures; a package that does not build, resolve, or typecheck for a consumer |
+| PR / main  | GitHub Actions `.github/workflows/ci.yml`        | Lean gate set + `pnpm check:size` + `pnpm build-storybook`                                                            | Everything above, plus bundle budgets and a broken Storybook build                                   |
+| PR / main  | GitHub Actions `.github/workflows/chromatic.yml` | Chromatic                                                                                                             | Visual changes in Storybook stories                                                                  |
 
-Hooks are activated via `core.hooksPath .githooks`. The `pnpm prepare` step (runs on `pnpm install`) sets this automatically.
+No automatic Figma sync runs. The REST-based `sync-figma-variables.yml` workflow is archived in `.github/workflows-archive/`, and the Figma REST variables API it called is Enterprise-only. ADR-025 records the Pro-plan path.
+
+Hooks are installed by husky into `.husky/`. The `pnpm prepare` step (runs on `pnpm install`) sets this up automatically.
 
 ### Prepare step
 
@@ -129,8 +131,8 @@ Backed by:
 
 Behavior:
 
-- runs `git config core.hooksPath .githooks` to activate the committed hook files
-- no files written to `.git/hooks/` — the committed `.githooks/` directory is the source of truth
+- runs husky, which points `core.hooksPath` at `.husky/_` so the committed `.husky/pre-commit` and `.husky/pre-push` files run
+- skips cleanly when `HUSKY=0` (for example in the release job) or outside a git checkout
 
 ### Token changes
 
@@ -177,14 +179,14 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 
 ## Supporting Scripts
 
-| Script                      | Purpose                                                      |
-| --------------------------- | ------------------------------------------------------------ |
-| `build-handoff.mjs`         | keeps the design handoff material in sync with token outputs |
-| `build-design-md.mjs`       | keeps the lean visual spec in sync with token outputs        |
-| `build-token-index.mjs`     | builds token-index artifacts                                 |
-| `build-figma-variables.mjs` | creates Figma variable export artifacts                      |
-| `audit-figma-system.mjs`    | compares repo truth to Figma-facing exports and snapshots    |
-| `batch-scan.mjs`            | scanning utility for broader inspection workflows            |
+| Script                      | Purpose                                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------------------ |
+| `build-handoff.mjs`         | keeps the design handoff material in sync with token outputs                               |
+| `build-design-md.mjs`       | keeps the lean visual spec in sync with token outputs                                      |
+| `build-token-index.mjs`     | builds token-index artifacts                                                               |
+| `build-figma-variables.mjs` | creates Figma variable export artifacts                                                    |
+| `figma-diff.mjs`            | diffs two Figma snapshot files; `--dry-run` uses built-in synthetic data, not a Figma read |
+| `batch-scan.mjs`            | scanning utility for broader inspection workflows                                          |
 
 ## Token Scan Architecture
 

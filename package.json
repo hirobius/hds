@@ -1,6 +1,23 @@
 {
   "name": "@hirobius/design-system",
   "description": "Hirobius Design Systems Architecture: token-governed React components, documentation surfaces, and distribution tooling.",
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "dtcg",
+    "react",
+    "radix-ui",
+    "storybook"
+  ],
+  "homepage": "https://github.com/hirobius/hds#readme",
+  "bugs": {
+    "url": "https://github.com/hirobius/hds/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hirobius/hds.git"
+  },
+  "license": "MIT",
   "private": false,
   "version": "0.13.0",
   "engines": {
