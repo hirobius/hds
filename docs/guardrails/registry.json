@@ -249,6 +249,19 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-figma-mapping",
+      "description": "Enforces the component parity contract (docs/architecture/variant-contract.md#figma-mapping): manifest variantAxes, componentProperties and figmaPropertyMapping must bind to props the component really accepts (TypeScript checker), contract axes backed by cva must be declared with matching enum values, inverted booleans must be \"Show …\" toggles, and Code Connect templates must map the same contract axes. Title Case property names are advisory warnings.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-mapping.mjs",
+      "fixturePath": null,
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
       "id": "check-focus-states",
       "description": "A11y focus state checker for HDS components and pages. Every interactive element must have a visible focus indicator.",
       "severity": "warn",
