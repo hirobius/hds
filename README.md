@@ -117,7 +117,7 @@ Core verification commands:
 ```bash
 pnpm typecheck
 pnpm lint
-pnpm test
+pnpm exec vitest run   # unit + contract tests, as the pre-push hook and CI run them
 pnpm tokens:verify
 pnpm check:size
 pnpm build-storybook
