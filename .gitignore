@@ -116,6 +116,9 @@ src/app/data/commit-history.json
 # REST API, so a committed copy is redundant. Regenerate on demand.
 hirobius.figma-variables.json
 hirobius.figma-variables-api.json
+# Figma model (pnpm figma:model): generated from hirobius.tokens.json by
+# scripts/build-figma-model.mjs; the golden test pins the exporter instead.
+figma/model.json
 
 # Auto-research findings — local LLM output, regenerated each run
 # (queries.json itself IS tracked; only the per-run findings are local-only)
