@@ -45,16 +45,40 @@ describe('buildFigmaModel — collections and modes', () => {
     expect(primitives.variables.every((v) => v.hiddenFromPublishing)).toBe(true);
   });
 
-  it('gives a collection Light/Dark only when one of its tokens is themed', () => {
+  it('keeps one theme axis: only Semantic has Light/Dark, even with a themed component token', () => {
     expect(collection(model, 'semantic').modes).toEqual(['Light', 'Dark']);
-    expect(collection(model, 'component').modes).toEqual(['Light', 'Dark']);
+    expect(collection(model, 'component').modes).toEqual(['Default']);
     expect(collection(model, 'role').modes).toEqual(['Default']);
+  });
+
+  it('places a themed component token in the Semantic theme collection, still published', () => {
+    // A Component Light/Dark axis would sit on Auto (= Light) while a frame's
+    // Semantic mode is Dark, so the token would show its Light alias in Dark.
+    expect(variable(model, 'component.button.text')).toMatchObject({
+      collection: 'semantic',
+      name: 'button/text',
+      hiddenFromPublishing: false,
+      codeSyntax: { WEB: 'var(--component-button-text)' },
+      scopes: ['TEXT_FILL', 'SHAPE_FILL', 'STROKE_COLOR'],
+      description: 'Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.',
+      valuesByMode: {
+        Light: { alias: 'semantic.color.content.primary' },
+        Dark: { alias: 'semantic.color.surface.page' },
+      },
+    });
+    expect(variable(model, 'component.button.bg')).toMatchObject({
+      collection: 'component',
+      valuesByMode: { Default: { alias: 'semantic.color.surface.accent' } },
+    });
   });
 
   it('places a themed primitive in the Semantic theme collection, still hidden', () => {
     const shadow = variable(model, 'primitive.shadow.color');
     expect(shadow.collection).toBe('semantic');
     expect(shadow.hiddenFromPublishing).toBe(true);
+    expect(shadow.description).toBe(
+      'HSL channels for shadow tints. Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.',
+    );
     // hsl(220 13% 18%): C = 0.0468, m = 0.1566 → r = 0.1566, b = 0.2034; hsl(0 0% 0%) → black
     expect(shadow.valuesByMode.Light.value.r).toBeCloseTo(0.1566, 4);
     expect(shadow.valuesByMode.Light.value.b).toBeCloseTo(0.2034, 4);
@@ -455,6 +479,18 @@ describe('validateFigmaModel — invariants', () => {
       /Hirobius\/Role.*11 modes.*10/,
     ],
     [
+      'a second Light/Dark collection',
+      (m) => {
+        const component = m.collections[2];
+        component.modes = ['Light', 'Dark'];
+        for (const v of component.variables) {
+          const { Default } = v.valuesByMode;
+          v.valuesByMode = { Light: Default, Dark: Default };
+        }
+      },
+      /Hirobius\/Semantic.*Hirobius\/Component.*one theme axis/,
+    ],
+    [
       'a scope that does not apply to the type',
       (m, find) => (find('semantic.color.surface.page').scopes = ['GAP']),
       /semantic\.color\.surface\.page.*GAP/,
@@ -541,8 +577,8 @@ describe('summarizeFigmaModel', () => {
     expect(summarizeFigmaModel(buildFigmaModel(fixture))).toEqual({
       collections: [
         { name: 'Hirobius/Primitives', modes: ['Default'], variables: 19 },
-        { name: 'Hirobius/Semantic', modes: ['Light', 'Dark'], variables: 26 },
-        { name: 'Hirobius/Component', modes: ['Light', 'Dark'], variables: 7 },
+        { name: 'Hirobius/Semantic', modes: ['Light', 'Dark'], variables: 27 },
+        { name: 'Hirobius/Component', modes: ['Default'], variables: 6 },
         { name: 'Hirobius/Role', modes: ['Default'], variables: 5 },
       ],
       variables: 57,
