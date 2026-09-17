@@ -6,13 +6,18 @@
  * The Figma library is shared: anyone it is shown to sees every Brand mode. So
  * a tenant enters only when all of these hold:
  *   1. figma/brand-modes.json lists it by slug (opt-in, never a directory scan);
- *   2. its metadata.json says it is a demo: tier 1, no deployment, no legal
- *      entity (a real client has at least one of those);
+ *   2. its metadata.json carries `"demo": true`, and is tier 1 with deployment
+ *      and legal groups present and empty. The marker is the real test: a new
+ *      client tenant is also tier 1 with those groups empty, and neither
+ *      `pnpm scaffold:tenant` nor tenants/_template writes the marker. The rest
+ *      catches a demo that has since become a client;
  *   3. its tokens.json passes validateTenantOverlay, the same validator
  *      `pnpm tokens` and check-tenant-tokens run.
- * Problems name fields, never their values, so an error message cannot leak
- * client details. buildFigmaModel (scripts/lib/figma-model.mjs) turns the
- * result into the Brand and Density collections.
+ * Nothing here can tell a client that someone marked `"demo": true` from a
+ * demo; that marker is a person's statement. Problems name fields, never their
+ * values, so an error message cannot leak client details. buildFigmaModel
+ * (scripts/lib/figma-model.mjs) turns the result into the Brand and Density
+ * collections.
  */
 
 import { existsSync, readFileSync } from 'fs';
@@ -31,8 +36,13 @@ const SLUG = /^[a-z0-9-]+$/;
 export function demoTenantProblems(metadata) {
   if (!metadata || typeof metadata !== 'object') return ['it has no metadata.json'];
   const problems = [];
+  if (metadata.demo !== true) problems.push('demo is not true');
   for (const group of ['deployment', 'legal']) {
-    for (const [field, value] of Object.entries(metadata[group] ?? {})) {
+    if (!metadata[group] || typeof metadata[group] !== 'object') {
+      problems.push(`${group} is missing`);
+      continue;
+    }
+    for (const [field, value] of Object.entries(metadata[group])) {
       if (value != null) problems.push(`${group}.${field} is set`);
     }
   }

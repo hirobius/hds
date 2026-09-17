@@ -336,7 +336,10 @@ describe('pnpm figma:native-import', () => {
       JSON.stringify({
         slug: 'sharp-demo',
         displayName: 'Sharp Demo',
+        demo: true,
         tier: 1,
+        deployment: { vercelProject: null, primaryDomain: null, previewDomain: null },
+        legal: { entity: null, jurisdiction: null, stripeAccountKind: null },
         status: 'scaffold',
       }),
     );
