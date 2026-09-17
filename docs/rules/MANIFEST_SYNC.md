@@ -187,8 +187,9 @@ disk
 
 Key facts:
 
-- Typography tokens are composite (W3C DTCG) — `build-figma-variables.mjs` explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing). Do not attempt to sync composite tokens directly.
-- The `expandTypography()` function in `build-figma-variables.mjs` owns this expansion. Do not duplicate its logic elsewhere.
+- `pnpm figma:model` (`scripts/build-figma-model.mjs` → `scripts/lib/figma-model.mjs`) is the one tokens → Figma mapping. It writes `figma/model.json` (generated, gitignored): collections × modes × variables keyed by token path, text styles, effect styles, and the `NOT_IN_FIGMA` list with a reason per exclusion. `pnpm figma-variables` projects the same model into the legacy plugin/REST formats. Theme values are read through `scripts/lib/token-modes.mjs`.
+- Typography tokens are composite (W3C DTCG) — the model explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing) resolved to px at that style's font size, plus a text style bound to them. Do not duplicate this expansion elsewhere.
+- Shadow and elevation tokens become effect styles. Motion, z-index, breakpoints and font-size-relative multipliers are declared not-in-Figma; `scripts/__tests__/figma-model.tokens.test.mjs` fails if a token is neither mapped nor declared.
 - Fluid clamp overrides on `display`, `heading1`, `heading2`, `heading3` are recorded in `$extensions["com.figma.variables"]` in `hirobius.tokens.json`. Figma stores the static desktop-max value; the browser applies the clamp on top. This divergence is intentional and documented.
 
 ## 8. Forbidden Patterns
@@ -211,5 +212,6 @@ Key facts:
 | Check for ghost / unused token vars     | `pnpm check:ghost-tokens`                |
 | Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides`         |
 | Full token + component audit            | `pnpm check:fast`                        |
-| Sync Figma Variables from tokens        | `node scripts/build-figma-variables.mjs` |
+| Build the Figma model from tokens       | `pnpm figma:model`                       |
+| Legacy Figma variable exports           | `node scripts/build-figma-variables.mjs` |
 | Audit Figma system state                | `pnpm figma:audit`                       |

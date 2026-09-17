@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
+import { readModes } from './lib/token-modes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -274,7 +275,7 @@ export function buildCSSSection(tokens, label, root = null) {
       const cssValue = valueToCSS(value, type, preserveAlias, root);
       if (cssValue != null) rootLines.push(`  ${cssVar}: ${cssValue};`);
 
-      const dark = extensions?.['com.figma.variables']?.modes?.Dark;
+      const dark = readModes(extensions)?.Dark;
       if (dark) {
         const dv = valueToCSS(dark, type, true, root);
         if (dv) darkLines.push(`  ${cssVar}: ${dv};`);
@@ -641,7 +642,7 @@ export function validateTokens(raw) {
     }
 
     // V5 — mode key capitalization
-    const modes = extensions?.['com.figma.variables']?.modes;
+    const modes = readModes(extensions);
     if (modes) {
       for (const key of Object.keys(modes)) {
         if (key === 'light' || key === 'dark') {
@@ -1179,11 +1180,11 @@ export function buildManifest(allTokens, raw) {
     } else if (typeof t.value === 'string' && t.value.startsWith('{')) {
       entry.alias = t.value;
       entry.resolvedValue = resolveValue(t.value, t.type);
-      const dark = t.extensions?.['com.figma.variables']?.modes?.Dark;
+      const dark = readModes(t.extensions)?.Dark;
       if (dark) entry.dark = { alias: dark, resolvedValue: resolveValue(dark, t.type) };
     } else {
       entry.value = valueToCSS(t.value, t.type, false, raw);
-      const dark = t.extensions?.['com.figma.variables']?.modes?.Dark;
+      const dark = readModes(t.extensions)?.Dark;
       if (dark) entry.dark = { alias: dark, resolvedValue: resolveValue(dark, t.type) };
     }
 
@@ -1561,9 +1562,10 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
       }
 
       // Prefer explicit Light mode value if present, fall back to $value
-      const lightMode = extensions?.['com.figma.variables']?.modes?.Light;
-      const darkMode = extensions?.['com.figma.variables']?.modes?.Dark;
-      const compactMode = extensions?.['com.figma.variables']?.modes?.Compact;
+      const modes = readModes(extensions);
+      const lightMode = modes?.Light;
+      const darkMode = modes?.Dark;
+      const compactMode = modes?.Compact;
 
       const lightVal = lightMode ?? value;
       const darkVal = darkMode;
