@@ -32,11 +32,6 @@ vite-actions-check.log
 *.patch
 test-results/
 
-# p6-4: reverse-token-sync output. Bridge writes the latest Figma
-# Variables snapshot here for human diff before any merge into
-# hirobius.tokens.json or public/hds-manifest.json. Not committed.
-tokens-from-figma.json
-
 # Claude Code worktrees (per-session sandboxes — not tracked)
 .claude/worktrees/
 .claude/settings.local.json

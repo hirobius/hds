@@ -190,7 +190,6 @@
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
     "figma-variables": "node scripts/build-figma-variables.mjs",
-    "figma:diff": "node scripts/figma-diff.mjs",
     "figma:model": "node scripts/build-figma-model.mjs",
     "guardrail:firing-stats": "node scripts/refresh-firing-stats.mjs",
     "harvest:design-md": "node scripts/harvest-design-md.mjs",
