@@ -24,6 +24,7 @@ import {
   MOTION_PROPS,
   ELEVATION_SLOTS,
 } from './build-tokens.mjs';
+import { readModes } from './lib/token-modes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -192,7 +193,7 @@ export function runChecks(raw, cssVarMap, tsText) {
     }
 
     // ── Check 4: Dark mode override should reference an existing var ────────────
-    const dark = extensions?.['com.hirobius.modes']?.dark;
+    const dark = readModes(extensions)?.Dark;
     if (dark && typeof dark === 'string' && dark.startsWith('{')) {
       const darkCSSVar = '--' + dark.replace(/^\{|\}$/g, '').replace(/\./g, '-');
       if (!cssVarMap.has(darkCSSVar)) {
