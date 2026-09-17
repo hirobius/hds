@@ -180,6 +180,19 @@
       "firingChannel": "pnpm-meta"
     },
     {
+      "id": "check-code-connect",
+      "description": "CI-safe Figma Code Connect gate (no token, no network, any Figma plan). Runs figma connect parse --exit-on-unreadable-files, fails if the committed src/app/components/*.figma.ts templates drift from scripts/generate-code-connect.mjs output, requires every public cva module to have a template or an exemption in figma/code-connect.json, and renders every VARIANT x BOOLEAN combination locally (getEnum maps are exhaustive and land on cva keys, snippets are valid JSX that only pass real props). Templates without a Figma node URL are reported as unmapped (--strict fails on them). Also runs in pnpm test through scripts/__tests__/check-code-connect.test.mjs.",
+      "severity": "error",
+      "gateScript": "scripts/check-code-connect.mjs",
+      "fixturePath": null,
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
       "id": "check-contrast",
       "description": "WCAG 2.1 contrast ratio checker for HDS semantic color pairs. Reads hirobius.tokens.json, resolves primitive + semantic color aliases, and reports contrast ratios for critical text/bg pairings in both light and dark mode.",
       "severity": "warn",
