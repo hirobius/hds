@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Tag } from '../app/components/tag';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/tag',
   component: Tag,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Tag'),
     layout: 'centered',
     docs: {
       description: {

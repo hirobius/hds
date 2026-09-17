@@ -29,7 +29,7 @@ import { spawnSync } from 'child_process';
 import { planAgainstSnapshot, writePushArtifacts } from '../figma-push.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
-import { writeNativeImport } from '../build-figma-native-import.mjs';
+import { formatNativeImportSteps, writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
@@ -320,6 +320,70 @@ describe('pnpm figma:native-import', () => {
     const dark = JSON.parse(readFileSync(join(outDir, '02-semantic', 'Dark.json'), 'utf8'));
     expect(dark.color.surface.page.$extensions['com.figma.aliasData'].targetVariableName).toBe(
       'color/neutral/black',
+    );
+  });
+
+  it('adds a file per Brand and Density mode when the root lists demo tenants', () => {
+    const root = tempRoot();
+    mkdirSync(join(root, 'figma'), { recursive: true });
+    writeFileSync(
+      join(root, 'figma', 'brand-modes.json'),
+      JSON.stringify({ baseMode: 'Hirobius', tenants: ['sharp-demo'] }),
+    );
+    mkdirSync(join(root, 'tenants', 'sharp-demo'), { recursive: true });
+    writeFileSync(
+      join(root, 'tenants', 'sharp-demo', 'metadata.json'),
+      JSON.stringify({
+        slug: 'sharp-demo',
+        displayName: 'Sharp Demo',
+        demo: true,
+        tier: 1,
+        deployment: { vercelProject: null, primaryDomain: null, previewDomain: null },
+        legal: { entity: null, jurisdiction: null, stripeAccountKind: null },
+        status: 'scaffold',
+      }),
+    );
+    writeFileSync(
+      join(root, 'tenants', 'sharp-demo', 'tokens.json'),
+      JSON.stringify({
+        role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+        semantic: {
+          space: {
+            $type: 'dimension',
+            component: {
+              gap: {
+                $value: '{primitive.space.4}',
+                $extensions: {
+                  'com.figma.variables': { modes: { Compact: '{primitive.space.2}' } },
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
+    const outDir = join(root, 'out');
+    const { files } = writeNativeImport({ root, outDir });
+    expect(files.map((f) => f.path)).toEqual([
+      '01-primitive/Default.json',
+      '02-brand/Hirobius.json',
+      '02-brand/sharp-demo.json',
+      '03-density/Comfortable.json',
+      '03-density/Compact.json',
+      '04-semantic/Light.json',
+      '04-semantic/Dark.json',
+      '05-component/Default.json',
+      '06-role/Default.json',
+    ]);
+    const compact = JSON.parse(readFileSync(join(outDir, '02-brand', 'sharp-demo.json'), 'utf8'));
+    expect(compact.semantic.space.component.gap.Compact.$value).toEqual({ value: 8, unit: 'px' });
+
+    const steps = formatNativeImportSteps(files, 'out');
+    expect(steps).toMatch(
+      /Hirobius\/Primitives[\s\S]*Hirobius\/Brand[\s\S]*Hirobius\/Density[\s\S]*Hirobius\/Semantic/,
+    );
+    expect(steps).toContain(
+      'out/02-brand/Hirobius.json: role/radius aliases Hirobius/Semantic radius/action, which is imported later, so it imports as a raw value. Run pnpm figma:push afterwards to restore the alias.',
     );
   });
 

@@ -71,6 +71,7 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
 | `category`             | string              | JSDoc `@category`                 | Governs docs routing                                                                                                                                                                                       |
 | `filePath`             | string              | Source scan                       | Relative to repo root                                                                                                                                                                                      |
 | `description`          | string              | JSDoc                             | One sentence                                                                                                                                                                                               |
+| `figmaUrl`             | string or null      | JSDoc `@figma`                    | The one Figma node source (URL with `node-id`). Storybook and the README read it; `pnpm figma:links` also builds the Figma dev resources and descriptions steps. Never copy it.                            |
 | `props`                | object              | `src/app/data/component-api.json` | See prop schema below                                                                                                                                                                                      |
 | `tokens`               | object              | Hand-authored                     | Maps semantic role → token path                                                                                                                                                                            |
 | `figmaPropertyMapping` | object              | Hand-authored                     | Maps React prop → Figma property name                                                                                                                                                                      |
@@ -189,6 +190,7 @@ Key facts:
 
 - `pnpm figma:push`, `pnpm figma:snapshot` and `pnpm check:figma-drift` consume that model; `figma/README.md` is their runbook.
 - `pnpm figma:model` (`scripts/build-figma-model.mjs` → `scripts/lib/figma-model.mjs`) is the one tokens → Figma mapping. It writes `figma/model.json` (generated, gitignored): collections × modes × variables keyed by token path, text styles, effect styles, and the `NOT_IN_FIGMA` list with a reason per exclusion. `pnpm figma-variables` projects the same model into the legacy plugin/REST formats. Theme values are read through `scripts/lib/token-modes.mjs`.
+- Demo tenant overlays listed in `figma/brand-modes.json` become the `Hirobius/Brand` (one mode per demo tenant) and `Hirobius/Density` (Comfortable/Compact) collections; overridden token variables alias them. Client tenants are never listed. Rules: `figma/README.md` (Brand and Density).
 - Typography tokens are composite (W3C DTCG) — the model explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing) resolved to px at that style's font size, plus a text style bound to them. Do not duplicate this expansion elsewhere.
 - Shadow and elevation tokens become effect styles. Motion, z-index, breakpoints and font-size-relative multipliers are declared not-in-Figma; `scripts/__tests__/figma-model.tokens.test.mjs` fails if a token is neither mapped nor declared.
 - Fluid clamp overrides on `display`, `heading1`, `heading2`, `heading3` are recorded in `$extensions["com.figma.variables"]` in `hirobius.tokens.json`. Figma stores the static desktop-max value; the browser applies the clamp on top. This divergence is intentional and documented.
@@ -216,5 +218,6 @@ Key facts:
 | Build the Figma model from tokens       | `pnpm figma:model`                              |
 | Push tokens into a Figma file           | `pnpm figma:push` (runbook: `figma/README.md`)  |
 | Record Figma's state / check drift      | `pnpm figma:snapshot`, `pnpm check:figma-drift` |
+| Project component Figma links           | `pnpm figma:links`                              |
 | Legacy Figma variable exports           | `node scripts/build-figma-variables.mjs`        |
 | Audit Figma system state                | `pnpm figma:audit`                              |

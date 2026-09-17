@@ -23,6 +23,7 @@ import {
   PUSH_CHUNKS,
   runtimeSource,
 } from '../lib/figma-scripts.mjs';
+import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
 import { createFakeFigma } from './helpers/fake-figma.mjs';
 import { fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
 
@@ -90,6 +91,26 @@ describe('use_figma scripts', () => {
       'path',
       'resolvedType',
     ]);
+  });
+
+  it('chunks cover every collection of the real model once, and alias only their own or earlier chunks', () => {
+    const { model: real } = loadFigmaInputs(join(HERE, '..', '..'));
+    const chunkOf = new Map(PUSH_CHUNKS.flatMap((chunk, i) => chunk.scope.map((key) => [key, i])));
+    const keys = PUSH_CHUNKS.flatMap((chunk) => chunk.scope).filter((key) => key !== 'styles');
+    expect([...keys].sort()).toEqual(real.collections.map((c) => c.key).sort());
+    const homeOf = new Map(
+      real.collections.flatMap((c) => c.variables.map((v) => [v.path, c.key])),
+    );
+    const late = real.collections.flatMap((c) =>
+      c.variables.flatMap((v) =>
+        Object.values(v.valuesByMode)
+          .filter(
+            (entry) => entry.alias && chunkOf.get(homeOf.get(entry.alias)) > chunkOf.get(c.key),
+          )
+          .map((entry) => `${v.path} -> ${entry.alias}`),
+      ),
+    );
+    expect(late).toEqual([]);
   });
 
   it('push chunk by chunk in an isolated context, then converge to zero changes', async () => {

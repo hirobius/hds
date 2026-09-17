@@ -34,22 +34,40 @@ export function writeNativeImport({ root, outDir }) {
   return { files };
 }
 
+/**
+ * The import steps, in order, then every alias the import cannot keep.
+ *
+ * @param {Array<{ path: string, collection: string, mode: string, forwardAliases: object[] }>} files
+ * @param {string} rel  The output directory, relative to the repo root.
+ */
+export function formatNativeImportSteps(files, rel) {
+  const lines = [`figma:native-import — ${files.length} files in ${rel}/, import in this order:`];
+  let current = null;
+  for (const file of files) {
+    if (file.collection !== current) {
+      current = file.collection;
+      lines.push(`  ${current}: create the collection, then import each file as a mode`);
+    }
+    lines.push(`    ${rel}/${file.path}  → mode "${file.mode}"`);
+  }
+  const forward = files.flatMap((file) => file.forwardAliases.map((alias) => ({ file, alias })));
+  if (forward.length > 0) {
+    lines.push('  Aliases the import cannot keep (their target collection comes later):');
+    for (const { file, alias } of forward) {
+      lines.push(
+        `    ${rel}/${file.path}: ${alias.variable} aliases ${alias.target} ${alias.targetVariable}, which is imported later, so it imports as a raw value. Run pnpm figma:push afterwards to restore the alias.`,
+      );
+    }
+  }
+  lines.push('  Details and what to check afterwards: figma/README.md');
+  return lines.join('\n');
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const outDir = join(ROOT, 'figma', 'native-import');
   try {
     const { files } = writeNativeImport({ root: ROOT, outDir });
-    const rel = relative(ROOT, outDir).replaceAll('\\', '/');
-    const lines = [`figma:native-import — ${files.length} files in ${rel}/, import in this order:`];
-    let current = null;
-    for (const file of files) {
-      if (file.collection !== current) {
-        current = file.collection;
-        lines.push(`  ${current}: create the collection, then import each file as a mode`);
-      }
-      lines.push(`    ${rel}/${file.path}  → mode "${file.mode}"`);
-    }
-    lines.push('  Details and what to check afterwards: figma/README.md');
-    console.log(lines.join('\n'));
+    console.log(formatNativeImportSteps(files, relative(ROOT, outDir).replaceAll('\\', '/')));
   } catch (error) {
     console.error(`✗ figma:native-import — ${error.message}`);
     process.exit(1);
