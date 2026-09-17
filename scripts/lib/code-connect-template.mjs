@@ -131,7 +131,8 @@ function mappedValues(def) {
   return Object.fromEntries((def.options ?? []).map((option) => [option, option]));
 }
 
-const sameKeys = (object, list) => {
+/** True when `object` has exactly the keys in `list` (order-free). */
+export const sameKeys = (object, list) => {
   const keys = Object.keys(object ?? {});
   return keys.length === list.length && list.every((item) => keys.includes(item));
 };
