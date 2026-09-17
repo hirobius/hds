@@ -187,6 +187,7 @@ disk
 
 Key facts:
 
+- `pnpm figma:push`, `pnpm figma:snapshot` and `pnpm check:figma-drift` consume that model; `figma/README.md` is their runbook.
 - `pnpm figma:model` (`scripts/build-figma-model.mjs` → `scripts/lib/figma-model.mjs`) is the one tokens → Figma mapping. It writes `figma/model.json` (generated, gitignored): collections × modes × variables keyed by token path, text styles, effect styles, and the `NOT_IN_FIGMA` list with a reason per exclusion. `pnpm figma-variables` projects the same model into the legacy plugin/REST formats. Theme values are read through `scripts/lib/token-modes.mjs`.
 - Typography tokens are composite (W3C DTCG) — the model explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing) resolved to px at that style's font size, plus a text style bound to them. Do not duplicate this expansion elsewhere.
 - Shadow and elevation tokens become effect styles. Motion, z-index, breakpoints and font-size-relative multipliers are declared not-in-Figma; `scripts/__tests__/figma-model.tokens.test.mjs` fails if a token is neither mapped nor declared.
@@ -204,14 +205,16 @@ Key facts:
 
 ## 9. Quick Reference — Which Script Does What
 
-| Need                                    | Command                                  |
-| --------------------------------------- | ---------------------------------------- |
-| Rebuild everything after a token edit   | `pnpm tokens`                            |
-| Rebuild just the manifest               | `pnpm manifest:generate`                 |
-| Validate manifest against schema        | `pnpm validate:manifest`                 |
-| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`                |
-| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides`         |
-| Full token + component audit            | `pnpm check:fast`                        |
-| Build the Figma model from tokens       | `pnpm figma:model`                       |
-| Legacy Figma variable exports           | `node scripts/build-figma-variables.mjs` |
-| Audit Figma system state                | `pnpm figma:audit`                       |
+| Need                                    | Command                                         |
+| --------------------------------------- | ----------------------------------------------- |
+| Rebuild everything after a token edit   | `pnpm tokens`                                   |
+| Rebuild just the manifest               | `pnpm manifest:generate`                        |
+| Validate manifest against schema        | `pnpm validate:manifest`                        |
+| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`                       |
+| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides`                |
+| Full token + component audit            | `pnpm check:fast`                               |
+| Build the Figma model from tokens       | `pnpm figma:model`                              |
+| Push tokens into a Figma file           | `pnpm figma:push` (runbook: `figma/README.md`)  |
+| Record Figma's state / check drift      | `pnpm figma:snapshot`, `pnpm check:figma-drift` |
+| Legacy Figma variable exports           | `node scripts/build-figma-variables.mjs`        |
+| Audit Figma system state                | `pnpm figma:audit`                              |

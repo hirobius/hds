@@ -55,6 +55,13 @@ jobs:
       - name: Token pipeline validity (verify-tokens + check-contrast)
         run: node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs
 
+      # Figma drift (figma/README.md): the tokens' Figma model against the
+      # committed snapshot. Fails only when Figma was last pushed from exactly
+      # the model the tokens build now and still differs (edited in Figma);
+      # changes not pushed to Figma yet are a warning, no snapshot is a notice.
+      - name: Figma drift (committed snapshot)
+        run: node scripts/check-figma-drift.mjs --ci
+
       - name: Unit + contract tests (vitest)
         run: pnpm exec vitest run
 
