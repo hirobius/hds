@@ -83,6 +83,19 @@ describe('Figma model of hirobius.tokens.json', () => {
     }
   });
 
+  it('keeps one theme axis: every themed token is a Semantic variable, every other collection is single-mode', () => {
+    const themed = leaves.filter((l) => themeModes(l) && variables.some((v) => v.path === l.path));
+    expect(themed.map((l) => l.path)).toContain('component.button.primary.textDisabled');
+    for (const leaf of themed) {
+      expect(variables.find((v) => v.path === leaf.path).collection.key, leaf.path).toBe(
+        'semantic',
+      );
+    }
+    for (const c of model.collections.filter((x) => x.key !== 'semantic')) {
+      expect(c.modes, c.name).toEqual(['Default']);
+    }
+  });
+
   it(`has a Role collection with all ${roleTokens.length} role.* tokens`, () => {
     const role = model.collections.find((c) => c.key === 'role');
     expect(role.name).toBe('Hirobius/Role');

@@ -27,7 +27,7 @@ describe('toPluginFormat', () => {
     expect(plugin.collections.map((c) => [c.name, c.modes])).toEqual([
       ['Hirobius/Primitives', ['Default']],
       ['Hirobius/Semantic', ['Light', 'Dark']],
-      ['Hirobius/Component', ['Light', 'Dark']],
+      ['Hirobius/Component', ['Default']],
       ['Hirobius/Role', ['Default']],
     ]);
   });

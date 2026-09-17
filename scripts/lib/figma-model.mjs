@@ -131,10 +131,14 @@ function colorToFigma(val) {
 
 // ── Collections ──────────────────────────────────────────────────────────────
 /**
- * One collection per tier. Primitives are single-mode and hidden from
- * publishing; a themed primitive (today primitive.shadow.color) joins the
- * Semantic theme collection, still hidden. Every other collection gets
- * Light/Dark exactly when one of its variables is themed.
+ * One collection per tier, and one theme axis. Figma picks a mode per
+ * collection, and an unset collection falls back to its first mode (Light), so
+ * a second Light/Dark collection would show Light values in a Dark frame. Every
+ * themed token therefore lives in the Semantic collection, whatever its tier
+ * (today primitive.shadow.color, still hidden, and
+ * component.button.primary.textDisabled). Unthemed variables in other tiers
+ * alias Semantic, so they follow the frame's Semantic mode without modes of
+ * their own. validateFigmaModel enforces the single axis.
  */
 const TIERS = [
   { key: 'primitive', name: 'Hirobius/Primitives' },
@@ -142,8 +146,10 @@ const TIERS = [
   { key: 'component', name: 'Hirobius/Component' },
   { key: 'role', name: 'Hirobius/Role' },
 ];
-const THEME_MODES = ['Light', 'Dark'];
+const THEME_TIER = 'semantic';
+export const THEME_MODES = Object.freeze(['Light', 'Dark']);
 const SINGLE_MODE = 'Default';
+const THEME_HOME_NOTE = 'Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.';
 
 const FIGMA_TYPE = {
   color: 'COLOR',
@@ -659,12 +665,10 @@ export function buildFigmaModel(raw) {
     }
   }
 
-  const homeOf = (item) =>
-    item.segments[0] === 'primitive' && item.themed ? 'semantic' : item.segments[0];
+  const homeOf = (item) => (item.themed ? THEME_TIER : item.segments[0]);
   const collections = TIERS.map(({ key, name }) => {
     const members = pending.filter((item) => homeOf(item) === key);
-    const themed = key !== 'primitive' && members.some((item) => item.themed);
-    const modes = themed ? THEME_MODES : [SINGLE_MODE];
+    const modes = members.some((item) => item.themed) ? [...THEME_MODES] : [SINGLE_MODE];
     return {
       key,
       name,
@@ -677,7 +681,10 @@ export function buildFigmaModel(raw) {
           name: item.segments.slice(1).join('/'),
           resolvedType,
           unit: item.unit,
-          description: item.description,
+          description:
+            key === item.segments[0]
+              ? item.description
+              : [item.description, THEME_HOME_NOTE].filter(Boolean).join(' '),
           scopes: scopesFor(item.segments, item.tokenType, resolvedType),
           hiddenFromPublishing: item.segments[0] === 'primitive',
           codeSyntax: { WEB: `var(--${item.segments.join('-')})` },

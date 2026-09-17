@@ -4,12 +4,12 @@
  *
  * validateFigmaModel(model) checks a model from buildFigmaModel() against what
  * Figma accepts (value types, scopes per type, modes per plan) and what HDS
- * promises about it (px units behind px scopes, hidden primitives, unique
- * names, bound styles). summarizeFigmaModel(model) gives the counts a reviewer
+ * promises about it (one theme axis, px units behind px scopes, hidden
+ * primitives, unique names, bound styles). summarizeFigmaModel(model) gives the counts a reviewer
  * checks first.
  */
 
-import { ALL_SCOPES_ALLOWLIST } from './figma-model.mjs';
+import { ALL_SCOPES_ALLOWLIST, THEME_MODES } from './figma-model.mjs';
 
 // ── Invariants ───────────────────────────────────────────────────────────────
 /** Modes per collection on a Figma Professional plan (Organization: 20). */
@@ -156,6 +156,15 @@ export function validateFigmaModel(model) {
       if (!collectionsByName.has(v.name)) collectionsByName.set(v.name, []);
       collectionsByName.get(v.name).push(c.name);
     }
+  }
+
+  // Figma picks a mode per collection and an unset one falls back to its first
+  // mode, so two Light/Dark collections can disagree inside one Dark frame.
+  const themeAxes = model.collections.filter((c) => c.modes.some((m) => THEME_MODES.includes(m)));
+  if (themeAxes.length > 1) {
+    flag(
+      `Light/Dark modes on ${themeAxes.map((c) => c.name).join(' and ')}: HDS keeps one theme axis, so a themed token belongs in Hirobius/Semantic.`,
+    );
   }
 
   const ctx = { variables, namesIn: (c) => names.get(c) };

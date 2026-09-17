@@ -374,7 +374,7 @@
           "name": "shadow/color",
           "resolvedType": "COLOR",
           "unit": null,
-          "description": "HSL channels for shadow tints.",
+          "description": "HSL channels for shadow tints. Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
           "scopes": [],
           "hiddenFromPublishing": true,
           "codeSyntax": {
@@ -953,6 +953,30 @@
               "value": 18
             }
           }
+        },
+        {
+          "path": "component.button.text",
+          "name": "button/text",
+          "resolvedType": "COLOR",
+          "unit": null,
+          "description": "Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
+          "scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL",
+            "STROKE_COLOR"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "var(--component-button-text)"
+          },
+          "valuesByMode": {
+            "Light": {
+              "alias": "semantic.color.content.primary"
+            },
+            "Dark": {
+              "alias": "semantic.color.surface.page"
+            }
+          }
         }
       ]
     },
@@ -960,8 +984,7 @@
       "key": "component",
       "name": "Hirobius/Component",
       "modes": [
-        "Light",
-        "Dark"
+        "Default"
       ],
       "hiddenFromPublishing": false,
       "variables": [
@@ -980,35 +1003,8 @@
             "WEB": "var(--component-button-bg)"
           },
           "valuesByMode": {
-            "Light": {
+            "Default": {
               "alias": "semantic.color.surface.accent"
-            },
-            "Dark": {
-              "alias": "semantic.color.surface.accent"
-            }
-          }
-        },
-        {
-          "path": "component.button.text",
-          "name": "button/text",
-          "resolvedType": "COLOR",
-          "unit": null,
-          "description": "",
-          "scopes": [
-            "TEXT_FILL",
-            "SHAPE_FILL",
-            "STROKE_COLOR"
-          ],
-          "hiddenFromPublishing": false,
-          "codeSyntax": {
-            "WEB": "var(--component-button-text)"
-          },
-          "valuesByMode": {
-            "Light": {
-              "alias": "semantic.color.content.primary"
-            },
-            "Dark": {
-              "alias": "semantic.color.surface.page"
             }
           }
         },
@@ -1026,10 +1022,7 @@
             "WEB": "var(--component-button-paddingX)"
           },
           "valuesByMode": {
-            "Light": {
-              "alias": "primitive.space.4"
-            },
-            "Dark": {
+            "Default": {
               "alias": "primitive.space.4"
             }
           }
@@ -1048,10 +1041,7 @@
             "WEB": "var(--component-button-height)"
           },
           "valuesByMode": {
-            "Light": {
-              "alias": "primitive.space.4"
-            },
-            "Dark": {
+            "Default": {
               "alias": "primitive.space.4"
             }
           }
@@ -1070,10 +1060,7 @@
             "WEB": "var(--component-button-fontSize)"
           },
           "valuesByMode": {
-            "Light": {
-              "alias": "primitive.typography.size.xs"
-            },
-            "Dark": {
+            "Default": {
               "alias": "primitive.typography.size.xs"
             }
           }
@@ -1092,10 +1079,7 @@
             "WEB": "var(--component-button-fontWeight)"
           },
           "valuesByMode": {
-            "Light": {
-              "alias": "primitive.typography.weight.medium"
-            },
-            "Dark": {
+            "Default": {
               "alias": "primitive.typography.weight.medium"
             }
           }
@@ -1114,10 +1098,7 @@
             "WEB": "var(--component-lightbox-backdrop-blur)"
           },
           "valuesByMode": {
-            "Light": {
-              "alias": "primitive.blur.16"
-            },
-            "Dark": {
+            "Default": {
               "alias": "primitive.blur.16"
             }
           }
