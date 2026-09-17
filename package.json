@@ -191,6 +191,7 @@
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
     "figma-variables": "node scripts/build-figma-variables.mjs",
+    "figma:links": "node scripts/figma-links.mjs",
     "figma:model": "node scripts/build-figma-model.mjs",
     "figma:native-import": "node scripts/build-figma-native-import.mjs",
     "figma:push": "node scripts/figma-push.mjs",

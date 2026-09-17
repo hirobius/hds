@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../app/components/button';
 import { MODES } from '../../.storybook/preview';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Button'),
     layout: 'centered',
     docs: {
       description: {

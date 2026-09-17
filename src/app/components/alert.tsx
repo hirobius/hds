@@ -2,6 +2,7 @@
  * Alert - compact feedback surface with contextual severity.
  * @category Feedback
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34
  */
 
 import React from 'react';

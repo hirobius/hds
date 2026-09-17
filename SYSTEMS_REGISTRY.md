@@ -187,6 +187,7 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 | `figma-snapshot.mjs`            | `pnpm figma:snapshot --ingest`: writes `figma/snapshot.json`  |
 | `check-figma-drift.mjs`         | `pnpm check:figma-drift`: model vs committed snapshot         |
 | `build-figma-native-import.mjs` | `pnpm figma:native-import`: DTCG files for Variables ▸ Import |
+| `figma-links.mjs`               | `pnpm figma:links`: figmaUrl → README, Storybook, Figma       |
 | `build-figma-variables.mjs`     | legacy plugin/REST exports projected from the Figma model     |
 | `audit-figma-system.mjs`        | compares repo truth to Figma-facing exports and snapshots     |
 | `batch-scan.mjs`                | scanning utility for broader inspection workflows             |
