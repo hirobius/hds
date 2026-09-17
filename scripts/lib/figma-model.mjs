@@ -5,7 +5,9 @@
  * buildFigmaModel(raw) turns hirobius.tokens.json into the one description of
  * what the Figma library should contain: variable collections × modes ×
  * variables keyed by token path, text styles, effect styles, and the declared
- * list of tokens that deliberately have no Figma representation.
+ * list of tokens that deliberately have no Figma representation. Given demo
+ * tenant overlays, it adds the Brand and Density collections (see "Brand and
+ * density axes" below).
  * scripts/lib/figma-model-invariants.mjs checks it against what Figma accepts
  * and what HDS promises about it. Nothing here does I/O: `pnpm figma:model`
  * (scripts/build-figma-model.mjs) writes figma/model.json, and the legacy
@@ -600,10 +602,202 @@ function effectStyleFor(graph, token) {
   };
 }
 
+// ── Brand and density axes ───────────────────────────────────────────────────
+/**
+ * Demo tenant overlays (tenants/<slug>/tokens.json, chosen and validated by
+ * scripts/lib/figma-brand-modes.mjs) become two more collections, mirroring the
+ * CSS buildTenantCSS emits:
+ *
+ *   Hirobius/Brand    one mode per brand: the base mode plus each demo tenant.
+ *                     One variable per overridden path, per variant: Light and
+ *                     Dark when the path is themed, Comfortable and Compact when
+ *                     a tenant compacts it, else one. The base mode holds the
+ *                     base token's value; a tenant mode holds its override, or
+ *                     the base value where it has none.
+ *   Hirobius/Density  Comfortable and Compact. One variable per compacted path,
+ *                     aliasing that path's two Brand variants.
+ *
+ * The token's own variable keeps its path, collection and bindings; its values
+ * alias Brand (by theme variant) or Density instead. A frame then resolves
+ * theme × brand × density from three independent collection modes, the way
+ * [data-theme], [data-brand] and [data-density] combine in CSS. Axis variables
+ * carry no scopes (designers bind the token variable) and no codeSyntax (they
+ * have no CSS variable of their own).
+ */
+const BRAND_COLLECTION = { key: 'brand', name: 'Hirobius/Brand' };
+const DENSITY_COLLECTION = { key: 'density', name: 'Hirobius/Density' };
+export const AXIS_COLLECTION_KEYS = Object.freeze([BRAND_COLLECTION.key, DENSITY_COLLECTION.key]);
+export const DENSITY_MODES = Object.freeze(['Comfortable', 'Compact']);
+const STYLE_TYPES = new Set(['typography', 'shadow', 'elevation']);
+
+const restValue = (token) => readModes(token.extensions)?.Light ?? token.value;
+
+/** The raw reference a brand source (base token or tenant override) takes in one variant. */
+function variantRef(source, variant) {
+  if (variant === 'Light' || variant === 'Dark') return modeValue(source, variant);
+  if (variant === 'Compact') return readModes(source.extensions)?.Compact ?? restValue(source);
+  return restValue(source);
+}
+
+const collectionNameOf = (key) =>
+  [...TIERS, BRAND_COLLECTION, DENSITY_COLLECTION].find((c) => c.key === key).name;
+
+/**
+ * Validates the brand list and collects, per base token path, which demo
+ * tenants override it. Refuses what a Brand mode cannot express.
+ */
+function collectBrandOverrides(graph, brands, excludedBy) {
+  const slugs = brands.tenants.map((t) => t.slug);
+  slugs.forEach((slug, i) => {
+    if (slugs.indexOf(slug) !== i) throw new Error(`Brand mode "${slug}" is listed twice.`);
+    if (slug === brands.baseMode) {
+      throw new Error(
+        `Tenant ${slug} has the same name as the base mode "${brands.baseMode}"; Brand mode names must be unique.`,
+      );
+    }
+  });
+
+  const overrides = new Map();
+  for (const { slug, overlay } of brands.tenants) {
+    for (const leaf of walkTokens(overlay)) {
+      const path = leaf.path.join('.');
+      const base = graph.byPath.get(path);
+      if (!base) {
+        throw new Error(
+          `${slug} overrides ${path}, which is not in hirobius.tokens.json (R5: tenants override, they do not extend).`,
+        );
+      }
+      const type = leaf.type ?? base.type;
+      if (type !== base.type) {
+        throw new Error(
+          `${slug} overrides ${path} as ${type}, but the base token is ${base.type}.`,
+        );
+      }
+      if (excludedBy.has(path)) continue;
+      if (STYLE_TYPES.has(type) || !FIGMA_TYPE[type]) {
+        throw new Error(
+          `${slug} overrides ${path}, a ${type} token: text and effect styles have no modes, so a Brand mode cannot carry it. Override the scalar tokens it aliases instead.`,
+        );
+      }
+      if (!overrides.has(path)) overrides.set(path, new Map());
+      overrides.get(path).set(slug, { ...leaf, type });
+    }
+  }
+  return overrides;
+}
+
+/**
+ * Adds the Brand and Density collections for `brands` and points each
+ * overridden token variable at them.
+ *
+ * @param {object} graph
+ * @param {{ baseMode: string, tenants: Array<{ slug: string, overlay: object }> }} brands
+ * @param {{ excludedBy: Map<string,string>, pendingByPath: Map<string,object> }} context
+ * @returns {object[]} Collections to append to the model.
+ */
+function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
+  const overrides = collectBrandOverrides(graph, brands, excludedBy);
+  const brandModes = [brands.baseMode, ...brands.tenants.map((t) => t.slug)];
+  const brandVariables = [];
+  const densityVariables = [];
+
+  for (const base of graph.tokens) {
+    const path = base.path.join('.');
+    const bySlug = overrides.get(path);
+    if (!bySlug) continue;
+    const item = pendingByPath.get(path);
+    const overriders = [...bySlug.keys()];
+    const themedBy = overriders.find((slug) => isThemed(bySlug.get(slug)));
+    const compactedBy = overriders.find(
+      (slug) => readModes(bySlug.get(slug).extensions)?.Compact !== undefined,
+    );
+    const themed = isThemed(base) || Boolean(themedBy);
+    if (themed && compactedBy) {
+      throw new Error(
+        `${path} varies by theme (Light/Dark) and by density (Compact, from ${compactedBy}); build-tokens emits no brand × theme × density CSS (ADR-022), so neither can Figma. Keep one axis per path.`,
+      );
+    }
+    const home = item.themed ? THEME_TIER : base.path[0];
+    if (themed && home !== THEME_TIER) {
+      throw new Error(
+        `${themedBy} themes ${path}, but it lives in ${collectionNameOf(home)}, which has no Light/Dark modes. Give ${path} Light/Dark modes in hirobius.tokens.json first (that moves it to Hirobius/Semantic).`,
+      );
+    }
+
+    const axis = themed ? 'theme' : compactedBy ? 'density' : null;
+    const variants = axis === 'theme' ? THEME_MODES : axis === 'density' ? DENSITY_MODES : [null];
+    const resolvedType = FIGMA_TYPE[base.type];
+    const unit = unitOf(graph, base);
+    const overriddenBy = overriders.map((slug) => `${slug} ([data-brand="${slug}"])`).join(', ');
+    const brandPath = (variant) => `brand.${path}${variant ? `.${variant}` : ''}`;
+
+    for (const variant of variants) {
+      const where =
+        variant === null ? '' : axis === 'theme' ? ` in ${variant}` : ` at ${variant} density`;
+      brandVariables.push({
+        path: brandPath(variant),
+        name: [...base.path, ...(variant ? [variant] : [])].join('/'),
+        resolvedType,
+        unit,
+        description: `Brand value of ${path}${where}. ${brands.baseMode}: the base token. Overridden by ${overriddenBy}.`,
+        scopes: [],
+        hiddenFromPublishing: false,
+        codeSyntax: {},
+        valuesByMode: Object.fromEntries(
+          brandModes.map((mode) => {
+            const source = bySlug.get(mode) ?? base;
+            return [mode, modeEntry(graph, variantRef(source, variant), base.type)];
+          }),
+        ),
+      });
+    }
+
+    if (axis === 'density') {
+      densityVariables.push({
+        path: `density.${path}`,
+        name: base.path.join('/'),
+        resolvedType,
+        unit,
+        description: `Density value of ${path}: Comfortable is the rest value, Compact applies under [data-density="compact"]. Each aliases its ${BRAND_COLLECTION.name} variant.`,
+        scopes: [],
+        hiddenFromPublishing: false,
+        codeSyntax: {},
+        valuesByMode: Object.fromEntries(
+          DENSITY_MODES.map((mode) => [mode, { alias: brandPath(mode) }]),
+        ),
+      });
+      item.entryFor = () => ({ alias: `density.${path}` });
+      item.axisNote = `Varies by brand and density: its value comes from ${DENSITY_COLLECTION.name}.`;
+    } else {
+      item.entryFor = (mode) => ({ alias: brandPath(axis === 'theme' ? mode : null) });
+      item.axisNote = `Varies by brand: its value comes from ${BRAND_COLLECTION.name}.`;
+    }
+  }
+
+  const axes = [
+    {
+      ...BRAND_COLLECTION,
+      modes: brandModes,
+      hiddenFromPublishing: false,
+      variables: brandVariables,
+    },
+  ];
+  if (densityVariables.length > 0) {
+    axes.push({
+      ...DENSITY_COLLECTION,
+      modes: [...DENSITY_MODES],
+      hiddenFromPublishing: false,
+      variables: densityVariables,
+    });
+  }
+  return axes;
+}
+
 // ── Build ────────────────────────────────────────────────────────────────────
 /** A scalar token → a pending variable (mode values are read once modes are known). */
 function tokenVariable(graph, token) {
   return {
+    path: token.path.join('.'),
     segments: token.path,
     tokenType: token.type,
     themed: isThemed(token),
@@ -632,9 +826,12 @@ function assertAliasesResolve(collections, excludedBy) {
  * Builds the Figma model for a token graph.
  *
  * @param {object} raw  Parsed hirobius.tokens.json (or a fixture graph).
+ * @param {{ brands?: { baseMode: string, tenants: Array<{ slug: string, overlay: object }> } | null }} [options]
+ *   brands: demo tenant overlays for the Brand and Density collections
+ *   (scripts/lib/figma-brand-modes.mjs loads them). Omitted: no axis collections.
  * @returns {object}    The model written to figma/model.json.
  */
-export function buildFigmaModel(raw) {
+export function buildFigmaModel(raw, { brands = null } = {}) {
   const graph = createGraph(raw);
   const notInFigma = NOT_IN_FIGMA.map(({ id, reason }) => ({ id, reason, tokens: [] }));
   const exclude = (id, path) => notInFigma.find((e) => e.id === id).tokens.push(path);
@@ -645,6 +842,11 @@ export function buildFigmaModel(raw) {
 
   for (const token of graph.tokens) {
     const path = token.path.join('.');
+    if (readModes(token.extensions)?.Compact !== undefined) {
+      throw new Error(
+        `${path} declares a Compact mode in hirobius.tokens.json, but build-tokens emits [data-density] CSS only for tenant overlays (ADR-022), so Figma would show a value the browser never applies. Move the Compact value into a tenant overlay, or teach build-tokens to emit it first.`,
+      );
+    }
     const exclusion = NOT_IN_FIGMA.find((e) => e.matches?.(token, graph));
     if (exclusion) {
       exclude(exclusion.id, path);
@@ -665,8 +867,17 @@ export function buildFigmaModel(raw) {
     }
   }
 
+  const axes = brands?.tenants?.length
+    ? buildBrandAxes(graph, brands, {
+        excludedBy,
+        pendingByPath: new Map(
+          pending.filter((item) => item.path).map((item) => [item.path, item]),
+        ),
+      })
+    : [];
+
   const homeOf = (item) => (item.themed ? THEME_TIER : item.segments[0]);
-  const collections = TIERS.map(({ key, name }) => {
+  const tierCollections = TIERS.map(({ key, name }) => {
     const members = pending.filter((item) => homeOf(item) === key);
     const modes = members.some((item) => item.themed) ? [...THEME_MODES] : [SINGLE_MODE];
     return {
@@ -681,10 +892,13 @@ export function buildFigmaModel(raw) {
           name: item.segments.slice(1).join('/'),
           resolvedType,
           unit: item.unit,
-          description:
-            key === item.segments[0]
-              ? item.description
-              : [item.description, THEME_HOME_NOTE].filter(Boolean).join(' '),
+          description: [
+            item.description,
+            key === item.segments[0] ? null : THEME_HOME_NOTE,
+            item.axisNote,
+          ]
+            .filter(Boolean)
+            .join(' '),
           scopes: scopesFor(item.segments, item.tokenType, resolvedType),
           hiddenFromPublishing: item.segments[0] === 'primitive',
           codeSyntax: { WEB: `var(--${item.segments.join('-')})` },
@@ -693,6 +907,7 @@ export function buildFigmaModel(raw) {
       }),
     };
   });
+  const collections = [...tierCollections, ...axes];
   assertAliasesResolve(collections, excludedBy);
 
   return {

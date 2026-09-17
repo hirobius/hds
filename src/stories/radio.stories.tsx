@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { HdsRadio } from '../app/components/radio';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/radio',
   component: HdsRadio,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('HdsRadio'),
     layout: 'centered',
     docs: {
       description: {
@@ -30,13 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 function DefaultDemo() {
   const [checked, setChecked] = useState(false);
-  return (
-    <HdsRadio
-      label="Automatic theme detection"
-      checked={checked}
-      onChange={setChecked}
-    />
-  );
+  return <HdsRadio label="Automatic theme detection" checked={checked} onChange={setChecked} />;
 }
 
 export const Default: Story = {
@@ -45,13 +41,7 @@ export const Default: Story = {
 
 function SelectedDemo() {
   const [checked, setChecked] = useState(true);
-  return (
-    <HdsRadio
-      label="Dark mode"
-      checked={checked}
-      onChange={setChecked}
-    />
-  );
+  return <HdsRadio label="Dark mode" checked={checked} onChange={setChecked} />;
 }
 
 export const Selected: Story = {

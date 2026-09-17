@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { HdsCheckbox } from '../app/components/checkbox';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/checkbox',
   component: HdsCheckbox,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('HdsCheckbox'),
     layout: 'centered',
     docs: {
       description: {
@@ -32,11 +34,7 @@ type Story = StoryObj<typeof meta>;
 function DefaultDemo() {
   const [checked, setChecked] = useState(false);
   return (
-    <HdsCheckbox
-      label="Receive project update emails"
-      checked={checked}
-      onChange={setChecked}
-    />
+    <HdsCheckbox label="Receive project update emails" checked={checked} onChange={setChecked} />
   );
 }
 
@@ -46,13 +44,7 @@ export const Default: Story = {
 
 function CheckedDemo() {
   const [checked, setChecked] = useState(true);
-  return (
-    <HdsCheckbox
-      label="Include archived projects"
-      checked={checked}
-      onChange={setChecked}
-    />
-  );
+  return <HdsCheckbox label="Include archived projects" checked={checked} onChange={setChecked} />;
 }
 
 export const Checked: Story = {

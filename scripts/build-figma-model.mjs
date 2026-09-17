@@ -3,8 +3,9 @@
 /**
  * Hirobius Design System — `pnpm figma:model`
  *
- * Builds the Figma model from hirobius.tokens.json (scripts/lib/figma-model.mjs),
- * checks its invariants, and writes figma/model.json: collections × modes ×
+ * Builds the Figma model from hirobius.tokens.json and the demo tenants in
+ * figma/brand-modes.json (scripts/lib/figma-model.mjs), checks its invariants,
+ * and writes figma/model.json: collections × modes ×
  * variables keyed by token path, text styles, effect styles, and the declared
  * not-in-Figma list. figma/model.json is a generated artifact (gitignored, like
  * the hirobius.figma-variables*.json exports). Nothing here talks to Figma.
@@ -14,6 +15,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { buildFigmaModel } from './lib/figma-model.mjs';
+import { loadBrandModes } from './lib/figma-brand-modes.mjs';
 import { validateFigmaModel, summarizeFigmaModel } from './lib/figma-model-invariants.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,11 +23,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 /**
  * Builds, validates and (only when valid) writes the model.
  *
- * @param {{ tokensPath: string, outPath: string }} paths
+ * @param {{ tokensPath: string, outPath: string, brands?: object|null }} paths
+ *   brands: demo tenant overlays (loadBrandModes) for the Brand and Density collections.
  * @returns {{ model: object, summary: object, violations: string[] }}
  */
-export function writeFigmaModel({ tokensPath, outPath }) {
-  const model = buildFigmaModel(JSON.parse(readFileSync(tokensPath, 'utf8')));
+export function writeFigmaModel({ tokensPath, outPath, brands = null }) {
+  const model = buildFigmaModel(JSON.parse(readFileSync(tokensPath, 'utf8')), { brands });
   const violations = validateFigmaModel(model);
   if (violations.length === 0) {
     mkdirSync(dirname(outPath), { recursive: true });
@@ -56,9 +59,11 @@ export function formatSummary(summary, outLabel) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const outPath = join(ROOT, 'figma', 'model.json');
   try {
+    const tokensPath = join(ROOT, 'hirobius.tokens.json');
     const { summary, violations } = writeFigmaModel({
-      tokensPath: join(ROOT, 'hirobius.tokens.json'),
+      tokensPath,
       outPath,
+      brands: loadBrandModes(ROOT, JSON.parse(readFileSync(tokensPath, 'utf8'))),
     });
     if (violations.length > 0) {
       console.error(

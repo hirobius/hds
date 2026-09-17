@@ -119,6 +119,8 @@ figma/model.json
 # figma/snapshot.json IS committed: it is Figma's state, not a build output.
 figma/push/
 figma/native-import/
+# Design <-> code link carriers (pnpm figma:links): regenerated from the manifest.
+figma/links/
 
 # Auto-research findings — local LLM output, regenerated each run
 # (queries.json itself IS tracked; only the per-run findings are local-only)
