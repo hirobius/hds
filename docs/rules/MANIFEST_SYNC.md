@@ -55,7 +55,7 @@ Do not run individual scripts out of order. If a single script needs to run in i
 | ------------------------------------------------ | -------------------------------------------------------------- | ------------------ |
 | `name`, `version`, `generated`, `source`         | `generate-manifest.mjs`                                        | ✓                  |
 | `componentInventory`                             | `generate-manifest.mjs` (from source scan)                     | ✓                  |
-| `componentSpecs`                                 | `generate-manifest.mjs` + bridge `/update-manifest`            | Partial — see §5   |
+| `componentSpecs`                                 | `generate-manifest.mjs` + hand-filled fields (§6)              | Partial — see §5   |
 | `tokens`                                         | `generate-manifest.mjs` (snapshot from `hirobius.tokens.json`) | ✓                  |
 | `typographyRamp`, `patternInventory`             | `generate-manifest.mjs`                                        | ✓                  |
 | `phases`, `health`                               | `build-roadmap-data.mjs`                                       | ✓                  |
