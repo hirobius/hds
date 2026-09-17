@@ -12,8 +12,15 @@
  * Exit codes: 0 no drift · 1 drift, or a snapshot that fails its checksum ·
  * 2 no snapshot taken yet.
  *
+ * --ci (the ci.yml step) fails only on drift a push cannot explain: a snapshot
+ * newer than the last token change that still disagrees with the tokens.
+ * Drift against an older snapshot is token changes not pushed to Figma yet,
+ * which nobody without Figma access can fix, so it is a GitHub warning
+ * annotation; no snapshot yet is a notice. A snapshot that fails its checksum
+ * always fails.
+ *
  * Usage:
- *   node scripts/check-figma-drift.mjs [--json]
+ *   node scripts/check-figma-drift.mjs [--json] [--ci]
  *
  * Fixture mode (docs/guardrails/FIXTURE_DIR_HARNESS.md): with FIXTURE_DIR set,
  * hirobius.tokens.json, TOKEN_MIGRATION.md and figma/snapshot.json are read
@@ -63,18 +70,18 @@ export function tokensChangedAt(root) {
 }
 
 /**
- * @param {{ root: string, tokensChangedAt?: string|null, json?: boolean }} options
+ * @param {{ root: string, tokensChangedAt?: string|null, json?: boolean, ci?: boolean }} options
  *   tokensChangedAt: omit to read it from git; null skips the staleness check.
  * @returns {{ exitCode: 0|1|2, output: string, report?: object }}
  */
-export function runDriftCheck({ root, tokensChangedAt: changedAt, json = false }) {
+export function runDriftCheck({ root, tokensChangedAt: changedAt, json = false, ci = false }) {
   const snapshotPath = join(root, 'figma', 'snapshot.json');
   if (!existsSync(snapshotPath)) {
-    return {
-      exitCode: 2,
-      output:
-        'No Figma snapshot yet (figma/snapshot.json). Push the tokens (pnpm figma:push), take a snapshot (pnpm figma:snapshot), commit it, then run this again.',
-    };
+    const message =
+      'No Figma snapshot yet (figma/snapshot.json). Push the tokens (pnpm figma:push), take a snapshot (pnpm figma:snapshot), commit it, then run this again.';
+    return ci
+      ? { exitCode: 0, output: `::notice title=Figma drift::${message}` }
+      : { exitCode: 2, output: message };
   }
   try {
     const { model, renames } = loadFigmaInputs(root);
@@ -83,11 +90,13 @@ export function runDriftCheck({ root, tokensChangedAt: changedAt, json = false }
       renames,
       tokensChangedAt: changedAt === undefined ? tokensChangedAt(root) : changedAt,
     });
-    return {
-      exitCode: report.ok ? 0 : 1,
-      output: json ? JSON.stringify(report, null, 2) : formatDrift(report),
-      report,
-    };
+    const output = json ? JSON.stringify(report, null, 2) : formatDrift(report);
+    if (report.ok || !ci) return { exitCode: report.ok ? 0 : 1, output, report };
+    const count = `${report.items.length} drift item(s)`;
+    const annotation = report.stale
+      ? `::warning title=Figma drift::${count} against a snapshot older than hirobius.tokens.json: push the tokens (pnpm figma:push) and commit a new snapshot.`
+      : `::error title=Figma drift::${count} against a snapshot newer than the last token change: Figma was edited by hand or a push did not stick. Push again (pnpm figma:push) and commit a new snapshot.`;
+    return { exitCode: report.stale ? 0 : 1, output: `${output}\n${annotation}`, report };
   } catch (error) {
     return { exitCode: 1, output: `✗ check-figma-drift — ${error.message}` };
   }
@@ -99,7 +108,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     root: fixtureDir || ROOT,
     tokensChangedAt: fixtureDir ? null : undefined,
     json: process.argv.includes('--json'),
+    ci: process.argv.includes('--ci'),
   });
-  (exitCode === 0 ? console.log : console.error)(output);
+  // GitHub reads ::notice/::warning/::error annotations from stdout.
+  (exitCode === 0 || process.argv.includes('--ci') ? console.log : console.error)(output);
   process.exit(exitCode);
 }

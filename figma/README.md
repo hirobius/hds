@@ -84,6 +84,13 @@ It also notes when Figma was last pushed from a different model.
 Fix drift in Figma (push again), never in `snapshot.json`: an edited snapshot
 fails its checksum.
 
+CI (`ci.yml`, `check-figma-drift.mjs --ci`) fails only on drift a push cannot
+explain: a snapshot newer than the last token change that still disagrees with
+the tokens (a hand edit in Figma, or a push that did not stick). Drift against an
+older snapshot means token changes are waiting to be pushed; that is a warning,
+because a change made without Figma access cannot push. Until a snapshot is
+committed the step only adds a notice.
+
 ## Native import (fallback)
 
 `pnpm figma:native-import` writes one DTCG file per collection × mode. For each

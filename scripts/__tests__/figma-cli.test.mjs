@@ -190,6 +190,44 @@ describe('pnpm check:figma-drift', () => {
     expect(output).toMatch(/edited after it was taken/);
   });
 
+  describe('--ci', () => {
+    const driftedSnapshot = (root) =>
+      takeSnapshot(root, async (figma) => {
+        (await figma.variables.getLocalVariablesAsync()).find((v) => v.name === 'ring').remove();
+      });
+
+    it('passes with a notice while no snapshot has been committed', () => {
+      const { exitCode, output } = runDriftCheck({
+        root: tempRoot(),
+        tokensChangedAt: null,
+        ci: true,
+      });
+      expect(exitCode).toBe(0);
+      expect(output).toMatch(/^::notice title=Figma drift::No Figma snapshot yet/);
+    });
+
+    it('warns without failing when the snapshot is older than the tokens (a push is pending)', async () => {
+      const root = tempRoot();
+      writeSnapshot(root, await driftedSnapshot(root));
+      const later = new Date(Date.now() + 60_000).toISOString();
+      const { exitCode, output } = runDriftCheck({ root, tokensChangedAt: later, ci: true });
+      expect(exitCode).toBe(0);
+      expect(output).toContain('missing  ring (role.ring)');
+      expect(output).toMatch(
+        /::warning title=Figma drift::1 drift item\(s\) against a snapshot older than hirobius\.tokens\.json/,
+      );
+    });
+
+    it('fails when a snapshot newer than the tokens disagrees with them', async () => {
+      const root = tempRoot();
+      writeSnapshot(root, await driftedSnapshot(root));
+      const earlier = '2020-01-01T00:00:00.000Z';
+      const { exitCode, output } = runDriftCheck({ root, tokensChangedAt: earlier, ci: true });
+      expect(exitCode).toBe(1);
+      expect(output).toMatch(/::error title=Figma drift::1 drift item\(s\)/);
+    });
+  });
+
   it('prints JSON with --json', async () => {
     const root = tempRoot();
     writeSnapshot(root, await takeSnapshot(root));
