@@ -33,7 +33,7 @@ Use it to answer:
 | `pnpm tokens:verify`      | Verify token pipeline integrity                                                                     | Fix token or compiler issues before proceeding                                   |
 | `pnpm tokens:audit`       | Audit component token compliance                                                                    | Refactor components or add justified suppressions                                |
 | `pnpm tokens:audit:pages` | Audit page surfaces for raw design values                                                           | Route page-level visual decisions through tokens or justify editorial exceptions |
-| `pnpm figma-variables`    | Write Figma variable export files from `hirobius.tokens.json` locally; nothing is pushed (ADR-025). | Review the export before any manual Figma import                                 |
+| `pnpm figma-variables`    | Write Figma variable export files from `hirobius.tokens.json` locally; nothing is pushed (ADR-025). | Do not import into Figma: Dark values equal Light and the role tier is missing   |
 
 ## Check Suite
 
@@ -179,14 +179,15 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 
 ## Supporting Scripts
 
-| Script                      | Purpose                                                      |
-| --------------------------- | ------------------------------------------------------------ |
-| `build-handoff.mjs`         | keeps the design handoff material in sync with token outputs |
-| `build-design-md.mjs`       | keeps the lean visual spec in sync with token outputs        |
-| `build-token-index.mjs`     | builds token-index artifacts                                 |
-| `build-figma-variables.mjs` | creates Figma variable export artifacts                      |
-| `figma-diff.mjs`            | diffs two Figma snapshots; the `--dry-run` mode is synthetic |
-| `batch-scan.mjs`            | scanning utility for broader inspection workflows            |
+| Script                      | Purpose                                                                           |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| `build-handoff.mjs`         | keeps the design handoff material in sync with token outputs                      |
+| `build-design-md.mjs`       | keeps the lean visual spec in sync with token outputs                             |
+| `build-token-index.mjs`     | builds token-index artifacts                                                      |
+| `build-figma-variables.mjs` | creates Figma variable export files; do not import them into Figma (Dark = Light) |
+| `build-readme-counts.mjs`   | regenerates the README count bullets from source (`pnpm tokens`)                  |
+| `figma-diff.mjs`            | diffs two Figma snapshots; the `--dry-run` mode is synthetic                      |
+| `batch-scan.mjs`            | scanning utility for broader inspection workflows                                 |
 
 ## Token Scan Architecture
 

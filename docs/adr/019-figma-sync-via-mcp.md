@@ -1,16 +1,17 @@
 # ADR-019: Figma sync via the official Figma MCP server + Code Connect
 
-- **Status:** Accepted (2026-07-01). §2 superseded by [ADR-025](025-figma-sync-pro-architecture.md) (Proposed 2026-09-16).
+- **Status:** Accepted (2026-07-01). [ADR-025](025-figma-sync-pro-architecture.md) (Proposed 2026-09-16) would supersede §2 if accepted.
 - **Date:** 2026-07-01
 - **Decider:** Adrian
 - **Related:** ADR-018 §2 (legacy bridge archived), `hirobius.tokens.json` (DTCG source of truth)
 
-> **Superseded in part.** §2 below keeps a REST-based `sync-figma-variables.yml`
+> **Note (2026-09-16).** §2 below keeps a REST-based `sync-figma-variables.yml`
 > workflow. That workflow is archived (`.github/workflows-archive/`), and the Figma
 > REST variables API it calls is Enterprise-only, so it cannot run on the Pro plan
-> HDS targets. ADR-025 replaces §2 with a Pro-plan push, import, and snapshot-drift
-> path. The §3 Code Connect step is also plan-gated: publishing needs Organization.
-> §1 (first-party channels) and §4 (legacy transport deleted) still stand.
+> HDS targets. No token sync runs today. ADR-025 (Proposed, not yet accepted) would
+> supersede §2 with a Pro-plan push, import, and snapshot-drift path. The §3 Code
+> Connect step is plan-gated: publishing needs Organization. This ADR stays in force
+> until ADR-025 is accepted.
 
 ## Context
 

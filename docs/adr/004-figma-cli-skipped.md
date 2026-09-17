@@ -3,8 +3,8 @@
 **Status:** Superseded by ADR-019 (2026-07-01). Originally Accepted (2026-04-30).
 
 > The in-house plugin and bridge this ADR kept as the single Figma integration point
-> were archived by ADR-018 §2. ADR-019 moved Figma work to first-party tools, and
-> ADR-025 records the current Figma sync architecture. The figma-cli rejection itself
+> were archived by ADR-018 §2. ADR-019 moved Figma work to first-party tools; ADR-025
+> (Proposed, not yet accepted) sets out a Pro-plan sync. The figma-cli rejection itself
 > still stands: no ADR adopts it.
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR-025: Figma Sync on the Pro Plan — One Way, Local Push, Snapshot Drift
 
-**Status:** Proposed (2026-09-16). Supersedes ADR-019 §2 (tokens → Figma variables through the REST workflow).
+**Status:** Proposed (2026-09-16). If accepted, supersedes ADR-019 §2 (tokens → Figma variables through the REST workflow).
 
 ## Context
 
@@ -137,8 +137,17 @@ source), component descriptions (import line and doc link), and the Storybook Co
 Upgrade when a paying client engagement or a design review needs Dev Mode snippets shown live.
 As checked on 2026-09-16: an Organization Full seat is $55/month billed annually ($660 up
 front), no trial is documented, and the upgrade moves existing teams into a new
-organization. Until then the claim is "Code Connect-ready, Organization-gated". Organization
-still does not unlock REST variables or extended collections; both stay Enterprise-only.
+organization. Organization still does not unlock REST variables or extended collections;
+both stay Enterprise-only.
+
+What HDS may claim before that upgrade depends on what exists. As of 2026-09-16 nothing is
+ready: `@figma/code-connect` is not a dependency, `figma.config.json` does not exist, there
+are no v2 templates, and the 34 `*.figma.tsx` files are commented-out stubs in the retired
+parser format. Until the templates and their local gate land, the claim is "no Code Connect
+mapping is published; Code Connect is planned and Organization-gated". Only after the
+dependency, the config, generated `*.figma.ts` templates with a passing `parse` and `preview`
+gate, and the component-to-Figma links from §4 all exist does the claim become "Code
+Connect-ready, Organization-gated".
 
 ## Rationale
 

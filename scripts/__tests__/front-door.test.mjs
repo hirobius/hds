@@ -4,78 +4,73 @@
  * they open any source file.
  *
  * Seams under test:
- *   1. Package metadata — the root LICENSE file and package.json fields that
- *      npm and GitHub's license detection read.
- *   2. README claims — every count, command, and status line in README.md must
- *      match the repo as it is, so the front door cannot drift into a claim a
- *      reviewer disproves by opening one file.
- *   3. Figma claims in the core docs — no Figma command, script, or automatic
- *      sync is described unless the repo actually has it, and the ADR trail
- *      records which Figma decision is current (ADR-025).
+ *   1. Package metadata — the root LICENSE file, the license notice, and the
+ *      package.json fields that npm and GitHub's license detection read. The
+ *      license field has to describe the fonts the package embeds, not only the
+ *      code.
+ *   2. README claims — the generated count bullets never claim more than the
+ *      source has, and every command and status line matches the repo. Counts
+ *      are checked one way (claim <= source) so a PR that adds tokens, stories,
+ *      or components never turns main red through merge order.
+ *   3. Figma claims in the core docs — no Figma command, script, automatic sync,
+ *      or Code Connect readiness is described unless the repo has it; the broken
+ *      variable export is never offered for import; and a Proposed ADR is not
+ *      presented as settled architecture.
  *
- * Reads repo files only; writes nothing; spawns nothing.
+ * Reads repo files. The export check copies the exporter and the token file to
+ * an OS temp directory and runs it there with `node`, so nothing in the repo is
+ * written. Spawns no git.
  */
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import {
+  readFileSync,
+  readdirSync,
+  statSync,
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  copyFileSync,
+  rmSync,
+} from 'node:fs';
 import { join, dirname } from 'node:path';
+import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import {
+  collectCounts,
+  readClaims,
+  findOverclaims,
+  COUNTS_BLOCK,
+} from '../build-readme-counts.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 const pkg = JSON.parse(read('package.json'));
 
-// ── Repo facts (the independent source the docs are checked against) ─────────
-/** Component modules re-exported by the public barrel (`src/index.ts`). */
-function countBarrelComponentModules() {
-  return read('src/index.ts')
-    .split('\n')
-    .filter((line) => /^export \* from '\.\/app\/components\//.test(line)).length;
-}
-
-/** DTCG leaf tokens (objects carrying `$value`) in hirobius.tokens.json. */
-function countTokens() {
-  let n = 0;
-  const walk = (node) => {
-    if (!node || typeof node !== 'object') return;
-    if ('$value' in node) {
-      n++;
-      return;
-    }
-    for (const [key, child] of Object.entries(node)) if (!key.startsWith('$')) walk(child);
-  };
-  walk(JSON.parse(read('hirobius.tokens.json')));
-  return n;
-}
-
-/** CSF story files under src/ and the named story exports inside them. */
-function countStories() {
-  const files = readdirSync(join(ROOT, 'src'), { recursive: true })
-    .map(String)
-    .filter((p) => p.endsWith('.stories.tsx'));
-  const stories = files.reduce(
-    (sum, rel) =>
-      sum +
-      readFileSync(join(ROOT, 'src', rel), 'utf8')
-        .split('\n')
-        .filter((l) => /^export const [A-Z]/.test(l)).length,
-    0,
-  );
-  return { files: files.length, stories };
-}
-
 /** README prose with markdown emphasis stripped, so `**108**` reads as `108`. */
 const readmeText = () => read('README.md').replace(/\*\*|__/g, '');
-
-/** A number the README states immediately before `phrase`, or null. */
-function claimedCount(text, phrase) {
-  const m = text.match(new RegExp(`(\\d[\\d,]*)\\s+${phrase}`));
-  return m ? Number(m[1].replace(/,/g, '')) : null;
-}
 
 const PNPM_BUILTINS = new Set(['install', 'exec', 'add', 'dlx']);
 
 // ── 1. Package metadata ───────────────────────────────────────────────────────
+/**
+ * License of each font family that scripts/embed-fonts.mjs inlines into
+ * dist/tokens.css. `spdx: null` means the license has no SPDX identifier, so
+ * npm cannot express it in an SPDX `license` field.
+ */
+const FONT_LICENSES = {
+  satoshi: { family: 'Satoshi', license: 'ITF Free Font License', spdx: null },
+  'geist-mono': { family: 'Geist Mono', license: 'SIL Open Font License 1.1', spdx: 'OFL-1.1' },
+};
+
+/** Font family directories (`/fonts/<family>/…`) the library build embeds. */
+function embeddedFontFamilies() {
+  const script = read('scripts/embed-fonts.mjs');
+  const list = script.slice(script.indexOf('const FONTS = ['), script.indexOf('];'));
+  return [...new Set([...list.matchAll(/'\/fonts\/([\w-]+)\//g)].map((m) => m[1]))];
+}
+
 describe('package metadata', () => {
   it('ships the license as a root LICENSE file, not a directory', () => {
     expect(statSync(join(ROOT, 'LICENSE')).isFile()).toBe(true);
@@ -88,8 +83,44 @@ describe('package metadata', () => {
     expect(text).toContain('THE SOFTWARE IS PROVIDED "AS IS"');
   });
 
-  it('package.json declares the same license', () => {
-    expect(pkg.license).toBe('MIT');
+  it('knows the license of every font the library build embeds', () => {
+    const families = embeddedFontFamilies();
+    expect(families.length).toBeGreaterThan(0);
+    const unknown = families.filter((f) => !(f in FONT_LICENSES));
+    // An unknown family: add it to FONT_LICENSES, NOTICE.md and package.json `license`.
+    expect(unknown).toEqual([]);
+  });
+
+  it('package.json license covers the MIT code and every embedded font, not bare MIT', () => {
+    const fonts = embeddedFontFamilies().map((f) => FONT_LICENSES[f]);
+    if (fonts.every((f) => f.spdx)) {
+      const ids = ['MIT', ...new Set(fonts.map((f) => f.spdx))];
+      expect(pkg.license).toBe(ids.join(' AND '));
+      return;
+    }
+    // A font without an SPDX id: npm's form for that is `SEE LICENSE IN <file>`.
+    const match = /^SEE LICENSE IN (\S+)$/.exec(pkg.license ?? '');
+    expect(match, `package.json license is ${JSON.stringify(pkg.license)}`).not.toBeNull();
+    const notice = match[1];
+    expect(pkg.files).toContain(notice);
+    const text = read(notice);
+    expect(text).toMatch(/\bMIT\b/);
+    expect(text).toContain('LICENSE');
+    for (const { family, license } of fonts) {
+      expect(text).toContain(family);
+      expect(text).toContain(license);
+    }
+    expect(read('README.md')).toContain(`](${notice})`);
+  });
+
+  it('keeps the notice out of GitHub license detection', () => {
+    // Licensee (GitHub's detector) scores root files named like LICENSE-*, *-LICENSE,
+    // or COPYING* as license files. A second one with different text can turn the
+    // detected MIT into "Other", so the notice must not use such a name.
+    const extra = readdirSync(ROOT).filter(
+      (f) => f !== 'LICENSE' && /licen[sc]e|copy(ing|right)/i.test(f),
+    );
+    expect(extra).toEqual([]);
   });
 
   it('package.json points npm at this repository', () => {
@@ -108,20 +139,19 @@ describe('README claims', () => {
     expect(readmeText()).not.toMatch(/\bstall(ed|ing)?\b/i);
   });
 
-  it('states the public component count from the barrel, not the file count', () => {
-    expect(claimedCount(readmeText(), 'public component modules')).toBe(
-      countBarrelComponentModules(),
-    );
+  it('keeps the counts in a generated block', () => {
+    const readme = read('README.md');
+    expect(readme).toContain(`<!-- auto:start:${COUNTS_BLOCK} -->`);
+    expect(readme).toContain(`<!-- auto:end:${COUNTS_BLOCK} -->`);
+    expect(pkg.scripts['readme:counts']).toBe('node scripts/build-readme-counts.mjs');
+    // Token PRs already run `pnpm tokens`, so they regenerate the README counts too.
+    expect(pkg.scripts.tokens).toContain('node scripts/build-readme-counts.mjs');
   });
 
-  it('states the DTCG token count from hirobius.tokens.json', () => {
-    expect(claimedCount(readmeText(), 'DTCG tokens')).toBe(countTokens());
-  });
-
-  it('states the Storybook story and story-file counts from src/', () => {
-    const { files, stories } = countStories();
-    expect(claimedCount(readmeText(), 'Storybook stories')).toBe(stories);
-    expect(claimedCount(readmeText(), 'story files')).toBe(files);
+  it('never claims more components, tokens, stories, or story files than the source has', () => {
+    // A failure here means the source shrank: run `pnpm readme:counts`.
+    const overclaims = findOverclaims(readClaims(read('README.md')), collectCounts(ROOT));
+    expect(overclaims).toEqual([]);
   });
 
   it('only names pnpm commands that exist and are not retired', () => {
@@ -177,6 +207,105 @@ function adrStatus(number) {
   return { file, line: line ?? '' };
 }
 
+/** The line itself for a table row, otherwise the blank-line-delimited block around it. */
+function enclosingBlock(lines, i) {
+  if (lines[i].trim().startsWith('|')) return lines[i];
+  let start = i;
+  let end = i;
+  while (start > 0 && lines[start - 1].trim() !== '') start--;
+  while (end < lines.length - 1 && lines[end + 1].trim() !== '') end++;
+  return lines.slice(start, end + 1).join('\n');
+}
+
+/** Sentences of a markdown doc, with line breaks inside a paragraph joined. */
+function sentences(text) {
+  return text
+    .split(/\n\s*\n/)
+    .map((block) => block.replace(/^\s*(?:>|[-*]|\d+\.)\s+/gm, '').replace(/\s*\n\s*/g, ' '))
+    .flatMap((block) => block.split(/(?<=[.!?]["”]?)\s+/));
+}
+
+/**
+ * Runs `pnpm figma-variables` (scripts/build-figma-variables.mjs) on a temp copy
+ * and compares its plugin-import file with the token source. Returns the defects
+ * that make the export unsafe to import into Figma, or [] once it is fixed.
+ * If the exporter starts importing local modules, copy those here too.
+ */
+function figmaVariablesExportDefects() {
+  const dir = mkdtempSync(join(tmpdir(), 'hds-figma-export-'));
+  try {
+    mkdirSync(join(dir, 'scripts'));
+    copyFileSync(
+      join(ROOT, 'scripts', 'build-figma-variables.mjs'),
+      join(dir, 'scripts', 'build-figma-variables.mjs'),
+    );
+    copyFileSync(join(ROOT, 'hirobius.tokens.json'), join(dir, 'hirobius.tokens.json'));
+    const env = Object.fromEntries(
+      Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')),
+    );
+    execFileSync(process.execPath, [join(dir, 'scripts', 'build-figma-variables.mjs')], {
+      cwd: dir,
+      env,
+      stdio: 'pipe',
+    });
+    const exported = JSON.parse(readFileSync(join(dir, 'hirobius.figma-variables.json'), 'utf8'));
+
+    let sourceDiffering = 0;
+    const walk = (node) => {
+      if (!node || typeof node !== 'object') return;
+      if ('$value' in node) {
+        const modes = node.$extensions?.['com.figma.variables']?.modes;
+        if (modes && JSON.stringify(modes.Light) !== JSON.stringify(modes.Dark)) sourceDiffering++;
+        return;
+      }
+      for (const [key, child] of Object.entries(node)) if (!key.startsWith('$')) walk(child);
+    };
+    const tokens = JSON.parse(read('hirobius.tokens.json'));
+    walk(tokens);
+
+    const exportDiffering = exported.collections
+      .filter((c) => c.modes.includes('Light') && c.modes.includes('Dark'))
+      .flatMap((c) => c.variables)
+      .filter(
+        (v) => JSON.stringify(v.valuesByMode.Light) !== JSON.stringify(v.valuesByMode.Dark),
+      ).length;
+
+    const defects = [];
+    if (exportDiffering < sourceDiffering) {
+      defects.push(`Dark differs from Light in ${exportDiffering} of ${sourceDiffering} variables`);
+    }
+    if (tokens.role && !exported.collections.some((c) => /role/i.test(c.name))) {
+      defects.push('no role collection');
+    }
+    return defects;
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+const EXPORT_DEFECTS = figmaVariablesExportDefects();
+const ADR_025_ACCEPTED = /\*\*Status:\*\*\s*Accepted/.test(adrStatus('025')?.line ?? '');
+
+/** Docs that point readers at ADR-025, other than ADR-025 itself. */
+const ADR_025_POINTERS = [
+  ...CORE_DOCS,
+  'docs/ROADMAP.md',
+  'docs/adr/004-figma-cli-skipped.md',
+  'docs/adr/019-figma-sync-via-mcp.md',
+];
+
+/** Code Connect is set up once the CLI, its config, and at least one v2 template exist. */
+function codeConnectSetUp() {
+  const templates = readdirSync(join(ROOT, 'src'), { recursive: true })
+    .map(String)
+    .filter((p) => p.endsWith('.figma.ts'));
+  return (
+    Boolean(pkg.devDependencies?.['@figma/code-connect']) &&
+    existsSync(join(ROOT, 'figma.config.json')) &&
+    templates.length > 0
+  );
+}
+
 describe('Figma claims in the core docs', () => {
   it('names only pnpm Figma commands that exist', () => {
     const missing = CORE_DOCS.flatMap((doc) =>
@@ -218,13 +347,29 @@ describe('Figma claims in the core docs', () => {
     },
   );
 
+  // Skipped once the exporter keeps Dark values and the role tier.
+  it.skipIf(EXPORT_DEFECTS.length === 0)(
+    `warns against importing the pnpm figma-variables export while it is broken (${EXPORT_DEFECTS.join('; ')})`,
+    () => {
+      const unwarned = CORE_DOCS.flatMap((doc) => {
+        const lines = read(doc).split('\n');
+        return lines
+          .map((line, i) => ({ line, i }))
+          .filter(({ line }) => /pnpm figma-variables/.test(line))
+          .filter(({ i }) => !/\bdo not import\b/i.test(enclosingBlock(lines, i)))
+          .map(({ line, i }) => `${doc}:${i + 1}: ${line.trim()}`);
+      });
+      expect(unwarned).toEqual([]);
+    },
+  );
+
   it('does not say Figma native import reads the token file or its mode extension', () => {
     const handoff = read('DESIGN-HANDOFF.md');
     expect(handoff).not.toMatch(/native import reads/i);
     expect(handoff).not.toMatch(/Import\s*(->|→)\s*`hirobius\.tokens\.json`/);
   });
 
-  it('records ADR-025 as the Figma sync architecture, superseding ADR-019 §2', () => {
+  it('ADR-025 follows the ADR-009 format and records the plan table', () => {
     const adr025 = adrStatus('025');
     expect(adr025).not.toBeNull();
     const body = read(`docs/adr/${adr025.file}`);
@@ -232,10 +377,63 @@ describe('Figma claims in the core docs', () => {
     for (const heading of ['## Context', '## Decision', '## Rationale', '## Consequences']) {
       expect(body).toContain(heading);
     }
-    expect(body).toMatch(/Supersedes[^\n]*ADR-019 §2/);
+    expect(adr025.line).toMatch(/\*\*Status:\*\*\s*(Proposed|Accepted) \(\d{4}-\d{2}-\d{2}\)/);
+    expect(adr025.line).toMatch(/ADR-019 §2/);
     expect(body).toMatch(/\|\s*Capability\s*\|\s*Pro\s*\|\s*Organization\s*\|\s*Enterprise\s*\|/);
-    expect(adrStatus('019').line).toMatch(/§2[^\n]*superseded by[^\n]*ADR-025/i);
   });
+
+  it.skipIf(ADR_025_ACCEPTED)(
+    'while ADR-025 is Proposed, no doc presents it as settled architecture',
+    () => {
+      const adr019 = adrStatus('019').line;
+      expect(adr019).not.toMatch(/superseded by[^\n]*ADR-025/i);
+      expect(adr019).toMatch(/ADR-025[^\n]*Proposed/);
+
+      const settled = ADR_025_POINTERS.flatMap((doc) =>
+        read(doc)
+          .split('\n')
+          .map((line, i) => ({ line, at: `${doc}:${i + 1}` }))
+          .filter(({ line }) => /ADR-025|025-figma-sync/.test(line))
+          .filter(({ line }) => !/propos/i.test(line))
+          .filter(
+            ({ line, at }) =>
+              at.startsWith('CLAUDE.md') ||
+              /\b(current|supersedes?|superseded|replaces?|replaced)\b/i.test(line),
+          )
+          .map(({ line, at }) => `${at}: ${line.trim()}`),
+      );
+      expect(settled).toEqual([]);
+    },
+  );
+
+  it.skipIf(!ADR_025_ACCEPTED)(
+    'once ADR-025 is Accepted, ADR-019 records §2 as superseded and no doc calls ADR-025 proposed',
+    () => {
+      expect(adrStatus('019').line).toMatch(/§2[^\n]*superseded by[^\n]*ADR-025/i);
+      const stale = ADR_025_POINTERS.flatMap((doc) =>
+        read(doc)
+          .split('\n')
+          .map((line, i) => ({ line, at: `${doc}:${i + 1}` }))
+          .filter(({ line }) => /ADR-025[^\n]*Proposed|Proposed[^\n]*ADR-025/.test(line))
+          .map(({ line, at }) => `${at}: ${line.trim()}`),
+      );
+      expect(stale).toEqual([]);
+    },
+  );
+
+  it.skipIf(codeConnectSetUp())(
+    'does not call Code Connect ready before the repo has a Code Connect setup',
+    () => {
+      const docs = [...CORE_DOCS, 'docs/ROADMAP.md', `docs/adr/${adrStatus('025').file}`];
+      const unconditional = docs.flatMap((doc) =>
+        sentences(read(doc))
+          .filter((s) => /Code Connect[- ]ready/i.test(s))
+          .filter((s) => !/\b(once|after)\b/i.test(s))
+          .map((s) => `${doc}: ${s}`),
+      );
+      expect(unconditional).toEqual([]);
+    },
+  );
 
   it('marks ADR-004 (the retired in-house plugin) as superseded', () => {
     expect(adrStatus('004').line).toMatch(/Superseded by ADR-019/);

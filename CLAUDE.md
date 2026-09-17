@@ -49,12 +49,14 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
 
 - **Design Token & Manifest Rules:** Read `docs/rules/MANIFEST_SYNC.md`
 - **React Component Rules:** Read `docs/rules/REACT_COMPONENTS.md`
-- **Figma Sync:** Read `docs/adr/025-figma-sync-pro-architecture.md` (current
-  architecture and what each Figma plan allows), then `docs/adr/019-figma-sync-via-mcp.md`
-  for the first-party-tools decision it builds on. The legacy WebSocket
-  bridge/plugin is archived on `archive/figma-bridge` (ADR-018 §2). Figma work
-  goes through the official Figma MCP server; Code Connect publishing is
-  Organization-plan-gated, so no mapping is live.
+- **Figma Sync:** Read `docs/adr/019-figma-sync-via-mcp.md`, the accepted decision:
+  Figma work goes through first-party tools (the official Figma MCP server). Its §2
+  REST workflow is archived and needs Enterprise, so no token sync runs, and Code
+  Connect publishing needs Organization, so no mapping is live. The legacy WebSocket
+  bridge/plugin is archived on `archive/figma-bridge` (ADR-018 §2).
+  `docs/adr/025-figma-sync-pro-architecture.md` is Proposed, not accepted: use it for
+  what each Figma plan allows, but do not build its `figma:*` commands, snapshot, or
+  Brand modes until its Status line reads Accepted.
 
 ## 🧬 SUB-AGENT DISPATCH RULES
 

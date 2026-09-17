@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-16T00:00:00Z",
+  "updatedAt": "2026-09-17T00:00:00Z",
   "phase": "active",
-  "headline": "CI, release, and Chromatic triggers were restored on 2026-09-14 (#204). The front door now states counts checked against source (108 public component modules, 361 DTCG tokens, 442 Storybook stories), ships a root MIT LICENSE with license and repository metadata, and no longer overclaims Figma sync; ADR-025 (proposed) records the Pro-plan Figma architecture. Nothing has published since 0.13.0 because no changesets exist yet (#199).",
+  "headline": "CI, release, and Chromatic triggers were restored on 2026-09-14 (#204). The front door now states counts generated from source (pnpm readme:counts), ships a root MIT LICENSE plus a NOTICE.md for the embedded Satoshi and Geist Mono fonts, warns against importing the broken Figma variable export, and no longer overclaims Figma sync; ADR-025 is Proposed, not accepted. Nothing has published since 0.13.0 because no changesets exist yet (#199).",
   "next": [
-    "Adrian: accept or amend ADR-025, confirm the MIT license, and fill or drop the README status placeholder (front-door PR)",
+    "Adrian: accept or amend ADR-025, confirm MIT for the code, decide Satoshi redistribution (plan 1.7) before the next publish, and fill or drop the README status placeholder (front-door PR)",
     "Figma readiness per ADR-025: exporter dark-mode fix and tested figma:model, local push, import fallback, snapshot drift, Code Connect v2 templates with a local parse/preview gate",
     "Land the privacy cleanup (#210) before sharing the repo with reviewers",
     "Cut 0.14.0 once changesets exist (#199)"
