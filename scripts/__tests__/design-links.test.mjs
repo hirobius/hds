@@ -469,6 +469,18 @@ describe('buildDescriptionsScript', () => {
     }
   });
 
+  it('keeps the plain description when descriptionMarkdown reads empty but description does not (a known Figma staleness bug)', async () => {
+    const file = fakeFile(
+      [componentSet({ description: 'Hand-written usage guidance', descriptionMarkdown: '' })],
+      { normalizeMarkdown: (md) => md },
+    );
+    const report = await run(buildDescriptionsScript(links, FILE_KEY), file.figma);
+    expect(report.updated[0].changes).toEqual(['description', 'documentationLinks']);
+    const alert = file.byId.get('33:34');
+    expect(alert.description.startsWith('Hand-written usage guidance\n\n▼ HDS')).toBe(true);
+    expect(file.writes.map(([, key]) => key)).not.toContain('descriptionMarkdown');
+  });
+
   it('writes rich text through descriptionMarkdown, so formatting outside the block survives', async () => {
     const normalizeMarkdown = (md) => md.replace(/\n{3,}/g, '\n\n').trim();
     const file = fakeFile(
