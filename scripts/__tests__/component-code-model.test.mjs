@@ -93,3 +93,52 @@ describe('createCodeModel — real components', () => {
     expect(model.component('src/app/components/button.tsx', 'Nope')).toBeNull();
   });
 });
+
+describe('createCodeModel — typecheckSnippets', () => {
+  let model;
+  const INPUT = 'src/app/components/input.tsx';
+  const BUTTON = 'src/app/components/button.tsx';
+  const CHECKBOX = 'src/app/components/checkbox.tsx';
+  beforeAll(() => {
+    model = createCodeModel({ root: ROOT, files: [INPUT, BUTTON, CHECKBOX] });
+  }, 60_000);
+
+  it('passes snippets that compile, treating placeholder identifiers as consumer-supplied', () => {
+    const results = model.typecheckSnippets([
+      {
+        source: BUTTON,
+        exportName: 'Button',
+        snippet:
+          '<Button variant="primary" tone="danger" disabled iconLeft={<IconInstance />}>Button</Button>',
+      },
+      {
+        source: CHECKBOX,
+        exportName: 'HdsCheckbox',
+        snippet:
+          '<HdsCheckbox label="Label" checked={false} indeterminate onChange={setChecked} />',
+      },
+      { source: INPUT, exportName: 'Input', snippet: '<Input error size="sm" label="Label" />' },
+    ]);
+    expect(results).toEqual([[], [], []]);
+  }, 60_000);
+
+  it('reports a boolean attribute on a string prop (Input errorMessage)', () => {
+    const [messages] = model.typecheckSnippets([
+      { source: INPUT, exportName: 'Input', snippet: '<Input errorMessage size="sm" />' },
+    ]);
+    expect(messages.join('\n')).toMatch(/boolean.*string/);
+  }, 60_000);
+
+  it('reports a value the prop type does not accept and a missing required prop', () => {
+    const [variant, required] = model.typecheckSnippets([
+      { source: BUTTON, exportName: 'Button', snippet: '<Button variant="ghost">Go</Button>' },
+      {
+        source: CHECKBOX,
+        exportName: 'HdsCheckbox',
+        snippet: '<HdsCheckbox label="Label" onChange={setChecked} />',
+      },
+    ]);
+    expect(variant.join('\n')).toMatch(/ghost/);
+    expect(required.join('\n')).toMatch(/checked/);
+  }, 60_000);
+});

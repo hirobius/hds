@@ -223,6 +223,42 @@ describe('checkCodeConnect', () => {
     );
   });
 
+  it('fails when a rendered snippet does not type-check against the component props', () => {
+    const calls = [];
+    const result = gate({
+      codeModel: modelWith(BADGE_CODE, {
+        typecheckSnippets: (list) => {
+          calls.push(...list);
+          return list.map(({ snippet }) =>
+            snippet.includes('tone="danger"')
+              ? ['Type \'"danger"\' is not assignable to type \'"neutral" | "info"\'.']
+              : [],
+          );
+        },
+      }),
+    });
+    expect(rules(result)).toEqual(['render-type']);
+    expect(result.errors[0].message).toMatch(/<Badge tone="danger">Badge<\/Badge> → Type/);
+    // Each distinct snippet is checked once, against its source module and export.
+    expect(calls).toEqual([
+      {
+        source: 'src/app/components/badge.tsx',
+        exportName: 'Badge',
+        snippet: '<Badge>Badge</Badge>',
+      },
+      {
+        source: 'src/app/components/badge.tsx',
+        exportName: 'Badge',
+        snippet: '<Badge tone="info">Badge</Badge>',
+      },
+      {
+        source: 'src/app/components/badge.tsx',
+        exportName: 'Badge',
+        snippet: '<Badge tone="danger">Badge</Badge>',
+      },
+    ]);
+  });
+
   it('fails on invalid JSX and on render errors', () => {
     const broken = docFor('Badge', badgeEntry(), BADGE_CODE);
     broken.template = broken.template.replace('</Badge>', '</Badg>');
