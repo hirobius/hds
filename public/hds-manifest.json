@@ -693,7 +693,7 @@
       "hidden": false,
       "filePath": "src/app/components/alert.tsx",
       "description": "Alert - compact feedback surface with contextual severity.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34",
       "figmaId": null,
       "preview": {
         "exportName": "Alert",
@@ -6305,7 +6305,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/avatar-group.figma.tsx",
         "src/app/components/avatar-group.test.tsx",
         "src/stories/avatar-group.stories.tsx"
       ],
@@ -6349,7 +6348,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/blockquote.figma.tsx",
         "src/app/components/blockquote.test.tsx",
         "src/stories/blockquote.stories.tsx"
       ],
@@ -6395,7 +6393,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/button-group.figma.tsx",
         "src/app/components/button-group.test.tsx",
         "src/stories/button-group.stories.tsx"
       ],
@@ -6436,7 +6433,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/input-group.figma.tsx",
         "src/app/components/input-group.test.tsx",
         "src/stories/input-group.stories.tsx"
       ],
@@ -6490,7 +6486,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/kbd.figma.tsx",
         "src/app/components/kbd.test.tsx",
         "src/stories/kbd.stories.tsx"
       ],
@@ -6532,7 +6527,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/status-dot.figma.tsx",
         "src/app/components/status-dot.test.tsx",
         "src/stories/status-dot.stories.tsx"
       ],
@@ -6590,7 +6584,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/timestamp.figma.tsx",
         "src/app/components/timestamp.test.tsx",
         "src/stories/timestamp.stories.tsx"
       ],
@@ -6644,7 +6637,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/visually-hidden.figma.tsx",
         "src/app/components/visually-hidden.test.tsx",
         "src/stories/visually-hidden.stories.tsx"
       ],
@@ -6681,7 +6673,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/circular-progress.figma.tsx",
         "src/app/components/circular-progress.test.tsx",
         "src/stories/circular-progress.stories.tsx"
       ],
@@ -6732,7 +6723,6 @@
       "figmaUrl": null,
       "figmaId": null,
       "consumers": [
-        "src/app/components/side-nav.figma.tsx",
         "src/app/components/side-nav.test.tsx",
         "src/stories/side-nav.stories.tsx"
       ],
@@ -6771,7 +6761,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/command-palette.figma.tsx",
         "src/app/data/nav-model.test.ts",
         "src/app/lib/hds-search.ts",
         "src/stories/command-palette.stories.tsx"
@@ -6809,7 +6798,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/image-lightbox.figma.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/asset-img.stories.tsx",
@@ -6877,7 +6865,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/app-shell.figma.tsx",
         "src/app/components/app-shell.test.tsx",
         "src/stories/app-shell.stories.tsx"
       ],
@@ -6909,7 +6896,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/file-input.figma.tsx",
         "src/app/components/file-input.test.tsx",
         "src/stories/file-input.stories.tsx"
       ],
@@ -6962,7 +6948,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/metadata-list.figma.tsx",
         "src/app/components/metadata-list.test.tsx",
         "src/stories/metadata-list.stories.tsx"
       ],
@@ -7006,7 +6991,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/overflow-list.figma.tsx",
         "src/app/components/overflow-list.test.tsx",
         "src/stories/overflow-list.stories.tsx"
       ],
@@ -7050,7 +7034,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/selectable-card.figma.tsx",
         "src/app/components/selectable-card.test.tsx",
         "src/stories/selectable-card.stories.tsx"
       ],
@@ -7095,7 +7078,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tokenizer.figma.tsx",
         "src/app/components/tokenizer.test.tsx",
         "src/stories/tokenizer.stories.tsx"
       ],
@@ -7146,7 +7128,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/top-nav.figma.tsx",
         "src/app/components/top-nav.test.tsx",
         "src/stories/top-nav.stories.tsx"
       ],
@@ -7195,7 +7176,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/carousel.figma.tsx",
         "src/app/components/carousel.test.tsx",
         "src/stories/carousel.stories.tsx"
       ],
@@ -7239,7 +7219,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/stepper.figma.tsx",
         "src/app/components/stepper.test.tsx",
         "src/stories/stepper.stories.tsx"
       ],
@@ -7286,7 +7265,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/toolbar.figma.tsx",
         "src/app/components/toolbar.test.tsx",
         "src/stories/toolbar.stories.tsx"
       ],
@@ -7323,7 +7301,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tree-list.figma.tsx",
         "src/app/components/tree-list.test.tsx",
         "src/stories/tree-list.stories.tsx"
       ],
@@ -7367,7 +7344,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/alert-dialog.figma.tsx",
         "src/app/components/alert-dialog.test.tsx",
         "src/stories/alert-dialog.stories.tsx"
       ],
@@ -7399,7 +7375,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/aspect-ratio.figma.tsx",
         "src/app/components/aspect-ratio.test.tsx",
         "src/app/components/frame.tsx",
         "src/stories/aspect-ratio.stories.tsx",
@@ -7442,7 +7417,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/calendar.figma.tsx",
         "src/app/components/calendar.test.tsx",
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
@@ -7480,7 +7454,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/context-menu.figma.tsx",
         "src/app/components/context-menu.test.tsx",
         "src/stories/context-menu.stories.tsx"
       ],
@@ -7512,7 +7485,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/date-input.figma.tsx",
         "src/app/components/date-input.test.tsx",
         "src/stories/date-input.stories.tsx"
       ],
@@ -7573,7 +7545,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/date-range-input.figma.tsx",
         "src/app/components/date-range-input.test.tsx",
         "src/stories/date-range-input.stories.tsx"
       ],
@@ -7638,7 +7609,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/date-time-input.figma.tsx",
         "src/app/components/date-time-input.test.tsx",
         "src/stories/date-time-input.stories.tsx"
       ],
@@ -7695,7 +7665,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/hover-card.figma.tsx",
         "src/app/components/hover-card.test.tsx",
         "src/stories/hover-card.stories.tsx"
       ],
@@ -7727,7 +7696,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/multi-selector.figma.tsx",
         "src/app/components/multi-selector.test.tsx",
         "src/stories/multi-selector.stories.tsx"
       ],
@@ -7782,7 +7750,6 @@
       },
       "consumers": [
         "src/app/components/date-time-input.tsx",
-        "src/app/components/time-input.figma.tsx",
         "src/app/components/time-input.test.tsx",
         "src/stories/date-time-input.stories.tsx",
         "src/stories/time-input.stories.tsx"
@@ -7825,7 +7792,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/toggle-button.figma.tsx",
         "src/app/components/toggle-button.test.tsx",
         "src/stories/toggle-button.stories.tsx"
       ],

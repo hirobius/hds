@@ -136,9 +136,12 @@ function escapeRegex(value) {
 function findConsumers(componentName, filePath, sourceFiles) {
   const pattern = new RegExp(`\\b${escapeRegex(componentName)}\\b`);
 
+  // Figma Code Connect templates (*.figma.ts) name the component in a snippet
+  // for Figma's runtime; they are not consumers of it.
   return sourceFiles
     .filter((candidate) => candidate !== filePath)
     .filter((candidate) => !candidate.startsWith(DOCS_PAGE_SEGMENT))
+    .filter((candidate) => !/\.figma\.tsx?$/.test(candidate))
     .filter((candidate) => {
       const content = readFileSync(join(ROOT, candidate), 'utf8');
       return pattern.test(content);

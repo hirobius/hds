@@ -1,0 +1,491 @@
+{
+  "$comment": [
+    "Figma Code Connect registry. scripts/generate-code-connect.mjs reads it and writes src/app/components/<module>.figma.ts (v2 parserless templates). scripts/check-code-connect.mjs gates the result (pnpm figma:connect:check, and pnpm test).",
+    "templates.<Export>.properties records the Figma component property definitions: name, type, options, default. It also records how each property maps onto the code prop. The code side (props, cva keys, defaultVariants) is always read from source, never copied here.",
+    "Node URLs are not stored here. They come from the component JSDoc tag `@figma <node-url>` through public/hds-manifest.json figmaUrl. A template without a URL is generated with a placeholder and reported as unmapped.",
+    "TEXT and INSTANCE_SWAP `default` values are preview text for the local renderer only. They are not Figma data.",
+    "exempt lists every public cva module (a src/index.ts barrel export whose file calls cva()) that has no template, with the reason. queued = the component exists in Figma but has no template yet. no-figma-component = nothing to map."
+  ],
+  "importFrom": "@hirobius/design-system",
+  "evidence": {
+    "hds#73": "Figma component property inventory from the Figma AI audit of file c8MaVgwxOlxm4wr8wnH0Z4 (2026-07-02). UNVERIFIED against the live file. Refresh it with an authenticated property read before publishing."
+  },
+  "templates": {
+    "Alert": {
+      "source": "src/app/components/alert.tsx",
+      "evidence": "hds#73",
+      "properties": {
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["info", "success", "warning", "danger"],
+          "default": "info",
+          "prop": "tone"
+        },
+        "Show title": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Title": {
+          "type": "TEXT",
+          "default": "Alert title",
+          "prop": "title",
+          "visibleWhen": "Show title"
+        },
+        "Body": {
+          "type": "TEXT",
+          "default": "Alert message",
+          "prop": "children"
+        }
+      }
+    },
+    "Avatar": {
+      "source": "src/app/components/avatar.tsx",
+      "evidence": "hds#73",
+      "properties": {
+        "Size": {
+          "type": "VARIANT",
+          "options": ["sm", "md", "lg"],
+          "default": "md",
+          "prop": "size"
+        },
+        "Type": {
+          "type": "VARIANT",
+          "options": ["Initials", "Image"],
+          "default": "Initials",
+          "set": {
+            "Initials": {},
+            "Image": {
+              "src": {
+                "$expr": "user.avatarUrl"
+              }
+            }
+          }
+        },
+        "Initials": {
+          "type": "TEXT",
+          "default": "AM",
+          "prop": "initials"
+        }
+      },
+      "staticProps": {
+        "alt": "{user.name}"
+      }
+    },
+    "Badge": {
+      "source": "src/app/components/badge.tsx",
+      "evidence": "hds#73",
+      "properties": {
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["neutral", "info", "success", "danger", "warning", "inProgress"],
+          "default": "neutral",
+          "prop": "tone"
+        },
+        "Label": {
+          "type": "TEXT",
+          "default": "Badge",
+          "prop": "children"
+        }
+      }
+    },
+    "Button": {
+      "source": "src/app/components/button.tsx",
+      "evidence": "hds#73",
+      "note": "Figma defaults Variant to Primary; code defaults to secondary (open decision, docs/architecture/variant-contract.md). The template emits variant whenever it differs from the code default, so either ruling renders correctly.",
+      "properties": {
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["Primary", "Secondary", "Tertiary"],
+          "default": "Primary",
+          "prop": "variant",
+          "values": {
+            "Primary": "primary",
+            "Secondary": "secondary",
+            "Tertiary": "tertiary"
+          }
+        },
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["neutral", "danger", "success", "warning", "info"],
+          "default": "neutral",
+          "prop": "tone"
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["sm", "md", "lg"],
+          "default": "md",
+          "prop": "size"
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Disabled", "Loading"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Disabled": {
+              "disabled": true
+            },
+            "Loading": {
+              "loading": true
+            }
+          }
+        },
+        "Label": {
+          "type": "TEXT",
+          "default": "Button",
+          "prop": "children"
+        },
+        "Show icon": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "Icon": {
+          "type": "INSTANCE_SWAP",
+          "prop": "iconLeft",
+          "visibleWhen": "Show icon"
+        },
+        "Show trail icon": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "Trail Icon": {
+          "type": "INSTANCE_SWAP",
+          "prop": "iconRight",
+          "visibleWhen": "Show trail icon"
+        }
+      }
+    },
+    "HdsCheckbox": {
+      "source": "src/app/components/checkbox.tsx",
+      "evidence": "hds#73",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Label",
+          "prop": "label"
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["unchecked", "checked", "indeterminate"],
+          "default": "unchecked",
+          "set": {
+            "unchecked": {
+              "checked": false
+            },
+            "checked": {
+              "checked": true
+            },
+            "indeterminate": {
+              "checked": false,
+              "indeterminate": true
+            }
+          }
+        },
+        "Disabled": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "disabled": true
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "onChange": "{setChecked}"
+      }
+    },
+    "HdsRadio": {
+      "source": "src/app/components/radio.tsx",
+      "evidence": "hds#73",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Label",
+          "prop": "label"
+        },
+        "Checked": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {
+              "checked": false
+            },
+            "true": {
+              "checked": true
+            }
+          }
+        },
+        "Disabled": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "disabled": true
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "onChange": "{setChecked}"
+      }
+    },
+    "Input": {
+      "source": "src/app/components/input.tsx",
+      "evidence": "hds#73",
+      "properties": {
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Focus", "Error", "Disabled"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Focus": {},
+            "Error": {
+              "error": true
+            },
+            "Disabled": {
+              "disabled": true
+            }
+          }
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["lg", "sm", "md"],
+          "default": "md",
+          "prop": "size"
+        },
+        "Show label": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Label": {
+          "type": "TEXT",
+          "default": "Label",
+          "prop": "label",
+          "visibleWhen": "Show label"
+        },
+        "Value": {
+          "type": "TEXT",
+          "default": "Value",
+          "prop": "defaultValue"
+        }
+      }
+    },
+    "Tag": {
+      "source": "src/app/components/tag.tsx",
+      "evidence": "hds#73",
+      "properties": {
+        "Active": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "active": true
+            }
+          }
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {}
+          }
+        },
+        "Label": {
+          "type": "TEXT",
+          "default": "Tag",
+          "prop": "children"
+        }
+      }
+    }
+  },
+  "exempt": {
+    "src/app/components/callout.tsx": {
+      "kind": "queued",
+      "reason": "Callout exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/field.tsx": {
+      "kind": "queued",
+      "reason": "Field exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/stat.tsx": {
+      "kind": "queued",
+      "reason": "Stat exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/status-list-item.tsx": {
+      "kind": "queued",
+      "reason": "StatusListItem exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/card.tsx": {
+      "kind": "queued",
+      "reason": "Card exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/code-block.tsx": {
+      "kind": "queued",
+      "reason": "CodeBlock exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/divider.tsx": {
+      "kind": "queued",
+      "reason": "Divider exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/doc-link-card.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/heading-stack.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/inline-code.tsx": {
+      "kind": "queued",
+      "reason": "InlineCode (with CodeBlock) exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/textarea.tsx": {
+      "kind": "queued",
+      "reason": "Textarea exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/toggle.tsx": {
+      "kind": "queued",
+      "reason": "Toggle exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/nav-item.tsx": {
+      "kind": "queued",
+      "reason": "NavItem exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/progress.tsx": {
+      "kind": "queued",
+      "reason": "Progress exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/skeleton.tsx": {
+      "kind": "queued",
+      "reason": "Skeleton exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/spinner.tsx": {
+      "kind": "queued",
+      "reason": "Spinner exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/segmented-control.tsx": {
+      "kind": "queued",
+      "reason": "SegmentedControl exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/surface.tsx": {
+      "kind": "queued",
+      "reason": "Surface exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/table.tsx": {
+      "kind": "queued",
+      "reason": "Table exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/text.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/token.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/kbd.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/status-dot.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/blockquote.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/avatar-group.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/button-group.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/input-group.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/circular-progress.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/toggle-button.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/side-nav.tsx": {
+      "kind": "queued",
+      "reason": "SideNav exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/command-palette.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/metadata-list.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/app-shell.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/selectable-card.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/file-input.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/stepper.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/carousel.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/time-input.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/activity-feed.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/breadcrumb.tsx": {
+      "kind": "queued",
+      "reason": "Breadcrumb exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/disclosure.tsx": {
+      "kind": "queued",
+      "reason": "Disclosure exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/nav-group.tsx": {
+      "kind": "queued",
+      "reason": "NavGroup exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/text-lockup.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
+    "src/app/components/toast.tsx": {
+      "kind": "queued",
+      "reason": "Toast exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    }
+  }
+}

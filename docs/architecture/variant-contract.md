@@ -135,6 +135,43 @@ forward:
 | Toast text property    | Figma `Message` vs code `description`; code has a `neutral` tone Figma lacks | Rename the Figma property to `Description` and add a `neutral` Tone option in Figma.                                    |
 | "Button Tonal" set     | A separate Figma set vs the code's single Button with a `tone` axis          | Fold it into Button's `Tone` VARIANT and retire the separate set.                                                       |
 
+### Code Connect templates
+
+Figma Code Connect shows real HDS snippets in Dev Mode. The templates are v2
+parserless files (`src/app/components/<module>.figma.ts`). Nobody writes them
+by hand: `pnpm figma:connect:generate` builds them from three inputs.
+
+1. **`figma/code-connect.json`** records each Figma property (name, type,
+   options) and how it maps onto the code. `prop` covers direct mappings;
+   `values` renames legacy option names; `set` covers options that toggle
+   other props (`State=Disabled` → `disabled`); `visibleWhen` ties a TEXT or
+   INSTANCE_SWAP to its `Show …` toggle; `staticProps` supplies required props
+   Figma has no property for (`onChange`); `figmaOnly` marks a property that
+   has no code equivalent.
+2. **The component source** supplies the props, which props are required,
+   the cva keys and `defaultVariants`, all read through the TypeScript
+   checker. A snippet leaves out any prop that equals its cva default.
+3. **The node URL** comes from the component JSDoc tag `@figma <node-url>`,
+   which flows through `public/hds-manifest.json` `figmaUrl`. A template
+   without one gets a placeholder `// url=` with an `UNMAPPED` comment.
+
+`pnpm figma:connect:check` (`scripts/check-code-connect.mjs`, also run by
+`pnpm test`) needs no token or network and works on any Figma plan. It runs
+`figma connect parse --exit-on-unreadable-files`, fails when a committed
+template differs from the generator output, and requires every public cva
+component (a `src/index.ts` export whose module calls `cva()`) to have a
+template or an `exempt` entry with a reason. It then renders every VARIANT ×
+BOOLEAN combination locally, so `getEnum` maps must cover every option and
+land on cva keys, and every snippet must be valid JSX that passes only real
+props. It lists unmapped templates on every run; `--strict` makes them fail.
+`figma/code-connect-preview.txt` is the committed snapshot of those renders.
+
+What this does **not** do: `figma connect preview` needs a
+`FIGMA_ACCESS_TOKEN` and renders on Figma's servers, and
+`figma connect publish` needs an Organization plan. Neither runs here. Until
+publish, the honest claim is "templates generated from cva, parsed and
+rendered in CI; publish pending Organization".
+
 ## Rollout status
 
 This contract landed with #60 Phase 1: the gate (rules A–D below) plus a

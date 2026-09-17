@@ -10,6 +10,7 @@
     "**/*.spec.ts",
     "**/*.spec.tsx",
     "**/*.stories.tsx",
-    "**/__fixtures__/**"
+    "**/__fixtures__/**",
+    "**/*.figma.ts"
   ]
 }
