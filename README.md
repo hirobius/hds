@@ -116,7 +116,7 @@ Source-of-truth files:
 
 ## Design ↔ Code links
 
-Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` projects it into this table, into Storybook (`parameters.design`), and into the Figma file as dev resources and component descriptions. Runbook: [`figma/README.md`](figma/README.md).
+Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).
 
 **1 of 119** components link a Figma node.
 
