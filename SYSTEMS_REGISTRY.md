@@ -182,7 +182,8 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 | `build-handoff.mjs`         | keeps the design handoff material in sync with token outputs |
 | `build-design-md.mjs`       | keeps the lean visual spec in sync with token outputs        |
 | `build-token-index.mjs`     | builds token-index artifacts                                 |
-| `build-figma-variables.mjs` | creates Figma variable export artifacts                      |
+| `build-figma-model.mjs`     | `pnpm figma:model`: tokens → `figma/model.json` (tested)     |
+| `build-figma-variables.mjs` | legacy plugin/REST exports projected from the Figma model    |
 | `audit-figma-system.mjs`    | compares repo truth to Figma-facing exports and snapshots    |
 | `batch-scan.mjs`            | scanning utility for broader inspection workflows            |
 
