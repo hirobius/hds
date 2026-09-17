@@ -320,7 +320,8 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
   if (unmapped) {
     header.push(
       `// UNMAPPED: no Figma node URL is recorded for ${name}. Add \`@figma <node-url>\` to the`,
-      `// component JSDoc in ${entry.source}, then run \`pnpm figma:connect:generate\`.`,
+      `// component JSDoc in ${entry.source}, then run`,
+      '// `pnpm manifest:generate && pnpm figma:connect:generate`.',
       '// `pnpm figma:connect:check` lists every unmapped template.',
       '//',
     );

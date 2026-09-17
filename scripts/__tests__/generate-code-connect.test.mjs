@@ -7,7 +7,9 @@
  * exercised without a TypeScript program. The round-trip tests transpile the
  * generated template exactly as `figma connect parse` does (TypeScript
  * transpileModule + the `figma` import rewrite) and execute it against the
- * local runtime, so they assert on the snippet Dev Mode would show.
+ * local runtime (scripts/lib/code-connect-runtime.mjs, an emulator of Figma's
+ * template runtime, not Figma itself). Nothing here is published, so these
+ * snippets are not what Dev Mode shows today.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -243,6 +245,14 @@ describe('buildTemplateSource', () => {
     expect(build(null)).toMatch(/UNMAPPED: no Figma node URL/);
   });
 
+  it('tells the reader both commands that carry an @figma tag into the template', () => {
+    // The URL flows tag → manifest figmaUrl → template, so regenerating the
+    // templates alone leaves the template unmapped.
+    expect(build(null).replace(/\n\/\/ /g, ' ')).toMatch(
+      /pnpm manifest:generate && pnpm figma:connect:generate/,
+    );
+  });
+
   it('uses a real node URL without the UNMAPPED flag', () => {
     const url = 'https://www.figma.com/design/abc123/HDS?node-id=1-2';
     const source = build(url);
@@ -267,7 +277,7 @@ describe('buildTemplateSource', () => {
   });
 });
 
-// ── Round trip: generated template → rendered Dev Mode snippet ───────────────
+// ── Round trip: generated template → locally rendered snippet ────────────────
 
 describe('generated template renders the HDS snippet', () => {
   const base = {

@@ -231,7 +231,9 @@ for (const entry of activeDiscoveredComponents) {
     docExempt: entry.docExempt,
     filePath: entry.filePath,
     description: entry.description || current.description,
-    figmaUrl: entry.figmaUrl ?? current.figmaUrl ?? null,
+    // The component's `@figma` JSDoc tag is the only source: removing the tag
+    // unmaps the component (and its Code Connect template) on the next regen.
+    figmaUrl: entry.figmaUrl ?? null,
     figmaId: current.figmaId ?? (entry.name === 'TextLockup' ? 'text-lockup-pattern' : null),
     // figmaLink: explicit "View in Figma" target surfaced on the doc-page
     // header. Mirrors figmaUrl when populated; otherwise a structured
