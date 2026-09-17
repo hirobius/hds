@@ -158,24 +158,35 @@ three inputs.
    other props (`State=Disabled` → `disabled`); `visibleWhen` ties a TEXT or
    INSTANCE_SWAP to its `Show …` toggle; `staticProps` supplies required props
    Figma has no property for (`onChange`); `figmaOnly` marks a property that
-   has no code equivalent.
+   has no code equivalent; `codeOnly` (`{ "ghost": "<reason>" }`, on a
+   VARIANT mapped with `prop`) acknowledges a cva key that has no Figma option
+   yet.
 2. **The component source** supplies the props, which props are required,
    the cva keys and `defaultVariants`, all read through the TypeScript
    checker. A snippet leaves out any prop that equals its cva default.
-3. **The node URL** comes from the component JSDoc tag `@figma <node-url>`,
-   which flows through `public/hds-manifest.json` `figmaUrl`. A template
-   without one gets a placeholder `// url=` with an `UNMAPPED` comment.
+3. **The node URL** comes from the component JSDoc tag `@figma <node-url>`
+   (file-level block or the block above the export), which flows through
+   `public/hds-manifest.json` `figmaUrl`. After adding, changing or removing a
+   tag, run `pnpm manifest:generate && pnpm figma:connect:generate`; the tag is
+   the only source, so removing it unmaps the component. A template without a
+   URL gets a placeholder `// url=` with an `UNMAPPED` comment.
 
 `pnpm figma:connect:check` (`scripts/check-code-connect.mjs`, also run by
 `pnpm test`) needs no token or network and works on any Figma plan. It runs
 `figma connect parse --exit-on-unreadable-files`, fails when a committed
 template differs from the generator output, and requires every public cva
 component (a `src/index.ts` export whose module calls `cva()`) to have a
-template or an `exempt` entry with a reason. It then renders every VARIANT ×
-BOOLEAN combination locally, so `getEnum` maps must cover every option and
-land on cva keys, and every snippet must be valid JSX that passes only real
-props. It lists unmapped templates on every run; `--strict` makes them fail.
-`figma/code-connect-preview.txt` is the committed snapshot of those renders.
+template or an `exempt` entry with a reason. A template's `// url=` must equal
+the component's `@figma` tag. It then renders every VARIANT × BOOLEAN
+combination locally, so `getEnum` maps must cover every option and land on
+cva keys, every cva key of a mapped axis must have a Figma option (or a
+`codeOnly` reason), and every snippet must be valid JSX that type-checks
+against the component's props. It lists unmapped templates on every run;
+`--strict` makes them fail. `figma/code-connect-preview.txt` is the committed
+snapshot of the rendered snippets. It holds snippets only, so adding a node URL
+does not change it; a registry or cva change that changes a snippet does, and
+then `pnpm exec vitest run scripts/__tests__/check-code-connect.test.mjs -u`
+updates it for review.
 
 What this does **not** do: `figma connect preview` needs a
 `FIGMA_ACCESS_TOKEN` and renders on Figma's servers, and

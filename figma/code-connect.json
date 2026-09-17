@@ -2,8 +2,9 @@
   "$comment": [
     "Figma Code Connect registry. scripts/generate-code-connect.mjs reads it and writes src/app/components/<module>.figma.ts (v2 parserless templates). scripts/check-code-connect.mjs gates the result (pnpm figma:connect:check, and pnpm test).",
     "templates.<Export>.properties records the Figma component property definitions: name, type, options, default. It also records how each property maps onto the code prop. The code side (props, cva keys, defaultVariants) is always read from source, never copied here.",
-    "Node URLs are not stored here. They come from the component JSDoc tag `@figma <node-url>` through public/hds-manifest.json figmaUrl. A template without a URL is generated with a placeholder and reported as unmapped.",
+    "Node URLs are not stored here. They come from the component JSDoc tag `@figma <node-url>` through public/hds-manifest.json figmaUrl: run pnpm manifest:generate && pnpm figma:connect:generate after changing a tag. A template without a URL is generated with a placeholder and reported as unmapped.",
     "TEXT and INSTANCE_SWAP `default` values are preview text for the local renderer only. They are not Figma data.",
+    "codeOnly on a VARIANT mapped with prop lists cva keys that have no Figma option yet, each with a reason. Any other unmapped cva key fails pnpm figma:connect:check.",
     "exempt lists every public cva module (a src/index.ts barrel export whose file calls cva()) that has no template, with the reason. queued = the component exists in Figma but has no template yet. no-figma-component = nothing to map."
   ],
   "importFrom": "@hirobius/design-system",

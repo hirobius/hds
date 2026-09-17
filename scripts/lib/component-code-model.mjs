@@ -3,7 +3,7 @@
  * scripts/lib/component-code-model.mjs
  *
  * The code side of the Figma parity contract (docs/architecture/variant-contract.md
- * "Figma mapping"). Answers three questions about a component module, straight
+ * "Figma mapping"). Answers these questions about a component module, straight
  * from source, so the gates never trust a prose or manifest copy of the API:
  *
  *   - props:   which props does the exported component accept (and which are
@@ -16,8 +16,10 @@
  *              code that feeds public/hds-manifest.json.
  *
  * Consumers: scripts/check-figma-mapping.mjs, scripts/generate-code-connect.mjs,
- * scripts/check-code-connect.mjs. Tests inject a plain object with the same
- * `component(filePath, exportName)` shape instead of building a program.
+ * scripts/check-code-connect.mjs. `typecheckSnippets()` type-checks rendered
+ * Code Connect snippets against the same program. Tests inject a plain object
+ * with the same `component(filePath, exportName)` / `typecheckSnippets(list)`
+ * shape instead of building a program.
  */
 
 import fs from 'node:fs';
