@@ -20,7 +20,8 @@
  *     is refused and nothing is written to that node. Where the file has
  *     rich-text descriptions (descriptionMarkdown and figma.util.normalizeMarkdown),
  *     the block goes through descriptionMarkdown, so formatting outside it
- *     survives.
+ *     survives, unless descriptionMarkdown reads empty next to a non-empty
+ *     plain description (a stale read the Plugin API typings warn about).
  *   - Documentation link (Figma holds one): set when there is none, replaced
  *     only when a previous run set it (recorded as shared plugin data), and
  *     otherwise kept and reported.
@@ -125,7 +126,12 @@ export async function hdsApplyDescriptions(figma, payload, checksum) {
       continue;
     }
 
-    const markdown = normalize !== null && typeof node.descriptionMarkdown === 'string';
+    // Figma can report a stale, empty descriptionMarkdown next to a real
+    // description; writing the block there would replace that text.
+    const markdown =
+      normalize !== null &&
+      typeof node.descriptionMarkdown === 'string' &&
+      (node.descriptionMarkdown.trim() !== '' || (node.description || '').trim() === '');
     const field = markdown ? 'descriptionMarkdown' : 'description';
     const current = node[field] || '';
     const spliced = hdsLinksSplice(current, hdsLinksBlock(item, markdown));
