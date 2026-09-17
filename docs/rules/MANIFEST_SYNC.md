@@ -158,7 +158,7 @@ If `optional` is absent and there is no `default`, the prop is implicitly requir
 
 ### Not from Figma
 
-There is no Figma → manifest path. The bridge that served `POST /update-manifest` was archived with the rest of the in-house Figma stack (ADR-018 §2, branch `archive/figma-bridge`). Sync runs one way, code → Figma (ADR-025).
+There is no Figma → manifest path. The bridge that served `POST /update-manifest` was archived with the rest of the in-house Figma stack (ADR-018 §2, branch `archive/figma-bridge`). Sync runs one way, code → Figma.
 
 ### From `generate-manifest.mjs`
 
@@ -171,7 +171,7 @@ Re-generates `componentInventory`, `componentSpecs` scaffolding, `tokens` snapsh
 3. Hand-fill `tokens`, `figmaPropertyMapping`, `states`, `allowedChildren`, `propConstraints`, `requiredProps`, `a11yRules`, `variantAxes`, `componentProperties` either inline in the manifest or — preferably — in `scripts/build-tokens.mjs` so they survive re-generation.
 4. Run `pnpm validate:manifest` to confirm the spec is valid.
 5. Run `pnpm tokens` to propagate to docs and llms.txt.
-6. Figma masters are not generated from the manifest today. The in-house plugin that read `variantAxes` and `componentProperties` to build them is archived (ADR-018 §2); ADR-025 records the current Figma component plan.
+6. Figma masters are not generated from the manifest today. The in-house plugin that read `variantAxes` and `componentProperties` to build them is archived (ADR-018 §2); ADR-025 (Proposed, not yet accepted) sets out a Code Connect plan.
 
 ## 7. Tokens → Figma Variables (one way)
 
@@ -180,9 +180,10 @@ hirobius.tokens.json
        ↓  scripts/build-figma-variables.mjs  (pnpm figma-variables, local)
 hirobius.figma-variables.json + hirobius.figma-variables-api.json  (gitignored export files)
        ↓  nothing automatic — no push to Figma runs today
+          Do not import these files: Dark values equal Light and the role tier is missing
 ```
 
-Nothing flows back from Figma into the repo. See ADR-025 for the Pro-plan push, import, and drift path.
+Nothing flows back from Figma into the repo. ADR-025 (Proposed, not yet accepted) sets out a Pro-plan push, import, and drift path.
 
 Key facts:
 
@@ -202,12 +203,12 @@ Key facts:
 
 ## 9. Quick Reference — Which Script Does What
 
-| Need                                    | Command                          |
-| --------------------------------------- | -------------------------------- |
-| Rebuild everything after a token edit   | `pnpm tokens`                    |
-| Rebuild just the manifest               | `pnpm manifest:generate`         |
-| Validate manifest against schema        | `pnpm validate:manifest`         |
-| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`        |
-| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides` |
-| Full token + component audit            | `pnpm check:fast`                |
-| Write Figma variable export files       | `pnpm figma-variables`           |
+| Need                                                   | Command                          |
+| ------------------------------------------------------ | -------------------------------- |
+| Rebuild everything after a token edit                  | `pnpm tokens`                    |
+| Rebuild just the manifest                              | `pnpm manifest:generate`         |
+| Validate manifest against schema                       | `pnpm validate:manifest`         |
+| Check for ghost / unused token vars                    | `pnpm check:ghost-tokens`        |
+| Check for forbidden hardcoded overrides                | `pnpm check:forbidden-overrides` |
+| Full token + component audit                           | `pnpm check:fast`                |
+| Write Figma variable export files (do not import them) | `pnpm figma-variables`           |

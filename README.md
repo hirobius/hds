@@ -10,13 +10,18 @@ A publishable React + TypeScript component library backed by a governed design-t
   PR removed: CI, release, and Chromatic triggers were restored in #204.
 -->
 
+<!-- auto:start:front-door-counts -->
+
 - **108** public component modules, exported from `src/index.ts`
 - **361** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 - **442** Storybook stories in **112** story files, reviewed visually in Chromatic
+
+<!-- auto:end:front-door-counts -->
+
 - Theming through four root attributes and CSS variables (theme, density, brand, font) that need no JavaScript
 - Deterministic gates in git hooks and CI: typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a Storybook build
 
-Those counts are checked against the source by `scripts/__tests__/front-door.test.mjs`, so a change that moves them fails the tests until this README is updated.
+The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens` also runs. `scripts/__tests__/front-door.test.mjs` fails if this README claims more than the source has.
 
 ## Using the published package
 
@@ -98,10 +103,10 @@ import { HdsThemeProvider } from '@hirobius/design-system';
 
 Code is the source of truth, and sync runs one way, from code to Figma. What exists today:
 
-- **Tokens → Figma variables:** `pnpm figma-variables` writes Figma variable export files from `hirobius.tokens.json` on your machine. Nothing pushes them to Figma automatically, and ADR-025 lists the export's known gaps.
+- **Tokens → Figma variables:** `pnpm figma-variables` writes Figma variable export files from `hirobius.tokens.json` on your machine. Nothing pushes them to Figma automatically. Do not import these files into Figma: every Dark value comes out equal to Light, and the role tokens are missing.
 - **Components → Code Connect:** no Code Connect mapping is published. Publishing Code Connect needs a Figma Organization plan.
 
-The target architecture, and what each Figma plan allows, is in [ADR-025](docs/adr/025-figma-sync-pro-architecture.md).
+What each Figma plan allows, and a proposed Pro-plan architecture, are in [ADR-025](docs/adr/025-figma-sync-pro-architecture.md) (Proposed, not yet accepted).
 
 ## Developing this repo
 
@@ -187,3 +192,7 @@ public/
 - `DESIGN-HANDOFF.md` — verbose visual mirror
 - `TOKEN_GOVERNANCE.md` — token system rules
 - `SYSTEMS_REGISTRY.md` — systems & guardrail registry
+
+## License
+
+The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also embeds the Satoshi and Geist Mono fonts, which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).
