@@ -42,7 +42,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCodeModel } from './lib/component-code-model.mjs';
-import { classifyFigmaUrl } from './lib/code-connect-template.mjs';
+import { classifyFigmaUrl, sameKeys } from './lib/code-connect-template.mjs';
 import {
   analyzeSnippet,
   compileTemplate,
@@ -118,11 +118,6 @@ export function runParse({ root = DEFAULT_ROOT, cli } = {}) {
 }
 
 // ── The gate ─────────────────────────────────────────────────────────────────
-
-const sameKeys = (object, list) => {
-  const keys = Object.keys(object ?? {});
-  return keys.length === list.length && list.every((item) => keys.includes(item));
-};
 
 /**
  * Pure gate over already-gathered inputs.

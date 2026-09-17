@@ -5655,7 +5655,9 @@
         "src/stories/avatar.stories.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "alt": {

@@ -264,6 +264,35 @@ describe('checkFigmaMapping — Code Connect registry agrees with manifest axes'
     },
   };
 
+  it('holds a templated component to the contract even when its manifest entry has no mapping data', () => {
+    const avatarRegistry = {
+      templates: {
+        Avatar: {
+          source: 'src/app/components/avatar.tsx',
+          properties: { Size: { type: 'VARIANT', options: ['sm'], prop: 'size' } },
+        },
+      },
+    };
+    const result = checkFigmaMapping({
+      manifest: {
+        componentSpecs: {
+          Avatar: { filePath: 'src/app/components/avatar.tsx', variantAxes: [] },
+        },
+      },
+      codeModel: fakeModel({
+        'src/app/components/avatar.tsx#Avatar': {
+          props: props('size', 'alt'),
+          members: {},
+          cva: { axes: { size: ['sm', 'md', 'lg'] }, defaults: { size: 'md' } },
+        },
+      }),
+      registry: avatarRegistry,
+    });
+    expect(rules(result)).toEqual(
+      expect.arrayContaining(['Avatar:contract-axis-missing', 'Avatar:registry-axis-drift']),
+    );
+  });
+
   it('flags a contract axis the manifest declares but the template does not map', () => {
     const result = checkFigmaMapping({
       manifest: { componentSpecs: { Button: buttonSpec() } },

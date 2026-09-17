@@ -1058,6 +1058,12 @@ export function buildManifest(allTokens, raw) {
       ],
       states: ['default'],
     },
+    // Avatar has a Code Connect template (figma/code-connect.json), so its
+    // cva-backed `size` axis must be declared (check-figma-mapping).
+    Avatar: {
+      ...(SYSTEM_MANIFEST.componentSpecs?.Avatar ?? {}),
+      variantAxes: ['size'],
+    },
     Surface: {
       ...(SYSTEM_MANIFEST.componentSpecs?.Surface ?? {}),
       variantAxes: [],

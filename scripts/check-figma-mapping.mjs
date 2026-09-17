@@ -47,10 +47,14 @@ function hasFigmaMapping(spec) {
   );
 }
 
-/** Specs that declare any Figma mapping data, with the file + export they bind to. */
-export function specsWithFigmaMapping(manifest) {
+/**
+ * Specs in scope — any Figma mapping data, or a Code Connect template in the
+ * registry — with the file + export they bind to.
+ */
+export function specsWithFigmaMapping(manifest, registry) {
+  const templated = new Set(Object.keys(registry?.templates ?? {}));
   return Object.entries(manifest?.componentSpecs ?? {})
-    .filter(([, spec]) => hasFigmaMapping(spec))
+    .filter(([name, spec]) => hasFigmaMapping(spec) || templated.has(name))
     .map(([name, spec]) => ({
       name,
       spec,
@@ -85,7 +89,7 @@ export function checkFigmaMapping({ manifest, codeModel, registry }) {
   const warn = (component, rule, message) =>
     warnings.push({ component, rule, message, severity: 'warn' });
 
-  for (const { name, spec, filePath, exportName } of specsWithFigmaMapping(manifest)) {
+  for (const { name, spec, filePath, exportName } of specsWithFigmaMapping(manifest, registry)) {
     const code = filePath ? codeModel.component(filePath, exportName) : null;
     if (!code) {
       error(
@@ -204,7 +208,7 @@ export function checkFigmaMapping({ manifest, codeModel, registry }) {
 
     // Code Connect template must map the same contract axes the manifest declares.
     const template = registry?.templates?.[name];
-    if (template && axes.length > 0) {
+    if (template) {
       const manifestContract = axes.filter((axis) => CONTRACT_AXES.includes(axis)).sort();
       const templateContract = Object.values(template.properties ?? {})
         .map((property) => property.prop)
@@ -225,7 +229,7 @@ export function checkFigmaMapping({ manifest, codeModel, registry }) {
 
 // ── Repository runner ────────────────────────────────────────────────────────
 
-export function readJsonIfExists(filePath) {
+function readJsonIfExists(filePath) {
   return fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : undefined;
 }
 
@@ -234,7 +238,7 @@ export function runFigmaMappingCheck({ root = DEFAULT_ROOT } = {}) {
     fs.readFileSync(path.join(root, 'public', 'hds-manifest.json'), 'utf8'),
   );
   const registry = readJsonIfExists(path.join(root, 'figma', 'code-connect.json'));
-  const files = specsWithFigmaMapping(manifest)
+  const files = specsWithFigmaMapping(manifest, registry)
     .map((entry) => entry.filePath)
     .filter((file) => file && fs.existsSync(path.join(root, file)));
   const codeModel = createCodeModel({ root, files });
