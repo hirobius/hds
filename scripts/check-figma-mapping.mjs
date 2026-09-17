@@ -17,6 +17,9 @@
  *   inverted-boolean-name     `invert: true` on a property not named "Show …"
  *   invert-non-boolean        `invert: true` on a non-BOOLEAN property
  *   registry-axis-drift       figma/code-connect.json template maps different contract axes than the manifest
+ *   registry-property-unknown a templated component's manifest names a Figma property the registry does not define
+ *   registry-property-type    manifest and registry record different types for one Figma property
+ *   registry-property-binding manifest maps a prop to a different Figma property than the registry does
  *
  * Warnings (advisory, exit 0):
  *   property-name-case        Figma property name is not Title Case
@@ -221,10 +224,83 @@ export function checkFigmaMapping({ manifest, codeModel, registry }) {
           `manifest contract axes [${manifestContract.join(', ')}] ≠ Code Connect template axes [${templateContract.join(', ')}] (figma/code-connect.json)`,
         );
       }
+      checkRegistryPropertyNames({ name, spec, template, error });
     }
   }
 
   return { errors, warnings };
+}
+
+/**
+ * The manifest (componentProperties, figmaPropertyMapping) and the Code Connect
+ * registry both record Figma property names. For a templated component they must
+ * not contradict each other: every name the manifest records is a registry
+ * property of the same type, and a prop the registry binds maps to the same
+ * property (or to the `Show …` toggle that gates it). The manifest may bind an
+ * extra prop the template does not use (Button `label` → `Label`).
+ */
+function checkRegistryPropertyNames({ name, spec, template, error }) {
+  const properties = template.properties ?? {};
+  const bindings = new Map();
+  const bind = (prop, figmaName) => {
+    if (!bindings.has(prop)) bindings.set(prop, new Set());
+    bindings.get(prop).add(figmaName);
+  };
+  for (const [figmaName, def] of Object.entries(properties)) {
+    if (def?.prop) {
+      bind(def.prop, figmaName);
+      if (def.visibleWhen) bind(def.prop, def.visibleWhen);
+    }
+    for (const setProps of Object.values(def?.set ?? {})) {
+      for (const prop of Object.keys(setProps ?? {})) bind(prop, figmaName);
+    }
+  }
+
+  const recorded = [
+    ...(spec.componentProperties ?? []).map((property) => ({
+      figmaName: property.name,
+      type: property.type,
+      prop: property.sourceProp,
+    })),
+    ...Object.entries(spec.figmaPropertyMapping ?? {}).map(([prop, figmaName]) => ({
+      figmaName,
+      prop,
+    })),
+  ];
+  const reported = new Set();
+  const once = (rule, key, message) => {
+    if (reported.has(`${rule}:${key}`)) return;
+    reported.add(`${rule}:${key}`);
+    error(name, rule, message);
+  };
+  const source = `figma/code-connect.json${template.evidence ? ` (evidence: ${template.evidence})` : ''}`;
+
+  for (const { figmaName, type, prop } of recorded) {
+    const def = properties[figmaName];
+    if (!def) {
+      once(
+        'registry-property-unknown',
+        figmaName,
+        `the manifest records Figma property "${figmaName}", which ${source} does not define for ${name} [${Object.keys(properties).join(', ')}]`,
+      );
+      continue;
+    }
+    if (type && def.type && type !== def.type) {
+      once(
+        'registry-property-type',
+        figmaName,
+        `the manifest records "${figmaName}" as ${type}; ${source} records ${def.type}`,
+      );
+    }
+    const bound = prop ? bindings.get(prop) : undefined;
+    if (bound && !bound.has(figmaName)) {
+      once(
+        'registry-property-binding',
+        `${prop}:${figmaName}`,
+        `the manifest maps "${prop}" to "${figmaName}"; ${source} maps it to [${[...bound].join(', ')}]`,
+      );
+    }
+  }
 }
 
 // ── Repository runner ────────────────────────────────────────────────────────
