@@ -165,6 +165,19 @@ describe('collectDesignLinks', () => {
     ]);
   });
 
+  it('reports a linked component the manifest has no source path for, instead of linking "undefined"', () => {
+    const { links, problems } = collectDesignLinks({
+      manifest: manifest({ Alert: { ...alertSpec, filePath: undefined } }),
+      stories,
+      config: CONFIG,
+      packageName: '@hirobius/design-system',
+    });
+    expect(links).toEqual([]);
+    expect(problems).toEqual([
+      'Alert: has a Figma node but no filePath in public/hds-manifest.json (run pnpm manifest:generate).',
+    ]);
+  });
+
   it('points the story link at the deployed Storybook once storybookUrl is set', () => {
     const { links } = collectDesignLinks({
       manifest: manifest({ Alert: alertSpec }),

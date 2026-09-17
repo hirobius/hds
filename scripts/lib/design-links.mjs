@@ -197,6 +197,12 @@ export function collectDesignLinks({ manifest, stories, config, packageName }) {
       );
       continue;
     }
+    if (!spec.filePath) {
+      problems.push(
+        `${name}: has a Figma node but no filePath in public/hds-manifest.json (run pnpm manifest:generate).`,
+      );
+      continue;
+    }
     const story = metas.find((s) => s.meta.component === name);
     if (!story) {
       problems.push(`${name}: has a Figma node but no story file whose meta component is ${name}.`);
