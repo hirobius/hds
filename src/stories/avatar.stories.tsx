@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Avatar } from '../app/components/avatar';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/avatar',
   component: Avatar,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Avatar'),
     layout: 'centered',
     docs: {
       description: {

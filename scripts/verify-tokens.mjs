@@ -14,12 +14,20 @@
  */
 
 import { readFileSync, existsSync } from 'fs';
-import { join, dirname }            from 'path';
-import { fileURLToPath }            from 'url';
-import { pathToCSSVar, walkTokens, TYPO_PROPS, TYPO_OPTIONAL_KEYS, MOTION_PROPS, ELEVATION_SLOTS } from './build-tokens.mjs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import {
+  pathToCSSVar,
+  walkTokens,
+  TYPO_PROPS,
+  TYPO_OPTIONAL_KEYS,
+  MOTION_PROPS,
+  ELEVATION_SLOTS,
+} from './build-tokens.mjs';
+import { readModes } from './lib/token-modes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT      = join(__dirname, '..');
+const ROOT = join(__dirname, '..');
 
 // ── Composite expansion helpers ───────────────────────────────────────────────
 /**
@@ -31,9 +39,9 @@ const ROOT      = join(__dirname, '..');
  */
 export function expandedTypoVars(path, value) {
   const base = pathToCSSVar(path);
-  return TYPO_PROPS
-    .filter(([, key]) => !TYPO_OPTIONAL_KEYS.has(key) || (value && value[key] != null))
-    .map(([suffix]) => `${base}-${suffix}`);
+  return TYPO_PROPS.filter(
+    ([, key]) => !TYPO_OPTIONAL_KEYS.has(key) || (value && value[key] != null),
+  ).map(([suffix]) => `${base}-${suffix}`);
 }
 
 /** Returns the expected CSS sub-var names for a transition composite token. */
@@ -64,7 +72,7 @@ export function parseCSSVarMap(cssText) {
   const map = new Map();
   for (const m of cssText.matchAll(/^\s*(--[\w-]+)\s*:\s*([^;]+);/gm)) {
     const varName = m[1].trim();
-    const value   = m[2].trim();
+    const value = m[2].trim();
     if (!map.has(varName)) map.set(varName, value);
   }
   return map;
@@ -80,14 +88,14 @@ export function parseCSSVarMap(cssText) {
  * @returns {{ errors: string[], warnings: string[], checked: number, skipped: number, orphans: number }}
  */
 export function runChecks(raw, cssVarMap, tsText) {
-  const errors   = [];
+  const errors = [];
   const warnings = [];
-  let   checked  = 0;
-  let   skipped  = 0;
+  let checked = 0;
+  let skipped = 0;
 
   for (const { path, type, value, extensions } of walkTokens(raw)) {
     const cssVar = pathToCSSVar(path);
-    const tier   = path[0]; // 'primitive' | 'semantic' | 'component'
+    const tier = path[0]; // 'primitive' | 'semantic' | 'component'
 
     // Composites expand into multiple sub-vars — check each one
     if (type === 'typography') {
@@ -153,12 +161,19 @@ export function runChecks(raw, cssVarMap, tsText) {
       const isAlias = cssValue.startsWith('var(--');
       const isOklch = cssValue.startsWith('oklch(');
       if (!isAlias && !isOklch) {
-        errors.push(`NOT_ALIASED      ${cssVar}: "${cssValue}"  (${type} — semantic/component tokens must alias a primitive var or use oklch())`);
+        errors.push(
+          `NOT_ALIASED      ${cssVar}: "${cssValue}"  (${type} — semantic/component tokens must alias a primitive var or use oklch())`,
+        );
       } else if (isAlias) {
         // ── Check 3: Referenced var must exist ─────────────────────────────────
-        const refVar = cssValue.replace(/^var\(/, '').replace(/\)$/, '').trim();
+        const refVar = cssValue
+          .replace(/^var\(/, '')
+          .replace(/\)$/, '')
+          .trim();
         if (!cssVarMap.has(refVar)) {
-          errors.push(`BROKEN_ALIAS     ${cssVar} → ${refVar}  (target var not found in tokens.css)`);
+          errors.push(
+            `BROKEN_ALIAS     ${cssVar} → ${refVar}  (target var not found in tokens.css)`,
+          );
         }
       }
     }
@@ -166,16 +181,25 @@ export function runChecks(raw, cssVarMap, tsText) {
     // ── Check 2b: Semantic shadow strings must reference --primitive-shadow-color ─
     // Lightweight integrity check that shadow tokens haven't drifted to literal
     // hex/rgb fills — they should always tint via the shared primitive var.
-    if (tier !== 'primitive' && type === 'shadow' && !/var\(--/.test(cssValue) && cssValue !== 'none') {
-      errors.push(`SHADOW_NO_TINT_VAR  ${cssVar}: "${cssValue.slice(0, 60)}…"  (shadow must compose via var(--primitive-shadow-color) tints)`);
+    if (
+      tier !== 'primitive' &&
+      type === 'shadow' &&
+      !/var\(--/.test(cssValue) &&
+      cssValue !== 'none'
+    ) {
+      errors.push(
+        `SHADOW_NO_TINT_VAR  ${cssVar}: "${cssValue.slice(0, 60)}…"  (shadow must compose via var(--primitive-shadow-color) tints)`,
+      );
     }
 
     // ── Check 4: Dark mode override should reference an existing var ────────────
-    const dark = extensions?.['com.hirobius.modes']?.dark;
+    const dark = readModes(extensions)?.Dark;
     if (dark && typeof dark === 'string' && dark.startsWith('{')) {
       const darkCSSVar = '--' + dark.replace(/^\{|\}$/g, '').replace(/\./g, '-');
       if (!cssVarMap.has(darkCSSVar)) {
-        warnings.push(`DARK_MODE_ALIAS  ${cssVar} dark override → ${darkCSSVar}  (target not found)`);
+        warnings.push(
+          `DARK_MODE_ALIAS  ${cssVar} dark override → ${darkCSSVar}  (target not found)`,
+        );
       }
     }
 
@@ -190,14 +214,20 @@ export function runChecks(raw, cssVarMap, tsText) {
   // ── Check 6: No orphaned CSS vars (in CSS but not in JSON) ───────────────────
   const jsonVars = new Set(
     [...walkTokens(raw)]
-      .filter(({ type }) => type !== 'typography' && type !== 'transition' && type !== 'motion' && type !== 'elevation')
-      .map(({ path }) => pathToCSSVar(path))
+      .filter(
+        ({ type }) =>
+          type !== 'typography' &&
+          type !== 'transition' &&
+          type !== 'motion' &&
+          type !== 'elevation',
+      )
+      .map(({ path }) => pathToCSSVar(path)),
   );
   for (const { path, type, value } of walkTokens(raw)) {
-    if (type === 'typography') expandedTypoVars(path, value).forEach(v => jsonVars.add(v));
-    if (type === 'motion') expandedMotionVars(path).forEach(v => jsonVars.add(v));
-    if (type === 'transition')  expandedTransitionVars(path).forEach(v => jsonVars.add(v));
-    if (type === 'elevation')   expandedElevationVars(path).forEach(v => jsonVars.add(v));
+    if (type === 'typography') expandedTypoVars(path, value).forEach((v) => jsonVars.add(v));
+    if (type === 'motion') expandedMotionVars(path).forEach((v) => jsonVars.add(v));
+    if (type === 'transition') expandedTransitionVars(path).forEach((v) => jsonVars.add(v));
+    if (type === 'elevation') expandedElevationVars(path).forEach((v) => jsonVars.add(v));
   }
 
   let orphans = 0;
@@ -222,9 +252,12 @@ function loadFile(path, label) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const raw      = JSON.parse(loadFile(join(ROOT, 'hirobius.tokens.json'), 'hirobius.tokens.json'));
-  const cssText  = loadFile(join(ROOT, 'src', 'styles', 'tokens.css'), 'tokens.css');
-  const tsText   = loadFile(join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'), 'generated-tokens.ts');
+  const raw = JSON.parse(loadFile(join(ROOT, 'hirobius.tokens.json'), 'hirobius.tokens.json'));
+  const cssText = loadFile(join(ROOT, 'src', 'styles', 'tokens.css'), 'tokens.css');
+  const tsText = loadFile(
+    join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'),
+    'generated-tokens.ts',
+  );
 
   const cssVarMap = parseCSSVarMap(cssText);
   const { errors, warnings, checked, skipped, orphans } = runChecks(raw, cssVarMap, tsText);
@@ -244,13 +277,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
   if (errors.length > 0) {
     console.log(`✗ ${errors.length} ERROR(S):`);
-    errors.forEach(e => console.log(`  • ${e}`));
+    errors.forEach((e) => console.log(`  • ${e}`));
     console.log('');
   }
 
   if (warnings.length > 0) {
     console.log(`⚠  ${warnings.length} WARNING(S):`);
-    warnings.forEach(w => console.log(`  • ${w}`));
+    warnings.forEach((w) => console.log(`  • ${w}`));
     console.log('');
   }
 

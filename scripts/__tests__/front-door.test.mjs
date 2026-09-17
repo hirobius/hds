@@ -31,6 +31,7 @@ import {
   mkdtempSync,
   mkdirSync,
   copyFileSync,
+  cpSync,
   rmSync,
 } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -229,12 +230,14 @@ function sentences(text) {
  * Runs `pnpm figma-variables` (scripts/build-figma-variables.mjs) on a temp copy
  * and compares its plugin-import file with the token source. Returns the defects
  * that make the export unsafe to import into Figma, or [] once it is fixed.
- * If the exporter starts importing local modules, copy those here too.
+ * All of `scripts/lib` is copied alongside the exporter, so whichever local
+ * modules it imports (today `lib/figma-model.mjs`) resolve in the temp copy.
  */
 function figmaVariablesExportDefects() {
   const dir = mkdtempSync(join(tmpdir(), 'hds-figma-export-'));
   try {
     mkdirSync(join(dir, 'scripts'));
+    cpSync(join(ROOT, 'scripts', 'lib'), join(dir, 'scripts', 'lib'), { recursive: true });
     copyFileSync(
       join(ROOT, 'scripts', 'build-figma-variables.mjs'),
       join(dir, 'scripts', 'build-figma-variables.mjs'),

@@ -1,0 +1,1465 @@
+{
+  "checksum": "f1eb7e4f",
+  "snapshot": {
+    "schemaVersion": 1,
+    "takenAt": "2026-09-17T00:00:00.000Z",
+    "file": {
+      "name": "HDS drift fixture",
+      "key": null
+    },
+    "lastPush": {
+      "modelHash": "044203c3",
+      "pushedAt": "2026-09-17T00:00:00.000Z",
+      "scope": null
+    },
+    "collections": [
+      {
+        "id": "VariableCollectionId:1:2",
+        "name": "Hirobius/Primitives",
+        "key": "primitive",
+        "hiddenFromPublishing": true,
+        "defaultMode": "Default",
+        "modes": [
+          "Default"
+        ],
+        "variables": [
+          {
+            "id": "VariableID:1:19",
+            "name": "blur/16",
+            "path": "primitive.blur.16",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-blur-16)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 16
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:18",
+            "name": "borderWidth/xs",
+            "path": "primitive.borderWidth.xs",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-borderWidth-xs)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 1
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:13",
+            "name": "color/blue/500",
+            "path": "primitive.color.blue.500",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-blue-500)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.117647,
+                  "g": 0.180392,
+                  "b": 0.992157,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:14",
+            "name": "color/blue/600",
+            "path": "primitive.color.blue.600",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-blue-600)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.103066,
+                  "g": 0.096297,
+                  "b": 0.949163,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:10",
+            "name": "color/neutral/900",
+            "path": "primitive.color.neutral.900",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.066667,
+                  "g": 0.066667,
+                  "b": 0.066667,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:12",
+            "name": "color/neutral/black",
+            "path": "primitive.color.neutral.black",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-black)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:11",
+            "name": "color/neutral/white",
+            "path": "primitive.color.neutral.white",
+            "resolvedType": "COLOR",
+            "description": "Pure white.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-white)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:21",
+            "name": "grid/columns/3",
+            "path": "primitive.grid.columns.3",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-grid-columns-3)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 3
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:17",
+            "name": "radius/8",
+            "path": "primitive.radius.8",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-radius-8)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 8
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:20",
+            "name": "size/width/50ch",
+            "path": "primitive.size.width.50ch",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-width-50ch)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 589.049988
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:15",
+            "name": "space/2",
+            "path": "primitive.space.2",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-space-2)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 8
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:16",
+            "name": "space/4",
+            "path": "primitive.space.4",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-space-4)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 16
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:23",
+            "name": "typography/family/mono",
+            "path": "primitive.typography.family.mono",
+            "resolvedType": "STRING",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-family-mono)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": "Geist Mono"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:22",
+            "name": "typography/family/primary",
+            "path": "primitive.typography.family.primary",
+            "resolvedType": "STRING",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-family-primary)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": "Satoshi"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:28",
+            "name": "typography/size/4xl",
+            "path": "primitive.typography.size.4xl",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-4xl)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 48
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:27",
+            "name": "typography/size/base",
+            "path": "primitive.typography.size.base",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-base)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 17
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:26",
+            "name": "typography/size/xs",
+            "path": "primitive.typography.size.xs",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-xs)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 13
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:25",
+            "name": "typography/weight/bold",
+            "path": "primitive.typography.weight.bold",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-weight-bold)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 700
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:24",
+            "name": "typography/weight/medium",
+            "path": "primitive.typography.weight.medium",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-weight-medium)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 500
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "VariableCollectionId:1:4",
+        "name": "Hirobius/Semantic",
+        "key": "semantic",
+        "hiddenFromPublishing": false,
+        "defaultMode": "Light",
+        "modes": [
+          "Light",
+          "Dark"
+        ],
+        "variables": [
+          {
+            "id": "VariableID:1:34",
+            "name": "accent/hover",
+            "path": "semantic.accent.hover",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-accent-hover)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:14",
+                "to": "Hirobius/Primitives: color/blue/600"
+              },
+              "Dark": {
+                "alias": "VariableID:1:14",
+                "to": "Hirobius/Primitives: color/blue/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:37",
+            "name": "borderWidth/default",
+            "path": "semantic.borderWidth.default",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "STROKE_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-borderWidth-default)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:18",
+                "to": "Hirobius/Primitives: borderWidth/xs"
+              },
+              "Dark": {
+                "alias": "VariableID:1:18",
+                "to": "Hirobius/Primitives: borderWidth/xs"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:55",
+            "name": "button/text",
+            "path": "component.button.text",
+            "resolvedType": "COLOR",
+            "description": "Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
+            "scopes": [
+              "TEXT_FILL",
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-text)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:32",
+                "to": "Hirobius/Semantic: color/content/primary"
+              },
+              "Dark": {
+                "alias": "VariableID:1:30",
+                "to": "Hirobius/Semantic: color/surface/page"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:33",
+            "name": "color/border/default",
+            "path": "semantic.color.border.default",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-border-default)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:10",
+                "to": "Hirobius/Primitives: color/neutral/900"
+              },
+              "Dark": {
+                "alias": "VariableID:1:10",
+                "to": "Hirobius/Primitives: color/neutral/900"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:32",
+            "name": "color/content/primary",
+            "path": "semantic.color.content.primary",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "TEXT_FILL",
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-content-primary)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:10",
+                "to": "Hirobius/Primitives: color/neutral/900"
+              },
+              "Dark": {
+                "alias": "VariableID:1:11",
+                "to": "Hirobius/Primitives: color/neutral/white"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:31",
+            "name": "color/surface/accent",
+            "path": "semantic.color.surface.accent",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-surface-accent)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:13",
+                "to": "Hirobius/Primitives: color/blue/500"
+              },
+              "Dark": {
+                "alias": "VariableID:1:13",
+                "to": "Hirobius/Primitives: color/blue/500"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:30",
+            "name": "color/surface/page",
+            "path": "semantic.color.surface.page",
+            "resolvedType": "COLOR",
+            "description": "Page background.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-surface-page)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:11",
+                "to": "Hirobius/Primitives: color/neutral/white"
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.2,
+                  "g": 0.4,
+                  "b": 0.6,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:39",
+            "name": "layout/grid/columns/desktop",
+            "path": "semantic.layout.grid.columns.desktop",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "ALL_SCOPES"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-layout-grid-columns-desktop)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:21",
+                "to": "Hirobius/Primitives: grid/columns/3"
+              },
+              "Dark": {
+                "alias": "VariableID:1:21",
+                "to": "Hirobius/Primitives: grid/columns/3"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:38",
+            "name": "layout/prose/maxWidth",
+            "path": "semantic.layout.prose.maxWidth",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-layout-prose-maxWidth)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:20",
+                "to": "Hirobius/Primitives: size/width/50ch"
+              },
+              "Dark": {
+                "alias": "VariableID:1:20",
+                "to": "Hirobius/Primitives: size/width/50ch"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:36",
+            "name": "radius/action",
+            "path": "semantic.radius.action",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-radius-action)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:17",
+                "to": "Hirobius/Primitives: radius/8"
+              },
+              "Dark": {
+                "alias": "VariableID:1:17",
+                "to": "Hirobius/Primitives: radius/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:29",
+            "name": "shadow/color",
+            "path": "primitive.shadow.color",
+            "resolvedType": "COLOR",
+            "description": "HSL channels for shadow tints. Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-shadow-color)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.1566,
+                  "g": 0.1722,
+                  "b": 0.2034,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:35",
+            "name": "space/component/gap",
+            "path": "semantic.space.component.gap",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-component-gap)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:15",
+                "to": "Hirobius/Primitives: space/2"
+              },
+              "Dark": {
+                "alias": "VariableID:1:15",
+                "to": "Hirobius/Primitives: space/2"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:45",
+            "name": "typography/body/font-family",
+            "path": "semantic.typography.body.font-family",
+            "resolvedType": "STRING",
+            "description": "",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-body-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:22",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              },
+              "Dark": {
+                "alias": "VariableID:1:22",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:46",
+            "name": "typography/body/font-size",
+            "path": "semantic.typography.body.font-size",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-body-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:27",
+                "to": "Hirobius/Primitives: typography/size/base"
+              },
+              "Dark": {
+                "alias": "VariableID:1:27",
+                "to": "Hirobius/Primitives: typography/size/base"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:47",
+            "name": "typography/body/font-weight",
+            "path": "semantic.typography.body.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-body-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:24",
+                "to": "Hirobius/Primitives: typography/weight/medium"
+              },
+              "Dark": {
+                "alias": "VariableID:1:24",
+                "to": "Hirobius/Primitives: typography/weight/medium"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:48",
+            "name": "typography/body/letter-spacing",
+            "path": "semantic.typography.body.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Converted from -0.01em at 17px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-body-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": -0.17
+              },
+              "Dark": {
+                "value": -0.17
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:49",
+            "name": "typography/body/line-height",
+            "path": "semantic.typography.body.line-height",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-body-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 28
+              },
+              "Dark": {
+                "value": 28
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:50",
+            "name": "typography/caption/font-family",
+            "path": "semantic.typography.caption.font-family",
+            "resolvedType": "STRING",
+            "description": "",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-caption-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:23",
+                "to": "Hirobius/Primitives: typography/family/mono"
+              },
+              "Dark": {
+                "alias": "VariableID:1:23",
+                "to": "Hirobius/Primitives: typography/family/mono"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:51",
+            "name": "typography/caption/font-size",
+            "path": "semantic.typography.caption.font-size",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-caption-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 12
+              },
+              "Dark": {
+                "value": 12
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:52",
+            "name": "typography/caption/font-weight",
+            "path": "semantic.typography.caption.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-caption-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:24",
+                "to": "Hirobius/Primitives: typography/weight/medium"
+              },
+              "Dark": {
+                "alias": "VariableID:1:24",
+                "to": "Hirobius/Primitives: typography/weight/medium"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:53",
+            "name": "typography/caption/letter-spacing",
+            "path": "semantic.typography.caption.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Converted from 0.06em at 12px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-caption-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 0.72
+              },
+              "Dark": {
+                "value": 0.72
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:54",
+            "name": "typography/caption/line-height",
+            "path": "semantic.typography.caption.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Converted from 1.5 × 12px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-caption-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 18
+              },
+              "Dark": {
+                "value": 18
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:40",
+            "name": "typography/h1/font-family",
+            "path": "semantic.typography.h1.font-family",
+            "resolvedType": "STRING",
+            "description": "Page title.",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-h1-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:22",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              },
+              "Dark": {
+                "alias": "VariableID:1:22",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:41",
+            "name": "typography/h1/font-size",
+            "path": "semantic.typography.h1.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Page title.",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-h1-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:28",
+                "to": "Hirobius/Primitives: typography/size/4xl"
+              },
+              "Dark": {
+                "alias": "VariableID:1:28",
+                "to": "Hirobius/Primitives: typography/size/4xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:42",
+            "name": "typography/h1/font-weight",
+            "path": "semantic.typography.h1.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "Page title.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-h1-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:1:25",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              },
+              "Dark": {
+                "alias": "VariableID:1:25",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:43",
+            "name": "typography/h1/letter-spacing",
+            "path": "semantic.typography.h1.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Page title. Converted from -0.01em at 48px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-h1-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": -0.48
+              },
+              "Dark": {
+                "value": -0.48
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:44",
+            "name": "typography/h1/line-height",
+            "path": "semantic.typography.h1.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Page title. Converted from 1.25 × 48px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-h1-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 60
+              },
+              "Dark": {
+                "value": 60
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "VariableCollectionId:1:7",
+        "name": "Hirobius/Component",
+        "key": "component",
+        "hiddenFromPublishing": false,
+        "defaultMode": "Default",
+        "modes": [
+          "Default"
+        ],
+        "variables": [
+          {
+            "id": "VariableID:1:56",
+            "name": "button/bg",
+            "path": "component.button.bg",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:31",
+                "to": "Hirobius/Semantic: color/surface/accent"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:59",
+            "name": "button/fontSize",
+            "path": "component.button.fontSize",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-fontSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:26",
+                "to": "Hirobius/Primitives: typography/size/xs"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:60",
+            "name": "button/fontWeight",
+            "path": "component.button.fontWeight",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-fontWeight)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:24",
+                "to": "Hirobius/Primitives: typography/weight/medium"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:58",
+            "name": "button/height",
+            "path": "component.button.height",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-height)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:16",
+                "to": "Hirobius/Primitives: space/4"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:57",
+            "name": "button/paddingX",
+            "path": "component.button.paddingX",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-paddingX)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:16",
+                "to": "Hirobius/Primitives: space/4"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:61",
+            "name": "lightbox/backdrop/blur",
+            "path": "component.lightbox.backdrop.blur",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "EFFECT_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-lightbox-backdrop-blur)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:19",
+                "to": "Hirobius/Primitives: blur/16"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "VariableCollectionId:1:9",
+        "name": "Hirobius/Role",
+        "key": "role",
+        "hiddenFromPublishing": false,
+        "defaultMode": "Default",
+        "modes": [
+          "Default"
+        ],
+        "variables": [
+          {
+            "id": "VariableID:1:62",
+            "name": "background",
+            "path": "role.background",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--role-background)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:30",
+                "to": "Hirobius/Semantic: color/surface/page"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:63",
+            "name": "card-foreground",
+            "path": "role.card-foreground",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "TEXT_FILL",
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--role-card-foreground)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:32",
+                "to": "Hirobius/Semantic: color/content/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:65",
+            "name": "primary",
+            "path": "role.primary",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--role-primary)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:31",
+                "to": "Hirobius/Semantic: color/surface/accent"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:66",
+            "name": "radius",
+            "path": "role.radius",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--role-radius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:36",
+                "to": "Hirobius/Semantic: radius/action"
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:64",
+            "name": "ring",
+            "path": "role.ring",
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--role-ring)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:1:33",
+                "to": "Hirobius/Semantic: color/border/default"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "textStyles": [
+      {
+        "id": "S:1:68",
+        "name": "typography/body",
+        "path": "semantic.typography.body",
+        "description": "",
+        "fontFamily": "Satoshi",
+        "fontStyle": "Medium",
+        "fontSize": 17,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 28
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": -0.17
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:1:45",
+          "fontSize": "VariableID:1:46",
+          "fontWeight": "VariableID:1:47",
+          "letterSpacing": "VariableID:1:48",
+          "lineHeight": "VariableID:1:49"
+        }
+      },
+      {
+        "id": "S:1:69",
+        "name": "typography/caption",
+        "path": "semantic.typography.caption",
+        "description": "",
+        "fontFamily": "Geist Mono",
+        "fontStyle": "Medium",
+        "fontSize": 12,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 18
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": 0.72
+        },
+        "textCase": "UPPER",
+        "boundVariables": {
+          "fontFamily": "VariableID:1:50",
+          "fontSize": "VariableID:1:51",
+          "fontWeight": "VariableID:1:52",
+          "letterSpacing": "VariableID:1:53",
+          "lineHeight": "VariableID:1:54"
+        }
+      },
+      {
+        "id": "S:1:67",
+        "name": "typography/h1",
+        "path": "semantic.typography.h1",
+        "description": "Page title.",
+        "fontFamily": "Satoshi",
+        "fontStyle": "Bold",
+        "fontSize": 48,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 60
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": -0.48
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:1:40",
+          "fontSize": "VariableID:1:41",
+          "fontWeight": "VariableID:1:42",
+          "letterSpacing": "VariableID:1:43",
+          "lineHeight": "VariableID:1:44"
+        }
+      }
+    ],
+    "effectStyles": [
+      {
+        "id": "S:1:71",
+        "name": "elevation/flat",
+        "path": "semantic.elevation.flat",
+        "description": "No shadow, hairline border.",
+        "effects": []
+      },
+      {
+        "id": "S:1:72",
+        "name": "elevation/raised",
+        "path": "semantic.elevation.raised",
+        "description": "",
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0.1566,
+              "g": 0.1722,
+              "b": 0.2034,
+              "a": 0.04
+            },
+            "offset": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 2,
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          },
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0.1566,
+              "g": 0.1722,
+              "b": 0.2034,
+              "a": 0.06
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 8,
+            "spread": -2,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          }
+        ]
+      },
+      {
+        "id": "S:1:70",
+        "name": "shadow/subtle",
+        "path": "semantic.shadow.subtle",
+        "description": "Resting shadow.",
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0.1566,
+              "g": 0.1722,
+              "b": 0.2034,
+              "a": 0.04
+            },
+            "offset": {
+              "x": 0,
+              "y": 1
+            },
+            "radius": 2,
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          },
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0.1566,
+              "g": 0.1722,
+              "b": 0.2034,
+              "a": 0.06
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 8,
+            "spread": -2,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          }
+        ]
+      }
+    ]
+  }
+}

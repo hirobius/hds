@@ -10,11 +10,14 @@ Priority: **P1** = highest leverage.
 
 ## 1. Figma tooling
 
-As of 2026-09-16 there is no working Figma sync. The bridge and plugin are archived (ADR-018 §2),
-the REST variables workflow is archived and Enterprise-only, the variable exporter
-writes Dark equal to Light, nothing checks drift, and no Code Connect mapping is
-published. [ADR-025](adr/025-figma-sync-pro-architecture.md) (Proposed, not yet accepted) sets out
-a Pro-plan architecture to replace it. History and remaining cleanup:
+As of 2026-09-17 the code → Figma path is local and hand-run. The bridge and plugin are
+archived (ADR-018 §2) and the REST variables workflow is archived and Enterprise-only, but
+`pnpm figma:model` now projects the tokens into `figma/model.json` with real Light and Dark
+values, `pnpm figma:push` and `pnpm figma:native-import` apply that model to a Figma file by
+hand, and `pnpm check:figma-drift` compares it against the committed `figma/snapshot.json`.
+No Code Connect mapping is published, so Dev Mode still shows no snippets.
+[ADR-025](adr/025-figma-sync-pro-architecture.md) is the Pro-plan architecture this follows.
+History and remaining cleanup:
 
 - ✅ **Generative pipeline — cut (#50).** `pipeline/`, `scripts/generate-to-figma.mjs`,
   `scripts/build-figma-masters.mjs`, `scripts/test-figma-masters-snapshot.mjs`,
@@ -29,7 +32,7 @@ a Pro-plan architecture to replace it. History and remaining cleanup:
   longer on `main`, so there is nothing to strip.
 - ✅ **Reconcile env var names — obsolete.** The `sync-figma-variables.yml` side is
   archived (`.github/workflows-archive/`) and called the Enterprise-only REST API;
-  ADR-025 (Proposed) would replace it. `scripts/figma-sync.ts` (`pnpm test:figma`) remains a
+  ADR-025 replaces it. `scripts/figma-sync.ts` (`pnpm test:figma`) remains a
   one-file read that only checks connectivity.
 - ✅ **Refresh stale docs — done.** `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP,STATE-2026-05-09}.md`
   referenced the retired `orchestration.json` and the already-archived Figma

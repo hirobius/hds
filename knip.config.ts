@@ -34,6 +34,10 @@ const config: KnipConfig = {
     // scripts/check-token-description-quality.mjs (filesystem consumer,
     // not a TS import).
     'src/app/design-system/generated-token-descriptions.ts',
+    // Figma Code Connect templates — generated, consumed by the `figma connect`
+    // CLI via figma.config.json and executed in Figma's template runtime (the
+    // `figma` import is provided there), not part of the TS module graph.
+    'src/app/components/*.figma.ts',
   ],
   ignoreDependencies: [
     // Type-only consumer (JSDoc `@type {{ ... }}` in scripts/build-tokens.mjs);
