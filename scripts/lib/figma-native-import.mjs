@@ -11,7 +11,16 @@
  * Within a file, an alias is a plain DTCG reference ("{color.surface.page}").
  * A cross-collection alias also keeps the resolved value for that mode as
  * `$value`, so a file imported before its target collection still holds the
- * right value.
+ * right value, but as a raw value, not an alias.
+ *
+ * Import order: Primitives, then Brand and Density, then the rest in model
+ * order. Semantic and Role alias Brand and Density (that is how switching a
+ * Brand or Density mode changes them), so the axes must exist first. The
+ * aliases also run the other way: a Brand base mode holds the base token's own
+ * alias, often into Semantic. That cycle has to break somewhere, and a static
+ * base-mode value costs less than an axis that does nothing. Each file lists
+ * the aliases it cannot keep in `forwardAliases`; `pnpm figma:push` restores
+ * them after the import.
  *
  * Not carried (the importer has no field for them): codeSyntax, text styles,
  * effect styles. `pnpm figma:push` is the complete path.
@@ -55,9 +64,19 @@ function segmentsOf(name, collection) {
   return segments;
 }
 
+/** Collections imported before the rest, in this order; the rest keep model order. */
+const IMPORT_FIRST = ['primitive', 'brand', 'density'];
+
+const importOrder = (collections) => [
+  ...IMPORT_FIRST.map((key) => collections.find((c) => c.key === key)).filter(Boolean),
+  ...collections.filter((c) => !IMPORT_FIRST.includes(c.key)),
+];
+
 /**
  * @param {object} model  The Figma model (scripts/lib/figma-model.mjs).
- * @returns {Array<{ path: string, collection: string, mode: string, tokens: object }>}
+ * @returns {Array<{ path: string, collection: string, mode: string, tokens: object, forwardAliases: Array<{ variable: string, target: string, targetVariable: string }> }>}
+ *   In import order. forwardAliases: cross-collection aliases into a collection
+ *   imported later, which the importer keeps as their resolved value.
  */
 export function buildNativeImportFiles(model) {
   const home = new Map();
@@ -75,9 +94,11 @@ export function buildNativeImportFiles(model) {
     return 'alias' in entry ? resolve(entry.alias, mode, seen) : entry.value;
   };
 
-  return model.collections.flatMap((collection, index) =>
+  const ordered = importOrder(model.collections);
+  return ordered.flatMap((collection, index) =>
     collection.modes.map((mode) => {
       const tokens = {};
+      const forwardAliases = [];
       for (const variable of collection.variables) {
         const segments = segmentsOf(variable.name, collection.name);
         const entry = variable.valuesByMode[mode];
@@ -96,6 +117,13 @@ export function buildNativeImportFiles(model) {
               targetVariableSetName: target.collection.name,
               targetVariableName: target.variable.name,
             };
+            if (ordered.indexOf(target.collection) > index) {
+              forwardAliases.push({
+                variable: variable.name,
+                target: target.collection.name,
+                targetVariable: target.variable.name,
+              });
+            }
           }
         } else {
           token.$value = dtcgValue(variable, entry.value);
@@ -112,6 +140,7 @@ export function buildNativeImportFiles(model) {
         collection: collection.name,
         mode,
         tokens,
+        forwardAliases,
       };
     }),
   );

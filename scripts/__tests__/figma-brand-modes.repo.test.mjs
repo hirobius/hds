@@ -19,6 +19,7 @@ import { BRAND_MODES_FILE, demoTenantProblems } from '../lib/figma-brand-modes.m
 import { PRO_MODE_LIMIT } from '../lib/figma-model-invariants.mjs';
 import { hdsRunPush } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
+import { buildNativeImportFiles } from '../lib/figma-native-import.mjs';
 import { createFakeFigma } from './helpers/fake-figma.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -142,5 +143,21 @@ describe(`${BRAND_MODES_FILE}`, () => {
     const first = await run();
     expect(first.summary.variables.created).toBe(variableByPath.size);
     expect((await run()).line).toBe('updated 0 · created 0 · deleted 0');
+  });
+
+  it('native import keeps every alias into Brand and Density; only Brand base-mode aliases import as raw values', () => {
+    const files = buildNativeImportFiles(model);
+    const order = [...new Set(files.map((f) => f.collection))];
+    expect(order.slice(0, 3)).toEqual([
+      'Hirobius/Primitives',
+      'Hirobius/Brand',
+      'Hirobius/Density',
+    ]);
+    for (const file of files) {
+      for (const alias of file.forwardAliases) {
+        expect(file.collection, `${file.path} ${alias.variable}`).toBe('Hirobius/Brand');
+        expect(file.mode, `${file.path} ${alias.variable}`).toBe(config.baseMode);
+      }
+    }
   });
 });

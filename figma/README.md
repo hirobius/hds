@@ -207,10 +207,18 @@ Until a snapshot is committed the step only adds a notice.
 
 `pnpm figma:native-import` writes one DTCG file per collection × mode. For each
 collection, in the printed order: create the collection in Figma, then import
-each file as a mode. Import Primitives first, since the other collections alias
-it. Brand and Density files come last: one file per brand mode and per density
-mode. An alias inside one file is a DTCG reference; an alias into another
-collection uses `com.figma.aliasData` and keeps the resolved value for that mode.
+each file as a mode. An alias inside one file is a DTCG reference; an alias into
+another collection uses `com.figma.aliasData` and also keeps the resolved value
+for that mode. The importer can only link an alias to a collection that already
+exists, so an alias into a collection imported later arrives as that raw value.
+
+The order is Primitives, then Brand, then Density, then Semantic, Component and
+Role. Semantic and Role alias Brand and Density, which is what makes switching a
+Brand or Density mode change them, so the axes come first. Aliases also run the
+other way: a Brand base mode holds the base token's own alias (the `Hirobius`
+mode of `role/radius` aliases Semantic `radius/action`). Those base-mode values
+import as raw values, and the command lists each one. Run `pnpm figma:push`
+afterwards to restore them.
 
 It carries variables only: no `codeSyntax`, text styles or effect styles, and no
 stable keys. Run `pnpm figma:push` afterwards to adopt the imported variables
