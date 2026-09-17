@@ -287,6 +287,10 @@ Compact value is only emitted when it differs from the value used at rest.
 | `legal.*`      | yes for tier ≥ 2 | Entity + jurisdiction. Drives legal-page generation, Stripe wiring, attribution requirements.                                         |
 | `status`       | yes              | One of: `scaffold`, `active`, `archived`. Drives validator strictness.                                                                |
 
+Each `metadata.json` sets `"$schema": "../../hirobius.tenant-metadata.schema.json"`
+for editor validation; the schema encodes the table above.
+`scripts/check-tenant-tokens.mjs` enforces the M1–M3 subset.
+
 ---
 
 ## JSON schema (delta on base DTCG)
