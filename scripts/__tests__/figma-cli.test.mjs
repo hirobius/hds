@@ -26,7 +26,7 @@ import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync, spawnSync } from 'child_process';
-import { writePushArtifacts } from '../figma-push.mjs';
+import { planAgainstSnapshot, writePushArtifacts } from '../figma-push.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import { runDriftCheck, tokensChangedAt } from '../check-figma-drift.mjs';
 import { writeNativeImport } from '../build-figma-native-import.mjs';
@@ -34,17 +34,9 @@ import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
-import { createFakeFigma } from './helpers/fake-figma.mjs';
+import { FIXTURE_TOKENS_PATH, newFixtureFile } from './helpers/figma-fixture.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const REPO = join(HERE, '..', '..');
-const FIXTURE_TOKENS = join(HERE, 'fixtures', 'figma-model', 'tokens.json');
-const FONTS = [
-  { family: 'Inter', style: 'Regular' },
-  { family: 'Satoshi', style: 'Medium' },
-  { family: 'Satoshi', style: 'Bold' },
-  { family: 'Geist Mono', style: 'Medium' },
-];
+const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const cleanEnv = () =>
   Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
 
@@ -56,14 +48,14 @@ afterEach(() => {
 const tempRoot = () => {
   const root = mkdtempSync(join(tmpdir(), 'hds-figma-'));
   dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS, join(root, 'hirobius.tokens.json'));
+  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
   return root;
 };
 const takeSnapshot = async (root, edit = async () => {}) => {
   const model = buildFigmaModel(
     JSON.parse(readFileSync(join(root, 'hirobius.tokens.json'), 'utf8')),
   );
-  const figma = createFakeFigma({ fonts: FONTS });
+  const figma = newFixtureFile();
   const { payload, checksum } = buildPushPayload(model);
   await hdsRunPush(figma, payload, checksum);
   await edit(figma);
@@ -117,6 +109,20 @@ describe('pnpm figma:push', () => {
     const outDir = join(root, 'figma', 'push');
     expect(() => writePushArtifacts({ root, outDir })).toThrow(/invariant violation/);
     expect(existsSync(outDir)).toBe(false);
+  });
+
+  it('--plan: previews a push against the committed snapshot, without Figma', async () => {
+    const root = tempRoot();
+    const { parseSnapshotFile } = await import('../lib/figma-snapshot.mjs');
+    const snapshotFile = parseSnapshotFile(
+      await takeSnapshot(root, async (figma) => {
+        (await figma.variables.getLocalVariablesAsync()).find((v) => v.name === 'ring').remove();
+      }),
+    );
+    const { model, renames } = writePushArtifacts({ root, outDir: join(root, 'figma', 'push') });
+    const { line, changes } = planAgainstSnapshot({ model, renames, snapshotFile });
+    expect(line).toBe('updated 0 · created 1 · deleted 0');
+    expect(changes).toEqual(['create variable role.ring']);
   });
 });
 

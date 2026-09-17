@@ -9,29 +9,16 @@
  * model into the in-memory Plugin API and editing it the way a person would.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { figmaDrift, formatDrift } from '../lib/figma-drift.mjs';
-import { createFakeFigma } from './helpers/fake-figma.mjs';
+import { fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const model = buildFigmaModel(
-  JSON.parse(readFileSync(join(HERE, 'fixtures', 'figma-model', 'tokens.json'), 'utf8')),
-);
-const FONTS = [
-  { family: 'Inter', style: 'Regular' },
-  { family: 'Satoshi', style: 'Medium' },
-  { family: 'Satoshi', style: 'Bold' },
-  { family: 'Geist Mono', style: 'Medium' },
-];
+const model = fixtureModel();
 
 const pushedFile = async () => {
-  const figma = createFakeFigma({ fonts: FONTS });
+  const figma = newFixtureFile();
   const { payload, checksum } = buildPushPayload(model);
   await hdsRunPush(figma, payload, checksum);
   return figma;

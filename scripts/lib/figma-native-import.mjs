@@ -17,16 +17,13 @@
  * effect styles. `pnpm figma:push` is the complete path.
  */
 
-const hex = (channel) =>
-  Math.round(channel * 255)
-    .toString(16)
-    .padStart(2, '0');
+import { hdsHex } from './figma-runtime.mjs';
 
 const colorObject = ({ r, g, b, a }) => ({
   colorSpace: 'srgb',
   components: [r, g, b],
   alpha: a,
-  hex: `#${hex(r)}${hex(g)}${hex(b)}`,
+  hex: hdsHex({ r, g, b }),
 });
 
 /** The model's only STRING variables are font families (FIGMA_TYPE in figma-model.mjs). */

@@ -37,7 +37,9 @@ breaks an invariant) and writes two carriers of the same code
   - **Take snapshot**: see below.
 - **use_figma scripts** (Figma MCP server): `figma/push/use-figma/01-primitive.js`
   … `05-styles.js`. Run them in order, unmodified. Each carries a checksum of its
-  payload; a script that was changed or mistyped stops before writing.
+  payload; a script that was changed or mistyped stops before writing. With the
+  current tokens each script is 40–90 KB of code for the agent to pass through,
+  so the development plugin is the easier path for a full push or a snapshot.
 
 What a push does:
 

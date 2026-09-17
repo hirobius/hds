@@ -93,19 +93,25 @@ export function hdsNormalizeEffect(effect) {
 }
 
 /** Numbers within 1e-4 (relative above 1) count as equal: Figma stores 32-bit floats. */
-export function hdsSame(a, b) {
+export function hdsSameValue(a, b) {
   if (typeof a === 'number' && typeof b === 'number') {
     return Math.abs(a - b) <= 1e-4 * Math.max(1, Math.abs(a), Math.abs(b));
   }
   if (Array.isArray(a) || Array.isArray(b)) {
     if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
-    return a.every((item, i) => hdsSame(item, b[i]));
+    return a.every((item, i) => hdsSameValue(item, b[i]));
   }
   if (a && b && typeof a === 'object' && typeof b === 'object') {
     const keys = Object.keys(a).concat(Object.keys(b).filter((k) => !(k in a)));
-    return keys.every((k) => hdsSame(a[k], b[k]));
+    return keys.every((k) => hdsSameValue(a[k], b[k]));
   }
   return a === b;
+}
+
+/** "#rrggbb" for a Figma RGB(A) color (alpha is not part of the hex). */
+export function hdsHex(color) {
+  const channel = (v) => ('0' + Math.round(v * 255).toString(16)).slice(-2);
+  return '#' + channel(color.r) + channel(color.g) + channel(color.b);
 }
 
 export function hdsSameSet(a, b) {
@@ -351,7 +357,7 @@ export function hdsSameEntry(want, have, pathById) {
   if (!have) return false;
   if (want.alias !== undefined)
     return have.alias !== undefined && pathById.get(have.alias) === want.alias;
-  return have.value !== undefined && hdsSame(want.value, have.value);
+  return have.value !== undefined && hdsSameValue(want.value, have.value);
 }
 
 /**
@@ -550,7 +556,7 @@ export function hdsPlan(model, state, options) {
             if (ss.fontFamily !== ms.fontFamily || ss.fontStyle !== ms.fontStyle)
               changes.push('font');
             ['fontSize', 'lineHeight', 'letterSpacing', 'textCase'].forEach((key) => {
-              if (!hdsSame(ss[key], ms[key])) changes.push(key);
+              if (!hdsSameValue(ss[key], ms[key])) changes.push(key);
             });
             const fields = Object.keys(ms.boundVariables).concat(
               Object.keys(ss.boundVariables).filter((f) => !(f in ms.boundVariables)),
@@ -563,7 +569,7 @@ export function hdsPlan(model, state, options) {
               if (want !== have) changes.push('bound:' + field);
             });
           }
-        } else if (ss && !hdsSame(ss.effects, ms.effects)) {
+        } else if (ss && !hdsSameValue(ss.effects, ms.effects)) {
           changes.push('effects');
         }
         if (ss && ss.name !== ms.name) changes.unshift('name');
@@ -944,7 +950,13 @@ export async function hdsRunPush(figma, payload, checksum, override) {
     throw new Error('Nothing was written. ' + problems.join(' | '));
   }
   const changed = summary.totals.created + summary.totals.updated + summary.totals.deleted > 0;
-  report.created = await hdsApply(figma, plan);
+  try {
+    report.created = await hdsApply(figma, plan);
+  } catch (error) {
+    throw new Error(
+      `${error.message} Some changes may already be applied. A push is idempotent: fix the cause, then run the push again (a dry run shows what is left).`,
+    );
+  }
 
   const after = hdsSummarize(hdsPlan(payload.model, await hdsReadState(figma), options)).totals;
   if (after.created + after.updated + after.deleted > 0) {

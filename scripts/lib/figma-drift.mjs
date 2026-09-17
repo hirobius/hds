@@ -12,13 +12,8 @@
  * than the tokens.
  */
 
-import { hdsPlan } from './figma-runtime.mjs';
+import { hdsHex, hdsPlan } from './figma-runtime.mjs';
 import { modelHash } from './figma-scripts.mjs';
-
-const hex = (channel) =>
-  Math.round(channel * 255)
-    .toString(16)
-    .padStart(2, '0');
 
 /** A mode entry as a person reads it: `→ path`, `#rrggbb`, a number or a quoted string. */
 function formatEntry(entry) {
@@ -26,7 +21,7 @@ function formatEntry(entry) {
   if (entry.alias !== undefined) return `→ ${entry.to ?? entry.alias}`;
   const { value } = entry;
   if (value && typeof value === 'object' && 'r' in value) {
-    const color = `#${hex(value.r)}${hex(value.g)}${hex(value.b)}`;
+    const color = hdsHex(value);
     return value.a < 1 ? `${color} @ ${Math.round(value.a * 100)}%` : color;
   }
   return typeof value === 'string' ? JSON.stringify(value) : String(value);
