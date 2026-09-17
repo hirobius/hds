@@ -70,11 +70,22 @@ function docFor(name, entry, code, { template, figmaNode } = {}) {
   };
 }
 
+const NODE_URL =
+  'https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=9-9';
+
+function modelWith(badgeCode = BADGE_CODE, extra = {}) {
+  return {
+    component: (file, name) => (name === 'Badge' ? badgeCode : null),
+    typecheckSnippets: () => [],
+    ...extra,
+  };
+}
+
 function gate(overrides = {}) {
   const registry = overrides.registry ?? registryWith();
   return checkCodeConnect({
     registry,
-    codeModel: { component: (file, name) => (name === 'Badge' ? BADGE_CODE : null) },
+    codeModel: overrides.codeModel ?? modelWith(),
     parsed: overrides.parsed ?? {
       status: 0,
       docs: [docFor('Badge', registry.templates.Badge ?? badgeEntry(), BADGE_CODE)],
@@ -198,6 +209,30 @@ describe('checkCodeConnect', () => {
     expect(rules(gate({ parsed: { status: 0, docs: [doc], output: '' } }))).toContain(
       'url-invalid',
     );
+  });
+
+  it('fails when the source has an @figma tag the template does not carry (manifest not regenerated)', () => {
+    const result = gate({ codeModel: modelWith({ ...BADGE_CODE, figmaUrl: NODE_URL }) });
+    expect(rules(result)).toContain('url-source-drift');
+    expect(result.errors.find((e) => e.rule === 'url-source-drift').message).toMatch(
+      /pnpm manifest:generate && pnpm figma:connect:generate/,
+    );
+  });
+
+  it('fails when the template keeps a node URL whose @figma tag was removed from the source', () => {
+    const doc = docFor('Badge', badgeEntry(), BADGE_CODE, { figmaNode: NODE_URL });
+    const result = gate({ parsed: { status: 0, docs: [doc], output: '' } });
+    expect(rules(result)).toContain('url-source-drift');
+  });
+
+  it('passes when the template URL matches the source @figma tag', () => {
+    const doc = docFor('Badge', badgeEntry(), BADGE_CODE, { figmaNode: NODE_URL });
+    const result = gate({
+      codeModel: modelWith({ ...BADGE_CODE, figmaUrl: NODE_URL }),
+      parsed: { status: 0, docs: [doc], output: '' },
+    });
+    expect(result.errors).toEqual([]);
+    expect(result.summary.mapped).toEqual(['Badge']);
   });
 });
 

@@ -12,6 +12,8 @@
  *   - members: compound parts (`Dialog.Title`, `Dialog.Content`) and their props.
  *   - cva:     every `cva(base, { variants, defaultVariants })` axis in the
  *              module, read syntactically (keys are the only contract values).
+ *   - figmaUrl: the component's `@figma <node-url>` JSDoc tag, read by the same
+ *              code that feeds public/hds-manifest.json.
  *
  * Consumers: scripts/check-figma-mapping.mjs, scripts/generate-code-connect.mjs,
  * scripts/check-code-connect.mjs. Tests inject a plain object with the same
@@ -21,6 +23,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
+import { readComponentTags } from '../component-discovery.mjs';
 
 // ── cva extraction (syntactic) ───────────────────────────────────────────────
 
@@ -158,10 +161,13 @@ export function createCodeModel({ root, files, compilerOptions }) {
           );
           if (memberProps) members[name] = { props: memberProps };
         }
+        const text = fs.readFileSync(path.join(root, filePath), 'utf8');
         result = {
           props,
           members,
-          cva: extractCva(fs.readFileSync(path.join(root, filePath), 'utf8')),
+          cva: extractCva(text),
+          // Read exactly as the manifest reads it (component-discovery.mjs).
+          figmaUrl: readComponentTags(text, exportName).figmaUrl,
         };
       }
     }

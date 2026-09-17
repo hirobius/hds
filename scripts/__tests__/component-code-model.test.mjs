@@ -45,6 +45,8 @@ describe('createCodeModel — real components', () => {
         'src/app/components/dialog.tsx',
         'src/app/components/heading-stack.tsx',
         'src/app/components/checkbox.tsx',
+        'src/app/components/alert.tsx',
+        'src/app/components/input.tsx',
       ],
     });
   }, 60_000);
@@ -78,6 +80,13 @@ describe('createCodeModel — real components', () => {
     const headingStack = model.component('src/app/components/heading-stack.tsx', 'HeadingStack');
     expect(headingStack.props).toHaveProperty('subheading');
     expect(headingStack.props).not.toHaveProperty('subtext');
+  });
+
+  it('reads the @figma node URL from the component JSDoc (null when there is none)', () => {
+    expect(model.component('src/app/components/alert.tsx', 'Alert').figmaUrl).toMatch(
+      /^https:\/\/www\.figma\.com\/design\/.+node-id=/,
+    );
+    expect(model.component('src/app/components/button.tsx', 'Button').figmaUrl).toBeNull();
   });
 
   it('returns null for an unknown export', () => {

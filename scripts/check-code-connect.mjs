@@ -17,6 +17,7 @@
  *   source-missing            `// source=` file does not exist
  *   component-missing         `// component=` export not found in the source
  *   url-invalid               `// url=` is neither a node URL nor the UNMAPPED placeholder
+ *   url-source-drift          `// url=` ≠ the component's `@figma` JSDoc tag (manifest or template not regenerated)
  *   parity-missing-template   a public cva module has no template and no exemption
  *   parity-stale-exemption    an exemption names a module that is not a public cva module, or has a template
  *   exemption-invalid         exemption kind/reason malformed
@@ -224,6 +225,15 @@ export function checkCodeConnect({
     }
 
     const urlStatus = classifyFigmaUrl(doc.figmaNode);
+    const templateUrl = urlStatus === 'mapped' ? doc.figmaNode : null;
+    const sourceUrl = code.figmaUrl ?? null;
+    if (urlStatus !== 'invalid' && templateUrl !== sourceUrl) {
+      error(
+        'url-source-drift',
+        `// url= is ${templateUrl ?? 'UNMAPPED'} but the @figma tag in ${doc.source} is ${sourceUrl ?? 'absent'}. Run pnpm manifest:generate && pnpm figma:connect:generate`,
+        name,
+      );
+    }
     if (urlStatus === 'invalid')
       error(
         'url-invalid',
@@ -236,7 +246,7 @@ export function checkCodeConnect({
       warnings.push({
         rule: 'unmapped',
         component: name,
-        message: `${name} has no Figma node URL; publish would fail. Add @figma <node-url> to ${doc.source}`,
+        message: `${name} has no Figma node URL; publish would fail. Add @figma <node-url> to ${doc.source}, then run pnpm manifest:generate && pnpm figma:connect:generate`,
       });
     }
 

@@ -38,9 +38,11 @@
     "accentCount": 1
   },
   "componentInventory": [
+    "ActivityFeed",
     "Alert",
     "AlertDialog",
     "AspectRatio",
+    "AssetImg",
     "Avatar",
     "AvatarGroup",
     "Badge",
@@ -48,6 +50,7 @@
     "Blockquote",
     "Box",
     "Breadcrumb",
+    "Button",
     "ButtonGroup",
     "Calendar",
     "Callout",
@@ -82,6 +85,7 @@
     "Grid",
     "HdsCheckbox",
     "HdsRadio",
+    "HdsSelect",
     "HdsSlider",
     "HdsThemeProvider",
     "HdsToggle",
@@ -91,6 +95,7 @@
     "IconButton",
     "InlineCode",
     "InlineLink",
+    "Input",
     "InputGroup",
     "Kbd",
     "Lightbox",
@@ -113,6 +118,7 @@
     "SpecimenBlock",
     "Spinner",
     "Stack",
+    "StackedCardRail",
     "Stat",
     "StatusDot",
     "StatusListItem",
@@ -128,6 +134,7 @@
     "TabsTrigger",
     "Tag",
     "Text",
+    "Textarea",
     "TextLockup",
     "TileGrid",
     "TimeInput",
@@ -551,10 +558,6 @@
       {
         "name": "HdsLegacyTokenGovernancePanel",
         "filePath": "src/app/components/lab/legacy-token-detail.tsx"
-      },
-      {
-        "name": "HdsSelect",
-        "filePath": "src/app/components/select.tsx"
       }
     ],
     "namespaceViolations": [
@@ -1981,7 +1984,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/input.tsx",
-      "description": "Input — text field primitive (shadcn baseline). shadcn-baseline implementation (8s-5): cva-driven sizing/state composed against role-token Tailwind utilities (bg-background / border-input / focus-visible:ring-ring / placeholder:text-muted-foreground / etc.) wired by 8e-2 + 8s-1. Border swaps to border-destructive on error and the focus ring follows. Theme is handled entirely by CSS custom properties. The label/helper/error wrapper is deliberately retained on this primitive so existing call sites keep working unchanged. A future 8t pass may extract those slots into an HdsField pattern (see orchestration agentNote). Variants: size — sm (32px) / md (40px, default) / lg (48px) textStyle — body (default) / mono Derived state (data-state): default | focus | filled | error | disabled | loading loading swaps the trailing area for a spinner and sets aria-busy; disabled is implied. demoState (frozen, via DemoStateContext) is honored so matrix cells still freeze visually.",
+      "description": "Input — text field primitive with label, helper, and error slots.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -1990,13 +1993,17 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/form.tsx",
+        "src/app/components/segmented-control.tsx",
         "src/app/components/stepper-field.tsx",
+        "src/app/components/textarea.tsx",
+        "src/app/components/time-input.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/patterns/HdsField.tsx",
-        "src/app/pages/sketches/private/CombatArenaLayout.tsx",
-        "src/stories/input.stories.tsx"
+        "src/stories/combobox.stories.tsx",
+        "src/stories/input.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
+        "src/stories/textarea.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "role.background",
@@ -3676,12 +3683,12 @@
       "figmaLink": "TODO:hds-master:SpecimenBlock"
     },
     "ActivityFeed": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/activity-feed.tsx",
-      "description": "ActivityFeed — chronological event log using whitespace as the sole separator between items. Use for timeline views and system audit trails; reach for Table when columnar comparison matters. Enforces 48px gap (space.12) between events and semantic typography roles throughout.",
+      "description": "ActivityFeed — chronological system event log. Renders a list of activity events using white space as the sole separator. No dividers, no borders between items. 48px gap (space.12) creates the visual grouping between events; 16px gap inside each item structures the content hierarchy. Typography mapping: title → heading3 (24px/1.25) description → body (16px/1.5) timestamp → technical (12px/1.0 mono) category → ui (14px/1.5)",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -4267,36 +4274,53 @@
       },
       "consumers": [
         "src/app/components/activity-feed.tsx",
+        "src/app/components/alert-dialog.tsx",
         "src/app/components/animated-label.tsx",
         "src/app/components/api-reference.tsx",
-        "src/app/components/approval-card.tsx",
-        "src/app/components/ComponentDocPage.tsx",
+        "src/app/components/button-group.test.tsx",
+        "src/app/components/button-group.tsx",
+        "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/dialog.tsx",
-        "src/app/components/doc-sections.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/menu.tsx",
+        "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.tsx",
+        "src/app/components/popover.tsx",
+        "src/app/components/segmented-control.tsx",
         "src/app/components/sketch-controls.tsx",
+        "src/app/components/toast.tsx",
+        "src/app/components/toolbar.test.tsx",
+        "src/app/components/toolbar.tsx",
         "src/app/components/variant-strip.tsx",
         "src/app/context/DemoStateContext.tsx",
-        "src/app/data/projects.ts",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/design-system/searchIndex.ts",
-        "src/app/lab/shadcn-spike/Button.tsx",
-        "src/app/lab/shadcn-spike/page.tsx",
-        "src/app/pages/admin/ApprovalDetail.tsx",
-        "src/app/pages/docs/patterns/HdsActivityFeed.tsx",
-        "src/app/pages/docs/patterns/HdsIconButton.tsx",
-        "src/app/pages/sketches/private/MetaballsLayout.tsx",
-        "src/app/pages/sketches/private/ShapeExplorerLayout.tsx",
-        "src/app/pages/sketches/private/WaveBackgroundLayout.tsx",
+        "src/form/index.ts",
+        "src/mui/index.ts",
+        "src/stories/alert-dialog.stories.tsx",
+        "src/stories/button-group.stories.tsx",
         "src/stories/button.stories.tsx",
+        "src/stories/code-block.stories.tsx",
+        "src/stories/combobox.stories.tsx",
+        "src/stories/dialog.stories.tsx",
+        "src/stories/form.stories.tsx",
+        "src/stories/hds-tooltip.stories.tsx",
         "src/stories/icon-button.stories.tsx",
+        "src/stories/image-lightbox.stories.tsx",
         "src/stories/inline-code.stories.tsx",
+        "src/stories/menu.stories.tsx",
+        "src/stories/nav-group.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx",
+        "src/stories/popover.stories.tsx",
         "src/stories/table.stories.tsx",
-        "src/stories/text-lockup.stories.tsx"
+        "src/stories/text-lockup.stories.tsx",
+        "src/stories/toast.stories.tsx",
+        "src/stories/toolbar.stories.tsx",
+        "src/stories/top-nav.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -5110,10 +5134,11 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/info-page.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/data/hdsEditorial.tsx"
+        "src/app/data/hdsEditorial.tsx",
+        "src/stories/asset-img.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5456,12 +5481,12 @@
       "figmaLink": "TODO:hds-master:HdsRadio"
     },
     "HdsSelect": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/select.tsx",
-      "description": "Controls — shared input/control primitives.",
+      "description": "HdsSelect — dropdown selector built on Radix Select.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -8493,6 +8518,69 @@
       "requiredProps": [],
       "a11yRules": []
     },
+    "Textarea": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/textarea.tsx",
+      "description": "Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the four states Default / Focus / Error / Disabled map to the focus-ring, `error`, and `disabled` treatments below.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": "TODO:hds-master:Textarea",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Textarea",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/stories/textarea.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "error": {
+          "type": "boolean",
+          "optional": true
+        },
+        "errorMessage": {
+          "type": "string",
+          "optional": true
+        },
+        "helperText": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "resize": {
+          "type": "TextareaResize",
+          "default": "vertical"
+        },
+        "textareaClassName": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": []
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -8899,9 +8987,9 @@
     },
     "AutoPreviewSpecimen": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "docExempt": true,
       "filePath": "src/app/components/componentPreviewRegistry.tsx",
       "description": "/** @internal @doc-exempt: demo-preview-helper — not part of @hirobius/design-system public API.",
@@ -9237,9 +9325,9 @@
     },
     "SketchButton": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9265,9 +9353,9 @@
     },
     "SketchCheckbox": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9293,9 +9381,9 @@
     },
     "SketchPanelToggle": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9321,9 +9409,9 @@
     },
     "SketchRange": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9349,9 +9437,9 @@
     },
     "SketchTextarea": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "filePath": "src/app/components/sketch-controls.tsx",
       "description": "",
       "figmaUrl": null,
@@ -9683,9 +9771,9 @@
     },
     "ErrorBoundary": {
       "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
       "docExempt": true,
       "filePath": "src/app/components/error-boundary.tsx",
       "description": "ErrorBoundary — slot-scoped recovery surface for runtime render failures.",
@@ -9743,11 +9831,7 @@
         "exportName": "DocPageHeader",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/pages/docs/patterns/_template.tsx",
-        "src/app/pages/docs/templates/_template.tsx",
-        "src/app/pages/SketchPage.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []
