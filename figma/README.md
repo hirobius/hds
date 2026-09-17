@@ -8,13 +8,14 @@ variables API is Enterprise-only), so every Figma step is a local command that a
 person, or an agent with Figma access, runs on purpose. Drift detection compares
 the model against a committed snapshot of the file, not the live file.
 
-| Command                    | What it does                                                                                                                                 | Talks to Figma? |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| `pnpm figma:model`         | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles, plus Brand and Density from `figma/brand-modes.json` | No              |
-| `pnpm figma:push`          | Writes the code that upserts the model into a file, to `figma/push/`                                                                         | No (you run it) |
-| `pnpm figma:snapshot`      | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`                                               | No (you run it) |
-| `pnpm check:figma-drift`   | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                            | No              |
-| `pnpm figma:native-import` | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                           | No              |
+| Command                    | What it does                                                                                                                                 | Talks to Figma?        |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `pnpm figma:model`         | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles, plus Brand and Density from `figma/brand-modes.json` | No                     |
+| `pnpm figma:push`          | Writes the code that upserts the model into a file, to `figma/push/`                                                                         | No (you run it)        |
+| `pnpm figma:snapshot`      | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`                                               | No (you run it)        |
+| `pnpm check:figma-drift`   | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                            | No                     |
+| `pnpm figma:native-import` | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                           | No                     |
+| `pnpm figma:links`         | Projects each component's Figma node (`figmaUrl` in the manifest) into the README, Storybook, dev resources and component descriptions       | Only `--dev-resources` |
 
 `figma/model.json`, `figma/push/` and `figma/native-import/` are generated and
 gitignored. `figma/snapshot.json` is committed: it records Figma's state.
@@ -68,6 +69,41 @@ The model refuses, with the reason:
 An override of a token that is not in Figma (motion, for example) is skipped.
 The base density scale (`--hds-space-*` in `src/styles/theme.css`) is not a
 token, so Density carries only tenant Compact values today.
+
+## Design ↔ Code links
+
+Each component's Figma node has one source: the `@figma` tag in its JSDoc,
+which `pnpm manifest:generate` copies to `componentSpecs[<Name>].figmaUrl` in
+`public/hds-manifest.json`. Everything else reads that field
+(`scripts/lib/design-links.mjs`), and all of it works on a Professional plan:
+
+| Where                                              | How                                                                                               | Needs                                                                                 |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| README "Design ↔ Code links"                       | `pnpm figma:links` rewrites the marked section                                                    | Nothing                                                                               |
+| Storybook `parameters.design`                      | The story meta spreads `designParameters('<Name>')` (`src/stories/design-parameters.ts`)          | `@storybook/addon-designs` to show it as the Design tab                               |
+| Figma dev resources "HDS source" and "HDS story"   | `FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run`, then without `--dry-run` | A personal access token with `file_dev_resources:read` and `file_dev_resources:write` |
+| Figma component description and documentation link | `figma/links/use-figma/descriptions-<file>.dry-run.js` through use_figma, then the `.js`          | Figma MCP write access to that file                                                   |
+
+To link a component:
+
+1. In Figma, select the component set and copy its link (Copy link to
+   selection). It must carry a `node-id`.
+2. Add `@figma <that URL>` to the component's JSDoc.
+3. Run `pnpm manifest:generate && pnpm figma:links`.
+4. If its story meta does not spread `designParameters('<Name>')` yet, add it.
+
+`pnpm test` fails, and `pnpm figma:links --check` exits 1, when the README
+section is stale, a linked component has no story or its story skips
+`designParameters`, a story hardcodes a Figma URL, or a `figmaUrl` is not a node
+URL.
+
+Story links open the story file on GitHub until `storybookUrl` is set in
+`figma/links.json`; then they open the Storybook docs page. The dev resources
+push never deletes: a URL already on the node counts as present under any name,
+and an "HDS" resource whose URL changed is updated in place. The descriptions
+script replaces the description and documentation link of each linked component
+set and reports the previous text; its payload carries a checksum, so a script
+changed in transit writes nothing. `figma/links/` is generated and gitignored.
 
 ## Push
 

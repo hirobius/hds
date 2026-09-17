@@ -71,6 +71,7 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
 | `category`             | string              | JSDoc `@category`                 | Governs docs routing                                                                                                                                                                                       |
 | `filePath`             | string              | Source scan                       | Relative to repo root                                                                                                                                                                                      |
 | `description`          | string              | JSDoc                             | One sentence                                                                                                                                                                                               |
+| `figmaUrl`             | string or null      | JSDoc `@figma`                    | The one Figma node source (URL with `node-id`). `pnpm figma:links` projects it into the README, Storybook, dev resources and component descriptions; never copy it by hand.                                |
 | `props`                | object              | `src/app/data/component-api.json` | See prop schema below                                                                                                                                                                                      |
 | `tokens`               | object              | Hand-authored                     | Maps semantic role → token path                                                                                                                                                                            |
 | `figmaPropertyMapping` | object              | Hand-authored                     | Maps React prop → Figma property name                                                                                                                                                                      |
@@ -217,5 +218,6 @@ Key facts:
 | Build the Figma model from tokens       | `pnpm figma:model`                              |
 | Push tokens into a Figma file           | `pnpm figma:push` (runbook: `figma/README.md`)  |
 | Record Figma's state / check drift      | `pnpm figma:snapshot`, `pnpm check:figma-drift` |
+| Project component Figma links           | `pnpm figma:links`                              |
 | Legacy Figma variable exports           | `node scripts/build-figma-variables.mjs`        |
 | Audit Figma system state                | `pnpm figma:audit`                              |
