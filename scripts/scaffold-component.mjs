@@ -5,9 +5,15 @@
  *
  * One-command component ingestion recipe. From a single name it emits a fully
  * wired component: the `.tsx` (cva skeleton + token bindings), a Storybook
- * story, a smoke test, a manifest entry, the component-api.json extraction, and
- * a Code Connect stub — plus a Swiss-canon fixture. Makes "ingest a new
- * component" a single standardized step (ADR-020 §5).
+ * story, a smoke test, a manifest entry and the component-api.json extraction,
+ * plus a Swiss-canon fixture. Makes "ingest a new component" a single
+ * standardized step (ADR-020 §5).
+ *
+ * No Figma Code Connect file is emitted. The commented `figma.connect()` stub
+ * this used to write targets the parser format Figma retired in
+ * @figma/code-connect 2.0.0, and a stub with no Figma node URL maps nothing.
+ * Code Connect templates (`<name>.figma.ts`, v2 template format) are authored
+ * once the component exists in the Figma library.
  *
  *   pnpm hds:new Example
  *   pnpm hds:new Example --dry-run
@@ -169,39 +175,6 @@ describe('${name}', () => {
 `;
 }
 
-function buildCodeConnectStub(name) {
-  const kebab = kebabCase(name);
-  // Emitted COMMENTED-OUT on purpose: @figma/code-connect is not yet a repo
-  // dependency and the Figma node id must be filled in (see ADR-019 / #47).
-  // Uncommenting once Code Connect is wired maps this component in Dev Mode.
-  return `/**
- * ${name} — Figma Code Connect stub (ADR-019 phase c / #47).
- *
- * Code Connect is not wired in this repo yet. When it is:
- *   1. add @figma/code-connect as a devDependency,
- *   2. replace FIGMA_NODE_URL with this component's Figma node URL,
- *   3. uncomment the block below and run \`figma connect publish\`.
- */
-
-// import figma from '@figma/code-connect';
-// import { ${name} } from './${kebab}';
-//
-// figma.connect(${name}, 'FIGMA_NODE_URL', {
-//   props: {
-//     variant: figma.enum('Variant', {
-//       primary: 'primary',
-//       secondary: 'secondary',
-//       tertiary: 'tertiary',
-//     }),
-//     children: figma.children('*'),
-//   },
-//   example: ({ variant, children }) => <${name} variant={variant}>{children}</${name}>,
-// });
-
-export {};
-`;
-}
-
 // ── Plan ───────────────────────────────────────────────────────────────────────
 
 function plan(name) {
@@ -210,7 +183,6 @@ function plan(name) {
     componentPath: path.join(COMPONENT_DIR, `${kebab}.tsx`),
     storyPath: path.join(STORY_DIR, `${kebab}.stories.tsx`),
     testPath: path.join(COMPONENT_DIR, `${kebab}.test.tsx`),
-    codeConnectPath: path.join(COMPONENT_DIR, `${kebab}.figma.tsx`),
     fixtureDir: path.join(FIXTURE_ROOT, `${kebab}-clean`),
     fixtureInputPath: path.join(FIXTURE_ROOT, `${kebab}-clean`, 'input.jsx'),
     fixtureExpectedPath: path.join(FIXTURE_ROOT, `${kebab}-clean`, 'expected.json'),
@@ -248,7 +220,7 @@ function main() {
     );
     process.exit(1);
   }
-  for (const p of [paths.componentPath, paths.storyPath, paths.testPath, paths.codeConnectPath]) {
+  for (const p of [paths.componentPath, paths.storyPath, paths.testPath]) {
     if (fs.existsSync(p)) {
       console.error(`Error: ${rel(p)} already exists.`);
       process.exit(1);
@@ -265,7 +237,6 @@ function main() {
     );
     console.log('[dry-run] would write story:      ', rel(paths.storyPath));
     console.log('[dry-run] would write test:       ', rel(paths.testPath));
-    console.log('[dry-run] would write code-connect:', rel(paths.codeConnectPath));
     console.log(
       '[dry-run] would add manifest entry:',
       name,
@@ -286,8 +257,6 @@ function main() {
   console.log('wrote', rel(paths.storyPath));
   fs.writeFileSync(paths.testPath, buildTestSource(name));
   console.log('wrote', rel(paths.testPath));
-  fs.writeFileSync(paths.codeConnectPath, buildCodeConnectStub(name));
-  console.log('wrote', rel(paths.codeConnectPath));
 
   manifest.componentSpecs = manifest.componentSpecs || {};
   manifest.componentSpecs[name] = spec;

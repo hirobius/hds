@@ -69,10 +69,10 @@ export interface DocPageHeaderSpec {
   /** Optional — drives the Figma link target. Legacy field. */
   figmaUrl?: string | null;
   /**
-   * Optional — explicit Figma master link (10d-14). Either a real URL or a
-   * structured `TODO:hds-master:<componentName>` marker so the Figma slot
-   * still surfaces while the master file is being authored. Preferred over
-   * `figmaUrl` when both are present.
+   * Optional — explicit Figma master link (10d-14). The manifest generator
+   * writes a real Figma URL or null and strips `TODO:hds-master:<componentName>`
+   * markers on regen. A `TODO:` value passed to this component directly still
+   * renders as a pending chip. Preferred over `figmaUrl` when both are present.
    */
   figmaLink?: string | null;
   /** Required — drives the tier chip. */

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hirobius.com/schemas/tenant-metadata.schema.json",
+  "title": "Hirobius Tenant Metadata",
+  "description": "Identity, deployment and brand metadata for one tenant (tenants/<slug>/metadata.json). Token values live in the sibling tokens.json; this file is for tooling that needs tenant facts without parsing DTCG. Field contract: docs/architecture/tenant-token-overlay-format.md (metadata.json section); scripts/check-tenant-tokens.mjs enforces its M1-M3 subset.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "displayName", "tier", "deployment", "brand", "status"],
+  "if": {
+    "properties": { "tier": { "enum": [2, 3] } },
+    "required": ["tier"]
+  },
+  "then": {
+    "properties": { "legal": { "type": "object" } },
+    "required": ["legal"]
+  },
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Must reference this schema file."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^_?[a-z0-9-]+$",
+      "description": "Verbatim data-tenant / data-brand attribute value. Must match the directory name (M1). A leading underscore marks a non-deployable directory such as _template."
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "UI-facing brand name, rendered in tenant-aware screens."
+    },
+    "tagline": {
+      "type": "string",
+      "description": "Short brand line used by previews and sales tooling."
+    },
+    "demo": {
+      "type": "boolean",
+      "description": "true only for a non-client exemplar tenant. Required (together with a figma/brand-modes.json listing) before a tenant becomes a mode of the shared Figma Brand collection; scaffold:tenant and tenants/_template never write it."
+    },
+    "tier": {
+      "enum": [1, 2, 3],
+      "description": "1 = brand presence (marketing site), 2 = e-commerce (Stripe Checkout, legal pages), 3 = product (custom auth/dashboards). Drives infra defaults."
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Where this tenant ships. Null until the deployment exists.",
+      "properties": {
+        "vercelProject": { "type": ["string", "null"] },
+        "primaryDomain": { "type": ["string", "null"] },
+        "previewDomain": { "type": ["string", "null"] }
+      }
+    },
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Quick-reference brand info. The source of truth for values is tokens.json.",
+      "properties": {
+        "primaryHex": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "accentName": { "type": "string" },
+        "logoPath": { "type": ["string", "null"] }
+      }
+    },
+    "legal": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Entity and jurisdiction. Fill before a tier 2+ tenant goes live; drives legal-page generation and Stripe wiring.",
+      "properties": {
+        "entity": { "type": ["string", "null"] },
+        "jurisdiction": { "type": ["string", "null"] },
+        "stripeAccountKind": { "type": ["string", "null"] }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date (YYYY-MM-DD) the tenant was scaffolded."
+    },
+    "status": {
+      "enum": ["scaffold", "active", "archived"],
+      "description": "Lifecycle state (M3). Drives validator strictness."
+    },
+    "_notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Free-form maintainer notes. Ignored by tooling."
+    }
+  }
+}
