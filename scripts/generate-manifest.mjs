@@ -239,7 +239,12 @@ for (const entry of activeDiscoveredComponents) {
     // figmaLink: explicit "View in Figma" target (10d-14). A real Figma URL or
     // null, never a placeholder. Legacy `TODO:hds-master:<Name>` markers are
     // dropped here so they cannot survive a regen; see scripts/lib/figma-link.mjs.
-    figmaLink: resolveFigmaLink(current.figmaLink, entry.figmaUrl, current.figmaUrl),
+    // The `@figma` tag is the only candidate, exactly as for figmaUrl above.
+    // The committed figmaLink used to come first, which pinned the stale URL:
+    // removing a tag left the old link in the manifest, and changing one left
+    // doc-page-header.tsx — which reads figmaLink before figmaUrl — pointing at
+    // the old node. Regen now clears and follows the tag.
+    figmaLink: resolveFigmaLink(entry.figmaUrl),
     // doc-exempt components surfacing for the first time fall back to 'utility' —
     // they're hidden internal helpers, so utility is the safe default until a
     // human authors a more precise @tier in the JSDoc.
@@ -275,7 +280,9 @@ for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
 }
 
 // Specs that discovery does not revisit are carried over by the seed fold
-// as-is, so clear placeholder figmaLinks on those too.
+// as-is, so clear placeholder figmaLinks on those too. Discovered specs have
+// already been rebuilt from their `@figma` tag above, so this is a no-op for
+// them: when the tag is gone, both candidates are null and the link stays null.
 for (const spec of Object.values(manifest.componentSpecs)) {
   if (spec && 'figmaLink' in spec) {
     spec.figmaLink = resolveFigmaLink(spec.figmaLink, spec.figmaUrl);
