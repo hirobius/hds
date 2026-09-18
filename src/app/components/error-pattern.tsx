@@ -5,6 +5,7 @@
  */
 import { motion } from 'motion/react';
 import hds from '../design-system/tokens';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Button } from './button';
 import { Stack } from './stack';
 import { Surface } from './surface';
@@ -30,13 +31,15 @@ export function ErrorPattern({
   displayText = 'Oops',
   message = 'Something went wrong',
 }: ErrorPatternProps) {
+  const spatialMotion = useHdsMotion('spatial');
+
   return (
     <div style={recoveryWrapStyle} data-role="error-recovery">
       <Surface padding="component">
         <motion.div
           initial={{ opacity: 0, y: 2 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: hds.motion.spatial.duration, ease: hds.motion.spatial.easing }}
+          transition={{ duration: spatialMotion.duration, ease: spatialMotion.easing }}
         >
           <Stack gap="normal" style={{ alignItems: 'center', textAlign: 'center' }}>
             <Text

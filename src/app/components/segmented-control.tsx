@@ -21,6 +21,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -346,6 +347,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
     const frozenState = useFrozenState();
     const demoState = frozenState as 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled' | null;
     const isDisabled = demoState === 'disabled';
+    const productiveMotion = useHdsMotion('productive');
     const isCompact = size === 'sm';
     const isSecondary = variant === 'secondary';
     const resolvedAriaLabel = ariaLabel ?? label;
@@ -422,8 +424,8 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
                   transition={
                     isSecondary
                       ? {
-                          duration: hds.motion.productive.duration,
-                          ease: hds.motion.productive.easing,
+                          duration: productiveMotion.duration,
+                          ease: productiveMotion.easing,
                         }
                       : undefined
                   }
