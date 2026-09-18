@@ -13,9 +13,10 @@
  *      are checked one way (claim <= source) so a PR that adds tokens, stories,
  *      or components never turns main red through merge order.
  *   3. Figma claims in the core docs — no Figma command, script, automatic sync,
- *      or Code Connect readiness is described unless the repo has it; the broken
- *      variable export is never offered for import; and a Proposed ADR is not
- *      presented as settled architecture.
+ *      or Code Connect readiness is described unless the repo has it; the legacy
+ *      variable export the docs still offer really carries what the model has
+ *      (Dark values and the role tier); and a Proposed ADR is not presented as
+ *      settled architecture.
  *
  * Reads repo files. The export check copies the exporter and the token file to
  * an OS temp directory and runs it there with `node`, so nothing in the repo is
@@ -208,16 +209,6 @@ function adrStatus(number) {
   return { file, line: line ?? '' };
 }
 
-/** The line itself for a table row, otherwise the blank-line-delimited block around it. */
-function enclosingBlock(lines, i) {
-  if (lines[i].trim().startsWith('|')) return lines[i];
-  let start = i;
-  let end = i;
-  while (start > 0 && lines[start - 1].trim() !== '') start--;
-  while (end < lines.length - 1 && lines[end + 1].trim() !== '') end++;
-  return lines.slice(start, end + 1).join('\n');
-}
-
 /** Sentences of a markdown doc, with line breaks inside a paragraph joined. */
 function sentences(text) {
   return text
@@ -228,12 +219,18 @@ function sentences(text) {
 
 /**
  * Runs `pnpm figma-variables` (scripts/build-figma-variables.mjs) on a temp copy
- * and compares its plugin-import file with the token source. Returns the defects
- * that make the export unsafe to import into Figma, or [] once it is fixed.
+ * and measures its plugin-import file against the token source: how many
+ * variables carry a Dark value that differs from Light, and which collections
+ * came out. The tests below assert those numbers directly.
+ *
+ * This used to return a defect list that a `skipIf` consumed, so the check
+ * disappeared the moment the exporter was fixed (#213/#215) and a regression
+ * would have restored the silence instead of failing.
+ *
  * All of `scripts/lib` is copied alongside the exporter, so whichever local
  * modules it imports (today `lib/figma-model.mjs`) resolve in the temp copy.
  */
-function figmaVariablesExportDefects() {
+function figmaVariablesExport() {
   const dir = mkdtempSync(join(tmpdir(), 'hds-figma-export-'));
   try {
     mkdirSync(join(dir, 'scripts'));
@@ -273,20 +270,22 @@ function figmaVariablesExportDefects() {
         (v) => JSON.stringify(v.valuesByMode.Light) !== JSON.stringify(v.valuesByMode.Dark),
       ).length;
 
-    const defects = [];
-    if (exportDiffering < sourceDiffering) {
-      defects.push(`Dark differs from Light in ${exportDiffering} of ${sourceDiffering} variables`);
-    }
-    if (tokens.role && !exported.collections.some((c) => /role/i.test(c.name))) {
-      defects.push('no role collection');
-    }
-    return defects;
+    return {
+      collections: exported.collections.map((c) => ({
+        name: c.name,
+        modes: c.modes,
+        variables: c.variables.length,
+      })),
+      sourceDiffering,
+      exportDiffering,
+      sourceHasRoleTier: Boolean(tokens.role),
+    };
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
 }
 
-const EXPORT_DEFECTS = figmaVariablesExportDefects();
+const EXPORT = figmaVariablesExport();
 const ADR_025_ACCEPTED = /\*\*Status:\*\*\s*Accepted/.test(adrStatus('025')?.line ?? '');
 
 /** Docs that point readers at ADR-025, other than ADR-025 itself. */
@@ -350,21 +349,28 @@ describe('Figma claims in the core docs', () => {
     },
   );
 
-  // Skipped once the exporter keeps Dark values and the role tier.
-  it.skipIf(EXPORT_DEFECTS.length === 0)(
-    `warns against importing the pnpm figma-variables export while it is broken (${EXPORT_DEFECTS.join('; ')})`,
-    () => {
-      const unwarned = CORE_DOCS.flatMap((doc) => {
-        const lines = read(doc).split('\n');
-        return lines
-          .map((line, i) => ({ line, i }))
-          .filter(({ line }) => /pnpm figma-variables/.test(line))
-          .filter(({ i }) => !/\bdo not import\b/i.test(enclosingBlock(lines, i)))
-          .map(({ line, i }) => `${doc}:${i + 1}: ${line.trim()}`);
-      });
-      expect(unwarned).toEqual([]);
-    },
-  );
+  // The docs offer `pnpm figma-variables` as a legacy export "projected from
+  // the same model" (README, DESIGN-HANDOFF, SYSTEMS_REGISTRY, MANIFEST_SYNC).
+  // These two assert the export really carries what the model has. Before
+  // #213/#215 it flattened Dark onto Light and dropped the role tier, and the
+  // docs had to warn readers off importing it.
+  it('exports every Light/Dark distinction the token source has', () => {
+    expect(EXPORT.sourceDiffering).toBeGreaterThan(0);
+    expect(
+      EXPORT.exportDiffering,
+      `${EXPORT.exportDiffering} of ${EXPORT.sourceDiffering} variables differ between Light and Dark in the export`,
+    ).toBeGreaterThanOrEqual(EXPORT.sourceDiffering);
+  });
+
+  it('exports the role tier as its own collection', () => {
+    expect(
+      EXPORT.sourceHasRoleTier,
+      'hirobius.tokens.json no longer has a role tier — retire this assertion if that was intended',
+    ).toBe(true);
+    const role = EXPORT.collections.find((c) => c.name === 'Hirobius/Role');
+    expect(role, `collections: ${EXPORT.collections.map((c) => c.name).join(', ')}`).toBeDefined();
+    expect(role.variables).toBeGreaterThan(0);
+  });
 
   it('does not say Figma native import reads the token file or its mode extension', () => {
     const handoff = read('DESIGN-HANDOFF.md');
