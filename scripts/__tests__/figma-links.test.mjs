@@ -193,4 +193,17 @@ describe('this repository', () => {
     expect(existsSync(path)).toBe(true);
     expect(readFileSync(path, 'utf8')).toContain(`...designParameters('${name}')`);
   });
+
+  it('has an addon behind the Design tab, so parameters.design is not inert', () => {
+    // The README section and design-parameters.ts both promise Storybook shows
+    // the node. Storybook only renders `parameters.design` when addon-designs
+    // is registered, so the claim and the addon have to travel together.
+    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
+    expect(pkg.devDependencies['@storybook/addon-designs']).toBeDefined();
+    const main = readFileSync(join(REPO, '.storybook', 'main.ts'), 'utf8');
+    const start = main.indexOf('addons: [');
+    expect(start, '.storybook/main.ts has no addons array').toBeGreaterThan(-1);
+    const addons = main.slice(start, main.indexOf('\n  ]', start));
+    expect(addons).toContain('@storybook/addon-designs');
+  });
 });
