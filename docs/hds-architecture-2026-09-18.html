@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>HDS Target Architecture</title>
+    <style>
+      :root {
+        --bg: #fafafa;
+        --surface: #fff;
+        --fg: #141414;
+        --dim: #6b6b6b;
+        --rule: #e6e6e6;
+        --rule2: #cfcfcf;
+        --accent: #1e2efd;
+        --core: #047857;
+        --pattern: #92400e;
+        --internal: #6b6b6b;
+        --fold: #1e2efd;
+        --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+        --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --r: 8px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #0d0d0d;
+          --surface: #171717;
+          --fg: #f2f2f2;
+          --dim: #a3a3a3;
+          --rule: #2e2e2e;
+          --rule2: #404040;
+          --accent: #7b85ff;
+          --core: #34d399;
+          --pattern: #fbbf24;
+          --internal: #a3a3a3;
+          --fold: #7b85ff;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.6 var(--sans);
+        -webkit-font-smoothing: antialiased;
+      }
+      .w {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 56px 16px 120px;
+      }
+      h1 {
+        font-size: clamp(28px, 6vw, 40px);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin: 0 0 10px;
+      }
+      h2 {
+        font-size: clamp(19px, 4vw, 23px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin: 0 0 14px;
+      }
+      h3 {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 6px;
+      }
+      .eyebrow {
+        font: 600 11px/1 var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin: 0 0 10px;
+      }
+      .lede {
+        color: var(--dim);
+        font-size: 17px;
+        margin: 0 0 8px;
+      }
+      section {
+        margin-top: 52px;
+      }
+      p {
+        margin: 0 0 14px;
+      }
+      code {
+        font: 0.86em var(--mono);
+        background: color-mix(in srgb, var(--fg) 7%, transparent);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        gap: 1px;
+        background: var(--rule);
+        border: 1px solid var(--rule);
+        border-radius: var(--r);
+        overflow: hidden;
+        margin: 18px 0;
+      }
+      .g {
+        background: var(--surface);
+        padding: 16px;
+      }
+      .g dt {
+        font: 600 11px/1 var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 6px;
+      }
+      .g dd {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        font-variant-numeric: tabular-nums;
+      }
+      .g dd small {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--dim);
+        letter-spacing: 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        margin: 6px 0 20px;
+      }
+      th {
+        text-align: left;
+        font: 600 10px/1.6 var(--mono);
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--dim);
+        border-bottom: 1px solid var(--rule2);
+        padding: 7px 10px 7px 0;
+      }
+      td {
+        padding: 8px 10px 8px 0;
+        border-bottom: 1px solid var(--rule);
+        vertical-align: top;
+      }
+      td.t {
+        color: var(--dim);
+        font-size: 13px;
+      }
+      .d {
+        font: 600 10px/1 var(--mono);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 6px;
+        border-radius: 4px;
+        border: 1px solid currentColor;
+        white-space: nowrap;
+      }
+      .d-core {
+        color: var(--core);
+      }
+      .d-pattern {
+        color: var(--pattern);
+      }
+      .d-internal {
+        color: var(--internal);
+      }
+      .d-fold {
+        color: var(--fold);
+      }
+      .u {
+        font: 600 9px/1 var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        border: 1px solid currentColor;
+        border-radius: 3px;
+        padding: 3px 4px;
+        margin-left: 7px;
+        vertical-align: 1px;
+      }
+      .knob {
+        border-left: 2px solid var(--rule2);
+        padding: 0 0 0 16px;
+        margin: 0 0 22px;
+      }
+      .knob.done {
+        border-left-color: var(--core);
+      }
+      .knob h3 {
+        margin-bottom: 4px;
+      }
+      .knob .s {
+        font: 600 10px/1 var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .knob.done .s {
+        color: var(--core);
+      }
+      .knob p {
+        margin: 6px 0 0;
+        color: var(--dim);
+        font-size: 15px;
+      }
+      ol.steps {
+        list-style: none;
+        counter-reset: s;
+        padding: 0;
+        margin: 0;
+      }
+      ol.steps li {
+        counter-increment: s;
+        position: relative;
+        padding: 14px 0 14px 38px;
+        border-bottom: 1px solid var(--rule);
+      }
+      ol.steps li::before {
+        content: counter(s);
+        position: absolute;
+        left: 0;
+        top: 14px;
+        width: 23px;
+        height: 23px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #fff;
+        font: 700 12px/23px var(--mono);
+        text-align: center;
+      }
+      ol.steps b {
+        display: block;
+      }
+      ol.steps span {
+        color: var(--dim);
+        font-size: 14px;
+      }
+      .note {
+        border-left: 2px solid var(--rule2);
+        padding-left: 16px;
+        color: var(--dim);
+        font-size: 15px;
+        margin: 16px 0;
+      }
+      details {
+        border-top: 1px solid var(--rule);
+        padding: 12px 0;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 15px;
+      }
+      footer {
+        margin-top: 64px;
+        padding-top: 18px;
+        border-top: 1px solid var(--rule);
+        color: var(--dim);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w">
+      <p class="eyebrow">Hirobius Design System · 18 September 2026</p>
+      <h1>Fewer components, more knobs.</h1>
+      <p class="lede">
+        A target architecture for HDS: what ships at the package root, what moves behind a subpath,
+        what stops being public at all — and the five values that carry the variation instead.
+      </p>
+
+      <section>
+        <p class="eyebrow">Why</p>
+        <h2>The library grew by adding files where it should have turned knobs</h2>
+        <dl class="grid">
+          <div class="g">
+            <dt>Components</dt>
+            <dd>113</dd>
+          </div>
+          <div class="g">
+            <dt>Used by ops</dt>
+            <dd>20</dd>
+          </div>
+          <div class="g">
+            <dt>Proposed core</dt>
+            <dd>42</dd>
+          </div>
+          <div class="g">
+            <dt>Knobs</dt>
+            <dd>5</dd>
+          </div>
+        </dl>
+        <p>
+          <code>ops</code> is the only real downstream consumer: 38 files, and four components —
+          <code>Stack</code>, <code>Badge</code>, <code>Button</code>, <code>Page</code> — account
+          for 41 of its 64 import sites. That is not an argument that the other 93 are waste. It is
+          an argument that there is evidence for 20 and none for the rest.
+        </p>
+        <p>
+          The structural tell is duplication by category: <strong>22 components</strong> are a card,
+          tile, panel or list-item shape, and <strong>21</strong> are a layout primitive. A third of
+          the library covers two ideas. Every time a new need appeared it became a new file rather
+          than a prop on an existing one.
+        </p>
+        <p>
+          The same habit produced the visual inconsistency: four different radius values for one
+          concept, a type ramp that four components ignore entirely. Bloat and incoherence here are
+          the same defect.
+        </p>
+      </section>
+
+      <section>
+        <p class="eyebrow">The proposal</p>
+        <h2>Three tiers, one public root</h2>
+        <p>
+          <strong>Core (42)</strong> — the package root. Brand-neutral, composable, the surface a
+          Figma Community file and a client project both consume. This is the tier that has to be
+          excellent.
+        </p>
+        <p>
+          <strong>Patterns (22)</strong> — moved to <code>@hirobius/design-system/patterns</code>.
+          Composed and opinionated: app shells, nav chrome, command palettes, the error and empty
+          states that assume a product. Still shipped, still supported, no longer competing for
+          attention with primitives.
+        </p>
+        <p>
+          <strong>Internal (8)</strong> — unexported. Docs tooling, the JSX compiler's vocabulary,
+          creative demos. These never belonged in a consumer's autocomplete.
+        </p>
+        <p>
+          <strong>Folded (41)</strong> — absorbed into another component as a prop, variant or slot.
+          This is where the count actually falls, and where the system gets easier to learn rather
+          than merely smaller.
+        </p>
+        <p class="note">
+          Nothing here deletes behaviour. A fold is an API change with a codemod; a pattern move is
+          an import-path change. The only true removals are the internal tier, and none of those are
+          imported by <code>ops</code>.
+        </p>
+      </section>
+
+      <section>
+        <p class="eyebrow">The knobs</p>
+        <h2>Five values carry the variation</h2>
+        <p>
+          You already built this. <code>tenants/brutalist-demo/tokens.json</code> re-skins the whole
+          system in <strong>two</strong> token overrides. The mechanism works; the defaults were
+          distinctive and the component layer bypassed it.
+        </p>
+
+        <div class="knob done">
+          <span class="s">shipped — this commit</span>
+          <h3>1 · Shape — <code>role.radius</code></h3>
+          <p>
+            One value. <code>rounded-md</code> now resolves to it exactly, so the utility and
+            <code>--semantic-radius-action</code> can no longer disagree; containers step +4px,
+            inset chrome −2px. Default moved 12px → 8px. Verified: <code>brutalist-demo</code> sets
+            it to 0 and every control renders square.
+          </p>
+        </div>
+
+        <div class="knob">
+          <span class="s">next</span>
+          <h3>2 · Accent — <code>role.accent</code></h3>
+          <p>
+            <code>#1E2EFD</code> is currently the base, so every consumer starts inside your brand
+            and has to override outward. Invert it: neutral near-black default, and the blue becomes
+            a <code>hirobius</code> tenant overlay like any client's.
+          </p>
+        </div>
+
+        <div class="knob">
+          <span class="s">next</span>
+          <h3>3 · Edge — <code>border.subtle</code> / <code>border.interactive</code></h3>
+          <p>
+            One token does two jobs today at <code>#E5E5E5</code> — 1.26:1, below the 3:1 floor WCAG
+            1.4.11 sets for a control boundary. Split it: keep the light hairline for decorative
+            edges, add a compliant step (<code>#949494</code>, 3.03:1) for anything that bounds an
+            interactive control.
+          </p>
+        </div>
+
+        <div class="knob">
+          <span class="s">exists, undocumented</span>
+          <h3>4 · Density — <code>data-density</code></h3>
+          <p>
+            Comfortable and compact already resolve through <code>--hds-space-*</code>. It is not in
+            the README, so nobody knows it is there.
+          </p>
+        </div>
+
+        <div class="knob">
+          <span class="s">partial</span>
+          <h3>5 · Type — family + base size</h3>
+          <p>
+            Eleven hardcoded sizes with an inversion at the top (<code>5xl</code> 80px is larger
+            than <code>7xl</code> 72px), and four components rendering off-scale because they set no
+            size and inherit the browser's 16px. Needs a base size and a ratio, not eleven literals.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">Disposition</p>
+        <h2>Every component, with its target</h2>
+        <p class="note">
+          <span class="d d-core">core</span> package root ·
+          <span class="d d-pattern">pattern</span> subpath export ·
+          <span class="d d-fold">fold</span> absorbed as a prop/variant/slot ·
+          <span class="d d-internal">internal</span> unexported. <span class="u">ops</span> marks a
+          component the consumer imports today — those need a codemod or a re-export, never a silent
+          break.
+        </p>
+        <h3>Inputs <span style="color: var(--dim); font-weight: 400">(23)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-pattern">
+              <td><code>Calendar</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Combobox</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>DateInput</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">DateInput mode</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>DateRangeInput</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">DateInput mode</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>DateTimeInput</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">DateInput mode</td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>FileInput</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>Form</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>FormField</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Field</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>FormFieldShell</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Field</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>HdsCheckbox</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>HdsRadio</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>HdsSelect</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>HdsSlider</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>HdsToggle</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Input</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>InputGroup</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Field</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>MultiSelector</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Combobox multiple</td>
+            </tr>
+            <tr class="r-core">
+              <td>
+                <code>SegmentedControl</code><span class="u" title="imported by ops">ops</span>
+              </td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>StepperField</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Input type="number"</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Tag</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Textarea</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>TimeInput</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">DateInput mode</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Tokenizer</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Combobox multiple</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Layout <span style="color: var(--dim); font-weight: 400">(22)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-pattern">
+              <td><code>AppShell</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>AspectRatio</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Box ratio</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Bleed</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Box</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Box</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-internal">
+              <td><code>CaseStudyLayout</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Center</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Box</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Cluster</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Stack direction="row"</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Container</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Cover</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Box</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Disclosure</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Divider</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Frame</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Box</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Grid</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>OverflowList</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>Page</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Pin</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Box</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Sidebar</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Grid</td>
+            </tr>
+            <tr class="r-internal">
+              <td><code>Sketch</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Stack</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Surface</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Switcher</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Grid</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>TileGrid</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Grid</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Display <span style="color: var(--dim); font-weight: 400">(21)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-pattern">
+              <td><code>ActivityFeed</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>AssetImg</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Avatar</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>AvatarGroup</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Avatar group</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Card</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>Carousel</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>CodeBlock</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>EmptyState</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Field</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Icon</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>InlineCode</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Text as="code"</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Kbd</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>MetadataList</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Card slot</td>
+            </tr>
+            <tr class="r-pattern">
+              <td>
+                <code>StackedCardRail</code><span class="u" title="imported by ops">ops</span>
+              </td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Stat</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Card slot</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>StatusListItem</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Card slot</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>StatusTile</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Card slot</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Table</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>TextLockup</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Card slot</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Timestamp</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Text</td>
+            </tr>
+            <tr class="r-internal">
+              <td><code>Token</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Navigation <span style="color: var(--dim); font-weight: 400">(14)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-core">
+              <td><code>Breadcrumb</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>DocLinkCard</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>InlineLink</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>NavGroup</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">NavItem</td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>NavItem</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Pagination</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>SideNav</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>Stepper</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Tabs</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>TabsContent</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Tabs</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>TabsList</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Tabs</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>TabsTrigger</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Tabs</td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>TopNav</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>TreeList</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Feedback <span style="color: var(--dim); font-weight: 400">(10)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-core">
+              <td><code>Alert</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Badge</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>Callout</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Alert tone</td>
+            </tr>
+            <tr class="r-fold">
+              <td>
+                <code>CircularProgress</code><span class="u" title="imported by ops">ops</span>
+              </td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Progress variant</td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>ErrorPattern</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Progress</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Skeleton</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Spinner</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>StatusDot</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Badge dot</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>ToastProvider</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Actions <span style="color: var(--dim); font-weight: 400">(6)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-core">
+              <td><code>Button</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>ButtonGroup</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>IconButton</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Button iconOnly</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>SelectableCard</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Card selectable</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>ToggleButton</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Button pressed</td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>Toolbar</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Overlays <span style="color: var(--dim); font-weight: 400">(6)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-fold">
+              <td><code>AlertDialog</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Dialog tone</td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>CommandPalette</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>ContextMenu</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Dialog</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-core">
+              <td><code>HoverCard</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-pattern">
+              <td><code>Lightbox</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Utilities <span style="color: var(--dim); font-weight: 400">(3)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-internal">
+              <td><code>ComponentInstanceMatrix</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-internal">
+              <td><code>FoundationSwatch</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+            <tr class="r-internal">
+              <td><code>SpecimenBlock</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Typography <span style="color: var(--dim); font-weight: 400">(3)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-fold">
+              <td><code>Blockquote</code></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Text as="blockquote"</td>
+            </tr>
+            <tr class="r-fold">
+              <td><code>HeadingStack</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-fold">fold</span></td>
+              <td class="t">Stack + Text</td>
+            </tr>
+            <tr class="r-core">
+              <td><code>Text</code><span class="u" title="imported by ops">ops</span></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Branding <span style="color: var(--dim); font-weight: 400">(1)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-internal">
+              <td><code>CinematicLink</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Uncategorized <span style="color: var(--dim); font-weight: 400">(1)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-internal">
+              <td><code>HdsSystemDocLayout</code></td>
+              <td><span class="d d-internal">internal</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Theming <span style="color: var(--dim); font-weight: 400">(1)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-core">
+              <td><code>HdsThemeProvider</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Utility <span style="color: var(--dim); font-weight: 400">(1)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-core">
+              <td><code>VisuallyHidden</code></td>
+              <td><span class="d d-core">core</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Motion <span style="color: var(--dim); font-weight: 400">(1)</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Target</th>
+              <th>Folds into</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="r-pattern">
+              <td><code>Reveal</code></td>
+              <td><span class="d d-pattern">pattern</span></td>
+              <td class="t"></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <p class="eyebrow">Order</p>
+        <h2>Slices, each independently shippable</h2>
+        <ol class="steps">
+          <li>
+            <b>Shape knob</b><span>Done. Four radius values → one, verified per tenant.</span>
+          </li>
+          <li>
+            <b>Neutral the accent, split the border</b
+            ><span
+              >Knobs 2 and 3. Two token changes plus a <code>hirobius</code> tenant overlay. No
+              component edits.</span
+            >
+          </li>
+          <li>
+            <b>Fix what does not render</b
+            ><span
+              >Radio paints nothing (inline spans, 0px wide); segmented items are white-on-white at
+              1.00:1; toggle is a 16×16 transparent box. Audit A3–A5.</span
+            >
+          </li>
+          <li>
+            <b>Type ramp</b
+            ><span
+              >Knob 5: base + ratio, fix the 5xl/7xl inversion, apply the ramp to the four
+              components inheriting 16px.</span
+            >
+          </li>
+          <li>
+            <b>Internal tier</b
+            ><span
+              >Unexport the 8 internal components. Zero consumer risk — none are imported by
+              ops.</span
+            >
+          </li>
+          <li>
+            <b>Patterns subpath</b
+            ><span
+              >Move 22 behind <code>/patterns</code> with root re-exports kept for one minor,
+              deprecation-warned.</span
+            >
+          </li>
+          <li>
+            <b>Folds</b
+            ><span
+              >The 41 API absorptions, one component family per PR, each with a codemod. This is the
+              breaking work and belongs in 1.0.</span
+            >
+          </li>
+          <li>
+            <b>Gate it</b
+            ><span
+              >A rendered-geometry check so radius, type scale and control height cannot drift again
+              — the existing gates are textual and caught none of this.</span
+            >
+          </li>
+        </ol>
+        <p class="note">
+          Slices 1–5 are non-breaking and can ship as 0.14.x. Slice 6 is a deprecation cycle. Slice
+          7 is 1.0 and needs the <code>ops</code> codemod ready first.
+        </p>
+      </section>
+
+      <footer>
+        <p>
+          Counts generated from <code>public/hds-manifest.json</code>; <code>ops</code> usage
+          measured across 38 importing files. Dispositions are a proposal — redline them.
+        </p>
+        <p>
+          Source of record: <code>docs/hds-architecture-2026-09-18.html</code>. Evidence for the
+          visual findings: <code>docs/visual-audit-2026-09-18.html</code>.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
