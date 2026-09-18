@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-17T07:57:06.152Z",
+  "generated": "2026-09-18T07:59:21.878Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -8529,104 +8529,6 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": []
-    },
-    "HdsPhosphor": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized icon alias stub for JSX normalization.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsFrame": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-internal frame primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsHeading": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized heading primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsLabel": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized label primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsCaption": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsChip": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized chip instance stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
-    },
-    "HdsAvatar": {
-      "category": "Compiler",
-      "filePath": "scripts/hds-jsx-compiler.mjs",
-      "description": "Compiler-recognized avatar instance stub for generated JSX validation.",
-      "hidden": true,
-      "tier": "utility",
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": []
     }
   },
   "utilities": {
@@ -11880,9 +11782,9 @@
         "path": "semantic.radius.action",
         "cssVar": "--semantic-radius-action",
         "type": "dimension",
-        "description": "Corner radius for interactive action elements like buttons and inputs.",
-        "alias": "{primitive.radius.12}",
-        "resolvedValue": "12px"
+        "description": "The shape knob. Corner radius for interactive action elements (buttons, inputs, badges, alerts, segmented items). Tailwind's rounded-md resolves to exactly this value via --role-radius; containers are one step above it at rounded-lg. Override role.radius in a tenant overlay to reshape the whole system from one value.",
+        "alias": "{primitive.radius.8}",
+        "resolvedValue": "8px"
       },
       {
         "path": "semantic.borderWidth.default",
@@ -12281,7 +12183,7 @@
         "type": "dimension",
         "description": "Button corner radius.",
         "alias": "{semantic.radius.action}",
-        "resolvedValue": "12px"
+        "resolvedValue": "8px"
       },
       {
         "path": "component.button.paddingX",
@@ -12560,7 +12462,7 @@
         "cssVar": "--component-input-radius",
         "type": "dimension",
         "alias": "{semantic.radius.action}",
-        "resolvedValue": "12px"
+        "resolvedValue": "8px"
       },
       {
         "path": "component.input.paddingX",
@@ -12779,7 +12681,7 @@
         "type": "dimension",
         "description": "Default border radius. shadcn role: radius.",
         "alias": "{semantic.radius.action}",
-        "resolvedValue": "12px"
+        "resolvedValue": "8px"
       }
     ]
   }

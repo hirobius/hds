@@ -24,7 +24,7 @@ export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'dis
 /** Root label chrome — hover/press tint, focus ring, cursor affordance. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
 const toggleRootVariants = cva(
-  'flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-[var(--semantic-radius-action)] py-[var(--semantic-space-subgrid-gap)] px-[var(--semantic-space-component-gap)] outline-offset-2 select-none',
+  'flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] px-[var(--semantic-space-component-gap)] outline-offset-2 select-none',
   {
     variants: {
       state: {

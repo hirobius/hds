@@ -38,7 +38,7 @@ export const Sidebar: Story = {
           // inline-ok: storybook-fixture
           style={{
             padding: 16,
-            borderRadius: 'var(--semantic-radius-action, 12px)',
+            borderRadius: 'var(--semantic-radius-action, 8px)',
             background: 'var(--semantic-color-surface-raised, #f4f4f5)',
             border: '1px solid var(--semantic-color-border-default, #d4d4d8)',
             fontSize: 13,
@@ -53,7 +53,7 @@ export const Sidebar: Story = {
             key={i}
             style={{
               height: 160,
-              borderRadius: 'var(--semantic-radius-action, 12px)',
+              borderRadius: 'var(--semantic-radius-action, 8px)',
               background: 'var(--semantic-color-surface-raised, #f4f4f5)',
               border: '1px solid var(--semantic-color-border-default, #d4d4d8)',
             }}

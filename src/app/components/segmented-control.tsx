@@ -40,7 +40,7 @@ const segmentedControlWrapperVariants = cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- rail border/radius/gap are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlRailVariants = cva(
-  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-[calc(var(--semantic-radius-action)+4px)] border border-solid border-[var(--semantic-color-border-default)] [scrollbar-width:thin]',
+  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[var(--semantic-color-border-default)] [scrollbar-width:thin]',
   {
     variants: {
       variant: {
@@ -65,7 +65,7 @@ const segmentedControlRailVariants = cva(
 // …` short-circuit.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- segment button color/spacing/motion tokens have no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlItemVariants = cva(
-  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-[var(--semantic-radius-action)] border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
   {
     variants: {
       size: {
@@ -148,7 +148,7 @@ const segmentedControlItemVariants = cva(
 // The absolutely-positioned background/ring indicator behind each segment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- indicator background/ring colors are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlIndicatorVariants = cva(
-  'pointer-events-none absolute inset-0 z-0 rounded-[var(--semantic-radius-action)] bg-transparent shadow-none',
+  'pointer-events-none absolute inset-0 z-0 rounded-md bg-transparent shadow-none',
   {
     variants: {
       variant: { primary: '', secondary: '' },

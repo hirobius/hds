@@ -400,14 +400,26 @@ describe('buildTailwindThemeExtend', () => {
     });
   });
 
-  it('radius dimension role drives borderRadius lg/md/sm with calc steps', () => {
+  it('radius dimension role drives borderRadius with md pinned to the role var', () => {
     const ext = buildTailwindThemeExtend([role('radius', 'dimension')], []);
     expect(ext.borderRadius).toEqual({
-      lg: 'var(--role-radius)',
-      md: 'calc(var(--role-radius) - 2px)',
-      sm: 'calc(var(--role-radius) - 4px)',
+      lg: 'calc(var(--role-radius) + 4px)',
+      md: 'var(--role-radius)',
+      sm: 'calc(var(--role-radius) - 2px)',
     });
     expect(ext.colors.radius).toBeUndefined();
+  });
+
+  // The invariant behind the mapping above, stated separately so it survives
+  // any future re-tuning of the lg/sm steps. `rounded-md` is what buttons and
+  // inputs use; --semantic-radius-action is what components bind directly and
+  // what DESIGN.md documents. If md is ever a calc() again the two diverge
+  // silently — which is exactly what shipped before (10px rendered against a
+  // 12px token and a 4px doc).
+  it('borderRadius.md resolves to the role radius with no arithmetic', () => {
+    const ext = buildTailwindThemeExtend([role('radius', 'dimension')], []);
+    expect(ext.borderRadius.md).toBe('var(--role-radius)');
+    expect(ext.borderRadius.md).not.toMatch(/calc\(/);
   });
 
   it('semantic shadows map by leaf name into boxShadow', () => {

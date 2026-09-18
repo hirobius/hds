@@ -1257,8 +1257,10 @@ export function buildManifest(allTokens, raw) {
  * Foreground role tokens (e.g. card-foreground) nest under their base as
  * { DEFAULT, foreground } so utilities like bg-card / text-card-foreground
  * resolve. Flat roles (background, foreground, border, input, ring) emit as
- * top-level color strings. The radius role drives borderRadius.lg/md/sm via
- * calc() steps (shadcn convention). Shadow tokens map by name into boxShadow.
+ * top-level color strings. The radius role drives borderRadius: `md` is the
+ * role radius itself and lg/sm step +4px/-2px around it, so the utility and
+ * --semantic-radius-action cannot diverge. Shadow tokens map by name into
+ * boxShadow.
  *
  * `utilityTokens` (all optional, default `[]`) surface the remaining
  * primitive/semantic scales as Tailwind utilities so `p-*`, `gap-*`, `sm:`,
@@ -1337,11 +1339,16 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
     }
   }
 
+  // One shape knob. `md` IS the role radius, so a control styled `rounded-md`
+  // and a component binding --semantic-radius-action resolve to the same
+  // number. Under the previous shadcn-style mapping (lg = role, md = role-2)
+  // they silently disagreed — buttons and inputs rendered 10px while the token
+  // and DESIGN.md both said 12px. Containers step up from actions, not down.
   const borderRadius = radiusVar
     ? {
-        lg: radiusVar,
-        md: `calc(${radiusVar} - 2px)`,
-        sm: `calc(${radiusVar} - 4px)`,
+        lg: `calc(${radiusVar} + 4px)`,
+        md: radiusVar,
+        sm: `calc(${radiusVar} - 2px)`,
       }
     : {};
 
