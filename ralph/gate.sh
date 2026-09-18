@@ -30,9 +30,9 @@ run_step node scripts/audit-tokens.mjs --full
 #
 # check-reduced-motion (#185) was red on clean main because its Layer 2 check
 # targeted src/app/App.tsx, deleted in the same migration; retargeted to
-# Layer 1 (CSS @media prefers-reduced-motion) only — see the script header
-# for why Layer 2 (JS/Motion per-component coverage, tracked in #190) isn't
-# gated yet.
+# Layer 1 (CSS @media prefers-reduced-motion) only, with Layer 2 (JS/Motion
+# per-component coverage) re-added in #190 once useHdsMotion() gave it a
+# real per-component pattern to gate on — see the script header for detail.
 #
 # check-hardcoded-colors was archived off automatic gating in #52 (ADR-018
 # §5, pre-commit friction); this re-introduces automatic gating for it via a

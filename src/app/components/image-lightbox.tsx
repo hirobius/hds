@@ -17,6 +17,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'motion/react';
 import { X } from 'lucide-react';
 import hds from '../design-system/tokens';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { AssetImg } from './asset-img';
 import { Button } from './button';
 import { Grid } from './grid';
@@ -49,6 +50,8 @@ export function Lightbox({
   captionLabel,
 }: LightboxProps) {
   const overlayInset = hds.semantic.space.layout.gap;
+  const productiveMotion = useHdsMotion('productive');
+  const spatialMotion = useHdsMotion('spatial');
 
   return (
     <Dialog.Root
@@ -66,8 +69,8 @@ export function Lightbox({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  duration: hds.motion.productive.duration,
-                  ease: hds.motion.productive.easing,
+                  duration: productiveMotion.duration,
+                  ease: productiveMotion.easing,
                 }}
                 style={{
                   position: 'fixed',
@@ -97,8 +100,8 @@ export function Lightbox({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  duration: hds.motion.productive.duration,
-                  ease: hds.motion.productive.easing,
+                  duration: productiveMotion.duration,
+                  ease: productiveMotion.easing,
                 }}
                 style={{
                   position: 'fixed',
@@ -144,8 +147,8 @@ export function Lightbox({
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.985 }}
                     transition={{
-                      duration: hds.motion.spatial.duration,
-                      ease: hds.motion.spatial.easing,
+                      duration: spatialMotion.duration,
+                      ease: spatialMotion.easing,
                     }}
                     style={{
                       width: '100%',

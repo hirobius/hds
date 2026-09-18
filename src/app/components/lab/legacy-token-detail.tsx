@@ -15,6 +15,7 @@ import { Fragment, useMemo } from 'react';
 import { ArrowUp, Search } from 'lucide-react';
 import { Icon } from '../icon';
 import hds from '../../design-system/tokens';
+import { useHdsMotion } from '../../hooks/useHdsMotion';
 import { CodeBlock } from '../code-block';
 import { InlineLink } from '../inline-link';
 import { Token } from '../token';
@@ -488,6 +489,7 @@ function LegacyTokenDetailInner({
   const mode: ThemeMode = isDark ? 'dark' : 'light';
   const traceBranches = useMemo(() => buildTraceBranches(token, mode), [token, mode]);
   const showCompositeGrid = isCompositeToken(token);
+  const productiveMotion = useHdsMotion('productive');
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -497,7 +499,7 @@ function LegacyTokenDetailInner({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.18 }}
+        transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
       >
         {showHeading ? (
           <h2

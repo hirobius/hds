@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Icon } from './icon';
 import { Stack } from './stack';
 import { Surface } from './surface';
@@ -94,6 +95,7 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
   const panelRef = useRef<HTMLDivElement>(null);
   const resolvedOpen = open ?? internalOpen;
   const state = resolvedOpen ? 'open' : 'closed';
+  const productiveMotion = useHdsMotion('productive');
 
   function handleToggle() {
     const nextOpen = !resolvedOpen;
@@ -149,8 +151,8 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
           aria-hidden="true"
           animate={{ rotate: resolvedOpen ? 0 : -90 }}
           transition={{
-            duration: hds.motion.productive.duration,
-            ease: hds.motion.productive.easing,
+            duration: productiveMotion.duration,
+            ease: productiveMotion.easing,
           }}
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
           className="inline-grid size-[var(--primitive-typography-size-base)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
@@ -168,8 +170,8 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{
-              duration: hds.motion.productive.duration,
-              ease: hds.motion.productive.easing,
+              duration: productiveMotion.duration,
+              ease: productiveMotion.easing,
             }}
             className="overflow-hidden"
           >

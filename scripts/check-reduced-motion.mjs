@@ -4,31 +4,28 @@
  *
  * Verifies that the HDS motion system respects prefers-reduced-motion:
  *
- *   Layer 1 — CSS transitions (enforced here):
+ *   Layer 1 — CSS transitions:
  *     src/styles/theme.css must contain an @media (prefers-reduced-motion: reduce)
  *     block that zeroes all --hds-duration-* custom properties.
  *
- * Layer 2 — Motion (Framer Motion) animations — NOT enforced here (#185):
- *   This check originally also required a single app root (src/app/App.tsx) to
- *   wrap its tree in <MotionConfig reducedMotion="user">. That file was removed
- *   in the ADR-018 Storybook migration (#90): this repo is a Storybook-first
- *   component library with no single app root to instrument — `motion/react`
- *   animations live per-component (src/app/components/*.tsx), each importing
- *   duration/easing from static JS token constants (src/app/design-system/
- *   tokens.ts) that are resolved once at module load and do NOT track the CSS
- *   custom properties Layer 1 zeroes at runtime, so they don't collapse under
- *   prefers-reduced-motion automatically.
+ *   Layer 2 — Motion (motion/react) animations:
+ *     A #185 audit found only 1 of 16 `motion/react`-consuming components
+ *     (theme-toggle.tsx) locally handled reduced motion (its own <MotionConfig
+ *     reducedMotion="user"> wrapper) — the other 15 read duration/easing
+ *     straight off `hds.motion.*` (src/app/design-system/tokens.ts), a plain
+ *     JS number resolved once at module load that does NOT track the CSS
+ *     custom properties Layer 1 zeroes at runtime.
  *
- *   A #185 audit found only 1 of 16 `motion/react`-consuming components
- *   (theme-toggle.tsx) locally handles this (its own <MotionConfig
- *   reducedMotion="user"> wrapper) — the other 15 have no reduced-motion
- *   handling at the JS layer. Retargeting this check to a real per-component
- *   scan would fail on that pre-existing gap, which is a separate, larger
- *   accessibility remediation across many components — out of scope for a
- *   gate-script bug fix. Tracked as a follow-up: #190.
- *
- *   Per #185's own DoD, this check now enforces Layer 1 (CSS) only until that
- *   follow-up lands a real per-component pattern to gate on.
+ *     #190 closed that gap with a token-level reactive hook instead of 15
+ *     per-component <MotionConfig> wrappers: useHdsMotion() (src/app/hooks/
+ *     useHdsMotion.ts) wraps useReducedMotion() and zeroes `duration` while
+ *     the OS preference is set — one fix point instead of many. This layer
+ *     enforces the pattern going forward: any src/app/components/**\/*.tsx
+ *     file (excluding .stories.tsx / .test.tsx) that imports from
+ *     'motion/react' may not read `hds.motion.<category>` directly — it must
+ *     go through useHdsMotion('<category>') instead. theme-toggle.tsx's own
+ *     <MotionConfig> wrapper never reads `hds.motion.*`, so it doesn't trip
+ *     this rule — it's a valid alternate pattern, just not the default one.
  *
  * Inspired by:
  *   IBM Carbon — motion.duration tokens mapped to 0ms in reduced-motion context.
@@ -42,7 +39,7 @@
  * Exempt: not applicable — this check has no per-line exemptions.
  */
 
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 
 const ROOT = process.cwd();
@@ -119,20 +116,86 @@ try {
   });
 }
 
+// ── Layer 2: JS/Motion (motion/react) reactive duration coverage (#190) ───────
+
+const MOTION_IMPORT_RE = /from\s+['"]motion\/react['"]/;
+const RAW_HDS_MOTION_RE = /hds\.motion\./;
+
+function scanComponentSource(source, label) {
+  if (!MOTION_IMPORT_RE.test(source)) return;
+  if (!RAW_HDS_MOTION_RE.test(source)) return;
+
+  failures.push({
+    file: label,
+    msg:
+      'Reads `hds.motion.*` directly while importing motion/react.\n' +
+      "       hds.motion.<category> is a static JS number — it won't collapse under\n" +
+      "       prefers-reduced-motion. Call useHdsMotion('<category>') from\n" +
+      '       src/app/hooks/useHdsMotion.ts instead, e.g.:\n\n' +
+      "         const productiveMotion = useHdsMotion('productive');\n" +
+      '         transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}',
+  });
+}
+
+function walkComponentFiles(dir, results = []) {
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return results;
+  }
+  for (const entry of entries) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walkComponentFiles(full, results);
+    } else if (
+      entry.name.endsWith('.tsx') &&
+      !entry.name.endsWith('.stories.tsx') &&
+      !entry.name.endsWith('.test.tsx')
+    ) {
+      results.push(full);
+    }
+  }
+  return results;
+}
+
+if (isFixtureMode && fixtureFile) {
+  // Same fixture file doubles as the Layer 2 scan target — its content is
+  // scanned both as (potential) theme.css text above and as a component
+  // source below, so one fixture pair can exercise both layers.
+  try {
+    const source = readFileSync(resolve(fixtureFile), 'utf-8');
+    scanComponentSource(source, fixtureFile);
+  } catch {
+    // Layer 1 above already records a "File not found" failure.
+  }
+} else {
+  const COMPONENTS_DIR = join(ROOT, 'src/app/components');
+  let statOk = true;
+  try {
+    statSync(COMPONENTS_DIR);
+  } catch {
+    statOk = false;
+  }
+  if (statOk) {
+    for (const file of walkComponentFiles(COMPONENTS_DIR)) {
+      const source = readFileSync(file, 'utf-8');
+      scanComponentSource(source, file.slice(ROOT.length + 1));
+    }
+  }
+}
+
 // ── Report ────────────────────────────────────────────────────────────────────
 
 if (failures.length === 0) {
-  console.log('\n✓ Reduced motion check passed — CSS layer covered.\n');
-  console.log(
-    '  Note: JS/Motion (motion/react) per-component reduced-motion coverage is a\n' +
-      '  known gap, not yet gated here — see #190.\n',
-  );
+  console.log('\n✓ Reduced motion check passed — CSS and motion/react layers covered.\n');
   process.exit(0);
 } else {
   console.error(`\n✗ Reduced motion check failed — ${failures.length} issue(s).\n`);
   console.error('  Motion sensitivity affects 10–35% of users.\n');
   console.error(
-    '    Layer 1: @media (prefers-reduced-motion) in theme.css — fixes CSS transitions\n',
+    '    Layer 1: @media (prefers-reduced-motion) in theme.css — fixes CSS transitions\n' +
+      '    Layer 2: useHdsMotion() instead of raw hds.motion.* — fixes motion/react animations\n',
   );
 
   for (const { file, msg } of failures) {

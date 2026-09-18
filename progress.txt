@@ -709,3 +709,70 @@ branch would close the loop visually.
 - Next: nothing outstanding on this slice. The split-out ci-scheduled
   promotion question (network-in-CI policy) remains a separate,
   human-decision issue to file later, per this issue's own scope note.
+
+## #190 — JS/Motion per-component reduced-motion coverage gap (2026-09-18)
+- Applied the accepted decision (Adrian, 2026-07-30 interview comment on the
+  issue): a token-level reactive hook, not 15 per-component MotionConfig
+  wrappers.
+- Added src/app/hooks/useReducedMotion.ts — SSR-safe
+  `prefers-reduced-motion: reduce` matchMedia hook, live-updating.
+- Added src/app/hooks/useHdsMotion.ts — wraps useReducedMotion() around
+  `hds.motion.<category>` (src/app/design-system/tokens.ts); zeroes
+  `duration` while reduced motion is active, keeps `easing` untouched.
+  Both hooks have renderHook unit tests (useReducedMotion.test.ts,
+  useHdsMotion.test.ts) mocking matchMedia per the existing
+  context.test.tsx pattern.
+- Migrated every motion/react-consuming component that read
+  `hds.motion.*` directly to call useHdsMotion() instead: alert, checkbox,
+  disclosure, doc-link-card, error-pattern, image-lightbox, radio,
+  segmented-control, slider, toggle, tooltip, lab/legacy-token-detail
+  (12 files — confirmed zero remaining `hds.motion.` matches across every
+  file that imports 'motion/react').
+  legacy-token-detail.tsx also had a separate bug — a hardcoded
+  `transition={{ duration: 0.18 }}` with no token reference at all — folded
+  into the same hook call since it's the same category of fix (productive).
+  theme-toggle.tsx untouched: it already complies via its own
+  `<MotionConfig reducedMotion="user">` wrapper (never reads hds.motion.*),
+  a valid alternate pattern the issue explicitly carved out.
+  token.tsx untouched: its motion.button has no hds.motion-derived
+  transition at all (only `whileTap={{ scale }}` with Motion's default
+  transition), and its one duration reference is already a Tailwind
+  class bound to `var(--hds-motion-productive-duration)` — already
+  Layer-1-covered, nothing to migrate.
+- Extended scripts/check-reduced-motion.mjs with Layer 2: any
+  src/app/components/**/*.tsx file (excluding .stories.tsx/.test.tsx) that
+  imports from 'motion/react' and still reads `hds.motion.` directly now
+  fails the gate. Fixture mode scans the same FIXTURE_FILE for both layers
+  (CSS-block text + component source), so the existing single fixture pair
+  proves both. Updated fixtures/check-reduced-motion/{passing,violating}
+  to exercise Layer 2 too (passing now demonstrates useHdsMotion()).
+  Updated the registry.json description and the ralph/gate.sh comment
+  that referenced Layer 2 as ungated.
+- NOT touched (found while grepping `hds.motion.` repo-wide, flagged as a
+  follow-up, not folded in — different bug shape, different file set, and
+  pulling it in would blow "smallest complete slice"): morph-card.tsx,
+  history-card.tsx, shell-controls.tsx, lab/token-list.tsx, card.tsx,
+  stepper-field.tsx, health-rail.tsx all build a plain CSS `transition`
+  *string* by interpolating `hds.motion.*.duration` as a raw number
+  (`` `transform ${hds.motion.productive.duration}s` ``) instead of
+  referencing the CSS custom property (`var(--hds-motion-productive-duration)`)
+  that Layer 1 already zeroes — none of them import motion/react, so
+  useHdsMotion() doesn't apply; the actual fix is swapping the string
+  interpolation for the CSS var, which needs its own issue.
+- Verified: bash ralph/gate.sh green (manifest:generate, audit-tokens
+  --full, contrast/focus/colors/motion gates, typecheck, 131 test files /
+  1702 tests / 8 skipped, lint 0 warnings). Also spot-checked
+  node scripts/validate-fixture-proof-of-firing.mjs --verbose reports
+  check-reduced-motion as REAL/PASS.
+- Files changed: src/app/hooks/useReducedMotion.ts (new),
+  src/app/hooks/useReducedMotion.test.ts (new),
+  src/app/hooks/useHdsMotion.ts (new), src/app/hooks/useHdsMotion.test.ts
+  (new), src/app/components/{alert,checkbox,disclosure,doc-link-card,
+  error-pattern,image-lightbox,radio,segmented-control,slider,toggle,
+  tooltip}.tsx, src/app/components/lab/legacy-token-detail.tsx,
+  scripts/check-reduced-motion.mjs,
+  fixtures/check-reduced-motion/{passing,violating}.example.tsx,
+  docs/guardrails/registry.json, ralph/gate.sh.
+- Next: file a follow-up issue for the 7 plain-CSS-string files listed
+  above (JS-string reduced-motion gap, distinct from #190's motion/react
+  scope).
