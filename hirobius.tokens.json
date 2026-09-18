@@ -1452,7 +1452,7 @@
       "component": {
         "gap": {
           "$value": "{primitive.space.2}",
-          "$description": "8px label\u2194input rhythm and closely coupled control spacing."
+          "$description": "8px label↔input rhythm and closely coupled control spacing."
         },
         "medium": {
           "$value": "{primitive.space.3}",
@@ -1578,7 +1578,7 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "8-style Swiss-canon type ramp: display, h1\u2013h3, body, small, caption, mono.",
+      "$description": "8-style Swiss-canon type ramp: display, h1–h3, body, small, caption, mono.",
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
@@ -1591,7 +1591,7 @@
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(40px, 8vw, 72px)",
-            "note": "Figma stores the 72px desktop-max static value. Browser CSS overrides with fluid scaling (40px min \u2192 72px max). See src/styles/theme.css."
+            "note": "Figma stores the 72px desktop-max static value. Browser CSS overrides with fluid scaling (40px min → 72px max). See src/styles/theme.css."
           }
         }
       },
@@ -1607,7 +1607,7 @@
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(32px, 6vw, 48px)",
-            "note": "Figma stores the 48px desktop-max static value. Browser CSS overrides with fluid scaling (32px min \u2192 48px max). See src/styles/theme.css."
+            "note": "Figma stores the 48px desktop-max static value. Browser CSS overrides with fluid scaling (32px min → 48px max). See src/styles/theme.css."
           }
         }
       },
@@ -1623,7 +1623,7 @@
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(24px, 3.5vw, 30px)",
-            "note": "Figma stores the 30px desktop-max static value. Browser CSS overrides with fluid scaling (24px min \u2192 30px max). See src/styles/theme.css."
+            "note": "Figma stores the 30px desktop-max static value. Browser CSS overrides with fluid scaling (24px min → 30px max). See src/styles/theme.css."
           }
         }
       },
@@ -1639,7 +1639,7 @@
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(18px, 2vw, 20px)",
-            "note": "Figma stores the 20px desktop-max static value. Browser CSS overrides with fluid scaling (18px min \u2192 20px max). See src/styles/theme.css."
+            "note": "Figma stores the 20px desktop-max static value. Browser CSS overrides with fluid scaling (18px min → 20px max). See src/styles/theme.css."
           }
         }
       },
@@ -1723,15 +1723,15 @@
         "$type": "dimension",
         "section": {
           "$value": "{primitive.space.12}",
-          "$description": "48px between H2 sections \u2014 generous section break for doc pages."
+          "$description": "48px between H2 sections — generous section break for doc pages."
         },
         "paragraph": {
           "$value": "{primitive.space.6}",
-          "$description": "24px between paragraphs \u2014 comfortable prose rhythm for long-form doc content."
+          "$description": "24px between paragraphs — comfortable prose rhythm for long-form doc content."
         },
         "inline": {
           "$value": "{primitive.space.2}",
-          "$description": "8px inline cluster spacing \u2014 gap between metadata badges, inline icons, doc-page chips."
+          "$description": "8px inline cluster spacing — gap between metadata badges, inline icons, doc-page chips."
         }
       }
     },
@@ -1837,8 +1837,8 @@
     "radius": {
       "action": {
         "$type": "dimension",
-        "$value": "{primitive.radius.12}",
-        "$description": "Corner radius for interactive action elements like buttons and inputs."
+        "$value": "{primitive.radius.8}",
+        "$description": "The shape knob. Corner radius for interactive action elements (buttons, inputs, badges, alerts, segmented items). Tailwind's rounded-md resolves to exactly this value via --role-radius; containers are one step above it at rounded-lg. Override role.radius in a tenant overlay to reshape the whole system from one value."
       }
     },
     "borderWidth": {

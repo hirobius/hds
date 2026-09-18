@@ -18,7 +18,7 @@
 | Font              | Satoshi (self-hosted) + Geist Mono (monospace)               |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
-| Action radius     | `12px` (`semantic.radius.action`) for interactive controls   |
+| Action radius     | `8px` (`semantic.radius.action`) for interactive controls    |
 | Card corners      | `8px` (`primitive.radius.8`)                                 |
 | Motion philosophy | Depth via interaction (BulgeCard parallax), not drop shadows |
 
