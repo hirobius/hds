@@ -267,7 +267,8 @@
     "watch:metrics": "nodemon --watch src/app/components --watch src/app/pages --watch src/app/design-system --watch src/app/styles -e tsx,ts,css --exec \"node scripts/audit-tokens.mjs --full && node scripts/generate-manifest.mjs\"",
     "prebuild-storybook": "node scripts/generate-component-api.mjs",
     "prestorybook": "node scripts/generate-component-api.mjs",
-    "pretypecheck": "node scripts/audit-tokens.mjs --report-only"
+    "pretypecheck": "node scripts/audit-tokens.mjs --report-only",
+    "preview:build": "vite build --config preview/vite.config.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.18",

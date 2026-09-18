@@ -140,3 +140,7 @@ ralph/runs.jsonl
 ralph/logs/
 ralph/.lock
 verdict.json
+
+# Preview bench build output (pnpm preview:build regenerates it)
+preview/dist/
+preview/publish/

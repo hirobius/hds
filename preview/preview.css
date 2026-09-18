@@ -1,0 +1,225 @@
+/* Preview chrome. Deliberately NOT token-driven: the rail and readout must stay
+   stable while the stage reskins, or you cannot tell what changed. */
+:root {
+  --pv-bg: #fafafa;
+  --pv-surface: #fff;
+  --pv-fg: #141414;
+  --pv-dim: #6b6b6b;
+  --pv-rule: #e6e6e6;
+  --pv-accent: #1e2efd;
+  --pv-warn: #b91c1c;
+  --pv-ok: #047857;
+  --pv-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --pv-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --pv-bg: #0d0d0d;
+    --pv-surface: #171717;
+    --pv-fg: #f2f2f2;
+    --pv-dim: #a3a3a3;
+    --pv-rule: #2e2e2e;
+    --pv-accent: #7b85ff;
+    --pv-warn: #f87171;
+    --pv-ok: #34d399;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --pv-bg: #0d0d0d;
+  --pv-surface: #171717;
+  --pv-fg: #f2f2f2;
+  --pv-dim: #a3a3a3;
+  --pv-rule: #2e2e2e;
+  --pv-accent: #7b85ff;
+  --pv-warn: #f87171;
+  --pv-ok: #34d399;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--pv-bg);
+  color: var(--pv-fg);
+  font: 15px/1.6 var(--pv-sans);
+  -webkit-font-smoothing: antialiased;
+}
+.pv {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 40px 16px 96px;
+}
+.pv-head h1 {
+  font-size: clamp(26px, 5vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0 0 10px;
+}
+.pv-eyebrow {
+  font: 600 11px/1 var(--pv-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pv-dim);
+  margin: 0 0 10px;
+}
+.pv-lede {
+  color: var(--pv-dim);
+  max-width: 46rem;
+  margin: 0;
+}
+.pv-lede code,
+.pv-foot code {
+  font: 0.85em var(--pv-mono);
+  background: color-mix(in srgb, var(--pv-fg) 8%, transparent);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.pv-rail {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  margin: 28px 0 24px;
+  padding: 14px 16px;
+  background: var(--pv-surface);
+  border: 1px solid var(--pv-rule);
+  border-radius: 10px;
+}
+.pv-rail label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 10px/1 var(--pv-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pv-dim);
+}
+.pv-rail select {
+  font: 500 13px/1 var(--pv-sans);
+  padding: 7px 9px;
+  border-radius: 6px;
+  border: 1px solid var(--pv-rule);
+  background: var(--pv-bg);
+  color: var(--pv-fg);
+}
+.pv-slider input[type='range'] {
+  width: 130px;
+  accent-color: var(--pv-accent);
+}
+.pv-val {
+  font: 600 12px/1 var(--pv-mono);
+  color: var(--pv-fg);
+  min-width: 44px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.pv-reset {
+  font: 600 10px/1 var(--pv-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--pv-rule);
+  background: transparent;
+  color: var(--pv-dim);
+  padding: 5px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pv-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 17rem;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .pv-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The stage carries data-hds, so HDS owns everything inside it. */
+.pv-stage {
+  background: var(--pv-surface);
+  border: 1px solid var(--pv-rule);
+  border-radius: 10px;
+  padding: 8px 24px 28px;
+  min-width: 0;
+}
+.pv-sec {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--pv-rule);
+}
+.pv-sec:last-child {
+  border-bottom: 0;
+}
+.pv-sec h2 {
+  font: 600 10px/1 var(--pv-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pv-dim);
+  margin: 0 0 16px;
+}
+.pv-sec-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.pv-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+.pv-grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 14px;
+}
+
+.pv-measure {
+  position: sticky;
+  top: 86px;
+  background: var(--pv-surface);
+  border: 1px solid var(--pv-rule);
+  border-radius: 10px;
+  padding: 16px;
+}
+.pv-measure dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px 10px;
+  margin: 0;
+  font-size: 12px;
+}
+.pv-measure dt {
+  font: 400 11px/1.5 var(--pv-mono);
+  color: var(--pv-dim);
+}
+.pv-measure dd {
+  margin: 0;
+  font: 600 11px/1.5 var(--pv-mono);
+  text-align: right;
+  word-break: break-all;
+}
+.pv-measure dd.warn {
+  color: var(--pv-warn);
+}
+.pv-measure dd.ok {
+  color: var(--pv-ok);
+}
+.pv-foot {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--pv-rule);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--pv-dim);
+}
