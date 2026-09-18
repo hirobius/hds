@@ -11,6 +11,7 @@ import { cva } from 'class-variance-authority';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 
 /** HdsRadio — radio button with animated selection indicator. */
@@ -86,11 +87,13 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
     disabled,
     frozenState: frozenState as InteractionVisualState | null,
   });
+  const productiveMotion = useHdsMotion('productive');
+  const expressiveMotion = useHdsMotion('expressive');
 
   return (
     <motion.label
       whileTap={isDisabled ? undefined : { scale: 0.99 }}
-      transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
     >
       <input
         ref={ref}
@@ -141,8 +144,8 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
               : 'var(--semantic-color-content-secondary)',
         }}
         transition={{
-          duration: hds.motion.productive.duration,
-          ease: hds.motion.productive.easing,
+          duration: productiveMotion.duration,
+          ease: productiveMotion.easing,
         }}
       >
         {checked && (
@@ -151,8 +154,8 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.4, opacity: 0 }}
             transition={{
-              duration: hds.motion.expressive.duration,
-              ease: hds.motion.productive.easing,
+              duration: expressiveMotion.duration,
+              ease: productiveMotion.easing,
             }}
             className={radioDotVariants({ disabled: isDisabled })}
           />
@@ -163,8 +166,8 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
           x: isPressed ? hds.space.px1 : 0,
         }}
         transition={{
-          duration: hds.motion.productive.duration,
-          ease: hds.motion.productive.easing,
+          duration: productiveMotion.duration,
+          ease: productiveMotion.easing,
         }}
         style={{
           ...hds.typeStyles.ui,

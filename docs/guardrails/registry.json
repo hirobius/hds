@@ -475,7 +475,7 @@
     },
     {
       "id": "check-reduced-motion",
-      "description": "Verifies that the HDS motion system respects prefers-reduced-motion via CSS transitions (theme.css @media block). JS/Motion (motion/react) per-component coverage is a known gap, not yet gated here — see #190.",
+      "description": "Verifies that the HDS motion system respects prefers-reduced-motion: Layer 1 is CSS transitions (theme.css @media block); Layer 2 is motion/react components, which must read duration/easing via useHdsMotion() rather than the raw hds.motion.* token object (#190).",
       "severity": "warn",
       "gateScript": "scripts/check-reduced-motion.mjs",
       "fixturePath": "fixtures/check-reduced-motion",

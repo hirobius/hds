@@ -1,7 +1,12 @@
-// passing: includes @media (prefers-reduced-motion) block with all required vars.
-// (MotionConfig below illustrates the theme-toggle.tsx best-practice pattern for
-// JS animations — not gated by this check since #185; see #190.)
-import { MotionConfig, motion } from 'motion/react';
+// passing: includes @media (prefers-reduced-motion) block with all required
+// vars (Layer 1), and reads motion timing through useHdsMotion() instead of
+// the raw token object, so `duration` collapses under prefers-reduced-motion
+// without a per-component <MotionConfig> wrapper (Layer 2, #190).
+// (theme-toggle.tsx's own <MotionConfig reducedMotion="user"> wrapper is a
+// valid alternate pattern too — it just never reads the raw token object
+// directly, so it wouldn't trip Layer 2 either.)
+import { motion } from 'motion/react';
+import { useHdsMotion } from '../../src/app/hooks/useHdsMotion';
 
 /*
  * theme.css reduced-motion block (inline for fixture scanning):
@@ -21,11 +26,14 @@ import { MotionConfig, motion } from 'motion/react';
  */
 
 export function App() {
+  const productiveMotion = useHdsMotion('productive');
+
   return (
-    <MotionConfig reducedMotion="user">
-      <motion.div animate={{ opacity: 1 }}>
-        <p>CSS custom properties above zero out durations under prefers-reduced-motion.</p>
-      </motion.div>
-    </MotionConfig>
+    <motion.div
+      animate={{ opacity: 1 }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+    >
+      <p>useHdsMotion() zeroes duration under prefers-reduced-motion.</p>
+    </motion.div>
   );
 }
