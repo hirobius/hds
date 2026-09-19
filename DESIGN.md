@@ -81,12 +81,12 @@ Depth is communicated through 4 elevation roles bundled by `semantic.elevation.*
 
 ### Elevation roles
 
-| Surface | Role token | Background | Shadow | Border |
-| --- | --- | --- | --- | --- |
-| Card / panel resting | `semantic.elevation.flat` | `surface.page` | none | `border.subtle` 1px |
-| Card / panel lifted (interactive only) | `semantic.elevation.raised` | `surface.raised` | `shadow.subtle` | none |
-| Popover / dropdown / tooltip | `semantic.elevation.floating` | `surface.raised` | `shadow.floating` | none |
-| Dialog / sheet / modal | `semantic.elevation.overlay` | `surface.overlay` | `shadow.overlay` | none |
+| Surface                                | Role token                    | Background        | Shadow            | Border              |
+| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | ------------------- |
+| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | `border.subtle` 1px |
+| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                |
+| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                |
+| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                |
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
@@ -137,16 +137,16 @@ See `public/hds-manifest.json` and `src/app/data/component-api.json` for the ful
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
 
-| Property | Required value | Forbidden |
-| --- | --- | --- |
-| Background | `var(--semantic-color-surface-raised)` | Any gradient, tinted fill, or custom color |
-| Border | `1px solid var(--semantic-color-border-default)` | `box-shadow` as an elevation substitute |
-| Border radius | `var(--primitive-radius-8)` (8 px) | 12 px, 16 px, 20 px, `rounded-full`, or any other value |
-| Padding | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">` | Raw pixel values or ad hoc insets |
-| Shadow | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
-| Title | `hds.typeStyles.heading3` / `<HdsText variant="heading3">` | Any other type style for the primary card heading |
-| Subtitle / meta | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)` | Primary content color or body size for secondary text |
-| Hover (interactive only) | `transform: scale(1.02)` | Background fill change, border color shift, or opacity fade on hover |
+| Property                 | Required value                                                                                           | Forbidden                                                                                   |
+| ------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Background               | `var(--semantic-color-surface-raised)`                                                                   | Any gradient, tinted fill, or custom color                                                  |
+| Border                   | `1px solid var(--semantic-color-border-default)`                                                         | `box-shadow` as an elevation substitute                                                     |
+| Border radius            | `var(--primitive-radius-8)` (8 px)                                                                       | 12 px, 16 px, 20 px, `rounded-full`, or any other value                                     |
+| Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                          | Raw pixel values or ad hoc insets                                                           |
+| Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
+| Title                    | `hds.typeStyles.heading3` / `<HdsText variant="heading3">`                                               | Any other type style for the primary card heading                                           |
+| Subtitle / meta          | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)`                                     | Primary content color or body size for secondary text                                       |
+| Hover (interactive only) | `transform: scale(1.02)`                                                                                 | Background fill change, border color shift, or opacity fade on hover                        |
 
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
