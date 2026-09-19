@@ -33,6 +33,15 @@ function collectTsxFiles(dir) {
 
   for (const entry of readdirSync(dir)) {
     if (SKIP_DIRS.has(entry)) continue;
+    // `__`-prefixed files are test scaffolding, never components. tests/
+    // check-source-canon.test.ts writes `__test-data-tenant-fixture.tsx` into
+    // the real src/app/components/ (it has to -- the gate only scans that
+    // tree), then deletes it. This walker runs concurrently under vitest, so
+    // it could list the file and then fail with ENOENT reading it a moment
+    // later: an intermittent failure in a test that has nothing to do with
+    // the fixture. Skipping the prefix also keeps scaffolding out of the
+    // generated manifest, which is correct independently of the race.
+    if (entry.startsWith('__')) continue;
 
     const fullPath = join(dir, entry);
     const stat = statSync(fullPath);
