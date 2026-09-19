@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-19T09:37:43.629Z",
+  "generated": "2026-09-19T10:20:49.303Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -11235,6 +11235,18 @@
         }
       },
       {
+        "path": "semantic.color.border.interactive",
+        "cssVar": "--semantic-color-border-interactive",
+        "type": "color",
+        "description": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
+        "alias": "{primitive.color.neutral.500}",
+        "resolvedValue": "#737373",
+        "dark": {
+          "alias": "{primitive.color.neutral.500}",
+          "resolvedValue": "#737373"
+        }
+      },
+      {
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
@@ -12495,24 +12507,24 @@
         "cssVar": "--component-button-secondary-border-rest",
         "type": "color",
         "description": "Secondary button border.",
-        "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "alias": "{semantic.color.border.interactive}",
+        "resolvedValue": "#737373"
       },
       {
         "path": "component.button.secondary.border.hover",
         "cssVar": "--component-button-secondary-border-hover",
         "type": "color",
         "description": "Secondary button hover border.",
-        "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "alias": "{semantic.color.border.interactive}",
+        "resolvedValue": "#737373"
       },
       {
         "path": "component.button.secondary.border.pressed",
         "cssVar": "--component-button-secondary-border-pressed",
         "type": "color",
         "description": "Secondary button pressed border.",
-        "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "alias": "{semantic.color.border.interactive}",
+        "resolvedValue": "#737373"
       },
       {
         "path": "component.button.secondary.border.disabled",
@@ -12548,8 +12560,8 @@
         "path": "component.input.border",
         "cssVar": "--component-input-border",
         "type": "color",
-        "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "alias": "{semantic.color.border.interactive}",
+        "resolvedValue": "#737373"
       },
       {
         "path": "component.input.borderError",
@@ -12765,8 +12777,8 @@
         "cssVar": "--role-input",
         "type": "color",
         "description": "Input field border. shadcn role: input.",
-        "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "alias": "{semantic.color.border.interactive}",
+        "resolvedValue": "#737373"
       },
       {
         "path": "role.ring",

@@ -194,7 +194,7 @@
     },
     {
       "id": "check-contrast",
-      "description": "WCAG 2.1 contrast ratio checker for HDS semantic color pairs. Reads hirobius.tokens.json, resolves primitive + semantic color aliases, and reports contrast ratios for critical text/bg pairings in both light and dark mode.",
+      "description": "WCAG 2.1 contrast ratio checker for HDS semantic color pairs. Reads hirobius.tokens.json, resolves primitive + semantic color aliases, and reports contrast ratios for critical text/bg pairings in both light and dark mode. Also gates a non-text tier (§1.4.11, 3:1) for border tokens that bound an interactive control's only affordance (#230).",
       "severity": "warn",
       "gateScript": "scripts/check-contrast.mjs",
       "fixturePath": "fixtures/check-contrast",
