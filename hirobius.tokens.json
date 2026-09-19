@@ -551,16 +551,16 @@
         },
         "5xl": {
           "$value": {
-            "value": 80,
-            "unit": "px"
-          }
-        },
-        "7xl": {
-          "$value": {
             "value": 72,
             "unit": "px"
           },
           "$description": "Swiss-canon display size. Static desktop value; fluid in theme.css."
+        },
+        "6xl": {
+          "$value": {
+            "value": 80,
+            "unit": "px"
+          }
         }
       },
       "weight": {
@@ -1585,7 +1585,7 @@
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.7xl}",
+          "fontSize": "{primitive.typography.size.5xl}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.none}"

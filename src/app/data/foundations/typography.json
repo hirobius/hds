@@ -173,7 +173,7 @@
   "typeScale": [
     {
       "key": "display",
-      "sizeToken": "primitive.typography.size.7xl",
+      "sizeToken": "primitive.typography.size.5xl",
       "weightToken": "primitive.typography.weight.medium",
       "lhToken": "primitive.typography.lineHeight.none",
       "lsToken": "primitive.typography.letterSpacing.tight",
@@ -255,7 +255,7 @@
     { "key": "3xl", "token": "primitive.typography.size.3xl" },
     { "key": "4xl", "token": "primitive.typography.size.4xl" },
     { "key": "5xl", "token": "primitive.typography.size.5xl" },
-    { "key": "7xl", "token": "primitive.typography.size.7xl" }
+    { "key": "6xl", "token": "primitive.typography.size.6xl" }
   ],
   "fontWeights": [
     { "key": "light", "token": "primitive.typography.weight.light" },

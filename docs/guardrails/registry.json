@@ -686,7 +686,7 @@
     },
     {
       "id": "check-token-structure",
-      "description": "Validates hirobius.tokens.json for structural correctness. Catches cross-tier aliasing and theme coverage gaps.",
+      "description": "Validates hirobius.tokens.json for structural correctness. Catches cross-tier aliasing, theme coverage gaps, and non-monotonic ordered (t-shirt-size) scales.",
       "severity": "warn",
       "gateScript": "scripts/check-token-structure.mjs",
       "fixturePath": "fixtures/check-token-structure",
