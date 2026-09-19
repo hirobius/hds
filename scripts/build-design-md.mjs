@@ -139,8 +139,40 @@ export function buildTypography(raw) {
     `- **Mono font**: ${mono}. Reserved for tokens, code, technical callouts, and metric readouts.`,
   );
   lines.push('');
+  // Derived, not asserted. This sentence used to be a string literal sitting
+  // directly above a token-derived table it contradicted (headings were
+  // claimed 500 while the ramp resolved 700). Read the weights off the same
+  // tokens the table uses so the two cannot drift apart again.
+  const weightOf = (role) => {
+    const node = semanticTypography?.[role];
+    const val = node?.$value?.fontWeight ?? node?.fontWeight;
+    return val === undefined ? undefined : lookup(val, weightMap);
+  };
+  const nameOfWeight = (w) =>
+    Object.keys(weightMap).find((k) => String(weightMap[k]) === String(w)) ?? String(w);
+  const uniq = (arr) => [...new Set(arr.filter((v) => v !== undefined).map(String))];
+
+  const declared = Object.keys(weightMap)
+    .sort((a, b) => Number(weightMap[a]) - Number(weightMap[b]))
+    .map((k) => `\`${weightMap[k]}\` ${k}`)
+    .join(', ');
+  const headingW = uniq(['display', 'h1', 'h2', 'h3'].map(weightOf));
+  const bodyW = uniq(['body', 'ui', 'caption'].map(weightOf));
+  const phrase = (ws) =>
+    ws.length === 1
+      ? `\`${ws[0]}\` ${nameOfWeight(ws[0])}`
+      : ws.map((w) => `\`${w}\` ${nameOfWeight(w)}`).join(' / ');
+  const usedWeights = new Set([...headingW, ...bodyW]);
+  const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(String(weightMap[k])));
+
   lines.push(
-    'Weights in use: `400` regular, `500` medium, `600` semibold, `700` bold. All heading styles (display · h1 · h2 · h3) use `500` medium. Body, small, and caption use `400` regular.',
+    `Weights declared: ${declared}. Heading styles (display · h1 · h2 · h3) use ` +
+      `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}.` +
+      (unused.length
+        ? ` Declared but unused by any semantic role: ${unused
+            .map((k) => `\`${weightMap[k]}\` ${k}`)
+            .join(', ')}.`
+        : ''),
   );
   lines.push('');
   lines.push('### Type ramp');

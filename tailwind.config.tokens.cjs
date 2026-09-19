@@ -44,9 +44,9 @@ const config = {
         ring: 'var(--role-ring)',
       },
       borderRadius: {
-        lg: 'var(--role-radius)',
-        md: 'calc(var(--role-radius) - 2px)',
-        sm: 'calc(var(--role-radius) - 4px)',
+        lg: 'calc(var(--role-radius) + 4px)',
+        md: 'var(--role-radius)',
+        sm: 'calc(var(--role-radius) - 2px)',
       },
       boxShadow: {
         subtle: 'var(--semantic-shadow-subtle)',

@@ -32,7 +32,7 @@ HDS ships three typefaces — each with a distinct and exclusive role:
 - **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: Geist Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights in use: `400` regular, `500` medium, `600` semibold, `700` bold. All heading styles (display · h1 · h2 · h3) use `500` medium. Body, small, and caption use `400` regular.
+Weights declared: `300` light, `400` regular, `500` medium, `600` semibold, `700` bold. Heading styles (display · h1 · h2 · h3) use `700` bold; body, UI, and caption use `500` medium. Declared but unused by any semantic role: `300` light, `400` regular, `600` semibold.
 
 ### Type ramp
 
@@ -64,12 +64,12 @@ Use `primitive.space.*` for layout rhythm, padding, and gaps. Use `semantic.spac
 
 ## Corner-Radius Policy
 
-Interactive controls use a restrained `4px` radius via the action radius token, containers trend to `8px` as the current system default, and `full` radius is reserved for pills or circular forms; `0px` should only appear on intentional outer canvas or substrate boundaries, not on everyday UI controls.
+Shape is one knob. `semantic.radius.action` is the system's single shape value — interactive controls (buttons, inputs, badges, alerts, segmented items) all resolve to it, and Tailwind's `rounded-md` maps to it exactly so the utility and the token cannot disagree. Containers sit one step above at `rounded-lg` (`action + 4px`); `rounded-sm` (`action - 2px`) is for chrome nested inside a control. `full` is reserved for pills and circular forms, and `0px` only for intentional outer canvas or substrate boundaries, never everyday UI controls. Reshaping the whole system means overriding `role.radius` in one tenant overlay — that is how `brutalist-demo` goes square in a single value.
 
 <!-- auto:start:radius -->
 | Tier | Value | Token | Applies to |
 | --- | --- | --- | --- |
-| Action | `12px` | `semantic.radius.action` | Buttons, inputs, badges, alerts, disclosures, segmented control items |
+| Action | `8px` | `semantic.radius.action` | Buttons, inputs, badges, alerts, disclosures, segmented control items |
 | Container | `8px` | `primitive.radius.8` | Cards, segmented control surface, modal/sheet containers |
 | Full | `9999px` | `primitive.radius.full` | Pills, avatars, indicator dots, any intentionally circular form |
 | Zero | `0px` | `primitive.radius.0` | Outer canvas / substrate boundaries only — never on everyday UI controls |
@@ -121,14 +121,14 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 <!-- auto:start:components -->
 | Component | Radius | States | Guidance |
 | --- | --- | --- | --- |
-| **Buttons** | `12px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Icon buttons (`IconButton`) follow the same token surface. |
-| **Inputs** | `12px` (`semantic.radius.action`) | default · focus · filled · error · disabled · loading | Border-driven treatment; no filled background by default. Focus uses `semantic.color.border.accent` plus a 2px outline offset. Error swaps to `component.input.borderError`. |
+| **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Icon buttons (`IconButton`) follow the same token surface. |
+| **Inputs** (`Input`) | `8px` (`semantic.radius.action`) | default · focus · filled · error · disabled · loading | Border-driven treatment; no filled background by default. Focus uses `semantic.color.border.accent` plus a 2px outline offset. Error swaps to `component.input.borderError`. |
 | **Cards** (`Card`) | `8px` (`primitive.radius.8`) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `var(--primitive-radius-8)` (8 px) — never 12/16/20 px. Padding: `var(--semantic-space-component-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
-| **Badges** (`Badge`) | `12px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
-| **Alerts** (`Alert`) | `12px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by left-border color, not by tinted fills. |
-| **Disclosures** (`Disclosure`) | `12px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
+| **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
+| **Alerts** (`Alert`) | `8px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by left-border color, not by tinted fills. |
+| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
 | **Toggles** (`HdsToggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
-| **Segmented Control** (`SegmentedControl`) | Outer `8px` · inner segments `12px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `HdsSelect`. |
+| **Segmented Control** (`SegmentedControl`) | Outer `8px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `HdsSelect`. |
 
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->

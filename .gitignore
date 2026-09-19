@@ -1,4 +1,7 @@
 node_modules/
+# Also match a bare `node_modules` symlink: the trailing-slash pattern above
+# matches only a directory, so a symlink of that name slips through `git add -A`.
+node_modules
 dist/
 temp/
 .ssr-cache/
@@ -140,3 +143,7 @@ ralph/runs.jsonl
 ralph/logs/
 ralph/.lock
 verdict.json
+
+# Preview bench build output (pnpm preview:build regenerates it)
+preview/dist/
+preview/publish/
