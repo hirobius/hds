@@ -11,6 +11,7 @@ import { cva } from 'class-variance-authority';
 import { Check, Minus } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 import { Icon } from './icon';
 
@@ -148,11 +149,12 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
   const glyphColor = isDisabled
     ? 'var(--semantic-color-content-disabled)'
     : 'var(--semantic-color-content-onAccent)';
+  const productiveMotion = useHdsMotion('productive');
 
   return (
     <motion.label
       whileTap={isDisabled ? undefined : { scale: 0.99 }}
-      transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
       onMouseEnter={handlers.onMouseEnter}
       onMouseLeave={handlers.onMouseLeave}
       onPointerDown={handlers.onPointerDown}
@@ -186,15 +188,15 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
         aria-hidden="true"
         animate={{ scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1 }}
         transition={{
-          duration: hds.motion.productive.duration,
-          ease: hds.motion.productive.easing,
+          duration: productiveMotion.duration,
+          ease: productiveMotion.easing,
         }}
         className={checkboxGlyphVariants({ state: visualState, on: isOn })}
         // motion-ok: background-color/border-color swap on state change; the CSS
         // transition (not a framer `animate` target) is left inline so the color
         // fade keeps working even though the colors themselves now live in cva.
         style={{
-          transition: `background-color ${hds.motion.productive.duration}s ease, border-color ${hds.motion.productive.duration}s ease`,
+          transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
         }}
       >
         {indeterminate ? (
@@ -207,8 +209,8 @@ export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function 
         className="text-secondary"
         animate={{ x: isPressed ? hds.space.px1 : 0 }}
         transition={{
-          duration: hds.motion.productive.duration,
-          ease: hds.motion.productive.easing,
+          duration: productiveMotion.duration,
+          ease: productiveMotion.easing,
         }}
         style={{
           ...hds.typeStyles.ui,

@@ -125,9 +125,24 @@ function main() {
   let scanned = 0;
   let missingSource = 0;
 
+  // Exact, case-SENSITIVE filename set. fs.existsSync() answers
+  // case-insensitively on Windows and macOS, so `Tag.tsx` resolved to the
+  // real `tag.tsx` there and this gate reported drift that Linux CI never
+  // sees — a platform split, not a finding. Matching against the real
+  // directory listing makes every platform agree with Linux.
+  //
+  // NOTE: agreeing with Linux means agreeing that most specs are SKIPPED.
+  // Manifest names are PascalCase while 197 of 200 component files are
+  // kebab-case (post-5bc184ea rename), so `${name}.tsx` misses and the
+  // `N spec(s) had slots[] but no matching .tsx` line below is this gate
+  // reporting how little it actually checks. Making it match for real would
+  // un-hide genuine drift (Tag alone has 5 unbound tokens) and is a scoped
+  // piece of work, not a drive-by — tracked separately.
+  const actualFiles = new Set(fs.existsSync(COMPONENTS_DIR) ? fs.readdirSync(COMPONENTS_DIR) : []);
+
   for (const [name, spec] of inScope) {
     const sourcePath = path.join(COMPONENTS_DIR, `${name}.tsx`);
-    if (!fs.existsSync(sourcePath)) {
+    if (!actualFiles.has(`${name}.tsx`)) {
       missingSource += 1;
       continue;
     }

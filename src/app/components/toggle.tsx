@@ -11,6 +11,7 @@ import { cva } from 'class-variance-authority';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 
 /** HdsToggle — boolean on/off toggle with animated thumb. */
@@ -81,11 +82,12 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
     disabled,
     frozenState: frozenState as InteractionVisualState | null,
   });
+  const productiveMotion = useHdsMotion('productive');
 
   return (
     <motion.label
       whileTap={isDisabled ? undefined : { scale: 0.99 }}
-      transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
       onMouseEnter={handlers.onMouseEnter}
       onMouseLeave={handlers.onMouseLeave}
       onPointerDown={handlers.onPointerDown}
@@ -101,8 +103,8 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
           scale: isPressed ? 0.96 : isHover || isFocused ? 1.04 : 1,
         }}
         transition={{
-          duration: hds.motion.productive.duration,
-          ease: hds.motion.productive.easing,
+          duration: productiveMotion.duration,
+          ease: productiveMotion.easing,
         }}
         className="inline-flex shrink-0"
       >
@@ -130,8 +132,8 @@ export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsT
           x: isPressed ? hds.space.px1 : 0,
         }}
         transition={{
-          duration: hds.motion.productive.duration,
-          ease: hds.motion.productive.easing,
+          duration: productiveMotion.duration,
+          ease: productiveMotion.easing,
         }}
         style={{
           ...hds.typeStyles.ui,
