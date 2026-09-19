@@ -105,8 +105,32 @@ async function nextReadme(root, collected) {
 }
 
 /**
+ * First line that differs between two texts, as a reviewable diff fragment.
+ * `readmeUpToDate` on its own asserts to `expected false to be true`, which
+ * names neither the file nor what moved — hds#229 was root-caused by hand
+ * because of it. The section is regenerated from the manifest, so a stale
+ * count here usually means the manifest was written by a chain that skipped
+ * enrichment.
+ *
+ * @param {string} current
+ * @param {string} next
+ * @returns {string | null}
+ */
+function firstDifference(current, next) {
+  if (current === next) return null;
+  const a = current.split('\n');
+  const b = next.split('\n');
+  for (let i = 0; i < Math.max(a.length, b.length); i += 1) {
+    if (a[i] !== b[i]) {
+      return `README.md line ${i + 1}:\n  committed:   ${a[i] ?? '(end of file)'}\n  regenerated: ${b[i] ?? '(end of file)'}`;
+    }
+  }
+  return '(files differ only in trailing whitespace)';
+}
+
+/**
  * @param {string} root
- * @returns {Promise<{ problems: string[], readmeUpToDate: boolean, links: number, total: number }>}
+ * @returns {Promise<{ problems: string[], readmeUpToDate: boolean, readmeDiff: string | null, links: number, total: number }>}
  */
 export async function checkDesignLinks(root) {
   const collected = computeDesignLinks(root);
@@ -114,6 +138,7 @@ export async function checkDesignLinks(root) {
   return {
     problems: collected.problems,
     readmeUpToDate: current === next,
+    readmeDiff: firstDifference(current, next),
     links: collected.links.length,
     total: collected.total,
   };

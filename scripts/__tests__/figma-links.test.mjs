@@ -112,6 +112,7 @@ describe('pnpm figma:links', () => {
     expect(await checkDesignLinks(root)).toEqual({
       problems: [],
       readmeUpToDate: true,
+      readmeDiff: null,
       links: 1,
       total: 2,
     });
@@ -147,6 +148,10 @@ describe('this repository', () => {
   it('has no broken or bypassed Figma links, and its README section is current (run pnpm figma:links)', async () => {
     const check = await checkDesignLinks(REPO);
     expect(check.problems).toEqual([]);
+    // Assert through readmeDiff, not the bare boolean: a bare
+    // `expected false to be true` names neither the file nor the change, which
+    // is what made hds#229 expensive to diagnose.
+    expect(check.readmeDiff).toBeNull();
     expect(check.readmeUpToDate).toBe(true);
   });
 
