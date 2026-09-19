@@ -148,8 +148,8 @@ export const tokenValues = {
         "2xl": "30px",
         "3xl": "36px",
         "4xl": "48px",
-        "5xl": "80px",
-        "7xl": "72px"
+        "5xl": "72px",
+        "6xl": "80px"
       },
       weight: {
         light: "300",
