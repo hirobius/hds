@@ -323,7 +323,7 @@
   --semantic-accent-content: var(--primitive-color-neutral-900);
   --semantic-accent-contentHover: var(--primitive-color-neutral-700);
   --semantic-accent-subtle: var(--primitive-color-neutral-100);
-  --semantic-radius-action: var(--primitive-radius-12);
+  --semantic-radius-action: var(--primitive-radius-8);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);

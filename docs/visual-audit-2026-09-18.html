@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>HDS Visual Audit</title>
+    <style>
+      :root {
+        --bg: #fff;
+        --fg: #111;
+        --mut: #6b6b6b;
+        --line: #e8e8e8;
+        --line2: #d0d0d0;
+        --acc: #1e2efd;
+        --p0: #b91c1c;
+        --p1: #92400e;
+        --p2: #6b6b6b;
+        --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+        --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #0b0b0c;
+          --fg: #ededed;
+          --mut: #8f8f8f;
+          --line: #212123;
+          --line2: #333;
+          --p0: #f87171;
+          --p1: #fbbf24;
+          --p2: #8f8f8f;
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #0b0b0c;
+        --fg: #ededed;
+        --mut: #8f8f8f;
+        --line: #212123;
+        --line2: #333;
+        --p0: #f87171;
+        --p1: #fbbf24;
+        --p2: #8f8f8f;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 400 14px/1.6 var(--sans);
+        -webkit-font-smoothing: antialiased;
+      }
+      .w {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 64px 16px 120px;
+      }
+      h1 {
+        font-size: 28px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        margin: 0 0 6px;
+      }
+      .sub {
+        color: var(--mut);
+        font-size: 14px;
+        margin: 0 0 8px;
+      }
+      .meta {
+        font: 400 11px/1.6 var(--mono);
+        color: var(--mut);
+        margin: 0 0 40px;
+      }
+      h2 {
+        font: 500 11px/1 var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--mut);
+        margin: 56px 0 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--line2);
+      }
+      .lede {
+        color: var(--mut);
+        margin: 16px 0 0;
+        font-size: 14px;
+      }
+      .f {
+        padding: 26px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .fh {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .fh h3 {
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        margin: 0;
+        flex: 1 1 260px;
+      }
+      .sev {
+        font: 500 10px/1 var(--mono);
+        letter-spacing: 0.1em;
+        color: var(--c);
+        border: 1px solid currentColor;
+        padding: 4px 6px;
+        border-radius: 3px;
+      }
+      .fid {
+        font: 400 11px/1 var(--mono);
+        color: var(--mut);
+      }
+      dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 8px 20px;
+      }
+      dt {
+        font: 400 10px/1.6 var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mut);
+      }
+      dd {
+        margin: 0;
+      }
+      dd.ask {
+        border-left: 2px solid var(--acc);
+        padding-left: 14px;
+      }
+      @media (max-width: 620px) {
+        dl {
+          grid-template-columns: 1fr;
+          gap: 4px 0;
+        }
+        dt {
+          margin-top: 12px;
+        }
+      }
+      code {
+        font: 400 12px/1.5 var(--mono);
+        background: color-mix(in srgb, var(--fg) 6%, transparent);
+        padding: 1px 5px;
+        border-radius: 3px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 6px 0;
+        font-size: 13px;
+      }
+      th {
+        text-align: left;
+        font: 400 10px/1.6 var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mut);
+        border-bottom: 1px solid var(--line2);
+        padding: 6px 10px 6px 0;
+      }
+      td {
+        padding: 7px 10px 7px 0;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      figure {
+        margin: 8px 0 0;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+      }
+      figcaption {
+        font: 400 11px/1.5 var(--mono);
+        color: var(--mut);
+        margin-top: 7px;
+      }
+      .count {
+        display: flex;
+        gap: 28px;
+        margin: 22px 0 0;
+        flex-wrap: wrap;
+      }
+      .count div {
+        font: 400 11px/1.6 var(--mono);
+        color: var(--mut);
+      }
+      .count b {
+        display: block;
+        font: 500 26px/1.1 var(--sans);
+        color: var(--fg);
+        letter-spacing: -0.02em;
+      }
+      .note {
+        border-left: 2px solid var(--line2);
+        padding: 2px 0 2px 16px;
+        color: var(--mut);
+        margin: 18px 0 0;
+        font-size: 13px;
+      }
+      ol {
+        padding-left: 18px;
+      }
+      ol li {
+        margin: 8px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w">
+      <h1>HDS visual audit</h1>
+      <p class="sub">
+        Rendered-evidence review of <code>@hirobius/design-system</code> 0.13.0 — what the 60
+        textual gates cannot see.
+      </p>
+      <p class="meta">
+        2026-09-18 · branch claude/design-system-visual-tuning-p6ddmn · 112 stories · 554 story
+        entries · measured in Chromium 1194 at 1400×1000, dpr 2
+      </p>
+
+      <div class="count">
+        <div><b>4</b>P0</div>
+        <div><b>3</b>P1</div>
+        <div><b>2</b>P2</div>
+        <div><b>6</b>direction calls</div>
+      </div>
+
+      <p class="lede">
+        Every finding below was measured in a real browser — computed styles and WCAG ratios from
+        rendered DOM, not read off source. Findings are split into two tracks because they pull in
+        opposite directions: <strong>Drift</strong> is code disagreeing with the spec, and the fix
+        is to move the code. <strong>Direction</strong> is the spec encoding rules you no longer
+        want, and the fix is to move the spec first — fixing drift toward a rule you intend to drop
+        is wasted work.
+      </p>
+
+      <p class="note">
+        Two P0s were fixed in place because the audit could not otherwise run: Storybook did not
+        build, and when it did it rendered in the wrong typeface. Everything measured here was
+        captured <em>after</em> those two fixes, on a correctly-rendering Storybook.
+      </p>
+
+      <h2>Track A · Drift — code disagrees with the spec</h2>
+      <p class="lede">
+        Mechanical. No decisions needed; the spec already says what these should be.
+      </p>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p0)">P0</span><span class="fid">A1</span>
+          <h3>Storybook preview does not build on a clean clone</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            <code>src/app/data/component-api.json</code> is gitignored (<code>.gitignore:99</code>)
+            and untracked. Only <code>prebuild:lib</code> generates it —
+            <code>build-storybook</code> had no pre-step, so Rollup fails:
+            <em>Could not resolve "../data/component-api.json"</em>. The preview bundle is never
+            emitted; only the manager shell is.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            Storybook is the <em>only</em> visual surface (#161 retired the Playwright suites; #90
+            deleted the docs SPA). It has not built on main. Chromatic (#200) could not have
+            produced a baseline even with the token set.
+          </dd>
+          <dt>Also</dt>
+          <dd>
+            <code>pnpm build-storybook</code> still exits <strong>0</strong> — the inner
+            <code>ELIFECYCLE … exit code 1</code> is swallowed by the telemetry prompt. CI would
+            report this green.
+          </dd>
+
+          <dt>Which gate should have caught it</dt>
+          <dd>No gate builds Storybook. <code>check:full</code> never invokes it.</dd>
+          <dt>Fix</dt>
+          <dd>
+            Added <code>prebuild-storybook</code> + <code>prestorybook</code> →
+            <code>node scripts/generate-component-api.mjs</code>. <strong>Applied.</strong>
+          </dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p0)">P0</span><span class="fid">A2</span>
+          <h3>Storybook rendered the whole system in a fallback typeface</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            <code>src/styles/fonts.css</code> declares <code>@font-face</code> with absolute URLs
+            (<code>/fonts/satoshi/satoshi-500.woff2</code>).
+            <code>.storybook/main.ts</code> declared no <code>staticDirs</code>, so every font
+            request 404s.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            Verified in-browser: <code>document.fonts.check("500 17px Satoshi")</code> returned
+            <code>false</code> before the fix, <code>true</code> after. Every visual review anyone
+            has done in Storybook was of the wrong face — and a Chromatic baseline would have frozen
+            that in.
+          </dd>
+
+          <dt>Which gate should have caught it</dt>
+          <dd>
+            None. No validator resolves a font URL against what the dev/build server actually
+            serves.
+          </dd>
+          <dt>Fix</dt>
+          <dd>Added <code>staticDirs: ['../public']</code>. <strong>Applied.</strong></dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p0)">P0</span><span class="fid">A3</span>
+          <h3>Radio renders no visible control at all</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            The indicator ring and its inner dot are both <code>display: inline</code>.
+            <code>width</code> does not apply to non-replaced inline elements, so the ring computes
+            <code>width: 8px</code> but lays out at <strong>0px</strong>.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            A selected radio is invisible — only the label renders. The styling is all correct
+            underneath: the ring carries <code>rgb(30,46,253)</code> accent and the dot
+            <code>#fff</code> at <code>radius: 9999px</code>. It is purely a layout-mode bug.
+          </dd>
+
+          <dt>Evidence</dt>
+          <dd>
+            <figure>
+              <img
+                src="data:image/png;base64,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ACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAAL54MbQAAADLSURBVCBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACBGaAAAAABihAYAAAAgRmgAAAAAYoQGAAAAIEZoAAAAAGKEBgAAACDmfwEAAP//jv+i2wAAAAZJREFUAwAp2+Pu2GU+WwAAAABJRU5ErkJggg=="
+                alt="Radio renders no visible control at all"
+              />
+              <figcaption>
+                <code>primitives-radio--selected</code>, checked = true. Only the label paints.
+              </figcaption>
+            </figure>
+          </dd>
+          <dt>Which gate should have caught it</dt>
+          <dd>
+            <code>check-layout-discipline</code>, <code>check-dimensions</code> and the 112 stories
+            all pass — none renders and measures.
+          </dd>
+          <dt>Fix</dt>
+          <dd>
+            Give both spans an explicit box display (<code>inline-flex</code>).
+            <code>src/app/components/radio.tsx:24,38</code>.
+          </dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p0)">P0</span><span class="fid">A4</span>
+          <h3>Segmented control items are white-on-white</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            Item text computes <code>rgb(255,255,255)</code> over <code>rgba(0,0,0,0)</code> on a
+            white page. Measured contrast <strong>1.00:1</strong>.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            Same root pattern as A3 — a component reaches for <code>content.onAccent</code> (white)
+            without the accent surface behind it. The control is legible only by accident of hover.
+          </dd>
+
+          <dt>Evidence</dt>
+          <dd>
+            <figure>
+              <img
+                src="data:image/png;base64,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AIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAOJ7o0oAAAQESURBVIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAIAYoQEAAACIERoAAACAGKEBAAAAiBEaAAAAgBihAQAAAIgRGgAAAICYfwMAAP//FMyapwAAAAZJREFUAwBLOa03ctkN5gAAAABJRU5ErkJggg=="
+                alt="Segmented control items are white-on-white"
+              />
+              <figcaption>
+                <code>primitives-segmented-control--primary</code>. The item label is present and
+                invisible.
+              </figcaption>
+            </figure>
+          </dd>
+          <dt>Which gate should have caught it</dt>
+          <dd>
+            <code>check-contrast.mjs</code> checks declared token pairs, not rendered
+            foreground-over-actual-background.
+          </dd>
+          <dt>Fix</dt>
+          <dd>
+            Bind item colour to the resting surface; reserve <code>onAccent</code> for the selected
+            item once its accent background paints.
+          </dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p1)">P1</span><span class="fid">A5</span>
+          <h3>Three sibling controls, three different outcomes</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            Measured in-browser: <strong>Checkbox</strong> — 20×20, <code>display:flex</code>,
+            accent background. Correct. <strong>Radio</strong> — 0px wide (A3).
+            <strong>Toggle</strong> — a 16×16 transparent box, not a switch track.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            These three ship as a set and a consumer will place them in one form. Only one of them
+            is right.
+          </dd>
+
+          <dt>Which gate should have caught it</dt>
+          <dd>None compares peer components against each other.</dd>
+          <dt>Fix</dt>
+          <dd>Bring radio and toggle onto the checkbox's box model.</dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p1)">P1</span><span class="fid">A6</span>
+          <h3>Form-control borders fail WCAG 1.4.11</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            <code>--semantic-color-border-default: #E5E5E5</code> on white =
+            <strong>1.26:1</strong>. Non-text UI affordances require <strong>3:1</strong>.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            The border is the <em>only</em> affordance on input, textarea, select, combobox and
+            secondary button — there is no fill to carry it. Everything else measured passes
+            comfortably (body 18.88:1, primary button 7.33:1, error 6.47:1, success 5.48:1, warning
+            7.09:1).
+          </dd>
+
+          <dt>Which gate should have caught it</dt>
+          <dd><code>check-contrast.mjs</code> covers text pairs only.</dd>
+          <dt>Fix</dt>
+          <dd>
+            A direction call, not a mechanical one — see <strong>B3</strong>. The minimum compliant
+            neutral against white is roughly <code>#949494</code>, which is a visibly heavier line
+            than you have now.
+          </dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p1)">P1</span><span class="fid">A7</span>
+          <h3>DESIGN.md contradicts its own generated tables</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            Hand-authored prose in <code>DESIGN.source.md:44</code> says interactive controls use “a
+            restrained <code>4px</code> radius via the action radius token”. The generated table
+            directly beneath says <strong>12px</strong>. Separately the typography prose says
+            headings are <code>500</code> and body <code>400</code>; the generated ramp says
+            <strong>700</strong> and <strong>500</strong>.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            This is the first file a prospective client or contributor reads, and it disagrees with
+            itself inside one screen.
+          </dd>
+
+          <dt>Which gate should have caught it</dt>
+          <dd>
+            <code>build-design-md.mjs</code> regenerates the auto blocks but never diffs the
+            hand-written prose against them.
+          </dd>
+          <dt>Fix</dt>
+          <dd>
+            Correct the prose, then add a validator that fails when a number in prose contradicts
+            the generated block beside it.
+          </dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p2)">P2</span><span class="fid">A8</span>
+          <h3>The type scale inverts at the top</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            <code>primitive.typography.size.5xl</code> = <strong>80px</strong>, <code>7xl</code> =
+            <strong>72px</strong>. The larger name is the smaller value.
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            Both are published in <code>public/hds-manifest.json</code> and
+            <code>src/app/data/foundations/typography.json</code>, so the docs surface a scale that
+            runs backwards.
+          </dd>
+
+          <dt>Which gate should have caught it</dt>
+          <dd><code>check-token-structure.mjs</code> validates shape, not ordering.</dd>
+          <dt>Fix</dt>
+          <dd>Renumber, and add a monotonicity assertion to the token-structure check.</dd>
+        </dl>
+      </article>
+      <article class="f">
+        <div class="fh">
+          <span class="sev" style="--c: var(--p2)">P2</span><span class="fid">A9</span>
+          <h3>weight.light (300) is orphaned</h3>
+        </div>
+        <dl>
+          <dt>What is happening</dt>
+          <dd>
+            Its own description reads “Swiss-canon heading weight. Display and h1/h2 composites
+            only.” Those composites all use <code>weight.bold</code> (700).
+          </dd>
+          <dt>Why it matters</dt>
+          <dd>
+            Someone began moving the headings to a lighter register and it never landed. Worth
+            knowing before you re-decide — see <strong>B4</strong>.
+          </dd>
+
+          <dt>Which gate should have caught it</dt>
+          <dd>
+            <code>check-ghost-tokens</code> / <code>audit-tokens --full</code> did not flag it.
+          </dd>
+          <dt>Fix</dt>
+          <dd>Either adopt it (B4) or delete it. Leaving it is the worst of the three.</dd>
+        </dl>
+      </article>
+
+      <h2>Track B · Direction — the spec itself is the question</h2>
+      <p class="lede">
+        You said some of the visual rules are no longer ones you align with. These are the six
+        places where the system states an intent, and changing it is a decision rather than a fix.
+        Each one names the call that is yours to make.
+      </p>
+      <article class="f b">
+        <div class="fh">
+          <span class="fid">B1</span>
+          <h3>Radius — four numbers for one concept</h3>
+        </div>
+        <dl>
+          <dt>Where it stands</dt>
+          <dd>
+            <table>
+              <tr>
+                <th>Surface</th>
+                <th>Rendered</th>
+                <th>Source</th>
+              </tr>
+              <tr>
+                <td>Button, Input, Select, Combobox, Textarea, Tab</td>
+                <td><strong>10px</strong></td>
+                <td><code>rounded-md</code> = <code>calc(var(--role-radius) - 2px)</code></td>
+              </tr>
+              <tr>
+                <td>Segmented item, Card, Toggle label</td>
+                <td><strong>12px</strong></td>
+                <td><code>rounded-[var(--semantic-radius-action)]</code></td>
+              </tr>
+              <tr>
+                <td>Segmented container</td>
+                <td><strong>16px</strong></td>
+                <td><code>calc(var(--semantic-radius-action) + 4px)</code></td>
+              </tr>
+              <tr>
+                <td>Surface</td>
+                <td><strong>8px</strong></td>
+                <td><code>primitive.radius.8</code></td>
+              </tr>
+              <tr>
+                <td>Badge, Alert</td>
+                <td><strong>4px</strong></td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>DESIGN.md prose</td>
+                <td><strong>4px</strong></td>
+                <td>hand-authored</td>
+              </tr>
+            </table>
+          </dd>
+          <dt>Diagnosis</dt>
+          <dd>
+            Two parallel radius systems. Tailwind derives from <code>--role-radius</code> with a
+            <code>-2px</code> offset (the shadcn convention); HDS components bind
+            <code>--semantic-radius-action</code> directly. Same intent, different number, in
+            components that sit side by side. A Card at 12px containing a Button at 10px also breaks
+            nested-radius geometry — an inner corner should be the outer corner minus its inset, not
+            one pixel tighter.
+          </dd>
+          <dt>The call that is yours</dt>
+          <dd class="ask">
+            Pick one source of truth and one value. The minimal-technical register you described
+            runs tighter than where you are — a single action radius in the 6–8px band, containers
+            one step above it, and the Tailwind <code>-2px</code> derivation deleted so
+            <code>rounded-md</code> cannot disagree with the token.
+          </dd>
+        </dl>
+      </article>
+      <article class="f b">
+        <div class="fh">
+          <span class="fid">B2</span>
+          <h3>The type ramp is largely not applied</h3>
+        </div>
+        <dl>
+          <dt>Where it stands</dt>
+          <dd>
+            <p>
+              Declared scale: <code>10 · 13 · 15 · 17 · 20 · 24 · 30 · 36 · 48 · 72 · 80</code>.
+              Measured in rendered components:
+            </p>
+            <table>
+              <tr>
+                <th>Rendered</th>
+                <th>Where</th>
+                <th>On scale?</th>
+              </tr>
+              <tr>
+                <td>11px</td>
+                <td>Badge</td>
+                <td>no</td>
+              </tr>
+              <tr>
+                <td>14px</td>
+                <td>Card body copy</td>
+                <td>no</td>
+              </tr>
+              <tr>
+                <td>16px</td>
+                <td>Card root, Alert, Segmented, Radio, Toggle</td>
+                <td>no — browser default</td>
+              </tr>
+              <tr>
+                <td>18px</td>
+                <td>Card heading (<code>h3</code> token = 20px)</td>
+                <td>no</td>
+              </tr>
+            </table>
+          </dd>
+          <dt>Diagnosis</dt>
+          <dd>
+            Components that set no font-size inherit the browser's 16px default, which is not a
+            token value. Four off-scale sizes are rendering today. This is the largest single
+            contributor to the system not reading as one system.
+          </dd>
+          <dt>The call that is yours</dt>
+          <dd class="ask">
+            This one is not a taste call — the ramp should be applied. But <em>which</em> ramp is a
+            taste call, so decide B3 first and apply once.
+          </dd>
+        </dl>
+      </article>
+      <article class="f b">
+        <div class="fh">
+          <span class="fid">B3</span>
+          <h3>Body weight and the border weight — the two that set the register</h3>
+        </div>
+        <dl>
+          <dt>Where it stands</dt>
+          <dd>
+            <table>
+              <tr>
+                <th>Token</th>
+                <th>Now</th>
+                <th>Effect</th>
+              </tr>
+              <tr>
+                <td><code>body</code></td>
+                <td>17px / <strong>500</strong></td>
+                <td>Large and medium-weight. Reads editorial and soft.</td>
+              </tr>
+              <tr>
+                <td><code>ui</code></td>
+                <td>15px / 500</td>
+                <td>Buttons match; inputs render 400, so labels and fields disagree.</td>
+              </tr>
+              <tr>
+                <td><code>border.default</code></td>
+                <td>#E5E5E5 — 1.26:1</td>
+                <td>Below the 3:1 floor (A6). Reads as an absent edge.</td>
+              </tr>
+            </table>
+          </dd>
+          <dt>Diagnosis</dt>
+          <dd>
+            You named Vercel and Linear as the target. The thing that actually separates that
+            register from yours is not radius or colour — it is that body copy sits smaller and
+            lighter, and the hairline that bounds a control is <em>visible</em>. A 500-weight 17px
+            body over a 1.26:1 border is the specific combination producing “soft” rather than
+            “precise”.
+          </dd>
+          <dt>The call that is yours</dt>
+          <dd class="ask">
+            Two numbers to choose: body size/weight, and the border neutral. Dropping body to 400
+            and darkening the border to clear 3:1 are the highest-leverage edits in this entire
+            audit, and they touch two token values.
+          </dd>
+        </dl>
+      </article>
+      <article class="f b">
+        <div class="fh">
+          <span class="fid">B4</span>
+          <h3>Heading weight — a move you already started</h3>
+        </div>
+        <dl>
+          <dt>Where it stands</dt>
+          <dd>
+            All of <code>display · h1 · h2 · h3</code> are <strong>700</strong>.
+            <code>weight.light</code> (300) exists, unused, described as the “Swiss-canon heading
+            weight” for exactly those composites.
+          </dd>
+          <dt>Diagnosis</dt>
+          <dd>
+            Someone set out to take the headings light and stopped. The prose in DESIGN.md still
+            claims headings are 500 (A7) — a third position. Three different intents are recorded in
+            the repo right now.
+          </dd>
+          <dt>The call that is yours</dt>
+          <dd class="ask">
+            Resolve to one. A lighter heading at large sizes is the more restrained register and it
+            is already tokenised; 700 at 72px is the loudest thing in the system.
+          </dd>
+        </dl>
+      </article>
+      <article class="f b">
+        <div class="fh">
+          <span class="fid">B5</span>
+          <h3>One accent doing two jobs</h3>
+        </div>
+        <dl>
+          <dt>Where it stands</dt>
+          <dd>
+            <code>semantic.accent.rest</code> and <code>semantic.color.feedback.info</code> are both
+            <code>#1E2EFD</code>.
+          </dd>
+          <dt>Diagnosis</dt>
+          <dd>
+            An informational alert is chromatically identical to a brand call-to-action. DESIGN.md
+            states feedback hues are “never decorative” — but the info hue <em>is</em> the
+            decorative accent.
+          </dd>
+          <dt>The call that is yours</dt>
+          <dd class="ask">
+            Either give info its own neutral-leaning treatment, or drop the info variant and let
+            neutral carry it. Most restrained systems do the latter.
+          </dd>
+        </dl>
+      </article>
+      <article class="f b">
+        <div class="fh">
+          <span class="fid">B6</span>
+          <h3>Card has an invisible border</h3>
+        </div>
+        <dl>
+          <dt>Where it stands</dt>
+          <dd>
+            Rendered card: <code>background #FAFAFA</code>, <code>border-width 1px</code>,
+            <code>border-color rgba(0,0,0,0)</code>, <code>radius 12px</code>.
+          </dd>
+          <dt>Diagnosis</dt>
+          <dd>
+            DESIGN.md defines <code>elevation.flat</code> as <code>surface.page</code> +
+            <code>border.subtle</code> 1px. What ships is a light grey block with a transparent
+            border — the 1px is reserving layout space and painting nothing.
+          </dd>
+          <dt>The call that is yours</dt>
+          <dd class="ask">
+            Decide whether a resting card is bounded by a visible hairline or by a fill. Your own
+            rule — depth is border <em>or</em> shadow, never both — is good; it just is not
+            implemented.
+          </dd>
+        </dl>
+      </article>
+
+      <h2>Order of work</h2>
+      <ol>
+        <li>
+          <strong>Land the two applied fixes</strong> (A1, A2) so Storybook builds and renders
+          truthfully. Without this nothing else is reviewable.
+        </li>
+        <li>
+          <strong>Decide B3</strong> — body size/weight and the border neutral. Two token values,
+          and they set the register everything else is judged against.
+        </li>
+        <li>
+          <strong>Then B1 and B4</strong> — radius source of truth, heading weight. Both are
+          single-value decisions once B3 fixes the register.
+        </li>
+        <li>
+          <strong>Then apply the ramp (B2)</strong> and fix A3–A6 in the same pass, since the
+          components being touched overlap.
+        </li>
+        <li>
+          <strong>Then A7–A9</strong> — docs and token hygiene, once the values have stopped moving.
+        </li>
+        <li>
+          <strong>Gate each decision</strong> as it lands: a monotonicity assertion on the scale, a
+          rendered-contrast check for non-text affordances, a prose-vs-generated-table diff.
+          Register each in <code>docs/guardrails/registry.json</code>.
+        </li>
+      </ol>
+
+      <h2>On the 1:1 against Vercel and Linear</h2>
+      <p class="lede">
+        This session's sandbox blocks outbound web access, so those two systems could not be
+        measured here and no numbers for them appear in this document.
+        <code>scripts/measure-reference.mjs</code> ships with this audit: it takes any URL and
+        prints the same computed-geometry table used throughout — control height, radius, padding,
+        border colour and contrast, type size and weight. Run it against the reference systems from
+        a machine with network access and the comparison becomes measured rather than remembered.
+      </p>
+      <p class="note">
+        The honest version of the comparison is B3. The distance between this system and that
+        register is mostly body weight and a visible hairline — not radius, and not colour.
+      </p>
+    </div>
+  </body>
+</html>

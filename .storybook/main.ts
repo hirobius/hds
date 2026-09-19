@@ -15,6 +15,10 @@ import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
   stories: ['../src/stories/**/*.stories.@(ts|tsx)', '../src/stories/**/*.mdx'],
+  // Serves public/ at the Storybook root so fonts.css's absolute
+  // `/fonts/satoshi/*.woff2` URLs resolve. Without this every story
+  // renders in a fallback face, not Satoshi.
+  staticDirs: ['../public'],
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-a11y',
