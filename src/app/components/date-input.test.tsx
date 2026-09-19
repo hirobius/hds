@@ -39,7 +39,7 @@ afterEach(cleanup);
 
 describe('DateInput', () => {
   it('shows the formatted value in the input when value is set', () => {
-    render(<DateInput value={new Date('2026-07-15')} aria-label="Date" />);
+    render(<DateInput value={new Date(2026, 6, 15)} aria-label="Date" />);
     const input = screen.getByLabelText('Date') as HTMLInputElement;
     expect(input.value).toBe('2026-07-15');
   });
@@ -53,7 +53,7 @@ describe('DateInput', () => {
 
   it('calls onChange with a Date when a day is selected', () => {
     const onChange = vi.fn();
-    render(<DateInput value={new Date('2026-07-01')} onChange={onChange} aria-label="Date" />);
+    render(<DateInput value={new Date(2026, 6, 1)} onChange={onChange} aria-label="Date" />);
     fireEvent.click(screen.getByRole('button', { name: 'Open calendar' }));
     fireEvent.click(screen.getByText('15'));
     expect(onChange).toHaveBeenCalledTimes(1);
