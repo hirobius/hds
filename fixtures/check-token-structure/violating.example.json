@@ -4,6 +4,11 @@
       "$type": "color",
       "white": { "$value": "#ffffff" },
       "black": { "$value": "#000000" }
+    },
+    "size": {
+      "$type": "dimension",
+      "sm": { "$value": { "value": 15, "unit": "px" } },
+      "lg": { "$value": { "value": 10, "unit": "px" } }
     }
   },
   "semantic": {
