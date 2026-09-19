@@ -7,6 +7,7 @@
 import { useState, forwardRef } from 'react';
 import { motion } from 'motion/react';
 import hds from '../design-system/tokens';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Surface } from './surface';
 
 /** HdsSlider — range slider with label and value display. */
@@ -33,6 +34,8 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
   const range = max - min;
   const progress = range <= 0 ? 0 : Math.min(Math.max((value - min) / range, 0), 1);
   const progressPercent = `${progress * 100}%`;
+  const productiveMotion = useHdsMotion('productive');
+  const expressiveMotion = useHdsMotion('expressive');
 
   return (
     // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
@@ -53,8 +56,8 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
           initial={{ opacity: 0.72, y: hds.space.px2 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            duration: hds.motion.productive.duration,
-            ease: hds.motion.productive.easing,
+            duration: productiveMotion.duration,
+            ease: productiveMotion.easing,
           }}
           style={{ ...hds.typeStyles.technical }}
         >
@@ -75,8 +78,8 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
               opacity: isActive ? 1 : 0.92,
             }}
             transition={{
-              duration: hds.motion.expressive.duration,
-              ease: hds.motion.productive.easing,
+              duration: expressiveMotion.duration,
+              ease: productiveMotion.easing,
             }}
             // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/color; var()-based, no Tailwind-theme utility exists
             className="h-full rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-accent)]"
