@@ -5,10 +5,15 @@
  * WCAG 2.1 contrast ratio checker for HDS semantic color pairs.
  * Reads hirobius.tokens.json, resolves primitive + semantic color aliases,
  * and reports contrast ratios for critical text/bg pairings in both
- * light and dark mode.
+ * light and dark mode. Also checks a non-text tier (WCAG 2.1 §1.4.11):
+ * border tokens that bound an interactive control's boundary, where the
+ * border is the only affordance, must hit a 3:1 floor against the surface
+ * they sit on — the same floor text pairs get at 4.5:1 does not apply to
+ * a 1px stroke (#230).
  *
  * Usage: node scripts/check-contrast.mjs
- * Exits 0 if all pairs pass WCAG AA. Exits 1 if any pair fails.
+ * Exits 0 if all pairs pass WCAG AA (text) and the 3:1 floor (non-text).
+ * Exits 1 if any pair fails.
  */
 
 import { readFileSync } from 'fs';
@@ -115,6 +120,15 @@ function passAAA(ratio) {
   return ratio >= AAA_NORMAL;
 }
 
+// Non-text tier — WCAG 2.1 §1.4.11 "Non-text Contrast". Applies to the
+// visual boundary of a UI component, not to text. 3:1 is the floor
+// regardless of AA/AAA; there is no stricter tier to aim for here.
+const AA_NONTEXT = 3.0;
+
+function passNonText(ratio) {
+  return ratio >= AA_NONTEXT;
+}
+
 // ── Pairs to check ────────────────────────────────────────────
 
 const PAIRS = [
@@ -188,6 +202,22 @@ const PAIRS = [
   ]),
 ];
 
+// ── Non-text pairs (WCAG 1.4.11, #230) ──────────────────────────
+
+// Control boundaries where the border is the *only* affordance — no fill
+// carries it. Add a pair here whenever a new component's sole boundary
+// starts resolving through `semantic.color.border.interactive`; decorative
+// hairlines (dividers, card edges, `border.subtle` under
+// `semantic.elevation.flat`) stay off this list, since 1.4.11 only binds
+// UI-component boundaries, not ornamentation.
+const NONTEXT_PAIRS = [
+  {
+    label: 'border.interactive / surface.page',
+    border: 'semantic.color.border.interactive',
+    bg: 'semantic.color.surface.page',
+  },
+];
+
 // ── Main ──────────────────────────────────────────────────────
 
 const COL_PAIR = 34;
@@ -220,16 +250,43 @@ const failures = results.filter(
   ({ lightRatio, darkRatio }) => !passAA(lightRatio) || !passAA(darkRatio),
 );
 
-if (failures.length === 0) {
-  console.log('\n✓ WCAG contrast check passed — all pairs meet AA.\n');
+const nonTextResults = NONTEXT_PAIRS.map(({ label, border, bg }) => {
+  const borderLight = resolveSemanticHex(border, 'light');
+  const bgLight = resolveSemanticHex(bg, 'light');
+  const borderDark = resolveSemanticHex(border, 'dark');
+  const bgDark = resolveSemanticHex(bg, 'dark');
+
+  const lightRatio = contrastRatio(borderLight, bgLight);
+  const darkRatio = contrastRatio(borderDark, bgDark);
+
+  return { label, lightRatio, darkRatio };
+});
+
+const nonTextFailures = nonTextResults.filter(
+  ({ lightRatio, darkRatio }) => !passNonText(lightRatio) || !passNonText(darkRatio),
+);
+
+if (failures.length === 0 && nonTextFailures.length === 0) {
+  console.log(
+    '\n✓ WCAG contrast check passed — all text pairs meet AA, all non-text pairs meet 3:1.\n',
+  );
 } else {
-  console.log('\n✗ WCAG contrast check FAILED — the following pairs do not meet AA:\n');
+  console.log('\n✗ WCAG contrast check FAILED:\n');
   for (const { label, lightRatio, darkRatio } of failures) {
     const lightFail = !passAA(lightRatio)
       ? ` light ${lightRatio.toFixed(1)}:1 (needs ${AA_NORMAL}:1)`
       : '';
     const darkFail = !passAA(darkRatio)
       ? ` dark ${darkRatio.toFixed(1)}:1 (needs ${AA_NORMAL}:1)`
+      : '';
+    console.log(`  ✗ ${label}:${lightFail}${darkFail}`);
+  }
+  for (const { label, lightRatio, darkRatio } of nonTextFailures) {
+    const lightFail = !passNonText(lightRatio)
+      ? ` light ${lightRatio.toFixed(1)}:1 (needs ${AA_NONTEXT}:1 non-text)`
+      : '';
+    const darkFail = !passNonText(darkRatio)
+      ? ` dark ${darkRatio.toFixed(1)}:1 (needs ${AA_NONTEXT}:1 non-text)`
       : '';
     console.log(`  ✗ ${label}:${lightFail}${darkFail}`);
   }
@@ -266,4 +323,26 @@ for (const { label, lightRatio, darkRatio } of results) {
 
 console.log('');
 
-process.exit(failures.length > 0 ? 1 : 0);
+// ── Non-text table (WCAG 1.4.11, 3:1 floor) ─────────────────────
+
+const nonTextHeader =
+  'Pair (UI boundary)'.padEnd(COL_PAIR) +
+  'Light'.padEnd(COL_RATIO) +
+  'Dark'.padEnd(COL_RATIO) +
+  '3:1 (L/D)';
+
+console.log('  ' + nonTextHeader);
+console.log('  ' + '─'.repeat(nonTextHeader.length));
+
+for (const { label, lightRatio, darkRatio } of nonTextResults) {
+  const ntLight = passNonText(lightRatio) ? '✓' : '✗';
+  const ntDark = passNonText(darkRatio) ? '✓' : '✗';
+
+  const row = label.padEnd(COL_PAIR) + fmt(lightRatio) + fmt(darkRatio) + `${ntLight}/${ntDark}`;
+
+  console.log('  ' + row);
+}
+
+console.log('');
+
+process.exit(failures.length > 0 || nonTextFailures.length > 0 ? 1 : 0);
