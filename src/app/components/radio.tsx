@@ -35,10 +35,50 @@ const radioInputVariants = cva('absolute inset-0 m-0 opacity-0', {
   defaultVariants: { state: 'rest' },
 });
 
+/**
+ * Root label chrome — position context for the absolutely-positioned native
+ * input above, plus flex layout so the ring and label text sit on one row
+ * with a real gap. A bare `<label>` defaults to `display: inline` (no
+ * position, no gap), which is half of the #225 rendering bug — see
+ * `radioRingVariants` below for the other half.
+ */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
+const radioRootVariants = cva(
+  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] select-none',
+  {
+    variants: {
+      state: {
+        rest: 'cursor-pointer',
+        hover: 'cursor-pointer',
+        focused: 'cursor-pointer',
+        pressed: 'cursor-pointer',
+        disabled: 'cursor-default',
+      },
+    },
+    defaultVariants: { state: 'rest' },
+  },
+);
+
+/**
+ * Selection ring — box model matches HdsCheckbox's glyph (see checkbox.tsx):
+ * 20x20, `inline-flex` + centering so the declared size actually applies (a
+ * bare `<span>` is `display: inline`, which ignores `width`/`height` — #225).
+ * Color/border-color are driven by the `animate` prop below (framer-motion
+ * inline style), not cva, so there's no state/on variant axis here — only
+ * the static box model.
+ */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border; var()-based, no Tailwind-theme utility exists
+const radioRingVariants = cva(
+  // tier-ok: primitive.size.20 / primitive.radius.full mirror checkbox's glyph box model 1:1 — no semantic alias for either
+  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)]',
+);
+
 /** Selected-state inner dot — static sizing; color is disabled-only (no animation). */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists
 const radioDotVariants = cva(
-  'w-[var(--primitive-size-8)] h-[var(--primitive-size-8)] rounded-[var(--primitive-radius-full)]',
+  // `inline-block` is the other half of the #225 fix: the dot's declared
+  // width/height are ignored under the browser's default `display: inline`.
+  'inline-block w-[var(--primitive-size-8)] h-[var(--primitive-size-8)] rounded-[var(--primitive-radius-full)]',
   {
     variants: {
       disabled: {
@@ -94,6 +134,7 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
     <motion.label
       whileTap={isDisabled ? undefined : { scale: 0.99 }}
       transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+      className={radioRootVariants({ state: visualState })}
     >
       <input
         ref={ref}
@@ -134,6 +175,7 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
       />
       <motion.span
         aria-hidden="true"
+        className={radioRingVariants()}
         animate={{
           scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1,
           backgroundColor:

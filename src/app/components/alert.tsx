@@ -84,7 +84,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert
       />
 
       {hasTitle ? (
-        <span>
+        // #226: title and body were adjacent inline `<span>`s with nothing
+        // between them, so every alert read as one run-on string ("InfoOne
+        // accent, used once."). Stacking them in a flex column — same pattern
+        // segmented-control.tsx uses for its own label+description pair —
+        // makes the title its own block instead of an inline sibling, with
+        // spacing from a semantic token rather than a literal.
+        // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic subgrid-hairline gap; var()-based, no Tailwind-theme utility exists
+        <span className="flex flex-col gap-[var(--semantic-space-subgrid-hairline)]">
           <span
             style={{
               ...hds.typeStyles.ui,
