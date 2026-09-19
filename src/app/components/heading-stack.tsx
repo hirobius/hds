@@ -30,9 +30,11 @@ import { cn } from '../../lib/utils';
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic space/typography tokens have no Tailwind-theme utility; var()-based so still token-driven
 const headingStackVariants = cva('flex flex-col', {
   variants: {
+    // tier-ok: subgrid-gap/component-gap resolve to var(--primitive-space-1)/-2 exactly
+    // (tokens.generated.css) — mechanical alias swap, hds#186
     gap: {
-      px4: 'gap-[var(--primitive-space-1)]',
-      px8: 'gap-[var(--primitive-space-2)]',
+      px4: 'gap-[var(--semantic-space-subgrid-gap)]',
+      px8: 'gap-[var(--semantic-space-component-gap)]',
     },
   },
   defaultVariants: { gap: 'px8' },

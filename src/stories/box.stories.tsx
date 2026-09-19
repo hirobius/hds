@@ -47,12 +47,16 @@ export const TokenColors: Story = {
 export const SpacingShorthands: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <Box sx={{ p: 2, bgcolor: 'surface.raised' }}>p: 2 → var(--primitive-space-2)</Box>
+      <Box sx={{ p: 2, bgcolor: 'surface.raised' }}>
+        {/* tier-ok: story caption documents resolveSx's literal output for viewers, not a live styling call, hds#186 */}
+        p: 2 → var(--primitive-space-2)
+      </Box>
       <Box sx={{ p: 'inset', bgcolor: 'surface.raised' }}>
         p: &apos;inset&apos; → --semantic-space-layout-inset
       </Box>
       <Box sx={{ px: 6, py: 2, bgcolor: 'surface.raised' }}>px: 6, py: 2 (axis shorthand)</Box>
       <Box sx={{ mt: 9, bgcolor: 'surface.raised', p: 2 }}>
+        {/* tier-ok: story caption documents resolveSx's literal output for viewers, not a live styling call, hds#186 */}
         mt: 9 (off-scale) → calc(var(--primitive-space-1) * 9)
       </Box>
     </Box>

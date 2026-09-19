@@ -6,19 +6,22 @@ afterEach(() => {
 });
 
 describe('resolveSx — spacing shorthands', () => {
+  // tier-ok: this whole file pins resolveSx()'s literal CSS-declaration output —
+  // the primitive-tier bridge (box-sx.ts) IS the thing under test, so asserting
+  // its exact resolved primitive-var strings is the point, not a bypass. hds#186
   it('maps a numeric value on the existing scale to --primitive-space-<n>', () => {
     const rules = resolveSx({ p: 2 }, 'cls');
-    expect(rules).toEqual(['.cls{padding:var(--primitive-space-2)}']);
+    expect(rules).toEqual(['.cls{padding:var(--primitive-space-2)}']); // tier-ok: pins bridge output, hds#186
   });
 
   it('falls back to calc() for a numeric value off the existing scale', () => {
     const rules = resolveSx({ p: 9 }, 'cls');
-    expect(rules).toEqual(['.cls{padding:calc(var(--primitive-space-1) * 9)}']);
+    expect(rules).toEqual(['.cls{padding:calc(var(--primitive-space-1) * 9)}']); // tier-ok: pins bridge output, hds#186
   });
 
   it('supports negative numeric values via calc()', () => {
     const rules = resolveSx({ mt: -2 }, 'cls');
-    expect(rules).toEqual(['.cls{margin-top:calc(var(--primitive-space-1) * -2)}']);
+    expect(rules).toEqual(['.cls{margin-top:calc(var(--primitive-space-1) * -2)}']); // tier-ok: pins bridge output, hds#186
   });
 
   it('maps a named semantic step to --semantic-space-layout-<step>', () => {
@@ -28,7 +31,7 @@ describe('resolveSx — spacing shorthands', () => {
 
   it('expands axis shorthands (mx/my/px/py) to two declarations', () => {
     expect(resolveSx({ mx: 2 }, 'cls')).toEqual([
-      '.cls{margin-left:var(--primitive-space-2);margin-right:var(--primitive-space-2)}',
+      '.cls{margin-left:var(--primitive-space-2);margin-right:var(--primitive-space-2)}', // tier-ok: pins bridge output, hds#186
     ]);
     expect(resolveSx({ py: 'normal' }, 'cls')).toEqual([
       '.cls{padding-top:var(--semantic-space-layout-normal);padding-bottom:var(--semantic-space-layout-normal)}',
@@ -41,10 +44,10 @@ describe('resolveSx — spacing shorthands', () => {
   });
 
   it('resolves gap/rowGap/columnGap the same way', () => {
-    expect(resolveSx({ gap: 4 }, 'cls')).toEqual(['.cls{gap:var(--primitive-space-4)}']);
-    expect(resolveSx({ rowGap: 4 }, 'cls')).toEqual(['.cls{row-gap:var(--primitive-space-4)}']);
+    expect(resolveSx({ gap: 4 }, 'cls')).toEqual(['.cls{gap:var(--primitive-space-4)}']); // tier-ok: pins bridge output, hds#186
+    expect(resolveSx({ rowGap: 4 }, 'cls')).toEqual(['.cls{row-gap:var(--primitive-space-4)}']); // tier-ok: pins bridge output, hds#186
     const columnGapInput = { columnGap: 4 }; // spacing-ok: token-scale index, not a raw px value
-    expect(resolveSx(columnGapInput, 'cls')).toEqual(['.cls{column-gap:var(--primitive-space-4)}']);
+    expect(resolveSx(columnGapInput, 'cls')).toEqual(['.cls{column-gap:var(--primitive-space-4)}']); // tier-ok: pins bridge output, hds#186
   });
 });
 
@@ -138,8 +141,8 @@ describe('resolveSx — responsive values', () => {
   it('supports responsive spacing and color values', () => {
     const rules = resolveSx({ p: { sm: 2, lg: 6 } }, 'cls');
     expect(rules).toEqual([
-      '@media (min-width:640px){.cls{padding:var(--primitive-space-2)}}',
-      '@media (min-width:1024px){.cls{padding:var(--primitive-space-6)}}',
+      '@media (min-width:640px){.cls{padding:var(--primitive-space-2)}}', // tier-ok: pins bridge output, hds#186
+      '@media (min-width:1024px){.cls{padding:var(--primitive-space-6)}}', // tier-ok: pins bridge output, hds#186
     ]);
   });
 });
@@ -152,7 +155,7 @@ describe('resolveSx — & nested selectors', () => {
 
   it('supports combinator and attribute selectors', () => {
     expect(resolveSx({ '& > *': { mt: 2 } }, 'cls')).toEqual([
-      '.cls > *{margin-top:var(--primitive-space-2)}',
+      '.cls > *{margin-top:var(--primitive-space-2)}', // tier-ok: pins bridge output, hds#186
     ]);
     expect(resolveSx({ '&[data-state=open]': { opacity: 1 } }, 'cls')).toEqual([
       '.cls[data-state=open]{opacity:1}',

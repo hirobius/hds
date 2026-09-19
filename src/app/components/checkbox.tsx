@@ -68,7 +68,8 @@ const checkboxGlyphVariants = cva(
         rest: '',
         hover: '',
         focused:
-          '[outline:var(--primitive-borderWidth-sm)_solid_var(--semantic-color-border-accent)]',
+          // tier-ok: semantic-borderWidth-emphasis resolves to var(--primitive-borderWidth-sm) exactly (tokens.generated.css) — mechanical alias swap, hds#186
+          '[outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
         pressed: '',
         disabled: '',
       },
