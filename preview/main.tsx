@@ -98,7 +98,7 @@ const BRANDS = [
   { value: '', label: 'default' },
   { value: 'brutalist-demo', label: 'brutalist' },
   { value: 'concrete-creations', label: 'concrete' },
-  { value: 'lilac-bonds', label: 'lilac' },
+  { value: 'accent-lilac', label: 'lilac' },
 ];
 
 function App() {

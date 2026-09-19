@@ -195,7 +195,7 @@
         },
         "500": {
           "$value": "#6f3fd4",
-          "$description": "Lilac Bonds accent rest — AA for white text on page and card surfaces."
+          "$description": "Lilac accent rest — AA for white text on page and card surfaces."
         },
         "600": {
           "$value": "#5f33c0",
@@ -213,7 +213,7 @@
           "$value": "#2a1659",
           "$description": "Specific value within the lilac range at a defined lightness step."
         },
-        "$description": "Discrete values within the lilac range at defined lightness steps. Mirrors the blue ramp's stop set; consumed by the lilac-bonds tenant overlay."
+        "$description": "Discrete values within the lilac range at defined lightness steps. Mirrors the blue ramp's stop set; available to downstream brand overlays."
       },
       "amber": {
         "50": {

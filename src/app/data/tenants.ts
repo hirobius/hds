@@ -84,16 +84,16 @@ export const TENANT_REGISTRY: TenantDefinition[] = [
     },
   },
   {
-    slug: 'lilac-bonds',
-    name: 'Lilac Bonds',
+    slug: 'accent-lilac',
+    name: 'Accent Lilac',
     description:
-      'Surety-bond microsite for Lilac Insurance (Hirobius’ first external client). Lilac accent aliasing primitive.color.lilac.* — semantic-tier overlay only, per R1.',
+      'Lilac accent exemplar aliasing primitive.color.lilac.* — semantic-tier overlay only, per R1. Storybook exemplar, not a real client.',
     // Semantic-tier accent overrides (Light mode), mirroring the compiled
-    // [data-tenant="lilac-bonds"] block in src/styles/tenants.css. Unlike the
+    // [data-tenant="accent-lilac"] block in src/styles/tenants.css. Unlike the
     // primitive-ramp approach above, this overlay aliases the lilac primitives
     // at the semantic tier, so only the accent role is re-pointed.
     // tier-ok: tenant primitive override is the override mechanism — same idiom as
-    // the compiled [data-tenant="lilac-bonds"] block in src/styles/tenants.css
+    // the compiled [data-tenant="accent-lilac"] block in src/styles/tenants.css
     // (see its header comment). Each entry re-points a semantic KEY at a raw
     // lilac primitive VALUE; that semantic-tier redirection is the whole point
     // of a tenant overlay, not a bypass of it. hds#186

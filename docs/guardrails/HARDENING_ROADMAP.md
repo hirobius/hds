@@ -220,7 +220,7 @@ These were missed in the first pass. Most are P2/P3 candidates — appended for 
 
 **`13g-18-codeowners`** _(P2)_
 
-- `.github/CODEOWNERS` even for a solo repo. Documents path → reviewer mapping. Forces explicit thought when paths cross client/agency boundaries (e.g. `clients/lilac-insure/legal/` requires Conrad ack, even though Conrad has no GH account).
+- `.github/CODEOWNERS` even for a solo repo. Documents path → reviewer mapping. Forces explicit thought when paths cross client/agency boundaries (e.g. a `clients/<client>/legal/` path requires the client's ack, even when they have no GitHub account).
 
 **`13g-19-github-actions-permissions`** _(P3)_
 

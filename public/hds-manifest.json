@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-19T10:20:49.303Z",
+  "generated": "2026-09-19T21:10:47.474Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -10180,7 +10180,7 @@
         "path": "primitive.color.lilac.500",
         "cssVar": "--primitive-color-lilac-500",
         "type": "color",
-        "description": "Lilac Bonds accent rest — AA for white text on page and card surfaces.",
+        "description": "Lilac accent rest — AA for white text on page and card surfaces.",
         "value": "#6f3fd4"
       },
       {

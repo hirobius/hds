@@ -126,7 +126,7 @@ Checks all 402 tokens, aliases, and TS refs in one shot.
 | `primitive.color.lilac.300`                         | `#c3aef6`                   | Specific value within the lilac range at a defined lightness step.      |
 | `primitive.color.lilac.400`                         | `#a585ee`                   | Specific value within the lilac range at a defined lightness step.      |
 | `primitive.color.lilac.450`                         | `#9a6fe8`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac Bonds accent rest — AA for white text on page and card surfaces.  |
+| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac accent rest — AA for white text on page and card surfaces.        |
 | `primitive.color.lilac.600`                         | `#5f33c0`                   | Specific value within the lilac range at a defined lightness step.      |
 | `primitive.color.lilac.700`                         | `#4f2aa3`                   | Specific value within the lilac range at a defined lightness step.      |
 | `primitive.color.lilac.800`                         | `#3a1f78`                   | Specific value within the lilac range at a defined lightness step.      |

@@ -1,0 +1,30 @@
+{
+  "$schema": "../../hirobius.tenant-metadata.schema.json",
+  "slug": "accent-lilac",
+  "displayName": "Accent Lilac",
+  "tagline": "Lilac accent exemplar — proves a violet brand ramp against the HDS semantic spine. Storybook-only, not a real client.",
+  "demo": true,
+  "tier": 2,
+  "deployment": {
+    "vercelProject": null,
+    "primaryDomain": null,
+    "previewDomain": null
+  },
+  "brand": {
+    "primaryHex": "#6f3fd4",
+    "accentName": "lilac",
+    "logoPath": null
+  },
+  "legal": {
+    "entity": null,
+    "jurisdiction": null,
+    "stripeAccountKind": null
+  },
+  "createdAt": "2026-07-06",
+  "status": "scaffold",
+  "_notes": [
+    "Exemplar tenant aliasing primitive.color.lilac.* onto the semantic accent tier, per R1. Not a real client — no deployment, no legal entity.",
+    "Brand hex #6f3fd4 = primitive.color.lilac.500 (AA for white text on page + card surfaces).",
+    "Client-specific overlays are NOT upstreamed here. A consumer themes itself downstream via the published `@hirobius/design-system/brand` export (src/brand/overlay.ts), so HDS never carries a client roster."
+  ]
+}
