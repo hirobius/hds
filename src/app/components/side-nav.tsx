@@ -54,6 +54,10 @@ export interface SideNavProps {
 // below) since it depends on runtime indent depth, not just level.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-size-interactive-min a11y touch target + --component-nav-paddingY level spacing + --semantic-color-* state tokens have no Tailwind-theme utility; var()-based so still token-driven
 const sideNavVariants = cva(
+  // 44px is the WCAG 2.5.5 / platform HIG minimum interactive target — a
+  // regulatory floor, not a design-scale choice; no semantic size scale exists
+  // yet for dimensional primitives (see hds#186 follow-up).
+  // tier-ok: regulatory a11y constant, not a design decision. hds#186
   'relative m-0 flex min-h-[var(--primitive-size-interactive-min)] w-full min-w-0 items-center no-underline transition-colors',
   {
     variants: {
@@ -67,7 +71,7 @@ const sideNavVariants = cva(
         hover:
           'cursor-pointer bg-[var(--semantic-color-surface-raised)] text-[var(--semantic-color-content-primary)] outline-none',
         focus:
-          'cursor-pointer bg-transparent text-[var(--semantic-color-content-secondary)] outline outline-[length:var(--primitive-borderWidth-sm)] outline-[color:var(--semantic-color-border-accent)] outline-offset-2',
+          'cursor-pointer bg-transparent text-[var(--semantic-color-content-secondary)] outline outline-[length:var(--semantic-borderWidth-emphasis)] outline-[color:var(--semantic-color-border-accent)] outline-offset-2',
         active:
           'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)] text-[var(--semantic-color-content-accent)] outline-none',
         disabled:

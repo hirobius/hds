@@ -70,9 +70,13 @@ describe('HeadingStack', () => {
     expect(headingStackVariants({})).toBe(headingStackVariants({ gap: 'px8' }));
   });
 
-  it('binds gap px8 (default) and px4 to their distinct primitive space tokens', () => {
-    expect(headingStackVariants({ gap: 'px8' })).toContain('gap-[var(--primitive-space-2)]');
-    expect(headingStackVariants({ gap: 'px4' })).toContain('gap-[var(--primitive-space-1)]');
+  it('binds gap px8 (default) and px4 to their distinct semantic space tokens', () => {
+    expect(headingStackVariants({ gap: 'px8' })).toContain(
+      'gap-[var(--semantic-space-component-gap)]',
+    );
+    expect(headingStackVariants({ gap: 'px4' })).toContain(
+      'gap-[var(--semantic-space-subgrid-gap)]',
+    );
   });
 
   it('applies the resolved gap className to the root element', () => {

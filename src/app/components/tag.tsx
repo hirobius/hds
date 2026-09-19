@@ -24,6 +24,10 @@ import { cn } from '../../lib/utils';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- 44px min interactive hit target has no semantic Tailwind size utility; var()-based so still token-driven
 const tagButtonVariants = cva(
+  // 44px is the WCAG 2.5.5 / platform HIG minimum interactive target — a
+  // regulatory floor, not a design-scale choice; no semantic size scale exists
+  // yet for dimensional primitives (see hds#186 follow-up).
+  // tier-ok: regulatory a11y constant, not a design decision. hds#186
   'group inline-flex min-w-[var(--primitive-size-interactive-min)] cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-inherit transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
 );
 
