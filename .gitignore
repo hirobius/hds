@@ -80,6 +80,10 @@ clients/*/automations/_log.jsonl
 # Per-client inbox discovery output — may contain tenant-specific summaries
 clients/*/inbox-discovery-results/
 
+# Real client detection rules for scripts/lib/knowledge-classify.mjs — client
+# names are personal/business data; only the .example.json is tracked.
+scripts/lib/knowledge-clients.local.json
+
 # Local agent state — never committed
 .agents/
 .claude/skills/

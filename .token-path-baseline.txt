@@ -49,7 +49,6 @@ src/app/pages/hds/MultiBrandThemingPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/OpsPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/PortfolioDraftPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/PortfolioHomePage.tsx:semantic.space.layout.gap
-src/app/pages/hds/RanchFoundationCaseStudyPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/SpacingPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/SystemContractPage.tsx:semantic.space.layout.gap
 src/app/pages/hds/TechStackPage.tsx:semantic.space.layout.gap

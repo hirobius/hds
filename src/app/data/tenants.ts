@@ -84,12 +84,12 @@ export const TENANT_REGISTRY: TenantDefinition[] = [
     },
   },
   {
-    slug: 'lilac-bonds',
-    name: 'Lilac Bonds',
+    slug: 'accent-overlay',
+    name: 'Accent Overlay',
     description:
-      'Surety-bond microsite for Lilac Insurance (Hirobius’ first external client). Lilac accent aliasing primitive.color.lilac.* — semantic-tier overlay only, per R1.',
+      'Accent-only tenant. Lilac accent aliasing primitive.color.lilac.* — semantic-tier overlay only, per R1.',
     // Semantic-tier accent overrides (Light mode), mirroring the compiled
-    // [data-tenant="lilac-bonds"] block in src/styles/tenants.css. Unlike the
+    // [data-tenant="accent-overlay"] block in src/styles/tenants.css. Unlike the
     // primitive-ramp approach above, this overlay aliases the lilac primitives
     // at the semantic tier, so only the accent role is re-pointed.
     tokens: {
