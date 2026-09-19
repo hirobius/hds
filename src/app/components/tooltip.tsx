@@ -22,6 +22,7 @@
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import hds from '../design-system/tokens';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Grid } from './grid';
 import { Stack } from './stack';
 import { Surface } from './surface';
@@ -57,12 +58,14 @@ const PILL_TEXT_STYLE: React.CSSProperties = {
 };
 
 function Pill({ label }: { label: string }) {
+  const productiveMotion = useHdsMotion('productive');
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.82 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.82 }}
-      transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
     >
       <Surface as="span" padding="none" style={PILL_SURFACE_STYLE}>
         <Stack as="span" direction="row" gap="xs" align="center" style={PILL_TEXT_STYLE}>

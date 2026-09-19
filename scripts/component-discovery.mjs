@@ -33,6 +33,15 @@ function collectTsxFiles(dir) {
 
   for (const entry of readdirSync(dir)) {
     if (SKIP_DIRS.has(entry)) continue;
+    // `__`-prefixed files are test scaffolding, never components. tests/
+    // check-source-canon.test.ts writes `__test-data-tenant-fixture.tsx` into
+    // the real src/app/components/ (it has to -- the gate only scans that
+    // tree), then deletes it. This walker runs concurrently under vitest, so
+    // it could list the file and then fail with ENOENT reading it a moment
+    // later: an intermittent failure in a test that has nothing to do with
+    // the fixture. Skipping the prefix also keeps scaffolding out of the
+    // generated manifest, which is correct independently of the race.
+    if (entry.startsWith('__')) continue;
 
     const fullPath = join(dir, entry);
     const stat = statSync(fullPath);
@@ -106,9 +115,11 @@ function findJsDocBlock(source, exportName) {
   return '';
 }
 
+// The file-level JSDoc is the first `/** … */` in the file. Only whitespace and
+// `//` line comments (e.g. `// motion-ok: …` gate notes) may come before it.
 function findFileJsDocBlock(source) {
-  const match = source.match(/^\s*\/\*\*[\s\S]*?\*\//);
-  return match?.[0] ?? '';
+  const match = source.match(/^(?:\s*\/\/[^\r\n]*)*\s*(\/\*\*[\s\S]*?\*\/)/);
+  return match?.[1] ?? '';
 }
 
 function stripJsDocBlock(block) {
@@ -157,6 +168,32 @@ function parseTags(block, source) {
   return tags;
 }
 
+/**
+ * The JSDoc tags discovery reads for one export of a module. A tag in the
+ * block directly above the export wins over the same tag in the file-level
+ * block. Also used by scripts/lib/component-code-model.mjs, so the Code Connect
+ * gate reads `@figma` exactly the way the manifest does.
+ *
+ * @param {string} source module text
+ * @param {string} exportName
+ * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, description: string }}
+ */
+export function readComponentTags(source, exportName) {
+  const fileBlock = findFileJsDocBlock(source);
+  const fileTags = parseTags(fileBlock, source);
+  const componentBlock = findJsDocBlock(source, exportName);
+  const componentTags = parseTags(componentBlock, source);
+  return {
+    category: componentTags.category ?? fileTags.category ?? null,
+    internal: componentTags.internal || fileTags.internal,
+    docIgnore: componentTags.docIgnore || fileTags.docIgnore,
+    docExempt: componentTags.docExempt || fileTags.docExempt,
+    figmaUrl: componentTags.figmaUrl ?? fileTags.figmaUrl ?? null,
+    tier: componentTags.tier ?? fileTags.tier ?? null,
+    description: stripJsDocBlock(componentBlock) || stripJsDocBlock(fileBlock),
+  };
+}
+
 export function discoverHdsComponents() {
   const files = collectTsxFiles(SRC_DIR);
   const components = [];
@@ -175,24 +212,16 @@ export function discoverHdsComponents() {
 
     if (exportedNames.length === 0) continue;
 
-    const fileBlock = findFileJsDocBlock(source);
-    const fileTags = parseTags(fileBlock, source);
-    if (fileTags.docIgnore) continue;
+    if (parseTags(findFileJsDocBlock(source), source).docIgnore) continue;
 
     for (const name of exportedNames) {
-      const componentBlock = findJsDocBlock(source, name);
-      const componentTags = parseTags(componentBlock, source);
-      const description = stripJsDocBlock(componentBlock) || stripJsDocBlock(fileBlock);
-      const category = componentTags.category ?? fileTags.category ?? null;
-      const internal = componentTags.internal || fileTags.internal;
       // @doc-ignore is a file-level "skip me" marker (not currently in use anywhere).
       // @doc-exempt is a component-level "no docs page" marker — the component is
       // still real (e.g. Card ships in GENERATIVE_SUBSET) and must surface in
       // the manifest so its tier and metadata can be governed. Callers that build
       // public-doc lists must filter on docExempt explicitly.
-      const docIgnore = componentTags.docIgnore || fileTags.docIgnore;
-      const docExempt = componentTags.docExempt || fileTags.docExempt;
-      const figmaUrl = componentTags.figmaUrl ?? fileTags.figmaUrl ?? null;
+      const { category, internal, docIgnore, docExempt, figmaUrl, tier, description } =
+        readComponentTags(source, name);
       // Components are PascalCase identifiers with at least one lowercase letter.
       // Filters out exported constants (ALL_UPPERCASE) and exported helper
       // functions (camelCase / lowercase-start) that share a doc-exempt source file.
@@ -211,8 +240,6 @@ export function discoverHdsComponents() {
       }
 
       if (!shouldInclude) continue;
-
-      const tier = componentTags.tier ?? fileTags.tier ?? null;
 
       components.push({
         name,

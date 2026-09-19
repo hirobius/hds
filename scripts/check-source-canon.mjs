@@ -226,7 +226,12 @@ function fileNearStructural(source) {
 function scanFile(filePath) {
   const source = fs.readFileSync(filePath, 'utf8');
   const violations = [];
-  const rel = path.relative(ROOT, filePath);
+  // POSIX separators always: `rel` is matched against hard-coded '/' paths
+  // below (the `src/app/components/` prefix and the isPrimitive filename
+  // regex). On Windows path.relative() returns backslashes, so those tests
+  // silently fail and every primitive loses its exemption — card.tsx reported
+  // INLINE_THIN_BAR on a clean tree, green on Linux CI and red locally.
+  const rel = path.relative(ROOT, filePath).split(path.sep).join('/');
   const exempt = fileExemptions(source, rel);
   if (exempt.skipAll) return violations;
 

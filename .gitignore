@@ -32,11 +32,6 @@ vite-actions-check.log
 *.patch
 test-results/
 
-# p6-4: reverse-token-sync output. Bridge writes the latest Figma
-# Variables snapshot here for human diff before any merge into
-# hirobius.tokens.json or public/hds-manifest.json. Not committed.
-tokens-from-figma.json
-
 # Claude Code worktrees (per-session sandboxes — not tracked)
 .claude/worktrees/
 .claude/settings.local.json
@@ -116,6 +111,16 @@ src/app/data/commit-history.json
 # REST API, so a committed copy is redundant. Regenerate on demand.
 hirobius.figma-variables.json
 hirobius.figma-variables-api.json
+# Figma model (pnpm figma:model): generated from hirobius.tokens.json by
+# scripts/build-figma-model.mjs; the golden test pins the exporter instead.
+figma/model.json
+# Figma sync carriers (pnpm figma:push / figma:snapshot) and native-import files
+# (pnpm figma:native-import): regenerated from the model on every run.
+# figma/snapshot.json IS committed: it is Figma's state, not a build output.
+figma/push/
+figma/native-import/
+# Design <-> code link carriers (pnpm figma:links): regenerated from the manifest.
+figma/links/
 
 # Auto-research findings — local LLM output, regenerated each run
 # (queries.json itself IS tracked; only the per-run findings are local-only)

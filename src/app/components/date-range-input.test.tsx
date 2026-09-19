@@ -27,7 +27,7 @@ describe('DateRangeInput', () => {
   });
 
   it('shows the formatted range on the trigger when a value is passed', () => {
-    render(<DateRangeInput value={{ from: new Date('2026-07-01'), to: new Date('2026-07-10') }} />);
+    render(<DateRangeInput value={{ from: new Date(2026, 6, 1), to: new Date(2026, 6, 10) }} />);
     expect(screen.getByRole('button').textContent).toContain('2026-07-01 – 2026-07-10');
   });
 

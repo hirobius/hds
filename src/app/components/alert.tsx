@@ -2,6 +2,7 @@
  * Alert - compact feedback surface with contextual severity.
  * @category Feedback
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34
  */
 
 import React from 'react';
@@ -10,6 +11,7 @@ import { cva } from 'class-variance-authority';
 import { CircleCheck, TriangleAlert, CircleX, Info, type LucideIcon } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Icon } from './icon';
 
 type AlertTone = 'success' | 'danger' | 'warning' | 'info';
@@ -62,6 +64,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert
 ) {
   const { icon: IconGlyph, colorVar } = TONE_CONFIG[tone];
   const hasTitle = Boolean(title);
+  const productiveMotion = useHdsMotion('productive');
 
   return (
     <motion.div
@@ -69,7 +72,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert
       role="alert"
       initial={{ opacity: 0, y: -4 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: hds.motion.productive.duration, ease: hds.motion.productive.easing }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
       className={cn(alertVariants({ tone, hasTitle }))}
     >
       <Icon

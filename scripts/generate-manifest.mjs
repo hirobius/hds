@@ -14,6 +14,7 @@ import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from '
 import { basename, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { discoverHdsComponents } from './component-discovery.mjs';
+import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -136,9 +137,12 @@ function escapeRegex(value) {
 function findConsumers(componentName, filePath, sourceFiles) {
   const pattern = new RegExp(`\\b${escapeRegex(componentName)}\\b`);
 
+  // Figma Code Connect templates (*.figma.ts) name the component in a snippet
+  // for Figma's runtime; they are not consumers of it.
   return sourceFiles
     .filter((candidate) => candidate !== filePath)
     .filter((candidate) => !candidate.startsWith(DOCS_PAGE_SEGMENT))
+    .filter((candidate) => !/\.figma\.tsx?$/.test(candidate))
     .filter((candidate) => {
       const content = readFileSync(join(ROOT, candidate), 'utf8');
       return pattern.test(content);
@@ -157,7 +161,7 @@ const discoveredPatterns = collectTsxFiles(PATTERNS_DIR)
   .filter(Boolean);
 
 // INVENTORY_TIERS must match generate-component-api.mjs exactly so that
-// componentInventory ↔ component-api.json stay in sync (pnpm figma:audit).
+// componentInventory ↔ component-api.json stay in sync.
 // template-tier components are excluded here because they are not parsed by
 // react-docgen-typescript in the API generator.
 const INVENTORY_TIERS = new Set(['primitive', 'pattern']);
@@ -228,18 +232,19 @@ for (const entry of activeDiscoveredComponents) {
     docExempt: entry.docExempt,
     filePath: entry.filePath,
     description: entry.description || current.description,
-    figmaUrl: entry.figmaUrl ?? current.figmaUrl ?? null,
+    // The component's `@figma` JSDoc tag is the only source: removing the tag
+    // unmaps the component (and its Code Connect template) on the next regen.
+    figmaUrl: entry.figmaUrl ?? null,
     figmaId: current.figmaId ?? (entry.name === 'TextLockup' ? 'text-lockup-pattern' : null),
-    // figmaLink: explicit "View in Figma" target surfaced on the doc-page
-    // header. Mirrors figmaUrl when populated; otherwise a structured
-    // `TODO:hds-master:<componentName>` marker so the link slot can render
-    // a "TODO" affordance and the figmaLink populated count stays at 100%
-    // for every non-template componentSpec. Templates may stay null. (10d-14)
-    figmaLink:
-      current.figmaLink ??
-      entry.figmaUrl ??
-      current.figmaUrl ??
-      (current.tier === 'template' ? null : `TODO:hds-master:${entry.name}`),
+    // figmaLink: explicit "View in Figma" target (10d-14). A real Figma URL or
+    // null, never a placeholder. Legacy `TODO:hds-master:<Name>` markers are
+    // dropped here so they cannot survive a regen; see scripts/lib/figma-link.mjs.
+    // The `@figma` tag is the only candidate, exactly as for figmaUrl above.
+    // The committed figmaLink used to come first, which pinned the stale URL:
+    // removing a tag left the old link in the manifest, and changing one left
+    // doc-page-header.tsx — which reads figmaLink before figmaUrl — pointing at
+    // the old node. Regen now clears and follows the tag.
+    figmaLink: resolveFigmaLink(entry.figmaUrl),
     // doc-exempt components surfacing for the first time fall back to 'utility' —
     // they're hidden internal helpers, so utility is the safe default until a
     // human authors a more precise @tier in the JSDoc.
@@ -274,6 +279,16 @@ for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
   }
 }
 
+// Specs that discovery does not revisit are carried over by the seed fold
+// as-is, so clear placeholder figmaLinks on those too. Discovered specs have
+// already been rebuilt from their `@figma` tag above, so this is a no-op for
+// them: when the tag is gone, both candidates are null and the link stays null.
+for (const spec of Object.values(manifest.componentSpecs)) {
+  if (spec && 'figmaLink' in spec) {
+    spec.figmaLink = resolveFigmaLink(spec.figmaLink, spec.figmaUrl);
+  }
+}
+
 const utilities = {};
 for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
   if (SECTION_BY_TIER[spec.tier] === 'utilities') {
@@ -301,6 +316,12 @@ const utilityCount = Object.keys(utilities).length;
 const sections = [`${componentSpecCount} components`];
 if (utilityCount > 0) sections.push(`${utilityCount} utilities`);
 console.log(`OK public/hds-manifest.json (${sections.join(', ')})`);
+
+// Honest Figma coverage: component specs whose figmaLink is a real Figma URL.
+const figmaCoverage = figmaLinkCoverage(manifest.componentSpecs);
+console.log(
+  `Figma links: ${figmaCoverage.linked} of ${figmaCoverage.total} component specs (${figmaCoverage.percent}%)`,
+);
 
 // Auto-regenerate lean agent projection
 const { execSync } = await import('child_process');

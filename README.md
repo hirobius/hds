@@ -1,8 +1,27 @@
 # Hirobius Design System
 
-HDS development has stalled since mid-July 2026 (no commits since 2026-07-15); the release, Chromatic, and Ralph loop-heartbeat workflows are all still frozen to manual dispatch from the 2026-07-09 shelving, and revival is tracked in [#199](https://github.com/hirobius/hds/issues/199)–[#201](https://github.com/hirobius/hds/issues/201). 133 components (Radix + `cva`), 351+ DTCG tokens, ~110 Storybook stories, a full guardrail suite, and the published `@hirobius/design-system` on npm.
+A publishable React + TypeScript component library backed by a governed design-token pipeline, published to npm as `@hirobius/design-system`.
 
-A publishable React + TypeScript component library, backed by a governed design-token pipeline, a documentation site, and an automated verification suite — all in one repository.
+<!--
+  PLACEHOLDER — ADRIAN TO WRITE (hds front-door PR).
+  If you want the README to mention the July–September 2026 pause, put one or
+  two sentences here in your own words, then delete this comment. Leaving the
+  comment in place publishes nothing. Do not restore the old status line this
+  PR removed: CI, release, and Chromatic triggers were restored in #204.
+-->
+
+<!-- auto:start:front-door-counts -->
+
+- **108** public component modules, exported from `src/index.ts`
+- **361** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **442** Storybook stories in **112** story files, reviewed visually in Chromatic
+
+<!-- auto:end:front-door-counts -->
+
+- Theming through four root attributes and CSS variables (theme, density, brand, font) that need no JavaScript
+- Deterministic gates in git hooks and CI: typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a Storybook build
+
+The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens` also runs. `scripts/__tests__/front-door.test.mjs` fails if this README claims more than the source has.
 
 ## Using the published package
 
@@ -80,27 +99,43 @@ import { HdsThemeProvider } from '@hirobius/design-system';
 </HdsThemeProvider>;
 ```
 
+## Figma ↔ code
+
+Code is the source of truth, and sync runs one way, from code to Figma. What exists today:
+
+- **Tokens → Figma model:** `pnpm figma:model` projects `hirobius.tokens.json` into `figma/model.json` — the Primitives, Semantic (Light/Dark), Component, Role, Brand and Density collections, plus text and effect styles. Light and Dark keep their own values.
+- **Model → Figma file:** `pnpm figma:push` writes the upsert scripts that apply that model to a Figma file, and `pnpm figma:native-import` writes DTCG files for Figma's own Variables ▸ Import. Both are run by hand — no workflow pushes to Figma. The runbook is [`figma/README.md`](figma/README.md).
+- **Figma → repo:** `pnpm figma:snapshot --ingest` records the file's state in `figma/snapshot.json`, and `pnpm check:figma-drift` compares the model against that committed snapshot. A hand edit in Figma is drift, not a source change.
+- **Legacy export:** `pnpm figma-variables` still writes the older plugin and REST export files, now projected from the same model.
+- **Components → Code Connect:** the v2 templates live in the repo, but no Code Connect mapping is published, so Dev Mode shows no snippets. Publishing Code Connect needs a Figma Organization plan.
+
+What each Figma plan allows, and the Pro-plan architecture this follows, are in [ADR-025](docs/adr/025-figma-sync-pro-architecture.md).
+
 ## Developing this repo
 
 ```bash
 pnpm install
-pnpm dev
+# Generated data files are gitignored; create them once (the same step CI runs):
+node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
+pnpm storybook   # component workbench on http://localhost:6006
 ```
 
 Core verification commands:
 
 ```bash
 pnpm typecheck
-pnpm run heal
-pnpm test
+pnpm lint
+pnpm exec vitest run   # unit + contract tests, as the pre-push hook and CI run them
+pnpm tokens:verify
 pnpm check:size
+pnpm build-storybook
 ```
 
 ## Architecture
 
 HDS is built around three structural rules:
 
-- **Strict semantics** — public surfaces prefer system primitives such as `HdsStack`, `HdsGrid`, `HdsSurface`, `HdsTextLockup`, `DocLayout`, and `CaseStudyLayout` instead of raw layout divs or ad hoc CSS.
+- **Strict semantics** — public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `TextLockup` instead of raw layout divs or ad hoc CSS.
 - **Polymorphism** — primitives preserve semantic HTML while staying composable through governed APIs such as `forwardRef`, `as`, and layout slots.
 - **12-column grid** — page structure follows a consistent editorial grid: readable center columns, intentional breakout zones, and explicit `gap` ownership rather than one-off spacing math.
 
@@ -111,6 +146,20 @@ Source-of-truth files:
 - `src/app/data/component-api.json` — generated prop tables and reflected component API.
 - `DESIGN.md` — lean visual spec for agents and engineers.
 - `DESIGN-HANDOFF.md` — verbose visual mirror for handoff and review.
+
+<!-- design-links:start (generated by `pnpm figma:links`; edit the @figma JSDoc tag, not this section) -->
+
+## Design ↔ Code links
+
+Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).
+
+**1 of 113** components link a Figma node.
+
+| Component | Figma node                                                                                       | Story                                              | Source                                    |
+| --------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------- | ----------------------------------------- |
+| `Alert`   | [33:34](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34) | [alert.stories.tsx](src/stories/alert.stories.tsx) | [alert.tsx](src/app/components/alert.tsx) |
+
+<!-- design-links:end -->
 
 ## Visual direction: Editorial Enterprise
 
@@ -123,26 +172,20 @@ The governing direction is "Editorial Enterprise" — enterprise rigor with edit
 
 ## Verification workflow
 
-Regression prevention is layered:
+The gates are deterministic and need no browser or live site:
 
-- `CLAUDE.md` is the operating contract — agent execution protocol, UI guardrails, required validation steps, and the self-heal requirement before a task is considered done.
-- `scripts/self-heal.mjs` (`pnpm run heal`) runs the local static and smoke checks, captures failures, and gives a consistent path to fix type, layout, and runtime drift.
-- The Playwright suite covers accessibility, layout integrity, collision detection, responsiveness, and visual regression, so changes that break containment, overlap, or responsive behavior fail automatically.
+- **pre-commit** (`.husky/pre-commit`): secrets scan, Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
+- **pre-push** (`.husky/pre-push`): Vitest unit and contract tests, then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
+- **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and a Storybook build.
+- **Visual review:** Storybook is the visual verification surface, and Chromatic (`.github/workflows/chromatic.yml`) runs it on pull requests. The earlier browser test suite drove a docs site that no longer exists; it is archived in `tests-archive/`.
 
-Typical loop:
-
-1. Change code within the token and component constraints.
-2. Run `pnpm typecheck` and `pnpm run heal`.
-3. Let Playwright catch runtime and visual regressions.
-4. If self-healing fixes a regression, log the root cause and resolution.
-5. Update the verification checklist and ship.
+`CLAUDE.md` is the operating contract for agents working in this repo.
 
 ## Bundle and release hygiene
 
 - `pnpm check:size` builds the library bundle and runs `size-limit`.
-- `pnpm check:release` runs the full release gate (accessibility, responsive, collision, visual, and bundle-size checks).
 
-Releases are cut with [Changesets](https://github.com/changesets/changesets): a merged changeset opens a "Version Packages" PR, and merging that PR publishes the new version to public npm via `.github/workflows/release.yml`.
+Releases are cut with [Changesets](https://github.com/changesets/changesets). A pull request that changes the published package adds a changeset (`pnpm changeset:add`). On a push to `main`, `.github/workflows/release.yml` opens or updates a "Version Packages" PR, and merging that PR publishes the new version to public npm.
 
 ## Repository shape
 
@@ -166,3 +209,7 @@ public/
 - `DESIGN-HANDOFF.md` — verbose visual mirror
 - `TOKEN_GOVERNANCE.md` — token system rules
 - `SYSTEMS_REGISTRY.md` — systems & guardrail registry
+
+## License
+
+The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also embeds the Satoshi and Geist Mono fonts, which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).

@@ -11,6 +11,7 @@ import { cn } from '../../lib/utils';
 import { useHdsRouter } from '../context/RouterContext';
 import { useLanguage } from '../context/LanguageContext';
 import hds from '../design-system/tokens';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Icon } from './icon';
 
 const bodyTextStyle = hds.typeStyles.ui;
@@ -91,11 +92,12 @@ export function DocLinkCard({
   // logical-left affordance and the current direction don't cancel out.
   // Equivalent to the original nested left/right + textAlign ternaries.
   const pagerLeftAligned = isLeftAffordance ? !isRtl : isRtl;
+  const productiveMotion = useHdsMotion('productive');
 
   useEffect(() => {
     const transition = {
-      duration: hds.motion.productive.duration,
-      ease: hds.motion.productive.easing,
+      duration: productiveMotion.duration,
+      ease: productiveMotion.easing,
     };
 
     if (variant === 'pager') {
@@ -107,7 +109,15 @@ export function DocLinkCard({
     }
 
     void headerIconControls.start(isInteractive ? { y: -3 } : { y: 0 }, transition);
-  }, [affordance, headerIconControls, isInteractive, pagerIconControls, variant]);
+  }, [
+    affordance,
+    headerIconControls,
+    isInteractive,
+    pagerIconControls,
+    variant,
+    productiveMotion.duration,
+    productiveMotion.easing,
+  ]);
 
   return (
     <button // audit-ok: hds-focus is baked into docLinkCardVariants() base class above
