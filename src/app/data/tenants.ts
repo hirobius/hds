@@ -92,19 +92,24 @@ export const TENANT_REGISTRY: TenantDefinition[] = [
     // [data-tenant="lilac-bonds"] block in src/styles/tenants.css. Unlike the
     // primitive-ramp approach above, this overlay aliases the lilac primitives
     // at the semantic tier, so only the accent role is re-pointed.
+    // tier-ok: tenant primitive override is the override mechanism — same idiom as
+    // the compiled [data-tenant="lilac-bonds"] block in src/styles/tenants.css
+    // (see its header comment). Each entry re-points a semantic KEY at a raw
+    // lilac primitive VALUE; that semantic-tier redirection is the whole point
+    // of a tenant overlay, not a bypass of it. hds#186
     tokens: {
-      '--semantic-accent-rest': 'var(--primitive-color-lilac-500)',
-      '--semantic-accent-hover': 'var(--primitive-color-lilac-600)',
-      '--semantic-accent-pressed': 'var(--primitive-color-lilac-700)',
-      '--semantic-accent-subtle': 'var(--primitive-color-lilac-50)',
-      '--semantic-accent-content': 'var(--primitive-color-lilac-500)',
-      '--semantic-accent-contentHover': 'var(--primitive-color-lilac-600)',
-      '--semantic-accent-disabled': 'var(--primitive-color-lilac-100)',
-      '--semantic-accent-inactive': 'var(--primitive-color-lilac-200)',
-      '--semantic-color-surface-accent': 'var(--primitive-color-lilac-500)',
-      '--semantic-color-surface-accentSubtle': 'var(--primitive-color-lilac-50)',
-      '--semantic-color-border-accent': 'var(--primitive-color-lilac-500)',
-      '--semantic-color-content-accent': 'var(--primitive-color-lilac-500)',
+      '--semantic-accent-rest': 'var(--primitive-color-lilac-500)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-accent-hover': 'var(--primitive-color-lilac-600)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-accent-pressed': 'var(--primitive-color-lilac-700)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-accent-subtle': 'var(--primitive-color-lilac-50)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-accent-content': 'var(--primitive-color-lilac-500)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-accent-contentHover': 'var(--primitive-color-lilac-600)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-accent-disabled': 'var(--primitive-color-lilac-100)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-accent-inactive': 'var(--primitive-color-lilac-200)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-color-surface-accent': 'var(--primitive-color-lilac-500)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-color-surface-accentSubtle': 'var(--primitive-color-lilac-50)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-color-border-accent': 'var(--primitive-color-lilac-500)', // tier-ok: tenant override mechanism, hds#186
+      '--semantic-color-content-accent': 'var(--primitive-color-lilac-500)', // tier-ok: tenant override mechanism, hds#186
     },
   },
 ];

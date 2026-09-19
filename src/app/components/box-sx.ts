@@ -66,6 +66,7 @@ const UNITLESS = new Set([
 
 // The `--primitive-space-<n>` tokens that actually exist (4px base scale;
 // see hirobius.tokens.json primitive.space.*). Any other integer falls back
+// tier-ok: prose reference inside a comment, not a live token usage, hds#186
 // to `calc(var(--primitive-space-1) * n)` so the value still resolves off the
 // 4px unit rather than a raw px literal.
 const EXISTING_SPACE_SCALE = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 16, 20, 24, 32]);
@@ -94,9 +95,14 @@ const SPACING_PROP_MAP: Record<string, string[]> = {
 
 function resolveSpacingValue(value: SxValue): string {
   if (typeof value === 'number') {
+    // This IS the primitive-tier bridge for Box's numeric spacing shorthand
+    // (`p`, `m`, `gap`, ...) — same pipeline role as the allowlisted
+    // src/app/design-system/tokens.ts, just resolving a scale index to a
+    // var() reference dynamically instead of statically. Not a component
+    // bypassing the tier; it IS the tier.
     return EXISTING_SPACE_SCALE.has(value)
-      ? `var(--primitive-space-${value})`
-      : `calc(var(--primitive-space-1) * ${value})`;
+      ? `var(--primitive-space-${value})` // tier-ok: primitive-tier bridge, hds#186
+      : `calc(var(--primitive-space-1) * ${value})`; // tier-ok: primitive-tier bridge, hds#186
   }
   if (SEMANTIC_SPACE_STEPS.has(value)) {
     return `var(--semantic-space-layout-${value})`;

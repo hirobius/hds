@@ -82,7 +82,7 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
               ease: productiveMotion.easing,
             }}
             // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/color; var()-based, no Tailwind-theme utility exists
-            className="h-full rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-accent)]"
+            className="h-full rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-accent)]" // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186
           />
         </Surface>
         <input
