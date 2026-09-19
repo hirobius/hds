@@ -51,7 +51,7 @@ function resolveModeHex(node: any, mode: 'Light' | 'Dark', root: object) {
   return resolved.toLowerCase();
 }
 
-const onAccentNode = getByPath(baseRaw, 'semantic.color.content.onAccent');
+const baseOnAccentNode = getByPath(baseRaw, 'semantic.color.content.onAccent');
 
 // Phase 1 pilot tenants (ISSUE-02 scope) — brutalist-demo is a dev fixture,
 // not a real tenant, so it's excluded here.
@@ -60,6 +60,10 @@ const TENANTS = ['concrete-creations', 'lilac-bonds'] as const;
 describe.each(TENANTS)('tenant contrast contract: %s', (slug) => {
   const overlay = JSON.parse(readFileSync(resolve(ROOT, 'tenants', slug, 'tokens.json'), 'utf8'));
   const accentNode = getByPath(overlay, 'semantic.color.surface.accent');
+  // onAccent is tenant-overridable: the base flips to a dark neutral in dark mode
+  // (for the neutral base accent), but a tenant with a colored accent fill sets its
+  // own on-accent text. Resolve tenant-first so the contract tests the EFFECTIVE pair.
+  const onAccentNode = getByPath(overlay, 'semantic.color.content.onAccent') ?? baseOnAccentNode;
 
   it('overrides semantic.color.surface.accent', () => {
     expect(accentNode).toBeDefined();

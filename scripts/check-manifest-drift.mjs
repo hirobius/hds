@@ -27,10 +27,9 @@ function extractSetNames(source, setName) {
 
 const manifest = readJson(manifestPath);
 const compilerSource = fs.readFileSync(compilerPath, 'utf8');
-const knownNames = new Set([
-  ...Object.keys(manifest.componentSpecs ?? {}),
-  ...Object.keys(manifest.utilities ?? {}),
-]);
+const specNames = new Set(Object.keys(manifest.componentSpecs ?? {}));
+const utilityNames = new Set(Object.keys(manifest.utilities ?? {}));
+const knownNames = new Set([...specNames, ...utilityNames]);
 const compilerNames = new Set(
   [
     ...extractSetNames(compilerSource, 'FRAME_TAGS'),
@@ -45,6 +44,26 @@ let warnings = 0;
 for (const name of compilerNames) {
   if (!knownNames.has(name)) {
     console.warn(`⚠ Compiler references ${name} but it is absent from componentSpecs/utilities`);
+    warnings += 1;
+  }
+}
+
+// `enrich-manifest.mjs` is what puts the compiler's tag vocabulary into
+// componentSpecs; `generate-manifest.mjs` alone does not, because it scans
+// src/ and these live in scripts/hds-jsx-compiler.mjs. So a manifest written
+// by a chain that skipped enrichment loses them from componentSpecs while
+// keeping them in utilities — and the union check above cannot see that
+// (hds#229: `pnpm tokens` used to do exactly this, silently dropping seven
+// entries from a committed file and only failing later, in CI).
+//
+// Assert the post-enrichment invariant directly.
+for (const name of compilerNames) {
+  if (utilityNames.has(name) && !specNames.has(name)) {
+    console.error(
+      `✖ ${name} is in manifest.utilities but missing from manifest.componentSpecs — ` +
+        'the manifest was written without scripts/enrich-manifest.mjs. ' +
+        'Regenerate with `pnpm manifest:generate` (not `generate-manifest.mjs` alone).',
+    );
     warnings += 1;
   }
 }
