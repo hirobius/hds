@@ -153,7 +153,7 @@ Source-of-truth files:
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).
 
-**1 of 113** components link a Figma node.
+**1 of 120** components link a Figma node.
 
 | Component | Figma node                                                                                       | Story                                              | Source                                    |
 | --------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------- | ----------------------------------------- |
