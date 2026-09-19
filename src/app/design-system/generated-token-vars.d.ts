@@ -114,7 +114,7 @@ declare module 'react' {
     '--primitive-typography-size-3xl'?: string | undefined;
     '--primitive-typography-size-4xl'?: string | undefined;
     '--primitive-typography-size-5xl'?: string | undefined;
-    '--primitive-typography-size-7xl'?: string | undefined;
+    '--primitive-typography-size-6xl'?: string | undefined;
     '--primitive-typography-weight-light'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;
     '--primitive-typography-weight-medium'?: string | undefined;

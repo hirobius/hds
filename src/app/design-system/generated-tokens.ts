@@ -140,7 +140,7 @@ export const tokens = {
         "3xl": "var(--primitive-typography-size-3xl)",
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
-        "7xl": "var(--primitive-typography-size-7xl)"
+        "6xl": "var(--primitive-typography-size-6xl)"
       },
       weight: {
         light: "var(--primitive-typography-weight-light)",
