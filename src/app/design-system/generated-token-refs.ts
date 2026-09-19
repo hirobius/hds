@@ -284,6 +284,7 @@ export const tokenRefs = {
       },
       border: {
         default: "var(--semantic-color-border-default)",
+        interactive: "var(--semantic-color-border-interactive)",
         subdued: "var(--semantic-color-border-subdued)",
         subtle: "var(--semantic-color-border-subtle)",
         strong: "var(--semantic-color-border-strong)",

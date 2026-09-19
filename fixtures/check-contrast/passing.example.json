@@ -113,6 +113,16 @@
           }
         }
       },
+      "border": {
+        "interactive": {
+          "$value": "{primitive.color.black}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": { "Light": "{primitive.color.black}", "Dark": "{primitive.color.black}" }
+            }
+          }
+        }
+      },
       "feedback": {
         "success": {
           "$value": "{primitive.color.black}",
