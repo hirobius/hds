@@ -209,6 +209,7 @@
   --semantic-color-content-warning: var(--primitive-color-amber-800);
   --semantic-color-content-danger: var(--primitive-color-red-700);
   --semantic-color-border-default: var(--primitive-color-neutral-200);
+  --semantic-color-border-interactive: var(--primitive-color-neutral-500);
   --semantic-color-border-subdued: var(--primitive-color-neutral-200);
   --semantic-color-border-subtle: var(--primitive-color-neutral-100);
   --semantic-color-border-strong: var(--primitive-color-neutral-300);
@@ -408,14 +409,14 @@
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-raised);
   --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
-  --component-button-secondary-border-rest: var(--semantic-color-border-default);
-  --component-button-secondary-border-hover: var(--semantic-color-border-default);
-  --component-button-secondary-border-pressed: var(--semantic-color-border-default);
+  --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
+  --component-button-secondary-border-hover: var(--semantic-color-border-interactive);
+  --component-button-secondary-border-pressed: var(--semantic-color-border-interactive);
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-input-bg: var(--semantic-color-surface-raised);
   --component-input-text: var(--semantic-color-content-primary);
-  --component-input-border: var(--semantic-color-border-default);
+  --component-input-border: var(--semantic-color-border-interactive);
   --component-input-borderError: var(--semantic-color-feedback-error);
   --component-input-radius: var(--semantic-radius-action);
   --component-input-paddingX: var(--primitive-space-4);
@@ -445,7 +446,7 @@
   --role-destructive: var(--semantic-color-feedback-error);
   --role-destructive-foreground: var(--semantic-color-content-inverse);
   --role-border: var(--semantic-color-border-default);
-  --role-input: var(--semantic-color-border-default);
+  --role-input: var(--semantic-color-border-interactive);
   --role-ring: var(--semantic-color-border-accent);
   --role-radius: var(--semantic-radius-action);
 }
@@ -474,6 +475,7 @@
   --semantic-color-content-warning: var(--primitive-color-amber-400);
   --semantic-color-content-danger: var(--primitive-color-red-400);
   --semantic-color-border-default: var(--primitive-color-neutral-700);
+  --semantic-color-border-interactive: var(--primitive-color-neutral-500);
   --semantic-color-border-subdued: var(--primitive-color-neutral-800);
   --semantic-color-border-subtle: var(--primitive-color-neutral-850);
   --semantic-color-border-strong: var(--primitive-color-neutral-600);

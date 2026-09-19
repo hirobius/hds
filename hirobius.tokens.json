@@ -1239,6 +1239,18 @@
             }
           }
         },
+        "interactive": {
+          "$value": "{primitive.color.neutral.500}",
+          "$description": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.500}",
+                "Dark": "{primitive.color.neutral.500}"
+              }
+            }
+          }
+        },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
           "$extensions": {
@@ -2252,17 +2264,17 @@
         "border": {
           "rest": {
             "$type": "color",
-            "$value": "{semantic.color.border.default}",
+            "$value": "{semantic.color.border.interactive}",
             "$description": "Secondary button border."
           },
           "hover": {
             "$type": "color",
-            "$value": "{semantic.color.border.default}",
+            "$value": "{semantic.color.border.interactive}",
             "$description": "Secondary button hover border."
           },
           "pressed": {
             "$type": "color",
-            "$value": "{semantic.color.border.default}",
+            "$value": "{semantic.color.border.interactive}",
             "$description": "Secondary button pressed border."
           },
           "disabled": {
@@ -2289,7 +2301,7 @@
       },
       "border": {
         "$type": "color",
-        "$value": "{semantic.color.border.default}"
+        "$value": "{semantic.color.border.interactive}"
       },
       "borderError": {
         "$type": "color",
@@ -2429,7 +2441,7 @@
     },
     "input": {
       "$type": "color",
-      "$value": "{semantic.color.border.default}",
+      "$value": "{semantic.color.border.interactive}",
       "$description": "Input field border. shadcn role: input."
     },
     "ring": {
