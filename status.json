@@ -1,12 +1,13 @@
 {
-  "updatedAt": "2026-09-19T09:33:00Z",
+  "updatedAt": "2026-09-19T09:58:00Z",
   "phase": "active",
-  "headline": "Two breaking-but-intentional token changes landed today. #228 collapsed four competing radius values onto one knob (semantic.radius.action 12px -> 8px; Tailwind rounded-md now resolves to the role radius exactly, so the utility and the token can no longer disagree) and unblocked Storybook, which had not built on a clean clone because two generated-but-gitignored JSON files are imported as modules. #208 neutralized the accent from blue to monochrome, inverting per theme, taking content.onAccent/surface.accent contrast from 7.3:1 to 18.9:1; blue is now a tenant overlay rather than the base. A rendered-evidence audit, a target-architecture proposal for all 120 components, and a knob bench (pnpm preview:build) that renders the real components with live dials shipped alongside. #237 also landed, fixing a silent manifest truncation: pnpm tokens skipped enrich-manifest and dropped seven entries from a committed file, and check-manifest-drift could not see it because the names sit in both componentSpecs and utilities and the gate unioned them. Epic #124 decomposed: 6 of its 9 children were already closed, #134 closed as superseded, and 7 new issues filed (#230-#236).",
+  "headline": "Fixed the four rendering defects from the 2026-09-18 visual audit (#225 A3/A4/A5 + #226), PR #239: radio ring/dot now take an explicit flex/block display so their token width/height actually apply (0px -> 20x20 ring, 8x8 dot); segmented-control's active indicator was losing bg-[accent] to its own base bg-transparent in the Tailwind cascade because it wasn't run through cn()/twMerge (1.00:1 -> 7.33:1 contrast) — same fix applied to the label+description text-color slot; toggle now draws a real 40x20 pill track + 16x16 thumb instead of rendering the native 16x16 checkbox directly; alert title/body are now a flex-col with a semantic-token gap instead of adjacent inline spans. All measured before/after in a real Chromium render (Playwright), not read off source. Note: #225 had already been closed once by #228, but #228 only did an unrelated radius-token rename in toggle/segmented-control and never touched radio.tsx — the three rendering bugs were still live on main until #239. Prior fleet context (#228/#208/#237/#124 decomposition) is in the PR/issue history.",
   "next": [
-    "Fix #225 (radio paints nothing, segmented items 1.00:1, toggle a transparent box) and #226 (alert title runs into body) — in progress on claude/fix-form-control-rendering",
     "Fix #227 (type scale inverts: 5xl 80px > 7xl 72px) — in progress on claude/fix-type-scale-inversion",
     "#230 — split the border token so control boundaries meet WCAG 1.4.11; --semantic-color-border-default is 1.26:1 against a 3:1 floor",
-    "#186 — 60 pre-existing check-tier-bypass violations, held until the form-control work lands to avoid file contention"
+    "#186 — 60 pre-existing check-tier-bypass violations (59 now — #239's toggle rewrite removed one outright). No longer blocked on form-control file contention now that #239 has landed.",
+    "#240 (new) — rendered regression gate for radio/segmented-control/toggle/alert (non-zero geometry + >=3:1 contrast), the #225 DoD item #239 didn't build",
+    "Enable Chromatic (#200) now that A3/A4/A5 render correctly, so the baseline captures a correct render"
   ],
   "blocked": [
     "Adrian: #235 — ratify or redline the core/pattern/internal/fold disposition table. Default applies 2026-10-03 if unanswered",

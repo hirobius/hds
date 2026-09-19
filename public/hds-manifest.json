@@ -5925,6 +5925,7 @@
       "figmaLink": null,
       "consumers": [
         "src/app/components/checkbox.test.tsx",
+        "src/app/components/radio.tsx",
         "src/stories/checkbox.stories.tsx"
       ],
       "variantAxes": [],
@@ -7831,6 +7832,7 @@
         "src/app/components/frame.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/switcher.tsx",
+        "src/app/components/toggle.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
