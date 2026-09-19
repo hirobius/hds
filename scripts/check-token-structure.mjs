@@ -3,7 +3,7 @@
  * check-token-structure.mjs
  *
  * Validates hirobius.tokens.json for structural correctness.
- * Catches two categories of architectural error:
+ * Catches three categories of architectural error:
  *
  * 1. Cross-tier aliasing — a token references a token in the wrong tier:
  *      semantic.*  must only alias primitive.*
@@ -12,6 +12,17 @@
  *
  * 2. Theme coverage gaps — a token with $extensions["com.figma.variables"].modes
  *    must define values for BOTH Light and Dark.
+ *
+ * 3. Non-monotonic ordered scales — a sibling group of leaves whose keys are ALL
+ *    drawn from the shared t-shirt-size step vocabulary (2xs..9xl) must resolve
+ *    to strictly increasing numeric values as the step name grows. Catches a
+ *    named step being larger than its neighbor but valued smaller (e.g.
+ *    primitive.typography.size.5xl = 80px vs 7xl = 72px — hds#227). Applies
+ *    generically to any current or future primitive scale that uses the t-shirt
+ *    vocabulary (today: typography.size, breakpoint, borderWidth), not just
+ *    typography — a group is only checked when EVERY one of its leaf keys is a
+ *    recognized step name; anything else (color ramps, spacing's numeric keys,
+ *    weight/lineHeight/letterSpacing's adjectival vocab) is left alone.
  *
  * No suppression mechanism. All violations require a structural fix in the JSON.
  */
@@ -32,6 +43,85 @@ const fixtureFile = process.env.FIXTURE_FILE;
 
 // Alias pattern: {path.to.token}
 const ALIAS_RE = /^\{([^}]+)\}$/;
+
+// ── Ordered-scale (monotonicity) vocabulary ─────────────────────────────────
+// The shared t-shirt-size step vocabulary, low to high. A tuple entry means
+// two names share one rung (different scales use 'base' or 'md' as their
+// middle step; no scale today defines both, so treating them as equal rank
+// is safe — see hds#227).
+const TSHIRT_STEPS = [
+  '2xs',
+  'xs',
+  'sm',
+  ['base', 'md'],
+  'lg',
+  'xl',
+  '2xl',
+  '3xl',
+  '4xl',
+  '5xl',
+  '6xl',
+  '7xl',
+  '8xl',
+  '9xl',
+];
+const TSHIRT_RANK = new Map(
+  TSHIRT_STEPS.flatMap((step, rank) =>
+    Array.isArray(step) ? step.map((name) => [name, rank]) : [[step, rank]],
+  ),
+);
+
+/**
+ * Extract a plain finite number from a DTCG $value — either a bare number
+ * (fontWeight, lineHeight, …) or a dimension object { value, unit }.
+ * Returns null for anything else (color, string, composite $value, …), which
+ * takes the leaf out of monotonicity consideration.
+ */
+function numericLeafValue(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (value && typeof value === 'object' && typeof value.value === 'number') {
+    return Number.isFinite(value.value) ? value.value : null;
+  }
+  return null;
+}
+
+/**
+ * Group-level check: if `node`'s direct children are ALL leaves whose keys
+ * are ALL in the t-shirt-size vocabulary, assert the values strictly increase
+ * in vocabulary order. Any child that isn't a leaf, or whose key isn't a
+ * recognized step name, or whose $value isn't numeric, takes the WHOLE group
+ * out of consideration (no partial-vocabulary matching) — this keeps color
+ * ramps, primitive.space's numeric keys, and adjectival vocabularies
+ * (weight/lineHeight/letterSpacing) untouched.
+ */
+function checkScaleMonotonicity(node, path) {
+  const keys = Object.keys(node).filter((k) => !k.startsWith('$'));
+  const steps = [];
+  for (const key of keys) {
+    const child = node[key];
+    if (!child || typeof child !== 'object' || !('$value' in child)) return;
+    if (!TSHIRT_RANK.has(key)) return;
+    const num = numericLeafValue(child['$value']);
+    if (num === null) return;
+    steps.push({ key, rank: TSHIRT_RANK.get(key), value: num });
+  }
+  if (steps.length < 2) return;
+
+  steps.sort((a, b) => a.rank - b.rank);
+  for (let i = 1; i < steps.length; i++) {
+    const prev = steps[i - 1];
+    const cur = steps[i];
+    if (cur.value <= prev.value) {
+      violations.push({
+        type: 'non-monotonic-scale',
+        path,
+        pair: [`${path}.${prev.key}`, `${path}.${cur.key}`],
+        values: [prev.value, cur.value],
+        fix: `${path}.${cur.key} (${cur.value}) must be greater than ${path}.${prev.key} (${prev.value}) — an ordered scale must increase monotonically with its step name`,
+      });
+    }
+  }
+}
 
 const violations = [];
 const FORBIDDEN_TYPOGRAPHY_SUBTREES = new Set([
@@ -136,6 +226,9 @@ function walkTokens(node, path, inheritedType = null) {
     return; // leaf — don't recurse further
   }
 
+  // ── Ordered-scale monotonicity check (group level only) ─────────────────
+  checkScaleMonotonicity(node, path);
+
   // Recurse into children (skip $ meta-keys), passing effective type down
   for (const key of Object.keys(node)) {
     if (key.startsWith('$')) continue;
@@ -161,7 +254,9 @@ for (const key of Object.keys(tokens)) {
 }
 
 if (violations.length === 0) {
-  console.log('✓ check-token-structure — no cross-tier alias violations or theme coverage gaps');
+  console.log(
+    '✓ check-token-structure — no cross-tier alias violations, theme coverage gaps, or non-monotonic ordered scales',
+  );
   process.exit(0);
 } else {
   console.error(`\n✗ check-token-structure — ${violations.length} violation(s) found\n`);
@@ -173,6 +268,10 @@ if (violations.length === 0) {
     } else if (v.type === 'forbidden-subtree') {
       console.error('  Forbidden typography subtree:');
       console.error(`    ${v.path}`);
+      console.error(`    Fix: ${v.fix}\n`);
+    } else if (v.type === 'non-monotonic-scale') {
+      console.error('  Non-monotonic ordered scale:');
+      console.error(`    ${v.pair[0]} = ${v.values[0]}  →  ${v.pair[1]} = ${v.values[1]}`);
       console.error(`    Fix: ${v.fix}\n`);
     } else {
       console.error(`  Theme coverage gap:`);

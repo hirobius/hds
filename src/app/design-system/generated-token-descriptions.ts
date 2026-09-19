@@ -79,7 +79,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.typography.family.primary": "Self-hosted Satoshi (ITF) body typeface; falls back to system-ui sans-serif stack.",
   "primitive.typography.family.display": "Display face: Satoshi Bold (ITF), bound to display/h1/h2/h3 composites.",
   "primitive.typography.family.mono": "Monospace face: Geist Mono. Falls back to Courier New, monospace.",
-  "primitive.typography.size.7xl": "Swiss-canon display size. Static desktop value; fluid in theme.css.",
+  "primitive.typography.size.5xl": "Swiss-canon display size. Static desktop value; fluid in theme.css.",
   "primitive.typography.weight.light": "Swiss-canon heading weight. Display and h1/h2 composites only.",
   "primitive.typography.lineHeight.snug": "Swiss-canon snug rhythm (10t-5). Used by h2/h3 composites for tight-but-readable heading lines.",
   "primitive.typography.lineHeight.relaxed": "Swiss-canon relaxed rhythm (10t-5). Used by body/small/mono composites for long-form prose comfort.",
