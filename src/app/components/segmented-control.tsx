@@ -449,22 +449,37 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
                 >
                   <span
                     aria-hidden="true"
-                    className={segmentedControlIndicatorVariants({
-                      variant,
-                      active,
-                      interaction,
-                      disabled: showDisabled,
-                    })}
-                  />
-                  <span className={segmentedControlLabelVariants()}>{option.label}</span>
-                  {option.description && (
-                    <span
-                      className={segmentedControlDescriptionVariants({
+                    // #225: cva only concatenates base + compound class strings — it
+                    // does not dedupe conflicting Tailwind utilities. The base here
+                    // always carries `bg-transparent`, so without a twMerge pass the
+                    // active/hover compounds' accent-background class
+                    // could lose the cascade to it (stylesheet order, not DOM class
+                    // order, decides ties) and the indicator never visibly paints.
+                    // `cn()` (clsx + tailwind-merge) makes the last conflicting
+                    // utility in the string win deterministically, same as every
+                    // other multi-source className in this file.
+                    className={cn(
+                      segmentedControlIndicatorVariants({
                         variant,
                         active,
                         interaction,
                         disabled: showDisabled,
-                      })}
+                      }),
+                    )}
+                  />
+                  <span className={segmentedControlLabelVariants()}>{option.label}</span>
+                  {option.description && (
+                    <span
+                      // Same cascade hazard as the indicator above (base
+                      // `text-[...secondary]` vs. compound `text-[...onAccent]`).
+                      className={cn(
+                        segmentedControlDescriptionVariants({
+                          variant,
+                          active,
+                          interaction,
+                          disabled: showDisabled,
+                        }),
+                      )}
                     >
                       {option.description}
                     </span>

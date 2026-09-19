@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-09-18T07:15:00Z",
+  "updatedAt": "2026-09-19T09:50:00Z",
   "phase": "active",
-  "headline": "Rendered-evidence visual audit landed (docs/visual-audit-2026-09-18.html). Storybook did not build on a clean clone — src/app/data/component-api.json is gitignored and only prebuild:lib generated it, and build-storybook still exited 0 on failure; the same pattern broke pnpm typecheck via token-audit-report.json. Both now have pre-steps. Storybook also had no staticDirs, so every story rendered in a fallback face instead of Satoshi. Audit found 4 P0 / 3 P1 / 2 P2 drift findings plus 6 direction calls for Adrian.",
+  "headline": "Fixed the four rendering defects from the 2026-09-18 visual audit (#225 A3/A4/A5 + #226): radio ring/dot now take an explicit flex/block display so their token width/height actually apply (0px -> 20x20 ring, 8x8 dot); segmented-control's active indicator was losing bg-[accent] to its own base bg-transparent in the Tailwind cascade because it wasn't run through cn()/twMerge (1.00:1 -> 7.33:1 contrast) — same fix applied to the label+description text-color slot; toggle now draws a real 40x20 pill track + 16x16 thumb instead of rendering the native 16x16 checkbox directly; alert title/body are now a flex-col with a semantic-token gap instead of adjacent inline spans. All measured before/after in a real Chromium render (Playwright), not read off source. Note: #225 had already been closed by PR #228, but that PR only did an unrelated radius-token rename in toggle/segmented-control and never touched radio.tsx — the three rendering bugs were still live on main.",
   "next": [
     "Adrian: decide B3 (body size/weight + border neutral) — two token values that set the register everything else is judged against; border is currently 1.26:1 against a 3:1 floor",
     "Adrian: decide B1 (single radius source of truth — Tailwind rounded-md derives 10px while components bind the 12px token) and B4 (heading weight; the light-300 token is orphaned)",
-    "Fix A3/A4/A5: radio renders 0px wide (inline spans), segmented items are white-on-white at 1.00:1, toggle renders as a 16x16 transparent box",
     "Correct DESIGN.source.md prose vs generated tables (A7), renumber the inverted 5xl/7xl scale (A8)",
-    "Enable Chromatic (#200) once the above land, so the baseline captures a correct render"
+    "Enable Chromatic (#200) now that A3/A4/A5 render correctly, so the baseline captures a correct render",
+    "Add a rendered regression gate (renders radio/segmented-control/toggle/alert, asserts non-zero geometry + >=3:1 contrast) per #225's DoD — not built in this PR, see the follow-up issue"
   ],
   "blocked": []
 }
