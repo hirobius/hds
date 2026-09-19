@@ -1037,37 +1037,37 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.blue.500}",
-          "$description": "Accent-colored background",
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Accent-colored background (neutral/monochrome; inverts to a light neutral on dark surfaces).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.500}",
-                "Dark": "{primitive.color.blue.500}"
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.100}"
               }
             }
           }
         },
         "accentSubtle": {
-          "$value": "{primitive.color.blue.50}",
+          "$value": "{primitive.color.neutral.100}",
           "$description": "Faint accent tint for hover states or highlights",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.50}",
-                "Dark": "{primitive.color.blue.900}"
+                "Light": "{primitive.color.neutral.100}",
+                "Dark": "{primitive.color.neutral.900}"
               }
             }
           }
         },
         "hover": {
-          "$value": "{primitive.color.blue.50}",
+          "$value": "{primitive.color.neutral.100}",
           "$description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.50}",
-                "Dark": "{primitive.color.blue.900}"
+                "Light": "{primitive.color.neutral.100}",
+                "Dark": "{primitive.color.neutral.900}"
               }
             }
           }
@@ -1085,13 +1085,13 @@
           }
         },
         "selected": {
-          "$value": "{primitive.color.blue.100}",
+          "$value": "{primitive.color.neutral.200}",
           "$description": "Background for a persistently selected item (active tab, checked row).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.100}",
-                "Dark": "{primitive.color.blue.800}"
+                "Light": "{primitive.color.neutral.200}",
+                "Dark": "{primitive.color.neutral.800}"
               }
             }
           }
@@ -1167,23 +1167,25 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.blue.500}",
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Accent-intent text/icon color (monochrome). Pair with underline/weight for link affordance.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.500}",
-                "Dark": "{primitive.color.blue.300}"
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.100}"
               }
             }
           }
         },
         "onAccent": {
           "$value": "{primitive.color.neutral.white}",
+          "$description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where the accent fill is a light neutral.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.white}",
-                "Dark": "{primitive.color.neutral.white}"
+                "Dark": "{primitive.color.neutral.900}"
               }
             }
           }
@@ -1272,12 +1274,13 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.blue.500}",
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Accent border (neutral/monochrome; inverts on dark surfaces).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.500}",
-                "Dark": "{primitive.color.blue.500}"
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.100}"
               }
             }
           }
@@ -1738,97 +1741,97 @@
     "accent": {
       "$type": "color",
       "rest": {
-        "$value": "{primitive.color.blue.500}",
-        "$description": "Default accent fill for interactive elements at rest.",
+        "$value": "{primitive.color.neutral.900}",
+        "$description": "Default accent fill for interactive elements at rest. Neutral (monochrome) accent — inverts to a light neutral on dark surfaces.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.500}",
-              "Dark": "{primitive.color.blue.500}"
+              "Light": "{primitive.color.neutral.900}",
+              "Dark": "{primitive.color.neutral.100}"
             }
           }
         }
       },
       "hover": {
-        "$value": "{primitive.color.blue.600}",
+        "$value": "{primitive.color.neutral.800}",
         "$description": "Accent fill on pointer hover.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.600}",
-              "Dark": "{primitive.color.blue.450}"
+              "Light": "{primitive.color.neutral.800}",
+              "Dark": "{primitive.color.neutral.200}"
             }
           }
         }
       },
       "pressed": {
-        "$value": "{primitive.color.blue.700}",
+        "$value": "{primitive.color.neutral.950}",
         "$description": "Accent fill during active press.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.700}",
-              "Dark": "{primitive.color.blue.400}"
+              "Light": "{primitive.color.neutral.950}",
+              "Dark": "{primitive.color.neutral.300}"
             }
           }
         }
       },
       "inactive": {
-        "$value": "{primitive.color.blue.200}",
+        "$value": "{primitive.color.neutral.400}",
         "$description": "Accent fill for inactive or unselected accent elements.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.200}",
-              "Dark": "{primitive.color.blue.200}"
+              "Light": "{primitive.color.neutral.400}",
+              "Dark": "{primitive.color.neutral.600}"
             }
           }
         }
       },
       "disabled": {
-        "$value": "{primitive.color.blue.100}",
+        "$value": "{primitive.color.neutral.300}",
         "$description": "Accent fill for disabled accent elements.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.100}",
-              "Dark": "{primitive.color.blue.100}"
+              "Light": "{primitive.color.neutral.300}",
+              "Dark": "{primitive.color.neutral.700}"
             }
           }
         }
       },
       "content": {
-        "$value": "{primitive.color.blue.500}",
-        "$description": "Text and icon color on neutral surfaces with accent intent.",
+        "$value": "{primitive.color.neutral.900}",
+        "$description": "Text and icon color on neutral surfaces with accent intent. Monochrome — pair with underline/weight for link affordance.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.500}",
-              "Dark": "{primitive.color.blue.300}"
+              "Light": "{primitive.color.neutral.900}",
+              "Dark": "{primitive.color.neutral.100}"
             }
           }
         }
       },
       "contentHover": {
-        "$value": "{primitive.color.blue.600}",
+        "$value": "{primitive.color.neutral.700}",
         "$description": "Accent content color on pointer hover.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.600}",
-              "Dark": "{primitive.color.blue.200}"
+              "Light": "{primitive.color.neutral.700}",
+              "Dark": "{primitive.color.neutral.300}"
             }
           }
         }
       },
       "subtle": {
-        "$value": "{primitive.color.blue.50}",
+        "$value": "{primitive.color.neutral.100}",
         "$description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.blue.50}",
-              "Dark": "{primitive.color.blue.900}"
+              "Light": "{primitive.color.neutral.100}",
+              "Dark": "{primitive.color.neutral.800}"
             }
           }
         }
