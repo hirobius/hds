@@ -202,6 +202,7 @@ declare module 'react' {
     '--semantic-color-content-warning'?: string | undefined;
     '--semantic-color-content-danger'?: string | undefined;
     '--semantic-color-border-default'?: string | undefined;
+    '--semantic-color-border-interactive'?: string | undefined;
     '--semantic-color-border-subdued'?: string | undefined;
     '--semantic-color-border-subtle'?: string | undefined;
     '--semantic-color-border-strong'?: string | undefined;

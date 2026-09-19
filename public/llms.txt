@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-07-08T23:27:26.438Z
+Generated: 2026-09-19T10:20:52.959Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -48,7 +48,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 | --- | --- | --- |
 | Page/background surfaces | `semantic.color.surface.page`, `semantic.color.surface.raised` | `--semantic-color-surface-page`, `--semantic-color-surface-raised` |
 | Text/content colors | `semantic.color.content.primary`, `semantic.color.content.secondary` | `--semantic-color-content-primary`, `--semantic-color-content-secondary` |
-| Borders/dividers | `semantic.color.border.default`, `semantic.color.border.subdued` | `--semantic-color-border-default`, `--semantic-color-border-subdued` |
+| Borders/dividers | `semantic.color.border.default`, `semantic.color.border.interactive` | `--semantic-color-border-default`, `--semantic-color-border-interactive` |
 | Feedback states | `semantic.color.feedback.error`, `semantic.color.feedback.success` | `--semantic-color-feedback-error`, `--semantic-color-feedback-success` |
 | Spacing (semantic tiers) | `semantic.space.subgrid.hairline`, `semantic.space.subgrid.xs`, `semantic.space.component.gap` | use semantic tokens or `--hds-space-px12` style vars |
 | Radius | `semantic.radius.action` | `--semantic-radius-action` |
