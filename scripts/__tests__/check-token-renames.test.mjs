@@ -8,31 +8,42 @@
 import { describe, it, expect } from 'vitest';
 import {
   parseMigrationLog,
+  parseMigrationRenames,
   findUndocumentedRemovals,
 } from '../check-token-renames.mjs';
+
+// ── parseMigrationRenames ─────────────────────────────────────────────────────
+describe('parseMigrationRenames', () => {
+  it('maps each renamed path to its new path and skips removals', () => {
+    const content = [
+      '## Entries',
+      'component.button.fontSize -> removed      (removed 2026-05-02, superseded by x)',
+      'semantic.typography.small -> semantic.typography.ui        (renamed 2026-05-04)',
+      '  semantic.typography.caption -> semantic.typography.eyebrow (renamed 2026-05-04)',
+    ].join('\n');
+    expect(parseMigrationRenames(content)).toEqual({
+      'semantic.typography.small': 'semantic.typography.ui',
+      'semantic.typography.caption': 'semantic.typography.eyebrow',
+    });
+  });
+});
 
 // ── parseMigrationLog ─────────────────────────────────────────────────────────
 describe('parseMigrationLog', () => {
   it('parses a rename entry', () => {
     const content = 'semantic.old.path -> semantic.new.path     (renamed 2026-05-01)';
-    const result  = parseMigrationLog(content);
+    const result = parseMigrationLog(content);
     expect(result.has('semantic.old.path')).toBe(true);
   });
 
   it('parses a removal entry', () => {
     const content = 'primitive.dropped.thing -> removed      (removed 2026-05-01, no replacement)';
-    const result  = parseMigrationLog(content);
+    const result = parseMigrationLog(content);
     expect(result.has('primitive.dropped.thing')).toBe(true);
   });
 
   it('ignores comment lines and blank lines', () => {
-    const content = [
-      '# Token Migration Log',
-      '',
-      '## Entries',
-      '',
-      '<none yet>',
-    ].join('\n');
+    const content = ['# Token Migration Log', '', '## Entries', '', '<none yet>'].join('\n');
     const result = parseMigrationLog(content);
     expect(result.size).toBe(0);
   });
@@ -63,8 +74,8 @@ describe('findUndocumentedRemovals — passes when removed set is empty', () => 
 
   it('returns empty array when current has MORE paths than baseline', () => {
     const baseline = ['semantic.color.surface.raised'];
-    const current  = ['semantic.color.surface.raised', 'semantic.color.surface.new'];
-    const result   = findUndocumentedRemovals(current, baseline, '');
+    const current = ['semantic.color.surface.raised', 'semantic.color.surface.new'];
+    const result = findUndocumentedRemovals(current, baseline, '');
     expect(result).toHaveLength(0);
   });
 });
@@ -72,19 +83,20 @@ describe('findUndocumentedRemovals — passes when removed set is empty', () => 
 // ── findUndocumentedRemovals — undocumented removal ──────────────────────────
 describe('findUndocumentedRemovals — fails when a removed path has no migration entry', () => {
   it('returns the missing path when it has no entry in TOKEN_MIGRATION.md', () => {
-    const baseline = [
-      'semantic.color.surface.raised',
-      'semantic.color.surface.sunken',
-    ];
+    const baseline = ['semantic.color.surface.raised', 'semantic.color.surface.sunken'];
     const current = ['semantic.color.surface.raised']; // sunken was removed
-    const result  = findUndocumentedRemovals(current, baseline, '# Token Migration Log\n\n## Entries\n\n<none yet>');
+    const result = findUndocumentedRemovals(
+      current,
+      baseline,
+      '# Token Migration Log\n\n## Entries\n\n<none yet>',
+    );
     expect(result).toEqual(['semantic.color.surface.sunken']);
   });
 
   it('returns all undocumented paths when multiple are missing', () => {
     const baseline = ['a.b.c', 'd.e.f', 'g.h.i'];
-    const current  = ['a.b.c'];
-    const result   = findUndocumentedRemovals(current, baseline, '');
+    const current = ['a.b.c'];
+    const result = findUndocumentedRemovals(current, baseline, '');
     expect(result).toHaveLength(2);
     expect(result).toContain('d.e.f');
     expect(result).toContain('g.h.i');
@@ -95,7 +107,7 @@ describe('findUndocumentedRemovals — fails when a removed path has no migratio
 describe('findUndocumentedRemovals — passes when removed path has a rename entry', () => {
   it('returns empty array when removed path is documented as renamed', () => {
     const baseline = ['semantic.color.surface.raised', 'semantic.color.surface.sunken'];
-    const current  = ['semantic.color.surface.raised', 'semantic.color.surface.deep'];
+    const current = ['semantic.color.surface.raised', 'semantic.color.surface.deep'];
     const migration = [
       '# Token Migration Log',
       '## Entries',
@@ -110,7 +122,7 @@ describe('findUndocumentedRemovals — passes when removed path has a rename ent
 describe('findUndocumentedRemovals — passes when removed path has a "removed" entry', () => {
   it('returns empty array when removed path is documented as explicitly removed', () => {
     const baseline = ['primitive.space.deprecated', 'primitive.space.base'];
-    const current  = ['primitive.space.base'];
+    const current = ['primitive.space.base'];
     const migration = [
       '# Token Migration Log',
       '## Entries',

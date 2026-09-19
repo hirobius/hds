@@ -4,10 +4,10 @@ Authoritative rules for the token architecture, manifest structure, and sync pip
 
 ## 1. Two Separate Source Files — Know Which is Which
 
-| File                       | What it is                                                        | Who writes it                                               | Who reads it                                     |
-| -------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------ |
-| `hirobius.tokens.json`     | W3C DTCG token graph. The design primitive.                       | Humans + Figma export                                       | `pnpm tokens` pipeline → CSS vars + TS constants |
-| `public/hds-manifest.json` | System inventory: components, phases, health, and token snapshot. | `scripts/generate-manifest.mjs` + bridge `/update-manifest` | Agents, docs pages, LLM context, Figma plugin    |
+| File                       | What it is                                                        | Who writes it                               | Who reads it                                     |
+| -------------------------- | ----------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| `hirobius.tokens.json`     | W3C DTCG token graph. The design primitive.                       | Humans (hand-edited; Figma never writes it) | `pnpm tokens` pipeline → CSS vars + TS constants |
+| `public/hds-manifest.json` | System inventory: components, phases, health, and token snapshot. | `scripts/generate-manifest.mjs`             | Agents, docs pages, LLM context                  |
 
 **NEVER conflate them.** A token lives in `hirobius.tokens.json`. A component spec lives in the manifest. A token _reference_ (the path string like `semantic.color.surface.raised`) may appear in both — in the token file as a node in the graph, in the manifest as a metadata field on a component spec.
 
@@ -55,7 +55,7 @@ Do not run individual scripts out of order. If a single script needs to run in i
 | ------------------------------------------------ | -------------------------------------------------------------- | ------------------ |
 | `name`, `version`, `generated`, `source`         | `generate-manifest.mjs`                                        | ✓                  |
 | `componentInventory`                             | `generate-manifest.mjs` (from source scan)                     | ✓                  |
-| `componentSpecs`                                 | `generate-manifest.mjs` + bridge `/update-manifest`            | Partial — see §5   |
+| `componentSpecs`                                 | `generate-manifest.mjs` + hand-filled fields (§6)              | Partial — see §5   |
 | `tokens`                                         | `generate-manifest.mjs` (snapshot from `hirobius.tokens.json`) | ✓                  |
 | `typographyRamp`, `patternInventory`             | `generate-manifest.mjs`                                        | ✓                  |
 | `phases`, `health`                               | `build-roadmap-data.mjs`                                       | ✓                  |
@@ -71,6 +71,7 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
 | `category`             | string              | JSDoc `@category`                 | Governs docs routing                                                                                                                                                                                       |
 | `filePath`             | string              | Source scan                       | Relative to repo root                                                                                                                                                                                      |
 | `description`          | string              | JSDoc                             | One sentence                                                                                                                                                                                               |
+| `figmaUrl`             | string or null      | JSDoc `@figma`                    | The one Figma node source (URL with `node-id`). Storybook and the README read it; `pnpm figma:links` also builds the Figma dev resources and descriptions steps. Never copy it.                            |
 | `props`                | object              | `src/app/data/component-api.json` | See prop schema below                                                                                                                                                                                      |
 | `tokens`               | object              | Hand-authored                     | Maps semantic role → token path                                                                                                                                                                            |
 | `figmaPropertyMapping` | object              | Hand-authored                     | Maps React prop → Figma property name                                                                                                                                                                      |
@@ -95,24 +96,20 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
     "targetSelector": "Label"
   },
   {
-    "name": "Leading icon",
+    "name": "Show icon",
     "type": "BOOLEAN",
     "defaultValue": false,
     "sourceProp": "iconLeft",
     "boundTo": "visibility",
     "targetSelector": "IconLeft"
-  },
-  {
-    "name": "Show label",
-    "type": "BOOLEAN",
-    "defaultValue": true,
-    "sourceProp": "iconOnly",
-    "boundTo": "visibility",
-    "targetSelector": "Label",
-    "invert": true
   }
 ]
 ```
+
+For a component with a Code Connect template, every `name` here and every
+`figmaPropertyMapping` value must be a property in `figma/code-connect.json`
+(the hds#73 inventory) with the same type. `pnpm check:figma-mapping` fails
+otherwise; see `docs/architecture/variant-contract.md` → "Figma mapping".
 
 | Field            | Required | Notes                                                                                                          |
 | ---------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
@@ -122,7 +119,7 @@ Every entry in `componentSpecs` MUST have these fields. The `scripts/validate-ma
 | `sourceProp`     | no       | React prop the JSX compiler maps from.                                                                         |
 | `boundTo`        | no       | Defaults: `BOOLEAN→visibility`, `TEXT→characters`, `INSTANCE_SWAP→mainComponent`.                              |
 | `targetSelector` | no       | Logical name of the tree node the property attaches to. Plugin matches by `node.name`. Convention: PascalCase. |
-| `invert`         | no       | If true, the JSX compiler negates the source prop value (e.g. `iconOnly→!Show label`).                         |
+| `invert`         | no       | If true, the JSX compiler negates the source prop value (e.g. `Content.hideClose→!Show close`).                |
 
 ### When the JSX compiler emits an instance, it must:
 
@@ -156,9 +153,9 @@ If `optional` is absent and there is no `default`, the prop is implicitly requir
 
 ## 6. Updating the Manifest
 
-### From the bridge (token sync round-trip)
+### Not from Figma
 
-`POST /update-manifest` with `{ tokens: [...] }`. The bridge upserts by `path` first, falls back to `name`. Responds with `{ status, upserted, inserted }`. This is the canonical path for Figma→manifest token updates.
+There is no Figma → manifest path. The bridge that served `POST /update-manifest` was archived with the rest of the in-house Figma stack (ADR-018 §2, branch `archive/figma-bridge`). Sync runs one way, code → Figma.
 
 ### From `generate-manifest.mjs`
 
@@ -171,24 +168,32 @@ Re-generates `componentInventory`, `componentSpecs` scaffolding, `tokens` snapsh
 3. Hand-fill `tokens`, `figmaPropertyMapping`, `states`, `allowedChildren`, `propConstraints`, `requiredProps`, `a11yRules`, `variantAxes`, `componentProperties` either inline in the manifest or — preferably — in `scripts/build-tokens.mjs` so they survive re-generation.
 4. Run `pnpm validate:manifest` to confirm the spec is valid.
 5. Run `pnpm tokens` to propagate to docs and llms.txt.
-6. If the component is in the generative-subset, also run Step 5 in the Figma plugin (`pnpm hds:bridge` → click "Step 5: Build Master Components") to materialize the master in the Figma file. The plugin's batch handler reads `variantAxes` to compute the cartesian variant set and `componentProperties` to call `master.addComponentProperty()` after `combineAsVariants`.
+6. Figma masters are not generated from the manifest today. The in-house plugin that read `variantAxes` and `componentProperties` to build them is archived (ADR-018 §2); ADR-025 sets out the Code Connect plan this follows.
 
-## 7. Figma Variables Round Trip
+## 7. Tokens → Figma Variables (one way)
 
 ```
 hirobius.tokens.json
-       ↓  scripts/build-figma-variables.mjs
-Figma Variables (Primitive + Semantic + Component collections)
-       ↓  SYNC_TOKENS button in plugin → sync-tokens.js
-public/hds-manifest.json (token snapshot updated)
-       ↓  POST /update-manifest (bridge)
-disk
+       ↓  scripts/build-figma-model.mjs  (pnpm figma:model)
+figma/model.json   collections × modes × variables, text styles, effect styles  (gitignored)
+       ↓  pnpm figma:push            upsert scripts, run by hand against a Figma file
+       ↓  pnpm figma:native-import   per-collection, per-mode DTCG files for Variables ▸ Import
+       ↓  pnpm figma-variables       legacy plugin/REST exports, projected from the same model
+Figma library
+       ↓  pnpm figma:snapshot --ingest   records the file's state
+figma/snapshot.json  (committed)
+       ↓  pnpm check:figma-drift     model vs committed snapshot; ci.yml runs it
 ```
+
+No workflow writes to Figma — every push and import is hand-run. The only thing that flows back is the snapshot `pnpm figma:snapshot --ingest` records, and it drift-checks the model rather than changing tokens. ADR-025 sets out this Pro-plan push, import, and drift path.
 
 Key facts:
 
-- Typography tokens are composite (W3C DTCG) — `build-figma-variables.mjs` explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing). Do not attempt to sync composite tokens directly.
-- The `expandTypography()` function in `build-figma-variables.mjs` owns this expansion. Do not duplicate its logic elsewhere.
+- `pnpm figma:push`, `pnpm figma:snapshot` and `pnpm check:figma-drift` consume that model; `figma/README.md` is their runbook.
+- `pnpm figma:model` (`scripts/build-figma-model.mjs` → `scripts/lib/figma-model.mjs`) is the one tokens → Figma mapping. It writes `figma/model.json` (generated, gitignored): collections × modes × variables keyed by token path, text styles, effect styles, and the `NOT_IN_FIGMA` list with a reason per exclusion. `pnpm figma-variables` projects the same model into the legacy plugin/REST formats. Theme values are read through `scripts/lib/token-modes.mjs`.
+- Demo tenant overlays listed in `figma/brand-modes.json` become the `Hirobius/Brand` (one mode per demo tenant) and `Hirobius/Density` (Comfortable/Compact) collections; overridden token variables alias them. Client tenants are never listed. Rules: `figma/README.md` (Brand and Density).
+- Typography tokens are composite (W3C DTCG) — the model explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing) resolved to px at that style's font size, plus a text style bound to them. Do not duplicate this expansion elsewhere.
+- Shadow and elevation tokens become effect styles. Motion, z-index, breakpoints and font-size-relative multipliers are declared not-in-Figma; `scripts/__tests__/figma-model.tokens.test.mjs` fails if a token is neither mapped nor declared.
 - Fluid clamp overrides on `display`, `heading1`, `heading2`, `heading3` are recorded in `$extensions["com.figma.variables"]` in `hirobius.tokens.json`. Figma stores the static desktop-max value; the browser applies the clamp on top. This divergence is intentional and documented.
 
 ## 8. Forbidden Patterns
@@ -203,13 +208,16 @@ Key facts:
 
 ## 9. Quick Reference — Which Script Does What
 
-| Need                                    | Command                                  |
-| --------------------------------------- | ---------------------------------------- |
-| Rebuild everything after a token edit   | `pnpm tokens`                            |
-| Rebuild just the manifest               | `pnpm manifest:generate`                 |
-| Validate manifest against schema        | `pnpm validate:manifest`                 |
-| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`                |
-| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides`         |
-| Full token + component audit            | `pnpm check:fast`                        |
-| Sync Figma Variables from tokens        | `node scripts/build-figma-variables.mjs` |
-| Audit Figma system state                | `pnpm figma:audit`                       |
+| Need                                    | Command                                         |
+| --------------------------------------- | ----------------------------------------------- |
+| Rebuild everything after a token edit   | `pnpm tokens`                                   |
+| Rebuild just the manifest               | `pnpm manifest:generate`                        |
+| Validate manifest against schema        | `pnpm validate:manifest`                        |
+| Check for ghost / unused token vars     | `pnpm check:ghost-tokens`                       |
+| Check for forbidden hardcoded overrides | `pnpm check:forbidden-overrides`                |
+| Full token + component audit            | `pnpm check:fast`                               |
+| Build the Figma model from tokens       | `pnpm figma:model`                              |
+| Push tokens into a Figma file           | `pnpm figma:push` (runbook: `figma/README.md`)  |
+| Record Figma's state / check drift      | `pnpm figma:snapshot`, `pnpm check:figma-drift` |
+| Project component Figma links           | `pnpm figma:links`                              |
+| Legacy Figma variable exports           | `node scripts/build-figma-variables.mjs`        |

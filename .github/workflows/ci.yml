@@ -55,8 +55,30 @@ jobs:
       - name: Token pipeline validity (verify-tokens + check-contrast)
         run: node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs
 
-      - name: Unit + contract tests (vitest)
-        run: pnpm exec vitest run
+      # Figma drift (figma/README.md): the tokens' Figma model against the
+      # committed snapshot. Fails only when Figma was last pushed from exactly
+      # the model the tokens build now and still differs (edited in Figma);
+      # changes not pushed to Figma yet are a warning, no snapshot is a notice.
+      - name: Figma drift (committed snapshot)
+        run: node scripts/check-figma-drift.mjs --ci
+
+      # `pnpm test`, NOT `pnpm exec vitest run`. The bare vitest invocation
+      # skips npm's `pretest` hook, and that hook is where the gate chain
+      # lives: validate-manifest, check-manifest-drift,
+      # check-manifest-schema-semver, audit-component-integrity,
+      # check-source-canon, check-binding-drift, check-registry,
+      # check-tenant-tokens, knip.
+      #
+      # Those nine ran only in `ralph/gate.sh` and pre-commit — never in CI —
+      # so main could be green here while a gate was broken, and two
+      # platform bugs survived inside gates nobody ran (#221: a path-separator
+      # bug in check-source-canon and a filename-case bug in
+      # check-binding-drift, both invisible to Linux CI).
+      #
+      # Keep the chain defined once, in package.json's `pretest`. Listing the
+      # nine scripts here as well would just drift.
+      - name: Gate chain + unit/contract tests (pretest + vitest)
+        run: pnpm test
 
       - name: Bundle budgets (size-limit)
         run: pnpm check:size

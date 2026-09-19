@@ -1,9 +1,11 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 // @vitest-environment node
 import { describe, it, expect, afterEach } from 'vitest';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'fs';
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import { transform } from 'lightningcss';
 import {
   pathToCSSVar,
   aliasToCSSVar,
@@ -978,6 +980,20 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     expect(densityBlock).not.toContain('--role-radius');
   });
 
+  it('keeps the header comment closed until its own terminator, so the first tenant rule stays valid CSS', () => {
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+    });
+    const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    // A stray "*/" inside the header ends the comment early; the rest of the
+    // header then becomes part of the first rule's selector and browsers drop
+    // that whole rule.
+    const firstRule = css.indexOf('[data-brand="brutalist-demo"]');
+    const headerEnd = css.indexOf('*/') + 2;
+    const between = css.slice(headerEnd, firstRule).replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(between.trim()).toBe('');
+  });
+
   it('does not emit a density block when no leaf declares a Compact mode (existing tenants unaffected)', () => {
     const tenantsDir = writeTenantFixture('concrete-creations', {
       semantic: { space: { component: { padding: { $value: '{primitive.space.4}' } } } },
@@ -1002,5 +1018,67 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     });
     const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
     expect(css).not.toContain('[data-brand="brutalist-demo"][data-density="compact"]');
+  });
+
+  // ── Lightning CSS contract ─────────────────────────────────────────────────
+  // The string assertions above pin the shape of the output; this pins that a
+  // CSS engine accepts it. Tailwind v4 parses src/styles/tenants.css with
+  // Lightning CSS at build time, so a warning here is a rule a browser drops —
+  // which is exactly how the header-comment defect above shipped: the CSS still
+  // "contained" the right text, and the first tenant rule was still dead.
+  //
+  // `lightningcss` is pinned to the version `@tailwindcss/vite` resolves, so the
+  // test and the build agree on what is valid.
+
+  /** Lightning CSS warnings for one stylesheet, `file:line:column` each. */
+  function cssWarnings(css) {
+    const { warnings } = transform({
+      filename: 'tenants.css',
+      code: Buffer.from(css),
+      minify: false,
+      // Report an invalid rule instead of throwing, so the assertion below can
+      // name every warning at once rather than dying on the first.
+      errorRecovery: true,
+    });
+    return warnings.map((w) => `${w.loc.line}:${w.loc.column} ${w.message}`);
+  }
+
+  it('generates tenant CSS that Lightning CSS parses without a single warning', () => {
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+      semantic: {
+        space: {
+          component: {
+            padding: {
+              $type: 'dimension',
+              $value: '{primitive.space.4}',
+              $extensions: { 'com.figma.variables': { modes: { Compact: '{primitive.space.2}' } } },
+            },
+          },
+        },
+      },
+    });
+    const { css, errors } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    expect(errors).toHaveLength(0);
+    expect(cssWarnings(css)).toEqual([]);
+  });
+
+  it('keeps the committed src/styles/tenants.css parseable (run pnpm tokens after editing a tenant)', () => {
+    const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+    expect(cssWarnings(readFileSync(join(repo, 'src', 'styles', 'tenants.css'), 'utf8'))).toEqual(
+      [],
+    );
+  });
+
+  it('catches the header-comment defect this guards against', () => {
+    // Proof of firing: closing the header comment early turns the rest of the
+    // header into the first rule's selector, and Lightning CSS says so.
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
+    });
+    const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
+    const brokenHeader = css.replace(' * Source:', ' */ Source:');
+    expect(brokenHeader).not.toBe(css);
+    expect(cssWarnings(brokenHeader).length).toBeGreaterThan(0);
   });
 });

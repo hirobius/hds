@@ -1,0 +1,277 @@
+{
+  "$description": "Synthetic token graph for the Figma model golden test. Covers every mapping path in scripts/lib/figma-model.mjs; values are illustrative, not HDS values.",
+  "primitive": {
+    "color": {
+      "$type": "color",
+      "neutral": {
+        "white": { "$value": "#ffffff", "$description": "Pure white." },
+        "900": { "$value": "#111111" },
+        "black": { "$value": "#000000" }
+      },
+      "blue": {
+        "500": { "$value": "#1E2EFD" },
+        "600": { "$value": "oklch(0.45 0.2903 266.54)" }
+      }
+    },
+    "shadow": {
+      "color": {
+        "$type": "color",
+        "$value": "220 13% 18%",
+        "$description": "HSL channels for shadow tints.",
+        "$extensions": {
+          "com.figma.variables": { "modes": { "Light": "220 13% 18%", "Dark": "0 0% 0%" } }
+        }
+      }
+    },
+    "space": {
+      "$type": "dimension",
+      "2": { "$value": { "value": 8, "unit": "px" } },
+      "4": { "$value": { "value": 16, "unit": "px" } }
+    },
+    "radius": {
+      "$type": "dimension",
+      "8": { "$value": { "value": 8, "unit": "px" } }
+    },
+    "borderWidth": {
+      "$type": "dimension",
+      "xs": { "$value": { "value": 1, "unit": "px" } }
+    },
+    "blur": {
+      "$type": "dimension",
+      "16": { "$value": { "value": 16, "unit": "px" } }
+    },
+    "size": {
+      "$type": "dimension",
+      "width": {
+        "50ch": { "$value": { "value": 50, "unit": "ch" } }
+      }
+    },
+    "breakpoint": {
+      "$type": "dimension",
+      "md": { "$value": { "value": 768, "unit": "px" } }
+    },
+    "zIndex": {
+      "$type": "number",
+      "10": { "$value": 10 }
+    },
+    "grid": {
+      "$type": "number",
+      "columns": { "3": { "$value": 3 } }
+    },
+    "duration": {
+      "$type": "duration",
+      "short": { "$value": { "value": 150, "unit": "ms" } }
+    },
+    "easing": {
+      "standard": { "$type": "cubicBezier", "$value": [0.4, 0, 0.2, 1] },
+      "elastic": {
+        "$type": "spring",
+        "$value": { "type": "spring", "stiffness": 300, "damping": 20, "mass": 1 }
+      }
+    },
+    "typography": {
+      "family": {
+        "$type": "fontFamily",
+        "primary": { "$value": ["Satoshi", "system-ui", "sans-serif"] },
+        "mono": { "$value": ["Geist Mono", "monospace"] }
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "medium": { "$value": 500 },
+        "bold": { "$value": 700 }
+      },
+      "size": {
+        "$type": "dimension",
+        "xs": { "$value": { "value": 13, "unit": "px" } },
+        "base": { "$value": { "value": 17, "unit": "px" } },
+        "4xl": { "$value": { "value": 48, "unit": "px" } }
+      },
+      "lineHeight": {
+        "$type": "number",
+        "tight": { "$value": 1.25 },
+        "normal": { "$value": 1.5 }
+      },
+      "letterSpacing": {
+        "$type": "dimension",
+        "tight": { "$value": { "value": -0.01, "unit": "em" } },
+        "caps": { "$value": { "value": 0.06, "unit": "em" } }
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "$type": "color",
+      "surface": {
+        "page": {
+          "$value": "{primitive.color.neutral.white}",
+          "$description": "Page background.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.white}",
+                "Dark": "{primitive.color.neutral.black}"
+              }
+            }
+          }
+        },
+        "accent": { "$value": "{primitive.color.blue.500}" }
+      },
+      "content": {
+        "primary": {
+          "$value": "{primitive.color.neutral.900}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.white}"
+              }
+            }
+          }
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{primitive.color.neutral.900}",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.900}"
+              }
+            }
+          }
+        }
+      }
+    },
+    "accent": {
+      "$type": "color",
+      "hover": { "$value": "{primitive.color.blue.600}" }
+    },
+    "space": {
+      "$type": "dimension",
+      "component": { "gap": { "$value": "{primitive.space.2}" } }
+    },
+    "radius": {
+      "$type": "dimension",
+      "action": { "$value": "{primitive.radius.8}" }
+    },
+    "borderWidth": {
+      "$type": "dimension",
+      "default": { "$value": "{primitive.borderWidth.xs}" }
+    },
+    "layout": {
+      "prose": { "maxWidth": { "$type": "dimension", "$value": "{primitive.size.width.50ch}" } },
+      "grid": {
+        "columns": { "desktop": { "$type": "number", "$value": "{primitive.grid.columns.3}" } }
+      }
+    },
+    "motion": {
+      "$type": "motion",
+      "productive": {
+        "$value": {
+          "duration": "{primitive.duration.short}",
+          "easing": "{primitive.easing.standard}"
+        }
+      }
+    },
+    "typography": {
+      "$type": "typography",
+      "h1": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.primary}",
+          "fontSize": "{primitive.typography.size.4xl}",
+          "fontWeight": "{primitive.typography.weight.bold}",
+          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
+          "lineHeight": "{primitive.typography.lineHeight.tight}"
+        },
+        "$description": "Page title.",
+        "$extensions": {
+          "com.figma.variables": {
+            "fontSize": "clamp(32px, 6vw, 48px)",
+            "note": "Figma stores the desktop max."
+          }
+        }
+      },
+      "body": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.primary}",
+          "fontSize": "{primitive.typography.size.base}",
+          "fontWeight": "{primitive.typography.weight.medium}",
+          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
+          "lineHeight": "28px",
+          "maxWidth": { "value": 60, "unit": "ch" }
+        }
+      },
+      "caption": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.mono}",
+          "fontSize": { "value": 12, "unit": "px" },
+          "fontWeight": "{primitive.typography.weight.medium}",
+          "letterSpacing": "{primitive.typography.letterSpacing.caps}",
+          "lineHeight": "{primitive.typography.lineHeight.normal}",
+          "textTransform": "uppercase"
+        }
+      },
+      "lineHeight": {
+        "$type": "number",
+        "tight": { "$value": "{primitive.typography.lineHeight.tight}" }
+      }
+    },
+    "shadow": {
+      "$type": "shadow",
+      "subtle": {
+        "$value": "0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 4px 8px -2px hsl(var(--primitive-shadow-color) / 0.06)",
+        "$description": "Resting shadow."
+      }
+    },
+    "elevation": {
+      "$type": "elevation",
+      "flat": {
+        "$value": {
+          "surface": "{semantic.color.surface.page}",
+          "shadow": null,
+          "border": "{semantic.color.border.default}"
+        },
+        "$description": "No shadow, hairline border."
+      },
+      "raised": {
+        "$value": {
+          "surface": "{semantic.color.surface.page}",
+          "shadow": "{semantic.shadow.subtle}",
+          "border": null
+        }
+      }
+    }
+  },
+  "component": {
+    "button": {
+      "bg": { "$type": "color", "$value": "{semantic.color.surface.accent}" },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.content.primary}",
+        "$extensions": {
+          "com.figma.variables": {
+            "modes": {
+              "Light": "{semantic.color.content.primary}",
+              "Dark": "{semantic.color.surface.page}"
+            }
+          }
+        }
+      },
+      "paddingX": { "$type": "dimension", "$value": "{primitive.space.4}" },
+      "height": { "$type": "dimension", "$value": "{primitive.space.4}" },
+      "fontSize": { "$type": "dimension", "$value": "{primitive.typography.size.xs}" },
+      "fontWeight": { "$type": "fontWeight", "$value": "{primitive.typography.weight.medium}" }
+    },
+    "lightbox": {
+      "backdrop": { "blur": { "$type": "dimension", "$value": "{primitive.blur.16}" } }
+    }
+  },
+  "role": {
+    "background": { "$type": "color", "$value": "{semantic.color.surface.page}" },
+    "card-foreground": { "$type": "color", "$value": "{semantic.color.content.primary}" },
+    "ring": { "$type": "color", "$value": "{semantic.color.border.default}" },
+    "primary": { "$type": "color", "$value": "{semantic.color.surface.accent}" },
+    "radius": { "$type": "dimension", "$value": "{semantic.radius.action}" }
+  }
+}

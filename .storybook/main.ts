@@ -11,27 +11,32 @@
  *   - Ladle rejected: fastest setup but lacks a11y addon, MDX docs, and
  *     Chromatic integration — all required for the 29-primitive external API.
  */
-import type { StorybookConfig } from "@storybook/react-vite";
+import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: ["../src/stories/**/*.stories.@(ts|tsx)", "../src/stories/**/*.mdx"],
+  stories: ['../src/stories/**/*.stories.@(ts|tsx)', '../src/stories/**/*.mdx'],
   addons: [
-    "@storybook/addon-essentials",
-    "@storybook/addon-a11y",
+    '@storybook/addon-essentials',
+    '@storybook/addon-a11y',
+    // Renders `parameters.design` as the Design tab. Stories set it through
+    // designParameters('<Name>') (src/stories/design-parameters.ts), which reads
+    // componentSpecs[].figmaUrl — the same field `pnpm figma:links` projects
+    // into the README. Without this addon the parameter is inert and the
+    // README's "Storybook reads the same field" claim has nothing behind it.
+    '@storybook/addon-designs',
   ],
   framework: {
-    name: "@storybook/react-vite",
+    name: '@storybook/react-vite',
     options: {},
   },
   docs: {
-    autodocs: "tag",
+    autodocs: 'tag',
   },
   typescript: {
-    reactDocgen: "react-docgen-typescript",
+    reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
-      propFilter: (prop) =>
-        prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
+      propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
     },
   },
 };

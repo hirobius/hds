@@ -24,6 +24,8 @@ if [ -f "$RALPH_DIR/config.env" ]; then
 fi
 : "${RALPH_ITER_TIMEOUT:=3600}"                       # seconds one claude iteration may run
 : "${RALPH_MAX_ATTEMPTS:=2}"                          # failed attempts before parking
+: "${RALPH_MAX_LIFETIME_ATTEMPTS:=5}"                 # failed attempts EVER, across re-queues
+: "${RALPH_SUBSTANTIVE_COMMENT_CHARS:=120}"           # length that marks a reasoned stop
 : "${RALPH_PR_WAIT:=1800}"                            # seconds loop.sh waits on an open PR
 : "${RALPH_CLAIM_TTL:=$((RALPH_ITER_TIMEOUT * 2))}"   # claim older than this w/o a PR = stale
 : "${RALPH_READY_LABEL:=ralph-ready}"
@@ -236,7 +238,7 @@ latest_ready_label_at() {
 # `unknown` when the boundary or the comment fetch is unavailable, so a
 # transient API flake can never re-select a should-be-parked issue (the old
 # `|| echo 0` fail-open did exactly that); callers must skip/fail, never park.
-count_failed_attempts() {
+count_attempts() { # <n> [since] — echoes "<this-cycle> <lifetime>", or "unknown"
   local n=$1 since=${2:-} comments
   [ -z "$since" ] && since=$(latest_ready_label_at "$n")
   [ "$since" = "unknown" ] && {
@@ -247,9 +249,27 @@ count_failed_attempts() {
     echo unknown
     return 0
   }
+  # ONE fetch, both numbers. next.sh's candidate walk is deliberately O(1) API
+  # calls per candidate ("fetching once keeps the walk O(1)"); asking the same
+  # endpoint twice for two views of the same list would break that for no gain,
+  # and would also make the second call's failure branch unreachable — the first
+  # would already have returned `unknown`.
   jq -r --arg since "${since:-1970-01-01T00:00:00Z}" \
-    '[.comments[] | select((.body | startswith("ralph-attempt-failed")) and (.createdAt > $since))] | length' \
+    '[.comments[] | select(.body | startswith("ralph-attempt-failed"))] as $all
+     | "\($all | map(select(.createdAt > $since)) | length) \($all | length)"' \
     <<<"$comments" 2>/dev/null || echo unknown
+}
+
+# Back-compat wrapper: the per-cycle count alone. reconcile_issue still wants
+# just this one, and it is the older of the two contracts.
+count_failed_attempts() {
+  local both
+  both=$(count_attempts "$1" "${2:-}")
+  [ "$both" = "unknown" ] && {
+    echo unknown
+    return 0
+  }
+  echo "${both%% *}"
 }
 
 # Did the model post a `ralph-blocked` sentinel THIS cycle? That comment is the
@@ -270,6 +290,94 @@ model_signalled_blocked() {
   [ "${count:-0}" -gt 0 ]
 }
 
+# Did the MODEL leave a substantive comment of its own this cycle?
+#
+# This is the fallback behind model_signalled_blocked. ops#303: "A load-bearing
+# protocol rides entirely on the model remembering a string prefix, with no
+# fallback." It failed exactly that way on ops#39 and ops#44 — the agent
+# explained clearly why it was stopping, just not starting with `ralph-blocked`,
+# and was charged an attempt for doing what CLAUDE.md asks.
+#
+# Three things keep the inference honest:
+#   - gated to THIS cycle, like the sentinel, so a re-queue resets it;
+#   - harness-authored comments are excluded — `ralph-claim`,
+#     `ralph-attempt-failed` and the park/gate notices are the loop talking to
+#     itself. Counting them would make EVERY failure look deliberate and the
+#     attempt budget would stop working altogether;
+#   - a length floor, so a one-liner like "working on it" is not a reasoned stop.
+#
+# On any API failure this returns false — a conservative fall-through to the
+# attempt path, never a silent swallow of a real crash.
+model_left_substantive_comment() {
+  local n=$1 since count
+  since=$(latest_ready_label_at "$n")
+  [ "$since" = "unknown" ] && return 1
+  count=$(gh issue view "$n" --json comments 2>/dev/null |
+    jq -r --arg since "${since:-1970-01-01T00:00:00Z}" \
+      --argjson min "${RALPH_SUBSTANTIVE_COMMENT_CHARS}" \
+      '[.comments[]
+        | select(.createdAt > $since)
+        | select((.body | ascii_downcase | test("^ralph-")) | not)
+        | select((.body | test("Ralph (parked|watchdog)|ralph-gate:")) | not)
+        | select((.body | length) >= $min)] | length' \
+      2>/dev/null || echo 0)
+  [ "${count:-0}" -gt 0 ]
+}
+
+# After a Ralph PR merges, confirm its linked issue ACTUALLY closed — and close
+# it if GitHub's linkage silently failed. ops#305.
+#
+# WHY THIS IS THE PRIMARY DEFENCE, not a backstop. ops#305 framed the cause as a
+# breakable reference: `Closes **#44**`, or the middot list
+# `Closes #186 · #187 · #188 · #191 · #196` that lost three issues in PR #311.
+# Both are real. But on 2026-09-16 PR #360 carried a clean, bare `Closes #297`
+# on its own line, based on the default branch, merged — and #297 stayed open.
+# Correct syntax is not sufficient, so a pre-merge body check cannot be the
+# primary mechanism. Only verifying the transition afterwards catches a failure
+# whose syntax was already right.
+#
+# THE SAFETY GUARD. A merged PR does NOT imply a finished issue —
+# reconcile_issue's step 6 exists precisely because merged work often leaves a
+# remainder. So this closes only when the PR body carries a closing keyword
+# naming THIS issue, and only on the keyword's own line, so a passing mention
+# elsewhere ("see #126 for the rest") is never mistaken for intent. It repairs a
+# linkage the author expressed; it never invents one.
+#
+# Fails safe at every step: an unreadable PR, an unparseable branch, a
+# non-MERGED state or an unknown issue state all return without closing.
+verify_issue_closed() { # <pr>
+  local pr=$1 json head pstate body n istate
+  json=$(gh pr view "$pr" --json headRefName,state,body 2>/dev/null) || return 0
+  [ -z "$json" ] && return 0
+  pstate=$(jq -r '.state // ""' <<<"$json" 2>/dev/null) || return 0
+  [ "$pstate" = "MERGED" ] || return 0
+  head=$(jq -r '.headRefName // ""' <<<"$json" 2>/dev/null)
+  n=$(sed -n 's|^ralph/issue-\([0-9]\{1,\}\)-.*|\1|p' <<<"$head")
+  [ -z "$n" ] && return 0
+  body=$(jq -r '.body // ""' <<<"$json" 2>/dev/null)
+
+  # A closing keyword and this issue's number on the SAME line. Emphasis markers
+  # sit outside the `#<n>` token (`**#126**` still contains `#126`), and a
+  # middot list keeps every number on the keyword's line — so one line-scoped
+  # match covers all three forms GitHub mis-parses.
+  grep -iE '(clos(e|es|ed)|fix(es|ed)?|resolv(e|es|ed))[[:space:]:]' <<<"$body" |
+    grep -qE "#${n}([^0-9]|\$)" || return 0
+
+  istate=$(gh issue view "$n" --json state --jq .state 2>/dev/null) || return 0
+  [ -z "$istate" ] && return 0
+  [ "$istate" = "CLOSED" ] && return 0
+
+  [ "$RALPH_DRY_RUN" = "1" ] && {
+    echo "ralph[dry-run]: would close #$n (PR #$pr merged, linkage did not fire)" >&2
+    return 0
+  }
+  gh issue close "$n" --reason completed --comment "Closed by the Ralph loop's post-merge check: PR #$pr merged carrying a closing keyword for this issue, but GitHub's linkage never fired.
+
+This is ops#305. It is not always malformed syntax — PR #360 carried a clean, bare \`Closes #297\` and still failed to close it — which is why the transition is verified after the merge rather than only checked before it." >/dev/null 2>&1 ||
+    echo "ralph: could not close #$n after PR #$pr merged — do it by hand" >&2
+  echo "ralph: closed #$n — PR #$pr merged but GitHub's linkage did not fire" >&2
+}
+
 record_failed_attempt() { # <n> <run_id> <reason>
   [ "$RALPH_DRY_RUN" = "1" ] && return 0
   gh issue comment "$1" --body "ralph-attempt-failed $2 — $3" >/dev/null 2>&1 || true
@@ -280,6 +388,10 @@ record_failed_attempt() { # <n> <run_id> <reason>
 # never a false "done". Reversible: re-add the ready label to retry.
 park_issue() {
   local n=$1 reason=$2 label=$3
+  # A park whose retry line is false is worse than no retry line: it sends a
+  # human round a loop that cannot succeed. Callers whose park is NOT cleared by
+  # re-queuing pass their own hint.
+  local retry=${4:-"fix the cause, then re-add \`$RALPH_READY_LABEL\`"}
   if [ "$RALPH_DRY_RUN" = "1" ]; then
     echo "ralph[dry-run]: would park #$n ($label): $reason" >&2
     return 0
@@ -291,7 +403,7 @@ park_issue() {
   # selected-issue capture in run.sh / the CI guard (bit us on the first run).
   gh_retry issue edit "$n" --remove-label "$RALPH_READY_LABEL" --add-label "$label" >/dev/null || true
   gh_retry issue comment "$n" --body "🅿️ **Ralph parked this issue** — $reason
-(To retry: fix the cause, then re-add \`$RALPH_READY_LABEL\`.)" >/dev/null || true
+(To retry: $retry.)" >/dev/null || true
 }
 
 # ---------------------------------------------------------------- reconcile
@@ -313,12 +425,41 @@ run_claim_time() {
   iso_of "$(($(date -u +%s) - RALPH_ITER_TIMEOUT - 600))"
 }
 
+# newest_branch <lines> — lines are "<sha>\t<branch>". Echoes the branch whose
+# head commit is newest (ralph#18).
+#
+# Recovery must never be blocked by an API hiccup: if any candidate cannot be
+# dated, this falls back to the historical behaviour (first in ls-remote order)
+# and says so, rather than failing the reconciliation. A wrong-but-recovered
+# branch is recoverable by hand; a crashed reconcile is not.
+#
+# ISO-8601 Zulu sorts correctly as a string, so no date parsing is needed.
+newest_branch() {
+  local lines="$1" best="" best_date="" sha br cdate
+  while IFS=$'\t' read -r sha br; do
+    [ -n "$br" ] || continue
+    cdate=$(gh api "repos/$(repo_slug)/commits/$sha" --jq '.commit.committer.date' 2>/dev/null || true)
+    if [ -z "$cdate" ]; then
+      echo "ralph: could not date $br via the API — falling back to ls-remote order" >&2
+      awk -F'\t' 'NF {print $2}' <<<"$lines" | head -n1
+      return 0
+    fi
+    if [ -z "$best_date" ] || [[ "$cdate" > "$best_date" ]]; then
+      best_date="$cdate"
+      best="$br"
+    fi
+  done <<<"$lines"
+  [ -n "$best" ] || best=$(awk -F'\t' 'NF {print $2}' <<<"$lines" | head -n1)
+  echo "$best"
+}
+
 # reconcile_issue <n> <run_id> <work_status>
 # State-based post-iteration reconciliation — the single place that decides
 # what actually happened, regardless of how the work step died. Prints one
 # token: pr:<num> | parked:<why> | failed:<why>. Never returns non-zero.
 reconcile_issue() {
   local n=$1 run_id=$2 work_status=$3 all since pr closed branch i fails why eligible
+  local candidates cand_count passed_over
   all=$(gh pr list --state all --limit 200 --json number,headRefName,state,createdAt \
     --jq "[.[] | select(.headRefName | startswith(\"ralph/issue-$n-\"))]" \
     2>/dev/null || echo '[]')
@@ -343,13 +484,24 @@ reconcile_issue() {
   #    open it ourselves, bounded retry with backoff. Never when a CLOSED PR
   #    exists — that would resurrect human-rejected work (parked in 4 below).
   branch=""
+  passed_over=""
   if [ "${closed:-0}" -eq 0 ]; then
-    branch=$(git ls-remote --heads origin "ralph/issue-$n-*" 2>/dev/null |
-      awk '{print $2}' | sed 's#refs/heads/##')
-    if [ "$(grep -c . <<<"$branch")" -gt 1 ]; then
-      echo "ralph: WARNING — multiple ralph/issue-$n-* branches exist; recovering the first" >&2
+    # Keep the sha alongside the ref: with more than one orphan we choose by
+    # commit date (ralph#18), and the sha is what the commits API needs.
+    candidates=$(git ls-remote --heads origin "ralph/issue-$n-*" 2>/dev/null |
+      awk 'NF >= 2 {print $1"\t"$2}' | sed 's#refs/heads/##')
+    cand_count=$(grep -c . <<<"$candidates" || true)
+    if [ "${cand_count:-0}" -gt 1 ]; then
+      # ls-remote order is alphabetical, not chronological, so head -n1 could
+      # resurrect the older of two crash orphans and open a PR for work that
+      # was already superseded.
+      branch=$(newest_branch "$candidates")
+      passed_over=$(awk -F'\t' -v keep="$branch" 'NF && $2 != keep {print $2}' <<<"$candidates" |
+        paste -sd', ' -)
+      echo "ralph: multiple ralph/issue-$n-* branches — recovering $branch (newest commit); passed over: ${passed_over:-none}" >&2
+    else
+      branch=$(awk -F'\t' 'NF {print $2}' <<<"$candidates" | head -n1)
     fi
-    branch=$(head -n1 <<<"$branch")
   fi
   if [ -n "$branch" ]; then
     if [ "$RALPH_DRY_RUN" = "1" ]; then
@@ -361,7 +513,11 @@ reconcile_issue() {
         --title "$(git log -1 --format=%s "origin/$branch" 2>/dev/null || echo "ralph: issue #$n")" \
         --body "Closes #$n
 
-Opened by ralph reconciliation (run \`$run_id\`): the iteration pushed this branch but its PR step failed." \
+Opened by ralph reconciliation (run \`$run_id\`): the iteration pushed this branch but its PR step failed.${passed_over:+
+
+**Other branches exist for this issue and were passed over:** $passed_over
+
+This branch was chosen because its head commit is the newest. If the work you wanted is on one of the others, open it by hand — nothing deletes them.}" \
         >/dev/null 2>&1; then
         release_claim "$n"
         echo "pr:recovered"
@@ -430,6 +586,20 @@ Opened by ralph reconciliation (run \`$run_id\`): the iteration pushed this bran
     release_claim "$n"
     park_issue "$n" "prior Ralph PR(s) merged but the issue is still open and this iteration produced nothing new — the remainder looks not agent-actionable. Close the issue or split what's left into a new issue, then re-add \`$RALPH_READY_LABEL\`." needs-adrian
     echo "parked:prior merged PR(s) but issue still open — remainder not agent-actionable"
+    return 0
+  fi
+  # 6.5) No sentinel, but the model left a reasoned comment of its own this
+  #      cycle → infer a deliberate stop. This is the ops#39 / ops#44 class:
+  #      the agent explained why it stopped and was charged an attempt anyway,
+  #      because it did not prefix the comment with `ralph-blocked`. Parks to
+  #      needs-adrian WITHOUT recording an attempt — and parking (not retrying)
+  #      is what makes a false positive safe, since no attempt is recorded here
+  #      and so neither cap would bound a retry loop.
+  if model_left_substantive_comment "$n"; then
+    park_issue "$n" "the model stopped without a PR and left a reasoned explanation instead of a \`ralph-blocked\` sentinel — treating it as a deliberate stop, not a crash. $why" needs-adrian \
+      "read the model's comment above first — if it is genuinely blocked, answer it; if it stopped in error, re-add \`$RALPH_READY_LABEL\`"
+    release_claim "$n"
+    echo "parked:#$n — inferred deliberate stop from the model's own comment, no attempt recorded"
     return 0
   fi
   # 7) Genuine no-ship → record the attempt, release the claim, park on cap.
