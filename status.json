@@ -1,13 +1,18 @@
 {
-  "updatedAt": "2026-09-18T07:15:00Z",
+  "updatedAt": "2026-09-19T09:30:00Z",
   "phase": "active",
-  "headline": "Rendered-evidence visual audit landed (docs/visual-audit-2026-09-18.html). Storybook did not build on a clean clone — src/app/data/component-api.json is gitignored and only prebuild:lib generated it, and build-storybook still exited 0 on failure; the same pattern broke pnpm typecheck via token-audit-report.json. Both now have pre-steps. Storybook also had no staticDirs, so every story rendered in a fallback face instead of Satoshi. Audit found 4 P0 / 3 P1 / 2 P2 drift findings plus 6 direction calls for Adrian.",
+  "headline": "Two breaking-but-intentional token changes landed today. #228 collapsed four competing radius values onto one knob (semantic.radius.action 12px -> 8px; Tailwind rounded-md now resolves to the role radius exactly, so the utility and the token can no longer disagree) and unblocked Storybook, which had not built on a clean clone because two generated-but-gitignored JSON files are imported as modules. #208 neutralized the accent from blue to monochrome, inverting per theme, taking content.onAccent/surface.accent contrast from 7.3:1 to 18.9:1; blue is now a tenant overlay rather than the base. A rendered-evidence audit, a target-architecture proposal for all 120 components, and a knob bench (pnpm preview:build) that renders the real components with live dials shipped alongside. Epic #124 decomposed: 6 of its 9 children were already closed, #134 closed as superseded, and 7 new issues filed (#230-#236).",
   "next": [
-    "Adrian: decide B3 (body size/weight + border neutral) — two token values that set the register everything else is judged against; border is currently 1.26:1 against a 3:1 floor",
-    "Adrian: decide B1 (single radius source of truth — Tailwind rounded-md derives 10px while components bind the 12px token) and B4 (heading weight; the light-300 token is orphaned)",
-    "Fix A3/A4/A5: radio renders 0px wide (inline spans), segmented items are white-on-white at 1.00:1, toggle renders as a 16x16 transparent box",
-    "Correct DESIGN.source.md prose vs generated tables (A7), renumber the inverted 5xl/7xl scale (A8)",
-    "Enable Chromatic (#200) once the above land, so the baseline captures a correct render"
+    "PR #237 — pnpm tokens truncated the manifest by seven entries because it skipped enrich-manifest; check-manifest-drift could not see it because the names sit in both componentSpecs and utilities and the gate unioned them",
+    "Fix #225 (radio paints nothing, segmented items 1.00:1, toggle a transparent box) and #226 (alert title runs into body) — in progress on claude/fix-form-control-rendering",
+    "Fix #227 (type scale inverts: 5xl 80px > 7xl 72px) — in progress on claude/fix-type-scale-inversion",
+    "#230 — split the border token so control boundaries meet WCAG 1.4.11; --semantic-color-border-default is 1.26:1 against a 3:1 floor",
+    "#186 — 60 pre-existing check-tier-bypass violations, held until the form-control work lands to avoid file contention"
   ],
-  "blocked": []
+  "blocked": [
+    "Adrian: #235 — ratify or redline the core/pattern/internal/fold disposition table. Default applies 2026-10-03 if unanswered",
+    "Adrian: #236 — commit the first figma/snapshot.json; check:figma-drift is dark until one exists, and a live Figma write is Adrian session-only",
+    "Adrian: #126 — CHROMATIC_PROJECT_TOKEN in Actions secrets. Re-claimed by the loop 8 times with the same blocker; marked do-not-re-dispatch",
+    "Adrian: #199 — release is held by an org-level policy, not a repo setting. GitHub org hirobius -> Settings -> Actions -> General -> Workflow permissions -> Allow GitHub Actions to create and approve pull requests. Nothing publishes past 0.13.0 until this is ticked"
+  ]
 }
