@@ -114,8 +114,8 @@
   --primitive-typography-size-2xl: 30px;
   --primitive-typography-size-3xl: 36px;
   --primitive-typography-size-4xl: 48px;
-  --primitive-typography-size-5xl: 80px;
-  --primitive-typography-size-7xl: 72px;
+  --primitive-typography-size-5xl: 72px;
+  --primitive-typography-size-6xl: 80px;
   --primitive-typography-weight-light: 300;
   --primitive-typography-weight-regular: 400;
   --primitive-typography-weight-medium: 500;
@@ -255,7 +255,7 @@
   --semantic-layout-grid-columns-desktop: var(--primitive-grid-columns-3);
   /* semantic.typography.display */
   --semantic-typography-display-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-display-font-size: var(--primitive-typography-size-7xl);
+  --semantic-typography-display-font-size: var(--primitive-typography-size-5xl);
   --semantic-typography-display-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-display-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-display-line-height: var(--primitive-typography-lineHeight-none);
