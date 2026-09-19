@@ -172,7 +172,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.accent.content": "Text and icon color on neutral surfaces with accent intent. Monochrome — pair with underline/weight for link affordance.",
   "semantic.accent.contentHover": "Accent content color on pointer hover.",
   "semantic.accent.subtle": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
-  "semantic.radius.action": "Corner radius for interactive action elements like buttons and inputs.",
+  "semantic.radius.action": "The shape knob. Corner radius for interactive action elements (buttons, inputs, badges, alerts, segmented items). Tailwind's rounded-md resolves to exactly this value via --role-radius; containers are one step above it at rounded-lg. Override role.radius in a tenant overlay to reshape the whole system from one value.",
   "semantic.borderWidth.default": "Default hairline border weight for surfaces and inputs.",
   "semantic.borderWidth.emphasis": "Stronger border weight for focus rings and active indicators.",
   "semantic.shadow.subtle": "Resting elevation shadow for raised surfaces (cards, inline panels).",

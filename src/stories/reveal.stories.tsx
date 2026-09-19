@@ -20,7 +20,7 @@ const Panel = ({ label }: { label: string }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 'var(--semantic-radius-action, 12px)',
+      borderRadius: 'var(--semantic-radius-action, 8px)',
       background: 'var(--semantic-color-surface-raised, #f4f4f5)',
       border: '1px solid var(--semantic-color-border-default, #d4d4d8)',
       color: 'var(--semantic-color-content-primary, #18181b)',
