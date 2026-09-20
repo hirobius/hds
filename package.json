@@ -219,7 +219,6 @@
     "figma:native-import": "node scripts/build-figma-native-import.mjs",
     "figma:push": "node scripts/figma-push.mjs",
     "figma:snapshot": "node scripts/figma-snapshot.mjs",
-    "guardrail:firing-stats": "node scripts/refresh-firing-stats.mjs",
     "harvest:design-md": "node scripts/harvest-design-md.mjs",
     "heal": "node scripts/self-heal.mjs",
     "heal:smoke": "node scripts/self-heal.mjs --smoke",
