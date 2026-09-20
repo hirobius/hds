@@ -2,6 +2,7 @@
  * Tag — interactive filter and category chip.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11
  *
  * The outer <button> carries the accessible 44px hit target directly via the
  * size token while the inner pill keeps the visible surface compact. Colors

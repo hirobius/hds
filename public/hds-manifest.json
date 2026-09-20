@@ -1741,7 +1741,7 @@
       "hidden": false,
       "filePath": "src/app/components/icon-button.tsx",
       "description": "IconButton ” icon-only action trigger built on the shared Button primitive.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39",
       "figmaId": null,
       "preview": {
         "exportName": "IconButton",
@@ -1862,7 +1862,7 @@
         }
       ],
       "sourcePath": "src/app/components/IconButton.tsx",
-      "figmaLink": null
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39"
     },
     "InlineCode": {
       "category": "Display",
@@ -1985,7 +1985,7 @@
       "hidden": false,
       "filePath": "src/app/components/input.tsx",
       "description": "Input — text field primitive with label, helper, and error slots.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20",
       "figmaId": null,
       "preview": {
         "exportName": "Input",
@@ -2219,7 +2219,7 @@
       ],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": null
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20"
     },
     "NavGroup": {
       "category": "Navigation",
@@ -2945,7 +2945,7 @@
       "hidden": false,
       "filePath": "src/app/components/tag.tsx",
       "description": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11",
       "figmaId": null,
       "preview": {
         "exportName": "Tag",
@@ -3095,7 +3095,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Tag.tsx",
-      "figmaLink": null
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11"
     },
     "Token": {
       "category": "Display",
@@ -3353,7 +3353,7 @@
       "hidden": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
         "src/app/components/doc-link-card.tsx",
@@ -3527,7 +3527,7 @@
         "Body",
         "Footer"
       ],
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
       "propConstraints": {
         "as": {
           "type": "string"
@@ -4225,9 +4225,9 @@
       "docExempt": false,
       "filePath": "src/app/components/button.tsx",
       "description": "Triggers an action when activated.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138",
       "tier": "primitive",
       "preview": {
         "exportName": "Button",
@@ -4979,9 +4979,9 @@
       "governedCategory": true,
       "hidden": false,
       "docExempt": false,
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15",
       "tier": "primitive",
       "preview": {
         "exportName": "Badge",
@@ -5378,7 +5378,7 @@
       "hidden": false,
       "filePath": "src/app/components/radio.tsx",
       "description": "HdsRadio — radio button with animated selection indicator.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17",
       "figmaId": null,
       "preview": {
         "exportName": "HdsRadio",
@@ -5427,7 +5427,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": null
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17"
     },
     "HdsSelect": {
       "category": "Inputs",
@@ -5552,7 +5552,7 @@
       "hidden": false,
       "filePath": "src/app/components/toggle.tsx",
       "description": "HdsToggle — boolean on/off toggle with animated thumb.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19",
       "figmaId": null,
       "preview": {
         "exportName": "HdsToggle",
@@ -5603,7 +5603,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": null
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19"
     },
     "Avatar": {
       "category": "Display",
@@ -5613,9 +5613,9 @@
       "docExempt": false,
       "filePath": "src/app/components/avatar.tsx",
       "description": "Circular avatar. Renders the image when available, else initials from `alt`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18",
       "tier": "primitive",
       "preview": {
         "exportName": "Avatar",
@@ -5920,9 +5920,9 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "docExempt": false,
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
       "consumers": [
         "src/app/components/checkbox.test.tsx",
         "src/app/components/radio.tsx",
