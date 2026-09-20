@@ -2,5 +2,8 @@
   "$comment": "Where pnpm figma:links points design <-> code links (README section, Figma dev resources, component documentation links). Component Figma nodes come from each component's @figma JSDoc tag, never from here. storybookUrl: the deployed Storybook root (for example the Chromatic library URL); while null, story links point at the story file on GitHub.",
   "repository": "https://github.com/hirobius/hds",
   "branch": "main",
-  "storybookUrl": null
+  "storybookUrl": null,
+  "libraryFileKey": "c8MaVgwxOlxm4wr8wnH0Z4",
+  "stagingFileKey": null,
+  "$comment_figmaFiles": "ADR-026. libraryFileKey is the published library 'HDS Tokens & Components' and is READ-ONLY to agents — every consumer resolves from it, so an agent write there propagates irreversibly. Agent writes go to stagingFileKey, a duplicate Adrian promotes by hand (Pro has no branching, so there is no automatic merge). While stagingFileKey is null an agent has no legal write target; that is the intended failure mode, not a reason to fall back to the library."
 }
