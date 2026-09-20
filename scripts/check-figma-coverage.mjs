@@ -26,6 +26,7 @@ import { coverage } from './lib/figma-inventory.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const INVENTORY = path.join(ROOT, 'figma/inventory.json');
 const MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
+const OVERRIDES = path.join(ROOT, 'figma/mapping-overrides.json');
 
 const asJson = process.argv.includes('--json');
 
@@ -39,7 +40,14 @@ if (!existsSync(INVENTORY)) {
 
 const inventory = JSON.parse(readFileSync(INVENTORY, 'utf8'));
 const manifest = JSON.parse(readFileSync(MANIFEST, 'utf8'));
-const result = coverage(inventory, manifest);
+const overrides = existsSync(OVERRIDES) ? JSON.parse(readFileSync(OVERRIDES, 'utf8')) : {};
+const result = coverage(inventory, manifest, overrides);
+
+// Printed, never silent: an override is a modelling mismatch someone accepted,
+// so it should stay visible rather than quietly inflating the mapped count.
+for (const o of result.overridden) {
+  console.log(`  override  ${o.id.padEnd(10)} ${o.name} → ${o.mapsTo}`);
+}
 
 if (asJson) {
   console.log(JSON.stringify({ ...result, complete: inventory.complete !== false }, null, 2));

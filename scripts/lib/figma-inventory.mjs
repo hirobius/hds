@@ -142,13 +142,24 @@ export function mappedNodes(manifest) {
  * `check-code-connect` already reports url-source drift, so folding both into
  * one number would hide which one fired.
  *
+ * Overrides cover the one honest exception: a Figma asset whose code
+ * counterpart is a compound member (`Card.Progress`) rather than a top-level
+ * component, so no `@figma` tag can name it. They are counted as mapped and
+ * reported separately, never hidden — an override is an admission that Figma
+ * and code model the same thing differently.
+ *
  * @param {ReturnType<typeof parseDocument>} inventory
  * @param {object} manifest parsed public/hds-manifest.json
- * @returns {{ total: number, mapped: number, unmapped: Array<{page: string, name: string, id: string, type: string}> }}
+ * @param {{ overrides?: Array<{nodeId: string, mapsTo: string}> }} [overrideFile]
+ * @returns {{ total: number, mapped: number, overridden: Array<{page: string, name: string, id: string, mapsTo: string}>, unmapped: Array<{page: string, name: string, id: string, type: string}> }}
  */
-export function coverage(inventory, manifest) {
+export function coverage(inventory, manifest, overrideFile = {}) {
   const byNode = mappedNodes(manifest);
+  const byOverride = new Map(
+    (overrideFile.overrides ?? []).map((o) => [String(o.nodeId).replace('-', ':'), o.mapsTo]),
+  );
   const unmapped = [];
+  const overridden = [];
   let total = 0;
   let mapped = 0;
 
@@ -162,11 +173,21 @@ export function coverage(inventory, manifest) {
         mapped += 1;
         continue;
       }
+      if (byOverride.has(asset.id)) {
+        mapped += 1;
+        overridden.push({
+          page: page.name,
+          name: asset.name,
+          id: asset.id,
+          mapsTo: byOverride.get(asset.id),
+        });
+        continue;
+      }
       unmapped.push({ page: page.name, name: asset.name, id: asset.id, type: asset.type });
     }
   }
 
-  return { total, mapped, unmapped };
+  return { total, mapped, overridden, unmapped };
 }
 
 /**

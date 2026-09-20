@@ -184,6 +184,25 @@ describe('coverage', () => {
     expect(report.unmapped.find((u) => u.name === 'Alert').page).toBe('Alert');
   });
 
+  it('counts an override as mapped and reports it separately, never silently', () => {
+    const overrides = { overrides: [{ nodeId: '33:34', mapsTo: 'Card.Progress' }] };
+    const report = coverage(inventory, { componentSpecs: {} }, overrides);
+    expect(report.unmapped.map((u) => u.name)).not.toContain('Alert');
+    expect(report.mapped).toBe(1);
+    expect(report.overridden).toEqual([
+      { page: 'Alert', name: 'Alert', id: '33:34', mapsTo: 'Card.Progress' },
+    ]);
+  });
+
+  it('accepts an override written in the URL dash form', () => {
+    const overrides = { overrides: [{ nodeId: '33-34', mapsTo: 'Card.Progress' }] };
+    expect(coverage(inventory, { componentSpecs: {} }, overrides).mapped).toBe(1);
+  });
+
+  it('reports no overrides when none are supplied', () => {
+    expect(coverage(inventory, { componentSpecs: {} }).overridden).toEqual([]);
+  });
+
   it('is clean when every asset is mapped', () => {
     const manifest = {
       componentSpecs: Object.fromEntries(
