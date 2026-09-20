@@ -22,6 +22,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseDocument, coverage, fetchFile } from './lib/figma-inventory.mjs';
+import { figmaToken, figmaTokenSource } from './lib/figma-token.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const INVENTORY = path.join(ROOT, 'figma/inventory.json');
@@ -49,7 +50,9 @@ async function refetch() {
     process.exit(1);
   }
 
-  const file = await fetchFile({ fileKey, token: process.env.FIGMA_ACCESS_TOKEN });
+  const source = figmaTokenSource();
+  if (source) console.log(`  using the Figma token from ${source}`);
+  const file = await fetchFile({ fileKey, token: figmaToken() });
   const parsed = parseDocument(file, fileKey);
 
   const inventory = {

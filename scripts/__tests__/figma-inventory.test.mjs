@@ -205,10 +205,12 @@ describe('coverage', () => {
 });
 
 describe('fetchFile', () => {
-  it('names the variable and the fix when no token is set', async () => {
-    await expect(fetchFile({ fileKey: FILE_KEY, token: '' })).rejects.toThrow(
-      /FIGMA_ACCESS_TOKEN is not set.*file_content:read/s,
-    );
+  it('names every accepted variable and the fix when no token is set', async () => {
+    // Both names, because reading only FIGMA_ACCESS_TOKEN while the environment
+    // supplied FIGMA_API_KEY is the bug scripts/lib/figma-token.mjs exists for.
+    const call = fetchFile({ fileKey: FILE_KEY, token: '' });
+    await expect(call).rejects.toThrow(/FIGMA_ACCESS_TOKEN or FIGMA_API_KEY/);
+    await expect(call).rejects.toThrow(/file_content:read/);
   });
 
   it('sends the token as X-Figma-Token and asks for depth 2', async () => {
