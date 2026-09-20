@@ -21,6 +21,8 @@
  * network, so both are tested against a fixture with no token and no Figma.
  */
 
+import { TOKEN_VARS, missingTokenMessage } from './figma-token.mjs';
+
 /** Figma node types that count as a mappable design-system asset. */
 const ASSET_TYPES = new Set(['COMPONENT_SET', 'COMPONENT']);
 
@@ -181,12 +183,7 @@ export async function fetchFile({
   depth = 2,
 }) {
   if (!token) {
-    throw new Error(
-      'FIGMA_ACCESS_TOKEN is not set. `pnpm figma:inventory --fetch` reads the document through the REST API. ' +
-        'Create a personal access token at https://www.figma.com/settings (Security → Personal access tokens) ' +
-        'with the `file_content:read` scope, then pass it for one run only, never in a committed file: ' +
-        'FIGMA_ACCESS_TOKEN=<token> pnpm figma:inventory --fetch',
-    );
+    throw new Error(missingTokenMessage('pnpm figma:inventory --fetch'));
   }
 
   const path = `/v1/files/${fileKey}?depth=${depth}`;
@@ -204,11 +201,11 @@ export async function fetchFile({
 function explainStatus(status, path) {
   const tokenHelp =
     'Create or rotate a personal access token at https://www.figma.com/settings ' +
-    '(Security → Personal access tokens) with the `file_content:read` scope, then re-run with ' +
-    'FIGMA_ACCESS_TOKEN=<token> pnpm figma:inventory --fetch';
+    '(Security → Personal access tokens) with the `file_content:read` scope, then re-run. ' +
+    `The token is read from ${TOKEN_VARS.join(' or ')}.`;
 
   if (status === 403 || status === 401) {
-    return `Figma refused FIGMA_ACCESS_TOKEN (HTTP ${status}) on GET ${path}. The token is expired, revoked, or lacks the \`file_content:read\` scope. ${tokenHelp}`;
+    return `Figma refused the token (HTTP ${status}) on GET ${path}. It is expired, revoked, or lacks the \`file_content:read\` scope. ${tokenHelp}`;
   }
   if (status === 404) {
     return `Figma found no such file (HTTP 404) on GET ${path}. Check libraryFileKey in figma/links.json: this needs the key of a main file, not a branch.`;
