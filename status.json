@@ -1,18 +1,20 @@
 {
-  "updatedAt": "2026-09-19T09:58:00Z",
+  "updatedAt": "2026-09-20T23:55:00Z",
   "phase": "active",
-  "headline": "Fixed the four rendering defects from the 2026-09-18 visual audit (#225 A3/A4/A5 + #226), PR #239: radio ring/dot now take an explicit flex/block display so their token width/height actually apply (0px -> 20x20 ring, 8x8 dot); segmented-control's active indicator was losing bg-[accent] to its own base bg-transparent in the Tailwind cascade because it wasn't run through cn()/twMerge (1.00:1 -> 7.33:1 contrast) — same fix applied to the label+description text-color slot; toggle now draws a real 40x20 pill track + 16x16 thumb instead of rendering the native 16x16 checkbox directly; alert title/body are now a flex-col with a semantic-token gap instead of adjacent inline spans. All measured before/after in a real Chromium render (Playwright), not read off source. Note: #225 had already been closed once by #228, but #228 only did an unrelated radius-token rename in toggle/segmented-control and never touched radio.tsx — the three rendering bugs were still live on main until #239. Prior fleet context (#228/#208/#237/#124 decomposition) is in the PR/issue history.",
+  "headline": "Figma coverage went 13 -> 50 of 51 after the first real REST enumeration of the published library (52 pages, 121 assets; a prior hand-walk had found 13 pages and missed 38 published components). Counting from the Figma side exposed two discovery bugs that counting from code never could: getExportedValueNames ignored ExportDeclaration, so every compound component built with Object.assign and exported via `export { X }` was invisible to the manifest, and findJsDocBlock had the same blind spot, so tags written on those components were silently dropped. Fixing both took the manifest from 113 to 132 components — 19 the system did not know it had. New tooling: pnpm figma:inventory (REST enumeration, committed as figma/inventory.json), pnpm check:figma-coverage (gates from the Figma side), pnpm guardrail:sweep (runs all 54 gates on demand). ADR-026 lets agents write Figma via a staging duplicate; ADR-027 deleted the gate firing telemetry, which measured 1 gate of 54 and backfilled the other 36 with a single date, and had nearly justified deleting 8 working gates.",
   "next": [
-    "Fix #227 (type scale inverts: 5xl 80px > 7xl 72px) — in progress on claude/fix-type-scale-inversion",
-    "#230 — split the border token so control boundaries meet WCAG 1.4.11; --semantic-color-border-default is 1.26:1 against a 3:1 floor",
-    "#186 — 60 pre-existing check-tier-bypass violations (59 now — #239's toggle rewrite removed one outright). No longer blocked on form-control file contention now that #239 has landed.",
-    "#240 (new) — rendered regression gate for radio/segmented-control/toggle/alert (non-zero geometry + >=3:1 contrast), the #225 DoD item #239 didn't build",
-    "Enable Chromatic (#200) now that A3/A4/A5 render correctly, so the baseline captures a correct render"
+    "#249 — gate the record artifacts: a pre-push check so status.json and .changeset cannot silently go stale (5 changesets pending, CHANGELOG last touched 2026-07-10)",
+    "audit-bundle crashes with UNRESOLVED_ENTRY — it is not reporting violations, it is broken. Only CRASH verdict in the sweep",
+    "15 gates are red on main and invisible because 37 of 54 fire only on demand. pnpm guardrail:sweep now measures this; wiring them is constrained by 4-5 that rewrite the working tree and audit-gates-supportjson at 48s",
+    "check-exemptions rejects `layout-ok`, the marker check-layout-discipline emits — two gates disagreeing about one vocabulary",
+    "Tooltip (93:15) is the last unmapped Figma asset, on purpose: Figma publishes a Tooltip component, the code Tooltip is an @internal image-hover utility. Rename one side or accept the divergence",
+    "The push/drift/snapshot machinery (1441 lines, 89 tests) is complete and correct but has never run against Figma. Do not cut it — run the first push, then decide what earns its keep"
   ],
   "blocked": [
     "Adrian: #235 — ratify or redline the core/pattern/internal/fold disposition table. Default applies 2026-10-03 if unanswered",
-    "Adrian: #236 — commit the first figma/snapshot.json; check:figma-drift is dark until one exists, and a live Figma write is Adrian session-only",
-    "Adrian: #126 — CHROMATIC_PROJECT_TOKEN in Actions secrets. Re-claimed by the loop 8 times with the same blocker; marked do-not-re-dispatch",
-    "Adrian: #199 — release is held by an org-level policy, not a repo setting. GitHub org hirobius -> Settings -> Actions -> General -> Workflow permissions -> Allow GitHub Actions to create and approve pull requests. Nothing publishes past 0.13.0 until this is ticked"
+    "Adrian: #236 — commit the first figma/snapshot.json. Import figma/push/plugin/manifest.json in Figma desktop, run \"Plan push (dry run)\" against the COPY (qhlYOkWPKs8MfO3x1M5W4f) not the published library, then Take snapshot. check:figma-drift reports NO-DATA until one exists. Variables were hand-built and have never been compared to hirobius.tokens.json, so the first push is a reconciliation, not a sync — read the plan before pushing",
+    "Adrian: #126 — CHROMATIC_PROJECT_TOKEN in Actions secrets + CHROMATIC_ENABLED=true in Actions variables. The build is verified green, so this cannot fail on code. Re-claimed by the loop 8 times with the same blocker; marked do-not-re-dispatch",
+    "Adrian: #199 — release is held by an org-level policy, not a repo setting. GitHub org hirobius -> Settings -> Actions -> General -> Workflow permissions -> Allow GitHub Actions to create and approve pull requests. Nothing publishes past 0.13.0 until this is ticked",
+    "Adrian: two community UI kits (Material 3 Design Kit, Simple Design System) are subscribed to the HDS Figma file, so every design-system search returns their components alongside ours. Figma -> Assets panel -> book icon -> toggle both off"
   ]
 }
