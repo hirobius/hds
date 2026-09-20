@@ -2,6 +2,7 @@
  * Card — surface container with slot anatomy (12d-card-anatomy).
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11
  *
  * Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are
  * layout-bearing — they live in slots, never inline next to prose.

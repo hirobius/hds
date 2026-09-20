@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Card } from '../app/components/card';
 import { MODES } from '../../.storybook/preview';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/card',
   component: Card,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Card'),
     layout: 'padded',
     docs: {
       description: {

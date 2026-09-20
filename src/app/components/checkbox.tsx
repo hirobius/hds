@@ -2,6 +2,7 @@
  * HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29
  */
 
 import { forwardRef, useEffect, useRef } from 'react';

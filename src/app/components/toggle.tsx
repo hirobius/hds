@@ -2,6 +2,7 @@
  * HdsToggle — boolean on/off toggle with animated thumb.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19
  */
 
 import { forwardRef } from 'react';

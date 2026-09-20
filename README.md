@@ -153,11 +153,21 @@ Source-of-truth files:
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).
 
-**1 of 120** components link a Figma node.
+**11 of 120** components link a Figma node.
 
-| Component | Figma node                                                                                       | Story                                              | Source                                    |
-| --------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------- | ----------------------------------------- |
-| `Alert`   | [33:34](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34) | [alert.stories.tsx](src/stories/alert.stories.tsx) | [alert.tsx](src/app/components/alert.tsx) |
+| Component     | Figma node                                                                                         | Story                                                          | Source                                                |
+| ------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------- |
+| `Alert`       | [33:34](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34)   | [alert.stories.tsx](src/stories/alert.stories.tsx)             | [alert.tsx](src/app/components/alert.tsx)             |
+| `Avatar`      | [34:18](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18)   | [avatar.stories.tsx](src/stories/avatar.stories.tsx)           | [avatar.tsx](src/app/components/avatar.tsx)           |
+| `Badge`       | [31:15](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15)   | [badge.stories.tsx](src/stories/badge.stories.tsx)             | [badge.tsx](src/app/components/badge.tsx)             |
+| `Button`      | [28:138](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138) | [button.stories.tsx](src/stories/button.stories.tsx)           | [button.tsx](src/app/components/button.tsx)           |
+| `Card`        | [39:11](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11)   | [card.stories.tsx](src/stories/card.stories.tsx)               | [card.tsx](src/app/components/card.tsx)               |
+| `HdsCheckbox` | [35:29](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29)   | [checkbox.stories.tsx](src/stories/checkbox.stories.tsx)       | [checkbox.tsx](src/app/components/checkbox.tsx)       |
+| `HdsRadio`    | [36:17](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17)   | [radio.stories.tsx](src/stories/radio.stories.tsx)             | [radio.tsx](src/app/components/radio.tsx)             |
+| `HdsToggle`   | [37:19](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19)   | [toggle.stories.tsx](src/stories/toggle.stories.tsx)           | [toggle.tsx](src/app/components/toggle.tsx)           |
+| `IconButton`  | [40:39](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39)   | [icon-button.stories.tsx](src/stories/icon-button.stories.tsx) | [icon-button.tsx](src/app/components/icon-button.tsx) |
+| `Input`       | [38:20](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20)   | [input.stories.tsx](src/stories/input.stories.tsx)             | [input.tsx](src/app/components/input.tsx)             |
+| `Tag`         | [32:11](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11)   | [tag.stories.tsx](src/stories/tag.stories.tsx)                 | [tag.tsx](src/app/components/tag.tsx)                 |
 
 <!-- design-links:end -->
 

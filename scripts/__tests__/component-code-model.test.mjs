@@ -86,7 +86,20 @@ describe('createCodeModel — real components', () => {
     expect(model.component('src/app/components/alert.tsx', 'Alert').figmaUrl).toMatch(
       /^https:\/\/www\.figma\.com\/design\/.+node-id=/,
     );
-    expect(model.component('src/app/components/button.tsx', 'Button').figmaUrl).toBeNull();
+    // heading-stack carries no @figma tag at all — the null case. Button used to
+    // stand in for it, until the 2026-09-20 library walk gave Button a real node.
+    expect(
+      model.component('src/app/components/heading-stack.tsx', 'HeadingStack').figmaUrl,
+    ).toBeNull();
+  });
+
+  it('ignores @figma tags whose value is not a URL', () => {
+    // button.tsx carries three @figma lines: one node URL plus two legacy
+    // property-mapping lines (`@figma Variant=Button/Variant`). Only values
+    // starting http(s):// or figma.com/ are accepted (component-discovery.mjs),
+    // so the property lines must not win, be concatenated, or null the result.
+    const button = model.component('src/app/components/button.tsx', 'Button');
+    expect(button.figmaUrl).toMatch(/^https:\/\/www\.figma\.com\/design\/.+node-id=28-138$/);
   });
 
   it('returns null for an unknown export', () => {
