@@ -25,11 +25,6 @@
  *   --parallel <N>      Run up to N gates concurrently (default: 1 for
  *                       pre-commit; 4 for ci-pr). pre-commit MUST stay serial.
  *   --gate <id>         Run a single gate by registry id (ignores --channel).
- *   --emit-jsonl <path> Append one JSONL line per gate to <path> with
- *                       {ts, channel, gate, exitCode, durationMs, commitSha}.
- *                       When set, pre-commit fail-fast is disabled so all
- *                       gates run and are logged (used by .husky/post-commit
- *                       to detect --no-verify bypasses post-hoc per 13g-12).
  *   --emit-inventory <path>
  *                       Write a single aggregate JSON inventory to <path> with
  *                       per-gate {id, exitCode, durationMs, supportsJson,
@@ -37,7 +32,6 @@
  *                       gatesWithJson + gatesWithoutJson. When set, fail-fast
  *                       is disabled so every gate runs (used by 13p-2 to
  *                       generate the Phase 2 strict-gate debt baseline).
- *                       Orthogonal to --emit-jsonl; both can be set together.
  *                       When a gate's registry entry has supportsJson:true,
  *                       the gate is invoked with --json appended; the parsed
  *                       structured violations array is captured. Otherwise
@@ -88,7 +82,6 @@ const channelArg = getFlag('--channel');
 const gateArg = getFlag('--gate');
 const dryRun = hasFlag('--dry-run');
 const parallelArg = getFlag('--parallel');
-const emitJsonlArg = getFlag('--emit-jsonl');
 const emitInventoryArg = getFlag('--emit-inventory');
 const scopeArg = getFlag('--scope');
 const scopeFiles = scopeArg
@@ -124,35 +117,6 @@ if (channelArg && !VALID_CHANNELS.has(channelArg)) {
 const isPreCommit = channelArg === 'pre-commit';
 const defaultParallel = isPreCommit ? 1 : 4;
 const concurrency = parallelArg ? Math.max(1, parseInt(parallelArg, 10)) : defaultParallel;
-
-// Resolve commit SHA once at startup when emitting JSONL — used to attribute
-// every per-gate firing to a specific HEAD (post-commit verifier per 13g-12).
-let commitSha = null;
-if (emitJsonlArg) {
-  const r = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT });
-  commitSha = r.status === 0 ? r.stdout.toString().trim() : null;
-}
-
-function appendFiringLog(gate, exitCode, durationMs) {
-  if (!emitJsonlArg) return;
-  const line =
-    JSON.stringify({
-      ts: new Date().toISOString(),
-      channel: channelArg ?? null,
-      gate: gate.id,
-      exitCode,
-      durationMs,
-      commitSha,
-    }) + '\n';
-  try {
-    const target = path.isAbsolute(emitJsonlArg) ? emitJsonlArg : path.join(ROOT, emitJsonlArg);
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.appendFileSync(target, line);
-  } catch (e) {
-    // Logging failure must not break the gate run; surface to stderr only.
-    console.error(`✗ run-gates: emit-jsonl append failed: ${e.message}`);
-  }
-}
 
 // ── Inventory capture (--emit-inventory) ──────────────────────────────────────
 //
@@ -364,7 +328,6 @@ function runGateSync(gate) {
     if (captured.stderr) process.stderr.write(captured.stderr);
     recordInventory(gate, code, durationMs, captured);
   }
-  appendFiringLog(gate, code, durationMs);
   return code;
 }
 
@@ -402,7 +365,6 @@ function runGateAsync(gate) {
         if (stderrBuf) process.stderr.write(stderrBuf);
         recordInventory(gate, exit, durationMs, { stdout: stdoutBuf, stderr: stderrBuf });
       }
-      appendFiringLog(gate, exit, durationMs);
       resolve(exit);
     });
     child.on('error', (err) => {
@@ -414,7 +376,6 @@ function runGateAsync(gate) {
           stderr: stderrBuf + `\n${err.message}`,
         });
       }
-      appendFiringLog(gate, 1, durationMs);
       resolve(1);
     });
   });
@@ -437,12 +398,10 @@ if (concurrency <= 1) {
     const code = runGateSync(gate);
     if (code !== 0) {
       failures.push({ id: gate.id, code });
-      // For pre-commit, fail fast on first error to match current behavior —
-      // unless --emit-jsonl is set (post-commit logger needs every gate's
-      // result, even after one fails — see 13g-12-postcommit-verifier) OR
-      // --emit-inventory is set (debt-baseline run needs every gate's result
-      // so the inventory file isn't truncated mid-channel — see 13p-1/13p-2).
-      if (isPreCommit && !emitJsonlArg && !emitInventoryArg) {
+      // For pre-commit, fail fast on the first error — unless --emit-inventory
+      // is set, because the debt-baseline run needs every gate's result or the
+      // inventory file is truncated mid-channel (13p-1/13p-2).
+      if (isPreCommit && !emitInventoryArg) {
         console.error(`\n✗ run-gates: gate '${gate.id}' failed (exit ${code})`);
         writeInventory();
         process.exit(1);
@@ -482,7 +441,7 @@ if (failures.length === 0) {
   }
   // When --emit-inventory is set, exit 0 even if gates failed: the inventory's
   // job is to capture the current state of debt for downstream classification.
-  // The failures table still prints to stderr for human visibility. (--emit-jsonl
+  // The failures table still prints to stderr for human visibility. (--emit-inventory
   // is unchanged: it logs but still exits 1 because it's used post-commit to
   // detect bypass, where the exit signals "post-commit found a real failure".)
   if (emitInventoryArg) {
