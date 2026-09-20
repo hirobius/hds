@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Callout } from '../app/components/callout';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/callout',
   component: Callout,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Callout'),
     layout: 'padded',
     docs: {
       description: {
@@ -40,14 +42,16 @@ export const Default: Story = {
 export const Accent: Story = {
   args: {
     tone: 'accent',
-    children: 'New design tokens are available in the latest release. Review the migration guide before upgrading.',
+    children:
+      'New design tokens are available in the latest release. Review the migration guide before upgrading.',
   },
 };
 
 export const Success: Story = {
   args: {
     tone: 'success',
-    children: 'All guardrails passed. The component meets accessibility and token-compliance requirements.',
+    children:
+      'All guardrails passed. The component meets accessibility and token-compliance requirements.',
   },
 };
 
@@ -93,7 +97,9 @@ export const AllTones: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '560px' }}>
       <Callout tone="accent">Accent — used for on-brand highlights and feature notices.</Callout>
       <Callout tone="info">Info — neutral informational message.</Callout>
-      <Callout tone="success">Success — confirmation that an action completed without errors.</Callout>
+      <Callout tone="success">
+        Success — confirmation that an action completed without errors.
+      </Callout>
       <Callout tone="warning">Warning — caution: review before proceeding.</Callout>
       <Callout tone="danger">Danger — destructive or breaking-change notice.</Callout>
     </div>

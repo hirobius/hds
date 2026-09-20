@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Textarea } from '../app/components/textarea';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/textarea',
   component: Textarea,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Textarea'),
     layout: 'padded',
     docs: {
       description: {

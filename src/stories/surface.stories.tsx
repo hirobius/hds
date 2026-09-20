@@ -3,32 +3,34 @@
  * Surface stories — padding, shadow, and slot pattern demos.
  * @see src/app/components/surface.tsx
  */
-import type { Meta, StoryObj } from "@storybook/react";
-import { Surface } from "../app/components/surface";
-import { Text } from "../app/components/text";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Surface } from '../app/components/surface';
+import { Text } from '../app/components/text';
+import { designParameters } from './design-parameters';
 
 const meta = {
-  title: "Primitives/Surface",
+  title: 'Primitives/Surface',
   component: Surface,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    ...designParameters('Surface'),
+    layout: 'centered',
     docs: {
       description: {
         component:
-          "Governed inset surface primitive. The only approved padded background-bearing wrapper in HDS. Enforces the Surface Inset rule: backgrounds MUST have internal padding. Use for card, panel, and inset content.",
+          'Governed inset surface primitive. The only approved padded background-bearing wrapper in HDS. Enforces the Surface Inset rule: backgrounds MUST have internal padding. Use for card, panel, and inset content.',
       },
     },
   },
   argTypes: {
     padding: {
-      control: { type: "select" },
-      options: ["component", "item", "px16", "px24", "none"],
+      control: { type: 'select' },
+      options: ['component', 'item', 'px16', 'px24', 'none'],
     },
-    shadow: { control: "boolean" },
+    shadow: { control: 'boolean' },
     theme: {
-      control: { type: "select" },
-      options: [undefined, "light", "dark"],
+      control: { type: 'select' },
+      options: [undefined, 'light', 'dark'],
     },
   },
 } satisfies Meta<typeof Surface>;
@@ -38,14 +40,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    padding: "component",
+    padding: 'component',
     children: <Text variant="body">Surface content with component padding.</Text>,
   },
 };
 
 export const ItemPadding: Story = {
   args: {
-    padding: "item",
+    padding: 'item',
     children: <Text variant="ui">Compact item surface.</Text>,
   },
 };
@@ -53,35 +55,31 @@ export const ItemPadding: Story = {
 export const WithShadow: Story = {
   args: {
     shadow: true,
-    children: (
-      <Text variant="body">Elevated card with box-shadow lift.</Text>
-    ),
+    children: <Text variant="body">Elevated card with box-shadow lift.</Text>,
   },
 };
 
 export const ForcedDark: Story = {
   args: {
-    theme: "dark",
-    padding: "component",
-    children: (
-      <Text variant="body">
-        Forced dark theme surface regardless of context.
-      </Text>
-    ),
+    theme: 'dark',
+    padding: 'component',
+    children: <Text variant="body">Forced dark theme surface regardless of context.</Text>,
   },
 };
 
 export const CardGrid: Story = {
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       description: {
-        story: "Grid of surfaces demonstrating padding and elevation variants.",
+        story: 'Grid of surfaces demonstrating padding and elevation variants.',
       },
     },
   },
   render: () => (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", width: "100%" }}>
+    <div
+      style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', width: '100%' }}
+    >
       <Surface>
         <Text variant="heading3">Default</Text>
         <Text variant="body">Component padding, no shadow.</Text>

@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Stat } from '../app/components/stat';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/stat',
   component: Stat,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Stat'),
     layout: 'centered',
     docs: {
       description: {

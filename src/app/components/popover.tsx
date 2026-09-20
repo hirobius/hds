@@ -2,6 +2,7 @@
  * Popover — floating surface anchored to a trigger (shadcn baseline, compound parts).
  * @category Overlays
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-32
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix Popover (@radix-ui/react-popover) themed with role tokens. Provides
@@ -38,9 +39,7 @@ const PopoverClose = PopoverPrimitive.Close;
 // ── Content ────────────────────────────────────────────────────────────────────
 
 /** @public */
-export type PopoverContentProps = React.ComponentPropsWithoutRef<
-  typeof PopoverPrimitive.Content
->;
+export type PopoverContentProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>;
 
 const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
@@ -66,8 +65,7 @@ const PopoverContent = React.forwardRef<
 
 // ── Compound export ────────────────────────────────────────────────────────────
 
-interface PopoverComponent
-  extends React.FC<React.ComponentProps<typeof PopoverPrimitive.Root>> {
+interface PopoverComponent extends React.FC<React.ComponentProps<typeof PopoverPrimitive.Root>> {
   Trigger: typeof PopoverTrigger;
   Anchor: typeof PopoverAnchor;
   Content: typeof PopoverContent;

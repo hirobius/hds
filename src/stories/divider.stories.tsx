@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Divider } from '../app/components/divider';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/divider',
   component: Divider,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Divider'),
     layout: 'padded',
     docs: {
       description: {

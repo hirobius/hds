@@ -2,6 +2,7 @@
  * Disclosure - compact disclosure surface for optional explanatory content.
  * @category Layout
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-453
  */
 import React, { useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';

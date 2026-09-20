@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { StatusListItem } from '../app/components/status-list-item';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/status-list-item',
   component: StatusListItem,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('StatusListItem'),
     layout: 'padded',
     docs: {
       description: {
@@ -84,25 +86,57 @@ export const WithTrailing: Story = {
         tone="success"
         title="Design system audit"
         notes={['Score: 98 / 100']}
-        trailing={<span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-success)', color: '#fff' }}>Pass</span>}
+        trailing={
+          <span
+            style={{
+              fontSize: '11px',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: 'var(--semantic-color-feedback-success)',
+              color: '#fff',
+            }}
+          >
+            Pass
+          </span>
+        }
       />
       <StatusListItem
         tone="warning"
         title="Bundle size check"
         notes={['213 kB gzipped']}
-        trailing={<span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-warning)', color: '#fff' }}>Warn</span>}
+        trailing={
+          <span
+            style={{
+              fontSize: '11px',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: 'var(--semantic-color-feedback-warning)',
+              color: '#fff',
+            }}
+          >
+            Warn
+          </span>
+        }
       />
       <StatusListItem
         tone="danger"
         title="Snapshot tests"
         notes={['3 snapshots out of date']}
-        trailing={<span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: 'var(--semantic-color-feedback-error)', color: '#fff' }}>Fail</span>}
+        trailing={
+          <span
+            style={{
+              fontSize: '11px',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: 'var(--semantic-color-feedback-error)',
+              color: '#fff',
+            }}
+          >
+            Fail
+          </span>
+        }
       />
-      <StatusListItem
-        tone="neutral"
-        title="Token manifest sync"
-        notes={['No changes detected']}
-      />
+      <StatusListItem tone="neutral" title="Token manifest sync" notes={['No changes detected']} />
     </div>
   ),
 };

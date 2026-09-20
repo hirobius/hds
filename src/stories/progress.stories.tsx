@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Progress } from '../app/components/progress';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/progress',
   component: Progress,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Progress'),
     layout: 'padded',
     docs: {
       description: {

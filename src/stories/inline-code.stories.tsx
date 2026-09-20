@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { InlineCode } from '../app/components/inline-code';
 import { Text } from '../app/components/text';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/inline-code',
   component: InlineCode,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('InlineCode'),
     layout: 'padded',
     docs: {
       description: {

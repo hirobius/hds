@@ -9,12 +9,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Popover } from '../app/components/popover';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/popover',
   component: Popover,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Popover'),
     layout: 'centered',
     docs: {
       description: {
@@ -61,12 +63,23 @@ function WithDismissDemo() {
         <div className="flex flex-col gap-3">
           <p className="text-sm font-medium">Filter by status</p>
           <div className="flex flex-col gap-1 text-sm text-muted-foreground">
-            <label><input type="checkbox" className="mr-2" />In progress</label>
-            <label><input type="checkbox" className="mr-2" />Published</label>
-            <label><input type="checkbox" className="mr-2" />Archived</label>
+            <label>
+              <input type="checkbox" className="mr-2" />
+              In progress
+            </label>
+            <label>
+              <input type="checkbox" className="mr-2" />
+              Published
+            </label>
+            <label>
+              <input type="checkbox" className="mr-2" />
+              Archived
+            </label>
           </div>
           <Popover.Close asChild>
-            <Button variant="primary" size="sm">Apply</Button>
+            <Button variant="primary" size="sm">
+              Apply
+            </Button>
           </Popover.Close>
         </div>
       </Popover.Content>
@@ -91,12 +104,14 @@ function InfoTipDemo() {
   return (
     <Popover>
       <Popover.Trigger asChild>
-        <Button variant="tertiary" size="sm">What is Phase 2?</Button>
+        <Button variant="tertiary" size="sm">
+          What is Phase 2?
+        </Button>
       </Popover.Trigger>
       <Popover.Content>
         <p className="text-sm text-muted-foreground">
-          Phase 2 covers pattern-level components (Combobox, Toast, Command Palette) built
-          on top of the Phase 1 primitives. Targeting Q3 2026.
+          Phase 2 covers pattern-level components (Combobox, Toast, Command Palette) built on top of
+          the Phase 1 primitives. Targeting Q3 2026.
         </p>
       </Popover.Content>
     </Popover>

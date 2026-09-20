@@ -2,6 +2,7 @@
  * Spinner - indeterminate loading indicator.
  * @category Feedback
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-106
  */
 
 import * as React from 'react';
@@ -31,9 +32,7 @@ const spinnerVariants = cva(
 type SpinnerVariantProps = VariantProps<typeof spinnerVariants>;
 
 /** @public */
-export interface SpinnerProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    SpinnerVariantProps {
+export interface SpinnerProps extends React.HTMLAttributes<HTMLSpanElement>, SpinnerVariantProps {
   /** Accessible label announced to assistive tech. Defaults to "Loading". */
   label?: string;
 }

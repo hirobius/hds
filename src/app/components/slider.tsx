@@ -2,6 +2,7 @@
  * HdsSlider — range slider with label and value display.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265
  */
 
 import { useState, forwardRef } from 'react';

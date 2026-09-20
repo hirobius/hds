@@ -8,12 +8,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../app/components/tabs';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/tabs',
   component: Tabs,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Tabs'),
     layout: 'padded',
     docs: {
       description: {
@@ -101,13 +103,17 @@ export const WithDisabledTab: Story = {
       <TabsList>
         <TabsTrigger value="published">Published</TabsTrigger>
         <TabsTrigger value="draft">Draft</TabsTrigger>
-        <TabsTrigger value="archived" disabled>Archived</TabsTrigger>
+        <TabsTrigger value="archived" disabled>
+          Archived
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="published">
         <p className="text-sm text-muted-foreground">Live components visible in production.</p>
       </TabsContent>
       <TabsContent value="draft">
-        <p className="text-sm text-muted-foreground">Work-in-progress components not yet released.</p>
+        <p className="text-sm text-muted-foreground">
+          Work-in-progress components not yet released.
+        </p>
       </TabsContent>
       <TabsContent value="archived">
         <p className="text-sm text-muted-foreground">Archived content.</p>
@@ -122,7 +128,9 @@ function ControlledTabsDemo() {
   const [tab, setTab] = React.useState('design');
   return (
     <div style={{ width: '480px' }}>
-      <p className="mb-4 text-xs text-muted-foreground">Active: <strong>{tab}</strong></p>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Active: <strong>{tab}</strong>
+      </p>
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
           <TabsTrigger value="design">Design</TabsTrigger>
@@ -136,7 +144,9 @@ function ControlledTabsDemo() {
           <p className="text-sm text-muted-foreground">Generated TSX snippet and imports.</p>
         </TabsContent>
         <TabsContent value="inspect">
-          <p className="text-sm text-muted-foreground">Token values, spacing, and computed styles.</p>
+          <p className="text-sm text-muted-foreground">
+            Token values, spacing, and computed styles.
+          </p>
         </TabsContent>
       </Tabs>
     </div>

@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Breadcrumb } from '../app/components/breadcrumb';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/breadcrumb',
   component: Breadcrumb,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Breadcrumb'),
     layout: 'padded',
     docs: {
       description: {
@@ -35,10 +37,7 @@ export const Default: Story = {
 
 export const ShallowTrail: Story = {
   args: {
-    items: [
-      { label: 'Home', href: '/' },
-      { label: 'Breadcrumb' },
-    ],
+    items: [{ label: 'Home', href: '/' }, { label: 'Breadcrumb' }],
   },
   parameters: {
     docs: {

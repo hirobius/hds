@@ -68,4 +68,17 @@ describe('discoverHdsComponents — repository', () => {
       .filter((key) => !discovered.has(key));
     expect(missing).toEqual([]);
   }, 60_000);
+
+  it('discovers a component exported through `export { X }`, not only `export const X`', () => {
+    // The regression this pins: getExportedValueNames read function, class and
+    // variable statements but not ExportDeclaration, so every compound
+    // component built with Object.assign — which leaves the module as a plain
+    // `const` and is exported at the bottom — was invisible to the manifest.
+    // It had no tier, no category, no docs row and no Figma link, while
+    // carrying @category and @tier in its JSDoc the whole time. Fixing it took
+    // the manifest from 113 components to 132.
+    const names = new Set(discoverHdsComponents().components.map((c) => c.name));
+    expect(names).toContain('Popover'); // src/app/components/popover.tsx
+    expect(names).toContain('Menu'); // src/app/components/menu.tsx
+  }, 60_000);
 });

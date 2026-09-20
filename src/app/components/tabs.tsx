@@ -24,6 +24,12 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cn } from '../../lib/utils';
 
+/**
+ * The tab set itself. Tagged here rather than in the file block because
+ * TabsList and TabsContent share this module and have no Figma node of their
+ * own — a file-level @figma would silently claim this node for all four.
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-89
+ */
 export const Tabs = TabsPrimitive.Root;
 
 export function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {

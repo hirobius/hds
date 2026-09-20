@@ -84,6 +84,26 @@ function getExportedValueNames(sourceFile) {
         }
       }
     }
+
+    // `export { Popover }` — a named export list, which is how every compound
+    // component built with Object.assign leaves the module (the value is a
+    // plain `const` first, so the branches above never see it as exported).
+    // Missing this made those components invisible to the manifest entirely:
+    // no tier, no category, no docs row, no Figma link. Popover and Menu both
+    // carry @category and @tier and still never appeared.
+    //
+    // `export * from './x'` has no clause and is skipped: the names live in
+    // another module, and that module is walked on its own.
+    if (ts.isExportDeclaration(statement) && !statement.isTypeOnly && statement.exportClause) {
+      if (ts.isNamedExports(statement.exportClause)) {
+        for (const element of statement.exportClause.elements) {
+          // `export type { T }` per-element, and the alias in `export { A as B }`
+          // — B is the name a consumer imports, so B is what we record.
+          if (element.isTypeOnly) continue;
+          exports.push(element.name.text);
+        }
+      }
+    }
   }
 
   return exports;
@@ -98,6 +118,14 @@ function findJsDocBlock(source, exportName) {
     new RegExp(`export\\s+function\\s+${escapedName}\\b`),
     new RegExp(`export\\s+default\\s+function\\s+${escapedName}\\b`),
     new RegExp(`export\\s+class\\s+${escapedName}\\b`),
+    // A plain declaration that the module exports further down with
+    // `export { X }`. getExportedValueNames now finds those names, so the
+    // block above them has to be findable too — otherwise the component is
+    // discovered but every tag written on it (@figma, @category, @tier) is
+    // silently dropped. Ranked below the `export`ed forms so a module that has
+    // both still prefers the real export site, and above the Props fallback.
+    new RegExp(`(?:^|\\n)[ \\t]*const\\s+${escapedName}\\b`),
+    new RegExp(`(?:^|\\n)[ \\t]*function\\s+${escapedName}\\b`),
     new RegExp(`export\\s+(?:interface|type)\\s+${escapedName}Props\\b`),
   ];
 
