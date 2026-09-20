@@ -1,6 +1,7 @@
 /**
  * @category Display
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-292
  */
 
 import * as React from 'react';
@@ -24,27 +25,30 @@ export interface StatusTileProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * — every tile should look the same so feedback signals stay reserved for
  * genuinely interrupting states.
  */
-export const StatusTile = React.forwardRef<HTMLDivElement, StatusTileProps>(
-  function StatusTile({ tone = 'neutral', title, notes, trailing, className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        data-hds-component="StatusTile"
-        data-hds-metrics={`tone:${tone}`}
-        className={cn(
-          'flex h-full items-start gap-3 rounded-[var(--component-card-radius)] bg-[var(--semantic-color-surface-raised)] p-4',
-          className,
-        )}
-        {...props}
-      >
-        <div className="min-w-0 flex-1">
-          <p className="m-0 text-sm text-foreground">{title}</p>
-          {notes?.map((note, i) => (
-            <p key={i} className="m-0 mt-1 text-xs text-muted-foreground">{note}</p>
-          ))}
-        </div>
-        {trailing && <div className="shrink-0">{trailing}</div>}
+export const StatusTile = React.forwardRef<HTMLDivElement, StatusTileProps>(function StatusTile(
+  { tone = 'neutral', title, notes, trailing, className, ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      data-hds-component="StatusTile"
+      data-hds-metrics={`tone:${tone}`}
+      className={cn(
+        'flex h-full items-start gap-3 rounded-[var(--component-card-radius)] bg-[var(--semantic-color-surface-raised)] p-4',
+        className,
+      )}
+      {...props}
+    >
+      <div className="min-w-0 flex-1">
+        <p className="m-0 text-sm text-foreground">{title}</p>
+        {notes?.map((note, i) => (
+          <p key={i} className="m-0 mt-1 text-xs text-muted-foreground">
+            {note}
+          </p>
+        ))}
       </div>
-    );
-  },
-);
+      {trailing && <div className="shrink-0">{trailing}</div>}
+    </div>
+  );
+});

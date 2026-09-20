@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Skeleton } from '../app/components/skeleton';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/skeleton',
   component: Skeleton,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Skeleton'),
     layout: 'centered',
     docs: {
       description: {

@@ -1,6 +1,7 @@
 /**
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-81
  */
 
 import * as React from 'react';

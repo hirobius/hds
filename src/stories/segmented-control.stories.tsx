@@ -5,6 +5,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { SegmentedControl } from '../app/components/segmented-control';
+import { designParameters } from './design-parameters';
 
 const VIEW_OPTIONS = [
   { value: 'list', label: 'List' },
@@ -23,6 +24,7 @@ const meta = {
   component: SegmentedControl,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('SegmentedControl'),
     layout: 'centered',
     docs: {
       description: {

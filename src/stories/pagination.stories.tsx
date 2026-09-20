@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Pagination } from '../app/components/pagination';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/pagination',
   component: Pagination,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Pagination'),
     layout: 'padded',
     docs: {
       description: {

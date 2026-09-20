@@ -2,6 +2,7 @@
  * SegmentedControl " segmented selection input for compact mutually-exclusive choices.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334
  *
  * The active×hover×pressed×disabled×secondary state matrix is expressed
  * through `cva` compound variants keyed by `active` / `interaction` (the

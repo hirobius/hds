@@ -2,6 +2,7 @@
  * Divider — semantic separator between content regions.
  * @category Layout
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26
  */
 
 import * as React from 'react';

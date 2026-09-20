@@ -2,6 +2,7 @@
  * InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155
  */
 // motion-ok: copy feedback is handled by the nested IconButton, while the inline code chip stays visually stable inside prose and tables
 import { useState } from 'react';

@@ -2,6 +2,7 @@
  * Combobox — searchable single-select (Popover + filtered listbox).
  * @category Inputs
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237
  * @doc-exempt: no Inputs-overlay doc page yet — add demo when created
  *
  * A select-with-search built on the HDS Popover. The trigger shows the current
@@ -105,7 +106,9 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(funct
     }
   }
 
-  const activeOptionId = filtered[activeIndex] ? `${baseId}-opt-${filtered[activeIndex].value}` : undefined;
+  const activeOptionId = filtered[activeIndex]
+    ? `${baseId}-opt-${filtered[activeIndex].value}`
+    : undefined;
 
   return (
     <Popover
@@ -136,7 +139,12 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(funct
           <span className={cn('truncate', !selected && 'text-muted-foreground')}>
             {selected ? selected.label : placeholder}
           </span>
-          <Icon icon={ChevronsUpDown} size="small" color="var(--semantic-color-content-secondary)" aria-hidden />
+          <Icon
+            icon={ChevronsUpDown}
+            size="small"
+            color="var(--semantic-color-content-secondary)"
+            aria-hidden
+          />
         </button>
       </Popover.Anchor>
 
@@ -167,7 +175,12 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(funct
             'outline-none placeholder:text-muted-foreground',
           )}
         />
-        <ul id={listId} role="listbox" aria-label={ariaLabel ?? placeholder} className="max-h-60 overflow-y-auto p-1">
+        <ul
+          id={listId}
+          role="listbox"
+          aria-label={ariaLabel ?? placeholder}
+          className="max-h-60 overflow-y-auto p-1"
+        >
           {filtered.length === 0 ? (
             <li className="px-2 py-6 text-center text-sm text-muted-foreground">{emptyMessage}</li>
           ) : (

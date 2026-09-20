@@ -41,7 +41,13 @@ import { cn } from '../../lib/utils';
 /** @public */
 export type FormProps = React.FormHTMLAttributes<HTMLFormElement>;
 
-/** Styled `<form>` with consistent vertical field rhythm. */
+/**
+ * Styled `<form>` with consistent vertical field rhythm.
+ *
+ * Tagged per-export: FormField and FormFieldShell share this module and have no
+ * Figma node, so a file-level @figma would claim this one for all three.
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94
+ */
 export const Form = React.forwardRef<HTMLFormElement, FormProps>(function Form(
   { className, ...props },
   ref,

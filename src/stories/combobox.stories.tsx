@@ -9,12 +9,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Combobox } from '../app/components/combobox';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/combobox',
   component: Combobox,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Combobox'),
     layout: 'centered',
     docs: {
       description: {

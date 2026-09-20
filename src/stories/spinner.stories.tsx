@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Spinner } from '../app/components/spinner';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/spinner',
   component: Spinner,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Spinner'),
     layout: 'centered',
     docs: {
       description: {

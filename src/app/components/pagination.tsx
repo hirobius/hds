@@ -2,6 +2,7 @@
  * Pagination - paged navigation control with truncation.
  * @category Navigation
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194
  */
 // motion-ok: every interactive control is a Button or IconButton, which own
 // their hover/press motion feedback; Pagination adds no bespoke interactive
@@ -22,11 +23,7 @@ function range(start: number, end: number): number[] {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-export function paginationRange(
-  page: number,
-  count: number,
-  siblingCount = 1,
-): PageToken[] {
+export function paginationRange(page: number, count: number, siblingCount = 1): PageToken[] {
   // first + last + current + 2*siblings + 2 ellipses
   const totalSlots = siblingCount * 2 + 5;
   if (count <= totalSlots) return range(1, count);

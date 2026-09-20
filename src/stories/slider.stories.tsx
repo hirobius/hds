@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { HdsSlider } from '../app/components/slider';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/slider',
   component: HdsSlider,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('HdsSlider'),
     layout: 'padded',
     docs: {
       description: {
@@ -90,7 +92,14 @@ function MultiSliderDemo() {
   const [letterSpacing, setLetterSpacing] = useState(0);
   return (
     <div style={{ width: '320px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <HdsSlider label="Font size" min={8} max={96} step={1} value={fontSize} onChange={setFontSize} />
+      <HdsSlider
+        label="Font size"
+        min={8}
+        max={96}
+        step={1}
+        value={fontSize}
+        onChange={setFontSize}
+      />
       <HdsSlider
         label="Line height"
         min={1}

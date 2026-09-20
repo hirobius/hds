@@ -7,12 +7,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { SideNav } from '../app/components/side-nav';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Navigation/side-nav',
   component: SideNav,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('SideNav'),
     layout: 'padded',
     docs: {
       description: {
@@ -46,7 +48,11 @@ export const Disabled: Story = {
 
 export const SidebarGroup: Story = {
   parameters: {
-    docs: { description: { story: 'A title label with root + nested rows, as composed inside the sidebar shell.' } },
+    docs: {
+      description: {
+        story: 'A title label with root + nested rows, as composed inside the sidebar shell.',
+      },
+    },
   },
   render: () => (
     <nav style={{ display: 'flex', flexDirection: 'column', width: 240 }}>

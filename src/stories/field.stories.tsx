@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Field } from '../app/components/field';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/field',
   component: Field,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Field'),
     layout: 'centered',
     docs: {
       description: {

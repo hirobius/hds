@@ -4,6 +4,7 @@
  * HdsSelect — dropdown selector built on Radix Select.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49
  */
 
 import { forwardRef } from 'react';

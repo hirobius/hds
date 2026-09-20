@@ -12,6 +12,7 @@
  * Accent surface fill on active state.
  * @category Navigation
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-332
  * @public
  */
 // motion-ok: motion delivered via Tailwind transition-colors on the state-keyed
