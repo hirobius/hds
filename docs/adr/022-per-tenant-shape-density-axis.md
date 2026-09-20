@@ -142,6 +142,6 @@ Concretely:
   with brand independently rather than with each other.
 - Tenants that don't declare shape/density overrides emit no new CSS —
   additive, zero-cost for existing tenants (`concrete-creations`,
-  `lilac-bonds`).
+  `accent-lilac`).
 - Unblocks ISSUE-04's Brutalist exemplar and, transitively, the visual
   baseline snapshots in ISSUE-02 (#126).

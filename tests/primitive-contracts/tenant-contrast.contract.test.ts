@@ -55,7 +55,7 @@ const baseOnAccentNode = getByPath(baseRaw, 'semantic.color.content.onAccent');
 
 // Phase 1 pilot tenants (ISSUE-02 scope) — brutalist-demo is a dev fixture,
 // not a real tenant, so it's excluded here.
-const TENANTS = ['concrete-creations', 'lilac-bonds'] as const;
+const TENANTS = ['concrete-creations', 'accent-lilac'] as const;
 
 describe.each(TENANTS)('tenant contrast contract: %s', (slug) => {
   const overlay = JSON.parse(readFileSync(resolve(ROOT, 'tenants', slug, 'tokens.json'), 'utf8'));

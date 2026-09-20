@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, type ReactNode } from 'react';
 
-export type TenantSlug = 'hirobius' | 'concrete-creations' | 'lilac-bonds' | (string & {});
+export type TenantSlug = 'hirobius' | 'concrete-creations' | 'accent-lilac' | (string & {});
 
 interface TenantCtx {
   /** Active tenant slug, or null in single-tenant mode. */

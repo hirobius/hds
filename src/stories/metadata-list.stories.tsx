@@ -69,7 +69,7 @@ export const Divided: Story = {
         description: (
           <>
             <InlineCode compact>--lb-*</InlineCode>
-            <div className="mt-1">(lilac-bonds; each consumer picks its own prefix)</div>
+            <div className="mt-1">(accent-lilac; each consumer picks its own prefix)</div>
           </>
         ),
       },

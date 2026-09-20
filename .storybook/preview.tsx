@@ -16,7 +16,7 @@ import '../src/styles/index.css';
 //
 //   dial      values exercised here
 //   ────────  ──────────────────────────────────────────
-//   brand     concrete-creations | lilac-bonds | brutalist-demo
+//   brand     concrete-creations | accent-lilac | brutalist-demo
 //   density   comfortable | compact
 //   theme     light | dark
 //
@@ -32,7 +32,7 @@ import '../src/styles/index.css';
 // brutalist-demo (ADR-022, #128) is a Storybook-only shape/density exemplar
 // — no deployment — proving role.radius/semantic.space overrides swap per
 // tenant independent of color. See tenants/brutalist-demo/.
-const BRANDS = ['concrete-creations', 'lilac-bonds', 'brutalist-demo'] as const;
+const BRANDS = ['concrete-creations', 'accent-lilac', 'brutalist-demo'] as const;
 const DENSITIES = ['comfortable', 'compact'] as const;
 const THEMES = ['light', 'dark'] as const;
 

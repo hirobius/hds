@@ -54,7 +54,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.color.lilac.300": "Design token source value.",
   "primitive.color.lilac.400": "Design token source value.",
   "primitive.color.lilac.450": "Design token source value.",
-  "primitive.color.lilac.500": "Lilac Bonds accent rest — AA for white text on page and card surfaces.",
+  "primitive.color.lilac.500": "Lilac accent rest — AA for white text on page and card surfaces.",
   "primitive.color.lilac.600": "Design token source value.",
   "primitive.color.lilac.700": "Design token source value.",
   "primitive.color.lilac.800": "Design token source value.",
