@@ -262,6 +262,19 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-figma-coverage",
+      "description": "Counts coverage from the FIGMA side: every component set published to the library (figma/inventory.json) must be reachable from code through an @figma JSDoc tag. figma:links --check counts the other direction — components in code that carry a tag — so a design published in Figma and never wired up is invisible to it. Refuses to report green from an inventory marked complete:false, because a hand walk cannot prove a page is absent. firingChannel is manual until a full `pnpm figma:inventory --fetch` inventory is committed; it becomes ci-pr then. Exit 0 clean, 1 unmapped assets or an incomplete inventory, 2 no inventory yet.",
+      "severity": "warn",
+      "gateScript": "scripts/check-figma-coverage.mjs",
+      "fixturePath": null,
+      "lastFiringAt": null,
+      "lastViolationAt": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "manual",
+      "supportsJson": true
+    },
+    {
       "id": "check-figma-drift",
       "description": "Compares the Figma model built from hirobius.tokens.json against the committed Figma snapshot (figma/snapshot.json) and reports missing, extra and changed variables, modes, default modes and styles. Exit 0 clean, 1 drift or an edited snapshot, 2 no snapshot yet. In ci.yml with --ci: fails only when Figma was last pushed from exactly the model the tokens build now (snapshot lastPush.modelHash) and still differs; drift that may be an unpushed change warns, no snapshot is a notice.",
       "severity": "warn",

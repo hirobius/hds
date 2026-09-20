@@ -268,7 +268,9 @@
     "prebuild-storybook": "node scripts/generate-component-api.mjs",
     "prestorybook": "node scripts/generate-component-api.mjs",
     "pretypecheck": "node scripts/audit-tokens.mjs --report-only",
-    "preview:build": "vite build --config preview/vite.config.mjs"
+    "preview:build": "vite build --config preview/vite.config.mjs",
+    "figma:inventory": "node scripts/figma-inventory.mjs",
+    "check:figma-coverage": "node scripts/check-figma-coverage.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.18",

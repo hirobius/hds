@@ -1,0 +1,599 @@
+{
+  "$comment": "The published Figma library, as data: every page, every component set, every variant count. Committed so an agent can traverse the design system without Figma access. Regenerate with `FIGMA_ACCESS_TOKEN=<token> pnpm figma:inventory --fetch` rather than hand-editing — scripts/check-figma-coverage.mjs reads this to find components published in Figma but unmapped in code.",
+  "generatedAt": "2026-09-20T00:00:00.000Z",
+  "source": "mcp-walk",
+  "complete": false,
+  "incompleteReason": "Built by walking node ids through the Figma MCP server one page at a time, because list_file_components_for_code_connect needs an Organization plan and get_metadata reports only the loaded page. A walk cannot prove a page is absent: search_design_system lists PageButton, EmptyState, Pagination and Form in this library, and their pages were not found. Run `pnpm figma:inventory --fetch` for a real enumeration.",
+  "fileKey": "c8MaVgwxOlxm4wr8wnH0Z4",
+  "fileName": "HDS Tokens & Components",
+  "pages": [
+    {
+      "id": "0:1",
+      "name": "Cover",
+      "kind": "doc",
+      "assets": []
+    },
+    {
+      "id": "27:2",
+      "name": "Icon",
+      "kind": "icons",
+      "assets": [
+        {
+          "id": "27:5",
+          "name": "Icon/check",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:9",
+          "name": "Icon/x",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:12",
+          "name": "Icon/chevron-down",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:15",
+          "name": "Icon/chevron-right",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:20",
+          "name": "Icon/info",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:25",
+          "name": "Icon/triangle-alert",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:29",
+          "name": "Icon/circle-check",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:34",
+          "name": "Icon/circle-alert",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:37",
+          "name": "Icon/minus",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "27:41",
+          "name": "Icon/plus",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:8",
+          "name": "Icon/chevron-up",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:15",
+          "name": "Icon/arrow-right",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:19",
+          "name": "Icon/arrow-left",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:23",
+          "name": "Icon/arrow-up-right",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:29",
+          "name": "Icon/calendar",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:33",
+          "name": "Icon/clock",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:37",
+          "name": "Icon/user",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:43",
+          "name": "Icon/users",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:47",
+          "name": "Icon/settings",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:58",
+          "name": "Icon/sliders",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:66",
+          "name": "Icon/trash",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:71",
+          "name": "Icon/download",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:76",
+          "name": "Icon/upload",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:81",
+          "name": "Icon/external-link",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:85",
+          "name": "Icon/eye",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:91",
+          "name": "Icon/eye-off",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:96",
+          "name": "Icon/more-horizontal",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:101",
+          "name": "Icon/more-vertical",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:106",
+          "name": "Icon/menu",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:114",
+          "name": "Icon/mail",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:118",
+          "name": "Icon/lock",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:124",
+          "name": "Icon/heart",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:128",
+          "name": "Icon/copy",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:132",
+          "name": "Icon/pencil",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:138",
+          "name": "Icon/circle",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "92:141",
+          "name": "Icon/dot",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "106:5",
+          "name": "Icon/search",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:5",
+          "name": "Icon/bell",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:8",
+          "name": "Icon/star",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:11",
+          "name": "Icon/filter",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1224",
+          "name": "Icon/chevron-left",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1227",
+          "name": "Icon/loader-circle",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1231",
+          "name": "Icon/home",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1236",
+          "name": "Icon/log-out",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1241",
+          "name": "Icon/log-in",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1247",
+          "name": "Icon/refresh-cw",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1251",
+          "name": "Icon/file",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1258",
+          "name": "Icon/file-text",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1261",
+          "name": "Icon/folder",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1266",
+          "name": "Icon/image",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1270",
+          "name": "Icon/link",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1273",
+          "name": "Icon/message-square",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1276",
+          "name": "Icon/phone",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1280",
+          "name": "Icon/send",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1285",
+          "name": "Icon/share",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1288",
+          "name": "Icon/bookmark",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1293",
+          "name": "Icon/globe",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1296",
+          "name": "Icon/cloud",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1299",
+          "name": "Icon/zap",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1304",
+          "name": "Icon/circle-help",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1312",
+          "name": "Icon/grip-vertical",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1317",
+          "name": "Icon/layers",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1323",
+          "name": "Icon/layout-dashboard",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1326",
+          "name": "Icon/shield",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1332",
+          "name": "Icon/chart-bar",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1336",
+          "name": "Icon/trending-up",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1343",
+          "name": "Icon/sparkles",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1348",
+          "name": "Icon/archive",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1352",
+          "name": "Icon/map-pin",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "109:1358",
+          "name": "Icon/hash",
+          "type": "COMPONENT",
+          "variantCount": 1
+        }
+      ]
+    },
+    {
+      "id": "28:2",
+      "name": "Button",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "28:138",
+          "name": "Button",
+          "type": "COMPONENT_SET",
+          "variantCount": 84
+        }
+      ]
+    },
+    {
+      "id": "31:2",
+      "name": "Badge",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "31:15",
+          "name": "Badge",
+          "type": "COMPONENT_SET",
+          "variantCount": 6
+        }
+      ]
+    },
+    {
+      "id": "32:2",
+      "name": "Tag",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "32:11",
+          "name": "Tag",
+          "type": "COMPONENT_SET",
+          "variantCount": 4
+        }
+      ]
+    },
+    {
+      "id": "33:2",
+      "name": "Alert",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "33:34",
+          "name": "Alert",
+          "type": "COMPONENT_SET",
+          "variantCount": 4
+        }
+      ]
+    },
+    {
+      "id": "34:2",
+      "name": "Avatar",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "34:18",
+          "name": "Avatar",
+          "type": "COMPONENT_SET",
+          "variantCount": 6
+        }
+      ]
+    },
+    {
+      "id": "35:2",
+      "name": "Checkbox",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "35:29",
+          "name": "Checkbox",
+          "type": "COMPONENT_SET",
+          "variantCount": 6
+        }
+      ]
+    },
+    {
+      "id": "36:2",
+      "name": "Radio",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "36:17",
+          "name": "Radio",
+          "type": "COMPONENT_SET",
+          "variantCount": 4
+        }
+      ]
+    },
+    {
+      "id": "37:2",
+      "name": "Toggle",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "37:19",
+          "name": "Toggle",
+          "type": "COMPONENT_SET",
+          "variantCount": 4
+        }
+      ]
+    },
+    {
+      "id": "38:2",
+      "name": "Input",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "38:20",
+          "name": "Input",
+          "type": "COMPONENT_SET",
+          "variantCount": 12
+        }
+      ]
+    },
+    {
+      "id": "39:2",
+      "name": "Card",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "39:11",
+          "name": "Card",
+          "type": "COMPONENT_SET",
+          "variantCount": 5
+        },
+        {
+          "id": "128:14",
+          "name": "CardProgress",
+          "type": "COMPONENT",
+          "variantCount": 1
+        },
+        {
+          "id": "128:18",
+          "name": "CardMetric",
+          "type": "COMPONENT",
+          "variantCount": 1
+        }
+      ]
+    },
+    {
+      "id": "40:2",
+      "name": "IconButton",
+      "kind": "components",
+      "assets": [
+        {
+          "id": "40:39",
+          "name": "IconButton",
+          "type": "COMPONENT_SET",
+          "variantCount": 9
+        }
+      ]
+    }
+  ]
+}
