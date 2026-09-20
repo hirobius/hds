@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.13.1
+
+### Patch Changes
+
+- 68df525: The published `hds-manifest.json` now carries Alert's Figma node URL in `componentSpecs.Alert.figmaUrl`, the single source the repo projects into its README, Storybook and Figma links.
+- 5db84a4: Fix Figma mapping drift in the published `hds-manifest.json`. Alert declares its real `tone` axis (`success | danger | warning | info`), not `variant` / `error`. Button's `tone` is now documented. HeadingStack binds `subheading`. Dialog's Title, Description and close toggle bind to its compound parts. Avatar, Card, Divider and TextLockup declare their cva axes.
+- f3268b4: **chore(pkg):** the package now declares its own front door. `license` is
+  `SEE LICENSE IN NOTICE.md` — the code is MIT (root `LICENSE`), but the embedded
+  fonts ship under their own terms, which no single SPDX expression covers — and
+  `NOTICE.md` is added to `files` so the published tarball carries those terms.
+  `repository`, `homepage`, `bugs` and `keywords` are set, so npm and GitHub link
+  back to the repo instead of showing nothing.
+- 65a5bf2: **fix(manifest):** `public/hds-manifest.json` no longer fills `figmaLink` with
+  `TODO:hds-master:<Name>` placeholders. Each `componentSpecs[]` and `utilities[]`
+  entry now carries a real Figma URL or `null`, so tooling can count linked
+  components directly. Consumers that treated any non-null `figmaLink`
+  as "has a Figma link" now get the right answer.
+- 65a5bf2: **fix(tokens):** the generated tenant overlay CSS no longer drops the first
+  brand's base rule. Its header comment contained `*/` inside a file glob, which
+  closed the comment early and turned the rest of the header into an invalid
+  selector prefix for the first `[data-brand]` rule. That brand's light overrides
+  now apply.
+
 ## 0.13.0
 
 ### Minor Changes
