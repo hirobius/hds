@@ -13,7 +13,9 @@
  * ONE of the following:
  *
  *   A) Imports from "motion/react" and uses motion.* or AnimatePresence
- *   B) Uses a CSS transition referencing an hds.duration.* token
+ *   B) Uses a CSS transition referencing an hds.duration.* token, a
+ *      --primitive/--semantic-duration-* var, or a Tailwind `transition-` or
+ *      `animate-` utility (the form 0.13.0's Tailwind + cva migration produces)
  *   C) Is annotated with // motion-ok: <reason> to document intentional exemption
  *
  * WHAT THIS CATCHES
@@ -41,6 +43,12 @@
  * ────────────────────
  * v1 (2026-03-16): Initial check — interactive components need motion/react import
  *                  OR hds.duration transition reference OR // motion-ok exemption.
+ * v2 (2026-09-21): Recognise Tailwind `transition-` and `animate-` utilities and raw
+ *                  duration CSS vars. Tag animates via `transition-colors` on its
+ *                  cva variants and was still reported as having no motion, because
+ *                  the pattern list had not followed the components off inline
+ *                  styles. Also stops scanning generated *.figma.ts Code Connect
+ *                  templates, which carry a component's props but render nothing.
  *
  * Usage: pnpm check:micromotion
  * Exempt: // motion-ok: <reason> on any line in the file
@@ -49,24 +57,26 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, extname, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { isSpecFile } from './lib/gate-scope.mjs';
 
 const __scriptDir = dirname(fileURLToPath(import.meta.url));
-const ROOT       = resolve(__scriptDir, '..');
-const COMP_DIR   = join(ROOT, 'src/app/components');
-const failures   = [];
+const ROOT = resolve(__scriptDir, '..');
+const COMP_DIR = join(ROOT, 'src/app/components');
+const failures = [];
 
-const isFixtureMode = process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
 // ── Files where motion is structurally N/A ────────────────────────────────────
 // These are utility files, type definitions, or display-only components.
 // When adding here, document WHY motion is not applicable.
 const SKIP = new Set([
-  'types.ts',           // type definitions — no JSX
+  'types.ts', // type definitions — no JSX
   'HdsWebGLTriangleLogo.tsx', // canvas animation — RAF loop, not motion/react
-  'ImageFill.tsx',      // pure image wrapper — display only
-  'AssetImg.tsx',    // pure image wrapper — display only
-  'BulgeCard.tsx',      // SVG canvas animation — RAF loop, motion-ok pattern
+  'ImageFill.tsx', // pure image wrapper — display only
+  'AssetImg.tsx', // pure image wrapper — display only
+  'BulgeCard.tsx', // SVG canvas animation — RAF loop, motion-ok pattern
 ]);
 
 // ── What makes a file "interactive" ──────────────────────────────────────────
@@ -84,13 +94,24 @@ const INTERACTIVE_PATTERNS = [
 ];
 
 // ── What satisfies the motion requirement ─────────────────────────────────────
+// The last three exist because 0.13.0 migrated components off inline style
+// objects onto Tailwind + cva. Tag came out of that migration with
+// `transition-colors` on both its cva variants — real motion feedback, on
+// screen — but this list only knew `hds.duration.*`, so the gate reported a
+// component that animates as having none. The rule did not change; the
+// vocabulary it is written in did.
 const MOTION_PATTERNS = [
-  /from ['"]motion\/react['"]/,         // imports motion/react
-  /motion\.[a-z]/,                      // uses motion.div / motion.button / etc.
-  /AnimatePresence/,                    // uses AnimatePresence
-  /whileHover|whileTap|whileFocus/,     // uses motion gesture props
-  /hds\.duration\./,                    // CSS transition references duration token
-  /hds\.easing\./,                      // references easing token in transition
+  /from ['"]motion\/react['"]/, // imports motion/react
+  /motion\.[a-z]/, // uses motion.div / motion.button / etc.
+  /AnimatePresence/, // uses AnimatePresence
+  /whileHover|whileTap|whileFocus/, // uses motion gesture props
+  /hds\.duration\./, // CSS transition references duration token
+  /hds\.easing\./, // references easing token in transition
+  // Tailwind transition utilities, matched as class tokens (quote- or
+  // space-delimited) so the word "transition" in prose does not count.
+  /["'\s]transition(?:-(?:all|colors|opacity|transform|shadow))?["'\s]/,
+  /["'\s]animate-[a-z]/, // Tailwind animation utilities
+  /var\(--(?:primitive|semantic)-duration-/, // duration token as a raw CSS var
 ];
 
 // ── Per-file exemption ────────────────────────────────────────────────────────
@@ -103,11 +124,21 @@ function scanDir(dir) {
   for (const entry of entries) {
     const full = join(dir, entry);
     const stat = statSync(full);
-    if (stat.isDirectory()) { scanDir(full); continue; }
+    if (stat.isDirectory()) {
+      scanDir(full);
+      continue;
+    }
     if (extname(entry) !== '.tsx' && extname(entry) !== '.ts') continue;
     // Test/spec files are not components — their JSX may reference interactive
     // props (onChange/onClick) for assertions without being a real surface.
-    if (/\.(test|spec)\.tsx?$/.test(entry)) continue;
+    if (isSpecFile(entry)) continue;
+    // Nor are generated Code Connect templates. checkbox.figma.ts and
+    // radio.figma.ts describe how a component maps into Figma; they carry the
+    // component's props (so they read as interactive) but render nothing, so
+    // "this interactive component has no motion feedback" has no subject.
+    // They are generated by scripts/generate-code-connect.mjs — adding motion
+    // to one would be overwritten on the next run.
+    if (entry.endsWith('.figma.ts')) continue;
     if (SKIP.has(entry)) continue;
 
     const content = readFileSync(full, 'utf-8');
@@ -116,24 +147,24 @@ function scanDir(dir) {
     if (EXEMPT_PATTERN.test(content)) continue;
 
     // Is this file interactive?
-    const isInteractive = INTERACTIVE_PATTERNS.some(p => p.test(content));
+    const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(content));
     if (!isInteractive) continue;
 
     // Does it satisfy the motion requirement?
-    const hasMotion = MOTION_PATTERNS.some(p => p.test(content));
+    const hasMotion = MOTION_PATTERNS.some((p) => p.test(content));
     if (!hasMotion) {
       const rel = full.replace(ROOT + '/', '');
       failures.push({
         file: rel,
         msg:
-          'Interactive component has no motion feedback.\n'
-        + '       Fix one of:\n'
-        + '         A) Import from "motion/react" and wrap elements with motion.* or AnimatePresence\n'
-        + '         B) Add CSS transition referencing hds.duration.* on state-changing elements\n'
-        + '         C) Add // motion-ok: <reason> to document why motion is intentionally absent\n'
-        + '\n'
-        + '       Example: transition: `background-color ${hds.duration.fast}s ease`\n'
-        + '       Example: import { motion } from "motion/react"; → <motion.div whileHover={{ ... }}>',
+          'Interactive component has no motion feedback.\n' +
+          '       Fix one of:\n' +
+          '         A) Import from "motion/react" and wrap elements with motion.* or AnimatePresence\n' +
+          '         B) Add CSS transition referencing hds.duration.* on state-changing elements\n' +
+          '         C) Add // motion-ok: <reason> to document why motion is intentionally absent\n' +
+          '\n' +
+          '       Example: transition: `background-color ${hds.duration.fast}s ease`\n' +
+          '       Example: import { motion } from "motion/react"; → <motion.div whileHover={{ ... }}>',
       });
     }
   }
@@ -146,18 +177,19 @@ if (isFixtureMode && fixtureFile) {
   if (!SKIP.has(entry) && (absPath.endsWith('.tsx') || absPath.endsWith('.ts'))) {
     const content = readFileSync(absPath, 'utf-8');
     if (!EXEMPT_PATTERN.test(content)) {
-      const isInteractive = INTERACTIVE_PATTERNS.some(p => p.test(content));
+      const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(content));
       if (isInteractive) {
-        const hasMotion = MOTION_PATTERNS.some(p => p.test(content));
+        const hasMotion = MOTION_PATTERNS.some((p) => p.test(content));
         if (!hasMotion) {
           const rel = absPath.replace(ROOT + '/', '');
           failures.push({
             file: rel,
-            msg: 'Interactive component has no motion feedback.\n'
-              + '       Fix one of:\n'
-              + '         A) Import from "motion/react" and wrap elements with motion.* or AnimatePresence\n'
-              + '         B) Add CSS transition referencing hds.duration.* on state-changing elements\n'
-              + '         C) Add // motion-ok: <reason> to document why motion is intentionally absent',
+            msg:
+              'Interactive component has no motion feedback.\n' +
+              '       Fix one of:\n' +
+              '         A) Import from "motion/react" and wrap elements with motion.* or AnimatePresence\n' +
+              '         B) Add CSS transition referencing hds.duration.* on state-changing elements\n' +
+              '         C) Add // motion-ok: <reason> to document why motion is intentionally absent',
           });
         }
       }
@@ -173,7 +205,9 @@ if (failures.length === 0) {
   console.log('\nâœ“ Motion check passed — all interactive components have motion feedback.\n');
   process.exit(0);
 } else {
-  console.error(`\nâœ— Motion check failed — ${failures.length} component(s) have no motion feedback.\n`);
+  console.error(
+    `\nâœ— Motion check failed — ${failures.length} component(s) have no motion feedback.\n`,
+  );
   console.error('  Every interactive component needs at least one of:\n');
   console.error('    A) motion/react (motion.div, AnimatePresence, whileHover, etc.)');
   console.error('    B) CSS transition referencing hds.duration.* tokens');
