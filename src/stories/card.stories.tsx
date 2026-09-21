@@ -189,3 +189,56 @@ export const FeedbackTones: Story = {
     </div>
   ),
 };
+
+export const ProgressSlot: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`Card.Progress` — the progress slot. It owns its own 4px rail and matches the Header/Body 24px inset, so it aligns without the caller doing spacing math. `tone` drives the fill color, which lets a card signal status without a separate badge. The fill animates with `transform: scaleX` rather than `width`, so it runs on the compositor instead of forcing layout each frame.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: 360 }}>
+      <Card>
+        <Card.Header>
+          <Card.Title>Migration</Card.Title>
+        </Card.Header>
+        <Card.Progress value={68} label="68% complete" />
+        <Card.Body>
+          <p style={{ margin: 0, fontSize: '13px' }}>Default neutral fill.</p>
+        </Card.Body>
+      </Card>
+      {(['success', 'warning', 'danger'] as const).map((tone) => (
+        <Card key={tone} tone={tone}>
+          <Card.Progress value={tone === 'danger' ? 18 : 84} tone={tone} label={`tone="${tone}"`} />
+        </Card>
+      ))}
+    </div>
+  ),
+};
+
+export const MetricSlot: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`Card.Metric` — the metric slot: an eyebrow label, an h2-weight value, and an optional sub-line. `tone` colors the value only, so the number carries the status and the card chrome stays quiet.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <Card style={{ minWidth: 160 }}>
+        <Card.Metric label="Retainer" value="$3,500" sub="Active" />
+      </Card>
+      <Card style={{ minWidth: 160 }}>
+        <Card.Metric label="Open tasks" value="12" sub="this week" tone="warning" />
+      </Card>
+      <Card style={{ minWidth: 160 }}>
+        <Card.Metric label="Uptime" value="99.9%" sub="30d" tone="success" />
+      </Card>
+    </div>
+  ),
+};

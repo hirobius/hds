@@ -27,7 +27,7 @@
     },
     {
       "id": "audit-component-integrity",
-      "description": "Merged gate (13z-6): (1) --tokens: token compliance audit for HDS components (hardcoded hex/rgba/opacity/radius/spacing/transition values); (2) --completeness: asserts every shipped component has a rich manifest entry for LLM use; (3) --docs: documentation coverage gate (every component imported in at least one HDS doc page); (4) --api: public API surface guard comparing against docs/api/api-baseline.json. Default: runs all 4. Merged from: audit-components + check-component-completeness + check-component-docs + check-public-api.",
+      "description": "Merged gate (13z-6): (1) --tokens: token compliance audit for HDS components (hardcoded hex/rgba/opacity/radius/spacing/transition values); (2) --completeness: asserts every shipped component has a rich manifest entry for LLM use; (3) --docs: documentation coverage gate (every component shown by at least one Storybook story under src/stories — re-pointed there after ADR-018 cut the bespoke docs site this gate had been reading); (4) --api: public API surface guard comparing against docs/api/api-baseline.json. Default: runs all 4. Merged from: audit-components + check-component-completeness + check-component-docs + check-public-api.",
       "severity": "warn",
       "gateScript": "scripts/audit-component-integrity.mjs",
       "fixturePath": "fixtures/audit-component-integrity",
