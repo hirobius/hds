@@ -7,17 +7,30 @@
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
   "generatedAt": "2026-09-21",
-  "overrides": {},
+  "overrides": {
+    "Frame": {
+      "class": "library",
+      "reason": "Not invisible. Frame's whole job is the overflow-hidden clip and semantic radius it adds on top of AspectRatio — its own JSDoc says 'Do NOT reach for bare AspectRatio in product code just to add a border-radius by hand — use Frame.' That radius is paint, and a media card with a clipped corner is exactly what a designer places."
+    },
+    "OverflowList": {
+      "class": "library",
+      "reason": "Not invisible. It renders its own '+N' pill — `rounded-md bg-muted px-2 h-6 text-sm` — which is a visible, styled affordance a designer needs to see and match, not a layout wrapper."
+    },
+    "Sketch": {
+      "class": "internal",
+      "reason": "A 'shared shell for generative canvases and WebGL sketches' — demo chrome with a title header and a bottom border. Zero consumers outside its own story. It scaffolds lab work rather than shipping to a consumer, so it belongs with the doc tooling, not in a published library."
+    }
+  },
   "summary": {
     "total": 139,
     "byClass": {
-      "library": 86,
+      "library": 88,
       "slot": 18,
-      "layout": 17,
-      "internal": 18
+      "layout": 14,
+      "internal": 19
     },
     "libraryLinked": 47,
-    "libraryMissing": 39,
+    "libraryMissing": 41,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -519,11 +532,13 @@
     },
     {
       "name": "Frame",
-      "class": "layout",
+      "class": "library",
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": null,
+      "overriddenFrom": "layout",
+      "overrideReason": "Not invisible. Frame's whole job is the overflow-hidden clip and semantic radius it adds on top of AspectRatio — its own JSDoc says 'Do NOT reach for bare AspectRatio in product code just to add a border-radius by hand — use Frame.' That radius is paint, and a media card with a clipped corner is exactly what a designer places."
     },
     {
       "name": "Grid",
@@ -775,11 +790,13 @@
     },
     {
       "name": "OverflowList",
-      "class": "layout",
+      "class": "library",
       "parent": null,
       "category": "Layout",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": null,
+      "overriddenFrom": "layout",
+      "overrideReason": "Not invisible. It renders its own '+N' pill — `rounded-md bg-muted px-2 h-6 text-sm` — which is a visible, styled affordance a designer needs to see and match, not a layout wrapper."
     },
     {
       "name": "Page",
@@ -871,11 +888,13 @@
     },
     {
       "name": "Sketch",
-      "class": "layout",
+      "class": "internal",
       "parent": null,
       "category": "Layout",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": null,
+      "overriddenFrom": "layout",
+      "overrideReason": "A 'shared shell for generative canvases and WebGL sketches' — demo chrome with a title header and a bottom border. Zero consumers outside its own story. It scaffolds lab work rather than shipping to a consumer, so it belongs with the doc tooling, not in a published library."
     },
     {
       "name": "SpecimenBlock",
