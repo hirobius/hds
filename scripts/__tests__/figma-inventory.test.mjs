@@ -10,7 +10,13 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { parseDocument, mappedNodes, coverage, fetchFile } from '../lib/figma-inventory.mjs';
+import {
+  parseDocument,
+  mappedNodes,
+  coverage,
+  fetchFile,
+  resolveTarget,
+} from '../lib/figma-inventory.mjs';
 
 const FILE_KEY = 'c8MaVgwxOlxm4wr8wnH0Z4';
 
@@ -252,5 +258,53 @@ describe('fetchFile', () => {
     await expect(fetchFile({ fileKey: FILE_KEY, token: 'tok', fetchImpl })).rejects.toThrow(
       /wait rather than retry/,
     );
+  });
+});
+
+describe('resolveTarget', () => {
+  const links = { libraryFileKey: 'LIB', stagingFileKey: 'STAGE' };
+
+  it('defaults to the published library', () => {
+    const t = resolveTarget([], links);
+    expect(t).toMatchObject({ fileKey: 'LIB', isDefault: true });
+  });
+
+  it('resolves `--file staging` by name so no key needs pasting', () => {
+    expect(resolveTarget(['--fetch', '--file', 'staging'], links)).toMatchObject({
+      fileKey: 'STAGE',
+      isDefault: false,
+    });
+  });
+
+  it('accepts a raw file key', () => {
+    expect(resolveTarget(['--file', 'qhlYOkWPKs8MfO3x1M5W4f'], links)).toMatchObject({
+      fileKey: 'qhlYOkWPKs8MfO3x1M5W4f',
+      isDefault: false,
+    });
+  });
+
+  it('explains how to get a key when staging is unset', () => {
+    // The error is the documentation: this is the exact moment someone needs
+    // to know a Figma file key is the URL segment after /design/.
+    expect(() =>
+      resolveTarget(['--file', 'staging'], { libraryFileKey: 'LIB', stagingFileKey: null }),
+    ).toThrow(/\/design\//);
+  });
+
+  it('rejects --file with no value rather than reading the wrong file', () => {
+    expect(() => resolveTarget(['--file'], links)).toThrow(/needs a Figma file key/);
+    expect(() => resolveTarget(['--file', '--json'], links)).toThrow(/needs a Figma file key/);
+  });
+
+  it('never marks a non-default target as default, so it cannot overwrite the inventory', () => {
+    // isDefault is what gates the write to figma/inventory.json. If a staging
+    // read ever came back isDefault, check-figma-coverage would start policing
+    // the duplicate instead of the library, and say nothing.
+    for (const args of [
+      ['--file', 'staging'],
+      ['--file', 'ANY'],
+    ]) {
+      expect(resolveTarget(args, links).isDefault).toBe(false);
+    }
   });
 });

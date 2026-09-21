@@ -236,3 +236,43 @@ function explainStatus(status, path) {
   }
   return `Figma returned HTTP ${status} on GET ${path}.`;
 }
+
+/**
+ * The file to read, and where that choice came from.
+ *
+ * Defaults to the published library. `--file <key>` points at another file
+ * WITHOUT writing figma/inventory.json, which is what makes a staging
+ * duplicate checkable: ADR-026 says agents may only write to the duplicate
+ * named by `stagingFileKey`, but nothing could tell you whether that
+ * duplicate was a faithful copy or a near-empty file with a Cover page.
+ * Figma's MCP `get_metadata` cannot answer it either — it lists one page for
+ * the real library too — so REST is the only honest check, and it was
+ * hardcoded to `libraryFileKey`.
+ *
+ * `--file staging` resolves `stagingFileKey` by name, so the common case
+ * needs no copy-pasted key.
+ *
+ * @param {object} links - figma/links.json
+ * @returns {{ fileKey: string, label: string, isDefault: boolean }}
+ */
+export function resolveTarget(args, links) {
+  const index = args.indexOf('--file');
+  if (index === -1) {
+    return { fileKey: links.libraryFileKey, label: 'libraryFileKey', isDefault: true };
+  }
+
+  const value = args[index + 1];
+  if (!value || value.startsWith('--')) {
+    throw new Error('--file needs a Figma file key, or the word `staging`.');
+  }
+  if (value === 'staging') {
+    if (!links.stagingFileKey) {
+      throw new Error(
+        'stagingFileKey is null in figma/links.json, so there is no staging file to read. ' +
+          "Duplicate the library in Figma, then set it to the new file's key (the segment after /design/ in its URL).",
+      );
+    }
+    return { fileKey: links.stagingFileKey, label: 'stagingFileKey', isDefault: false };
+  }
+  return { fileKey: value, label: 'the key passed to --file', isDefault: false };
+}
