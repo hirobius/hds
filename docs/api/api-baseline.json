@@ -1,6 +1,7 @@
 {
   "entry": "src/index.ts",
-  "generatedAt": "baseline",
+  "version": "0.13.0",
+  "generatedAt": "2026-09-21",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -24,14 +25,23 @@
     "./app/components/asset-img": ["AssetImg"],
     "./app/components/avatar": ["Avatar", "AvatarProps"],
     "./app/components/badge": ["Badge", "BadgeProps", "badgeVariants"],
+    "./app/components/box": [
+      "Box",
+      "BoxProps",
+      "Breakpoint",
+      "ResponsiveValue",
+      "SxObject",
+      "SxValue"
+    ],
     "./app/components/button": ["Button", "ButtonProps", "buttonVariants"],
     "./app/components/callout": ["Callout", "CalloutProps", "default"],
-    "./app/components/field": ["Field", "FieldProps", "FieldTone"],
-    "./app/components/stat": ["Stat", "StatProps", "StatTone"],
+    "./app/components/field": ["Field", "FieldProps", "fieldValueVariants"],
+    "./app/components/stat": ["Stat", "StatProps", "statVariants"],
     "./app/components/status-list-item": [
       "StatusListItem",
       "StatusListItemProps",
-      "StatusListItemTone"
+      "StatusListItemTone",
+      "statusListItemDotVariants"
     ],
     "./app/components/card": [
       "Card",
@@ -42,10 +52,24 @@
       "CardMetric",
       "CardProgress",
       "CardProps",
-      "CardTitle"
+      "CardTitle",
+      "CardTone",
+      "CardVariant",
+      "cardVariants"
     ],
     "./app/components/cinematic-link": ["CinematicLink"],
-    "./app/components/code-block": ["CodeBlock"],
+    "./app/components/code-block": [
+      "CodeBlock",
+      "blockCodeTextVariants",
+      "blockContainerVariants",
+      "blockHeaderVariants",
+      "chevronVariants",
+      "collapsibleToggleVariants",
+      "copyButtonVariants",
+      "inlineCodeTextVariants",
+      "inlineWrapperVariants",
+      "prePanelVariants"
+    ],
     "./app/components/component-instance-matrix": ["ComponentInstanceMatrix"],
     "./app/components/container": ["Container"],
     "./app/components/dialog": [
@@ -62,16 +86,20 @@
       "DialogTitle",
       "DialogTrigger"
     ],
-    "./app/components/divider": ["Divider"],
+    "./app/components/divider": ["Divider", "DividerProps"],
     "./app/components/menu": ["Menu"],
     "./app/components/popover": ["Popover", "PopoverContentProps"],
     "./app/components/hds-tooltip": ["HdsTooltip", "HdsTooltipContentProps"],
-    "./app/components/doc-link-card": ["DocLinkCard"],
+    "./app/components/doc-link-card": ["DocLinkCard", "docLinkCardVariants"],
     "./app/components/grid": ["Grid"],
-    "./app/components/heading-stack": ["HeadingStack"],
+    "./app/components/heading-stack": [
+      "HeadingStack",
+      "headingStackLevelVariants",
+      "headingStackVariants"
+    ],
     "./app/components/history-card": ["HistoryCard", "HistoryCardCommit", "HistoryCardProps"],
     "./app/components/icon": ["Icon", "IconProps", "IconSize"],
-    "./app/components/inline-code": ["InlineCode"],
+    "./app/components/inline-code": ["InlineCode", "inlineCodeVariants"],
     "./app/components/inline-link": ["InlineLink"],
     "./app/components/input": ["Input", "InputProps", "InputSize", "inputVariants"],
     "./app/components/textarea": [
@@ -84,11 +112,20 @@
     "./app/components/radio": ["HdsRadio", "HdsRadioDemoState"],
     "./app/components/slider": ["HdsSlider"],
     "./app/components/toggle": ["HdsToggle", "HdsToggleDemoState"],
-    "./app/components/nav-item": ["NavItem"],
+    "./app/components/nav-item": ["NavItem", "navIndicatorVariants", "navItemVariants"],
     "./app/components/progress": ["Progress", "ProgressProps", "progressTrackVariants"],
     "./app/components/skeleton": ["Skeleton", "SkeletonProps", "skeletonVariants"],
     "./app/components/spinner": ["Spinner", "SpinnerProps", "spinnerVariants"],
-    "./app/components/segmented-control": ["SegmentedControl"],
+    "./app/components/segmented-control": [
+      "SegmentedControl",
+      "segmentedControlDescriptionVariants",
+      "segmentedControlFocusRingVariants",
+      "segmentedControlIndicatorVariants",
+      "segmentedControlItemVariants",
+      "segmentedControlLabelVariants",
+      "segmentedControlRailVariants",
+      "segmentedControlWrapperVariants"
+    ],
     "./app/components/stack": ["Stack"],
     "./app/components/surface": ["Surface", "surfaceVariants"],
     "./app/components/table": [
@@ -97,20 +134,31 @@
       "TableCellSlot",
       "TableColumn",
       "TableColumnAlign",
-      "TableRow"
+      "TableRow",
+      "tableDataCellVariants",
+      "tableHeaderCellVariants"
     ],
-    "./app/components/tag": ["Tag"],
-    "./app/components/text": ["Text", "TextProps"],
-    "./app/components/token": ["Token"],
+    "./app/components/tag": ["Tag", "TagProps", "tagButtonVariants", "tagPillVariants"],
+    "./app/components/text": ["Text", "TextProps", "textVariants"],
+    "./app/components/token": [
+      "Token",
+      "tokenLabelVariants",
+      "tokenNodeInlineVariants",
+      "tokenShellVariants"
+    ],
     "./app/components/kbd": ["Kbd", "KbdProps", "kbdVariants"],
     "./app/components/status-dot": ["StatusDot", "StatusDotProps", "statusDotVariants"],
     "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
     "./app/components/blockquote": ["Blockquote", "BlockquoteProps", "blockquoteVariants"],
     "./app/components/visually-hidden": ["VisuallyHidden", "VisuallyHiddenProps"],
-    "./app/components/avatar-group": ["AvatarGroup", "AvatarGroupProps"],
+    "./app/components/avatar-group": ["AvatarGroup", "AvatarGroupProps", "overflowBubbleVariants"],
     "./app/components/button-group": ["ButtonGroup", "ButtonGroupProps", "buttonGroupVariants"],
     "./app/components/input-group": ["InputGroup", "InputGroupProps"],
-    "./app/components/circular-progress": ["CircularProgress", "CircularProgressProps"],
+    "./app/components/circular-progress": [
+      "CircularProgress",
+      "CircularProgressProps",
+      "circularProgressVariants"
+    ],
     "./app/components/toggle-button": [
       "ToggleButton",
       "ToggleButtonProps",
@@ -120,8 +168,14 @@
     "./app/components/alert-dialog": ["AlertDialog"],
     "./app/components/hover-card": ["HoverCard"],
     "./app/components/context-menu": ["ContextMenu"],
-    "./app/components/side-nav": ["SideNav", "SideNavLevel", "SideNavProps"],
-    "./app/components/command-palette": ["CommandPalette", "CommandPaletteProps"],
+    "./app/components/side-nav": ["SideNav", "SideNavLevel", "SideNavProps", "sideNavVariants"],
+    "./app/components/command-palette": [
+      "CommandPalette",
+      "CommandPaletteProps",
+      "cmdkDescriptionVariants",
+      "cmdkKindBadgeVariants",
+      "cmdkRowVariants"
+    ],
     "./app/components/image-lightbox": ["Lightbox"],
     "./app/components/metadata-list": [
       "MetadataList",
@@ -138,7 +192,7 @@
       "selectableCardVariants"
     ],
     "./app/components/tokenizer": ["Tokenizer", "TokenizerProps"],
-    "./app/components/file-input": ["FileInput", "FileInputProps"],
+    "./app/components/file-input": ["FileInput", "FileInputProps", "fileInputVariants"],
     "./app/components/multi-selector": [
       "MultiSelector",
       "MultiSelectorOption",
@@ -147,12 +201,21 @@
     "./app/components/toolbar": ["Toolbar"],
     "./app/components/tree-list": ["TreeList", "TreeListProps", "TreeNode"],
     "./app/components/stepper": ["Step", "Stepper", "StepperProps", "stepMarkerVariants"],
-    "./app/components/carousel": ["Carousel", "CarouselProps"],
+    "./app/components/carousel": ["Carousel", "CarouselProps", "carouselControlVariants"],
     "./app/components/calendar": ["Calendar", "CalendarProps"],
     "./app/components/time-input": ["TimeInput", "TimeInputProps", "hdsTimeInputVariants"],
     "./app/components/date-input": ["DateInput", "DateInputProps"],
     "./app/components/date-range-input": ["DateRangeInput", "DateRangeInputProps"],
     "./app/components/date-time-input": ["DateTimeInput", "DateTimeInputProps"],
+    "./app/components/cluster": ["Cluster"],
+    "./app/components/center": ["Center"],
+    "./app/components/sidebar": ["Sidebar"],
+    "./app/components/switcher": ["Switcher"],
+    "./app/components/cover": ["Cover"],
+    "./app/components/frame": ["Frame"],
+    "./app/components/bleed": ["Bleed"],
+    "./app/components/reveal": ["Reveal", "RevealAnimation"],
+    "./app/components/pin": ["Pin"],
     "./app/components/page": ["Page"],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
     "./app/components/error-boundary": ["ErrorBoundary"],
@@ -165,11 +228,19 @@
       "ActivityFeed",
       "ActivityFeedProps",
       "ActivityStatus",
+      "ActivityTone",
+      "activityAvatarVariants",
+      "activityToneVariants",
       "defaultActivityEvents"
     ],
-    "./app/components/breadcrumb": ["Breadcrumb", "BreadcrumbItem", "BreadcrumbProps"],
+    "./app/components/breadcrumb": [
+      "Breadcrumb",
+      "BreadcrumbItem",
+      "BreadcrumbProps",
+      "crumbLabelVariants"
+    ],
     "./app/components/combobox": ["Combobox", "ComboboxOption", "ComboboxProps"],
-    "./app/components/disclosure": ["Disclosure"],
+    "./app/components/disclosure": ["Disclosure", "disclosureTriggerVariants"],
     "./app/components/form": [
       "FieldWiring",
       "FieldWiringInput",
@@ -183,7 +254,7 @@
     ],
     "./app/components/foundation-swatch": ["FoundationSwatch", "FoundationSwatchProps"],
     "./app/components/icon-button": ["IconButton"],
-    "./app/components/nav-group": ["NavGroup"],
+    "./app/components/nav-group": ["NavGroup", "navGroupLabelVariants"],
     "./app/components/pagination": ["Pagination", "PaginationProps", "paginationRange"],
     "./app/components/sketch": ["Sketch", "SketchProps"],
     "./app/components/stepper-field": ["StepperField"],
@@ -193,12 +264,12 @@
       "ToastProvider",
       "ToastProviderProps",
       "ToastTone",
+      "toastIconVariants",
       "useToast"
     ],
     "./app/layouts/CaseStudyLayout": ["CaseStudyLayout"],
     "./app/components/error-pattern": ["ErrorPattern"],
-    "./app/components/info-page": ["InfoPage", "InfoPageProps"],
-    "./app/pages/hds/HdsSystemDocLayout": ["HdsSystemDocLayout"],
+    "./app/layouts/HdsSystemDocLayout": ["HdsSystemDocLayout"],
     "@subpath/cn": ["cn"],
     "@subpath/tokens": ["ct", "default", "tokenValues"],
     "@subpath/manifest": ["default"]
