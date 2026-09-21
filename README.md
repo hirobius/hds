@@ -14,7 +14,7 @@ A publishable React + TypeScript component library backed by a governed design-t
 
 - **108** public component modules, exported from `src/index.ts`
 - **362** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **442** Storybook stories in **112** story files, reviewed visually in Chromatic
+- **447** Storybook stories in **113** story files, reviewed visually in Chromatic
 
 <!-- auto:end:front-door-counts -->
 

@@ -3173,6 +3173,7 @@
         "src/stories/heading-stack.stories.tsx",
         "src/stories/input.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
+        "src/stories/stacked-card-rail.stories.tsx",
         "src/stories/status-list-item.stories.tsx",
         "src/stories/table.stories.tsx",
         "src/stories/tabs.stories.tsx",
@@ -4239,7 +4240,9 @@
         "exportName": "StackedCardRail",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/stories/stacked-card-rail.stories.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5720,6 +5723,7 @@
       "consumers": [
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
+        "src/stories/card.stories.tsx",
         "src/stories/circular-progress.stories.tsx",
         "src/stories/progress.stories.tsx",
         "src/stories/table.stories.tsx"
