@@ -9,7 +9,13 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { classifyVerdict, summarize, exitCodeFor, ACTIONABLE } from '../lib/guardrail-sweep.mjs';
+import {
+  classifyVerdict,
+  summarize,
+  exitCodeFor,
+  gateArgv,
+  ACTIONABLE,
+} from '../lib/guardrail-sweep.mjs';
 
 describe('classifyVerdict', () => {
   it('reads exit 0 as a pass and exit 1 as real violations', () => {
@@ -90,5 +96,33 @@ describe('exitCodeFor', () => {
     const s = summarize([{ id: 'a', verdict: 'PASS', durationMs: 1, dirtiesTree: false }]);
     expect(exitCodeFor(s)).toBe(0);
     expect(exitCodeFor(s, { strict: true })).toBe(0);
+  });
+});
+
+describe('gateArgv', () => {
+  it('runs a gate bare when the registry records no arguments', () => {
+    expect(gateArgv({ gateScript: 'scripts/check-x.mjs' })).toEqual(['scripts/check-x.mjs']);
+  });
+
+  it("appends the registry's defaultArgs", () => {
+    // check-token-descriptions is never invoked bare: check:full passes
+    // --no-missing and check:docs passes --no-missing --quality. Run bare, it
+    // reported 106 violations, 103 of them MISSING descriptions on primitives
+    // the repo has deliberately chosen not to describe one by one. The sweep
+    // was measuring a standard nothing enforces, which is the one thing a
+    // sweep must not do — it is the instrument every other verdict is read
+    // through.
+    expect(
+      gateArgv({
+        gateScript: 'scripts/check-token-descriptions.mjs',
+        defaultArgs: ['--no-missing'],
+      }),
+    ).toEqual(['scripts/check-token-descriptions.mjs', '--no-missing']);
+  });
+
+  it('ignores a non-array defaultArgs rather than corrupting the argv', () => {
+    expect(gateArgv({ gateScript: 'scripts/check-x.mjs', defaultArgs: '--no-missing' })).toEqual([
+      'scripts/check-x.mjs',
+    ]);
   });
 });

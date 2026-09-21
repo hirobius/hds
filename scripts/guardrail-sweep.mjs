@@ -30,7 +30,13 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { classifyVerdict, summarize, exitCodeFor, ACTIONABLE } from './lib/guardrail-sweep.mjs';
+import {
+  classifyVerdict,
+  summarize,
+  exitCodeFor,
+  gateArgv,
+  ACTIONABLE,
+} from './lib/guardrail-sweep.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REGISTRY = path.join(ROOT, 'docs/guardrails/registry.json');
@@ -75,7 +81,7 @@ const results = [];
 
 for (const [i, gate] of gates.entries()) {
   const started = Date.now();
-  const run = spawnSync('node', [gate.gateScript], {
+  const run = spawnSync('node', gateArgv(gate), {
     cwd: ROOT,
     encoding: 'utf8',
     timeout: TIMEOUT_MS,

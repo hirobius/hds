@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-19T21:10:47.474Z",
+  "generated": "2026-09-21T02:18:05.720Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -11874,7 +11874,7 @@
         "path": "semantic.color.content.onAccent",
         "cssVar": "--semantic-color-content-onAccent",
         "type": "color",
-        "description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where the accent fill is a light neutral.",
+        "description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where accent fills are light.",
         "alias": "{primitive.color.neutral.white}",
         "resolvedValue": "#ffffff",
         "dark": {
@@ -12590,7 +12590,7 @@
         "path": "semantic.radius.action",
         "cssVar": "--semantic-radius-action",
         "type": "dimension",
-        "description": "The shape knob. Corner radius for interactive action elements (buttons, inputs, badges, alerts, segmented items). Tailwind's rounded-md resolves to exactly this value via --role-radius; containers are one step above it at rounded-lg. Override role.radius in a tenant overlay to reshape the whole system from one value.",
+        "description": "Corner radius for action elements (buttons, inputs, badges); Tailwind rounded-md resolves here. Override role.radius to reshape the system.",
         "alias": "{primitive.radius.8}",
         "resolvedValue": "8px"
       },

@@ -76,3 +76,26 @@ export function exitCodeFor(summary, { strict = false } = {}) {
   if (strict && summary.actionable > 0) return 1;
   return 0;
 }
+
+/**
+ * The argv to run a gate with.
+ *
+ * The sweep used to run every gate bare — `node <gateScript>` with no flags —
+ * which is not how four of them are wired. For three (audit-component-integrity,
+ * check-link-integrity, audit-tokens) a bare run is the union of the sub-modes,
+ * so it over-reports nothing. check-token-descriptions is the exception: every
+ * caller passes --no-missing, and bare it added 103 MISSING findings for
+ * primitives the repo has deliberately chosen not to describe one at a time.
+ *
+ * A sweep reporting a standard nothing enforces is the worst kind of wrong
+ * here, because it is the instrument every other verdict is read through — the
+ * same failure as the firing telemetry ADR-027 removed, arrived at from the
+ * other direction.
+ *
+ * @param {{ gateScript: string, defaultArgs?: string[] }} gate - registry entry
+ * @returns {string[]} argv for `node`
+ */
+export function gateArgv(gate) {
+  const extra = Array.isArray(gate?.defaultArgs) ? gate.defaultArgs : [];
+  return [gate.gateScript, ...extra];
+}
