@@ -69,9 +69,26 @@ if (FIXTURE_DIR) {
 mkdirSync(OUT_DIR, { recursive: true });
 
 try {
-  execFileSync('pnpm', ['exec', 'vite-bundle-visualizer', '-o', OUT_FILE], {
-    stdio: jsonMode ? 'pipe' : 'inherit',
-  });
+  // `-c vite.config.lib.ts` is load-bearing. Without it the visualizer builds
+  // the default app target and looks for `index.html`, which this repo stopped
+  // having when ADR-018 cut the bespoke docs site and the /ops dashboard —
+  // every run since has died on UNRESOLVED_ENTRY. The thing worth visualizing
+  // in a library repo is the published bundle, which is what vite.config.lib.ts
+  // builds. `--open false` because a gate must never try to launch a browser.
+  execFileSync(
+    'pnpm',
+    [
+      'exec',
+      'vite-bundle-visualizer',
+      '-c',
+      'vite.config.lib.ts',
+      '--open',
+      'false',
+      '-o',
+      OUT_FILE,
+    ],
+    { stdio: jsonMode ? 'pipe' : 'inherit' },
+  );
   result.summary = { outFile: OUT_FILE };
 } catch (err) {
   result.violations.push({
