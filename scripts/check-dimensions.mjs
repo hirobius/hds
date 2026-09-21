@@ -21,6 +21,7 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { isSpecFile } from './lib/gate-scope.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -42,7 +43,15 @@ function collectFiles(dir, results = []) {
     if (statSync(full).isDirectory()) {
       if (SKIP_DIRS.has(entry)) continue;
       collectFiles(full, results);
-    } else if (extname(entry) === '.tsx' || extname(entry) === '.ts') {
+    } else if (
+      (extname(entry) === '.tsx' || extname(entry) === '.ts') &&
+      // Both violations this gate reported on main were box-sx.test.ts
+      // asserting the resolver's output — the dimension regex matched inside a
+      // CSS string literal the test exists to pin, and read it as a width set
+      // from a spacing token. Someone had already tried to silence it with a
+      // `tier-ok` marker, which belongs to a different gate.
+      !isSpecFile(entry)
+    ) {
       results.push(full);
     }
   }

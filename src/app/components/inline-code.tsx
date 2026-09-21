@@ -52,6 +52,9 @@ type InlineCodeProps = {
   /**
    * @deprecated Use `density="compact"` instead. Kept for backward
    * compatibility; when set, it takes precedence over `density`.
+   *
+   * @removeIn 1.0.0 — same shape as Divider's `strong`: a boolean superseded
+   * by a variant axis, breaking to remove.
    */
   compact?: boolean;
   /** Show a copy-to-clipboard button. children must be a string when true. */
