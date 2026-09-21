@@ -17,8 +17,16 @@
  *      member would add ~21 assets no designer would ever place.
  *   3. Layout primitives — Box, Stack, Cluster, Switcher. These render no
  *      pixels of their own; in Figma their behaviour IS auto-layout. The
- *      library already has a `Layout Primitives` page, created and left
- *      empty, which is the same conclusion reached and never written down.
+ *      library's `Layout Primitives` page (111:7) already reflects that: it
+ *      documents Container, Grid, Stack and Page as SPEC CARDS — key/value
+ *      text frames for max-width, gutter, gap, inset — rather than drawing
+ *      them as components. So this classification is not a new proposal for
+ *      those four; it is what the library already does, written down.
+ *
+ *      (The REST inventory reports that page as 0 assets, because it counts
+ *      COMPONENT and COMPONENT_SET nodes and the page holds neither. Reading
+ *      "0 assets" as "empty" is wrong, and was worth correcting: the page is
+ *      documented, just not with components.)
  *
  * So "1:1 with Figma" is the right goal against the right denominator, and
  * this computes that denominator from evidence rather than opinion:
