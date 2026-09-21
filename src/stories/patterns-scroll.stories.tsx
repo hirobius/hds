@@ -153,6 +153,10 @@ function SimpleParallaxDemo() {
   return (
     <div
       ref={ref}
+      // inline-ok: the scroll-parallax demo's own scaffold — a 140vh track is
+      // what makes the effect observable in a story, and it is not a surface
+      // the design system ships. Extracting it would create a component whose
+      // only consumer is this story.
       style={{
         height: '140vh',
         position: 'relative',

@@ -172,3 +172,41 @@ export function register(_opts) {
 export function isSpecFile(pathLike) {
   return /\.(?:test|spec)\.[cm]?[jt]sx?$/.test(String(pathLike));
 }
+
+/**
+ * A line plus the contiguous comment block directly above it, joined.
+ *
+ * Gates accept an exemption marker "on the offending line or immediately
+ * before", and implement that as `lines[i]` plus `lines[i - 1]`. That holds
+ * only while the marker's comment is one line long. Three real exemptions in
+ * this repo are not:
+ *
+ *   - card.tsx wraps `// inline-ok:` over three lines explaining why the
+ *     progress fill animates with transform instead of width
+ *   - static.css's four `css-ok` markers sit after a `);` Prettier introduced
+ *   - segmented-control.tsx's `tier-ok` markers, which I split across lines in
+ *     this session and immediately turned into two new violations
+ *
+ * In every case the exemption was written, with a reason, and the gate could
+ * not see it — so the fix on offer was to write the marker that was already
+ * there. Reading the whole comment block means a marker stays valid however
+ * its explanation is wrapped.
+ *
+ * Only contiguous comment lines are walked, so it cannot reach past a blank
+ * line or a statement into an unrelated comment further up.
+ *
+ * @param {string[]} lines
+ * @param {number} index - the line the violation was found on
+ * @returns {string} the line and its preceding comment block
+ */
+export function exemptionContext(lines, index) {
+  const block = [lines[index] ?? ''];
+  for (let i = index - 1; i >= 0; i--) {
+    const trimmed = (lines[i] ?? '').trim();
+    // `{/* ... */}` is how a comment is written inside JSX — box.stories.tsx
+    // marks two tier-ok exemptions that way — so the leading brace is optional.
+    if (!/^\{?(\/\/|\/\*|\*|-->)/.test(trimmed) && !/\*\/\}?$/.test(trimmed)) break;
+    block.unshift(lines[i]);
+  }
+  return block.join('\n');
+}
