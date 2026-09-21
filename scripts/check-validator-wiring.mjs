@@ -104,12 +104,37 @@ function readSafe(p) {
   }
 }
 
+/**
+ * Drop whole-line YAML comments.
+ *
+ * Detection is `ghActionsContent.includes(gateScript)`, so before this a
+ * workflow *comment* naming a gate counted as CI wiring. ci.yml has a block
+ * explaining that nine gates run through `pnpm test`'s pretest hook rather
+ * than being listed individually — and naming them there made all nine report
+ * as `ci-detected`, contradicting their registry channel. Seven of the eight
+ * WIRING_DRIFTs on main were that comment, so the gate whose job is to keep
+ * the registry honest was itself reading documentation as configuration.
+ *
+ * Only lines whose first non-whitespace character is `#` are dropped, which is
+ * exactly what parseHookLines already does for shell hooks. A trailing `#`
+ * inside a `run:` command is left alone — stripping it could hide real wiring.
+ *
+ * @param {string} content
+ * @returns {string}
+ */
+function stripYamlComments(content) {
+  return content
+    .split('\n')
+    .filter((line) => !line.trimStart().startsWith('#'))
+    .join('\n');
+}
+
 function listGhActions() {
   if (!fs.existsSync(GH_DIR)) return '';
   return fs
     .readdirSync(GH_DIR)
     .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
-    .map((f) => readSafe(path.join(GH_DIR, f)))
+    .map((f) => stripYamlComments(readSafe(path.join(GH_DIR, f))))
     .join('\n');
 }
 
@@ -814,6 +839,52 @@ if (SELF_TEST) {
       },
       ralphGate: 'run_step node scripts/scenario-not-in-channels.mjs\n',
     },
+
+    // ── YAML comments are documentation, not wiring ─────────────────────────
+    {
+      // A gate declared `manual` and merely NAMED in a workflow comment must
+      // stay `manual`. Reading the comment as wiring is what produced seven of
+      // the eight WIRING_DRIFTs on main.
+      name: 'gh-actions-comment-is-not-wiring',
+      expectPass: true,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-commented',
+            gateScript: 'scripts/scenario-commented.mjs',
+            firingChannel: 'manual',
+          },
+        ],
+      },
+      ghActions: [
+        'jobs:',
+        '  build:',
+        '    steps:',
+        '      # scripts/scenario-commented.mjs runs via pretest, not listed here',
+        '      - run: pnpm test',
+      ].join('\n'),
+    },
+    {
+      // The other half of the property: stripping comments must not blind the
+      // detector to a gate a workflow really does invoke.
+      name: 'gh-actions-real-invocation-is-wiring',
+      expectPass: false,
+      registry: {
+        gates: [
+          {
+            id: 'scenario-really-in-ci',
+            gateScript: 'scripts/scenario-really-in-ci.mjs',
+            firingChannel: 'manual',
+          },
+        ],
+      },
+      ghActions: [
+        'jobs:',
+        '  build:',
+        '    steps:',
+        '      - run: node scripts/scenario-really-in-ci.mjs',
+      ].join('\n'),
+    },
   ];
 
   const channelResults = [];
@@ -830,7 +901,9 @@ if (SELF_TEST) {
         scenario.registry,
         precommitPath,
         null,
-        '', // no GH Actions content
+        // Scenarios that exercise CI detection supply their own workflow text;
+        // the rest get none, as before.
+        stripYamlComments(scenario.ghActions || ''),
         scenario.pkg || {},
         null,
         ralphGatePath,
