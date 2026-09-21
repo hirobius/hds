@@ -30,7 +30,8 @@
  * Pure functions are exported so they can be unit-tested with Vitest.
  */
 
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
+import { writeGenerated } from './lib/write-generated.mjs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -482,6 +483,6 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   handoff = replaceSection(handoff, 'agent-constraints', buildAgentConstraints(raw));
   handoff = replaceSection(handoff, 'token-count', buildTokenCount(raw));
 
-  writeFileSync(join(ROOT, 'DESIGN-HANDOFF.md'), handoff);
+  await writeGenerated(join(ROOT, 'DESIGN-HANDOFF.md'), handoff);
   console.log('✓ DESIGN-HANDOFF.md updated from token source.');
 }
