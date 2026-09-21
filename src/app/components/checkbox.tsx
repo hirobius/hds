@@ -62,7 +62,7 @@ const checkboxInputVariants = cva('absolute inset-0 m-0 opacity-0', {
 /** Glyph box — border/background driven by `state` (interaction) x `on` (checked/indeterminate). */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/color; var()-based, no Tailwind-theme utility exists
 const checkboxGlyphVariants = cva(
-  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-4)] border-solid border-[length:var(--primitive-borderWidth-sm)] outline-offset-2',
+  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-4)] border-solid border-[length:var(--semantic-borderWidth-emphasis)] outline-offset-2',
   {
     variants: {
       state: {
