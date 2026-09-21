@@ -34,6 +34,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, relative, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { isSpecFile } from './lib/gate-scope.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -165,14 +166,12 @@ async function runTokensCheck() {
       } else if (
         (entry.endsWith('.tsx') || entry.endsWith('.ts')) &&
         !SKIP_FILES.has(entry) &&
-        // Specs are not components. box-sx.test.ts asserts that resolveSx turns
-        // `{ width: 100 }` into `width:100px` — a raw pixel is the thing under
-        // test, so the gate flagged the proof that the resolver works. Nothing
-        // in a .test file reaches a consumer's bundle, so a token rule has no
-        // subject here. 64 spec files live in this directory; this one is the
-        // only one that ever wrote a CSS literal, which is why it read as a
-        // real finding rather than a category error.
-        !/\.test\.tsx?$/.test(entry)
+        // box-sx.test.ts asserts that resolveSx turns `{ width: 100 }` into
+        // `width:100px` — a raw pixel is the thing under test, so the gate
+        // flagged the proof that the resolver works. 64 spec files live in this
+        // directory; this one is the only one that ever wrote a CSS literal,
+        // which is why it read as a real finding rather than a category error.
+        !isSpecFile(entry)
       ) {
         scanFile(full);
       }

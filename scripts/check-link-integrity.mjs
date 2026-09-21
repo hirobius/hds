@@ -30,11 +30,45 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, normalize, isAbsolute, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { spawnSync } from 'node:child_process';
 import http from 'node:http';
 import https from 'node:https';
+import { isSpecFile } from './lib/gate-scope.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
+
+/**
+ * Which of `paths` .gitignore covers, asked of git in one call.
+ *
+ * Fails open: outside a git checkout, or if git is missing, every path comes
+ * back un-ignored and the gate behaves exactly as it did before. A link check
+ * must not start passing because git was unavailable.
+ *
+ * @param {string[]} paths - repo-relative paths
+ * @returns {Set<string>} the subset git reports as ignored
+ */
+export function gitIgnoredPaths(paths) {
+  const unique = [...new Set(paths)];
+  if (unique.length === 0) return new Set();
+
+  const run = spawnSync('git', ['check-ignore', '--stdin'], {
+    cwd: ROOT,
+    input: `${unique.join('\n')}\n`,
+    encoding: 'utf8',
+  });
+
+  // 0 = at least one ignored, 1 = none ignored. Anything else (128: not a
+  // repository) means git could not answer, so claim nothing.
+  if (run.error || (run.status !== 0 && run.status !== 1)) return new Set();
+
+  return new Set(
+    (run.stdout ?? '')
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean),
+  );
+}
 
 const args = process.argv.slice(2);
 const argSet = new Set(args);
@@ -159,6 +193,21 @@ function runDocRefsCheck() {
       }
     }
   }
+
+  // A reference to a build output is not a broken link. `figma/model.json` is
+  // gitignored — "generated from hirobius.tokens.json by build-figma-model.mjs"
+  // — so it is absent from every clean checkout by design, and the four docs
+  // naming it are correctly telling a reader what `pnpm figma:model` produces.
+  // Four of this gate's nine reported misses were that one path, which it could
+  // never stop reporting. Asking git rather than reimplementing .gitignore
+  // keeps the two definitions of "generated" from drifting apart.
+  //
+  // This deliberately does not excuse figma/snapshot.json: that one IS meant to
+  // be committed and is genuinely missing (hds#236), which is a real finding.
+  const ignored = gitIgnoredPaths(violations.map((v) => v.ref));
+  const realViolations = violations.filter((v) => !ignored.has(v.ref));
+  violations.length = 0;
+  violations.push(...realViolations);
 
   if (violations.length === 0) {
     console.log(
@@ -430,6 +479,10 @@ function runRouteLinksCheck() {
       }
       if (!entry.endsWith('.ts') && !entry.endsWith('.tsx')) continue;
       if (SKIP_FILES.has(entry)) continue;
+      // doc-link-card.test.tsx and top-nav.test.tsx supplied all 8 reported
+      // "invalid routes" — /a, /b, /x, /start and friends, which are fixture
+      // hrefs chosen precisely because they are not real routes.
+      if (isSpecFile(entry)) continue;
       scanFile(full);
     }
   }

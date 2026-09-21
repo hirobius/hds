@@ -38,6 +38,10 @@ import { Icon } from './icon';
  * fixed HDS tone vocabulary (`neutral | danger | success | warning | info`,
  * see docs/architecture/variant-contract.md). `'error'` remains supported
  * here as a back-compat alias for `'danger'`; new code should use `tone`.
+ *
+ * @removeIn 1.0.0 — CHANGELOG 0.13.0 already states `status`/`ActivityStatus`
+ * go in a future major. Dropping a prop is breaking, so 1.0.0 is the first
+ * version that can carry it.
  */
 export type ActivityStatus = 'success' | 'error' | 'warning' | 'info' | 'neutral';
 
@@ -59,6 +63,8 @@ export interface ActivityEvent {
   /**
    * @deprecated Use `tone` instead. Retained for back-compat; `'error'`
    * resolves to the `danger` tone.
+   *
+   * @removeIn 1.0.0 — paired with ActivityStatus above; both go together.
    */
   status?: ActivityStatus;
   action?: { label: string; onClick?: () => void };

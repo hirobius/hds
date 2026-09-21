@@ -42,6 +42,9 @@ export interface DividerProps
   /**
    * @deprecated Use `variant="strong"` instead. Kept for backward
    * compatibility; when set, it takes precedence over `variant`.
+   *
+   * @removeIn 1.0.0 — a boolean superseded by a variant axis. Removing it
+   * is breaking, so it waits for the major.
    */
   strong?: boolean;
 }
