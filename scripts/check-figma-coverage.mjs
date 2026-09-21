@@ -16,6 +16,11 @@
  *
  * Exit codes: 0 clean · 1 unmapped assets (or an incomplete inventory) ·
  * 2 no inventory committed yet.
+ *
+ * Fixture mode: set FIXTURE_DIR=<abs path to a mini-root> to read
+ * figma/inventory.json, public/hds-manifest.json and figma/mapping-overrides.json
+ * from there instead of the repo. See docs/guardrails/FIXTURE_DIR_HARNESS.md.
+ * No-op in normal runs (FIXTURE_DIR unset).
  */
 
 import { existsSync, readFileSync } from 'node:fs';
@@ -24,9 +29,12 @@ import { fileURLToPath } from 'node:url';
 import { coverage } from './lib/figma-inventory.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const INVENTORY = path.join(ROOT, 'figma/inventory.json');
-const MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
-const OVERRIDES = path.join(ROOT, 'figma/mapping-overrides.json');
+// A fixture root stands in for the repo root, so the gate proves it fires on a
+// synthetic unmapped asset without needing the real Figma inventory.
+const BASE = process.env.FIXTURE_DIR ? path.resolve(process.env.FIXTURE_DIR) : ROOT;
+const INVENTORY = path.join(BASE, 'figma/inventory.json');
+const MANIFEST = path.join(BASE, 'public/hds-manifest.json');
+const OVERRIDES = path.join(BASE, 'figma/mapping-overrides.json');
 
 const asJson = process.argv.includes('--json');
 
