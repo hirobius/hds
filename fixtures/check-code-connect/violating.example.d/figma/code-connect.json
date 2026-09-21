@@ -1,0 +1,18 @@
+{
+  "$comment": "Fixture registry \u2014 Tone declares a \"warning\" option the component cva does not define.",
+  "importFrom": "@hirobius/design-system",
+  "templates": {
+    "Widget": {
+      "source": "src/app/components/widget.tsx",
+      "evidence": "fixture",
+      "properties": {
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["info", "danger", "warning"],
+          "default": "info",
+          "prop": "tone"
+        }
+      }
+    }
+  }
+}
