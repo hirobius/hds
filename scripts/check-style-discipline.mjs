@@ -38,6 +38,7 @@ import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, extname, relative, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { exemptionContext } from './lib/gate-scope.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -134,8 +135,10 @@ if (RUN_ALL || INLINE_ONLY) {
         continue;
       }
 
-      const prevLine = i > 0 ? lines[i - 1] : '';
-      if (line.includes('// inline-ok:') || prevLine.includes('// inline-ok:')) {
+      // The whole preceding comment block, not just one line above: card.tsx
+      // explains its inline-ok over three lines, and checking lines[i - 1]
+      // landed on the last of them.
+      if (exemptionContext(lines, i).includes('// inline-ok:')) {
         i++;
         continue;
       }
@@ -297,6 +300,36 @@ if ((RUN_ALL || CSS_VALUES_ONLY) && !isFixtureMode) {
   const NAMED_RE = /(?<!-)\b(red|blue|green|white|black|gray|grey)\b(?!-)/i;
   const CSS_KW = /\b(transparent|currentColor|inherit|initial|unset)\b/i;
 
+  /**
+   * The full CSS declaration starting at `lines[start]`, up to and including the
+   * line that terminates it (plus that line's trailing comment).
+   *
+   * An exemption is written against a declaration, but the check was written
+   * against a physical line. Prettier wraps a long value, so
+   *
+   *     background-color: rgb(
+   *       0 0 0 / 0.04
+   *     ); /* css-ok: mirrors badge.tsx's neutral-tone overlay ... *\/
+   *
+   * puts the marker two lines below the `rgb(` that trips the rule — past both
+   * the current line and the previous one. All four raw-color findings in
+   * static.css were already exempted, with reasons, and the gate could not see
+   * any of them. Capped so a malformed block cannot swallow the rest of a file.
+   *
+   * @param {string[]} lines
+   * @param {number} start
+   * @returns {string}
+   */
+  function declarationText(lines, start) {
+    const MAX_SPAN = 6;
+    const out = [];
+    for (let i = start; i < lines.length && i < start + MAX_SPAN; i++) {
+      out.push(lines[i]);
+      if (lines[i].includes(';')) break;
+    }
+    return out.join('\n');
+  }
+
   function stripBlockComments(line) {
     return line.replace(/\/\*[^*]*(?:\*(?!\/)[^*]*)*\*\//g, '');
   }
@@ -328,7 +361,8 @@ if ((RUN_ALL || CSS_VALUES_ONLY) && !isFixtureMode) {
       if (
         line.includes(CSS_OK_NEEDLE) ||
         raw.includes(CSS_OK_NEEDLE) ||
-        prevLine.includes(CSS_OK_NEEDLE)
+        prevLine.includes(CSS_OK_NEEDLE) ||
+        declarationText(lines, i).includes(CSS_OK_NEEDLE)
       )
         continue;
 

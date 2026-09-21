@@ -19,6 +19,7 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, extname, relative, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { exemptionContext } from './lib/gate-scope.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -78,9 +79,11 @@ for (const file of files) {
 
     // Suppression: same line or immediately preceding line
     // Accepts `// tier-ok:` (JS) or `/* tier-ok:` (JSX block comment / CSS-style)
-    const prevLine = i > 0 ? lines[i - 1] : '';
     const SUPPRESS = /\/\/\s*tier-ok:|\/\*\s*tier-ok:/;
-    if (SUPPRESS.test(line) || SUPPRESS.test(prevLine)) continue;
+    // The whole preceding comment block: a marker whose reason wraps onto a
+    // second line was invisible, so wrapping one turned it back into a
+    // violation whose suggested fix was the marker already sitting there.
+    if (SUPPRESS.test(exemptionContext(lines, i))) continue;
 
     const match = line.match(/var\(--primitive-[^)]+\)/);
     violations.push({ file: rel, line: i + 1, pattern: match ? match[0] : 'var(--primitive-...)' });
