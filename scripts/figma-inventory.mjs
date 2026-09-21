@@ -21,7 +21,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseDocument, coverage, fetchFile } from './lib/figma-inventory.mjs';
+import { parseDocument, coverage, fetchFile, resolveTarget } from './lib/figma-inventory.mjs';
 import { figmaToken, figmaTokenSource } from './lib/figma-token.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -42,10 +42,19 @@ function readJson(file, what) {
 
 async function refetch() {
   const links = readJson(LINKS, 'the Figma links config');
-  const fileKey = links.libraryFileKey;
+
+  let target;
+  try {
+    target = resolveTarget(args, links);
+  } catch (error) {
+    console.error(`✗ figma:inventory — ${error.message}`);
+    process.exit(1);
+  }
+
+  const { fileKey, label, isDefault } = target;
   if (!fileKey) {
     console.error(
-      '✗ figma:inventory — libraryFileKey is not set in figma/links.json, so there is no file to read.',
+      `✗ figma:inventory — ${label} is not set in figma/links.json, so there is no file to read.`,
     );
     process.exit(1);
   }
@@ -64,8 +73,32 @@ async function refetch() {
     ...parsed,
   };
 
-  writeFileSync(INVENTORY, `${JSON.stringify(inventory, null, 2)}\n`, 'utf8');
   const assets = inventory.pages.reduce((n, page) => n + page.assets.length, 0);
+
+  // Only the published library is the committed inventory. Reading any other
+  // file is an inspection — overwriting inventory.json with a staging
+  // duplicate's contents would make check-figma-coverage police the wrong
+  // document, silently.
+  if (!isDefault) {
+    console.log(
+      `\n  Read ${label} (${fileKey}) — NOT written to figma/inventory.json.\n` +
+        `  ${inventory.pages.length} page(s), ${assets} asset(s).\n`,
+    );
+    const committed = readJson(INVENTORY, 'the committed inventory');
+    const committedAssets = committed.pages.reduce((n, page) => n + page.assets.length, 0);
+    console.log(
+      `  The published library has ${committed.pages.length} page(s), ${committedAssets} asset(s).`,
+    );
+    const ok = inventory.pages.length === committed.pages.length && assets === committedAssets;
+    console.log(
+      ok
+        ? '  ✓ Same shape as the library — a faithful duplicate.\n'
+        : '  ✗ Different shape. This is not a complete duplicate of the library.\n',
+    );
+    process.exit(ok ? 0 : 1);
+  }
+
+  writeFileSync(INVENTORY, `${JSON.stringify(inventory, null, 2)}\n`, 'utf8');
   console.log(
     `✓ figma:inventory — wrote figma/inventory.json: ${inventory.pages.length} page(s), ${assets} asset(s)`,
   );
