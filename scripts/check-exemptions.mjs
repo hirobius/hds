@@ -41,6 +41,11 @@ const MARKERS = [
   'aria-ok',
   'motion-ok',
   'grid-ok',
+  // check-layout-discipline.mjs implements this (its own line 178 tests for
+  // it) and tells users to reach for it, but it was never added here — so the
+  // gate that validates exemption markers rejected 7 real uses of a marker
+  // another gate documents. Two gates disagreeing about one vocabulary.
+  'layout-ok',
   'ref-ok',
   'semantic-ok',
   'breakpoint-ok',
