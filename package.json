@@ -215,6 +215,7 @@
     "figma:connect:generate": "node scripts/generate-code-connect.mjs",
     "figma:connect:parse": "figma connect parse --exit-on-unreadable-files --skip-update-check",
     "figma:links": "node scripts/figma-links.mjs",
+    "figma:disposition": "node scripts/figma-disposition.mjs",
     "figma:model": "node scripts/build-figma-model.mjs",
     "figma:native-import": "node scripts/build-figma-native-import.mjs",
     "figma:push": "node scripts/figma-push.mjs",
