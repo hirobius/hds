@@ -554,6 +554,7 @@
       "description": "Merged gate (13z-6): default mode enforces token description quality in hirobius.tokens.json (missing/blank/verbose descriptions). With --quality flag: also scans generated-token-descriptions.ts for empty, generic-fallback, or one-sided-theme-language descriptions. Merged from: check-token-descriptions + check-token-description-quality.",
       "severity": "warn",
       "gateScript": "scripts/check-token-descriptions.mjs",
+      "defaultArgs": ["--no-missing"],
       "fixturePath": "fixtures/check-token-descriptions",
       "owner": "Adrian",
       "source": "human",
