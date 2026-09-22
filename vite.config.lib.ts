@@ -25,7 +25,7 @@
  * + a bundler resolve them transparently). This keeps the build hermetic
  * with zero new dependencies.
  */
-import { defineConfig } from 'vite';
+import { defineConfig, type Rollup } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
@@ -80,10 +80,7 @@ const hdsManifestVirtualPlugin = {
  */
 const rscDirectivePlugin = {
   name: 'hds-rsc-directive',
-  generateBundle(
-    _options: unknown,
-    bundle: Record<string, { type: string; imports?: string[]; code?: string }>,
-  ) {
+  generateBundle(_options: unknown, bundle: Rollup.OutputBundle) {
     const touched = applyDirectives(bundle);
     console.log(
       `[rsc-directive] 'use client' on ${touched.length} chunk(s): ${touched.join(', ')}`,
