@@ -36,16 +36,33 @@ CI runs via `pnpm test` — its channel is `pnpm-meta`, not `manual`, however
 rarely anyone runs it by hand.
 
 `check-validator-wiring.mjs` used to accept `manual` for a gate it detected as
-`pnpm-meta`. That allowance recorded 24 of 54 gates as operator-only tools while
-they ran on every PR. `check-source-canon` was the costly one: registered
-`severity: warn, firingChannel: manual`, and simultaneously in `pretest`,
-exiting 1 on any violation — so the registry said the Swiss canon was dormant
-while it was blocking merges. The allowance is gone; `manual` now requires a
-detected channel of `none`.
+`pnpm-meta`. That allowance recorded 24 of 55 gates as operator-only tools when
+they were in fact reachable from a `package.json` script. The allowance is gone;
+`manual` now requires a detected channel of `none`.
 
-Note that `severity` is a separate axis and has not been reconciled: several
-gates still say `warn` while exiting 1 in `pretest`. Read `firingChannel` for
-"does this block a PR", not `severity`.
+Of those 24, **6 run on every PR** — `audit-component-integrity`,
+`check-binding-drift`, `check-manifest-drift`, `check-registry`,
+`check-source-canon`, `check-tenant-tokens` — because they sit in `pretest`,
+which `.github/workflows/ci.yml` reaches via `pnpm test`. `check-source-canon`
+is the costly one: registered `severity: warn, firingChannel: manual`, and
+simultaneously exiting 1 on any violation in CI, so the registry said the Swiss
+canon was dormant while it was blocking merges.
+
+The other 18 are reachable only from `check:fast`, `check:full`, or their own
+`pnpm run` alias, none of which CI invokes. They were mislabelled, and they are
+not gating. `pnpm-meta` is the correct channel for both groups; it does not by
+itself mean "blocks a PR".
+
+Two things `firingChannel` still does not tell you:
+
+- **`severity` is a separate axis and is not reconciled.** Several gates say
+  `warn` while exiting 1 in `pretest`. Read `firingChannel` for where a gate
+  fires, not `severity` for how hard.
+- **`pnpm-meta` detection does not prove the script is ever run.** It matches a
+  gate whose `gateScript` appears in any `package.json` script, including one
+  nothing invokes. A dead alias satisfies it. Closing that needs reachability
+  from a real entry point (a hook, a CI step, or `pretest`); until then
+  `pnpm-meta` means "referenced by a script", not "runs".
 
 ### `ralph-gate` channel (added #188)
 
