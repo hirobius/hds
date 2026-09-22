@@ -36,12 +36,15 @@
  *   - tier, category and `hidden` come from the manifest
  *   - current Figma links come from each component's `@figma` tag
  *
- * The classification RULES were ratified in hds#235 (closed 2026-09-22): the
- * 17 `layout` primitives and the 18 `slot`s stay out, and the whole `library`
- * missing-list gets built. What hds#235 ratified is the rules, not a specific
- * integer — three components were later found to be misapplying them (Frame
- * and OverflowList paint, Sketch is lab chrome), so the counts moved and the
- * reasons are recorded in `overrides`.
+ * The classification RULES were ratified in hds#235 (closed 2026-09-22):
+ * invisible `layout` primitives and compound `slot`s stay out, and the whole
+ * `library` missing-list gets built. What hds#235 ratified is the rules, not a
+ * specific integer, and the integers have since moved: it was read against
+ * 17 `layout` / 86 `library`, then three components were found to be
+ * misapplying the rules (Frame and OverflowList paint, Sketch is lab chrome),
+ * leaving 14 `layout` / 88 `library`. Those three are recorded in `overrides`
+ * with their reasons. Trust this tool's current output over any count quoted
+ * in prose, including this comment.
  *
  * So this output is now the ratified set, not a proposal. Correct an individual
  * component by adding it to `figma/disposition.json`'s `overrides` with a
