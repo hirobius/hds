@@ -2,6 +2,7 @@
  * InlineLink ” inline navigation and external-link primitive for body copy.
  * @category Navigation
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161
  */
 import React from 'react';
 import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';

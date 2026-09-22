@@ -2,6 +2,7 @@
  * InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155
  */
 // motion-ok: copy feedback is handled by the nested IconButton, while the inline code chip stays visually stable inside prose and tables
 import { useState } from 'react';
@@ -51,6 +52,9 @@ type InlineCodeProps = {
   /**
    * @deprecated Use `density="compact"` instead. Kept for backward
    * compatibility; when set, it takes precedence over `density`.
+   *
+   * @removeIn 1.0.0 — a boolean superseded by a variant axis, breaking to
+   * remove, so it waits for the major.
    */
   compact?: boolean;
   /** Show a copy-to-clipboard button. children must be a string when true. */

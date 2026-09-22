@@ -7,12 +7,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Table, type TableColumn, type TableRow } from '../app/components/table';
 import { Badge } from '../app/components/badge';
 import { MODES } from '../../.storybook/preview';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/table',
   component: Table,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Table'),
     layout: 'padded',
     docs: {
       description: {

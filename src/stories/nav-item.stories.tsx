@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { NavItem } from '../app/components/nav-item';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/nav-item',
   component: NavItem,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('NavItem'),
     layout: 'padded',
     docs: {
       description: {
@@ -124,9 +126,24 @@ export const NestedLevel: Story = {
   render: () => (
     <div style={{ width: '240px' }}>
       <NavItem label="Design System" href="/design-system" variant="side" level="root" />
-      <NavItem label="Foundations" href="/design-system/foundations" variant="side" level="section" />
-      <NavItem label="Color" href="/design-system/foundations/color" variant="side" level="nested" />
-      <NavItem label="Color Tokens" href="/design-system/foundations/color/tokens" variant="side" level="deep" />
+      <NavItem
+        label="Foundations"
+        href="/design-system/foundations"
+        variant="side"
+        level="section"
+      />
+      <NavItem
+        label="Color"
+        href="/design-system/foundations/color"
+        variant="side"
+        level="nested"
+      />
+      <NavItem
+        label="Color Tokens"
+        href="/design-system/foundations/color/tokens"
+        variant="side"
+        level="deep"
+      />
     </div>
   ),
 };
@@ -140,7 +157,8 @@ export const ButtonMode: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'When no href is provided, NavItem renders as a <button> for callback-only nav patterns.',
+        story:
+          'When no href is provided, NavItem renders as a <button> for callback-only nav patterns.',
       },
     },
   },

@@ -8,12 +8,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { HdsSelect } from '../app/components/select';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/select',
   component: HdsSelect,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('HdsSelect'),
     layout: 'centered',
     docs: {
       description: {
@@ -55,7 +57,11 @@ export const Default: Story = {
 
 export const NoLabel: Story = {
   parameters: {
-    docs: { description: { story: 'Hide the field label with showLabel={false}; it still labels the trigger for a11y.' } },
+    docs: {
+      description: {
+        story: 'Hide the field label with showLabel={false}; it still labels the trigger for a11y.',
+      },
+    },
   },
   render: () => <ControlledDemo showLabel={false} />,
 };

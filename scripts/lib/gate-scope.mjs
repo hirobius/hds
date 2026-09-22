@@ -89,7 +89,7 @@ function globToRegex(pattern) {
     if (c === '*' && pattern[i + 1] === '*') {
       re += '.*';
       i += 2;
-      if (pattern[i] === '/') i += 1;  // consume trailing slash of `**/`
+      if (pattern[i] === '/') i += 1; // consume trailing slash of `**/`
     } else if (c === '*') {
       re += '[^/]*';
       i += 1;
@@ -141,4 +141,72 @@ export function matchesScope(gate, changedFiles) {
  */
 export function register(_opts) {
   // intentional no-op
+}
+
+/**
+ * Is this path a spec file rather than shipped source?
+ *
+ * Gates that walk `src/**` for `.ts`/`.tsx` pick up the 64 spec files living
+ * beside the components, and a spec's job is to write down exactly the literal
+ * its subject produces. Three gates independently reported those literals as
+ * violations before anyone noticed the shape:
+ *
+ *   - audit-component-integrity --tokens flagged
+ *     `resolveSx({ width: 100 })` → `width:100px` as a raw pixel
+ *   - check-dimensions read the CSS string
+ *     `'@media (min-width:640px){.cls{padding:var(--primitive-space-2)}}'`
+ *     as a width set from a spacing token
+ *   - check-link-integrity --route-links called the fixture hrefs
+ *     `/a`, `/b`, `/x` and `/start` invalid routes
+ *
+ * None of them is a defect: nothing in a spec reaches a consumer's bundle, so
+ * a token-tier, dimension or routing rule has no subject there. Each had been
+ * patched separately; this exists so the fourth gate does not have to be.
+ *
+ * A gate that genuinely needs to police specs (import hygiene, banned
+ * globals) should simply not call this.
+ *
+ * @param {string} pathLike - a file path or bare filename
+ * @returns {boolean}
+ */
+export function isSpecFile(pathLike) {
+  return /\.(?:test|spec)\.[cm]?[jt]sx?$/.test(String(pathLike));
+}
+
+/**
+ * A line plus the contiguous comment block directly above it, joined.
+ *
+ * Gates accept an exemption marker "on the offending line or immediately
+ * before", and implement that as `lines[i]` plus `lines[i - 1]`. That holds
+ * only while the marker's comment is one line long. Three real exemptions in
+ * this repo are not:
+ *
+ *   - card.tsx wraps `// inline-ok:` over three lines explaining why the
+ *     progress fill animates with transform instead of width
+ *   - static.css's four `css-ok` markers sit after a `);` Prettier introduced
+ *   - segmented-control.tsx's `tier-ok` markers, which I split across lines in
+ *     this session and immediately turned into two new violations
+ *
+ * In every case the exemption was written, with a reason, and the gate could
+ * not see it — so the fix on offer was to write the marker that was already
+ * there. Reading the whole comment block means a marker stays valid however
+ * its explanation is wrapped.
+ *
+ * Only contiguous comment lines are walked, so it cannot reach past a blank
+ * line or a statement into an unrelated comment further up.
+ *
+ * @param {string[]} lines
+ * @param {number} index - the line the violation was found on
+ * @returns {string} the line and its preceding comment block
+ */
+export function exemptionContext(lines, index) {
+  const block = [lines[index] ?? ''];
+  for (let i = index - 1; i >= 0; i--) {
+    const trimmed = (lines[i] ?? '').trim();
+    // `{/* ... */}` is how a comment is written inside JSX — box.stories.tsx
+    // marks two tier-ok exemptions that way — so the leading brace is optional.
+    if (!/^\{?(\/\/|\/\*|\*|-->)/.test(trimmed) && !/\*\/\}?$/.test(trimmed)) break;
+    block.unshift(lines[i]);
+  }
+  return block.join('\n');
 }

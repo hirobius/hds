@@ -56,8 +56,11 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   Figma file by hand; `pnpm figma:snapshot --ingest` records the file into the committed
   `figma/snapshot.json`; `pnpm check:figma-drift` compares the two. Runbook:
   `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, demo tenants
-  only (`figma/brand-modes.json`) — a client tenant never enters the shared library, and
-  a live Figma write is Adrian's authenticated session, never an agent's. Code Connect
+  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. Agents
+  may read and write Figma live (ADR-026), but only to the staging duplicate named by
+  `stagingFileKey` in `figma/links.json`; the published library is read-only to agents, and
+  an unset `stagingFileKey` means no write target at all. Pro allows 200 MCP reads a day —
+  batch them, and never retry a rate-limit error. Code Connect
   v2 templates are generated and gated locally, but publishing needs a Figma
   Organization plan, so no mapping is live and Dev Mode shows no HDS snippets.
   `docs/adr/019-figma-sync-via-mcp.md` still governs §1 (first-party tools, the official

@@ -110,13 +110,17 @@ Done when ≥80% of registered gates have real (non-stub) fixtures + meta-test g
 - Sub-second pre-commit on small commits → adoption survives.
 - Mitigation against missing cross-file violations: gates that need full-tree scan (e.g. manifest-drift, route-coverage) opt out of scoping by declaring `scope: 'full-tree'` in registry.
 
-### P2 — bypass detection
+### ~~P2 — bypass detection~~ — built, then removed (ADR-027)
 
-**`13g-12-postcommit-verifier`**
+**`13g-12-postcommit-verifier`** shipped as a `.husky/post-commit` hook that
+re-ran the pre-commit channel against HEAD and logged each gate to
+`firing-log.jsonl`. It was removed on 2026-09-20: the pre-commit channel holds
+exactly **one** gate, so the log only ever recorded `check-contrast`, and
+nothing read the file or surfaced the red row it was supposed to feed.
 
-- A `.husky/post-commit` hook (or local cron) re-runs the full pre-commit gate set against the committed tree (NOT staged — committed). Append the result to `docs/guardrails/firing-log.jsonl` with commit SHA + per-gate exit code.
-- If a gate that was supposed to gate the commit fails post-commit, that means `--no-verify` was used or pre-commit silently failed. Surface as red row in `/ops/atlas#validators`.
-- Doesn't prevent bypass (that requires server-side gating we don't have), but makes it auditable.
+The goal is still sound — a `--no-verify` bypass should be visible. Re-do it
+only when there are enough pre-commit gates for the answer to mean something,
+and wire the consumer at the same time as the producer.
 
 ### P2 — Hermes learned-rules pipe
 
@@ -127,14 +131,18 @@ Done when ≥80% of registered gates have real (non-stub) fixtures + meta-test g
 - Author `scripts/promote-learned-rule.mjs` (interactive): walks recent unprommoted entries, asks Adrian to flip each to a registry entry as `severity: warn`. Once a learned rule has caught a real fixture-violation, promote to `severity: error`.
 - This is the closed-loop fix: every regression contributes back to the gate set.
 
-### P2 — firing telemetry
+### ~~P2 — firing telemetry~~ — built, then removed (ADR-027)
 
-**`13g-14-gate-firing-telemetry`**
+**`13g-14-gate-firing-telemetry`** shipped `lastFiringAt` / `lastViolationAt`
+on every registry entry plus `refresh-firing-stats.mjs`. Removed 2026-09-20
+because it never measured anything: only the one pre-commit gate could be
+recorded, and the other 36 timestamps were a single bulk backfill dated
+2026-06-19 — which made dormant gates look alive, the exact opposite of the
+intent. It could not "distinguish perfectly clean from silently broken"; it
+asserted clean.
 
-- Each gate emits a one-liner JSON to `docs/guardrails/firing-log.jsonl` per run: `{ gate, ts, exitCode, violations, durationMs, commitSha }`.
-- Periodic job (`pnpm guardrail:report`) updates `lastFiringAt` / `lastViolationAt` in registry from the log.
-- Surface dormant gates (no fires in 90 days) on `/ops/atlas#validators`.
-- Distinguishes "perfectly clean" from "silently broken."
+Worth rebuilding only alongside real multi-channel emission. Until then a
+dormancy question is answered by running the gate.
 
 ### P3 — platform robustness
 

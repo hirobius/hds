@@ -1,0 +1,11 @@
+{
+  "componentSpecs": {
+    "Widget": {
+      "filePath": "src/app/components/widget.tsx",
+      "sourceExport": "Widget",
+      "figmaUrl": "https://www.figma.com/design/FIXTUREKEY/Fixture?node-id=1-2",
+      "variantAxes": ["tone"],
+      "props": [{ "name": "tone", "type": "'info' | 'danger'" }]
+    }
+  }
+}

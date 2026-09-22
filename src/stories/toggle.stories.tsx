@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { HdsToggle } from '../app/components/toggle';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/toggle',
   component: HdsToggle,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('HdsToggle'),
     layout: 'centered',
     docs: {
       description: {
@@ -30,13 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 function DefaultDemo() {
   const [checked, setChecked] = useState(false);
-  return (
-    <HdsToggle
-      label="Enable notifications"
-      checked={checked}
-      onChange={setChecked}
-    />
-  );
+  return <HdsToggle label="Enable notifications" checked={checked} onChange={setChecked} />;
 }
 
 export const Default: Story = {
@@ -45,13 +41,7 @@ export const Default: Story = {
 
 function OnDemo() {
   const [checked, setChecked] = useState(true);
-  return (
-    <HdsToggle
-      label="Show component previews"
-      checked={checked}
-      onChange={setChecked}
-    />
-  );
+  return <HdsToggle label="Show component previews" checked={checked} onChange={setChecked} />;
 }
 
 export const On: Story = {

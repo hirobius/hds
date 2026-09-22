@@ -36,7 +36,9 @@ const parser = reactDocgenTypescript.withCustomConfig(TSCONFIG_FILE, {
 });
 
 function cleanText(value) {
-  return String(value ?? '').replace(/\s+/g, ' ').trim();
+  return String(value ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function stripMatchingWrapper(value, open, close) {
@@ -259,11 +261,64 @@ function resolveDefaultValue(defaultValue) {
   return value || undefined;
 }
 
+/**
+ * `hds.<group>.<key>` → the DTCG path of the token it actually resolves to.
+ *
+ * The bridge in tokens.ts is full of aliases whose name differs from the
+ * primitive behind them — `space.px4` is `--primitive-space-1`,
+ * `borderRadius.sm` is `--primitive-radius-4`, `zIndex.focus` is
+ * `--primitive-zIndex-10`. normalizeHdsTokenPath used to pass the alias key
+ * straight through, emitting `primitive.space.px4` and `primitive.radius.sm`:
+ * paths that do not exist in hirobius.tokens.json. check-token-paths-ratchet
+ * reported them as unresolved references, and its "did you mean" guesses were
+ * nonsense (`primitive.space.px4` → "did you mean primitive.space.px1?", when
+ * the answer is `primitive.space.1`). Every one of the 5 NEW violations on
+ * main was this, plus more sitting in the 72-entry baseline.
+ *
+ * Read from tokens.ts rather than hardcoded here, so adding an alias there
+ * cannot silently reintroduce the drift. A CSS var name maps to its DTCG path
+ * by swapping `-` for `.`, which is exactly how build-tokens.mjs emits them.
+ *
+ * @returns {Map<string, string>} e.g. 'space.px4' → 'primitive.space.1'
+ */
+function loadBridgeAliasPaths() {
+  const source = readFileSync(join(ROOT, 'src', 'app', 'design-system', 'tokens.ts'), 'utf8');
+  const map = new Map();
+
+  // Top-level scalar groups only: `  <group>: {` at two-space indent, closed by
+  // `  },`. Nested groups (semantic.*) are handled by the rules below, which
+  // already map them correctly.
+  const groupRe = /^ {2}([A-Za-z][A-Za-z0-9_]*): \{$/gm;
+  for (const groupMatch of source.matchAll(groupRe)) {
+    const group = groupMatch[1];
+    const bodyStart = groupMatch.index + groupMatch[0].length;
+    const bodyEnd = source.indexOf('\n  },', bodyStart);
+    if (bodyEnd === -1) continue;
+
+    for (const entry of source
+      .slice(bodyStart, bodyEnd)
+      .matchAll(/^\s{4}([A-Za-z0-9_]+):\s*'var\(--([^)']+)\)'/gm)) {
+      map.set(`${group}.${entry[1]}`, entry[2].replace(/-/g, '.'));
+    }
+  }
+
+  return map;
+}
+
+const BRIDGE_ALIAS_PATHS = loadBridgeAliasPaths();
+
 function normalizeHdsTokenPath(raw) {
   const expression = cleanText(raw);
   if (!expression.startsWith('hds.')) return undefined;
 
-  const segments = [...expression.matchAll(/(?:\.([A-Za-z_][A-Za-z0-9_]*))|(?:\[(\d+|"(?:[^"]+)"|'(?:[^']+)')\])/g)]
+  // The bridge's own answer wins over the naming rules below, because it is
+  // the thing that actually decides which token the expression reads.
+  const direct = BRIDGE_ALIAS_PATHS.get(expression.slice('hds.'.length));
+  if (direct) return direct;
+
+  const segments = [
+    ...expression.matchAll(/(?:\.([A-Za-z_][A-Za-z0-9_]*))|(?:\[(\d+|"(?:[^"]+)"|'(?:[^']+)')\])/g),
+  ]
     .map(([, dotKey, bracketKey]) => {
       const value = dotKey ?? bracketKey ?? '';
       return value.replace(/^['"]|['"]$/g, '');
@@ -278,21 +333,32 @@ function normalizeHdsTokenPath(raw) {
     return 'semantic.space.section.stack';
   }
   if (root === 'semantic') return ['semantic', ...rest].join('.');
-  if (root === 'space') return rest.length > 0 ? ['primitive', 'space', ...rest].join('.') : undefined;
-  if (root === 'size') return rest.length > 0 ? ['primitive', 'size', ...rest].join('.') : undefined;
+  if (root === 'space')
+    return rest.length > 0 ? ['primitive', 'space', ...rest].join('.') : undefined;
+  if (root === 'size')
+    return rest.length > 0 ? ['primitive', 'size', ...rest].join('.') : undefined;
   if (root === 'fontFamily') return 'primitive.typography.family.primary';
   if (root === 'monoFamily') return 'primitive.typography.family.mono';
-  if (root === 'fontSize') return rest.length > 0 ? ['primitive', 'typography', 'size', ...rest].join('.') : undefined;
-  if (root === 'fontWeight') return rest.length > 0 ? ['primitive', 'typography', 'weight', ...rest].join('.') : undefined;
-  if (root === 'lineHeight') return rest.length > 0 ? ['primitive', 'typography', 'lineHeight', ...rest].join('.') : undefined;
-  if (root === 'letterSpacing') return rest.length > 0 ? ['primitive', 'typography', 'letterSpacing', ...rest].join('.') : undefined;
+  if (root === 'fontSize')
+    return rest.length > 0 ? ['primitive', 'typography', 'size', ...rest].join('.') : undefined;
+  if (root === 'fontWeight')
+    return rest.length > 0 ? ['primitive', 'typography', 'weight', ...rest].join('.') : undefined;
+  if (root === 'lineHeight')
+    return rest.length > 0
+      ? ['primitive', 'typography', 'lineHeight', ...rest].join('.')
+      : undefined;
+  if (root === 'letterSpacing')
+    return rest.length > 0
+      ? ['primitive', 'typography', 'letterSpacing', ...rest].join('.')
+      : undefined;
   if (root === 'borderRadius') {
     if (rest[0] === 'action') return 'semantic.radius.action';
     if (rest[0] === 'circle') return undefined;
     return rest.length > 0 ? ['primitive', 'radius', ...rest].join('.') : undefined;
   }
   if (root === 'borderWidth') {
-    if (rest[0] === 'default' || rest[0] === 'emphasis') return ['semantic', 'borderWidth', ...rest].join('.');
+    if (rest[0] === 'default' || rest[0] === 'emphasis')
+      return ['semantic', 'borderWidth', ...rest].join('.');
     return rest.length > 0 ? ['primitive', 'borderWidth', ...rest].join('.') : undefined;
   }
   if (root === 'typeStyles') {
@@ -368,7 +434,8 @@ function normalizeHdsTokenPath(raw) {
     return undefined;
   }
   if (root === 'color') {
-    if (rest[0] === 'content' || rest[0] === 'surface' || rest[0] === 'feedback') return ['semantic', 'color', ...rest].join('.');
+    if (rest[0] === 'content' || rest[0] === 'surface' || rest[0] === 'feedback')
+      return ['semantic', 'color', ...rest].join('.');
     if (rest[0] === 'brand') return 'primitive.color.blue.500';
     if (rest[0] === 'brandPressed') return 'primitive.color.blue.600';
     if (rest[0] === 'white') return 'primitive.color.neutral.white';
@@ -380,7 +447,9 @@ function normalizeHdsTokenPath(raw) {
 }
 
 function extractObservedTokens(source) {
-  const matches = [...source.matchAll(/\bhds(?:\.[A-Za-z_][A-Za-z0-9_]*|\[(?:\d+|'[^']+'|"[^"]+")\])+/g)];
+  const matches = [
+    ...source.matchAll(/\bhds(?:\.[A-Za-z_][A-Za-z0-9_]*|\[(?:\d+|'[^']+'|"[^"]+")\])+/g),
+  ];
   const seen = new Set();
   const tokens = [];
 
@@ -393,7 +462,9 @@ function extractObservedTokens(source) {
     const sourceLine = before.split('\n').length;
     const lineStart = source.lastIndexOf('\n', Math.max(0, index - 1)) + 1;
     const lineEnd = source.indexOf('\n', index);
-    const sourceSnippet = cleanText(source.slice(lineStart, lineEnd === -1 ? source.length : lineEnd));
+    const sourceSnippet = cleanText(
+      source.slice(lineStart, lineEnd === -1 ? source.length : lineEnd),
+    );
     tokens.push({
       raw,
       tokenPath: normalizeHdsTokenPath(raw),
@@ -416,12 +487,16 @@ function toPropRow(propName, prop, aliases) {
 }
 
 export function buildManifest() {
-  const discoveredComponents = discoverHdsComponents().components
-    .filter((component) => !component.ignored)
+  const discoveredComponents = discoverHdsComponents()
+    .components.filter((component) => !component.ignored)
     .filter((component) => component.tier === 'primitive' || component.tier === 'pattern');
-  const files = [...new Set(discoveredComponents.map((component) => join(ROOT, component.filePath)))];
+  const files = [
+    ...new Set(discoveredComponents.map((component) => join(ROOT, component.filePath))),
+  ];
   const discoveredNames = new Set(discoveredComponents.map((component) => component.name));
-  const metadataByName = new Map(discoveredComponents.map((component) => [component.name, component]));
+  const metadataByName = new Map(
+    discoveredComponents.map((component) => [component.name, component]),
+  );
   const fileSourceByRelativePath = new Map(
     files.map((filePath) => [
       relative(ROOT, filePath).replace(/\\/g, '/'),
@@ -429,15 +504,18 @@ export function buildManifest() {
     ]),
   );
 
-  const docs = parser.parse(files)
+  const docs = parser
+    .parse(files)
     .filter((doc) => doc?.displayName && discoveredNames.has(doc.displayName))
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
   const components = {};
 
   for (const doc of docs) {
-    const relativePath = doc.filePath ? relative(ROOT, doc.filePath).replace(/\\/g, '/') : undefined;
-    const source = relativePath ? fileSourceByRelativePath.get(relativePath) ?? '' : '';
+    const relativePath = doc.filePath
+      ? relative(ROOT, doc.filePath).replace(/\\/g, '/')
+      : undefined;
+    const source = relativePath ? (fileSourceByRelativePath.get(relativePath) ?? '') : '';
     const aliases = extractTypeAliases(source);
     const metadata = metadataByName.get(doc.displayName);
     const props = Object.entries(doc.props ?? {})
@@ -448,7 +526,10 @@ export function buildManifest() {
 
     components[doc.displayName] = {
       filePath: relativePath ?? metadata?.filePath,
-      description: cleanText(doc.description) || metadata?.description || extractComponentDescription(source, doc.displayName),
+      description:
+        cleanText(doc.description) ||
+        metadata?.description ||
+        extractComponentDescription(source, doc.displayName),
       ...(metadata?.category ? { category: metadata.category } : {}),
       ...(metadata ? { hidden: Boolean(metadata.hidden) } : {}),
       ...(metadata?.figmaUrl ? { figmaUrl: metadata.figmaUrl } : {}),
@@ -469,7 +550,9 @@ export function buildManifest() {
       hidden: Boolean(metadata.hidden),
       ...(metadata.figmaUrl ? { figmaUrl: metadata.figmaUrl } : {}),
       props: [],
-      ...(extractComponentGuides(source, metadata.name).length > 0 ? { guides: extractComponentGuides(source, metadata.name) } : {}),
+      ...(extractComponentGuides(source, metadata.name).length > 0
+        ? { guides: extractComponentGuides(source, metadata.name) }
+        : {}),
       observedTokens: extractObservedTokens(source),
     };
   }

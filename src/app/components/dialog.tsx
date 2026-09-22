@@ -186,6 +186,11 @@ interface DialogComponent extends React.FC<DialogProps> {
   Close: typeof DialogClose;
 }
 
+/**
+ * Tagged per-export, not on the file block: this module exports ten components
+ * and a file-level @figma would hand all ten this one node.
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-27
+ */
 export const Dialog = DialogRoot as unknown as DialogComponent;
 Dialog.Trigger = DialogTrigger;
 Dialog.Portal = DialogPortal;

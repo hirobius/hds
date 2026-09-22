@@ -1,28 +1,19 @@
 #!/usr/bin/env sh
 # Post-commit: non-blocking background work.
 #
-# 1. Refresh ready-queue.json so the next agent pick is instant.
-# 2. Re-run all pre-commit registry gates against HEAD and append per-gate
-#    results to docs/guardrails/firing-log.jsonl (unit 13g-12). If a gate
-#    that should have gated the commit fails post-commit, that means
-#    --no-verify was used (or the pre-commit hook silently failed). The
-#    log makes bypasses auditable; it does not prevent them.
+# Refreshes ready-queue.json so the next agent pick is instant. Detached and
+# nohup'd so `git commit` returns immediately.
 #
-# NOTE: firing telemetry (registry.json lastFiringAt/lastViolationAt) is NOT
-# refreshed here — doing so rewrote a git-tracked file on every commit and left
-# the tree perpetually dirty. Refresh it deliberately instead, off the hot path:
-#   pnpm guardrail:firing-stats   (or a ci-scheduled job that commits the result)
-#
-# Both jobs are detached + nohup'd so `git commit` returns immediately.
+# The firing-log re-run that used to live here was removed with the rest of the
+# registry firing telemetry (ADR-027). It re-ran the pre-commit channel on every
+# commit to make --no-verify bypasses auditable, but that channel holds exactly
+# one gate, so the log only ever recorded check-contrast — and nothing acted on
+# it. Detecting a bypass is worth doing; doing it by re-running one gate in the
+# background and writing a file no one reads was not.
 
 ROOT="$(git rev-parse --show-toplevel)"
-LOG_DIR="$ROOT/docs/guardrails"
-mkdir -p "$LOG_DIR"
 
 nohup node "$ROOT/scripts/orchestration-watcher.mjs" --once --quiet \
   >/dev/null 2>&1 </dev/null &
-
-nohup sh -c "node \"$ROOT/scripts/run-gates.mjs\" --channel pre-commit --emit-jsonl docs/guardrails/firing-log.jsonl" \
-  >>"$LOG_DIR/firing-log.stderr" 2>&1 </dev/null &
 
 exit 0

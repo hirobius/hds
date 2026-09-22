@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { InlineLink } from '../app/components/inline-link';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/inline-link',
   component: InlineLink,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('InlineLink'),
     layout: 'padded',
     docs: {
       description: {
@@ -76,10 +78,9 @@ export const InBodyCopy: Story = {
   render: () => (
     <p style={{ maxWidth: '480px', lineHeight: 1.6 }}>
       The Hirobius Design System ships a token-driven{' '}
-      <InlineLink href="/components">component library</InlineLink> and a Figma
-      bridge. Read the{' '}
-      <InlineLink href="https://hirobius.com/docs">public documentation</InlineLink>{' '}
-      for full integration details.
+      <InlineLink href="/components">component library</InlineLink> and a Figma bridge. Read the{' '}
+      <InlineLink href="https://hirobius.com/docs">public documentation</InlineLink> for full
+      integration details.
     </p>
   ),
 };

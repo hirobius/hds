@@ -3,6 +3,7 @@
  * Textarea — multi-line text field primitive with label, helper, and error slots.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14
  *
  * Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity:
  * the four states Default / Focus / Error / Disabled map to the focus-ring,
@@ -41,8 +42,10 @@ const textareaVariants = cva(
 /** @public */
 export type TextareaResize = NonNullable<VariantProps<typeof textareaVariants>['resize']>;
 
-export interface TextareaProps
-  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'disabled'> {
+export interface TextareaProps extends Omit<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  'disabled'
+> {
   /** Field label rendered above the textarea. */
   label?: string;
   /** Supporting helper text rendered below when not in error. */

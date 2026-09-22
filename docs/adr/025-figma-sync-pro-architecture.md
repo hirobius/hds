@@ -1,6 +1,6 @@
 # ADR-025: Figma Sync on the Pro Plan — One Way, Local Push, Snapshot Drift
 
-**Status:** Accepted (2026-09-17). Supersedes ADR-019 §2 (tokens → Figma variables through the REST workflow).
+**Status:** Accepted (2026-09-17). Supersedes ADR-019 §2 (tokens → Figma variables through the REST workflow). Its agent-write constraint (Consequences) is superseded by ADR-026 (2026-09-20); everything else stands.
 
 ## Context
 
@@ -180,8 +180,11 @@ shows no HDS snippets; publishing is Organization-gated", never a count of live 
   and the payload's temporary-id defect is left unfixed unless HDS moves to Enterprise.
 - On Pro, Figma sync is a local command, not a CI job. CI can check the model, the Code
   Connect templates, and the committed snapshot, but not Figma itself.
-- Live Figma reads and writes need Adrian's authenticated MCP session. Agents build and test
-  against injected or mocked ports and hand live runs to Adrian.
+- ~~Live Figma reads and writes need Adrian's authenticated MCP session. Agents build and test
+  against injected or mocked ports and hand live runs to Adrian.~~ **Superseded by ADR-026
+  (2026-09-20):** the account was since confirmed Full seat / admin / Pro, and this ADR's own
+  capability table already listed `use_figma` writes as available on Pro. Agents may read and
+  write live, to a staging duplicate only; the published library stays read-only to agents.
 - Snapshot reads must batch to stay inside the Pro MCP limit of 200 read calls a day, and
   `use_figma` writes will become usage-billed when the beta ends.
 - Docs do not claim, until each becomes true: automatic Figma sync in CI; that Figma's

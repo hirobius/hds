@@ -2,6 +2,7 @@
  * Toast — transient feedback notifications (Radix Toast).
  * @category Feedback
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367
  * @doc-exempt: no Overlays/Feedback-overlay doc page yet — add demo when created
  *
  * Imperative API: wrap the app once in <ToastProvider>, then call

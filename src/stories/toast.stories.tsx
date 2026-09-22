@@ -10,6 +10,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { ToastProvider, useToast } from '../app/components/toast';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 // Meta uses ToastProvider as the stand-in component since Toast has no
 // single exported React component to pass to `component`.
@@ -18,6 +19,7 @@ const meta = {
   component: ToastProvider,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('ToastProvider'),
     layout: 'centered',
     docs: {
       description: {
@@ -106,7 +108,7 @@ function DangerToastDemo() {
 export const Danger: Story = {
   parameters: {
     docs: {
-      description: { story: 'Danger tone — use for errors that require the user\'s attention.' },
+      description: { story: "Danger tone — use for errors that require the user's attention." },
     },
   },
   render: () => (
@@ -139,7 +141,9 @@ function WarningToastDemo() {
 export const Warning: Story = {
   parameters: {
     docs: {
-      description: { story: 'Warning tone — use for non-blocking issues the user should know about.' },
+      description: {
+        story: 'Warning tone — use for non-blocking issues the user should know about.',
+      },
     },
   },
   render: () => (

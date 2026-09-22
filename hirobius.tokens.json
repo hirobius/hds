@@ -213,7 +213,7 @@
           "$value": "#2a1659",
           "$description": "Specific value within the lilac range at a defined lightness step."
         },
-        "$description": "Discrete values within the lilac range at defined lightness steps. Mirrors the blue ramp's stop set; available to downstream brand overlays."
+        "$description": "Lilac ramp at fixed lightness steps. Mirrors the blue ramp's stops; available to brand overlays."
       },
       "amber": {
         "50": {
@@ -1180,7 +1180,7 @@
         },
         "onAccent": {
           "$value": "{primitive.color.neutral.white}",
-          "$description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where the accent fill is a light neutral.",
+          "$description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where accent fills are light.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1853,7 +1853,7 @@
       "action": {
         "$type": "dimension",
         "$value": "{primitive.radius.8}",
-        "$description": "The shape knob. Corner radius for interactive action elements (buttons, inputs, badges, alerts, segmented items). Tailwind's rounded-md resolves to exactly this value via --role-radius; containers are one step above it at rounded-lg. Override role.radius in a tenant overlay to reshape the whole system from one value."
+        "$description": "Corner radius for action elements (buttons, inputs, badges); Tailwind rounded-md resolves here. Override role.radius to reshape the system."
       }
     },
     "borderWidth": {

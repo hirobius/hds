@@ -1,0 +1,18 @@
+{
+  "$comment": "Fixture registry — one templated component.",
+  "importFrom": "@hirobius/design-system",
+  "templates": {
+    "Widget": {
+      "source": "src/app/components/widget.tsx",
+      "evidence": "fixture",
+      "properties": {
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["info", "danger"],
+          "default": "info",
+          "prop": "tone"
+        }
+      }
+    }
+  }
+}

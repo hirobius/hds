@@ -2,6 +2,7 @@
  * NavItem - navigation row primitive for sidebars, table of contents, and list navigation.
  * @category Navigation
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-258
  */
 // motion-ok: motion delivered via Tailwind transition-colors on the state-keyed
 // cva classes below; timing matches hds.motion.productive (150ms) via Tailwind's

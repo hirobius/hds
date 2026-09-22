@@ -5,6 +5,7 @@
 import type { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { EmptyState } from '../app/components/empty-state';
+import { designParameters } from './design-parameters';
 
 // Story-only demo frame — extracted to a const so it isn't a dense inline
 // style={{ }} on a demo element (check-style-discipline).
@@ -23,6 +24,7 @@ const meta = {
   component: EmptyState,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('EmptyState'),
     layout: 'centered',
     docs: {
       description: {

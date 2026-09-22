@@ -2,6 +2,7 @@
  * Progress - linear progress bar (determinate or indeterminate).
  * @category Feedback
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91
  */
 
 import * as React from 'react';
@@ -26,8 +27,7 @@ type ProgressVariantProps = VariantProps<typeof progressTrackVariants>;
 
 /** @public */
 export interface ProgressProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'role'>,
-    ProgressVariantProps {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'role'>, ProgressVariantProps {
   /**
    * Completion 0–100. Omit (or pass null) for an indeterminate bar that
    * animates until the work completes.

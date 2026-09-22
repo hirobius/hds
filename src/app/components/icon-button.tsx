@@ -2,6 +2,7 @@
  * IconButton ” icon-only action trigger built on the shared Button primitive.
  * @category Actions
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39
  */
 import { forwardRef } from 'react';
 import type { LucideIcon } from 'lucide-react';

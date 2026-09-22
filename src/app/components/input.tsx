@@ -3,6 +3,7 @@
  * Input — text field primitive with label, helper, and error slots.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20
  */
 
 import * as React from 'react';

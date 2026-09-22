@@ -4,6 +4,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { CodeBlock } from '../app/components/code-block';
+import { designParameters } from './design-parameters';
 
 const TS_SAMPLE = `import { Badge } from '@hirobius/design-system';
 
@@ -71,6 +72,7 @@ const meta = {
   component: CodeBlock,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('CodeBlock'),
     layout: 'padded',
     docs: {
       description: {

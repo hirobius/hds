@@ -10,12 +10,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Dialog } from '../app/components/dialog';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/dialog',
   component: Dialog,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Dialog'),
     layout: 'centered',
     docs: {
       description: {
@@ -88,7 +90,9 @@ function DestructiveDemo() {
 export const Destructive: Story = {
   parameters: {
     docs: {
-      description: { story: 'Destructive confirmation pattern with a clearly labelled primary action.' },
+      description: {
+        story: 'Destructive confirmation pattern with a clearly labelled primary action.',
+      },
     },
   },
   render: () => <DestructiveDemo />,
@@ -140,8 +144,8 @@ function InformationDemo() {
         <Dialog.Header>
           <Dialog.Title>Hirobius Design System</Dialog.Title>
           <Dialog.Description>
-            HDS is a self-driving component library built for portfolio and job-hunt products.
-            It owns the token pipeline, Figma bridge, and Storybook publishing in one closed loop.
+            HDS is a self-driving component library built for portfolio and job-hunt products. It
+            owns the token pipeline, Figma bridge, and Storybook publishing in one closed loop.
           </Dialog.Description>
         </Dialog.Header>
         <Dialog.Footer>

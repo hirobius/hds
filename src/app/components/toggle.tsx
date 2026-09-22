@@ -2,6 +2,7 @@
  * HdsToggle — boolean on/off toggle with animated thumb.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19
  */
 
 import { forwardRef } from 'react';
@@ -52,7 +53,7 @@ const toggleRootVariants = cva(
         rest: 'cursor-pointer bg-transparent',
         hover: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
         focused:
-          'cursor-pointer bg-transparent [outline:var(--primitive-borderWidth-sm)_solid_var(--semantic-color-border-accent)]',
+          'cursor-pointer bg-transparent [outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
         pressed: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
         disabled: 'cursor-default bg-[var(--semantic-color-surface-raised)]',
       },

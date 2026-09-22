@@ -61,7 +61,10 @@ import {
 } from './generate-code-connect.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DEFAULT_ROOT = path.join(__dirname, '..');
+// Every entry point already takes `root`, so a fixture root only had to be
+// readable from the environment. See docs/guardrails/FIXTURE_DIR_HARNESS.md.
+const REPO_ROOT = path.join(__dirname, '..');
+const DEFAULT_ROOT = process.env.FIXTURE_DIR ? path.resolve(process.env.FIXTURE_DIR) : REPO_ROOT;
 const EXEMPTION_KINDS = new Set(['queued', 'no-figma-component']);
 const COMBINATION_CAP = 5000;
 
@@ -92,7 +95,12 @@ export function childEnv(env = process.env) {
 
 /** Run `figma connect parse --exit-on-unreadable-files` and return the parsed docs. */
 export function runParse({ root = DEFAULT_ROOT, cli } = {}) {
-  const bin = cli ?? path.join(root, 'node_modules', '@figma', 'code-connect', 'bin', 'figma');
+  // Resolved from the repo, not `root`. A fixture root supplies the gate's
+  // inputs, not its tooling — it has no node_modules, so looking for the CLI
+  // there made the parse step crash and put a parse-failed error in front of
+  // whatever the fixture was actually meant to prove. `cwd` stays `root` so the
+  // parser still reads the fixture's templates.
+  const bin = cli ?? path.join(REPO_ROOT, 'node_modules', '@figma', 'code-connect', 'bin', 'figma');
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'hds-code-connect-parse-'));
   const outFile = path.join(outDir, 'parsed.json');
   try {

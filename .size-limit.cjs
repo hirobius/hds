@@ -21,6 +21,20 @@
  *   styles.css (scoped-only bundle)  : 120.15 kB -> budget 140 kB
  *   tokens.js (token bridge consts)  :   5.67 kB -> budget   7 kB
  *
+ * Re-baselined 2026-09-21, manifest entry only: 45.43 kB -> 47.46 kB, which
+ * broke the 47 kB budget. The cause is content, not bloat — the manifest now
+ * describes 139 components rather than 120, and `componentSpecs` carries the
+ * extra 19 along with their descriptions and Figma links. Holding 47 kB would
+ * mean refusing to document components the library actually ships. New budget
+ * 55 kB keeps the ~17% headroom the other entries use and absorbs the
+ * `figmaUrl` / `figmaLink` fields the remaining Figma work will add. Approved
+ * by Adrian 2026-09-21. The other four budgets are unchanged and still
+ * measured against the 2026-07-07 baseline.
+ *
+ * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
+ * byte-identical on all 44 linked components. Dropping one would shrink this
+ * entry, but it is a breaking change for manifest consumers.
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.
@@ -42,7 +56,7 @@ module.exports = [
   {
     name: 'manifest (hds-manifest.json ESM)',
     path: 'dist/manifest.js',
-    limit: '47 kB',
+    limit: '55 kB',
     gzip: true,
   },
   {

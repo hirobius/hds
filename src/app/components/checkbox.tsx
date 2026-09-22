@@ -2,6 +2,7 @@
  * HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29
  */
 
 import { forwardRef, useEffect, useRef } from 'react';
@@ -61,7 +62,7 @@ const checkboxInputVariants = cva('absolute inset-0 m-0 opacity-0', {
 /** Glyph box — border/background driven by `state` (interaction) x `on` (checked/indeterminate). */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/color; var()-based, no Tailwind-theme utility exists
 const checkboxGlyphVariants = cva(
-  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-4)] border-solid border-[length:var(--primitive-borderWidth-sm)] outline-offset-2',
+  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-4)] border-solid border-[length:var(--semantic-borderWidth-emphasis)] outline-offset-2',
   {
     variants: {
       state: {

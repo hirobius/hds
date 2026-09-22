@@ -2,6 +2,7 @@
  * Skeleton - placeholder shimmer for content that is still loading.
  * @category Feedback
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-95
  */
 
 import * as React from 'react';
@@ -28,9 +29,7 @@ const skeletonVariants = cva('hds-skeleton block', {
 type SkeletonVariantProps = VariantProps<typeof skeletonVariants>;
 
 /** @public */
-export interface SkeletonProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    SkeletonVariantProps {
+export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement>, SkeletonVariantProps {
   /** Explicit width (number → px, or any CSS length). */
   width?: number | string;
   /** Explicit height (number → px, or any CSS length). For `text`, defaults to 1em. */

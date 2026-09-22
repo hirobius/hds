@@ -2,6 +2,7 @@
  * Menu — dropdown menu (shadcn baseline, compound parts).
  * @category Overlays
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-59
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix DropdownMenu (@radix-ui/react-dropdown-menu) themed with the overlay
