@@ -2,6 +2,7 @@
  * Divider — semantic separator between content regions.
  * @category Layout
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26
  */
 
 import * as React from 'react';
@@ -41,6 +42,9 @@ export interface DividerProps
   /**
    * @deprecated Use `variant="strong"` instead. Kept for backward
    * compatibility; when set, it takes precedence over `variant`.
+   *
+   * @removeIn 1.0.0 — a boolean superseded by a variant axis. Removing it
+   * is breaking, so it waits for the major.
    */
   strong?: boolean;
 }

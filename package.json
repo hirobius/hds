@@ -215,11 +215,11 @@
     "figma:connect:generate": "node scripts/generate-code-connect.mjs",
     "figma:connect:parse": "figma connect parse --exit-on-unreadable-files --skip-update-check",
     "figma:links": "node scripts/figma-links.mjs",
+    "figma:disposition": "node scripts/figma-disposition.mjs",
     "figma:model": "node scripts/build-figma-model.mjs",
     "figma:native-import": "node scripts/build-figma-native-import.mjs",
     "figma:push": "node scripts/figma-push.mjs",
     "figma:snapshot": "node scripts/figma-snapshot.mjs",
-    "guardrail:firing-stats": "node scripts/refresh-firing-stats.mjs",
     "harvest:design-md": "node scripts/harvest-design-md.mjs",
     "heal": "node scripts/self-heal.mjs",
     "heal:smoke": "node scripts/self-heal.mjs --smoke",
@@ -268,7 +268,10 @@
     "prebuild-storybook": "node scripts/generate-component-api.mjs",
     "prestorybook": "node scripts/generate-component-api.mjs",
     "pretypecheck": "node scripts/audit-tokens.mjs --report-only",
-    "preview:build": "vite build --config preview/vite.config.mjs"
+    "preview:build": "vite build --config preview/vite.config.mjs",
+    "figma:inventory": "node scripts/figma-inventory.mjs",
+    "check:figma-coverage": "node scripts/check-figma-coverage.mjs",
+    "guardrail:sweep": "node scripts/guardrail-sweep.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.18",

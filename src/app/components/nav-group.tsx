@@ -2,6 +2,7 @@
  * NavGroup - labeled navigation group for stacks of nav items.
  * @category Navigation
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-304
  */
 import { useEffect, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';

@@ -60,6 +60,15 @@ const ENTRY = join(SRC_DIR, 'index.ts');
 const BASELINE_DIR = join(ROOT, 'docs', 'api');
 const BASELINE_PATH = join(BASELINE_DIR, 'api-baseline.json');
 
+/** The package version this API surface was taken from, or 'unknown'. */
+function readPackageVersion() {
+  try {
+    return JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).version ?? 'unknown';
+  } catch {
+    return 'unknown';
+  }
+}
+
 const args = new Set(process.argv.slice(2));
 const UPDATE_BASELINE = args.has('--update-baseline');
 const STRICT = args.has('--strict');
@@ -261,9 +270,16 @@ function collectBarrelMap() {
  * separately by `vite.config.lib.ts`.
  */
 function collectPublicApi() {
+  // `generatedAt` was the literal string 'baseline'. It is not part of the
+  // diff, so it cost nothing to be wrong — and it was: the committed baseline
+  // described the pre-0.13.0 surface, 81 commits and two and a half months
+  // behind main, with nothing in the file to say so. Recording the version the
+  // surface was taken from answers the question a baseline is actually asked:
+  // which release is this the API of?
   const surface = {
     entry: 'src/index.ts',
-    generatedAt: 'baseline',
+    version: readPackageVersion(),
+    generatedAt: new Date().toISOString().slice(0, 10),
     modules: {},
   };
 
@@ -379,13 +395,13 @@ function main() {
   if (UPDATE_BASELINE) {
     writeBaseline(current);
     if (JSON_OUTPUT) {
-      console.log(JSON.stringify({ updated: true, baseline: BASELINE_PATH, surface: current }, null, 2));
+      console.log(
+        JSON.stringify({ updated: true, baseline: BASELINE_PATH, surface: current }, null, 2),
+      );
     } else {
       const moduleCount = Object.keys(current.modules).length;
       const symbolCount = totalSymbolCount(current);
-      console.log(
-        `[check-public-api] baseline updated → ${relative(ROOT, BASELINE_PATH)}`,
-      );
+      console.log(`[check-public-api] baseline updated → ${relative(ROOT, BASELINE_PATH)}`);
       console.log(`[check-public-api] ${moduleCount} modules, ${symbolCount} exported symbols`);
     }
     process.exit(0);

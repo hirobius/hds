@@ -9,12 +9,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Menu } from '../app/components/menu';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/menu',
   component: Menu,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Menu'),
     layout: 'centered',
     docs: {
       description: {
@@ -42,7 +44,9 @@ function DefaultDemo() {
         <Menu.Item onSelect={() => {}}>Duplicate</Menu.Item>
         <Menu.Separator />
         <Menu.Item onSelect={() => {}}>Archive</Menu.Item>
-        <Menu.Item disabled onSelect={() => {}}>Delete</Menu.Item>
+        <Menu.Item disabled onSelect={() => {}}>
+          Delete
+        </Menu.Item>
       </Menu.Content>
     </Menu>
   );

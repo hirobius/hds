@@ -2,6 +2,7 @@
  * Table - structured data table primitive for documentation and compact UI matrices.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300
  */
 import { Fragment, useId, type CSSProperties, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';

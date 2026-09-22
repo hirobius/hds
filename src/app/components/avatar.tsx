@@ -2,6 +2,7 @@
  * Avatar - user or entity image with an initials fallback.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18
  */
 
 import * as React from 'react';
@@ -40,8 +41,7 @@ type AvatarVariantProps = VariantProps<typeof avatarVariants>;
 
 /** @public */
 export interface AvatarProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>,
-    AvatarVariantProps {
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>, AvatarVariantProps {
   /** Image source. When absent or it fails to load, the initials fallback shows. */
   src?: string;
   /** Required descriptive alt / accessible name (e.g. the person's name). */

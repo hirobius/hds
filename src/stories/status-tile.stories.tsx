@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { StatusTile } from '../app/components/status-tile';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/status-tile',
   component: StatusTile,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('StatusTile'),
     layout: 'padded',
     docs: {
       description: {

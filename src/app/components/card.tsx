@@ -439,6 +439,11 @@ const CardMetric = React.forwardRef<HTMLDivElement, CardMetricProps>(function Ca
 
 // ── Compound assembly ─────────────────────────────────────────────────────────
 
+/**
+ * Tagged per-export, not on the file block: this module exports eight
+ * components and a file-level @figma would hand all eight this one node.
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11
+ */
 export const Card = CardRoot as CardComponent;
 Card.Header = CardHeader;
 Card.Title = CardTitle;

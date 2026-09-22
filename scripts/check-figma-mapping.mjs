@@ -34,7 +34,11 @@ import { fileURLToPath } from 'node:url';
 import { createCodeModel } from './lib/component-code-model.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DEFAULT_ROOT = path.join(__dirname, '..');
+// runFigmaMappingCheck already takes `root`, so a fixture root only had to be
+// readable from the environment. See docs/guardrails/FIXTURE_DIR_HARNESS.md.
+const DEFAULT_ROOT = process.env.FIXTURE_DIR
+  ? path.resolve(process.env.FIXTURE_DIR)
+  : path.join(__dirname, '..');
 
 export const CONTRACT_AXES = ['variant', 'tone', 'size', 'density'];
 /** Axes that exist only on the Figma side (interaction-state previews). */

@@ -2,6 +2,7 @@
  * HdsRadio — radio button with animated selection indicator.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17
  */
 
 import { forwardRef } from 'react';

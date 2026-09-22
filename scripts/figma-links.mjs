@@ -33,6 +33,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { format, resolveConfig } from 'prettier';
+import { figmaToken } from './lib/figma-token.mjs';
 import {
   buildDescriptionsScript,
   collectDesignLinks,
@@ -212,7 +213,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       printProblems(problems);
       const result = await syncDevResources({
         links,
-        token: process.env.FIGMA_ACCESS_TOKEN,
+        // Accepts FIGMA_ACCESS_TOKEN or FIGMA_API_KEY. Reading only the former
+        // is why this path reported "not set" while a working token was in the
+        // environment the whole time — see scripts/lib/figma-token.mjs.
+        token: figmaToken(),
         dryRun: args.includes('--dry-run'),
       });
       console.log(`figma:links — ${result.line}`);

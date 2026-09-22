@@ -1,0 +1,16 @@
+{
+  "$comment": "Fixture: one published Figma component that no code component claims.",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "source": "fixture",
+  "complete": true,
+  "fileKey": "FIXTUREFILEKEY000000",
+  "fileName": "Fixture Library",
+  "pages": [
+    {
+      "id": "1:1",
+      "name": "Widget",
+      "kind": "components",
+      "assets": [{ "id": "1:2", "name": "Widget", "type": "COMPONENT_SET", "variantCount": 0 }]
+    }
+  ]
+}

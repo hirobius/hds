@@ -2,6 +2,7 @@
  * Breadcrumb - hierarchical navigation trail.
  * @category Navigation
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-159
  */
 
 import * as React from 'react';

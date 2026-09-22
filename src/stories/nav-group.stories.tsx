@@ -4,6 +4,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { NavGroup } from '../app/components/nav-group';
+import { designParameters } from './design-parameters';
 
 const COMPONENTS_ITEMS = [
   { path: '/components/badge', label: 'Badge' },
@@ -23,6 +24,7 @@ const meta = {
   component: NavGroup,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('NavGroup'),
     layout: 'padded',
     docs: {
       description: {

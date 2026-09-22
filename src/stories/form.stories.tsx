@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Form, FormField } from '../app/components/form';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 // Named demo components are required for any story that uses state
 // (hooks-in-arrow rule from story-shared.md).
@@ -126,6 +127,7 @@ const meta = {
   component: Form,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Form'),
     layout: 'centered',
     docs: {
       description: {

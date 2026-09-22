@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { StepperField } from '../app/components/stepper-field';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/stepper-field',
   component: StepperField,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('StepperField'),
     layout: 'centered',
     docs: {
       description: {
@@ -27,14 +29,7 @@ type Story = StoryObj<typeof meta>;
 function DefaultDemo() {
   const [value, setValue] = useState(1);
   return (
-    <StepperField
-      label="Quantity"
-      value={value}
-      min={1}
-      max={99}
-      step={1}
-      onChange={setValue}
-    />
+    <StepperField label="Quantity" value={value} min={1} max={99} step={1} onChange={setValue} />
   );
 }
 
@@ -45,14 +40,7 @@ export const Default: Story = {
 function ColumnCountDemo() {
   const [value, setValue] = useState(3);
   return (
-    <StepperField
-      label="Columns"
-      value={value}
-      min={1}
-      max={12}
-      step={1}
-      onChange={setValue}
-    />
+    <StepperField label="Columns" value={value} min={1} max={12} step={1} onChange={setValue} />
   );
 }
 
@@ -70,14 +58,7 @@ export const ColumnCount: Story = {
 function DecimalDemo() {
   const [value, setValue] = useState(1.0);
   return (
-    <StepperField
-      label="Scale"
-      value={value}
-      min={0.25}
-      max={4}
-      step={0.25}
-      onChange={setValue}
-    />
+    <StepperField label="Scale" value={value} min={0.25} max={4} step={0.25} onChange={setValue} />
   );
 }
 
@@ -124,7 +105,14 @@ function PanelDemo() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <StepperField label="Width" value={width} min={64} max={1920} step={8} onChange={setWidth} />
-      <StepperField label="Height" value={height} min={64} max={1080} step={8} onChange={setHeight} />
+      <StepperField
+        label="Height"
+        value={height}
+        min={64}
+        max={1080}
+        step={8}
+        onChange={setHeight}
+      />
       <StepperField label="Gap" value={gap} min={0} max={64} step={4} onChange={setGap} />
     </div>
   );

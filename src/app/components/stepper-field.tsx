@@ -2,6 +2,7 @@
  * StepperField ” numeric input with decrement/increment controls.
  * @category Inputs
  * @tier pattern
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-425
  *
  * Classification baseline:
  * Material Design, Chakra UI, and Ant Design treat steppers as numeric input

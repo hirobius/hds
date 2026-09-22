@@ -2,6 +2,7 @@
  * SegmentedControl " segmented selection input for compact mutually-exclusive choices.
  * @category Inputs
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334
  *
  * The active×hover×pressed×disabled×secondary state matrix is expressed
  * through `cva` compound variants keyed by `active` / `interaction` (the
@@ -237,7 +238,7 @@ const segmentedControlIndicatorVariants = cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- description text is the semantic caption composite (12px/16px/medium) plus content-* color tokens; no Tailwind-theme utility
 const segmentedControlDescriptionVariants = cva(
-  // tier-ok: primitive.zIndex.focus (the discrete 0/10/100/1000 stacking scale) has no semantic alias — same primitive ref the pre-Tailwind inline style used
+  // tier-ok: primitive.zIndex.10 (the discrete 0/10/100/1000 stacking scale, reached as hds.zIndex.focus) has no semantic alias — same primitive ref the pre-Tailwind inline style used
   'relative z-[var(--primitive-zIndex-10)] text-xs font-medium text-[var(--semantic-color-content-secondary)]',
   {
     variants: {
@@ -283,7 +284,7 @@ const segmentedControlFocusRingVariants = cva(
 // carries the typeStyles.ui composite (15px/24px/medium/60ch) + stacking.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- typeStyles.ui composite + zIndex.focus token have no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlLabelVariants = cva(
-  // tier-ok: primitive.zIndex.focus has no semantic alias — same primitive ref the pre-Tailwind inline style used
+  // tier-ok: primitive.zIndex.10, reached as hds.zIndex.focus, has no semantic alias — same primitive ref the pre-Tailwind inline style used
   'relative z-[var(--primitive-zIndex-10)] max-w-[60ch] text-[15px] font-medium leading-6 text-current',
 );
 

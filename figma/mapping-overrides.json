@@ -1,0 +1,47 @@
+{
+  "$comment": "Figma assets whose code counterpart is NOT a top-level component, so no @figma JSDoc tag can point at them and scripts/check-figma-coverage.mjs would report them forever. Each entry is a deliberate statement that the asset IS mapped, just not the usual way. Keep this small: an entry is an admission that Figma and code model the same thing differently, and the better fix is usually to make them agree. Every entry needs a reason a reviewer can check.",
+  "overrides": [
+    {
+      "nodeId": "128:14",
+      "name": "CardProgress",
+      "mapsTo": "Card.Progress",
+      "source": "src/app/components/card.tsx",
+      "reason": "Compound member of Card. It IS a manifest entry, so an @figma tag would stick — but linking a component makes its story a gate (figma:links --check), and a compound part has no story of its own and should not need one. Overriding keeps the link honest without inventing a story file."
+    },
+    {
+      "nodeId": "128:18",
+      "name": "CardMetric",
+      "mapsTo": "Card.Metric",
+      "source": "src/app/components/card.tsx",
+      "reason": "Compound member of Card. Same shape as CardProgress above."
+    },
+    {
+      "nodeId": "86:52",
+      "name": "TabTrigger",
+      "mapsTo": "TabsTrigger",
+      "source": "src/app/components/tabs.tsx",
+      "reason": "Figma calls it TabTrigger, code calls it TabsTrigger — one letter apart, which is why no name match found it. It is a part of Tabs and has no story of its own, so it takes an override rather than a tag. Worth renaming one side to match; until then this records the pairing."
+    },
+    {
+      "nodeId": "93:58",
+      "name": "MenuItem",
+      "mapsTo": "Menu.Item",
+      "source": "src/app/components/menu.tsx",
+      "reason": "Compound member of Menu (Radix DropdownMenu). Not exported on its own, so no JSDoc block can carry an @figma tag for it."
+    },
+    {
+      "nodeId": "86:121",
+      "name": "BreadcrumbItem",
+      "mapsTo": "Breadcrumb.Item",
+      "source": "src/app/components/breadcrumb.tsx",
+      "reason": "Compound member. breadcrumb.tsx exports only Breadcrumb and crumbLabelVariants; the item is reached through the compound namespace."
+    },
+    {
+      "nodeId": "86:193",
+      "name": "PageButton",
+      "mapsTo": "Pagination (internal page button)",
+      "source": "src/app/components/pagination.tsx",
+      "reason": "Internal to Pagination — pagination.tsx exports only paginationRange and Pagination. Figma models the individual page button as a component because it needs the variants; code renders it inline."
+    }
+  ]
+}

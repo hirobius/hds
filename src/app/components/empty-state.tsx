@@ -2,6 +2,7 @@
  * EmptyState — consistent no-data placeholder for lists, grids, and sections.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352
  * @ai-intent Inline empty-state placeholder so any list, grid, or section can
  *   communicate "no data yet" with consistent muted typography instead of agents
  *   inventing one-off `<p>No items.</p>` lines.

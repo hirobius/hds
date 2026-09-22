@@ -1,0 +1,10 @@
+{
+  "componentSpecs": {
+    "Widget": {
+      "filePath": "src/widget.tsx",
+      "sourceExport": "Widget",
+      "variantAxes": ["tone"],
+      "props": [{ "name": "tone", "type": "'neutral' | 'danger'" }]
+    }
+  }
+}

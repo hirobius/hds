@@ -37,8 +37,8 @@ function loadRegistry() {
 function discoverScripts() {
   const files = readdirSync(SCRIPTS_DIR);
   return files
-    .filter(f => /^(check-|audit-).*\.mjs$/.test(f))
-    .map(f => basename(f, '.mjs'))
+    .filter((f) => /^(check-|audit-).*\.mjs$/.test(f))
+    .map((f) => basename(f, '.mjs'))
     .sort();
 }
 
@@ -63,8 +63,8 @@ function extractDescription(scriptName) {
   // Strip * prefixes, collect non-empty lines that aren't the filename
   const lines = jsdocContent
     .split('\n')
-    .map(l => l.replace(/^\s*\*\s?/, '').trim())
-    .filter(l => l.length > 0 && l !== scriptName + '.mjs' && !l.startsWith('@'));
+    .map((l) => l.replace(/^\s*\*\s?/, '').trim())
+    .filter((l) => l.length > 0 && l !== scriptName + '.mjs' && !l.startsWith('@'));
 
   if (lines.length === 0) {
     return `TODO: add description — ${scriptName}.mjs JSDoc block is empty.`;
@@ -72,16 +72,18 @@ function extractDescription(scriptName) {
 
   // Return first meaningful line (first sentence)
   const first = lines[0];
-  return first.length > 0 ? first : `TODO: add description — ${scriptName}.mjs has no description text.`;
+  return first.length > 0
+    ? first
+    : `TODO: add description — ${scriptName}.mjs has no description text.`;
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 const registry = loadRegistry();
-const registeredIds = new Set(registry.gates.map(g => g.id));
+const registeredIds = new Set(registry.gates.map((g) => g.id));
 const scripts = discoverScripts();
 
-const missing = scripts.filter(id => !registeredIds.has(id));
+const missing = scripts.filter((id) => !registeredIds.has(id));
 
 if (missing.length === 0) {
   console.log(`✓ validate-guardrail-registry — all ${scripts.length} validator(s) are registered.`);
@@ -98,8 +100,6 @@ if (UPDATE_MODE) {
       severity: 'warn',
       gateScript: `scripts/${id}.mjs`,
       fixturePath: null,
-      lastFiringAt: null,
-      lastViolationAt: null,
       owner: 'Adrian',
       source: 'human',
     });
@@ -117,6 +117,8 @@ for (const id of missing) {
   console.error(`  - ${id}  (scripts/${id}.mjs)`);
 }
 console.error('');
-console.error('Fix: run `node scripts/validate-guardrail-registry.mjs --update` to auto-append stubs,');
+console.error(
+  'Fix: run `node scripts/validate-guardrail-registry.mjs --update` to auto-append stubs,',
+);
 console.error('     then fill in the description field for each new entry.');
 process.exit(1);
