@@ -28,6 +28,25 @@ automated quality gate in the Hirobius repo.
 | `firingChannels` | `string[]`                                                   | no       | For a gate that genuinely fires from more than one real channel (e.g. wired into both `.husky/pre-commit` AND `ralph/gate.sh`). When present, `firingChannel` must be one of its entries, and `check-validator-wiring.mjs` requires every listed channel to have independent wiring evidence — see #188.                                                                                                                                                      |
 | `defaultArgs`    | `string[]`                                                   | no       | The argv a standalone runner (`pnpm guardrail:sweep`) must pass. Set it when a bare `node <gateScript>` run is NOT how the repo wires the gate — e.g. `check-token-descriptions` is only ever invoked with `--no-missing`, and bare it reports 103 MISSING descriptions the repo has deliberately chosen not to write. Leave unset when a bare run is the real contract or a superset of the sub-modes (`audit-component-integrity`, `check-link-integrity`). |
 
+### `manual` means never auto-fires
+
+`manual` is for a gate a human runs from the CLI and nothing else invokes. If
+the gate is reachable from a `package.json` script — `pretest` above all, which
+CI runs via `pnpm test` — its channel is `pnpm-meta`, not `manual`, however
+rarely anyone runs it by hand.
+
+`check-validator-wiring.mjs` used to accept `manual` for a gate it detected as
+`pnpm-meta`. That allowance recorded 24 of 54 gates as operator-only tools while
+they ran on every PR. `check-source-canon` was the costly one: registered
+`severity: warn, firingChannel: manual`, and simultaneously in `pretest`,
+exiting 1 on any violation — so the registry said the Swiss canon was dormant
+while it was blocking merges. The allowance is gone; `manual` now requires a
+detected channel of `none`.
+
+Note that `severity` is a separate axis and has not been reconciled: several
+gates still say `warn` while exiting 1 in `pretest`. Read `firingChannel` for
+"does this block a PR", not `severity`.
+
 ### `ralph-gate` channel (added #188)
 
 `ralph/gate.sh` is the fail-closed gate Ralph (the autonomous agent) must pass

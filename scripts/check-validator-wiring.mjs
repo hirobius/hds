@@ -609,7 +609,16 @@ function runWiringCheck(
     if (declared === actual) ok = true;
     else if ((declared === 'ci-pr' || declared === 'ci-scheduled') && actual === 'ci-detected')
       ok = true;
-    else if (declared === 'manual' && (actual === 'none' || actual === 'pnpm-meta')) ok = true;
+    // `manual` means "never auto-fires" (see the channel taxonomy above), so
+    // `none` is the ONLY detection consistent with it. This once also accepted
+    // `pnpm-meta`, which collapsed the single distinction the field exists to
+    // draw: 24 of 54 gates were recorded as operator-only CLI tools while
+    // running on every `pnpm test`, and through it on every PR. The worst was
+    // check-source-canon — registered manual/warn, actually a hard-fail CI
+    // gate — so the registry said the Swiss canon was dormant while it was
+    // blocking merges. Pinned by
+    // scripts/__tests__/check-validator-wiring.manual-channel.test.mjs.
+    else if (declared === 'manual' && actual === 'none') ok = true;
     else if (declared === 'pre-commit' && actual === 'pre-commit') ok = true;
     else if (declared === 'commit-msg' && actual === 'commit-msg') ok = true;
 
