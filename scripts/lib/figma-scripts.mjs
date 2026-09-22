@@ -67,12 +67,6 @@ export function runtimeFunctions(source = runtimeSource()) {
     .map((node) => ({ name: node.id.name, text: source.slice(node.start, node.end) }));
 }
 
-/** hdsChecksum of the runtime source, as hdsVerifyRuntime() recomputes it inside Figma. */
-export function runtimeChecksum(source = runtimeSource()) {
-  const texts = runtimeFunctions(source).map((fn) => fn.text.replace(/\r/g, ''));
-  return hdsChecksum(texts.join('\n'));
-}
-
 /**
  * The runtime functions a carrier actually runs: the transitive closure of its
  * entry points over the other functions' names, plus `hdsVerifyRuntime`, which
