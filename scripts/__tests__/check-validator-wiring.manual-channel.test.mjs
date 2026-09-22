@@ -3,11 +3,12 @@
 /**
  * `manual` must mean "never auto-fires".
  *
- * The registry's whole job is answering "what actually blocks a PR?". It could
+ * The registry's whole job is answering "where does this gate fire?". It could
  * not: `check-validator-wiring.mjs` accepted a gate declaring `manual` whose
- * real channel was `pnpm-meta`, so 24 of 54 gates were recorded as
- * operator-only CLI tools while in fact running on every `pnpm test` — and
- * through it, on every PR in CI.
+ * real channel was `pnpm-meta`, so 24 gates were recorded as operator-only CLI
+ * tools while in fact reachable from a `package.json` script. Six of those sit
+ * in `pretest` and so run on every PR; the other 18 are reachable only from
+ * `check:fast`, `check:full` or their own alias, none of which CI invokes.
  *
  * `check-source-canon` was the one that mattered: registered
  * `severity: warn, firingChannel: manual, archivedFrom: pre-commit`, and
