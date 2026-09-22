@@ -32,7 +32,7 @@ const maxWidthMap: Record<MaxWidthOption, string> = {
   max: 'var(--semantic-layout-width-max)',
 };
 
-interface ContainerProps {
+export interface ContainerProps {
   /** Container content. */
   children: ReactNode;
   /** Max width: 'content' (760px for prose) | 'max' (1200px for full layouts). Defaults to 'max'. */

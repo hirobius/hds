@@ -14,7 +14,7 @@ const MAX_SIZE = 280; // max default frame size before the placeholder shifts to
 
 type AssetImgContext = 'default' | 'lightbox' | 'detail';
 
-interface AssetImgProps {
+export interface AssetImgProps {
   /** Image source path. */
   src: string;
   /** Accessible alt text. */
@@ -102,7 +102,13 @@ export function AssetImg({
           className={className}
           draggable={draggable}
           onClick={onClick}
-          onKeyDown={onClick ? (e) => { if (e.key === 'Enter') onClick(e as unknown as React.MouseEvent); } : undefined}
+          onKeyDown={
+            onClick
+              ? (e) => {
+                  if (e.key === 'Enter') onClick(e as unknown as React.MouseEvent);
+                }
+              : undefined
+          }
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
@@ -117,11 +123,11 @@ export function AssetImg({
         className={className}
         // inline-ok: HDS component — inline styles are the intentional pattern for token-driven styling
         style={{
-          position:   'relative',
-          display:    'inline-flex',
-          overflow:   'hidden',
-          cursor:     'pointer',
-          outline:    'none',
+          position: 'relative',
+          display: 'inline-flex',
+          overflow: 'hidden',
+          cursor: 'pointer',
+          outline: 'none',
           flexShrink: (resolvedStyle as CSSProperties & { flexShrink?: number }).flexShrink,
         }}
         role="button"
@@ -129,10 +135,10 @@ export function AssetImg({
         aria-label={alt}
         onClick={onClick}
         onKeyDown={(e) => {
-           if ((e.key === 'Enter' || e.key === ' ') && onClick) {
-             e.preventDefault();
-             onClick(e as unknown as React.MouseEvent);
-           }
+          if ((e.key === 'Enter' || e.key === ' ') && onClick) {
+            e.preventDefault();
+            onClick(e as unknown as React.MouseEvent);
+          }
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseMove={(e) => {
@@ -157,18 +163,8 @@ export function AssetImg({
           draggable={draggable}
           onError={() => setFailed(true)}
         />
-        <Tooltip
-          mode="centered"
-          visible={focused && !hovered}
-          label={expandLabel}
-        />
-        <Tooltip
-          mode="cursor"
-          visible={hovered}
-          x={cursorX}
-          y={cursorY}
-          label={expandLabel}
-        />
+        <Tooltip mode="centered" visible={focused && !hovered} label={expandLabel} />
+        <Tooltip mode="cursor" visible={hovered} x={cursorX} y={cursorY} label={expandLabel} />
       </div>
     );
   }
@@ -195,15 +191,16 @@ export function AssetImg({
   let placeholderStyle: CSSProperties = {};
 
   if (context === 'lightbox') {
-    placeholderStyle = style.width === '100%'
-      ? { width: '100%', aspectRatio: `${ar}`, display: 'block' }
-      : {
-          height: style.maxHeight ?? '70vh',
-          width: 'auto',
-          aspectRatio: `${ar}`,
-          display: 'block',
-          flexShrink: 0,
-        };
+    placeholderStyle =
+      style.width === '100%'
+        ? { width: '100%', aspectRatio: `${ar}`, display: 'block' }
+        : {
+            height: style.maxHeight ?? '70vh',
+            width: 'auto',
+            aspectRatio: `${ar}`,
+            display: 'block',
+            flexShrink: 0,
+          };
   } else {
     let pw: number;
     let ph: number;
@@ -217,7 +214,7 @@ export function AssetImg({
       pw = maxW;
       ph = Math.round(maxW / ar);
     } else if (style.width === '100%') {
-      pw = 0; 
+      pw = 0;
       ph = 0;
     } else {
       if (isPortrait) {
@@ -253,7 +250,13 @@ export function AssetImg({
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
-      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick(e as unknown as React.MouseEvent); } : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') onClick(e as unknown as React.MouseEvent);
+            }
+          : undefined
+      }
       aria-label={alt}
     >
       {title && (
@@ -273,4 +276,3 @@ export function AssetImg({
     </div>
   );
 }
-

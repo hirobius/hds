@@ -18,7 +18,7 @@ const SIZE_TO_ICON: Record<IconButtonSize, IconSize> = {
   lg: 'large',
 };
 
-interface IconButtonProps extends Omit<ButtonProps, 'iconOnly' | 'children' | 'size'> {
+export interface IconButtonProps extends Omit<ButtonProps, 'iconOnly' | 'children' | 'size'> {
   /** Lucide icon rendered inside the button. */
   icon: LucideIcon;
   /** Size token for the button itself. */
