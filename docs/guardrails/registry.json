@@ -455,6 +455,16 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-rsc-directives",
+      "description": "Reads the built dist/ and checks 'use client' both ways: every chunk that imports React (directly or through an internal chunk) must start with it, and every framework-free chunk (brand, tokens, cn, manifest, mui) must not. Missing directives make a Next.js App Router consumer render hooks in a Server Component and fail on first import; spurious ones turn server-safe exports into opaque client references. Re-derives the rule from the files via scripts/lib/rsc-directive.mjs rather than trusting the build plugin ran.",
+      "severity": "error",
+      "gateScript": "scripts/check-rsc-directives.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
+    },
+    {
       "id": "check-secrets",
       "description": "Pre-commit secrets scanner wrapping the gitleaks binary. Registers gitleaks in the guardrail registry so it shows up in audits and fixture-proof runs.",
       "severity": "error",

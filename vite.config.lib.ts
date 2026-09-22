@@ -32,6 +32,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 
+import { applyDirectives } from './scripts/lib/rsc-directive.mjs';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const hdsManifestModuleId = 'virtual:hds-manifest';
@@ -55,8 +57,42 @@ const hdsManifestVirtualPlugin = {
   },
 };
 
+/**
+ * @internal Vite plugin: stamp `'use client'` onto every emitted chunk that
+ * executes React, and only those.
+ *
+ * The package ships hooks and CONSUMING.md advertises Next.js. In the App
+ * Router a module without the directive is a Server Component, and one that
+ * calls a hook fails at render — so without this, the first
+ * `import { Button }` in a Next.js page threw.
+ *
+ * It is NOT a blanket banner. `brand`, `tokens`, `cn`, `manifest` and `mui`
+ * are framework-free by design (see the `brand` entry below: "static Astro
+ * build or edge runtime"), and `'use client'` would turn every one of their
+ * exports into an opaque client reference when imported from server code.
+ * The per-chunk rule — imports React, or imports a chunk that does — lives in
+ * scripts/lib/rsc-directive.mjs so the standing gate
+ * (scripts/check-rsc-directives.mjs) can re-derive it from `dist/` without
+ * trusting that this plugin ran.
+ *
+ * `generateBundle` runs after `renderChunk`, where esbuild minifies, so the
+ * directive is prepended to final code and cannot be stripped.
+ */
+const rscDirectivePlugin = {
+  name: 'hds-rsc-directive',
+  generateBundle(
+    _options: unknown,
+    bundle: Record<string, { type: string; imports?: string[]; code?: string }>,
+  ) {
+    const touched = applyDirectives(bundle);
+    console.log(
+      `[rsc-directive] 'use client' on ${touched.length} chunk(s): ${touched.join(', ')}`,
+    );
+  },
+};
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(), hdsManifestVirtualPlugin],
+  plugins: [react(), tailwindcss(), hdsManifestVirtualPlugin, rscDirectivePlugin],
   // Do NOT copy the `public/` directory into the library output. The app build
   // (vite.config.mjs) serves portfolio assets, fonts, and manifests from
   // public/, but the published package must not carry ~47MB of portfolio PNGs
