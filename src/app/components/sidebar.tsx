@@ -32,7 +32,7 @@ const gapMap: Record<LayoutGap, string> = {
   spacious: 'var(--semantic-space-layout-spacious)',
 };
 
-interface SidebarProps {
+export interface SidebarProps {
   /** Exactly two children: the rail first, the fluid content second (DOM order — `side` only changes visual order). */
   children: [React.ReactNode, React.ReactNode];
   /** Which visual edge the rail renders on. Defaults to 'start'. */

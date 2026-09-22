@@ -30,7 +30,7 @@ function formatValue(value: number, step: number) {
   return decimals > 0 ? value.toFixed(decimals) : String(value);
 }
 
-interface StepperFieldProps {
+export interface StepperFieldProps {
   label: string;
   value: number;
   min: number;

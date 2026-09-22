@@ -32,7 +32,7 @@ const justifyMap: Record<FlexJustify, React.CSSProperties['justifyContent']> = {
   'space-between': 'space-between',
 };
 
-interface StackProps {
+export interface StackProps {
   /** Stack content rendered inside the flex wrapper. */
   children: React.ReactNode;
   /** Flex direction for the stack. */

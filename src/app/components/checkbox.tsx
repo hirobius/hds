@@ -110,7 +110,7 @@ const checkboxGlyphVariants = cva(
   },
 );
 
-interface CheckboxProps extends Omit<
+export interface CheckboxProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'type' | 'checked' | 'onChange'
 > {

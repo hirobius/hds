@@ -32,7 +32,7 @@ const gutterMap: Record<LayoutGap, string> = {
   spacious: 'var(--semantic-space-layout-spacious)',
 };
 
-interface CenterProps {
+export interface CenterProps {
   /** Center content. */
   children: React.ReactNode;
   /** Max width: 'content' (760px prose) | 'max' (1200px full layouts). Defaults to 'content'. */

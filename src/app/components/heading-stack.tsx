@@ -67,7 +67,7 @@ type HdsHeadingGap = NonNullable<HeadingStackGapVariantProps['gap']>;
 type HdsHeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 type HdsSupportingTag = 'p' | 'div' | 'span';
 
-interface HeadingStackProps {
+export interface HeadingStackProps {
   /** The heading content (string). */
   heading: string;
   /** The supporting copy rendered beneath the heading. */
