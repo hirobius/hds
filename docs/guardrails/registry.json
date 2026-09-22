@@ -228,7 +228,7 @@
       "description": "Counts coverage from the FIGMA side: every component set published to the library (figma/inventory.json) must be reachable from code through an @figma JSDoc tag. figma:links --check counts the other direction — components in code that carry a tag — so a design published in Figma and never wired up is invisible to it. Refuses to report green from an inventory marked complete:false, because a hand walk cannot prove a page is absent. firingChannel is manual until a full `pnpm figma:inventory --fetch` inventory is committed; it becomes ci-pr then. Exit 0 clean, 1 unmapped assets or an incomplete inventory, 2 no inventory yet.",
       "severity": "warn",
       "gateScript": "scripts/check-figma-coverage.mjs",
-      "fixturePath": null,
+      "fixturePath": "fixtures/check-figma-coverage",
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "manual",

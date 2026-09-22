@@ -548,4 +548,9 @@ async function main() {
   }
 }
 
-main();
+// Only when run as a command. Without this guard, importing the module to
+// test an exported helper runs the whole gate and calls process.exit — which
+// is how #251's DoD test first failed. Same pattern as figma-snapshot.mjs.
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main();
+}
