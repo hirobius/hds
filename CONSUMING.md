@@ -84,5 +84,19 @@ pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md
 ```
 
 CI (`.github/workflows/release.yml`) automates steps 2–3 on merge to `main`.
-Publishing uses the `NPM_TOKEN` repo secret (an npm "Automation" token for an
-account with publish rights on the `@hirobius` scope).
+
+Two repo secrets are required, and the workflow fails loudly naming either one
+if it is missing or expired:
+
+| Secret        | What it does                                                                                                                                            | If it lapses                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `NPM_TOKEN`   | Publishes to public npm. An npm "Automation" token for an account with publish rights on the `@hirobius` scope.                                         | The publish step fails.                                  |
+| `RELEASE_PAT` | Authors the "Version Packages" PR and pushes tags. A **fine-grained** PAT scoped to `hirobius/hds` with Contents + Pull requests set to Read and write. | The run fails at the guard step, before anything builds. |
+
+`RELEASE_PAT` exists because GitHub does not start workflow runs from events
+created with `GITHUB_TOKEN`. With `GITHUB_TOKEN`, `ci.yml` never fires on the
+release PR, so the required `Lean gate set` check cannot run and the PR is
+unmergeable. A user-owned token is not subject to that guard, so the release PR
+is tested like any other PR. Fine-grained tokens expire — when this one does,
+the failure names the secret and the fix rather than silently reverting to the
+deadlock.
