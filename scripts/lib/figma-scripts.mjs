@@ -67,20 +67,45 @@ export function runtimeFunctions(source = runtimeSource()) {
     .map((node) => ({ name: node.id.name, text: source.slice(node.start, node.end) }));
 }
 
-/** hdsChecksum of the runtime source, as hdsVerifyRuntime() recomputes it inside Figma. */
-export function runtimeChecksum(source = runtimeSource()) {
-  const texts = runtimeFunctions(source).map((fn) => fn.text.replace(/\r/g, ''));
-  return hdsChecksum(texts.join('\n'));
+/**
+ * The runtime functions a carrier actually runs: the transitive closure of its
+ * entry points over the other functions' names, plus `hdsVerifyRuntime`, which
+ * every carrier calls.
+ *
+ * A carrier that ships only the code it reaches is smaller to retype into
+ * `use_figma` — the snapshot script drops from 37 KB to about 8 KB, well inside
+ * the tool's 50,000-character `code` limit — and its checksum then covers
+ * exactly what it executes rather than the whole push engine. The read-only
+ * snapshot in particular no longer carries `hdsApply`, so a transcription
+ * error in code it never calls cannot fail a snapshot, and the script a human
+ * reads before running it is the script that runs.
+ */
+export function reachableRuntime(entries, source = runtimeSource()) {
+  const all = runtimeFunctions(source);
+  const byName = new Map(all.map((fn) => [fn.name, fn]));
+  const reached = new Set();
+  const queue = entries.concat(['hdsVerifyRuntime']);
+  while (queue.length) {
+    const name = queue.shift();
+    if (reached.has(name) || !byName.has(name)) continue;
+    reached.add(name);
+    const body = byName.get(name).text;
+    for (const other of byName.keys()) {
+      if (other !== name && new RegExp(`\\b${other}\\b`).test(body)) queue.push(other);
+    }
+  }
+  return all.filter((fn) => reached.has(fn.name));
 }
 
-/** The runtime plus the statement that checks it: what every use_figma script carries. */
-function verifiedRuntime() {
-  const source = runtimeSource();
-  const names = runtimeFunctions(source).map((fn) => fn.name);
+/** The runtime a carrier reaches, plus the statement that checks it. */
+function verifiedRuntime(entries) {
+  const functions = reachableRuntime(entries);
+  const names = functions.map((fn) => fn.name);
+  const texts = functions.map((fn) => fn.text.replace(/\r/g, ''));
   return [
-    source,
+    functions.map((fn) => fn.text).join('\n\n'),
     '',
-    `hdsVerifyRuntime([${names.join(', ')}], '${runtimeChecksum(source)}');`,
+    `hdsVerifyRuntime([${names.join(', ')}], '${hdsChecksum(texts.join('\n'))}');`,
   ].join('\n');
 }
 
@@ -182,7 +207,7 @@ export function buildUseFigmaPushScript(model, options = {}, title = 'full push'
     `const PAYLOAD = ${JSON.stringify(payload)};`,
     `const CHECKSUM = '${checksum}';`,
     '',
-    verifiedRuntime(),
+    verifiedRuntime(['hdsRunPush']),
     'return await hdsRunPush(figma, PAYLOAD, CHECKSUM);',
     '',
   ].join('\n');
@@ -195,7 +220,7 @@ export function buildUseFigmaSnapshotScript() {
       'Save the returned JSON to a file, then: pnpm figma:snapshot --ingest <file>',
     ]),
     '',
-    verifiedRuntime(),
+    verifiedRuntime(['hdsRunSnapshot']),
     'return await hdsRunSnapshot(figma);',
     '',
   ].join('\n');
