@@ -18,9 +18,15 @@
  * an opaque proxy on the server. So the decision is per chunk, and both
  * directions matter.
  *
- * THE RULE. A chunk needs the directive iff it imports React itself
- * (`react`, `react/jsx-runtime`, `react-dom`, …) or imports an internal chunk
- * that does — transitively. The second clause is what covers `form.js`, which
+ * THE RULE. A chunk needs the directive iff it STATICALLY imports React itself
+ * (`react`, `react/jsx-runtime`, `react-dom`, …) or statically imports an
+ * internal chunk that does — transitively.
+ *
+ * Dynamic `import()` is deliberately excluded, and that is a decision rather
+ * than an oversight: a Server Component may `await import()` a module carrying
+ * `'use client'` and stay a Server Component, because the boundary sits at the
+ * imported module, which is marked on its own account. Marking the importer
+ * too would push the boundary up the graph for no benefit. The second clause is what covers `form.js`, which
  * imports only `react-hook-form` and a shared chunk; the chunk is where React
  * is, and a Server Component importing from `form.js` still has to cross a
  * client boundary somewhere.
@@ -121,9 +127,25 @@ function jsFiles(dir, base = dir, acc = []) {
   return acc;
 }
 
-/** Static import specifiers of an emitted ESM file. */
+/**
+ * Static import specifiers of an emitted ESM file.
+ *
+ * Anchored on a statement boundary — start of file, newline, or `;` — because
+ * whole-file minification puts statements on one line. The keyword is followed
+ * by `\b`, not `\s`: `import{jsx}from"react/jsx-runtime"` and `export*from"./x"`
+ * are legal and space-free, and an earlier version requiring the space read
+ * neither.
+ *
+ * That mattered more than it looks. The build plugin decides from Rollup's
+ * structured `imports` metadata, which no formatting can affect; this audit
+ * re-derives the same rule by PARSING TEXT. If the two disagree about the graph
+ * the gate fails a correct build, or — the dangerous direction — passes a wrong
+ * one. Today Rollup renders the import statements itself and they arrive
+ * spaced, so the old form happened to work; nothing guaranteed it would keep
+ * working, and the gate should not rest on a detail it does not control.
+ */
 const IMPORT_SPECIFIER =
-  /(?:^|\n)\s*(?:import|export)\s[^'"]*?from\s*['"]([^'"]+)['"]|(?:^|\n)\s*import\s*['"]([^'"]+)['"]/g;
+  /(?:^|[\n;])\s*(?:import|export)\b[^'"]*?\bfrom\s*['"]([^'"]+)['"]|(?:^|[\n;])\s*import\s*['"]([^'"]+)['"]/g;
 
 function importsOf(code) {
   const out = [];

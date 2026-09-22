@@ -188,4 +188,36 @@ describe('auditDist', () => {
     write({});
     expect(auditDist(dir).scanned).toBe(0);
   });
+
+  // Rollup, not esbuild, renders the import statements, so real output today is
+  // spaced (`import { jsx } from "react/jsx-runtime";`) and the audit reads it
+  // correctly. But nothing GUARANTEES that: the audit re-parses text while the
+  // build plugin reads Rollup's structured metadata, and if the two ever
+  // disagree about the graph the gate can fail a correct build or — far worse —
+  // pass a wrong one. These pin the whitespace-free forms so the audit does not
+  // silently depend on a formatting detail it does not control.
+  it('reads a minified import with no space after the keyword', () => {
+    write({ 'ui.js': 'import{jsx as j}from"react/jsx-runtime";export const A=1;' });
+    expect(auditDist(dir).missing).toEqual(['ui.js']);
+  });
+
+  it('reads a minified star re-export with no spaces', () => {
+    write({
+      'a.js': 'export*from"./chunks/b.js";',
+      'chunks/b.js': `${DIRECTIVE}\nimport{jsx}from"react/jsx-runtime";export const x=1;`,
+    });
+    expect(auditDist(dir).missing).toEqual(['a.js']);
+  });
+
+  it('reads an import that is not the first statement on its line', () => {
+    // Whole-file minification puts statements on one line separated by `;`.
+    write({ 'ui.js': 'const a=1;import{jsx}from"react/jsx-runtime";export const A=a;' });
+    expect(auditDist(dir).missing).toEqual(['ui.js']);
+  });
+
+  it('still ignores a bare word that merely starts with the keyword', () => {
+    // `important` must not read as `import`.
+    write({ 'ok.js': 'const important="x";export const A=1;' });
+    expect(auditDist(dir)).toEqual({ missing: [], spurious: [], scanned: 1 });
+  });
 });
