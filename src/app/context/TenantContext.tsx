@@ -25,20 +25,33 @@ function clearBrandAttrs(): void {
 /**
  * TenantProvider
  *
- * Reads VITE_TENANT_SLUG from the Vite environment and, if set, writes
- * `data-tenant="<slug>"` onto `<html>` so CSS tenant-scope selectors
+ * Writes `data-tenant="<slug>"` onto `<html>` so CSS tenant-scope selectors
  * (e.g. `[data-tenant="acme"] .hds-button`) resolve correctly at runtime.
  *
- * Single-tenant deployments that never set VITE_TENANT_SLUG are unaffected:
- * no attribute is written and no context value is populated.
+ * Pass the slug in. It used to be read from `VITE_TENANT_SLUG` via
+ * `import.meta.env`, which the library build evaluated at HDS's build time
+ * rather than the consumer's — it baked to `{}` in `dist/contexts.js`, so the
+ * provider had been an inert no-op for every installed consumer regardless of
+ * what they set. Taking a prop is therefore not a behaviour change for anyone
+ * downstream: it is the first version that works at all.
+ *
+ * An app that still wants an env var reads it itself and passes the result,
+ * which is the only place that knows its own build:
+ *
+ * ```tsx
+ * <TenantProvider slug={import.meta.env.VITE_TENANT_SLUG as TenantSlug}>
+ * ```
+ *
+ * Omitting `slug` writes no attribute and populates no context value.
  */
-export function TenantProvider({ children }: { children: ReactNode }) {
-  const slug: TenantSlug | null =
-    typeof import.meta.env['VITE_TENANT_SLUG'] === 'string' &&
-    import.meta.env['VITE_TENANT_SLUG'].trim().length > 0
-      ? (import.meta.env['VITE_TENANT_SLUG'].trim() as TenantSlug)
-      : null;
-
+export function TenantProvider({
+  children,
+  slug = null,
+}: {
+  children: ReactNode;
+  /** The active tenant, or null for a single-tenant deployment. */
+  slug?: TenantSlug | null;
+}) {
   useEffect(() => {
     if (!slug) return;
     applyBrandAttrs(slug);
