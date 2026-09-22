@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>StatusDot Figma Pilot</title>
+    <style>
+      :root {
+        --bg: #fff;
+        --fg: #111;
+        --mut: #6b6b6b;
+        --line: #e8e8e8;
+        --line2: #d0d0d0;
+        --acc: #1e2efd;
+        --ok: #047857;
+        --warn: #92400e;
+        --bad: #b91c1c;
+        --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+        --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #0b0b0c;
+          --fg: #ededed;
+          --mut: #8f8f8f;
+          --line: #212123;
+          --line2: #333;
+          --ok: #34d399;
+          --warn: #fbbf24;
+          --bad: #f87171;
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #0b0b0c;
+        --fg: #ededed;
+        --mut: #8f8f8f;
+        --line: #212123;
+        --line2: #333;
+        --ok: #34d399;
+        --warn: #fbbf24;
+        --bad: #f87171;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--sans);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 64px 16px 96px;
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mut);
+        margin: 0 0 12px;
+      }
+      h1 {
+        font-size: 34px;
+        line-height: 1.15;
+        margin: 0 0 12px;
+        letter-spacing: -0.02em;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 56px 0 14px;
+        letter-spacing: -0.01em;
+      }
+      h3 {
+        font-size: 15px;
+        margin: 28px 0 8px;
+      }
+      p,
+      li {
+        font-size: 15px;
+      }
+      .lede {
+        font-size: 17px;
+        color: var(--mut);
+        margin: 0 0 8px;
+      }
+      .meta {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--mut);
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        margin-top: 22px;
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 0.88em;
+        background: color-mix(in srgb, var(--fg) 7%, transparent);
+        padding: 0.12em 0.38em;
+        border-radius: 3px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 9px 10px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--mut);
+        font-weight: 600;
+        border-bottom: 1px solid var(--line2);
+      }
+      td.mono,
+      th.mono {
+        font-family: var(--mono);
+        font-size: 12.5px;
+      }
+      .ok {
+        color: var(--ok);
+      }
+      .bad {
+        color: var(--bad);
+      }
+      .warn {
+        color: var(--warn);
+      }
+      .band {
+        border-left: 2px solid var(--line2);
+        padding: 2px 0 2px 18px;
+        margin: 22px 0;
+      }
+      .band.alert {
+        border-left-color: var(--bad);
+      }
+      .dotgrid {
+        display: grid;
+        grid-template-columns: 90px repeat(3, 1fr);
+        gap: 10px 8px;
+        align-items: center;
+        margin: 18px 0;
+        max-width: 420px;
+      }
+      .dotgrid .hd {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--mut);
+      }
+      .dot {
+        border-radius: 9999px;
+        display: block;
+      }
+      .cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+      }
+      .tone {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--mut);
+      }
+      ol li,
+      ul li {
+        margin: 5px 0;
+      }
+      .foot {
+        margin-top: 64px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--mut);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="eyebrow">HDS · Figma pilot</p>
+      <h1>StatusDot, drawn into Figma by an agent</h1>
+      <p class="lede">
+        The pilot asked one question: if an agent can draw one component correctly from the
+        manifest, are the other 40 mechanical? Answer: yes — and the attempt surfaced a library-wide
+        defect that no gate could have caught.
+      </p>
+      <p class="meta">
+        2026-09-21 · staging file <code>2VgBbVpKiDnu0aftJEVyBQ</code> · set <code>2003:21</code> ·
+        page <code>StatusDot</code> · branch <code>claude/hds-statusdot-figma-pilot-l8i44i</code>
+      </p>
+
+      <h2>What was drawn</h2>
+      <p>
+        A single <code>StatusDot</code> component set: 6 tones × 3 sizes = 18 variants, named to the
+        file's existing convention (<code>Tone=neutral, Size=md</code>), placed on its own page
+        beside the other <code>Status*</code> pages.
+      </p>
+
+      <div class="dotgrid">
+        <div></div>
+        <div class="hd">sm · 6px</div>
+        <div class="hd">md · 8px</div>
+        <div class="hd">lg · 10px</div>
+        <div class="tone">neutral</div>
+        <div class="cell">
+          <span class="dot" style="width: 6px; height: 6px; background: #525252"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 8px; height: 8px; background: #525252"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 10px; height: 10px; background: #525252"></span>
+        </div>
+        <div class="tone">info</div>
+        <div class="cell">
+          <span class="dot" style="width: 6px; height: 6px; background: #1e2efd"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 8px; height: 8px; background: #1e2efd"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 10px; height: 10px; background: #1e2efd"></span>
+        </div>
+        <div class="tone">success</div>
+        <div class="cell">
+          <span class="dot" style="width: 6px; height: 6px; background: #047857"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 8px; height: 8px; background: #047857"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 10px; height: 10px; background: #047857"></span>
+        </div>
+        <div class="tone">danger</div>
+        <div class="cell">
+          <span class="dot" style="width: 6px; height: 6px; background: #b91c1c"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 8px; height: 8px; background: #b91c1c"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 10px; height: 10px; background: #b91c1c"></span>
+        </div>
+        <div class="tone">warning</div>
+        <div class="cell">
+          <span class="dot" style="width: 6px; height: 6px; background: #92400e"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 8px; height: 8px; background: #92400e"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 10px; height: 10px; background: #92400e"></span>
+        </div>
+        <div class="tone">inProgress</div>
+        <div class="cell">
+          <span class="dot" style="width: 6px; height: 6px; background: #6d28d9"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 8px; height: 8px; background: #6d28d9"></span>
+        </div>
+        <div class="cell">
+          <span class="dot" style="width: 10px; height: 10px; background: #6d28d9"></span>
+        </div>
+      </div>
+
+      <h3>Binding decisions</h3>
+      <table>
+        <tr>
+          <th>Property</th>
+          <th>Bound to</th>
+          <th>Why</th>
+        </tr>
+        <tr>
+          <td class="mono">fill</td>
+          <td class="mono">color/feedback/*, color/content/secondary</td>
+          <td>
+            Code uses semantic tokens here, so Figma does too. <code>danger</code> maps to the
+            <strong>error</strong> token pair, matching the prop vocabulary.
+          </td>
+        </tr>
+        <tr>
+          <td class="mono">cornerRadius</td>
+          <td class="mono">radius/full</td>
+          <td>
+            Code says <code>rounded-full</code>; <code>radius/full</code> is its exact equivalent.
+          </td>
+        </tr>
+        <tr>
+          <td class="mono">width / height</td>
+          <td class="mono">— literal 6 / 8 / 10px</td>
+          <td>
+            <strong>Deliberately unbound.</strong> Code uses raw Tailwind (<code
+              >h-1.5 / h-2 / h-2.5</code
+            >) with no HDS token behind it. Inventing <code>statusDot/*</code> variables would
+            manufacture drift against ADR-025. Tracked in #242.
+          </td>
+        </tr>
+      </table>
+
+      <h2 class="bad">The finding that mattered</h2>
+      <div class="band alert">
+        <p style="margin-top: 0">
+          Verifying that the fills were genuinely variable-bound rather than baked meant flipping
+          the set to Dark mode. The dots did not change. That turned out not to be a StatusDot bug —
+          <strong>every mode-aware variable in the file is identical in Light and Dark.</strong>
+        </p>
+        <table>
+          <tr>
+            <th>Collection</th>
+            <th>Variables</th>
+            <th>Identical in both modes</th>
+            <th>Differing</th>
+          </tr>
+          <tr>
+            <td class="mono">Hirobius/Semantic</td>
+            <td>110</td>
+            <td class="bad">110</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td class="mono">Hirobius/Component</td>
+            <td>79</td>
+            <td class="bad">79</td>
+            <td>0</td>
+          </tr>
+        </table>
+        <p>
+          Code ships a full <code>[data-theme="dark"]</code> block —
+          <code>content.secondary</code> goes <code>neutral-600 → neutral-400</code>,
+          <code>feedback.success</code> goes <code>green-700 → green-400</code>. Figma has none of
+          it. Dark mode on the canvas is a mode that exists and does nothing.
+        </p>
+        <p style="margin-bottom: 0">
+          Filed as <strong>#252</strong>. It is not #245 (that is a code-side CSS-emission bug);
+          both point at dark mode being the least-verified surface in the system. Nothing caught it
+          because <code>check:figma-drift</code> has never run against real state — no snapshot has
+          ever been committed (#236).
+        </p>
+      </div>
+      <p>
+        Worth being precise about the blast radius: <strong>no component rework is implied.</strong>
+        StatusDot binds to the right variables. The moment the collections are repaired, it — and
+        all 88 components already in Figma — start rendering dark mode correctly. The fix lives
+        entirely in the variable collections.
+      </p>
+
+      <h2>Three mechanics worth not rediscovering</h2>
+      <ol>
+        <li>
+          <strong>A component set does not grow to fit its variants.</strong> Resize the set
+          <em>before</em> repositioning children, or the outer column and row are silently clipped —
+          the structure reads correct in metadata while the render is wrong.
+        </li>
+        <li>
+          <strong><code>defaultVariant</code> is positional, not child order.</strong> Figma takes
+          the top-left-most variant. <code>insertChild(0, …)</code> does nothing; moving
+          <code>x</code>/<code>y</code> does. Confirmed by probe.
+        </li>
+        <li>
+          <strong><code>fills[0].color</code> returns the baked colour</strong>, not the
+          mode-resolved one — so it cannot prove a binding is live. Resolve
+          <code>valuesByMode</code> through its alias chain instead. Reading the baked value is what
+          nearly let the dark-mode defect pass as "same colour in both themes, fine".
+        </li>
+      </ol>
+
+      <h2>Open decision</h2>
+      <p>
+        Figma's positional default means "grid reads ascending" and "default variant matches the
+        code default" cannot both hold. Button already drifts on two axes (code
+        <code>secondary/md</code> vs Figma <code>Primary/sm</code>). StatusDot was left ascending
+        and consistent with the library rather than fixed alone — a small consistent wrongness beats
+        an inconsistent rightness across 41 components. Ruling needed before the other 40:
+        <strong>#253</strong>, defaulting to "keep ascending" on 2026-10-05.
+      </p>
+
+      <h2>Verdict</h2>
+      <p>
+        The other 40 are mechanical. The recipe is written down in
+        <code>figma/COMPONENT-DRAWING-RECIPE.md</code>. The real cost is not drawing — it is
+        resolving each component's tokens against code first, which is exactly the step that turned
+        up #252.
+      </p>
+
+      <p class="foot">
+        Staging only, per ADR-026 — the published library (<code>c8MaVgwxOlxm4wr8wnH0Z4</code>) was
+        never written to. No <code>@figma</code> JSDoc tag was added: staging node IDs do not
+        survive promotion, and every existing tag points at the published library.
+      </p>
+    </div>
+  </body>
+</html>
