@@ -609,7 +609,20 @@ function runWiringCheck(
     if (declared === actual) ok = true;
     else if ((declared === 'ci-pr' || declared === 'ci-scheduled') && actual === 'ci-detected')
       ok = true;
-    else if (declared === 'manual' && (actual === 'none' || actual === 'pnpm-meta')) ok = true;
+    // `manual` means "never auto-fires" (see the channel taxonomy above), so
+    // `none` is the ONLY detection consistent with it. This once also accepted
+    // `pnpm-meta`, which collapsed the single distinction the field exists to
+    // draw: 24 gates were recorded as operator-only CLI tools while in fact
+    // reachable from a package.json script. Six of them — including
+    // check-source-canon, registered manual/warn — sit in `pretest` and so run
+    // on every PR, which meant the registry called the Swiss canon dormant
+    // while it was blocking merges. Pinned by
+    // scripts/__tests__/check-validator-wiring.manual-channel.test.mjs.
+    //
+    // KNOWN LIMIT: `pnpm-meta` detection matches a gateScript named in ANY
+    // package.json script, invoked or not, so a dead alias satisfies it. It
+    // means "referenced by a script", not "runs". See SCHEMA.md.
+    else if (declared === 'manual' && actual === 'none') ok = true;
     else if (declared === 'pre-commit' && actual === 'pre-commit') ok = true;
     else if (declared === 'commit-msg' && actual === 'commit-msg') ok = true;
 

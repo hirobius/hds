@@ -6,6 +6,7 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
 import hds from '../design-system/tokens';
+import { isDevelopment } from '../../lib/env';
 
 /** @public */
 export type IconSize = keyof typeof hds.iconSize | number | string;
@@ -52,7 +53,7 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(function Icon(
   },
   ref,
 ) {
-  if (import.meta.env.DEV && !IconComponent) {
+  if (isDevelopment() && !IconComponent) {
     console.warn('[Icon] icon prop is missing or undefined. Provide a Lucide icon component.');
     return null;
   }

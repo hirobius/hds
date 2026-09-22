@@ -8,11 +8,13 @@
  *
  * No-op in production builds. Each unique `code` warns at most once per session.
  */
+import { isProduction } from './env';
+
 const warned = new Set<string>();
 
 /** Emit a deprecation warning once per unique `code` (dev only). */
 export function warnOnce(code: string, message: string): void {
-  if (import.meta.env?.PROD) return;
+  if (isProduction()) return;
   if (warned.has(code)) return;
   warned.add(code);
   console.warn(`[HDS deprecation] ${message} (${code})`);
