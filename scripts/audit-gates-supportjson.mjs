@@ -74,15 +74,40 @@ try {
   process.exit(2);
 }
 
-// Skip pnpm-meta channel for cost (47 gates × 30s ≈ 23 min worst case).
-// Strict cohort = pre-commit + ci-pr + manual + ci-scheduled + pre-push.
-const SKIP_CHANNELS = new Set(['pnpm-meta']);
+// Gates too slow to probe here, BY IDENTITY rather than by channel.
+//
+// This used to read `firingChannel !== 'pnpm-meta'`, using the channel as a
+// stand-in for "expensive". That coupled the cohort to a label that means
+// something else entirely, and it broke the moment the label was corrected:
+// relabelling 24 mislabelled `manual` gates to their real `pnpm-meta` channel
+// silently dropped the probe cohort from 39 to 15 — a 62% coverage loss with
+// nothing to announce it, in the very commit that set out to end exactly this
+// class of silent drift.
+//
+// An explicit list cannot do that. It is also safe in the right direction: a
+// gate added tomorrow is INCLUDED by default, so the failure mode is a slow
+// run, not a quiet hole. Seeded with the 14 gates this skipped before the
+// relabel, so behaviour is unchanged from `main`.
+const SKIP_IDS = new Set([
+  'audit-deps',
+  'check-brand',
+  'check-code-connect',
+  'check-figma-mapping',
+  'check-focus-states',
+  'check-link-integrity',
+  'check-manifest-schema-semver',
+  'check-security-baseline',
+  'check-style-discipline',
+  'check-tailwind-token-coverage',
+  'check-tier-bypass',
+  'check-token-descriptions',
+  'check-token-renames',
+  'check-token-structure',
+]);
 // The meta-gate must not invoke itself (recursion → infinite spawn loop).
 const SELF_ID = 'audit-gates-supportjson';
 
-const target = registry.gates.filter(
-  (g) => g && !SKIP_CHANNELS.has(g.firingChannel) && g.id !== SELF_ID,
-);
+const target = registry.gates.filter((g) => g && !SKIP_IDS.has(g.id) && g.id !== SELF_ID);
 
 // ── Probe each gate ──────────────────────────────────────────────────────────
 
