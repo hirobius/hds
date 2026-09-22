@@ -61,18 +61,72 @@ function shippedSourceFiles(dir: string, acc: string[] = []): string[] {
   return acc;
 }
 
+/**
+ * Every occurrence of `import.meta`, wherever it appears.
+ *
+ * Matching `import.meta.env` directly was the obvious rule and the wrong one:
+ * `import.meta['env']`, `const meta = import.meta`, and destructuring all reach
+ * the same baked object without ever writing the characters `.env`. So the scan
+ * is inverted — find every `import.meta` and allow only the members that are
+ * safe in shipped code.
+ */
+const IMPORT_META = /import\s*\.\s*meta/g;
+
+/**
+ * Members that mean the same thing in the library build and in the consumer's.
+ *
+ * `glob` and `url` are resolved by Vite at build time into real values, which is
+ * correct: the files being globbed and the module's own URL are HDS's, not the
+ * consumer's. `env` is the opposite — its value belongs to whoever is building
+ * the app — which is exactly why it is absent from this list.
+ */
+const SAFE_MEMBER = /^\s*\.\s*(?:url|glob|globEager|hot|resolve|dirname|filename)\b/;
+
+/** `import.meta` occurrences in `code` that are not one of the safe members. */
+function unsafeMetaLines(code: string): number[] {
+  const lines: number[] = [];
+  for (const match of code.matchAll(IMPORT_META)) {
+    const after = code.slice(match.index + match[0].length);
+    if (SAFE_MEMBER.test(after)) continue;
+    lines.push(code.slice(0, match.index).split('\n').length);
+  }
+  return lines;
+}
+
 describe('shipped library source', () => {
-  it('never reads import.meta.env, which the library build would bake to a constant', () => {
+  it('never reaches import.meta.env, which the library build would bake to a constant', () => {
     const offenders = shippedSourceFiles(SRC)
-      .map((rel) => ({ rel, text: readFileSync(join(ROOT, rel), 'utf8') }))
-      .map(({ rel, text }) => ({ rel, code: stripComments(text) }))
-      .filter(({ code }) => /import\s*\.\s*meta\s*\.\s*env/.test(code))
-      .map(({ rel, code }) => {
-        const line = code.split('\n').findIndex((l) => /import\s*\.\s*meta\s*\.\s*env/.test(l)) + 1;
-        return `${rel}:${line}`;
-      });
+      .map((rel) => ({ rel, code: stripComments(readFileSync(join(ROOT, rel), 'utf8')) }))
+      .flatMap(({ rel, code }) => unsafeMetaLines(code).map((line) => `${rel}:${line}`));
 
     expect(offenders).toEqual([]);
+  });
+
+  it('catches every way of reaching it, not just the dotted one', () => {
+    // The original guard only matched `import.meta.env`. Each of these reaches
+    // the same object and would have shipped past it unnoticed.
+    const dodges = [
+      `const dev = import.meta.env.DEV;`,
+      `const dev = import.meta['env'].DEV;`,
+      `const dev = import.meta["env"].DEV;`,
+      `const { env } = import.meta;`,
+      `const meta = import.meta;`,
+      `const dev = import\n  .meta\n  .env.DEV;`,
+    ];
+    for (const dodge of dodges) {
+      expect(unsafeMetaLines(dodge), dodge).not.toEqual([]);
+    }
+  });
+
+  it('leaves the build-time members alone, which are correct in shipped code', () => {
+    const allowed = [
+      `const mods = import.meta.glob('./*.tsx');`,
+      `const here = import.meta.url;`,
+      `const dir = import.meta.dirname;`,
+    ];
+    for (const line of allowed) {
+      expect(unsafeMetaLines(line), line).toEqual([]);
+    }
   });
 
   it('scans a meaningful number of files, so a broken walker cannot pass vacuously', () => {
