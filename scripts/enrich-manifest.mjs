@@ -1,6 +1,7 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 import fs from 'node:fs';
 import path from 'node:path';
+import { buildStoryIndex } from './lib/story-link.mjs';
 
 const repoRoot = process.cwd();
 const manifestPath = path.join(repoRoot, 'public', 'hds-manifest.json');
@@ -455,6 +456,34 @@ for (const [name, spec] of Object.entries(componentSpecs)) {
   ) {
     spec.a11yRules = targets.has(name) ? [...(a11yDefaults[name] ?? [])] : (spec.a11yRules ?? []);
   }
+}
+
+// Join each component to the stories that exercise it. The manifest is the
+// declared source of truth for inventory and Figma links and could not answer
+// "where is Button's story", though the link was derivable from source all
+// along -- so nothing could gate it and an agent looking for an editing target
+// had to grep. Ids are derived rather than read from storybook-static, so this
+// needs no build; scripts/__tests__/story-link.test.mjs asserts the derivation
+// against the real index.json whenever one is present.
+const storyFiles = fs
+  .globSync('src/**/*.stories.tsx', { cwd: repoRoot })
+  .map((p) => p.split(path.sep).join('/'))
+  .sort();
+const { byFilePath: storiesByFilePath } = buildStoryIndex(
+  storyFiles.map((p) => ({ path: p, source: fs.readFileSync(path.join(repoRoot, p), 'utf8') })),
+  new Set(
+    Object.values(componentSpecs)
+      .map((spec) => spec.filePath)
+      .filter(Boolean),
+  ),
+);
+
+for (const [, spec] of Object.entries(componentSpecs)) {
+  const link = spec.filePath ? storiesByFilePath.get(spec.filePath) : undefined;
+  // Always written, including as empty arrays: a component with no story is a
+  // fact worth recording, and an absent field reads as "not yet computed".
+  spec.storyFiles = link?.storyFiles ?? [];
+  spec.storyIds = link?.storyIds ?? [];
 }
 
 manifest.componentSpecs = componentSpecs;

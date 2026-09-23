@@ -27,3 +27,10 @@ pnpm lint --max-warnings=0
 echo "Token pipeline validity (verify-tokens + check-contrast)…"
 node scripts/verify-tokens.mjs
 node scripts/check-contrast.mjs
+
+# Joins source, manifest, Storybook and Figma into one table and fails when they
+# drift apart. Qualifies for this lean set: 0.6s, no network, no browser, no
+# build -- story ids are derived from source rather than read from
+# storybook-static, so it runs anywhere.
+echo "Record join (source ↔ manifest ↔ Storybook ↔ Figma)…"
+node scripts/check-sync-map.mjs

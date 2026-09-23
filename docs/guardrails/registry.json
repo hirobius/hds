@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "a3e8080e12cc8cf7edf95a12c7e2e538d95eaacc6bce0e30b27c549bcc0e5300",
-  "precommitStructureHashUpdatedAt": "2026-07-07T18:31:52.102Z",
+  "precommitStructureHash": "ce3f552e8ae4618522f9986f1c95d72ceb063482f2c22187367faccb47161394",
+  "precommitStructureHashUpdatedAt": "2026-09-23T06:20:20.878Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -449,6 +449,16 @@
       "source": "human",
       "firingChannel": "on-demand",
       "firingChannels": ["on-demand"]
+    },
+    {
+      "id": "check-sync-map",
+      "description": "Joins the four records that describe a component -- source file, manifest entry, Storybook story, Figma node -- into one table with a per-component verdict, so an editing target can be looked up instead of remembered. Re-derives story ids from source rather than trusting the manifest, so a stale manifest fails rather than passing a gate whose job is to prove the records agree. Fails on a drop in story or Figma coverage, on a story file that resolves to no component, and on manifest drift. Expectations come from the ratified disposition (hds#235): a layout primitive is never reported as missing a Figma node it is not supposed to have.",
+      "severity": "error",
+      "gateScript": "scripts/check-sync-map.mjs",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"]
     },
     {
       "id": "check-published-types",
