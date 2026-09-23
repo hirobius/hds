@@ -239,7 +239,7 @@
     "scaffold:component": "node scripts/scaffold-component.mjs",
     "scaffold:tenant": "node scripts/scaffold-tenant.mjs",
     "size-limit": "size-limit --config .size-limit.cjs",
-    "smoke:consumer": "node scripts/smoke-consumer.mjs && node scripts/check-published-types.mjs",
+    "smoke:consumer": "node scripts/smoke-consumer.mjs && node scripts/check-published-types.mjs && node scripts/check-rsc-directives.mjs",
     "sync": "node scripts/build-tokens.mjs && node scripts/audit-tokens.mjs --forbidden && node scripts/build-handoff.mjs && node scripts/build-design-md.mjs && node scripts/build-figma-variables.mjs",
     "sync:health": "node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/build-tokens.mjs && node scripts/audit-tokens.mjs --report-only && node scripts/build-design-md.mjs",
     "test": "vitest run --passWithNoTests",
