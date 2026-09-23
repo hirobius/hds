@@ -14,7 +14,7 @@
 
 | Attribute         | Value                                                        |
 | ----------------- | ------------------------------------------------------------ |
-| Brand blue        | `#1E2EFD` (`primitive.color.blue.500`)                       |
+| Brand accent      | `#111111` (`semantic.accent.rest`)                           |
 | Font              | Satoshi (self-hosted) + Geist Mono (monospace)               |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
@@ -523,7 +523,7 @@ Semantic layout tokens exist for layout decisions only: readable content widths,
 
 <!-- auto:start:agent-constraints -->
 
-- **One accent color:** `#1E2EFD` only — no other hues
+- **One accent color:** `#111111` (`semantic.accent.rest`) only — no other hues
 - **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and Geist Mono for code; no other faces
 - **Action radius:** `4px` for interactive controls; `8px` cards
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale

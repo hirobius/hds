@@ -25,6 +25,8 @@ import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { homedir } from 'os';
 
+import { brandAccent, violationsInSource } from './lib/brand-truth.mjs';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
@@ -44,9 +46,14 @@ const LEGACY_FONT_DECLARATION_PATTERN = new RegExp(
 // ── Read current brand values ─────────────────────────────────────────────────
 
 const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
-const primaryColor = raw.primitive?.color?.blue?.['500']?.$value?.toLowerCase();
-if (!primaryColor)
-  throw new Error('Cannot read primitive.color.blue.500 from hirobius.tokens.json');
+
+// #246: this used to read `primitive.color.blue.500` directly, then validate the
+// docs against it. After #208 repointed the accent to a neutral the gate went on
+// reporting "all docs in sync" at #1e2efd for days — it was defining the value it
+// was checking, so it could not see drift in it. The accent now comes from
+// semantic.accent.rest, resolved the same way the shipped CSS resolves it, and it
+// throws rather than falling back if that token is missing.
+const primaryColor = brandAccent(raw);
 
 // 12t-typography-truth-up: corrected token path. Was `raw.primitive.font.family.primary`,
 // which doesn't exist (tokens carry primitive.typography.family.primary). Empty fontName
@@ -54,10 +61,12 @@ if (!primaryColor)
 const fontRaw = raw.primitive?.typography?.family?.primary?.$value;
 const fontName = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? '';
 
-// All other blue scale values — these are NOT the brand primary, flag if used as brand
-const otherBlues = Object.values(raw.primitive?.color?.blue ?? {})
-  .map((v) => v?.$value?.toLowerCase?.())
-  .filter((v) => v && typeof v === 'string' && v !== primaryColor);
+// No `otherBlues` list any more. The old rule was "the brand is a blue, flag the
+// OTHER blues", which stopped meaning anything once the brand became a neutral —
+// and would have flagged correct documentation of semantic.color.feedback.info,
+// which still aliases primitive.color.blue.500. Blue is no longer the brand; it is
+// not thereby stale. scripts/lib/brand-truth.mjs flags a CLAIM instead: a line
+// asserting a hex is the brand/primary/accent while naming a different hex.
 
 // ── Files and rules ───────────────────────────────────────────────────────────
 
@@ -66,6 +75,14 @@ const ACTIVE_DOCS =
     ? [resolve(fixtureFile)]
     : (() => {
         const docs = [
+          // The brand spec itself. #246: these three WERE NOT SCANNED, which is
+          // why DESIGN.md could open with "a single electric-blue accent" while
+          // the gate reported every doc in sync. CLAUDE.md tells every agent to
+          // read DESIGN.md first before visual work, so a lie here propagates
+          // into code by design.
+          join(ROOT, 'DESIGN.md'),
+          join(ROOT, 'DESIGN.source.md'),
+          join(ROOT, 'DESIGN-HANDOFF.md'),
           join(ROOT, 'scripts', 'build-tokens.mjs'),
           join(ROOT, 'TASKS.md'),
           join(ROOT, 'src', 'app', 'data', 'projects.ts'),
@@ -102,28 +119,21 @@ for (const file of ACTIVE_DOCS) {
   const rel = file.startsWith(ROOT) ? file.slice(ROOT.length + 1).replace(/\\/g, '/') : file;
   const lines = readFileSync(file, 'utf8').split('\n');
 
+  // ── Color check ────────────────────────────────────────────────────────────
+  // Whole-file, via the shared rule, so the gate and its tests cannot drift.
+  for (const v of violationsInSource(readFileSync(file, 'utf8'), rel, primaryColor)) {
+    console.error(
+      `✗ [${v.file}:${v.line}] claims ${v.found} is the brand accent; it is ${v.expected}`,
+    );
+    console.error(`    ${v.text}`);
+    errors++;
+  }
+
   lines.forEach((line, i) => {
     const lineNum = i + 1;
-    const lower = line.toLowerCase();
 
     // Skip historical lines
     if (HISTORICAL_EXEMPTIONS.some((p) => p.test(line))) return;
-
-    // ── Color check ──────────────────────────────────────────────────────────
-    // Flag if line mentions another blue-scale hex in a brand-relevant context.
-    // Skip lines that already contain the current primary — those are describing
-    // the full scale (e.g. "10 steps from #060a33 to #eef0ff, anchored at #1e2fff").
-    if (!lower.includes(primaryColor)) {
-      for (const stale of otherBlues) {
-        if (lower.includes(stale)) {
-          console.error(
-            `âœ— [${rel}:${lineNum}] Stale brand color ${stale} (current: ${primaryColor})`,
-          );
-          console.error(`    ${line.trim()}`);
-          errors++;
-        }
-      }
-    }
 
     // ── Font check ───────────────────────────────────────────────────────────
     // Flag stale legacy font references outside tests and archived context
