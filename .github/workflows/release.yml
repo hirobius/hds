@@ -67,23 +67,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
-          scope: '@hirobius'
-
-      - run: pnpm install --frozen-lockfile
-
-      # Fail loud, before anything is built or published, if RELEASE_PAT is
-      # missing or expired. Without this the action would still "succeed" using
-      # a token that cannot trigger CI, and the release PR would silently go
-      # back to being unmergeable — the exact failure this secret exists to end.
+      # FIRST step, before checkout: checkout below takes RELEASE_PAT, and an
+      # unset secret there fails with a git auth error that names nothing.
+      # Fail loud here instead, before anything is checked out, built or
+      # published. Without this the run could still "succeed" on a token that
+      # cannot trigger CI, and the release PR would silently go back to being
+      # unmergeable — the exact failure this secret exists to end.
       # Read through `env`, not `if: ${{ secrets.X == '' }}` — the secrets
       # context is not reliably available in a step-level `if`, and a condition
       # that silently evaluates false would skip the guard entirely, which is
@@ -109,6 +98,31 @@ jobs:
           echo "Then add it as the repo secret RELEASE_PAT at"
           echo "  https://github.com/hirobius/hds/settings/secrets/actions"
           exit 1
+
+      # RELEASE_PAT here too, not just on the changesets step below.
+      # actions/checkout persists the token it is given into .git/config
+      # (persist-credentials defaults to true), and that is the credential
+      # changesets uses to PUSH the "Version Packages" branch. Passing the PAT
+      # only to the changesets step fixed who AUTHORS the PR through the API
+      # while leaving the push itself on GITHUB_TOKEN — so the resulting
+      # pull_request event was still attributed to github-actions[bot], and CI
+      # on #266 came back `action_required` (run 35811146524) waiting on a
+      # human to click Approve. The token that pushes is the one that decides
+      # the event's actor, so it has to be the PAT.
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.RELEASE_PAT }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+          scope: '@hirobius'
+
+      - run: pnpm install --frozen-lockfile
 
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
