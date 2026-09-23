@@ -25,17 +25,16 @@
  * Chromium resolution order: PLAYWRIGHT_CHROMIUM_PATH, the image-provided build
  * under /opt/pw-browsers, then Playwright's own download.
  */
-import http from 'node:http';
-import { createReadStream, existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
 import {
   PROBE_CONFIG,
   PROBE_SOURCE,
   diffAgainstBaseline,
   summarize,
 } from './lib/rendered-geometry.mjs';
+import { launchChromium, serveStorybook, storyUrl } from './lib/storybook-host.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -56,58 +55,10 @@ const EXTERNAL_URL = valueOf('--storybook-url');
 const CONCURRENCY = Number(process.env.RENDER_GATE_CONCURRENCY || 6);
 const VIEWPORT = { width: 1280, height: 900 };
 
-const MIME = {
-  '.html': 'text/html',
-  '.js': 'text/javascript',
-  '.mjs': 'text/javascript',
-  '.css': 'text/css',
-  '.json': 'application/json',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.ttf': 'font/ttf',
-  '.map': 'application/json',
-};
-
 function fail(message, fix) {
   console.error(`\n✗ check-rendered-geometry — ${message}`);
   if (fix) console.error(`  fix: ${fix}`);
   process.exit(1);
-}
-
-function serveStatic() {
-  return new Promise((resolve) => {
-    const server = http.createServer((req, res) => {
-      const urlPath = decodeURIComponent(req.url.split('?')[0]);
-      let file = path.join(STATIC_DIR, urlPath);
-      if (!file.startsWith(STATIC_DIR)) {
-        res.writeHead(403).end();
-        return;
-      }
-      if (existsSync(file) && statSync(file).isDirectory()) file = path.join(file, 'index.html');
-      if (!existsSync(file)) {
-        res.writeHead(404).end('not found');
-        return;
-      }
-      res.writeHead(200, {
-        'content-type': MIME[path.extname(file)] || 'application/octet-stream',
-      });
-      createReadStream(file).pipe(res);
-    });
-    server.listen(0, '127.0.0.1', () => resolve({ server, port: server.address().port }));
-  });
-}
-
-function resolveChromium() {
-  const candidates = [
-    process.env.PLAYWRIGHT_CHROMIUM_PATH,
-    '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
-  ].filter(Boolean);
-  return candidates.find((p) => existsSync(p));
 }
 
 async function loadStoryIds(baseUrl) {
@@ -125,8 +76,7 @@ async function loadStoryIds(baseUrl) {
 }
 
 async function sweep(baseUrl, storyIds) {
-  const executablePath = resolveChromium();
-  const browser = await chromium.launch(executablePath ? { executablePath } : {});
+  const browser = await launchChromium();
   const queue = storyIds.slice();
   const results = [];
   let done = 0;
@@ -137,10 +87,7 @@ async function sweep(baseUrl, storyIds) {
     while (queue.length) {
       const id = queue.shift();
       try {
-        await page.goto(`${baseUrl}/iframe.html?id=${encodeURIComponent(id)}&viewMode=story`, {
-          waitUntil: 'networkidle',
-          timeout: 20000,
-        });
+        await page.goto(storyUrl(baseUrl, id), { waitUntil: 'networkidle', timeout: 20000 });
         await page.waitForSelector('#storybook-root > *', { timeout: 8000 }).catch(() => {});
         // Let webfonts swap and entry transitions settle; measuring mid-transition
         // reports the animation, not the layout.
@@ -176,9 +123,9 @@ async function main() {
         'pnpm build-storybook  (or pass --storybook-url http://localhost:6006)',
       );
     }
-    const served = await serveStatic();
-    server = served.server;
-    baseUrl = `http://127.0.0.1:${served.port}`;
+    const host = await serveStorybook(ROOT);
+    server = host.server;
+    baseUrl = host.baseUrl;
   }
 
   const storyIds = await loadStoryIds(baseUrl);

@@ -18,27 +18,27 @@
  * regenerated binaries, and a checked-in page is one more generated artifact
  * that can go stale while asserting it is current.
  */
-import http from 'node:http';
-import {
-  createReadStream,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  rmSync,
-  statSync,
-  writeFileSync,
-} from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { buildUtilityMap, collectTokens, renderIndex, renderPage } from './lib/component-page.mjs';
 import { mappedByOverride } from './figma-disposition.mjs';
+import { launchChromium, serveStorybook, storyUrl } from './lib/storybook-host.mjs';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const readJsonAt = (p, fallback = null) =>
+  existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : fallback;
+
 const OUT_DIR = path.join(ROOT, 'docs/components');
 const SHOT_DIR = path.join(OUT_DIR, '_shots');
-const REPO = 'https://github.com/hirobius/hds';
+// The repository and branch are already recorded in figma/links.json, which
+// pnpm figma:links reads to build design<->code links. Hardcoding them here
+// would be a second copy of a fact that can move.
+const links = readJsonAt(path.join(ROOT, 'figma/links.json'), {});
+const REPO = links.repository ?? 'https://github.com/hirobius/hds';
+const BRANCH = links.branch ?? 'main';
 
 const argv = process.argv.slice(2);
 const ALL = argv.includes('--all');
@@ -94,21 +94,6 @@ for (const fp of baseline.accepted ?? []) {
   defectsByStory.get(storyId).push({ storyId, kind, selector });
 }
 
-const MIME = {
-  '.html': 'text/html',
-  '.js': 'text/javascript',
-  '.mjs': 'text/javascript',
-  '.css': 'text/css',
-  '.json': 'application/json',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.ttf': 'font/ttf',
-  '.map': 'application/json',
-};
-
 /**
  * Runs INSIDE the page. Clipping to #storybook-root pads every example with
  * viewport-height dead space, and clipping to its children does not help
@@ -145,21 +130,6 @@ const PAINTED_BOUNDS = () => {
   };
 };
 
-function serveStorybook() {
-  const STATIC = path.join(ROOT, 'storybook-static');
-  if (!existsSync(path.join(STATIC, 'index.json'))) return null;
-  const server = http.createServer((req, res) => {
-    const urlPath = decodeURIComponent(req.url.split('?')[0]);
-    let file = path.join(STATIC, urlPath);
-    if (!file.startsWith(STATIC)) return res.writeHead(403).end();
-    if (existsSync(file) && statSync(file).isDirectory()) file = path.join(file, 'index.html');
-    if (!existsSync(file)) return res.writeHead(404).end();
-    res.writeHead(200, { 'content-type': MIME[path.extname(file)] || 'application/octet-stream' });
-    createReadStream(file).pipe(res);
-  });
-  return server;
-}
-
 /**
  * Capture every story for every component in ONE browser session. Launching a
  * browser per component made --all unusable; this keeps it to a single launch
@@ -169,18 +139,12 @@ async function captureAll(work) {
   const unique = new Set(work.flatMap((w) => w.storyIds));
   const total = unique.size;
   if (!total) return {};
-  const server = serveStorybook();
-  if (!server) {
+  const host = await serveStorybook(ROOT);
+  if (!host) {
     console.warn('  (no storybook-static — run pnpm build-storybook for example images)');
     return {};
   }
-  await new Promise((r) => server.listen(0, '127.0.0.1', r));
-  const base = `http://127.0.0.1:${server.address().port}`;
-
-  const { chromium } = await import('playwright');
-  const exe =
-    process.env.PLAYWRIGHT_CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
-  const browser = await chromium.launch(existsSync(exe) ? { executablePath: exe } : {});
+  const browser = await launchChromium();
 
   // Several components legitimately share one story file — Card and its seven
   // slot components all resolve to card.stories.tsx — so the same story id
@@ -201,7 +165,7 @@ async function captureAll(work) {
     while (queue.length) {
       const job = queue.shift();
       try {
-        await page.goto(`${base}/iframe.html?id=${encodeURIComponent(job.id)}&viewMode=story`, {
+        await page.goto(storyUrl(host.baseUrl, job.id), {
           waitUntil: 'networkidle',
           timeout: 20000,
         });
@@ -228,7 +192,7 @@ async function captureAll(work) {
 
   await Promise.all(Array.from({ length: 4 }, worker));
   await browser.close();
-  server.close();
+  host.close();
   if (failed) console.warn(`  (${failed} stor${failed === 1 ? 'y' : 'ies'} did not render)`);
   return shots;
 }
@@ -272,6 +236,7 @@ for (const w of work) {
       defects: w.defects,
       shots,
       repo: REPO,
+      branch: BRANCH,
     }),
   );
 }

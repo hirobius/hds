@@ -135,7 +135,16 @@ const section = (id, title, body, note) => `
  * `shots` maps story id -> relative image path; a missing entry renders a
  * placeholder rather than a broken image.
  */
-export function renderPage({ name, spec, props, tokens, defects, shots = {}, repo }) {
+export function renderPage({
+  name,
+  spec,
+  props,
+  tokens,
+  defects,
+  shots = {},
+  repo,
+  branch = 'main',
+}) {
   const storyIds = spec.storyIds ?? [];
 
   const examples = storyIds.length
@@ -203,7 +212,7 @@ export function renderPage({ name, spec, props, tokens, defects, shots = {}, rep
         .join('')}</ul>`
     : '<p class="empty">No accessibility rules recorded.</p>';
 
-  const blob = (p) => `${repo}/blob/main/${p}`;
+  const blob = (p) => `${repo}/blob/${branch}/${p}`;
 
   return `<!doctype html>
 <html lang="en">
