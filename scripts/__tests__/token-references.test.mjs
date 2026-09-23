@@ -137,3 +137,33 @@ describe('mergeReferences', () => {
     expect(a.map((t) => t.tokenPath)).toEqual(['a.z', 'z.a']);
   });
 });
+
+/**
+ * The page turns a defect `kind` into a sentence through GAP_LABEL. That map
+ * is hand-written and the kinds are emitted by the probe, so adding a detector
+ * without adding a label would silently print a raw slug like
+ * `zero-size-control` where a reader expects prose. Nothing else would catch
+ * it — the page still renders.
+ */
+describe('defect labels track the probe', () => {
+  it('labels every kind the probe can emit', async () => {
+    const { GAP_LABEL } = await import('../lib/component-page.mjs');
+    const { PROBE_SOURCE } = await import('../lib/rendered-geometry.mjs');
+    const emitted = [
+      ...new Set([...PROBE_SOURCE.toString().matchAll(/kind: '([a-z-]+)'/g)].map((m) => m[1])),
+    ].sort();
+    expect(emitted.length).toBeGreaterThan(0);
+    expect(emitted.filter((k) => !(k in GAP_LABEL))).toEqual([]);
+  });
+
+  it('has no label for a kind the probe cannot emit', async () => {
+    // A stale label is a smaller problem than a missing one, but it still
+    // means the two drifted.
+    const { GAP_LABEL } = await import('../lib/component-page.mjs');
+    const { PROBE_SOURCE } = await import('../lib/rendered-geometry.mjs');
+    const emitted = new Set(
+      [...PROBE_SOURCE.toString().matchAll(/kind: '([a-z-]+)'/g)].map((m) => m[1]),
+    );
+    expect(Object.keys(GAP_LABEL).filter((k) => !emitted.has(k))).toEqual([]);
+  });
+});

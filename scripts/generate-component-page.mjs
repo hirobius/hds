@@ -38,12 +38,19 @@ const SHOT_DIR = path.join(OUT_DIR, '_shots');
 // would be a second copy of a fact that can move.
 const links = readJsonAt(path.join(ROOT, 'figma/links.json'), {});
 const REPO = links.repository ?? 'https://github.com/hirobius/hds';
+// The published package name belongs to package.json. Writing it here would be
+// a second copy of a fact that a rename has to find.
+const PACKAGE_NAME = readJsonAt(path.join(ROOT, 'package.json'), {}).name ?? 'the design system';
 const BRANCH = links.branch ?? 'main';
 
 const argv = process.argv.slice(2);
 const ALL = argv.includes('--all');
 const SHOTS = !argv.includes('--no-shots');
 const CLEAN = argv.includes('--clean');
+// Inline every screenshot as a data URI, producing self-contained pages. Costs
+// ~33% in size, but it turns 576 files (140 pages + 436 images) into 140, which
+// is what a host with a file-count limit can take.
+const INLINE = argv.includes('--inline');
 const ONLY = argv.find((a) => !a.startsWith('--'));
 
 if (!ALL && !ONLY) {
@@ -99,11 +106,19 @@ for (const fp of baseline.accepted ?? []) {
  * viewport-height dead space, and clipping to its children does not help
  * because a story's own wrapper is usually a transparent full-height box.
  * Measure what actually PAINTS instead.
+ *
+ * `scrollIntoView` first when asked: a story can render its content inside a
+ * NESTED scroll container, where the content sits thousands of pixels down
+ * while document.scrollHeight stays at the viewport height. StackedCardRail
+ * does exactly that — a 4000px spacer drives a pinned strip, so its cards sit
+ * at y≈2708 in a 700px page that cannot scroll. Measuring without scrolling
+ * yields a clip outside the image, and Playwright rejects it.
  */
-const PAINTED_BOUNDS = () => {
+const MEASURE_PAINTED = (scrollFirst) => {
   const root = document.querySelector('#storybook-root');
   if (!root) return null;
-  const boxes = [];
+
+  const painted = [];
   for (const el of root.querySelectorAll('*')) {
     const r = el.getBoundingClientRect();
     if (r.width <= 0 || r.height <= 0) continue;
@@ -112,29 +127,45 @@ const PAINTED_BOUNDS = () => {
     const hasBg =
       cs.backgroundColor && !/^(transparent|rgba\(0, 0, 0, 0\))$/.test(cs.backgroundColor);
     const hasBorder = ['Top', 'Right', 'Bottom', 'Left'].some(
-      (s) => parseFloat(cs[`border${s}Width`]) > 0,
+      (side) => parseFloat(cs[`border${side}Width`]) > 0,
     );
     const hasImage = el.tagName === 'IMG' || el.tagName === 'SVG' || cs.backgroundImage !== 'none';
     const hasText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
-    if (hasBg || hasBorder || hasImage || hasText) boxes.push(r);
+    if (hasBg || hasBorder || hasImage || hasText) painted.push(el);
   }
-  if (!boxes.length) return null;
+  if (!painted.length) return null;
+
+  if (scrollFirst) {
+    // Scroll the topmost painted element into view. scrollIntoView walks every
+    // scrollable ancestor, which is what reaches content inside a nested
+    // scroller that the document itself cannot scroll to.
+    let top = painted[0];
+    for (const el of painted) {
+      if (el.getBoundingClientRect().top < top.getBoundingClientRect().top) top = el;
+    }
+    top.scrollIntoView({ block: 'center', inline: 'center' });
+    return { scrolled: true };
+  }
+
+  const boxes = painted.map((el) => el.getBoundingClientRect());
   const PAD = 16;
+  const vw = document.documentElement.clientWidth;
+  const vh = document.documentElement.clientHeight;
+  // Clamp to the viewport: a clip that leaves it is rejected outright, and a
+  // partial capture beats no capture at all.
   const left = Math.max(0, Math.min(...boxes.map((b) => b.left)) - PAD);
   const top = Math.max(0, Math.min(...boxes.map((b) => b.top)) - PAD);
+  const right = Math.min(vw, Math.max(...boxes.map((b) => b.right)) + PAD);
+  const bottom = Math.min(vh, Math.max(...boxes.map((b) => b.bottom)) + PAD);
   return {
     x: left,
     y: top,
-    width: Math.max(...boxes.map((b) => b.right)) + PAD - left,
-    height: Math.max(...boxes.map((b) => b.bottom)) + PAD - top,
+    width: Math.max(0, right - left),
+    height: Math.max(0, bottom - top),
+    clamped: bottom < Math.max(...boxes.map((b) => b.bottom)) + PAD,
   };
 };
 
-/**
- * Capture every story for every component in ONE browser session. Launching a
- * browser per component made --all unusable; this keeps it to a single launch
- * and a small pool of pages.
- */
 async function captureAll(work) {
   const unique = new Set(work.flatMap((w) => w.storyIds));
   const total = unique.size;
@@ -171,7 +202,14 @@ async function captureAll(work) {
         });
         await page.waitForSelector('#storybook-root > *', { timeout: 8000 }).catch(() => {});
         await page.waitForTimeout(120);
-        const clip = await page.evaluate(PAINTED_BOUNDS);
+        let clip = await page.evaluate(MEASURE_PAINTED, false);
+        // Off-screen content means a nested scroller; bring it into view and
+        // measure again rather than emitting no image.
+        if (!clip || clip.width < 1 || clip.height < 1) {
+          await page.evaluate(MEASURE_PAINTED, true);
+          await page.waitForTimeout(150);
+          clip = await page.evaluate(MEASURE_PAINTED, false);
+        }
         mkdirSync(job.dir, { recursive: true });
         const file = path.join(job.dir, `${job.id}.png`);
         if (clip && clip.width >= 1 && clip.height >= 1) {
@@ -225,6 +263,18 @@ const work = names.map((name) => {
 
 const shots = SHOTS ? await captureAll(work) : {};
 
+/** Swap image paths for data URIs when the target cannot carry loose files. */
+function inlineShots(map) {
+  const out = {};
+  for (const [id, rel] of Object.entries(map)) {
+    const abs = path.join(OUT_DIR, rel);
+    if (!existsSync(abs)) continue;
+    out[id] = `data:image/png;base64,${readFileSync(abs).toString('base64')}`;
+  }
+  return out;
+}
+const pageShots = INLINE ? inlineShots(shots) : shots;
+
 for (const w of work) {
   writeFileSync(
     path.join(OUT_DIR, `${w.slug}.html`),
@@ -234,9 +284,10 @@ for (const w of work) {
       props: w.props,
       tokens: w.tokens,
       defects: w.defects,
-      shots,
+      shots: pageShots,
       repo: REPO,
       branch: BRANCH,
+      packageName: PACKAGE_NAME,
     }),
   );
 }

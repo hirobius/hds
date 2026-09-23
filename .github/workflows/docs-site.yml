@@ -1,0 +1,82 @@
+name: Component reference site
+
+# Publishes the generated component site (pnpm docs:site) to Vercel as a
+# static, preview-only gallery.
+#
+# SETUP (one-time, manual — Adrian, not automatable):
+#   1. Add VERCEL_TOKEN as an Actions *secret*
+#      (Settings -> Secrets and variables -> Actions -> Secrets).
+#      scripts/deploy-storybook.mjs already documents this token.
+#   2. Add a repo *variable* DOCS_SITE_ENABLED = true (same page -> Variables)
+#      to switch the job on.
+#
+# Until that variable is set the job green-skips, so this cannot turn PRs red
+# before the one-time setup is done — the same guard chromatic.yml uses.
+#
+# Why this runs in CI rather than from a session: CLAUDE.md forbids agents from
+# running deploy commands. Building the site in CI keeps the publish behind a
+# reviewed merge instead of an agent's shell.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.DOCS_SITE_ENABLED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # Stories import gitignored generated artifacts, so regenerate them
+      # before the Storybook build — mirroring ci.yml and chromatic.yml.
+      - name: Generate data artifacts
+        run: |
+          node scripts/generate-manifest.mjs
+          node scripts/generate-component-api.mjs
+          node scripts/enrich-manifest.mjs
+          node scripts/sync-icons.mjs
+          node scripts/audit-tokens.mjs --full
+
+      # The site renders every story, so it needs a real browser and a built
+      # Storybook. Without these the pages generate with empty Examples.
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build Storybook
+        run: pnpm build-storybook --quiet
+
+      - name: Generate the component site
+        run: pnpm docs:site
+
+      # Fail loudly and name the variable, rather than publishing a site whose
+      # Examples are all empty.
+      - name: Verify the site rendered
+        run: |
+          pages=$(find docs/components -maxdepth 1 -name '*.html' | wc -l)
+          shots=$(find docs/components/_shots -name '*.png' 2>/dev/null | wc -l)
+          echo "pages=$pages shots=$shots"
+          if [ "$pages" -lt 2 ] || [ "$shots" -lt 1 ]; then
+            echo "::error::docs:site produced $pages pages and $shots renders."
+            echo "::error::A page count of 1 means the manifest is empty; 0 renders means storybook-static was missing."
+            exit 1
+          fi
+
+      - name: Publish to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is not set. Add it in Settings -> Secrets and variables -> Actions -> Secrets, then re-run this workflow."
+            exit 1
+          fi
+          pnpm dlx vercel deploy docs/components \
+            --prod --yes --token "$VERCEL_TOKEN" \
+            --name hirobius-hds-components

@@ -144,6 +144,7 @@ export function renderPage({
   shots = {},
   repo,
   branch = 'main',
+  packageName = 'the design system',
 }) {
   const storyIds = spec.storyIds ?? [];
 
@@ -219,7 +220,7 @@ export function renderPage({
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(name)} — Hirobius Design System</title>
+<title>${esc(name)} — Hirobius Components</title>
 <style>${STYLES}</style>
 </head>
 <body>
@@ -239,7 +240,11 @@ export function renderPage({
     </div>
   </header>
 
-  ${section('usage', 'Usage', `<pre><code>import { ${esc(name)} } from '@hirobius/design-system';</code></pre>`)}
+  ${section(
+    'usage',
+    'Usage',
+    `<pre><code>import { ${esc(name)} } from '${esc(packageName)}';</code></pre>`,
+  )}
 
   ${section(
     'examples',
@@ -326,7 +331,7 @@ export function renderIndex({ rows, generated, summary }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hirobius Design System — Components</title>
+<title>Hirobius Components</title>
 <style>${STYLES}
   .wrap{max-width:1000px}
   .stats{display:flex;flex-wrap:wrap;gap:24px;margin:24px 0 0}
