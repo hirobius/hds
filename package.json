@@ -233,7 +233,7 @@
     "manifest:project": "node scripts/generate-manifest-projection.mjs",
     "prebuild:lib": "node scripts/generate-component-api.mjs",
     "prepare": "node scripts/setup-hooks.mjs",
-    "pretest": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/check-manifest-schema-semver.mjs && node scripts/audit-component-integrity.mjs --completeness && node scripts/check-source-canon.mjs && node scripts/check-binding-drift.mjs && node scripts/check-registry.mjs && node scripts/check-tenant-tokens.mjs && knip --no-exit-code",
+    "pretest": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/check-manifest-schema-semver.mjs && node scripts/audit-component-integrity.mjs --completeness && node scripts/check-source-canon.mjs && node scripts/check-binding-drift.mjs && node scripts/check-registry.mjs && node scripts/check-tenant-tokens.mjs && node scripts/check-dark-alias-flip.mjs && knip --no-exit-code",
     "promote": "node scripts/promote.mjs",
     "hds:new": "node scripts/scaffold-component.mjs",
     "scaffold:component": "node scripts/scaffold-component.mjs",
