@@ -26,7 +26,7 @@ import { InlineLink } from './inline-link';
 import { Stack } from './stack';
 import { Surface } from './surface';
 
-interface LightboxProps {
+export interface LightboxProps {
   open: boolean;
   onClose: () => void;
   src: string;

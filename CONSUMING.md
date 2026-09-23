@@ -54,6 +54,29 @@ The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,
 Remix, Webpack 5+) or a Node ≥ 20 ESM runtime. Built `.d.ts` declarations ship in
 `dist/types`, so TypeScript consumers get full types with no extra config.
 
+Every component's props type is exported under its own name — `AlertProps`,
+`ButtonProps`, `GridProps`, and so on — so wrapping one needs no
+`React.ComponentProps<typeof X>`:
+
+```tsx
+import { Alert, type AlertProps } from '@hirobius/design-system';
+
+export const Notice = (props: AlertProps) => <Alert tone="info" {...props} />;
+```
+
+Types that are implementation detail stay internal on purpose: the cva variant
+aliases, composition bases, and the props of sub-components the package does not
+export.
+
+**Next.js App Router / React Server Components.** Every React-bearing entry — the
+main barrel, `contexts`, `form`, `scroll` — ships with `'use client'`, so you can
+import components straight into a Server Component and they render as client
+components with no wrapper. The framework-free subpaths — `tokens`, `cn`,
+`manifest`, `brand`, `mui` — deliberately carry **no** directive: they have no
+React in them, and marking them would turn their exports into opaque client
+references when you use them on the server (`tokens.color.primary` in a layout,
+`brand` at the edge). Import those from server code freely.
+
 ## 2.5. Lint discipline (optional)
 
 `@hirobius/eslint-plugin-hds` flags raw hex/px values in `style`, `className`,

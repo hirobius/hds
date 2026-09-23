@@ -30,7 +30,7 @@ const amountMap: Record<LayoutGap, string> = {
   spacious: 'var(--semantic-space-layout-spacious)',
 };
 
-interface BleedProps {
+export interface BleedProps {
   /** Bleed content. */
   children: React.ReactNode;
   /** Semantic space step to negate. Defaults to 'normal'. */

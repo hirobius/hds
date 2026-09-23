@@ -41,7 +41,7 @@ const alertVariants = cva(
   },
 );
 
-interface AlertProps {
+export interface AlertProps {
   /** Feedback tone that controls icon, border, and surface treatment. */
   tone?: AlertTone;
   /** Optional heading shown above the body copy. */

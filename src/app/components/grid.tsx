@@ -34,13 +34,13 @@ type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type GridLayout = 'fixed' | 'auto-fit';
 
 const gapMap: Record<SemanticGap, string> = {
-  tight:    'var(--semantic-space-layout-tight)',
-  normal:   'var(--semantic-space-layout-normal)',
-  inset:    'var(--semantic-space-layout-inset)',
+  tight: 'var(--semantic-space-layout-tight)',
+  normal: 'var(--semantic-space-layout-normal)',
+  inset: 'var(--semantic-space-layout-inset)',
   spacious: 'var(--semantic-space-layout-spacious)',
 };
 
-interface GridProps {
+export interface GridProps {
   /** Grid content. */
   children: ReactNode;
   /** Grid layout mode: 'fixed' (responsive) or 'auto-fit' (card wrapping). Defaults to 'fixed'. */
@@ -59,7 +59,7 @@ interface GridProps {
   as?: React.ElementType;
 }
 
-interface GridItemProps {
+export interface GridItemProps {
   children: ReactNode;
   /** Number of columns this item spans (out of the grid's column count). */
   colSpan?: number;
@@ -73,22 +73,23 @@ interface GridItemProps {
   as?: React.ElementType;
 }
 
-const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(
-  function GridItem({ children, colSpan, colOffset, style, className, as: Tag = 'div' }, ref) {
-    const itemStyle: CSSProperties = {
-      ...(colSpan !== undefined && { gridColumn: `span min(var(--current-cols, 12), ${colSpan})` }),
-      ...(colOffset !== undefined && { gridColumnStart: colOffset }),
-      height: '100%',
-      minWidth: 0,
-      ...style,
-    };
-    return (
-      <Tag ref={ref} className={className} style={itemStyle} data-hds-grid-item="true">
-        {children}
-      </Tag>
-    );
-  },
-);
+const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(function GridItem(
+  { children, colSpan, colOffset, style, className, as: Tag = 'div' },
+  ref,
+) {
+  const itemStyle: CSSProperties = {
+    ...(colSpan !== undefined && { gridColumn: `span min(var(--current-cols, 12), ${colSpan})` }),
+    ...(colOffset !== undefined && { gridColumnStart: colOffset }),
+    height: '100%',
+    minWidth: 0,
+    ...style,
+  };
+  return (
+    <Tag ref={ref} className={className} style={itemStyle} data-hds-grid-item="true">
+      {children}
+    </Tag>
+  );
+});
 
 function getResponsiveColumns(width: number, columns: number) {
   if (width <= hds.breakpoints.sm) {
@@ -102,65 +103,71 @@ function getResponsiveColumns(width: number, columns: number) {
   return columns;
 }
 
-const GridInner = React.forwardRef<HTMLDivElement, GridProps>(
-  function Grid(
-    { children, layout = 'fixed', columns = 12, gap = 'inset', subgrid = false, style, className, as: Tag = 'div' },
-    ref,
-  ) {
-    const isFixedLayout = layout === 'fixed' && !subgrid;
-    const [currentColumns, setCurrentColumns] = useState(columns);
-
-    useEffect(() => {
-      if (!isFixedLayout || typeof window === 'undefined') return;
-
-      const updateColumns = () => {
-        setCurrentColumns(getResponsiveColumns(window.innerWidth, columns));
-      };
-
-      updateColumns();
-      window.addEventListener('resize', updateColumns);
-
-      return () => {
-        window.removeEventListener('resize', updateColumns);
-      };
-    }, [columns, isFixedLayout]);
-
-    let gridTemplateColumns: string | undefined;
-
-    if (subgrid) {
-      gridTemplateColumns = 'subgrid';
-    } else if (layout === 'auto-fit') {
-      gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
-    } else {
-      gridTemplateColumns = `repeat(${currentColumns}, minmax(0, 1fr))`;
-    }
-
-    const gridStyle = {
-      display: 'grid',
-      alignItems: 'stretch',
-      ...(gridTemplateColumns !== undefined && { gridTemplateColumns }),
-      ...(isFixedLayout && {
-        '--current-cols': String(currentColumns),
-      }),
-      gap: gapMap[gap],
-      ...style,
-    } as CSSProperties;
-
-    return (
-      <Tag
-        ref={ref}
-        className={className}
-        style={gridStyle}
-        data-hds-grid="true"
-        data-hds-component="Grid"
-        data-hds-metrics={`gap:${gap}`}
-      >
-        {children}
-      </Tag>
-    );
+const GridInner = React.forwardRef<HTMLDivElement, GridProps>(function Grid(
+  {
+    children,
+    layout = 'fixed',
+    columns = 12,
+    gap = 'inset',
+    subgrid = false,
+    style,
+    className,
+    as: Tag = 'div',
   },
-);
+  ref,
+) {
+  const isFixedLayout = layout === 'fixed' && !subgrid;
+  const [currentColumns, setCurrentColumns] = useState(columns);
+
+  useEffect(() => {
+    if (!isFixedLayout || typeof window === 'undefined') return;
+
+    const updateColumns = () => {
+      setCurrentColumns(getResponsiveColumns(window.innerWidth, columns));
+    };
+
+    updateColumns();
+    window.addEventListener('resize', updateColumns);
+
+    return () => {
+      window.removeEventListener('resize', updateColumns);
+    };
+  }, [columns, isFixedLayout]);
+
+  let gridTemplateColumns: string | undefined;
+
+  if (subgrid) {
+    gridTemplateColumns = 'subgrid';
+  } else if (layout === 'auto-fit') {
+    gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+  } else {
+    gridTemplateColumns = `repeat(${currentColumns}, minmax(0, 1fr))`;
+  }
+
+  const gridStyle = {
+    display: 'grid',
+    alignItems: 'stretch',
+    ...(gridTemplateColumns !== undefined && { gridTemplateColumns }),
+    ...(isFixedLayout && {
+      '--current-cols': String(currentColumns),
+    }),
+    gap: gapMap[gap],
+    ...style,
+  } as CSSProperties;
+
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={gridStyle}
+      data-hds-grid="true"
+      data-hds-component="Grid"
+      data-hds-metrics={`gap:${gap}`}
+    >
+      {children}
+    </Tag>
+  );
+});
 
 /** @public */
 export const Grid = Object.assign(GridInner, { Item: GridItem });
-

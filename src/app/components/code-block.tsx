@@ -113,7 +113,7 @@ const prePanelVariants = cva(
   },
 );
 
-interface CodeBlockProps {
+export interface CodeBlockProps {
   /** Code string displayed in the block. */
   code: string;
   /** Visual presentation mode for block snippets vs inline single-line code. */

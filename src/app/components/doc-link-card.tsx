@@ -16,7 +16,7 @@ import { Icon } from './icon';
 
 const bodyTextStyle = hds.typeStyles.ui;
 
-interface DocLinkCardProps {
+export interface DocLinkCardProps {
   /** Primary title displayed in the card. */
   title: string;
   /** Supporting body copy shown below the title. */
