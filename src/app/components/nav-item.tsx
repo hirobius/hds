@@ -90,7 +90,7 @@ type NavVisualState = NavState | 'pressed';
 
 type NavNativeProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'children' | 'onClick'>;
 
-interface NavProps extends NavNativeProps {
+export interface NavProps extends NavNativeProps {
   /** Visual layout variant for side nav or table of contents usage. */
   variant?: NavVariant;
   /** Text label displayed inside the navigation row. */

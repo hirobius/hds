@@ -28,7 +28,7 @@ const gapMap: Record<LayoutGap, string> = {
   spacious: 'var(--semantic-space-layout-spacious)',
 };
 
-interface CoverProps {
+export interface CoverProps {
   /** The centered main region — takes the remaining space via auto margins. Also available as `centerSlot`. */
   children?: React.ReactNode;
   /** Alias for `children` — the centered main region. If both are set, `centerSlot` wins. */

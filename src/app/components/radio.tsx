@@ -91,7 +91,7 @@ const radioDotVariants = cva(
   },
 );
 
-interface RadioProps extends Omit<
+export interface RadioProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'type' | 'checked' | 'onChange'
 > {

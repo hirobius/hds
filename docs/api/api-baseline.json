@@ -1,7 +1,7 @@
 {
   "entry": "src/index.ts",
   "version": "0.13.1",
-  "generatedAt": "2026-09-21",
+  "generatedAt": "2026-09-22",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -21,8 +21,8 @@
       "useHdsRouter",
       "useHdsTheme"
     ],
-    "./app/components/alert": ["Alert"],
-    "./app/components/asset-img": ["AssetImg"],
+    "./app/components/alert": ["Alert", "AlertProps"],
+    "./app/components/asset-img": ["AssetImg", "AssetImgProps"],
     "./app/components/avatar": ["Avatar", "AvatarProps"],
     "./app/components/badge": ["Badge", "BadgeProps", "badgeVariants"],
     "./app/components/box": [
@@ -49,17 +49,21 @@
       "CardDescription",
       "CardFooter",
       "CardHeader",
+      "CardHeaderProps",
       "CardMetric",
+      "CardMetricProps",
       "CardProgress",
+      "CardProgressProps",
       "CardProps",
       "CardTitle",
       "CardTone",
       "CardVariant",
       "cardVariants"
     ],
-    "./app/components/cinematic-link": ["CinematicLink"],
+    "./app/components/cinematic-link": ["CinematicLink", "CinematicLinkProps"],
     "./app/components/code-block": [
       "CodeBlock",
+      "CodeBlockProps",
       "blockCodeTextVariants",
       "blockContainerVariants",
       "blockHeaderVariants",
@@ -71,7 +75,7 @@
       "prePanelVariants"
     ],
     "./app/components/component-instance-matrix": ["ComponentInstanceMatrix"],
-    "./app/components/container": ["Container"],
+    "./app/components/container": ["Container", "ContainerProps"],
     "./app/components/dialog": [
       "Dialog",
       "DialogClose",
@@ -90,17 +94,18 @@
     "./app/components/menu": ["Menu"],
     "./app/components/popover": ["Popover", "PopoverContentProps"],
     "./app/components/hds-tooltip": ["HdsTooltip", "HdsTooltipContentProps"],
-    "./app/components/doc-link-card": ["DocLinkCard", "docLinkCardVariants"],
-    "./app/components/grid": ["Grid"],
+    "./app/components/doc-link-card": ["DocLinkCard", "DocLinkCardProps", "docLinkCardVariants"],
+    "./app/components/grid": ["Grid", "GridItemProps", "GridProps"],
     "./app/components/heading-stack": [
       "HeadingStack",
+      "HeadingStackProps",
       "headingStackLevelVariants",
       "headingStackVariants"
     ],
     "./app/components/history-card": ["HistoryCard", "HistoryCardCommit", "HistoryCardProps"],
     "./app/components/icon": ["Icon", "IconProps", "IconSize"],
-    "./app/components/inline-code": ["InlineCode", "inlineCodeVariants"],
-    "./app/components/inline-link": ["InlineLink"],
+    "./app/components/inline-code": ["InlineCode", "InlineCodeProps", "inlineCodeVariants"],
+    "./app/components/inline-link": ["InlineLink", "InlineLinkProps"],
     "./app/components/input": ["Input", "InputProps", "InputSize", "inputVariants"],
     "./app/components/textarea": [
       "Textarea",
@@ -108,16 +113,17 @@
       "TextareaResize",
       "textareaVariants"
     ],
-    "./app/components/checkbox": ["HdsCheckbox", "HdsCheckboxDemoState"],
-    "./app/components/radio": ["HdsRadio", "HdsRadioDemoState"],
-    "./app/components/slider": ["HdsSlider"],
-    "./app/components/toggle": ["HdsToggle", "HdsToggleDemoState"],
-    "./app/components/nav-item": ["NavItem", "navIndicatorVariants", "navItemVariants"],
+    "./app/components/checkbox": ["CheckboxProps", "HdsCheckbox", "HdsCheckboxDemoState"],
+    "./app/components/radio": ["HdsRadio", "HdsRadioDemoState", "RadioProps"],
+    "./app/components/slider": ["HdsSlider", "SliderProps"],
+    "./app/components/toggle": ["HdsToggle", "HdsToggleDemoState", "ToggleProps"],
+    "./app/components/nav-item": ["NavItem", "NavProps", "navIndicatorVariants", "navItemVariants"],
     "./app/components/progress": ["Progress", "ProgressProps", "progressTrackVariants"],
     "./app/components/skeleton": ["Skeleton", "SkeletonProps", "skeletonVariants"],
     "./app/components/spinner": ["Spinner", "SpinnerProps", "spinnerVariants"],
     "./app/components/segmented-control": [
       "SegmentedControl",
+      "SegmentedControlProps",
       "segmentedControlDescriptionVariants",
       "segmentedControlFocusRingVariants",
       "segmentedControlIndicatorVariants",
@@ -126,8 +132,8 @@
       "segmentedControlRailVariants",
       "segmentedControlWrapperVariants"
     ],
-    "./app/components/stack": ["Stack"],
-    "./app/components/surface": ["Surface", "surfaceVariants"],
+    "./app/components/stack": ["Stack", "StackProps"],
+    "./app/components/surface": ["Surface", "SurfaceProps", "surfaceVariants"],
     "./app/components/table": [
       "Table",
       "TableCell",
@@ -142,6 +148,7 @@
     "./app/components/text": ["Text", "TextProps", "textVariants"],
     "./app/components/token": [
       "Token",
+      "TokenProps",
       "tokenLabelVariants",
       "tokenNodeInlineVariants",
       "tokenShellVariants"
@@ -176,7 +183,7 @@
       "cmdkKindBadgeVariants",
       "cmdkRowVariants"
     ],
-    "./app/components/image-lightbox": ["Lightbox"],
+    "./app/components/image-lightbox": ["Lightbox", "LightboxProps"],
     "./app/components/metadata-list": [
       "MetadataList",
       "MetadataListItem",
@@ -207,18 +214,18 @@
     "./app/components/date-input": ["DateInput", "DateInputProps"],
     "./app/components/date-range-input": ["DateRangeInput", "DateRangeInputProps"],
     "./app/components/date-time-input": ["DateTimeInput", "DateTimeInputProps"],
-    "./app/components/cluster": ["Cluster"],
-    "./app/components/center": ["Center"],
-    "./app/components/sidebar": ["Sidebar"],
-    "./app/components/switcher": ["Switcher"],
-    "./app/components/cover": ["Cover"],
-    "./app/components/frame": ["Frame"],
-    "./app/components/bleed": ["Bleed"],
-    "./app/components/reveal": ["Reveal", "RevealAnimation"],
-    "./app/components/pin": ["Pin"],
-    "./app/components/page": ["Page"],
+    "./app/components/cluster": ["Cluster", "ClusterProps"],
+    "./app/components/center": ["Center", "CenterProps"],
+    "./app/components/sidebar": ["Sidebar", "SidebarProps"],
+    "./app/components/switcher": ["Switcher", "SwitcherProps"],
+    "./app/components/cover": ["Cover", "CoverProps"],
+    "./app/components/frame": ["Frame", "FrameProps"],
+    "./app/components/bleed": ["Bleed", "BleedProps"],
+    "./app/components/reveal": ["Reveal", "RevealAnimation", "RevealProps"],
+    "./app/components/pin": ["Pin", "PinProps"],
+    "./app/components/page": ["Page", "PageProps"],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
-    "./app/components/error-boundary": ["ErrorBoundary"],
+    "./app/components/error-boundary": ["ErrorBoundary", "ErrorBoundaryProps"],
     "./app/components/not-found-pattern": ["NotFoundPattern"],
     "./app/components/tabs": ["Tabs", "TabsContent", "TabsList", "TabsTrigger"],
     "./app/components/tile-grid": ["TileGrid", "TileGridProps"],
@@ -240,7 +247,7 @@
       "crumbLabelVariants"
     ],
     "./app/components/combobox": ["Combobox", "ComboboxOption", "ComboboxProps"],
-    "./app/components/disclosure": ["Disclosure", "disclosureTriggerVariants"],
+    "./app/components/disclosure": ["Disclosure", "DisclosureProps", "disclosureTriggerVariants"],
     "./app/components/form": [
       "FieldWiring",
       "FieldWiringInput",
@@ -253,11 +260,11 @@
       "useFieldWiring"
     ],
     "./app/components/foundation-swatch": ["FoundationSwatch", "FoundationSwatchProps"],
-    "./app/components/icon-button": ["IconButton"],
-    "./app/components/nav-group": ["NavGroup", "navGroupLabelVariants"],
+    "./app/components/icon-button": ["IconButton", "IconButtonProps"],
+    "./app/components/nav-group": ["NavGroup", "NavGroupProps", "navGroupLabelVariants"],
     "./app/components/pagination": ["Pagination", "PaginationProps", "paginationRange"],
     "./app/components/sketch": ["Sketch", "SketchProps"],
-    "./app/components/stepper-field": ["StepperField"],
+    "./app/components/stepper-field": ["StepperField", "StepperFieldProps"],
     "./app/components/text-lockup": ["TextLockup", "TextLockupProps"],
     "./app/components/toast": [
       "ToastOptions",
@@ -267,8 +274,8 @@
       "toastIconVariants",
       "useToast"
     ],
-    "./app/layouts/CaseStudyLayout": ["CaseStudyLayout"],
-    "./app/components/error-pattern": ["ErrorPattern"],
+    "./app/layouts/CaseStudyLayout": ["CaseStudyLayout", "CaseStudyLayoutProps"],
+    "./app/components/error-pattern": ["ErrorPattern", "ErrorPatternProps"],
     "./app/layouts/HdsSystemDocLayout": ["HdsSystemDocLayout"],
     "@subpath/cn": ["cn"],
     "@subpath/tokens": ["ct", "default", "tokenValues"],

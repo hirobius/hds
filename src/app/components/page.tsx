@@ -36,10 +36,10 @@ type PaddingY = 'default' | 'compact' | 'none';
 const PADDING_Y: Record<PaddingY, { top: string; bottom: string }> = {
   default: { top: hds.space.px48, bottom: hds.space.px64 },
   compact: { top: hds.space.px24, bottom: hds.space.px32 },
-  none:    { top: '0',             bottom: '0'             },
+  none: { top: '0', bottom: '0' },
 };
 
-interface PageProps {
+export interface PageProps {
   children: ReactNode;
   /** Max width: 'content' (760px for prose) | 'max' (1200px). Defaults to 'max'. */
   maxWidth?: MaxWidth;

@@ -15,7 +15,7 @@ import { Container } from '../components/container';
 import { ErrorBoundary } from '../components/error-boundary';
 import { Stack } from '../components/stack';
 
-interface CaseStudyLayoutProps {
+export interface CaseStudyLayoutProps {
   heroSlot: ReactNode;
   introSlot: ReactNode;
   metricsSlot?: ReactNode;
@@ -23,7 +23,12 @@ interface CaseStudyLayoutProps {
 }
 
 /** @public */
-export function CaseStudyLayout({ heroSlot, introSlot, metricsSlot, contentSlot }: CaseStudyLayoutProps) {
+export function CaseStudyLayout({
+  heroSlot,
+  introSlot,
+  metricsSlot,
+  contentSlot,
+}: CaseStudyLayoutProps) {
   return (
     <main>
       <Stack gap="spacious">

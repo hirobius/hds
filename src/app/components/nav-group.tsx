@@ -41,7 +41,7 @@ const navGroupLabelVariants = cva('text-[var(--semantic-color-content-secondary)
   defaultVariants: { variant: 'side' },
 });
 
-type NavGroupProps = {
+export type NavGroupProps = {
   label?: string;
   variant?: NavGroupVariant;
   level?: NavLevel;

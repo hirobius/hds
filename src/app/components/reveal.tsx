@@ -16,7 +16,7 @@ import React from 'react';
 
 export type RevealAnimation = 'fade' | 'fade-up' | 'fade-down' | 'scale';
 
-interface RevealProps {
+export interface RevealProps {
   /** Content revealed as it scrolls into view. */
   children: React.ReactNode;
   /** Entrance animation. Defaults to 'fade-up'. */

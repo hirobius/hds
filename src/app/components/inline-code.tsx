@@ -44,7 +44,7 @@ const inlineCodeVariants = cva(
 
 type InlineCodeVariantProps = VariantProps<typeof inlineCodeVariants>;
 
-type InlineCodeProps = {
+export type InlineCodeProps = {
   children: ReactNode;
   style?: CSSProperties;
   /** Layout density. `compact` tightens vertical rhythm for dense body copy and table prose. Defaults to `comfortable`. */

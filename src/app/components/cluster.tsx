@@ -42,7 +42,7 @@ const justifyMap: Record<ClusterJustify, React.CSSProperties['justifyContent']> 
   'space-between': 'space-between',
 };
 
-interface ClusterProps {
+export interface ClusterProps {
   /** Cluster content — items that wrap as a unit. */
   children: React.ReactNode;
   /** Gap token applied to both axes (row and column). Defaults to 'tight'. */
