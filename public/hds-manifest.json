@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-21T02:18:05.720Z",
+  "generated": "2026-09-23T02:51:22.454Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -28,8 +28,8 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#1E2EFD",
-    "primaryColorToken": "primitive.color.blue.500",
+    "primaryColor": "#111111",
+    "primaryColorToken": "semantic.accent.rest",
     "font": "Satoshi variable 100–900, self-hosted",
     "spacingBase": "4px",
     "buttonBorderRadius": "0px",
