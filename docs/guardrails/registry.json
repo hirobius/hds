@@ -441,6 +441,16 @@
       "glob": "src/**/*.{ts,tsx}"
     },
     {
+      "id": "check-rendered-geometry",
+      "description": "Renders every Storybook story in Chromium and reports layout defects no textual gate can see: content overflowing its frame, boxes clipping their own text, elements pushed past the viewport, controls with no rendered box or below the WCAG 2.2 AA 24px target, links whose only affordance is colour, and misaligned table-row baselines. Existing debt is accepted explicitly in docs/guardrails/rendered-geometry-baseline.json so new findings fail while known ones do not. Closes the blind spot #245 exposed, where 55 structurally broken dark-mode aliases passed every token gate.",
+      "severity": "warn",
+      "gateScript": "scripts/check-rendered-geometry.mjs",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand",
+      "firingChannels": ["on-demand"]
+    },
+    {
       "id": "check-published-types",
       "description": "Runs attw over the packed tarball so the PUBLISHED types are proven to resolve for a node16/nodenext ESM consumer. Nothing else sees that surface: tsc and every test read src/, and smoke:consumer proves subpaths import but not that their .d.ts resolve. The gap shipped 150 extensionless specifiers into a \"type\": \"module\" package, breaking types across 7 entry points with CI green. Profile esm-only (no CJS build here, node10 cannot read exports); the four CSS subpaths are excluded because stylesheets have no types to resolve.",
       "severity": "error",
