@@ -188,6 +188,17 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-dark-alias-flip",
+      "description": "Every theme-sensitive `--x: var(--y)` alias must also be declared in the [data-theme=\"dark\"] block. Declared only in :root, such an alias is substituted there and inherits its LIGHT value when a theme is scoped to a subtree rather than to <html>. Reads the EMITTED CSS, because every token gate resolves the graph in JS where the indirection is correct by construction.",
+      "severity": "error",
+      "gateScript": "scripts/check-dark-alias-flip.mjs",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree",
+      "glob": "src/styles/tokens.css"
+    },
+    {
       "id": "check-deprecations",
       "description": "Deprecation-lifecycle gate: every @deprecated JSDoc in the component tier must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version).",
       "severity": "warn",
