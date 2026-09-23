@@ -8,10 +8,13 @@
  * files. They share rule definitions through validators/canon-rules.mjs so
  * a Swiss antipattern caught one way is caught the other.
  *
- * What it scans:
+ * What it scans (SCAN_DIRS below is the source of truth; this list mirrors it):
  *   src/app/components/**\/*.tsx
- *   src/app/pages/**\/*.tsx
  *   src/app/layouts/**\/*.tsx
+ *
+ * It does NOT scan src/app/pages. That directory no longer exists, and this
+ * header claimed it for long enough to be worth saying so explicitly (#265).
+ * The scan was always correct; only the documentation of it was wrong.
  *
  * What it flags (rule code | meaning):
  *   FONT_BOLD         — `font-bold`/extra/black className OR `fontWeight: bold|700+`
@@ -54,6 +57,8 @@ import {
 } from '../validators/canon-rules.mjs';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 
+import { resolveScanRoots } from './lib/scan-roots.mjs';
+
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOFT = process.argv.includes('--soft');
 const VERBOSE = process.argv.includes('--verbose');
@@ -65,6 +70,10 @@ const isFixtureMode =
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SCAN_DIRS = ['src/app/components', 'src/app/layouts'];
+// #265: fail loudly if either ever disappears, rather than scanning less and
+// still reporting success. The returned absolute paths are unused — SCAN_DIRS
+// stays relative for the report line below — but the check is the point.
+resolveScanRoots(SCAN_DIRS, { root: ROOT, gate: 'check-source-canon' });
 
 // The sketches directory (formerly src/app/pages/sketches, removed with the
 // docs SPA teardown, #51) was the "Expressive Zone" and explicitly suspended

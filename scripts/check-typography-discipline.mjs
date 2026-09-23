@@ -192,17 +192,14 @@ if ((RUN_ALL || FONT_FILES_ONLY) && !isFixtureMode) {
 if (RUN_ALL || OVERRIDES_ONLY) {
   const SRC = path.join(ROOT, 'src');
 
-  const ALLOWLIST_PREFIXES_OVERRIDES = ['src/app/pages/sketches/'];
-  const ALLOWLIST_FILES_OVERRIDES = new Set([
-    'src/app/pages/hds/TypographyPage.tsx',
-    'src/app/pages/hds/TypographyTestPage.tsx',
-    'src/app/pages/ops/agentic-os/AgenticOSPage.tsx',
-    'src/app/pages/ops/agentic-os/StatusBanner.tsx',
-    'src/app/pages/ops/agentic-os/KpiCards.tsx',
-    'src/app/pages/ops/agentic-os/SkillsBar.tsx',
-    'src/app/pages/ops/agentic-os/LanesGrid.tsx',
-    'src/app/pages/ops/agentic-os/StrengthFooter.tsx',
-  ]);
+  // #265: this allowlist was 1 prefix + 8 files, and EVERY ONE of them was under
+  // src/app/pages, which no longer exists — nine exemptions that could never
+  // match. Harmless today, but an exemption list is a record of deliberate
+  // decisions, and a dead entry silently reactivates if a path with that name
+  // ever returns. Emptied rather than kept "just in case": if one of these files
+  // comes back and needs an exemption, it needs a fresh decision, not a stale one.
+  const ALLOWLIST_PREFIXES_OVERRIDES = [];
+  const ALLOWLIST_FILES_OVERRIDES = new Set([]);
   const SKIP_BASENAME_PATTERNS = [/^generated-/, /\.generated\./, /\.test\./, /\.spec\./];
   const SKIP_EXACT_FILES = new Set([
     'src/styles/tokens.css',

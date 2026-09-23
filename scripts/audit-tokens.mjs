@@ -35,6 +35,8 @@ import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { tmpdir } from 'node:os';
 
+import { resolveScanRoots } from './lib/scan-roots.mjs';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
@@ -119,12 +121,13 @@ function runScanSource() {
     };
   });
 
-  const TARGET_DIRS = [
-    join(ROOT, 'src/app/components'),
-    join(ROOT, 'src/app/styles'),
-    join(ROOT, 'src/app/pages'),
-    join(ROOT, 'src/app/design-system'),
-  ];
+  // #265: 'src/app/pages' and 'src/app/styles' were both dead — the issue named
+  // only the first, this sweep found the second. Two of four roots silently
+  // resolving to nothing, with the audit still reporting a grade.
+  const TARGET_DIRS = resolveScanRoots(['src/app/components', 'src/app/design-system'], {
+    root: ROOT,
+    gate: 'audit-tokens',
+  });
 
   let totalViolations = 0;
   let typographyViolations = 0;
