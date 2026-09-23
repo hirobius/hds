@@ -36,6 +36,9 @@ const has = (f) => argv.includes(f);
 const valueOf = (f) => (argv.indexOf(f) >= 0 ? argv[argv.indexOf(f) + 1] : undefined);
 
 const GAPS_ONLY = has('--gaps');
+// The table is 139 rows. Printing it on every commit buries the summary and
+// trains people to scroll past hook output, so it is opt-in.
+const SHOW_TABLE = GAPS_ONLY || has('--table');
 const AS_JSON = has('--json');
 const WRITE = has('--write');
 const UPDATE = has('--update-coverage');
@@ -183,26 +186,35 @@ console.log(
       .join('   '),
 );
 
-console.log(
-  `\n${'component'.padEnd(24)}${'class'.padEnd(10)}${'stories'.padEnd(9)}${'figma'.padEnd(18)}gaps`,
-);
-console.log('─'.repeat(96));
-for (const row of shown) {
-  const figma = row.figmaVia ?? (row.expectFigma ? 'MISSING' : '—');
+if (SHOW_TABLE) {
   console.log(
-    row.name.padEnd(24) +
-      row.class.padEnd(10) +
-      String(row.storyCount || '—').padEnd(9) +
-      figma.padEnd(18) +
-      (row.gaps.map((g) => GAP_LABEL[g]).join(', ') || '✓'),
+    `\n${'component'.padEnd(24)}${'class'.padEnd(10)}${'stories'.padEnd(9)}${'figma'.padEnd(18)}gaps`,
   );
-}
+  console.log('─'.repeat(96));
+  for (const row of shown) {
+    const figma = row.figmaVia ?? (row.expectFigma ? 'MISSING' : '—');
+    console.log(
+      row.name.padEnd(24) +
+        row.class.padEnd(10) +
+        String(row.storyCount || '—').padEnd(9) +
+        figma.padEnd(18) +
+        (row.gaps.map((g) => GAP_LABEL[g]).join(', ') || '✓'),
+    );
+  }
 
-if (map.orphanStories.length) {
-  console.log(
-    `\n${map.orphanStories.length} story file(s) resolve to no component in the manifest:`,
-  );
-  for (const o of map.orphanStories) console.log(`    ${o.storyFile} — ${o.reason}`);
+  if (map.orphanStories.length) {
+    console.log(
+      `\n${map.orphanStories.length} story file(s) resolve to no component in the manifest:`,
+    );
+    for (const o of map.orphanStories) console.log(`    ${o.storyFile} — ${o.reason}`);
+  }
+} else {
+  console.log('  (pnpm sync-map for the gaps, --table for every component)');
+  if (map.orphanStories.length) {
+    console.log(
+      `  ${map.orphanStories.length} story file(s) resolve to no component in the manifest`,
+    );
+  }
 }
 
 const recorded = readJson(COVERAGE);
