@@ -14,7 +14,7 @@
  */
 import React from 'react';
 
-interface PinProps {
+export interface PinProps {
   /** Content pinned within the scroll region. */
   children: React.ReactNode;
   /** Sticky offset from the top of the scroll region (CSS length). Defaults to '0'. */

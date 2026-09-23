@@ -1,9 +1,19 @@
 {
+  // `include` deliberately reaches beyond src/ for vite.config.lib.ts. That file
+  // imports scripts/lib/rsc-directive.mjs — the rule deciding which built chunks
+  // get `'use client'` — and with src-only coverage the whole .mjs-into-.ts seam
+  // was unchecked: a shape change in that module would have failed silently
+  // until someone ran `pnpm build:lib`. `allowJs` is what lets the .mjs resolve;
+  // `checkJs` stays off, so the module itself is not type-checked, only its use
+  // from the config is. There are zero .js/.mjs/.cjs files under src/, so
+  // allowJs sweeps in nothing else.
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+    "checkJs": false
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "vite.config.lib.ts"],
   "exclude": [
     "**/*.test.ts",
     "**/*.test.tsx",

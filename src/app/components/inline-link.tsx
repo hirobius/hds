@@ -10,7 +10,7 @@ import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { Icon } from './icon';
 
-interface InlineLinkProps {
+export interface InlineLinkProps {
   /** Destination route or URL. */
   href: string;
   /** Inline label or content to render inside the link. */

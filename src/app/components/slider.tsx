@@ -12,7 +12,7 @@ import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Surface } from './surface';
 
 /** HdsSlider — range slider with label and value display. */
-interface SliderProps {
+export interface SliderProps {
   /** Slider label. */
   label: string;
   /** Minimum value in the range. */

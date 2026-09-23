@@ -62,7 +62,7 @@ const surfaceVariants = cva(
 
 type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
 
-interface SurfaceProps
+export interface SurfaceProps
   extends
     Omit<HTMLAttributes<HTMLDivElement>, 'style' | 'className'>,
     Omit<SurfaceVariantProps, 'shadow'> {

@@ -49,7 +49,7 @@ const disclosureContainerGap: Record<DisclosureVariant, string> = {
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-type DisclosureProps = {
+export type DisclosureProps = {
   /** Summary label rendered in the disclosure trigger. Accepts a string or ReactNode for icon+label combos. */
   label: ReactNode;
   /** Whether the disclosure starts in the open state. */

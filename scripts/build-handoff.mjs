@@ -8,7 +8,7 @@
  * and <!-- auto:end:SECTION --> markers are replaced on every run.
  *
  * Sections managed:
- *   brand-identity      — brand blue, font, spacing base, radius rule
+ *   brand-identity      — brand accent, font, spacing base, radius rule
  *   primitives-color    — primitive color ramp tables
  *   semantic-accent     — semantic.accent.* state table
  *   semantic-color      — semantic.color bg/text/border/icon tables
@@ -34,6 +34,8 @@ import { readFileSync } from 'fs';
 import { writeGenerated } from './lib/write-generated.mjs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+
+import { brandAccent } from './lib/brand-truth.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -228,7 +230,10 @@ export function buildSize(raw) {
 
 /** Builds the Brand Identity table from live token values. */
 export function buildBrandIdentity(raw) {
-  const blue = raw.primitive?.color?.blue?.['500']?.$value ?? '?';
+  // #246: was `primitive.color.blue.500` with a '?' fallback. The accent is
+  // semantic.accent.rest, resolved; brandAccent throws rather than emitting a
+  // plausible wrong colour.
+  const accent = brandAccent(raw);
   const fontRaw = raw.primitive?.typography?.family?.primary?.$value;
   const font = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? '?';
   const monoRaw = raw.primitive?.typography?.family?.mono?.$value;
@@ -237,7 +242,7 @@ export function buildBrandIdentity(raw) {
   const action = resolveRef(raw.semantic?.radius?.action?.$value ?? '{primitive.radius.4}', raw);
   const radius8 = resolveRef(raw.primitive?.radius?.[8]?.$value ?? '8px', raw);
   const lines = [header('Attribute', 'Value')];
-  lines.push(row('Brand blue', `\`${blue.toUpperCase()}\` (\`primitive.color.blue.500\`)`));
+  lines.push(row('Brand accent', `\`${accent.toUpperCase()}\` (\`semantic.accent.rest\`)`));
   lines.push(row('Font', `${font} (self-hosted) + ${mono} (monospace)`));
   lines.push(row('Neutral scale', 'True monochromatic — equal RGB channels, no warm/cool tint'));
   lines.push(row('Spacing base', spaceBase));
@@ -399,11 +404,14 @@ export function buildMotion(raw) {
 }
 /** Builds the Agent Creative Constraints list with live brand values. */
 export function buildAgentConstraints(raw) {
-  const blue = (raw.primitive?.color?.blue?.['500']?.$value ?? '#1E2FFF').toUpperCase();
+  // #246: was `primitive.color.blue.500` falling back to '#1E2FFF' — a typo of the
+  // #1E2EFD it stood in for, so the silent fallback emitted a colour that existed
+  // nowhere in the token file. No fallback now; brandAccent throws.
+  const accent = brandAccent(raw).toUpperCase();
   const fontRaw = raw.primitive?.typography?.family?.primary?.$value;
   const font = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? 'Satoshi';
   return [
-    `- **One accent color:** \`${blue}\` only — no other hues`,
+    `- **One accent color:** \`${accent}\` (\`semantic.accent.rest\`) only — no other hues`,
     `- **Body / UI typeface:** ${font} — use Satoshi Bold (700) for headings and Geist Mono for code; no other faces`,
     '- **Action radius:** `4px` for interactive controls; `8px` cards',
     '- **4px spacing grid:** All spacing snaps to `primitive.space.*` scale',

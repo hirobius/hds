@@ -210,7 +210,7 @@ const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
 
 // ── Parts ─────────────────────────────────────────────────────────────────────
 
-interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Top-of-card metadata zone — status badges, tags, eyebrow labels.
    *  Accepts <Badge>, <Tag>, or compound nodes. NEVER pass raw spans
    *  with status colors here; use the proper primitive so tone, padding,
@@ -295,7 +295,7 @@ const PROGRESS_TONE_FILL: Record<CardTone, string> = {
   danger: 'var(--semantic-color-feedback-error)',
 };
 
-interface CardProgressProps extends Omit<
+export interface CardProgressProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
   'aria-valuemin' | 'aria-valuemax' | 'aria-valuenow'
 > {
@@ -385,7 +385,7 @@ const METRIC_TONE_VALUE_COLOR: Record<CardTone, string> = {
   danger: 'var(--semantic-color-feedback-error)',
 };
 
-interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Uppercase eyebrow label (e.g. "Retainer", "Open tasks"). */
   label: React.ReactNode;
   /** Big value (e.g. "$3,500", "12", "67%"). Rendered at h2 weight. */

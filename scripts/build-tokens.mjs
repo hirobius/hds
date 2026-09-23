@@ -1207,8 +1207,13 @@ export function buildManifest(allTokens, raw) {
       consumeTypography: 'hds.typeStyles.h1 (inline style object) — never Tailwind font classes',
     },
     brand: {
-      primaryColor: resolveValue(raw.primitive?.color?.blue?.['500']?.$value, 'color') ?? '',
-      primaryColorToken: 'primitive.color.blue.500',
+      // #246: was `primitive.color.blue.500`, hardcoded, emitting electric blue
+      // into an agent-facing artifact three days after #208 made the accent a
+      // neutral. Resolved from the semantic layer with this file's own
+      // resolveAlias — brand-truth.mjs imports THAT, so importing it back here
+      // would be circular.
+      primaryColor: resolveValue(raw.semantic?.accent?.rest?.$value, 'color') ?? '',
+      primaryColorToken: 'semantic.accent.rest',
       font: fontName + ' variable 100–900, self-hosted',
       spacingBase: resolveValue(raw.primitive?.space?.['1']?.$value, 'dimension') ?? '',
       buttonBorderRadius: resolveValue(raw.primitive?.radius?.[0]?.$value, 'dimension') ?? '',
