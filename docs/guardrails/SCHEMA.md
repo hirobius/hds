@@ -24,7 +24,7 @@ automated quality gate in the Hirobius repo.
 | `fixturePath`    | `string \| null`                                             | yes      | Path to a proof-of-firing fixture. `null` until 13g-3 wires fixtures.                                                                                                                                                                                                                                                                                                                                                                                         |
 | `owner`          | `string`                                                     | yes      | Responsible party. Default: `"Adrian"`.                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `source`         | `"human" \| "agent" \| "generated" \| "hermes-distillation"` | yes      | Who authored the gate: `"human"` hand-authored; `"agent"` written by an agent session; `"generated"` emitted by a generator; `"hermes-distillation"` auto-distilled. `"agent"` and `"generated"` were in use in `registry.json` before this row listed them.                                                                                                                                                                                                  |
-| `firingChannel`  | `string` (enum)                                              | yes      | The primary channel that fires this gate: `pre-commit \| commit-msg \| pre-push \| ci-pr \| ci-scheduled \| pnpm-meta \| ralph-gate \| manual`. Validated against `scripts/check-validator-wiring.mjs`'s `VALID_CHANNELS`. Read by `scripts/run-gates.mjs --channel <x>` and other single-channel consumers — keep it set even when `firingChannels` is also present.                                                                                         |
+| `firingChannel`  | `string` (enum)                                              | yes      | The primary channel that fires this gate: `pre-commit \| commit-msg \| pre-push \| ci-pr \| ci-scheduled \| pnpm-meta \| on-demand \| ralph-gate \| manual`. Validated against `scripts/check-validator-wiring.mjs`'s `VALID_CHANNELS`. Read by `scripts/run-gates.mjs --channel <x>` and other single-channel consumers — keep it set even when `firingChannels` is also present.                                                                            |
 | `firingChannels` | `string[]`                                                   | no       | For a gate that genuinely fires from more than one real channel (e.g. wired into both `.husky/pre-commit` AND `ralph/gate.sh`). When present, `firingChannel` must be one of its entries, and `check-validator-wiring.mjs` requires every listed channel to have independent wiring evidence — see #188.                                                                                                                                                      |
 | `defaultArgs`    | `string[]`                                                   | no       | The argv a standalone runner (`pnpm guardrail:sweep`) must pass. Set it when a bare `node <gateScript>` run is NOT how the repo wires the gate — e.g. `check-token-descriptions` is only ever invoked with `--no-missing`, and bare it reports 103 MISSING descriptions the repo has deliberately chosen not to write. Leave unset when a bare run is the real contract or a superset of the sub-modes (`audit-component-integrity`, `check-link-integrity`). |
 
@@ -48,21 +48,44 @@ is the costly one: registered `severity: warn, firingChannel: manual`, and
 simultaneously exiting 1 on any violation in CI, so the registry said the Swiss
 canon was dormant while it was blocking merges.
 
-The other 18 are reachable only from `check:fast`, `check:full`, or their own
-`pnpm run` alias, none of which CI invokes. They were mislabelled, and they are
-not gating. `pnpm-meta` is the correct channel for both groups; it does not by
-itself mean "blocks a PR".
+The rest are reachable only from `check:fast`, `check:full`, or their own
+`pnpm run` alias, none of which CI invokes.
 
-Two things `firingChannel` still does not tell you:
+### `on-demand` channel (added #265)
+
+`pnpm-meta` used to cover both groups, which made it useless: it meant
+"referenced by a script", not "runs". The detection reduced to
+`some(cmd => cmd.includes(gateScript))` with no test that the script is ever
+invoked, and a reviewer proved the dodge during #262 with a `package.json`
+script named `totally:unused:nobody:calls:this`.
+
+Measured once reachability was implemented — a script runs if a `.husky` hook
+or a CI step invokes it, if it is the npm lifecycle hook of a script that runs,
+or if a script that runs calls it:
+
+|                                   |        |
+| --------------------------------- | -----: |
+| `package.json` scripts defined    |    147 |
+| reachable from a real entry point | **16** |
+| gates labelled `pnpm-meta`        |     41 |
+| of those, genuinely firing        | **11** |
+| of those, firing from nothing     | **30** |
+
+Those 30 are now `on-demand`: real, registered, runnable, and invoked by
+nothing automatic. It is deliberately NOT `manual` — `manual` means a human
+running it is the design, and nobody runs these. The label is honest rather
+than flattering, which is the point: it makes "should this be wired, or
+removed?" a question somebody can answer.
+
+`pnpm-meta` now means the referencing script is reachable. Pinned from the
+outside by `scripts/__tests__/check-validator-wiring.reachability.test.mjs`,
+which spawns the real validator against a fixture carrying the original dodge.
+
+One thing `firingChannel` still does not tell you:
 
 - **`severity` is a separate axis and is not reconciled.** Several gates say
   `warn` while exiting 1 in `pretest`. Read `firingChannel` for where a gate
   fires, not `severity` for how hard.
-- **`pnpm-meta` detection does not prove the script is ever run.** It matches a
-  gate whose `gateScript` appears in any `package.json` script, including one
-  nothing invokes. A dead alias satisfies it. Closing that needs reachability
-  from a real entry point (a hook, a CI step, or `pretest`); until then
-  `pnpm-meta` means "referenced by a script", not "runs".
 
 ### `ralph-gate` channel (added #188)
 
