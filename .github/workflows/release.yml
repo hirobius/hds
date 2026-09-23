@@ -19,6 +19,34 @@ name: Release
 #     must be a member with publish rights.
 #   - Add the value as the GitHub repo secret NPM_TOKEN (Settings → Secrets and
 #     variables → Actions).
+#
+# Auth, part two: RELEASE_PAT, and why GITHUB_TOKEN is not enough here.
+#
+# GitHub deliberately does not start a workflow run from an event created with
+# GITHUB_TOKEN — it is the anti-recursion guard. So when this workflow used
+# GITHUB_TOKEN to open the "Version Packages" PR, ci.yml (`on: pull_request`)
+# never fired on it, and the PR sat with no checks at all. That was invisible
+# until `main` required the `Lean gate set` check to merge: PR #266 then became
+# permanently unmergeable, because the one check it required could never run.
+# Vercel still reported, which made it look like CI had simply chosen not to —
+# Vercel is a GitHub App, not a workflow, so the guard does not apply to it.
+#
+# A user-owned PAT is not subject to the guard, so the release PR gets the same
+# CI as any other PR and merges on its own merit rather than on a bypass.
+#
+# Provision it as the repo secret RELEASE_PAT — a FINE-GRAINED token, scoped to
+# this repository only:
+#   github.com/settings/personal-access-tokens → Generate new token
+#     Resource owner:  hirobius
+#     Repository:      only select repositories → hirobius/hds
+#     Permissions:     Contents        → Read and write   (version commit, tags)
+#                      Pull requests   → Read and write   (open/update the PR)
+#   Nothing else. Then add it at Settings → Secrets and variables → Actions as
+#   RELEASE_PAT.
+#
+# Fine-grained tokens EXPIRE. When it does, the guard step below fails the run
+# with the variable name and this fix, rather than silently falling back to
+# GITHUB_TOKEN and quietly restoring the deadlock.
 
 on:
   # Un-shelved 2026-09-14 (#199). The repo was unfrozen 2026-07-10 (#155) but
@@ -52,14 +80,47 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Fail loud, before anything is built or published, if RELEASE_PAT is
+      # missing or expired. Without this the action would still "succeed" using
+      # a token that cannot trigger CI, and the release PR would silently go
+      # back to being unmergeable — the exact failure this secret exists to end.
+      # Read through `env`, not `if: ${{ secrets.X == '' }}` — the secrets
+      # context is not reliably available in a step-level `if`, and a condition
+      # that silently evaluates false would skip the guard entirely, which is
+      # the one failure mode a guard must not have.
+      - name: Require RELEASE_PAT
+        env:
+          RELEASE_PAT: ${{ secrets.RELEASE_PAT }}
+        run: |
+          if [ -n "$RELEASE_PAT" ]; then
+            echo "RELEASE_PAT is set."
+            exit 0
+          fi
+          echo "::error::RELEASE_PAT is missing or expired."
+          echo "The Version Packages PR must be authored by a user token, not GITHUB_TOKEN:"
+          echo "GitHub does not start workflow runs from GITHUB_TOKEN events, so ci.yml"
+          echo "never fires on the release PR and the required 'Lean gate set' check can"
+          echo "never run, leaving the PR permanently unmergeable."
+          echo ""
+          echo "Fix: create a fine-grained PAT at"
+          echo "  https://github.com/settings/personal-access-tokens"
+          echo "  Resource owner: hirobius / Repository: only hirobius/hds"
+          echo "  Permissions: Contents = Read and write, Pull requests = Read and write"
+          echo "Then add it as the repo secret RELEASE_PAT at"
+          echo "  https://github.com/hirobius/hds/settings/secrets/actions"
+          exit 1
+
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
         with:
           version: pnpm changeset:version
           publish: pnpm release
         env:
-          # GITHUB_TOKEN authors/updates the "Version Packages" PR and pushes tags.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # RELEASE_PAT, not GITHUB_TOKEN, authors/updates the "Version Packages"
+          # PR and pushes tags. See the header: GITHUB_TOKEN events do not start
+          # workflow runs, so with it the release PR gets no CI and cannot
+          # satisfy a required check. The step above guarantees it is set.
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
           # NPM_TOKEN publishes to public npm. Must be an npm "Automation" token
           # for an account with publish rights on the @hirobius scope (see the
           # header comment for provisioning steps).
