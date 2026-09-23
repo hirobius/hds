@@ -23,7 +23,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { buildUtilityMap, collectTokens, renderIndex, renderPage } from './lib/component-page.mjs';
-import { mappedByOverride } from './figma-disposition.mjs';
+import { buildDisposition, mappedByOverride } from './figma-disposition.mjs';
 import { launchChromium, serveStorybook, storyUrl } from './lib/storybook-host.mjs';
 
 const require = createRequire(import.meta.url);
@@ -79,6 +79,10 @@ const utilityMap = buildUtilityMap(ROOT, require);
 // where check-sync-map reports 47 — two generated records disagreeing about
 // the same fact is the failure this whole line of work exists to remove.
 const figmaMapped = mappedByOverride();
+// The disposition decides who is exempt from having a story, so a page with no
+// examples can say WHY rather than looking broken.
+const dispositionClass = {};
+for (const entry of buildDisposition().components) dispositionClass[entry.name] = entry.class;
 
 const specs = manifest.componentSpecs ?? {};
 let names = Object.keys(specs);
@@ -288,6 +292,7 @@ for (const w of work) {
       repo: REPO,
       branch: BRANCH,
       packageName: PACKAGE_NAME,
+      dispositionClass: dispositionClass[w.name],
     }),
   );
 }

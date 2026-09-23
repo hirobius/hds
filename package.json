@@ -192,6 +192,7 @@
     "check:semantic-report": "node scripts/audit-tokens.mjs --report-only",
     "check:size": "pnpm build:lib && size-limit",
     "check:spacing": "node scripts/check-hardcoded-spacing.mjs",
+    "check:story-coverage": "node scripts/check-story-coverage.mjs",
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:sync-map": "node scripts/check-sync-map.mjs",
     "check:tailwind": "pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}'",

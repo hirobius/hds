@@ -145,6 +145,7 @@ export function renderPage({
   repo,
   branch = 'main',
   packageName = 'the design system',
+  dispositionClass,
 }) {
   const storyIds = spec.storyIds ?? [];
 
@@ -162,7 +163,14 @@ export function renderPage({
       </figure>`,
         )
         .join('')
-    : '<p class="empty">This component has no stories.</p>';
+    : `<p class="empty">${
+        dispositionClass === 'internal'
+          ? 'No stories, by design — this is an <strong>internal</strong> component under the ratified disposition (hds#235), not part of the consumer-facing surface. ' +
+            (spec.filePath?.endsWith('.mjs')
+              ? 'It is a Compiler primitive defined in a build script rather than a React module, so there is nothing to mount.'
+              : 'Every consumer-facing component does have one — <code>check-story-coverage</code> fails when one does not.')
+          : 'No stories. This component is consumer-facing, so that is a gap <code>check-story-coverage</code> should have caught.'
+      }</p>`;
 
   const propRows = props.length
     ? props
@@ -234,7 +242,13 @@ export function renderPage({
       ${spec.filePath ? `<a class="pill" href="${esc(blob(spec.filePath))}">Source</a>` : ''}
       ${(spec.storyFiles ?? []).length ? `<a class="pill" href="${esc(blob(spec.storyFiles[0]))}">Stories</a>` : ''}
       ${spec.figmaUrl ? `<a class="pill" href="${esc(spec.figmaUrl)}">Figma</a>` : '<span class="pill">No Figma node</span>'}
-      <span class="pill">${storyIds.length} stor${storyIds.length === 1 ? 'y' : 'ies'}</span>
+      <span class="pill">${
+        storyIds.length
+          ? `${storyIds.length} stor${storyIds.length === 1 ? 'y' : 'ies'}`
+          : dispositionClass === 'internal'
+            ? 'internal — no story by design'
+            : 'no story'
+      }</span>
       <span class="pill">${props.length} prop${props.length === 1 ? '' : 's'}</span>
       ${defects.length ? `<span class="pill warn">${defects.length} finding${defects.length === 1 ? '' : 's'}</span>` : ''}
     </div>

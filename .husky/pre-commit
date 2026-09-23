@@ -34,3 +34,9 @@ node scripts/check-contrast.mjs
 # storybook-static, so it runs anywhere.
 echo "Record join (source ↔ manifest ↔ Storybook ↔ Figma)…"
 node scripts/check-sync-map.mjs
+
+# A consumer-facing component with no story is invisible on the reference site
+# and never swept for rendered defects, so it reads as clean when nothing has
+# looked at it. Reads the manifest only: no network, no browser, no build.
+echo "Story coverage (every consumer-facing component is visible)…"
+node scripts/check-story-coverage.mjs

@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "ce3f552e8ae4618522f9986f1c95d72ceb063482f2c22187367faccb47161394",
-  "precommitStructureHashUpdatedAt": "2026-09-23T06:20:20.878Z",
+  "precommitStructureHash": "321055e6afa038ecfb55ca0f4e31002c1968bd75e1e03d4700537fdf20a292d7",
+  "precommitStructureHashUpdatedAt": "2026-09-23T09:02:56.314Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -455,6 +455,16 @@
       "description": "Joins the four records that describe a component -- source file, manifest entry, Storybook story, Figma node -- into one table with a per-component verdict, so an editing target can be looked up instead of remembered. Re-derives story ids from source rather than trusting the manifest, so a stale manifest fails rather than passing a gate whose job is to prove the records agree. Fails on a drop in story or Figma coverage, on a story file that resolves to no component, and on manifest drift. Expectations come from the ratified disposition (hds#235): a layout primitive is never reported as missing a Figma node it is not supposed to have.",
       "severity": "error",
       "gateScript": "scripts/check-sync-map.mjs",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"]
+    },
+    {
+      "id": "check-story-coverage",
+      "description": "Fails when a consumer-facing component has no Storybook story. A storyless component is invisible on the generated reference site AND is never swept by check-rendered-geometry, so it reads as clean when nothing has looked at it. Exemption is not a list kept in the gate: it is the ratified disposition (hds#235), where internal components are out of the consumer-facing surface — seven of them are Compiler primitives defined in a build script rather than React modules. A hand-kept allowlist is what the old componentPreviewRegistry tried: 46 entries, 16 naming components that no longer existed, 109 of 139 missing.",
+      "severity": "error",
+      "gateScript": "scripts/check-story-coverage.mjs",
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
