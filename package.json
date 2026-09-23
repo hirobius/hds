@@ -211,6 +211,7 @@
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
     "docs:component": "node scripts/generate-component-page.mjs",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
+    "docs:site": "node scripts/generate-component-page.mjs --all --clean",
     "figma-variables": "node scripts/build-figma-variables.mjs",
     "figma:connect:check": "node scripts/check-code-connect.mjs",
     "figma:connect:generate": "node scripts/generate-code-connect.mjs",
