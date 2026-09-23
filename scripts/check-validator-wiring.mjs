@@ -64,6 +64,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hashPrecommit } from './lib/precommit-canonical.mjs';
 
+import { reachableScripts } from './lib/script-reachability.mjs';
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 // Fixture mode: read inputs from a synthetic mini-root (proof-of-firing
@@ -87,6 +89,7 @@ const VALID_CHANNELS = new Set([
   'ci-pr',
   'ci-scheduled',
   'pnpm-meta',
+  'on-demand',
   'ralph-gate',
   'manual',
 ]);
@@ -400,6 +403,28 @@ function isChannelWired(channel, entry, ctx) {
         hasUnifiedRunnerInvocation(ghActionsContent, 'ci-scheduled')
       );
     case 'pnpm-meta': {
+      // #265: this used to be `some(cmd => cmd.includes(gateScript))` with no
+      // check that the referencing script is ever invoked, so `pnpm-meta` meant
+      // "named in a script", not "runs". A reviewer proved the dodge during
+      // #262 with a script called `totally:unused:nobody:calls:this`. The gate
+      // must now be named in a script that is REACHABLE from a real entry point
+      // — a .husky hook, a CI step, or an npm lifecycle hook that fires
+      // automatically — computed transitively by lib/script-reachability.mjs.
+      const scripts = pkgObj.scripts || {};
+      const reachable = reachableScripts({
+        hooks: [precommitContent, prepushContent, commitmsgContent].join('\n'),
+        workflows: ghActionsContent,
+        scripts,
+      });
+      return [...reachable].some((name) => (scripts[name] ?? '').includes(gateScript));
+    }
+    case 'on-demand': {
+      // Real, runnable, registered — and invoked by nothing automatic. It is
+      // named in a package.json script (so `pnpm <alias>` works) but no hook,
+      // CI step or lifecycle hook reaches that script. Distinct from `manual`,
+      // where a human running it IS the design; here nobody runs it at all,
+      // and the honest label is the first step to deciding whether it should
+      // be wired or removed.
       const scripts = pkgObj.scripts || {};
       return Object.values(scripts).some((cmd) => cmd.includes(gateScript));
     }
@@ -493,9 +518,20 @@ function runWiringCheck(
       ghActionsContent.includes(path.basename(gateScript, '.mjs'))
     )
       return 'ci-detected';
+    // #265: a gate named in a package.json script is `pnpm-meta` ONLY if that
+    // script actually runs. Named in a script nothing invokes, it is
+    // `on-demand` — real and runnable, but fired by nothing. Reporting both as
+    // pnpm-meta is what let 30 of 41 gates count as wired while never running.
     const scripts = pkgObj.scripts || {};
     const callers = Object.entries(scripts).filter(([, cmd]) => cmd.includes(gateScript));
-    if (callers.length) return 'pnpm-meta';
+    if (callers.length) {
+      const reachable = reachableScripts({
+        hooks: [precommitContent, prepushContent, commitmsgContent].join('\n'),
+        workflows: ghActionsContent,
+        scripts,
+      });
+      return callers.some(([name]) => reachable.has(name)) ? 'pnpm-meta' : 'on-demand';
+    }
 
     // ralph-gate, checked again as a last-resort fallback: a gate wired into
     // ralph/gate.sh purely via a pnpm script alias (no other automatic
