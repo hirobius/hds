@@ -94,16 +94,23 @@ function formatRun({ model, prune, files }, outDir) {
     (f) => f.path.startsWith('use-figma/') && !f.path.endsWith('snapshot.js'),
   );
   return [
-    `figma:push — carriers written to ${rel}/ (model ${modelHash(model)}, prune ${prune ? 'ON: deletes extras' : 'off'})`,
+    `figma:push — NOTHING HAS BEEN PUSHED. This command only WRITES FILES.`,
+    `  Carriers written to ${rel}/ (model ${modelHash(model)}, prune ${prune ? 'ON: deletes extras' : 'off'}).`,
+    '  Figma is unchanged until you run one of the two paths below, neither of which is a terminal command.',
     '',
     '  Development plugin (recommended: no size limit, nothing passes through a chat):',
-    `    Figma desktop → Plugins → Development → Import plugin from manifest… → ${rel}/plugin/manifest.json`,
-    '    Run "Plan push (dry run, writes nothing)", read the plan, then run the push command.',
+    `    1. Figma desktop → Plugins → Development → Import plugin from manifest… → ${rel}/plugin/manifest.json`,
+    '       (once only — the plugin re-reads these files every run, so no re-import after this)',
+    '    2. Run "Plan push (dry run, WRITES NOTHING)" and read the plan.',
+    '    3. Run the PUSH command. THIS is the step that changes Figma. It reports what it wrote.',
     '',
     '  use_figma (Figma MCP server), in order and unmodified; a script whose payload or runtime code changed stops before it reads or writes:',
     ...scripts.map((f) => `    ${rel}/${f.path}  (${kb(f.bytes)})`),
     '',
-    '  Then take a snapshot (pnpm figma:snapshot) and run pnpm check:figma-drift.',
+    '  AFTER the push has actually run, record it:',
+    '    4. In the plugin: "Take snapshot" → Download JSON.',
+    '    5. pnpm figma:snapshot --ingest <the downloaded file>   (this one does write figma/snapshot.json)',
+    '    6. pnpm check:figma-drift',
   ].join('\n');
 }
 

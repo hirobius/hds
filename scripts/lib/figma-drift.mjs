@@ -196,7 +196,11 @@ export function formatDrift(report, { snapshotLabel = 'figma/snapshot.json' } = 
       `ℹ Figma was last pushed from a different model (${snapshot.lastPush.modelHash} at ${snapshot.lastPush.pushedAt}; the tokens now build ${report.modelHash}).${pending}`,
     );
   } else if (report.pushedFromOtherModel === null) {
-    lines.push(`ℹ No pnpm figma:push is recorded in this Figma file.${pending}`);
+    lines.push(
+      `⚠ NO PUSH HAS EVER REACHED THIS FIGMA FILE. Every item below is un-delivered model, not drift.` +
+        ` Note that \`pnpm figma:push\` only writes carrier files — the push itself is the plugin's PUSH` +
+        ` command in Figma desktop, and a dry run writes nothing.`,
+    );
   } else if (!report.ok) {
     lines.push(
       `⚠ Figma was last pushed from this exact model (${report.modelHash} at ${snapshot.lastPush.pushedAt}), so the drift below was made in Figma after that push.`,
