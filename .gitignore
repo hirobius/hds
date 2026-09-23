@@ -147,3 +147,9 @@ verdict.json
 # Preview bench build output (pnpm preview:build regenerates it)
 preview/dist/
 preview/publish/
+
+# Generated component reference pages — rebuild with `pnpm docs:component <Name>`.
+# Not committed: the story screenshots are regenerated binaries that would churn
+# on every run, and a checked-in page is one more generated artifact that can go
+# stale while asserting it is current.
+docs/components/

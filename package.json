@@ -209,6 +209,7 @@
     "closure:plan:check": "node scripts/generate-closure-plan.mjs --check",
     "docs:api": "node scripts/generate-component-api.mjs",
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
+    "docs:component": "node scripts/generate-component-page.mjs",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
     "figma-variables": "node scripts/build-figma-variables.mjs",
     "figma:connect:check": "node scripts/check-code-connect.mjs",
