@@ -58,14 +58,25 @@ jobs:
 
       # Fail loudly and name the variable, rather than publishing a site whose
       # Examples are all empty.
-      - name: Verify the site rendered
+      # Examples are live iframes into the Storybook shipped beside the pages,
+      # so the check is that both exist. Publishing pages whose frames 404
+      # would look like a site where nothing renders.
+      - name: Verify the site
         run: |
           pages=$(find docs/components -maxdepth 1 -name '*.html' | wc -l)
-          shots=$(find docs/components/_shots -name '*.png' 2>/dev/null | wc -l)
-          echo "pages=$pages shots=$shots"
-          if [ "$pages" -lt 2 ] || [ "$shots" -lt 1 ]; then
-            echo "::error::docs:site produced $pages pages and $shots renders."
-            echo "::error::A page count of 1 means the manifest is empty; 0 renders means storybook-static was missing."
+          frames=$(grep -l 'storybook/iframe.html' docs/components/*.html | wc -l)
+          echo "pages=$pages pages-with-frames=$frames"
+          if [ "$pages" -lt 2 ]; then
+            echo "::error::docs:site produced $pages pages — the manifest is empty."
+            exit 1
+          fi
+          if [ ! -f docs/components/storybook/iframe.html ]; then
+            echo "::error::docs/components/storybook/iframe.html is missing, so every example frame would 404."
+            echo "::error::The Build Storybook step must run before pnpm docs:site."
+            exit 1
+          fi
+          if [ "$frames" -lt 1 ]; then
+            echo "::error::No page embeds a live example frame."
             exit 1
           fi
 

@@ -139,3 +139,49 @@ describe('baseline bookkeeping', () => {
     expect(summarize([{ id: 'c--three', findings: [] }]).storiesWithFindings).toBe(0);
   });
 });
+
+/**
+ * The detector that exists because the gate could not tell silence from
+ * success. Found by running this probe against another component library:
+ * three of eighteen cases failed to mount, and all three reported "clean".
+ */
+describe.skipIf(!hasBrowser)('empty renders are a finding, not a pass', () => {
+  let browser;
+  let page;
+
+  beforeAll(async () => {
+    browser = await chromium.launch({ executablePath: CHROMIUM });
+    page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  }, 60_000);
+
+  afterAll(async () => {
+    await browser?.close();
+  });
+
+  const run = async (html) => {
+    await page.setContent(html);
+    return page.evaluate(
+      ([source, cfg]) => new Function(`return (${source})`)()(cfg),
+      [PROBE_SOURCE.toString(), PROBE_CONFIG],
+    );
+  };
+
+  it('reports a story whose root is empty', async () => {
+    const findings = await run(`<html><body><div id="storybook-root"></div></body></html>`);
+    expect(findings.map((f) => f.kind)).toEqual(['empty-render']);
+  });
+
+  it('does not report a story that rendered something', async () => {
+    const findings = await run(
+      `<html><body><div id="storybook-root"><button style="height:40px;width:120px">Save</button></div></body></html>`,
+    );
+    expect(findings.map((f) => f.kind)).not.toContain('empty-render');
+  });
+
+  it('short-circuits, so an empty root yields exactly one finding', async () => {
+    // Without the early return an empty root would also be measured for
+    // overflow and targets, producing noise on top of the real problem.
+    const findings = await run(`<html><body><div id="storybook-root"></div></body></html>`);
+    expect(findings).toHaveLength(1);
+  });
+});

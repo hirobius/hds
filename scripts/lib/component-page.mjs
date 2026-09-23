@@ -59,6 +59,7 @@ export const GAP_LABEL = Object.freeze({
   'small-target': 'below the 24px WCAG 2.2 AA target',
   'link-no-affordance': 'link has colour as its only affordance',
   'row-misaligned': 'table row baselines misaligned',
+  'empty-render': 'the story rendered nothing at all',
 });
 
 /** Shared chrome. One stylesheet for every page, so the site reads as one. */
@@ -113,6 +114,10 @@ export const STYLES = `
   .examples{display:grid;gap:20px}
   .example{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
   .example img{display:block;width:100%;height:auto;background:#fff}
+  /* A live story runs in its own frame. Height comes from the painted bounds
+     measured at generation time, so the frame fits what the component draws
+     instead of guessing or shipping resize JS into every page. */
+  .example iframe{display:block;width:100%;border:0;background:#fff;color-scheme:light}
   .example .missing{padding:40px;text-align:center;color:var(--ink-3);font-size:13px}
   figcaption{display:flex;justify-content:space-between;align-items:center;gap:12px;
              padding:10px 14px;border-top:1px solid var(--line);font-size:13px}
@@ -146,6 +151,8 @@ export function renderPage({
   branch = 'main',
   packageName = 'the design system',
   dispositionClass,
+  heights = {},
+  live = false,
 }) {
   const storyIds = spec.storyIds ?? [];
 
@@ -155,9 +162,16 @@ export function renderPage({
           (id) => `
       <figure class="example">
         ${
-          shots[id]
-            ? `<img src="${esc(shots[id])}" alt="${esc(storyLabel(id))}" loading="lazy">`
-            : '<div class="missing">no render captured</div>'
+          live
+            ? `<iframe
+                 src="./storybook/iframe.html?id=${encodeURIComponent(id)}&viewMode=story"
+                 title="${esc(storyLabel(id))}"
+                 loading="lazy"
+                 style="height:${heights[id] ?? 240}px"
+               ></iframe>`
+            : shots[id]
+              ? `<img src="${esc(shots[id])}" alt="${esc(storyLabel(id))}" loading="lazy">`
+              : '<div class="missing">no render captured</div>'
         }
         <figcaption><span>${esc(storyLabel(id))}</span><code>${esc(id)}</code></figcaption>
       </figure>`,
@@ -264,7 +278,9 @@ export function renderPage({
     'examples',
     'Examples',
     `<div class="examples">${examples}</div>`,
-    'Every image is the real story rendered in Chromium, not a mockup — so a visual defect here is a defect in the component.',
+    live
+      ? 'Each example is the real component running in its own frame — not a picture of it. Interact with it; what you see is what the code does.'
+      : 'Every image is the real story rendered in Chromium, not a mockup — so a visual defect here is a defect in the component.',
   )}
 
   ${section(

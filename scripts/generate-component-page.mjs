@@ -18,13 +18,18 @@
  * regenerated binaries, and a checked-in page is one more generated artifact
  * that can go stale while asserting it is current.
  */
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { buildUtilityMap, collectTokens, renderIndex, renderPage } from './lib/component-page.mjs';
 import { buildDisposition, mappedByOverride } from './figma-disposition.mjs';
-import { launchChromium, serveStorybook, storyUrl } from './lib/storybook-host.mjs';
+import {
+  hasStorybookBuild,
+  launchChromium,
+  serveStorybook,
+  storyUrl,
+} from './lib/storybook-host.mjs';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -51,6 +56,12 @@ const CLEAN = argv.includes('--clean');
 // ~33% in size, but it turns 576 files (140 pages + 436 images) into 140, which
 // is what a host with a file-count limit can take.
 const INLINE = argv.includes('--inline');
+// Live by default: an <iframe> per story running the real component, not a
+// picture of it. --shots falls back to screenshots for a host that cannot
+// carry storybook-static alongside the pages (an Artifact caps at 255 files;
+// Storybook alone is 275).
+const SHOT_MODE = argv.includes('--shots');
+const LIVE = !SHOT_MODE;
 const ONLY = argv.find((a) => !a.startsWith('--'));
 
 if (!ALL && !ONLY) {
@@ -170,6 +181,62 @@ const MEASURE_PAINTED = (scrollFirst) => {
   };
 };
 
+/**
+ * Measure each story's painted bounds WITHOUT writing a PNG.
+ *
+ * A live iframe has no intrinsic height, and Storybook does not resize one for
+ * you. Rather than guessing a height or shipping resize JS into every page,
+ * the same painted-bounds measurement that used to crop screenshots now sets
+ * each iframe's height, so a live example is sized to what it actually draws.
+ */
+async function measureAll(work) {
+  const unique = [...new Set(work.flatMap((w) => w.storyIds))];
+  if (!unique.length) return {};
+  const host = await serveStorybook(ROOT);
+  if (!host) {
+    console.warn('  (no storybook-static — run pnpm build-storybook first)');
+    return {};
+  }
+  const browser = await launchChromium();
+  const queue = unique.slice();
+  const sizes = {};
+  let done = 0;
+  let failed = 0;
+
+  const worker = async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1100, height: 700 } });
+    const page = await ctx.newPage();
+    while (queue.length) {
+      const id = queue.shift();
+      try {
+        await page.goto(storyUrl(host.baseUrl, id), { waitUntil: 'networkidle', timeout: 20000 });
+        await page.waitForSelector('#storybook-root > *', { timeout: 8000 }).catch(() => {});
+        await page.waitForTimeout(120);
+        let box = await page.evaluate(MEASURE_PAINTED, false);
+        if (!box || box.height < 1) {
+          await page.evaluate(MEASURE_PAINTED, true);
+          await page.waitForTimeout(150);
+          box = await page.evaluate(MEASURE_PAINTED, false);
+        }
+        // Clamp: a story taller than the viewport scrolls inside its own frame
+        // rather than making the page enormous.
+        if (box && box.height >= 1) sizes[id] = Math.min(Math.ceil(box.height + box.y), 900);
+      } catch {
+        failed += 1;
+      }
+      done += 1;
+      if (done % 100 === 0) process.stderr.write(`  measured ${done}/${unique.length}\n`);
+    }
+    await ctx.close();
+  };
+
+  await Promise.all(Array.from({ length: 4 }, worker));
+  await browser.close();
+  host.close();
+  if (failed) console.warn(`  (${failed} story/stories could not be measured)`);
+  return sizes;
+}
+
 async function captureAll(work) {
   const unique = new Set(work.flatMap((w) => w.storyIds));
   const total = unique.size;
@@ -265,7 +332,13 @@ const work = names.map((name) => {
   };
 });
 
-const shots = SHOTS ? await captureAll(work) : {};
+const shots = SHOTS && SHOT_MODE ? await captureAll(work) : {};
+const heights = SHOTS && LIVE ? await measureAll(work) : {};
+
+// Live pages iframe the real Storybook, so it has to ship beside them.
+if (LIVE && hasStorybookBuild(ROOT)) {
+  cpSync(path.join(ROOT, 'storybook-static'), path.join(OUT_DIR, 'storybook'), { recursive: true });
+}
 
 /** Swap image paths for data URIs when the target cannot carry loose files. */
 function inlineShots(map) {
@@ -289,6 +362,8 @@ for (const w of work) {
       tokens: w.tokens,
       defects: w.defects,
       shots: pageShots,
+      heights,
+      live: LIVE,
       repo: REPO,
       branch: BRANCH,
       packageName: PACKAGE_NAME,
@@ -336,7 +411,14 @@ const totals = work.reduce(
 console.log(
   `✓ ${work.length} page${work.length === 1 ? '' : 's'}${ALL ? ' + index' : ''} → ${path.relative(ROOT, OUT_DIR)}/`,
 );
+const storyNote = LIVE
+  ? `${Object.keys(heights).length} live`
+  : `${Object.keys(shots).length} rendered`;
 console.log(
-  `  ${totals.stories} stories (${Object.keys(shots).length} rendered) · ${totals.tokens} token refs · ${totals.defects} findings`,
+  `  ${totals.stories} stories (${storyNote}) · ${totals.tokens} token refs · ${totals.defects} findings`,
 );
+if (LIVE && !hasStorybookBuild(ROOT)) {
+  console.warn('  ⚠ storybook-static is missing, so every example frame will 404.');
+  console.warn('    fix: pnpm build-storybook, then pnpm docs:site');
+}
 if (ALL) console.log(`  open ${path.relative(ROOT, path.join(OUT_DIR, 'index.html'))}`);

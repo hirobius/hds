@@ -35,6 +35,18 @@ export const PROBE_SOURCE = function hdsRenderedGeometryProbe(cfg) {
   const root = document.querySelector('#storybook-root') || document.body;
   const vw = document.documentElement.clientWidth;
 
+  // A story that throws, fails to mount or renders null produces NO findings,
+  // which is indistinguishable from a clean pass — a vacuous green. Running
+  // this probe against another library surfaced it: three of eighteen cases
+  // rendered nothing and all three reported "clean". It had already happened
+  // here, where three StackedCardRail stories captured nothing while the gate
+  // said no new findings. An empty root is now a finding of its own.
+  const rendered = root.querySelectorAll('*').length;
+  if (rendered === 0) {
+    out.push({ kind: 'empty-render', sel: '#storybook-root', text: '' });
+    return out;
+  }
+
   const sel = (el) => {
     const id = el.id ? `#${el.id}` : '';
     const cls =
