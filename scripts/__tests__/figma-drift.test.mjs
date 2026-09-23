@@ -57,7 +57,7 @@ describe('snapshot files', () => {
 describe('figmaDrift', () => {
   it('finds nothing when Figma matches the model', async () => {
     const report = figmaDrift(model, await snapshotOf(await pushedFile()));
-    expect(report.counts).toEqual({ missing: 0, extra: 0, changed: 0 });
+    expect(report.counts).toEqual({ missing: 0, extra: 0, changed: 0, excluded: 0, moved: 0 });
     expect(report.ok).toBe(true);
     expect(formatDrift(report)).toMatch(/✓ No drift/);
   });
@@ -74,7 +74,7 @@ describe('figmaDrift', () => {
     });
 
     const report = figmaDrift(model, await snapshotOf(figma));
-    expect(report.counts).toEqual({ missing: 0, extra: 0, changed: 1 });
+    expect(report.counts).toEqual({ missing: 0, extra: 0, changed: 1, excluded: 0, moved: 0 });
     expect(report.items).toEqual([
       {
         kind: 'changed',
@@ -100,7 +100,7 @@ describe('figmaDrift', () => {
     semantic.addMode('High contrast');
 
     const report = figmaDrift(model, await snapshotOf(figma));
-    expect(report.counts).toEqual({ missing: 1, extra: 2, changed: 0 });
+    expect(report.counts).toEqual({ missing: 1, extra: 2, changed: 0, excluded: 0, moved: 0 });
     const text = formatDrift(report);
     expect(text).toContain('missing  space/component/gap (semantic.space.component.gap)');
     expect(text).toContain('extra    legacy/unused');
@@ -116,7 +116,7 @@ describe('figmaDrift', () => {
     h1.fontSize = 40;
 
     const report = figmaDrift(model, await snapshotOf(figma));
-    expect(report.counts).toEqual({ missing: 0, extra: 0, changed: 1 });
+    expect(report.counts).toEqual({ missing: 0, extra: 0, changed: 1, excluded: 0, moved: 0 });
     expect(formatDrift(report)).toContain(
       'changed  text style typography/h1: fontSize, bound:fontSize',
     );
@@ -170,16 +170,18 @@ describe('figmaDrift', () => {
     );
   });
 
-  it('reports a variable left behind by a cross-collection move as an extra to rebind, then delete', async () => {
+  it('reports a variable left behind by a cross-collection move as `moved`, not `extra`', async () => {
     const figma = await pushedFile();
     const component = await collection(figma, 'Hirobius/Component');
     const old = figma.variables.createVariable('button/text', component, 'COLOR');
     old.setVariableCodeSyntax('WEB', 'var(--component-button-text)');
 
     const report = figmaDrift(model, await snapshotOf(figma));
+    // `moved`, not `extra`: the old copy is real and layers may still bind to
+    // it, so the remedy is rebind-then-delete in Figma, never --prune.
     expect(report.items).toEqual([
       {
-        kind: 'extra',
+        kind: 'moved',
         collection: 'Hirobius/Component',
         what: 'variable',
         name: 'button/text',
@@ -188,7 +190,7 @@ describe('figmaDrift', () => {
       },
     ]);
     expect(formatDrift(report)).toContain(
-      'extra    button/text: moved to Hirobius/Semantic; rebind its layers to the new variable, then delete it in Figma',
+      'moved    button/text: moved to Hirobius/Semantic; rebind its layers to the new variable, then delete it in Figma',
     );
   });
 
