@@ -32,6 +32,8 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import { brandAccent } from './lib/brand-truth.mjs';
+
 import { walk, resolveRef, header, row, replaceSection } from './build-handoff.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -52,7 +54,11 @@ function dim(value) {
  * the full semantic table lives in DESIGN-HANDOFF.md.
  */
 export function buildColors(raw) {
-  const blue = (raw.primitive?.color?.blue?.['500']?.$value ?? '').toUpperCase();
+  // #246: was `primitive.color.blue.500`, hardcoded. #208 repointed the accent to a
+  // neutral and this kept emitting electric blue into the document CLAUDE.md tells
+  // every agent to read first before visual work. The accent lives at
+  // semantic.accent.rest and is resolved the same way the shipped CSS resolves it.
+  const accent = brandAccent(raw).toUpperCase();
   const fb = raw.semantic?.color?.feedback ?? {};
   const red = resolveRef(fb.error?.$value, raw);
   const green = resolveRef(fb.success?.$value, raw);
@@ -63,7 +69,7 @@ export function buildColors(raw) {
   lines.push('**One accent — one neutral system.**');
   lines.push('');
   lines.push(
-    `- **Primary** (\`${blue}\`): CTAs, active states, selected focus rings, and the single brand accent. \`primitive.color.blue.500\` / \`semantic.accent.rest\`.`,
+    `- **Accent** (\`${accent}\`): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
   );
   lines.push(
     '- **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.',
