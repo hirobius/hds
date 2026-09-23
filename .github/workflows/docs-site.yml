@@ -7,8 +7,14 @@ name: Component reference site
 #   1. Add VERCEL_TOKEN as an Actions *secret*
 #      (Settings -> Secrets and variables -> Actions -> Secrets).
 #      scripts/deploy-storybook.mjs already documents this token.
+#      This is the ONLY thing a manual "Run workflow" needs.
 #   2. Add a repo *variable* DOCS_SITE_ENABLED = true (same page -> Variables)
-#      to switch the job on.
+#      to also publish automatically on every push to main.
+#   3. Optional: a repo *variable* VERCEL_SCOPE = <team slug> if the token
+#      belongs to a team rather than a personal account.
+#
+# The project itself is created by `vercel link --project` on the first run;
+# there is nothing to set up in the Vercel dashboard beforehand.
 #
 # Until that variable is set the job green-skips, so this cannot turn PRs red
 # before the one-time setup is done — the same guard chromatic.yml uses.
@@ -80,14 +86,39 @@ jobs:
             exit 1
           fi
 
+      # `vercel deploy --name` is deprecated and ignored by the current CLI, so
+      # an unlinked deploy would invent a project named after the directory
+      # ("components"). `vercel link --project` is the supported way to pin the
+      # name, and it CREATES the project on first run — so the only thing Adrian
+      # has to set is the token.
       - name: Publish to Vercel
+        id: publish
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE }}
+          PROJECT: hirobius-hds-components
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
-            echo "::error::VERCEL_TOKEN is not set. Add it in Settings -> Secrets and variables -> Actions -> Secrets, then re-run this workflow."
+            echo "::error::VERCEL_TOKEN is not set. Add it at https://github.com/hirobius/hds/settings/secrets/actions/new (name: VERCEL_TOKEN, value: a token from https://vercel.com/account/settings/tokens), then re-run this workflow."
             exit 1
           fi
+          # Only pass --scope when a team is configured; an empty --scope errors.
+          scope=""
+          if [ -n "$VERCEL_SCOPE" ]; then scope="--scope $VERCEL_SCOPE"; fi
+
+          pnpm dlx vercel link --yes --cwd docs/components \
+            --project "$PROJECT" --token "$VERCEL_TOKEN" $scope
+
           pnpm dlx vercel deploy docs/components \
-            --prod --yes --token "$VERCEL_TOKEN" \
-            --name hirobius-hds-components
+            --prod --yes --token "$VERCEL_TOKEN" $scope | tee deploy-url.txt
+
+          url=$(tail -n 1 deploy-url.txt)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      # The URL is the whole point of the job — put it on the run page rather
+      # than leaving it buried in step logs.
+      - name: Report the URL
+        run: |
+          echo "### Component reference site" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "${{ steps.publish.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
