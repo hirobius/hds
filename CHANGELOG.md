@@ -1,5 +1,62 @@
 # Changelog
 
+## 0.15.0
+
+### Minor Changes
+
+- a5d33b6: Every props type behind a component the package exports is now exported too, so a
+  consumer can name it.
+
+  41 of them were not. `src/index.ts` re-exports each public module with `export *`, so a
+  type ships only if its module exports it — and for `Alert`, `Container`, `Stack`,
+  `Grid`, `CardHeader`, `ErrorBoundary` and 35 others it did not. The single most ordinary
+  thing a consumer writes,
+
+  ```tsx
+  const Wrapped = (props: AlertProps) => <Alert {...props} />;
+  ```
+
+  did not compile, and the author had to fall back to `React.ComponentProps<typeof Alert>`
+  or restate the shape by hand. Nothing here could see it: `tsc` is satisfied because the
+  type is in scope inside its own module, the component renders fine, and every test in
+  this repo imports from `src/`, where the barrel is irrelevant.
+
+  The rule is reachability, not the `Props` suffix. A type is exported iff it annotates the
+  props of a component the module exports — directly, through a trailing `export { … }`, or
+  through an `Object.assign` compound like `Grid`. That deliberately leaves internal: the 33
+  `VariantProps<typeof xVariants>` cva aliases (`button.tsx` sets that convention),
+  composition bases such as `NavNativeProps`, union arms such as `TokenBaseProps`, cast
+  targets such as `WiredChildProps`, and the props of sub-components the module keeps to
+  itself.
+
+  Purely additive — 41 symbols added, none removed, no module changed.
+  `scripts/check-props-exports.mjs` runs from `pretest` and holds the line.
+
+### Patch Changes
+
+- c2b9e86: Every React-bearing bundle now starts with `'use client'`, so the package works in the
+  Next.js App Router that `CONSUMING.md` advertises.
+
+  Before this, `dist/` shipped 20 `useState` calls and zero client directives. In the App
+  Router a module is a Server Component until it says otherwise, and a Server Component
+  that calls a hook fails at render — so the first `import { Button } from
+'@hirobius/design-system'` in a Next.js page threw. No existing consumer had hit it
+  (ops is Vite, site-engine is Astro), which is exactly why a prospective user would have
+  found it first.
+
+  The directive is applied **per chunk, not as a blanket banner**. The framework-free
+  subpaths — `brand`, `tokens`, `cn`, `manifest`, `mui` — stay unmarked on purpose:
+  `'use client'` turns every export of a module into an opaque client reference when it is
+  imported from server or edge code, which would break `tokens.color.primary` in a Server
+  Component and defeat `brand`'s documented "static Astro build or edge runtime" use.
+
+  Marked: the main barrel, `contexts`, `form`, `scroll`, and the two shared chunks they
+  import. A chunk is marked iff it imports React, or imports a chunk that does.
+
+  Gated: `scripts/check-rsc-directives.mjs` runs from `smoke:consumer` and re-derives the
+  rule from the emitted files, in both directions, so neither a missing nor a spurious
+  directive can ship again.
+
 ## 0.14.0
 
 ### Minor Changes
