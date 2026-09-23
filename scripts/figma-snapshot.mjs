@@ -50,7 +50,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       const rel = relative(ROOT, outDir).replaceAll('\\', '/');
       console.log(
         [
-          'figma:snapshot — take a snapshot of the Figma file, then ingest it:',
+          'figma:snapshot — NO SNAPSHOT TAKEN. This command only prints these instructions.',
+          '  Taking the snapshot happens in Figma; only the --ingest step below writes anything here.',
+          '',
           `  Development plugin: import ${rel}/plugin/manifest.json once, run "Take snapshot", click Download JSON.`,
           `  use_figma: run ${rel}/use-figma/snapshot.js unmodified and save the returned JSON to a file.`,
           '  Then: pnpm figma:snapshot --ingest <file>   (verifies the checksum, writes figma/snapshot.json)',
