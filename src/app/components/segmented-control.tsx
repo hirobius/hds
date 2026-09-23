@@ -301,7 +301,7 @@ interface HdsSegmentedOption {
   description?: string;
 }
 
-interface SegmentedControlProps {
+export interface SegmentedControlProps {
   /** Accessible label for the control. */
   label?: string;
   /** Accessible label when no visible label should be rendered. */

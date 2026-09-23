@@ -13,7 +13,7 @@ import { Button } from './button';
 import { Stack } from './stack';
 import { Surface } from './surface';
 
-interface ErrorBoundaryProps {
+export interface ErrorBoundaryProps {
   children: ReactNode;
   slotLabel?: string;
   minHeight?: string;
@@ -97,7 +97,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             {error.message || 'A runtime error interrupted this slot.'}
           </p>
           <div>
-            <Button variant="secondary" onClick={this.handleRetry} aria-label={`Retry ${slotLabel}`}>
+            <Button
+              variant="secondary"
+              onClick={this.handleRetry}
+              aria-label={`Retry ${slotLabel}`}
+            >
               Retry section
             </Button>
           </div>

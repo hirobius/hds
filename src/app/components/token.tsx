@@ -160,7 +160,7 @@ type TokenDiagramProps = TokenBaseProps & {
   onClick?: () => void;
 };
 
-type TokenProps = TokenNodeSurfaceProps | TokenDiagramProps;
+export type TokenProps = TokenNodeSurfaceProps | TokenDiagramProps;
 
 /** Dot-notation token paths that can deep-link into the Tokens explorer. */
 function isDeepLinkablePath(val: unknown): val is string {

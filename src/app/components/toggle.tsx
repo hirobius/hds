@@ -148,7 +148,7 @@ const toggleThumbVariants = cva(
   'pointer-events-none block w-[var(--primitive-size-16)] h-[var(--primitive-size-16)] rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-page)]',
 );
 
-interface ToggleProps extends Omit<
+export interface ToggleProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'type' | 'checked' | 'onChange'
 > {

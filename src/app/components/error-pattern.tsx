@@ -11,7 +11,7 @@ import { Stack } from './stack';
 import { Surface } from './surface';
 import { Text } from './text';
 
-type ErrorPatternProps = {
+export type ErrorPatternProps = {
   /** Large recovery headline rendered through the animated cascade treatment. */
   displayText?: string;
   /** Supporting message explaining the recovery state to the user. */

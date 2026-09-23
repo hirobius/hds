@@ -31,7 +31,7 @@ const radiusMap: Record<FrameRadius, string> = {
   full: hds.borderRadius.full,
 };
 
-interface FrameProps {
+export interface FrameProps {
   /** Media rendered inside the locked-ratio, clipped frame. */
   children: React.ReactNode;
   /** Desired width-to-height ratio, e.g. `16 / 9`. Defaults to `16 / 9`. */

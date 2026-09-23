@@ -30,7 +30,7 @@ const gapMap: Record<LayoutGap, string> = {
   spacious: 'var(--semantic-space-layout-spacious)',
 };
 
-interface SwitcherProps {
+export interface SwitcherProps {
   /** Switcher content — peer items that flip between row and column as a unit. */
   children: React.ReactNode;
   /** Container width below which items stack vertically (CSS length, e.g. '30rem'). Defaults to '30rem'. */
