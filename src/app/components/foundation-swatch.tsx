@@ -132,10 +132,9 @@ function renderDetails(
 }
 
 /**
- * @deprecated FoundationSwatch is an HDS docs/lab internal (foundation
- * specimen preview for the token/foundation doc pages), not a
- * consumer-facing HDS surface. It will be retiered to `utility` (dropped
- * from the published barrel) at the named major.
+ * FoundationSwatch - governed foundation specimen for color and semantic role previews.
+ *
+ * @deprecated FoundationSwatch is an HDS docs/lab internal (foundation specimen preview for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.
  * @removeIn 1.0.0
  */
 export function FoundationSwatch({

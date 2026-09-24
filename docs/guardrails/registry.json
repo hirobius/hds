@@ -467,8 +467,7 @@
       "gateScript": "scripts/check-status-claims.mjs",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "manual",
-      "firingChannels": ["manual"]
+      "firingChannel": "on-demand"
     },
     {
       "id": "check-story-coverage",

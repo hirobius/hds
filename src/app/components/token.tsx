@@ -457,11 +457,10 @@ function TokenDiagram({
  * Node content can use a left-side slot for swatches or other compact previews.
  */
 /**
+ * Token - reflective token specimen for unified node-based token views. The `variant` axis (node | diagram — diagram is a deprecated alias that resolves to the same node treatment) plus the `selected` / `fullWidth` / `asButton` / `nowrap` / `sourceNode` states used to be a Token.module.css `[data-*]` attribute stylesheet, with a duplicate `isSelected` branch re-painted inline on top of it. Both now live as one `cva` variant set — same `--semantic-*`/`--component-*`/`--primitive-*` custom properties, same pixels, no CSS module.
+ *
  * @public
- * @deprecated Token is an HDS docs/lab internal (reflective token specimen
- * for the token/foundation doc pages), not a consumer-facing HDS surface. It
- * will be retiered to `utility` (dropped from the published barrel) at the
- * named major.
+ * @deprecated Token is an HDS docs/lab internal (reflective token specimen for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.
  * @removeIn 1.0.0
  */
 export function Token(props: TokenProps) {

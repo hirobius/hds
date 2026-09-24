@@ -19,11 +19,10 @@ export interface CinematicLinkProps extends Omit<
 }
 
 /**
+ * CinematicLink - cinematic editorial link treatment for portfolio surfaces.
+ *
  * @public
- * @deprecated CinematicLink is an HDS docs/lab internal (editorial link
- * treatment for portfolio/case-study specimen surfaces), not a
- * consumer-facing HDS surface. It will be retiered to `utility` (dropped
- * from the published barrel) at the named major.
+ * @deprecated CinematicLink is an HDS docs/lab internal (editorial link treatment for portfolio/case-study specimen surfaces), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.
  * @removeIn 1.0.0
  */
 export function CinematicLink({ href, children, style, className, ...rest }: CinematicLinkProps) {
