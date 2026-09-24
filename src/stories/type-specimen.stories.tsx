@@ -39,35 +39,69 @@ type Story = StoryObj<typeof meta>;
 
 const GRID = 4;
 
-/** Resolve a `var(--x)` (or a bare custom-property name) to the px the browser computes. */
-function usePx(varRefs: readonly string[]): Record<string, number | null> {
-  const [resolved, setResolved] = React.useState<Record<string, number | null>>({});
+/**
+ * Resolve type metrics to the px the browser actually computes.
+ *
+ * NOT by probing element WIDTH, which was the first version of this and was
+ * broken in the way that matters most here: `--primitive-typography-lineHeight-none`
+ * is the unitless number `1`, and `width: 1` is invalid CSS. An invalid
+ * assignment leaves the previous value in place, so reusing one probe across a
+ * loop would have reported the PREVIOUS row's line-height for `display` — a
+ * confident, plausible, wrong number. Exactly the failure this page exists to
+ * expose, reproduced inside the page.
+ *
+ * Instead the declarations are applied as real type and read back through
+ * getComputedStyle, which resolves unitless multipliers, em and rem alike, and
+ * returns px for both properties. A metric that cannot be resolved comes back
+ * null and renders as an em dash.
+ */
+function useMetrics(
+  specs: ReadonlyArray<{ key: string; fontSize: string; lineHeight?: string }>,
+): Record<string, { size: number | null; lh: number | null }> {
+  const [out, setOut] = React.useState<Record<string, { size: number | null; lh: number | null }>>(
+    {},
+  );
   React.useEffect(() => {
     let raf = 0;
     const probe = document.createElement('div');
-    // Absolute px is the only honest read: a unitless line-height or an em
-    // tracking resolves against a font size, so measure it in place rather than
-    // parsing the declaration and doing the multiplication ourselves.
-    probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none';
+    probe.textContent = 'Ag';
+    probe.style.cssText =
+      'position:absolute;visibility:hidden;pointer-events:none;white-space:nowrap';
     document.body.appendChild(probe);
-    const out: Record<string, number | null> = {};
-    for (const ref of varRefs) {
-      probe.style.width = ref.startsWith('var(') ? ref : `var(${ref})`;
-      const w = parseFloat(getComputedStyle(probe).width);
-      out[ref] = Number.isFinite(w) ? Math.round(w * 100) / 100 : null;
+
+    const px = (v: string) => {
+      const n = parseFloat(v);
+      return Number.isFinite(n) ? Math.round(n * 100) / 100 : null;
+    };
+
+    const next: Record<string, { size: number | null; lh: number | null }> = {};
+    for (const spec of specs) {
+      // Cleared every pass: a declaration the browser rejects is silently
+      // ignored, and without the reset the previous row's value survives.
+      probe.style.fontSize = '';
+      probe.style.lineHeight = '';
+      probe.style.fontSize = spec.fontSize;
+      if (spec.lineHeight) probe.style.lineHeight = spec.lineHeight;
+      const cs = getComputedStyle(probe);
+      next[spec.key] = {
+        size: px(cs.fontSize),
+        // `normal` is a real computed value and is not a number — report it as
+        // unresolved rather than coercing it to something tidy.
+        lh: spec.lineHeight ? px(cs.lineHeight) : null,
+      };
     }
     probe.remove();
     // Deferred deliberately: measuring needs a painted document, and setting
-    // state synchronously inside the effect cascades a second render before
-    // the first has committed.
-    raf = requestAnimationFrame(() => setResolved(out));
+    // state synchronously inside the effect cascades a render before the first
+    // has committed.
+    raf = requestAnimationFrame(() => setOut(next));
     return () => cancelAnimationFrame(raf);
-  }, [varRefs]);
-  return resolved;
+  }, [specs]);
+  return out;
 }
 
 const RUNGS = Object.entries(hds.fontSize) as Array<[string, string]>;
-const RUNG_REFS = RUNGS.map(([, ref]) => ref);
+const RUNG_SPECS = RUNGS.map(([name, ref]) => ({ key: name, fontSize: ref }));
 
 const shell: React.CSSProperties = {
   padding: hds.space.px32,
@@ -95,14 +129,14 @@ const band: React.CSSProperties = {
 };
 
 function RampView() {
-  const px = usePx(RUNG_REFS);
+  const m = useMetrics(RUNG_SPECS);
   return (
     <div style={shell}>
       <span style={eyebrow}>primitive.typography.size</span>
       <div>
         {RUNGS.map(([name, ref], i) => {
-          const here = px[ref];
-          const below = i > 0 ? px[RUNGS[i - 1][1]] : null;
+          const here = m[name]?.size ?? null;
+          const below = i > 0 ? (m[RUNGS[i - 1][0]]?.size ?? null) : null;
           const ratio = here && below ? here / below : null;
           return (
             <div key={name} style={band}>
@@ -134,23 +168,22 @@ const COMPOSITES = [
   'mono',
 ] as const;
 
+/** Stable identity so useMetrics' effect does not re-run every render. */
+const COMPOSITE_SPECS = COMPOSITES.map((c) => ({
+  key: c,
+  fontSize: `var(--semantic-typography-${c}-font-size)`,
+  lineHeight: `var(--semantic-typography-${c}-line-height)`,
+}));
+
 function CompositesView() {
-  const refs = React.useMemo(
-    () =>
-      COMPOSITES.flatMap((c) => [
-        `--semantic-typography-${c}-font-size`,
-        `--semantic-typography-${c}-line-height`,
-      ]),
-    [],
-  );
-  const px = usePx(refs);
+  const m = useMetrics(COMPOSITE_SPECS);
   return (
     <div style={shell}>
       <span style={eyebrow}>semantic.typography</span>
       <div>
         {COMPOSITES.map((c) => {
-          const size = px[`--semantic-typography-${c}-font-size`];
-          const lh = px[`--semantic-typography-${c}-line-height`];
+          const size = m[c]?.size ?? null;
+          const lh = m[c]?.lh ?? null;
           const onGrid = lh !== null && lh !== undefined && lh % GRID === 0;
           return (
             <div key={c} style={band}>
@@ -190,11 +223,7 @@ export const Composites: Story = { render: () => <CompositesView /> };
  * vertical rhythm hold. Sizes never need to be on the grid; line boxes do.
  */
 function RhythmView() {
-  const refs = React.useMemo(
-    () => COMPOSITES.map((c) => `--semantic-typography-${c}-line-height`),
-    [],
-  );
-  const px = usePx(refs);
+  const m = useMetrics(COMPOSITE_SPECS);
   return (
     <div style={shell}>
       <span style={eyebrow}>line boxes against the 4px spacing grid</span>
@@ -216,7 +245,7 @@ function RhythmView() {
         }}
       >
         {COMPOSITES.map((c) => {
-          const lh = px[`--semantic-typography-${c}-line-height`];
+          const lh = m[c]?.lh ?? null;
           const onGrid = lh !== null && lh !== undefined && lh % GRID === 0;
           return (
             <div
