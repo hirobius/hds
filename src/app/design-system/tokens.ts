@@ -115,7 +115,6 @@ const hds = {
   fontWeight: {
     regular: 'var(--primitive-typography-weight-regular)',
     medium: 'var(--primitive-typography-weight-medium)',
-    semibold: 'var(--primitive-typography-weight-semibold)',
     bold: 'var(--primitive-typography-weight-bold)',
   },
 
@@ -129,11 +128,8 @@ const hds = {
   },
 
   letterSpacing: {
-    tighter: 'var(--primitive-typography-letterSpacing-tighter)',
     tight: 'var(--primitive-typography-letterSpacing-tight)',
     normal: 'var(--primitive-typography-letterSpacing-normal)',
-    wide: 'var(--primitive-typography-letterSpacing-wide)',
-    wider: 'var(--primitive-typography-letterSpacing-wider)',
   },
 
   semantic: {
