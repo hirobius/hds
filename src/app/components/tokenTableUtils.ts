@@ -1,6 +1,6 @@
 /** @internal — utility-tier component; not part of @hirobius/design-system public API. */
 import hirobiusTokens from '../../../hirobius.tokens.json';
-import { resolveTokenLiteralValue } from './lab/tokenUtils';
+import { resolveTokenLiteralValue } from './tokenUtils';
 
 type TokenNode = {
   $type?: string;
@@ -38,10 +38,20 @@ const TOKEN_ROOT = hirobiusTokens as TokenTree;
 const TOKEN_DESCRIPTIONS = new Map<string, string>();
 
 function isTokenNode(value: unknown): value is TokenNode {
-  return Boolean(value) && typeof value === 'object' && ('$value' in (value as Record<string, unknown>) || '$description' in (value as Record<string, unknown>) || '$type' in (value as Record<string, unknown>));
+  return (
+    Boolean(value) &&
+    typeof value === 'object' &&
+    ('$value' in (value as Record<string, unknown>) ||
+      '$description' in (value as Record<string, unknown>) ||
+      '$type' in (value as Record<string, unknown>))
+  );
 }
 
-function flattenTokens(node: TokenTree, prefix: string[] = [], out = new Map<string, FlatTokenEntry>()): Map<string, FlatTokenEntry> {
+function flattenTokens(
+  node: TokenTree,
+  prefix: string[] = [],
+  out = new Map<string, FlatTokenEntry>(),
+): Map<string, FlatTokenEntry> {
   Object.entries(node).forEach(([key, value]) => {
     if (key.startsWith('$')) return;
 
@@ -81,11 +91,18 @@ const FLAT_TOKENS = flattenTokens(TOKEN_ROOT);
 collectTokenDescriptions(TOKEN_ROOT);
 
 function lowerWords(value: string) {
-  return value.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[-_]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+  return value
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[-_]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
 }
 
 function cleanText(value: string) {
-  return String(value ?? '').replace(/\s+/g, ' ').trim();
+  return String(value ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function deriveFallbackAnatomy(tokenPath: string) {
@@ -97,7 +114,12 @@ function deriveFallbackAnatomy(tokenPath: string) {
   if (normalized.includes('font') || normalized.includes('type')) return 'type setting';
   if (normalized.includes('opacity')) return 'opacity';
   if (normalized.includes('shadow')) return 'shadow depth';
-  if (normalized.includes('motion') || normalized.includes('duration') || normalized.includes('easing')) return 'motion timing';
+  if (
+    normalized.includes('motion') ||
+    normalized.includes('duration') ||
+    normalized.includes('easing')
+  )
+    return 'motion timing';
   if (normalized.includes('border')) return 'border / stroke';
   if (normalized.includes('icon')) return 'icon slot';
   if (normalized.includes('gap')) return 'inter-item gap';
@@ -204,9 +226,11 @@ function deriveFallbackDescription(tokenPath: string, componentName?: string, ca
   return `${surface.charAt(0).toUpperCase()}${surface.slice(1)} detail.`;
 }
 
-const themeRelativeDescriptionPattern = /\b(darken(?:s|ed)?|lighten(?:s|ed)?|brighten(?:s|ed)?|dim(?:s|med)?|darkens?|lightens?)\b/i;
+const themeRelativeDescriptionPattern =
+  /\b(darken(?:s|ed)?|lighten(?:s|ed)?|brighten(?:s|ed)?|dim(?:s|med)?|darkens?|lightens?)\b/i;
 const themePairPattern = /\blight\b[\s\S]*\bdark\b|\bdark\b[\s\S]*\blight\b/i;
-const genericDescriptionPattern = /^(No token description available\.?|Primitive source value\.|Semantic role token\.|Design token source value\.|Specific value within the .* range at a defined lightness step\.|Discrete values within the .* range at defined lightness steps\.)$/i;
+const genericDescriptionPattern =
+  /^(No token description available\.?|Primitive source value\.|Semantic role token\.|Design token source value\.|Specific value within the .* range at a defined lightness step\.|Discrete values within the .* range at defined lightness steps\.)$/i;
 
 function normalizeTokenDescription(
   tokenPath: string,
@@ -218,7 +242,8 @@ function normalizeTokenDescription(
 ) {
   const cleaned = cleanText(description ?? '');
   if (!cleaned) return deriveFallbackDescription(tokenPath, componentName, category);
-  if (genericDescriptionPattern.test(cleaned)) return deriveFallbackDescription(tokenPath, componentName, category);
+  if (genericDescriptionPattern.test(cleaned))
+    return deriveFallbackDescription(tokenPath, componentName, category);
   if (themeRelativeDescriptionPattern.test(cleaned) && !themePairPattern.test(cleaned)) {
     return deriveFallbackDescription(tokenPath, componentName, category);
   }
@@ -230,12 +255,29 @@ function deriveSurfaceLabel(componentName?: string, category?: string) {
   const normalizedCategory = lowerWords(category ?? '');
 
   if (normalizedName.includes('button')) return 'button shell';
-  if (normalizedName.includes('input') || normalizedName.includes('select') || normalizedName.includes('radio') || normalizedName.includes('toggle') || normalizedName.includes('slider') || normalizedName.includes('segmented control')) return 'control shell';
-  if (normalizedName.includes('nav') || normalizedName.includes('side nav') || normalizedName.includes('doc link card')) return 'navigation surface';
-  if (normalizedName.includes('alert') || normalizedName.includes('badge')) return 'feedback surface';
-  if (normalizedName.includes('code block') || normalizedName.includes('inline code')) return 'code surface';
-  if (normalizedName.includes('asset img') || normalizedName.includes('image')) return 'media frame';
-  if (normalizedName.includes('preview frame') || normalizedName.includes('component preview')) return 'preview frame';
+  if (
+    normalizedName.includes('input') ||
+    normalizedName.includes('select') ||
+    normalizedName.includes('radio') ||
+    normalizedName.includes('toggle') ||
+    normalizedName.includes('slider') ||
+    normalizedName.includes('segmented control')
+  )
+    return 'control shell';
+  if (
+    normalizedName.includes('nav') ||
+    normalizedName.includes('side nav') ||
+    normalizedName.includes('doc link card')
+  )
+    return 'navigation surface';
+  if (normalizedName.includes('alert') || normalizedName.includes('badge'))
+    return 'feedback surface';
+  if (normalizedName.includes('code block') || normalizedName.includes('inline code'))
+    return 'code surface';
+  if (normalizedName.includes('asset img') || normalizedName.includes('image'))
+    return 'media frame';
+  if (normalizedName.includes('preview frame') || normalizedName.includes('component preview'))
+    return 'preview frame';
   if (normalizedName.includes('table')) return 'table surface';
   if (normalizedName.includes('token')) return 'token surface';
   if (normalizedName.includes('stack')) return 'layout stack';
@@ -248,20 +290,30 @@ function deriveSurfaceLabel(componentName?: string, category?: string) {
   return 'component surface';
 }
 
-function deriveWhereFromRole(role: string, tokenPath: string, componentName?: string, category?: string) {
+function deriveWhereFromRole(
+  role: string,
+  tokenPath: string,
+  componentName?: string,
+  category?: string,
+) {
   const surface = deriveSurfaceLabel(componentName, category);
   const normalized = lowerWords(role);
 
-  if (normalized.includes('horizontal padding')) return { whereLabel: surface, whereDetail: 'inner padding / inline axis' };
-  if (normalized.includes('vertical padding')) return { whereLabel: surface, whereDetail: 'inner padding / block axis' };
+  if (normalized.includes('horizontal padding'))
+    return { whereLabel: surface, whereDetail: 'inner padding / inline axis' };
+  if (normalized.includes('vertical padding'))
+    return { whereLabel: surface, whereDetail: 'inner padding / block axis' };
   if (normalized.includes('padding')) return { whereLabel: surface, whereDetail: 'inner padding' };
   if (normalized.includes('fill hover')) return { whereLabel: surface, whereDetail: 'hover fill' };
   if (normalized.includes('fill')) return { whereLabel: surface, whereDetail: 'surface fill' };
   if (normalized.includes('label')) return { whereLabel: surface, whereDetail: 'label text' };
-  if (normalized.includes('corner radius') || normalized.includes('radius')) return { whereLabel: surface, whereDetail: 'corner radius' };
+  if (normalized.includes('corner radius') || normalized.includes('radius'))
+    return { whereLabel: surface, whereDetail: 'corner radius' };
   if (normalized.includes('font size')) return { whereLabel: surface, whereDetail: 'type size' };
-  if (normalized.includes('font weight')) return { whereLabel: surface, whereDetail: 'type weight' };
-  if (normalized.includes('size')) return { whereLabel: surface, whereDetail: deriveFallbackAnatomy(tokenPath) };
+  if (normalized.includes('font weight'))
+    return { whereLabel: surface, whereDetail: 'type weight' };
+  if (normalized.includes('size'))
+    return { whereLabel: surface, whereDetail: deriveFallbackAnatomy(tokenPath) };
   if (normalized.includes('gap')) return { whereLabel: surface, whereDetail: 'inter-item gap' };
   if (normalized.includes('border')) return { whereLabel: surface, whereDetail: 'border / stroke' };
   if (normalized.includes('height')) return { whereLabel: surface, whereDetail: 'control height' };
@@ -271,35 +323,73 @@ function deriveWhereFromRole(role: string, tokenPath: string, componentName?: st
   return { whereLabel: surface, whereDetail: deriveFallbackAnatomy(tokenPath) };
 }
 
-function deriveWhereFromSnippet(sourceSnippet: string | undefined, tokenPath: string, componentName?: string, category?: string) {
+function deriveWhereFromSnippet(
+  sourceSnippet: string | undefined,
+  tokenPath: string,
+  componentName?: string,
+  category?: string,
+) {
   const surface = deriveSurfaceLabel(componentName, category);
   const snippet = lowerWords(sourceSnippet ?? '');
   const path = lowerWords(tokenPath);
 
-  if (snippet.includes('padding left') || snippet.includes('padding right') || snippet.includes('padding x') || snippet.includes('paddingleft') || snippet.includes('paddingright')) {
+  if (
+    snippet.includes('padding left') ||
+    snippet.includes('padding right') ||
+    snippet.includes('padding x') ||
+    snippet.includes('paddingleft') ||
+    snippet.includes('paddingright')
+  ) {
     return { whereLabel: surface, whereDetail: 'inner padding / inline axis' };
   }
-  if (snippet.includes('padding top') || snippet.includes('padding bottom') || snippet.includes('padding y') || snippet.includes('paddingtop') || snippet.includes('paddingbottom')) {
+  if (
+    snippet.includes('padding top') ||
+    snippet.includes('padding bottom') ||
+    snippet.includes('padding y') ||
+    snippet.includes('paddingtop') ||
+    snippet.includes('paddingbottom')
+  ) {
     return { whereLabel: surface, whereDetail: 'inner padding / block axis' };
   }
-  if (snippet.includes('min height') || snippet.includes('height:') || snippet.includes('height =') || snippet.includes('height=')) {
+  if (
+    snippet.includes('min height') ||
+    snippet.includes('height:') ||
+    snippet.includes('height =') ||
+    snippet.includes('height=')
+  ) {
     if (surface === 'table surface') return { whereLabel: surface, whereDetail: 'row height' };
-    if (surface === 'button shell' || surface === 'control shell' || surface === 'navigation surface' || surface === 'feedback surface') {
+    if (
+      surface === 'button shell' ||
+      surface === 'control shell' ||
+      surface === 'navigation surface' ||
+      surface === 'feedback surface'
+    ) {
       return { whereLabel: surface, whereDetail: 'control height' };
     }
     return { whereLabel: surface, whereDetail: 'box height' };
   }
-  if (snippet.includes('min width') || snippet.includes('width:') || snippet.includes('width =') || snippet.includes('width=')) {
-    if (path.includes('size.32') || snippet.includes('square')) return { whereLabel: surface, whereDetail: 'square size' };
+  if (
+    snippet.includes('min width') ||
+    snippet.includes('width:') ||
+    snippet.includes('width =') ||
+    snippet.includes('width=')
+  ) {
+    if (path.includes('size.32') || snippet.includes('square'))
+      return { whereLabel: surface, whereDetail: 'square size' };
     return { whereLabel: surface, whereDetail: 'control width' };
   }
   if (snippet.includes('gap:')) return { whereLabel: surface, whereDetail: 'inter-item gap' };
-  if (snippet.includes('border radius') || snippet.includes('borderradius')) return { whereLabel: surface, whereDetail: 'corner radius' };
-  if (snippet.includes('font size') || snippet.includes('fontsize')) return { whereLabel: surface, whereDetail: 'type size' };
-  if (snippet.includes('font weight') || snippet.includes('fontweight')) return { whereLabel: surface, whereDetail: 'type weight' };
-  if (snippet.includes('line height') || snippet.includes('lineheight')) return { whereLabel: surface, whereDetail: 'line rhythm' };
+  if (snippet.includes('border radius') || snippet.includes('borderradius'))
+    return { whereLabel: surface, whereDetail: 'corner radius' };
+  if (snippet.includes('font size') || snippet.includes('fontsize'))
+    return { whereLabel: surface, whereDetail: 'type size' };
+  if (snippet.includes('font weight') || snippet.includes('fontweight'))
+    return { whereLabel: surface, whereDetail: 'type weight' };
+  if (snippet.includes('line height') || snippet.includes('lineheight'))
+    return { whereLabel: surface, whereDetail: 'line rhythm' };
   if (snippet.includes('icon')) return { whereLabel: surface, whereDetail: 'icon slot' };
-  if (snippet.includes('text') || snippet.includes('label')) return { whereLabel: surface, whereDetail: 'label text' };
+  if (snippet.includes('text') || snippet.includes('label'))
+    return { whereLabel: surface, whereDetail: 'label text' };
 
   return { whereLabel: surface, whereDetail: deriveFallbackAnatomy(tokenPath) };
 }
@@ -328,19 +418,34 @@ function resolveTokenDescription(path: string): string | null {
   return null;
 }
 
-export function buildReflectiveTokenRows(tokenMapping: Record<string, string>, componentName?: string, category?: string): ReflectiveTokenRow[] {
+export function buildReflectiveTokenRows(
+  tokenMapping: Record<string, string>,
+  componentName?: string,
+  category?: string,
+): ReflectiveTokenRow[] {
   return Object.entries(tokenMapping).map(([role, tokenPath]) => ({
     key: role,
     role,
     tokenPath,
     value: resolveTokenLiteralValue(tokenPath) ?? '—',
     ...deriveWhereFromRole(role, tokenPath, componentName, category),
-    description: normalizeTokenDescription(tokenPath, resolveTokenDescription(tokenPath), componentName, category, role),
+    description: normalizeTokenDescription(
+      tokenPath,
+      resolveTokenDescription(tokenPath),
+      componentName,
+      category,
+      role,
+    ),
   }));
 }
 
 export function buildObservedTokenRows(
-  observedTokens: Array<{ raw: string; tokenPath?: string; sourceLine?: number; sourceSnippet?: string }>,
+  observedTokens: Array<{
+    raw: string;
+    tokenPath?: string;
+    sourceLine?: number;
+    sourceSnippet?: string;
+  }>,
   existingTokenPaths: Set<string> = new Set(),
   componentName?: string,
   category?: string,

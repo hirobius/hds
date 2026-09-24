@@ -47,18 +47,23 @@
  * New budget 205 kB keeps the ~17% headroom the other entries use. Approved by
  * Adrian 2026-09-24.
  *
- * Rejected alternative, tracked in #279: move `observedTokens` out of the
- * shipped bundle entirely and have the docs site read it from disk. That is the
- * better architecture — a design system's runtime bundle should not carry its
- * documentation corpus, and it would put the main entry BELOW main's current
- * size — but it removes runtime-only token rows from the `api-reference`
- * component as published, which is a behaviour change for anyone embedding it.
- * Deliberately not smuggled into the docs-site PR.
- *
- * Note for whoever re-baselines this next: `sourceLine` on each observed-token
- * entry (16,660 bytes across 1020 references) is read by nothing in src/. It is
- * the only free saving here; `raw`, `tokenPath` and `sourceSnippet` are all
- * consumed by buildObservedTokenRows in tokenTableUtils.ts.
+ * Re-baselined 2026-09-24 (hds#279): the alternative rejected above was taken.
+ * `observedTokens` no longer ships in src/app/data/component-api.json at all —
+ * grep confirmed `buildObservedTokenRows` (tokenTableUtils.ts, the one function
+ * that reads observedTokens rows) has ZERO importers anywhere in src/, so there
+ * was no "runtime-only token rows" behaviour to preserve in the first place;
+ * the concern above turned out to be unfounded once checked. The three actual
+ * importers of component-api.json (api-reference.tsx, component-instance-matrix.tsx,
+ * componentPreviewRegistry.tsx) only ever read `props`/`description`/`filePath`.
+ * `scripts/generate-component-api.mjs` now writes the full corpus (observedTokens
+ * incl. sourceLine) to docs/generated/component-api-full.json instead — gitignored,
+ * read only in Node by scripts/generate-component-page.mjs for the docs site's
+ * styling-reference token table, never bundled. Measured: main entry
+ * 183.18 kB gzipped, BELOW the pre-#278 205 kB budget and even below the
+ * 184.23 kB origin/main figure #278 regressed from. New budget 200 kB — modest
+ * headroom over the measured 183.18 kB, deliberately tighter than the ~17%
+ * other entries carry, since the whole point of this re-baseline is to stop
+ * documentation corpus growth from silently riding along in the runtime bundle.
  *
  * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
  * byte-identical on all 44 linked components. Dropping one would shrink this
@@ -79,7 +84,7 @@ module.exports = [
   {
     name: 'main entry (hirobius-ui.js)',
     path: 'dist/hirobius-ui.js',
-    limit: '205 kB',
+    limit: '200 kB',
     gzip: true,
   },
   {

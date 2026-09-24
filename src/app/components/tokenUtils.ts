@@ -3,22 +3,22 @@
  * and trace alias chains through the three-tier hierarchy.
  */
 
-import rawTokens from '../../../../hirobius.tokens.json';
+import rawTokens from '../../../hirobius.tokens.json';
 
 export type Tier = 'primitive' | 'semantic' | 'component';
 
 export interface FlatToken {
-  path: string;        // "semantic.color.surface.page"
-  cssVar: string;      // "--semantic-color-surface-page"
+  path: string; // "semantic.color.surface.page"
+  cssVar: string; // "--semantic-color-surface-page"
   tier: Tier;
   type: string;
-  category: string;    // second segment: "color", "space", "font", etc.
+  category: string; // second segment: "color", "space", "font", etc.
   rawValue: unknown;
   isAlias: boolean;
   description?: string; // "$description" from token JSON
   lightAlias?: string | number; // "{primitive.color.neutral.50}" or numeric mode value
-  darkAlias?: string | number;  // "{primitive.color.neutral.950}" or numeric mode value
-  composite?: Record<string, unknown>;  // object-valued authored token children
+  darkAlias?: string | number; // "{primitive.color.neutral.950}" or numeric mode value
+  composite?: Record<string, unknown>; // object-valued authored token children
 }
 
 const DTCG_KEYS = new Set(['$type', '$value', '$description', '$extensions', '$schema']);
@@ -46,13 +46,18 @@ export function formatCategoryLabel(category: string) {
 function normalizeTokenRef(ref: string) {
   const trimmed = ref.trim();
   if (trimmed.startsWith('var(')) return trimmed;
-  const unwrapped = trimmed.startsWith('{') && trimmed.endsWith('}')
-    ? trimmed.slice(1, -1)
-    : trimmed;
+  const unwrapped =
+    trimmed.startsWith('{') && trimmed.endsWith('}') ? trimmed.slice(1, -1) : trimmed;
   return unwrapped.includes('/') ? unwrapped.split('/').filter(Boolean).join('.') : unwrapped;
 }
 
-function fallbackDescription(path: string[], tier: Tier, type: string, rawValue: unknown, isAlias: boolean): string {
+function fallbackDescription(
+  path: string[],
+  tier: Tier,
+  type: string,
+  rawValue: unknown,
+  isAlias: boolean,
+): string {
   const category = path[1] ?? tier;
   const name = path[path.length - 1] ?? '';
 
@@ -201,9 +206,11 @@ function formatInlineValue(rawValue: unknown): string {
 }
 
 function formatStructuredLiteralValue(rawValue: unknown): string | null {
-  return formatAuthoredDimensionValue(rawValue)
-    ?? formatSpringValue(rawValue)
-    ?? formatTypographyStyleValue(rawValue);
+  return (
+    formatAuthoredDimensionValue(rawValue) ??
+    formatSpringValue(rawValue) ??
+    formatTypographyStyleValue(rawValue)
+  );
 }
 
 function formatTypographyStyleValue(rawValue: unknown): string | null {
@@ -274,11 +281,15 @@ function getFigmaModes(node: TokenTreeNode): Record<string, string | number> | u
   return Object.keys(normalizedModes).length > 0 ? normalizedModes : undefined;
 }
 
-function* walkRaw(node: unknown, path: string[] = [], inherited: string | null = null): Generator<FlatToken> {
+function* walkRaw(
+  node: unknown,
+  path: string[] = [],
+  inherited: string | null = null,
+): Generator<FlatToken> {
   if (!isPlainObject(node)) return;
 
   const tokenNode = node as TokenTreeNode;
-  const type = typeof tokenNode.$type === 'string' ? tokenNode.$type : inherited ?? '';
+  const type = typeof tokenNode.$type === 'string' ? tokenNode.$type : (inherited ?? '');
 
   if ('$value' in tokenNode) {
     if (!type || SKIP_TYPES.has(type)) return;
@@ -286,10 +297,16 @@ function* walkRaw(node: unknown, path: string[] = [], inherited: string | null =
     const modes = getFigmaModes(tokenNode);
     const value = tokenNode.$value;
 
-    if (typeof value === 'object' && value !== null && !Array.isArray(value) && !shouldTreatAsLiteralObject(value)) {
-      const description = typeof tokenNode.$description === 'string'
-        ? tokenNode.$description
-        : fallbackDescription(path, tier, type, value, false);
+    if (
+      typeof value === 'object' &&
+      value !== null &&
+      !Array.isArray(value) &&
+      !shouldTreatAsLiteralObject(value)
+    ) {
+      const description =
+        typeof tokenNode.$description === 'string'
+          ? tokenNode.$description
+          : fallbackDescription(path, tier, type, value, false);
       yield {
         path: path.join('.'),
         cssVar: '--' + path.join('-'),
@@ -305,9 +322,10 @@ function* walkRaw(node: unknown, path: string[] = [], inherited: string | null =
     }
 
     const isAlias = typeof value === 'string' && (value as string).startsWith('{');
-    const description = typeof tokenNode.$description === 'string'
-      ? tokenNode.$description
-      : fallbackDescription(path, tier, type, value, isAlias);
+    const description =
+      typeof tokenNode.$description === 'string'
+        ? tokenNode.$description
+        : fallbackDescription(path, tier, type, value, isAlias);
     yield {
       path: path.join('.'),
       cssVar: '--' + path.join('-'),
@@ -334,11 +352,11 @@ const raw = rawTokens as TokenTreeNode;
 export const allTokens: FlatToken[] = [...walkRaw(raw)];
 
 export function getTokensByTier(tier: Tier): FlatToken[] {
-  return allTokens.filter(t => t.tier === tier);
+  return allTokens.filter((t) => t.tier === tier);
 }
 
 export function getTierCategories(tier: Tier): string[] {
-  return [...new Set(getTokensByTier(tier).map(t => t.category))].sort();
+  return [...new Set(getTokensByTier(tier).map((t) => t.category))].sort();
 }
 
 export function formatTokenValue(rawValue: unknown): string {
@@ -357,7 +375,7 @@ export function resolveAlias(ref: unknown): FlatToken | null {
   if (!normalized || normalized.startsWith('var(')) {
     return null;
   }
-  const result = allTokens.find(t => t.path === normalized) ?? null;
+  const result = allTokens.find((t) => t.path === normalized) ?? null;
   return result;
 }
 
@@ -385,7 +403,11 @@ export function resolveAliasCssVar(ref: unknown): string {
  * Useful for contrast math and other places that need literal colors,
  * while the UI may still consume CSS vars end-to-end.
  */
-export function resolveTokenLiteralValue(ref: unknown, mode: 'light' | 'dark' = 'light', depth = 0): string | null {
+export function resolveTokenLiteralValue(
+  ref: unknown,
+  mode: 'light' | 'dark' = 'light',
+  depth = 0,
+): string | null {
   if (typeof ref !== 'string' || depth > 20) return null;
 
   const trimmed = ref.trim();
@@ -407,7 +429,7 @@ export function resolveTokenLiteralValue(ref: unknown, mode: 'light' | 'dark' = 
   const normalized = normalizeTokenRef(trimmed);
   if (!normalized) return trimmed;
 
-  const token = allTokens.find(t => t.path === normalized);
+  const token = allTokens.find((t) => t.path === normalized);
   if (!token) return trimmed;
 
   const alias = mode === 'light' ? token.lightAlias : token.darkAlias;
@@ -421,7 +443,8 @@ export function resolveTokenLiteralValue(ref: unknown, mode: 'light' | 'dark' = 
   }
 
   if (typeof token.rawValue === 'string') return token.rawValue;
-  if (typeof token.rawValue === 'number' || typeof token.rawValue === 'boolean') return String(token.rawValue);
+  if (typeof token.rawValue === 'number' || typeof token.rawValue === 'boolean')
+    return String(token.rawValue);
   const structuredLiteral = formatStructuredLiteralValue(token.rawValue);
   if (structuredLiteral) return structuredLiteral;
   return formatTokenValue(token.rawValue);

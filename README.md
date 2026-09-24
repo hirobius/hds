@@ -12,9 +12,9 @@ A publishable React + TypeScript component library backed by a governed design-t
 
 <!-- auto:start:front-door-counts -->
 
-- **108** public component modules, exported from `src/index.ts`
-- **356** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **450** Storybook stories in **114** story files, reviewed visually in Chromatic
+- **109** public component modules, exported from `src/index.ts`
+- **359** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **454** Storybook stories in **115** story files, reviewed visually in Chromatic
 
 <!-- auto:end:front-door-counts -->
 
@@ -153,7 +153,7 @@ Source-of-truth files:
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).
 
-**44 of 139** components link a Figma node.
+**44 of 140** components link a Figma node.
 
 | Component          | Figma node                                                                                         | Story                                                                      | Source                                                            |
 | ------------------ | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------- |

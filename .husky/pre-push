@@ -15,3 +15,9 @@ pnpm exec vitest run
 
 echo "Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)…"
 pnpm smoke:consumer
+
+# Replaces "update it at intervals": status.json/CHANGELOG.md going stale is a
+# convention nothing enforced (hds#249). A push is the state change the fleet
+# dashboard shows, so this runs here rather than per-commit.
+echo "Record freshness (status.json + changeset presence)…"
+node scripts/check-record-freshness.mjs

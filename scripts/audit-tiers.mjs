@@ -46,15 +46,34 @@ const APPLY = process.argv.includes('--apply');
 const TIERS = ['primitive', 'pattern', 'template', 'utility'];
 const TIER_SET = new Set(TIERS);
 
+const COMPONENT_FILE_PATTERN = /^Hds[A-Z].*\.tsx$/;
+
 function walk(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.name.startsWith('.')) continue;
     if (entry.name === '__tests__' || entry.name === 'node_modules') continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full, out);
-    else if (entry.isFile() && /^Hds[A-Z].*\.tsx$/.test(entry.name)) out.push(full);
+    else if (entry.isFile() && COMPONENT_FILE_PATTERN.test(entry.name)) out.push(full);
   }
   return out;
+}
+
+/**
+ * Every `.tsx` file under `dir`, with no name-pattern filter — used only to
+ * build the vacuity guard's diagnostic (see `main()`): when the walker's
+ * naming pattern matches nothing, this says what WAS there instead of
+ * silently writing a report over zero files (hds#264).
+ */
+function countAllTsx(dir, count = 0) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
+    if (entry.name === '__tests__' || entry.name === 'node_modules') continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) count = countAllTsx(full, count);
+    else if (entry.isFile() && entry.name.endsWith('.tsx')) count += 1;
+  }
+  return count;
 }
 
 function topJSDoc(source) {
@@ -414,9 +433,38 @@ function findInvalidTierTags(files) {
   return violations;
 }
 
+/**
+ * Vacuity guard (hds#264): a gate that reads zero input files has no basis
+ * for a report. Emitting one anyway is how docs/audits/TIER_AUDIT.md sat for
+ * months claiming "65 componentSpecs, audit walked 0 source files" as if that
+ * were a finding rather than a broken walker. Fail loudly instead, and name
+ * both the pattern that matched nothing and what the tree actually holds, so
+ * the fix is obvious without re-deriving it from the source.
+ */
+function assertNotVacuous(files, dir) {
+  if (files.length > 0) return;
+  const totalTsx = fs.existsSync(dir) ? countAllTsx(dir) : 0;
+  console.error(
+    `✗ audit-tiers — walked 0 files matching ${COMPONENT_FILE_PATTERN} under ${path.relative(ROOT, dir)}`,
+  );
+  console.error(
+    totalTsx > 0
+      ? `  found ${totalTsx} .tsx file(s) in that tree, but none matched the pattern above — ` +
+          `the walker's naming convention is out of date (components are kebab-case now, e.g. ` +
+          `button.tsx, not HdsButton.tsx). Refusing to write a report over zero files.`
+      : `  found 0 .tsx files at all under ${path.relative(ROOT, dir)} — check COMPONENTS_DIR / FIXTURE_DIR.`,
+  );
+  console.error(
+    '  fix: rewrite the classifier against the current naming convention, or delete this gate ' +
+      '(see hds#264) — do not re-run until one of those lands.',
+  );
+  process.exit(1);
+}
+
 function main() {
   const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
   const files = walk(COMPONENTS_DIR).sort();
+  assertNotVacuous(files, COMPONENTS_DIR);
   const results = files.map((f) => classify(f, manifest));
   const counts = tally(results);
   const summary = summarize(counts, results.length);
