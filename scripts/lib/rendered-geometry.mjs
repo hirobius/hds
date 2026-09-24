@@ -148,7 +148,19 @@ export const PROBE_SOURCE = function hdsRenderedGeometryProbe(cfg) {
     // nothing at all to anyone who cannot separate the two hues.
     if (el.matches('a[href]') && text(el)) {
       const parentTag = el.parentElement?.tagName.toLowerCase() || '';
-      const inProse = ['p', 'li', 'span', 'td', 'dd', 'blockquote'].includes(parentTag);
+      // WCAG 1.4.1 concerns a link that cannot be told apart from the prose
+      // AROUND it. `<li>` alone doesn't mean prose -- a breadcrumb trail
+      // (`<nav> > <ol>/<ul> > <li> > <a>`) is a nav landmark, not a sentence a
+      // link is embedded in, so it is excluded even though its parent tag is
+      // `li`. A `<li>` inside a genuinely textual list (no nav/ol/ul
+      // ancestor with an accessible name, or a plain `<ul>` of prose) still
+      // counts.
+      const isNavLandmarkItem =
+        parentTag === 'li' &&
+        !!el.closest('nav, [role="navigation"], ol[aria-label], ul[aria-label]');
+      const inProse =
+        ['p', 'span', 'td', 'dd', 'blockquote'].includes(parentTag) ||
+        (parentTag === 'li' && !isNavLandmarkItem);
       const underlined = cs.textDecorationLine.includes('underline');
       const bordered = parseFloat(cs.borderBottomWidth) > 0;
       if (inProse && !underlined && !bordered) {

@@ -26,15 +26,9 @@
     "patterns-stacked-card-rail--sparse :: overflow-x :: div.hds-scr-track",
     "patterns-stacked-card-rail--with-links :: overflow-x :: div",
     "patterns-stacked-card-rail--with-links :: overflow-x :: div.hds-scr-card",
-    "patterns-tokenizer--default :: small-target :: button.inline-flex.items-center.justify-center",
     "patterns-tokenizer--default :: small-target :: input.min-w-24.flex-1.bg-transparent",
-    "patterns-tokenizer--disabled :: small-target :: button.inline-flex.items-center.justify-center",
     "patterns-tokenizer--disabled :: small-target :: input.min-w-24.flex-1.bg-transparent",
     "patterns-tokenizer--empty :: small-target :: input.min-w-24.flex-1.bg-transparent",
-    "primitives-breadcrumb--custom-label :: link-no-affordance :: a.hds-focus.text-muted-foreground.transition-colors",
-    "primitives-breadcrumb--deep-trail :: link-no-affordance :: a.hds-focus.text-muted-foreground.transition-colors",
-    "primitives-breadcrumb--default :: link-no-affordance :: a.hds-focus.text-muted-foreground.transition-colors",
-    "primitives-breadcrumb--shallow-trail :: link-no-affordance :: a.hds-focus.text-muted-foreground.transition-colors",
     "primitives-cinematic-link--default :: clipped-y :: a.group.relative.inline-flex",
     "primitives-cinematic-link--default :: small-target :: a.group.relative.inline-flex",
     "primitives-cinematic-link--external-href :: clipped-y :: a.group.relative.inline-flex",
@@ -53,11 +47,6 @@
     "primitives-slider--default :: small-target :: input.hds-focus.hds-slider-input.w-full",
     "primitives-slider--stepped :: small-target :: input.hds-focus.hds-slider-input.w-full",
     "primitives-slider--typography-controls :: small-target :: input.hds-focus.hds-slider-input.w-full",
-    "primitives-table--default :: overflow-x :: div.flex.items-start.px-[var(--semantic-space-component-padding)]",
-    "primitives-table--density-comfortable :: overflow-x :: div.flex.items-start.px-[var(--semantic-space-component-padding)]",
-    "primitives-table--density-compact :: overflow-x :: div.flex.items-start.px-[var(--semantic-space-component-padding)]",
-    "primitives-table--flush :: overflow-x :: div.flex.items-start.px-[var(--semantic-space-component-padding)]",
-    "primitives-table--with-caption :: overflow-x :: div.flex.items-start.px-[var(--semantic-space-component-padding)]",
     "primitives-visually-hidden--default :: small-target :: button"
   ]
 }

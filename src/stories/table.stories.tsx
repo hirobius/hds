@@ -39,7 +39,7 @@ type Story = StoryObj<typeof meta>;
 // ── Token table ──────────────────────────────────────────────────────────────
 
 const tokenColumns: TableColumn[] = [
-  { key: 'name', label: 'Token', width: '240px' },
+  { key: 'name', label: 'Token', width: 'max-content' },
   { key: 'value', label: 'Value' },
   { key: 'description', label: 'Description' },
 ];

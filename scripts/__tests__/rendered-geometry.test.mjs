@@ -47,6 +47,19 @@ const DEFECTS = {
   ),
 };
 
+/**
+ * #287 (breadcrumb false positive) canary. `<li>` alone is not prose -- a
+ * breadcrumb's `<nav aria-label> > <ol> > <li> > <a>` is a landmark, not a
+ * sentence. But a plain `<li>` in a genuinely textual list (no nav/labelled
+ * list ancestor) is still prose and the rule must still catch it.
+ */
+const inProseListItem = wrap(
+  `<ul><li>read <a href="#" style="text-decoration:none">this note</a> first</li></ul>`,
+);
+const breadcrumbListItem = wrap(
+  `<nav aria-label="Breadcrumb"><ol><li><a href="#" style="text-decoration:none">Products</a></li></ol></nav>`,
+);
+
 /** Deliberate techniques the probe must stay silent about. */
 const NOT_DEFECTS = {
   'sr-only label': wrap(
@@ -96,6 +109,15 @@ describe.skipIf(!hasBrowser)('rendered-geometry probe', () => {
       expect(await run(html)).toEqual([]);
     });
   }
+
+  it('still fires on a colour-only link inside a genuine prose <li>', async () => {
+    const kinds = (await run(inProseListItem)).map((f) => f.kind);
+    expect(kinds).toContain('link-no-affordance');
+  });
+
+  it('stays silent on a breadcrumb <li> (nav landmark, not prose)', async () => {
+    expect(await run(breadcrumbListItem)).toEqual([]);
+  });
 
   it('reports no finding for a well-formed control', async () => {
     const findings = await run(

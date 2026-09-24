@@ -159,6 +159,7 @@ declare module 'react' {
     '--primitive-size-80'?: string | undefined;
     '--primitive-size-96'?: string | undefined;
     '--primitive-size-interactive-min'?: string | undefined;
+    '--primitive-size-interactive-minCompact'?: string | undefined;
     '--primitive-size-width-96'?: string | undefined;
     '--primitive-size-width-760'?: string | undefined;
     '--primitive-size-width-1200'?: string | undefined;
