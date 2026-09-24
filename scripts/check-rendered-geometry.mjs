@@ -207,23 +207,30 @@ async function main() {
     console.log('    node scripts/check-rendered-geometry.mjs --update-baseline');
   }
 
+  const FINDING_DETAIL = {
+    'overflow-x': (f) =>
+      `content is ${f.by}px wider than its ${f.clientWidth}px frame (overflow: ${f.overflow})`,
+    'clipped-y': (f) => `content is ${f.by}px taller than its ${f.clientHeight}px clipped box`,
+    'past-viewport': (f) => `right edge at ${f.right}px, viewport is ${f.vw}px`,
+    'zero-size-control': (f) =>
+      `control renders at ${f.w}x${f.h} — present in the DOM, unclickable`,
+    'zero-size-decorative': (f) =>
+      `renders at ${f.w}x${f.h} — has a border/background but no box, present in the DOM, invisible`,
+    'small-target': (f) =>
+      `${f.w}x${f.h}, below the ${PROBE_CONFIG.MIN_TARGET}px WCAG 2.2 AA target`,
+    'link-no-affordance': (f) =>
+      `link in <${f.parent}> with no underline or border — colour is its only affordance`,
+    'rendered-contrast': (f) =>
+      `${f.side} border at ${f.ratio}:1 against its painted background — below the ${PROBE_CONFIG.MIN_CONTRAST_NONTEXT}:1 WCAG 1.4.11 floor`,
+    'text-contrast': (f) =>
+      `text at ${f.ratio}:1 against its painted background — below the ${f.floor}:1 WCAG 1.4.3 floor`,
+    'row-misaligned': (f) => `row baselines span ${f.spread}px across ${f.cells} cells`,
+  };
+
   if (added.length) {
     console.error(`\n✗ ${added.length} new rendered-geometry finding(s):\n`);
     for (const f of added) {
-      const detail =
-        f.kind === 'overflow-x'
-          ? `content is ${f.by}px wider than its ${f.clientWidth}px frame (overflow: ${f.overflow})`
-          : f.kind === 'clipped-y'
-            ? `content is ${f.by}px taller than its ${f.clientHeight}px clipped box`
-            : f.kind === 'past-viewport'
-              ? `right edge at ${f.right}px, viewport is ${f.vw}px`
-              : f.kind === 'zero-size-control'
-                ? `control renders at ${f.w}x${f.h} — present in the DOM, unclickable`
-                : f.kind === 'small-target'
-                  ? `${f.w}x${f.h}, below the ${PROBE_CONFIG.MIN_TARGET}px WCAG 2.2 AA target`
-                  : f.kind === 'link-no-affordance'
-                    ? `link in <${f.parent}> with no underline or border — colour is its only affordance`
-                    : `row baselines span ${f.spread}px across ${f.cells} cells`;
+      const detail = (FINDING_DETAIL[f.kind] ?? (() => JSON.stringify(f)))(f);
       console.error(`  ${f.storyId}`);
       console.error(`    ${f.kind}: ${f.sel} — ${detail}`);
       if (f.text) console.error(`    text: ${JSON.stringify(f.text)}`);

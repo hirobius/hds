@@ -45,6 +45,22 @@ const DEFECTS = {
   'row-misaligned': wrap(
     `<table><tr><td style="vertical-align:top;height:60px">top</td><td style="vertical-align:bottom;height:60px">bottom</td></tr></table>`,
   ),
+  // #225 class of bug: a decorative indicator (radio's dot, toggle's thumb)
+  // whose wrapper stayed the browser default `display: inline`, which
+  // ignores width/height on a non-replaced element outright -- an inline
+  // element with no text content generates no box at all, so a background
+  // alone (no border) still collapses all the way to 0x0.
+  'zero-size-decorative': wrap(
+    `<span><i style="width:8px;height:8px;background:black;border-radius:999px"></i></span>`,
+  ),
+  // #230 / #234: a control boundary below WCAG 1.4.11's 3:1 non-text floor —
+  // a near-white border on a white backdrop.
+  'rendered-contrast': wrap(
+    `<div style="width:40px;height:40px;background:#ffffff;border:2px solid #fdfdfd"></div>`,
+  ),
+  // #240: a label's painted text below WCAG 1.4.3 AA — white text with no
+  // opaque backdrop behind it, over the (white) page.
+  'text-contrast': wrap(`<span style="color:#ffffff;font-size:14px">Active</span>`),
 };
 
 /**
@@ -73,6 +89,26 @@ const NOT_DEFECTS = {
   ),
   'rotating spinner': wrap(
     `<div style="width:24px;height:24px;overflow:hidden;transform:rotate(45deg)"><span style="white-space:nowrap">loading loading</span></div>`,
+  ),
+  // A genuinely unpainted 0x0 node (no border, no background) is layout
+  // glue, not a broken indicator -- `zero-size-decorative` must not fire on it.
+  'unpainted zero-size glue': wrap(`<span>label<i style="width:20px;height:20px"></i></span>`),
+  // A control boundary that clears WCAG 1.4.11's 3:1 non-text floor.
+  'high-contrast border': wrap(
+    `<div style="width:40px;height:40px;background:#ffffff;border:2px solid #333333"></div>`,
+  ),
+  // Text that clears WCAG 1.4.3 AA against its actually-painted background.
+  'high-contrast text': wrap(
+    `<div style="background:#000000"><span style="color:#ffffff;font-size:14px">Active</span></div>`,
+  ),
+  // WCAG 1.4.3/1.4.11 both explicitly exempt an inactive component -- a
+  // disabled control's low-contrast text/border is the deliberate signal of
+  // "disabled", not a defect.
+  'disabled control text': wrap(
+    `<button disabled style="height:40px;width:120px;padding:0 12px;color:#eeeeee">Save</button>`,
+  ),
+  'disabled control border': wrap(
+    `<button disabled style="height:40px;width:120px;padding:0 12px;border:2px solid #fdfdfd;background:#ffffff">Save</button>`,
   ),
 };
 
@@ -231,7 +267,7 @@ describe.skipIf(!hasBrowser)('#282 — freezing animations removes measurement f
   });
 
   // A 40px frame; the child's width animates 20px -> 140px -> 20px on a
-  // 2s loop, so it fits the frame near 0%/100% and overflows near 50%.
+  // 400ms loop, so it fits the frame near 0%/100% and overflows near 50%.
   const ANIMATED_HTML = `<!doctype html><html><head><style>
     @keyframes grow { 0%, 100% { width: 20px; } 50% { width: 140px; } }
     body { margin: 0; }
