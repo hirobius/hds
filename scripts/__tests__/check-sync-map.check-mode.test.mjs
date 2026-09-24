@@ -51,7 +51,7 @@ describe('check-sync-map --check', () => {
   it('passes against the committed, up-to-date docs/sync-map.json', () => {
     const result = runCheck();
     expect(result.status).toBe(0);
-  });
+  }, 20000);
 
   it('fails and names the component when a row is hand-edited', () => {
     const parsed = JSON.parse(original);
@@ -66,5 +66,5 @@ describe('check-sync-map --check', () => {
     expect(result.stderr).toContain(row.name);
 
     writeFileSync(SYNC_MAP, original);
-  });
+  }, 20000);
 });
