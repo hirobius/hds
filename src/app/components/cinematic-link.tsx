@@ -8,6 +8,7 @@
 // are too short for this specific cinematic micro-interaction.
 import React from 'react';
 import hds from '../design-system/tokens';
+import { warnOnce } from '../../lib/deprecation';
 
 export interface CinematicLinkProps extends Omit<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -17,8 +18,19 @@ export interface CinematicLinkProps extends Omit<
   children: string;
 }
 
-/** @public */
+/**
+ * @public
+ * @deprecated CinematicLink is an HDS docs/lab internal (editorial link
+ * treatment for portfolio/case-study specimen surfaces), not a
+ * consumer-facing HDS surface. It will be retiered to `utility` (dropped
+ * from the published barrel) at the named major.
+ * @removeIn 1.0.0
+ */
 export function CinematicLink({ href, children, style, className, ...rest }: CinematicLinkProps) {
+  warnOnce(
+    'cinematic-link-deprecated',
+    'CinematicLink is an HDS docs/lab internal and will be removed from the published barrel in 1.0.0.',
+  );
   return (
     <a
       href={href}

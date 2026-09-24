@@ -13,6 +13,7 @@ import type {
 import componentApiManifest from '../data/component-api.json';
 import hds from '../design-system/tokens';
 import { FreezeState } from '../context/DemoStateContext';
+import { warnOnce } from '../../lib/deprecation';
 
 // ComponentInstanceMatrix requires prop `type` to be a non-optional string
 // (it calls parseLiteralOptions which expects a string). Derive a narrowed type.
@@ -87,7 +88,14 @@ function toMatrixLabel(dimension: string) {
   return toTitleCase(dimension);
 }
 
-/** @public */
+/**
+ * @public
+ * @deprecated ComponentInstanceMatrix is an HDS docs/lab internal (specimen
+ * matrix helper for the component doc pages), not a consumer-facing HDS
+ * surface. It will be retiered to `utility` (dropped from the published
+ * barrel) at the named major.
+ * @removeIn 1.0.0
+ */
 export function ComponentInstanceMatrix({
   componentName,
   dimensionX,
@@ -110,6 +118,10 @@ export function ComponentInstanceMatrix({
   freezeRowState?: boolean;
   renderInstance: (rowKey: string, columnKey: string) => React.ReactNode;
 }) {
+  warnOnce(
+    'component-instance-matrix-deprecated',
+    'ComponentInstanceMatrix is an HDS docs/lab internal and will be removed from the published barrel in 1.0.0.',
+  );
   const resolvedColumnOptions = resolveMatrixOptions(componentName, dimensionX);
   const resolvedRowOptions = resolveMatrixOptions(componentName, dimensionY);
   const _rowLabel = toMatrixLabel(dimensionY);
