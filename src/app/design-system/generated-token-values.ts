@@ -215,6 +215,7 @@ export const tokenValues = {
       },
       width: {
         "96": "96px",
+        "280": "280px",
         "760": "760px",
         "1200": "1200px",
         "50ch": "50ch"
