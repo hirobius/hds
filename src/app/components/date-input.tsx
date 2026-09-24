@@ -89,7 +89,7 @@ export const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(func
         disabled={disabled}
         onChange={(event) => setText(event.target.value)}
         onBlur={handleBlur}
-        className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+        className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed min-w-0"
       />
 
       <Popover open={open} onOpenChange={setOpen}>
@@ -98,7 +98,7 @@ export const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(func
             type="button"
             aria-label="Open calendar"
             disabled={disabled}
-            className="text-muted-foreground hover:text-foreground hds-focus disabled:pointer-events-none disabled:opacity-50"
+            className="text-muted-foreground hover:text-foreground hds-focus disabled:pointer-events-none disabled:opacity-50 shrink-0"
           >
             <CalendarIcon className="size-4" aria-hidden="true" />
           </button>
