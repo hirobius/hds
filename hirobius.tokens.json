@@ -862,6 +862,14 @@
             "unit": "px"
           },
           "$description": "Minimum interactive hit target size."
+        },
+        "minCompact": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$description": "WCAG 2.2 AA (2.5.8) minimum target size for a compact inline control, such as a tokenizer chip's remove button, where the 44px AAA floor (2.5.5) does not apply."
         }
       },
       "width": {

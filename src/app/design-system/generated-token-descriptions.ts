@@ -106,6 +106,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.size.80": "80px size step.",
   "primitive.size.96": "96px size step.",
   "primitive.size.interactive.min": "Minimum interactive hit target size.",
+  "primitive.size.interactive.minCompact": "WCAG 2.2 AA (2.5.8) minimum target size for a compact inline control, such as a tokenizer chip's remove button, where the 44px AAA floor (2.5.5) does not apply.",
   "primitive.size.width.96": "96px width step.",
   "primitive.size.width.280": "Docs-shell rail width (hds#280). Our own number, not HeroUI's 268px — wide enough for the longest top-level nav label at the default type ramp with room to spare.",
   "semantic.motion.productive": "For micro-interactions and status changes. No deformation.",

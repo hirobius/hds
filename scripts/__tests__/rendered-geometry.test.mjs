@@ -8,10 +8,12 @@ import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
 import {
+  FREEZE_ANIMATIONS_CSS,
   PROBE_CONFIG,
   PROBE_SOURCE,
   diffAgainstBaseline,
   fingerprint,
+  freezeAnimationsInPage,
   summarize,
 } from '../lib/rendered-geometry.mjs';
 
@@ -43,7 +45,36 @@ const DEFECTS = {
   'row-misaligned': wrap(
     `<table><tr><td style="vertical-align:top;height:60px">top</td><td style="vertical-align:bottom;height:60px">bottom</td></tr></table>`,
   ),
+  // #225 class of bug: a decorative indicator (radio's dot, toggle's thumb)
+  // whose wrapper stayed the browser default `display: inline`, which
+  // ignores width/height on a non-replaced element outright -- an inline
+  // element with no text content generates no box at all, so a background
+  // alone (no border) still collapses all the way to 0x0.
+  'zero-size-decorative': wrap(
+    `<span><i style="width:8px;height:8px;background:black;border-radius:999px"></i></span>`,
+  ),
+  // #230 / #234: a control boundary below WCAG 1.4.11's 3:1 non-text floor —
+  // a near-white border on a white backdrop.
+  'rendered-contrast': wrap(
+    `<div style="width:40px;height:40px;background:#ffffff;border:2px solid #fdfdfd"></div>`,
+  ),
+  // #240: a label's painted text below WCAG 1.4.3 AA — white text with no
+  // opaque backdrop behind it, over the (white) page.
+  'text-contrast': wrap(`<span style="color:#ffffff;font-size:14px">Active</span>`),
 };
+
+/**
+ * #287 (breadcrumb false positive) canary. `<li>` alone is not prose -- a
+ * breadcrumb's `<nav aria-label> > <ol> > <li> > <a>` is a landmark, not a
+ * sentence. But a plain `<li>` in a genuinely textual list (no nav/labelled
+ * list ancestor) is still prose and the rule must still catch it.
+ */
+const inProseListItem = wrap(
+  `<ul><li>read <a href="#" style="text-decoration:none">this note</a> first</li></ul>`,
+);
+const breadcrumbListItem = wrap(
+  `<nav aria-label="Breadcrumb"><ol><li><a href="#" style="text-decoration:none">Products</a></li></ol></nav>`,
+);
 
 /** Deliberate techniques the probe must stay silent about. */
 const NOT_DEFECTS = {
@@ -58,6 +89,26 @@ const NOT_DEFECTS = {
   ),
   'rotating spinner': wrap(
     `<div style="width:24px;height:24px;overflow:hidden;transform:rotate(45deg)"><span style="white-space:nowrap">loading loading</span></div>`,
+  ),
+  // A genuinely unpainted 0x0 node (no border, no background) is layout
+  // glue, not a broken indicator -- `zero-size-decorative` must not fire on it.
+  'unpainted zero-size glue': wrap(`<span>label<i style="width:20px;height:20px"></i></span>`),
+  // A control boundary that clears WCAG 1.4.11's 3:1 non-text floor.
+  'high-contrast border': wrap(
+    `<div style="width:40px;height:40px;background:#ffffff;border:2px solid #333333"></div>`,
+  ),
+  // Text that clears WCAG 1.4.3 AA against its actually-painted background.
+  'high-contrast text': wrap(
+    `<div style="background:#000000"><span style="color:#ffffff;font-size:14px">Active</span></div>`,
+  ),
+  // WCAG 1.4.3/1.4.11 both explicitly exempt an inactive component -- a
+  // disabled control's low-contrast text/border is the deliberate signal of
+  // "disabled", not a defect.
+  'disabled control text': wrap(
+    `<button disabled style="height:40px;width:120px;padding:0 12px;color:#eeeeee">Save</button>`,
+  ),
+  'disabled control border': wrap(
+    `<button disabled style="height:40px;width:120px;padding:0 12px;border:2px solid #fdfdfd;background:#ffffff">Save</button>`,
   ),
 };
 
@@ -94,6 +145,15 @@ describe.skipIf(!hasBrowser)('rendered-geometry probe', () => {
       expect(await run(html)).toEqual([]);
     });
   }
+
+  it('still fires on a colour-only link inside a genuine prose <li>', async () => {
+    const kinds = (await run(inProseListItem)).map((f) => f.kind);
+    expect(kinds).toContain('link-no-affordance');
+  });
+
+  it('stays silent on a breadcrumb <li> (nav landmark, not prose)', async () => {
+    expect(await run(breadcrumbListItem)).toEqual([]);
+  });
 
   it('reports no finding for a well-formed control', async () => {
     const findings = await run(
@@ -183,5 +243,82 @@ describe.skipIf(!hasBrowser)('empty renders are a finding, not a pass', () => {
     // overflow and targets, producing noise on top of the real problem.
     const findings = await run(`<html><body><div id="storybook-root"></div></body></html>`);
     expect(findings).toHaveLength(1);
+  });
+});
+
+/**
+ * #282 canary. A frame whose child's intrinsic width oscillates on a CSS
+ * animation reproduces the exact class of flake reported against
+ * `circular-progress--indeterminate`: the frame overflows for part of the
+ * cycle and does not for the rest, so an unfrozen measurement's result
+ * depends on which instant it lands on. `freezeAnimationsInPage` is proven to
+ * remove that dependency by measuring at two different points in the cycle
+ * and asserting the two measurements now agree.
+ */
+describe.skipIf(!hasBrowser)('#282 — freezing animations removes measurement flake', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await chromium.launch({ executablePath: CHROMIUM });
+  }, 60_000);
+
+  afterAll(async () => {
+    await browser?.close();
+  });
+
+  // A 40px frame; the child's width animates 20px -> 140px -> 20px on a
+  // 400ms loop, so it fits the frame near 0%/100% and overflows near 50%.
+  const ANIMATED_HTML = `<!doctype html><html><head><style>
+    @keyframes grow { 0%, 100% { width: 20px; } 50% { width: 140px; } }
+    body { margin: 0; }
+    .frame { width: 40px; overflow: hidden; white-space: nowrap; }
+    .content { display: inline-block; height: 20px; animation: grow 2s linear infinite; }
+  </style></head><body>
+    <div id="storybook-root"><div class="frame"><span class="content"></span></div></div>
+  </body></html>`;
+
+  const measure = async (page) =>
+    page.evaluate(
+      ([source, cfg]) => new Function(`return (${source})`)()(cfg),
+      [PROBE_SOURCE.toString(), PROBE_CONFIG],
+    );
+
+  it('is non-deterministic when animations are left running', async () => {
+    const context = await browser.newContext({ viewport: { width: 400, height: 200 } });
+    const page = await context.newPage();
+    await page.goto(`data:text/html,${encodeURIComponent(ANIMATED_HTML)}`);
+
+    // Near the 0%/100% keyframe: the child is at its 20px resting width, well
+    // inside the 40px frame.
+    await page.waitForTimeout(50);
+    const atRest = (await measure(page)).map((f) => f.kind);
+
+    // Near the 50% keyframe (t=1s of the 2s loop): the child is near its
+    // 140px peak, well past the frame's width.
+    await page.waitForTimeout(950);
+    const midCycle = (await measure(page)).map((f) => f.kind);
+
+    await context.close();
+    expect(atRest.includes('overflow-x')).toBe(false);
+    expect(midCycle.includes('overflow-x')).toBe(true);
+  });
+
+  it('is stable once animations are frozen before the first paint', async () => {
+    const context = await browser.newContext({ viewport: { width: 400, height: 200 } });
+    await context.addInitScript(freezeAnimationsInPage, FREEZE_ANIMATIONS_CSS);
+    const page = await context.newPage();
+    await page.goto(`data:text/html,${encodeURIComponent(ANIMATED_HTML)}`);
+
+    await page.waitForTimeout(50);
+    const first = (await measure(page)).map((f) => f.kind);
+
+    // Same wait a real sweep would have hit the 50% keyframe at; frozen, the
+    // animation never advanced past its start, so this must read identically.
+    await page.waitForTimeout(950);
+    const second = (await measure(page)).map((f) => f.kind);
+
+    await context.close();
+    expect(second).toEqual(first);
+    expect(first.includes('overflow-x')).toBe(false);
   });
 });

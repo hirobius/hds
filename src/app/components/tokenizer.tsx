@@ -79,7 +79,9 @@ export const Tokenizer = React.forwardRef<HTMLInputElement, TokenizerProps>(func
             onClick={() => handleRemove(index)}
             disabled={disabled}
             aria-label={`Remove ${token}`}
-            className="inline-flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            // tier-ok: compact hit-target floor is a primitive by definition (hds#287) — no semantic alias exists, mirrors --primitive-size-interactive-min's own unaliased use in side-nav.tsx/tag.tsx
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-size-interactive-minCompact WCAG 2.2 AA (2.5.8) compact hit target; no Tailwind-theme utility, var()-based so still token-driven
+            className="inline-flex size-[var(--primitive-size-interactive-minCompact)] shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <X className="size-3" aria-hidden="true" />
           </button>
