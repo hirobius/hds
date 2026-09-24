@@ -16,8 +16,15 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
+import { createRequire } from 'node:module';
 import reactDocgenTypescript from 'react-docgen-typescript';
 import { discoverHdsComponents } from './component-discovery.mjs';
+import {
+  buildUtilityMap,
+  mergeReferences,
+  utilityReferences,
+  varReferences,
+} from './lib/token-references.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -446,7 +453,24 @@ function normalizeHdsTokenPath(raw) {
   return undefined;
 }
 
-function extractObservedTokens(source) {
+/**
+ * The Tailwind colour map, read once. Built lazily because this module is
+ * imported by tools that never need it.
+ */
+let UTILITY_MAP;
+function utilityMap() {
+  if (!UTILITY_MAP) UTILITY_MAP = buildUtilityMap(ROOT, createRequire(import.meta.url));
+  return UTILITY_MAP;
+}
+
+/**
+ * Every `hds.*` expression in the source.
+ *
+ * This is ONE of the three ways HDS names a token, and for a long time it was
+ * the only one detected — see scripts/lib/token-references.mjs. The other two
+ * are merged in by extractObservedTokens below.
+ */
+function extractHdsObjectTokens(source) {
   const matches = [
     ...source.matchAll(/\bhds(?:\.[A-Za-z_][A-Za-z0-9_]*|\[(?:\d+|'[^']+'|"[^"]+")\])+/g),
   ];
@@ -474,6 +498,22 @@ function extractObservedTokens(source) {
   }
 
   return tokens;
+}
+
+/**
+ * Every token the source names, by any of the three routes.
+ *
+ * Before this merged the other two detectors, 78 of 128 components recorded
+ * zero tokens while plainly being tokenized: a component that colours itself
+ * with `bg-primary` or `text-[color:var(--semantic-…)]` never touches the
+ * `hds.*` object, so it looked untokenized.
+ */
+function extractObservedTokens(source) {
+  return mergeReferences([
+    extractHdsObjectTokens(source),
+    varReferences(source),
+    utilityReferences(source, utilityMap()),
+  ]);
 }
 
 function toPropRow(propName, prop, aliases) {

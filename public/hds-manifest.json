@@ -726,7 +726,9 @@
       ],
       "tier": "template",
       "docExempt": false,
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [],
+      "storyIds": []
     },
     "Alert": {
       "category": "Feedback",
@@ -853,7 +855,18 @@
             "info"
           ]
         }
-      }
+      },
+      "storyFiles": [
+        "src/stories/alert.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-alert--all-variants",
+        "primitives-alert--error",
+        "primitives-alert--info",
+        "primitives-alert--success",
+        "primitives-alert--warning",
+        "primitives-alert--with-title"
+      ]
     },
     "CinematicLink": {
       "category": "Branding",
@@ -893,7 +906,16 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/CinematicLink.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/cinematic-link.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-cinematic-link--default",
+        "primitives-cinematic-link--external-href",
+        "primitives-cinematic-link--long-label",
+        "primitives-cinematic-link--short-label"
+      ]
     },
     "CodeBlock": {
       "category": "Display",
@@ -961,7 +983,17 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/CodeBlock.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-154"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-154",
+      "storyFiles": [
+        "src/stories/code-block.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-code-block--collapsible",
+        "primitives-code-block--css-highlighting",
+        "primitives-code-block--default",
+        "primitives-code-block--inline",
+        "primitives-code-block--json-highlighting"
+      ]
     },
     "Container": {
       "category": "Layout",
@@ -1026,7 +1058,14 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Container.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/container.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-container--content-width",
+        "primitives-container--max-width"
+      ]
     },
     "Disclosure": {
       "category": "Layout",
@@ -1141,7 +1180,16 @@
         }
       ],
       "sourcePath": "src/app/components/Disclosure.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-453"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-453",
+      "storyFiles": [
+        "src/stories/disclosure.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-disclosure--controlled",
+        "primitives-disclosure--multiple-items",
+        "primitives-disclosure--open-by-default",
+        "primitives-disclosure--panel"
+      ]
     },
     "Divider": {
       "category": "Layout",
@@ -1236,7 +1284,18 @@
             "default"
           ]
         }
-      }
+      },
+      "storyFiles": [
+        "src/stories/divider.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-divider--between-sections",
+        "primitives-divider--horizontal",
+        "primitives-divider--horizontal-strong",
+        "primitives-divider--legacy-strong-prop",
+        "primitives-divider--vertical",
+        "primitives-divider--with-spacing"
+      ]
     },
     "DocLinkCard": {
       "category": "Navigation",
@@ -1285,7 +1344,17 @@
         "src/stories/doc-link-card.stories.tsx"
       ],
       "variantAxes": [],
-      "componentProperties": []
+      "componentProperties": [],
+      "storyFiles": [
+        "src/stories/doc-link-card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-doc-link-card--accent",
+        "primitives-doc-link-card--default",
+        "primitives-doc-link-card--disabled",
+        "primitives-doc-link-card--pager-back",
+        "primitives-doc-link-card--pager-forward"
+      ]
     },
     "ErrorPattern": {
       "category": "Feedback",
@@ -1372,7 +1441,16 @@
       ],
       "tier": "template",
       "docExempt": false,
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/error-pattern.stories.tsx"
+      ],
+      "storyIds": [
+        "feedback-error-pattern--default",
+        "feedback-error-pattern--not-found",
+        "feedback-error-pattern--server-error",
+        "feedback-error-pattern--unauthorized"
+      ]
     },
     "FoundationSwatch": {
       "category": "Utilities",
@@ -1493,7 +1571,17 @@
         }
       ],
       "sourcePath": "src/app/components/FoundationSwatch.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/foundation-swatch.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-foundation-swatch--color-grid",
+        "primitives-foundation-swatch--default",
+        "primitives-foundation-swatch--feedback-palette",
+        "primitives-foundation-swatch--with-details",
+        "primitives-foundation-swatch--with-specimen"
+      ]
     },
     "Grid": {
       "category": "Layout",
@@ -1617,7 +1705,16 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Grid.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/grid.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-grid--aside-layout",
+        "primitives-grid--auto-fit",
+        "primitives-grid--three-column",
+        "primitives-grid--two-column"
+      ]
     },
     "Icon": {
       "category": "Display",
@@ -1771,7 +1868,18 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Icon.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/icon.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-icon--default",
+        "primitives-icon--large",
+        "primitives-icon--medium",
+        "primitives-icon--semantic-color",
+        "primitives-icon--semantic-colors",
+        "primitives-icon--size-gallery"
+      ]
     },
     "IconButton": {
       "category": "Actions",
@@ -1901,7 +2009,17 @@
         }
       ],
       "sourcePath": "src/app/components/IconButton.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39",
+      "storyFiles": [
+        "src/stories/icon-button.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-icon-button--default",
+        "primitives-icon-button--disabled",
+        "primitives-icon-button--primary",
+        "primitives-icon-button--size-gallery",
+        "primitives-icon-button--tertiary"
+      ]
     },
     "InlineCode": {
       "category": "Display",
@@ -1956,7 +2074,19 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/InlineCode.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155",
+      "storyFiles": [
+        "src/stories/inline-code.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-inline-code--comfortable",
+        "primitives-inline-code--compact",
+        "primitives-inline-code--compact-deprecated-alias",
+        "primitives-inline-code--copyable",
+        "primitives-inline-code--copyable-in-prose",
+        "primitives-inline-code--default",
+        "primitives-inline-code--in-prose"
+      ]
     },
     "InlineLink": {
       "category": "Navigation",
@@ -2015,7 +2145,16 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/InlineLink.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161",
+      "storyFiles": [
+        "src/stories/inline-link.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-inline-link--default",
+        "primitives-inline-link--external-no-icon",
+        "primitives-inline-link--in-body-copy",
+        "primitives-inline-link--internal-route"
+      ]
     },
     "Input": {
       "category": "Inputs",
@@ -2258,7 +2397,19 @@
       ],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20",
+      "storyFiles": [
+        "src/stories/input.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-input--default",
+        "primitives-input--disabled",
+        "primitives-input--loading",
+        "primitives-input--mono",
+        "primitives-input--size-variants",
+        "primitives-input--with-error",
+        "primitives-input--with-helper"
+      ]
     },
     "NavGroup": {
       "category": "Navigation",
@@ -2366,7 +2517,17 @@
         }
       ],
       "sourcePath": "src/app/components/NavGroup.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-304"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-304",
+      "storyFiles": [
+        "src/stories/nav-group.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-nav-group--collapsible",
+        "primitives-nav-group--default",
+        "primitives-nav-group--no-label",
+        "primitives-nav-group--toc-variant",
+        "primitives-nav-group--with-disabled-item"
+      ]
     },
     "NavItem": {
       "category": "Navigation",
@@ -2440,7 +2601,19 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/NavItem.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-258"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-258",
+      "storyFiles": [
+        "src/stories/nav-item.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-nav-item--active",
+        "primitives-nav-item--button-mode",
+        "primitives-nav-item--default",
+        "primitives-nav-item--disabled",
+        "primitives-nav-item--nested-level",
+        "primitives-nav-item--toc-active",
+        "primitives-nav-item--toc-variant"
+      ]
     },
     "SegmentedControl": {
       "category": "Inputs",
@@ -2539,7 +2712,16 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/SegmentedControl.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334",
+      "storyFiles": [
+        "src/stories/segmented-control.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-segmented-control--compact",
+        "primitives-segmented-control--full-width",
+        "primitives-segmented-control--primary",
+        "primitives-segmented-control--secondary"
+      ]
     },
     "Sketch": {
       "category": "Layout",
@@ -2609,7 +2791,15 @@
         }
       ],
       "sourcePath": "src/app/components/Sketch.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/sketch.stories.tsx"
+      ],
+      "storyIds": [
+        "layout-sketch--default",
+        "layout-sketch--narrow-canvas",
+        "layout-sketch--with-controls"
+      ]
     },
     "Stack": {
       "category": "Layout",
@@ -2798,7 +2988,17 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Stack.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/stack.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-stack--column",
+        "primitives-stack--row",
+        "primitives-stack--space-between",
+        "primitives-stack--spacious-gap",
+        "primitives-stack--tight-gap"
+      ]
     },
     "StepperField": {
       "category": "Inputs",
@@ -2889,7 +3089,17 @@
         }
       ],
       "sourcePath": "src/app/components/StepperField.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-425"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-425",
+      "storyFiles": [
+        "src/stories/stepper-field.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-stepper-field--column-count",
+        "primitives-stepper-field--decimal",
+        "primitives-stepper-field--default",
+        "primitives-stepper-field--dimension-panel",
+        "primitives-stepper-field--font-size"
+      ]
     },
     "Table": {
       "category": "Display",
@@ -2975,7 +3185,18 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Table.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300",
+      "storyFiles": [
+        "src/stories/table.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-table--default",
+        "primitives-table--density-comfortable",
+        "primitives-table--density-compact",
+        "primitives-table--flush",
+        "primitives-table--with-badge-slots",
+        "primitives-table--with-caption"
+      ]
     },
     "Tag": {
       "category": "Inputs",
@@ -3134,7 +3355,18 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Tag.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11",
+      "storyFiles": [
+        "src/stories/tag.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-tag--active",
+        "primitives-tag--default",
+        "primitives-tag--disabled",
+        "primitives-tag--filter-row",
+        "primitives-tag--interactive",
+        "primitives-tag--state-matrix"
+      ]
     },
     "Token": {
       "category": "Display",
@@ -3293,7 +3525,18 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Token.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/token.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-token--color-token",
+        "primitives-token--compressed-path",
+        "primitives-token--default",
+        "primitives-token--explicit-swatch",
+        "primitives-token--selected",
+        "primitives-token--source-node"
+      ]
     },
     "Surface": {
       "category": "Layout",
@@ -3384,6 +3627,16 @@
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-27",
       "states": [
         "default"
+      ],
+      "storyFiles": [
+        "src/stories/surface.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-surface--card-grid",
+        "primitives-surface--default",
+        "primitives-surface--forced-dark",
+        "primitives-surface--item-padding",
+        "primitives-surface--with-shadow"
       ]
     },
     "Card": {
@@ -3617,7 +3870,22 @@
         "className": {
           "type": "string"
         }
-      }
+      },
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "ComponentInstanceMatrix": {
       "category": "Utilities",
@@ -3649,7 +3917,15 @@
       "variantAxes": [],
       "componentProperties": [],
       "sourcePath": "src/app/components/ComponentInstanceMatrix.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/component-instance-matrix.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-component-instance-matrix--default",
+        "primitives-component-instance-matrix--frozen-row-state",
+        "primitives-component-instance-matrix--mobile-layout"
+      ]
     },
     "SpecimenBlock": {
       "category": "Utilities",
@@ -3681,7 +3957,9 @@
       "variantAxes": [],
       "componentProperties": [],
       "sourcePath": "src/app/components/SpecimenBlock.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [],
+      "storyIds": []
     },
     "ActivityFeed": {
       "category": "Display",
@@ -3757,7 +4035,16 @@
         }
       ],
       "sourcePath": "src/app/components/ActivityFeed.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/activity-feed.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-activity-feed--all-success",
+        "primitives-activity-feed--default",
+        "primitives-activity-feed--errors-and-warnings",
+        "primitives-activity-feed--single-event"
+      ]
     },
     "HeadingStack": {
       "category": "Typography",
@@ -3856,7 +4143,18 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/HeadingStack.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/heading-stack.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-heading-stack--all-levels",
+        "primitives-heading-stack--default",
+        "primitives-heading-stack--heading-1",
+        "primitives-heading-stack--heading-2",
+        "primitives-heading-stack--heading-3",
+        "primitives-heading-stack--tight-gap"
+      ]
     },
     "HdsSystemDocLayout": {
       "category": "Uncategorized",
@@ -3942,7 +4240,9 @@
           }
         }
       ],
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [],
+      "storyIds": []
     },
     "Text": {
       "category": "Typography",
@@ -4026,7 +4326,24 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/Text.tsx",
-      "figmaLink": null
+      "figmaLink": null,
+      "storyFiles": [
+        "src/stories/error-boundary.stories.tsx",
+        "src/stories/text.stories.tsx"
+      ],
+      "storyIds": [
+        "feedback-error-boundary--default",
+        "feedback-error-boundary--with-min-height",
+        "primitives-text--body",
+        "primitives-text--caption",
+        "primitives-text--display",
+        "primitives-text--full-ramp",
+        "primitives-text--heading-1",
+        "primitives-text--heading-2",
+        "primitives-text--heading-3",
+        "primitives-text--technical",
+        "primitives-text--ui"
+      ]
     },
     "Dialog": {
       "category": "Overlays",
@@ -4222,7 +4539,16 @@
         "modal": {
           "type": "boolean"
         }
-      }
+      },
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "StackedCardRail": {
       "category": "Display",
@@ -4257,7 +4583,15 @@
       "requiredProps": [
         "cards"
       ],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/stacked-card-rail.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-stacked-card-rail--default",
+        "patterns-stacked-card-rail--sparse",
+        "patterns-stacked-card-rail--with-links"
+      ]
     },
     "Button": {
       "category": "Actions",
@@ -4491,7 +4825,21 @@
         "iconOnly": {
           "type": "boolean"
         }
-      }
+      },
+      "storyFiles": [
+        "src/stories/button.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-button--all-variants-row",
+        "primitives-button--disabled",
+        "primitives-button--large",
+        "primitives-button--loading",
+        "primitives-button--medium",
+        "primitives-button--primary",
+        "primitives-button--secondary",
+        "primitives-button--small",
+        "primitives-button--tertiary"
+      ]
     },
     "Callout": {
       "category": "Feedback",
@@ -4556,6 +4904,18 @@
           "rule": "Callout is decorative; tone is signaled visually — pair with semantic role when meaning matters",
           "required": false
         }
+      ],
+      "storyFiles": [
+        "src/stories/callout.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-callout--accent",
+        "primitives-callout--all-tones",
+        "primitives-callout--danger",
+        "primitives-callout--default",
+        "primitives-callout--italic",
+        "primitives-callout--success",
+        "primitives-callout--warning"
       ]
     },
     "EmptyState": {
@@ -4600,7 +4960,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/empty-state.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-empty-state--default",
+        "primitives-empty-state--in-grid",
+        "primitives-empty-state--title-only",
+        "primitives-empty-state--with-description"
+      ]
     },
     "Field": {
       "category": "Display",
@@ -4682,6 +5051,20 @@
           "rule": "Label must describe the value; pair with aria-describedby when value is non-trivial",
           "required": false
         }
+      ],
+      "storyFiles": [
+        "src/stories/field.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-field--all-tones",
+        "primitives-field--danger",
+        "primitives-field--default",
+        "primitives-field--info",
+        "primitives-field--metadata-grid",
+        "primitives-field--mono",
+        "primitives-field--success",
+        "primitives-field--warning",
+        "primitives-field--with-children"
       ]
     },
     "Page": {
@@ -4751,7 +5134,21 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/page.stories.tsx",
+        "src/stories/patterns-layout.stories.tsx"
+      ],
+      "storyIds": [
+        "layout-page--compact-padding",
+        "layout-page--content-width",
+        "layout-page--default",
+        "layout-page--no-padding",
+        "patterns-layout--dashboard-grid",
+        "patterns-layout--detail-page",
+        "patterns-layout--empty-state-screen",
+        "patterns-layout--form-screen"
+      ]
     },
     "Stat": {
       "category": "Display",
@@ -4821,6 +5218,17 @@
           "rule": "Provide an accessible name for the stat when value is symbolic (—, ✓, etc.)",
           "required": false
         }
+      ],
+      "storyFiles": [
+        "src/stories/stat.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-stat--all-tones",
+        "primitives-stat--danger",
+        "primitives-stat--default",
+        "primitives-stat--success",
+        "primitives-stat--warning",
+        "primitives-stat--with-sub"
       ]
     },
     "StatusListItem": {
@@ -4891,6 +5299,17 @@
           "rule": "Status dot is decorative (aria-hidden); convey status meaning via title or trailing badge",
           "required": true
         }
+      ],
+      "storyFiles": [
+        "src/stories/status-list-item.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-status-list-item--danger",
+        "primitives-status-list-item--default",
+        "primitives-status-list-item--info",
+        "primitives-status-list-item--success",
+        "primitives-status-list-item--warning",
+        "primitives-status-list-item--with-trailing"
       ]
     },
     "StatusTile": {
@@ -4945,7 +5364,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/status-tile.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-status-tile--danger",
+        "primitives-status-tile--default",
+        "primitives-status-tile--tile-grid",
+        "primitives-status-tile--warning",
+        "primitives-status-tile--with-trailing-badge"
+      ]
     },
     "TileGrid": {
       "category": "Layout",
@@ -4990,7 +5419,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/tile-grid.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-tile-grid--default",
+        "primitives-tile-grid--gap-md",
+        "primitives-tile-grid--gap-xs",
+        "primitives-tile-grid--narrow-tiles",
+        "primitives-tile-grid--wide-tiles"
+      ]
     },
     "Badge": {
       "variantAxes": [
@@ -5046,7 +5485,18 @@
         "src/stories/static-primitives.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
-      "tokenMapping": {}
+      "tokenMapping": {},
+      "storyFiles": [
+        "src/stories/badge.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-badge--all-tones",
+        "primitives-badge--danger",
+        "primitives-badge--info",
+        "primitives-badge--neutral",
+        "primitives-badge--success",
+        "primitives-badge--warning"
+      ]
     },
     "TextLockup": {
       "variantAxes": [
@@ -5105,7 +5555,18 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/text-lockup.stories.tsx"
       ],
-      "tokenMapping": {}
+      "tokenMapping": {},
+      "storyFiles": [
+        "src/stories/text-lockup.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-text-lockup--centered",
+        "primitives-text-lockup--detail",
+        "primitives-text-lockup--hero",
+        "primitives-text-lockup--numbered",
+        "primitives-text-lockup--section",
+        "primitives-text-lockup--with-eyebrow"
+      ]
     },
     "AssetImg": {
       "category": "Display",
@@ -5270,6 +5731,16 @@
           "rule": "Caption or description should be associated via aria-describedby when present",
           "required": false
         }
+      ],
+      "storyFiles": [
+        "src/stories/asset-img.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-asset-img--default",
+        "primitives-asset-img--detail-context",
+        "primitives-asset-img--lightbox-context",
+        "primitives-asset-img--placeholder-fallback",
+        "primitives-asset-img--with-title"
       ]
     },
     "Tabs": {
@@ -5306,7 +5777,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/tabs.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-tabs--controlled",
+        "primitives-tabs--default",
+        "primitives-tabs--many-tabs",
+        "primitives-tabs--with-disabled-tab"
+      ]
     },
     "TabsContent": {
       "category": "Navigation",
@@ -5341,7 +5821,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/tabs.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-tabs--controlled",
+        "primitives-tabs--default",
+        "primitives-tabs--many-tabs",
+        "primitives-tabs--with-disabled-tab"
+      ]
     },
     "TabsList": {
       "category": "Navigation",
@@ -5376,7 +5865,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/tabs.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-tabs--controlled",
+        "primitives-tabs--default",
+        "primitives-tabs--many-tabs",
+        "primitives-tabs--with-disabled-tab"
+      ]
     },
     "TabsTrigger": {
       "category": "Navigation",
@@ -5411,7 +5909,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/tabs.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-tabs--controlled",
+        "primitives-tabs--default",
+        "primitives-tabs--many-tabs",
+        "primitives-tabs--with-disabled-tab"
+      ]
     },
     "HdsRadio": {
       "category": "Inputs",
@@ -5469,7 +5976,17 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17",
+      "storyFiles": [
+        "src/stories/radio.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-radio--default",
+        "primitives-radio--disabled",
+        "primitives-radio--disabled-selected",
+        "primitives-radio--group",
+        "primitives-radio--selected"
+      ]
     },
     "HdsSelect": {
       "category": "Inputs",
@@ -5527,7 +6044,14 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49",
+      "storyFiles": [
+        "src/stories/select.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-select--default",
+        "primitives-select--no-label"
+      ]
     },
     "HdsSlider": {
       "category": "Inputs",
@@ -5585,7 +6109,16 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265",
+      "storyFiles": [
+        "src/stories/slider.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-slider--decimal",
+        "primitives-slider--default",
+        "primitives-slider--stepped",
+        "primitives-slider--typography-controls"
+      ]
     },
     "HdsToggle": {
       "category": "Inputs",
@@ -5645,7 +6178,17 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19",
+      "storyFiles": [
+        "src/stories/toggle.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-toggle--default",
+        "primitives-toggle--disabled",
+        "primitives-toggle--disabled-on",
+        "primitives-toggle--on",
+        "primitives-toggle--settings-group"
+      ]
     },
     "Avatar": {
       "category": "Display",
@@ -5702,7 +6245,18 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/avatar.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-avatar--all-sizes",
+        "primitives-avatar--default",
+        "primitives-avatar--explicit-initials",
+        "primitives-avatar--large",
+        "primitives-avatar--small",
+        "primitives-avatar--with-image"
+      ]
     },
     "Progress": {
       "category": "Feedback",
@@ -5755,7 +6309,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/progress.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-progress--all-sizes",
+        "primitives-progress--complete",
+        "primitives-progress--default",
+        "primitives-progress--indeterminate"
+      ]
     },
     "Skeleton": {
       "category": "Feedback",
@@ -5806,7 +6369,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/skeleton.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-skeleton--all-variants",
+        "primitives-skeleton--card-placeholder",
+        "primitives-skeleton--circular",
+        "primitives-skeleton--default",
+        "primitives-skeleton--text"
+      ]
     },
     "Spinner": {
       "category": "Feedback",
@@ -5851,7 +6424,18 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/spinner.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-spinner--all-sizes",
+        "primitives-spinner--color-inheritance",
+        "primitives-spinner--custom-label",
+        "primitives-spinner--default",
+        "primitives-spinner--large",
+        "primitives-spinner--small"
+      ]
     },
     "Breadcrumb": {
       "category": "Navigation",
@@ -5891,7 +6475,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/breadcrumb.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-breadcrumb--custom-label",
+        "primitives-breadcrumb--deep-trail",
+        "primitives-breadcrumb--default",
+        "primitives-breadcrumb--shallow-trail",
+        "primitives-breadcrumb--single-crumb"
+      ]
     },
     "Pagination": {
       "category": "Navigation",
@@ -5940,7 +6534,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/pagination.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-pagination--default",
+        "primitives-pagination--few-pages",
+        "primitives-pagination--last-page",
+        "primitives-pagination--middle-page",
+        "primitives-pagination--wide-siblings"
+      ]
     },
     "HdsCheckbox": {
       "category": "Inputs",
@@ -5972,7 +6576,18 @@
         "src/stories/checkbox.stories.tsx"
       ],
       "variantAxes": [],
-      "componentProperties": []
+      "componentProperties": [],
+      "storyFiles": [
+        "src/stories/checkbox.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-checkbox--checked",
+        "primitives-checkbox--default",
+        "primitives-checkbox--disabled",
+        "primitives-checkbox--disabled-checked",
+        "primitives-checkbox--group",
+        "primitives-checkbox--indeterminate"
+      ]
     },
     "ToastProvider": {
       "category": "Feedback",
@@ -6012,7 +6627,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/toast.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-toast--danger",
+        "primitives-toast--default",
+        "primitives-toast--info",
+        "primitives-toast--success",
+        "primitives-toast--warning"
+      ]
     },
     "Combobox": {
       "category": "Inputs",
@@ -6081,7 +6706,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/combobox.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-combobox--default",
+        "primitives-combobox--disabled-trigger",
+        "primitives-combobox--few-options",
+        "primitives-combobox--pre-selected",
+        "primitives-combobox--with-disabled-option"
+      ]
     },
     "Form": {
       "category": "Inputs",
@@ -6117,7 +6752,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/form.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-form--controlled",
+        "patterns-form--default",
+        "patterns-form--with-description",
+        "patterns-form--with-error"
+      ]
     },
     "FormField": {
       "category": "Inputs",
@@ -6178,7 +6822,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/form.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-form--controlled",
+        "patterns-form--default",
+        "patterns-form--with-description",
+        "patterns-form--with-error"
+      ]
     },
     "FormFieldShell": {
       "category": "Inputs",
@@ -6234,7 +6887,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/form.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-form--controlled",
+        "patterns-form--default",
+        "patterns-form--with-description",
+        "patterns-form--with-error"
+      ]
     },
     "HdsThemeProvider": {
       "category": "Theming",
@@ -6306,7 +6968,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "AvatarGroup": {
       "category": "Display",
@@ -6349,7 +7013,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/avatar-group.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-avatar-group--default",
+        "primitives-avatar-group--sizes",
+        "primitives-avatar-group--with-overflow"
+      ]
     },
     "Blockquote": {
       "category": "Typography",
@@ -6394,7 +7066,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/blockquote.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-blockquote--default",
+        "primitives-blockquote--sizes",
+        "primitives-blockquote--with-attribution"
+      ]
     },
     "ButtonGroup": {
       "category": "Actions",
@@ -6434,7 +7114,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/button-group.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-button-group--default",
+        "primitives-button-group--vertical"
+      ]
     },
     "InputGroup": {
       "category": "Inputs",
@@ -6487,7 +7174,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/input-group.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-input-group--default",
+        "primitives-input-group--with-adornments"
+      ]
     },
     "Kbd": {
       "category": "Display",
@@ -6528,7 +7222,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/kbd.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-kbd--combination",
+        "primitives-kbd--default",
+        "primitives-kbd--sizes"
+      ]
     },
     "StatusDot": {
       "category": "Feedback",
@@ -6585,7 +7287,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/status-dot.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-status-dot--default",
+        "primitives-status-dot--tones",
+        "primitives-status-dot--with-label-text"
+      ]
     },
     "Timestamp": {
       "category": "Display",
@@ -6638,7 +7348,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/timestamp.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-timestamp--default",
+        "primitives-timestamp--formats"
+      ]
     },
     "VisuallyHidden": {
       "category": "Utility",
@@ -6674,7 +7391,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/visually-hidden.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-visually-hidden--default"
+      ]
     },
     "CircularProgress": {
       "category": "Feedback",
@@ -6731,7 +7454,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/circular-progress.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-circular-progress--default",
+        "primitives-circular-progress--indeterminate",
+        "primitives-circular-progress--sizes",
+        "primitives-circular-progress--tones"
+      ]
     },
     "SideNav": {
       "category": "Navigation",
@@ -6762,7 +7494,16 @@
       "docExempt": false,
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-332"
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-332",
+      "storyFiles": [
+        "src/stories/side-nav.stories.tsx"
+      ],
+      "storyIds": [
+        "navigation-side-nav--disabled",
+        "navigation-side-nav--nested-active",
+        "navigation-side-nav--root",
+        "navigation-side-nav--sidebar-group"
+      ]
     },
     "CommandPalette": {
       "category": "Overlays",
@@ -6799,7 +7540,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/command-palette.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-command-palette--default"
+      ]
     },
     "Lightbox": {
       "category": "Overlays",
@@ -6866,7 +7613,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/image-lightbox.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-image-lightbox--default"
+      ]
     },
     "AppShell": {
       "category": "Layout",
@@ -6897,7 +7650,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/app-shell.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-app-shell--default",
+        "patterns-app-shell--no-sidebar",
+        "patterns-app-shell--wide-sidebar"
+      ]
     },
     "FileInput": {
       "category": "Inputs",
@@ -6949,7 +7710,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/file-input.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-file-input--default",
+        "patterns-file-input--disabled",
+        "patterns-file-input--multiple-images"
+      ]
     },
     "MetadataList": {
       "category": "Display",
@@ -6992,7 +7761,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/metadata-list.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-metadata-list--default",
+        "patterns-metadata-list--divided",
+        "patterns-metadata-list--horizontal"
+      ]
     },
     "OverflowList": {
       "category": "Layout",
@@ -7035,7 +7812,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/overflow-list.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-overflow-list--default",
+        "patterns-overflow-list--with-overflow"
+      ]
     },
     "SelectableCard": {
       "category": "Actions",
@@ -7079,7 +7863,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/selectable-card.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-selectable-card--default",
+        "patterns-selectable-card--disabled",
+        "patterns-selectable-card--plan-picker",
+        "patterns-selectable-card--selected"
+      ]
     },
     "Tokenizer": {
       "category": "Inputs",
@@ -7129,7 +7922,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/tokenizer.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-tokenizer--default",
+        "patterns-tokenizer--disabled",
+        "patterns-tokenizer--empty"
+      ]
     },
     "TopNav": {
       "category": "Navigation",
@@ -7177,7 +7978,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/top-nav.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-top-nav--default",
+        "patterns-top-nav--sticky"
+      ]
     },
     "Carousel": {
       "category": "Display",
@@ -7220,7 +8028,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/carousel.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-carousel--default",
+        "patterns-carousel--no-controls"
+      ]
     },
     "Stepper": {
       "category": "Navigation",
@@ -7266,7 +8081,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/stepper.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-stepper--default",
+        "patterns-stepper--vertical"
+      ]
     },
     "Toolbar": {
       "category": "Actions",
@@ -7302,7 +8124,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/toolbar.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-toolbar--default"
+      ]
     },
     "TreeList": {
       "category": "Navigation",
@@ -7345,7 +8173,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/tree-list.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-tree-list--default",
+        "patterns-tree-list--with-default-expanded"
+      ]
     },
     "AlertDialog": {
       "category": "Overlays",
@@ -7376,7 +8211,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/alert-dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-alert-dialog--default"
+      ]
     },
     "AspectRatio": {
       "category": "Layout",
@@ -7418,7 +8259,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/aspect-ratio.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-aspect-ratio--square",
+        "primitives-aspect-ratio--widescreen"
+      ]
     },
     "Calendar": {
       "category": "Inputs",
@@ -7455,7 +8303,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/calendar.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-calendar--range",
+        "primitives-calendar--single"
+      ]
     },
     "ContextMenu": {
       "category": "Overlays",
@@ -7486,7 +8341,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/context-menu.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-context-menu--default"
+      ]
     },
     "DateInput": {
       "category": "Inputs",
@@ -7546,7 +8407,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/date-input.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-date-input--default",
+        "patterns-date-input--with-initial-value"
+      ]
     },
     "DateRangeInput": {
       "category": "Inputs",
@@ -7610,7 +8478,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/date-range-input.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-date-range-input--default",
+        "patterns-date-range-input--disabled-trigger",
+        "patterns-date-range-input--pre-selected"
+      ]
     },
     "DateTimeInput": {
       "category": "Inputs",
@@ -7666,7 +8542,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/date-time-input.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-date-time-input--default",
+        "patterns-date-time-input--with-initial-value"
+      ]
     },
     "HoverCard": {
       "category": "Overlays",
@@ -7697,7 +8580,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/hover-card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-hover-card--default"
+      ]
     },
     "MultiSelector": {
       "category": "Inputs",
@@ -7750,7 +8639,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/multi-selector.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-multi-selector--default",
+        "patterns-multi-selector--disabled-trigger",
+        "patterns-multi-selector--pre-selected"
+      ]
     },
     "TimeInput": {
       "category": "Inputs",
@@ -7793,7 +8690,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/time-input.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-time-input--default",
+        "primitives-time-input--sizes"
+      ]
     },
     "ToggleButton": {
       "category": "Actions",
@@ -7846,7 +8750,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/toggle-button.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-toggle-button--default",
+        "primitives-toggle-button--pressed",
+        "primitives-toggle-button--variants"
+      ]
     },
     "Box": {
       "category": "Layout",
@@ -7901,7 +8813,18 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/box.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-box--ampersand-selectors",
+        "primitives-box--ampersand-with-responsive",
+        "primitives-box--polymorphic-as",
+        "primitives-box--responsive-values",
+        "primitives-box--spacing-shorthands",
+        "primitives-box--token-colors"
+      ]
     },
     "Bleed": {
       "category": "Layout",
@@ -7967,7 +8890,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/bleed.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-bleed--bleed-both",
+        "primitives-bleed--bleed-x"
+      ]
     },
     "Center": {
       "category": "Layout",
@@ -8036,7 +8966,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/center.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-center--content-width",
+        "primitives-center--max-width",
+        "primitives-center--with-gutter"
+      ]
     },
     "Cluster": {
       "category": "Layout",
@@ -8115,7 +9053,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/cluster.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-cluster--default",
+        "primitives-cluster--space-between",
+        "primitives-cluster--spacious-gap"
+      ]
     },
     "Cover": {
       "category": "Layout",
@@ -8191,7 +9137,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/cover.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-cover--header-main-footer",
+        "primitives-cover--header-only",
+        "primitives-cover--main-only"
+      ]
     },
     "Frame": {
       "category": "Layout",
@@ -8253,7 +9207,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/frame.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-frame--no-radius",
+        "primitives-frame--square",
+        "primitives-frame--widescreen"
+      ]
     },
     "Sidebar": {
       "category": "Layout",
@@ -8333,7 +9295,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/sidebar.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-sidebar--narrow-container-stacks",
+        "primitives-sidebar--rail-end",
+        "primitives-sidebar--rail-start"
+      ]
     },
     "Switcher": {
       "category": "Layout",
@@ -8398,7 +9368,15 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/switcher.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-switcher--default",
+        "primitives-switcher--limit-forces-stacked",
+        "primitives-switcher--narrow-container-stacks"
+      ]
     },
     "Pin": {
       "category": "Layout",
@@ -8451,7 +9429,13 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/pin.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-pin--sidebar"
+      ]
     },
     "Reveal": {
       "category": "Motion",
@@ -8510,7 +9494,18 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/patterns-scroll.stories.tsx",
+        "src/stories/reveal.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-scroll--pinned-scale-reveal",
+        "patterns-scroll--reveal-sequence",
+        "patterns-scroll--simple-parallax",
+        "primitives-reveal--animations",
+        "primitives-reveal--scale-reveal-scene"
+      ]
     },
     "Textarea": {
       "category": "Inputs",
@@ -8573,7 +9568,17 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/textarea.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-textarea--all-states",
+        "primitives-textarea--default",
+        "primitives-textarea--disabled",
+        "primitives-textarea--error",
+        "primitives-textarea--with-helper"
+      ]
     },
     "CardBody": {
       "category": "Display",
@@ -8601,7 +9606,22 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "CardDescription": {
       "category": "Display",
@@ -8629,7 +9649,22 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "CardFooter": {
       "category": "Display",
@@ -8657,7 +9692,22 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "CardHeader": {
       "category": "Display",
@@ -8690,7 +9740,22 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "CardMetric": {
       "category": "Display",
@@ -8740,7 +9805,22 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "CardProgress": {
       "category": "Display",
@@ -8791,7 +9871,22 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "CardTitle": {
       "category": "Display",
@@ -8819,7 +9914,22 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/card.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-card--bordered",
+        "primitives-card--default",
+        "primitives-card--elevated",
+        "primitives-card--feedback-tones",
+        "primitives-card--full-anatomy",
+        "primitives-card--header-only",
+        "primitives-card--metric-slot",
+        "primitives-card--padding-variants",
+        "primitives-card--progress-slot",
+        "primitives-card--variant-accent"
+      ]
     },
     "DialogClose": {
       "category": "Overlays",
@@ -8852,7 +9962,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogContent": {
       "category": "Overlays",
@@ -8889,7 +10008,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogDescription": {
       "category": "Overlays",
@@ -8922,7 +10050,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogFooter": {
       "category": "Overlays",
@@ -8950,7 +10087,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogHeader": {
       "category": "Overlays",
@@ -8978,7 +10124,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogOverlay": {
       "category": "Overlays",
@@ -9011,7 +10166,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogPortal": {
       "category": "Overlays",
@@ -9039,7 +10203,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogTitle": {
       "category": "Overlays",
@@ -9072,7 +10245,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "DialogTrigger": {
       "category": "Overlays",
@@ -9105,7 +10287,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/dialog.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-dialog--default",
+        "primitives-dialog--destructive",
+        "primitives-dialog--information",
+        "primitives-dialog--no-close-affordance"
+      ]
     },
     "HdsTooltip": {
       "category": "Internal",
@@ -9136,7 +10327,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/hds-tooltip.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-hds-tooltip--default",
+        "primitives-hds-tooltip--placement"
+      ]
     },
     "Menu": {
       "category": "Overlays",
@@ -9173,7 +10371,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/menu.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-menu--default",
+        "primitives-menu--with-checkbox-items",
+        "primitives-menu--with-radio-group",
+        "primitives-menu--with-submenu"
+      ]
     },
     "Popover": {
       "category": "Overlays",
@@ -9223,7 +10430,16 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/popover.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-popover--aligned-start",
+        "primitives-popover--default",
+        "primitives-popover--info-tip",
+        "primitives-popover--with-dismiss"
+      ]
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -9237,7 +10453,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "HdsFrame": {
       "category": "Compiler",
@@ -9251,7 +10469,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "HdsHeading": {
       "category": "Compiler",
@@ -9265,7 +10485,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "HdsLabel": {
       "category": "Compiler",
@@ -9279,7 +10501,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "HdsCaption": {
       "category": "Compiler",
@@ -9293,7 +10517,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "HdsChip": {
       "category": "Compiler",
@@ -9307,7 +10533,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "HdsAvatar": {
       "category": "Compiler",
@@ -9321,7 +10549,9 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": []
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     }
   },
   "utilities": {
