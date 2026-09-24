@@ -12,7 +12,7 @@
 import hds from '../../design-system/tokens';
 import { Stack } from '../stack';
 import { Token } from '../token';
-import { FlatToken } from './tokenUtils';
+import { FlatToken } from '../tokenUtils';
 
 const collectionListStyles = {
   headerBase: {
@@ -59,15 +59,10 @@ function GroupItems({
 }) {
   return (
     <Stack gap="xs">
-      {items.map(tok => {
+      {items.map((tok) => {
         const isSelected = tok.path === selectedPath;
         return (
-          <Stack
-            key={tok.path}
-            align="start"
-            gap="xs"
-            style={{ width: '100%', minWidth: 0 }}
-          >
+          <Stack key={tok.path} align="start" gap="xs" style={{ width: '100%', minWidth: 0 }}>
             <Token
               variant="node"
               isSelected={isSelected}
@@ -97,12 +92,30 @@ function CollectionHeader({
 }) {
   return (
     <div
-      style={{ ...collectionListStyles.headerBase, position: sticky ? 'sticky' : 'relative', top: sticky ? 0 : undefined, background: sticky ? 'var(--semantic-color-surface-page)' : undefined, zIndex: sticky ? hds.zIndex.focus : undefined }}
+      style={{
+        ...collectionListStyles.headerBase,
+        position: sticky ? 'sticky' : 'relative',
+        top: sticky ? 0 : undefined,
+        background: sticky ? 'var(--semantic-color-surface-page)' : undefined,
+        zIndex: sticky ? hds.zIndex.focus : undefined,
+      }}
     >
-      <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: hds.semantic.space.subgrid.gap }}>
+      <span
+        style={{
+          display: 'inline-flex',
+          alignItems: 'baseline',
+          gap: hds.semantic.space.subgrid.gap,
+        }}
+      >
         <span>{label}</span>
         {typeof count === 'number' ? (
-          <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', lineHeight: 'var(--semantic-typography-lineHeight-none)' }}>
+          <span
+            style={{
+              ...hds.typeStyles.caption,
+              color: 'var(--semantic-color-content-secondary)',
+              lineHeight: 'var(--semantic-typography-lineHeight-none)',
+            }}
+          >
             {count}
           </span>
         ) : null}
@@ -114,20 +127,34 @@ function CollectionHeader({
 export function TokenCollectionList({ sections, selectedPath, onSelect }: Props) {
   return (
     <Stack gap="tight">
-      {sections.map(section => (
+      {sections.map((section) => (
         <Stack key={section.key} gap="xs">
-          <CollectionHeader sticky label={section.label} count={section.groups ? section.groups.length : section.items?.length} />
+          <CollectionHeader
+            sticky
+            label={section.label}
+            count={section.groups ? section.groups.length : section.items?.length}
+          />
           {section.groups ? (
             <Stack gap="xs">
-              {section.groups.map(group => (
+              {section.groups.map((group) => (
                 <Stack key={group.key} gap="xs">
-                  {group.label ? <CollectionHeader sticky label={group.label} count={group.showCount ? group.items.length : undefined} /> : null}
+                  {group.label ? (
+                    <CollectionHeader
+                      sticky
+                      label={group.label}
+                      count={group.showCount ? group.items.length : undefined}
+                    />
+                  ) : null}
                   <GroupItems items={group.items} selectedPath={selectedPath} onSelect={onSelect} />
                 </Stack>
               ))}
             </Stack>
           ) : (
-            <GroupItems items={section.items ?? []} selectedPath={selectedPath} onSelect={onSelect} />
+            <GroupItems
+              items={section.items ?? []}
+              selectedPath={selectedPath}
+              onSelect={onSelect}
+            />
           )}
         </Stack>
       ))}

@@ -18,7 +18,7 @@ import { cn } from '../../lib/utils';
 import { warnOnce } from '../../lib/deprecation';
 import { useHdsRouter } from '../context/RouterContext';
 import { useTokenDisplay } from '../context/TokenDisplayContext';
-import { allTokens } from './lab/tokenUtils';
+import { allTokens } from './tokenUtils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
