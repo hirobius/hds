@@ -442,13 +442,14 @@
     },
     {
       "id": "check-rendered-geometry",
-      "description": "Renders every Storybook story in Chromium and reports layout defects no textual gate can see: content overflowing its frame, boxes clipping their own text, elements pushed past the viewport, controls with no rendered box or below the WCAG 2.2 AA 24px target, links whose only affordance is colour, and misaligned table-row baselines. Existing debt is accepted explicitly in docs/guardrails/rendered-geometry-baseline.json so new findings fail while known ones do not. Closes the blind spot #245 exposed, where 55 structurally broken dark-mode aliases passed every token gate.",
+      "description": "Renders every Storybook story in Chromium and reports layout defects no textual gate can see: content overflowing its frame, boxes clipping their own text, elements pushed past the viewport, controls with no rendered box or below the WCAG 2.2 AA 24px target, a decorative indicator (ring/dot/track/thumb) collapsed to 0px, links whose only affordance is colour, misaligned table-row baselines, a control boundary below the WCAG 1.4.11 3:1 non-text floor, and text below the WCAG 1.4.3 AA floor -- all measured against the actually-painted, composited color, not a declared token pair. Every context freezes CSS animations/transitions before a story's first paint, so a story whose geometry is a function of animation time gets one repeatable measurement (#282). Existing debt is accepted explicitly in docs/guardrails/rendered-geometry-baseline.json so new findings fail while known ones do not. Closes the blind spot #245 exposed, where 55 structurally broken dark-mode aliases passed every token gate, and the blind spot #234/#240 exposed, where a 1.26:1 control border and a 1.00:1 segmented-control label passed every textual gate. Needs a real browser + a built Storybook, so it is out of scope for the static fixture-dir harness (docs/guardrails/FIXTURE_DIR_HARNESS.md's needs-runtime exception, same as check-code-connect/check-route-smoke).",
       "severity": "warn",
       "gateScript": "scripts/check-rendered-geometry.mjs",
+      "fixturePath": null,
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
-      "firingChannels": ["on-demand"]
+      "firingChannel": "manual",
+      "firingChannels": ["manual"]
     },
     {
       "id": "check-sync-map",

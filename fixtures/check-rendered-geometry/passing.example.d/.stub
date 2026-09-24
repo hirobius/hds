@@ -1,0 +1,3 @@
+STUB — see violating.example.d/.stub for why this gate is exempt from the
+FIXTURE_DIR harness's real-run proof and where its proof-of-firing actually
+lives.
