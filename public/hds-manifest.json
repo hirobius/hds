@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-23T02:51:22.454Z",
+  "generated": "2026-09-24T15:25:22.095Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -12425,12 +12425,6 @@
         "value": "\"Geist Mono\", \"Courier New\", monospace"
       },
       {
-        "path": "primitive.typography.size.2xs",
-        "cssVar": "--primitive-typography-size-2xs",
-        "type": "dimension",
-        "value": "10px"
-      },
-      {
         "path": "primitive.typography.size.xs",
         "cssVar": "--primitive-typography-size-xs",
         "type": "dimension",
@@ -12492,13 +12486,6 @@
         "value": "80px"
       },
       {
-        "path": "primitive.typography.weight.light",
-        "cssVar": "--primitive-typography-weight-light",
-        "type": "fontWeight",
-        "description": "Swiss-canon heading weight. Display and h1/h2 composites only.",
-        "value": "300"
-      },
-      {
         "path": "primitive.typography.weight.regular",
         "cssVar": "--primitive-typography-weight-regular",
         "type": "fontWeight",
@@ -12509,12 +12496,6 @@
         "cssVar": "--primitive-typography-weight-medium",
         "type": "fontWeight",
         "value": "500"
-      },
-      {
-        "path": "primitive.typography.weight.semibold",
-        "cssVar": "--primitive-typography-weight-semibold",
-        "type": "fontWeight",
-        "value": "600"
       },
       {
         "path": "primitive.typography.weight.bold",
@@ -12561,12 +12542,6 @@
         "value": "1.625"
       },
       {
-        "path": "primitive.typography.letterSpacing.tighter",
-        "cssVar": "--primitive-typography-letterSpacing-tighter",
-        "type": "dimension",
-        "value": "-0.02em"
-      },
-      {
         "path": "primitive.typography.letterSpacing.tight",
         "cssVar": "--primitive-typography-letterSpacing-tight",
         "type": "dimension",
@@ -12577,18 +12552,6 @@
         "cssVar": "--primitive-typography-letterSpacing-normal",
         "type": "dimension",
         "value": "0em"
-      },
-      {
-        "path": "primitive.typography.letterSpacing.wide",
-        "cssVar": "--primitive-typography-letterSpacing-wide",
-        "type": "dimension",
-        "value": "0.01em"
-      },
-      {
-        "path": "primitive.typography.letterSpacing.wider",
-        "cssVar": "--primitive-typography-letterSpacing-wider",
-        "type": "dimension",
-        "value": "0.02em"
       },
       {
         "path": "primitive.typography.letterSpacing.caps",

@@ -130,7 +130,6 @@ export const tokens = {
         mono: "var(--primitive-typography-family-mono)"
       },
       size: {
-        "2xs": "var(--primitive-typography-size-2xs)",
         xs: "var(--primitive-typography-size-xs)",
         sm: "var(--primitive-typography-size-sm)",
         base: "var(--primitive-typography-size-base)",
@@ -143,10 +142,8 @@ export const tokens = {
         "6xl": "var(--primitive-typography-size-6xl)"
       },
       weight: {
-        light: "var(--primitive-typography-weight-light)",
         regular: "var(--primitive-typography-weight-regular)",
         medium: "var(--primitive-typography-weight-medium)",
-        semibold: "var(--primitive-typography-weight-semibold)",
         bold: "var(--primitive-typography-weight-bold)"
       },
       lineHeight: {
@@ -158,11 +155,8 @@ export const tokens = {
         relaxed: "var(--primitive-typography-lineHeight-relaxed)"
       },
       letterSpacing: {
-        tighter: "var(--primitive-typography-letterSpacing-tighter)",
         tight: "var(--primitive-typography-letterSpacing-tight)",
         normal: "var(--primitive-typography-letterSpacing-normal)",
-        wide: "var(--primitive-typography-letterSpacing-wide)",
-        wider: "var(--primitive-typography-letterSpacing-wider)",
         caps: "var(--primitive-typography-letterSpacing-caps)"
       }
     },

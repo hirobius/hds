@@ -104,7 +104,6 @@ declare module 'react' {
     '--primitive-typography-family-primary'?: string | undefined;
     '--primitive-typography-family-display'?: string | undefined;
     '--primitive-typography-family-mono'?: string | undefined;
-    '--primitive-typography-size-2xs'?: string | undefined;
     '--primitive-typography-size-xs'?: string | undefined;
     '--primitive-typography-size-sm'?: string | undefined;
     '--primitive-typography-size-base'?: string | undefined;
@@ -115,10 +114,8 @@ declare module 'react' {
     '--primitive-typography-size-4xl'?: string | undefined;
     '--primitive-typography-size-5xl'?: string | undefined;
     '--primitive-typography-size-6xl'?: string | undefined;
-    '--primitive-typography-weight-light'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;
     '--primitive-typography-weight-medium'?: string | undefined;
-    '--primitive-typography-weight-semibold'?: string | undefined;
     '--primitive-typography-weight-bold'?: string | undefined;
     '--primitive-typography-lineHeight-compact'?: string | undefined;
     '--primitive-typography-lineHeight-none'?: string | undefined;
@@ -126,11 +123,8 @@ declare module 'react' {
     '--primitive-typography-lineHeight-snug'?: string | undefined;
     '--primitive-typography-lineHeight-normal'?: string | undefined;
     '--primitive-typography-lineHeight-relaxed'?: string | undefined;
-    '--primitive-typography-letterSpacing-tighter'?: string | undefined;
     '--primitive-typography-letterSpacing-tight'?: string | undefined;
     '--primitive-typography-letterSpacing-normal'?: string | undefined;
-    '--primitive-typography-letterSpacing-wide'?: string | undefined;
-    '--primitive-typography-letterSpacing-wider'?: string | undefined;
     '--primitive-typography-letterSpacing-caps'?: string | undefined;
     '--primitive-duration-instant'?: string | undefined;
     '--primitive-duration-short'?: string | undefined;
