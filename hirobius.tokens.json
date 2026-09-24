@@ -495,12 +495,6 @@
       },
       "size": {
         "$type": "dimension",
-        "2xs": {
-          "$value": {
-            "value": 10,
-            "unit": "px"
-          }
-        },
         "xs": {
           "$value": {
             "value": 13,
@@ -565,18 +559,11 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "light": {
-          "$value": 300,
-          "$description": "Swiss-canon heading weight. Display and h1/h2 composites only."
-        },
         "regular": {
           "$value": 400
         },
         "medium": {
           "$value": 500
-        },
-        "semibold": {
-          "$value": 600
         },
         "bold": {
           "$value": 700
@@ -607,12 +594,6 @@
       },
       "letterSpacing": {
         "$type": "dimension",
-        "tighter": {
-          "$value": {
-            "value": -0.02,
-            "unit": "em"
-          }
-        },
         "tight": {
           "$value": {
             "value": -0.01,
@@ -622,18 +603,6 @@
         "normal": {
           "$value": {
             "value": 0,
-            "unit": "em"
-          }
-        },
-        "wide": {
-          "$value": {
-            "value": 0.01,
-            "unit": "em"
-          }
-        },
-        "wider": {
-          "$value": {
-            "value": 0.02,
             "unit": "em"
           }
         },
