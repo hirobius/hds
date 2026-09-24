@@ -160,6 +160,7 @@ declare module 'react' {
     '--primitive-size-96'?: string | undefined;
     '--primitive-size-interactive-min'?: string | undefined;
     '--primitive-size-width-96'?: string | undefined;
+    '--primitive-size-width-280'?: string | undefined;
     '--primitive-size-width-760'?: string | undefined;
     '--primitive-size-width-1200'?: string | undefined;
     '--primitive-size-width-50ch'?: string | undefined;
@@ -237,6 +238,7 @@ declare module 'react' {
     '--semantic-space-sidebar-gap'?: string | undefined;
     '--semantic-space-sidebar-sectionGap'?: string | undefined;
     '--semantic-space-sidebar-railPadding'?: string | undefined;
+    '--semantic-space-sidebar-railWidth'?: string | undefined;
     '--semantic-layout-width-content'?: string | undefined;
     '--semantic-layout-width-max'?: string | undefined;
     '--semantic-layout-container-maxWidth'?: string | undefined;

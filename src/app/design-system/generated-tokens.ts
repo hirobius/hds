@@ -206,6 +206,7 @@ export const tokens = {
       },
       width: {
         "96": "var(--primitive-size-width-96)",
+        "280": "var(--primitive-size-width-280)",
         "760": "var(--primitive-size-width-760)",
         "1200": "var(--primitive-size-width-1200)",
         "50ch": "var(--primitive-size-width-50ch)"
@@ -308,7 +309,8 @@ export const tokens = {
         indent: "var(--semantic-space-sidebar-indent)",
         gap: "var(--semantic-space-sidebar-gap)",
         sectionGap: "var(--semantic-space-sidebar-sectionGap)",
-        railPadding: "var(--semantic-space-sidebar-railPadding)"
+        railPadding: "var(--semantic-space-sidebar-railPadding)",
+        railWidth: "var(--semantic-space-sidebar-railWidth)"
       }
     },
     layout: {
