@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-23T02:51:22.454Z",
+  "generated": "2026-09-24T15:58:51.723Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -12784,6 +12784,13 @@
         "type": "dimension",
         "description": "Minimum interactive hit target size.",
         "value": "44px"
+      },
+      {
+        "path": "primitive.size.interactive.minCompact",
+        "cssVar": "--primitive-size-interactive-minCompact",
+        "type": "dimension",
+        "description": "WCAG 2.2 AA (2.5.8) minimum target size for a compact inline control, such as a tokenizer chip's remove button, where the 44px AAA floor (2.5.5) does not apply.",
+        "value": "24px"
       },
       {
         "path": "primitive.size.width.96",

@@ -202,7 +202,8 @@ export const tokens = {
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
       interactive: {
-        min: "var(--primitive-size-interactive-min)"
+        min: "var(--primitive-size-interactive-min)",
+        minCompact: "var(--primitive-size-interactive-minCompact)"
       },
       width: {
         "96": "var(--primitive-size-width-96)",
