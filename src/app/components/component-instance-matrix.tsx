@@ -89,11 +89,10 @@ function toMatrixLabel(dimension: string) {
 }
 
 /**
+ * ComponentInstanceMatrix — responsive specimen matrix for variant and state parity.
+ *
  * @public
- * @deprecated ComponentInstanceMatrix is an HDS docs/lab internal (specimen
- * matrix helper for the component doc pages), not a consumer-facing HDS
- * surface. It will be retiered to `utility` (dropped from the published
- * barrel) at the named major.
+ * @deprecated ComponentInstanceMatrix is an HDS docs/lab internal (specimen matrix helper for the component doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.
  * @removeIn 1.0.0
  */
 export function ComponentInstanceMatrix({

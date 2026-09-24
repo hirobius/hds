@@ -18,10 +18,9 @@ export interface SketchProps {
 }
 
 /**
- * @deprecated Sketch is an HDS docs/lab internal (shell for generative
- * canvas/WebGL specimen pages), not a consumer-facing HDS surface. It will
- * be retiered to `utility` (dropped from the published barrel) at the named
- * major.
+ * Sketch — shared shell for generative canvases and WebGL sketches.
+ *
+ * @deprecated Sketch is an HDS docs/lab internal (shell for generative canvas/WebGL specimen pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.
  * @removeIn 1.0.0
  */
 export function Sketch({ title, children, controls }: SketchProps) {
