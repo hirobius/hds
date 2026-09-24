@@ -461,6 +461,16 @@
       "firingChannels": ["pre-commit"]
     },
     {
+      "id": "check-status-claims",
+      "description": "Re-derives asserted integers in root status.json that already have a derivable source (e.g. stories carrying a Storybook play() field) and compares them against a generated witness at docs/guardrails/status-claims.json, so a hand-typed number cannot silently go stale the way status.json's '56 stories have play() functions' claim did (hds#285) -- that count came from a naive `grep play:` matching `display:` in inline styles; the true count was 0. `--write` regenerates the witness after a claim is corrected; `--check` fails on drift.",
+      "severity": "warn",
+      "gateScript": "scripts/check-status-claims.mjs",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "manual",
+      "firingChannels": ["manual"]
+    },
+    {
       "id": "check-story-coverage",
       "description": "Fails when a consumer-facing component has no Storybook story. A storyless component is invisible on the generated reference site AND is never swept by check-rendered-geometry, so it reads as clean when nothing has looked at it. Exemption is not a list kept in the gate: it is the ratified disposition (hds#235), where internal components are out of the consumer-facing surface — seven of them are Compiler primitives defined in a build script rather than React modules. A hand-kept allowlist is what the old componentPreviewRegistry tried: 46 entries, 16 naming components that no longer existed, 109 of 139 missing.",
       "severity": "error",
