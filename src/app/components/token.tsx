@@ -456,8 +456,19 @@ function TokenDiagram({
  * @removeIn 1.0.0) that now resolves to the same node treatment.
  * Node content can use a left-side slot for swatches or other compact previews.
  */
-/** @public */
+/**
+ * @public
+ * @deprecated Token is an HDS docs/lab internal (reflective token specimen
+ * for the token/foundation doc pages), not a consumer-facing HDS surface. It
+ * will be retiered to `utility` (dropped from the published barrel) at the
+ * named major.
+ * @removeIn 1.0.0
+ */
 export function Token(props: TokenProps) {
+  warnOnce(
+    'token-component-deprecated',
+    'Token is an HDS docs/lab internal and will be removed from the published barrel in 1.0.0.',
+  );
   if (props.variant === 'diagram') {
     warnOnce(
       'token-variant-diagram',
