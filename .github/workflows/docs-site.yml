@@ -69,13 +69,17 @@ jobs:
       # would look like a site where nothing renders.
       - name: Verify the site
         run: |
+          # Count pages and bail BEFORE globbing. GitHub runs steps under
+          # `bash -eo pipefail` with no nullglob, so on zero pages
+          # `docs/components/*.html` reaches grep as a literal, grep exits 2,
+          # and the step dies on that instead of printing the error below.
           pages=$(find docs/components -maxdepth 1 -name '*.html' | wc -l)
-          frames=$(grep -l 'storybook/iframe.html' docs/components/*.html | wc -l)
-          echo "pages=$pages pages-with-frames=$frames"
           if [ "$pages" -lt 2 ]; then
             echo "::error::docs:site produced $pages pages — the manifest is empty."
             exit 1
           fi
+          frames=$(grep -l 'storybook/iframe.html' docs/components/*.html | wc -l)
+          echo "pages=$pages pages-with-frames=$frames"
           if [ ! -f docs/components/storybook/iframe.html ]; then
             echo "::error::docs/components/storybook/iframe.html is missing, so every example frame would 404."
             echo "::error::The Build Storybook step must run before pnpm docs:site."

@@ -13,7 +13,6 @@ ids do not survive promotion — `figma/COMPONENT-DRAWING-RECIPE.md` §Promotion
 the sequence: promote, take the NEW library node id, add the tag, then
 `pnpm manifest:generate`.
 
-Link pattern: `https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=<node>`
 
 ## Why the sync gate still reports these as missing
 
@@ -29,47 +28,47 @@ the measurement, not drift.
 
 | Component | Kind | Variants | Node |
 |---|---|---|---|
-| ActivityFeed | set | 4 | `2043-184` |
-| AlertDialog | component | — | `2035-24` |
-| AssetImg | set | 2 | `2041-67` |
-| AvatarGroup | set | 6 | `2030-63` |
-| Blockquote | set | 6 | `2024-18` |
-| ButtonGroup | set | 2 | `2028-118` |
-| Calendar | component | — | `2043-3` |
-| Carousel | component | — | `2042-71` |
-| CinematicLink | set | 2 | `2040-34` |
-| CircularProgress | set | 15 | `2029-48` |
-| CommandPalette | component | — | `2043-99` |
-| ContextMenu | component | — | `2034-7` |
-| DateInput | component | — | `2039-3` |
-| DateRangeInput | component | — | `2039-37` |
-| DateTimeInput | component | — | `2039-23` |
-| DocLinkCard | set | 2 | `2044-51` |
-| FileInput | set | 4 | `2036-29` |
-| Frame | set | 4 | `2038-36` |
-| HeadingStack | set | 6 | `2025-21` |
-| HoverCard | component | — | `2034-3` |
-| InputGroup | set | 3 | `2036-15` |
-| Kbd | set | 3 | `2026-9` |
-| Lightbox | component | — | `2043-125` |
-| MetadataList | set | 4 | `2041-47` |
-| MultiSelector | component | — | `2042-54` |
-| OverflowList | component | — | `2038-16` |
-| SelectableCard | set | 2 | `2032-9` |
-| StackedCardRail | component | — | `2044-53` |
-| Stepper | set | 2 | `2033-50` |
-| Text | set | 14 | `2022-31` |
-| TextLockup | set | 12 | `2044-39` |
-| TimeInput | set | 3 | `2039-21` |
-| Timestamp | set | 4 | `2031-11` |
-| ToggleButton | set | 12 | `2028-27` |
-| Token | set | 4 | `2041-61` |
-| Tokenizer | set | 2 | `2042-52` |
-| Toolbar | component | — | `2038-3` |
-| TopNav | component | — | `2042-3` |
-| TreeList | component | — | `2040-3` |
+| [ActivityFeed](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-184) | set | 4 | `2043-184` |
+| [AlertDialog](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2035-24) | component | — | `2035-24` |
+| [AssetImg](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-67) | set | 2 | `2041-67` |
+| [AvatarGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2030-63) | set | 6 | `2030-63` |
+| [Blockquote](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2024-18) | set | 6 | `2024-18` |
+| [ButtonGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2028-118) | set | 2 | `2028-118` |
+| [Calendar](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-3) | component | — | `2043-3` |
+| [Carousel](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-71) | component | — | `2042-71` |
+| [CinematicLink](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2040-34) | set | 2 | `2040-34` |
+| [CircularProgress](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2029-48) | set | 15 | `2029-48` |
+| [CommandPalette](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-99) | component | — | `2043-99` |
+| [ContextMenu](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2034-7) | component | — | `2034-7` |
+| [DateInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-3) | component | — | `2039-3` |
+| [DateRangeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-37) | component | — | `2039-37` |
+| [DateTimeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-23) | component | — | `2039-23` |
+| [DocLinkCard](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2044-51) | set | 2 | `2044-51` |
+| [FileInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2036-29) | set | 4 | `2036-29` |
+| [Frame](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-36) | set | 4 | `2038-36` |
+| [HeadingStack](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2025-21) | set | 6 | `2025-21` |
+| [HoverCard](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2034-3) | component | — | `2034-3` |
+| [InputGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2036-15) | set | 3 | `2036-15` |
+| [Kbd](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2026-9) | set | 3 | `2026-9` |
+| [Lightbox](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-125) | component | — | `2043-125` |
+| [MetadataList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-47) | set | 4 | `2041-47` |
+| [MultiSelector](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-54) | component | — | `2042-54` |
+| [OverflowList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-16) | component | — | `2038-16` |
+| [SelectableCard](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2032-9) | set | 2 | `2032-9` |
+| [StackedCardRail](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2044-53) | component | — | `2044-53` |
+| [Stepper](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2033-50) | set | 2 | `2033-50` |
+| [Text](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2022-31) | set | 14 | `2022-31` |
+| [TextLockup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2044-39) | set | 12 | `2044-39` |
+| [TimeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-21) | set | 3 | `2039-21` |
+| [Timestamp](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2031-11) | set | 4 | `2031-11` |
+| [ToggleButton](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2028-27) | set | 12 | `2028-27` |
+| [Token](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-61) | set | 4 | `2041-61` |
+| [Tokenizer](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-52) | set | 2 | `2042-52` |
+| [Toolbar](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-3) | component | — | `2038-3` |
+| [TopNav](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-3) | component | — | `2042-3` |
+| [TreeList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2040-3) | component | — | `2040-3` |
 
-Drawn earlier, same status: **Icon** (`27-2`, 70 components) and **StatusDot** (`2003-2`, 1 set).
+Drawn earlier, same status: **[Icon](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=27-2)** (70 components) and **[StatusDot](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2003-2)** (1 set).
 
 ## Verification gap, stated plainly
 
