@@ -1,0 +1,128 @@
+name: Component reference site
+
+# Publishes the generated component site (pnpm docs:site) to Vercel as a
+# static, preview-only gallery.
+#
+# SETUP (one-time, manual — Adrian, not automatable):
+#   1. Add VERCEL_TOKEN as an Actions *secret*
+#      (Settings -> Secrets and variables -> Actions -> Secrets).
+#      scripts/deploy-storybook.mjs already documents this token.
+#      This is the ONLY thing a manual "Run workflow" needs.
+#   2. Add a repo *variable* DOCS_SITE_ENABLED = true (same page -> Variables)
+#      to also publish automatically on every push to main.
+#   3. Optional: a repo *variable* VERCEL_SCOPE = <team slug> if the token
+#      belongs to a team rather than a personal account.
+#
+# The project itself is created by `vercel link --project` on the first run;
+# there is nothing to set up in the Vercel dashboard beforehand.
+#
+# Until that variable is set the job green-skips, so this cannot turn PRs red
+# before the one-time setup is done — the same guard chromatic.yml uses.
+#
+# Why this runs in CI rather than from a session: CLAUDE.md forbids agents from
+# running deploy commands. Building the site in CI keeps the publish behind a
+# reviewed merge instead of an agent's shell.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.DOCS_SITE_ENABLED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # Stories import gitignored generated artifacts, so regenerate them
+      # before the Storybook build — mirroring ci.yml and chromatic.yml.
+      - name: Generate data artifacts
+        run: |
+          node scripts/generate-manifest.mjs
+          node scripts/generate-component-api.mjs
+          node scripts/enrich-manifest.mjs
+          node scripts/sync-icons.mjs
+          node scripts/audit-tokens.mjs --full
+
+      # The site renders every story, so it needs a real browser and a built
+      # Storybook. Without these the pages generate with empty Examples.
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build Storybook
+        run: pnpm build-storybook --quiet
+
+      - name: Generate the component site
+        run: pnpm docs:site
+
+      # Fail loudly and name the variable, rather than publishing a site whose
+      # Examples are all empty.
+      # Examples are live iframes into the Storybook shipped beside the pages,
+      # so the check is that both exist. Publishing pages whose frames 404
+      # would look like a site where nothing renders.
+      - name: Verify the site
+        run: |
+          # Count pages and bail BEFORE globbing. GitHub runs steps under
+          # `bash -eo pipefail` with no nullglob, so on zero pages
+          # `docs/components/*.html` reaches grep as a literal, grep exits 2,
+          # and the step dies on that instead of printing the error below.
+          pages=$(find docs/components -maxdepth 1 -name '*.html' | wc -l)
+          if [ "$pages" -lt 2 ]; then
+            echo "::error::docs:site produced $pages pages — the manifest is empty."
+            exit 1
+          fi
+          frames=$(grep -l 'storybook/iframe.html' docs/components/*.html | wc -l)
+          echo "pages=$pages pages-with-frames=$frames"
+          if [ ! -f docs/components/storybook/iframe.html ]; then
+            echo "::error::docs/components/storybook/iframe.html is missing, so every example frame would 404."
+            echo "::error::The Build Storybook step must run before pnpm docs:site."
+            exit 1
+          fi
+          if [ "$frames" -lt 1 ]; then
+            echo "::error::No page embeds a live example frame."
+            exit 1
+          fi
+
+      # `vercel deploy --name` is deprecated and ignored by the current CLI, so
+      # an unlinked deploy would invent a project named after the directory
+      # ("components"). `vercel link --project` is the supported way to pin the
+      # name, and it CREATES the project on first run — so the only thing Adrian
+      # has to set is the token.
+      - name: Publish to Vercel
+        id: publish
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE }}
+          PROJECT: hirobius-hds-components
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is not set. Add it at https://github.com/hirobius/hds/settings/secrets/actions/new (name: VERCEL_TOKEN, value: a token from https://vercel.com/account/settings/tokens), then re-run this workflow."
+            exit 1
+          fi
+          # Only pass --scope when a team is configured; an empty --scope errors.
+          scope=""
+          if [ -n "$VERCEL_SCOPE" ]; then scope="--scope $VERCEL_SCOPE"; fi
+
+          pnpm dlx vercel link --yes --cwd docs/components \
+            --project "$PROJECT" --token "$VERCEL_TOKEN" $scope
+
+          pnpm dlx vercel deploy docs/components \
+            --prod --yes --token "$VERCEL_TOKEN" $scope | tee deploy-url.txt
+
+          url=$(tail -n 1 deploy-url.txt)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      # The URL is the whole point of the job — put it on the run page rather
+      # than leaving it buried in step logs.
+      - name: Report the URL
+        run: |
+          echo "### Component reference site" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "${{ steps.publish.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,16 @@
+{
+  "$comment": "Coverage floor for check-sync-map. Coverage may rise; a drop fails the gate. Regenerate with: node scripts/check-sync-map.mjs --update-coverage",
+  "storyCoverage": {
+    "expected": 120,
+    "covered": 120
+  },
+  "figmaCoverage": {
+    "expected": 88,
+    "covered": 47
+  },
+  "orphanStories": [
+    "src/stories/history-card.stories.tsx",
+    "src/stories/not-found-pattern.stories.tsx",
+    "src/stories/static-primitives.stories.tsx"
+  ]
+}

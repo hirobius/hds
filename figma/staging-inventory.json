@@ -1,0 +1,214 @@
+{
+  "$comment": "Components an agent drew into the Figma STAGING file, as DATA rather than a hand-typed table. figma/STAGING-INVENTORY.md is generated from this — do not hand-edit either. Node ids are staging-only and do not survive promotion (figma/COMPONENT-DRAWING-RECIPE.md), which is exactly why they belong in a file a script can re-verify rather than in prose nobody checks.",
+  "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
+  "drawnOn": "2026-09-23",
+  "components": {
+    "ActivityFeed": {
+      "kind": "set",
+      "variants": 4,
+      "node": "2043-184"
+    },
+    "AlertDialog": {
+      "kind": "component",
+      "variants": null,
+      "node": "2035-24"
+    },
+    "AssetImg": {
+      "kind": "set",
+      "variants": 2,
+      "node": "2041-67"
+    },
+    "AvatarGroup": {
+      "kind": "set",
+      "variants": 6,
+      "node": "2030-63"
+    },
+    "Blockquote": {
+      "kind": "set",
+      "variants": 6,
+      "node": "2024-18"
+    },
+    "ButtonGroup": {
+      "kind": "set",
+      "variants": 2,
+      "node": "2028-118"
+    },
+    "Calendar": {
+      "kind": "component",
+      "variants": null,
+      "node": "2043-3"
+    },
+    "Carousel": {
+      "kind": "component",
+      "variants": null,
+      "node": "2042-71"
+    },
+    "CinematicLink": {
+      "kind": "set",
+      "variants": 2,
+      "node": "2040-34"
+    },
+    "CircularProgress": {
+      "kind": "set",
+      "variants": 15,
+      "node": "2029-48"
+    },
+    "CommandPalette": {
+      "kind": "component",
+      "variants": null,
+      "node": "2043-99"
+    },
+    "ContextMenu": {
+      "kind": "component",
+      "variants": null,
+      "node": "2034-7"
+    },
+    "DateInput": {
+      "kind": "component",
+      "variants": null,
+      "node": "2039-3"
+    },
+    "DateRangeInput": {
+      "kind": "component",
+      "variants": null,
+      "node": "2039-37"
+    },
+    "DateTimeInput": {
+      "kind": "component",
+      "variants": null,
+      "node": "2039-23"
+    },
+    "DocLinkCard": {
+      "kind": "set",
+      "variants": 2,
+      "node": "2044-51"
+    },
+    "FileInput": {
+      "kind": "set",
+      "variants": 4,
+      "node": "2036-29"
+    },
+    "Frame": {
+      "kind": "set",
+      "variants": 4,
+      "node": "2038-36"
+    },
+    "HeadingStack": {
+      "kind": "set",
+      "variants": 6,
+      "node": "2025-21"
+    },
+    "HoverCard": {
+      "kind": "component",
+      "variants": null,
+      "node": "2034-3"
+    },
+    "InputGroup": {
+      "kind": "set",
+      "variants": 3,
+      "node": "2036-15"
+    },
+    "Kbd": {
+      "kind": "set",
+      "variants": 3,
+      "node": "2026-9"
+    },
+    "Lightbox": {
+      "kind": "component",
+      "variants": null,
+      "node": "2043-125"
+    },
+    "MetadataList": {
+      "kind": "set",
+      "variants": 4,
+      "node": "2041-47"
+    },
+    "MultiSelector": {
+      "kind": "component",
+      "variants": null,
+      "node": "2042-54"
+    },
+    "OverflowList": {
+      "kind": "component",
+      "variants": null,
+      "node": "2038-16"
+    },
+    "SelectableCard": {
+      "kind": "set",
+      "variants": 2,
+      "node": "2032-9"
+    },
+    "StackedCardRail": {
+      "kind": "component",
+      "variants": null,
+      "node": "2044-53"
+    },
+    "Stepper": {
+      "kind": "set",
+      "variants": 2,
+      "node": "2033-50"
+    },
+    "Text": {
+      "kind": "set",
+      "variants": 14,
+      "node": "2022-31"
+    },
+    "TextLockup": {
+      "kind": "set",
+      "variants": 12,
+      "node": "2044-39"
+    },
+    "TimeInput": {
+      "kind": "set",
+      "variants": 3,
+      "node": "2039-21"
+    },
+    "Timestamp": {
+      "kind": "set",
+      "variants": 4,
+      "node": "2031-11"
+    },
+    "ToggleButton": {
+      "kind": "set",
+      "variants": 12,
+      "node": "2028-27"
+    },
+    "Token": {
+      "kind": "set",
+      "variants": 4,
+      "node": "2041-61"
+    },
+    "Tokenizer": {
+      "kind": "set",
+      "variants": 2,
+      "node": "2042-52"
+    },
+    "Toolbar": {
+      "kind": "component",
+      "variants": null,
+      "node": "2038-3"
+    },
+    "TopNav": {
+      "kind": "component",
+      "variants": null,
+      "node": "2042-3"
+    },
+    "TreeList": {
+      "kind": "component",
+      "variants": null,
+      "node": "2040-3"
+    }
+  },
+  "drawnEarlier": {
+    "Icon": {
+      "kind": "components",
+      "variants": 70,
+      "node": "27-2"
+    },
+    "StatusDot": {
+      "kind": "set",
+      "variants": 1,
+      "node": "2003-2"
+    }
+  }
+}
