@@ -64,14 +64,55 @@ const radioRootVariants = cva(
  * Selection ring — box model matches HdsCheckbox's glyph (see checkbox.tsx):
  * 20x20, `inline-flex` + centering so the declared size actually applies (a
  * bare `<span>` is `display: inline`, which ignores `width`/`height` — #225).
- * Color/border-color are driven by the `animate` prop below (framer-motion
- * inline style), not cva, so there's no state/on variant axis here — only
- * the static box model.
+ * Color/border-color are driven by `state` (interaction) x `on` (checked),
+ * same shape as `checkboxGlyphVariants` — framer-motion's `animate` prop
+ * cannot interpolate `var(...)` color strings (hds#257), so only `scale`
+ * stays on `animate`; the color swap is a CSS transition applied inline
+ * (see the `motion-ok` comment at the call site).
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border; var()-based, no Tailwind-theme utility exists
 const radioRingVariants = cva(
   // tier-ok: primitive.size.20 / primitive.radius.full mirror checkbox's glyph box model 1:1 — no semantic alias for either
   'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)]',
+  {
+    variants: {
+      state: {
+        rest: '',
+        hover: '',
+        focused: '',
+        pressed: '',
+        disabled: '',
+      },
+      on: {
+        true: '',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      {
+        on: true,
+        state: 'disabled',
+        className: 'border-[color:var(--semantic-color-border-accent)] bg-transparent',
+      },
+      {
+        on: true,
+        state: ['rest', 'hover', 'focused', 'pressed'],
+        className:
+          'border-[color:var(--semantic-color-border-accent)] bg-[var(--semantic-color-surface-accent)]',
+      },
+      {
+        on: false,
+        state: ['hover', 'focused', 'pressed'],
+        className: 'border-[color:var(--semantic-color-border-accent)] bg-transparent',
+      },
+      {
+        on: false,
+        state: ['rest', 'disabled'],
+        className: 'border-[color:var(--semantic-color-content-secondary)] bg-transparent',
+      },
+    ],
+    defaultVariants: { state: 'rest', on: false },
+  },
 );
 
 /** Selected-state inner dot — static sizing; color is disabled-only (no animation). */
@@ -176,19 +217,20 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
       />
       <motion.span
         aria-hidden="true"
-        className={radioRingVariants()}
+        className={radioRingVariants({ state: visualState, on: checked })}
         animate={{
           scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1,
-          backgroundColor:
-            checked && !isDisabled ? 'var(--semantic-color-surface-accent)' : 'transparent',
-          borderColor:
-            checked || isFocused || isHover || isPressed
-              ? 'var(--semantic-color-border-accent)'
-              : 'var(--semantic-color-content-secondary)',
         }}
         transition={{
           duration: productiveMotion.duration,
           ease: productiveMotion.easing,
+        }}
+        // motion-ok: background-color/border-color swap on state change; framer-motion's
+        // `animate` prop cannot interpolate var(...) color strings (hds#257), so the CSS
+        // transition (not a framer `animate` target) is left inline so the color fade
+        // keeps working even though the colors themselves now live in cva.
+        style={{
+          transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
         }}
       >
         {checked && (
