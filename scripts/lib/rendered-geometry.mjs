@@ -177,6 +177,51 @@ export const PROBE_SOURCE = function hdsRenderedGeometryProbe(cfg) {
   return out;
 };
 
+/**
+ * Injected before any story mounts so CSS animations and transitions never
+ * run in the first place. #282: `getBoundingClientRect()` measures whatever
+ * instant the page happens to be in, and a component whose geometry is a
+ * function of animation time (a spinner, an entry transition) has no single
+ * correct measurement -- one sweep in three reported a transient overflow on
+ * `circular-progress--indeterminate` that two more sweeps, same commit, did
+ * not. `animation-play-state: paused` alone is not enough: applied AFTER
+ * navigation it freezes at whatever point real elapsed time happened to
+ * reach, which is exactly the non-determinism this exists to remove. Applied
+ * via `page.addInitScript`/`context.addInitScript` it lands before the
+ * animated element is even created, so every animation is paused from its
+ * first frame -- the same pose, every run, on every machine.
+ */
+export const FREEZE_ANIMATIONS_CSS = `
+  *, *::before, *::after {
+    animation-play-state: paused !important;
+    animation-delay: 0s !important;
+    transition: none !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+`;
+
+/**
+ * Appends a <style> freezing animations/transitions as early as the DOM
+ * allows. Runs inside the page (via addInitScript), so it has no import of
+ * its own -- kept as a plain function so it can be serialised the same way
+ * PROBE_SOURCE is.
+ */
+export function freezeAnimationsInPage(css) {
+  const inject = () => {
+    if (!document.head) {
+      requestAnimationFrame(inject);
+      return;
+    }
+    const style = document.createElement('style');
+    style.setAttribute('data-hds-freeze-animations', '');
+    style.textContent = css;
+    document.head.appendChild(style);
+  };
+  inject();
+}
+
 export const PROBE_CONFIG = Object.freeze({
   INTERACTIVE,
   ROUNDING_SLACK,

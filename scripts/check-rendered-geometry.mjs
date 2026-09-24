@@ -24,14 +24,22 @@
  *
  * Chromium resolution order: PLAYWRIGHT_CHROMIUM_PATH, the image-provided build
  * under /opt/pw-browsers, then Playwright's own download.
+ *
+ * Every context freezes CSS animations and transitions before a story's first
+ * paint (see freezeAnimationsInPage in lib/rendered-geometry.mjs) so a story
+ * whose geometry is a function of animation time -- a spinner, an entry
+ * transition -- has one repeatable measurement instead of whichever instant
+ * getBoundingClientRect() happened to catch (#282).
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  FREEZE_ANIMATIONS_CSS,
   PROBE_CONFIG,
   PROBE_SOURCE,
   diffAgainstBaseline,
+  freezeAnimationsInPage,
   summarize,
 } from './lib/rendered-geometry.mjs';
 import { launchChromium, serveStorybook, storyUrl } from './lib/storybook-host.mjs';
@@ -83,6 +91,10 @@ async function sweep(baseUrl, storyIds) {
 
   const worker = async () => {
     const context = await browser.newContext({ viewport: VIEWPORT });
+    // #282: pause every animation/transition before a story's first paint,
+    // so geometry is measured at a fixed, repeatable pose rather than
+    // whatever instant getBoundingClientRect() happens to catch.
+    await context.addInitScript(freezeAnimationsInPage, FREEZE_ANIMATIONS_CSS);
     const page = await context.newPage();
     while (queue.length) {
       const id = queue.shift();
