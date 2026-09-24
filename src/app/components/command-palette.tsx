@@ -56,7 +56,7 @@ const cmdkRowVariants = cva('flex w-full items-start gap-3 px-4 py-2 text-left h
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- kind-label badge metadata size (10px), no semantic Tailwind text-size utility
 const cmdkKindBadgeVariants = cva(
-  'mt-0.5 inline-flex h-5 shrink-0 items-center rounded-sm border px-1.5 text-[10px] uppercase tracking-wide',
+  'mt-0.5 inline-flex h-5 shrink-0 items-center rounded-sm border px-1.5 text-[10px] uppercase tracking-caps',
   {
     variants: {
       active: {

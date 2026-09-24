@@ -227,7 +227,7 @@ function Chip({ children, tone = 'neutral', className }: ChipProps) {
     <span
       className={cn(
         'inline-flex h-5 items-center rounded-md border px-1.5',
-        'text-xs font-medium uppercase tracking-wide',
+        'text-xs font-medium uppercase tracking-caps',
         tone === 'neutral' && 'border-border bg-muted text-muted-foreground',
         // Beta uses the warning role tokens already established by 8e-2.
         tone === 'beta' &&
@@ -289,8 +289,21 @@ export function DocPageHeader({
     >
       <Stack gap="tight">
         {/* Title row */}
+        {/*
+          font-medium, not font-semibold. 600 has no @font-face in this repo
+          (fonts.css ships Satoshi 500 and 700 only), so the browser was
+          synthesising it — on the largest text of every component doc page.
+          check-source-canon's FONT_BOLD rule forbids font-bold, so 500 is the
+          heaviest real face available here.
+
+          Note the standing contradiction, recorded in #283 rather than papered
+          over: the canon says "use font-medium for emphasis, never bold",
+          while semantic.typography.display/h1/h2/h3 all point at
+          weight.bold (700) and fonts.css loads Satoshi 700 expressly for them.
+          One of those two is wrong; it is not this component's job to decide.
+        */}
         <h1
-          className={cn('m-0 text-3xl font-semibold tracking-tight text-foreground', 'sm:text-4xl')}
+          className={cn('m-0 text-3xl font-medium tracking-tight text-foreground', 'sm:text-4xl')}
         >
           {spec.name}
         </h1>
