@@ -195,6 +195,7 @@
     "check:story-coverage": "node scripts/check-story-coverage.mjs",
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:sync-map": "node scripts/check-sync-map.mjs",
+    "check:status-claims": "node scripts/check-status-claims.mjs --check",
     "check:tailwind": "pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}'",
     "check:tailwind-arbitrary": "pnpm lint --rule '{\"tailwindcss/no-arbitrary-value\":\"error\"}'",
     "check:tailwind-token-coverage": "node scripts/check-tailwind-token-coverage.mjs",

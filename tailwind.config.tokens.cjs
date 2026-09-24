@@ -87,6 +87,7 @@ const config = {
         'sidebar-gap': 'var(--semantic-space-sidebar-gap)',
         'sidebar-sectionGap': 'var(--semantic-space-sidebar-sectionGap)',
         'sidebar-railPadding': 'var(--semantic-space-sidebar-railPadding)',
+        'sidebar-railWidth': 'var(--semantic-space-sidebar-railWidth)',
         px1: 'var(--primitive-space-px1)',
         px2: 'var(--primitive-space-px2)',
         px6: 'var(--primitive-space-px6)',
