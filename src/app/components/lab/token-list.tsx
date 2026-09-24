@@ -13,7 +13,13 @@
  */
 import hds from '../../design-system/tokens';
 import { Surface } from '../surface';
-import { FlatToken, formatCategoryLabel, formatTokenValue, groupByCategory, resolveTokenLiteralValue } from './tokenUtils';
+import {
+  FlatToken,
+  formatCategoryLabel,
+  formatTokenValue,
+  groupByCategory,
+  resolveTokenLiteralValue,
+} from '../tokenUtils';
 
 const tokenListStyles = {
   valueBadge: {
@@ -68,22 +74,17 @@ const truncateFromStartTextStyle = {
 
 function TokenBadge({ token }: { token: FlatToken }) {
   if (token.type === 'color') {
-    return (
-      <span
-        aria-hidden="true" />
-    );
+    return <span aria-hidden="true" />;
   }
 
   const literalValue = resolveTokenLiteralValue(token.rawValue);
-  const badgeValue = typeof literalValue === 'string' && /[0-9]/.test(literalValue) ? literalValue : null;
+  const badgeValue =
+    typeof literalValue === 'string' && /[0-9]/.test(literalValue) ? literalValue : null;
 
   if (!badgeValue) return null;
 
   return (
-    <span
-      aria-hidden="true"
-      style={tokenListStyles.valueBadge}
-    >
+    <span aria-hidden="true" style={tokenListStyles.valueBadge}>
       {badgeValue}
     </span>
   );
@@ -104,9 +105,23 @@ function TokenRow({
       onClick={() => onSelect(token)}
       aria-pressed={isSelected}
       className="hds-focus"
-      style={{ ...tokenListStyles.tokenRowBtnBase, border: `${hds.borderWidth.default} solid ${isSelected ? 'var(--semantic-color-border-accent)' : 'var(--semantic-color-border-default)'}`, background: isSelected ? 'var(--semantic-color-surface-raised)' : 'var(--semantic-color-surface-page)', transition: `background ${hds.motion.productive.duration}s ${hds.motion.productive.easing}, border-color ${hds.motion.productive.duration}s ${hds.motion.productive.easing}` }}
+      style={{
+        ...tokenListStyles.tokenRowBtnBase,
+        border: `${hds.borderWidth.default} solid ${isSelected ? 'var(--semantic-color-border-accent)' : 'var(--semantic-color-border-default)'}`,
+        background: isSelected
+          ? 'var(--semantic-color-surface-raised)'
+          : 'var(--semantic-color-surface-page)',
+        transition: `background ${hds.motion.productive.duration}s ${hds.motion.productive.easing}, border-color ${hds.motion.productive.duration}s ${hds.motion.productive.easing}`,
+      }}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: hds.semantic.space.component.gap, minWidth: 0 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: hds.semantic.space.component.gap,
+          minWidth: 0,
+        }}
+      >
         <TokenBadge token={token} />
         <div>
           <span
@@ -136,14 +151,27 @@ function TokenRow({
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: hds.semantic.space.subgrid.gap }}>
-        <span style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: hds.semantic.space.subgrid.gap,
+        }}
+      >
+        <span
+          style={{
+            ...hds.typeStyles.caption,
+            color: 'var(--semantic-color-content-secondary)',
+            margin: 0,
+          }}
+        >
           {formatCategoryLabel(token.category)}
         </span>
-        <span
-          style={tokenListStyles.descriptionValue}
-        >
-          {typeof token.description === 'string' ? token.description : formatTokenValue(token.rawValue)}
+        <span style={tokenListStyles.descriptionValue}>
+          {typeof token.description === 'string'
+            ? token.description
+            : formatTokenValue(token.rawValue)}
         </span>
       </div>
     </button>
@@ -163,7 +191,13 @@ export function TokenList({ tokens, selectedPath, onSelect }: Props) {
           background: 'var(--semantic-color-surface-raised)',
         }}
       >
-        <p style={{ ...hds.typeStyles.caption, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+        <p
+          style={{
+            ...hds.typeStyles.caption,
+            color: 'var(--semantic-color-content-secondary)',
+            margin: 0,
+          }}
+        >
           No tokens match this filter.
         </p>
       </div>
@@ -171,21 +205,37 @@ export function TokenList({ tokens, selectedPath, onSelect }: Props) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.sidebar.sectionGap }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: hds.semantic.space.sidebar.sectionGap,
+      }}
+    >
       {Object.entries(groups)
         .sort(([a], [b]) => a.localeCompare(b))
         .map(([group, items]) => (
-          <section
-            key={group}>
-            <Surface padding="component" style={{position: 'sticky',
+          <section key={group}>
+            <Surface
+              padding="component"
+              style={{
+                position: 'sticky',
                 top: 0,
                 zIndex: hds.zIndex.focus,
                 display: 'flex',
                 alignItems: 'center',
                 minHeight: hds.size[16],
-                
-                background: 'var(--semantic-color-surface-page)',}}>
-              <span style={{ ...hds.typeStyles.ui, color: 'var(--semantic-color-content-secondary)', margin: 0 }}>
+
+                background: 'var(--semantic-color-surface-page)',
+              }}
+            >
+              <span
+                style={{
+                  ...hds.typeStyles.ui,
+                  color: 'var(--semantic-color-content-secondary)',
+                  margin: 0,
+                }}
+              >
                 {formatCategoryLabel(group)}
               </span>
             </Surface>
@@ -194,7 +244,7 @@ export function TokenList({ tokens, selectedPath, onSelect }: Props) {
               {items
                 .slice()
                 .sort((a, b) => a.path.localeCompare(b.path))
-                .map(token => (
+                .map((token) => (
                   <TokenRow
                     key={token.path}
                     token={token}

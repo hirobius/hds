@@ -1,0 +1,10 @@
+STUB: check-rendered-geometry needs a real headless-browser render of a built
+Storybook (storybook-static/, ~40MB) against docs/guardrails/rendered-geometry-baseline.json --
+not a scanned source file or a small synthetic input tree the FIXTURE_DIR
+harness's `--fixture-mode` contract can model cheaply. Same needs-runtime
+class as check-route-smoke / audit-figma-system (docs/guardrails/FIXTURE_DIR_HARNESS.md
+"Browser / external"). Proof-of-firing lives instead in
+scripts/__tests__/rendered-geometry.test.mjs, which launches real Chromium
+(the same browser this gate uses) and asserts each finding kind fires on an
+injected defect and stays silent on the clean/deliberate-technique
+counterpart -- see hds#234/#240.

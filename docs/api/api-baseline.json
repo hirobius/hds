@@ -1,7 +1,7 @@
 {
   "entry": "src/index.ts",
-  "version": "0.13.1",
-  "generatedAt": "2026-09-22",
+  "version": "0.15.0",
+  "generatedAt": "2026-09-24",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -132,6 +132,7 @@
       "segmentedControlRailVariants",
       "segmentedControlWrapperVariants"
     ],
+    "./app/components/select": ["HdsSelect", "SelectProps"],
     "./app/components/stack": ["Stack", "StackProps"],
     "./app/components/surface": ["Surface", "SurfaceProps", "surfaceVariants"],
     "./app/components/table": [

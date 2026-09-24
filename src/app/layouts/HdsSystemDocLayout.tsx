@@ -2,7 +2,14 @@
 import type { ReactNode } from 'react';
 import { DocLayout, type DocLayoutContentMaxWidth } from './DocLayout';
 
-/** @public */
+/**
+ * HdsSystemDocLayout — single centered content column for documentation pages.
+ * Thin wrapper around DocLayout: takes only `contentSlot` and `contentMaxWidth`,
+ * with no sidebar or nav region to pass one into. Not the three-column docs
+ * shell (left rail + content + right rail) — that is tracked as its own shell
+ * component (hds#280).
+ * @public
+ */
 export function HdsSystemDocLayout({
   contentSlot,
   contentMaxWidth = 'content',

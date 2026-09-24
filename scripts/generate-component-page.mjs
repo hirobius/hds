@@ -80,7 +80,14 @@ if (!manifest) {
   console.error('  fix: pnpm manifest:generate');
   process.exit(1);
 }
-const api = readJson(path.join(ROOT, 'src/app/data/component-api.json'), { components: {} });
+// Reads the FULL corpus (docs/generated/component-api-full.json), not the
+// bundled src/app/data/component-api.json — hds#279 split observedTokens out
+// of the published bundle (45% of the main entry, unread by any src/ runtime
+// consumer); this site's styling-reference token table is the one real
+// consumer of observedTokens, so it needs the full copy.
+const api = readJson(path.join(ROOT, 'docs/generated/component-api-full.json'), {
+  components: {},
+});
 const baseline = readJson(path.join(ROOT, 'docs/guardrails/rendered-geometry-baseline.json'), {
   accepted: [],
 });

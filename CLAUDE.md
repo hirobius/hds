@@ -21,6 +21,7 @@ The repo has a **closed-loop guardrail system** every agent must understand:
 
 - **`docs/guardrails/HARDENING_ROADMAP.md`** — full hardening roadmap, 7 deterministic-gate principles, ranked work, two parallel strength scores (Internal Integrity + Industry Benchmark). The single source of truth for "where are we, where are we going."
 - **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift caught by `validate-guardrail-registry` + `check-validator-wiring`, both pre-commit gates.
+- **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt`, or when a commit touching `src/` has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message.
 
 Context Awareness: Always look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for specific overriding rules before editing.
 

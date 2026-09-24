@@ -6,8 +6,23 @@
  * Builds a JSON manifest of exported component props from
  * src/app/components/*.tsx using react-docgen-typescript.
  *
- * Output:
- *   src/app/data/component-api.json
+ * Output — TWO files, split by hds#279 (a docs artifact was shipping in the
+ * published bundle: component-api.json was 45% of the main entry, entirely
+ * from `observedTokens`, which the three src/ runtime consumers of this file
+ * (api-reference.tsx, component-instance-matrix.tsx, componentPreviewRegistry.tsx)
+ * never read — grep confirms it):
+ *
+ *   src/app/data/component-api.json        bundled runtime copy: props +
+ *                                           description only, no observedTokens.
+ *                                           Consumed by the three files above,
+ *                                           one of which (component-instance-matrix)
+ *                                           is re-exported from the public barrel.
+ *   docs/generated/component-api-full.json full corpus INCLUDING observedTokens
+ *                                           (raw/tokenPath/sourceSnippet/sourceLine).
+ *                                           Gitignored generated output, read only
+ *                                           in Node by scripts/generate-component-page.mjs
+ *                                           for the styling-reference token table on
+ *                                           each generated doc page — never bundled.
  *
  * The manifest is consumed by HDS doc pages to render generated prop tables
  * and by llms.txt generation to provide machine-readable API context.
@@ -29,6 +44,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const OUTPUT_FILE = join(ROOT, 'src', 'app', 'data', 'component-api.json');
+const FULL_OUTPUT_FILE = join(ROOT, 'docs', 'generated', 'component-api-full.json');
 const TSCONFIG_FILE = join(ROOT, 'tsconfig.json');
 
 const parser = reactDocgenTypescript.withCustomConfig(TSCONFIG_FILE, {
@@ -604,16 +620,39 @@ export function buildManifest() {
   };
 }
 
+/**
+ * Strip `observedTokens` from every component entry — hds#279. Nothing in
+ * src/ reads it (confirmed by grep across api-reference.tsx,
+ * component-instance-matrix.tsx and componentPreviewRegistry.tsx, the only
+ * three importers of this file); it exists solely for the docs-site token
+ * table, which reads the full corpus from FULL_OUTPUT_FILE instead.
+ */
+function stripObservedTokens(manifest) {
+  const components = {};
+  for (const [name, entry] of Object.entries(manifest.components)) {
+    const { observedTokens: _observedTokens, ...rest } = entry;
+    components[name] = rest;
+  }
+  return { ...manifest, components };
+}
+
 export function writeManifest() {
   const manifest = buildManifest();
+
+  mkdirSync(dirname(FULL_OUTPUT_FILE), { recursive: true });
+  writeFileSync(FULL_OUTPUT_FILE, `${JSON.stringify(manifest, null, 2)}\n`);
+
+  const trimmed = stripObservedTokens(manifest);
   mkdirSync(dirname(OUTPUT_FILE), { recursive: true });
-  writeFileSync(OUTPUT_FILE, `${JSON.stringify(manifest, null, 2)}\n`);
+  writeFileSync(OUTPUT_FILE, `${JSON.stringify(trimmed, null, 2)}\n`);
+
   return manifest;
 }
 
 export function main() {
   writeManifest();
-  console.log(`✓ ${OUTPUT_FILE}`);
+  console.log(`✓ ${OUTPUT_FILE} (bundled, no observedTokens)`);
+  console.log(`✓ ${FULL_OUTPUT_FILE} (full corpus, docs-only)`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

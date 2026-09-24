@@ -205,10 +205,12 @@ export const tokenValues = {
       "80": "80px",
       "96": "96px",
       interactive: {
-        min: "44px"
+        min: "44px",
+        minCompact: "24px"
       },
       width: {
         "96": "96px",
+        "280": "280px",
         "760": "760px",
         "1200": "1200px",
         "50ch": "50ch"

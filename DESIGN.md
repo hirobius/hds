@@ -32,7 +32,7 @@ HDS ships three typefaces — each with a distinct and exclusive role:
 - **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: Geist Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `300` light, `400` regular, `500` medium, `600` semibold, `700` bold. Heading styles (display · h1 · h2 · h3) use `700` bold; body, UI, and caption use `500` medium. Declared but unused by any semantic role: `300` light, `400` regular, `600` semibold.
+Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · h1 · h2 · h3) use `700` bold; body, UI, and caption use `500` medium. Declared but unused by any semantic role: `400` regular.
 
 ### Type ramp
 
@@ -172,6 +172,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (362 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (359 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

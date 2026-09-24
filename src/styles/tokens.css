@@ -154,7 +154,9 @@
   --primitive-size-80: 80px;
   --primitive-size-96: 96px;
   --primitive-size-interactive-min: 44px;
+  --primitive-size-interactive-minCompact: 24px;
   --primitive-size-width-96: 96px;
+  --primitive-size-width-280: 280px;
   --primitive-size-width-760: 760px;
   --primitive-size-width-1200: 1200px;
   --primitive-size-width-50ch: 50ch;
@@ -238,6 +240,7 @@
   --semantic-space-sidebar-gap: var(--primitive-space-4);
   --semantic-space-sidebar-sectionGap: var(--primitive-space-3);
   --semantic-space-sidebar-railPadding: var(--primitive-space-5);
+  --semantic-space-sidebar-railWidth: var(--primitive-size-width-280);
   --semantic-layout-width-content: var(--primitive-size-width-760);
   --semantic-layout-width-max: var(--primitive-size-width-1200);
   --semantic-layout-container-maxWidth: var(--primitive-size-width-1200);

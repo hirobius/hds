@@ -35,14 +35,24 @@
  *      Run with `--update-baseline` to accept the current surface and
  *      rewrite the baseline.
  *
- * The same script powers `pnpm api:check` (CI) and `pnpm api:update`
- * (developer workflow when an intentional API change ships).
+ * This file is NOT run directly by any package.json script or hook — it is
+ * invoked as a subprocess of `scripts/audit-component-integrity.mjs --api`
+ * (see that file's "Sub-check 4"), which re-uses this module's logic rather
+ * than duplicating the TS-compiler-API walk. `pnpm api:check` and
+ * `pnpm api:update` are `audit-component-integrity.mjs --api[--update-baseline]`,
+ * and `pnpm check:full` runs `audit-component-integrity.mjs --api` directly —
+ * both reach this script that way. The gate is registered in
+ * `docs/guardrails/registry.json` under the merged `audit-component-integrity`
+ * id ("(4) --api: public API surface guard … Merged from: … check-public-api"),
+ * not under its own id — do not add a separate `check-public-api` registry
+ * entry without also removing the merged description, or `validate-guardrail-
+ * registry` will see the same gate declared twice.
  *
  * When `dist/types/` exists in the future this script can be retired in
  * favour of api-extractor without touching consumers.
  *
- * Wiring verdict (12g-5): WIRE — breaking-change guard for external consumer
- * (Concrete Creations). Added to check:full as `api:check` and `api:update`.
+ * Wiring verdict (12g-5, corrected by hds#270): WIRE, but indirectly — see
+ * above. Breaking-change guard for external consumer (Concrete Creations).
  * Not pre-commit (uses TS compiler API, adds ~2s; appropriate for check:full).
  * Run `pnpm api:update` after any intentional API change, then commit the
  * updated docs/api/api-baseline.json.
@@ -52,6 +62,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
+import { formatGenerated } from './write-generated.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..'); // scripts/lib → scripts → project root
@@ -312,7 +323,7 @@ function collectPublicApi() {
 
 // ── diff ────────────────────────────────────────────────────────────────────
 
-function diffSurfaces(baseline, current) {
+export function diffSurfaces(baseline, current) {
   const breakingChanges = [];
   const additions = [];
 
@@ -376,9 +387,13 @@ function readBaseline() {
   return JSON.parse(readFileSync(BASELINE_PATH, 'utf8'));
 }
 
-function writeBaseline(surface) {
+async function writeBaseline(surface) {
   ensureBaselineDir();
-  writeFileSync(BASELINE_PATH, `${JSON.stringify(surface, null, 2)}\n`, 'utf8');
+  // Format through Prettier before writing (matches scripts/lib/write-generated.mjs):
+  // otherwise `--update-baseline` produces bytes lint-staged's Prettier pass
+  // immediately rewrites, so the file always shows a second diff on commit.
+  const formatted = await formatGenerated(BASELINE_PATH, `${JSON.stringify(surface, null, 2)}\n`);
+  writeFileSync(BASELINE_PATH, formatted, 'utf8');
 }
 
 function totalSymbolCount(surface) {
@@ -389,11 +404,11 @@ function totalSymbolCount(surface) {
   return total;
 }
 
-function main() {
+async function main() {
   const current = collectPublicApi();
 
   if (UPDATE_BASELINE) {
-    writeBaseline(current);
+    await writeBaseline(current);
     if (JSON_OUTPUT) {
       console.log(
         JSON.stringify({ updated: true, baseline: BASELINE_PATH, surface: current }, null, 2),
@@ -470,9 +485,12 @@ function main() {
   process.exit(0);
 }
 
-try {
-  main();
-} catch (error) {
-  console.error('[check-public-api] fatal:', error?.stack || error?.message || error);
-  process.exit(2);
+// Guard direct-run vs. import (the diffSurfaces canary test imports this
+// module for its pure diff logic and must not trigger a real TS-compiler
+// walk + baseline write/exit as a side effect of `import`).
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error('[check-public-api] fatal:', error?.stack || error?.message || error);
+    process.exit(2);
+  });
 }

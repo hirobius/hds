@@ -60,6 +60,9 @@ export const GAP_LABEL = Object.freeze({
   'link-no-affordance': 'link has colour as its only affordance',
   'row-misaligned': 'table row baselines misaligned',
   'empty-render': 'the story rendered nothing at all',
+  'zero-size-decorative': 'a decorative indicator renders at 0×0',
+  'rendered-contrast': 'control boundary below the 3:1 WCAG 1.4.11 floor',
+  'text-contrast': 'text below the WCAG 1.4.3 AA contrast floor',
 });
 
 /** Shared chrome. One stylesheet for every page, so the site reads as one. */
