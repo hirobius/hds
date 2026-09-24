@@ -1,7 +1,7 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 import fs from 'node:fs';
 import path from 'node:path';
-import { buildStoryIndex } from './lib/story-link.mjs';
+import { buildStoryIndex, findStoryFiles } from './lib/story-link.mjs';
 
 const repoRoot = process.cwd();
 const manifestPath = path.join(repoRoot, 'public', 'hds-manifest.json');
@@ -465,10 +465,7 @@ for (const [name, spec] of Object.entries(componentSpecs)) {
 // had to grep. Ids are derived rather than read from storybook-static, so this
 // needs no build; scripts/__tests__/story-link.test.mjs asserts the derivation
 // against the real index.json whenever one is present.
-const storyFiles = fs
-  .globSync('src/**/*.stories.tsx', { cwd: repoRoot })
-  .map((p) => p.split(path.sep).join('/'))
-  .sort();
+const storyFiles = findStoryFiles(repoRoot);
 const { byFilePath: storiesByFilePath } = buildStoryIndex(
   storyFiles.map((p) => ({ path: p, source: fs.readFileSync(path.join(repoRoot, p), 'utf8') })),
   new Set(

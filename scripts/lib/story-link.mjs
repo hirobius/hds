@@ -15,7 +15,36 @@
  * test fails rather than the manifest quietly filling with ids that resolve to
  * nothing.
  */
+import fs from 'node:fs';
 import path from 'node:path';
+
+/**
+ * Every `*.stories.tsx` under `src/`, as repo-relative POSIX paths, sorted.
+ *
+ * Deliberately NOT `fs.globSync`: that landed in Node 22, this package declares
+ * `engines.node >= 20` and CI pins 20, so the first version of this threw
+ * "globSync is not a function" in Actions while passing on a dev machine. Three
+ * callers had copied the same glob, so the bug shipped three times; they share
+ * this instead.
+ */
+export function findStoryFiles(root, dir = 'src') {
+  const found = [];
+  const walk = (rel) => {
+    let entries;
+    try {
+      entries = fs.readdirSync(path.join(root, rel), { withFileTypes: true });
+    } catch {
+      return; // an absent directory yields no stories, which is the honest answer
+    }
+    for (const entry of entries) {
+      const next = `${rel}/${entry.name}`;
+      if (entry.isDirectory()) walk(next);
+      else if (entry.name.endsWith('.stories.tsx')) found.push(next);
+    }
+  };
+  walk(dir);
+  return found.sort();
+}
 
 /** Storybook's `sanitize`: lowercase, non-alphanumerics to a single dash. */
 export function sanitize(input) {

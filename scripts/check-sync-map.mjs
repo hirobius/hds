@@ -18,11 +18,11 @@
  * 41 library components have no Figma node by known backlog, and failing on
  * that would make the gate a permanent red nobody reads.
  */
-import { existsSync, globSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDisposition, mappedByOverride } from './figma-disposition.mjs';
-import { buildStoryIndex } from './lib/story-link.mjs';
+import { buildStoryIndex, findStoryFiles } from './lib/story-link.mjs';
 import { GAPS, buildSyncMap, summarizeSyncMap } from './lib/sync-map.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -80,9 +80,7 @@ const sourceFiles = new Set(
     .filter((file) => file && existsSync(path.join(ROOT, file))),
 );
 
-const storyFilePaths = globSync('src/**/*.stories.tsx', { cwd: ROOT })
-  .map((p) => p.split(path.sep).join('/'))
-  .sort();
+const storyFilePaths = findStoryFiles(ROOT);
 const { byFilePath: freshStories, unresolved } = buildStoryIndex(
   storyFilePaths.map((p) => ({ path: p, source: readFileSync(path.join(ROOT, p), 'utf8') })),
   new Set(

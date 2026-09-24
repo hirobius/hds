@@ -7,7 +7,7 @@
  * index.json whenever a build is present.
  */
 import { describe, expect, it } from 'vitest';
-import { existsSync, globSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -18,6 +18,7 @@ import {
   resolveStorySubject,
   sanitize,
   storyNameFromExport,
+  findStoryFiles,
 } from '../lib/story-link.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -194,8 +195,23 @@ describe.skipIf(!existsSync(INDEX))('parity with Storybook index.json', () => {
     });
   });
 
+  // CI runs Node 20 (package.json: engines.node >= 20) and `fs.globSync` landed
+  // in Node 22, so the first version of this walk threw "globSync is not a
+  // function" in Actions while passing on a dev machine. The helper exists so
+  // one portable implementation is shared by every caller rather than three.
+  it('finds every story file under src/ without fs.globSync', () => {
+    const found = findStoryFiles(ROOT);
+    expect(found.length).toBeGreaterThan(50);
+    expect(found.every((p) => p.startsWith('src/') && p.endsWith('.stories.tsx'))).toBe(true);
+    expect(found.every((p) => !p.includes('\\'))).toBe(true);
+    expect([...found]).toEqual([...found].sort());
+    expect(new Set(found).size).toBe(found.length);
+    // The walk must be recursive, not just src/*.stories.tsx.
+    expect(found.some((p) => p.split('/').length > 2)).toBe(true);
+  });
+
   it('derives the same id set from source as Storybook built', () => {
-    const storyFiles = globSync('src/**/*.stories.tsx', { cwd: ROOT });
+    const storyFiles = findStoryFiles(ROOT);
     const files = storyFiles.map((p) => ({
       path: p.split(path.sep).join('/'),
       source: readFileSync(path.join(ROOT, p), 'utf8'),
