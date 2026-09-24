@@ -155,8 +155,10 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(func
             duration: productiveMotion.duration,
             ease: productiveMotion.easing,
           }}
+          // Was --primitive-typography-size-base: a chevron BOX sized off the body
+          // type rung, so a ramp change would have resized it. Now the icon token.
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
-          className="inline-grid size-[var(--primitive-typography-size-base)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
+          className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
         >
           <Icon icon={ChevronDown} size="small" color="currentColor" />
         </motion.span>
