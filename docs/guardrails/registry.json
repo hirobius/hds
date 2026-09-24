@@ -1,12 +1,12 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "321055e6afa038ecfb55ca0f4e31002c1968bd75e1e03d4700537fdf20a292d7",
-  "precommitStructureHashUpdatedAt": "2026-09-23T09:02:56.314Z",
+  "precommitStructureHash": "8c9524c6dca49bf64af45ab1bd6c592df940e7892d85b6c8dd861fdee98dd020",
+  "precommitStructureHashUpdatedAt": "2026-09-24T16:08:52.175Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
-      "description": "TODO: add description — audit-batch-deliverables.mjs JSDoc block is empty.",
+      "description": "TODO: add description \u2014 audit-batch-deliverables.mjs JSDoc block is empty.",
       "severity": "warn",
       "gateScript": "scripts/audit-batch-deliverables.mjs",
       "fixturePath": "fixtures/audit-batch-deliverables",
@@ -16,7 +16,7 @@
     },
     {
       "id": "audit-bundle",
-      "description": "Generates a bundle composition report at docs/perf/bundle-report.html using vite-bundle-visualizer. Manual channel only — artifact, not gating.",
+      "description": "Generates a bundle composition report at docs/perf/bundle-report.html using vite-bundle-visualizer. Manual channel only \u2014 artifact, not gating.",
       "severity": "warn",
       "gateScript": "scripts/audit-bundle.mjs",
       "fixturePath": null,
@@ -27,7 +27,7 @@
     },
     {
       "id": "audit-component-integrity",
-      "description": "Merged gate (13z-6): (1) --tokens: token compliance audit for HDS components (hardcoded hex/rgba/opacity/radius/spacing/transition values); (2) --completeness: asserts every shipped component has a rich manifest entry for LLM use; (3) --docs: documentation coverage gate (every component shown by at least one Storybook story under src/stories — re-pointed there after ADR-018 cut the bespoke docs site this gate had been reading); (4) --api: public API surface guard comparing against docs/api/api-baseline.json. Default: runs all 4. Merged from: audit-components + check-component-completeness + check-component-docs + check-public-api.",
+      "description": "Merged gate (13z-6): (1) --tokens: token compliance audit for HDS components (hardcoded hex/rgba/opacity/radius/spacing/transition values); (2) --completeness: asserts every shipped component has a rich manifest entry for LLM use; (3) --docs: documentation coverage gate (every component shown by at least one Storybook story under src/stories \u2014 re-pointed there after ADR-018 cut the bespoke docs site this gate had been reading); (4) --api: public API surface guard comparing against docs/api/api-baseline.json. Default: runs all 4. Merged from: audit-components + check-component-completeness + check-component-docs + check-public-api.",
       "severity": "warn",
       "gateScript": "scripts/audit-component-integrity.mjs",
       "fixturePath": "fixtures/audit-component-integrity",
@@ -36,7 +36,7 @@
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "audit-deps",
@@ -51,7 +51,7 @@
     },
     {
       "id": "audit-exceptions",
-      "description": "TODO: add description — audit-exceptions.mjs has no leading JSDoc block.",
+      "description": "TODO: add description \u2014 audit-exceptions.mjs has no leading JSDoc block.",
       "severity": "warn",
       "gateScript": "scripts/audit-exceptions.mjs",
       "fixturePath": "fixtures/audit-exceptions",
@@ -59,7 +59,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "audit-gate-purity",
@@ -86,7 +86,7 @@
     },
     {
       "id": "audit-sbom",
-      "description": "Generates a CycloneDX Software Bill of Materials at docs/security/sbom.json. Manual channel — produces an artifact, not a gate. Useful for the GRC narrative and supply-chain review.",
+      "description": "Generates a CycloneDX Software Bill of Materials at docs/security/sbom.json. Manual channel \u2014 produces an artifact, not a gate. Useful for the GRC narrative and supply-chain review.",
       "severity": "warn",
       "gateScript": "scripts/audit-sbom.mjs",
       "fixturePath": null,
@@ -116,7 +116,7 @@
       "firingChannel": "ci-pr",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-attributions",
@@ -128,7 +128,7 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-binding-drift",
@@ -141,7 +141,7 @@
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-brand",
@@ -166,7 +166,7 @@
     },
     {
       "id": "check-contrast",
-      "description": "WCAG 2.1 contrast ratio checker for HDS semantic color pairs. Reads hirobius.tokens.json, resolves primitive + semantic color aliases, and reports contrast ratios for critical text/bg pairings in both light and dark mode. Also gates a non-text tier (§1.4.11, 3:1) for border tokens that bound an interactive control's only affordance (#230).",
+      "description": "WCAG 2.1 contrast ratio checker for HDS semantic color pairs. Reads hirobius.tokens.json, resolves primitive + semantic color aliases, and reports contrast ratios for critical text/bg pairings in both light and dark mode. Also gates a non-text tier (\u00a71.4.11, 3:1) for border tokens that bound an interactive control's only affordance (#230).",
       "severity": "warn",
       "gateScript": "scripts/check-contrast.mjs",
       "fixturePath": "fixtures/check-contrast",
@@ -185,7 +185,7 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-dark-alias-flip",
@@ -208,7 +208,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-dimensions",
@@ -220,7 +220,7 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-exemptions",
@@ -232,11 +232,11 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-figma-coverage",
-      "description": "Counts coverage from the FIGMA side: every component set published to the library (figma/inventory.json) must be reachable from code through an @figma JSDoc tag. figma:links --check counts the other direction — components in code that carry a tag — so a design published in Figma and never wired up is invisible to it. Refuses to report green from an inventory marked complete:false, because a hand walk cannot prove a page is absent. firingChannel is manual until a full `pnpm figma:inventory --fetch` inventory is committed; it becomes ci-pr then. Exit 0 clean, 1 unmapped assets or an incomplete inventory, 2 no inventory yet.",
+      "description": "Counts coverage from the FIGMA side: every component set published to the library (figma/inventory.json) must be reachable from code through an @figma JSDoc tag. figma:links --check counts the other direction \u2014 components in code that carry a tag \u2014 so a design published in Figma and never wired up is invisible to it. Refuses to report green from an inventory marked complete:false, because a hand walk cannot prove a page is absent. firingChannel is manual until a full `pnpm figma:inventory --fetch` inventory is committed; it becomes ci-pr then. Exit 0 clean, 1 unmapped assets or an incomplete inventory, 2 no inventory yet.",
       "severity": "warn",
       "gateScript": "scripts/check-figma-coverage.mjs",
       "fixturePath": "fixtures/check-figma-coverage",
@@ -258,7 +258,7 @@
     },
     {
       "id": "check-figma-mapping",
-      "description": "Enforces the component parity contract (docs/architecture/variant-contract.md#figma-mapping): manifest variantAxes, componentProperties and figmaPropertyMapping must bind to props the component really accepts (TypeScript checker), contract axes backed by cva must be declared with matching enum values, inverted booleans must be \"Show …\" toggles, and Code Connect templates must map the same contract axes. Title Case property names are advisory warnings.",
+      "description": "Enforces the component parity contract (docs/architecture/variant-contract.md#figma-mapping): manifest variantAxes, componentProperties and figmaPropertyMapping must bind to props the component really accepts (TypeScript checker), contract axes backed by cva must be declared with matching enum values, inverted booleans must be \"Show \u2026\" toggles, and Code Connect templates must map the same contract axes. Title Case property names are advisory warnings.",
       "severity": "error",
       "gateScript": "scripts/check-figma-mapping.mjs",
       "fixturePath": null,
@@ -280,7 +280,7 @@
     },
     {
       "id": "check-hardcoded-breakpoints",
-      "description": "Catches raw pixel comparisons against known breakpoint values in JS/TS. All JS/TS viewport comparisons must use hds.breakpoints.* — no raw px numbers that match a known breakpoint value.",
+      "description": "Catches raw pixel comparisons against known breakpoint values in JS/TS. All JS/TS viewport comparisons must use hds.breakpoints.* \u2014 no raw px numbers that match a known breakpoint value.",
       "severity": "warn",
       "gateScript": "scripts/check-hardcoded-breakpoints.mjs",
       "fixturePath": "fixtures/check-hardcoded-breakpoints",
@@ -288,7 +288,7 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-hardcoded-colors",
@@ -303,8 +303,8 @@
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)",
-      "note": "Demoted off pre-commit in #52 (commit-time friction). #181 re-introduces automatic gating via ralph/gate.sh — a different, lower-friction PR-time channel, not a re-reversal of #52. See #188."
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)",
+      "note": "Demoted off pre-commit in #52 (commit-time friction). #181 re-introduces automatic gating via ralph/gate.sh \u2014 a different, lower-friction PR-time channel, not a re-reversal of #52. See #188."
     },
     {
       "id": "check-hardcoded-spacing",
@@ -318,11 +318,11 @@
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-layout-discipline",
-      "description": "Flags raw px/number layout values (margin*, padding*, position, top/right/bottom/left/inset, gap/rowGap/columnGap, flexBasis) inside inline style={{…}} in src/app/components. Points violators at Box sx (the sanctioned escape hatch) or a named layout primitive (Stack/Grid/Container) instead of check-hardcoded-spacing's generic token-var fix. Introduced with #98 (layout-consistency epic #95, workstream 4).",
+      "description": "Flags raw px/number layout values (margin*, padding*, position, top/right/bottom/left/inset, gap/rowGap/columnGap, flexBasis) inside inline style={{\u2026}} in src/app/components. Points violators at Box sx (the sanctioned escape hatch) or a named layout primitive (Stack/Grid/Container) instead of check-hardcoded-spacing's generic token-var fix. Introduced with #98 (layout-consistency epic #95, workstream 4).",
       "severity": "warn",
       "gateScript": "scripts/check-layout-discipline.mjs",
       "fixturePath": "fixtures/check-layout-discipline",
@@ -344,7 +344,7 @@
       "scope": "full-tree",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-link-integrity",
@@ -372,7 +372,7 @@
     },
     {
       "id": "check-manifest-drift",
-      "description": "TODO: add description — check-manifest-drift.mjs has no leading JSDoc block.",
+      "description": "TODO: add description \u2014 check-manifest-drift.mjs has no leading JSDoc block.",
       "severity": "warn",
       "gateScript": "scripts/check-manifest-drift.mjs",
       "fixturePath": "fixtures/check-manifest-drift",
@@ -381,7 +381,7 @@
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-manifest-schema-semver",
@@ -395,7 +395,7 @@
     },
     {
       "id": "check-motion",
-      "description": "Verifies that interactive components ship with motion feedback — the HDS standard that every user action has a visible, token-timed response.",
+      "description": "Verifies that interactive components ship with motion feedback \u2014 the HDS standard that every user action has a visible, token-timed response.",
       "severity": "warn",
       "gateScript": "scripts/check-motion.mjs",
       "fixturePath": "fixtures/check-motion",
@@ -403,7 +403,7 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-no-style-prop",
@@ -415,7 +415,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-prop-vocabulary",
@@ -427,7 +427,7 @@
       "source": "human",
       "firingChannel": "manual",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-props-exports",
@@ -452,7 +452,7 @@
     },
     {
       "id": "check-sync-map",
-      "description": "Joins the four records that describe a component -- source file, manifest entry, Storybook story, Figma node -- into one table with a per-component verdict, so an editing target can be looked up instead of remembered. Re-derives story ids from source rather than trusting the manifest, so a stale manifest fails rather than passing a gate whose job is to prove the records agree. Fails on a drop in story or Figma coverage, on a story file that resolves to no component, and on manifest drift. Expectations come from the ratified disposition (hds#235): a layout primitive is never reported as missing a Figma node it is not supposed to have.",
+      "description": "Joins the four records that describe a component -- source file, manifest entry, Storybook story, Figma node -- into one table with a per-component verdict, so an editing target can be looked up instead of remembered. Re-derives story ids from source rather than trusting the manifest, so a stale manifest fails rather than passing a gate whose job is to prove the records agree. Fails on a drop in story or Figma coverage, on a story file that resolves to no component, and on manifest drift. Expectations come from the ratified disposition (hds#235): a layout primitive is never reported as missing a Figma node it is not supposed to have. Also writes docs/sync-map.json (--write) -- committed generated output the agent-facing README describes as 'the same data for agents'. --check (hds#277) recomputes it and diffs byte-for-byte against what's on disk, failing and naming every disagreeing component if the committed file has drifted from its source records (hand-edited or stale). Pre-commit runs the plain gate (coverage/orphan checks) and `--check` (docs/sync-map.json drift) back to back.",
       "severity": "error",
       "gateScript": "scripts/check-sync-map.mjs",
       "owner": "Adrian",
@@ -470,8 +470,18 @@
       "firingChannel": "on-demand"
     },
     {
+      "id": "check-record-freshness",
+      "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, naming the offending commit and the fix. Separately fails when a pushed commit touches src/ with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a source change cannot ship with CHANGELOG.md left to go stale.",
+      "severity": "error",
+      "gateScript": "scripts/check-record-freshness.mjs",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-push",
+      "firingChannels": ["pre-push"]
+    },
+    {
       "id": "check-story-coverage",
-      "description": "Fails when a consumer-facing component has no Storybook story. A storyless component is invisible on the generated reference site AND is never swept by check-rendered-geometry, so it reads as clean when nothing has looked at it. Exemption is not a list kept in the gate: it is the ratified disposition (hds#235), where internal components are out of the consumer-facing surface — seven of them are Compiler primitives defined in a build script rather than React modules. A hand-kept allowlist is what the old componentPreviewRegistry tried: 46 entries, 16 naming components that no longer existed, 109 of 139 missing.",
+      "description": "Fails when a consumer-facing component has no Storybook story. A storyless component is invisible on the generated reference site AND is never swept by check-rendered-geometry, so it reads as clean when nothing has looked at it. Exemption is not a list kept in the gate: it is the ratified disposition (hds#235), where internal components are out of the consumer-facing surface \u2014 seven of them are Compiler primitives defined in a build script rather than React modules. A hand-kept allowlist is what the old componentPreviewRegistry tried: 46 entries, 16 naming components that no longer existed, 109 of 139 missing.",
       "severity": "error",
       "gateScript": "scripts/check-story-coverage.mjs",
       "owner": "Adrian",
@@ -499,7 +509,7 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-ref-forwarding",
@@ -511,7 +521,7 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-registry",
@@ -523,7 +533,7 @@
       "source": "human",
       "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-rsc-directives",
@@ -547,7 +557,7 @@
       "scope": "full-tree",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-security-baseline",
@@ -571,7 +581,7 @@
       "glob": "src/**/*.{ts,tsx,jsx,js}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-style-discipline",
@@ -586,7 +596,7 @@
     },
     {
       "id": "check-tailwind-token-coverage",
-      "description": "Asserts tailwind.config.tokens.cjs exposes spacing/screens/borderWidth/fontSize as theme.extend keys sourced from HDS tokens instead of Tailwind's built-in scale — spacing/borderWidth/fontSize as var(--…) refs, screens as resolved px literals, per ADR-024.",
+      "description": "Asserts tailwind.config.tokens.cjs exposes spacing/screens/borderWidth/fontSize as theme.extend keys sourced from HDS tokens instead of Tailwind's built-in scale \u2014 spacing/borderWidth/fontSize as var(--\u2026) refs, screens as resolved px literals, per ADR-024.",
       "severity": "warn",
       "gateScript": "scripts/check-tailwind-token-coverage.mjs",
       "fixturePath": "fixtures/check-tailwind-token-coverage",
@@ -606,7 +616,7 @@
       "firingChannel": "on-demand",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-tenant-tokens",
@@ -618,7 +628,7 @@
       "source": "human",
       "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-tier-bypass",
@@ -644,7 +654,7 @@
     },
     {
       "id": "check-token-paths-ratchet",
-      "description": "Merged gate (13z-6): default mode scans src/** for unresolved design-token path references ({primitive,semantic,component,role}.x.y.z) against hirobius.tokens.json — fires pre-commit. With --ratchet flag: B-class monotonic-decrement ratchet asserting .token-path-baseline.txt entry count never increases — fires ci-pr. Use --update-baseline to record a new baseline. Merged from: check-token-paths (scan) + check-token-paths-ratchet (count ratchet).",
+      "description": "Merged gate (13z-6): default mode scans src/** for unresolved design-token path references ({primitive,semantic,component,role}.x.y.z) against hirobius.tokens.json \u2014 fires pre-commit. With --ratchet flag: B-class monotonic-decrement ratchet asserting .token-path-baseline.txt entry count never increases \u2014 fires ci-pr. Use --update-baseline to record a new baseline. Merged from: check-token-paths (scan) + check-token-paths-ratchet (count ratchet).",
       "severity": "error",
       "gateScript": "scripts/check-token-paths-ratchet.mjs",
       "fixturePath": "fixtures/check-token-paths-ratchet",
@@ -656,7 +666,7 @@
       "ratchetChannel": "ci-pr",
       "ratchetFlag": "--ratchet",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-token-rebake-needed",
@@ -669,7 +679,7 @@
       "firingChannel": "manual",
       "glob": ["hirobius.tokens.json", "src/styles/**", "src/app/data/**"],
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-token-renames",
@@ -703,7 +713,7 @@
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-unresponsive-grids",
@@ -715,11 +725,11 @@
       "source": "human",
       "firingChannel": "on-demand",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "check-validator-wiring",
-      "description": "Meta-validator: every gate registered in docs/guardrails/registry.json has a firingChannel that matches actual invocation. Catches aspirational guardrails — gates registered but never really firing.",
+      "description": "Meta-validator: every gate registered in docs/guardrails/registry.json has a firingChannel that matches actual invocation. Catches aspirational guardrails \u2014 gates registered but never really firing.",
       "severity": "warn",
       "gateScript": "scripts/check-validator-wiring.mjs",
       "fixturePath": "fixtures/check-validator-wiring",
@@ -728,7 +738,7 @@
       "firingChannel": "manual",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     },
     {
       "id": "validate-fixture-proof-of-firing",
@@ -742,7 +752,7 @@
       "scope": "full-tree",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "archivedBy": "#52 guardrail lean (ADR-018 \u00a75)"
     }
   ]
 }

@@ -156,3 +156,22 @@ preview/publish/
 # on every run, and a checked-in page is one more generated artifact that can go
 # stale while asserting it is current.
 docs/components/
+
+# tsconfig.dts.json declares `outDir: dist/types`, so a correct `pnpm build:types`
+# run never touches src/. But `tsc` run without that project file (or without its
+# outDir honored) emits a .d.ts next to each of its entry points by default — hds#264
+# hit this from a stray `tsc` invocation, and a committed one would silently shadow
+# the real .ts source since TypeScript prefers a .d.ts over a same-name .ts. Ignore
+# exactly tsconfig.dts.json's entry points, targeted rather than a blanket
+# `src/**/*.d.ts` — src/vite-env.d.ts and
+# src/app/design-system/generated-token-vars.d.ts are real, committed source and must
+# stay trackable.
+/src/index.d.ts
+/src/lib/utils.d.ts
+/src/lib/manifest-entry.d.ts
+/src/app/design-system/tokens.d.ts
+/src/app/context/index.d.ts
+/src/form/index.d.ts
+/src/mui/index.d.ts
+/src/brand/index.d.ts
+/src/scroll/index.d.ts
