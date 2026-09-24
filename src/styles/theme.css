@@ -90,9 +90,11 @@
   --hds-letterSpacing-normal: var(--primitive-typography-letterSpacing-normal);
 
   /* -- Icon sizes ------------------------------------------------------------- */
-  --hds-icon-small: var(--primitive-typography-size-base); /* 16px */
-  --hds-icon-medium: var(--primitive-typography-size-lg); /* 20px */
-  --hds-icon-large: var(--primitive-typography-size-xl); /* 24px */
+  /* primitive.size, not the type ramp — an icon is geometry beside text, not
+     text. See the note in design-system/tokens.ts. */
+  --hds-icon-small: var(--primitive-size-16); /* 16px */
+  --hds-icon-medium: var(--primitive-size-20); /* 20px */
+  --hds-icon-large: var(--primitive-size-24); /* 24px */
 
   /* -- Border radius ---------------------------------------------------------- */
   --hds-radius-0: var(--primitive-radius-0);
