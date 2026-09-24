@@ -8,10 +8,12 @@ import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
 import {
+  FREEZE_ANIMATIONS_CSS,
   PROBE_CONFIG,
   PROBE_SOURCE,
   diffAgainstBaseline,
   fingerprint,
+  freezeAnimationsInPage,
   summarize,
 } from '../lib/rendered-geometry.mjs';
 
@@ -183,5 +185,82 @@ describe.skipIf(!hasBrowser)('empty renders are a finding, not a pass', () => {
     // overflow and targets, producing noise on top of the real problem.
     const findings = await run(`<html><body><div id="storybook-root"></div></body></html>`);
     expect(findings).toHaveLength(1);
+  });
+});
+
+/**
+ * #282 canary. A frame whose child's intrinsic width oscillates on a CSS
+ * animation reproduces the exact class of flake reported against
+ * `circular-progress--indeterminate`: the frame overflows for part of the
+ * cycle and does not for the rest, so an unfrozen measurement's result
+ * depends on which instant it lands on. `freezeAnimationsInPage` is proven to
+ * remove that dependency by measuring at two different points in the cycle
+ * and asserting the two measurements now agree.
+ */
+describe.skipIf(!hasBrowser)('#282 — freezing animations removes measurement flake', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await chromium.launch({ executablePath: CHROMIUM });
+  }, 60_000);
+
+  afterAll(async () => {
+    await browser?.close();
+  });
+
+  // A 40px frame; the child's width animates 20px -> 140px -> 20px on a
+  // 2s loop, so it fits the frame near 0%/100% and overflows near 50%.
+  const ANIMATED_HTML = `<!doctype html><html><head><style>
+    @keyframes grow { 0%, 100% { width: 20px; } 50% { width: 140px; } }
+    body { margin: 0; }
+    .frame { width: 40px; overflow: hidden; white-space: nowrap; }
+    .content { display: inline-block; height: 20px; animation: grow 2s linear infinite; }
+  </style></head><body>
+    <div id="storybook-root"><div class="frame"><span class="content"></span></div></div>
+  </body></html>`;
+
+  const measure = async (page) =>
+    page.evaluate(
+      ([source, cfg]) => new Function(`return (${source})`)()(cfg),
+      [PROBE_SOURCE.toString(), PROBE_CONFIG],
+    );
+
+  it('is non-deterministic when animations are left running', async () => {
+    const context = await browser.newContext({ viewport: { width: 400, height: 200 } });
+    const page = await context.newPage();
+    await page.goto(`data:text/html,${encodeURIComponent(ANIMATED_HTML)}`);
+
+    // Near the 0%/100% keyframe: the child is at its 20px resting width, well
+    // inside the 40px frame.
+    await page.waitForTimeout(50);
+    const atRest = (await measure(page)).map((f) => f.kind);
+
+    // Near the 50% keyframe (t=1s of the 2s loop): the child is near its
+    // 140px peak, well past the frame's width.
+    await page.waitForTimeout(950);
+    const midCycle = (await measure(page)).map((f) => f.kind);
+
+    await context.close();
+    expect(atRest.includes('overflow-x')).toBe(false);
+    expect(midCycle.includes('overflow-x')).toBe(true);
+  });
+
+  it('is stable once animations are frozen before the first paint', async () => {
+    const context = await browser.newContext({ viewport: { width: 400, height: 200 } });
+    await context.addInitScript(freezeAnimationsInPage, FREEZE_ANIMATIONS_CSS);
+    const page = await context.newPage();
+    await page.goto(`data:text/html,${encodeURIComponent(ANIMATED_HTML)}`);
+
+    await page.waitForTimeout(50);
+    const first = (await measure(page)).map((f) => f.kind);
+
+    // Same wait a real sweep would have hit the 50% keyframe at; frozen, the
+    // animation never advanced past its start, so this must read identically.
+    await page.waitForTimeout(950);
+    const second = (await measure(page)).map((f) => f.kind);
+
+    await context.close();
+    expect(second).toEqual(first);
+    expect(first.includes('overflow-x')).toBe(false);
   });
 });
