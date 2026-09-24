@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-23T02:51:22.454Z",
+  "generated": "2026-09-24T16:15:45.012Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -100,6 +100,7 @@
     "Frame",
     "Grid",
     "HdsCheckbox",
+    "HdsDocsShell",
     "HdsRadio",
     "HdsSelect",
     "HdsSlider",
@@ -1083,6 +1084,7 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
+        "src/app/layouts/HdsDocsShell.tsx",
         "src/stories/disclosure.stories.tsx",
         "src/stories/nav-group.stories.tsx"
       ],
@@ -2548,6 +2550,7 @@
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
+        "src/app/layouts/HdsDocsShell.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx"
       ],
@@ -7477,6 +7480,7 @@
       "figmaId": null,
       "consumers": [
         "src/app/components/side-nav.test.tsx",
+        "src/app/layouts/HdsDocsShell.tsx",
         "src/stories/side-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7951,6 +7955,7 @@
       },
       "consumers": [
         "src/app/components/top-nav.test.tsx",
+        "src/app/layouts/HdsDocsShell.tsx",
         "src/stories/top-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -10442,6 +10447,72 @@
         "primitives-popover--with-dismiss"
       ]
     },
+    "HdsDocsShell": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/layouts/HdsDocsShell.tsx",
+      "description": "HdsDocsShell — three-region docs shell (left nav rail, content, right TOC rail), driven by grid columns that default to 0 and are set per breakpoint. hds#280 slice: this is the SHELL MECHANICS ONLY — the smallest shippable piece of the docs-shell epic. It ships: - A 3-column grid (`leftRail | content | rightRail`), both rail columns defaulting to `0px` and set to `semantic.space.sidebar.railWidth` (hds#280 token, our own 280px — not HeroUI's 268px) per breakpoint via Tailwind's arbitrary-property + responsive-variant syntax, the same technique Fumadocs/HeroUI uses. `md768:` brings in the left rail, `xl1280:` brings in the right rail — matching the three-stage table in hds#280. - Each rail is `position: sticky` and scrolls independently of content and of the other rail, clipped to the viewport minus `topOffset`. - `topOffset` composes (it is one CSS length a caller supplies, e.g. its own sticky header's height token) rather than a hardcoded pixel value — the first stage of the row-cascade pattern hds#280 asks for. A second region (a tabs row, hds#280's PR-comment addendum) would extend this by adding its own height into the same `calc()` chain, not by hardcoding a second offset. Deliberately NOT in this slice (tracked as proposed follow-up issues, not filed — see the PR/commit this ships in): - Below the TOC breakpoint, `rightRail` is omitted from the grid rather than becoming a reachable popover. The DoD explicitly wants a popover, not \"merely hidden\" — that is real, separate UI work (a sticky current-section breadcrumb bar), not shell mechanics. - Left-rail collapsible groups (chevron, active-section pill) and right-rail active-anchor styling (vertical rule, filled pill) are content the caller supplies via `leftRail`/`rightRail` — this shell does not build SideNav/Disclosure/NavItem composition for the caller. - `check-rendered-geometry` verification at every breakpoint in the DoD's table (needs a built Storybook + a live run, not exercised here). - Named CSS `grid-template-areas` (the DoD's literal ask) — this ships a 3-column grid with DOM order instead, which is behaviorally identical for a single linear row of regions and needs no separate stylesheet. Areas earn their keep once a 4th region (a tabs row spanning full width) is added — call out then, not before.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "HdsDocsShell",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/design-system/generated-token-descriptions.ts",
+        "src/app/layouts/HdsDocsShell.test.tsx",
+        "src/index.ts",
+        "src/stories/hds-docs-shell.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "leftRail": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "rightRail": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "topOffset": {
+          "type": "string",
+          "default": "0px"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/hds-docs-shell.stories.tsx"
+      ],
+      "storyIds": [
+        "layout-hdsdocsshell--content-only",
+        "layout-hdsdocsshell--default",
+        "layout-hdsdocsshell--no-right-rail",
+        "layout-hdsdocsshell--with-top-offset"
+      ]
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -12794,6 +12865,13 @@
         "value": "96px"
       },
       {
+        "path": "primitive.size.width.280",
+        "cssVar": "--primitive-size-width-280",
+        "type": "dimension",
+        "description": "Docs-shell rail width (hds#280). Our own number, not HeroUI's 268px — wide enough for the longest top-level nav label at the default type ramp with room to spare.",
+        "value": "280px"
+      },
+      {
         "path": "primitive.size.width.760",
         "cssVar": "--primitive-size-width-760",
         "type": "dimension",
@@ -13495,6 +13573,14 @@
         "description": "20px outer padding for sidebar and TOC rails.",
         "alias": "{primitive.space.5}",
         "resolvedValue": "20px"
+      },
+      {
+        "path": "semantic.space.sidebar.railWidth",
+        "cssVar": "--semantic-space-sidebar-railWidth",
+        "type": "dimension",
+        "description": "Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell).",
+        "alias": "{primitive.size.width.280}",
+        "resolvedValue": "280px"
       },
       {
         "path": "semantic.layout.width.content",
