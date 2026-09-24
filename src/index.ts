@@ -52,6 +52,7 @@ export * from './app/components/progress';
 export * from './app/components/skeleton';
 export * from './app/components/spinner';
 export * from './app/components/segmented-control';
+export * from './app/components/select';
 export * from './app/components/stack';
 export * from './app/components/surface';
 export * from './app/components/table';

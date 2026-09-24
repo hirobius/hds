@@ -21,7 +21,7 @@ import { Icon } from './icon';
  * dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by
  * tabs.tsx / command-palette.tsx; `ref` targets the trigger button.
  */
-interface SelectProps {
+export interface SelectProps {
   /** Select label rendered above the control. */
   label: string;
   /** Controls whether the label is rendered. */
