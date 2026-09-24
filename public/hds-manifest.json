@@ -4162,7 +4162,7 @@
       "governedCategory": false,
       "hidden": false,
       "filePath": "src/app/layouts/HdsSystemDocLayout.tsx",
-      "description": "HdsSystemDocLayout — three-column doc layout with sidebar, nav, and content.",
+      "description": "HdsSystemDocLayout — single centered content column for documentation pages. Thin wrapper around DocLayout: takes only `contentSlot` and `contentMaxWidth`, with no sidebar or nav region to pass one into. Not the three-column docs shell (left rail + content + right rail) — that is tracked as its own shell component (hds#280).",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -4170,6 +4170,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/layouts/DocLayout.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {
