@@ -120,6 +120,9 @@ const config = {
         '5xl': 'var(--primitive-typography-size-5xl)',
         '6xl': 'var(--primitive-typography-size-6xl)',
       },
+      letterSpacing: {
+        caps: 'var(--primitive-typography-letterSpacing-caps)',
+      },
     },
   },
 };

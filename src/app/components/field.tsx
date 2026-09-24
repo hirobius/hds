@@ -56,7 +56,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(function Field
       className={cn('flex flex-col gap-1', className)}
       {...props}
     >
-      <span className="text-xs uppercase tracking-wide text-muted-foreground">{label}</span>
+      <span className="text-xs uppercase tracking-caps text-muted-foreground">{label}</span>
       {body !== undefined && body !== null && (
         <span className={fieldValueVariants({ tone, mono })}>{body}</span>
       )}
