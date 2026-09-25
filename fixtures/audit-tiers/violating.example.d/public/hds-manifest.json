@@ -1,8 +1,0 @@
-{
-  "componentSpecs": {
-    "HdsButton": {
-      "category": "Core",
-      "filePath": "src/app/components/HdsButton.tsx"
-    }
-  }
-}

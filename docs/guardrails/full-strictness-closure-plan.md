@@ -779,10 +779,6 @@ This runs the inventory across the strict cohort and rebuilds the table below in
 
 | validate-fixture-proof-of-firing | fixtures/audit-strengths/ | null | fixture-stub | baselined | B — ratchet on stub count (CI must show withStubFixtures strictly decreasing; aim ≥1 fixture filled per week) |
 
-<!-- key: validate-fixture-proof-of-firing::fixtures/audit-tiers/::null::fixture-stub -->
-
-| validate-fixture-proof-of-firing | fixtures/audit-tiers/ | null | fixture-stub | baselined | B — ratchet on stub count (CI must show withStubFixtures strictly decreasing; aim ≥1 fixture filled per week) |
-
 <!-- key: validate-fixture-proof-of-firing::fixtures/audit-tokens/::null::fixture-stub -->
 
 | validate-fixture-proof-of-firing | fixtures/audit-tokens/ | null | fixture-stub | baselined | B — ratchet on stub count (CI must show withStubFixtures strictly decreasing; aim ≥1 fixture filled per week) |

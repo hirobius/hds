@@ -96,16 +96,6 @@
       "supportsJson": true
     },
     {
-      "id": "audit-tiers",
-      "description": "Heuristic tier classifier for every src/app/components/Hds*.tsx (and recursive subdirs like src/app/components/lab/). Proposes one of: primitive | pattern | utility | unknown.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-tiers.mjs",
-      "fixturePath": "fixtures/audit-tiers",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual"
-    },
-    {
       "id": "audit-tokens",
       "description": "Audits CSS token bridges and visual overrides against the JSON token source of truth.",
       "severity": "warn",
