@@ -1,0 +1,57 @@
+---
+title: Introduction
+---
+
+# Hirobius Design System
+
+This is a proof-of-concept docs site for `@hirobius/design-system`, built on
+[Nextra](https://nextra.site) (`nextra` + `nextra-theme-docs` on Next.js). It
+renders **real HDS components** and reads **real HDS tokens** — it is not a
+mockup.
+
+## Install
+
+```bash
+pnpm add @hirobius/design-system
+pnpm add react react-dom
+```
+
+## Import
+
+```tsx
+import { Button, Card, Dialog } from '@hirobius/design-system';
+import '@hirobius/design-system/tokens.css';
+```
+
+`tokens.css` ships the token CSS variables (colors, spacing, typography) as a
+global reset + variable layer; import it once at your app root. Components
+render as `'use client'` boundaries, so they drop straight into a Next.js App
+Router server component tree with no extra wrapper.
+
+## A first component
+
+```tsx
+import { Button } from '@hirobius/design-system';
+
+export function Example() {
+  return <Button variant="primary">Get started</Button>;
+}
+```
+
+Rendered:
+
+import { Button } from '@hirobius/design-system';
+
+<Button variant="primary">Get started</Button>
+
+## What's in this proof of concept
+
+- **[Button](/button)** — every variant, size, tone and state, live-rendered,
+  plus a props table generated from the component's source.
+- **[Colors](/colors)** — swatches read straight from the shipped token CSS
+  variables.
+- **[Typography](/typography)** — the semantic type scale (display → eyebrow).
+
+Left nav, on-this-page TOC, dark mode and the built-in Pagefind search (try
+the search box above) all come from Nextra's docs theme, retheme'd with HDS
+tokens instead of the framework defaults.

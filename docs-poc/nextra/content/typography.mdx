@@ -1,0 +1,26 @@
+---
+title: Typography
+---
+
+# Typography
+
+HDS's type scale runs from `display` down to `eyebrow`, each a full token
+group (`font-family`, `font-size`, `font-weight`, `letter-spacing`,
+`line-height`) rather than a single font-size utility. Body copy uses
+Satoshi 500; display and headings use Satoshi 700.
+
+import { TypeScale } from '../components/type-scale';
+
+<TypeScale />
+
+## Using a scale step
+
+```css
+.page-title {
+  font-family: var(--semantic-typography-h1-font-family);
+  font-size: var(--semantic-typography-h1-font-size);
+  font-weight: var(--semantic-typography-h1-font-weight);
+  letter-spacing: var(--semantic-typography-h1-letter-spacing);
+  line-height: var(--semantic-typography-h1-line-height);
+}
+```

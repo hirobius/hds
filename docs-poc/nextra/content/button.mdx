@@ -1,0 +1,58 @@
+---
+title: Button
+---
+
+# Button
+
+`Button` triggers an action when activated. It's a Radix `Slot`-composable
+primitive with `variant`, `tone`, and `size` axes, built with
+`class-variance-authority` on top of HDS's Tailwind token bridge.
+
+```tsx
+import { Button } from '@hirobius/design-system';
+
+<Button variant="primary">Save changes</Button>;
+```
+
+import { ButtonShowcase } from '../components/hds-examples';
+
+<ButtonShowcase />
+
+## Variants
+
+```tsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="tertiary">Tertiary</Button>
+```
+
+## Sizes
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+```
+
+## Tone (status color)
+
+`tone` composes with any `variant` and forces AA-compliant tinted colors in
+both light and dark mode:
+
+```tsx
+<Button tone="danger">Delete</Button>
+<Button tone="success">Approve</Button>
+```
+
+## Props
+
+import { PropsTable } from '../components/props-table';
+import buttonProps from './button-props.json';
+
+<PropsTable props={buttonProps.props} />
+
+<small>
+  Generated from `src/app/components/button.tsx` via HDS's
+  `generate-component-api.mjs` (the same script the shipped docs surface
+  uses).
+</small>

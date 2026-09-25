@@ -6,6 +6,10 @@ coverage/
 playwright-report/
 test-results/
 
+# Docs-site proof of concepts — self-contained packages with their own
+# tooling/formatting; not part of the root workspace.
+docs-poc/
+
 # Generated artifacts
 DESIGN.md
 # Generated token outputs — build-tokens.mjs owns their format (double-quoted
