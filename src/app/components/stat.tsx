@@ -52,7 +52,7 @@ export const Stat = React.forwardRef<HTMLDivElement, StatProps>(function Stat(
       {...props}
     >
       <p className={statVariants({ tone })}>{value}</p>
-      <p className="m-0 text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="m-0 text-xs uppercase tracking-caps text-muted-foreground">{label}</p>
       {sub && <p className="m-0 text-xs text-muted-foreground">{sub}</p>}
     </div>
   );

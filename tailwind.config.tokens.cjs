@@ -109,7 +109,6 @@ const config = {
         md: 'var(--primitive-borderWidth-md)',
       },
       fontSize: {
-        '2xs': 'var(--primitive-typography-size-2xs)',
         xs: 'var(--primitive-typography-size-xs)',
         sm: 'var(--primitive-typography-size-sm)',
         base: 'var(--primitive-typography-size-base)',
@@ -120,6 +119,9 @@ const config = {
         '4xl': 'var(--primitive-typography-size-4xl)',
         '5xl': 'var(--primitive-typography-size-5xl)',
         '6xl': 'var(--primitive-typography-size-6xl)',
+      },
+      letterSpacing: {
+        caps: 'var(--primitive-typography-letterSpacing-caps)',
       },
     },
   },

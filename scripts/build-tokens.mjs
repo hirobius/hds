@@ -1316,6 +1316,7 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
     semanticBorderWidth = [],
     primitiveBorderWidth = [],
     primitiveFontSize = [],
+    primitiveLetterSpacing = [],
   } = utilityTokens;
   const FOREGROUND_SUFFIX = '-foreground';
   const foregroundBases = new Set();
@@ -1415,7 +1416,45 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
     fontSize[t.path[t.path.length - 1]] = `var(${pathToCSSVar(t.path)})`;
   }
 
-  return { colors, borderRadius, boxShadow, spacing, screens, borderWidth, fontSize };
+  // letterSpacing — emitted ONLY for token names Tailwind does not already own.
+  //
+  // fontSize above deliberately collides: `text-sm` SHOULD mean the HDS rung.
+  // Tracking cannot do the same. Five of the six HDS names (tighter, tight,
+  // normal, wide, wider) are also Tailwind's, and silently redefining
+  // `tracking-tight` from -0.025em to the token's -0.01em changes every
+  // existing use of a stock utility — a different value under an unchanged
+  // name, which is the hardest kind of change to notice in review.
+  //
+  // So only the names Tailwind lacks are emitted. Today that is `caps`
+  // (0.06em), which is the one that was missing: with no `tracking-caps`,
+  // five components reached for `tracking-wide` — Tailwind's stock 0.025em,
+  // 42% of what the eyebrow token specifies. The gap in the config WAS the
+  // bypass (see #283).
+  const TAILWIND_OWNED_TRACKING = new Set([
+    'tighter',
+    'tight',
+    'normal',
+    'wide',
+    'wider',
+    'widest',
+  ]);
+  const letterSpacing = {};
+  for (const t of primitiveLetterSpacing) {
+    const name = t.path[t.path.length - 1];
+    if (TAILWIND_OWNED_TRACKING.has(name)) continue;
+    letterSpacing[name] = `var(${pathToCSSVar(t.path)})`;
+  }
+
+  return {
+    colors,
+    borderRadius,
+    boxShadow,
+    spacing,
+    screens,
+    borderWidth,
+    fontSize,
+    letterSpacing,
+  };
 }
 
 // ── Tenant overlay validator ────────────────────────────────────────────────
@@ -1868,6 +1907,10 @@ ${serialize(refsTree)}
     ),
     primitiveFontSize: allTokens.filter(
       (t) => t.path[0] === 'primitive' && t.path[1] === 'typography' && t.path[2] === 'size',
+    ),
+    primitiveLetterSpacing: allTokens.filter(
+      (t) =>
+        t.path[0] === 'primitive' && t.path[1] === 'typography' && t.path[2] === 'letterSpacing',
     ),
   });
   const tailwindConfigCjs = `// GENERATED FILE — do not edit; mutate hirobius.tokens.json instead.

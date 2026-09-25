@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 402 tokens, aliases, and TS refs in one shot.
+Checks all 399 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -246,7 +246,6 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 ### Primitive font sizes
 
-- `primitive.typography.size.2xs` = **10px**
 - `primitive.typography.size.xs` = **13px**
 - `primitive.typography.size.sm` = **15px**
 - `primitive.typography.size.base` = **17px**
@@ -315,26 +314,27 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 
 <!-- auto:start:semantic-space -->
 
-| Token                                | Value   | Notes                                                                     |
-| ------------------------------------ | ------- | ------------------------------------------------------------------------- |
-| `semantic.space.subgrid.hairline`    | `1px`   | 1px border offset and hairline spacing.                                   |
-| `semantic.space.subgrid.xs`          | `2px`   | 2px vertical rhythm nudge and baseline adjustment.                        |
-| `semantic.space.subgrid.gap`         | `4px`   | 4px cap-height and inline cluster spacing.                                |
-| `semantic.space.component.gap`       | `8px`   | 8px label↔input rhythm and closely coupled control spacing.               |
-| `semantic.space.component.medium`    | `12px`  | 12px adjacent form fields and medium intra-component gaps.                |
-| `semantic.space.component.padding`   | `24px`  | 24px default inset for cards, forms, panels, and grouped surfaces.        |
-| `semantic.space.layout.tight`        | `16px`  | 16px default HdsStack gap and inter-component spacing.                    |
-| `semantic.space.layout.normal`       | `24px`  | 24px column gutters and sidebar gutter spacing.                           |
-| `semantic.space.layout.gutter`       | `24px`  | 24px column and region gutters (alias for layout.normal).                 |
-| `semantic.space.layout.inset`        | `32px`  | 32px major block separation and inset inter-component gaps.               |
-| `semantic.space.layout.spacious`     | `48px`  | 48px section break and whitespace separator between major content blocks. |
-| `semantic.space.section.stack`       | `80px`  | 80px vertical rhythm between page sections and major editorial blocks.    |
-| `semantic.space.section.inset`       | `96px`  | 96px hero and landing-page inset padding.                                 |
-| `semantic.space.section.heroMax`     | `128px` | 128px maximum hero region padding for extra-large displays.               |
-| `semantic.space.sidebar.indent`      | `12px`  | 12px indent level for nested sidebar and TOC groups.                      |
-| `semantic.space.sidebar.gap`         | `16px`  | 16px vertical spacing between items in sidebar and TOC stacks.            |
-| `semantic.space.sidebar.sectionGap`  | `12px`  | 12px spacing between sidebar sections and grouped rail blocks.            |
-| `semantic.space.sidebar.railPadding` | `20px`  | 20px outer padding for sidebar and TOC rails.                             |
+| Token                                | Value   | Notes                                                                                                                                               |
+| ------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.space.subgrid.hairline`    | `1px`   | 1px border offset and hairline spacing.                                                                                                             |
+| `semantic.space.subgrid.xs`          | `2px`   | 2px vertical rhythm nudge and baseline adjustment.                                                                                                  |
+| `semantic.space.subgrid.gap`         | `4px`   | 4px cap-height and inline cluster spacing.                                                                                                          |
+| `semantic.space.component.gap`       | `8px`   | 8px label↔input rhythm and closely coupled control spacing.                                                                                         |
+| `semantic.space.component.medium`    | `12px`  | 12px adjacent form fields and medium intra-component gaps.                                                                                          |
+| `semantic.space.component.padding`   | `24px`  | 24px default inset for cards, forms, panels, and grouped surfaces.                                                                                  |
+| `semantic.space.layout.tight`        | `16px`  | 16px default HdsStack gap and inter-component spacing.                                                                                              |
+| `semantic.space.layout.normal`       | `24px`  | 24px column gutters and sidebar gutter spacing.                                                                                                     |
+| `semantic.space.layout.gutter`       | `24px`  | 24px column and region gutters (alias for layout.normal).                                                                                           |
+| `semantic.space.layout.inset`        | `32px`  | 32px major block separation and inset inter-component gaps.                                                                                         |
+| `semantic.space.layout.spacious`     | `48px`  | 48px section break and whitespace separator between major content blocks.                                                                           |
+| `semantic.space.section.stack`       | `80px`  | 80px vertical rhythm between page sections and major editorial blocks.                                                                              |
+| `semantic.space.section.inset`       | `96px`  | 96px hero and landing-page inset padding.                                                                                                           |
+| `semantic.space.section.heroMax`     | `128px` | 128px maximum hero region padding for extra-large displays.                                                                                         |
+| `semantic.space.sidebar.indent`      | `12px`  | 12px indent level for nested sidebar and TOC groups.                                                                                                |
+| `semantic.space.sidebar.gap`         | `16px`  | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                      |
+| `semantic.space.sidebar.sectionGap`  | `12px`  | 12px spacing between sidebar sections and grouped rail blocks.                                                                                      |
+| `semantic.space.sidebar.railPadding` | `20px`  | 20px outer padding for sidebar and TOC rails.                                                                                                       |
+| `semantic.space.sidebar.railWidth`   | `280px` | Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell). |
 
 <!-- auto:end:semantic-space -->
 
@@ -368,12 +368,13 @@ Use `primitive.size.*` for explicit widths and heights. Keep `primitive.space.*`
 
 ### Primitive width measures
 
-| Token                       | Value    | Notes            |
-| --------------------------- | -------- | ---------------- |
-| `primitive.size.width.96`   | `96px`   | 96px width step. |
-| `primitive.size.width.760`  | `760px`  |                  |
-| `primitive.size.width.1200` | `1200px` |                  |
-| `primitive.size.width.50ch` | `50ch`   |                  |
+| Token                       | Value    | Notes                                                                                                                                                              |
+| --------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `primitive.size.width.96`   | `96px`   | 96px width step.                                                                                                                                                   |
+| `primitive.size.width.280`  | `280px`  | Docs-shell rail width (hds#280). Our own number, not HeroUI's 268px — wide enough for the longest top-level nav label at the default type ramp with room to spare. |
+| `primitive.size.width.760`  | `760px`  |                                                                                                                                                                    |
+| `primitive.size.width.1200` | `1200px` |                                                                                                                                                                    |
+| `primitive.size.width.50ch` | `50ch`   |                                                                                                                                                                    |
 
 <!-- auto:end:size -->
 
