@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T16:48:50.832Z",
+  "updatedAt": "2026-09-25T17:53:55.871Z",
   "phase": "active",
   "headline": "FOUR DORMANT/MISLEADING GUARDRAILS FIXED IN ONE PASS, ALL RE-REGISTERED AND WIRED: audit-tiers now refuses to fabricate a report over 0 matched files instead of writing one silently (hds#264); check-public-api's docblock no longer claims a wiring it doesn't have, and its baseline writes stopped fighting the pre-commit Prettier pass (hds#270); docs/sync-map.json — 2757 lines of committed generated output — is now gated against drift the same way figma/STAGING-INVENTORY.md already was (hds#277); and the CLAUDE.md rule that status.json gets bumped before a session ends is enforced for the first time, at push time, by scripts/check-record-freshness.mjs (hds#249) — which caught this very file stale while proving itself.",
   "next": [
