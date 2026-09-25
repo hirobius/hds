@@ -5,8 +5,12 @@ import { ErrorBoundary } from '../components/error-boundary';
 import { Stack } from '../components/stack';
 import { useEmbeddedDocLayoutBottomSlot } from './EmbeddedDocLayoutContext';
 
-export const DOC_LAYOUT_STICKY_OFFSET = hds.space.px40;
-export const DOC_LAYOUT_STICKY_VIEWPORT_HEIGHT = `calc(100dvh - ${DOC_LAYOUT_STICKY_OFFSET})`;
+// Not exported: nothing outside this file reads it (hds#281). Sticky-viewport
+// maths only makes sense for a rail that scrolls independently of the main
+// column, and this layout renders a single column — see HdsSystemDocLayout's
+// doc comment. DOC_LAYOUT_STICKY_VIEWPORT_HEIGHT, which paired with it, was
+// unused everywhere and has been removed outright.
+const DOC_LAYOUT_STICKY_OFFSET = hds.space.px40;
 
 const DOC_LAYOUT_CONTENT_WIDTHS = {
   content: 'var(--semantic-layout-width-content)',
@@ -44,7 +48,10 @@ export function DocLayout({
   return (
     <main style={{ width: '100%', marginTop: 0, paddingTop: 0 }}>
       <div
-        style={{ ...docLayoutStyles.contentWrapperBase, maxWidth: DOC_LAYOUT_CONTENT_WIDTHS[contentMaxWidth] }}
+        style={{
+          ...docLayoutStyles.contentWrapperBase,
+          maxWidth: DOC_LAYOUT_CONTENT_WIDTHS[contentMaxWidth],
+        }}
       >
         <section
           style={{

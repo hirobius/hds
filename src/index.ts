@@ -52,6 +52,7 @@ export * from './app/components/progress';
 export * from './app/components/skeleton';
 export * from './app/components/spinner';
 export * from './app/components/segmented-control';
+export * from './app/components/select';
 export * from './app/components/stack';
 export * from './app/components/surface';
 export * from './app/components/table';
@@ -150,6 +151,7 @@ export * from './app/components/toast';
 export * from './app/layouts/CaseStudyLayout';
 export * from './app/components/error-pattern';
 export * from './app/layouts/HdsSystemDocLayout';
+export * from './app/layouts/HdsDocsShell';
 
 // ── Token bridge (CSS variables wrapped as TS constants + raw DTCG JSON) ──
 export { default as hds } from './app/design-system/tokens';

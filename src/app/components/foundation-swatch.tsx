@@ -4,6 +4,7 @@
  * @tier pattern
  */
 import type { ReactNode } from 'react';
+import { warnOnce } from '../../lib/deprecation';
 import hds from '../design-system/tokens';
 import { Token } from './token';
 import { Surface } from './surface';
@@ -81,11 +82,14 @@ const noteStyle = {
   margin: 0,
 } as const;
 
-const TOKEN_DISPLAY_PRESETS: Record<FoundationSwatchTokenDisplayPreset, {
-  mode: 'full' | 'compressed';
-  depth: number;
-  leadingDot: boolean;
-}> = {
+const TOKEN_DISPLAY_PRESETS: Record<
+  FoundationSwatchTokenDisplayPreset,
+  {
+    mode: 'full' | 'compressed';
+    depth: number;
+    leadingDot: boolean;
+  }
+> = {
   depth1: {
     mode: 'compressed',
     depth: 1,
@@ -103,12 +107,21 @@ const TOKEN_DISPLAY_PRESETS: Record<FoundationSwatchTokenDisplayPreset, {
   },
 };
 
-function renderDetails(label: string, value?: string, details?: string[], hidePreviewLabel = false) {
+function renderDetails(
+  label: string,
+  value?: string,
+  details?: string[],
+  hidePreviewLabel = false,
+) {
   const lines = details && details.length > 0 ? details : value ? [value] : [];
 
   return (
     <div>
-      {!hidePreviewLabel ? <Text variant="technical" as="p" style={metaLabelStyle}>{label.toLowerCase()}</Text> : null}
+      {!hidePreviewLabel ? (
+        <Text variant="technical" as="p" style={metaLabelStyle}>
+          {label.toLowerCase()}
+        </Text>
+      ) : null}
       {lines.map((line) => (
         <Text key={line} variant="technical" as="p" style={metaLabelStyle}>
           {line.toLowerCase()}
@@ -118,6 +131,12 @@ function renderDetails(label: string, value?: string, details?: string[], hidePr
   );
 }
 
+/**
+ * FoundationSwatch - governed foundation specimen for color and semantic role previews.
+ *
+ * @deprecated FoundationSwatch is an HDS docs/lab internal (foundation specimen preview for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.
+ * @removeIn 1.0.0
+ */
 export function FoundationSwatch({
   label,
   hidePreviewLabel = false,
@@ -133,6 +152,10 @@ export function FoundationSwatch({
   bordered = false,
   swatchVar,
 }: FoundationSwatchProps) {
+  warnOnce(
+    'foundation-swatch-deprecated',
+    'FoundationSwatch is an HDS docs/lab internal and will be removed from the published barrel in 1.0.0.',
+  );
   const tokenDisplay = TOKEN_DISPLAY_PRESETS[tokenDisplayPreset];
   const previewJustifyContent =
     previewPosition === 'center'
@@ -140,14 +163,9 @@ export function FoundationSwatch({
       : previewPosition === 'bottom-left'
         ? 'flex-end'
         : 'flex-start';
-  const previewAlignItems =
-    previewPosition === 'center'
-      ? 'center'
-      : 'flex-start';
+  const previewAlignItems = previewPosition === 'center' ? 'center' : 'flex-start';
   const previewPaddingBottom =
-    previewPosition === 'bottom-left'
-      ? hds.semantic.space.component.gap
-      : 0;
+    previewPosition === 'bottom-left' ? hds.semantic.space.component.gap : 0;
 
   return (
     <div style={shellStyle} data-layout-role="foundation-swatch-shell">
@@ -167,7 +185,12 @@ export function FoundationSwatch({
         }}
       >
         <div
-          style={{ ...swatchStyles.previewBody, alignItems: previewAlignItems, justifyContent: previewJustifyContent, paddingBottom: previewPaddingBottom }}
+          style={{
+            ...swatchStyles.previewBody,
+            alignItems: previewAlignItems,
+            justifyContent: previewJustifyContent,
+            paddingBottom: previewPaddingBottom,
+          }}
         >
           {specimen ? (
             specimen

@@ -8,7 +8,7 @@ import componentApiManifest from '../data/component-api.json';
 import hds from '../design-system/tokens';
 import { Button } from './button';
 import { PreviewFrame } from './preview-frame';
-import { allTokens } from './lab/tokenUtils';
+import { allTokens } from './tokenUtils';
 
 type PreviewSizingProfile = 'compact' | 'panel' | 'full';
 

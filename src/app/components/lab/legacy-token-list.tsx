@@ -9,7 +9,7 @@
  *   rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md.
  */
 // motion-ok: list wrapper - all interactive rows render as Token (motion.button with whileTap)
-import { FlatToken, Tier, groupByCategory, formatCategoryLabel } from './tokenUtils';
+import { FlatToken, Tier, groupByCategory, formatCategoryLabel } from '../tokenUtils';
 import { TokenCollectionList } from './token-collection-list';
 
 interface Props {
@@ -30,10 +30,6 @@ export function LegacyTokenList({ tokens, selectedPath, onSelect }: Props) {
   }));
 
   return (
-    <TokenCollectionList
-      sections={sections}
-      selectedPath={selectedPath}
-      onSelect={onSelect}
-    />
+    <TokenCollectionList sections={sections} selectedPath={selectedPath} onSelect={onSelect} />
   );
 }

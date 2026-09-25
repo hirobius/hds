@@ -407,7 +407,13 @@ export function StackedCardRail({ cards }: StackedCardRailProps) {
 
   return (
     <>
-      <style>{STYLES}</style>
+      {/* dangerouslySetInnerHTML (not a `{STYLES}` text child) so the server renderer
+          does not HTML-escape the quotes in `[data-fallback="true"]` — a `<style>`
+          text child is entity-escaped by renderToStaticMarkup/renderToString but
+          browsers parse `<style>` as raw text, so `&quot;` is never decoded and the
+          selector is invalid until hydration replaces the subtree (hds#284). STYLES
+          is a module-scope literal, not user input, so this is safe. */}
+      <style dangerouslySetInnerHTML={{ __html: STYLES }} />
       <div
         ref={outerRef}
         className="hds-scr-outer"
