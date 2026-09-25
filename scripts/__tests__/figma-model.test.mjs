@@ -491,6 +491,16 @@ describe('validateFigmaModel — invariants', () => {
       /Hirobius\/Semantic.*Hirobius\/Component.*one theme axis/,
     ],
     [
+      'every Light/Dark variable collapsed to the same value (hds#252)',
+      (m) => {
+        const semantic = m.collections.find((c) => c.key === 'semantic');
+        for (const v of semantic.variables) {
+          v.valuesByMode = { Light: v.valuesByMode.Light, Dark: v.valuesByMode.Light };
+        }
+      },
+      /Hirobius\/Semantic.*identical Light\/Dark values.*hds#252/,
+    ],
+    [
       'a scope that does not apply to the type',
       (m, find) => (find('semantic.color.surface.page').scopes = ['GAP']),
       /semantic\.color\.surface\.page.*GAP/,

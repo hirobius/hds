@@ -862,6 +862,14 @@
             "unit": "px"
           },
           "$description": "Minimum interactive hit target size."
+        },
+        "minCompact": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$description": "WCAG 2.2 AA (2.5.8) minimum target size for a compact inline control, such as a tokenizer chip's remove button, where the 44px AAA floor (2.5.5) does not apply."
         }
       },
       "width": {
@@ -893,6 +901,14 @@
             "value": 50,
             "unit": "ch"
           }
+        },
+        "280": {
+          "$type": "dimension",
+          "$value": {
+            "value": 280,
+            "unit": "px"
+          },
+          "$description": "Docs-shell rail width (hds#280). Our own number, not HeroUI's 268px — wide enough for the longest top-level nav label at the default type ramp with room to spare."
         }
       }
     },
@@ -1530,6 +1546,11 @@
         "railPadding": {
           "$value": "{primitive.space.5}",
           "$description": "20px outer padding for sidebar and TOC rails."
+        },
+        "railWidth": {
+          "$type": "dimension",
+          "$value": "{primitive.size.width.280}",
+          "$description": "Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell)."
         }
       }
     },

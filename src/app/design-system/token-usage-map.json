@@ -971,7 +971,7 @@
       "src/app/components/lab/token-collection-list.tsx",
       "src/app/components/lab/token-detail.tsx",
       "src/app/components/lab/token-list.tsx",
-      "src/app/components/lab/tokenUtils.ts",
+      "src/app/components/tokenUtils.ts",
       "src/app/components/segmented-control.tsx",
       "src/app/components/shell-controls.tsx",
       "src/app/components/sketch-controls.tsx",
@@ -4897,7 +4897,7 @@
       "hds.zIndex.focus",
       "hds.typeStyles.ui"
     ],
-    "src/app/components/lab/tokenUtils.ts": ["--semantic-color-surface-page"],
+    "src/app/components/tokenUtils.ts": ["--semantic-color-surface-page"],
     "src/app/components/metadata-list.tsx": [
       "hds.borderWidth.default",
       "--semantic-color-border-default",

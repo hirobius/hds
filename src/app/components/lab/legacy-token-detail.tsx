@@ -78,7 +78,7 @@ import {
   resolveAlias,
   resolveTokenLiteralValue,
   allTokens,
-} from './tokenUtils';
+} from '../tokenUtils';
 
 type ThemeMode = 'light' | 'dark';
 
