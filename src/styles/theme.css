@@ -80,19 +80,21 @@
   --hds-font-family:
     'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --hds-font-family-mono: 'Geist Mono', 'Courier New', monospace;
-  /* -- Font sizes ------------------------------------------------------------- */
-  --hds-font-size-xs: 11px;
-  --hds-font-size-sm: 13px;
-  --hds-font-size-base: 16px;
-  --hds-font-size-lg: 20px;
-  --hds-font-size-xl: 28px;
+  /* -- Type metrics ----------------------------------------------------------- */
+  /* The --hds-font-size-xs/sm/base/lg/xl block that was here held a SECOND,
+     hand-authored ramp (11/13/16/20/28 as literal px, not var refs) that
+     agreed with the real one at exactly one rung. Zero consumers in hds, ops
+     or concrete — and being literals, it could never have followed a token
+     change. Removed in #283. */
   --hds-lineHeight-none: var(--primitive-typography-lineHeight-none);
   --hds-letterSpacing-normal: var(--primitive-typography-letterSpacing-normal);
 
   /* -- Icon sizes ------------------------------------------------------------- */
-  --hds-icon-small: var(--primitive-typography-size-base); /* 16px */
-  --hds-icon-medium: var(--primitive-typography-size-lg); /* 20px */
-  --hds-icon-large: var(--primitive-typography-size-xl); /* 24px */
+  /* primitive.size, not the type ramp — an icon is geometry beside text, not
+     text. See the note in design-system/tokens.ts. */
+  --hds-icon-small: var(--primitive-size-16); /* 16px */
+  --hds-icon-medium: var(--primitive-size-20); /* 20px */
+  --hds-icon-large: var(--primitive-size-24); /* 24px */
 
   /* -- Border radius ---------------------------------------------------------- */
   --hds-radius-0: var(--primitive-radius-0);

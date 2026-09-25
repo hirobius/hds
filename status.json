@@ -1,8 +1,9 @@
 {
-  "updatedAt": "2026-09-24T17:14:19Z",
+  "updatedAt": "2026-09-25T04:27:45Z",
   "phase": "active",
   "headline": "FOUR DORMANT/MISLEADING GUARDRAILS FIXED IN ONE PASS, ALL RE-REGISTERED AND WIRED: audit-tiers now refuses to fabricate a report over 0 matched files instead of writing one silently (hds#264); check-public-api's docblock no longer claims a wiring it doesn't have, and its baseline writes stopped fighting the pre-commit Prettier pass (hds#270); docs/sync-map.json — 2757 lines of committed generated output — is now gated against drift the same way figma/STAGING-INVENTORY.md already was (hds#277); and the CLAUDE.md rule that status.json gets bumped before a session ends is enforced for the first time, at push time, by scripts/check-record-freshness.mjs (hds#249) — which caught this very file stale while proving itself.",
   "next": [
+    "MERGE ORDER: #290 (the 2026-09-24 burndown) first, then #289 (type-ramp prerequisites, hds#283 steps 0-3; carries #290). The ramp itself (hds#283 step 5) is PAUSED pending Adrian's triage — do not start it.",
     "MERGE claude/open-issues-count-1i85qw — 19 issues built 2026-09-24 (hds#231 #232 #233 #234 #249 #250 #252 #257 #264 #270 #277 #279 #280 #281 #282 #284 #285 #287; #240 is a duplicate of #234). Unmerged, no PR, no issue closed. Then: `pnpm figma:push` to staging (hds#252 — the code already emits distinct Light/Dark). Detail: hirobius/ops docs/ai/DONE-LOG.md, 2026-09-24.",
     "THE COMPONENT REFERENCE SITE IS BUILT BY `pnpm docs:site` AND PUBLISHED BY CI, never by an agent — .github/workflows/docs-site.yml, guarded the way chromatic.yml is. Output is gitignored: a checked-in page is one more generated artifact that can go stale while asserting it is current. The deployed URL lands in the workflow run's summary.",
     "EDITING TARGETS ARE NOW A LOOKUP: `pnpm sync-map` for every component with a gap, `node scripts/check-sync-map.mjs --component Table` for one component's source file, story files, story ids, Figma node and defect count. docs/sync-map.json is the same data for agents.",

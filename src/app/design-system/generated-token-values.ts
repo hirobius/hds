@@ -139,7 +139,6 @@ export const tokenValues = {
         mono: ["Geist Mono", "Courier New", "monospace"] as const
       },
       size: {
-        "2xs": "10px",
         xs: "13px",
         sm: "15px",
         base: "17px",
@@ -152,10 +151,8 @@ export const tokenValues = {
         "6xl": "80px"
       },
       weight: {
-        light: "300",
         regular: "400",
         medium: "500",
-        semibold: "600",
         bold: "700"
       },
       lineHeight: {
@@ -167,11 +164,8 @@ export const tokenValues = {
         relaxed: "1.625"
       },
       letterSpacing: {
-        tighter: "-0.02em",
         tight: "-0.01em",
         normal: "0em",
-        wide: "0.01em",
-        wider: "0.02em",
         caps: "0.06em"
       }
     },

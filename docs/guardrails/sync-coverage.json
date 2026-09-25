@@ -11,6 +11,7 @@
   "orphanStories": [
     "src/stories/history-card.stories.tsx",
     "src/stories/not-found-pattern.stories.tsx",
-    "src/stories/static-primitives.stories.tsx"
+    "src/stories/static-primitives.stories.tsx",
+    "src/stories/type-specimen.stories.tsx"
   ]
 }
