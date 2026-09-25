@@ -1,0 +1,34 @@
+---
+title: Typography
+description: The semantic type scale, rendered with the real tokens and the real Satoshi font.
+---
+
+Every row below is styled entirely with `var(--semantic-typography-*)`
+tokens — family, size, weight, and line-height all come from the live CSS,
+including the embedded Satoshi webfont.
+
+<TypeScaleRow name="Display" token="display" />
+<TypeScaleRow name="Heading 1" token="h1" />
+<TypeScaleRow name="Heading 2" token="h2" />
+<TypeScaleRow name="Heading 3" token="h3" />
+<TypeScaleRow name="Body" token="body" />
+<TypeScaleRow name="UI" token="ui" />
+<TypeScaleRow name="Caption" token="caption" sample="Hirobius Design System" />
+<TypeScaleRow name="Eyebrow" token="eyebrow" sample="HIROBIUS DESIGN SYSTEM" />
+<TypeScaleRow name="Mono" token="mono" sample="const hds = true;" />
+
+## Font families
+
+- **Primary / UI** — `Satoshi` (embedded as base64 in `tokens.css`, zero
+  consumer setup)
+- **Display / Headings** — `Satoshi`
+- **Mono** — `Geist Mono`
+
+```css
+.my-heading {
+  font-family: var(--semantic-typography-h1-font-family);
+  font-size: var(--semantic-typography-h1-font-size);
+  font-weight: var(--semantic-typography-h1-font-weight);
+  line-height: var(--semantic-typography-h1-line-height);
+}
+```

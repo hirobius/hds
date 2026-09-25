@@ -1,0 +1,56 @@
+---
+title: Introduction
+description: What the Hirobius Design System is and how to install it.
+---
+
+## What this is
+
+The **Hirobius Design System** (`@hirobius/design-system`) is a token-governed
+React component library — primitives, patterns, and templates — built on
+Radix UI primitives and Tailwind, distributed as an ESM package with full
+TypeScript types.
+
+This site is a **proof of concept**: a Fumadocs-based documentation shell,
+themed with HDS's own CSS variables and rendering the real, installed
+`@hirobius/design-system` package — not a re-implementation or mockup.
+
+## Install
+
+```bash
+pnpm add @hirobius/design-system
+# peer dependencies your app provides:
+pnpm add react react-dom
+```
+
+No registry config or auth token is required — it publishes to public npm.
+
+## Use
+
+Import components and the token stylesheet once at your app root:
+
+```tsx
+import { Button, Card } from '@hirobius/design-system';
+import '@hirobius/design-system/tokens.css'; // design tokens as CSS variables
+import '@hirobius/design-system/styles.css'; // compiled Tailwind utility layer
+
+export function Example() {
+  return (
+    <Card>
+      <Button variant="primary">Hello, Hirobius</Button>
+    </Card>
+  );
+}
+```
+
+That's exactly how this docs site itself consumes the package — see the
+[Button](/docs/button) page for a live-rendered example, or
+[Colors](/docs/colors) for the raw token values.
+
+## What's next
+
+- [Button](/docs/button) — a component page with live variants, sizes, and a
+  props table generated from HDS's own component API data.
+- [Colors](/docs/colors) — token swatches read straight from the live CSS
+  variables, so light/dark stay in sync automatically.
+- [Typography](/docs/typography) — the semantic type scale, rendered with the
+  real tokens and the real Satoshi font.

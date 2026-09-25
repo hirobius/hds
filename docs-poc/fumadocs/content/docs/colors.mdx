@@ -1,0 +1,82 @@
+---
+title: Colors
+description: Semantic color tokens, read straight from the live CSS variables.
+---
+
+Every swatch below is `background: var(--semantic-color-*)` — not a
+hard-coded hex. Toggle dark mode (top right) and they update instantly,
+because that's how the token layer itself works.
+
+<ColorSwatchGrid
+  title="Surface"
+  swatches={[
+    { name: 'page', variable: '--semantic-color-surface-page' },
+    { name: 'raised', variable: '--semantic-color-surface-raised' },
+    { name: 'overlay', variable: '--semantic-color-surface-overlay' },
+    { name: 'accent', variable: '--semantic-color-surface-accent' },
+    { name: 'accentSubtle', variable: '--semantic-color-surface-accentSubtle' },
+    { name: 'hover', variable: '--semantic-color-surface-hover' },
+    { name: 'pressed', variable: '--semantic-color-surface-pressed' },
+    { name: 'selected', variable: '--semantic-color-surface-selected' },
+    { name: 'muted', variable: '--semantic-color-surface-muted' },
+    { name: 'sunken', variable: '--semantic-color-surface-sunken' },
+  ]}
+/>
+
+<ColorSwatchGrid
+  title="Content"
+  swatches={[
+    { name: 'primary', variable: '--semantic-color-content-primary' },
+    { name: 'secondary', variable: '--semantic-color-content-secondary' },
+    { name: 'disabled', variable: '--semantic-color-content-disabled' },
+    { name: 'accent', variable: '--semantic-color-content-accent' },
+    { name: 'onAccent', variable: '--semantic-color-content-onAccent' },
+    { name: 'success', variable: '--semantic-color-content-success' },
+    { name: 'warning', variable: '--semantic-color-content-warning' },
+    { name: 'danger', variable: '--semantic-color-content-danger' },
+  ]}
+/>
+
+<ColorSwatchGrid
+  title="Border"
+  swatches={[
+    { name: 'default', variable: '--semantic-color-border-default' },
+    { name: 'interactive', variable: '--semantic-color-border-interactive' },
+    { name: 'subdued', variable: '--semantic-color-border-subdued' },
+    { name: 'subtle', variable: '--semantic-color-border-subtle' },
+    { name: 'strong', variable: '--semantic-color-border-strong' },
+    { name: 'accent', variable: '--semantic-color-border-accent' },
+    { name: 'success', variable: '--semantic-color-border-success' },
+    { name: 'warning', variable: '--semantic-color-border-warning' },
+  ]}
+/>
+
+<ColorSwatchGrid
+  title="Feedback"
+  swatches={[
+    { name: 'error', variable: '--semantic-color-feedback-error' },
+    { name: 'success', variable: '--semantic-color-feedback-success' },
+    { name: 'warning', variable: '--semantic-color-feedback-warning' },
+    { name: 'info', variable: '--semantic-color-feedback-info' },
+    { name: 'inProgress', variable: '--semantic-color-feedback-inProgress' },
+    { name: 'bg-error', variable: '--semantic-color-feedback-bg-error' },
+    { name: 'bg-success', variable: '--semantic-color-feedback-bg-success' },
+    { name: 'bg-warning', variable: '--semantic-color-feedback-bg-warning' },
+    { name: 'bg-info', variable: '--semantic-color-feedback-bg-info' },
+    { name: 'bg-inProgress', variable: '--semantic-color-feedback-bg-inProgress' },
+  ]}
+/>
+
+## Using tokens directly
+
+```css
+.my-component {
+  background: var(--semantic-color-surface-raised);
+  color: var(--semantic-color-content-primary);
+  border: 1px solid var(--semantic-color-border-default);
+}
+```
+
+Three-tier architecture — primitive → semantic → component — with dark mode
+applied via a `[data-theme="dark"]` selector, so the reference chain cascades
+with zero JavaScript re-renders.
