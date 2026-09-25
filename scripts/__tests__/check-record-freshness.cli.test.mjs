@@ -22,8 +22,15 @@ const GATE = path.join(REPO_ROOT, 'scripts', 'check-record-freshness.mjs');
 
 let dir;
 
+// Strip GIT_* vars: under a pre-push hook (esp. from a worktree) git exports
+// GIT_DIR/GIT_INDEX_FILE etc., which would redirect every command here into
+// the real repo — committing junk and rewriting its .git/config.
+const CLEAN_ENV = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')),
+);
+
 function git(args, cwd) {
-  return execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
+  return execFileSync('git', args, { cwd, encoding: 'utf8', env: CLEAN_ENV }).trim();
 }
 
 function commitAll(cwd, message, env = {}) {
@@ -31,7 +38,7 @@ function commitAll(cwd, message, env = {}) {
   execFileSync('git', ['commit', '-m', message, '--no-verify'], {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, ...env },
+    env: { ...CLEAN_ENV, ...env },
   });
 }
 
@@ -60,6 +67,7 @@ function runGate(range) {
     const stdout = execFileSync(process.execPath, [GATE, '--range', range], {
       cwd: dir,
       encoding: 'utf8',
+      env: CLEAN_ENV,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
     return { status: 0, stdout, stderr: '' };
