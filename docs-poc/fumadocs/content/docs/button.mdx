@@ -1,0 +1,116 @@
+---
+title: Button
+description: Triggers an action when activated — primary, secondary, and tertiary variants with semantic tone overrides.
+---
+
+`Button` is a real, live-rendered `@hirobius/design-system` component —
+every example below runs the actual package, styled by the actual token
+CSS, not a screenshot or a recreated look-alike.
+
+```tsx
+import { Button } from '@hirobius/design-system';
+
+<Button variant="primary">Save changes</Button>;
+```
+
+## Variants
+
+<div className="hds-preview">
+  <Button variant="primary">Primary</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="tertiary">Tertiary</Button>
+</div>
+
+## Sizes
+
+<div className="hds-preview">
+  <Button size="sm">Small</Button>
+  <Button size="md">Medium</Button>
+  <Button size="lg">Large</Button>
+</div>
+
+## Tones
+
+Tone applies a token-driven feedback color on top of any variant, and stays
+AA-compliant in both light and dark because the fg/bg pair flips together
+per theme.
+
+<div className="hds-preview">
+  <Button tone="neutral">Neutral</Button>
+  <Button tone="danger">Danger</Button>
+  <Button tone="success">Success</Button>
+  <Button tone="warning">Warning</Button>
+  <Button tone="info">Info</Button>
+</div>
+
+## States
+
+<div className="hds-preview">
+  <Button>Default</Button>
+  <Button disabled>Disabled</Button>
+  <Button loading>Loading</Button>
+</div>
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: 'asChild',
+      type: 'boolean',
+      default: 'false',
+      description: 'Render the button chrome onto a single child element for link semantics.',
+    },
+    {
+      name: 'variant',
+      type: '"primary" | "secondary" | "tertiary"',
+      default: '"secondary"',
+    },
+    {
+      name: 'tone',
+      type: '"neutral" | "danger" | "success" | "warning" | "info"',
+      default: '"neutral"',
+    },
+    {
+      name: 'size',
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+    },
+    {
+      name: 'iconOnly',
+      type: 'boolean',
+      default: 'false',
+      description: 'Render the button as a square icon-only control. Requires aria-label.',
+    },
+    {
+      name: 'iconLeft',
+      type: 'ReactNode',
+      description: 'Leading icon rendered before the label.',
+    },
+    {
+      name: 'iconRight',
+      type: 'ReactNode',
+      description: 'Trailing icon rendered after the label.',
+    },
+    {
+      name: 'label',
+      type: 'string',
+      description: 'Optional accessible label used when children are not suitable as the name.',
+    },
+    {
+      name: 'loading',
+      type: 'boolean',
+      default: 'false',
+      description: 'Show a busy indicator and disable interaction.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Disable interaction. Mirrors the native HTML attribute.',
+    },
+  ]}
+/>
+
+Generated from HDS's own `src/app/data/component-api.json` (the same source
+the primary HDS docs surface uses), kept here as a static snapshot for this
+proof of concept.

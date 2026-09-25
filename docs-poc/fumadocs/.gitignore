@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Next.js build output / static export
+.next/
+out/
+
+# fumadocs-mdx generated collection glue — regenerated on every build
+.source/
+
+# The @hirobius/design-system tarball this app depends on (file:.pkg/*.tgz).
+# Regenerated at build time by packing the HDS repo root — see vercel.json's
+# buildCommand and README notes; never hand-edited, never committed.
+.pkg/
+
+# Misc
+*.log
+.DS_Store

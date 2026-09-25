@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd ../.. && corepack enable && pnpm install --frozen-lockfile && pnpm build:lib && mkdir -p docs-poc/fumadocs/.pkg && npm pack --pack-destination docs-poc/fumadocs/.pkg && mv docs-poc/fumadocs/.pkg/hirobius-design-system-*.tgz docs-poc/fumadocs/.pkg/hirobius-design-system.tgz && cd docs-poc/fumadocs && npm install && npm run build",
+  "installCommand": "echo 'no-op: buildCommand installs the HDS lib deps at repo root and this apps deps itself, in the right order'",
+  "outputDirectory": "out"
+}

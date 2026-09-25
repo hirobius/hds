@@ -1,0 +1,206 @@
+/* Fumadocs' own compiled UI styles (layout, nav, search dialog, TOC, prose). */
+@import 'fumadocs-ui/style.css';
+
+/* HDS's compiled Tailwind utility layer — needed so components like <Button>
+   render with their real classes (bg-primary, border-input, etc). */
+@import '@hirobius/design-system/styles.css';
+
+/*
+ * Theme Fumadocs' own chrome with HDS tokens instead of its defaults.
+ * Fumadocs exposes its palette as --color-fd-* custom properties (set in
+ * :root and .dark by fumadocs-ui/style.css); we re-point every one of them
+ * at the matching HDS --semantic-color-* variable so the whole shell —
+ * background, borders, nav, search dialog, code blocks — reads as Hirobius,
+ * not "generic Fumadocs blue". Because HDS's own dark-mode values live under
+ * [data-theme="dark"], RootProvider is configured to write BOTH `class` and
+ * `data-theme` on <html>, so this cascades automatically with no JS.
+ */
+:root,
+.dark {
+  /* Fumadocs reads --font-sans / --font-mono for its base typography. */
+  --font-sans: var(--primitive-typography-family-primary);
+  --font-mono: var(--primitive-typography-family-mono);
+
+  --color-fd-background: var(--semantic-color-surface-page);
+  --color-fd-foreground: var(--semantic-color-content-primary);
+  --color-fd-muted: var(--semantic-color-surface-muted);
+  --color-fd-muted-foreground: var(--semantic-color-content-secondary);
+  --color-fd-popover: var(--semantic-color-surface-overlay);
+  --color-fd-popover-foreground: var(--semantic-color-content-primary);
+  --color-fd-card: var(--semantic-color-surface-raised);
+  --color-fd-card-foreground: var(--semantic-color-content-primary);
+  --color-fd-border: var(--semantic-color-border-default);
+  --color-fd-primary: var(--semantic-color-surface-accent);
+  --color-fd-primary-foreground: var(--semantic-color-content-onAccent);
+  --color-fd-secondary: var(--semantic-color-surface-raised);
+  --color-fd-secondary-foreground: var(--semantic-color-content-primary);
+  --color-fd-accent: var(--semantic-color-surface-hover);
+  --color-fd-accent-foreground: var(--semantic-color-content-primary);
+  --color-fd-ring: var(--semantic-color-border-accent);
+  --color-fd-error: var(--semantic-color-feedback-error);
+  --color-fd-warning: var(--semantic-color-feedback-warning);
+  --color-fd-success: var(--semantic-color-feedback-success);
+  --color-fd-info: var(--semantic-color-feedback-info);
+}
+
+html {
+  font-family: var(--primitive-typography-family-primary);
+}
+
+/*
+ * Fumadocs sizes its sticky top bar via the --fd-header-height custom
+ * property, toggled on by a `:has()` selector keyed to a marker class that
+ * only appears for the *mobile* subnav in this Fumadocs version — so at
+ * desktop widths the header collapses to 0px and its content clips. Forcing
+ * a fixed height here (matching Fumadocs' own `--spacing(14)` mobile value)
+ * fixes it at every breakpoint with no JS.
+ */
+#nd-docs-layout {
+  --fd-header-height: calc(var(--spacing) * 14) !important;
+}
+
+/*
+ * Same container-query shim issue as above: below the `xl` breakpoint the
+ * right-hand "On this page" TOC rail is supposed to collapse to 0 width
+ * (replaced by the mobile popover trigger), but --fd-toc-width sticks at a
+ * few residual px, leaving a clipped, vertically-wrapped sliver of text
+ * pinned to the right edge. Force it closed below xl to match the popover.
+ */
+@media (width < 80rem) {
+  #nd-toc {
+    display: none !important;
+  }
+}
+
+body {
+  background-color: var(--semantic-color-surface-page);
+  color: var(--semantic-color-content-primary);
+}
+
+/* Fumadocs' default nav "brand mark" slot; keep the logo lockup crisp. */
+#nd-nav a[href='/'] {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Swatch grid used on the Colors page. */
+.hds-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.hds-swatch {
+  border: 1px solid var(--semantic-color-border-default);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--semantic-color-surface-raised);
+}
+
+.hds-swatch-color {
+  height: 64px;
+  width: 100%;
+}
+
+.hds-swatch-meta {
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+
+.hds-swatch-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--semantic-color-content-primary);
+}
+
+.hds-swatch-value {
+  font-family: var(--primitive-typography-family-mono);
+  font-size: 0.6875rem;
+  color: var(--semantic-color-content-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* Live component preview frames on the Button page. */
+.hds-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--semantic-color-border-default);
+  border-radius: 0.75rem;
+  background: var(--semantic-color-surface-raised);
+  margin: 1.25rem 0;
+}
+
+.hds-preview-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1.25rem 0;
+}
+
+.hds-preview-row-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--semantic-color-content-secondary);
+}
+
+/* Type-scale rows on the Typography page. */
+.hds-type-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--semantic-color-border-subtle);
+}
+
+.hds-type-row-meta {
+  font-family: var(--primitive-typography-family-mono);
+  font-size: 0.75rem;
+  color: var(--semantic-color-content-secondary);
+  white-space: nowrap;
+}
+
+@media (width < 640px) {
+  .hds-type-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .hds-type-row-meta {
+    white-space: normal;
+  }
+}
+
+/* Props table */
+.hds-props-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.875rem;
+}
+
+.hds-props-table th,
+.hds-props-table td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--semantic-color-border-subtle);
+  vertical-align: top;
+}
+
+.hds-props-table th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--semantic-color-content-secondary);
+}
+
+.hds-props-table code {
+  font-family: var(--primitive-typography-family-mono);
+  font-size: 0.8em;
+}
