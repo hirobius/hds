@@ -1,0 +1,30 @@
+---
+title: Colors
+---
+
+# Colors
+
+HDS ships a three-tier token architecture — primitive → semantic → component
+— with dark mode driven entirely by CSS variable overrides under
+`[data-theme="dark"]` (no JS re-render). The swatches below read the actual
+`--semantic-color-*` variables from `@hirobius/design-system/tokens.css` —
+switch the theme toggle above and they'll repaint.
+
+import { ColorSwatches } from '../components/color-swatches';
+
+<ColorSwatches />
+
+## Using a token
+
+```css
+.card {
+  background: var(--semantic-color-surface-raised);
+  color: var(--semantic-color-content-primary);
+  border: 1px solid var(--semantic-color-border-default);
+}
+```
+
+Component internals (like `Button` above) consume these through generated
+utility classes such as `bg-primary` / `text-primary-foreground`, which are
+themselves aliases onto the `--semantic-color-*` variables — see
+`tailwind.config.tokens.cjs` in the HDS repo for the full bridge.

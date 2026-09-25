@@ -54,6 +54,10 @@ export default [
       'figma-agent-plugin/**',
       '.claude/**',
       'scripts/_retired-*/**',
+      // Docs-site proof of concepts (ops#TBD) — self-contained packages with
+      // their own package.json/lockfile and tooling, not part of the root
+      // workspace's TS/ESLint project.
+      'docs-poc/**',
       // Workflow (Dynamic-Workflow) scripts execute in the agent runtime, which
       // injects globals (agent/parallel/log/phase/budget/args) and allows
       // top-level await/return. They are not conventional ESM modules, so the

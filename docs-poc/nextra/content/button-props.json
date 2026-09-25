@@ -1,0 +1,72 @@
+{
+  "filePath": "src/app/components/button.tsx",
+  "description": "Triggers an action when activated.",
+  "category": "Actions",
+  "hidden": false,
+  "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138",
+  "props": [
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "default": "false",
+      "required": false,
+      "description": "Render the button chrome onto a single child element for link semantics."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Disable interaction. Mirrors the native HTML attribute."
+    },
+    {
+      "name": "iconLeft",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Leading icon rendered before the label."
+    },
+    {
+      "name": "iconOnly",
+      "type": "boolean",
+      "default": "false",
+      "required": false,
+      "description": "Render the button as a square icon-only control. Requires aria-label."
+    },
+    {
+      "name": "iconRight",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Trailing icon rendered after the label."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": "Optional accessible label used when children are not suitable as the name."
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "default": "false",
+      "required": false,
+      "description": "Show a busy indicator and disable interaction."
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "tone",
+      "type": "\"neutral\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "variant",
+      "type": "\"primary\" | \"secondary\" | \"tertiary\"",
+      "required": false,
+      "description": ""
+    }
+  ]
+}

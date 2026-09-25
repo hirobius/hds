@@ -1,0 +1,101 @@
+/* HDS docs-poc theming layer.
+ *
+ * nextra-theme-docs ships its own compiled Tailwind v4 stylesheet whose
+ * utility classes read from a small set of CSS custom properties (the
+ * `--x-color-*` scale, `--nextra-primary-*`, `--nextra-bg`, `--x-font-*`).
+ * Rather than fighting individual atomic classes, we override those
+ * variables so the theme's own chrome (nav, sidebar, TOC, search, code
+ * blocks) repaints itself with real HDS tokens. Values below are read
+ * straight from @hirobius/design-system's tokens.css (neutral scale +
+ * brand blue) — see docs-poc/nextra/README (build notes) for the mapping.
+ */
+
+@import 'nextra-theme-docs/style.css';
+@import '@hirobius/design-system/tokens.css';
+@import '@hirobius/design-system/styles.css';
+
+:root {
+  /* Fonts — HDS ships Satoshi (UI/body) + Geist Mono, embedded as base64
+     woff2 in tokens.css via @font-face, so no extra font loading here. */
+  --x-font-sans: 'Satoshi', var(--hds-font-family, ui-sans-serif), system-ui, sans-serif;
+  --x-font-mono: 'Geist Mono', var(--hds-font-family-mono, ui-monospace), monospace;
+
+  /* Neutral scale — mapped 1:1 to HDS's primitive neutral ramp instead of
+     Tailwind's stock slate/gray so every "gray-*" utility nextra emits
+     repaints as HDS neutral. */
+  --x-color-gray-50: var(--primitive-color-neutral-50);
+  --x-color-gray-100: var(--primitive-color-neutral-100);
+  --x-color-gray-200: var(--primitive-color-neutral-200);
+  --x-color-gray-300: var(--primitive-color-neutral-300);
+  --x-color-gray-400: var(--primitive-color-neutral-400);
+  --x-color-gray-500: var(--primitive-color-neutral-500);
+  --x-color-gray-600: var(--primitive-color-neutral-600);
+  --x-color-gray-700: var(--primitive-color-neutral-700);
+  --x-color-gray-800: var(--primitive-color-neutral-800);
+  --x-color-gray-900: var(--primitive-color-neutral-900);
+
+  --x-color-neutral-50: var(--primitive-color-neutral-50);
+  --x-color-neutral-100: var(--primitive-color-neutral-100);
+  --x-color-neutral-200: var(--primitive-color-neutral-200);
+  --x-color-neutral-300: var(--primitive-color-neutral-300);
+  --x-color-neutral-400: var(--primitive-color-neutral-400);
+  --x-color-neutral-500: var(--primitive-color-neutral-500);
+  --x-color-neutral-600: var(--primitive-color-neutral-600);
+  --x-color-neutral-700: var(--primitive-color-neutral-700);
+  --x-color-neutral-800: var(--primitive-color-neutral-800);
+  --x-color-neutral-900: var(--primitive-color-neutral-900);
+
+  --x-color-white: var(--primitive-color-neutral-white);
+  --x-color-black: var(--primitive-color-neutral-black);
+
+  /* Accent — HDS brand blue (primitive-color-blue-500, #1E2EFD) expressed
+     as HSL for nextra's primary-{50..800} scale generator. */
+  --nextra-primary-hue: 236deg;
+  --nextra-primary-saturation: 90%;
+  --nextra-primary-lightness: 55%;
+
+  /* Translucent navbar/sidebar backdrop reads this as an rgb() triplet. */
+  --nextra-bg: 255 255 255;
+
+  color-scheme: light;
+}
+
+:root:not([data-theme='light']) {
+  @media (prefers-color-scheme: dark) {
+    --nextra-bg: 17 17 17;
+    color-scheme: dark;
+  }
+}
+
+.dark {
+  --nextra-bg: 17 17 17;
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--semantic-color-surface-page);
+  color: var(--semantic-color-content-primary);
+  font-family: var(--x-font-sans);
+}
+
+/* nextra-theme-docs' Search combobox ships hardcoded focus-ring/accent
+   colors that don't route through --x-color-primary-*; nudge the visible
+   ones (input border, active option) toward the HDS accent so it doesn't
+   read as stock nextra blue. */
+[cmdk-input] {
+  font-family: var(--x-font-sans);
+}
+
+/* Code blocks: let Shiki's own theme colors show, but align the block
+   chrome (border/bg) with HDS surfaces instead of nextra's zinc defaults. */
+pre {
+  border-radius: var(--semantic-radius-md, 8px);
+}
+
+/* Prevent the mobile hamburger / TOC icons from being squished by HDS's
+   global button reset leaking through — nextra's own buttons keep their
+   own sizing. */
+.nextra-nav-container button svg {
+  pointer-events: none;
+}
