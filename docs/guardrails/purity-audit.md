@@ -6,34 +6,34 @@ A gate may legitimately need to mutate (e.g. an `--update` flag), read the clock
 
 ## Summary
 
-| Verdict | Count |
-|---|---:|
-| **PURE** — no impurity patterns found | 63 |
-| **EXEMPTED** — impurity present, documented in `pureExceptions` | 0 |
-| **IMPURE** — impurity present, **NOT** documented | 7 |
-| **MISSING** — `gateScript` file does not exist | 0 |
-| **TOTAL** | 70 |
+| Verdict                                                         | Count |
+| --------------------------------------------------------------- | ----: |
+| **PURE** — no impurity patterns found                           |    63 |
+| **EXEMPTED** — impurity present, documented in `pureExceptions` |     0 |
+| **IMPURE** — impurity present, **NOT** documented               |     7 |
+| **MISSING** — `gateScript` file does not exist                  |     0 |
+| **TOTAL**                                                       |    70 |
 
 ## Patterns scanned
 
-| Category | Pattern | Why it matters |
-|---|---|---|
-| `mutation` | `fs.writeFileSync` | mutates the working tree |
-| `mutation` | `fs.appendFileSync` | mutates the working tree |
-| `mutation` | `fs.unlinkSync` | deletes from the working tree |
-| `mutation` | `fs.rmSync` | deletes from the working tree |
-| `mutation` | `fs.mkdirSync` | mutates the working tree |
-| `mutation` | `fs.renameSync` | mutates the working tree |
-| `mutation` | `fs.copyFileSync` | mutates the working tree |
-| `mutation` | `fs.chmodSync` | mutates the working tree |
-| `mutation` | `fs.promises.writeFile` | mutates the working tree (async) |
-| `time` | `Date.now` | wall-clock — output varies across runs |
-| `time` | `new Date()` | wall-clock — output varies across runs |
-| `random` | `Math.random` | non-deterministic — output varies across runs |
-| `network` | `import 'http' / 'https'` | fetches data outside the working tree |
-| `network` | `import 'fetch' / axios / node-fetch` | fetches data outside the working tree |
-| `network` | `fetch(` | fetches data outside the working tree |
-| `env` | `process.env.X` (X not in allowlist) | external state — varies across machines |
+| Category   | Pattern                               | Why it matters                                |
+| ---------- | ------------------------------------- | --------------------------------------------- |
+| `mutation` | `fs.writeFileSync`                    | mutates the working tree                      |
+| `mutation` | `fs.appendFileSync`                   | mutates the working tree                      |
+| `mutation` | `fs.unlinkSync`                       | deletes from the working tree                 |
+| `mutation` | `fs.rmSync`                           | deletes from the working tree                 |
+| `mutation` | `fs.mkdirSync`                        | mutates the working tree                      |
+| `mutation` | `fs.renameSync`                       | mutates the working tree                      |
+| `mutation` | `fs.copyFileSync`                     | mutates the working tree                      |
+| `mutation` | `fs.chmodSync`                        | mutates the working tree                      |
+| `mutation` | `fs.promises.writeFile`               | mutates the working tree (async)              |
+| `time`     | `Date.now`                            | wall-clock — output varies across runs        |
+| `time`     | `new Date()`                          | wall-clock — output varies across runs        |
+| `random`   | `Math.random`                         | non-deterministic — output varies across runs |
+| `network`  | `import 'http' / 'https'`             | fetches data outside the working tree         |
+| `network`  | `import 'fetch' / axios / node-fetch` | fetches data outside the working tree         |
+| `network`  | `fetch(`                              | fetches data outside the working tree         |
+| `env`      | `process.env.X` (X not in allowlist)  | external state — varies across machines       |
 
 **Env allowlist:** `CI`, `GITHUB_ACTIONS`, `GITHUB_REF`, `GITHUB_SHA`, `GITHUB_TOKEN`, `HOME`, `LANG`, `LC_ALL`, `NODE_ENV`, `PATH`, `PWD`, `TZ`, `npm_lifecycle_event`
 
@@ -45,65 +45,54 @@ Each gate below has at least one finding in a category not covered by `pureExcep
 
 Source: `scripts/audit-claims.mjs`
 
-| Line | Category | Pattern | Snippet |
-|---:|---|---|---|
-| 55 | `time` | `Date.now` | `const now = Date.now();` |
+| Line | Category | Pattern    | Snippet                   |
+| ---: | -------- | ---------- | ------------------------- |
+|   55 | `time`   | `Date.now` | `const now = Date.now();` |
 
 ### `audit-exceptions`
 
 Source: `scripts/audit-exceptions.mjs`
 
-| Line | Category | Pattern | Snippet |
-|---:|---|---|---|
-| 201 | `time` | `new Date()` | `md += `Generated: ${new Date().toISOString()}\n\n`;` |
-
-### `audit-tiers`
-
-Source: `scripts/audit-tiers.mjs`
-
-| Line | Category | Pattern | Snippet |
-|---:|---|---|---|
-| 237 | `time` | `new Date()` | `lines.push(`Generated: ${new Date().toISOString().slice(0, 10)}`);` |
-| 335 | `mutation` | `fs.writeFileSync` | `fs.writeFileSync(r.file, next);` |
-| 368 | `mutation` | `fs.writeFileSync` | `fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n');` |
-| 398 | `mutation` | `fs.writeFileSync` | `fs.writeFileSync(AUDIT_PATH, md);` |
+| Line | Category | Pattern      | Snippet                                               |
+| ---: | -------- | ------------ | ----------------------------------------------------- |
+|  201 | `time`   | `new Date()` | `md += `Generated: ${new Date().toISOString()}\n\n`;` |
 
 ### `audit-tokens`
 
 Source: `scripts/audit-tokens.mjs`
 
-| Line | Category | Pattern | Snippet |
-|---:|---|---|---|
-| 141 | `time` | `new Date()` | `const timestamp = new Date().toISOString();` |
-| 188 | `time` | `new Date()` | `lastUpdated: new Date().toISOString(),` |
-| 928 | `time` | `new Date()` | `generatedAt: new Date().toISOString(),` |
+| Line | Category | Pattern      | Snippet                                       |
+| ---: | -------- | ------------ | --------------------------------------------- |
+|  141 | `time`   | `new Date()` | `const timestamp = new Date().toISOString();` |
+|  188 | `time`   | `new Date()` | `lastUpdated: new Date().toISOString(),`      |
+|  928 | `time`   | `new Date()` | `generatedAt: new Date().toISOString(),`      |
 
 ### `check-external-links`
 
 Source: `scripts/check-external-links.mjs`
 
-| Line | Category | Pattern | Snippet |
-|---:|---|---|---|
-| 16 | `network` | `import 'http' / 'https'` | `import http from 'node:http';` |
-| 17 | `network` | `import 'http' / 'https'` | `import https from 'node:https';` |
+| Line | Category  | Pattern                   | Snippet                           |
+| ---: | --------- | ------------------------- | --------------------------------- |
+|   16 | `network` | `import 'http' / 'https'` | `import http from 'node:http';`   |
+|   17 | `network` | `import 'http' / 'https'` | `import https from 'node:https';` |
 
 ### `check-route-smoke`
 
 Source: `scripts/check-route-smoke.mjs`
 
-| Line | Category | Pattern | Snippet |
-|---:|---|---|---|
-| 18 | `env` | `process.env.ROUTE_SMOKE_URL` | `const BASE_URL = process.env.ROUTE_SMOKE_URL \|\| `http://127.0.0.1:${PORT}`;` |
-| 50 | `network` | `fetch(` | `const response = await fetch(BASE_URL, { redirect: 'manual' });` |
-| 59 | `env` | `process.env.ROUTE_SMOKE_URL` | `const shouldStartPreview = !process.env.ROUTE_SMOKE_URL;` |
+| Line | Category  | Pattern                       | Snippet                                                                         |
+| ---: | --------- | ----------------------------- | ------------------------------------------------------------------------------- |
+|   18 | `env`     | `process.env.ROUTE_SMOKE_URL` | `const BASE_URL = process.env.ROUTE_SMOKE_URL \|\| `http://127.0.0.1:${PORT}`;` |
+|   50 | `network` | `fetch(`                      | `const response = await fetch(BASE_URL, { redirect: 'manual' });`               |
+|   59 | `env`     | `process.env.ROUTE_SMOKE_URL` | `const shouldStartPreview = !process.env.ROUTE_SMOKE_URL;`                      |
 
 ### `check-source-canon`
 
 Source: `scripts/check-source-canon.mjs`
 
-| Line | Category | Pattern | Snippet |
-|---:|---|---|---|
-| 385 | `mutation` | `fs.writeFileSync` | `fs.writeFileSync(path.join(ROOT, '.source-canon-baseline.txt'), lines.join('\n') + '\n');` |
+| Line | Category   | Pattern            | Snippet                                                                                     |
+| ---: | ---------- | ------------------ | ------------------------------------------------------------------------------------------- |
+|  385 | `mutation` | `fs.writeFileSync` | `fs.writeFileSync(path.join(ROOT, '.source-canon-baseline.txt'), lines.join('\n') + '\n');` |
 
 ## PURE gates
 
@@ -174,4 +163,3 @@ No impurity patterns detected. Deterministic by static analysis.
 node scripts/audit-gate-purity.mjs --report          # regenerate this file
 node scripts/audit-gate-purity.mjs --strict          # exit 1 on any IMPURE
 ```
-

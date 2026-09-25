@@ -35,14 +35,6 @@
       "outputTail": "Audit complete. Report written to /home/adrian/projects/adrian-milsap/docs/audits/exceptions-audit.md\nTotal suppressions found: 266\nJustified: 262\nUntriaged: 4\n"
     },
     {
-      "id": "audit-tiers",
-      "exitCode": 0,
-      "durationMs": 42,
-      "supportsJson": false,
-      "violations": null,
-      "outputTail": "Wrote docs/ai/TIER_AUDIT.md — Audit proposes: 0 primitive, 0 pattern, 0 template, 0 utility (total 0)\n"
-    },
-    {
       "id": "audit-tokens",
       "exitCode": 0,
       "durationMs": 24,
@@ -1870,16 +1862,6 @@
           "gateId": "audit-strengths",
           "violatingPath": "/home/adrian/projects/adrian-milsap/fixtures/audit-strengths/violating.example.txt",
           "passingPath": "/home/adrian/projects/adrian-milsap/fixtures/audit-strengths/passing.example.txt"
-        },
-        {
-          "file": "fixtures/audit-tiers/",
-          "line": null,
-          "rule": "fixture-stub",
-          "severity": "baselined",
-          "message": "audit-tiers: stub fixture (TODO marker) — burn down by replacing with real fixture",
-          "gateId": "audit-tiers",
-          "violatingPath": "/home/adrian/projects/adrian-milsap/fixtures/audit-tiers/violating.example.tsx",
-          "passingPath": "/home/adrian/projects/adrian-milsap/fixtures/audit-tiers/passing.example.tsx"
         },
         {
           "file": "fixtures/audit-tokens/",
