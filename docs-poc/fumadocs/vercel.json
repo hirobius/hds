@@ -2,5 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "bash vercel-build.sh",
   "installCommand": "echo 'no-op: buildCommand installs the HDS lib deps at repo root and this apps deps itself, in the right order'",
-  "outputDirectory": "out"
+  "outputDirectory": "out",
+  "cleanUrls": true
 }
