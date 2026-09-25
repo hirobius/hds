@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.16.0
+
+### Minor Changes
+
+- f20513f: - **New exports:** `HdsSelect` and its `SelectProps` are now reachable from the package root (hds#231), and `HdsDocsShell` is a new 3-column docs layout with independently sticky rails (hds#280).
+  - **New token:** `primitive.size.interactive.minCompact` (24px). Tokenizer's remove button now uses it, so it meets the WCAG 2.2 2.5.8 minimum target size (hds#287).
+  - **Fixes:** Radio's colour transition now actually animates (hds#257); StackedCardRail no longer breaks its styles when server-rendered (hds#284).
+  - **Deprecations:** `ComponentInstanceMatrix`, `FoundationSwatch`, `Sketch`, `Token` and `CinematicLink` are docs-internal and now warn once. They leave the published barrel in 1.0.0 (hds#232).
+  - **Smaller bundle:** the main entry drops from 202 to 183 kB gzip, because the docs-only token corpus no longer ships in the published library (hds#279).
+- Type-ramp prerequisites (hds#283, steps 0–3). **Removes six unused primitive tokens**: `--primitive-typography-size-2xs`, `--primitive-typography-weight-light`, `--primitive-typography-weight-semibold`, and `--primitive-typography-letterSpacing-tighter` / `-wide` / `-wider`. None had a consumer in hds, ops or concrete. Icons are now sized from `primitive.size.16/20/24` instead of the type scale; a `tracking-caps` utility replaces stock `tracking-wide` for eyebrow text; DateInput and DateTimeInput calendar buttons no longer collapse under flexbox; and a type specimen story documents the scale.
+
 ## 0.15.0
 
 ### Minor Changes
