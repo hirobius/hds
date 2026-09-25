@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "echo 'skipping default install — buildCommand installs both the HDS root workspace and this app, in that order (this app depends on the built HDS package via file:../..)'",
-  "buildCommand": "cd ../.. && corepack enable && pnpm install --frozen-lockfile && pnpm build:lib && cd docs-poc/nextra && npm install && npm run build",
+  "buildCommand": "bash vercel-build.sh",
   "outputDirectory": "out"
 }
