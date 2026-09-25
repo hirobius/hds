@@ -2,5 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "echo 'skipping default install — buildCommand installs both the HDS root workspace and this app, in that order (this app depends on the built HDS package via file:../..)'",
   "buildCommand": "bash vercel-build.sh",
-  "outputDirectory": "out"
+  "outputDirectory": "out",
+  "cleanUrls": true
 }
