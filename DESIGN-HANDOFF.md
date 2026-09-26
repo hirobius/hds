@@ -229,33 +229,33 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 <!-- auto:start:typography -->
 
-| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                                     |
-| ----------------- | ---------- | ------ | ----------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
-| `display`         | 72px       | 700    | 1           | -0.01em        | Display headline. 72px / Satoshi bold 700 / leading-none.                                                       |
-| `h1`              | 48px       | 700    | 1.25        | -0.01em        | Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.                                         |
-| `h2`              | 30px       | 700    | 42px        | -0.01em        | Secondary section headings (h2). Satoshi bold 700, 30px, line-height 42px.                                      |
-| `h3`              | 20px       | 700    | 28px        | 0em            | Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug.                                    |
-| `body`            | 17px       | 500    | 28px        | 0em            | Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure.                                           |
-| `ui`              | 15px       | 500    | 24px        | 0em            | UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px.                                      |
-| `caption`         | 12px       | 500    | 16px        | 0em            | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style. |
-| `eyebrow`         | 13px       | 500    | 20px        | 0.06em         | Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase.                                         |
-| `mono`            | 13px       | 400    | 20px        | 0em            | Monospace for code, token names, shortcuts. Geist Mono regular, 13px.                                           |
-| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                              |
+| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                                                                              |
+| ----------------- | ---------- | ------ | ----------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `display`         | 60px       | 700    | 1           | -0.01em        | Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).                                                                        |
+| `h1`              | 48px       | 700    | 1.25        | -0.01em        | Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).                                    |
+| `h2`              | 30px       | 700    | 40px        | -0.01em        | Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).                                             |
+| `h3`              | 20px       | 700    | 28px        | 0em            | Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).                                 |
+| `body`            | 16px       | 500    | 24px        | 0em            | Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).                                                           |
+| `ui`              | 14px       | 500    | 20px        | 0em            | UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).                                                      |
+| `caption`         | 12px       | 500    | 16px        | 0em            | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283). |
+| `eyebrow`         | 12px       | 500    | 16px        | 0.06em         | Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).                                                         |
+| `mono`            | 14px       | 400    | 20px        | 0em            | Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).                               |
+| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                                                                       |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
 
 ### Primitive font sizes
 
-- `primitive.typography.size.xs` = **13px**
-- `primitive.typography.size.sm` = **15px**
-- `primitive.typography.size.base` = **17px**
-- `primitive.typography.size.lg` = **20px**
-- `primitive.typography.size.xl` = **24px**
-- `primitive.typography.size.2xl` = **30px**
-- `primitive.typography.size.3xl` = **36px**
-- `primitive.typography.size.4xl` = **48px**
-- `primitive.typography.size.5xl` = **72px**
-- `primitive.typography.size.6xl` = **80px**
+- `primitive.typography.size.xs` = **12px**
+- `primitive.typography.size.sm` = **14px**
+- `primitive.typography.size.base` = **16px**
+- `primitive.typography.size.lg` = **18px**
+- `primitive.typography.size.xl` = **20px**
+- `primitive.typography.size.2xl` = **24px**
+- `primitive.typography.size.3xl` = **30px**
+- `primitive.typography.size.4xl` = **36px**
+- `primitive.typography.size.5xl` = **48px**
+- `primitive.typography.size.6xl` = **60px**
 <!-- auto:end:typography -->
 
 ---

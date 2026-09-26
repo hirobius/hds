@@ -497,64 +497,73 @@
         "$type": "dimension",
         "xs": {
           "$value": {
-            "value": 13,
+            "value": 12,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-xs (hds#283 ramp)."
         },
         "sm": {
           "$value": {
-            "value": 15,
+            "value": 14,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-sm (hds#283 ramp)."
         },
         "base": {
           "$value": {
-            "value": 17,
+            "value": 16,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-base (hds#283 ramp)."
         },
         "lg": {
           "$value": {
-            "value": 20,
+            "value": 18,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-lg (hds#283 ramp)."
         },
         "xl": {
           "$value": {
-            "value": 24,
+            "value": 20,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-xl (hds#283 ramp)."
         },
         "2xl": {
           "$value": {
-            "value": 30,
+            "value": 24,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-2xl (hds#283 ramp)."
         },
         "3xl": {
           "$value": {
-            "value": 36,
+            "value": 30,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-3xl (hds#283 ramp)."
         },
         "4xl": {
           "$value": {
-            "value": 48,
+            "value": 36,
             "unit": "px"
-          }
+          },
+          "$description": "Tailwind 4 default text-4xl (hds#283 ramp)."
         },
         "5xl": {
           "$value": {
-            "value": 72,
+            "value": 48,
             "unit": "px"
           },
-          "$description": "Swiss-canon display size. Static desktop value; fluid in theme.css."
+          "$description": "Tailwind 4 default text-5xl (hds#283 ramp)."
         },
         "6xl": {
           "$value": {
-            "value": 80,
+            "value": 60,
             "unit": "px"
-          }
+          },
+          "$description": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl."
         }
       },
       "weight": {
@@ -1615,28 +1624,28 @@
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.5xl}",
+          "fontSize": "{primitive.typography.size.6xl}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.none}"
         },
-        "$description": "Display headline. 72px / Satoshi bold 700 / leading-none.",
+        "$description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
         "$extensions": {
           "com.figma.variables": {
-            "fontSize": "clamp(40px, 8vw, 72px)",
-            "note": "Figma stores the 72px desktop-max static value. Browser CSS overrides with fluid scaling (40px min → 72px max). See src/styles/theme.css."
+            "fontSize": "clamp(40px, 8vw, 60px)",
+            "note": "Figma stores the 60px desktop-max static value. Browser CSS overrides with fluid scaling (40px min → 60px max). See src/styles/theme.css."
           }
         }
       },
       "h1": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.4xl}",
+          "fontSize": "{primitive.typography.size.5xl}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
-        "$description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.",
+        "$description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(32px, 6vw, 48px)",
@@ -1647,12 +1656,12 @@
       "h2": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.2xl}",
+          "fontSize": "{primitive.typography.size.3xl}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
-          "lineHeight": "42px"
+          "lineHeight": "40px"
         },
-        "$description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 42px.",
+        "$description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(24px, 3.5vw, 30px)",
@@ -1663,12 +1672,12 @@
       "h3": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.lg}",
+          "fontSize": "{primitive.typography.size.xl}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "28px"
         },
-        "$description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug.",
+        "$description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
         "$extensions": {
           "com.figma.variables": {
             "fontSize": "clamp(18px, 2vw, 20px)",
@@ -1682,13 +1691,13 @@
           "fontSize": "{primitive.typography.size.base}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
-          "lineHeight": "28px",
+          "lineHeight": "24px",
           "maxWidth": {
             "value": 60,
             "unit": "ch"
           }
         },
-        "$description": "Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure."
+        "$description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px)."
       },
       "ui": {
         "$value": {
@@ -1696,26 +1705,23 @@
           "fontSize": "{primitive.typography.size.sm}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
-          "lineHeight": "24px",
+          "lineHeight": "20px",
           "maxWidth": {
             "value": 60,
             "unit": "ch"
           }
         },
-        "$description": "UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px."
+        "$description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px)."
       },
       "caption": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
-          "fontSize": {
-            "value": 12,
-            "unit": "px"
-          },
+          "fontSize": "{primitive.typography.size.xs}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "16px"
         },
-        "$description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style."
+        "$description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283)."
       },
       "eyebrow": {
         "$value": {
@@ -1723,15 +1729,15 @@
           "fontSize": "{primitive.typography.size.xs}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.caps}",
-          "lineHeight": "20px",
+          "lineHeight": "16px",
           "textTransform": "uppercase"
         },
-        "$description": "Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase."
+        "$description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px)."
       },
       "mono": {
         "$value": {
           "fontFamily": "{primitive.typography.family.mono}",
-          "fontSize": "{primitive.typography.size.xs}",
+          "fontSize": "{primitive.typography.size.sm}",
           "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "20px",
@@ -1740,7 +1746,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Monospace for code, token names, shortcuts. Geist Mono regular, 13px."
+        "$description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px)."
       },
       "lineHeight": {
         "none": {
@@ -2224,7 +2230,7 @@
           "fontSize": {
             "$type": "dimension",
             "$value": "{primitive.typography.size.xs}",
-            "$description": "Small button label size (13px)."
+            "$description": "Small button label size (12px, hds#283: was 13px)."
           },
           "iconSize": {
             "$type": "dimension",
@@ -2256,7 +2262,7 @@
           "fontSize": {
             "$type": "dimension",
             "$value": "{primitive.typography.size.sm}",
-            "$description": "Medium button label size (15px)."
+            "$description": "Medium button label size (14px, hds#283: was 15px)."
           },
           "iconSize": {
             "$type": "dimension",
@@ -2288,7 +2294,7 @@
           "fontSize": {
             "$type": "dimension",
             "$value": "{primitive.typography.size.base}",
-            "$description": "Large button label size (17px)."
+            "$description": "Large button label size (16px, hds#283: was 17px)."
           },
           "iconSize": {
             "$type": "dimension",

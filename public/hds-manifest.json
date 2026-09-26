@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-26T02:38:22.559Z",
+  "generated": "2026-09-26T04:21:54.652Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -918,6 +918,7 @@
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
+        "src/index.ts",
         "src/stories/code-block.stories.tsx"
       ],
       "tokenMapping": {
@@ -1327,6 +1328,7 @@
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/doc-link-card.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/doc-link-card.stories.tsx"
       ],
       "variantAxes": [],
@@ -1357,6 +1359,7 @@
       },
       "consumers": [
         "src/app/components/not-found-pattern.tsx",
+        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx"
       ],
@@ -2535,6 +2538,7 @@
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
         "src/app/layouts/HdsDocsShell.tsx",
+        "src/index.ts",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx"
       ],
@@ -3963,6 +3967,7 @@
       },
       "consumers": [
         "src/app/components/activity-feed.test.tsx",
+        "src/index.ts",
         "src/stories/activity-feed.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4555,6 +4560,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/index.ts",
         "src/stories/stacked-card-rail.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5080,6 +5086,7 @@
         "src/app/components/toast.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
+        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx",
@@ -5579,6 +5586,7 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/asset-img.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6726,6 +6734,7 @@
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts",
+        "src/index.ts",
         "src/stories/form.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
@@ -7463,6 +7472,7 @@
       "consumers": [
         "src/app/components/side-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
+        "src/index.ts",
         "src/stories/side-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7511,6 +7521,7 @@
       "consumers": [
         "src/app/data/nav-model.test.ts",
         "src/app/lib/hds-search.ts",
+        "src/index.ts",
         "src/stories/command-palette.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7554,6 +7565,7 @@
       "consumers": [
         "src/app/components/image-lightbox.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/asset-img.stories.tsx",
         "src/stories/image-lightbox.stories.tsx"
       ],
@@ -7626,6 +7638,7 @@
       },
       "consumers": [
         "src/app/components/app-shell.test.tsx",
+        "src/index.ts",
         "src/stories/app-shell.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7665,6 +7678,7 @@
       },
       "consumers": [
         "src/app/components/file-input.test.tsx",
+        "src/index.ts",
         "src/stories/file-input.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7776,6 +7790,7 @@
       },
       "consumers": [
         "src/app/components/overflow-list.test.tsx",
+        "src/index.ts",
         "src/stories/overflow-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7938,6 +7953,7 @@
       "consumers": [
         "src/app/components/top-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
+        "src/index.ts",
         "src/stories/top-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7993,6 +8009,7 @@
       },
       "consumers": [
         "src/app/components/carousel.test.tsx",
+        "src/index.ts",
         "src/stories/carousel.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8043,6 +8060,7 @@
       },
       "consumers": [
         "src/app/components/stepper.test.tsx",
+        "src/index.ts",
         "src/stories/stepper.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8096,6 +8114,7 @@
       },
       "consumers": [
         "src/app/components/toolbar.test.tsx",
+        "src/index.ts",
         "src/stories/toolbar.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8138,6 +8157,7 @@
       },
       "consumers": [
         "src/app/components/tree-list.test.tsx",
+        "src/index.ts",
         "src/stories/tree-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8277,6 +8297,7 @@
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/date-time-input.tsx",
+        "src/index.ts",
         "src/stories/calendar.stories.tsx",
         "src/stories/date-input.stories.tsx",
         "src/stories/date-range-input.stories.tsx",
@@ -9444,6 +9465,7 @@
       "consumers": [
         "src/app/components/pin.tsx",
         "src/app/components/reveal.test.tsx",
+        "src/index.ts",
         "src/stories/patterns-scroll.stories.tsx",
         "src/stories/reveal.stories.tsx"
       ],
@@ -12442,62 +12464,71 @@
         "path": "primitive.typography.size.xs",
         "cssVar": "--primitive-typography-size-xs",
         "type": "dimension",
-        "value": "13px"
+        "description": "Tailwind 4 default text-xs (hds#283 ramp).",
+        "value": "12px"
       },
       {
         "path": "primitive.typography.size.sm",
         "cssVar": "--primitive-typography-size-sm",
         "type": "dimension",
-        "value": "15px"
+        "description": "Tailwind 4 default text-sm (hds#283 ramp).",
+        "value": "14px"
       },
       {
         "path": "primitive.typography.size.base",
         "cssVar": "--primitive-typography-size-base",
         "type": "dimension",
-        "value": "17px"
+        "description": "Tailwind 4 default text-base (hds#283 ramp).",
+        "value": "16px"
       },
       {
         "path": "primitive.typography.size.lg",
         "cssVar": "--primitive-typography-size-lg",
         "type": "dimension",
-        "value": "20px"
+        "description": "Tailwind 4 default text-lg (hds#283 ramp).",
+        "value": "18px"
       },
       {
         "path": "primitive.typography.size.xl",
         "cssVar": "--primitive-typography-size-xl",
         "type": "dimension",
-        "value": "24px"
+        "description": "Tailwind 4 default text-xl (hds#283 ramp).",
+        "value": "20px"
       },
       {
         "path": "primitive.typography.size.2xl",
         "cssVar": "--primitive-typography-size-2xl",
         "type": "dimension",
-        "value": "30px"
+        "description": "Tailwind 4 default text-2xl (hds#283 ramp).",
+        "value": "24px"
       },
       {
         "path": "primitive.typography.size.3xl",
         "cssVar": "--primitive-typography-size-3xl",
         "type": "dimension",
-        "value": "36px"
+        "description": "Tailwind 4 default text-3xl (hds#283 ramp).",
+        "value": "30px"
       },
       {
         "path": "primitive.typography.size.4xl",
         "cssVar": "--primitive-typography-size-4xl",
         "type": "dimension",
-        "value": "48px"
+        "description": "Tailwind 4 default text-4xl (hds#283 ramp).",
+        "value": "36px"
       },
       {
         "path": "primitive.typography.size.5xl",
         "cssVar": "--primitive-typography-size-5xl",
         "type": "dimension",
-        "description": "Swiss-canon display size. Static desktop value; fluid in theme.css.",
-        "value": "72px"
+        "description": "Tailwind 4 default text-5xl (hds#283 ramp).",
+        "value": "48px"
       },
       {
         "path": "primitive.typography.size.6xl",
         "cssVar": "--primitive-typography-size-6xl",
         "type": "dimension",
-        "value": "80px"
+        "description": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl.",
+        "value": "60px"
       },
       {
         "path": "primitive.typography.weight.regular",
@@ -13618,10 +13649,10 @@
         "path": "semantic.typography.display",
         "cssVar": "--semantic-typography-display",
         "type": "typography",
-        "description": "Display headline. 72px / Satoshi bold 700 / leading-none.",
+        "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "72px",
+          "fontSize": "60px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1"
@@ -13631,7 +13662,7 @@
         "path": "semantic.typography.h1",
         "cssVar": "--semantic-typography-h1",
         "type": "typography",
-        "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.",
+        "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "48px",
@@ -13644,20 +13675,20 @@
         "path": "semantic.typography.h2",
         "cssVar": "--semantic-typography-h2",
         "type": "typography",
-        "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 42px.",
+        "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "30px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
-          "lineHeight": "42px"
+          "lineHeight": "40px"
         }
       },
       {
         "path": "semantic.typography.h3",
         "cssVar": "--semantic-typography-h3",
         "type": "typography",
-        "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug.",
+        "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "20px",
@@ -13670,24 +13701,10 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure.",
+        "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "17px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
-          "lineHeight": "28px",
-          "maxWidth": "60ch"
-        }
-      },
-      {
-        "path": "semantic.typography.ui",
-        "cssVar": "--semantic-typography-ui",
-        "type": "typography",
-        "description": "UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px.",
-        "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "15px",
+          "fontSize": "16px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "24px",
@@ -13695,10 +13712,24 @@
         }
       },
       {
+        "path": "semantic.typography.ui",
+        "cssVar": "--semantic-typography-ui",
+        "type": "typography",
+        "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "20px",
+          "maxWidth": "60ch"
+        }
+      },
+      {
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style.",
+        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "12px",
@@ -13711,13 +13742,13 @@
         "path": "semantic.typography.eyebrow",
         "cssVar": "--semantic-typography-eyebrow",
         "type": "typography",
-        "description": "Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase.",
+        "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "13px",
+          "fontSize": "12px",
           "fontWeight": "500",
           "letterSpacing": "0.06em",
-          "lineHeight": "20px",
+          "lineHeight": "16px",
           "textTransform": "uppercase"
         }
       },
@@ -13725,10 +13756,10 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 13px.",
+        "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
         "composite": {
           "fontFamily": "\"Geist Mono\", \"Courier New\", monospace",
-          "fontSize": "13px",
+          "fontSize": "14px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "20px",
@@ -14176,7 +14207,7 @@
         "type": "dimension",
         "description": "Tag type size.",
         "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "13px"
+        "resolvedValue": "12px"
       },
       {
         "path": "component.tag.fontWeight",
@@ -14264,7 +14295,7 @@
         "type": "dimension",
         "description": "Badge type size.",
         "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "13px"
+        "resolvedValue": "12px"
       },
       {
         "path": "component.badge.fontWeight",
@@ -14402,9 +14433,9 @@
         "path": "component.button.size.sm.fontSize",
         "cssVar": "--component-button-size-sm-fontSize",
         "type": "dimension",
-        "description": "Small button label size (13px).",
+        "description": "Small button label size (12px, hds#283: was 13px).",
         "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "13px"
+        "resolvedValue": "12px"
       },
       {
         "path": "component.button.size.sm.iconSize",
@@ -14450,9 +14481,9 @@
         "path": "component.button.size.md.fontSize",
         "cssVar": "--component-button-size-md-fontSize",
         "type": "dimension",
-        "description": "Medium button label size (15px).",
+        "description": "Medium button label size (14px, hds#283: was 15px).",
         "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "15px"
+        "resolvedValue": "14px"
       },
       {
         "path": "component.button.size.md.iconSize",
@@ -14498,9 +14529,9 @@
         "path": "component.button.size.lg.fontSize",
         "cssVar": "--component-button-size-lg-fontSize",
         "type": "dimension",
-        "description": "Large button label size (17px).",
+        "description": "Large button label size (16px, hds#283: was 17px).",
         "alias": "{primitive.typography.size.base}",
-        "resolvedValue": "17px"
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.lg.iconSize",

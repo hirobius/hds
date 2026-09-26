@@ -38,15 +38,15 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
-| `semantic.typography.display` | 72px | 700 | Display headline |
+| `semantic.typography.display` | 60px | 700 | Display headline |
 | `semantic.typography.h1` | 48px | 700 | Primary section headings (h1) |
 | `semantic.typography.h2` | 30px | 700 | Secondary section headings (h2) |
 | `semantic.typography.h3` | 20px | 700 | Component and card headers (h3) |
-| `semantic.typography.body` | 17px | 500 | Body prose |
-| `semantic.typography.ui` | 15px | 500 | UI text for nav, labels, captions |
+| `semantic.typography.body` | 16px | 500 | Body prose |
+| `semantic.typography.ui` | 14px | 500 | UI text for nav, labels, captions |
 | `semantic.typography.caption` | 12px | 500 | Caption / helper text |
-| `semantic.typography.eyebrow` | 13px | 500 | Eyebrow / kicker label |
-| `semantic.typography.mono` | 13px | 400 | Monospace for code, token names, shortcuts |
+| `semantic.typography.eyebrow` | 12px | 500 | Eyebrow / kicker label |
+| `semantic.typography.mono` | 14px | 400 | Monospace for code, token names, shortcuts |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
 > Responsive `clamp()` overrides live in `src/styles/theme.css`; tokens store the desktop-max static value.

@@ -53,8 +53,8 @@
   /* -- Responsive typography overrides ---------------------------------------- */
   /* The token JSON stores static (desktop-max) font sizes for Figma compatibility. */
   /* These clamp() overrides restore fluid responsive scaling in the browser.      */
-  /* 10t-5: Swiss-canon ramp (display 72px, h1 48px, h2 30px, h3 20px). */
-  --semantic-typography-display-font-size: clamp(40px, 8vw, 72px);
+  /* 10t-5: Swiss-canon ramp (display 60px, h1 48px, h2 30px, h3 20px). hds#283: display was 72px. */
+  --semantic-typography-display-font-size: clamp(40px, 8vw, 60px);
   --semantic-typography-h1-font-size: clamp(32px, 6vw, 48px);
   --semantic-typography-h2-font-size: clamp(24px, 3.5vw, 30px);
   --semantic-typography-h3-font-size: clamp(18px, 2vw, 20px);
