@@ -595,15 +595,7 @@
       },
       {
         "name": "HdsRadio",
-        "filePath": "src/app/components/controls.tsx"
-      },
-      {
-        "name": "HdsRadio",
         "filePath": "src/app/components/radio.tsx"
-      },
-      {
-        "name": "HdsSelect",
-        "filePath": "src/app/components/controls.tsx"
       },
       {
         "name": "HdsSelect",
@@ -615,15 +607,7 @@
       },
       {
         "name": "HdsSlider",
-        "filePath": "src/app/components/controls.tsx"
-      },
-      {
-        "name": "HdsSlider",
         "filePath": "src/app/components/slider.tsx"
-      },
-      {
-        "name": "HdsToggle",
-        "filePath": "src/app/components/controls.tsx"
       },
       {
         "name": "HdsToggle",
@@ -4623,6 +4607,7 @@
         "src/app/components/card.tsx",
         "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/dialog.tsx",
+        "src/app/components/doc-page-header.test.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/form.tsx",
@@ -5939,7 +5924,6 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
@@ -6007,7 +5991,6 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/select.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/select.stories.tsx"
@@ -6072,7 +6055,6 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/slider.stories.tsx"
       ],
@@ -6139,7 +6121,6 @@
       },
       "consumers": [
         "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.test.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -11409,27 +11390,6 @@
       "componentProperties": [],
       "figmaLink": null
     },
-    "MorphCard": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/morph-card.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "MorphCard",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "Tooltip": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -11485,27 +11445,6 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": true,
-      "figmaLink": null
-    },
-    "CascadeText": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/CascadeText.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "CascadeText",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
       "figmaLink": null
     },
     "DocPageSpec": {
@@ -11777,7 +11716,9 @@
         "exportName": "DocPageHeader",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/doc-page-header.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []
