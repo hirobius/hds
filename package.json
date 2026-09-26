@@ -86,6 +86,11 @@
       "import": "./dist/scroll.js",
       "default": "./dist/scroll.js"
     },
+    "./patterns": {
+      "types": "./dist/types/src/patterns.d.ts",
+      "import": "./dist/patterns.js",
+      "default": "./dist/patterns.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [

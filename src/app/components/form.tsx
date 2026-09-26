@@ -47,6 +47,8 @@ export type FormProps = React.FormHTMLAttributes<HTMLFormElement>;
  * Tagged per-export: FormField and FormFieldShell share this module and have no
  * Figma node, so a file-level @figma would claim this one for all three.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94
+ * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
+ * @removeIn 1.0.0
  */
 export const Form = React.forwardRef<HTMLFormElement, FormProps>(function Form(
   { className, ...props },

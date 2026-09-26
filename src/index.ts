@@ -8,6 +8,12 @@
 //
 // Validators, scripts, figma-agent-plugin sources, and other utility-tier
 // modules are marked @internal and are NOT part of this surface.
+//
+// hds#254 (ratified 2026-09-26): the 22 `pattern`-tier components below are
+// ALSO available from `@hirobius/design-system/patterns` (src/patterns.ts).
+// Each carries a `@deprecated` / `@removeIn 1.0.0` JSDoc notice — the root
+// re-export here is kept for one minor, then dropped at the next major once
+// ops has a codemod. Prefer the `/patterns` subpath in new code.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Side-effect import: design system base styles (tokens + theme + utilities)

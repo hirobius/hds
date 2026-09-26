@@ -52,7 +52,11 @@ export interface FileInputProps extends Omit<
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** A dashed dropzone that opens the native file picker or accepts a drag-and-drop. */
+/**
+ * A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
+ * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
+ * @removeIn 1.0.0
+ */
 export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
   {
     onFiles,

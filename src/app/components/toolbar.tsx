@@ -96,6 +96,8 @@ interface ToolbarComponent extends React.FC<React.ComponentProps<typeof ToolbarP
  * Toolbar root. Groups related controls with a single roving tab-stop.
  * Supports the native `orientation` prop (`horizontal` | `vertical`).
  * @public
+ * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
+ * @removeIn 1.0.0
  */
 export const Toolbar = (({
   className,

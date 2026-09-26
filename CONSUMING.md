@@ -48,6 +48,7 @@ Available subpaths:
 | `@hirobius/design-system/contexts`   | Theme / language / tenant / font providers                                                                                                                                                                                                  |
 | `@hirobius/design-system/brand`      | Palette → HDS-semantic overlay bridge (static / SSR / Astro; see [`docs/CONSUMING.md` §12](docs/CONSUMING.md#12-static-astro-sites--the-brand-overlay-bridge))                                                                              |
 | `@hirobius/design-system/scroll`     | Opt-in scroll-motion primitives — `SmoothScroll` (Lenis), `useScrollProgress` (Motion). Requires the optional peer `lenis`. See [`docs/CONSUMING.md` §13](docs/CONSUMING.md#13-scroll-motion-the-scroll-subpath)                            |
+| `@hirobius/design-system/patterns`   | The 22 `pattern`-tier components (nav shells, feeds, rails, pickers — see hds#254). Also still re-exported from the root for one minor (`@deprecated`, removed at the next major) — prefer this subpath in new code.                        |
 | `@hirobius/design-system/static.css` | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React. See [`docs/CONSUMING.md` §14](docs/CONSUMING.md#14-css-only-static-primitives--badgecardalertdividertag-with-no-react) |
 
 The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,
@@ -69,7 +70,7 @@ aliases, composition bases, and the props of sub-components the package does not
 export.
 
 **Next.js App Router / React Server Components.** Every React-bearing entry — the
-main barrel, `contexts`, `form`, `scroll` — ships with `'use client'`, so you can
+main barrel, `contexts`, `form`, `scroll`, `patterns` — ships with `'use client'`, so you can
 import components straight into a Server Component and they render as client
 components with no wrapper. The framework-free subpaths — `tokens`, `cn`,
 `manifest`, `brand`, `mui` — deliberately carry **no** directive: they have no

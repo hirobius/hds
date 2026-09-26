@@ -51,7 +51,11 @@ export interface AppShellProps extends Omit<React.HTMLAttributes<HTMLDivElement>
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`. */
+/**
+ * Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.
+ * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
+ * @removeIn 1.0.0
+ */
 export const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function AppShell(
   { className, header, sidebar, sidebarWidth = 'md', children, ...rest },
   ref,

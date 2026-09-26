@@ -50,7 +50,11 @@ export interface PageProps {
   className?: string;
 }
 
-/** @public */
+/**
+ * @public
+ * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. `ops` is a current importer of this component — its codemod is tracked under hds#124 before this is dropped.
+ * @removeIn 1.0.0
+ */
 export function Page({
   children,
   maxWidth = 'max',

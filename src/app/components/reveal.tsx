@@ -29,7 +29,11 @@ export interface RevealProps {
   as?: React.ElementType;
 }
 
-/** @public */
+/**
+ * @public
+ * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
+ * @removeIn 1.0.0
+ */
 export const Reveal = React.forwardRef<HTMLDivElement, RevealProps>(function Reveal(
   { children, animation = 'fade-up', className, style, as: Tag = 'div' },
   ref,
