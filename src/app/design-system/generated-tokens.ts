@@ -278,6 +278,13 @@ export const tokens = {
       }
     },
     space: {
+      scale: {
+        xs: "var(--semantic-space-scale-xs)",
+        sm: "var(--semantic-space-scale-sm)",
+        md: "var(--semantic-space-scale-md)",
+        lg: "var(--semantic-space-scale-lg)",
+        xl: "var(--semantic-space-scale-xl)"
+      },
       subgrid: {
         hairline: "var(--semantic-space-subgrid-hairline)",
         xs: "var(--semantic-space-subgrid-xs)",

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-24T18:19:57.948Z",
+  "generated": "2026-09-26T01:57:51.126Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -13342,6 +13342,46 @@
         }
       },
       {
+        "path": "semantic.space.scale.xs",
+        "cssVar": "--semantic-space-scale-xs",
+        "type": "dimension",
+        "description": "8px — smallest step. Same value as component.gap (deprecated alias).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.space.scale.sm",
+        "cssVar": "--semantic-space-scale-sm",
+        "type": "dimension",
+        "description": "16px — same value as layout.tight (deprecated alias).",
+        "alias": "{primitive.space.4}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.space.scale.md",
+        "cssVar": "--semantic-space-scale-md",
+        "type": "dimension",
+        "description": "24px — same value as layout.normal / layout.gutter / component.padding (deprecated aliases; hds#206 de-aliases this triplet down to this one canonical token).",
+        "alias": "{primitive.space.6}",
+        "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.space.scale.lg",
+        "cssVar": "--semantic-space-scale-lg",
+        "type": "dimension",
+        "description": "32px — same value as layout.inset (deprecated alias).",
+        "alias": "{primitive.space.8}",
+        "resolvedValue": "32px"
+      },
+      {
+        "path": "semantic.space.scale.xl",
+        "cssVar": "--semantic-space-scale-xl",
+        "type": "dimension",
+        "description": "48px — same value as layout.spacious (deprecated alias).",
+        "alias": "{primitive.space.12}",
+        "resolvedValue": "48px"
+      },
+      {
         "path": "semantic.space.subgrid.hairline",
         "cssVar": "--semantic-space-subgrid-hairline",
         "type": "dimension",
@@ -13369,7 +13409,7 @@
         "path": "semantic.space.component.gap",
         "cssVar": "--semantic-space-component-gap",
         "type": "dimension",
-        "description": "8px label↔input rhythm and closely coupled control spacing.",
+        "description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -13385,7 +13425,7 @@
         "path": "semantic.space.component.padding",
         "cssVar": "--semantic-space-component-padding",
         "type": "dimension",
-        "description": "24px default inset for cards, forms, panels, and grouped surfaces.",
+        "description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -13393,7 +13433,7 @@
         "path": "semantic.space.layout.tight",
         "cssVar": "--semantic-space-layout-tight",
         "type": "dimension",
-        "description": "16px default HdsStack gap and inter-component spacing.",
+        "description": "16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet.",
         "alias": "{primitive.space.4}",
         "resolvedValue": "16px"
       },
@@ -13401,7 +13441,7 @@
         "path": "semantic.space.layout.normal",
         "cssVar": "--semantic-space-layout-normal",
         "type": "dimension",
-        "description": "24px column gutters and sidebar gutter spacing.",
+        "description": "24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -13409,7 +13449,7 @@
         "path": "semantic.space.layout.gutter",
         "cssVar": "--semantic-space-layout-gutter",
         "type": "dimension",
-        "description": "24px column and region gutters (alias for layout.normal).",
+        "description": "24px column and region gutters (alias for layout.normal). DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -13417,7 +13457,7 @@
         "path": "semantic.space.layout.inset",
         "cssVar": "--semantic-space-layout-inset",
         "type": "dimension",
-        "description": "32px major block separation and inset inter-component gaps.",
+        "description": "32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet.",
         "alias": "{primitive.space.8}",
         "resolvedValue": "32px"
       },
@@ -13425,7 +13465,7 @@
         "path": "semantic.space.layout.spacious",
         "cssVar": "--semantic-space-layout-spacious",
         "type": "dimension",
-        "description": "48px section break and whitespace separator between major content blocks.",
+        "description": "48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
         "alias": "{primitive.space.12}",
         "resolvedValue": "48px"
       },

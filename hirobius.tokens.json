@@ -1434,7 +1434,30 @@
     },
     "space": {
       "$type": "dimension",
-      "$description": "Semantic spacing tiers: subgrid, component, layout, section.",
+      "$description": "Semantic spacing tiers: subgrid, component, layout, section, scale.",
+      "scale": {
+        "$description": "hds#206 — the canonical spacing vocabulary. One monotonic, single-family t-shirt scale (xs < sm < md < lg < xl) for the `p`/`m`/`gap` family of props on Box/Stack. Superseds the four un-ordered gap families below (subgrid/component/layout/section) and the 24px alias triplet (layout.normal / layout.gutter / component.padding) for NEW usage; those remain live, deprecated aliases until the consumer codemod (hds#206 remaining work) migrates callers and removes them — not a breaking change yet.",
+        "xs": {
+          "$value": "{primitive.space.2}",
+          "$description": "8px — smallest step. Same value as component.gap (deprecated alias)."
+        },
+        "sm": {
+          "$value": "{primitive.space.4}",
+          "$description": "16px — same value as layout.tight (deprecated alias)."
+        },
+        "md": {
+          "$value": "{primitive.space.6}",
+          "$description": "24px — same value as layout.normal / layout.gutter / component.padding (deprecated aliases; hds#206 de-aliases this triplet down to this one canonical token)."
+        },
+        "lg": {
+          "$value": "{primitive.space.8}",
+          "$description": "32px — same value as layout.inset (deprecated alias)."
+        },
+        "xl": {
+          "$value": "{primitive.space.12}",
+          "$description": "48px — same value as layout.spacious (deprecated alias)."
+        }
+      },
       "subgrid": {
         "hairline": {
           "$value": "{primitive.space.px1}",
@@ -1452,7 +1475,7 @@
       "component": {
         "gap": {
           "$value": "{primitive.space.2}",
-          "$description": "8px label↔input rhythm and closely coupled control spacing."
+          "$description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet."
         },
         "medium": {
           "$value": "{primitive.space.3}",
@@ -1460,29 +1483,29 @@
         },
         "padding": {
           "$value": "{primitive.space.6}",
-          "$description": "24px default inset for cards, forms, panels, and grouped surfaces."
+          "$description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet."
         }
       },
       "layout": {
         "tight": {
           "$value": "{primitive.space.4}",
-          "$description": "16px default HdsStack gap and inter-component spacing."
+          "$description": "16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet."
         },
         "normal": {
           "$value": "{primitive.space.6}",
-          "$description": "24px column gutters and sidebar gutter spacing."
+          "$description": "24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet."
         },
         "gutter": {
           "$value": "{primitive.space.6}",
-          "$description": "24px column and region gutters (alias for layout.normal)."
+          "$description": "24px column and region gutters (alias for layout.normal). DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet."
         },
         "inset": {
           "$value": "{primitive.space.8}",
-          "$description": "32px major block separation and inset inter-component gaps."
+          "$description": "32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet."
         },
         "spacious": {
           "$value": "{primitive.space.12}",
-          "$description": "48px section break and whitespace separator between major content blocks."
+          "$description": "48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet."
         }
       },
       "section": {

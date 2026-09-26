@@ -215,6 +215,11 @@ declare module 'react' {
     '--semantic-color-feedback-bg-warning'?: string | undefined;
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
+    '--semantic-space-scale-xs'?: string | undefined;
+    '--semantic-space-scale-sm'?: string | undefined;
+    '--semantic-space-scale-md'?: string | undefined;
+    '--semantic-space-scale-lg'?: string | undefined;
+    '--semantic-space-scale-xl'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;

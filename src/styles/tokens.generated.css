@@ -222,6 +222,11 @@
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-50);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-50);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
+  --semantic-space-scale-xs: var(--primitive-space-2);
+  --semantic-space-scale-sm: var(--primitive-space-4);
+  --semantic-space-scale-md: var(--primitive-space-6);
+  --semantic-space-scale-lg: var(--primitive-space-8);
+  --semantic-space-scale-xl: var(--primitive-space-12);
   --semantic-space-subgrid-hairline: var(--primitive-space-px1);
   --semantic-space-subgrid-xs: var(--primitive-space-px2);
   --semantic-space-subgrid-gap: var(--primitive-space-1);
