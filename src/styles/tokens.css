@@ -184,6 +184,7 @@
   /* semantic.motion.exit */
   --hds-motion-exit-duration: var(--primitive-duration-instant);
   --hds-motion-exit-easing: var(--primitive-easing-accelerate);
+  --semantic-motion-distance: var(--primitive-space-6);
   --semantic-color-surface-page: var(--primitive-color-neutral-white);
   --semantic-color-surface-raised: var(--primitive-color-neutral-50);
   --semantic-color-surface-overlay: var(--primitive-color-neutral-100);
@@ -327,6 +328,7 @@
   --semantic-accent-contentHover: var(--primitive-color-neutral-700);
   --semantic-accent-subtle: var(--primitive-color-neutral-100);
   --semantic-radius-action: var(--primitive-radius-8);
+  --semantic-radius-control: var(--primitive-radius-4);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);
@@ -348,6 +350,17 @@
   --semantic-elevation-overlay-surface: var(--semantic-color-surface-overlay);
   --semantic-elevation-overlay-shadow: var(--semantic-shadow-overlay);
   --semantic-elevation-overlay-border: transparent;
+  --semantic-size-control-sm: var(--primitive-size-8);
+  --semantic-size-control-md: var(--primitive-size-20);
+  --semantic-size-control-lg: var(--primitive-size-32);
+  --semantic-size-icon-sm: var(--primitive-size-16);
+  --semantic-size-icon-md: var(--primitive-size-20);
+  --semantic-size-icon-lg: var(--primitive-size-24);
+  --semantic-size-avatar: var(--primitive-size-40);
+  --semantic-size-row-compact: var(--primitive-size-40);
+  --semantic-size-row-comfortable: var(--primitive-size-48);
+  --semantic-zIndex-control: var(--primitive-zIndex-10);
+  --semantic-zIndex-sticky: var(--primitive-zIndex-100);
 
   /* ── Component ─────────────────────────────────────────────────────────── */
   --component-nav-bg: var(--semantic-color-surface-page);

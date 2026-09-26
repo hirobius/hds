@@ -120,7 +120,8 @@ const radioRingVariants = cva(
 const radioDotVariants = cva(
   // `inline-block` is the other half of the #225 fix: the dot's declared
   // width/height are ignored under the browser's default `display: inline`.
-  'inline-block w-[var(--primitive-size-8)] h-[var(--primitive-size-8)] rounded-[var(--primitive-radius-full)]',
+  // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186/hds#242
+  'inline-block w-[var(--semantic-size-control-sm)] h-[var(--semantic-size-control-sm)] rounded-[var(--primitive-radius-full)]',
   {
     variants: {
       disabled: {

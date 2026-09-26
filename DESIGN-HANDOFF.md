@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 404 tokens, aliases, and TS refs in one shot.
+Checks all 417 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -443,12 +443,13 @@ Or via `useTheme().setDensity('compact')`
 
 ### Semantic motion intents
 
-| Token                        | Duration | Easing                          | Purpose                                                                         |
-| ---------------------------- | -------- | ------------------------------- | ------------------------------------------------------------------------------- |
-| `semantic.motion.productive` | `150ms`  | `{primitive.easing.decelerate}` | For micro-interactions and status changes. No deformation.                      |
-| `semantic.motion.expressive` | `250ms`  | `{primitive.easing.elastic}`    | For teaching moments and significant UI entries. Includes physics-based squish. |
-| `semantic.motion.spatial`    | `400ms`  | `{primitive.easing.emphasized}` | For elements traveling long distances across the viewport.                      |
-| `semantic.motion.exit`       | `100ms`  | `{primitive.easing.accelerate}` | For elements being removed from the DOM.                                        |
+| Token                        | Duration | Easing                          | Purpose                                                                                                                                                                                |
+| ---------------------------- | -------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.motion.productive` | `150ms`  | `{primitive.easing.decelerate}` | For micro-interactions and status changes. No deformation.                                                                                                                             |
+| `semantic.motion.expressive` | `250ms`  | `{primitive.easing.elastic}`    | For teaching moments and significant UI entries. Includes physics-based squish.                                                                                                        |
+| `semantic.motion.spatial`    | `400ms`  | `{primitive.easing.emphasized}` | For elements traveling long distances across the viewport.                                                                                                                             |
+| `semantic.motion.exit`       | `100ms`  | `{primitive.easing.accelerate}` | For elements being removed from the DOM.                                                                                                                                               |
+| `semantic.motion.distance`   | ``       | ``                              | Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242). |
 
 <!-- auto:end:motion -->
 

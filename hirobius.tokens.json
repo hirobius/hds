@@ -968,6 +968,11 @@
           "easing": "{primitive.easing.accelerate}"
         },
         "$description": "For elements being removed from the DOM."
+      },
+      "distance": {
+        "$type": "dimension",
+        "$value": "{primitive.space.6}",
+        "$description": "Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242)."
       }
     },
     "color": {
@@ -1867,6 +1872,11 @@
         "$type": "dimension",
         "$value": "{primitive.radius.8}",
         "$description": "Corner radius for action elements (buttons, inputs, badges); Tailwind rounded-md resolves here. Override role.radius to reshape the system."
+      },
+      "control": {
+        "$type": "dimension",
+        "$value": "{primitive.radius.4}",
+        "$description": "Corner radius for small interactive control glyphs (e.g. checkbox glyph box) that are not fully round and not the standard action radius. Real design-scale value, distinct from semantic.radius.action (hds#242)."
       }
     },
     "borderWidth": {
@@ -1929,6 +1939,67 @@
           "border": null
         },
         "$description": "Modal, dialog, and drawer elevation."
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "$description": "Semantic sizing roles for control glyphs, avatars, and table rows. Distinct roles may share a primitive value today by coincidence; keep them separate so one can change without dragging the other (hds#242).",
+      "control": {
+        "$description": "Interactive control glyph/element sizing (checkbox glyph box, radio dot, slider track/fill, code-block copy-button-matched footprint).",
+        "sm": {
+          "$value": "{primitive.size.8}",
+          "$description": "Small control element — radio dot, slider fill bar height."
+        },
+        "md": {
+          "$value": "{primitive.size.20}",
+          "$description": "Medium control element — checkbox glyph box, slider track wrapper height."
+        },
+        "lg": {
+          "$value": "{primitive.size.32}",
+          "$description": "Large control footprint — code-block inline-wrapper min-height / copy-button-matched pre padding."
+        }
+      },
+      "icon": {
+        "$description": "Reserved icon-size role, parallel to the existing --hds-icon-* bridge (src/styles/theme.css), for future direct semantic.size.icon consumers.",
+        "sm": {
+          "$value": "{primitive.size.16}",
+          "$description": "Small icon box — matches --hds-icon-small."
+        },
+        "md": {
+          "$value": "{primitive.size.20}",
+          "$description": "Medium icon box — matches --hds-icon-medium."
+        },
+        "lg": {
+          "$value": "{primitive.size.24}",
+          "$description": "Large icon box — matches --hds-icon-large."
+        }
+      },
+      "avatar": {
+        "$value": "{primitive.size.40}",
+        "$description": "Avatar diagonal (width/height) for activity-feed and similar identity glyphs. Coincides in pixels with row.compact today; kept as a separate role per hds#242 so either can change independently."
+      },
+      "row": {
+        "$description": "Table row minimum height by density.",
+        "compact": {
+          "$value": "{primitive.size.40}",
+          "$description": "Compact-density row minimum height."
+        },
+        "comfortable": {
+          "$value": "{primitive.size.48}",
+          "$description": "Comfortable-density row minimum height."
+        }
+      }
+    },
+    "zIndex": {
+      "$type": "number",
+      "$description": "Named stacking layers, aliasing the numeric primitive.zIndex scale (hds#242).",
+      "control": {
+        "$value": "{primitive.zIndex.10}",
+        "$description": "Raises an interactive control (e.g. a native range input) above its visual decoration for hit-testing."
+      },
+      "sticky": {
+        "$value": "{primitive.zIndex.100}",
+        "$description": "Sticky-positioned elements, such as a table header row."
       }
     }
   },

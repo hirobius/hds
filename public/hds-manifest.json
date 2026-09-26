@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-26T01:57:51.126Z",
+  "generated": "2026-09-26T02:38:22.559Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -6195,6 +6195,7 @@
         "src/app/components/avatar-group.test.tsx",
         "src/app/components/avatar-group.tsx",
         "src/app/components/avatar.test.tsx",
+        "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/avatar-group.stories.tsx",
         "src/stories/avatar.stories.tsx"
       ],
@@ -12903,6 +12904,14 @@
         }
       },
       {
+        "path": "semantic.motion.distance",
+        "cssVar": "--semantic-motion-distance",
+        "type": "dimension",
+        "description": "Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242).",
+        "alias": "{primitive.space.6}",
+        "resolvedValue": "24px"
+      },
+      {
         "path": "semantic.color.surface.page",
         "cssVar": "--semantic-color-surface-page",
         "type": "color",
@@ -13863,6 +13872,14 @@
         "resolvedValue": "8px"
       },
       {
+        "path": "semantic.radius.control",
+        "cssVar": "--semantic-radius-control",
+        "type": "dimension",
+        "description": "Corner radius for small interactive control glyphs (e.g. checkbox glyph box) that are not fully round and not the standard action radius. Real design-scale value, distinct from semantic.radius.action (hds#242).",
+        "alias": "{primitive.radius.4}",
+        "resolvedValue": "4px"
+      },
+      {
         "path": "semantic.borderWidth.default",
         "cssVar": "--semantic-borderWidth-default",
         "type": "dimension",
@@ -13966,6 +13983,94 @@
           },
           "border": null
         }
+      },
+      {
+        "path": "semantic.size.control.sm",
+        "cssVar": "--semantic-size-control-sm",
+        "type": "dimension",
+        "description": "Small control element — radio dot, slider fill bar height.",
+        "alias": "{primitive.size.8}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.size.control.md",
+        "cssVar": "--semantic-size-control-md",
+        "type": "dimension",
+        "description": "Medium control element — checkbox glyph box, slider track wrapper height.",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
+      },
+      {
+        "path": "semantic.size.control.lg",
+        "cssVar": "--semantic-size-control-lg",
+        "type": "dimension",
+        "description": "Large control footprint — code-block inline-wrapper min-height / copy-button-matched pre padding.",
+        "alias": "{primitive.size.32}",
+        "resolvedValue": "32px"
+      },
+      {
+        "path": "semantic.size.icon.sm",
+        "cssVar": "--semantic-size-icon-sm",
+        "type": "dimension",
+        "description": "Small icon box — matches --hds-icon-small.",
+        "alias": "{primitive.size.16}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.size.icon.md",
+        "cssVar": "--semantic-size-icon-md",
+        "type": "dimension",
+        "description": "Medium icon box — matches --hds-icon-medium.",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
+      },
+      {
+        "path": "semantic.size.icon.lg",
+        "cssVar": "--semantic-size-icon-lg",
+        "type": "dimension",
+        "description": "Large icon box — matches --hds-icon-large.",
+        "alias": "{primitive.size.24}",
+        "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.size.avatar",
+        "cssVar": "--semantic-size-avatar",
+        "type": "dimension",
+        "description": "Avatar diagonal (width/height) for activity-feed and similar identity glyphs. Coincides in pixels with row.compact today; kept as a separate role per hds#242 so either can change independently.",
+        "alias": "{primitive.size.40}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.row.compact",
+        "cssVar": "--semantic-size-row-compact",
+        "type": "dimension",
+        "description": "Compact-density row minimum height.",
+        "alias": "{primitive.size.40}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.row.comfortable",
+        "cssVar": "--semantic-size-row-comfortable",
+        "type": "dimension",
+        "description": "Comfortable-density row minimum height.",
+        "alias": "{primitive.size.48}",
+        "resolvedValue": "48px"
+      },
+      {
+        "path": "semantic.zIndex.control",
+        "cssVar": "--semantic-zIndex-control",
+        "type": "number",
+        "description": "Raises an interactive control (e.g. a native range input) above its visual decoration for hit-testing.",
+        "alias": "{primitive.zIndex.10}",
+        "resolvedValue": "10"
+      },
+      {
+        "path": "semantic.zIndex.sticky",
+        "cssVar": "--semantic-zIndex-sticky",
+        "type": "number",
+        "description": "Sticky-positioned elements, such as a table header row.",
+        "alias": "{primitive.zIndex.100}",
+        "resolvedValue": "100"
       }
     ],
     "component": [

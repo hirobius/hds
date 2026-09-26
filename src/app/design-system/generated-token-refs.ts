@@ -251,7 +251,8 @@ export const tokenRefs = {
       exit: {
         duration: "var(--hds-motion-exit-duration)",
         easing: "var(--hds-motion-exit-easing)"
-      }
+      },
+      distance: "var(--semantic-motion-distance)"
     },
     color: {
       surface: {
@@ -457,7 +458,8 @@ export const tokenRefs = {
       subtle: "var(--semantic-accent-subtle)"
     },
     radius: {
-      action: "var(--semantic-radius-action)"
+      action: "var(--semantic-radius-action)",
+      control: "var(--semantic-radius-control)"
     },
     borderWidth: {
       default: "var(--semantic-borderWidth-default)",
@@ -489,6 +491,27 @@ export const tokenRefs = {
         shadow: "var(--semantic-elevation-overlay-shadow)",
         border: "var(--semantic-elevation-overlay-border)"
       }
+    },
+    size: {
+      control: {
+        sm: "var(--semantic-size-control-sm)",
+        md: "var(--semantic-size-control-md)",
+        lg: "var(--semantic-size-control-lg)"
+      },
+      icon: {
+        sm: "var(--semantic-size-icon-sm)",
+        md: "var(--semantic-size-icon-md)",
+        lg: "var(--semantic-size-icon-lg)"
+      },
+      avatar: "var(--semantic-size-avatar)",
+      row: {
+        compact: "var(--semantic-size-row-compact)",
+        comfortable: "var(--semantic-size-row-comfortable)"
+      }
+    },
+    zIndex: {
+      control: "var(--semantic-zIndex-control)",
+      sticky: "var(--semantic-zIndex-sticky)"
     }
   },
   component: {

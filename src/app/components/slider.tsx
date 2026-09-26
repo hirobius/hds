@@ -66,12 +66,12 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
         </motion.span>
       </div>
       {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven height; var()-based, no Tailwind-theme utility exists */}
-      <motion.div className="relative h-[var(--primitive-size-20)] grid items-center">
+      <motion.div className="relative h-[var(--semantic-size-control-md)] grid items-center">
         <Surface
           aria-hidden="true"
           padding="component"
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven inset/height/color; var()-based, no Tailwind-theme utility exists
-          className="absolute [inset-inline:0] top-1/2 h-[var(--primitive-size-8)] -translate-y-1/2 bg-[var(--semantic-color-border-default)] overflow-hidden"
+          className="absolute [inset-inline:0] top-1/2 h-[var(--semantic-size-control-sm)] -translate-y-1/2 bg-[var(--semantic-color-border-default)] overflow-hidden"
         >
           <motion.div
             animate={{
@@ -100,7 +100,7 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
           onPointerCancel={() => setIsActive(false)}
           onBlur={() => setIsActive(false)}
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven accent-color/z-index; var()-based, no Tailwind-theme utility exists
-          className="hds-focus hds-slider-input w-full h-full block m-0 bg-transparent accent-[var(--semantic-color-surface-accent)] cursor-pointer relative z-[var(--primitive-zIndex-10)]"
+          className="hds-focus hds-slider-input w-full h-full block m-0 bg-transparent accent-[var(--semantic-color-surface-accent)] cursor-pointer relative z-[var(--semantic-zIndex-control)]"
         />
       </motion.div>
     </div>

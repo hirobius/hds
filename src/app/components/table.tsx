@@ -29,11 +29,13 @@ const tableHeaderCellVariants = cva(
         right: 'justify-end text-right',
       },
       density: {
-        comfortable: 'min-h-[var(--primitive-size-48)] py-[var(--primitive-space-3)]',
-        compact: 'min-h-[var(--primitive-size-40)] py-[var(--semantic-space-component-gap)]',
+        comfortable:
+          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
+        compact:
+          'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-component-gap)]',
       },
       sticky: {
-        true: 'sticky top-0 z-[var(--primitive-zIndex-100)]',
+        true: 'sticky top-0 z-[var(--semantic-zIndex-sticky)]',
         false: '',
       },
     },
@@ -50,8 +52,9 @@ const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-com
       right: 'justify-end text-right',
     },
     density: {
-      comfortable: 'min-h-[var(--primitive-size-48)] py-[var(--primitive-space-3)]',
-      compact: 'min-h-[var(--primitive-size-40)] py-[var(--semantic-space-component-gap)]',
+      comfortable:
+        'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
+      compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-component-gap)]',
     },
     divider: {
       true: '[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
