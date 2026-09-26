@@ -135,7 +135,6 @@
     "SideNav",
     "Skeleton",
     "Sketch",
-    "SpecimenBlock",
     "Spinner",
     "Stack",
     "StackedCardRail",
@@ -729,7 +728,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
@@ -868,7 +866,6 @@
       },
       "consumers": [
         "src/app/components/animated-label.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/cinematic-link.stories.tsx"
       ],
       "tokenMapping": {},
@@ -916,7 +913,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/index.ts",
         "src/stories/code-block.stories.tsx"
@@ -1067,7 +1063,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
         "src/stories/disclosure.stories.tsx",
@@ -1192,7 +1187,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/divider.stories.tsx",
@@ -1325,7 +1319,6 @@
       "figmaId": null,
       "figmaLink": null,
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/doc-link-card.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
@@ -1455,7 +1448,6 @@
         "sizing": "full"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/foundation-swatch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -1588,7 +1580,6 @@
       "consumers": [
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/segmented-control.test.tsx",
@@ -1726,7 +1717,6 @@
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/context-menu.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-link-card.tsx",
@@ -1884,7 +1874,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/page-footer.tsx",
@@ -2024,7 +2013,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/inline-code.stories.tsx",
@@ -2091,7 +2079,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -2159,7 +2146,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/form.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/stepper-field.tsx",
@@ -2414,7 +2400,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/lib/nav-active.ts",
         "src/stories/nav-group.stories.tsx"
       ],
@@ -2532,7 +2517,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
@@ -2620,7 +2604,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -2809,7 +2792,6 @@
         "src/app/components/activity-feed.tsx",
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/container.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/cover.tsx",
@@ -3005,7 +2987,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
@@ -3107,7 +3088,6 @@
       },
       "consumers": [
         "src/app/components/api-reference.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/propTableUtils.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/nav-group.stories.tsx",
@@ -3210,7 +3190,6 @@
         "src/app/components/card.tsx",
         "src/app/components/center.tsx",
         "src/app/components/cluster.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/cover.tsx",
         "src/app/components/file-input.tsx",
         "src/app/components/frame.tsx",
@@ -3377,7 +3356,6 @@
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
         "src/app/components/code-block.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/health-rail.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -3892,7 +3870,6 @@
         "sizing": "full"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/component-instance-matrix.stories.tsx"
       ],
       "tokenMapping": {},
@@ -3917,40 +3894,6 @@
         "primitives-component-instance-matrix--frozen-row-state",
         "primitives-component-instance-matrix--mobile-layout"
       ]
-    },
-    "SpecimenBlock": {
-      "category": "Utilities",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/specimen-block.tsx",
-      "description": "SpecimenBlock — shared component-doc specimen block with preview, variant deck, and optional matrix.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "SpecimenBlock",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/api-reference.tsx",
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "primitive",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "sourcePath": "src/app/components/SpecimenBlock.tsx",
-      "figmaLink": null,
-      "storyFiles": [],
-      "storyIds": []
     },
     "ActivityFeed": {
       "category": "Display",
@@ -4611,7 +4554,6 @@
         "src/app/components/button-group.test.tsx",
         "src/app/components/button-group.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/doc-page-header.test.tsx",
         "src/app/components/error-boundary.tsx",
@@ -5467,7 +5409,6 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -5548,7 +5489,6 @@
         "sizing": "compact"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/text-lockup.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5581,7 +5521,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.tsx",
@@ -5931,7 +5870,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
@@ -5998,7 +5936,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/select.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/select.stories.tsx"
@@ -6062,7 +5999,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/slider.stories.tsx"
       ],
@@ -6128,7 +6064,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.test.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -10935,60 +10870,6 @@
       "tokenMapping": {},
       "tier": "utility"
     },
-    "AutoPreviewSpecimen": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/componentPreviewRegistry.tsx",
-      "description": "/** @internal @doc-exempt: demo-preview-helper — not part of @hirobius/design-system public API.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "AutoPreviewSpecimen",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/specimen-block.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "VariantPreviewDeck": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/variant-preview-deck.tsx",
-      "description": "/** @internal @doc-exempt: demo-preview-helper — not part of @hirobius/design-system public API.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "VariantPreviewDeck",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/specimen-block.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "HistoryCard": {
       "category": "Uncategorized",
       "categorySource": "missing-jsdoc",
@@ -11003,7 +10884,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/history-card.stories.tsx"
       ],
       "tokenMapping": {},
@@ -11042,7 +10922,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {},
@@ -11072,9 +10951,7 @@
         "exportName": "AnimatedLabel",
         "sizing": "compact"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -11103,7 +10980,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {},
@@ -11134,7 +11010,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {},
@@ -11164,9 +11039,7 @@
         "exportName": "HdsMobileTopBar",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -11195,9 +11068,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/demo-block.tsx",
-        "src/app/components/specimen-block.tsx"
+        "src/app/components/demo-block.tsx"
       ],
       "tokenMapping": {},
       "props": {},
@@ -11226,9 +11097,7 @@
         "exportName": "HdsSidebarUtilityButton",
         "sizing": "compact"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -11528,7 +11397,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/health-rail.tsx"
       ],
       "tokenMapping": {},
@@ -11573,9 +11441,7 @@
         "exportName": "LegacyTokenList",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {
         "isDark": {
@@ -11620,7 +11486,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-list.tsx"
       ],
       "tokenMapping": {},
@@ -11660,9 +11525,7 @@
         "exportName": "TokenList",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [

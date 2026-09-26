@@ -8,13 +8,14 @@
  *
  * Output — TWO files, split by hds#279 (a docs artifact was shipping in the
  * published bundle: component-api.json was 45% of the main entry, entirely
- * from `observedTokens`, which the three src/ runtime consumers of this file
- * (api-reference.tsx, component-instance-matrix.tsx, componentPreviewRegistry.tsx)
- * never read — grep confirms it):
+ * from `observedTokens`, which the src/ runtime consumers of this file
+ * (api-reference.tsx, component-instance-matrix.tsx) never read — grep
+ * confirms it). A third consumer, componentPreviewRegistry.tsx, was deleted
+ * in hds#286 (dead island, see DECISIONS.md); the two below are current:
  *
  *   src/app/data/component-api.json        bundled runtime copy: props +
  *                                           description only, no observedTokens.
- *                                           Consumed by the three files above,
+ *                                           Consumed by the two files above,
  *                                           one of which (component-instance-matrix)
  *                                           is re-exported from the public barrel.
  *   docs/generated/component-api-full.json full corpus INCLUDING observedTokens
@@ -622,10 +623,11 @@ export function buildManifest() {
 
 /**
  * Strip `observedTokens` from every component entry — hds#279. Nothing in
- * src/ reads it (confirmed by grep across api-reference.tsx,
- * component-instance-matrix.tsx and componentPreviewRegistry.tsx, the only
- * three importers of this file); it exists solely for the docs-site token
- * table, which reads the full corpus from FULL_OUTPUT_FILE instead.
+ * src/ reads it (confirmed by grep across api-reference.tsx and
+ * component-instance-matrix.tsx, the only two importers of this file —
+ * componentPreviewRegistry.tsx, the former third importer, was deleted in
+ * hds#286); it exists solely for the docs-site token table, which reads the
+ * full corpus from FULL_OUTPUT_FILE instead.
  */
 function stripObservedTokens(manifest) {
   const components = {};

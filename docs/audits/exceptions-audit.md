@@ -4,22 +4,22 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 96 | 96 | 0 |
+| eslint-disable | 90 | 90 | 0 |
 | @ts-ignore/@ts-expect-error | 10 | 10 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 42 | 42 | 0 |
-| **Total** | **148** | **148** | **0** |
+| custom-sentinels (*-ok / hds-bypass) | 40 | 40 | 0 |
+| **Total** | **140** | **140** | **0** |
 
 ## eslint-disable
 
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
 | `src/app/components/activity-feed.tsx` | 99 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- info's accent-rest token has no matching Tailwind-theme utility (text-feedback-info binds to a different var); var()-based so still token-driven` | justified |
-| `src/app/components/activity-feed.tsx` | 113 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- size-40/radius-full/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/activity-feed.tsx` | 113 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic-size-avatar/radius-full/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/alert.tsx` | 24 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/alert.tsx` | 93 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic subgrid-hairline gap; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/animated-label.tsx` | 54 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; no Tailwind utility covers multi-prop animation` | justified |
-| `src/app/components/asset-img.tsx` | 96 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
-| `src/app/components/badge.tsx` | 16 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens, the intentional 11px chip size, and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/asset-img.tsx` | 98 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
+| `src/app/components/badge.tsx` | 16 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven. text-xs matches component.badge.fontSize (primitive.typography.size.xs, hds#283: 12px).` | justified |
 | `src/app/components/button.tsx` | 18 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list; Tailwind has no single utility for transition-[colors,filter]` | justified |
 | `src/app/components/callout.tsx` | 24 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven padding + accent/surface vars have no Tailwind-theme utility` | justified |
 | `src/app/components/card.tsx` | 102 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven` | justified |
@@ -27,7 +27,7 @@
 | `src/app/components/checkbox.tsx` | 63 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven size/radius/border/color; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/code-block.tsx` | 7 | `eslint-disable*` | `jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation` | justified |
 | `src/app/components/code-block.tsx` | 25 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/code-block.tsx` | 30 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + size-32 + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/code-block.tsx` | 30 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 35 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 40 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 43 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-padding/component-gap spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
@@ -36,24 +36,18 @@
 | `src/app/components/code-block.tsx` | 67 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + radius-action + border-default/surface-raised tokens + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 83 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- mono typography composite + content-primary token have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 97 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- mono typography composite + content-primary token have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/code-block.tsx` | 102 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- section-stack/size-32 spacing + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/code-block.tsx` | 262 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/code-block.tsx` | 266 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/code-block.tsx` | 102 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- section-stack spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/code-block.tsx` | 264 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/code-block.tsx` | 268 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/combobox.tsx` | 159 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus -- combobox search field is the expected focus target on open` | justified |
-| `src/app/components/command-palette.tsx` | 57 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- kind-label badge metadata size (10px), no semantic Tailwind text-size utility` | justified |
-| `src/app/components/command-palette.tsx` | 169 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- 10px is the standard shadcn cmd-palette kbd metadata size` | justified |
-| `src/app/components/command-palette.tsx` | 171 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- kbd shortcut hint` | justified |
-| `src/app/components/command-palette.tsx` | 175 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- kbd shortcut hint` | justified |
-| `src/app/components/command-palette.tsx` | 197 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus` | justified |
-| `src/app/components/command-palette.tsx` | 218 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- dialog results scroll cap at 60% viewport height` | justified |
-| `src/app/components/command-palette.tsx` | 256 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- footer hint metadata size` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 484 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
+| `src/app/components/command-palette.tsx` | 193 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus` | justified |
+| `src/app/components/command-palette.tsx` | 214 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- dialog results scroll cap at 60% viewport height` | justified |
 | `src/app/components/disclosure.tsx` | 28 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/disclosure.tsx` | 147 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/disclosure.tsx` | 160 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/divider.tsx` | 18 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- border-default/border-strong have no named Tailwind color utility (only the generic `border` role token is mapped); var()-based so still token-driven` | justified |
 | `src/app/components/doc-link-card.tsx` | 49 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven padding; var()-based, no Tailwind-theme utility exists` | justified |
-| `src/app/components/doc-link-card.tsx` | 197 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists` | justified |
+| `src/app/components/doc-link-card.tsx` | 199 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/doc-page-header.tsx` | 280 | `eslint-disable-next-line` | `react-hooks/refs -- `ref` is a string prop (git branch), not a React ref` | justified |
 | `src/app/components/hds-tooltip.tsx` | 63 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- inverse-surface fill matches the bubble; var()-based` | justified |
 | `src/app/components/heading-stack.tsx` | 30 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic space/typography tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
@@ -76,8 +70,8 @@
 | `src/app/components/segmented-control.tsx` | 151 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- indicator background/ring colors are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/segmented-control.tsx` | 239 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- description text is the semantic caption composite (12px/16px/medium) plus content-* color tokens; no Tailwind-theme utility` | justified |
 | `src/app/components/segmented-control.tsx` | 267 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- outline width/offset/color are semantic tokens with no Tailwind-theme utility` | justified |
-| `src/app/components/segmented-control.tsx` | 285 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- typeStyles.ui composite + zIndex.focus token have no Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/segmented-control.tsx` | 364 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- typeStyles.ui composite (15px/24px/medium/60ch) + content-primary color have no Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/segmented-control.tsx` | 285 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- zIndex.focus token + 60ch max-width have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (text-sm/leading-5).` | justified |
+| `src/app/components/segmented-control.tsx` | 364 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- 60ch max-width + content-primary color have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (text-sm/leading-5, hds#283: was 15px/24px).` | justified |
 | `src/app/components/shell-controls.tsx` | 151 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/side-nav.tsx` | 56 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- --primitive-size-interactive-min a11y touch target + --component-nav-paddingY level spacing + --semantic-color-* state tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/slider.tsx` | 42 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists` | justified |
@@ -89,7 +83,7 @@
 | `src/app/components/stepper-field.tsx` | 60 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/surface.tsx` | 37 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/table.tsx` | 21 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/table.tsx` | 44 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/table.tsx` | 46 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/tag.tsx` | 26 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- 44px min interactive hit target has no semantic Tailwind size utility; var()-based so still token-driven` | justified |
 | `src/app/components/tag.tsx` | 35 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-tag-* sizing/radius tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/text-lockup.tsx` | 42 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component/subgrid gap composite tokens have no Tailwind-theme spacing utility; var()-based so still token-driven` | justified |
@@ -131,17 +125,15 @@
 |------|------|------|--------|--------|
 | `src/app/components/box-sx.test.ts` | 49 | `spacing-ok` | `token-scale index, not a raw px value` | justified |
 | `src/app/components/card.tsx` | 336 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
-| `src/app/components/command-palette.tsx` | 229 | `audit-ok` | `hds-focus is baked into cmdkRowVariants() base class above` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 43 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
-| `src/app/components/componentPreviewRegistry.tsx` | 56 | `audit-ok` | `responsive container dimension derived from grid layout, not token-backed` | justified |
+| `src/app/components/command-palette.tsx` | 225 | `audit-ok` | `hds-focus is baked into cmdkRowVariants() base class above` | justified |
 | `src/app/components/disclosure.tsx` | 137 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
-| `src/app/components/doc-link-card.tsx` | 123 | `audit-ok` | `hds-focus is baked into docLinkCardVariants() base class above` | justified |
+| `src/app/components/doc-link-card.tsx` | 125 | `audit-ok` | `hds-focus is baked into docLinkCardVariants() base class above` | justified |
 | `src/app/components/foundation-swatch.tsx` | 176 | `hds-bypass` | `fixed specimen height keeps foundation swatches visually comparable across token demos` | justified |
-| `src/app/components/image-lightbox.tsx` | 110 | `audit-ok` | `Radix Dialog.Content container (tabIndex=-1, auto-focused on open). The dialog surface intentionally shows no focus ring; the visible focus affordance is the Close button (Button → hds-focus).` | justified |
-| `src/app/components/nav-item.tsx` | 247 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
-| `src/app/components/nav-item.tsx` | 267 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
-| `src/app/components/side-nav.tsx` | 258 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
-| `src/app/components/side-nav.tsx` | 282 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
+| `src/app/components/image-lightbox.tsx` | 112 | `audit-ok` | `Radix Dialog.Content container (tabIndex=-1, auto-focused on open). The dialog surface intentionally shows no focus ring; the visible focus affordance is the Close button (Button → hds-focus).` | justified |
+| `src/app/components/nav-item.tsx` | 249 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
+| `src/app/components/nav-item.tsx` | 269 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
+| `src/app/components/side-nav.tsx` | 260 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
+| `src/app/components/side-nav.tsx` | 284 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
 | `src/app/components/sketch-controls.tsx` | 29 | `audit-ok` | `hds-focus applied via textarea className` | justified |
 | `src/app/components/stacked-card-rail.tsx` | 54 | `audit-ok` | `percentage fill in CSS template */` | justified |
 | `src/app/components/stacked-card-rail.tsx` | 66 | `audit-ok` | `percentage fill in CSS template */` | justified |
@@ -174,8 +166,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 148
-- **Justified (reason >= 10 chars):** 148
+- **Total suppressions:** 140
+- **Justified (reason >= 10 chars):** 140
 - **Untriaged (reason < 10 chars or missing):** 0
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.
