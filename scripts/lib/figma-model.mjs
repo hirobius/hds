@@ -190,6 +190,12 @@ export const NOT_IN_FIGMA = [
     matches: (token) => token.path[1] === 'breakpoint',
   },
   {
+    id: 'motion-distance',
+    reason:
+      "Figma prototyping derives travel distance from a layer's own frame position, not a bindable scalar variable — a translateY offset has nothing to bind to, same as duration/easing (hds#242).",
+    matches: (token) => token.path[1] === 'motion' && token.path[2] === 'distance',
+  },
+  {
     id: 'relative-typography',
     reason:
       "Font-size-relative multipliers (em letter-spacing, unitless line-height). Figma applies number variables to letter spacing and line height as px only, so each typography/<style> variable carries the px value resolved at that style's font size instead.",

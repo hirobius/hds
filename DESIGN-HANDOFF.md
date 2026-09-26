@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 399 tokens, aliases, and TS refs in one shot.
+Checks all 417 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -229,33 +229,33 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 <!-- auto:start:typography -->
 
-| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                                     |
-| ----------------- | ---------- | ------ | ----------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
-| `display`         | 72px       | 700    | 1           | -0.01em        | Display headline. 72px / Satoshi bold 700 / leading-none.                                                       |
-| `h1`              | 48px       | 700    | 1.25        | -0.01em        | Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.                                         |
-| `h2`              | 30px       | 700    | 42px        | -0.01em        | Secondary section headings (h2). Satoshi bold 700, 30px, line-height 42px.                                      |
-| `h3`              | 20px       | 700    | 28px        | 0em            | Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug.                                    |
-| `body`            | 17px       | 500    | 28px        | 0em            | Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure.                                           |
-| `ui`              | 15px       | 500    | 24px        | 0em            | UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px.                                      |
-| `caption`         | 12px       | 500    | 16px        | 0em            | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style. |
-| `eyebrow`         | 13px       | 500    | 20px        | 0.06em         | Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase.                                         |
-| `mono`            | 13px       | 400    | 20px        | 0em            | Monospace for code, token names, shortcuts. Geist Mono regular, 13px.                                           |
-| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                              |
+| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                                                                              |
+| ----------------- | ---------- | ------ | ----------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `display`         | 60px       | 700    | 1           | -0.01em        | Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).                                                                        |
+| `h1`              | 48px       | 700    | 1.25        | -0.01em        | Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).                                    |
+| `h2`              | 30px       | 700    | 40px        | -0.01em        | Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).                                             |
+| `h3`              | 20px       | 700    | 28px        | 0em            | Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).                                 |
+| `body`            | 16px       | 500    | 24px        | 0em            | Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).                                                           |
+| `ui`              | 14px       | 500    | 20px        | 0em            | UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).                                                      |
+| `caption`         | 12px       | 500    | 16px        | 0em            | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283). |
+| `eyebrow`         | 12px       | 500    | 16px        | 0.06em         | Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).                                                         |
+| `mono`            | 14px       | 400    | 20px        | 0em            | Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).                               |
+| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                                                                       |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
 
 ### Primitive font sizes
 
-- `primitive.typography.size.xs` = **13px**
-- `primitive.typography.size.sm` = **15px**
-- `primitive.typography.size.base` = **17px**
-- `primitive.typography.size.lg` = **20px**
-- `primitive.typography.size.xl` = **24px**
-- `primitive.typography.size.2xl` = **30px**
-- `primitive.typography.size.3xl` = **36px**
-- `primitive.typography.size.4xl` = **48px**
-- `primitive.typography.size.5xl` = **72px**
-- `primitive.typography.size.6xl` = **80px**
+- `primitive.typography.size.xs` = **12px**
+- `primitive.typography.size.sm` = **14px**
+- `primitive.typography.size.base` = **16px**
+- `primitive.typography.size.lg` = **18px**
+- `primitive.typography.size.xl` = **20px**
+- `primitive.typography.size.2xl` = **24px**
+- `primitive.typography.size.3xl` = **30px**
+- `primitive.typography.size.4xl` = **36px**
+- `primitive.typography.size.5xl` = **48px**
+- `primitive.typography.size.6xl` = **60px**
 <!-- auto:end:typography -->
 
 ---
@@ -314,27 +314,32 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 
 <!-- auto:start:semantic-space -->
 
-| Token                                | Value   | Notes                                                                                                                                               |
-| ------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.space.subgrid.hairline`    | `1px`   | 1px border offset and hairline spacing.                                                                                                             |
-| `semantic.space.subgrid.xs`          | `2px`   | 2px vertical rhythm nudge and baseline adjustment.                                                                                                  |
-| `semantic.space.subgrid.gap`         | `4px`   | 4px cap-height and inline cluster spacing.                                                                                                          |
-| `semantic.space.component.gap`       | `8px`   | 8px label↔input rhythm and closely coupled control spacing.                                                                                         |
-| `semantic.space.component.medium`    | `12px`  | 12px adjacent form fields and medium intra-component gaps.                                                                                          |
-| `semantic.space.component.padding`   | `24px`  | 24px default inset for cards, forms, panels, and grouped surfaces.                                                                                  |
-| `semantic.space.layout.tight`        | `16px`  | 16px default HdsStack gap and inter-component spacing.                                                                                              |
-| `semantic.space.layout.normal`       | `24px`  | 24px column gutters and sidebar gutter spacing.                                                                                                     |
-| `semantic.space.layout.gutter`       | `24px`  | 24px column and region gutters (alias for layout.normal).                                                                                           |
-| `semantic.space.layout.inset`        | `32px`  | 32px major block separation and inset inter-component gaps.                                                                                         |
-| `semantic.space.layout.spacious`     | `48px`  | 48px section break and whitespace separator between major content blocks.                                                                           |
-| `semantic.space.section.stack`       | `80px`  | 80px vertical rhythm between page sections and major editorial blocks.                                                                              |
-| `semantic.space.section.inset`       | `96px`  | 96px hero and landing-page inset padding.                                                                                                           |
-| `semantic.space.section.heroMax`     | `128px` | 128px maximum hero region padding for extra-large displays.                                                                                         |
-| `semantic.space.sidebar.indent`      | `12px`  | 12px indent level for nested sidebar and TOC groups.                                                                                                |
-| `semantic.space.sidebar.gap`         | `16px`  | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                      |
-| `semantic.space.sidebar.sectionGap`  | `12px`  | 12px spacing between sidebar sections and grouped rail blocks.                                                                                      |
-| `semantic.space.sidebar.railPadding` | `20px`  | 20px outer padding for sidebar and TOC rails.                                                                                                       |
-| `semantic.space.sidebar.railWidth`   | `280px` | Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell). |
+| Token                                | Value   | Notes                                                                                                                                                          |
+| ------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.space.scale.xs`            | `8px`   | 8px — smallest step. Same value as component.gap (deprecated alias).                                                                                           |
+| `semantic.space.scale.sm`            | `16px`  | 16px — same value as layout.tight (deprecated alias).                                                                                                          |
+| `semantic.space.scale.md`            | `24px`  | 24px — same value as layout.normal / layout.gutter / component.padding (deprecated aliases; hds#206 de-aliases this triplet down to this one canonical token). |
+| `semantic.space.scale.lg`            | `32px`  | 32px — same value as layout.inset (deprecated alias).                                                                                                          |
+| `semantic.space.scale.xl`            | `48px`  | 48px — same value as layout.spacious (deprecated alias).                                                                                                       |
+| `semantic.space.subgrid.hairline`    | `1px`   | 1px border offset and hairline spacing.                                                                                                                        |
+| `semantic.space.subgrid.xs`          | `2px`   | 2px vertical rhythm nudge and baseline adjustment.                                                                                                             |
+| `semantic.space.subgrid.gap`         | `4px`   | 4px cap-height and inline cluster spacing.                                                                                                                     |
+| `semantic.space.component.gap`       | `8px`   | 8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.               |
+| `semantic.space.component.medium`    | `12px`  | 12px adjacent form fields and medium intra-component gaps.                                                                                                     |
+| `semantic.space.component.padding`   | `24px`  | 24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.        |
+| `semantic.space.layout.tight`        | `16px`  | 16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet.                    |
+| `semantic.space.layout.normal`       | `24px`  | 24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.                           |
+| `semantic.space.layout.gutter`       | `24px`  | 24px column and region gutters (alias for layout.normal). DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.                 |
+| `semantic.space.layout.inset`        | `32px`  | 32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet.               |
+| `semantic.space.layout.spacious`     | `48px`  | 48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet. |
+| `semantic.space.section.stack`       | `80px`  | 80px vertical rhythm between page sections and major editorial blocks.                                                                                         |
+| `semantic.space.section.inset`       | `96px`  | 96px hero and landing-page inset padding.                                                                                                                      |
+| `semantic.space.section.heroMax`     | `128px` | 128px maximum hero region padding for extra-large displays.                                                                                                    |
+| `semantic.space.sidebar.indent`      | `12px`  | 12px indent level for nested sidebar and TOC groups.                                                                                                           |
+| `semantic.space.sidebar.gap`         | `16px`  | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                                 |
+| `semantic.space.sidebar.sectionGap`  | `12px`  | 12px spacing between sidebar sections and grouped rail blocks.                                                                                                 |
+| `semantic.space.sidebar.railPadding` | `20px`  | 20px outer padding for sidebar and TOC rails.                                                                                                                  |
+| `semantic.space.sidebar.railWidth`   | `280px` | Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell).            |
 
 <!-- auto:end:semantic-space -->
 
@@ -444,6 +449,12 @@ Or via `useTheme().setDensity('compact')`
 | `semantic.motion.expressive` | `250ms`  | `{primitive.easing.elastic}`    | For teaching moments and significant UI entries. Includes physics-based squish. |
 | `semantic.motion.spatial`    | `400ms`  | `{primitive.easing.emphasized}` | For elements traveling long distances across the viewport.                      |
 | `semantic.motion.exit`       | `100ms`  | `{primitive.easing.accelerate}` | For elements being removed from the DOM.                                        |
+
+### Other semantic motion tokens
+
+| Token                      | Value  | Purpose                                                                                                                                                                                |
+| -------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.motion.distance` | `24px` | Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242). |
 
 <!-- auto:end:motion -->
 

@@ -52,7 +52,9 @@ export interface FileInputProps extends Omit<
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** A dashed dropzone that opens the native file picker or accepts a drag-and-drop. */
+/**
+ * A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
+ */
 export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
   {
     onFiles,

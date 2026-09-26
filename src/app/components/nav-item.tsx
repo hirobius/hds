@@ -131,7 +131,9 @@ const NAV_VARIANT_LAYOUT: Record<
   },
 };
 
-/** @public */
+/**
+ * @public
+ */
 export function NavItem({
   variant = 'side',
   label,

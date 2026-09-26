@@ -177,6 +177,7 @@ declare module 'react' {
     '--hds-motion-spatial-easing'?: string | undefined;
     '--hds-motion-exit-duration'?: string | undefined;
     '--hds-motion-exit-easing'?: string | undefined;
+    '--semantic-motion-distance'?: string | undefined;
     '--semantic-color-surface-page'?: string | undefined;
     '--semantic-color-surface-raised'?: string | undefined;
     '--semantic-color-surface-overlay'?: string | undefined;
@@ -215,6 +216,11 @@ declare module 'react' {
     '--semantic-color-feedback-bg-warning'?: string | undefined;
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
+    '--semantic-space-scale-xs'?: string | undefined;
+    '--semantic-space-scale-sm'?: string | undefined;
+    '--semantic-space-scale-md'?: string | undefined;
+    '--semantic-space-scale-lg'?: string | undefined;
+    '--semantic-space-scale-xl'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;
@@ -306,6 +312,7 @@ declare module 'react' {
     '--semantic-accent-contentHover'?: string | undefined;
     '--semantic-accent-subtle'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
+    '--semantic-radius-control'?: string | undefined;
     '--semantic-borderWidth-default'?: string | undefined;
     '--semantic-borderWidth-emphasis'?: string | undefined;
     '--semantic-shadow-subtle'?: string | undefined;
@@ -323,6 +330,17 @@ declare module 'react' {
     '--semantic-elevation-overlay-surface'?: string | undefined;
     '--semantic-elevation-overlay-shadow'?: string | undefined;
     '--semantic-elevation-overlay-border'?: string | undefined;
+    '--semantic-size-control-sm'?: string | undefined;
+    '--semantic-size-control-md'?: string | undefined;
+    '--semantic-size-control-lg'?: string | undefined;
+    '--semantic-size-icon-sm'?: string | undefined;
+    '--semantic-size-icon-md'?: string | undefined;
+    '--semantic-size-icon-lg'?: string | undefined;
+    '--semantic-size-avatar'?: string | undefined;
+    '--semantic-size-row-compact'?: string | undefined;
+    '--semantic-size-row-comfortable'?: string | undefined;
+    '--semantic-zIndex-control'?: string | undefined;
+    '--semantic-zIndex-sticky'?: string | undefined;
     '--component-nav-bg'?: string | undefined;
     '--component-nav-bgActive'?: string | undefined;
     '--component-nav-borderActive'?: string | undefined;

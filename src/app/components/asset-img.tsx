@@ -57,7 +57,9 @@ export interface AssetImgProps {
  * Display asset frame with fallback placeholder handling.
  * @category Display
  */
-/** @public */
+/**
+ * @public
+ */
 export function AssetImg({
   src,
   alt,

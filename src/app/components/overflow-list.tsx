@@ -23,7 +23,9 @@ export interface OverflowListProps extends React.HTMLAttributes<HTMLDivElement> 
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Renders up to `max` children followed by a `+N` overflow chip (or custom node). */
+/**
+ * Renders up to `max` children followed by a `+N` overflow chip (or custom node).
+ */
 export const OverflowList = React.forwardRef<HTMLDivElement, OverflowListProps>(
   function OverflowList({ className, children, max, renderOverflow, ...props }, ref) {
     const items = React.Children.toArray(children).filter(React.isValidElement);

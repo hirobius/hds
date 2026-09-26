@@ -26,7 +26,9 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Renders an accessible month grid; compose it inside a Popover for the date inputs. */
+/**
+ * Renders an accessible month grid; compose it inside a Popover for the date inputs.
+ */
 export function Calendar({
   className,
   classNames,

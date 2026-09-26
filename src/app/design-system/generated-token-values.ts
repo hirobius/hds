@@ -139,16 +139,16 @@ export const tokenValues = {
         mono: ["Geist Mono", "Courier New", "monospace"] as const
       },
       size: {
-        xs: "13px",
-        sm: "15px",
-        base: "17px",
-        lg: "20px",
-        xl: "24px",
-        "2xl": "30px",
-        "3xl": "36px",
-        "4xl": "48px",
-        "5xl": "72px",
-        "6xl": "80px"
+        xs: "12px",
+        sm: "14px",
+        base: "16px",
+        lg: "18px",
+        xl: "20px",
+        "2xl": "24px",
+        "3xl": "30px",
+        "4xl": "36px",
+        "5xl": "48px",
+        "6xl": "60px"
       },
       weight: {
         regular: "400",

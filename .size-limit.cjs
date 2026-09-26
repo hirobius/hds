@@ -65,6 +65,12 @@
  * other entries carry, since the whole point of this re-baseline is to stop
  * documentation corpus growth from silently riding along in the runtime bundle.
  *
+ * Note (hds#286, 2026-09-26): `componentPreviewRegistry.tsx`, named above (twice) as
+ * one of `component-api.json`'s three importers, was deleted along with its two
+ * exclusive consumers — a dead island reachable from nothing, superseded by the
+ * Storybook-built reference site. `component-api.json` now has two importers:
+ * api-reference.tsx and component-instance-matrix.tsx. See DECISIONS.md.
+ *
  * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
  * byte-identical on all 44 linked components. Dropping one would shrink this
  * entry, but it is a breaking change for manifest consumers.

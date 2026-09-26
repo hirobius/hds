@@ -40,7 +40,6 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['Input', 'Input'],
   ['InlineCode', 'InlineCode'],
   ['InlineLink', 'InlineLink'],
-  ['MorphCard', 'MorphCard'],
   ['Nav', 'HdsNav'],
   ['Stack', 'Stack'],
   ['StepperField', 'StepperField'],

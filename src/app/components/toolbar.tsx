@@ -84,7 +84,9 @@ const ToolbarLink = React.forwardRef<
 
 // ── Compound export ──────────────────────────────────────────────────────────────
 
-interface ToolbarComponent extends React.FC<React.ComponentProps<typeof ToolbarPrimitive.Root>> {
+export interface ToolbarComponent extends React.FC<
+  React.ComponentProps<typeof ToolbarPrimitive.Root>
+> {
   Button: typeof ToolbarButton;
   Separator: typeof ToolbarSeparator;
   ToggleGroup: typeof ToolbarToggleGroup;

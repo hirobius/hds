@@ -442,6 +442,18 @@
       "firingChannels": ["on-demand"]
     },
     {
+      "id": "check-spacing-vocabulary",
+      "description": "hds#206 -- flags raw integer literals on sx spacing shorthand props (p/m/gap/px/py/mx/my/pt/pr/pb/pl/mt/mr/mb/ml/rowGap/columnGap), the exact px-ambiguous numeric-scale form Adrian's 2026-09-26 decision bans in favor of semantic.space.scale.{xs,sm,md,lg,xl}. Warn severity: reports the debt, does not yet block -- promotion to error, wiring into an automatic channel, and the consumer codemod are hds#206 remaining work.",
+      "severity": "warn",
+      "gateScript": "scripts/check-spacing-vocabulary.mjs",
+      "fixturePath": "fixtures/check-spacing-vocabulary",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand",
+      "firingChannels": ["on-demand"],
+      "supportsJson": true
+    },
+    {
       "id": "check-sync-map",
       "description": "Joins the four records that describe a component -- source file, manifest entry, Storybook story, Figma node -- into one table with a per-component verdict, so an editing target can be looked up instead of remembered. Re-derives story ids from source rather than trusting the manifest, so a stale manifest fails rather than passing a gate whose job is to prove the records agree. Fails on a drop in story or Figma coverage, on a story file that resolves to no component, and on manifest drift. Expectations come from the ratified disposition (hds#235): a layout primitive is never reported as missing a Figma node it is not supposed to have. Also writes docs/sync-map.json (--write) -- committed generated output the agent-facing README describes as 'the same data for agents'. --check (hds#277) recomputes it and diffs byte-for-byte against what's on disk, failing and naming every disagreeing component if the committed file has drifted from its source records (hand-edited or stale). Pre-commit runs the plain gate (coverage/orphan checks) and `--check` (docs/sync-map.json drift) back to back.",
       "severity": "error",

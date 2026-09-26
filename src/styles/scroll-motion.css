@@ -40,7 +40,7 @@
 @keyframes hds-reveal-fade-up {
   from {
     opacity: 0;
-    transform: translateY(var(--primitive-space-6)); /* css-ok: token-bound reveal offset */
+    transform: translateY(var(--semantic-motion-distance)); /* css-ok: token-bound reveal offset */
   }
   to {
     opacity: 1;
@@ -51,7 +51,7 @@
   from {
     opacity: 0;
     transform: translateY(
-      calc(-1 * var(--primitive-space-6))
+      calc(-1 * var(--semantic-motion-distance))
     ); /* css-ok: token-bound reveal offset */
   }
   to {
