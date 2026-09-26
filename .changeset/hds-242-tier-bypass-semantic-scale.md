@@ -6,7 +6,7 @@ Add `semantic.size.{control,icon,avatar,row}` and `semantic.zIndex.{control,stic
 to `hirobius.tokens.json` per Adrian's 2026-09-26 decision on hds#242, plus
 `semantic.radius.control` (checkbox glyph corner radius, a real design-scale
 value distinct from `semantic.radius.action`) and `semantic.motion.distance`
-(scroll-reveal `translateY` offset). Repoints the 14 `check-tier-bypass`
+(scroll-reveal `translateY` offset). Repoints all 15 `check-tier-bypass`
 judgement-call violations named in hds#242 — activity-feed, checkbox,
 code-block, radio, slider, table, `scroll-motion.css` — onto the new semantic
 tokens, and adds `// tier-ok:` exemptions (matching #186's precedent) for the
