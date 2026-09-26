@@ -88,8 +88,6 @@ export interface CommandPaletteProps {
 /**
  * Mountable trigger + dialog. Drop into header slot; component manages its
  * own open state and Cmd-K / Ctrl-K global keybinding.
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
  */
 export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteProps>(
   function CommandPalette({ className }: CommandPaletteProps = {}, ref) {

@@ -95,8 +95,6 @@ function TreeItem({ node, expandedIds, onToggle, onSelect }: TreeItemProps) {
 
 /**
  * Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
  */
 export const TreeList = React.forwardRef<HTMLUListElement, TreeListProps>(function TreeList(
   { items, defaultExpandedIds, onSelect, className, ...props },

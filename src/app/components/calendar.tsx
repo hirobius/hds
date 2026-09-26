@@ -28,8 +28,6 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 /**
  * Renders an accessible month grid; compose it inside a Popover for the date inputs.
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
  */
 export function Calendar({
   className,

@@ -61,8 +61,6 @@ function stepState(index: number, activeStep: number): StepState {
 
 /**
  * Step indicator for multi-step flows. Purely presentational — no navigation.
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
  */
 export const Stepper = React.forwardRef<HTMLOListElement, StepperProps>(function Stepper(
   { steps, activeStep, orientation = 'horizontal', className, ...props },
