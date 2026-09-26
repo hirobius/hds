@@ -60,7 +60,9 @@ const docLinkCardVariants = cva(
   },
 );
 
-/** @public */
+/**
+ * @public
+ */
 export function DocLinkCard({
   title,
   description,

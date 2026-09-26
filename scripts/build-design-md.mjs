@@ -299,12 +299,22 @@ export function buildMotion(raw) {
   }
 
   const intentLines = [header('Intent', 'Duration', 'Purpose')];
+  const otherLines = [header('Token', 'Value', 'Purpose')];
   for (const { path, value, desc } of walk(motions)) {
+    // Not every semantic.motion.* entry is a duration/easing transition —
+    // e.g. `distance` is a dimension (scroll-reveal travel distance).
+    // Route those to their own table instead of blanking the Duration cell.
+    if (!value || typeof value !== 'object' || !('duration' in value)) {
+      otherLines.push(
+        row(`\`semantic.motion.${path.join('.')}\``, `\`${resolveRef(value, raw)}\``, desc ?? ''),
+      );
+      continue;
+    }
     const duration = resolveRef(value?.duration, raw);
     intentLines.push(row(`\`semantic.motion.${path.join('.')}\``, `\`${duration}\``, desc ?? ''));
   }
 
-  return [
+  const sections = [
     'Motion (lift on hover, parallax) is the interaction-affordance layer; static depth comes from the `semantic.elevation.*` role-token bundles.',
     '',
     '### Duration tiers',
@@ -316,7 +326,11 @@ export function buildMotion(raw) {
     intentLines.join('\n'),
     '',
     'Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.',
-  ].join('\n');
+  ];
+  if (otherLines.length > 1) {
+    sections.push('', '### Other semantic motion tokens', '', otherLines.join('\n'));
+  }
+  return sections.join('\n');
 }
 
 /**

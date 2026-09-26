@@ -131,6 +131,8 @@ const LEVEL_HORIZONTAL_PADDING: Record<
 
 // ── Component ────────────────────────────────────────────────────────────────
 
+/**
+ */
 export function SideNav({
   label,
   href,

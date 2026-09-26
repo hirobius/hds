@@ -38,6 +38,8 @@ export interface LightboxProps {
   captionLabel?: string;
 }
 
+/**
+ */
 export function Lightbox({
   open,
   onClose,

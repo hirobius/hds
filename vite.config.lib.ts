@@ -8,6 +8,7 @@
  *   import { hds, tokens } from '@hirobius/design-system/tokens';
  *   import { cn } from '@hirobius/design-system/cn';
  *   import manifest from '@hirobius/design-system/manifest';
+ *   import { Form, TopNav } from '@hirobius/design-system/patterns';
  *
  * Output is ESM-only (no CJS dual emit) — modern, smaller footprint, matches
  * shadcn/Radix/cva-style packaging conventions. Consumers must use a bundler
@@ -140,6 +141,10 @@ export default defineConfig({
         // useScrollProgress). `lenis` is an OPTIONAL peer, externalized below, so
         // this never lands in the main barrel. See ADR-021 / #116.
         scroll: path.resolve(__dirname, 'src/scroll/index.ts'),
+        // Subpath: the 22 pattern-tier components (hds#254). Still re-exported
+        // from the main barrel too (deprecated, root re-export kept for one
+        // minor) — this entry is the forward-looking import path.
+        patterns: path.resolve(__dirname, 'src/patterns.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],

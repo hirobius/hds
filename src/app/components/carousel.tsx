@@ -43,7 +43,9 @@ export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Renders children as a snap-scrolling track with Prev/Next scroll buttons. */
+/**
+ * Renders children as a snap-scrolling track with Prev/Next scroll buttons.
+ */
 export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Carousel(
   { className, children, ariaLabel = 'Carousel', showControls = true, ...rest },
   ref,

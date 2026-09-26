@@ -8,6 +8,21 @@
 //
 // Validators, scripts, figma-agent-plugin sources, and other utility-tier
 // modules are marked @internal and are NOT part of this surface.
+//
+// hds#254 (ratified 2026-09-26): 21 of the 22 `pattern`-tier components are
+// ALSO available from `@hirobius/design-system/patterns` (src/patterns.ts;
+// `StackedCardRail` is /patterns-only, see the hds#254 changeset). The root
+// re-export of each is kept for one minor, then dropped at the next major
+// once ops has a codemod — but the `@deprecated` / `@removeIn 1.0.0` JSDoc
+// notice lives ONLY on the root-only alias block at the bottom of this file,
+// not on the component declaration itself. Tagging the declaration would
+// attach the deprecation to the symbol everywhere, including the `/patterns`
+// import this notice tells people to use (TS suggestion 6385 either way) —
+// so each of those 21 modules keeps a plain, undeprecated declaration, and
+// this barrel re-exports it twice: once untagged via `export *` (superseded
+// below) and once tagged via a local `const` alias, which — per ES module
+// semantics — shadows the star-exported binding of the same name for
+// consumers of the package root. Prefer the `/patterns` subpath in new code.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Side-effect import: design system base styles (tokens + theme + utilities)
@@ -185,3 +200,78 @@ export type {
   HdsLinkProps,
   HdsNavigateOptions,
 } from './app/context/RouterContext';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// hds#254 — root-only deprecation of the 21 pattern-tier components that also
+// ship via `@hirobius/design-system/patterns`. Each underlying module (above,
+// via `export *`) keeps an UNDEPRECATED declaration so the `/patterns` import
+// path stays clean; the `@deprecated` notice below is a local `const` alias,
+// which shadows the star-exported binding of the same name for root-import
+// consumers only. Do not add `@deprecated` back onto the source declarations
+// (see the review fix on hds#254 — that flagged consumers of `/patterns` too,
+// since TS attaches deprecation to the symbol, not the export site).
+// ─────────────────────────────────────────────────────────────────────────────
+import { ActivityFeed as _ActivityFeed254 } from './app/components/activity-feed';
+import { AppShell as _AppShell254 } from './app/components/app-shell';
+import { AssetImg as _AssetImg254 } from './app/components/asset-img';
+import { Calendar as _Calendar254 } from './app/components/calendar';
+import { Carousel as _Carousel254 } from './app/components/carousel';
+import { CodeBlock as _CodeBlock254 } from './app/components/code-block';
+import { CommandPalette as _CommandPalette254 } from './app/components/command-palette';
+import { DocLinkCard as _DocLinkCard254 } from './app/components/doc-link-card';
+import { ErrorPattern as _ErrorPattern254 } from './app/components/error-pattern';
+import { FileInput as _FileInput254 } from './app/components/file-input';
+import { Form as _Form254 } from './app/components/form';
+import { Lightbox as _Lightbox254 } from './app/components/image-lightbox';
+import { NavItem as _NavItem254 } from './app/components/nav-item';
+import { OverflowList as _OverflowList254 } from './app/components/overflow-list';
+import { Page as _Page254 } from './app/components/page';
+import { Reveal as _Reveal254 } from './app/components/reveal';
+import { SideNav as _SideNav254 } from './app/components/side-nav';
+import { Stepper as _Stepper254 } from './app/components/stepper';
+import { Toolbar as _Toolbar254 } from './app/components/toolbar';
+import { TopNav as _TopNav254 } from './app/components/top-nav';
+import { TreeList as _TreeList254 } from './app/components/tree-list';
+
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const ActivityFeed = _ActivityFeed254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const AppShell = _AppShell254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. `ops` is a current importer of this component — its codemod is tracked under hds#124 before this is dropped. */
+export const AssetImg = _AssetImg254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Calendar = _Calendar254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Carousel = _Carousel254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const CodeBlock = _CodeBlock254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const CommandPalette = _CommandPalette254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const DocLinkCard = _DocLinkCard254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const ErrorPattern = _ErrorPattern254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const FileInput = _FileInput254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Form = _Form254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Lightbox = _Lightbox254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const NavItem = _NavItem254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const OverflowList = _OverflowList254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Page = _Page254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Reveal = _Reveal254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const SideNav = _SideNav254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Stepper = _Stepper254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const Toolbar = _Toolbar254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const TopNav = _TopNav254;
+/** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
+export const TreeList = _TreeList254;

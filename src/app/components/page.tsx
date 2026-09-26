@@ -50,7 +50,9 @@ export interface PageProps {
   className?: string;
 }
 
-/** @public */
+/**
+ * @public
+ */
 export function Page({
   children,
   maxWidth = 'max',

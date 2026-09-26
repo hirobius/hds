@@ -380,8 +380,16 @@ export function buildMotion(raw) {
   }
 
   const semanticLines = [header('Token', 'Duration', 'Easing', 'Purpose')];
+  const otherLines = [header('Token', 'Value', 'Purpose')];
   for (const { path, value, desc } of walk(motions)) {
     const tok = 'semantic.motion.' + path.join('.');
+    // Not every semantic.motion.* entry is a duration/easing transition —
+    // e.g. `distance` is a dimension (scroll-reveal travel distance).
+    // Route those to their own table instead of blanking Duration/Easing.
+    if (!value || typeof value !== 'object' || !('duration' in value)) {
+      otherLines.push(row(`\`${tok}\``, `\`${resolveRef(value, raw)}\``, desc ?? ''));
+      continue;
+    }
     const duration = value?.duration;
     const easing = value?.easing;
     const durationText = `\`${resolveRef(duration, raw)}\``;
@@ -392,7 +400,7 @@ export function buildMotion(raw) {
     semanticLines.push(row(`\`${tok}\``, durationText, easingText, desc ?? ''));
   }
 
-  return [
+  const sections = [
     '### Primitive motion base',
     '',
     primitiveLines.join('\n'),
@@ -400,7 +408,11 @@ export function buildMotion(raw) {
     '### Semantic motion intents',
     '',
     semanticLines.join('\n'),
-  ].join('\n');
+  ];
+  if (otherLines.length > 1) {
+    sections.push('', '### Other semantic motion tokens', '', otherLines.join('\n'));
+  }
+  return sections.join('\n');
 }
 /** Builds the Agent Creative Constraints list with live brand values. */
 export function buildAgentConstraints(raw) {

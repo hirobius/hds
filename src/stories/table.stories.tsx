@@ -2,9 +2,14 @@
  * Table stories — columns, row slots, density, and caption demos.
  * @see src/app/components/Table.tsx
  */
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table, type TableColumn, type TableRow } from '../app/components/table';
+import {
+  Table,
+  type TableColumn,
+  type TableRow,
+  type TableSortDirection,
+} from '../app/components/table';
 import { Badge } from '../app/components/badge';
 import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
@@ -158,6 +163,51 @@ export const DensityComfortable: Story = {
 };
 
 // ── Flush ────────────────────────────────────────────────────────────────────
+
+// ── Sortable ─────────────────────────────────────────────────────────────────
+
+function SortableExample() {
+  const [sort, setSort] = useState<{ key: string; direction: TableSortDirection }>({
+    key: 'name',
+    direction: 'ascending',
+  });
+
+  const sortedRows = [...tokenRows].sort((a, b) => {
+    const index = sort.key === 'name' ? 0 : sort.key === 'value' ? 1 : 2;
+    const aValue = String(a.cells[index]?.content ?? '');
+    const bValue = String(b.cells[index]?.content ?? '');
+    const cmp = aValue.localeCompare(bValue);
+    return sort.direction === 'descending' ? -cmp : cmp;
+  });
+
+  const columns: TableColumn[] = tokenColumns.map((column) => ({
+    ...column,
+    sortable: true,
+    sortDirection: sort.key === column.key ? sort.direction : 'none',
+    onSort: () =>
+      setSort((current) => ({
+        key: column.key,
+        direction:
+          current.key === column.key && current.direction === 'ascending'
+            ? 'descending'
+            : 'ascending',
+      })),
+  }));
+
+  return <Table columns={columns} rows={sortedRows} />;
+}
+
+export const Sortable: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'sortable columns render a button in the header cell, set aria-sort on the header, and show a direction glyph from tokens. Click a header to toggle ascending/descending.',
+      },
+    },
+  },
+  render: () => <SortableExample />,
+};
 
 export const Flush: Story = {
   parameters: {

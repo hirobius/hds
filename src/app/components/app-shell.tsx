@@ -51,7 +51,9 @@ export interface AppShellProps extends Omit<React.HTMLAttributes<HTMLDivElement>
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`. */
+/**
+ * Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.
+ */
 export const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function AppShell(
   { className, header, sidebar, sidebarWidth = 'md', children, ...rest },
   ref,

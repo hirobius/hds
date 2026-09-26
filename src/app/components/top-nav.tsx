@@ -25,7 +25,9 @@ export interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Top navigation bar with brand, nav, and trailing action slots. */
+/**
+ * Top navigation bar with brand, nav, and trailing action slots.
+ */
 export const TopNav = React.forwardRef<HTMLElement, TopNavProps>(function TopNav(
   { className, brand, trailing, sticky, children, ...rest },
   ref,

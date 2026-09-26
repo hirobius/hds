@@ -29,7 +29,9 @@ export interface RevealProps {
   as?: React.ElementType;
 }
 
-/** @public */
+/**
+ * @public
+ */
 export const Reveal = React.forwardRef<HTMLDivElement, RevealProps>(function Reveal(
   { children, animation = 'fade-up', className, style, as: Tag = 'div' },
   ref,

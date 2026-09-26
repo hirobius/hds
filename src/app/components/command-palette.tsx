@@ -54,9 +54,8 @@ const cmdkRowVariants = cva('flex w-full items-start gap-3 px-4 py-2 text-left h
   defaultVariants: { active: false },
 });
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- kind-label badge metadata size (10px), no semantic Tailwind text-size utility
 const cmdkKindBadgeVariants = cva(
-  'mt-0.5 inline-flex h-5 shrink-0 items-center rounded-sm border px-1.5 text-[10px] uppercase tracking-caps',
+  'mt-0.5 inline-flex h-5 shrink-0 items-center rounded-sm border px-1.5 text-xs uppercase tracking-caps',
   {
     variants: {
       active: {
@@ -166,14 +165,11 @@ export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteP
           )}
         >
           <span className="truncate">Search docs…</span>
-          {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- 10px is the standard shadcn cmd-palette kbd metadata size */}
-          <span className="ml-auto inline-flex shrink-0 items-center gap-1 pl-3 text-[10px]">
-            {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- kbd shortcut hint */}
-            <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[10px] text-foreground">
+          <span className="ml-auto inline-flex shrink-0 items-center gap-1 pl-3 text-xs">
+            <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-xs text-foreground">
               ⌘
             </kbd>
-            {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- kbd shortcut hint */}
-            <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[10px] text-foreground">
+            <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-xs text-foreground">
               K
             </kbd>
           </span>
@@ -253,8 +249,7 @@ export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteP
               </ul>
             )}
           </div>
-          {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- footer hint metadata size */}
-          <div className="flex items-center justify-between border-t border-border px-4 py-2 text-[10px] text-muted-foreground">
+          <div className="flex items-center justify-between border-t border-border px-4 py-2 text-xs text-muted-foreground">
             <span>
               <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono">
                 ↑↓

@@ -13,9 +13,9 @@ import { cn } from '../../lib/utils';
 // Tone is the only styling axis. Neutral is theme-aware via the `dark:` variant
 // (no runtime useTheme branch). Semantic tones use the named feedback utilities
 // (text-feedback-* / bg-feedback-bg-*) so there are no arbitrary color values.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens, the intentional 11px chip size, and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven. text-xs matches component.badge.fontSize (primitive.typography.size.xs, hds#283: 12px).
 const badgeVariants = cva(
-  'inline-flex w-fit items-center justify-center whitespace-nowrap box-border leading-none uppercase font-medium text-[11px] tracking-caps h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-[var(--component-badge-radius)]',
+  'inline-flex w-fit items-center justify-center whitespace-nowrap box-border leading-none uppercase font-medium text-xs tracking-caps h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-[var(--component-badge-radius)]',
   {
     variants: {
       tone: {

@@ -27,9 +27,9 @@ const blockContainerVariants = cva(
   'overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + size-32 + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const inlineWrapperVariants = cva(
-  'flex w-full min-w-0 min-h-[var(--primitive-size-32)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-gap)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-gap)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
@@ -99,9 +99,9 @@ const blockCodeTextVariants = cva(
   `whitespace-pre text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- section-stack/size-32 spacing + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- section-stack spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const prePanelVariants = cva(
-  'm-0 overflow-x-auto p-[var(--semantic-space-section-stack)] pr-[calc(var(--semantic-space-section-stack)_+_var(--primitive-size-32))]',
+  'm-0 overflow-x-auto p-[var(--semantic-space-section-stack)] pr-[calc(var(--semantic-space-section-stack)_+_var(--semantic-size-control-lg))]',
   {
     variants: {
       panelBackground: {
@@ -135,7 +135,9 @@ export interface CodeBlockProps {
   className?: string;
 }
 
-/** @public */
+/**
+ * @public
+ */
 export function CodeBlock({
   code,
   variant = 'block',

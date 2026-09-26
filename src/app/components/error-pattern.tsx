@@ -26,7 +26,9 @@ const recoveryWrapStyle = {
   fontFamily: hds.fontFamily,
 };
 
-/** @public */
+/**
+ * @public
+ */
 export function ErrorPattern({
   displayText = 'Oops',
   message = 'Something went wrong',

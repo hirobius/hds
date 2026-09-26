@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-24T18:19:57.948Z",
+  "generated": "2026-09-26T04:21:54.652Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -135,7 +135,6 @@
     "SideNav",
     "Skeleton",
     "Sketch",
-    "SpecimenBlock",
     "Spinner",
     "Stack",
     "StackedCardRail",
@@ -595,15 +594,7 @@
       },
       {
         "name": "HdsRadio",
-        "filePath": "src/app/components/controls.tsx"
-      },
-      {
-        "name": "HdsRadio",
         "filePath": "src/app/components/radio.tsx"
-      },
-      {
-        "name": "HdsSelect",
-        "filePath": "src/app/components/controls.tsx"
       },
       {
         "name": "HdsSelect",
@@ -615,15 +606,7 @@
       },
       {
         "name": "HdsSlider",
-        "filePath": "src/app/components/controls.tsx"
-      },
-      {
-        "name": "HdsSlider",
         "filePath": "src/app/components/slider.tsx"
-      },
-      {
-        "name": "HdsToggle",
-        "filePath": "src/app/components/controls.tsx"
       },
       {
         "name": "HdsToggle",
@@ -745,7 +728,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
@@ -884,7 +866,6 @@
       },
       "consumers": [
         "src/app/components/animated-label.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/cinematic-link.stories.tsx"
       ],
       "tokenMapping": {},
@@ -932,8 +913,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
+        "src/index.ts",
         "src/stories/code-block.stories.tsx"
       ],
       "tokenMapping": {
@@ -1082,7 +1063,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
         "src/stories/disclosure.stories.tsx",
@@ -1207,7 +1187,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/divider.stories.tsx",
@@ -1340,9 +1319,9 @@
       "figmaId": null,
       "figmaLink": null,
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/doc-link-card.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/doc-link-card.stories.tsx"
       ],
       "variantAxes": [],
@@ -1373,6 +1352,7 @@
       },
       "consumers": [
         "src/app/components/not-found-pattern.tsx",
+        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx"
       ],
@@ -1468,7 +1448,6 @@
         "sizing": "full"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/foundation-swatch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -1601,7 +1580,6 @@
       "consumers": [
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/segmented-control.test.tsx",
@@ -1609,6 +1587,7 @@
         "src/app/components/sidebar.tsx",
         "src/app/components/sketch-controls.tsx",
         "src/app/components/stack.tsx",
+        "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/foundation-swatch.stories.tsx",
@@ -1739,7 +1718,6 @@
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/context-menu.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/doc-link-card.tsx",
@@ -1752,6 +1730,7 @@
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/app/components/shell-controls.tsx",
+        "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/theme-toggle.tsx",
         "src/app/components/toast.tsx",
@@ -1897,7 +1876,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/page-footer.tsx",
@@ -2037,7 +2015,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/inline-code.stories.tsx",
@@ -2104,7 +2081,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -2172,7 +2148,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/form.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/stepper-field.tsx",
@@ -2427,7 +2402,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/lib/nav-active.ts",
         "src/stories/nav-group.stories.tsx"
       ],
@@ -2545,12 +2519,12 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
         "src/app/layouts/HdsDocsShell.tsx",
+        "src/index.ts",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx"
       ],
@@ -2632,7 +2606,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/TokenDisplayToggle.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -2821,7 +2794,6 @@
         "src/app/components/activity-feed.tsx",
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/container.tsx",
         "src/app/components/controls-panel.tsx",
         "src/app/components/cover.tsx",
@@ -3017,7 +2989,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
@@ -3119,8 +3090,8 @@
       },
       "consumers": [
         "src/app/components/api-reference.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/propTableUtils.tsx",
+        "src/app/components/table.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx",
@@ -3197,6 +3168,7 @@
         "primitives-table--density-comfortable",
         "primitives-table--density-compact",
         "primitives-table--flush",
+        "primitives-table--sortable",
         "primitives-table--with-badge-slots",
         "primitives-table--with-caption"
       ]
@@ -3222,7 +3194,6 @@
         "src/app/components/card.tsx",
         "src/app/components/center.tsx",
         "src/app/components/cluster.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/cover.tsx",
         "src/app/components/file-input.tsx",
         "src/app/components/frame.tsx",
@@ -3389,7 +3360,6 @@
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
         "src/app/components/code-block.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/health-rail.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
@@ -3904,7 +3874,6 @@
         "sizing": "full"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/component-instance-matrix.stories.tsx"
       ],
       "tokenMapping": {},
@@ -3930,40 +3899,6 @@
         "primitives-component-instance-matrix--mobile-layout"
       ]
     },
-    "SpecimenBlock": {
-      "category": "Utilities",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/specimen-block.tsx",
-      "description": "SpecimenBlock — shared component-doc specimen block with preview, variant deck, and optional matrix.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "SpecimenBlock",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/api-reference.tsx",
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "primitive",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "sourcePath": "src/app/components/SpecimenBlock.tsx",
-      "figmaLink": null,
-      "storyFiles": [],
-      "storyIds": []
-    },
     "ActivityFeed": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -3979,6 +3914,7 @@
       },
       "consumers": [
         "src/app/components/activity-feed.test.tsx",
+        "src/index.ts",
         "src/stories/activity-feed.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4571,6 +4507,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/index.ts",
         "src/stories/stacked-card-rail.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4621,8 +4558,8 @@
         "src/app/components/button-group.test.tsx",
         "src/app/components/button-group.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/dialog.tsx",
+        "src/app/components/doc-page-header.test.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/form.tsx",
@@ -5095,6 +5032,7 @@
         "src/app/components/toast.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
+        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx",
@@ -5475,7 +5413,6 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -5556,7 +5493,6 @@
         "sizing": "compact"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/text-lockup.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5589,11 +5525,11 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/asset-img.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5938,8 +5874,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
@@ -6006,8 +5940,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/select.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/select.stories.tsx"
@@ -6071,8 +6003,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/slider.stories.tsx"
       ],
@@ -6138,8 +6068,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/controls.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.test.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -6214,6 +6142,7 @@
         "src/app/components/avatar-group.test.tsx",
         "src/app/components/avatar-group.tsx",
         "src/app/components/avatar.test.tsx",
+        "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/avatar-group.stories.tsx",
         "src/stories/avatar.stories.tsx"
       ],
@@ -6744,6 +6673,7 @@
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts",
+        "src/index.ts",
         "src/stories/form.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
@@ -7481,6 +7411,7 @@
       "consumers": [
         "src/app/components/side-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
+        "src/index.ts",
         "src/stories/side-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7529,6 +7460,7 @@
       "consumers": [
         "src/app/data/nav-model.test.ts",
         "src/app/lib/hds-search.ts",
+        "src/index.ts",
         "src/stories/command-palette.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7572,6 +7504,7 @@
       "consumers": [
         "src/app/components/image-lightbox.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/asset-img.stories.tsx",
         "src/stories/image-lightbox.stories.tsx"
       ],
@@ -7644,6 +7577,7 @@
       },
       "consumers": [
         "src/app/components/app-shell.test.tsx",
+        "src/index.ts",
         "src/stories/app-shell.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7683,6 +7617,7 @@
       },
       "consumers": [
         "src/app/components/file-input.test.tsx",
+        "src/index.ts",
         "src/stories/file-input.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7794,6 +7729,7 @@
       },
       "consumers": [
         "src/app/components/overflow-list.test.tsx",
+        "src/index.ts",
         "src/stories/overflow-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7956,6 +7892,7 @@
       "consumers": [
         "src/app/components/top-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
+        "src/index.ts",
         "src/stories/top-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8011,6 +7948,7 @@
       },
       "consumers": [
         "src/app/components/carousel.test.tsx",
+        "src/index.ts",
         "src/stories/carousel.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8061,6 +7999,7 @@
       },
       "consumers": [
         "src/app/components/stepper.test.tsx",
+        "src/index.ts",
         "src/stories/stepper.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8114,6 +8053,7 @@
       },
       "consumers": [
         "src/app/components/toolbar.test.tsx",
+        "src/index.ts",
         "src/stories/toolbar.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8156,6 +8096,7 @@
       },
       "consumers": [
         "src/app/components/tree-list.test.tsx",
+        "src/index.ts",
         "src/stories/tree-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8295,6 +8236,7 @@
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/date-time-input.tsx",
+        "src/index.ts",
         "src/stories/calendar.stories.tsx",
         "src/stories/date-input.stories.tsx",
         "src/stories/date-range-input.stories.tsx",
@@ -9462,6 +9404,7 @@
       "consumers": [
         "src/app/components/pin.tsx",
         "src/app/components/reveal.test.tsx",
+        "src/index.ts",
         "src/stories/patterns-scroll.stories.tsx",
         "src/stories/reveal.stories.tsx"
       ],
@@ -10931,60 +10874,6 @@
       "tokenMapping": {},
       "tier": "utility"
     },
-    "AutoPreviewSpecimen": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/componentPreviewRegistry.tsx",
-      "description": "/** @internal @doc-exempt: demo-preview-helper — not part of @hirobius/design-system public API.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "AutoPreviewSpecimen",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/specimen-block.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "VariantPreviewDeck": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/variant-preview-deck.tsx",
-      "description": "/** @internal @doc-exempt: demo-preview-helper — not part of @hirobius/design-system public API.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "VariantPreviewDeck",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/specimen-block.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "HistoryCard": {
       "category": "Uncategorized",
       "categorySource": "missing-jsdoc",
@@ -10999,7 +10888,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/stories/history-card.stories.tsx"
       ],
       "tokenMapping": {},
@@ -11038,7 +10926,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {},
@@ -11068,9 +10955,7 @@
         "exportName": "AnimatedLabel",
         "sizing": "compact"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -11099,7 +10984,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {},
@@ -11130,7 +11014,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/data/hdsEditorial.tsx"
       ],
       "tokenMapping": {},
@@ -11160,9 +11043,7 @@
         "exportName": "HdsMobileTopBar",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -11191,9 +11072,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
-        "src/app/components/demo-block.tsx",
-        "src/app/components/specimen-block.tsx"
+        "src/app/components/demo-block.tsx"
       ],
       "tokenMapping": {},
       "props": {},
@@ -11222,9 +11101,7 @@
         "exportName": "HdsSidebarUtilityButton",
         "sizing": "compact"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -11409,27 +11286,6 @@
       "componentProperties": [],
       "figmaLink": null
     },
-    "MorphCard": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/morph-card.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "MorphCard",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "Tooltip": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -11485,27 +11341,6 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": true,
-      "figmaLink": null
-    },
-    "CascadeText": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/CascadeText.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "CascadeText",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
       "figmaLink": null
     },
     "DocPageSpec": {
@@ -11566,7 +11401,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/health-rail.tsx"
       ],
       "tokenMapping": {},
@@ -11611,9 +11445,7 @@
         "exportName": "LegacyTokenList",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {
         "isDark": {
@@ -11658,7 +11490,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx",
         "src/app/components/lab/legacy-token-list.tsx"
       ],
       "tokenMapping": {},
@@ -11698,9 +11529,7 @@
         "exportName": "TokenList",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/componentPreviewRegistry.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "props": {},
       "allowedChildren": [
@@ -11777,7 +11606,9 @@
         "exportName": "DocPageHeader",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/doc-page-header.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []
@@ -12500,62 +12331,71 @@
         "path": "primitive.typography.size.xs",
         "cssVar": "--primitive-typography-size-xs",
         "type": "dimension",
-        "value": "13px"
+        "description": "Tailwind 4 default text-xs (hds#283 ramp).",
+        "value": "12px"
       },
       {
         "path": "primitive.typography.size.sm",
         "cssVar": "--primitive-typography-size-sm",
         "type": "dimension",
-        "value": "15px"
+        "description": "Tailwind 4 default text-sm (hds#283 ramp).",
+        "value": "14px"
       },
       {
         "path": "primitive.typography.size.base",
         "cssVar": "--primitive-typography-size-base",
         "type": "dimension",
-        "value": "17px"
+        "description": "Tailwind 4 default text-base (hds#283 ramp).",
+        "value": "16px"
       },
       {
         "path": "primitive.typography.size.lg",
         "cssVar": "--primitive-typography-size-lg",
         "type": "dimension",
-        "value": "20px"
+        "description": "Tailwind 4 default text-lg (hds#283 ramp).",
+        "value": "18px"
       },
       {
         "path": "primitive.typography.size.xl",
         "cssVar": "--primitive-typography-size-xl",
         "type": "dimension",
-        "value": "24px"
+        "description": "Tailwind 4 default text-xl (hds#283 ramp).",
+        "value": "20px"
       },
       {
         "path": "primitive.typography.size.2xl",
         "cssVar": "--primitive-typography-size-2xl",
         "type": "dimension",
-        "value": "30px"
+        "description": "Tailwind 4 default text-2xl (hds#283 ramp).",
+        "value": "24px"
       },
       {
         "path": "primitive.typography.size.3xl",
         "cssVar": "--primitive-typography-size-3xl",
         "type": "dimension",
-        "value": "36px"
+        "description": "Tailwind 4 default text-3xl (hds#283 ramp).",
+        "value": "30px"
       },
       {
         "path": "primitive.typography.size.4xl",
         "cssVar": "--primitive-typography-size-4xl",
         "type": "dimension",
-        "value": "48px"
+        "description": "Tailwind 4 default text-4xl (hds#283 ramp).",
+        "value": "36px"
       },
       {
         "path": "primitive.typography.size.5xl",
         "cssVar": "--primitive-typography-size-5xl",
         "type": "dimension",
-        "description": "Swiss-canon display size. Static desktop value; fluid in theme.css.",
-        "value": "72px"
+        "description": "Tailwind 4 default text-5xl (hds#283 ramp).",
+        "value": "48px"
       },
       {
         "path": "primitive.typography.size.6xl",
         "cssVar": "--primitive-typography-size-6xl",
         "type": "dimension",
-        "value": "80px"
+        "description": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl.",
+        "value": "60px"
       },
       {
         "path": "primitive.typography.weight.regular",
@@ -12960,6 +12800,14 @@
           "duration": "100ms",
           "easing": "cubic-bezier(0.4, 0, 1, 1)"
         }
+      },
+      {
+        "path": "semantic.motion.distance",
+        "cssVar": "--semantic-motion-distance",
+        "type": "dimension",
+        "description": "Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242).",
+        "alias": "{primitive.space.6}",
+        "resolvedValue": "24px"
       },
       {
         "path": "semantic.color.surface.page",
@@ -13401,6 +13249,46 @@
         }
       },
       {
+        "path": "semantic.space.scale.xs",
+        "cssVar": "--semantic-space-scale-xs",
+        "type": "dimension",
+        "description": "8px — smallest step. Same value as component.gap (deprecated alias).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.space.scale.sm",
+        "cssVar": "--semantic-space-scale-sm",
+        "type": "dimension",
+        "description": "16px — same value as layout.tight (deprecated alias).",
+        "alias": "{primitive.space.4}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.space.scale.md",
+        "cssVar": "--semantic-space-scale-md",
+        "type": "dimension",
+        "description": "24px — same value as layout.normal / layout.gutter / component.padding (deprecated aliases; hds#206 de-aliases this triplet down to this one canonical token).",
+        "alias": "{primitive.space.6}",
+        "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.space.scale.lg",
+        "cssVar": "--semantic-space-scale-lg",
+        "type": "dimension",
+        "description": "32px — same value as layout.inset (deprecated alias).",
+        "alias": "{primitive.space.8}",
+        "resolvedValue": "32px"
+      },
+      {
+        "path": "semantic.space.scale.xl",
+        "cssVar": "--semantic-space-scale-xl",
+        "type": "dimension",
+        "description": "48px — same value as layout.spacious (deprecated alias).",
+        "alias": "{primitive.space.12}",
+        "resolvedValue": "48px"
+      },
+      {
         "path": "semantic.space.subgrid.hairline",
         "cssVar": "--semantic-space-subgrid-hairline",
         "type": "dimension",
@@ -13428,7 +13316,7 @@
         "path": "semantic.space.component.gap",
         "cssVar": "--semantic-space-component-gap",
         "type": "dimension",
-        "description": "8px label↔input rhythm and closely coupled control spacing.",
+        "description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -13444,7 +13332,7 @@
         "path": "semantic.space.component.padding",
         "cssVar": "--semantic-space-component-padding",
         "type": "dimension",
-        "description": "24px default inset for cards, forms, panels, and grouped surfaces.",
+        "description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -13452,7 +13340,7 @@
         "path": "semantic.space.layout.tight",
         "cssVar": "--semantic-space-layout-tight",
         "type": "dimension",
-        "description": "16px default HdsStack gap and inter-component spacing.",
+        "description": "16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet.",
         "alias": "{primitive.space.4}",
         "resolvedValue": "16px"
       },
@@ -13460,7 +13348,7 @@
         "path": "semantic.space.layout.normal",
         "cssVar": "--semantic-space-layout-normal",
         "type": "dimension",
-        "description": "24px column gutters and sidebar gutter spacing.",
+        "description": "24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -13468,7 +13356,7 @@
         "path": "semantic.space.layout.gutter",
         "cssVar": "--semantic-space-layout-gutter",
         "type": "dimension",
-        "description": "24px column and region gutters (alias for layout.normal).",
+        "description": "24px column and region gutters (alias for layout.normal). DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -13476,7 +13364,7 @@
         "path": "semantic.space.layout.inset",
         "cssVar": "--semantic-space-layout-inset",
         "type": "dimension",
-        "description": "32px major block separation and inset inter-component gaps.",
+        "description": "32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet.",
         "alias": "{primitive.space.8}",
         "resolvedValue": "32px"
       },
@@ -13484,7 +13372,7 @@
         "path": "semantic.space.layout.spacious",
         "cssVar": "--semantic-space-layout-spacious",
         "type": "dimension",
-        "description": "48px section break and whitespace separator between major content blocks.",
+        "description": "48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
         "alias": "{primitive.space.12}",
         "resolvedValue": "48px"
       },
@@ -13628,10 +13516,10 @@
         "path": "semantic.typography.display",
         "cssVar": "--semantic-typography-display",
         "type": "typography",
-        "description": "Display headline. 72px / Satoshi bold 700 / leading-none.",
+        "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "72px",
+          "fontSize": "60px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1"
@@ -13641,7 +13529,7 @@
         "path": "semantic.typography.h1",
         "cssVar": "--semantic-typography-h1",
         "type": "typography",
-        "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight.",
+        "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "48px",
@@ -13654,20 +13542,20 @@
         "path": "semantic.typography.h2",
         "cssVar": "--semantic-typography-h2",
         "type": "typography",
-        "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 42px.",
+        "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "30px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
-          "lineHeight": "42px"
+          "lineHeight": "40px"
         }
       },
       {
         "path": "semantic.typography.h3",
         "cssVar": "--semantic-typography-h3",
         "type": "typography",
-        "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug.",
+        "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "20px",
@@ -13680,24 +13568,10 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Body prose. Satoshi medium, 17px, line-height 28px, max 60ch measure.",
+        "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "17px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
-          "lineHeight": "28px",
-          "maxWidth": "60ch"
-        }
-      },
-      {
-        "path": "semantic.typography.ui",
-        "cssVar": "--semantic-typography-ui",
-        "type": "typography",
-        "description": "UI text for nav, labels, captions. Satoshi medium, 15px, line-height 24px.",
-        "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "15px",
+          "fontSize": "16px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "24px",
@@ -13705,10 +13579,24 @@
         }
       },
       {
+        "path": "semantic.typography.ui",
+        "cssVar": "--semantic-typography-ui",
+        "type": "typography",
+        "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "20px",
+          "maxWidth": "60ch"
+        }
+      },
+      {
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style.",
+        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "12px",
@@ -13721,13 +13609,13 @@
         "path": "semantic.typography.eyebrow",
         "cssVar": "--semantic-typography-eyebrow",
         "type": "typography",
-        "description": "Eyebrow / kicker label. Satoshi medium, 13px, caps tracking, uppercase.",
+        "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "13px",
+          "fontSize": "12px",
           "fontWeight": "500",
           "letterSpacing": "0.06em",
-          "lineHeight": "20px",
+          "lineHeight": "16px",
           "textTransform": "uppercase"
         }
       },
@@ -13735,10 +13623,10 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 13px.",
+        "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
         "composite": {
           "fontFamily": "\"Geist Mono\", \"Courier New\", monospace",
-          "fontSize": "13px",
+          "fontSize": "14px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "20px",
@@ -13882,6 +13770,14 @@
         "resolvedValue": "8px"
       },
       {
+        "path": "semantic.radius.control",
+        "cssVar": "--semantic-radius-control",
+        "type": "dimension",
+        "description": "Corner radius for small interactive control glyphs (e.g. checkbox glyph box) that are not fully round and not the standard action radius. Real design-scale value, distinct from semantic.radius.action (hds#242).",
+        "alias": "{primitive.radius.4}",
+        "resolvedValue": "4px"
+      },
+      {
         "path": "semantic.borderWidth.default",
         "cssVar": "--semantic-borderWidth-default",
         "type": "dimension",
@@ -13985,6 +13881,94 @@
           },
           "border": null
         }
+      },
+      {
+        "path": "semantic.size.control.sm",
+        "cssVar": "--semantic-size-control-sm",
+        "type": "dimension",
+        "description": "Small control element — radio dot, slider fill bar height.",
+        "alias": "{primitive.size.8}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.size.control.md",
+        "cssVar": "--semantic-size-control-md",
+        "type": "dimension",
+        "description": "Medium control element — checkbox glyph box, slider track wrapper height.",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
+      },
+      {
+        "path": "semantic.size.control.lg",
+        "cssVar": "--semantic-size-control-lg",
+        "type": "dimension",
+        "description": "Large control footprint — code-block inline-wrapper min-height / copy-button-matched pre padding.",
+        "alias": "{primitive.size.32}",
+        "resolvedValue": "32px"
+      },
+      {
+        "path": "semantic.size.icon.sm",
+        "cssVar": "--semantic-size-icon-sm",
+        "type": "dimension",
+        "description": "Small icon box — matches --hds-icon-small.",
+        "alias": "{primitive.size.16}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.size.icon.md",
+        "cssVar": "--semantic-size-icon-md",
+        "type": "dimension",
+        "description": "Medium icon box — matches --hds-icon-medium.",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
+      },
+      {
+        "path": "semantic.size.icon.lg",
+        "cssVar": "--semantic-size-icon-lg",
+        "type": "dimension",
+        "description": "Large icon box — matches --hds-icon-large.",
+        "alias": "{primitive.size.24}",
+        "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.size.avatar",
+        "cssVar": "--semantic-size-avatar",
+        "type": "dimension",
+        "description": "Avatar diagonal (width/height) for activity-feed and similar identity glyphs. Coincides in pixels with row.compact today; kept as a separate role per hds#242 so either can change independently.",
+        "alias": "{primitive.size.40}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.row.compact",
+        "cssVar": "--semantic-size-row-compact",
+        "type": "dimension",
+        "description": "Compact-density row minimum height.",
+        "alias": "{primitive.size.40}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.row.comfortable",
+        "cssVar": "--semantic-size-row-comfortable",
+        "type": "dimension",
+        "description": "Comfortable-density row minimum height.",
+        "alias": "{primitive.size.48}",
+        "resolvedValue": "48px"
+      },
+      {
+        "path": "semantic.zIndex.control",
+        "cssVar": "--semantic-zIndex-control",
+        "type": "number",
+        "description": "Raises an interactive control (e.g. a native range input) above its visual decoration for hit-testing.",
+        "alias": "{primitive.zIndex.10}",
+        "resolvedValue": "10"
+      },
+      {
+        "path": "semantic.zIndex.sticky",
+        "cssVar": "--semantic-zIndex-sticky",
+        "type": "number",
+        "description": "Sticky-positioned elements, such as a table header row.",
+        "alias": "{primitive.zIndex.100}",
+        "resolvedValue": "100"
       }
     ],
     "component": [
@@ -14090,7 +14074,7 @@
         "type": "dimension",
         "description": "Tag type size.",
         "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "13px"
+        "resolvedValue": "12px"
       },
       {
         "path": "component.tag.fontWeight",
@@ -14178,7 +14162,7 @@
         "type": "dimension",
         "description": "Badge type size.",
         "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "13px"
+        "resolvedValue": "12px"
       },
       {
         "path": "component.badge.fontWeight",
@@ -14316,9 +14300,9 @@
         "path": "component.button.size.sm.fontSize",
         "cssVar": "--component-button-size-sm-fontSize",
         "type": "dimension",
-        "description": "Small button label size (13px).",
+        "description": "Small button label size (12px, hds#283: was 13px).",
         "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "13px"
+        "resolvedValue": "12px"
       },
       {
         "path": "component.button.size.sm.iconSize",
@@ -14364,9 +14348,9 @@
         "path": "component.button.size.md.fontSize",
         "cssVar": "--component-button-size-md-fontSize",
         "type": "dimension",
-        "description": "Medium button label size (15px).",
+        "description": "Medium button label size (14px, hds#283: was 15px).",
         "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "15px"
+        "resolvedValue": "14px"
       },
       {
         "path": "component.button.size.md.iconSize",
@@ -14412,9 +14396,9 @@
         "path": "component.button.size.lg.fontSize",
         "cssVar": "--component-button-size-lg-fontSize",
         "type": "dimension",
-        "description": "Large button label size (17px).",
+        "description": "Large button label size (16px, hds#283: was 17px).",
         "alias": "{primitive.typography.size.base}",
-        "resolvedValue": "17px"
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.lg.iconSize",

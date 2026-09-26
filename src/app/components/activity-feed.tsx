@@ -110,9 +110,10 @@ const activityToneVariants = cva('', {
   defaultVariants: { tone: 'neutral' },
 });
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- size-40/radius-full/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic-size-avatar/radius-full/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const activityAvatarVariants = cva(
-  'flex h-[var(--primitive-size-40)] w-[var(--primitive-size-40)] shrink-0 items-center justify-center rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-raised)]',
+  // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186/hds#242
+  'flex h-[var(--semantic-size-avatar)] w-[var(--semantic-size-avatar)] shrink-0 items-center justify-center rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-raised)]',
 );
 
 // Typography composites — var()-based, no matching Tailwind-theme utility
@@ -248,6 +249,8 @@ export const defaultActivityEvents: ActivityEvent[] = [
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
+/**
+ */
 export function ActivityFeed({ events = defaultActivityEvents }: ActivityFeedProps) {
   return (
     <Stack gap="spacious" as="ol" className="m-0 list-none p-0">

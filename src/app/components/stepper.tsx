@@ -59,7 +59,9 @@ function stepState(index: number, activeStep: number): StepState {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Step indicator for multi-step flows. Purely presentational — no navigation. */
+/**
+ * Step indicator for multi-step flows. Purely presentational — no navigation.
+ */
 export const Stepper = React.forwardRef<HTMLOListElement, StepperProps>(function Stepper(
   { steps, activeStep, orientation = 'horizontal', className, ...props },
   ref,

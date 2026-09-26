@@ -93,7 +93,9 @@ function TreeItem({ node, expandedIds, onToggle, onSelect }: TreeItemProps) {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle. */
+/**
+ * Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
+ */
 export const TreeList = React.forwardRef<HTMLUListElement, TreeListProps>(function TreeList(
   { items, defaultExpandedIds, onSelect, className, ...props },
   ref,
