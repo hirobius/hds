@@ -6,8 +6,10 @@
  */
 import { Fragment, useId, type CSSProperties, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
+import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
+import { Icon } from './icon';
 import { Surface } from './surface';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -43,6 +45,25 @@ const tableHeaderCellVariants = cva(
   },
 );
 
+// Sortable header cells render a real `<button>` filling the cell so the whole
+// header remains one hit target; unstyled beyond layout so the cell's own
+// alignment/typography (tableHeaderCellVariants + typeStyles.technical) keeps
+// driving pixel parity with the non-sortable render path.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
+const tableSortButtonVariants = cva(
+  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-component-gap)] border-0 bg-transparent p-0 text-inherit [font:inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+  {
+    variants: {
+      align: {
+        left: 'justify-start',
+        center: 'justify-center',
+        right: 'justify-end',
+      },
+    },
+    defaultVariants: { align: 'left' },
+  },
+);
+
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-component-padding)]', {
   variants: {
@@ -69,11 +90,20 @@ const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-com
 /** @public */
 export type TableColumnAlign = 'left' | 'center' | 'right';
 
+/** @public */
+export type TableSortDirection = 'ascending' | 'descending' | 'none';
+
 export type TableColumn = {
   key: string;
   label: ReactNode;
   width?: string;
   align?: TableColumnAlign;
+  /** Renders the header as a button and sets `aria-sort` on the header cell. */
+  sortable?: boolean;
+  /** Current sort state for this column; defaults to `'none'` when `sortable`. */
+  sortDirection?: TableSortDirection;
+  /** Called when the sort button is activated (click, Enter, or Space). */
+  onSort?: () => void;
 };
 
 export type TableCellSlot =
@@ -188,21 +218,68 @@ export function Table({
               .join(' '),
           }}
         >
-          {columns.map((column) => (
-            <div
-              key={column.key}
-              className={cn(
-                tableHeaderCellVariants({
-                  align: column.align ?? 'left',
-                  density,
-                  sticky: Boolean(stickyHeader),
-                }),
-              )}
-              style={hds.typeStyles.technical}
-            >
-              {column.label}
-            </div>
-          ))}
+          {columns.map((column) => {
+            if (!column.sortable) {
+              return (
+                <div
+                  key={column.key}
+                  className={cn(
+                    tableHeaderCellVariants({
+                      align: column.align ?? 'left',
+                      density,
+                      sticky: Boolean(stickyHeader),
+                    }),
+                  )}
+                  style={hds.typeStyles.technical}
+                >
+                  {column.label}
+                </div>
+              );
+            }
+
+            const direction = column.sortDirection ?? 'none';
+            const DirectionIcon =
+              direction === 'ascending'
+                ? ArrowUp
+                : direction === 'descending'
+                  ? ArrowDown
+                  : ArrowUpDown;
+
+            return (
+              <div
+                key={column.key}
+                role="columnheader"
+                aria-sort={direction}
+                className={cn(
+                  tableHeaderCellVariants({
+                    align: column.align ?? 'left',
+                    density,
+                    sticky: Boolean(stickyHeader),
+                  }),
+                )}
+                style={hds.typeStyles.technical}
+              >
+                <button
+                  type="button"
+                  onClick={column.onSort}
+                  // Native <button> already turns Enter/Space into a click via the
+                  // browser's default action; jsdom's fireEvent doesn't simulate
+                  // that, so we handle both keys explicitly here and preventDefault
+                  // to avoid a duplicate onSort call in real browsers.
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+                      event.preventDefault();
+                      column.onSort?.();
+                    }
+                  }}
+                  className={cn(tableSortButtonVariants({ align: column.align ?? 'left' }))}
+                >
+                  {column.label}
+                  <Icon icon={DirectionIcon} size="small" aria-hidden />
+                </button>
+              </div>
+            );
+          })}
           {rows.map((row, rowIndex) => (
             <Fragment key={row.key ?? rowIndex}>
               {row.cells.map((cell, cellIndex) => (
@@ -229,4 +306,4 @@ export function Table({
 }
 
 /** @internal — CVA variant helpers; compose via Table props instead. */
-export { tableHeaderCellVariants, tableDataCellVariants };
+export { tableHeaderCellVariants, tableDataCellVariants, tableSortButtonVariants };

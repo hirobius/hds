@@ -1729,6 +1729,7 @@
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/app/components/shell-controls.tsx",
+        "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/theme-toggle.tsx",
         "src/app/components/toast.tsx",
@@ -3089,6 +3090,7 @@
       "consumers": [
         "src/app/components/api-reference.tsx",
         "src/app/components/propTableUtils.tsx",
+        "src/app/components/table.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx",
@@ -3165,6 +3167,7 @@
         "primitives-table--density-comfortable",
         "primitives-table--density-compact",
         "primitives-table--flush",
+        "primitives-table--sortable",
         "primitives-table--with-badge-slots",
         "primitives-table--with-caption"
       ]

@@ -1330,10 +1330,11 @@
         "primitives-table--density-comfortable",
         "primitives-table--density-compact",
         "primitives-table--flush",
+        "primitives-table--sortable",
         "primitives-table--with-badge-slots",
         "primitives-table--with-caption"
       ],
-      "storyCount": 6,
+      "storyCount": 7,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300",
       "figmaVia": "manifest",
       "expectFigma": true,
