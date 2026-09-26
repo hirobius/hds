@@ -34,14 +34,13 @@ function columnsWith(overrides: Partial<TableColumn>): TableColumn[] {
 }
 
 describe('Table — sortable columns', () => {
-  it('renders a non-sortable header cell with no aria-sort and no button (pixel parity)', () => {
+  it('renders a non-sortable header cell as a columnheader with no aria-sort and no button (pixel parity)', () => {
     render(<Table columns={columnsWith({})} rows={rows} />);
-    const header = screen.getByText('Name').closest('[role], div');
     expect(screen.queryByRole('button', { name: 'Name' })).toBeNull();
-    // The header cell itself must not carry aria-sort when not sortable.
-    const headerCell = screen.getByText('Name').parentElement;
-    expect(headerCell?.getAttribute('aria-sort')).toBeNull();
-    void header;
+    // The header cell itself carries columnheader semantics (inside the
+    // table/row ancestry) but no aria-sort, since it isn't sortable.
+    const headerCell = screen.getByRole('columnheader', { name: 'Name' });
+    expect(headerCell.getAttribute('aria-sort')).toBeNull();
   });
 
   it('sets aria-sort="none" on a sortable column with no active direction', () => {
@@ -76,17 +75,13 @@ describe('Table — sortable columns', () => {
     expect(onSort).toHaveBeenCalledTimes(1);
   });
 
-  it('fires onSort on Enter key', () => {
-    const onSort = vi.fn();
-    render(<Table columns={columnsWith({ sortable: true, onSort })} rows={rows} />);
-    fireEvent.keyDown(screen.getByRole('button', { name: 'Name' }), { key: 'Enter' });
-    expect(onSort).toHaveBeenCalledTimes(1);
-  });
-
-  it('fires onSort on Space key', () => {
-    const onSort = vi.fn();
-    render(<Table columns={columnsWith({ sortable: true, onSort })} rows={rows} />);
-    fireEvent.keyDown(screen.getByRole('button', { name: 'Name' }), { key: ' ' });
-    expect(onSort).toHaveBeenCalledTimes(1);
-  });
+  // Keyboard activation (Enter/Space) is native <button> behaviour — the
+  // browser's own default action turns those keys into a click. There is no
+  // custom onKeyDown handler to test (a prior version had one purely to
+  // satisfy jsdom's fireEvent, which risked a double-fire in real browsers —
+  // see hds#294 review). jsdom itself doesn't implement that default action
+  // for fireEvent.keyDown/keyUp, so real keyboard-activation coverage needs
+  // @testing-library/user-event (not currently a devDependency here); the
+  // click test above covers the button's own onClick wiring, which is all
+  // this component owns.
 });

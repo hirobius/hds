@@ -1587,6 +1587,7 @@
         "src/app/components/sidebar.tsx",
         "src/app/components/sketch-controls.tsx",
         "src/app/components/stack.tsx",
+        "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/foundation-swatch.stories.tsx",

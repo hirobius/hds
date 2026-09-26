@@ -4,7 +4,7 @@
  * @tier primitive
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300
  */
-import { Fragment, useId, type CSSProperties, type ReactNode } from 'react';
+import { useId, type CSSProperties, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
 import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -210,6 +210,8 @@ export function Table({
         style={{ overflowX: 'auto', overflowY: 'visible' }}
       >
         <div
+          role="table"
+          aria-labelledby={hasCaption ? captionId : undefined}
           className="grid"
           style={{
             minWidth,
@@ -218,11 +220,48 @@ export function Table({
               .join(' '),
           }}
         >
-          {columns.map((column) => {
-            if (!column.sortable) {
+          {/*
+           * `display: contents` keeps this wrapper out of the CSS Grid layout
+           * entirely — its children still lay out as direct grid items,
+           * pixel-identical to before — while giving ARIA a real row to hang
+           * columnheader/cell roles from. Without it, `role="columnheader"`
+           * on a header cell is an orphan (no row → no table ancestor chain),
+           * which axe flags as aria-required-parent (critical).
+           */}
+          <div role="row" style={{ display: 'contents' }}>
+            {columns.map((column) => {
+              if (!column.sortable) {
+                return (
+                  <div
+                    key={column.key}
+                    role="columnheader"
+                    className={cn(
+                      tableHeaderCellVariants({
+                        align: column.align ?? 'left',
+                        density,
+                        sticky: Boolean(stickyHeader),
+                      }),
+                    )}
+                    style={hds.typeStyles.technical}
+                  >
+                    {column.label}
+                  </div>
+                );
+              }
+
+              const direction = column.sortDirection ?? 'none';
+              const DirectionIcon =
+                direction === 'ascending'
+                  ? ArrowUp
+                  : direction === 'descending'
+                    ? ArrowDown
+                    : ArrowUpDown;
+
               return (
                 <div
                   key={column.key}
+                  role="columnheader"
+                  aria-sort={direction}
                   className={cn(
                     tableHeaderCellVariants({
                       align: column.align ?? 'left',
@@ -232,59 +271,24 @@ export function Table({
                   )}
                   style={hds.typeStyles.technical}
                 >
-                  {column.label}
+                  <button
+                    type="button"
+                    onClick={column.onSort}
+                    className={cn(tableSortButtonVariants({ align: column.align ?? 'left' }))}
+                  >
+                    {column.label}
+                    <Icon icon={DirectionIcon} size="small" aria-hidden />
+                  </button>
                 </div>
               );
-            }
-
-            const direction = column.sortDirection ?? 'none';
-            const DirectionIcon =
-              direction === 'ascending'
-                ? ArrowUp
-                : direction === 'descending'
-                  ? ArrowDown
-                  : ArrowUpDown;
-
-            return (
-              <div
-                key={column.key}
-                role="columnheader"
-                aria-sort={direction}
-                className={cn(
-                  tableHeaderCellVariants({
-                    align: column.align ?? 'left',
-                    density,
-                    sticky: Boolean(stickyHeader),
-                  }),
-                )}
-                style={hds.typeStyles.technical}
-              >
-                <button
-                  type="button"
-                  onClick={column.onSort}
-                  // Native <button> already turns Enter/Space into a click via the
-                  // browser's default action; jsdom's fireEvent doesn't simulate
-                  // that, so we handle both keys explicitly here and preventDefault
-                  // to avoid a duplicate onSort call in real browsers.
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
-                      event.preventDefault();
-                      column.onSort?.();
-                    }
-                  }}
-                  className={cn(tableSortButtonVariants({ align: column.align ?? 'left' }))}
-                >
-                  {column.label}
-                  <Icon icon={DirectionIcon} size="small" aria-hidden />
-                </button>
-              </div>
-            );
-          })}
+            })}
+          </div>
           {rows.map((row, rowIndex) => (
-            <Fragment key={row.key ?? rowIndex}>
+            <div key={row.key ?? rowIndex} role="row" style={{ display: 'contents' }}>
               {row.cells.map((cell, cellIndex) => (
                 <div
                   key={`${row.key ?? rowIndex}-${cellIndex}`}
+                  role="cell"
                   className={cn(
                     tableDataCellVariants({
                       align: cell.align ?? 'left',
@@ -297,7 +301,7 @@ export function Table({
                   {cell.content}
                 </div>
               ))}
-            </Fragment>
+            </div>
           ))}
         </div>
       </Surface>
