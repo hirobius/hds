@@ -1,5 +1,114 @@
 # Changelog
 
+## 0.17.0
+
+### Minor Changes
+
+- d41c65e: Add `semantic.space.scale.{xs,sm,md,lg,xl}` — one monotonic t-shirt spacing
+  scale (8/16/24/32/48px) per Adrian's 2026-09-26 decision on hds#206. The
+  existing gap families (`layout.tight/normal/gutter/inset/spacious`,
+  `component.gap/padding`) are unchanged and kept live as deprecated aliases —
+  no breaking change. Adds `check-spacing-vocabulary` (warn-severity, manual/
+  on-demand) flagging raw integer literals on Box `sx` spacing props (the
+  px-ambiguous form hds#206 identifies), registered in
+  `docs/guardrails/registry.json`. Consumer codemod off the deprecated names,
+  alias removal, and unifying `Stack`'s gap resolver with `box-sx`'s are
+  tracked as remaining hds#206 work.
+- d41c65e: Add `semantic.size.{control,icon,avatar,row}` and `semantic.zIndex.{control,sticky}`
+  to `hirobius.tokens.json` per Adrian's 2026-09-26 decision on hds#242, plus
+  `semantic.radius.control` (checkbox glyph corner radius, a real design-scale
+  value distinct from `semantic.radius.action`) and `semantic.motion.distance`
+  (scroll-reveal `translateY` offset). Repoints all 15 `check-tier-bypass`
+  judgement-call violations named in hds#242 — activity-feed, checkbox,
+  code-block, radio, slider, table, `scroll-motion.css` — onto the new semantic
+  tokens, and adds `// tier-ok:` exemptions (matching #186's precedent) for the
+  two `radius-full` "fully round, one possible value" references that share a
+  line with a now-fixed size token. `pnpm check:tier-bypass` is green (was 15).
+
+  `scripts/lib/figma-model.mjs`: `semantic.radius.control` needed its own
+  `$type` (siblings inherit it from a group `$type` that `semantic.radius`
+  doesn't set); `semantic.motion.distance` is declared in `NOT_IN_FIGMA` (a
+  translateY offset has nothing to bind to in Figma, same as duration/easing).
+
+- d41c65e: Adds `@hirobius/design-system/patterns` (hds#254, ratified 2026-09-26): the 22
+  `pattern`-tier components from the disposition table — `Calendar`,
+  `FileInput`, `Form`, `AppShell`, `OverflowList`, `Page`, `ActivityFeed`,
+  `AssetImg`, `Carousel`, `CodeBlock`, `StackedCardRail`, `DocLinkCard`,
+  `NavItem`, `SideNav`, `Stepper`, `TopNav`, `TreeList`, `ErrorPattern`,
+  `Toolbar`, `CommandPalette`, `Lightbox`, `Reveal` — now importable from their
+  own subpath (`vite.config.lib.ts` entry, `package.json#exports`). Non-breaking:
+  21 of the 22 stay re-exported from the package root too, each now carrying a
+  `@deprecated`/`@removeIn 1.0.0` JSDoc notice pointing at the new subpath; the
+  root re-export is dropped at the next major once ops has a codemod
+  (`StackedCardRail` is new to the published surface either way — it was
+  `pattern`-tiered in the manifest but missing from `src/index.ts`, so it has no
+  root re-export to deprecate).
+
+  This is the non-breaking half of the hds#254 decision. The 41 `fold` API
+  absorptions in the same disposition table wait for 1.0 and an `ops` codemod —
+  tracked on hds#254/hds#124, not filed as new issues.
+
+- d41c65e: Standard type ramp (Adrian's 2026-09-26 decision on hds#283): lift Tailwind 4's
+  ten default `fontSize` steps into `primitive.typography.size.*` verbatim —
+  `xs` 13→12, `sm` 15→14, `base` 17→16, `lg` 20→18, `xl` 24→20, `2xl` 30→24,
+  `3xl` 36→30, `4xl` 48→36, `5xl` 72→48, `6xl` 80→60 — and repoint every
+  semantic composite at its new rung per the 2026-09-24 audit table:
+  - Rendered size changes: `body` 17→16px, `ui` 15→14px, `display` 72→60px,
+    `eyebrow`/`caption` 13→12px (closes the eyebrow/caption duplicate), `mono`
+    13→14px (repointed off `xs`, since `xs` alone now gives 12px).
+  - Rendered size unchanged, rung renamed to keep the primitive scale
+    monotonic: `h1` (`4xl`→`5xl`, 48px), `h2` (`2xl`→`3xl`, 30px, line-height
+    42px→40px onto the 4px grid), `h3` (`lg`→`xl`, 20px).
+  - `component.button.size.{sm,md,lg}.fontSize` descriptions corrected
+    (13/15/17px → 12/14/16px); `tag`/`badge`.fontSize already referenced
+    `primitive.typography.size.xs` and pick up 12px automatically.
+  - `--semantic-typography-display-font-size` clamp max in `src/styles/theme.css`
+    updated 72px→60px to match.
+  - Hardcoded `text-[10px]` / `text-[11px]` / `text-[15px]` classes that bypassed
+    the ramp (`command-palette.tsx`, `badge.tsx`, `segmented-control.tsx`)
+    replaced with ramp-driven `text-xs` / `text-sm` utilities (now that
+    `tailwind.config.tokens.cjs` wires `fontSize.*` straight onto these same
+    primitives, this also closes the fork with `hirobius/concrete`'s Tailwind
+    defaults).
+
+  Base-size rationale recorded in `DECISIONS.md`. Not in this pass: concrete's
+  duplicated display/h1 CSS clamp mins, Figma `figma:push`/`figma:snapshot
+--ingest` re-sync, and ops's 54 call sites on the `xs` rung (tracked as
+  remaining work on hds#283).
+
+- d41c65e: Table: `TableColumn` gains optional `sortable`, `sortDirection` (`'ascending' | 'descending' | 'none'`), and `onSort`. Sortable columns render a real button inside the header cell, set `aria-sort` on the header cell, and show a token-sized direction glyph (ArrowUp/ArrowDown/ArrowUpDown). Non-sortable columns render exactly as before (pixel parity).
+
+### Patch Changes
+
+- d41c65e: Delete dead internal (non-exported) files with zero consumers: `morph-card.tsx`,
+  `CascadeText.tsx`, `controls.tsx`. None were in `src/index.ts`'s public barrel
+  and none were imported anywhere in the repo — confirmed by grep before removal
+  (hds#133, Tier-1 zero-risk bucket, Adrian's option-A decision 2026-09-26).
+- d41c65e: Fix hds#254 review defect: the `@deprecated`/`@removeIn 1.0.0` JSDoc on the 21
+  pattern-tier components was on the component declarations themselves (e.g.
+  `export const AppShell` in `app-shell.tsx`), so TypeScript attached the
+  deprecation to the symbol everywhere — including the new
+  `@hirobius/design-system/patterns` subpath the notice tells consumers to
+  migrate to (`import { AppShell } from '.../patterns'` produced TS6385).
+
+  The declarations are now plain (undeprecated); the `@deprecated` notice lives
+  only on a root-only `const` alias in `src/index.ts` for each of the 21 names,
+  which shadows the star-exported binding for root-import consumers per ES
+  module semantics. Importing from `/patterns` now gives no deprecation
+  warning; importing the same name from the package root still does.
+
+- d41c65e: Delete the dead `componentPreviewRegistry` island: `componentPreviewRegistry.tsx`,
+  `specimen-block.tsx`, `variant-preview-deck.tsx` (~900 lines). None were exported
+  from `src/index.ts`'s public barrel, none were imported outside this trio, and
+  knip flagged all three as unused — the remains of the docs SPA deleted in #90.
+  The Storybook-built component reference site (#280) replaces what this was
+  reaching for; its hand-written `DEFAULT_PREVIEW_PROPS` table had decayed to 46
+  entries covering 30 of 139 manifest components. Decision and the pattern worth
+  keeping (`import.meta.glob` module discovery + manifest-driven
+  `preview.exportName`/`preview.sizing`) recorded in `DECISIONS.md` (hds#286,
+  Adrian's decision 2026-09-26).
+- d41c65e: Table: fix invalid ARIA structure from the sortable-columns change (hds#294 review). The grid now carries `role="table"`, header/data rows are wrapped in `role="row"` elements (`display: contents`, so CSS Grid layout is unaffected), every header cell has `role="columnheader"` (not just sortable ones), and data cells have `role="cell"` — so `aria-sort` no longer sits on an orphan columnheader outside any table/row ancestry. Also drops the manual `onKeyDown` on the sort button (native `<button>` already turns Enter/Space into a click; the duplicate handler risked a double-toggle in browsers with inconsistent Space-keyup behavior).
+
 ## 0.16.0
 
 ### Minor Changes
