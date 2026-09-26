@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 399 tokens, aliases, and TS refs in one shot.
+Checks all 404 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -314,27 +314,32 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 
 <!-- auto:start:semantic-space -->
 
-| Token                                | Value   | Notes                                                                                                                                               |
-| ------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.space.subgrid.hairline`    | `1px`   | 1px border offset and hairline spacing.                                                                                                             |
-| `semantic.space.subgrid.xs`          | `2px`   | 2px vertical rhythm nudge and baseline adjustment.                                                                                                  |
-| `semantic.space.subgrid.gap`         | `4px`   | 4px cap-height and inline cluster spacing.                                                                                                          |
-| `semantic.space.component.gap`       | `8px`   | 8px label↔input rhythm and closely coupled control spacing.                                                                                         |
-| `semantic.space.component.medium`    | `12px`  | 12px adjacent form fields and medium intra-component gaps.                                                                                          |
-| `semantic.space.component.padding`   | `24px`  | 24px default inset for cards, forms, panels, and grouped surfaces.                                                                                  |
-| `semantic.space.layout.tight`        | `16px`  | 16px default HdsStack gap and inter-component spacing.                                                                                              |
-| `semantic.space.layout.normal`       | `24px`  | 24px column gutters and sidebar gutter spacing.                                                                                                     |
-| `semantic.space.layout.gutter`       | `24px`  | 24px column and region gutters (alias for layout.normal).                                                                                           |
-| `semantic.space.layout.inset`        | `32px`  | 32px major block separation and inset inter-component gaps.                                                                                         |
-| `semantic.space.layout.spacious`     | `48px`  | 48px section break and whitespace separator between major content blocks.                                                                           |
-| `semantic.space.section.stack`       | `80px`  | 80px vertical rhythm between page sections and major editorial blocks.                                                                              |
-| `semantic.space.section.inset`       | `96px`  | 96px hero and landing-page inset padding.                                                                                                           |
-| `semantic.space.section.heroMax`     | `128px` | 128px maximum hero region padding for extra-large displays.                                                                                         |
-| `semantic.space.sidebar.indent`      | `12px`  | 12px indent level for nested sidebar and TOC groups.                                                                                                |
-| `semantic.space.sidebar.gap`         | `16px`  | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                      |
-| `semantic.space.sidebar.sectionGap`  | `12px`  | 12px spacing between sidebar sections and grouped rail blocks.                                                                                      |
-| `semantic.space.sidebar.railPadding` | `20px`  | 20px outer padding for sidebar and TOC rails.                                                                                                       |
-| `semantic.space.sidebar.railWidth`   | `280px` | Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell). |
+| Token                                | Value   | Notes                                                                                                                                                          |
+| ------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.space.scale.xs`            | `8px`   | 8px — smallest step. Same value as component.gap (deprecated alias).                                                                                           |
+| `semantic.space.scale.sm`            | `16px`  | 16px — same value as layout.tight (deprecated alias).                                                                                                          |
+| `semantic.space.scale.md`            | `24px`  | 24px — same value as layout.normal / layout.gutter / component.padding (deprecated aliases; hds#206 de-aliases this triplet down to this one canonical token). |
+| `semantic.space.scale.lg`            | `32px`  | 32px — same value as layout.inset (deprecated alias).                                                                                                          |
+| `semantic.space.scale.xl`            | `48px`  | 48px — same value as layout.spacious (deprecated alias).                                                                                                       |
+| `semantic.space.subgrid.hairline`    | `1px`   | 1px border offset and hairline spacing.                                                                                                                        |
+| `semantic.space.subgrid.xs`          | `2px`   | 2px vertical rhythm nudge and baseline adjustment.                                                                                                             |
+| `semantic.space.subgrid.gap`         | `4px`   | 4px cap-height and inline cluster spacing.                                                                                                                     |
+| `semantic.space.component.gap`       | `8px`   | 8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.               |
+| `semantic.space.component.medium`    | `12px`  | 12px adjacent form fields and medium intra-component gaps.                                                                                                     |
+| `semantic.space.component.padding`   | `24px`  | 24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.        |
+| `semantic.space.layout.tight`        | `16px`  | 16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet.                    |
+| `semantic.space.layout.normal`       | `24px`  | 24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.                           |
+| `semantic.space.layout.gutter`       | `24px`  | 24px column and region gutters (alias for layout.normal). DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.                 |
+| `semantic.space.layout.inset`        | `32px`  | 32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet.               |
+| `semantic.space.layout.spacious`     | `48px`  | 48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet. |
+| `semantic.space.section.stack`       | `80px`  | 80px vertical rhythm between page sections and major editorial blocks.                                                                                         |
+| `semantic.space.section.inset`       | `96px`  | 96px hero and landing-page inset padding.                                                                                                                      |
+| `semantic.space.section.heroMax`     | `128px` | 128px maximum hero region padding for extra-large displays.                                                                                                    |
+| `semantic.space.sidebar.indent`      | `12px`  | 12px indent level for nested sidebar and TOC groups.                                                                                                           |
+| `semantic.space.sidebar.gap`         | `16px`  | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                                 |
+| `semantic.space.sidebar.sectionGap`  | `12px`  | 12px spacing between sidebar sections and grouped rail blocks.                                                                                                 |
+| `semantic.space.sidebar.railPadding` | `20px`  | 20px outer padding for sidebar and TOC rails.                                                                                                                  |
+| `semantic.space.sidebar.railWidth`   | `280px` | Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell).            |
 
 <!-- auto:end:semantic-space -->
 

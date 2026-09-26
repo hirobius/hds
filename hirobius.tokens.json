@@ -1436,7 +1436,7 @@
       "$type": "dimension",
       "$description": "Semantic spacing tiers: subgrid, component, layout, section, scale.",
       "scale": {
-        "$description": "hds#206 — the canonical spacing vocabulary. One monotonic, single-family t-shirt scale (xs < sm < md < lg < xl) for the `p`/`m`/`gap` family of props on Box/Stack. Superseds the four un-ordered gap families below (subgrid/component/layout/section) and the 24px alias triplet (layout.normal / layout.gutter / component.padding) for NEW usage; those remain live, deprecated aliases until the consumer codemod (hds#206 remaining work) migrates callers and removes them — not a breaking change yet.",
+        "$description": "hds#206 — the canonical spacing vocabulary. One monotonic, single-family t-shirt scale (xs < sm < md < lg < xl) for the `p`/`m`/`gap` family of props on Box/Stack. Supersedes the four un-ordered gap families below (subgrid/component/layout/section) and the 24px alias triplet (layout.normal / layout.gutter / component.padding) for NEW usage; those remain live, deprecated aliases until the consumer codemod (hds#206 remaining work) migrates callers and removes them — not a breaking change yet.",
         "xs": {
           "$value": "{primitive.space.2}",
           "$description": "8px — smallest step. Same value as component.gap (deprecated alias)."
