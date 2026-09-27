@@ -8,9 +8,9 @@
  * @category Utilities
  */
 import type { ReactNode } from 'react';
-import hds from '../design-system/tokens';
-import { Stack } from './stack';
-import { Surface } from './surface';
+import hds from '../app/design-system/tokens';
+import { Stack } from '../app/components/stack';
+import { Surface } from '../app/components/surface';
 
 const supportingTextStyle = hds.typeStyles.caption;
 

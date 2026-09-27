@@ -139,7 +139,7 @@
   border-width: 1px;
   border-color: transparent;
   padding: var(--semantic-space-component-padding);
-  gap: var(--semantic-space-layout-tight);
+  gap: var(--semantic-space-scale-sm);
 }
 
 .hds-card--no-padding {
@@ -187,8 +187,8 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  gap: var(--semantic-space-component-gap);
-  padding: var(--semantic-space-component-gap);
+  gap: var(--semantic-space-scale-xs);
+  padding: var(--semantic-space-scale-xs);
   border-radius: var(
     --primitive-radius-4
   ); /* tier-ok: alert.tsx itself carries the identical exemption ("tier-ok: 4px primitive radius, no semantic 4px token", alert.tsx:24) */

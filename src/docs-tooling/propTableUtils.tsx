@@ -1,8 +1,8 @@
 /** @internal — utility-tier component; not part of @hirobius/design-system public API. */
 // @doc-exempt: internal HDS documentation utility that shapes generated prop rows for Table
 import type { ReactNode } from 'react';
-import hds from '../design-system/tokens';
-import type { TableColumn, TableRow } from './table';
+import hds from '../app/design-system/tokens';
+import type { TableColumn, TableRow } from '../app/components/table';
 
 export type ComponentPropRow = {
   name: string;
@@ -21,9 +21,13 @@ export const PROP_TABLE_COLUMNS: TableColumn[] = [
 
 function propNameCell(row: ComponentPropRow): ReactNode {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: hds.semantic.space.subgrid.xs }}>
+    <span
+      style={{ display: 'inline-flex', alignItems: 'baseline', gap: hds.semantic.space.subgrid.xs }}
+    >
       <span>{row.name}</span>
-      {row.required ? <span style={{ color: 'var(--semantic-color-content-accent)' }}>*</span> : null}
+      {row.required ? (
+        <span style={{ color: 'var(--semantic-color-content-accent)' }}>*</span>
+      ) : null}
     </span>
   );
 }

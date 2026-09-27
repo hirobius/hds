@@ -29,10 +29,10 @@ import type {
   ManifestPropSpec,
   SystemManifest,
   ComponentApiManifest,
-} from '../data/manifest-types';
-import componentApiManifest from '../data/component-api.json';
-import hds from '../design-system/tokens';
-import { Table } from './table';
+} from '../app/data/manifest-types';
+import componentApiManifest from '../app/data/component-api.json';
+import hds from '../app/design-system/tokens';
+import { Table } from '../app/components/table';
 import { PROP_TABLE_COLUMNS, buildPropTableRows, type ComponentPropRow } from './propTableUtils';
 
 const MANIFEST = systemManifestData as SystemManifest;
@@ -116,11 +116,11 @@ const summaryStyle: React.CSSProperties = {
   color: 'var(--semantic-color-content-secondary)',
   cursor: 'pointer',
   listStyle: 'none',
-  paddingBlock: hds.semantic.space.component.gap,
+  paddingBlock: hds.semantic.space.scale.xs,
   paddingInline: 0,
   display: 'flex',
   alignItems: 'center',
-  gap: hds.semantic.space.component.gap,
+  gap: hds.semantic.space.scale.xs,
 };
 
 const detailsStyle: React.CSSProperties = {
@@ -131,13 +131,13 @@ const detailsStyle: React.CSSProperties = {
 const emptyNoteStyle: React.CSSProperties = {
   ...hds.typeStyles.ui,
   color: 'var(--semantic-color-content-secondary)',
-  marginBlock: hds.semantic.space.component.gap,
+  marginBlock: hds.semantic.space.scale.xs,
 };
 
 const slotListStyle: React.CSSProperties = {
   ...hds.typeStyles.technical,
   color: 'var(--semantic-color-content-primary)',
-  marginBlock: hds.semantic.space.component.gap,
+  marginBlock: hds.semantic.space.scale.xs,
   paddingInlineStart: hds.semantic.space.section.stack,
 };
 

@@ -59,7 +59,7 @@ const legacyTokenDetailStyles = {
     flexWrap: 'wrap' as const,
     alignItems: 'center',
     justifyContent: 'space-between',
-    columnGap: hds.semantic.space.component.gap,
+    columnGap: hds.semantic.space.scale.xs,
     rowGap: hds.semantic.space.subgrid.gap,
   } satisfies React.CSSProperties,
 } as const;
@@ -296,7 +296,7 @@ function TokenTraceStack({
   if (branches.length === 0) return null;
 
   return (
-    <div style={{ display: 'grid', gap: hds.semantic.space.component.gap, minWidth: 0 }}>
+    <div style={{ display: 'grid', gap: hds.semantic.space.scale.xs, minWidth: 0 }}>
       {branches.map((branch, index) => {
         const lineage = [...branch.steps].reverse();
         // steps[0] is the leaf (deepest) token in the resolved alias chain.
@@ -312,7 +312,7 @@ function TokenTraceStack({
             key={`trace-${index}-${branch.steps.map((step) => step.path).join('|')}`}
             style={{
               ...legacyTokenDetailStyles.traceRow,
-              paddingTop: index === 0 ? 0 : hds.semantic.space.component.gap,
+              paddingTop: index === 0 ? 0 : hds.semantic.space.scale.xs,
             }}
           >
             <Token
@@ -415,7 +415,7 @@ function CompositeDnaGrid({
   if (entries.length === 0) return null;
 
   return (
-    <div style={{ display: 'grid', gap: hds.semantic.space.component.gap, minWidth: 0 }}>
+    <div style={{ display: 'grid', gap: hds.semantic.space.scale.xs, minWidth: 0 }}>
       <Token
         variant="node"
         swatchVar={token.type === 'color' ? token.cssVar : undefined}
@@ -506,7 +506,7 @@ function LegacyTokenDetailInner({
             style={{
               ...hds.typeStyles.heading3,
               margin: 0,
-              marginBottom: hds.semantic.space.component.gap,
+              marginBottom: hds.semantic.space.scale.xs,
               color: 'var(--semantic-color-content-primary)',
             }}
           >
@@ -552,7 +552,7 @@ function CopyRailPanel({ token, mode }: { token: FlatToken; mode: ThemeMode }) {
       >
         Copy
       </p>
-      <div style={{ display: 'grid', gap: hds.semantic.space.component.gap }}>
+      <div style={{ display: 'grid', gap: hds.semantic.space.scale.xs }}>
         {items.map((item) => (
           <div
             key={item.id}
@@ -632,7 +632,7 @@ function ContrastCheckerPanel({ token, mode }: { token: FlatToken; mode: ThemeMo
           display: 'flex',
           alignItems: 'baseline',
           justifyContent: 'space-between',
-          gap: hds.semantic.space.component.gap,
+          gap: hds.semantic.space.scale.xs,
         }}
       >
         <p
@@ -802,7 +802,7 @@ export function HdsLegacyTokenGovernancePanel({
             style={{
               ...hds.typeStyles.heading3,
               margin: 0,
-              marginBottom: hds.semantic.space.component.gap,
+              marginBottom: hds.semantic.space.scale.xs,
               color: 'var(--semantic-color-content-primary)',
             }}
           >
@@ -836,7 +836,7 @@ export function HdsLegacyTokenGovernancePanel({
             style={{
               ...hds.typeStyles.heading3,
               margin: 0,
-              marginBottom: hds.semantic.space.component.gap,
+              marginBottom: hds.semantic.space.scale.xs,
               color: 'var(--semantic-color-content-primary)',
             }}
           >

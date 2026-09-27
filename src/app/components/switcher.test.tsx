@@ -44,7 +44,7 @@ describe('Switcher', () => {
       </Switcher>,
     );
     const outer = container.firstChild as HTMLElement;
-    expect(outer.style.gap).toBe('var(--semantic-space-layout-inset)');
+    expect(outer.style.gap).toBe('var(--semantic-space-scale-lg)');
     const [itemA] = Array.from(outer.childNodes) as HTMLElement[];
     // jsdom's CSSOM normalizes calc() operand order (999 * (...)) — assert on
     // the normalized form rather than the literal source string.

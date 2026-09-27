@@ -10,7 +10,7 @@
  * @category Utilities
  */
 import type { ReactNode } from 'react';
-import hds from '../design-system/tokens';
+import hds from '../app/design-system/tokens';
 import { PreviewFrame } from './preview-frame';
 
 export function DemoBlock({
@@ -33,7 +33,7 @@ export function DemoBlock({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.component.gap }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.scale.xs }}>
       <h4
         style={{
           ...hds.typeStyles.ui,

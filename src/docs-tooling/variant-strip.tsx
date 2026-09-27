@@ -17,7 +17,7 @@
  * @doc-exempt: documentation utility used to render variant family strips in component docs.
  */
 import type { ReactNode } from 'react';
-import hds from '../design-system/tokens';
+import hds from '../app/design-system/tokens';
 
 export type VariantStripItem = {
   /** Short label displayed above the specimen (e.g. "Primary", "SM"). */
@@ -42,14 +42,14 @@ export function VariantStrip({ label, variants }: VariantStripProps) {
   if (variants.length === 0) return null;
 
   return (
-    <div style={{ marginTop: hds.semantic.space.component.gap }}>
+    <div style={{ marginTop: hds.semantic.space.scale.xs }}>
       {label && (
         <p
           style={{
             ...hds.typeStyles.ui,
             color: 'var(--semantic-color-content-primary)',
             margin: 0,
-            marginBottom: hds.semantic.space.component.gap,
+            marginBottom: hds.semantic.space.scale.xs,
           }}
         >
           {label}
@@ -59,7 +59,7 @@ export function VariantStrip({ label, variants }: VariantStripProps) {
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: hds.semantic.space.component.gap,
+          gap: hds.semantic.space.scale.xs,
           alignItems: 'flex-end',
         }}
       >
@@ -70,7 +70,7 @@ export function VariantStrip({ label, variants }: VariantStripProps) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
-              gap: `calc(${hds.semantic.space.component.gap} / 2)`,
+              gap: `calc(${hds.semantic.space.scale.xs} / 2)`,
             }}
           >
             <span

@@ -45,8 +45,8 @@ import {
   Code as CodeIcon,
   Figma as FigmaLogo,
 } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import { Stack } from './stack';
+import { cn } from '../lib/utils';
+import { Stack } from '../app/components/stack';
 
 // ── Public types ──────────────────────────────────────────────────────────────
 

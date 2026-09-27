@@ -29,7 +29,7 @@ const blockContainerVariants = cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const inlineWrapperVariants = cva(
-  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-gap)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
@@ -38,11 +38,11 @@ const blockHeaderVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
-const headerGroupVariants = cva('flex items-center gap-[var(--semantic-space-component-gap)]');
+const headerGroupVariants = cva('flex items-center gap-[var(--semantic-space-scale-xs)]');
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-padding/component-gap spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven
 const collapsibleToggleVariants = cva(
-  `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-component-padding)] py-[var(--semantic-space-component-gap)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
+  `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-component-padding)] py-[var(--semantic-space-scale-xs)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default token has no matching Tailwind-theme utility; var()-based so still token-driven
@@ -71,9 +71,9 @@ const copyButtonVariants = cva(
     variants: {
       variant: {
         inline:
-          'shrink-0 border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-gap)] pr-[var(--semantic-space-subgrid-gap)] transition-[background-color,color,transform] duration-[var(--hds-motion-productive-duration)] ease',
+          'shrink-0 border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)] transition-[background-color,color,transform] duration-[var(--hds-motion-productive-duration)] ease',
         block:
-          'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-component-gap)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
+          'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-scale-xs)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
       },
     },
     defaultVariants: { variant: 'block' },

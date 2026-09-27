@@ -28,7 +28,7 @@ describe('DocLinkCard', () => {
     expect(button.className).toContain('text-left');
     expect(button.getAttribute('data-variant')).toBe('feature');
     expect(screen.getByText('Design Tokens').className).toContain(
-      'mt-[var(--semantic-space-component-gap)]',
+      'mt-[var(--semantic-space-scale-xs)]',
     );
     // description present → title reserves the subgrid-gap margin below it
     expect(screen.getByText('Design Tokens').className).toContain(

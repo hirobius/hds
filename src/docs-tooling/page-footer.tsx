@@ -14,9 +14,9 @@
  */
 
 import { Moon, Sun } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import hds from '../design-system/tokens';
-import { IconButton } from './icon-button';
+import { useTheme } from '../app/context/ThemeContext';
+import hds from '../app/design-system/tokens';
+import { IconButton } from '../app/components/icon-button';
 
 export function PageFooter() {
   const { isDark, toggleDark } = useTheme();
