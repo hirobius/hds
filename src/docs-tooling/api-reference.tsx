@@ -29,10 +29,10 @@ import type {
   ManifestPropSpec,
   SystemManifest,
   ComponentApiManifest,
-} from '../data/manifest-types';
-import componentApiManifest from '../data/component-api.json';
-import hds from '../design-system/tokens';
-import { Table } from './table';
+} from '../app/data/manifest-types';
+import componentApiManifest from '../app/data/component-api.json';
+import hds from '../app/design-system/tokens';
+import { Table } from '../app/components/table';
 import { PROP_TABLE_COLUMNS, buildPropTableRows, type ComponentPropRow } from './propTableUtils';
 
 const MANIFEST = systemManifestData as SystemManifest;

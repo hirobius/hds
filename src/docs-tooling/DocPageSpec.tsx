@@ -47,27 +47,32 @@ export function DocPageSpec({ spec }: { spec: PageSpec }) {
       url: 'https://adrianmilsap.com/hds',
     },
     ...(spec.components && {
-      hasPart: spec.components.map(c => ({
+      hasPart: spec.components.map((c) => ({
         '@type': 'DefinedTerm',
         name: c.name,
         description: c.description,
-        ...(c.token  && { identifier: c.token }),
-        ...(c.tokens && { additionalProperty: c.tokens.map(t => ({ '@type': 'PropertyValue', value: t })) }),
-        ...(c.usage  && { usageInfo: c.usage }),
+        ...(c.token && { identifier: c.token }),
+        ...(c.tokens && {
+          additionalProperty: c.tokens.map((t) => ({ '@type': 'PropertyValue', value: t })),
+        }),
+        ...(c.usage && { usageInfo: c.usage }),
       })),
     }),
     ...(spec.decisions && {
-      abstract: spec.decisions.map(d => d.rule).join(' | '),
+      abstract: spec.decisions.map((d) => d.rule).join(' | '),
     }),
     keywords: [
       spec.category,
-      ...(spec.components?.map(c => c.name) ?? []),
-      ...(spec.tokens?.map(t => t.path) ?? []),
+      ...(spec.components?.map((c) => c.name) ?? []),
+      ...(spec.tokens?.map((t) => t.path) ?? []),
     ].join(', '),
   };
 
   // JSON-LD always in DOM — readable by LLMs and structured-data crawlers
   return (
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} /> // security-ok: JSON.stringify output — no user input, no raw HTML
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    /> // security-ok: JSON.stringify output — no user input, no raw HTML
   );
 }

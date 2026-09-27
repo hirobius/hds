@@ -9,14 +9,14 @@
  */
 import React, { useState, useEffect, useRef } from 'react';
 import { Languages, Menu, X, Moon, Sun, type LucideIcon } from 'lucide-react';
-import { useHdsRouter } from '../context/RouterContext';
-import { useLanguage } from '../context/LanguageContext';
-import hds from '../design-system/tokens';
-import { Grid } from './grid';
-import { IconButton } from './icon-button';
-import { Icon } from './icon';
-import { Stack } from './stack';
-import { Surface } from './surface';
+import { useHdsRouter } from '../app/context/RouterContext';
+import { useLanguage } from '../app/context/LanguageContext';
+import hds from '../app/design-system/tokens';
+import { Grid } from '../app/components/grid';
+import { IconButton } from '../app/components/icon-button';
+import { Icon } from '../app/components/icon';
+import { Stack } from '../app/components/stack';
+import { Surface } from '../app/components/surface';
 
 const shellControlsStyles = {
   infoNavBtn: {

@@ -2,14 +2,14 @@
 /**
  * @tier utility
  */
-﻿// @doc-exempt: preview harness used by docs and lab tooling, not a consumer-facing HDS surface.
+// @doc-exempt: preview harness used by docs and lab tooling, not a consumer-facing HDS surface.
 /**
  * ComponentPreview - framed preview harness for utility and lab specimens.
  * @category Utilities
  */
 import React from 'react';
-import hds from '../design-system/tokens';
-import { Surface } from './surface';
+import hds from '../app/design-system/tokens';
+import { Surface } from '../app/components/surface';
 
 interface ComponentPreviewProps {
   component: React.ComponentType<Record<string, unknown>>;
@@ -17,7 +17,11 @@ interface ComponentPreviewProps {
   bgColor?: string;
 }
 
-export function ComponentPreview({ component: Component, props = {}, bgColor = 'var(--semantic-color-surface-raised)' }: ComponentPreviewProps) {
+export function ComponentPreview({
+  component: Component,
+  props = {},
+  bgColor = 'var(--semantic-color-surface-raised)',
+}: ComponentPreviewProps) {
   return (
     <Surface
       padding="component"
@@ -30,4 +34,3 @@ export function ComponentPreview({ component: Component, props = {}, bgColor = '
     </Surface>
   );
 }
-

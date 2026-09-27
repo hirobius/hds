@@ -17,7 +17,7 @@
  * @doc-exempt: documentation utility used to render variant family strips in component docs.
  */
 import type { ReactNode } from 'react';
-import hds from '../design-system/tokens';
+import hds from '../app/design-system/tokens';
 
 export type VariantStripItem = {
   /** Short label displayed above the specimen (e.g. "Primary", "SM"). */

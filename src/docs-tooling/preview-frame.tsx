@@ -9,9 +9,9 @@
  * @category Utilities
  */
 import type { ReactNode } from 'react';
-import hds from '../design-system/tokens';
-import { Surface } from './surface';
-import { Text } from './text';
+import hds from '../app/design-system/tokens';
+import { Surface } from '../app/components/surface';
+import { Text } from '../app/components/text';
 
 const previewFrameLabelStyle = {
   position: 'absolute',
