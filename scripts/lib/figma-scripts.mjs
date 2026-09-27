@@ -277,30 +277,24 @@ const PLUGIN_UI = `<!doctype html>
 `;
 
 /**
- * Which write commands may run in which file (ADR-026). `plan`/`push` target
- * the staging duplicate only; `plan-library`/`push-library` are the separate,
- * named promotion step and target the published library only. Any other file,
- * or a file Figma gives no key for, is refused before anything is read.
- * `snapshot` only reads, so it runs anywhere.
+ * Where the write commands may run (ADR-026, ADR-029): the staging duplicate
+ * only. The published library, any other file, or a file Figma gives no key
+ * for, is refused before anything is read. Promotion into the library stays a
+ * manual step outside this plugin. `snapshot` only reads, so it runs anywhere.
  */
 const FILE_GUARD = `function hdsFileGuard(command, files, fileKey) {
   if (command === 'snapshot') return null;
-  const library = command === 'plan-library' || command === 'push-library';
   if (typeof fileKey !== 'string' || !fileKey) {
     return 'Figma gave this plugin no file key (an unsaved draft, or the manifest lost enablePrivatePluginApi), so it cannot tell staging from the library. Nothing was read or written. Save the file, or re-import figma/push/plugin/manifest.json after pnpm figma:push.';
   }
-  if (!library && !files.stagingFileKey) {
-    return 'figma/links.json has no stagingFileKey, so there is no file this command may write to. Nothing was read or written. Set stagingFileKey (ADR-026), run pnpm figma:push, and re-run.';
+  if (!files.stagingFileKey) {
+    return 'figma/links.json has no stagingFileKey, so there is no file this plugin may write to. Nothing was read or written. Set stagingFileKey (ADR-026), run pnpm figma:push, and re-run.';
   }
-  const want = library ? files.libraryFileKey : files.stagingFileKey;
-  if (fileKey === want) return null;
-  if (!library && fileKey === files.libraryFileKey) {
-    return 'This is the published library (' + fileKey + '). Plan and Push write to the staging file only (' + files.stagingFileKey + '). Nothing was read or written. To promote staging into the library, use "Plan push to LIBRARY" and then "Push to LIBRARY".';
+  if (fileKey === files.stagingFileKey) return null;
+  if (fileKey === files.libraryFileKey) {
+    return 'This is the published library (' + fileKey + '). This plugin writes to the staging file only (' + files.stagingFileKey + '). Nothing was read or written. Promoting staging into the library is a manual step (ADR-026).';
   }
-  if (library && fileKey === files.stagingFileKey) {
-    return 'This is the staging file (' + fileKey + '). The LIBRARY commands write to the published library only (' + files.libraryFileKey + '). Nothing was read or written. Use Plan / Push here.';
-  }
-  return 'This file (' + fileKey + ') is neither the staging file nor the library named in figma/links.json. Nothing was read or written. Open the right file, or fix figma/links.json and run pnpm figma:push again.';
+  return 'This file (' + fileKey + ') is not the staging file named in figma/links.json (' + files.stagingFileKey + '). Nothing was read or written. Open the staging file, or fix figma/links.json and run pnpm figma:push again.';
 }`;
 
 /**
@@ -309,7 +303,7 @@ const FILE_GUARD = `function hdsFileGuard(command, files, fileKey) {
  *
  * @param {object} model
  * @param {{prune?: boolean, renames?: object, files?: {stagingFileKey: string|null, libraryFileKey: string|null}}} [options]
- *   `files` comes from figma/links.json; without it every write command is refused.
+ *   `files` comes from figma/links.json; without a staging key every write command is refused.
  * @returns {Record<string, string>} file name → contents
  */
 export function buildDevPlugin(
@@ -321,13 +315,9 @@ export function buildDevPlugin(
     stagingFileKey: files.stagingFileKey ?? null,
     libraryFileKey: files.libraryFileKey ?? null,
   };
-  const pushName = prune ? 'Push and prune extras (deletes)' : 'Push';
   const menu = [
     { name: 'Plan push (dry run, writes nothing)', command: 'plan' },
-    { name: pushName, command: 'push' },
-    { separator: true },
-    { name: 'Plan push to LIBRARY (promotion, dry run)', command: 'plan-library' },
-    { name: `${pushName} to LIBRARY (promotion, Adrian only)`, command: 'push-library' },
+    { name: prune ? 'Push and prune extras (deletes)' : 'Push', command: 'push' },
     { separator: true },
     { name: 'Take snapshot', command: 'snapshot' },
   ];
@@ -370,7 +360,7 @@ figma.ui.onmessage = (message) => {
       figma.ui.postMessage({ ok: true, title: 'Snapshot — download it, then run pnpm figma:snapshot --ingest <file>', fileName: 'figma-snapshot.json', result });
       return;
     }
-    const dryRun = figma.command !== 'push' && figma.command !== 'push-library';
+    const dryRun = figma.command !== 'push';
     const result = await hdsRunPush(figma, PAYLOAD, CHECKSUM, { dryRun });
     const warned = result.warnings.length ? ' · ' + result.warnings.length + ' warning(s): read them below' : '';
     figma.ui.postMessage({ ok: true, title: (dryRun ? 'Plan (nothing written): ' : 'Pushed: ') + result.line + warned, fileName: dryRun ? 'figma-push-plan.json' : 'figma-push-report.json', result });
