@@ -15,15 +15,13 @@ describe('applyReplacements', () => {
     expect(count).toBe(1);
   });
 
-  it('rewrites all four deprecated layout var() names', () => {
+  it('rewrites the deprecated var() names that have no runtime override', () => {
     const cases = [
       ['var(--semantic-space-layout-tight)', 'var(--semantic-space-scale-sm)'],
       ['var(--semantic-space-layout-normal)', 'var(--semantic-space-scale-md)'],
-      ['var(--semantic-space-layout-gutter)', 'var(--semantic-space-scale-md)'],
       ['var(--semantic-space-layout-inset)', 'var(--semantic-space-scale-lg)'],
       ['var(--semantic-space-layout-spacious)', 'var(--semantic-space-scale-xl)'],
       ['var(--semantic-space-component-gap)', 'var(--semantic-space-scale-xs)'],
-      ['var(--semantic-space-component-padding)', 'var(--semantic-space-scale-md)'],
     ];
     for (const [before, after] of cases) {
       expect(applyReplacements(before).text).toBe(after);
@@ -36,8 +34,20 @@ describe('applyReplacements', () => {
   });
 
   it('rewrites the bare dotted string-label form (e.g. Storybook demo args)', () => {
-    const text = "tokenPath: 'semantic.space.component.padding',";
-    expect(applyReplacements(text).text).toBe("tokenPath: 'semantic.space.scale.md',");
+    const text = "tokenPath: 'semantic.space.component.gap',";
+    expect(applyReplacements(text).text).toBe("tokenPath: 'semantic.space.scale.xs',");
+  });
+
+  it('leaves component.padding and layout.gutter alone (tenants.css / theme.css override them at runtime)', () => {
+    const text = [
+      'padding: var(--semantic-space-component-padding);',
+      'gap: var(--semantic-space-layout-gutter);',
+      "tokenPath: 'semantic.space.component.padding',",
+      'x: hds.semantic.space.layout.gutter,',
+    ].join('\n');
+    const { text: out, count } = applyReplacements(text);
+    expect(out).toBe(text);
+    expect(count).toBe(0);
   });
 
   it('rewrites multiple occurrences on one line and counts each', () => {

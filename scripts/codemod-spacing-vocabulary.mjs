@@ -23,12 +23,15 @@
  * Deprecated → canonical mapping (identical resolved px value each side —
  * this is a pure rename, not a value change):
  *   semantic.space.component.gap      (8px)  → semantic.space.scale.xs
- *   semantic.space.component.padding  (24px) → semantic.space.scale.md
  *   semantic.space.layout.tight       (16px) → semantic.space.scale.sm
  *   semantic.space.layout.normal      (24px) → semantic.space.scale.md
- *   semantic.space.layout.gutter      (24px) → semantic.space.scale.md
  *   semantic.space.layout.inset       (32px) → semantic.space.scale.lg
  *   semantic.space.layout.spacious    (48px) → semantic.space.scale.xl
+ *
+ * NOT renamed: semantic.space.component.padding and semantic.space.layout.gutter.
+ * tenants.css (per tenant/density) and theme.css (responsive 32px/16px)
+ * override those alias vars at runtime, so pointing consumers at a scale
+ * token would silently drop the override. They stay until the overrides move.
  *
  * What it does NOT touch (by design):
  *   - Generated build output (`generated-*.ts`, `generated-token-vars.d.ts`,
@@ -69,10 +72,8 @@ const SRC = join(ROOT, 'src');
 export const REPLACEMENTS = [
   // CSS custom-property consumption sites: `var(--semantic-space-…)`.
   ['var(--semantic-space-component-gap)', 'var(--semantic-space-scale-xs)'],
-  ['var(--semantic-space-component-padding)', 'var(--semantic-space-scale-md)'],
   ['var(--semantic-space-layout-tight)', 'var(--semantic-space-scale-sm)'],
   ['var(--semantic-space-layout-normal)', 'var(--semantic-space-scale-md)'],
-  ['var(--semantic-space-layout-gutter)', 'var(--semantic-space-scale-md)'],
   ['var(--semantic-space-layout-inset)', 'var(--semantic-space-scale-lg)'],
   ['var(--semantic-space-layout-spacious)', 'var(--semantic-space-scale-xl)'],
   // JS/TS dotted token-bridge paths (`hds.semantic.space.…` and bare
@@ -80,8 +81,6 @@ export const REPLACEMENTS = [
   // match also fixes the `hds.`-prefixed form as a side effect, since it's
   // a literal substring of it — no separate rule needed for that case.
   ['semantic.space.component.gap', 'semantic.space.scale.xs'],
-  ['semantic.space.component.padding', 'semantic.space.scale.md'],
-  ['semantic.space.layout.gutter', 'semantic.space.scale.md'],
 ];
 
 // Files/paths (repo-relative, forward-slash) this codemod never touches:
