@@ -64,18 +64,14 @@ one above, component descriptions, and drawing a single component by the recipe.
 
 ADR-026 made staging the only agent write target, but nothing stopped the plugin from
 pushing into whichever file was open. The plugin now reads `figma.fileKey` (the manifest
-sets `enablePrivatePluginApi`) and checks it against `figma/links.json`:
+sets `enablePrivatePluginApi`) and checks it against `stagingFileKey` in
+`figma/links.json`. Plan and Push run only there. In the published library, in any other
+file, in an unsaved draft (no key), or while `stagingFileKey` is null, they refuse before
+reading anything, and name the file to open. Take snapshot only reads, so it runs anywhere.
 
-| Command                               | Runs only in             |
-| ------------------------------------- | ------------------------ |
-| Plan push, Push                       | `stagingFileKey`         |
-| Plan push to LIBRARY, Push to LIBRARY | `libraryFileKey`         |
-| Take snapshot                         | any file (it only reads) |
-
-A write command refuses, before it reads anything, in any other file, in an unsaved draft
-(no key), or while `stagingFileKey` is null. Promotion is still Adrian's manual step (Pro
-has no branching). The only change is that it now has its own named commands, so a stray
-click in the wrong file cannot write.
+The plugin has no command that writes to the library. How staging's variables reach the
+library is Adrian's call, like every other promotion step (ADR-026 §2, and the handoff's
+stop points). Pro has no branching, so that step stays manual.
 
 ### 3. The component draw carrier is not ported (Adrian to confirm)
 

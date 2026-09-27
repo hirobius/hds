@@ -144,17 +144,15 @@ breaks an invariant) and writes two carriers of the same code
   - **Push**: applies the plan, re-reads the file, and fails if Figma still
     differs from the model. Built with `--prune`, this command is named "Push and
     prune extras (deletes)".
-  - **Plan push to LIBRARY / Push to LIBRARY**: the same two steps, for Adrian's
-    promotion of staging into the published library.
   - **Take snapshot**: see below.
 
-  The plugin is pinned to the two files in `figma/links.json` (ADR-026, ADR-029).
-  Plan and Push run only in the staging file (`stagingFileKey`). The LIBRARY
-  commands run only in the library (`libraryFileKey`). In any other file, in an
-  unsaved draft (no file key), or with `stagingFileKey` unset, a write command
-  refuses before it reads anything, and says which file to open. Take snapshot
-  only reads, so it runs anywhere. The manifest sets `enablePrivatePluginApi`,
-  which is what lets a development plugin read `figma.fileKey`.
+  The plugin writes to one file: `stagingFileKey` in `figma/links.json` (ADR-026,
+  ADR-029). Plan and Push refuse, before they read anything, in the published
+  library, in any other file, in an unsaved draft (no file key), or while
+  `stagingFileKey` is unset. The refusal says which file to open. Promoting staging
+  into the library stays a manual step outside the plugin. Take snapshot only reads,
+  so it runs anywhere. The manifest sets `enablePrivatePluginApi`, which is what
+  lets a development plugin read `figma.fileKey`.
 
 - **use_figma scripts** (Figma MCP server): `figma/push/use-figma/01-primitive.js`
   … `05-styles.js`. Run them in order, unmodified. An agent retypes each script
@@ -214,9 +212,9 @@ snapshot, without Figma.
 
 ## Snapshot and drift
 
-1. Take a snapshot: the plugin's **Take snapshot** command (then **Download
-   JSON**), or run `figma/push/use-figma/snapshot.js` through use_figma and save
-   what it returns.
+1. Take a snapshot: the plugin's **Take snapshot** command, then **Download
+   JSON**. (`figma/push/use-figma/snapshot.js` is generated too, but use_figma
+   truncates its result at 20 KB, well short of a full snapshot; see Push.)
 2. `pnpm figma:snapshot --ingest <file>` verifies the checksum and writes
    `figma/snapshot.json`. Commit it.
 3. `pnpm check:figma-drift` exits 0 with no drift, 1 with drift (or a snapshot
