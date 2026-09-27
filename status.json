@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-27T06:11:46.000Z",
+  "updatedAt": "2026-09-27T06:21:37.000Z",
   "phase": "active",
   "headline": "Figma build-out (2026-09-27, ADR-029 proposed): staging verified live — all 41 staged components present, variant counts match, 806 bound paints vs 2 raw, 0 clipped; 231/313 text layers carry no text style. use_figma measured unable to carry push/snapshot (50K-char input cap, 20KB output cap), so the dev plugin is the push/snapshot carrier; plugin now pinned by figma.fileKey (Plan/Push refuse outside staging; no library write command). HdsTooltip linked to library Tooltip 93:15 → figma coverage 51/51. Draw backlog per the ratified disposition is 0 (48 linked + 41 staged = 89 library), so the archived draw carrier was NOT ported pending Adrian's call.",
   "next": [
