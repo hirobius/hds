@@ -13,6 +13,7 @@ of `src/app/components/` into `src/docs-tooling/`: `api-reference`,
 relative import paths changed. `pnpm manifest:generate` now correctly drops
 these from `public/hds-manifest.json` (component-discovery only scans
 `src/app/components/`), which is the intended effect: they were never
-consumer-facing. `lab/*` relocation stays remaining (blocked on extracting
-`lab/tokenUtils.ts` from the public `Token` primitive, per the hds#133 audit
-comment).
+consumer-facing. `lab/*` relocation stays remaining — its earlier blocker
+(extracting `lab/tokenUtils.ts` from the public `Token` primitive) was already
+resolved in hds#233/369dce5; the file lives at `src/app/components/tokenUtils.ts`
+now.

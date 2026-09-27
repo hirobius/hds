@@ -9,7 +9,7 @@ src/app/components/ComponentDocPage.tsx:semantic.space.layout.gap
 src/app/components/component-instance-matrix.tsx:semantic.space.layout.gap
 src/app/components/doc-link-card.tsx:semantic.space.layout.gap
 src/app/components/doc-sections.tsx:semantic.space.layout.gap
-src/app/components/health-rail.tsx:semantic.space.layout.gap
+src/docs-tooling/health-rail.tsx:semantic.space.layout.gap
 src/app/components/history-card.tsx:semantic.space.layout.gap
 src/app/components/image-lightbox.tsx:semantic.space.layout.gap
 src/app/components/info-page.tsx:semantic.space.layout.gap
