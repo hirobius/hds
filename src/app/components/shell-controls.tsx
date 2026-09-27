@@ -201,8 +201,8 @@ export function HdsMobileTopBar({
           gridTemplateColumns: 'minmax(0, 1fr) auto', // grid-ok: shell title + actions row; minmax(0,1fr) shrinks title column, actions sized to content
           height: '100%',
           alignItems: 'center',
-          paddingInlineStart: hds.semantic.space.scale.md,
-          paddingInlineEnd: hds.semantic.space.scale.md,
+          paddingInlineStart: hds.semantic.space.layout.gutter,
+          paddingInlineEnd: hds.semantic.space.component.padding,
         }}
       >
         <Grid.Item>

@@ -22,7 +22,7 @@ import { Surface } from './surface';
 // inline styles referenced — same tokens, pixel-parity.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableHeaderCellVariants = cva(
-  'flex items-center bg-[var(--semantic-color-surface-overlay)] px-[var(--semantic-space-scale-md)]',
+  'flex items-center bg-[var(--semantic-color-surface-overlay)] px-[var(--semantic-space-component-padding)]',
   {
     variants: {
       align: {
@@ -64,7 +64,7 @@ const tableSortButtonVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
-const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-scale-md)]', {
+const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-component-padding)]', {
   variants: {
     align: {
       left: 'justify-start text-left',

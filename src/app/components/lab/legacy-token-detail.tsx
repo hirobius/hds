@@ -425,7 +425,7 @@ function CompositeDnaGrid({
         {token.path}
       </Token>
       <MicroProvenanceArrow />
-      <div style={{ display: 'grid', gap: hds.semantic.space.scale.md, minWidth: 0 }}>
+      <div style={{ display: 'grid', gap: hds.semantic.space.component.padding, minWidth: 0 }}>
         {entries.map((entry) => (
           <CompositeDnaCard key={entry.key} entry={entry} onSelectToken={onSelectToken} />
         ))}

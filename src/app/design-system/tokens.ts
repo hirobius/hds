@@ -158,14 +158,20 @@ const hds = {
         xs: 'var(--semantic-space-subgrid-xs)',
       },
       component: {
-        padding: 'var(--semantic-space-scale-md)',
+        // kept on the alias var, not scale.md: tenants.css overrides
+        // --semantic-space-component-padding per-tenant/density (brutalist-demo);
+        // scale-md is a fixed 24px with no such override (hds#206 review).
+        padding: 'var(--semantic-space-component-padding)',
         gap: 'var(--semantic-space-scale-xs)',
       },
       stack: {
         gap: 'var(--semantic-space-section-stack)',
       },
       layout: {
-        gutter: 'var(--semantic-space-scale-md)',
+        // kept on the alias var, not scale.md: theme.css overrides
+        // --semantic-space-layout-gutter (32px desktop / 16px <639px) while
+        // scale-md is a fixed 24px (hds#206 review).
+        gutter: 'var(--semantic-space-layout-gutter)',
         gap: 'var(--semantic-space-layout-gap)',
         section: 'var(--semantic-layout-section-paddingY)',
       },

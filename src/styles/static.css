@@ -138,7 +138,7 @@
   border-style: solid;
   border-width: 1px;
   border-color: transparent;
-  padding: var(--semantic-space-scale-md);
+  padding: var(--semantic-space-component-padding);
   gap: var(--semantic-space-scale-sm);
 }
 

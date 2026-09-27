@@ -29,7 +29,7 @@ export function Sketch({ title, children, controls }: SketchProps) {
     'Sketch is an HDS docs/lab internal and will be removed from the published barrel in 1.0.0.',
   );
   const headerStyle: CSSProperties = {
-    padding: hds.semantic.space.scale.md,
+    padding: hds.semantic.space.component.padding,
     borderBottom: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
     flexShrink: 0,
   };

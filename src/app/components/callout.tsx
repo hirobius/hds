@@ -22,7 +22,7 @@ type CalloutTone = 'accent' | 'info' | 'success' | 'warning' | 'danger';
 // the surface backgrounds have no named utility, so they stay var()-based.
 // outline-ok: the left border is a signal-bearing rule, not a container outline.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding + accent/surface vars have no Tailwind-theme utility
-const calloutVariants = cva('border-l-[3px] p-[var(--semantic-space-scale-md)]', {
+const calloutVariants = cva('border-l-[3px] p-[var(--semantic-space-component-padding)]', {
   variants: {
     tone: {
       accent:

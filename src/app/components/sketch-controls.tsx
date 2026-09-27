@@ -22,7 +22,7 @@ const sketchControlsStyles = {
     width: '100%',
     minHeight: hds.size[96],
     resize: 'vertical' as const,
-    padding: hds.semantic.space.scale.md,
+    padding: hds.semantic.space.component.padding,
     background: 'transparent',
     color: 'var(--semantic-color-content-primary)',
     border: 'none',
