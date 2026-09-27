@@ -82,8 +82,8 @@ export const CompressedPath: Story = {
     },
   },
   args: {
-    tokenPath: 'semantic.space.component.padding',
-    children: 'semantic.space.component.padding',
+    tokenPath: 'semantic.space.scale.md',
+    children: 'semantic.space.scale.md',
     pathDisplayMode: 'compressed',
     pathDisplayDepth: 1,
   },
@@ -93,7 +93,8 @@ export const SourceNode: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Source node variant — text wraps rather than truncating, used for multi-line token paths in diagrams.',
+        story:
+          'Source node variant — text wraps rather than truncating, used for multi-line token paths in diagrams.',
       },
     },
   },

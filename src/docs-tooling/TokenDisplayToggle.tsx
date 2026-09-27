@@ -1,7 +1,7 @@
 /** @internal — utility-tier component; not part of @hirobius/design-system public API. */
 // @doc-exempt: internal display toggle, not a consumer-facing HDS component
-import { useTokenDisplay } from '../context/TokenDisplayContext';
-import { SegmentedControl } from './segmented-control';
+import { useTokenDisplay } from '../app/context/TokenDisplayContext';
+import { SegmentedControl } from '../app/components/segmented-control';
 
 export function TokenDisplayToggle() {
   const { showCss, setShowCss } = useTokenDisplay();

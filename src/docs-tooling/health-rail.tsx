@@ -11,9 +11,9 @@
  *   TOKENS_RAIL_MIN_W  — minimum width used by HDSDocRoot's shell grid calculation
  */
 
-import hds from '../design-system/tokens';
-import { HdsLegacyTokenGovernancePanel } from './lab/legacy-token-detail';
-import { allTokens } from './tokenUtils';
+import hds from '../app/design-system/tokens';
+import { HdsLegacyTokenGovernancePanel } from '../app/components/lab/legacy-token-detail';
+import { allTokens } from '../app/components/tokenUtils';
 
 // --- Constants --------------------------------------------------------------
 
@@ -60,7 +60,7 @@ export function TokensRail({ isDark, tokenPath }: { isDark: boolean; tokenPath: 
           style={{
             ...hds.typeStyles.heading3,
             margin: 0,
-            marginBottom: hds.semantic.space.component.gap,
+            marginBottom: hds.semantic.space.scale.xs,
             color: 'var(--semantic-color-content-primary)',
           }}
         >

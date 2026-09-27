@@ -24,10 +24,10 @@ import React from 'react';
 type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
 
 const gapMap: Record<LayoutGap, string> = {
-  tight: 'var(--semantic-space-layout-tight)',
-  normal: 'var(--semantic-space-layout-normal)',
-  inset: 'var(--semantic-space-layout-inset)',
-  spacious: 'var(--semantic-space-layout-spacious)',
+  tight: 'var(--semantic-space-scale-sm)',
+  normal: 'var(--semantic-space-scale-md)',
+  inset: 'var(--semantic-space-scale-lg)',
+  spacious: 'var(--semantic-space-scale-xl)',
 };
 
 export interface SwitcherProps {

@@ -93,7 +93,7 @@ export function StepperField({
       <label className="text-secondary" style={{ ...hds.typeStyles.caption }}>
         {label}
       </label>
-      <div style={{ display: 'flex', alignItems: 'center', gap: hds.semantic.space.component.gap }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: hds.semantic.space.scale.xs }}>
         <IconButton
           icon={Minus}
           size="sm"

@@ -34,10 +34,10 @@ type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type GridLayout = 'fixed' | 'auto-fit';
 
 const gapMap: Record<SemanticGap, string> = {
-  tight: 'var(--semantic-space-layout-tight)',
-  normal: 'var(--semantic-space-layout-normal)',
-  inset: 'var(--semantic-space-layout-inset)',
-  spacious: 'var(--semantic-space-layout-spacious)',
+  tight: 'var(--semantic-space-scale-sm)',
+  normal: 'var(--semantic-space-scale-md)',
+  inset: 'var(--semantic-space-scale-lg)',
+  spacious: 'var(--semantic-space-scale-xl)',
 };
 
 export interface GridProps {

@@ -56,10 +56,10 @@ import { resolvePaddingValue, type PaddingOption } from './surface-padding';
 type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof hds.space;
 
 const GAP_MAP: Record<string, string> = {
-  tight: 'var(--semantic-space-layout-tight)',
-  normal: 'var(--semantic-space-layout-normal)',
-  inset: 'var(--semantic-space-layout-inset)',
-  spacious: 'var(--semantic-space-layout-spacious)',
+  tight: 'var(--semantic-space-scale-sm)',
+  normal: 'var(--semantic-space-scale-md)',
+  inset: 'var(--semantic-space-scale-lg)',
+  spacious: 'var(--semantic-space-scale-xl)',
 };
 
 function resolveGap(g: GapOption): string {

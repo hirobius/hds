@@ -28,7 +28,7 @@ describe('Cover', () => {
     expect(el.style.display).toBe('flex');
     expect(el.style.flexDirection).toBe('column');
     expect(el.style.minHeight).toBe('100svh');
-    expect(el.style.gap).toBe('var(--semantic-space-layout-normal)');
+    expect(el.style.gap).toBe('var(--semantic-space-scale-md)');
   });
 
   it('renders optional header and footer around the auto-margin-centered main region', () => {

@@ -25,8 +25,8 @@ describe('Bleed', () => {
   it('defaults to a negative horizontal margin using the normal token', () => {
     const { container } = render(<Bleed>content</Bleed>);
     const el = container.firstChild as HTMLElement;
-    expect(el.style.marginLeft).toBe('calc(-1 * var(--semantic-space-layout-normal))');
-    expect(el.style.marginRight).toBe('calc(-1 * var(--semantic-space-layout-normal))');
+    expect(el.style.marginLeft).toBe('calc(-1 * var(--semantic-space-scale-md))');
+    expect(el.style.marginRight).toBe('calc(-1 * var(--semantic-space-scale-md))');
     expect(el.style.marginTop).toBe('');
   });
 
@@ -37,8 +37,8 @@ describe('Bleed', () => {
       </Bleed>,
     );
     const el = container.firstChild as HTMLElement;
-    expect(el.style.marginTop).toBe('calc(-1 * var(--semantic-space-layout-inset))');
-    expect(el.style.marginBottom).toBe('calc(-1 * var(--semantic-space-layout-inset))');
+    expect(el.style.marginTop).toBe('calc(-1 * var(--semantic-space-scale-lg))');
+    expect(el.style.marginBottom).toBe('calc(-1 * var(--semantic-space-scale-lg))');
     expect(el.style.marginLeft).toBe('');
   });
 
@@ -49,7 +49,7 @@ describe('Bleed', () => {
       </Bleed>,
     );
     const el = container.firstChild as HTMLElement;
-    expect(el.style.marginLeft).toBe('calc(-1 * var(--semantic-space-layout-tight))');
-    expect(el.style.marginTop).toBe('calc(-1 * var(--semantic-space-layout-tight))');
+    expect(el.style.marginLeft).toBe('calc(-1 * var(--semantic-space-scale-sm))');
+    expect(el.style.marginTop).toBe('calc(-1 * var(--semantic-space-scale-sm))');
   });
 });

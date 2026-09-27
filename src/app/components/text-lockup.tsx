@@ -43,9 +43,9 @@ const anchorCopyBtnStyle = {
 const textLockupRootVariants = cva('flex w-full min-w-0 flex-col', {
   variants: {
     size: {
-      hero: 'gap-[var(--semantic-space-component-gap)]',
-      heroXl: 'gap-[var(--semantic-space-component-gap)]',
-      section: 'gap-[var(--semantic-space-component-gap)]',
+      hero: 'gap-[var(--semantic-space-scale-xs)]',
+      heroXl: 'gap-[var(--semantic-space-scale-xs)]',
+      section: 'gap-[var(--semantic-space-scale-xs)]',
       metric: 'gap-[var(--semantic-space-subgrid-gap)]',
       detail: 'gap-[var(--semantic-space-subgrid-gap)]',
       numbered: 'gap-[var(--semantic-space-subgrid-gap)]',

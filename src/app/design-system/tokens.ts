@@ -143,19 +143,34 @@ const hds = {
       },
     },
     space: {
+      // hds#206 — canonical t-shirt spacing scale (slice 1: #297). Prefer this
+      // over the deprecated `component`/`layout` aliases below for new code.
+      scale: {
+        xs: 'var(--semantic-space-scale-xs)',
+        sm: 'var(--semantic-space-scale-sm)',
+        md: 'var(--semantic-space-scale-md)',
+        lg: 'var(--semantic-space-scale-lg)',
+        xl: 'var(--semantic-space-scale-xl)',
+      },
       subgrid: {
         gap: 'var(--semantic-space-subgrid-gap)',
         hairline: 'var(--semantic-space-subgrid-hairline)',
         xs: 'var(--semantic-space-subgrid-xs)',
       },
       component: {
+        // kept on the alias var, not scale.md: tenants.css overrides
+        // --semantic-space-component-padding per-tenant/density (brutalist-demo);
+        // scale-md is a fixed 24px with no such override (hds#206 review).
         padding: 'var(--semantic-space-component-padding)',
-        gap: 'var(--semantic-space-component-gap)',
+        gap: 'var(--semantic-space-scale-xs)',
       },
       stack: {
         gap: 'var(--semantic-space-section-stack)',
       },
       layout: {
+        // kept on the alias var, not scale.md: theme.css overrides
+        // --semantic-space-layout-gutter (32px desktop / 16px <639px) while
+        // scale-md is a fixed 24px (hds#206 review).
         gutter: 'var(--semantic-space-layout-gutter)',
         gap: 'var(--semantic-space-layout-gap)',
         section: 'var(--semantic-layout-section-paddingY)',

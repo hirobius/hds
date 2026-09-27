@@ -164,8 +164,7 @@ export function FoundationSwatch({
         ? 'flex-end'
         : 'flex-start';
   const previewAlignItems = previewPosition === 'center' ? 'center' : 'flex-start';
-  const previewPaddingBottom =
-    previewPosition === 'bottom-left' ? hds.semantic.space.component.gap : 0;
+  const previewPaddingBottom = previewPosition === 'bottom-left' ? hds.semantic.space.scale.xs : 0;
 
   return (
     <div style={shellStyle} data-layout-role="foundation-swatch-shell">

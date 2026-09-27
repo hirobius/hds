@@ -9,14 +9,14 @@
  * @category Utilities
  */
 import type { ReactNode } from 'react';
-import hds from '../design-system/tokens';
-import { Surface } from './surface';
-import { Text } from './text';
+import hds from '../app/design-system/tokens';
+import { Surface } from '../app/components/surface';
+import { Text } from '../app/components/text';
 
 const previewFrameLabelStyle = {
   position: 'absolute',
-  bottom: hds.semantic.space.component.gap,
-  right: hds.semantic.space.component.gap,
+  bottom: hds.semantic.space.scale.xs,
+  right: hds.semantic.space.scale.xs,
   ...hds.typeStyles.caption,
   color: 'var(--semantic-color-content-secondary)',
   userSelect: 'none',

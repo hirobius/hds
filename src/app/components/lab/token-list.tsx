@@ -41,7 +41,7 @@ const tokenListStyles = {
     width: '100%',
     display: 'grid',
     gap: hds.semantic.space.subgrid.gap,
-    padding: hds.semantic.space.component.gap,
+    padding: hds.semantic.space.scale.xs,
     borderRadius: hds.borderRadius[8],
     textAlign: 'left' as const,
     cursor: 'pointer',
@@ -118,7 +118,7 @@ function TokenRow({
         style={{
           display: 'flex',
           alignItems: 'flex-start',
-          gap: hds.semantic.space.component.gap,
+          gap: hds.semantic.space.scale.xs,
           minWidth: 0,
         }}
       >

@@ -34,7 +34,7 @@ const headingStackVariants = cva('flex flex-col', {
     // (tokens.generated.css) — mechanical alias swap, hds#186
     gap: {
       px4: 'gap-[var(--semantic-space-subgrid-gap)]',
-      px8: 'gap-[var(--semantic-space-component-gap)]',
+      px8: 'gap-[var(--semantic-space-scale-xs)]',
     },
   },
   defaultVariants: { gap: 'px8' },

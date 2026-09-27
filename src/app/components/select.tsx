@@ -45,7 +45,7 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
       {showLabel ? (
         <span
           className="text-secondary"
-          style={{ ...hds.typeStyles.caption, marginBottom: hds.semantic.space.component.gap }}
+          style={{ ...hds.typeStyles.caption, marginBottom: hds.semantic.space.scale.xs }}
         >
           {label}
         </span>

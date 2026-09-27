@@ -55,12 +55,12 @@ export interface StackProps {
 
 const getGapValue = (gap: GapOption): string => {
   const semanticGaps: Record<string, string> = {
-    tight: 'var(--semantic-space-layout-tight)',
-    normal: 'var(--semantic-space-layout-normal)',
-    inset: 'var(--semantic-space-layout-inset)',
-    spacious: 'var(--semantic-space-layout-spacious)',
+    tight: 'var(--semantic-space-scale-sm)',
+    normal: 'var(--semantic-space-scale-md)',
+    inset: 'var(--semantic-space-scale-lg)',
+    spacious: 'var(--semantic-space-scale-xl)',
     stack: 'var(--semantic-space-section-stack)',
-    gap: 'var(--semantic-space-component-gap)',
+    gap: 'var(--semantic-space-scale-xs)',
     medium: 'var(--semantic-space-component-medium)',
     hairline: 'var(--semantic-space-subgrid-hairline)',
     xs: 'var(--semantic-space-subgrid-xs)',

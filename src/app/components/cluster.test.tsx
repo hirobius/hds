@@ -28,7 +28,7 @@ describe('Cluster', () => {
     const el = container.firstChild as HTMLElement;
     expect(el.style.display).toBe('flex');
     expect(el.style.flexWrap).toBe('wrap');
-    expect(el.style.gap).toBe('var(--semantic-space-layout-spacious)');
+    expect(el.style.gap).toBe('var(--semantic-space-scale-xl)');
   });
 
   it('defaults to align=center, justify=start', () => {

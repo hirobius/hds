@@ -40,9 +40,9 @@ export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsS
 
   return (
     // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
-    <div className="flex flex-col gap-[var(--semantic-space-component-gap)]">
+    <div className="flex flex-col gap-[var(--semantic-space-scale-xs)]">
       {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists */}
-      <div className="flex justify-between items-baseline gap-[var(--semantic-space-component-gap)]">
+      <div className="flex justify-between items-baseline gap-[var(--semantic-space-scale-xs)]">
         <label
           style={{
             ...hds.typeStyles.ui,

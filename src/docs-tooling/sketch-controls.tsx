@@ -11,11 +11,11 @@ import type {
   ReactNode,
   TextareaHTMLAttributes,
 } from 'react';
-import hds from '../design-system/tokens';
-import { Button } from './button';
-import { Grid } from './grid';
-import { Stack } from './stack';
-import { Surface } from './surface';
+import hds from '../app/design-system/tokens';
+import { Button } from '../app/components/button';
+import { Grid } from '../app/components/grid';
+import { Stack } from '../app/components/stack';
+import { Surface } from '../app/components/surface';
 
 const sketchControlsStyles = {
   textareaBase: {
@@ -55,13 +55,7 @@ type SketchRangeProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'on
   onValueChange: (value: number) => void;
 };
 
-export function SketchRange({
-  label,
-  tone,
-  onValueChange,
-  style,
-  ...props
-}: SketchRangeProps) {
+export function SketchRange({ label, tone, onValueChange, style, ...props }: SketchRangeProps) {
   const resolvedTone = { ...defaultTone, ...tone };
 
   return (

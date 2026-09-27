@@ -456,8 +456,8 @@
 
 .hds-sketchbook-canvas-overlay {
   position: absolute;
-  top: var(--semantic-space-component-gap);
-  right: var(--semantic-space-component-gap);
+  top: var(--semantic-space-scale-xs);
+  right: var(--semantic-space-scale-xs);
   z-index: var(--hds-z-dropdown);
   pointer-events: none;
 }

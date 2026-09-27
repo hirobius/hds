@@ -173,7 +173,7 @@ export function DocLinkCard({
         <div className="flex flex-1 min-w-0 flex-col justify-start">
           <div
             className={cn(
-              'flex items-center justify-between gap-[var(--semantic-space-component-gap)]',
+              'flex items-center justify-between gap-[var(--semantic-space-scale-xs)]',
               isRtl ? 'flex-row-reverse' : 'flex-row',
             )}
           >
@@ -201,7 +201,7 @@ export function DocLinkCard({
           >
             <p
               className={cn(
-                'mt-[var(--semantic-space-component-gap)] text-primary',
+                'mt-[var(--semantic-space-scale-xs)] text-primary',
                 description ? 'mb-[var(--semantic-space-subgrid-gap)]' : 'mb-0',
               )}
               style={hds.typeStyles.heading3}

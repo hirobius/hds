@@ -23,7 +23,7 @@ type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 // the Icon takes a color value). `hasTitle` flips cross-axis alignment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists
 const alertVariants = cva(
-  'flex gap-[var(--semantic-space-component-gap)] p-[var(--semantic-space-component-gap)] rounded-[var(--primitive-radius-4)]', // tier-ok: 4px primitive radius, no semantic 4px token
+  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-scale-xs)] rounded-[var(--primitive-radius-4)]', // tier-ok: 4px primitive radius, no semantic 4px token
   {
     variants: {
       tone: {
