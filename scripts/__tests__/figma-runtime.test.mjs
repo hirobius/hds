@@ -220,13 +220,22 @@ describe('development plugin', () => {
     return JSON.parse(JSON.stringify(posted[0]));
   };
 
-  it('declares plan, push and snapshot commands, and only says "prune" when built with it', () => {
-    const plain = JSON.parse(buildDevPlugin(model)['manifest.json']);
+  const FILES = {
+    stagingFileKey: 'STAGINGKEY0000000000000',
+    libraryFileKey: 'LIBRARYKEY0000000000000',
+  };
+  const inFile = (figma, key) => Object.assign(figma, { fileKey: key });
+
+  it('declares plan, push, library promotion and snapshot commands, and only says "prune" when built with it', () => {
+    const plain = JSON.parse(buildDevPlugin(model, { files: FILES })['manifest.json']);
     expect(plain.menu.filter((m) => m.command).map((m) => m.command)).toEqual([
       'plan',
       'push',
+      'plan-library',
+      'push-library',
       'snapshot',
     ]);
+    expect(plain.enablePrivatePluginApi).toBe(true);
     expect(JSON.stringify(plain.menu)).not.toMatch(/prune/i);
     const pruning = JSON.parse(buildDevPlugin(model, { prune: true })['manifest.json']);
     expect(pruning.menu.find((m) => m.command === 'push').name).toMatch(/prune/i);
@@ -234,8 +243,8 @@ describe('development plugin', () => {
   });
 
   it('plans without writing, pushes, then snapshots', async () => {
-    const figma = newFixtureFile();
-    const files = buildDevPlugin(model);
+    const figma = inFile(newFixtureFile(), FILES.stagingFileKey);
+    const files = buildDevPlugin(model, { files: FILES });
 
     const plan = await runPlugin(files, 'plan', figma);
     expect(plan.ok).toBe(true);
@@ -252,10 +261,75 @@ describe('development plugin', () => {
   });
 
   it('shows the error instead of throwing when the push is refused', async () => {
-    const figma = createFakeFigma({ fonts: [] });
-    const result = await runPlugin(buildDevPlugin(model), 'push', figma);
+    const figma = inFile(createFakeFigma({ fonts: [] }), FILES.stagingFileKey);
+    const result = await runPlugin(buildDevPlugin(model, { files: FILES }), 'push', figma);
     expect(result.ok).toBe(false);
     expect(result.error).toMatch(/Nothing was written/);
+  });
+
+  describe('file guard (ADR-026: agents write to staging; the library is a separate, named step)', () => {
+    it('refuses plan and push in the library file, writing nothing', async () => {
+      for (const command of ['plan', 'push']) {
+        const figma = inFile(newFixtureFile(), FILES.libraryFileKey);
+        const result = await runPlugin(buildDevPlugin(model, { files: FILES }), command, figma);
+        expect(result.ok).toBe(false);
+        expect(result.error).toMatch(/staging/);
+        expect(result.error).toMatch(/Push to LIBRARY/);
+        expect(figma.writes).toEqual([]);
+      }
+    });
+
+    it('refuses every write command in a file that is neither staging nor library', async () => {
+      for (const command of ['plan', 'push', 'plan-library', 'push-library']) {
+        const figma = inFile(newFixtureFile(), 'SOMEOTHERFILE0000000000');
+        const result = await runPlugin(buildDevPlugin(model, { files: FILES }), command, figma);
+        expect(result.ok).toBe(false);
+        expect(result.error).toMatch(/SOMEOTHERFILE0000000000/);
+        expect(result.error).toMatch(/figma\/links\.json/);
+        expect(figma.writes).toEqual([]);
+      }
+    });
+
+    it('refuses when Figma gives no file key (unsaved file, or the manifest lost enablePrivatePluginApi)', async () => {
+      const figma = newFixtureFile();
+      const result = await runPlugin(buildDevPlugin(model, { files: FILES }), 'push', figma);
+      expect(result.ok).toBe(false);
+      expect(result.error).toMatch(/file key/);
+      expect(figma.writes).toEqual([]);
+    });
+
+    it('refuses plan and push when no staging file is configured, instead of falling back to the library', async () => {
+      const files = buildDevPlugin(model, {
+        files: { stagingFileKey: null, libraryFileKey: FILES.libraryFileKey },
+      });
+      const figma = inFile(newFixtureFile(), FILES.libraryFileKey);
+      const result = await runPlugin(files, 'push', figma);
+      expect(result.ok).toBe(false);
+      expect(result.error).toMatch(/stagingFileKey/);
+      expect(figma.writes).toEqual([]);
+    });
+
+    it('pushes to the library only through the library commands, in the library file', async () => {
+      const figma = inFile(newFixtureFile(), FILES.libraryFileKey);
+      const files = buildDevPlugin(model, { files: FILES });
+      const plan = await runPlugin(files, 'plan-library', figma);
+      expect(plan.ok).toBe(true);
+      expect(figma.writes).toEqual([]);
+      const pushed = await runPlugin(files, 'push-library', figma);
+      expect(pushed.ok).toBe(true);
+      expect(pushed.result.summary.variables.created).toBe(57);
+
+      const staging = inFile(newFixtureFile(), FILES.stagingFileKey);
+      const wrong = await runPlugin(files, 'push-library', staging);
+      expect(wrong.ok).toBe(false);
+      expect(staging.writes).toEqual([]);
+    });
+
+    it('takes a snapshot in any file, since it only reads', async () => {
+      const figma = inFile(newFixtureFile(), 'SOMEOTHERFILE0000000000');
+      const snap = await runPlugin(buildDevPlugin(model, { files: FILES }), 'snapshot', figma);
+      expect(snap.ok).toBe(true);
+    });
   });
 });
 

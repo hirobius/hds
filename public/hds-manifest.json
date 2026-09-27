@@ -10247,9 +10247,9 @@
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<HdsTooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
       "tier": "primitive",
       "preview": {
         "exportName": "HdsTooltip",

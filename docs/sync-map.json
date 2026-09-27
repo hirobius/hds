@@ -9,19 +9,19 @@
       "rendered-defects": 47
     },
     "byClass": {
-      "library": 88,
-      "internal": 18,
+      "library": 89,
+      "internal": 17,
       "layout": 15,
       "slot": 18
     },
     "orphanStories": 4,
     "storyCoverage": {
-      "expected": 121,
-      "covered": 121
+      "expected": 122,
+      "covered": 122
     },
     "figmaCoverage": {
-      "expected": 88,
-      "covered": 47
+      "expected": 89,
+      "covered": 48
     }
   },
   "rows": [
@@ -2183,15 +2183,15 @@
     },
     {
       "name": "HdsTooltip",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/hds-tooltip.tsx",
       "storyFiles": ["src/stories/hds-tooltip.stories.tsx"],
       "storyIds": ["primitives-hds-tooltip--default", "primitives-hds-tooltip--placement"],
       "storyCount": 2,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 0,
       "gaps": [],
       "synced": true

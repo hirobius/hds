@@ -210,5 +210,59 @@
       "variants": 1,
       "node": "2003-2"
     }
+  },
+  "verification": {
+    "$comment": "A live read of the staging file through use_figma (figma/MCP-LEDGER.md, 2026-09-27 call #5): each recorded node fetched by id and walked. Re-run the same read after any redraw and replace this block.",
+    "on": "2026-09-27",
+    "present": 41,
+    "recorded": 41,
+    "variantCountsMatch": true,
+    "descriptionsMissing": [],
+    "clippedSets": 0,
+    "boundPaints": 806,
+    "rawPaints": {
+      "Lightbox": 1,
+      "Icon": 1
+    },
+    "textLayers": 313,
+    "textLayersWithoutStyle": 231,
+    "componentsWithUnstyledText": [
+      "ActivityFeed",
+      "AlertDialog",
+      "AssetImg",
+      "AvatarGroup",
+      "Blockquote",
+      "ButtonGroup",
+      "Calendar",
+      "CinematicLink",
+      "CommandPalette",
+      "ContextMenu",
+      "DateInput",
+      "DateRangeInput",
+      "DateTimeInput",
+      "FileInput",
+      "Frame",
+      "HeadingStack",
+      "HoverCard",
+      "InputGroup",
+      "Kbd",
+      "MetadataList",
+      "MultiSelector",
+      "OverflowList",
+      "StackedCardRail",
+      "Stepper",
+      "Text",
+      "TimeInput",
+      "ToggleButton",
+      "Token",
+      "Tokenizer",
+      "Toolbar",
+      "TopNav",
+      "TreeList"
+    ],
+    "notes": [
+      "StatusDot and Icon are recorded by their PAGE id, not a component or set id. Icon's 70 components were counted on the page; StatusDot's one variant was not re-counted, since its record names the page, not the set.",
+      "Only paints were checked for variable bindings; spacing, radius and stroke-width bindings were not read."
+    ]
   }
 }

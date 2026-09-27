@@ -42,6 +42,38 @@ const nodeUrl = (node) => `https://www.figma.com/design/${fileKey}/?node-id=${no
 const row = ([name, c]) =>
   `| [${name}](${nodeUrl(c.node)}) | ${c.kind} | ${c.variants ?? '—'} | \`${c.node}\` |`;
 
+const disposition = JSON.parse(readFileSync(path.join(ROOT, 'figma/disposition.json'), 'utf8'));
+const coverage = `${disposition.summary.libraryLinked}/${disposition.summary.byClass.library}`;
+
+const list = (names) => (names.length ? names.join(', ') : 'none');
+const v = data.verification;
+const verification = v
+  ? `## Verified live ${v.on}
+
+A read of the staging file itself (use_figma; \`figma/MCP-LEDGER.md\`) fetched
+every recorded node by id and walked it:
+
+- **Present:** ${v.present} of ${v.recorded} recorded nodes, every name matching.
+  Variant counts ${v.variantCountsMatch ? 'all match' : '**do not all match**'} the record.
+- **Descriptions** missing: ${list(v.descriptionsMissing)}. **Clipped sets:** ${v.clippedSets}.
+- **Paints:** ${v.boundPaints} solid paints bound to variables; raw (unbound):
+  ${list(Object.entries(v.rawPaints).map(([name, n]) => `${name} ${n}`))}.
+- **Text styles:** ${v.textLayersWithoutStyle} of ${v.textLayers} text layers carry no text
+  style, across ${v.componentsWithUnstyledText.length} components. Their type is set by hand,
+  so a type-ramp change will not reach them.
+${v.notes.map((note) => `- ${note}`).join('\n')}
+
+This proves the file as of that date, not today. Re-run the read after any redraw.
+`
+  : `## Verification gap, stated plainly
+
+Nothing here can currently self-verify. Confirming these node ids against the
+live staging file needs the Figma REST token, which is what \`pnpm figma:inventory\`
+uses and which is not working. Until it is, treat this as a dated record of what
+one session drew, not as proof of the file's present contents — which is why the
+node ids live in JSON a script can check rather than in prose nobody can.
+`;
+
 const earlier = Object.entries(data.drawnEarlier ?? {})
   .map(([name, c]) => `**[${name}](${nodeUrl(c.node)})** (${c.variants} ${c.kind})`)
   .join(' and ');
@@ -67,7 +99,7 @@ the sequence: promote, take the NEW library node id, add the tag, then
 \`check-sync-map\` counts a library component as linked when it carries an
 \`@figma\` tag or a \`figma/mapping-overrides.json\` entry. The recipe forbids
 tagging a component that lives only in staging. So **staging work is
-structurally invisible to the gate**, and Figma coverage reads 47/88 until
+structurally invisible to the gate**, and Figma coverage reads ${coverage} until
 promotion — not because the components are absent, but because the only record
 the gate can read is the one the recipe says not to write yet. That is a gap in
 the measurement, not drift.
@@ -80,14 +112,7 @@ ${entries.map(row).join('\n')}
 
 Drawn earlier, same status: ${earlier}.
 
-## Verification gap, stated plainly
-
-Nothing here can currently self-verify. Confirming these node ids against the
-live staging file needs the Figma REST token, which is what \`pnpm figma:inventory\`
-uses and which is not working. Until it is, treat this as a dated record of what
-one session drew, not as proof of the file's present contents — which is why the
-node ids live in JSON a script can check rather than in prose nobody can.
-`;
+${verification}`;
 
 if (CHECK) {
   const current = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';

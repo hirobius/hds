@@ -9,12 +9,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { HdsTooltip } from '../app/components/hds-tooltip';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/hds-tooltip',
   component: HdsTooltip,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('HdsTooltip'),
     layout: 'centered',
     docs: {
       description: {
@@ -51,7 +53,9 @@ function PlacementDemo() {
   return (
     <HdsTooltip>
       <HdsTooltip.Trigger asChild>
-        <Button variant="tertiary" size="sm">Tip on the right</Button>
+        <Button variant="tertiary" size="sm">
+          Tip on the right
+        </Button>
       </HdsTooltip.Trigger>
       <HdsTooltip.Content side="right">Opens beside the trigger</HdsTooltip.Content>
     </HdsTooltip>
@@ -62,7 +66,8 @@ export const Placement: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Pass Radix `side` (top | right | bottom | left) to steer placement; positioning stays collision-aware.',
+        story:
+          'Pass Radix `side` (top | right | bottom | left) to steer placement; positioning stays collision-aware.',
       },
     },
   },
