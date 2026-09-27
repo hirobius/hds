@@ -153,7 +153,7 @@ Source-of-truth files:
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).
 
-**44 of 139** components link a Figma node.
+**45 of 139** components link a Figma node.
 
 | Component          | Figma node                                                                                         | Story                                                                      | Source                                                            |
 | ------------------ | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
@@ -177,6 +177,7 @@ Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, w
 | `HdsSelect`        | [82:49](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49)   | [select.stories.tsx](src/stories/select.stories.tsx)                       | [select.tsx](src/app/components/select.tsx)                       |
 | `HdsSlider`        | [82:265](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265) | [slider.stories.tsx](src/stories/slider.stories.tsx)                       | [slider.tsx](src/app/components/slider.tsx)                       |
 | `HdsToggle`        | [37:19](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19)   | [toggle.stories.tsx](src/stories/toggle.stories.tsx)                       | [toggle.tsx](src/app/components/toggle.tsx)                       |
+| `HdsTooltip`       | [93:15](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15)   | [hds-tooltip.stories.tsx](src/stories/hds-tooltip.stories.tsx)             | [hds-tooltip.tsx](src/app/components/hds-tooltip.tsx)             |
 | `IconButton`       | [40:39](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39)   | [icon-button.stories.tsx](src/stories/icon-button.stories.tsx)             | [icon-button.tsx](src/app/components/icon-button.tsx)             |
 | `InlineCode`       | [89:155](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155) | [inline-code.stories.tsx](src/stories/inline-code.stories.tsx)             | [inline-code.tsx](src/app/components/inline-code.tsx)             |
 | `InlineLink`       | [89:161](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161) | [inline-link.stories.tsx](src/stories/inline-link.stories.tsx)             | [inline-link.tsx](src/app/components/inline-link.tsx)             |
