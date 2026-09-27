@@ -15,7 +15,7 @@ const historyCardStyles = {
   link: {
     display: 'grid',
     gridTemplateColumns: 'auto minmax(0, 1fr) auto', // grid-ok: avatar + content + arrow row; minmax(0,1fr) shrinks content column on narrow viewports
-    gap: hds.semantic.space.component.gap,
+    gap: hds.semantic.space.scale.xs,
     alignItems: 'center',
     minWidth: 0,
     width: '100%',
@@ -53,7 +53,9 @@ export function HistoryCard({ commit, href }: HistoryCardProps) {
   const [interactive, setInteractive] = useState(false);
 
   const displayDate = new Date(commit.date).toLocaleDateString(undefined, {
-    month: 'short', day: 'numeric', year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
   });
   const headline = commit.displayMessage?.trim() || commit.message;
 
@@ -80,27 +82,50 @@ export function HistoryCard({ commit, href }: HistoryCardProps) {
       </span>
 
       <div style={{ display: 'grid', gap: hds.semantic.space.subgrid.gap, minWidth: 0 }}>
-        <div style={{
-          display: 'flex',
-          gap: hds.semantic.space.subgrid.gap,
-          alignItems: 'baseline',
-          flexWrap: 'wrap',
-          minWidth: 0,
-        }}>
-          <span style={{ ...hds.typeStyles.caption, margin: 0, color: 'var(--semantic-color-content-secondary)' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: hds.semantic.space.subgrid.gap,
+            alignItems: 'baseline',
+            flexWrap: 'wrap',
+            minWidth: 0,
+          }}
+        >
+          <span
+            style={{
+              ...hds.typeStyles.caption,
+              margin: 0,
+              color: 'var(--semantic-color-content-secondary)',
+            }}
+          >
             commit
           </span>
           {commit.hash && (
-            <code style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-primary)' }}>
+            <code
+              style={{
+                ...hds.typeStyles.technical,
+                color: 'var(--semantic-color-content-primary)',
+              }}
+            >
               {commit.hash}
             </code>
           )}
-          <span style={{ ...hds.typeStyles.technical, color: 'var(--semantic-color-content-secondary)' }}>
+          <span
+            style={{
+              ...hds.typeStyles.technical,
+              color: 'var(--semantic-color-content-secondary)',
+            }}
+          >
             {displayDate}
           </span>
         </div>
         <p
-          style={{ ...hds.typeStyles.ui, margin: 0, color: 'var(--semantic-color-content-primary)', minWidth: 0 }}
+          style={{
+            ...hds.typeStyles.ui,
+            margin: 0,
+            color: 'var(--semantic-color-content-primary)',
+            minWidth: 0,
+          }}
           title={commit.message !== headline ? commit.message : undefined}
         >
           {headline}

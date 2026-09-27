@@ -22,7 +22,7 @@ import { Surface } from './surface';
 // inline styles referenced — same tokens, pixel-parity.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableHeaderCellVariants = cva(
-  'flex items-center bg-[var(--semantic-color-surface-overlay)] px-[var(--semantic-space-component-padding)]',
+  'flex items-center bg-[var(--semantic-color-surface-overlay)] px-[var(--semantic-space-scale-md)]',
   {
     variants: {
       align: {
@@ -33,8 +33,7 @@ const tableHeaderCellVariants = cva(
       density: {
         comfortable:
           'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
-        compact:
-          'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-component-gap)]',
+        compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-scale-xs)]',
       },
       sticky: {
         true: 'sticky top-0 z-[var(--semantic-zIndex-sticky)]',
@@ -51,7 +50,7 @@ const tableHeaderCellVariants = cva(
 // driving pixel parity with the non-sortable render path.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
 const tableSortButtonVariants = cva(
-  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-component-gap)] border-0 bg-transparent p-0 text-inherit [font:inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
   {
     variants: {
       align: {
@@ -65,7 +64,7 @@ const tableSortButtonVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
-const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-component-padding)]', {
+const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-scale-md)]', {
   variants: {
     align: {
       left: 'justify-start text-left',
@@ -75,7 +74,7 @@ const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-com
     density: {
       comfortable:
         'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
-      compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-component-gap)]',
+      compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-scale-xs)]',
     },
     divider: {
       true: '[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',

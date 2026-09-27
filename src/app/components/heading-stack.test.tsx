@@ -71,9 +71,7 @@ describe('HeadingStack', () => {
   });
 
   it('binds gap px8 (default) and px4 to their distinct semantic space tokens', () => {
-    expect(headingStackVariants({ gap: 'px8' })).toContain(
-      'gap-[var(--semantic-space-component-gap)]',
-    );
+    expect(headingStackVariants({ gap: 'px8' })).toContain('gap-[var(--semantic-space-scale-xs)]');
     expect(headingStackVariants({ gap: 'px4' })).toContain(
       'gap-[var(--semantic-space-subgrid-gap)]',
     );

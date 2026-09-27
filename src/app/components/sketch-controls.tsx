@@ -22,7 +22,7 @@ const sketchControlsStyles = {
     width: '100%',
     minHeight: hds.size[96],
     resize: 'vertical' as const,
-    padding: hds.semantic.space.component.padding,
+    padding: hds.semantic.space.scale.md,
     background: 'transparent',
     color: 'var(--semantic-color-content-primary)',
     border: 'none',
@@ -55,13 +55,7 @@ type SketchRangeProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'on
   onValueChange: (value: number) => void;
 };
 
-export function SketchRange({
-  label,
-  tone,
-  onValueChange,
-  style,
-  ...props
-}: SketchRangeProps) {
+export function SketchRange({ label, tone, onValueChange, style, ...props }: SketchRangeProps) {
   const resolvedTone = { ...defaultTone, ...tone };
 
   return (

@@ -33,7 +33,7 @@ export function DemoBlock({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.component.gap }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: hds.semantic.space.scale.xs }}>
       <h4
         style={{
           ...hds.typeStyles.ui,

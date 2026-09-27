@@ -60,7 +60,7 @@ export function TokensRail({ isDark, tokenPath }: { isDark: boolean; tokenPath: 
           style={{
             ...hds.typeStyles.heading3,
             margin: 0,
-            marginBottom: hds.semantic.space.component.gap,
+            marginBottom: hds.semantic.space.scale.xs,
             color: 'var(--semantic-color-content-primary)',
           }}
         >

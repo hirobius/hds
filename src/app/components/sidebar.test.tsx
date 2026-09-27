@@ -48,7 +48,7 @@ describe('Sidebar', () => {
     const el = container.firstChild as HTMLElement;
     expect(el.style.display).toBe('flex');
     expect(el.style.flexWrap).toBe('wrap');
-    expect(el.style.gap).toBe('var(--semantic-space-layout-inset)');
+    expect(el.style.gap).toBe('var(--semantic-space-scale-lg)');
   });
 
   it('gives the rail sideWidth flex-basis and the content flex-grow:999 with contentMin', () => {

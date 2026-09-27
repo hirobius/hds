@@ -28,7 +28,7 @@ import { useHdsMotion } from '../hooks/useHdsMotion';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic space/radius/border tokens have no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlWrapperVariants = cva(
-  'inline-flex max-w-full flex-col items-start self-start gap-[var(--semantic-space-component-gap)] p-0',
+  'inline-flex max-w-full flex-col items-start self-start gap-[var(--semantic-space-scale-xs)] p-0',
   {
     variants: {
       fullWidth: {
@@ -353,8 +353,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
     const isSecondary = variant === 'secondary';
     const resolvedAriaLabel = ariaLabel ?? label;
     const resolvedSegmentPaddingX =
-      segmentPaddingX ??
-      (isCompact ? hds.semantic.space.component.gap : hds.semantic.space.layout.gap);
+      segmentPaddingX ?? (isCompact ? hds.semantic.space.scale.xs : hds.semantic.space.layout.gap);
 
     return (
       <div ref={ref} className={segmentedControlWrapperVariants({ fullWidth })}>

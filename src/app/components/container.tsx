@@ -49,7 +49,7 @@ export interface ContainerProps {
 export function Container({
   children,
   maxWidth = 'max',
-  padding = 'var(--semantic-space-component-padding)',
+  padding = 'var(--semantic-space-scale-md)',
   style,
   className,
 }: ContainerProps) {

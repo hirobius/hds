@@ -40,7 +40,7 @@ const surfaceVariants = cva(
   {
     variants: {
       padding: {
-        component: 'p-[var(--semantic-space-component-padding)]',
+        component: 'p-[var(--semantic-space-scale-md)]',
         // spacing-ok: 16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to
         item: 'p-[16px]',
         px16: 'p-[16px]',

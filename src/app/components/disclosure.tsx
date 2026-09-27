@@ -34,7 +34,7 @@ const disclosureTriggerVariants = cva(
         panel: 'min-w-0 justify-between',
         nav: 'justify-between rounded-[var(--semantic-radius-action)] border-0 px-0 py-[var(--component-nav-paddingY)] hover:bg-[var(--semantic-color-surface-raised)] data-[state=open]:bg-[var(--semantic-color-surface-raised)]',
         // grid-ok: label + caret row; minmax(0,1fr) lets label shrink to any viewport, caret is a small auto column
-        card: 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[var(--semantic-space-component-gap)] gap-y-0 data-[state=open]:gap-y-[var(--semantic-space-component-gap)]',
+        card: 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[var(--semantic-space-scale-xs)] gap-y-0 data-[state=open]:gap-y-[var(--semantic-space-scale-xs)]',
       },
     },
     defaultVariants: { variant: 'panel' },
@@ -44,7 +44,7 @@ const disclosureTriggerVariants = cva(
 const disclosureContainerGap: Record<DisclosureVariant, string> = {
   panel: hds.semantic.space.sidebar.gap,
   nav: hds.semantic.space.sidebar.sectionGap,
-  card: hds.semantic.space.component.gap,
+  card: hds.semantic.space.scale.xs,
 };
 
 // ── Types ──────────────────────────────────────────────────────────────────────

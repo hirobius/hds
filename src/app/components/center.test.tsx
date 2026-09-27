@@ -39,7 +39,7 @@ describe('Center', () => {
   it('applies a tokenized horizontal gutter when set', () => {
     const { container } = render(<Center gutter="normal">content</Center>);
     const el = container.firstChild as HTMLElement;
-    expect(el.style.paddingLeft).toBe('var(--semantic-space-layout-normal)');
-    expect(el.style.paddingRight).toBe('var(--semantic-space-layout-normal)');
+    expect(el.style.paddingLeft).toBe('var(--semantic-space-scale-md)');
+    expect(el.style.paddingRight).toBe('var(--semantic-space-scale-md)');
   });
 });
