@@ -47,6 +47,17 @@ import { parseSnapshotFile } from './lib/figma-snapshot.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
+/** The staging and library file keys the development plugin is pinned to (figma/links.json). */
+function readFileKeys(root) {
+  const path = join(root, 'figma/links.json');
+  if (!existsSync(path)) return { stagingFileKey: null, libraryFileKey: null };
+  const links = JSON.parse(readFileSync(path, 'utf8'));
+  return {
+    stagingFileKey: links.stagingFileKey ?? null,
+    libraryFileKey: links.libraryFileKey ?? null,
+  };
+}
+
 /**
  * Builds and validates the model, then (re)writes every carrier under outDir.
  *
@@ -55,10 +66,10 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  */
 export function writePushArtifacts({ root, outDir, prune = false }) {
   const { model, renames } = loadFigmaInputs(root);
-  const outputs = Object.entries(buildDevPlugin(model, { prune, renames })).map(([name, text]) => [
-    join('plugin', name),
-    text,
-  ]);
+  const fileKeys = readFileKeys(root);
+  const outputs = Object.entries(buildDevPlugin(model, { prune, renames, files: fileKeys })).map(
+    ([name, text]) => [join('plugin', name), text],
+  );
   for (const chunk of PUSH_CHUNKS) {
     outputs.push([
       join('use-figma', `${chunk.id}.js`),

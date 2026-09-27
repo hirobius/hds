@@ -1,6 +1,7 @@
 /**
  * HdsTooltip — accessible hover/focus tooltip on Radix (Overlays).
  * @category Overlays
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15
  * @tier primitive
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
@@ -72,13 +73,12 @@ const HdsTooltipContent = React.forwardRef<
 
 // ── Compound export ──────────────────────────────────────────────────────────
 
-interface HdsTooltipComponent
-  extends React.FC<
-    React.ComponentProps<typeof TooltipPrimitive.Root> & {
-      /** Hover-open delay in ms (Radix Provider). Default 300. */
-      delayDuration?: number;
-    }
-  > {
+interface HdsTooltipComponent extends React.FC<
+  React.ComponentProps<typeof TooltipPrimitive.Root> & {
+    /** Hover-open delay in ms (Radix Provider). Default 300. */
+    delayDuration?: number;
+  }
+> {
   Trigger: typeof TooltipPrimitive.Trigger;
   Content: typeof HdsTooltipContent;
 }

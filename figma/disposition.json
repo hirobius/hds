@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-09-22",
+  "generatedAt": "2026-09-27",
   "overrides": {
     "Frame": {
       "class": "library",
@@ -19,17 +19,21 @@
     "Sketch": {
       "class": "internal",
       "reason": "A 'shared shell for generative canvases and WebGL sketches' — demo chrome with a title header and a bottom border. Zero consumers outside its own story. It scaffolds lab work rather than shipping to a consumer, so it belongs with the doc tooling, not in a published library."
+    },
+    "HdsTooltip": {
+      "class": "library",
+      "reason": "Publicly exported (src/index.ts) general-purpose accessible tooltip, and the published library already carries it (Tooltip, node 93:15). It infers as internal only because its @doc-exempt tag (no Overlays doc page yet) hides it from the docs; that is a docs gap, not a statement that it is outside the consumer surface."
     }
   },
   "summary": {
     "total": 139,
     "byClass": {
-      "library": 88,
+      "library": 89,
       "slot": 18,
-      "layout": 14,
-      "internal": 19
+      "layout": 15,
+      "internal": 17
     },
-    "libraryLinked": 47,
+    "libraryLinked": 48,
     "libraryMissing": 41,
     "unexpectedlyLinked": 0
   },
@@ -581,6 +585,14 @@
       "figmaUrl": null
     },
     {
+      "name": "HdsDocsShell",
+      "class": "layout",
+      "parent": null,
+      "category": "Layout",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
       "name": "HdsFrame",
       "class": "internal",
       "parent": null,
@@ -662,11 +674,13 @@
     },
     {
       "name": "HdsTooltip",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Internal",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
+      "overriddenFrom": "internal",
+      "overrideReason": "Publicly exported (src/index.ts) general-purpose accessible tooltip, and the published library already carries it (Tooltip, node 93:15). It infers as internal only because its @doc-exempt tag (no Overlays doc page yet) hides it from the docs; that is a docs gap, not a statement that it is outside the consumer surface."
     },
     {
       "name": "HeadingStack",
@@ -895,14 +909,6 @@
       "figmaUrl": null,
       "overriddenFrom": "layout",
       "overrideReason": "A 'shared shell for generative canvases and WebGL sketches' — demo chrome with a title header and a bottom border. Zero consumers outside its own story. It scaffolds lab work rather than shipping to a consumer, so it belongs with the doc tooling, not in a published library."
-    },
-    {
-      "name": "SpecimenBlock",
-      "class": "internal",
-      "parent": null,
-      "category": "Utilities",
-      "tier": "primitive",
-      "figmaUrl": null
     },
     {
       "name": "Spinner",

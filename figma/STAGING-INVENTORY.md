@@ -19,7 +19,7 @@ the sequence: promote, take the NEW library node id, add the tag, then
 `check-sync-map` counts a library component as linked when it carries an
 `@figma` tag or a `figma/mapping-overrides.json` entry. The recipe forbids
 tagging a component that lives only in staging. So **staging work is
-structurally invisible to the gate**, and Figma coverage reads 47/88 until
+structurally invisible to the gate**, and Figma coverage reads 48/89 until
 promotion — not because the components are absent, but because the only record
 the gate can read is the one the recipe says not to write yet. That is a gap in
 the measurement, not drift.
@@ -70,10 +70,20 @@ the measurement, not drift.
 
 Drawn earlier, same status: **[Icon](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=27-2)** (70 components) and **[StatusDot](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2003-2)** (1 set).
 
-## Verification gap, stated plainly
+## Verified live 2026-09-27
 
-Nothing here can currently self-verify. Confirming these node ids against the
-live staging file needs the Figma REST token, which is what `pnpm figma:inventory`
-uses and which is not working. Until it is, treat this as a dated record of what
-one session drew, not as proof of the file's present contents — which is why the
-node ids live in JSON a script can check rather than in prose nobody can.
+A read of the staging file itself (use_figma; `figma/MCP-LEDGER.md`) fetched
+every recorded node by id and walked it:
+
+- **Present:** 41 of 41 recorded nodes, every name matching.
+  Variant counts all match the record.
+- **Descriptions** missing: none. **Clipped sets:** 0.
+- **Paints:** 806 solid paints bound to variables; raw (unbound):
+  Lightbox 1, Icon 1.
+- **Text styles:** 231 of 313 text layers carry no text
+  style, across 32 components. Their type is set by hand,
+  so a type-ramp change will not reach them.
+- StatusDot and Icon are recorded by their PAGE id, not a component or set id. Icon's 70 components were counted on the page; StatusDot's one variant was not re-counted, since its record names the page, not the set.
+- Only paints were checked for variable bindings; spacing, radius and stroke-width bindings were not read.
+
+This proves the file as of that date, not today. Re-run the read after any redraw.

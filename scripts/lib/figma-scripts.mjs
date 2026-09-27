@@ -277,13 +277,44 @@ const PLUGIN_UI = `<!doctype html>
 `;
 
 /**
+ * Where the write commands may run (ADR-026, ADR-029): the staging duplicate
+ * only. The published library, any other file, or a file Figma gives no key
+ * for, is refused before anything is read. Promotion into the library stays a
+ * manual step outside this plugin. `snapshot` only reads, so it runs anywhere.
+ */
+const FILE_GUARD = `function hdsFileGuard(command, files, fileKey) {
+  if (command === 'snapshot') return null;
+  if (typeof fileKey !== 'string' || !fileKey) {
+    return 'Figma gave this plugin no file key (an unsaved draft, or the manifest lost enablePrivatePluginApi), so it cannot tell staging from the library. Nothing was read or written. Save the file, or re-import figma/push/plugin/manifest.json after pnpm figma:push.';
+  }
+  if (!files.stagingFileKey) {
+    return 'figma/links.json has no stagingFileKey, so there is no file this plugin may write to. Nothing was read or written. Set stagingFileKey (ADR-026), run pnpm figma:push, and re-run.';
+  }
+  if (fileKey === files.stagingFileKey) return null;
+  if (fileKey === files.libraryFileKey) {
+    return 'This is the published library (' + fileKey + '). This plugin writes to the staging file only (' + files.stagingFileKey + '). Nothing was read or written. Promoting staging into the library is a manual step (ADR-026).';
+  }
+  return 'This file (' + fileKey + ') is not the staging file named in figma/links.json (' + files.stagingFileKey + '). Nothing was read or written. Open the staging file, or fix figma/links.json and run pnpm figma:push again.';
+}`;
+
+/**
  * A local development plugin (Plugins → Development → Import plugin from
  * manifest). Its prune command exists only when generated with prune.
  *
+ * @param {object} model
+ * @param {{prune?: boolean, renames?: object, files?: {stagingFileKey: string|null, libraryFileKey: string|null}}} [options]
+ *   `files` comes from figma/links.json; without a staging key every write command is refused.
  * @returns {Record<string, string>} file name → contents
  */
-export function buildDevPlugin(model, { prune = false, renames = {} } = {}) {
+export function buildDevPlugin(
+  model,
+  { prune = false, renames = {}, files = { stagingFileKey: null, libraryFileKey: null } } = {},
+) {
   const { payload, checksum } = buildPushPayload(model, { prune, renames });
+  const fileKeys = {
+    stagingFileKey: files.stagingFileKey ?? null,
+    libraryFileKey: files.libraryFileKey ?? null,
+  };
   const menu = [
     { name: 'Plan push (dry run, writes nothing)', command: 'plan' },
     { name: prune ? 'Push and prune extras (deletes)' : 'Push', command: 'push' },
@@ -298,6 +329,8 @@ export function buildDevPlugin(model, { prune = false, renames = {} } = {}) {
     ui: 'ui.html',
     editorType: ['figma'],
     documentAccess: 'dynamic-page',
+    // figma.fileKey is only exposed to private and development plugins that ask for it.
+    enablePrivatePluginApi: true,
     networkAccess: { allowedDomains: ['none'] },
     menu,
   };
@@ -308,8 +341,11 @@ export function buildDevPlugin(model, { prune = false, renames = {} } = {}) {
     ]),
     `const PAYLOAD = ${JSON.stringify(payload)};`,
     `const CHECKSUM = '${checksum}';`,
+    `const FILES = ${JSON.stringify(fileKeys)};`,
     '',
     runtimeSource(),
+    '',
+    FILE_GUARD,
     '',
     `figma.showUI(__html__, { width: 560, height: 500, themeColors: true });
 figma.ui.onmessage = (message) => {
@@ -317,6 +353,8 @@ figma.ui.onmessage = (message) => {
 };
 (async () => {
   try {
+    const refused = hdsFileGuard(figma.command, FILES, figma.fileKey);
+    if (refused) throw new Error(refused);
     if (figma.command === 'snapshot') {
       const result = await hdsRunSnapshot(figma);
       figma.ui.postMessage({ ok: true, title: 'Snapshot — download it, then run pnpm figma:snapshot --ingest <file>', fileName: 'figma-snapshot.json', result });

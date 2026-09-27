@@ -145,6 +145,15 @@ breaks an invariant) and writes two carriers of the same code
     differs from the model. Built with `--prune`, this command is named "Push and
     prune extras (deletes)".
   - **Take snapshot**: see below.
+
+  The plugin writes to one file: `stagingFileKey` in `figma/links.json` (ADR-026,
+  ADR-029). Plan and Push refuse, before they read anything, in the published
+  library, in any other file, in an unsaved draft (no file key), or while
+  `stagingFileKey` is unset. The refusal says which file to open. Promoting staging
+  into the library stays a manual step outside the plugin. Take snapshot only reads,
+  so it runs anywhere. The manifest sets `enablePrivatePluginApi`, which is what
+  lets a development plugin read `figma.fileKey`.
+
 - **use_figma scripts** (Figma MCP server): `figma/push/use-figma/01-primitive.js`
   … `05-styles.js`. Run them in order, unmodified. An agent retypes each script
   into use_figma's `code` parameter, so each checks two checksums before it reads
@@ -152,11 +161,17 @@ breaks an invariant) and writes two carriers of the same code
   runtime function (`Function.prototype.toString`). A script whose data or code
   changed on the way stops there; only its last two call lines are not covered.
   If Figma's sandbox ever hides function source, the scripts refuse and name the
-  development plugin, which Figma loads from disk. With the
-  current tokens each script is 46–99 KB of code for the agent to pass through
-  (a `--prune` build carries every variable's identity, so moved tokens are
-  recognised, and reaches 93–119 KB), so the development plugin is the easier
-  path for a full push, a prune or a snapshot.
+  development plugin, which Figma loads from disk.
+
+  **Measured 2026-09-27 (ADR-029): the push and snapshot cannot run through
+  `use_figma` today.** The tool takes at most 50,000 characters of code and
+  truncates what it returns at 20 KB. The push runtime alone is 36 KB, the
+  Semantic payload 72 KB, and each generated push script 46–110 KB. A snapshot
+  of the staging file is about 255 KB. In the one live try, the snapshot
+  script's runtime self-check also refused, although eight of its ten functions
+  read back byte-identical. The development plugin, which has no size limit, is
+  the path for every push and snapshot. `use_figma` stays useful for small
+  reads (for example, verifying drawn components) and small writes.
 
 What a push does:
 
@@ -197,9 +212,9 @@ snapshot, without Figma.
 
 ## Snapshot and drift
 
-1. Take a snapshot: the plugin's **Take snapshot** command (then **Download
-   JSON**), or run `figma/push/use-figma/snapshot.js` through use_figma and save
-   what it returns.
+1. Take a snapshot: the plugin's **Take snapshot** command, then **Download
+   JSON**. (`figma/push/use-figma/snapshot.js` is generated too, but use_figma
+   truncates its result at 20 KB, well short of a full snapshot; see Push.)
 2. `pnpm figma:snapshot --ingest <file>` verifies the checksum and writes
    `figma/snapshot.json`. Commit it.
 3. `pnpm check:figma-drift` exits 0 with no drift, 1 with drift (or a snapshot
