@@ -38,16 +38,25 @@ describe('applyReplacements', () => {
     expect(applyReplacements(text).text).toBe("tokenPath: 'semantic.space.scale.xs',");
   });
 
-  it('leaves component.padding and layout.gutter alone (tenants.css / theme.css override them at runtime)', () => {
-    const text = [
-      'padding: var(--semantic-space-component-padding);',
-      'gap: var(--semantic-space-layout-gutter);',
-      "tokenPath: 'semantic.space.component.padding',",
-      'x: hds.semantic.space.layout.gutter,',
-    ].join('\n');
-    const { text: out, count } = applyReplacements(text);
-    expect(out).toBe(text);
-    expect(count).toBe(0);
+  it('renames component.padding and layout.gutter to their canonical overridable names (hds#206 slice 3)', () => {
+    const cases = [
+      ['var(--semantic-space-component-padding)', 'var(--semantic-space-surface-padding)'],
+      ['var(--semantic-space-layout-gutter)', 'var(--semantic-space-region-gutter)'],
+      ['p-[var(--semantic-space-component-padding)]', 'p-[var(--semantic-space-surface-padding)]'],
+      ["'semantic.space.component.padding'", "'semantic.space.surface.padding'"],
+      ['hds.semantic.space.component.padding', 'hds.semantic.space.surface.padding'],
+      ['hds.semantic.space.layout.gutter', 'hds.semantic.space.region.gutter'],
+    ];
+    for (const [before, after] of cases) {
+      expect(applyReplacements(before).text).toBe(after);
+    }
+  });
+
+  it('never points component.padding / layout.gutter at a scale token (that would drop the tenant, density and responsive overrides)', () => {
+    const { text } = applyReplacements(
+      'padding: var(--semantic-space-component-padding); gap: var(--semantic-space-layout-gutter);',
+    );
+    expect(text).not.toMatch(/scale-/);
   });
 
   it('rewrites multiple occurrences on one line and counts each', () => {
@@ -66,7 +75,7 @@ describe('applyReplacements', () => {
   });
 
   it('does NOT touch a bare CSS custom-property declaration (only var() reads)', () => {
-    const text = '--semantic-space-layout-gutter: 32px;';
+    const text = '--semantic-space-layout-gutter: var(--semantic-space-region-gutter);';
     const { text: out, count } = applyReplacements(text);
     expect(out).toBe(text);
     expect(count).toBe(0);

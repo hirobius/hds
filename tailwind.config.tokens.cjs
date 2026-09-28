@@ -74,6 +74,8 @@ const config = {
         'scale-md': 'var(--semantic-space-scale-md)',
         'scale-lg': 'var(--semantic-space-scale-lg)',
         'scale-xl': 'var(--semantic-space-scale-xl)',
+        'surface-padding': 'var(--semantic-space-surface-padding)',
+        'region-gutter': 'var(--semantic-space-region-gutter)',
         'subgrid-hairline': 'var(--semantic-space-subgrid-hairline)',
         'subgrid-xs': 'var(--semantic-space-subgrid-xs)',
         'subgrid-gap': 'var(--semantic-space-subgrid-gap)',

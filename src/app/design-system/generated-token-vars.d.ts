@@ -221,6 +221,8 @@ declare module 'react' {
     '--semantic-space-scale-md'?: string | undefined;
     '--semantic-space-scale-lg'?: string | undefined;
     '--semantic-space-scale-xl'?: string | undefined;
+    '--semantic-space-surface-padding'?: string | undefined;
+    '--semantic-space-region-gutter'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;

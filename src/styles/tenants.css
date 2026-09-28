@@ -81,15 +81,21 @@
 [data-brand='brutalist-demo'],
 [data-tenant='brutalist-demo'] {
   --role-radius: 0px; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --semantic-space-component-padding: var(
-    --primitive-space-4
+  --semantic-space-surface-padding: var(
+    --semantic-space-scale-sm
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-space-component-padding: var(
+    --semantic-space-surface-padding
+  ); /* deprecated alias re-anchored to the override (hds#206) */
 }
 [data-brand='brutalist-demo'][data-density='compact'],
 [data-tenant='brutalist-demo'][data-density='compact'] {
-  --semantic-space-component-padding: var(
-    --primitive-space-2
+  --semantic-space-surface-padding: var(
+    --semantic-space-scale-xs
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-space-component-padding: var(
+    --semantic-space-surface-padding
+  ); /* deprecated alias re-anchored to the override (hds#206) */
 }
 
 /* ── concrete-creations ────────────────────────────────────────────────── */
