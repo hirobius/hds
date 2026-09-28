@@ -54,7 +54,9 @@ function parseArgs(argv) {
 }
 
 function usage() {
-  console.error('Usage: pnpm harvest:design-md --in=<path-to-design.md> --slug=<brand-slug> [--dry-run] [--force]');
+  console.error(
+    'Usage: pnpm harvest:design-md --in=<path-to-design.md> --slug=<brand-slug> [--dry-run] [--force]',
+  );
   console.error('  --in        Required. Path to the Aura design.md file to ingest.');
   console.error('  --slug      Required. Lowercase kebab-case tenant slug (e.g. acme-co).');
   console.error('  --dry-run   Print planned writes without touching disk.');
@@ -155,7 +157,12 @@ export function oklchToRgb({ L, C, H }) {
   };
 
   const inGamut = ([rLin, gLin, bLin]) =>
-    rLin >= -1e-4 && rLin <= 1 + 1e-4 && gLin >= -1e-4 && gLin <= 1 + 1e-4 && bLin >= -1e-4 && bLin <= 1 + 1e-4;
+    rLin >= -1e-4 &&
+    rLin <= 1 + 1e-4 &&
+    gLin >= -1e-4 &&
+    gLin <= 1 + 1e-4 &&
+    bLin >= -1e-4 &&
+    bLin <= 1 + 1e-4;
 
   // Gamut-map by binary-searching down chroma until the linear-sRGB triple
   // fits inside [0,1]^3. Lightness and hue are preserved; chroma is the only
@@ -312,9 +319,16 @@ export function parseDesignMd(content) {
     }
   }
 
-  const hasUsefulKeys = ['colors', 'color', 'palette', 'typography', 'fonts', 'rounded', 'radius', 'spacing'].some(
-    (k) => doc[k] != null,
-  );
+  const hasUsefulKeys = [
+    'colors',
+    'color',
+    'palette',
+    'typography',
+    'fonts',
+    'rounded',
+    'radius',
+    'spacing',
+  ].some((k) => doc[k] != null);
 
   if (!parsedAny || !hasUsefulKeys) {
     // Fallback 1: maybe the whole file IS yaml (no fences, no markdown prose).
@@ -348,14 +362,18 @@ export function parseDesignMd(content) {
 function regexFallbackExtract(content, warnings) {
   const doc = {};
 
-  const colorMatch = content.match(/(?:primary|accent|brand)\s*[:=]\s*["']?(#[0-9a-fA-F]{3,8})["']?/i);
+  const colorMatch = content.match(
+    /(?:primary|accent|brand)\s*[:=]\s*["']?(#[0-9a-fA-F]{3,8})["']?/i,
+  );
   if (colorMatch) {
     doc.colors = { primary: colorMatch[1] };
   } else {
     warnings.push('Regex fallback: no primary/accent/brand hex color found.');
   }
 
-  const fontMatches = [...content.matchAll(/font(?:Family)?\s*[:=]\s*["']?([A-Za-z0-9][A-Za-z0-9 ,'"-]*)/gi)];
+  const fontMatches = [
+    ...content.matchAll(/font(?:Family)?\s*[:=]\s*["']?([A-Za-z0-9][A-Za-z0-9 ,'"-]*)/gi),
+  ];
   if (fontMatches.length > 0) {
     doc.typography = { body: { fontFamily: fontMatches[0][1].trim() } };
     const mono = fontMatches.find((mm) => /mono|code/i.test(mm[1]));
@@ -413,12 +431,18 @@ function extractAccentSource(doc) {
   // accent — some Aura design.md files use "tertiary", not "primary", for
   // this role (Material-3-style role naming).
   const components = doc?.components ?? {};
-  const buttonKey = Object.keys(components).find((k) => /button.*primary|primary.*button|^cta$|^button$/i.test(k));
+  const buttonKey = Object.keys(components).find((k) =>
+    /button.*primary|primary.*button|^cta$|^button$/i.test(k),
+  );
   if (buttonKey) {
     const bg = components[buttonKey]?.backgroundColor;
     const resolved = resolveDesignRef(bg, doc);
     if (typeof resolved === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(resolved)) {
-      return { hex: normalizeHex(resolved), via: `components.${buttonKey}.backgroundColor`, confidence: 'high' };
+      return {
+        hex: normalizeHex(resolved),
+        via: `components.${buttonKey}.backgroundColor`,
+        confidence: 'high',
+      };
     }
   }
 
@@ -431,9 +455,15 @@ function extractAccentSource(doc) {
   }
 
   // Last resort: first hex-looking value in the colors map.
-  const firstHexEntry = Object.entries(colors).find(([, v]) => typeof v === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(v));
+  const firstHexEntry = Object.entries(colors).find(
+    ([, v]) => typeof v === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(v),
+  );
   if (firstHexEntry) {
-    return { hex: normalizeHex(firstHexEntry[1]), via: `colors.${firstHexEntry[0]}`, confidence: 'low' };
+    return {
+      hex: normalizeHex(firstHexEntry[1]),
+      via: `colors.${firstHexEntry[0]}`,
+      confidence: 'low',
+    };
   }
 
   return null;
@@ -456,7 +486,8 @@ function extractTypography(doc) {
     entries[0];
   const monoEntry = entries.find(([k]) => /mono|code/i.test(k));
 
-  const bodyFamily = bodyEntry?.[1]?.fontFamily ?? (typeof doc?.fontFamily === 'string' ? doc.fontFamily : null);
+  const bodyFamily =
+    bodyEntry?.[1]?.fontFamily ?? (typeof doc?.fontFamily === 'string' ? doc.fontFamily : null);
   const monoFamily = monoEntry?.[1]?.fontFamily ?? null;
 
   return {
@@ -474,7 +505,9 @@ function extractRadius(doc) {
   // Highest confidence: an explicit component→rounded reference (mirrors the
   // accent-color heuristic above).
   const components = doc?.components ?? {};
-  const buttonKey = Object.keys(components).find((k) => /button.*primary|primary.*button|^cta$|^button$/i.test(k));
+  const buttonKey = Object.keys(components).find((k) =>
+    /button.*primary|primary.*button|^cta$|^button$/i.test(k),
+  );
   if (buttonKey) {
     const roundedRef = components[buttonKey]?.rounded;
     const resolved = resolveDesignRef(roundedRef, doc);
@@ -491,7 +524,11 @@ function extractRadius(doc) {
 
   const firstEntry = Object.entries(rounded).find(([, v]) => parseDimensionValue(v));
   if (firstEntry) {
-    return { dim: parseDimensionValue(firstEntry[1]), via: `rounded.${firstEntry[0]}`, confidence: 'low' };
+    return {
+      dim: parseDimensionValue(firstEntry[1]),
+      via: `rounded.${firstEntry[0]}`,
+      confidence: 'low',
+    };
   }
 
   return null;
@@ -518,7 +555,9 @@ function buildTokensOverlay({ slug, sourcePath, accent, radius, timestamp }) {
 
   if (accent) {
     const ramp = deriveAccentRamp(accent.hex);
-    const modes = (light, dark) => ({ $extensions: { 'com.figma.variables': { modes: { Light: light, Dark: dark } } } });
+    const modes = (light, dark) => ({
+      $extensions: { 'com.figma.variables': { modes: { Light: light, Dark: dark } } },
+    });
 
     overlay.semantic = {
       accent: {
@@ -530,7 +569,8 @@ function buildTokensOverlay({ slug, sourcePath, accent, radius, timestamp }) {
         },
         hover: {
           $value: ramp.hover.light,
-          $description: 'Harvested accent hover — OKLCH-stepped darker (Light) / lighter (Dark) from rest.',
+          $description:
+            'Harvested accent hover — OKLCH-stepped darker (Light) / lighter (Dark) from rest.',
           ...modes(ramp.hover.light, ramp.hover.dark),
         },
         pressed: {
@@ -545,7 +585,8 @@ function buildTokensOverlay({ slug, sourcePath, accent, radius, timestamp }) {
         },
         content: {
           $value: ramp.content.light,
-          $description: 'Harvested accent text color — used for links and accent labels (mirrors hover).',
+          $description:
+            'Harvested accent text color — used for links and accent labels (mirrors hover).',
           ...modes(ramp.content.light, ramp.content.dark),
         },
       },
@@ -582,7 +623,9 @@ function buildTokensOverlay({ slug, sourcePath, accent, radius, timestamp }) {
         $value: { value: radius.dim.value, unit: radius.dim.unit },
         $description:
           `Harvested action radius (source: ${radius.via}, confidence: ${radius.confidence})` +
-          (radius.dim.convertedFrom ? ` — converted from ${radius.dim.convertedFrom} assuming a 16px root.` : '.'),
+          (radius.dim.convertedFrom
+            ? ` — converted from ${radius.dim.convertedFrom} assuming a 16px root.`
+            : '.'),
       },
     };
   }
@@ -590,7 +633,18 @@ function buildTokensOverlay({ slug, sourcePath, accent, radius, timestamp }) {
   return overlay;
 }
 
-function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSource, accent, radius, typography, spacingScale }) {
+function buildHarvestMd({
+  slug,
+  sourcePath,
+  timestamp,
+  doc,
+  warnings,
+  parseSource,
+  accent,
+  radius,
+  typography,
+  spacingScale,
+}) {
   const lines = [];
   lines.push(`# HARVEST.md — ${slug}`);
   lines.push('');
@@ -600,7 +654,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
       'with lower confidence, and what still needs Adrian to tighten by hand before this tenant leaves `status: scaffold`.',
   );
   lines.push('');
-  lines.push(`**Parse strategy:** ${parseSource === 'yaml' ? 'structured YAML (frontmatter and/or fenced blocks)' : 'regex fallback (source did not parse as clean YAML)'}.`);
+  lines.push(
+    `**Parse strategy:** ${parseSource === 'yaml' ? 'structured YAML (frontmatter and/or fenced blocks)' : 'regex fallback (source did not parse as clean YAML)'}.`,
+  );
   lines.push('');
 
   if (warnings.length > 0) {
@@ -620,7 +676,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
       `| \`${accent.via}\` (\`${accent.hex}\`) | \`semantic.accent.{rest,hover,pressed,subtle,content}\`, \`semantic.color.surface.{accent,accentSubtle}\`, \`semantic.color.border.accent\` | Mapped (confidence: ${accent.confidence}) | OKLCH-derived ramp — see below. |`,
     );
   } else {
-    lines.push('| *(no primary/accent/brand color found)* | `semantic.accent.*` | **Not mapped** | No hex color could be extracted — add `colors.primary` (or `colors.accent`) to the source design.md, or set `semantic.accent.rest` manually. |');
+    lines.push(
+      '| *(no primary/accent/brand color found)* | `semantic.accent.*` | **Not mapped** | No hex color could be extracted — add `colors.primary` (or `colors.accent`) to the source design.md, or set `semantic.accent.rest` manually. |',
+    );
   }
 
   if (radius) {
@@ -628,7 +686,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
       `| \`${radius.via}\` (\`${radius.dim.value}${radius.dim.unit}\`) | \`semantic.radius.action\` | Mapped (confidence: ${radius.confidence}) | ${radius.dim.convertedFrom ? `Converted from \`${radius.dim.convertedFrom}\` assuming a 16px root — verify.` : 'Direct px value.'} |`,
     );
   } else {
-    lines.push('| *(no rounded/radius value found)* | `semantic.radius.action` | **Not mapped** | No usable radius value in source; base HDS default (`{primitive.radius.12}`) applies unless overridden manually. |');
+    lines.push(
+      '| *(no rounded/radius value found)* | `semantic.radius.action` | **Not mapped** | No usable radius value in source; base HDS default (`{primitive.radius.12}`) applies unless overridden manually. |',
+    );
   }
 
   lines.push(
@@ -644,7 +704,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
   if (accent) {
     lines.push('## Accent ramp (OKLCH-derived)');
     lines.push('');
-    lines.push(`Base color: \`${accent.hex}\` — resolved via \`${accent.via}\` (confidence: **${accent.confidence}**).`);
+    lines.push(
+      `Base color: \`${accent.hex}\` — resolved via \`${accent.via}\` (confidence: **${accent.confidence}**).`,
+    );
     lines.push('');
     const ramp = deriveAccentRamp(accent.hex);
     const fmtOklch = (o) => `oklch(${o.L.toFixed(3)} ${o.C.toFixed(3)} ${o.H.toFixed(1)}deg)`;
@@ -655,10 +717,17 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
       ['hover', ramp.hover, hexToOklch(ramp.hover.light), hexToOklch(ramp.hover.dark)],
       ['pressed', ramp.pressed, hexToOklch(ramp.pressed.light), hexToOklch(ramp.pressed.dark)],
       ['subtle', ramp.subtle, hexToOklch(ramp.subtle.light), hexToOklch(ramp.subtle.dark)],
-      ['content (=hover)', ramp.content, hexToOklch(ramp.content.light), hexToOklch(ramp.content.dark)],
+      [
+        'content (=hover)',
+        ramp.content,
+        hexToOklch(ramp.content.light),
+        hexToOklch(ramp.content.dark),
+      ],
     ];
     for (const [name, hexPair, lOklch, dOklch] of rows) {
-      lines.push(`| ${name} | \`${hexPair.light}\` | \`${hexPair.dark}\` | \`${fmtOklch(lOklch)}\` | \`${fmtOklch(dOklch)}\` |`);
+      lines.push(
+        `| ${name} | \`${hexPair.light}\` | \`${hexPair.dark}\` | \`${fmtOklch(lOklch)}\` | \`${fmtOklch(dOklch)}\` |`,
+      );
     }
     lines.push('');
     lines.push(
@@ -669,7 +738,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
         'must stay vivid regardless of theme, matching the concrete-creations pattern.',
     );
     lines.push('');
-    lines.push('**These are candidate hexes, not final brand hexes.** Review against real brand guidelines before promoting.');
+    lines.push(
+      '**These are candidate hexes, not final brand hexes.** Review against real brand guidelines before promoting.',
+    );
     lines.push('');
   }
 
@@ -686,9 +757,13 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
   if (typography.bodyFamily) {
     lines.push('```css');
     lines.push(`[data-tenant="${slug}"] {`);
-    lines.push(`  --hds-font-family: '${typography.bodyFamily}', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;`);
+    lines.push(
+      `  --hds-font-family: '${typography.bodyFamily}', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;`,
+    );
     if (typography.monoFamily) {
-      lines.push(`  --hds-font-family-mono: '${typography.monoFamily}', 'Geist Mono', 'Courier New', monospace;`);
+      lines.push(
+        `  --hds-font-family-mono: '${typography.monoFamily}', 'Geist Mono', 'Courier New', monospace;`,
+      );
     }
     lines.push('}');
     lines.push('```');
@@ -697,20 +772,26 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
     if (typography.monoFamily) {
       lines.push(`Mono font source: \`${typography.monoVia}\` → **${typography.monoFamily}**.`);
     } else {
-      lines.push('No mono/code font role found in source — mono stays at the HDS default (`Geist Mono`).');
+      lines.push(
+        'No mono/code font role found in source — mono stays at the HDS default (`Geist Mono`).',
+      );
     }
     if (typography.allRoles.length > 0) {
       lines.push('');
-      lines.push(`Other typography roles present in source (not mapped — HDS's type ramp is fixed): ${typography.allRoles.map((r) => `\`${r}\``).join(', ')}.`);
+      lines.push(
+        `Other typography roles present in source (not mapped — HDS's type ramp is fixed): ${typography.allRoles.map((r) => `\`${r}\``).join(', ')}.`,
+      );
     }
   } else {
-    lines.push('No font family could be extracted from the source design.md — add `typography.body-md.fontFamily` (or similar) and re-run.');
+    lines.push(
+      'No font family could be extracted from the source design.md — add `typography.body-md.fontFamily` (or similar) and re-run.',
+    );
   }
   lines.push('');
   lines.push(
     'Wire this by setting the two CSS custom properties above wherever the tenant scope selector ' +
       `(\`[data-tenant="${slug}"]\`) is styled — e.g. a small tenant-specific CSS file, or inline via ` +
-      '`<HdsThemeProvider>`\'s font override prop if the consuming app uses it. This is intentionally kept out of ' +
+      "`<HdsThemeProvider>`'s font override prop if the consuming app uses it. This is intentionally kept out of " +
       'the DTCG-validated `tokens.json` so `check-tenant-tokens.mjs` has nothing false to validate against.',
   );
   lines.push('');
@@ -723,7 +804,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
     lines.push('| Key | Raw value | Parsed |');
     lines.push('|---|---|---|');
     for (const s of spacingScale) {
-      lines.push(`| \`spacing.${s.key}\` | \`${s.raw}\` | ${s.dim.value}${s.dim.unit}${s.dim.convertedFrom ? ` (from ${s.dim.convertedFrom})` : ''} |`);
+      lines.push(
+        `| \`spacing.${s.key}\` | \`${s.raw}\` | ${s.dim.value}${s.dim.unit}${s.dim.convertedFrom ? ` (from ${s.dim.convertedFrom})` : ''} |`,
+      );
     }
     lines.push('');
   } else {
@@ -731,9 +814,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
     lines.push('');
   }
   lines.push(
-    'This was deliberately **not** auto-mapped: design.md\'s `spacing` is a single flat scale (e.g. `sm`/`md`/`lg`), ' +
-      'while HDS\'s `semantic.space.*` is a five-tier hierarchy (`subgrid`, `component`, `layout`, `section`, ' +
-      '`sidebar`) with role-specific leaves (e.g. `semantic.space.component.padding`, `semantic.space.layout.tight`). ' +
+    "This was deliberately **not** auto-mapped: design.md's `spacing` is a single flat scale (e.g. `sm`/`md`/`lg`), " +
+      "while HDS's `semantic.space.*` is a five-tier hierarchy (`subgrid`, `component`, `layout`, `section`, " +
+      '`sidebar`) with role-specific leaves (e.g. `semantic.space.surface.padding`, `semantic.space.scale.sm`). ' +
       'There is no confident 1:1 correspondence between a flat scale step and a specific HDS spacing role — guessing ' +
       'here risks silently mis-scaling real layout. If the brand truly needs a denser/looser rhythm than the HDS ' +
       'base, pick the specific `semantic.space.*` leaf that matches the intended UI role and override it by hand; ' +
@@ -746,7 +829,9 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
     lines.push('');
     lines.push(
       `The source design.md declared ${Object.keys(doc.components).length} component(s): ` +
-        `${Object.keys(doc.components).map((k) => `\`${k}\``).join(', ')}. These were only consulted to disambiguate ` +
+        `${Object.keys(doc.components)
+          .map((k) => `\`${k}\``)
+          .join(', ')}. These were only consulted to disambiguate ` +
         'the accent color and action radius (see above) — HDS component styling is token-driven and does not ' +
         'take per-component design.md overrides.',
     );
@@ -755,12 +840,26 @@ function buildHarvestMd({ slug, sourcePath, timestamp, doc, warnings, parseSourc
 
   lines.push('## Next steps for Adrian');
   lines.push('');
-  lines.push('- [ ] Verify the harvested accent hex(es) against the real brand guidelines (these are OKLCH-derived candidates, not final).');
-  lines.push('- [ ] Wire the `--hds-font-family` / `--hds-font-family-mono` recipe above if this tenant needs a custom typeface.');
-  lines.push('- [ ] Pick specific `semantic.space.*` overrides by hand if the brand needs non-default rhythm.');
-  lines.push('- [ ] Create `tenants/' + slug + '/metadata.json` (not generated by this tool) — see `tenants/_template/metadata.json`.');
-  lines.push('- [ ] Run `pnpm tokens` to compile this overlay into `src/styles/tenants.css` once reviewed.');
-  lines.push('- [ ] Flip `status` from `scaffold` to `active` in metadata.json when ready to ship.');
+  lines.push(
+    '- [ ] Verify the harvested accent hex(es) against the real brand guidelines (these are OKLCH-derived candidates, not final).',
+  );
+  lines.push(
+    '- [ ] Wire the `--hds-font-family` / `--hds-font-family-mono` recipe above if this tenant needs a custom typeface.',
+  );
+  lines.push(
+    '- [ ] Pick specific `semantic.space.*` overrides by hand if the brand needs non-default rhythm.',
+  );
+  lines.push(
+    '- [ ] Create `tenants/' +
+      slug +
+      '/metadata.json` (not generated by this tool) — see `tenants/_template/metadata.json`.',
+  );
+  lines.push(
+    '- [ ] Run `pnpm tokens` to compile this overlay into `src/styles/tenants.css` once reviewed.',
+  );
+  lines.push(
+    '- [ ] Flip `status` from `scaffold` to `active` in metadata.json when ready to ship.',
+  );
   lines.push('');
 
   return lines.join('\n');
@@ -778,9 +877,17 @@ export function harvest({ inPath, slug, dryRun = false, force = false }) {
   const spacingScale = extractSpacingScale(doc);
 
   const timestamp = new Date().toISOString();
-  const relativeSource = sourcePath.startsWith(ROOT) ? sourcePath.slice(ROOT.length + 1) : sourcePath;
+  const relativeSource = sourcePath.startsWith(ROOT)
+    ? sourcePath.slice(ROOT.length + 1)
+    : sourcePath;
 
-  const overlay = buildTokensOverlay({ slug, sourcePath: relativeSource, accent, radius, timestamp });
+  const overlay = buildTokensOverlay({
+    slug,
+    sourcePath: relativeSource,
+    accent,
+    radius,
+    timestamp,
+  });
   const harvestMd = buildHarvestMd({
     slug,
     sourcePath: relativeSource,
@@ -816,7 +923,9 @@ export function harvest({ inPath, slug, dryRun = false, force = false }) {
   }
 
   if (existsSync(tenantDir) && !force) {
-    throw new Error(`tenants/${slug}/ already exists. Re-run with --force to overwrite, or choose a different --slug.`);
+    throw new Error(
+      `tenants/${slug}/ already exists. Re-run with --force to overwrite, or choose a different --slug.`,
+    );
   }
 
   mkdirSync(tenantDir, { recursive: true });
@@ -829,8 +938,12 @@ export function harvest({ inPath, slug, dryRun = false, force = false }) {
 function printSummary(result) {
   console.log(`\ndesign.md → HDS harvest: ${result.slug}`);
   console.log(`  source: ${result.sourcePath} (parsed via ${result.parseSource})`);
-  console.log(`  accent: ${result.accent ? `${result.accent.hex} (via ${result.accent.via}, confidence: ${result.accent.confidence})` : 'NOT FOUND'}`);
-  console.log(`  radius: ${result.radius ? `${result.radius.dim.value}${result.radius.dim.unit} (via ${result.radius.via}, confidence: ${result.radius.confidence})` : 'NOT FOUND'}`);
+  console.log(
+    `  accent: ${result.accent ? `${result.accent.hex} (via ${result.accent.via}, confidence: ${result.accent.confidence})` : 'NOT FOUND'}`,
+  );
+  console.log(
+    `  radius: ${result.radius ? `${result.radius.dim.value}${result.radius.dim.unit} (via ${result.radius.via}, confidence: ${result.radius.confidence})` : 'NOT FOUND'}`,
+  );
   console.log(`  typography body: ${result.typography.bodyFamily ?? 'NOT FOUND'}`);
   console.log(`  typography mono: ${result.typography.monoFamily ?? '(none — HDS default kept)'}`);
   console.log(`  spacing scale entries: ${result.spacingScale.length}`);

@@ -28,10 +28,15 @@
  *   semantic.space.layout.inset       (32px) → semantic.space.scale.lg
  *   semantic.space.layout.spacious    (48px) → semantic.space.scale.xl
  *
- * NOT renamed: semantic.space.component.padding and semantic.space.layout.gutter.
- * tenants.css (per tenant/density) and theme.css (responsive 32px/16px)
- * override those alias vars at runtime, so pointing consumers at a scale
- * token would silently drop the override. They stay until the overrides move.
+ *   semantic.space.component.padding (24px) → semantic.space.surface.padding
+ *   semantic.space.layout.gutter      (24px) → semantic.space.region.gutter
+ *
+ * The last two are not scale steps: tenants.css (per tenant/density) and
+ * theme.css (responsive 32px/16px) override them at runtime, so they rename
+ * to overridable roles whose default is scale.md and whose overrides are
+ * themselves scale steps (hds#206 slice 3). The deprecated names stay as
+ * `$deprecated` aliases, re-anchored inside each tenant block, so a consumer
+ * that has not run this codemod keeps the same computed values.
  *
  * What it does NOT touch (by design):
  *   - Generated build output (`generated-*.ts`, `generated-token-vars.d.ts`,
@@ -76,11 +81,19 @@ export const REPLACEMENTS = [
   ['var(--semantic-space-layout-normal)', 'var(--semantic-space-scale-md)'],
   ['var(--semantic-space-layout-inset)', 'var(--semantic-space-scale-lg)'],
   ['var(--semantic-space-layout-spacious)', 'var(--semantic-space-scale-xl)'],
+  // The two runtime-overridden tokens (hds#206 slice 3) rename to their
+  // overridable role names, NOT to scale.md: tenants.css (brand/density) and
+  // theme.css (responsive) override these roles, and a scale step would drop
+  // those overrides.
+  ['var(--semantic-space-component-padding)', 'var(--semantic-space-surface-padding)'],
+  ['var(--semantic-space-layout-gutter)', 'var(--semantic-space-region-gutter)'],
   // JS/TS dotted token-bridge paths (`hds.semantic.space.…` and bare
   // `semantic.space.…` string labels, e.g. in Storybook demo args). A bare
   // match also fixes the `hds.`-prefixed form as a side effect, since it's
   // a literal substring of it — no separate rule needed for that case.
   ['semantic.space.component.gap', 'semantic.space.scale.xs'],
+  ['semantic.space.component.padding', 'semantic.space.surface.padding'],
+  ['semantic.space.layout.gutter', 'semantic.space.region.gutter'],
 ];
 
 // Files/paths (repo-relative, forward-slash) this codemod never touches:

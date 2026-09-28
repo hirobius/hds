@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-26T02:15:08.646Z
+Generated: 2026-09-28T00:15:51.088Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -50,7 +50,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 | Text/content colors | `semantic.color.content.primary`, `semantic.color.content.secondary` | `--semantic-color-content-primary`, `--semantic-color-content-secondary` |
 | Borders/dividers | `semantic.color.border.default`, `semantic.color.border.interactive` | `--semantic-color-border-default`, `--semantic-color-border-interactive` |
 | Feedback states | `semantic.color.feedback.error`, `semantic.color.feedback.success` | `--semantic-color-feedback-error`, `--semantic-color-feedback-success` |
-| Spacing (semantic tiers) | `semantic.space.scale.xs`, `semantic.space.subgrid.hairline`, `semantic.space.subgrid.xs` | use semantic tokens or `--hds-space-px12` style vars |
+| Spacing (semantic tiers) | `semantic.space.scale.xs`, `semantic.space.surface.padding`, `semantic.space.region.gutter` | use semantic tokens or `--hds-space-px12` style vars |
 | Radius | `semantic.radius.action` | `--semantic-radius-action` |
 | Motion | `semantic.motion.productive`, `semantic.motion.expressive`, `semantic.motion.exit` | use token refs; values are structured (duration/easing) |
 | Typography | `semantic.typography.body`, `semantic.typography.h2`, `semantic.typography.caption` | use token refs; values are structured (family/size/weight/etc) |
@@ -101,7 +101,7 @@ When building any card component or card-like surface, ALL of the following rule
 | Background | `var(--semantic-color-surface-raised)` | Custom colors, gradients, tinted fills, any non-token value |
 | Border | `1px solid var(--semantic-color-border-default)` | `box-shadow` as an elevation substitute |
 | Border radius | `var(--primitive-radius-8)` (8 px) | 12 px, 16 px, 20 px, `rounded-full`, or any other value |
-| Padding | `var(--semantic-space-component-padding)` or `<Surface padding="component">` | Raw pixel values, Tailwind spacing classes, ad hoc insets |
+| Padding | `var(--semantic-space-surface-padding)` or `<Surface padding="component">` | Raw pixel values, Tailwind spacing classes, ad hoc insets |
 | Shadow | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`. Never reach for shadow values directly — bind via `var(--semantic-elevation-{role}-shadow)` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title | `hds.typeStyles.heading3` / `<Text variant="heading3">` | Any other type style for the primary card heading |
 | Subtitle / meta | `hds.typeStyles.caption` / `<Text variant="caption">` + `var(--semantic-color-content-secondary)` | Primary color, body size, or custom color for secondary text |

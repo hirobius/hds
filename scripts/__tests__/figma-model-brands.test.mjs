@@ -219,6 +219,44 @@ describe('buildFigmaModel — Brand collection', () => {
     });
   });
 
+  it('resolves a tenant override that aliases a scale step down to its primitive (hds#206)', () => {
+    // Tenant spacing overrides alias the t-shirt scale (semantic.space.scale.*).
+    // Brand imports before Semantic, so a tenant mode aliasing a Semantic
+    // variable would be a forward alias the native import cannot keep; the
+    // Brand mode holds the primitive the scale step resolves to instead.
+    const raw = fixture();
+    raw.semantic.space.scale = {
+      xs: { $value: '{primitive.space.2}' },
+      sm: { $value: '{primitive.space.4}' },
+    };
+    const scaled = {
+      slug: 'scaled-demo',
+      overlay: {
+        semantic: {
+          space: {
+            $type: 'dimension',
+            component: {
+              gap: {
+                $value: '{semantic.space.scale.sm}',
+                $extensions: modes({ Compact: '{semantic.space.scale.xs}' }),
+              },
+            },
+          },
+        },
+      },
+    };
+    const m = buildFigmaModel(raw, { brands: brands(scaled) });
+    expect(variable(m, 'brand.semantic.space.component.gap.Comfortable').valuesByMode).toEqual({
+      Hirobius: { alias: 'primitive.space.2' },
+      'scaled-demo': { alias: 'primitive.space.4' },
+    });
+    expect(variable(m, 'brand.semantic.space.component.gap.Compact').valuesByMode).toEqual({
+      Hirobius: { alias: 'primitive.space.2' },
+      'scaled-demo': { alias: 'primitive.space.2' },
+    });
+    expect(validateFigmaModel(m)).toEqual([]);
+  });
+
   it('passes every invariant', () => {
     expect(validateFigmaModel(model)).toEqual([]);
   });

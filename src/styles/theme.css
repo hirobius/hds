@@ -61,7 +61,9 @@
 
   /* -- Responsive layout rhythm ----------------------------------------------- */
   /* Keep shell rhythm adaptive without pushing breakpoint logic into components. */
-  --semantic-space-layout-gutter: 32px;
+  /* hds#206: region.gutter steps on the t-shirt scale (lg 32px, sm 16px below 640px). */
+  /* The deprecated --semantic-space-layout-gutter follows via its tokens.css alias. */
+  --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-layout-gap: 24px;
   --semantic-space-section-stack: 80px;
   --semantic-space-section-inset: 128px;
@@ -230,7 +232,7 @@
 
 @media (max-width: 639px) {
   :root {
-    --semantic-space-layout-gutter: 16px;
+    --semantic-space-region-gutter: var(--semantic-space-scale-sm);
     --semantic-space-layout-gap: 16px;
     --semantic-space-section-stack: 48px;
     --semantic-space-section-inset: 64px;

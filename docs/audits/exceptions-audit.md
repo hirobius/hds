@@ -28,9 +28,9 @@
 | `src/app/components/code-block.tsx` | 7 | `eslint-disable*` | `jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation` | justified |
 | `src/app/components/code-block.tsx` | 25 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 30 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/code-block.tsx` | 35 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/code-block.tsx` | 35 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 40 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/code-block.tsx` | 43 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-padding/component-gap spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
+| `src/app/components/code-block.tsx` | 43 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- surface-padding/scale-xs spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 48 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- border-default token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 53 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- motion.productive.duration token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 67 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + radius-action + border-default/surface-raised tokens + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
@@ -53,7 +53,6 @@
 | `src/app/components/heading-stack.tsx` | 43 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic typography composite tokens (font-size/font-weight/line-height/letter-spacing) have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/history-card.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/inline-code.tsx` | 23 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- mono typography composite + subgrid/badge tokens have no named Tailwind utility; var()-based so still token-driven` | justified |
-| `src/app/components/lab/legacy-token-detail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/app/components/nav-group.tsx` | 33 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- --semantic-color-content-secondary has no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/nav-group.tsx` | 87 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/nav-item.tsx` | 36 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- --primitive-size-interactive-min a11y touch target + --semantic-color-* state tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
@@ -96,6 +95,7 @@
 | `src/app/context/__tests__/context.test.tsx` | 17 | `eslint-disable-next-line` | `@typescript-eslint/no-explicit-any` | justified |
 | `src/docs-tooling/doc-page-header.tsx` | 280 | `eslint-disable-next-line` | `react-hooks/refs -- `ref` is a string prop (git branch), not a React ref` | justified |
 | `src/docs-tooling/health-rail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
+| `src/docs-tooling/lab/legacy-token-detail.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/docs-tooling/preview-frame.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
 | `src/docs-tooling/shell-controls.tsx` | 151 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/stories/field.stories.tsx` | 141 | `eslint-disable-next-line` | `no-restricted-syntax -- story demo: a raw grid is the point of the layout showcase` | justified |

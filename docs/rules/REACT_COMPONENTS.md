@@ -32,13 +32,13 @@ Do not use `technical` for status tags, categories, dates, user names, or genera
 
 ## Spacing — 24px Component Padding Standard
 
-| Context                | Token               | Value | Role                                                               |
-| ---------------------- | ------------------- | ----- | ------------------------------------------------------------------ |
-| Shared surface padding | `component.padding` | 24px  | Default inset for cards, forms, panels, and other grouped surfaces |
-| Tight component gaps   | `component.gap`     | 8px   | Label↔input rhythm and closely coupled control spacing             |
-| Micro spacing          | `subgrid.gap`       | 4px   | Inline clusters, cap-height nudge, and tiny internal offsets       |
+| Context                | Token             | Value | Role                                                               |
+| ---------------------- | ----------------- | ----- | ------------------------------------------------------------------ |
+| Shared surface padding | `surface.padding` | 24px  | Default inset for cards, forms, panels, and other grouped surfaces |
+| Tight component gaps   | `scale.xs`        | 8px   | Label↔input rhythm and closely coupled control spacing             |
+| Micro spacing          | `subgrid.gap`     | 4px   | Inline clusters, cap-height nudge, and tiny internal offsets       |
 
-`component.padding` is the default inset for breathable shared surfaces. Use it for cards, forms, and panels; reserve `component.gap` for the 8px label/input rhythm and `subgrid.gap` for micro-spacing only.
+`surface.padding` is the default inset for breathable shared surfaces (tenants may retune it per brand and density; it replaces the deprecated `component.padding`, hds#206). Use it for cards, forms, and panels; reserve `scale.xs` (was `component.gap`) for the 8px label/input rhythm and `subgrid.gap` for micro-spacing only.
 
 ## Forbidden Patterns — Compositional Guardrails
 
@@ -96,7 +96,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 - Background: `var(--semantic-color-surface-raised)`. No custom colors, gradients, or tinted fills.
 - Border: `1px solid var(--semantic-color-border-default)` (resting cards only — `elevation.flat`). Never use `box-shadow` as an elevation substitute.
 - Border radius: `var(--primitive-radius-8)` (8px). Never 12px, 16px, 20px, `rounded-xl`, or `rounded-full`.
-- Padding: `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`. No raw pixel values.
+- Padding: `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`. No raw pixel values.
 - Shadow: none by default (`elevation.flat`). Lifted/interactive cards use `shadow.subtle` via `elevation.raised` — bind to the role token, never a raw box-shadow value.
 - Title: `hds.typeStyles.heading3` / `<Text variant="h3">`. No other type style for the primary card heading.
 - Subtitle / meta: `hds.typeStyles.caption` / `<Text variant="caption">` + `var(--semantic-color-content-secondary)`.
@@ -105,7 +105,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 ### Dialog
 
 - Modal and sheet surfaces must use `<HdsSurface>` for the background. Never hardcode `background-color`.
-- Internal padding: `var(--semantic-space-component-padding)` (`semantic.space.component.padding`). Pass `padding="component"` to `<HdsSurface>`.
+- Internal padding: `var(--semantic-space-surface-padding)` (`semantic.space.surface.padding`). Pass `padding="component"` to `<HdsSurface>`.
 - Elevation: bind to `semantic.elevation.overlay` role — `surface.overlay` background + `shadow.overlay` shadow. Never use raw shadow values; always bind via the role token.
 - Never apply `backdrop-filter: blur` on the dialog surface itself; blur is reserved for the scrim behind the dialog.
 

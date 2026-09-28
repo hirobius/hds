@@ -9,10 +9,10 @@
  *   rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md.
  */
 // motion-ok: token row interaction feedback is owned by the nested Token nodes, while the collection wrapper remains a static organizational scaffold
-import hds from '../../design-system/tokens';
-import { Stack } from '../stack';
-import { Token } from '../token';
-import { FlatToken } from '../tokenUtils';
+import hds from '../../app/design-system/tokens';
+import { Stack } from '../../app/components/stack';
+import { Token } from '../../app/components/token';
+import { FlatToken } from '../../app/components/tokenUtils';
 
 const collectionListStyles = {
   headerBase: {

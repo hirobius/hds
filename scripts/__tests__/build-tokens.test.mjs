@@ -992,6 +992,64 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     expect(densityBlock).not.toContain('--role-radius');
   });
 
+  it('re-anchors a $deprecated alias of an overridden leaf in the same block (hds#206)', () => {
+    // A deprecated alias declared on :root as var(--canonical) is computed at
+    // :root, so a tenant override of the canonical var on a descendant
+    // [data-brand] element would never reach consumers still reading the
+    // alias. The tenant block therefore redeclares the alias next to the
+    // override, in the base block and in the density block alike.
+    const base = structuredClone(SHAPE_DENSITY_BASE_RAW);
+    base.semantic.space.scale = {
+      xs: { $value: '{primitive.space.2}' },
+      sm: { $value: '{primitive.space.4}' },
+      md: { $value: '{primitive.space.6}' },
+    };
+    base.semantic.space.surface = { padding: { $value: '{semantic.space.scale.md}' } };
+    base.semantic.space.component = {
+      padding: { $value: '{semantic.space.surface.padding}', $deprecated: 'use surface.padding' },
+    };
+    base.semantic.space.unrelated = { $value: '{semantic.space.surface.padding}' };
+    const tenantsDir = writeTenantFixture('brutalist-demo', {
+      semantic: {
+        space: {
+          surface: {
+            padding: {
+              $type: 'dimension',
+              $value: '{semantic.space.scale.sm}',
+              $extensions: {
+                'com.figma.variables': { modes: { Compact: '{semantic.space.scale.xs}' } },
+              },
+            },
+          },
+        },
+      },
+    });
+    const { css, errors } = buildTenantCSS(tenantsDir, base);
+    expect(errors).toHaveLength(0);
+
+    const baseBlock = css.slice(
+      css.indexOf('[data-brand="brutalist-demo"],'),
+      css.indexOf('[data-brand="brutalist-demo"][data-density="compact"]'),
+    );
+    expect(baseBlock).toContain(
+      '--semantic-space-surface-padding: var(--semantic-space-scale-sm);',
+    );
+    expect(baseBlock).toContain(
+      '--semantic-space-component-padding: var(--semantic-space-surface-padding);',
+    );
+    const densityBlock = css.slice(
+      css.indexOf('[data-brand="brutalist-demo"][data-density="compact"]'),
+    );
+    expect(densityBlock).toContain(
+      '--semantic-space-surface-padding: var(--semantic-space-scale-xs);',
+    );
+    expect(densityBlock).toContain(
+      '--semantic-space-component-padding: var(--semantic-space-surface-padding);',
+    );
+    // Only $deprecated aliases are re-anchored; ordinary dependents are not.
+    expect(css).not.toContain('--semantic-space-unrelated');
+  });
+
   it('keeps the header comment closed until its own terminator, so the first tenant rule stays valid CSS', () => {
     const tenantsDir = writeTenantFixture('brutalist-demo', {
       role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },

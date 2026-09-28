@@ -19,7 +19,14 @@ import { readModes, modeValue } from './token-modes.mjs';
 // ── Token graph ──────────────────────────────────────────────────────────────
 // build-tokens.mjs exports the same walker, but importing it reads
 // public/hds-manifest.json at module load, which would make this module impure.
-const DTCG_KEYS = new Set(['$type', '$value', '$description', '$extensions', '$schema']);
+const DTCG_KEYS = new Set([
+  '$type',
+  '$value',
+  '$description',
+  '$extensions',
+  '$schema',
+  '$deprecated',
+]);
 
 function* walkTokens(node, path = [], inheritedType = null) {
   if (!node || typeof node !== 'object') return;
@@ -645,6 +652,27 @@ function variantRef(source, variant) {
   return restValue(source);
 }
 
+/**
+ * A tenant mode's reference, followed down to the primitive it rests on.
+ * Tenant spacing overrides alias the t-shirt scale (hds#206), but Brand
+ * imports before Semantic, so a tenant mode aliasing a Semantic variable
+ * would be a forward alias the native import cannot keep. Stops at a
+ * primitive, a raw value, or a token with its own Light/Dark/Compact modes.
+ */
+function tenantRef(graph, ref) {
+  const seen = new Set();
+  let current = ref;
+  while (isAlias(current)) {
+    const target = aliasPath(current);
+    if (target.startsWith('primitive.') || seen.has(target)) break;
+    seen.add(target);
+    const token = graph.byPath.get(target);
+    if (!token || readModes(token.extensions)) break;
+    current = token.value;
+  }
+  return current;
+}
+
 const collectionNameOf = (key) =>
   [...TIERS, BRAND_COLLECTION, DENSITY_COLLECTION].find((c) => c.key === key).name;
 
@@ -752,7 +780,9 @@ function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
         valuesByMode: Object.fromEntries(
           brandModes.map((mode) => {
             const source = bySlug.get(mode) ?? base;
-            return [mode, modeEntry(graph, variantRef(source, variant), base.type)];
+            const ref = variantRef(source, variant);
+            const tenantOwned = mode !== brands.baseMode && bySlug.has(mode);
+            return [mode, modeEntry(graph, tenantOwned ? tenantRef(graph, ref) : ref, base.type)];
           }),
         ),
       });

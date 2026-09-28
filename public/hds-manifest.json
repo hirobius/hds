@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-26T04:21:54.652Z",
+  "generated": "2026-09-28T00:14:31.544Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -576,17 +576,13 @@
     "uncategorized": [
       {
         "name": "HdsLegacyTokenGovernancePanel",
-        "filePath": "src/app/components/lab/legacy-token-detail.tsx"
+        "filePath": "src/docs-tooling/lab/legacy-token-detail.tsx"
       }
     ],
     "namespaceViolations": [
       {
         "name": "HdsCheckbox",
         "filePath": "src/app/components/checkbox.tsx"
-      },
-      {
-        "name": "HdsLegacyTokenGovernancePanel",
-        "filePath": "src/app/components/lab/legacy-token-detail.tsx"
       },
       {
         "name": "HdsRadio",
@@ -905,7 +901,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/lab/legacy-token-detail.tsx",
+        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/index.ts",
         "src/stories/code-block.stories.tsx"
       ],
@@ -1717,7 +1713,6 @@
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/inline-link.tsx",
-        "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
@@ -1727,6 +1722,7 @@
         "src/app/components/tokenTableUtils.ts",
         "src/app/components/tokenUtils.ts",
         "src/app/data/hdsEditorial.tsx",
+        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/docs-tooling/shell-controls.tsx",
         "src/docs-tooling/theme-toggle.tsx",
         "src/stories/activity-feed.stories.tsx",
@@ -2075,7 +2071,7 @@
       "consumers": [
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/lab/legacy-token-detail.tsx",
+        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/stories/inline-link.stories.tsx"
       ],
       "tokenMapping": {
@@ -2795,7 +2791,6 @@
         "src/app/components/grid.tsx",
         "src/app/components/heading-stack.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/lab/token-collection-list.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/components/page.tsx",
         "src/app/components/sketch.tsx",
@@ -2805,6 +2800,7 @@
         "src/app/layouts/DocLayout.tsx",
         "src/docs-tooling/controls-panel.tsx",
         "src/docs-tooling/doc-page-header.tsx",
+        "src/docs-tooling/lab/token-collection-list.tsx",
         "src/docs-tooling/shell-controls.tsx",
         "src/docs-tooling/sketch-controls.tsx",
         "src/stories/box.stories.tsx",
@@ -3353,15 +3349,15 @@
         "src/app/components/box.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/foundation-swatch.tsx",
-        "src/app/components/lab/legacy-token-detail.tsx",
-        "src/app/components/lab/legacy-token-list.tsx",
-        "src/app/components/lab/token-collection-list.tsx",
         "src/app/components/side-nav.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/lib/hds-search.ts",
         "src/app/stores/mobiusStore.ts",
         "src/docs-tooling/health-rail.tsx",
+        "src/docs-tooling/lab/legacy-token-detail.tsx",
+        "src/docs-tooling/lab/legacy-token-list.tsx",
+        "src/docs-tooling/lab/token-collection-list.tsx",
         "src/docs-tooling/TokenDisplayToggle.tsx",
         "src/index.ts",
         "src/stories/activity-feed.stories.tsx",
@@ -3525,7 +3521,6 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
-        "src/app/components/lab/token-list.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/sketch.tsx",
         "src/app/components/slider.tsx",
@@ -3541,6 +3536,7 @@
         "src/docs-tooling/component-preview.tsx",
         "src/docs-tooling/controls-panel.tsx",
         "src/docs-tooling/doc-page-header.tsx",
+        "src/docs-tooling/lab/token-list.tsx",
         "src/docs-tooling/preview-frame.tsx",
         "src/docs-tooling/shell-controls.tsx",
         "src/docs-tooling/sketch-controls.tsx",
@@ -4868,7 +4864,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/lab/legacy-token-detail.tsx",
+        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/stories/empty-state.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
@@ -5405,9 +5401,9 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/lab/legacy-token-detail.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/mui/index.ts",
         "src/stories/badge.stories.tsx",
         "src/stories/code-block.stories.tsx",
@@ -11384,7 +11380,7 @@
       "categorySource": "missing-jsdoc",
       "governedCategory": false,
       "hidden": false,
-      "filePath": "src/app/components/lab/legacy-token-detail.tsx",
+      "filePath": "src/docs-tooling/lab/legacy-token-detail.tsx",
       "description": "LegacyTokenDetail - lab-facing token inspection panels used to maintain legacy token views.",
       "figmaUrl": null,
       "figmaId": null,
@@ -11429,7 +11425,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
-      "filePath": "src/app/components/lab/legacy-token-list.tsx",
+      "filePath": "src/docs-tooling/lab/legacy-token-list.tsx",
       "description": "LegacyTokenList - legacy token grouping list retained for lab-side maintenance workflows. architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md.",
       "figmaUrl": null,
       "figmaId": null,
@@ -11473,7 +11469,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
-      "filePath": "src/app/components/lab/token-collection-list.tsx",
+      "filePath": "src/docs-tooling/lab/token-collection-list.tsx",
       "description": "TokenCollectionList - grouped token inventory list for lab and explorer maintenance. architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md.",
       "figmaUrl": null,
       "figmaId": null,
@@ -11482,7 +11478,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/lab/legacy-token-list.tsx"
+        "src/docs-tooling/lab/legacy-token-list.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -11513,7 +11509,7 @@
       "categorySource": "missing-jsdoc",
       "governedCategory": false,
       "hidden": false,
-      "filePath": "src/app/components/lab/token-list.tsx",
+      "filePath": "src/docs-tooling/lab/token-list.tsx",
       "description": "TokenList - searchable token rail for interactive lab-side token inspection.",
       "figmaUrl": null,
       "figmaId": null,
@@ -13260,7 +13256,7 @@
         "path": "semantic.space.scale.md",
         "cssVar": "--semantic-space-scale-md",
         "type": "dimension",
-        "description": "24px — same value as layout.normal / layout.gutter / component.padding (deprecated aliases; hds#206 de-aliases this triplet down to this one canonical token).",
+        "description": "24px — same value as layout.normal (deprecated alias). Default of the overridable roles surface.padding and region.gutter, which replace the deprecated component.padding / layout.gutter.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -13279,6 +13275,22 @@
         "description": "48px — same value as layout.spacious (deprecated alias).",
         "alias": "{primitive.space.12}",
         "resolvedValue": "48px"
+      },
+      {
+        "path": "semantic.space.surface.padding",
+        "cssVar": "--semantic-space-surface-padding",
+        "type": "dimension",
+        "description": "24px (scale.md) default inset for cards, forms, panels, and grouped surfaces. Tenants override it with another scale step (tenants/*/tokens.json, incl. a Compact density mode). Replaces the deprecated semantic.space.component.padding.",
+        "alias": "{semantic.space.scale.md}",
+        "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.space.region.gutter",
+        "cssVar": "--semantic-space-region-gutter",
+        "type": "dimension",
+        "description": "24px (scale.md) column and region gutters. theme.css sets it responsively to scale.lg (32px) and, below 640px, scale.sm (16px). Replaces the deprecated semantic.space.layout.gutter.",
+        "alias": "{semantic.space.scale.md}",
+        "resolvedValue": "24px"
       },
       {
         "path": "semantic.space.subgrid.hairline",
@@ -13324,8 +13336,8 @@
         "path": "semantic.space.component.padding",
         "cssVar": "--semantic-space-component-padding",
         "type": "dimension",
-        "description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
-        "alias": "{primitive.space.6}",
+        "description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.surface.padding (tenant/density-overridable); kept live, no removal yet.",
+        "alias": "{semantic.space.surface.padding}",
         "resolvedValue": "24px"
       },
       {
@@ -13348,8 +13360,8 @@
         "path": "semantic.space.layout.gutter",
         "cssVar": "--semantic-space-layout-gutter",
         "type": "dimension",
-        "description": "24px column and region gutters (alias for layout.normal). DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
-        "alias": "{primitive.space.6}",
+        "description": "24px column and region gutters. DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
+        "alias": "{semantic.space.region.gutter}",
         "resolvedValue": "24px"
       },
       {

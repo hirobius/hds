@@ -12,8 +12,8 @@
  */
 
 import hds from '../app/design-system/tokens';
-import { HdsLegacyTokenGovernancePanel } from '../app/components/lab/legacy-token-detail';
 import { allTokens } from '../app/components/tokenUtils';
+import { HdsLegacyTokenGovernancePanel } from './lab/legacy-token-detail';
 
 // --- Constants --------------------------------------------------------------
 

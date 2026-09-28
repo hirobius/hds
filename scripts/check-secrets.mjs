@@ -17,6 +17,10 @@
  *
  * Exit codes match gitleaks: 0 = clean, 1 = leaks found, other = error.
  *
+ * Missing binary (hds#263): locally the gate skips (exit 0, or the exit-78
+ * sentinel in fixture mode). When `process.env.CI` is set it HARD-FAILS
+ * (exit 2) instead — CI is the one place the scan must never silently skip.
+ *
  * Usage: pnpm check:secrets
  */
 
@@ -38,6 +42,17 @@ const configArgs = existsSync(CONFIG) ? ['--config', CONFIG] : [];
 // code so validate-fixture-proof-of-firing maps it to skipped:true rather than
 // misreading the tool error as "the passing fixture tripped the gate".
 const SKIP_EXIT_CODE = 78;
+
+// CI detection: any non-empty CI value except the explicit falsy spellings.
+const ciValue = (process.env.CI ?? '').trim().toLowerCase();
+const inCI = ciValue !== '' && ciValue !== 'false' && ciValue !== '0';
+
+const GITLEAKS_MISSING_IN_CI_MESSAGE =
+  'check-secrets: CI is set but the gitleaks binary is not on PATH — the secrets scan cannot run, ' +
+  'and CI must not skip it (hds#263). Install gitleaks in the CI job before this step: add ' +
+  '`uses: gitleaks/gitleaks-action@v2`, or download a release binary from ' +
+  'https://github.com/gitleaks/gitleaks/releases (e.g. gitleaks_<ver>_linux_x64.tar.gz) onto PATH. ' +
+  'Locally: `brew install gitleaks` or the same release download.';
 
 let result = { violations: [], summary: { mode: '' }, ok: true };
 
@@ -68,9 +83,27 @@ try {
   // Degrade gracefully instead of erroring out:
   //   - fixture mode: emit the SKIP sentinel so proof-of-firing skips this gate.
   //   - staged mode:  warn but exit 0 — a missing optional scanner must never
-  //     block a commit/CI run on its own.
+  //     block a local commit on its own.
+  //   - CI (either mode): hard-fail — the skip must never cover CI (hds#263).
   if (err?.code === 'ENOENT') {
-    if (tempFixturePath) { try { unlinkSync(tempFixturePath); } catch {} }
+    if (tempFixturePath) {
+      try {
+        unlinkSync(tempFixturePath);
+      } catch {}
+    }
+    if (inCI) {
+      console.error(GITLEAKS_MISSING_IN_CI_MESSAGE);
+      result.ok = false;
+      result.violations.push({
+        file: '*',
+        line: null,
+        rule: 'GITLEAKS_MISSING_IN_CI',
+        severity: 'error',
+        message: GITLEAKS_MISSING_IN_CI_MESSAGE,
+      });
+      emitResult(result, jsonMode);
+      process.exit(2);
+    }
     result.ok = true;
     result.summary.skipped = true;
     result.summary.skipReason = 'gitleaks binary not installed';
@@ -108,11 +141,19 @@ try {
     });
     result.ok = false;
   }
-  if (tempFixturePath) { try { unlinkSync(tempFixturePath); } catch {} }
+  if (tempFixturePath) {
+    try {
+      unlinkSync(tempFixturePath);
+    } catch {}
+  }
   emitResult(result, jsonMode);
   process.exit(code === 1 ? 1 : code);
 }
 
-if (tempFixturePath) { try { unlinkSync(tempFixturePath); } catch {} }
+if (tempFixturePath) {
+  try {
+    unlinkSync(tempFixturePath);
+  } catch {}
+}
 emitResult(result, jsonMode);
 process.exit(0);

@@ -38,6 +38,21 @@ const tenantDirs = readdirSync(join(ROOT, 'tenants'), { withFileTypes: true })
   .map((entry) => entry.name);
 const unlisted = tenantDirs.filter((slug) => !config.tenants.includes(slug));
 
+/**
+ * A tenant alias into a non-primitive (a scale step, hds#206) lands on the
+ * primitive it rests on: Brand imports before Semantic, so a tenant mode
+ * cannot keep a forward alias.
+ */
+const restingAlias = (ref) => {
+  let target = ref.slice(1, -1);
+  while (!target.startsWith('primitive.')) {
+    const token = target.split('.').reduce((node, key) => node?.[key], raw);
+    if (typeof token?.$value !== 'string' || !token.$value.startsWith('{')) break;
+    target = token.$value.slice(1, -1);
+  }
+  return target;
+};
+
 const leavesOf = (overlay) => {
   const leaves = [];
   (function walk(node, path) {
@@ -92,7 +107,7 @@ describe(`${BRAND_MODES_FILE}`, () => {
               : (leaf.modes.Light ?? leaf.value);
           const entry = v.valuesByMode[slug];
           if (typeof ref === 'string' && ref.startsWith('{')) {
-            expect(entry, v.path).toEqual({ alias: ref.slice(1, -1) });
+            expect(entry, v.path).toEqual({ alias: restingAlias(ref) });
           } else if (ref?.unit === 'px') {
             expect(entry, v.path).toEqual({ value: ref.value });
           } else {

@@ -312,6 +312,12 @@ export const tokenRefs = {
         lg: "var(--semantic-space-scale-lg)",
         xl: "var(--semantic-space-scale-xl)"
       },
+      surface: {
+        padding: "var(--semantic-space-surface-padding)"
+      },
+      region: {
+        gutter: "var(--semantic-space-region-gutter)"
+      },
       subgrid: {
         hairline: "var(--semantic-space-subgrid-hairline)",
         xs: "var(--semantic-space-subgrid-xs)",
