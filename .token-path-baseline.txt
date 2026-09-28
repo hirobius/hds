@@ -13,7 +13,7 @@ src/docs-tooling/health-rail.tsx:semantic.space.layout.gap
 src/app/components/history-card.tsx:semantic.space.layout.gap
 src/app/components/image-lightbox.tsx:semantic.space.layout.gap
 src/app/components/info-page.tsx:semantic.space.layout.gap
-src/app/components/lab/token-list.tsx:semantic.space.layout.gap
+src/docs-tooling/lab/token-list.tsx:semantic.space.layout.gap
 src/app/components/segmented-control.tsx:semantic.space.layout.gap
 src/app/data/component-api.json:primitive.space.px12
 src/app/data/component-api.json:primitive.space.px24

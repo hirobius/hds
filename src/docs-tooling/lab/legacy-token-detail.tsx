@@ -13,12 +13,12 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Fragment, useMemo } from 'react';
 import { ArrowUp, Search } from 'lucide-react';
-import { Icon } from '../icon';
-import hds from '../../design-system/tokens';
-import { useHdsMotion } from '../../hooks/useHdsMotion';
-import { CodeBlock } from '../code-block';
-import { InlineLink } from '../inline-link';
-import { Token } from '../token';
+import { Icon } from '../../app/components/icon';
+import hds from '../../app/design-system/tokens';
+import { useHdsMotion } from '../../app/hooks/useHdsMotion';
+import { CodeBlock } from '../../app/components/code-block';
+import { InlineLink } from '../../app/components/inline-link';
+import { Token } from '../../app/components/token';
 
 const legacyTokenDetailStyles = {
   provenanceArrow: {
@@ -63,14 +63,14 @@ const legacyTokenDetailStyles = {
     rowGap: hds.semantic.space.subgrid.gap,
   } satisfies React.CSSProperties,
 } as const;
-import { Badge } from '../badge';
-import tokenAuditReport from '../../data/token-audit-report.json';
+import { Badge } from '../../app/components/badge';
+import tokenAuditReport from '../../app/data/token-audit-report.json';
 import {
   convertCssColorToHex,
   contrastRatio,
   buildWebAimContrastHref,
-} from '../../utils/colorUtils';
-import type { TokenAuditReport, UsageEntry } from '../../data/tokenAuditReportTypes';
+} from '../../app/utils/colorUtils';
+import type { TokenAuditReport, UsageEntry } from '../../app/data/tokenAuditReportTypes';
 import {
   FlatToken,
   formatCategoryLabel,
@@ -78,7 +78,7 @@ import {
   resolveAlias,
   resolveTokenLiteralValue,
   allTokens,
-} from '../tokenUtils';
+} from '../../app/components/tokenUtils';
 
 type ThemeMode = 'light' | 'dark';
 

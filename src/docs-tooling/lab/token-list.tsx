@@ -11,15 +11,15 @@
  *   inspector UI". Pruning deferred until /hds/tokens is retired or
  *   rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md.
  */
-import hds from '../../design-system/tokens';
-import { Surface } from '../surface';
+import hds from '../../app/design-system/tokens';
+import { Surface } from '../../app/components/surface';
 import {
   FlatToken,
   formatCategoryLabel,
   formatTokenValue,
   groupByCategory,
   resolveTokenLiteralValue,
-} from '../tokenUtils';
+} from '../../app/components/tokenUtils';
 
 const tokenListStyles = {
   valueBadge: {
