@@ -213,12 +213,12 @@ value, in addition to the base `[data-brand="X"]` block carrying the
   },
   "semantic": {
     "space": {
-      "component": {
+      "surface": {
         "padding": {
           "$type": "dimension",
-          "$value": "{primitive.space.4}",
+          "$value": "{semantic.space.scale.sm}",
           "$extensions": {
-            "com.figma.variables": { "modes": { "Compact": "{primitive.space.2}" } }
+            "com.figma.variables": { "modes": { "Compact": "{semantic.space.scale.xs}" } }
           }
         }
       }
@@ -232,12 +232,22 @@ compiles to:
 ```css
 [data-brand='brutalist-demo'] {
   --role-radius: 0px;
-  --semantic-space-component-padding: var(--primitive-space-4);
+  --semantic-space-surface-padding: var(--semantic-space-scale-sm);
+  --semantic-space-component-padding: var(--semantic-space-surface-padding);
 }
 [data-brand='brutalist-demo'][data-density='compact'] {
-  --semantic-space-component-padding: var(--primitive-space-2);
+  --semantic-space-surface-padding: var(--semantic-space-scale-xs);
+  --semantic-space-component-padding: var(--semantic-space-surface-padding);
 }
 ```
+
+Spacing overrides use a step of the t-shirt scale (`semantic.space.scale.*`),
+not a primitive (hds#206). The second line in each block is a **re-anchored
+deprecated alias**: any base token marked `$deprecated` whose `$value` is
+exactly the overridden path is redeclared next to the override. A custom
+property is computed where it is declared, so without this the `:root`
+alias would never see an override set on a descendant `[data-brand]`
+element, and consumers still reading `component.padding` would lose it.
 
 Density and theme combine with brand **independently** — there is no
 `[data-brand][data-theme][data-density]` triple-combo block. `role.radius`

@@ -24,7 +24,7 @@
   "status": "scaffold",
   "_notes": [
     "Exemplar tenant proving the per-tenant shape+density overlay axis from ADR-022 (#128, epic #124). Not a real client — Storybook/Chromatic exemplar only, no deployment.",
-    "Overrides role.radius (0, density-invariant) and semantic.space.component.padding (16px comfortable baseline, 8px under [data-density=\"compact\"] via the Compact figma-variables mode).",
+    "Overrides role.radius (0, density-invariant) and semantic.space.surface.padding (16px / scale.sm comfortable baseline, 8px / scale.xs under [data-density=\"compact\"] via the Compact figma-variables mode).",
     "Wired into .storybook/preview.tsx's BRANDS list (#126 modes matrix) so every component already exercising MODES gets brutalist-demo coverage automatically."
   ]
 }

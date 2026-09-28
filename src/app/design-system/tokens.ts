@@ -152,26 +152,32 @@ const hds = {
         lg: 'var(--semantic-space-scale-lg)',
         xl: 'var(--semantic-space-scale-xl)',
       },
+      // hds#206 slice 3 — the overridable roles. Default scale.md (24px);
+      // tenants.css overrides surface.padding per brand/density and theme.css
+      // sets region.gutter responsively (scale.lg / scale.sm).
+      surface: {
+        padding: 'var(--semantic-space-surface-padding)',
+      },
+      region: {
+        gutter: 'var(--semantic-space-region-gutter)',
+      },
       subgrid: {
         gap: 'var(--semantic-space-subgrid-gap)',
         hairline: 'var(--semantic-space-subgrid-hairline)',
         xs: 'var(--semantic-space-subgrid-xs)',
       },
       component: {
-        // kept on the alias var, not scale.md: tenants.css overrides
-        // --semantic-space-component-padding per-tenant/density (brutalist-demo);
-        // scale-md is a fixed 24px with no such override (hds#206 review).
-        padding: 'var(--semantic-space-component-padding)',
+        /** @deprecated hds#206 — use `semantic.space.surface.padding`. */
+        padding: 'var(--semantic-space-surface-padding)',
+        /** @deprecated hds#206 — use `semantic.space.scale.xs`. */
         gap: 'var(--semantic-space-scale-xs)',
       },
       stack: {
         gap: 'var(--semantic-space-section-stack)',
       },
       layout: {
-        // kept on the alias var, not scale.md: theme.css overrides
-        // --semantic-space-layout-gutter (32px desktop / 16px <639px) while
-        // scale-md is a fixed 24px (hds#206 review).
-        gutter: 'var(--semantic-space-layout-gutter)',
+        /** @deprecated hds#206 — use `semantic.space.region.gutter`. */
+        gutter: 'var(--semantic-space-region-gutter)',
         gap: 'var(--semantic-space-layout-gap)',
         section: 'var(--semantic-layout-section-paddingY)',
       },

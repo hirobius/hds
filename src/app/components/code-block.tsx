@@ -32,17 +32,17 @@ const inlineWrapperVariants = cva(
   'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
 const blockHeaderVariants = cva(
-  'flex items-center justify-between border-b border-solid border-[var(--semantic-color-border-default)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-component-padding)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex items-center justify-between border-b border-solid border-[var(--semantic-color-border-default)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-surface-padding)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
 const headerGroupVariants = cva('flex items-center gap-[var(--semantic-space-scale-xs)]');
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-padding/component-gap spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/scale-xs spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven
 const collapsibleToggleVariants = cva(
-  `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-component-padding)] py-[var(--semantic-space-scale-xs)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
+  `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-surface-padding)] py-[var(--semantic-space-scale-xs)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default token has no matching Tailwind-theme utility; var()-based so still token-driven

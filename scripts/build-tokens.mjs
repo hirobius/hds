@@ -161,7 +161,14 @@ export function valueToCSS(val, type, preserveAlias, root = null) {
 }
 
 // ── Tree walker ──────────────────────────────────────────────────────────────
-export const DTCG_KEYS = new Set(['$type', '$value', '$description', '$extensions', '$schema']);
+export const DTCG_KEYS = new Set([
+  '$type',
+  '$value',
+  '$description',
+  '$extensions',
+  '$schema',
+  '$deprecated',
+]);
 
 /**
  * Generator: walks the token tree yielding leaf token descriptors.
@@ -177,6 +184,7 @@ export function* walkTokens(node, path = [], inheritedType = null) {
       value: node.$value,
       extensions: node.$extensions,
       description: node.$description,
+      deprecated: node.$deprecated,
     };
     return;
   }
@@ -1512,6 +1520,36 @@ export function validateTenantOverlay(overlay, baseRaw, slug) {
   return errors;
 }
 
+// ── Deprecated-alias index ─────────────────────────────────────────────────────
+/**
+ * Maps each canonical token path to the CSS vars of its `$deprecated` aliases
+ * (base leaves whose `$value` is exactly `{canonical.path}`), e.g.
+ * `semantic.space.surface.padding` → [`--semantic-space-component-padding`].
+ *
+ * Why: tokens.css declares an alias on :root as `var(--canonical)`, and a
+ * custom property is computed where it is declared. A tenant overlay that
+ * overrides the canonical var on a descendant `[data-brand]` element (the
+ * Storybook decorator does exactly that) would therefore never reach a
+ * consumer still reading the deprecated alias. buildTenantCSS redeclares
+ * each such alias beside the override so renaming a token (hds#206) keeps
+ * every computed value the same until the alias is removed.
+ *
+ * @param {object} baseRaw - Parsed hirobius.tokens.json
+ * @returns {Map<string, string[]>}
+ */
+export function indexDeprecatedAliases(baseRaw) {
+  const index = new Map();
+  for (const { path, value, deprecated } of walkTokens(baseRaw)) {
+    if (!deprecated || typeof value !== 'string') continue;
+    const m = /^\{([^}]+)\}$/.exec(value);
+    if (!m) continue;
+    const list = index.get(m[1]) ?? [];
+    list.push(pathToCSSVar(path));
+    index.set(m[1], list);
+  }
+  return index;
+}
+
 // ── Per-tenant CSS emitter ─────────────────────────────────────────────────────
 /**
  * Walks tenants/* (skipping _template and any dir without tokens.json),
@@ -1536,6 +1574,7 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
   const allErrors = [];
   const processedSlugs = [];
   const blocks = [];
+  const deprecatedAliases = indexDeprecatedAliases(baseRaw);
 
   let slugDirs;
   try {
@@ -1581,6 +1620,15 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
 
     for (const { path, type, value, extensions } of walkTokens(overlay)) {
       const cssVar = pathToCSSVar(path);
+      const aliasVars = deprecatedAliases.get(path.join('.')) ?? [];
+      /** Redeclares this leaf's $deprecated aliases next to its override (hds#206). */
+      const reanchor = (list) => {
+        for (const aliasVar of aliasVars) {
+          list.push(
+            `  ${aliasVar}: var(${cssVar}); /* deprecated alias re-anchored to the override (hds#206) */`,
+          );
+        }
+      };
 
       // Composite types (typography, transition, motion, elevation) require
       // the full base context for expansion. Skip atomic-string passthrough
@@ -1616,29 +1664,35 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
       // primitive concrete value lives (see ADR-0001 multi-tenant scope).
       if (lightVal != null) {
         const cssValue = valueToCSS(lightVal, type, /* preserveAlias */ true, baseRaw);
-        if (cssValue != null)
+        if (cssValue != null) {
           lightVars.push(
             `  ${cssVar}: ${cssValue}; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */`,
           );
+          reanchor(lightVars);
+        }
       }
 
       // Emit dark value only when it differs from light
       if (darkVal != null && darkVal !== lightVal) {
         const cssValue = valueToCSS(darkVal, type, /* preserveAlias */ true, baseRaw);
-        if (cssValue != null)
+        if (cssValue != null) {
           darkVars.push(
             `  ${cssVar}: ${cssValue}; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */`,
           );
+          reanchor(darkVars);
+        }
       }
 
       // Emit compact-density value only when it differs from the rest value
       // (ADR-022 — shape/density overlay axis).
       if (compactVal != null && compactVal !== lightVal) {
         const cssValue = valueToCSS(compactVal, type, /* preserveAlias */ true, baseRaw);
-        if (cssValue != null)
+        if (cssValue != null) {
           densityVars.push(
             `  ${cssVar}: ${cssValue}; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */`,
           );
+          reanchor(densityVars);
+        }
       }
     }
 
