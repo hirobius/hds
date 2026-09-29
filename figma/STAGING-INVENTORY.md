@@ -70,6 +70,17 @@ the measurement, not drift.
 
 Drawn earlier, same status: **[Icon](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=27-2)** (70 components) and **[StatusDot](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2003-2)** (1 set).
 
+## States added to library sets (2026-09-29)
+
+These sets already exist in the library; an agent added variants to the staging
+copy. Promote by copying the new variants into the library set. The set's
+`@figma` tag already points at the library, so no tag changes.
+
+| Component | States added | New variants | Variants now | Set node |
+|---|---|---|---|---|
+| [Button](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=28-138) | Focus, Pressed | 42 | 126 | `28-138` |
+| [IconButton](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=40-39) | Hover, Focus, Pressed, Disabled | 36 | 45 | `40-39` |
+
 ## Verification gap, stated plainly
 
 Nothing here can currently self-verify. Confirming these node ids against the

@@ -69,6 +69,14 @@ published library is read-only to agents. Adrian promotes staging by hand.
 - **Reading `fills[0].color` does not resolve the active mode.** It returns the
   baked colour, so it cannot be used to prove a binding is live. Resolve
   `variable.valuesByMode` and follow the aliases instead.
+- **A focus ring is two zero-blur spread shadows, and it needs a fill.**
+  Tailwind's `ring-2 ring-offset-2` is a 2px offset shadow over a 4px ring
+  shadow; in Figma the offset shadow goes last in `effects` so it paints on
+  top. A frame with no fill casts no spread shadow at all, and a 0% fill does
+  not fix it, so a transparent variant (Tertiary) needs a real fill in its
+  Focus state. Found drawing Button Focus/Pressed (hds#317).
+- **A review sheet of instances clips the ring** unless every auto-layout row
+  has `clipsContent = false`; the set itself keeps its 16px padding clear.
 
 ## Promotion (Adrian, by hand)
 
