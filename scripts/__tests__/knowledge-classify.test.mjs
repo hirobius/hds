@@ -28,14 +28,23 @@ afterEach(() => {
 });
 
 describe('classify against the checked-in example rules', () => {
+  // Explicit example load: must not depend on a developer's local file.
+  const exampleRules = loadClientRules({
+    localFile: join(tmpdir(), 'kc-absent-local-file.json'),
+    exampleFile: CLIENT_RULES_EXAMPLE_FILE,
+  });
+
   it('detects a placeholder client and tags it', () => {
-    const r = classify({ title: 'Kickoff', text: 'Acme Widgets scope notes' });
+    const r = classify(
+      { title: 'Kickoff', text: 'Acme Widgets scope notes' },
+      { clientRules: exampleRules },
+    );
     expect(r.client).toBe('client-a');
     expect(r.tags).toContain('client:client-a');
   });
 
   it('returns null client and still scores pillars when nothing matches', () => {
-    const r = classify({ text: 'design tokens and storybook' });
+    const r = classify({ text: 'design tokens and storybook' }, { clientRules: exampleRules });
     expect(r.client).toBeNull();
     expect(r.pillar).toBe('build');
   });

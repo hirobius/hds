@@ -142,7 +142,14 @@ export function loadClientRules({
 // Read once per process, on first use, not per classify() call.
 let defaultClientRules;
 function getDefaultClientRules() {
-  defaultClientRules ??= loadClientRules();
+  if (!defaultClientRules) {
+    if (!existsSync(CLIENT_RULES_FILE)) {
+      console.warn(
+        'knowledge-classify: knowledge-clients.local.json not found; using placeholder rules, real clients will not be quarantined.',
+      );
+    }
+    defaultClientRules = loadClientRules();
+  }
   return defaultClientRules;
 }
 
