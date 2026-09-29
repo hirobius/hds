@@ -132,6 +132,8 @@ may skip:
 - **Design-touching / new module → `/codebase-design`**; periodic design-debt
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
+- **Charting a multi-decision lane → `/wayfinder`.**
+- **Spec before implement-spec → `/to-spec`.**
 
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
