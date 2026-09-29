@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-29T20:34:50.000Z",
+  "updatedAt": "2026-09-29T22:42:10.059Z",
   "phase": "active",
   "headline": "hds#315 QUICK CREDIBILITY (2026-09-29): strict TypeScript on (5 errors fixed, no any or non-null assertions); Toggle/Checkbox/Radio/Slider/Select/Tooltip exported under bare names with Hds* kept as @deprecated aliases (hds#254); pre-push runs pnpm test; Button-only root import budgeted at 113.01 kB gzip against a 119 kB limit (scripts/build-button-probe.mjs). typecheck, lint, full test suite, smoke:consumer, check:size green. API baseline refreshed (pnpm api:update). Not pushed to main; PR open for review.",
   "next": [
