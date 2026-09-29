@@ -88,6 +88,7 @@ describe('buildCountsSection', () => {
     expect(section).toContain('**108** public component modules');
     expect(section).toContain('**361** DTCG tokens');
     expect(section).toContain('**442** Storybook stories in **112** story files');
+    expect(section).not.toMatch(/chromatic/i);
     expect(readClaims(readmeWith(section))).toEqual(COUNTS);
   });
 });
@@ -99,7 +100,7 @@ describe('replaceCountsBlock', () => {
     expect(after).toContain(
       `<!-- auto:start:${COUNTS_BLOCK} -->\n\n- **108** public component modules`,
     );
-    expect(after).toMatch(new RegExp(`Chromatic\\n\\n<!-- auto:end:${COUNTS_BLOCK} -->`));
+    expect(after).toMatch(new RegExp(`story files\\n\\n<!-- auto:end:${COUNTS_BLOCK} -->`));
     expect(after).toContain('- Theming through four root attributes');
     expect(after).not.toContain('**1** public component modules');
   });
