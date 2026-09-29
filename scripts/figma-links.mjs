@@ -7,7 +7,7 @@
  * public/hds-manifest.json (set from its `@figma` JSDoc tag), everywhere a
  * designer or engineer looks for it (scripts/lib/design-links.mjs):
  *
- *   README.md "Design ↔ Code links"        the section between the design-links markers
+ *   docs/DESIGN_LINKS.md                    the section between the design-links markers
  *   figma/links/dev-resources.json          POST /v1/dev_resources body, for review
  *   figma/links/use-figma/descriptions-<file>[.dry-run].js
  *                                           component descriptions + documentation links
@@ -17,7 +17,7 @@
  * --dev-resources, which a person runs with a token.
  *
  * Usage:
- *   pnpm figma:links                                  write the README section and carriers
+ *   pnpm figma:links                                  write docs/DESIGN_LINKS.md and carriers
  *   pnpm figma:links --check                          exit 1 when stale or broken; writes nothing
  *   FIGMA_ACCESS_TOKEN=… pnpm figma:links --dev-resources [--dry-run]
  *                                                     add "HDS source" / "HDS story" dev resources
@@ -45,6 +45,10 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const LINKS_CONFIG = 'figma/links.json';
+/** Home of the Design ↔ Code table; README.md carries only a pointer to it. */
+export const DESIGN_LINKS_DOC = 'docs/DESIGN_LINKS.md';
+const DESIGN_LINKS_DOC_HEAD =
+  '# Design links\n\nWhere each component lives in Figma, Storybook and source.\n\n';
 
 const MISSING_HELP = {
   [LINKS_CONFIG]:
@@ -93,16 +97,17 @@ export function computeDesignLinks(root) {
   });
 }
 
-/** README.md with a current, Prettier-formatted section. */
+/** docs/DESIGN_LINKS.md with a current, Prettier-formatted section. */
 async function nextReadme(root, collected) {
-  const readmePath = join(root, 'README.md');
-  const current = readFileSync(readmePath, 'utf8');
+  const readmePath = join(root, DESIGN_LINKS_DOC);
+  const current = existsSync(readmePath) ? readFileSync(readmePath, 'utf8') : '';
   const options = (await resolveConfig(readmePath)) ?? {};
-  const section = await format(renderReadmeSection(collected), {
+  const section = await format(renderReadmeSection(collected, { base: '../' }), {
     ...options,
     parser: 'markdown',
   });
-  return { readmePath, current, next: upsertReadmeSection(current, section) };
+  const next = upsertReadmeSection(current === '' ? DESIGN_LINKS_DOC_HEAD : current, section);
+  return { readmePath, current, next: await format(next, { ...options, parser: 'markdown' }) };
 }
 
 /**
@@ -123,7 +128,7 @@ function firstDifference(current, next) {
   const b = next.split('\n');
   for (let i = 0; i < Math.max(a.length, b.length); i += 1) {
     if (a[i] !== b[i]) {
-      return `README.md line ${i + 1}:\n  committed:   ${a[i] ?? '(end of file)'}\n  regenerated: ${b[i] ?? '(end of file)'}`;
+      return `${DESIGN_LINKS_DOC} line ${i + 1}:\n  committed:   ${a[i] ?? '(end of file)'}\n  regenerated: ${b[i] ?? '(end of file)'}`;
     }
   }
   return '(files differ only in trailing whitespace)';
@@ -146,14 +151,17 @@ export async function checkDesignLinks(root) {
 }
 
 /**
- * Writes the README section and regenerates every carrier under outDir.
+ * Writes docs/DESIGN_LINKS.md and regenerates every carrier under outDir.
  *
  * @param {{ root: string, outDir: string }} options
  */
 export async function writeDesignLinks({ root, outDir }) {
   const collected = computeDesignLinks(root);
   const { readmePath, current, next } = await nextReadme(root, collected);
-  if (next !== current) writeFileSync(readmePath, next);
+  if (next !== current) {
+    mkdirSync(dirname(readmePath), { recursive: true });
+    writeFileSync(readmePath, next);
+  }
 
   const outputs = [
     [
@@ -201,12 +209,12 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       printProblems(check.problems);
       if (!check.readmeUpToDate) {
         console.error(
-          '✗ README.md "Design ↔ Code links" is stale. Run: pnpm manifest:generate && pnpm figma:links',
+          `✗ ${DESIGN_LINKS_DOC} is stale. Run: pnpm manifest:generate && pnpm figma:links`,
         );
       }
       if (check.problems.length > 0 || !check.readmeUpToDate) process.exit(1);
       console.log(
-        `✓ figma:links — ${check.links} of ${check.total} components link a Figma node; README current`,
+        `✓ figma:links — ${check.links} of ${check.total} components link a Figma node; ${DESIGN_LINKS_DOC} current`,
       );
     } else if (args.includes('--dev-resources')) {
       const { links, problems } = computeDesignLinks(ROOT);
@@ -231,7 +239,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       console.log(
         [
           `figma:links — ${result.links.length} of ${result.total} components link a Figma node`,
-          `  README.md "Design ↔ Code links" ${result.readmeChanged ? 'updated' : 'already current'}`,
+          `  ${DESIGN_LINKS_DOC} ${result.readmeChanged ? 'updated' : 'already current'}`,
           ...result.files.map((file) => `  ${rel}/${file}`),
           '',
           '  Dev resources:  FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run',

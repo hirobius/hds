@@ -268,23 +268,27 @@ const fileName = (path) => path.split('/').at(-1);
  * The README section, as unformatted Markdown (the CLI runs Prettier on it).
  *
  * @param {{ links: object[], total: number }} collected
+ * @param {{ base?: string }} [options]  `base` prefixes every repo-relative link, for a
+ *   section that lives below the repo root (docs/DESIGN_LINKS.md uses '../').
  */
-export function renderReadmeSection({ links, total }) {
+export function renderReadmeSection({ links, total }, { base = '' } = {}) {
   const lines = [
     DESIGN_LINKS_START,
     '',
     '## Design ↔ Code links',
     '',
-    'Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).',
+    'Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](' +
+      base +
+      'figma/README.md).',
     '',
     `**${links.length} of ${total}** components link a Figma node.`,
   ];
   if (links.length > 0) {
     lines.push('', '| Component | Figma node | Story | Source |', '| --- | --- | --- | --- |');
     for (const link of links) {
-      const story = link.story ? `[${fileName(link.story.path)}](${link.story.path})` : '—';
+      const story = link.story ? `[${fileName(link.story.path)}](${base}${link.story.path})` : '—';
       lines.push(
-        `| \`${link.name}\` | [${link.nodeId}](${link.figmaUrl}) | ${story} | [${fileName(link.source.path)}](${link.source.path}) |`,
+        `| \`${link.name}\` | [${link.nodeId}](${link.figmaUrl}) | ${story} | [${fileName(link.source.path)}](${base}${link.source.path}) |`,
       );
     }
   }

@@ -14,7 +14,12 @@ import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { format } from 'prettier';
-import { checkDesignLinks, computeDesignLinks, writeDesignLinks } from '../figma-links.mjs';
+import {
+  DESIGN_LINKS_DOC,
+  checkDesignLinks,
+  computeDesignLinks,
+  writeDesignLinks,
+} from '../figma-links.mjs';
 import { designParameters, figmaDesignParameter } from '../../src/stories/design-parameters.ts';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -81,12 +86,11 @@ describe('pnpm figma:links', () => {
       'use-figma/descriptions-FileKey123.js',
     ]);
 
-    const readme = readFileSync(join(root, 'README.md'), 'utf8');
+    const readme = readFileSync(join(root, DESIGN_LINKS_DOC), 'utf8');
+    expect(readFileSync(join(root, 'README.md'), 'utf8')).not.toContain('Design ↔ Code links');
     expect(readme).toContain('## Design ↔ Code links');
+    expect(readme).toContain('](../src/stories/alert.stories.tsx)');
     expect(readme).toContain('**1 of 2** components link a Figma node.');
-    expect(readme.indexOf('## Design ↔ Code links')).toBeLessThan(
-      readme.indexOf('## Visual direction'),
-    );
     expect(await format(readme, { parser: 'markdown' })).toBe(readme);
 
     expect(JSON.parse(readFileSync(join(outDir, 'dev-resources.json'), 'utf8'))).toEqual({
@@ -117,7 +121,7 @@ describe('pnpm figma:links', () => {
       total: 2,
     });
     await writeDesignLinks({ root, outDir });
-    expect(readFileSync(join(root, 'README.md'), 'utf8')).toBe(readme);
+    expect(readFileSync(join(root, DESIGN_LINKS_DOC), 'utf8')).toBe(readme);
   });
 
   it('reports problems and still refuses to call the README current', async () => {
