@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { MultiSelector } from '../app/components/multi-selector';
 
 const meta = {
-  title: 'Patterns/multi-selector',
+  title: 'Patterns/Multi Selector',
   component: MultiSelector,
   tags: ['autodocs'],
   parameters: {

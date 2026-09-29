@@ -20,7 +20,7 @@ const FOUNDATIONS_ITEMS = [
 ];
 
 const meta = {
-  title: 'Primitives/nav-group',
+  title: 'Primitives/Nav Group',
   component: NavGroup,
   tags: ['autodocs'],
   parameters: {

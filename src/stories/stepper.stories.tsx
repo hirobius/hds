@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Stepper } from '../app/components/stepper';
 
 const meta = {
-  title: 'Patterns/stepper',
+  title: 'Patterns/Stepper',
   component: Stepper,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

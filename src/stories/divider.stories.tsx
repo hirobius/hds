@@ -7,7 +7,7 @@ import { Divider } from '../app/components/divider';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/divider',
+  title: 'Primitives/Divider',
   component: Divider,
   tags: ['autodocs'],
   parameters: {

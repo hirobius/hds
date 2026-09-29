@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { NotFoundPattern } from '../app/components/not-found-pattern';
 
 const meta = {
-  title: 'Feedback/not-found-pattern',
+  title: 'Feedback/Not Found Pattern',
   component: NotFoundPattern,
   tags: ['autodocs'],
   parameters: {

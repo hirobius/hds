@@ -23,7 +23,7 @@ const Prose = () => (
 );
 
 const meta = {
-  title: 'Primitives/center',
+  title: 'Primitives/Center',
   component: Center,
   tags: ['autodocs'],
   parameters: {

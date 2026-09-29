@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ErrorPattern } from '../app/components/error-pattern';
 
 const meta = {
-  title: 'Feedback/error-pattern',
+  title: 'Feedback/Error Pattern',
   component: ErrorPattern,
   tags: ['autodocs'],
   parameters: {

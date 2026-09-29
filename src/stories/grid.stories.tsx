@@ -14,7 +14,7 @@ const GridCard = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: "Primitives/grid",
+  title: "Primitives/Grid",
   component: Grid,
   tags: ["autodocs"],
   parameters: {

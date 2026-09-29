@@ -8,7 +8,7 @@ import { Pagination } from '../app/components/pagination';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/pagination',
+  title: 'Primitives/Pagination',
   component: Pagination,
   tags: ['autodocs'],
   parameters: {

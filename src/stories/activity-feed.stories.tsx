@@ -15,7 +15,7 @@ import type { ActivityEvent } from '../app/components/activity-feed';
 import { Icon } from '../app/components/icon';
 
 const meta = {
-  title: 'Primitives/activity-feed',
+  title: 'Primitives/Activity Feed',
   component: ActivityFeed,
   tags: ['autodocs'],
   parameters: {

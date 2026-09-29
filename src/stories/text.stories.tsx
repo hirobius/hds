@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Text } from "../app/components/text";
 
 const meta = {
-  title: "Primitives/text",
+  title: "Primitives/Text",
   component: Text,
   tags: ["autodocs"],
   parameters: {

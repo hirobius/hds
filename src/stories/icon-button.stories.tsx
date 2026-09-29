@@ -8,7 +8,7 @@ import { IconButton } from '../app/components/icon-button';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/icon-button',
+  title: 'Primitives/Icon Button',
   component: IconButton,
   tags: ['autodocs'],
   parameters: {

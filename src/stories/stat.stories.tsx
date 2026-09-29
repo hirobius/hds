@@ -7,7 +7,7 @@ import { Stat } from '../app/components/stat';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/stat',
+  title: 'Primitives/Stat',
   component: Stat,
   tags: ['autodocs'],
   parameters: {

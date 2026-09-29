@@ -8,7 +8,7 @@ import { HdsSlider } from '../app/components/slider';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/slider',
+  title: 'Primitives/Slider',
   component: HdsSlider,
   tags: ['autodocs'],
   parameters: {

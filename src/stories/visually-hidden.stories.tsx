@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { VisuallyHidden } from '../app/components/visually-hidden';
 
 const meta = {
-  title: 'Primitives/visually-hidden',
+  title: 'Primitives/Visually Hidden',
   component: VisuallyHidden,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

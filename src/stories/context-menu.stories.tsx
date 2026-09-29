@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ContextMenu } from '../app/components/context-menu';
 
 const meta = {
-  title: 'Primitives/context-menu',
+  title: 'Primitives/Context Menu',
   component: ContextMenu,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

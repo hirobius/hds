@@ -11,14 +11,45 @@
  *   - Ladle rejected: fastest setup but lacks a11y addon, MDX docs, and
  *     Chromatic integration — all required for the 29-primitive external API.
  */
+import { readdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
 
+const STORIES_DIR = join(dirname(fileURLToPath(import.meta.url)), '../src/stories');
+
+const INTERNAL_STORY_FILES = [
+  'cinematic-link',
+  'component-instance-matrix',
+  'foundation-swatch',
+  'history-card',
+  'sketch',
+  'token',
+];
+
 const config: StorybookConfig = {
-  stories: ['../src/stories/**/*.stories.@(ts|tsx)', '../src/stories/**/*.mdx'],
+  // Internals (#308): six components are engineering scaffolding, not public
+  // API. Their metas carry `tags: ['!dev']`, which hides them in the dev
+  // sidebar; a static build still lists tagged entries in index.json, so the
+  // PUBLISHED Storybook also leaves those files out. That is opt-in
+  // (HDS_STORYBOOK_PUBLIC=1, set only in vercel.json) because the docs-site and
+  // Chromatic builds embed and snapshot the internals' stories.
+  stories: () =>
+    [
+      process.env.HDS_STORYBOOK_PUBLIC === '1'
+        ? // Explicit files, not an extglob: `!(token)` also swallowed tokenizer.
+          (readdirSync(STORIES_DIR, { recursive: true }) as string[])
+            .map((f) => f.split('\\').join('/'))
+            .filter((f) => /\.stories\.tsx?$/.test(f))
+            .filter((f) => !INTERNAL_STORY_FILES.includes(f.replace(/\.stories\.tsx?$/, '')))
+            .map((f) => `../src/stories/${f}`)
+        : '../src/stories/**/*.stories.@(ts|tsx)',
+      '../src/stories/**/*.mdx',
+    ].flat(),
   // Serves public/ at the Storybook root so fonts.css's absolute
   // `/fonts/satoshi/*.woff2` URLs resolve. Without this every story
   // renders in a fallback face, not Satoshi.
-  staticDirs: ['../public'],
+  staticDirs: ['../public', '../.storybook/static'],
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-a11y',

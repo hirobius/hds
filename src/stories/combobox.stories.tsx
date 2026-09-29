@@ -12,7 +12,7 @@ import { Combobox } from '../app/components/combobox';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/combobox',
+  title: 'Primitives/Combobox',
   component: Combobox,
   tags: ['autodocs'],
   parameters: {

@@ -8,7 +8,7 @@ import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/input',
+  title: 'Primitives/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: {

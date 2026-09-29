@@ -9,7 +9,7 @@ const SAMPLE = new Date('2026-07-04T12:00:00.000Z');
 const NOW = new Date('2026-07-04T14:30:00.000Z');
 
 const meta = {
-  title: 'Primitives/timestamp',
+  title: 'Primitives/Timestamp',
   component: Timestamp,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

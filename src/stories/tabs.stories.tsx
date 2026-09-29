@@ -11,7 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '../app/components/tabs
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/tabs',
+  title: 'Primitives/Tabs',
   component: Tabs,
   tags: ['autodocs'],
   parameters: {

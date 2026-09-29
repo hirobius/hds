@@ -8,7 +8,7 @@ import { HdsRadio } from '../app/components/radio';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/radio',
+  title: 'Primitives/Radio',
   component: HdsRadio,
   tags: ['autodocs'],
   parameters: {

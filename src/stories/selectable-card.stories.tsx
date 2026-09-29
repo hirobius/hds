@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { SelectableCard } from '../app/components/selectable-card';
 
 const meta = {
-  title: 'Patterns/selectable-card',
+  title: 'Patterns/Selectable Card',
   component: SelectableCard,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

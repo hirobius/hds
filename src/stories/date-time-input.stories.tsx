@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { DateTimeInput } from '../app/components/date-time-input';
 
 const meta = {
-  title: 'Patterns/date-time-input',
+  title: 'Patterns/Date Time Input',
   component: DateTimeInput,
   tags: ['autodocs'],
   parameters: {

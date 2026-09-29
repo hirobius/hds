@@ -212,10 +212,13 @@ describe.skipIf(!existsSync(INDEX))('parity with Storybook index.json', () => {
 
   it('derives the same id set from source as Storybook built', () => {
     const storyFiles = findStoryFiles(ROOT);
-    const files = storyFiles.map((p) => ({
-      path: p.split(path.sep).join('/'),
-      source: readFileSync(path.join(ROOT, p), 'utf8'),
-    }));
+    const files = storyFiles
+      .map((p) => ({
+        path: p.split(path.sep).join('/'),
+        source: readFileSync(path.join(ROOT, p), 'utf8'),
+      }))
+      // #308: `!dev` internals are left out of the published build on purpose.
+      .filter(({ source }) => !/^\s*tags:\s*\[[^\]]*['"]!dev['"]/m.test(source));
     const manifest = JSON.parse(readFileSync(path.join(ROOT, 'public/hds-manifest.json'), 'utf8'));
     const known = new Set(
       Object.values(manifest.componentSpecs)

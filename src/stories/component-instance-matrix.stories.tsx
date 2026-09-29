@@ -14,9 +14,9 @@ import { ComponentInstanceMatrix } from '../app/components/component-instance-ma
 import { Badge } from '../app/components/badge';
 
 const meta = {
-  title: 'Primitives/component-instance-matrix',
+  title: 'Primitives/Component Instance Matrix',
   component: ComponentInstanceMatrix,
-  tags: ['autodocs'],
+  tags: ['autodocs', '!dev'],
   parameters: {
     layout: 'padded',
     docs: {

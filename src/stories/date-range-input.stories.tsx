@@ -12,7 +12,7 @@ import type { DateRange } from 'react-day-picker';
 import { DateRangeInput } from '../app/components/date-range-input';
 
 const meta = {
-  title: 'Patterns/date-range-input',
+  title: 'Patterns/Date Range Input',
   component: DateRangeInput,
   tags: ['autodocs'],
   parameters: {

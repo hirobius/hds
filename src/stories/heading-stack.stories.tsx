@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { HeadingStack } from '../app/components/heading-stack';
 
 const meta = {
-  title: 'Primitives/heading-stack',
+  title: 'Primitives/Heading Stack',
   component: HeadingStack,
   tags: ['autodocs'],
   parameters: {

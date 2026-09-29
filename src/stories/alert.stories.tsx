@@ -8,7 +8,7 @@ import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/alert',
+  title: 'Primitives/Alert',
   component: Alert,
   tags: ['autodocs'],
   parameters: {

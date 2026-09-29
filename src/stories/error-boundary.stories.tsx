@@ -7,7 +7,7 @@ import { ErrorBoundary } from '../app/components/error-boundary';
 import { Text } from '../app/components/text';
 
 const meta = {
-  title: 'Feedback/error-boundary',
+  title: 'Feedback/Error Boundary',
   component: ErrorBoundary,
   tags: ['autodocs'],
   parameters: {

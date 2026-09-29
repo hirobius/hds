@@ -14,7 +14,7 @@ import {
 import { Icon } from "../app/components/icon";
 
 const meta = {
-  title: "Primitives/icon",
+  title: "Primitives/Icon",
   component: Icon,
   tags: ["autodocs"],
   parameters: {

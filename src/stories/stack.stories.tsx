@@ -22,7 +22,7 @@ const Swatch = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: "Primitives/stack",
+  title: "Primitives/Stack",
   component: Stack,
   tags: ["autodocs"],
   parameters: {

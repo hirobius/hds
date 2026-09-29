@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { DateInput } from '../app/components/date-input';
 
 const meta = {
-  title: 'Patterns/date-input',
+  title: 'Patterns/Date Input',
   component: DateInput,
   tags: ['autodocs'],
   parameters: {

@@ -12,7 +12,7 @@ import { StackedCardRail } from '../app/components/stacked-card-rail';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Patterns/stacked-card-rail',
+  title: 'Patterns/Stacked Card Rail',
   component: StackedCardRail,
   tags: ['autodocs'],
   parameters: {

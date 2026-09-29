@@ -68,7 +68,7 @@ export function ComponentList() {
 }`;
 
 const meta = {
-  title: 'Primitives/code-block',
+  title: 'Primitives/Code Block',
   component: CodeBlock,
   tags: ['autodocs'],
   parameters: {

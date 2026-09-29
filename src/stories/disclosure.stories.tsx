@@ -9,7 +9,7 @@ import { Text } from '../app/components/text';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/disclosure',
+  title: 'Primitives/Disclosure',
   component: Disclosure,
   tags: ['autodocs'],
   parameters: {

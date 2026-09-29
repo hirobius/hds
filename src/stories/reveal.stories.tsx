@@ -32,7 +32,7 @@ const Panel = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: 'Primitives/reveal',
+  title: 'Primitives/Reveal',
   component: Reveal,
   tags: ['autodocs'],
   parameters: {

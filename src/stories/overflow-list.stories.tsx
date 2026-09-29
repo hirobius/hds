@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { OverflowList } from '../app/components/overflow-list';
 
 const meta = {
-  title: 'Patterns/overflow-list',
+  title: 'Patterns/Overflow List',
   component: OverflowList,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

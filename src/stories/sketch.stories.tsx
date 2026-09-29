@@ -12,9 +12,9 @@ import { Sketch } from '../app/components/sketch';
 import { Text } from '../app/components/text';
 
 const meta = {
-  title: 'Layout/sketch',
+  title: 'Layout/Sketch',
   component: Sketch,
-  tags: ['autodocs'],
+  tags: ['autodocs', '!dev'],
   parameters: {
     layout: 'padded',
     docs: {

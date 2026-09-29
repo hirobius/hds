@@ -8,7 +8,7 @@ import { StepperField } from '../app/components/stepper-field';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/stepper-field',
+  title: 'Primitives/Stepper Field',
   component: StepperField,
   tags: ['autodocs'],
   parameters: {

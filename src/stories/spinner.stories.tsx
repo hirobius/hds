@@ -7,7 +7,7 @@ import { Spinner } from '../app/components/spinner';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/spinner',
+  title: 'Primitives/Spinner',
   component: Spinner,
   tags: ['autodocs'],
   parameters: {

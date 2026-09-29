@@ -20,7 +20,7 @@ const demoFrameStyle: CSSProperties = {
 };
 
 const meta = {
-  title: 'Primitives/empty-state',
+  title: 'Primitives/Empty State',
   component: EmptyState,
   tags: ['autodocs'],
   parameters: {

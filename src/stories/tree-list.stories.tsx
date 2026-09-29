@@ -28,7 +28,7 @@ const fileTree: TreeNode[] = [
 ];
 
 const meta = {
-  title: 'Patterns/tree-list',
+  title: 'Patterns/Tree List',
   component: TreeList,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

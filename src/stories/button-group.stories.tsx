@@ -7,7 +7,7 @@ import { ButtonGroup } from '../app/components/button-group';
 import { Button } from '../app/components/button';
 
 const meta = {
-  title: 'Primitives/button-group',
+  title: 'Primitives/Button Group',
   component: ButtonGroup,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

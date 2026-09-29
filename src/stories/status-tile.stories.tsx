@@ -7,7 +7,7 @@ import { StatusTile } from '../app/components/status-tile';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/status-tile',
+  title: 'Primitives/Status Tile',
   component: StatusTile,
   tags: ['autodocs'],
   parameters: {

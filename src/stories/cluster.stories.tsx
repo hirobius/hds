@@ -23,7 +23,7 @@ const Chip = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: 'Primitives/cluster',
+  title: 'Primitives/Cluster',
   component: Cluster,
   tags: ['autodocs'],
   parameters: {

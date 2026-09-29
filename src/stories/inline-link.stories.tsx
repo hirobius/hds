@@ -8,7 +8,7 @@ import { InlineLink } from '../app/components/inline-link';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/inline-link',
+  title: 'Primitives/Inline Link',
   component: InlineLink,
   tags: ['autodocs'],
   parameters: {

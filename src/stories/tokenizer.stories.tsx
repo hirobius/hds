@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Tokenizer } from '../app/components/tokenizer';
 
 const meta = {
-  title: 'Patterns/tokenizer',
+  title: 'Patterns/Tokenizer',
   component: Tokenizer,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

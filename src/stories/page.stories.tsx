@@ -9,7 +9,7 @@ import { Stack } from '../app/components/stack';
 import { Surface } from '../app/components/surface';
 
 const meta = {
-  title: 'Layout/page',
+  title: 'Layout/Page',
   component: Page,
   tags: ['autodocs'],
   parameters: {

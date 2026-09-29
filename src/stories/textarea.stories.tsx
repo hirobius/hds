@@ -7,7 +7,7 @@ import { Textarea } from '../app/components/textarea';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/textarea',
+  title: 'Primitives/Textarea',
   component: Textarea,
   tags: ['autodocs'],
   parameters: {
