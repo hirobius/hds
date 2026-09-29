@@ -122,14 +122,13 @@ export function AssetImg({
 
     return (
       <div
-        className={className}
+        className={className ? `hds-focus ${className}` : 'hds-focus'}
         // inline-ok: HDS component — inline styles are the intentional pattern for token-driven styling
         style={{
           position: 'relative',
           display: 'inline-flex',
           overflow: 'hidden',
           cursor: 'pointer',
-          outline: 'none',
           flexShrink: (resolvedStyle as CSSProperties & { flexShrink?: number }).flexShrink,
         }}
         role="button"
@@ -182,6 +181,7 @@ export function AssetImg({
           alignItems: 'center',
           justifyContent: 'center',
         }}
+        role="img"
         aria-label={alt}
       />
     );
@@ -249,7 +249,7 @@ export function AssetImg({
         overflow: 'hidden',
         cursor: onClick ? (context === 'lightbox' ? 'zoom-in' : 'pointer') : undefined,
       }}
-      role={onClick ? 'button' : undefined}
+      role={onClick ? 'button' : 'img'}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
       onKeyDown={
