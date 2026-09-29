@@ -23,6 +23,25 @@ pnpm add @hirobius/design-system
 
 The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens` also runs. `scripts/__tests__/front-door.test.mjs` fails if this README claims more than the source has.
 
+## In use
+
+<!-- auto:start:consumer-usage -->
+
+The Ops dashboard (`hirobius/ops`) is the component-level consumer: **35** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main`.
+
+| Consumer kind     | Count | How it uses HDS                           |
+| ----------------- | ----- | ----------------------------------------- |
+| Product apps      | 2     | Components and tokens                     |
+| Token-level sites | 4     | Tokens and CSS only, no component imports |
+
+[![Ops library page](docs/images/ops-library.png)](docs/images/ops-library.png)
+
+[![Ops fleet audit page](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)
+
+<!-- auto:end:consumer-usage -->
+
+The numbers and the table come from `pnpm consumer:usage`, which measures the Ops checkout when present and otherwise reuses the committed snapshot in `docs/data/consumer-usage.json`. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file.
+
 ## Using the published package
 
 Installing HDS in another project? It ships to the **public npm registry** as

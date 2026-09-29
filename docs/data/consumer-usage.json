@@ -1,0 +1,9 @@
+{
+  "measuredFrom": "hirobius/ops",
+  "files": 35,
+  "components": 25,
+  "consumers": {
+    "productApps": 2,
+    "tokenLevelSites": 4
+  }
+}
