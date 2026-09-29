@@ -195,7 +195,7 @@
     "check:secrets": "node scripts/check-secrets.mjs",
     "check:security": "node scripts/check-security-baseline.mjs",
     "check:semantic-report": "node scripts/audit-tokens.mjs --report-only",
-    "check:size": "pnpm build:lib && size-limit",
+    "check:size": "pnpm build:lib && node scripts/build-button-probe.mjs && size-limit",
     "check:spacing": "node scripts/check-hardcoded-spacing.mjs",
     "check:spacing-vocabulary": "node scripts/check-spacing-vocabulary.mjs",
     "check:story-coverage": "node scripts/check-story-coverage.mjs",
