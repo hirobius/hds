@@ -430,6 +430,7 @@ export function StackedCardRail({ cards }: StackedCardRailProps) {
           className="hds-scr-yscroll"
           role="region"
           aria-label="Project cards, vertical scroll"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-focusable
           tabIndex={0}
           // Height of the y-scroll div must equal the container width so that
           // the full scroll travel (spacerHeight px vertically) maps cleanly
@@ -451,6 +452,7 @@ export function StackedCardRail({ cards }: StackedCardRailProps) {
             className="hds-scr-strip"
             role="region"
             aria-label="Project cards, horizontal scroll"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-focusable
             tabIndex={0}
           >
             <div className="hds-scr-track" role="list">
