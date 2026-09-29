@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-29T19:56:25.000Z",
+  "updatedAt": "2026-09-29T20:23:54.000Z",
   "phase": "active",
   "headline": "hds#317 IN PROGRESS, WAITING ON ADRIAN (2026-09-29, draft PR from claude/dsr-12-figma): hirobius.tokens.json now passes a strict DTCG check (Terrazzo passes; main fails on component.tag.lineHeight), with the HDS composites (motion, spring, elevation) under $extensions[\"com.hirobius.hds\"] and read back through scripts/lib/token-dialect.mjs, so generated CSS/TS/Figma output is unchanged except the fixed --component-tag-lineHeight (1.5, was undefinedundefined). Minor changeset: the raw JSON / `tokens` export changes shape. Staging Button 28-138 and IconButton 40-39 now carry Focus (ring bound to Role/ring + Role/background) and Pressed variants. figma/README.md records the measured carrier sizes: use_figma's 50,000-character limit rejects 4 of the 5 push scripts, so the token push and snapshot need the dev plugin. check:figma-drift is still 540 items against the 2026-09-22 snapshot, lastPush null.",
   "next": [
