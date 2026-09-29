@@ -73,6 +73,23 @@ describe('hirobius.tokens.json on disk is strict DTCG', () => {
     }
     expect(mismatches).toEqual([]);
   });
+
+  it('says where the elastic cubicBezier comes from, since DTCG tools see only that curve', () => {
+    const ext = disk.primitive.easing.elastic.$extensions[HDS_NAMESPACE];
+    expect(ext.bezierSource).toMatch(/easeOutBack/);
+    expect(ext.bezierSource).toMatch(/spring/);
+  });
+});
+
+describe('token-dialect.mjs stays browser-safe', () => {
+  // src/app/components/tokenUtils.ts imports fromDtcg, so this module ships in
+  // the library bundle. An fs/path/url import here would break that bundle.
+  it('imports nothing', () => {
+    const src = readFileSync(join(ROOT, 'scripts', 'lib', 'token-dialect.mjs'), 'utf8');
+    expect(src).not.toMatch(/^\s*import\s/m);
+    expect(src).not.toMatch(/\brequire\s*\(/);
+    expect(src).not.toMatch(/\bimport\s*\(/);
+  });
 });
 
 describe('fromDtcg', () => {
