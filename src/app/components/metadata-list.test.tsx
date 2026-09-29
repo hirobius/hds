@@ -62,7 +62,9 @@ describe('MetadataList', () => {
       expect(['DIV', 'DT', 'DD']).toContain(child.tagName);
       if (child.tagName === 'DIV') {
         expect(child.querySelectorAll(':scope > *:not(dt):not(dd)')).toHaveLength(0);
-        expect(child.querySelectorAll(':scope > dd').length).toBeGreaterThan(0);
+        const kids = Array.from(child.children).map((c) => c.tagName);
+        expect(kids.indexOf('DT')).toBeGreaterThanOrEqual(0);
+        expect(kids.indexOf('DD')).toBeGreaterThan(kids.indexOf('DT'));
       }
     }
     expect(screen.getByText('42 tokens total').tagName).toBe('DD');
