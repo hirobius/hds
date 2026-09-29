@@ -73,7 +73,7 @@ export const Info = {};
 }
 
 describe('pnpm figma:links', () => {
-  it('writes the README section, the dev resources body and the descriptions scripts', async () => {
+  it('writes the design links doc, the dev resources body and the descriptions scripts', async () => {
     const root = miniRoot();
     const outDir = join(root, 'figma', 'links');
     expect((await checkDesignLinks(root)).readmeUpToDate).toBe(false);
@@ -149,7 +149,7 @@ describe('pnpm figma:links', () => {
 });
 
 describe('this repository', () => {
-  it('has no broken or bypassed Figma links, and its README section is current (run pnpm figma:links)', async () => {
+  it('has no broken or bypassed Figma links, and its design links doc is current (run pnpm figma:links)', async () => {
     const check = await checkDesignLinks(REPO);
     expect(check.problems).toEqual([]);
     // Assert through readmeDiff, not the bare boolean: a bare
@@ -204,7 +204,7 @@ describe('this repository', () => {
   });
 
   it('has an addon behind the Design tab, so parameters.design is not inert', () => {
-    // The README section and design-parameters.ts both promise Storybook shows
+    // The design links doc and design-parameters.ts both promise Storybook shows
     // the node. Storybook only renders `parameters.design` when addon-designs
     // is registered, so the claim and the addon have to travel together.
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));

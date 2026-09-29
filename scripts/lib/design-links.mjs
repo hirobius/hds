@@ -5,7 +5,7 @@
  * One source: `componentSpecs[<Name>].figmaUrl` in public/hds-manifest.json,
  * which `pnpm manifest:generate` fills from the component's `@figma` JSDoc tag.
  * Everything here is a projection of it:
- *   - the README "Design ↔ Code links" section (renderReadmeSection);
+ *   - the design links doc (docs/DESIGN_LINKS.md) (renderReadmeSection);
  *   - Storybook `parameters.design`, through src/stories/design-parameters.ts
  *     (collectDesignLinks reports a story that does not use it, or that
  *     hardcodes a Figma URL);
@@ -15,7 +15,7 @@
  *   - Figma component descriptions and documentation links, through a
  *     use_figma script (buildDescriptionsScript: the REST API cannot write them,
  *     so it goes through the Plugin API, like figma:push; run by a person).
- * Only the README section and the Storybook parameter take effect without a
+ * Only the design links doc and the Storybook parameter take effect without a
  * person running a step in Figma. Nothing here reads a token or talks to Figma
  * unless syncDevResources is called.
  */
@@ -265,7 +265,7 @@ export function collectDesignLinks({ manifest, stories, config, packageName }) {
 const fileName = (path) => path.split('/').at(-1);
 
 /**
- * The README section, as unformatted Markdown (the CLI runs Prettier on it).
+ * The design links doc, as unformatted Markdown (the CLI runs Prettier on it).
  *
  * @param {{ links: object[], total: number }} collected
  * @param {{ base?: string }} [options]  `base` prefixes every repo-relative link, for a

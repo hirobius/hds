@@ -98,7 +98,7 @@ export function computeDesignLinks(root) {
 }
 
 /** docs/DESIGN_LINKS.md with a current, Prettier-formatted section. */
-async function nextReadme(root, collected) {
+async function nextDesignLinksDoc(root, collected) {
   const readmePath = join(root, DESIGN_LINKS_DOC);
   const current = existsSync(readmePath) ? readFileSync(readmePath, 'utf8') : '';
   const options = (await resolveConfig(readmePath)) ?? {};
@@ -140,7 +140,7 @@ function firstDifference(current, next) {
  */
 export async function checkDesignLinks(root) {
   const collected = computeDesignLinks(root);
-  const { current, next } = await nextReadme(root, collected);
+  const { current, next } = await nextDesignLinksDoc(root, collected);
   return {
     problems: collected.problems,
     readmeUpToDate: current === next,
@@ -157,7 +157,7 @@ export async function checkDesignLinks(root) {
  */
 export async function writeDesignLinks({ root, outDir }) {
   const collected = computeDesignLinks(root);
-  const { readmePath, current, next } = await nextReadme(root, collected);
+  const { readmePath, current, next } = await nextDesignLinksDoc(root, collected);
   if (next !== current) {
     mkdirSync(dirname(readmePath), { recursive: true });
     writeFileSync(readmePath, next);

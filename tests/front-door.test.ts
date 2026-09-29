@@ -59,6 +59,14 @@ describe('README honesty', () => {
     expect(section).not.toMatch(/screen reader|VoiceOver|NVDA|fully accessible|WCAG 2\.\d AAA/i);
   });
 
+  it('does not present the focus check as green or as CI-gated while it is red', () => {
+    const section = readme.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
+    const focus = section.split('\n').find((l) => l.includes('check-focus-states')) ?? '';
+    expect(focus).toMatch(/violation/i);
+    expect(focus).toContain('asset-img');
+    expect(focus).not.toMatch(/not in CI/i);
+  });
+
   it('keeps the design-links table out of the README, with a pointer to its home', () => {
     expect(readme).not.toContain('design-links:start');
     expect(readme).toContain('docs/DESIGN_LINKS.md');
