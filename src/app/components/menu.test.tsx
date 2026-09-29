@@ -72,3 +72,14 @@ describe('Menu', () => {
     expect(screen.queryByRole('menuitem')).toBeNull();
   });
 });
+
+describe('Menu highlighted row ring', () => {
+  it('draws a 2px inset ring on the highlighted item', () => {
+    render(<Example />);
+    const cls = screen.getByRole('menuitem', { name: 'Profile' }).className;
+    expect(cls).toContain('data-[highlighted]:ring-2');
+    expect(cls).toContain('data-[highlighted]:ring-inset');
+    expect(cls.split(/\s+/)).not.toContain('hds-focus');
+    expect(cls).toContain('data-[highlighted]:ring-ring');
+  });
+});

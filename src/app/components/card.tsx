@@ -333,6 +333,7 @@ const CardProgress = React.forwardRef<HTMLDivElement, CardProgressProps>(functio
         aria-valuemin={0}
         aria-valuemax={max}
         aria-valuenow={clamped}
+        aria-label={typeof label === 'string' ? label : 'Progress'}
         /* hds-bypass: INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */
         style={{
           height: '4px',
