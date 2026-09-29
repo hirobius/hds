@@ -14,7 +14,12 @@ import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { format } from 'prettier';
-import { checkDesignLinks, computeDesignLinks, writeDesignLinks } from '../figma-links.mjs';
+import {
+  DESIGN_LINKS_DOC,
+  checkDesignLinks,
+  computeDesignLinks,
+  writeDesignLinks,
+} from '../figma-links.mjs';
 import { designParameters, figmaDesignParameter } from '../../src/stories/design-parameters.ts';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -68,7 +73,7 @@ export const Info = {};
 }
 
 describe('pnpm figma:links', () => {
-  it('writes the README section, the dev resources body and the descriptions scripts', async () => {
+  it('writes the design links doc, the dev resources body and the descriptions scripts', async () => {
     const root = miniRoot();
     const outDir = join(root, 'figma', 'links');
     expect((await checkDesignLinks(root)).readmeUpToDate).toBe(false);
@@ -81,12 +86,11 @@ describe('pnpm figma:links', () => {
       'use-figma/descriptions-FileKey123.js',
     ]);
 
-    const readme = readFileSync(join(root, 'README.md'), 'utf8');
+    const readme = readFileSync(join(root, DESIGN_LINKS_DOC), 'utf8');
+    expect(readFileSync(join(root, 'README.md'), 'utf8')).not.toContain('Design ↔ Code links');
     expect(readme).toContain('## Design ↔ Code links');
+    expect(readme).toContain('](../src/stories/alert.stories.tsx)');
     expect(readme).toContain('**1 of 2** components link a Figma node.');
-    expect(readme.indexOf('## Design ↔ Code links')).toBeLessThan(
-      readme.indexOf('## Visual direction'),
-    );
     expect(await format(readme, { parser: 'markdown' })).toBe(readme);
 
     expect(JSON.parse(readFileSync(join(outDir, 'dev-resources.json'), 'utf8'))).toEqual({
@@ -117,7 +121,7 @@ describe('pnpm figma:links', () => {
       total: 2,
     });
     await writeDesignLinks({ root, outDir });
-    expect(readFileSync(join(root, 'README.md'), 'utf8')).toBe(readme);
+    expect(readFileSync(join(root, DESIGN_LINKS_DOC), 'utf8')).toBe(readme);
   });
 
   it('reports problems and still refuses to call the README current', async () => {
@@ -145,7 +149,7 @@ describe('pnpm figma:links', () => {
 });
 
 describe('this repository', () => {
-  it('has no broken or bypassed Figma links, and its README section is current (run pnpm figma:links)', async () => {
+  it('has no broken or bypassed Figma links, and its design links doc is current (run pnpm figma:links)', async () => {
     const check = await checkDesignLinks(REPO);
     expect(check.problems).toEqual([]);
     // Assert through readmeDiff, not the bare boolean: a bare
@@ -200,7 +204,7 @@ describe('this repository', () => {
   });
 
   it('has an addon behind the Design tab, so parameters.design is not inert', () => {
-    // The README section and design-parameters.ts both promise Storybook shows
+    // The design links doc and design-parameters.ts both promise Storybook shows
     // the node. Storybook only renders `parameters.design` when addon-designs
     // is registered, so the claim and the addon have to travel together.
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
