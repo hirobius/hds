@@ -195,6 +195,32 @@ model prints all zeros and writes nothing.
 `pnpm figma:push --plan` prints what a push would change against the committed
 snapshot, without Figma.
 
+### Carrier sizes, measured (hds#317, 2026-09-29)
+
+`use_figma` takes at most 50,000 characters of code in one call. The carriers
+`pnpm figma:push` writes for the current tokens (model `3f3f9750`, prune off):
+
+| Script            | Bytes   | Fits one `use_figma` call?                                                                                  |
+| ----------------- | ------- | ----------------------------------------------------------------------------------------------------------- |
+| `01-primitive.js` | 76,860  | No                                                                                                          |
+| `02-semantic.js`  | 111,156 | No                                                                                                          |
+| `03-component.js` | 66,563  | No                                                                                                          |
+| `04-role.js`      | 46,693  | Yes, but it runs fourth, after three that do not fit                                                        |
+| `05-styles.js`    | 54,925  | No                                                                                                          |
+| `snapshot.js`     | 6,803   | The script does; the snapshot it returns does not come back whole (measured 2026-09-27 in draft PR hds#304) |
+
+Do not split a script to make it fit. The push plans, reports extras and
+verifies per collection, and each script checks its own checksums, so a trimmed
+script refuses. The token push and the snapshot go through the development
+plugin: an agent stops and hands them over, as hds#317 did.
+
+What `use_figma` did carry in hds#317 was component work in the staging file.
+Adding Focus and Pressed to the Button set (42 variants) and a State axis to
+IconButton (36 variants) took one call each, because the script builds each new
+variant by cloning an existing one instead of carrying data. The Button script
+was about 4.5 KB. When the session cannot reach figma.com asset URLs,
+`get_screenshot` with a base64 response still returns the review image.
+
 ## Snapshot and drift
 
 1. Take a snapshot: the plugin's **Take snapshot** command (then **Download
