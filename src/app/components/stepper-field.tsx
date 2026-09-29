@@ -9,7 +9,7 @@
  * controls rather than page-specific controls. This lives in shared components
  * so sketches and docs consume the same primitive.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { IconButton } from './icon-button';
@@ -52,6 +52,7 @@ export function StepperField({
   inputStep,
   precision,
 }: StepperFieldProps) {
+  const inputId = useId();
   const [draftValue, setDraftValue] = useState(() => formatValue(value, inputStep ?? step));
   const resolvedInputStep = inputStep ?? step;
   const resolvedPrecision = precision ?? getDecimalPlaces(step);
@@ -90,7 +91,7 @@ export function StepperField({
 
   return (
     <Surface padding="component">
-      <label className="text-secondary" style={{ ...hds.typeStyles.caption }}>
+      <label htmlFor={inputId} className="text-secondary" style={{ ...hds.typeStyles.caption }}>
         {label}
       </label>
       <div style={{ display: 'flex', alignItems: 'center', gap: hds.semantic.space.scale.xs }}>
@@ -103,6 +104,7 @@ export function StepperField({
           onClick={() => setValue(value - step)}
         />
         <Input
+          id={inputId}
           type="number"
           textStyle="mono"
           inputMode={resolvedPrecision > 0 ? 'decimal' : 'numeric'}
