@@ -1,5 +1,5 @@
 {
-  "$comment": "Where pnpm figma:links points design <-> code links (README section, Figma dev resources, component documentation links). Component Figma nodes come from each component's @figma JSDoc tag, never from here. storybookUrl: the deployed Storybook root (for example the Chromatic library URL); while null, story links point at the story file on GitHub.",
+  "$comment": "Where pnpm figma:links points design <-> code links (docs/DESIGN_LINKS.md, Figma dev resources, component documentation links). Component Figma nodes come from each component's @figma JSDoc tag, never from here. storybookUrl: the deployed Storybook root; while null, story links point at the story file on GitHub.",
   "repository": "https://github.com/hirobius/hds",
   "branch": "main",
   "storybookUrl": "https://hirobius-design-system.vercel.app",

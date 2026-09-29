@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-29T19:38:43.000Z",
+  "updatedAt": "2026-09-29T22:42:07.811Z",
   "phase": "active",
   "headline": "hds#133 lab/* RELOCATED (2026-09-28): the 4 token-lab views (legacy-token-detail, legacy-token-list, token-collection-list, token-list) moved from src/app/components/lab/ to src/docs-tooling/lab/, joining the docs-tooling bucket. tokenUtils.ts already lived at src/app/components/tokenUtils.ts (hds#233), so the public Token primitive is untouched. None were exported; no exported component removed or renamed. New docs-tooling-boundary test pins it (no lab under src/app/components, no component imports docs-tooling, barrels never reach lab/docs-tooling). typecheck, full test suite (168 files), build:lib, publint, smoke:consumer green. REMAINING for #133: Tier-2 exported-component deprecation cycle (activity-feed et al.), still blocked on the hirobius/clients import sweep.",
   "next": [

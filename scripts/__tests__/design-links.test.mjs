@@ -243,6 +243,13 @@ describe('README section', () => {
     );
   });
 
+  it('prefixes repo-relative links when the section lives in a subdirectory', () => {
+    const section = renderReadmeSection(links, { base: '../' });
+    expect(section).toContain('[alert.stories.tsx](../src/stories/alert.stories.tsx)');
+    expect(section).toContain('[alert.tsx](../src/app/components/alert.tsx)');
+    expect(section).toContain('(../figma/README.md)');
+  });
+
   it('says so plainly when nothing links a Figma node', () => {
     const section = renderReadmeSection({ links: [], total: 5 });
     expect(section).toContain('**0 of 5** components');

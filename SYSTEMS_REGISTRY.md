@@ -183,20 +183,20 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 
 ## Supporting Scripts
 
-| Script                          | Purpose                                                          |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `build-handoff.mjs`             | keeps the design handoff material in sync with token outputs     |
-| `build-design-md.mjs`           | keeps the lean visual spec in sync with token outputs            |
-| `build-token-index.mjs`         | builds token-index artifacts                                     |
-| `build-figma-model.mjs`         | `pnpm figma:model`: tokens → `figma/model.json` (tested)         |
-| `figma-push.mjs`                | `pnpm figma:push`: dev plugin + use_figma upsert scripts         |
-| `figma-snapshot.mjs`            | `pnpm figma:snapshot --ingest`: writes `figma/snapshot.json`     |
-| `check-figma-drift.mjs`         | `pnpm check:figma-drift`: model vs committed snapshot            |
-| `build-figma-native-import.mjs` | `pnpm figma:native-import`: DTCG files for Variables ▸ Import    |
-| `figma-links.mjs`               | `pnpm figma:links`: figmaUrl → README, Storybook, Figma          |
-| `build-figma-variables.mjs`     | legacy plugin/REST exports projected from the Figma model        |
-| `build-readme-counts.mjs`       | regenerates the README count bullets from source (`pnpm tokens`) |
-| `batch-scan.mjs`                | scanning utility for broader inspection workflows                |
+| Script                          | Purpose                                                           |
+| ------------------------------- | ----------------------------------------------------------------- |
+| `build-handoff.mjs`             | keeps the design handoff material in sync with token outputs      |
+| `build-design-md.mjs`           | keeps the lean visual spec in sync with token outputs             |
+| `build-token-index.mjs`         | builds token-index artifacts                                      |
+| `build-figma-model.mjs`         | `pnpm figma:model`: tokens → `figma/model.json` (tested)          |
+| `figma-push.mjs`                | `pnpm figma:push`: dev plugin + use_figma upsert scripts          |
+| `figma-snapshot.mjs`            | `pnpm figma:snapshot --ingest`: writes `figma/snapshot.json`      |
+| `check-figma-drift.mjs`         | `pnpm check:figma-drift`: model vs committed snapshot             |
+| `build-figma-native-import.mjs` | `pnpm figma:native-import`: DTCG files for Variables ▸ Import     |
+| `figma-links.mjs`               | `pnpm figma:links`: figmaUrl → design links doc, Storybook, Figma |
+| `build-figma-variables.mjs`     | legacy plugin/REST exports projected from the Figma model         |
+| `build-readme-counts.mjs`       | regenerates the README count bullets from source (`pnpm tokens`)  |
+| `batch-scan.mjs`                | scanning utility for broader inspection workflows                 |
 
 ## Token Scan Architecture
 
