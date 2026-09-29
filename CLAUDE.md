@@ -141,6 +141,12 @@ is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
 **sub-issues** for epic→child, **"Depends on #N"** in the body for cross-task
 prerequisites.
 
+## Agent skills
+
+Issue tracker: GitHub Issues, see `docs/agents/issue-tracker.md` (includes Wayfinding operations).
+Triage labels: see `docs/agents/triage-labels.md`.
+Domain docs: single-context, see `docs/agents/domain.md`.
+
 ## Fleet hub
 
 This repo is part of the Hirobius fleet. The operations hub is the
