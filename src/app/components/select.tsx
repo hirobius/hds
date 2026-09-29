@@ -90,6 +90,7 @@ export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function Hds
                   className={cn(
                     'hds-focus relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-sm outline-none',
                     'text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+                    'data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring',
                   )}
                 >
                   <RSelect.ItemText>{opt.label}</RSelect.ItemText>
