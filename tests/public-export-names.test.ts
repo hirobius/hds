@@ -29,7 +29,8 @@ const DEPRECATED_ALIASES: Record<string, string> = {
 
 /**
  * Hds-prefixed value exports that are NOT component primitives being renamed
- * here: app-level providers, hooks, docs-shell layouts and the form binding.
+ * here: app-level providers and docs-shell layouts (root barrel only; subpath entry
+ * points such as ./form are out of scope here).
  * Adding a component to this list is a review decision, not a shortcut.
  */
 const HDS_PREFIXED_ALLOWLIST = new Set([
@@ -37,8 +38,6 @@ const HDS_PREFIXED_ALLOWLIST = new Set([
   'HdsRouterProvider',
   'HdsSystemDocLayout',
   'HdsDocsShell',
-  'HdsForm',
-  'HdsFormField',
 ]);
 
 function readBarrel() {

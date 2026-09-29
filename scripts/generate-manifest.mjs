@@ -30,9 +30,9 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['CodeBlock', 'CodeBlock'],
   ['ControlsPanel', 'ControlsPanel'],
   ['Divider', 'Divider'],
-  // hds#315: the internal image-expand pill was `Tooltip`, then briefly
-  // `ExpandTooltip` again; the public bare name `Tooltip` now belongs to the
-  // Radix tooltip (was HdsTooltip). The five form controls de-prefixed the same way.
+  // HdsTooltip -> Tooltip (hds#315): the public Radix tooltip took the bare name;
+  // the internal image-expand pill is ExpandTooltip (@internal, not exported).
+  // The four form controls are remapped the same way so curated metadata migrates.
   ['HdsTooltip', 'Tooltip'],
   ['HdsRadio', 'Radio'],
   ['HdsSelect', 'Select'],

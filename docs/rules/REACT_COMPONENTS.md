@@ -123,7 +123,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 - Feedback text uses the matching `semantic.color.feedback.*` foreground token (e.g. `var(--semantic-color-feedback-error)`).
 - Label: `component.tag.fontSize` (13px / `primitive.typography.size.xs`) + `component.tag.fontWeight` (medium 500).
 
-### HdsSelect
+### Select
 
 - Follows the same border, radius, and focus rules as `Input`:
   - Border at rest: `1px solid var(--semantic-color-border-default)`.
@@ -141,7 +141,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 
 ## Form Controls — Controlled-Only Contract
 
-`HdsToggle`, `HdsRadio`, `HdsSlider`, `HdsSelect`, and `SegmentedControl` are
+`Toggle`, `Radio`, `Slider`, `Select`, and `SegmentedControl` are
 **controlled-only by deliberate contract**. Each requires:
 
 - a value prop (`value` / `checked`) — the single source of truth, and
@@ -174,7 +174,7 @@ Cards default to `flat`. They lift to `raised` only on interactive hover or when
 
 - Inventory first: always use an existing `Hds...` component before inventing a new wrapper or control.
 - Do not default to native HTML equivalents in app code when an HDS component already exists.
-- If no direct HDS component exists, compose the UI from existing primitives such as `Stack`, `HdsButton`, `Input`, and `HdsSelect` before asking for a new component.
+- If no direct HDS component exists, compose the UI from existing primitives such as `Stack`, `HdsButton`, `Input`, and `Select` before asking for a new component.
 - If composition still cannot express the requirement cleanly, stop and ask whether the component should be officially added to the system.
 
 ## Component Incubation & Native Fallbacks
