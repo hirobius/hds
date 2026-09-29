@@ -39,4 +39,17 @@ describe('AssetImg a11y', () => {
     expect(btn.style.outline).toBe('');
     expect(btn.classList.contains('hds-focus')).toBe(true);
   });
+
+  it('placeholder without alt is hidden from assistive tech, never an unnamed img', () => {
+    for (const ctx of [undefined, 'detail'] as const) {
+      const { container, unmount } = render(<AssetImg src="/x.png" context={ctx} />);
+      fireEvent.error(container.querySelector('img') as HTMLImageElement);
+      const unnamed = Array.from(container.querySelectorAll('[role="img"]')).filter(
+        (el) => !el.getAttribute('aria-label'),
+      );
+      expect(unnamed).toHaveLength(0);
+      expect(container.querySelector('[aria-hidden="true"]')).not.toBeNull();
+      unmount();
+    }
+  });
 });
