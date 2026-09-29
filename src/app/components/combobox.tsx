@@ -201,6 +201,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(funct
                     className={cn(
                       'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
                       'data-[active=true]:bg-accent data-[active=true]:text-accent-foreground',
+                      'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
                       'disabled:pointer-events-none disabled:opacity-50',
                     )}
                   >

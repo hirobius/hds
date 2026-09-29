@@ -68,6 +68,10 @@ export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Ca
     >
       <div
         ref={trackRef}
+        role="region"
+        aria-label={`${ariaLabel} slides`}
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-focusable
+        tabIndex={0}
         className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth rounded-md border border-border bg-background text-foreground"
       >
         {React.Children.map(children, (child, i) => (

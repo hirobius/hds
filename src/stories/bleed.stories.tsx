@@ -9,12 +9,12 @@ const FullBleedBand = () => (
   <div
     // inline-ok: storybook-fixture
     style={{
-      background: 'var(--semantic-color-accent, #6366f1)',
+      background: 'var(--semantic-accent-rest)',
       height: 48,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      color: 'white',
+      color: 'var(--semantic-accent-content)',
       fontSize: '12px',
     }}
   >
@@ -56,7 +56,7 @@ export const BleedX: Story = {
     <div
       style={{
         padding: 'var(--semantic-space-layout-normal, 24px)',
-        border: '1px dashed var(--semantic-color-border-default, #d1d5db)',
+        border: '1px dashed var(--semantic-color-border-default)',
         maxWidth: 400,
       }}
     >
@@ -77,7 +77,7 @@ export const BleedBoth: Story = {
     <div
       style={{
         padding: 'var(--semantic-space-layout-inset, 32px)',
-        border: '1px dashed var(--semantic-color-border-default, #d1d5db)',
+        border: '1px dashed var(--semantic-color-border-default)',
         maxWidth: 400,
       }}
     >

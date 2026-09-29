@@ -67,7 +67,7 @@ export const Tokenizer = React.forwardRef<HTMLInputElement, TokenizerProps>(func
     <div
       className={cn(
         'flex flex-wrap items-center gap-1.5 min-h-10 w-full rounded-md border border-input bg-background px-2 py-1 text-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
-        disabled && 'cursor-not-allowed bg-muted opacity-70',
+        disabled && 'cursor-not-allowed bg-muted text-muted-foreground',
         className,
       )}
     >

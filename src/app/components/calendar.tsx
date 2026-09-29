@@ -59,7 +59,7 @@ export function Calendar({
         selected:
           '[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary',
         today: '[&>button]:bg-accent [&>button]:text-accent-foreground',
-        outside: 'text-muted-foreground opacity-50',
+        outside: '[&>button]:text-muted-foreground',
         disabled: 'text-muted-foreground opacity-50',
         range_start: '[&>button]:bg-primary [&>button]:text-primary-foreground',
         range_end: '[&>button]:bg-primary [&>button]:text-primary-foreground',

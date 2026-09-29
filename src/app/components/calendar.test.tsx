@@ -24,4 +24,14 @@ describe('Calendar', () => {
     render(<Calendar mode="single" defaultMonth={new Date('2026-07-01')} onSelect={onSelect} />);
     expect(screen.getByText('10')).not.toBeNull();
   });
+
+  it('paints outside-month days with the secondary content colour, not reduced opacity', () => {
+    const { container } = render(
+      <Calendar mode="single" showOutsideDays defaultMonth={new Date('2026-07-01')} />,
+    );
+    const outside = container.querySelector('.rdp-outside, td[data-outside="true"]') as HTMLElement;
+    expect(outside).not.toBeNull();
+    expect(outside.className).toContain('[&>button]:text-muted-foreground');
+    expect(outside.className).not.toContain('opacity-');
+  });
 });

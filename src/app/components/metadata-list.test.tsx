@@ -52,4 +52,21 @@ describe('MetadataList', () => {
     rerender(<MetadataList items={items} footer="42 tokens total" />);
     expect(screen.queryByText('42 tokens total')).toBeNull();
   });
+
+  it('keeps the divided footer inside valid dl structure (dt/dd only, in div groups)', () => {
+    const { container } = render(
+      <MetadataList items={items} variant="divided" footer="42 tokens total" />,
+    );
+    const dl = container.querySelector('dl') as HTMLElement;
+    for (const child of Array.from(dl.children)) {
+      expect(['DIV', 'DT', 'DD']).toContain(child.tagName);
+      if (child.tagName === 'DIV') {
+        expect(child.querySelectorAll(':scope > *:not(dt):not(dd)')).toHaveLength(0);
+        const kids = Array.from(child.children).map((c) => c.tagName);
+        expect(kids.indexOf('DT')).toBeGreaterThanOrEqual(0);
+        expect(kids.indexOf('DD')).toBeGreaterThan(kids.indexOf('DT'));
+      }
+    }
+    expect(screen.getByText('42 tokens total').tagName).toBe('DD');
+  });
 });

@@ -67,3 +67,14 @@ describe('MultiSelector', () => {
     expect(onChange).toHaveBeenCalledWith(['b']);
   });
 });
+
+describe('MultiSelector highlighted row ring', () => {
+  it('draws a 2px inset ring on the row that holds focus', () => {
+    render(<Example />);
+    fireEvent.click(screen.getByRole('button'));
+    const row = screen.getByText('Apple').closest('label') as HTMLElement;
+    expect(row.className).toContain('focus-within:ring-2');
+    expect(row.className).toContain('focus-within:ring-inset');
+    expect(row.className).toContain('focus-within:ring-ring');
+  });
+});

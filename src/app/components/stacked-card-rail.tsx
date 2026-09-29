@@ -428,6 +428,10 @@ export function StackedCardRail({ cards }: StackedCardRailProps) {
         <div
           ref={yScrollRef}
           className="hds-scr-yscroll"
+          role="region"
+          aria-label="Project cards, vertical scroll"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-focusable
+          tabIndex={0}
           // Height of the y-scroll div must equal the container width so that
           // the full scroll travel (spacerHeight px vertically) maps cleanly
           // onto the horizontal extent.
@@ -443,7 +447,14 @@ export function StackedCardRail({ cards }: StackedCardRailProps) {
             }
           />
           {/* Sticky strip — horizontally scrollable, driven by JS */}
-          <div ref={stripRef} className="hds-scr-strip">
+          <div
+            ref={stripRef}
+            className="hds-scr-strip"
+            role="region"
+            aria-label="Project cards, horizontal scroll"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-focusable
+            tabIndex={0}
+          >
             <div className="hds-scr-track" role="list">
               {cards.map((card, i) => (
                 <div key={card.id} role="listitem">
