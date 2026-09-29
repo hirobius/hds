@@ -5,6 +5,7 @@ import type { Preview } from '@storybook/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { ThemeProvider } from '../src/app/context/ThemeContext';
+import { GlobalsSync } from './globals-sync';
 import '../src/styles/index.css';
 
 // ── Brand/density/theme modes matrix (#126) ─────────────────────────────────
@@ -128,11 +129,18 @@ const preview: Preview = {
               data-tenant={brand || undefined}
               data-density={density || undefined}
               data-theme={theme || undefined}
-              style={{ padding: '24px', minHeight: '100vh' }}
+              style={{
+                padding: '24px',
+                minHeight: '100vh',
+                background: 'var(--semantic-color-surface-page)',
+                color: 'var(--semantic-color-content-primary)',
+              }}
             >
               <Story />
             </div>
           </ThemeProvider>
+          {/* After ThemeProvider so its effect runs last and the toolbar wins on <html>. */}
+          <GlobalsSync theme={theme} density={density} brand={brand} />
         </MemoryRouter>
       );
     },
