@@ -46,17 +46,18 @@ export const OverflowList = React.forwardRef<HTMLDivElement, OverflowListProps>(
             {child}
           </div>
         ))}
-        {overflow > 0 &&
-          (renderOverflow ? (
-            renderOverflow(overflow)
-          ) : (
-            <span
-              aria-label={`+${overflow} more`}
-              className="inline-flex items-center rounded-md bg-muted px-2 h-6 text-sm font-medium text-muted-foreground"
-            >
-              +{overflow}
-            </span>
-          ))}
+        {overflow > 0 && (
+          <div role="listitem">
+            {renderOverflow ? (
+              renderOverflow(overflow)
+            ) : (
+              <span className="inline-flex items-center rounded-md bg-muted px-2 h-6 text-sm font-medium text-muted-foreground">
+                +{overflow}
+                <span className="sr-only"> more</span>
+              </span>
+            )}
+          </div>
+        )}
       </div>
     );
   },
