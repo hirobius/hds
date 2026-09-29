@@ -7,7 +7,7 @@ import { Breadcrumb } from '../app/components/breadcrumb';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/breadcrumb',
+  title: 'Primitives/Breadcrumb',
   component: Breadcrumb,
   tags: ['autodocs'],
   parameters: {

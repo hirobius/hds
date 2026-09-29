@@ -10,7 +10,7 @@ import { SideNav } from '../app/components/side-nav';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Navigation/side-nav',
+  title: 'Navigation/Side Nav',
   component: SideNav,
   tags: ['autodocs'],
   parameters: {

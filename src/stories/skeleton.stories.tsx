@@ -7,7 +7,7 @@ import { Skeleton } from '../app/components/skeleton';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/skeleton',
+  title: 'Primitives/Skeleton',
   component: Skeleton,
   tags: ['autodocs'],
   parameters: {

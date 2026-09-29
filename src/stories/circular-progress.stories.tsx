@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { CircularProgress } from '../app/components/circular-progress';
 
 const meta = {
-  title: 'Primitives/circular-progress',
+  title: 'Primitives/Circular Progress',
   component: CircularProgress,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

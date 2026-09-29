@@ -11,7 +11,7 @@ import { BookOpen, Layers, Palette, ArrowRight, Zap } from 'lucide-react';
 import { DocLinkCard } from '../app/components/doc-link-card';
 
 const meta = {
-  title: 'Primitives/doc-link-card',
+  title: 'Primitives/Doc Link Card',
   component: DocLinkCard,
   tags: ['autodocs'],
   parameters: {

@@ -8,7 +8,7 @@ import { Tag } from '../app/components/tag';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/tag',
+  title: 'Primitives/Tag',
   component: Tag,
   tags: ['autodocs'],
   parameters: {

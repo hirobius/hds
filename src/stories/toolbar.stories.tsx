@@ -7,7 +7,7 @@ import { Bold, Italic, Underline } from 'lucide-react';
 import { Toolbar } from '../app/components/toolbar';
 
 const meta = {
-  title: 'Patterns/toolbar',
+  title: 'Patterns/Toolbar',
   component: Toolbar,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

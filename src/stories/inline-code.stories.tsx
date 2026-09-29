@@ -8,7 +8,7 @@ import { Text } from '../app/components/text';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/inline-code',
+  title: 'Primitives/Inline Code',
   component: InlineCode,
   tags: ['autodocs'],
   parameters: {

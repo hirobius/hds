@@ -8,7 +8,7 @@ import { Text } from "../app/components/text";
 import { Surface } from "../app/components/surface";
 
 const meta = {
-  title: "Primitives/container",
+  title: "Primitives/Container",
   component: Container,
   tags: ["autodocs"],
   parameters: {

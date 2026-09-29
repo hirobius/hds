@@ -20,7 +20,7 @@ const THEME_OPTIONS = [
 ];
 
 const meta = {
-  title: 'Primitives/segmented-control',
+  title: 'Primitives/Segmented Control',
   component: SegmentedControl,
   tags: ['autodocs'],
   parameters: {
