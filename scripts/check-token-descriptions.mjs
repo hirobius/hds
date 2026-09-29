@@ -28,6 +28,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -92,7 +93,7 @@ function collectTokenNodes(obj, pathParts = []) {
 
 let tokens;
 try {
-  tokens = JSON.parse(readFileSync(TOKENS_FILE, 'utf-8'));
+  tokens = readTokenSource(TOKENS_FILE);
 } catch (e) {
   console.error(`✗ check-token-descriptions — could not read ${TOKENS_FILE}: ${e.message}`);
   process.exit(1);

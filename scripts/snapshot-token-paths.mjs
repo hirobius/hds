@@ -13,9 +13,10 @@
  *   node scripts/snapshot-token-paths.mjs --write
  */
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -53,7 +54,7 @@ export function* walkPaths(node, path = []) {
  */
 export function snapshotTokenPaths(tokensPath) {
   const src = tokensPath ?? resolve(ROOT, 'hirobius.tokens.json');
-  const raw = JSON.parse(readFileSync(src, 'utf-8'));
+  const raw = readTokenSource(src);
   return [...walkPaths(raw)].sort();
 }
 

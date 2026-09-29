@@ -19,7 +19,7 @@
  * No new npm dependencies required.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -37,13 +37,14 @@ import {
   buildTSTree,
   serialize,
 } from './build-tokens.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const DIST = join(ROOT, 'dist');
 
 // ── Load token source ───────────────────────────────────────────────────────
-const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
 const allTokens = [...walkTokens(raw)];
 
 // ── Build flat CSS (all tiers, fully resolved to primitive values) ──────────
