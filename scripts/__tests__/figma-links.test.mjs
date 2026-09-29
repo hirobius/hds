@@ -189,9 +189,9 @@ describe('this repository', () => {
     ['avatar', 'Avatar'],
     ['badge', 'Badge'],
     ['button', 'Button'],
-    ['checkbox', 'HdsCheckbox'],
+    ['checkbox', 'Checkbox'],
     ['input', 'Input'],
-    ['radio', 'HdsRadio'],
+    ['radio', 'Radio'],
     ['tag', 'Tag'],
   ])('pre-wires the %s story (a Figma-built component) to designParameters', (file, name) => {
     const path = join(REPO, 'src', 'stories', `${file}.stories.tsx`);

@@ -1,5 +1,5 @@
 /**
- * HdsRadio — radio button with animated selection indicator.
+ * Radio — radio button with animated selection indicator.
  * @category Inputs
  * @tier primitive
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17
@@ -15,7 +15,7 @@ import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 
-/** HdsRadio — radio button with animated selection indicator. */
+/** Radio — radio button with animated selection indicator. */
 export type HdsRadioDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ const radioRootVariants = cva(
 );
 
 /**
- * Selection ring — box model matches HdsCheckbox's glyph (see checkbox.tsx):
+ * Selection ring — box model matches Checkbox's glyph (see checkbox.tsx):
  * 20x20, `inline-flex` + centering so the declared size actually applies (a
  * bare `<span>` is `display: inline`, which ignores `width`/`height` — #225).
  * Color/border-color are driven by `state` (interaction) x `on` (checked),
@@ -145,7 +145,7 @@ export interface RadioProps extends Omit<
   onChange: (v: boolean) => void;
 }
 
-export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRadio(
+export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   {
     label,
     checked,
@@ -165,7 +165,7 @@ export const HdsRadio = forwardRef<HTMLInputElement, RadioProps>(function HdsRad
   ref,
 ) {
   const frozenState = useFrozenState();
-  // Shared single-element interaction machine (ADR-015), identical to HdsToggle.
+  // Shared single-element interaction machine (ADR-015), identical to Toggle.
   const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
     disabled,
     frozenState: frozenState as InteractionVisualState | null,

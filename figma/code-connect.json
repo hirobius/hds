@@ -157,7 +157,7 @@
         }
       }
     },
-    "HdsCheckbox": {
+    "Checkbox": {
       "source": "src/app/components/checkbox.tsx",
       "evidence": "hds#73",
       "properties": {
@@ -199,7 +199,7 @@
         "onChange": "{setChecked}"
       }
     },
-    "HdsRadio": {
+    "Radio": {
       "source": "src/app/components/radio.tsx",
       "evidence": "hds#73",
       "properties": {

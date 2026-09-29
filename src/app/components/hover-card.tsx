@@ -7,7 +7,7 @@
  * Radix HoverCard (@radix-ui/react-hover-card) themed with the overlay role
  * tokens to match Menu/Popover. For sighted-pointer preview affordances (user
  * cards, link previews) — it is NOT a replacement for an accessible tooltip on
- * an interactive control; use HdsTooltip for labelling.
+ * an interactive control; use Tooltip for labelling.
  *
  *   <HoverCard>
  *     <HoverCard.Trigger asChild><InlineLink href="…">@ada</InlineLink></HoverCard.Trigger>

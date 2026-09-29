@@ -1,5 +1,5 @@
 /**
- * HdsSelect stories — dropdown selector on Radix Select.
+ * Select stories — dropdown selector on Radix Select.
  * @see src/app/components/select.tsx
  *
  * NOTE: Overlays stay CLOSED on mount. jsdom lacks pointer-capture so the
@@ -7,15 +7,15 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { HdsSelect } from '../app/components/select';
+import { Select } from '../app/components/select';
 import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/select',
-  component: HdsSelect,
+  component: Select,
   tags: ['autodocs'],
   parameters: {
-    ...designParameters('HdsSelect'),
+    ...designParameters('Select'),
     layout: 'centered',
     docs: {
       description: {
@@ -24,7 +24,7 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof HdsSelect>;
+} satisfies Meta<typeof Select>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -40,7 +40,7 @@ function ControlledDemo({ showLabel = true }: { showLabel?: boolean }) {
   const [value, setValue] = React.useState('react');
   return (
     <div style={{ minWidth: 220 }}>
-      <HdsSelect
+      <Select
         label="Framework"
         showLabel={showLabel}
         options={FRAMEWORKS}

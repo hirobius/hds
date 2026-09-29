@@ -62,7 +62,7 @@ describe('createCodeModel — real components', () => {
   });
 
   it('marks required props as not optional', () => {
-    const checkbox = model.component('src/app/components/checkbox.tsx', 'HdsCheckbox');
+    const checkbox = model.component('src/app/components/checkbox.tsx', 'Checkbox');
     expect(checkbox.props.label.optional).toBe(false);
     expect(checkbox.props.checked.optional).toBe(false);
     expect(checkbox.props.indeterminate.optional).toBe(true);
@@ -126,9 +126,8 @@ describe('createCodeModel — typecheckSnippets', () => {
       },
       {
         source: CHECKBOX,
-        exportName: 'HdsCheckbox',
-        snippet:
-          '<HdsCheckbox label="Label" checked={false} indeterminate onChange={setChecked} />',
+        exportName: 'Checkbox',
+        snippet: '<Checkbox label="Label" checked={false} indeterminate onChange={setChecked} />',
       },
       { source: INPUT, exportName: 'Input', snippet: '<Input error size="sm" label="Label" />' },
     ]);
@@ -147,8 +146,8 @@ describe('createCodeModel — typecheckSnippets', () => {
       { source: BUTTON, exportName: 'Button', snippet: '<Button variant="ghost">Go</Button>' },
       {
         source: CHECKBOX,
-        exportName: 'HdsCheckbox',
-        snippet: '<HdsCheckbox label="Label" onChange={setChecked} />',
+        exportName: 'Checkbox',
+        snippet: '<Checkbox label="Label" onChange={setChecked} />',
       },
     ]);
     expect(variant.join('\n')).toMatch(/ghost/);

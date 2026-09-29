@@ -125,7 +125,7 @@ Core verification commands:
 ```bash
 pnpm typecheck
 pnpm lint
-pnpm exec vitest run   # unit + contract tests, as the pre-push hook and CI run them
+pnpm test              # pretest gates + unit + contract tests, exactly as the pre-push hook and CI run them
 pnpm tokens:verify
 pnpm check:size
 pnpm build-storybook
@@ -153,7 +153,7 @@ Source-of-truth files:
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](figma/README.md).
 
-**44 of 139** components link a Figma node.
+**44 of 140** components link a Figma node.
 
 | Component          | Figma node                                                                                         | Story                                                                      | Source                                                            |
 | ------------------ | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
@@ -164,6 +164,7 @@ Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, w
 | `Button`           | [28:138](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138) | [button.stories.tsx](src/stories/button.stories.tsx)                       | [button.tsx](src/app/components/button.tsx)                       |
 | `Callout`          | [88:85](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-85)   | [callout.stories.tsx](src/stories/callout.stories.tsx)                     | [callout.tsx](src/app/components/callout.tsx)                     |
 | `Card`             | [39:11](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11)   | [card.stories.tsx](src/stories/card.stories.tsx)                           | [card.tsx](src/app/components/card.tsx)                           |
+| `Checkbox`         | [35:29](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29)   | [checkbox.stories.tsx](src/stories/checkbox.stories.tsx)                   | [checkbox.tsx](src/app/components/checkbox.tsx)                   |
 | `CodeBlock`        | [89:154](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-154) | [code-block.stories.tsx](src/stories/code-block.stories.tsx)               | [code-block.tsx](src/app/components/code-block.tsx)               |
 | `Combobox`         | [82:237](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237) | [combobox.stories.tsx](src/stories/combobox.stories.tsx)                   | [combobox.tsx](src/app/components/combobox.tsx)                   |
 | `Dialog`           | [93:27](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-27)   | [dialog.stories.tsx](src/stories/dialog.stories.tsx)                       | [dialog.tsx](src/app/components/dialog.tsx)                       |
@@ -172,11 +173,6 @@ Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, w
 | `EmptyState`       | [88:352](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352) | [empty-state.stories.tsx](src/stories/empty-state.stories.tsx)             | [empty-state.tsx](src/app/components/empty-state.tsx)             |
 | `Field`            | [85:81](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-81)   | [field.stories.tsx](src/stories/field.stories.tsx)                         | [field.tsx](src/app/components/field.tsx)                         |
 | `Form`             | [85:94](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94)   | [form.stories.tsx](src/stories/form.stories.tsx)                           | [form.tsx](src/app/components/form.tsx)                           |
-| `HdsCheckbox`      | [35:29](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29)   | [checkbox.stories.tsx](src/stories/checkbox.stories.tsx)                   | [checkbox.tsx](src/app/components/checkbox.tsx)                   |
-| `HdsRadio`         | [36:17](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17)   | [radio.stories.tsx](src/stories/radio.stories.tsx)                         | [radio.tsx](src/app/components/radio.tsx)                         |
-| `HdsSelect`        | [82:49](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49)   | [select.stories.tsx](src/stories/select.stories.tsx)                       | [select.tsx](src/app/components/select.tsx)                       |
-| `HdsSlider`        | [82:265](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265) | [slider.stories.tsx](src/stories/slider.stories.tsx)                       | [slider.tsx](src/app/components/slider.tsx)                       |
-| `HdsToggle`        | [37:19](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19)   | [toggle.stories.tsx](src/stories/toggle.stories.tsx)                       | [toggle.tsx](src/app/components/toggle.tsx)                       |
 | `IconButton`       | [40:39](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39)   | [icon-button.stories.tsx](src/stories/icon-button.stories.tsx)             | [icon-button.tsx](src/app/components/icon-button.tsx)             |
 | `InlineCode`       | [89:155](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155) | [inline-code.stories.tsx](src/stories/inline-code.stories.tsx)             | [inline-code.tsx](src/app/components/inline-code.tsx)             |
 | `InlineLink`       | [89:161](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161) | [inline-link.stories.tsx](src/stories/inline-link.stories.tsx)             | [inline-link.tsx](src/app/components/inline-link.tsx)             |
@@ -187,9 +183,12 @@ Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, w
 | `Pagination`       | [86:194](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194) | [pagination.stories.tsx](src/stories/pagination.stories.tsx)               | [pagination.tsx](src/app/components/pagination.tsx)               |
 | `Popover`          | [93:32](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-32)   | [popover.stories.tsx](src/stories/popover.stories.tsx)                     | [popover.tsx](src/app/components/popover.tsx)                     |
 | `Progress`         | [88:91](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91)   | [progress.stories.tsx](src/stories/progress.stories.tsx)                   | [progress.tsx](src/app/components/progress.tsx)                   |
+| `Radio`            | [36:17](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17)   | [radio.stories.tsx](src/stories/radio.stories.tsx)                         | [radio.tsx](src/app/components/radio.tsx)                         |
 | `SegmentedControl` | [82:334](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334) | [segmented-control.stories.tsx](src/stories/segmented-control.stories.tsx) | [segmented-control.tsx](src/app/components/segmented-control.tsx) |
+| `Select`           | [82:49](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49)   | [select.stories.tsx](src/stories/select.stories.tsx)                       | [select.tsx](src/app/components/select.tsx)                       |
 | `SideNav`          | [86:332](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-332) | [side-nav.stories.tsx](src/stories/side-nav.stories.tsx)                   | [side-nav.tsx](src/app/components/side-nav.tsx)                   |
 | `Skeleton`         | [88:95](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-95)   | [skeleton.stories.tsx](src/stories/skeleton.stories.tsx)                   | [skeleton.tsx](src/app/components/skeleton.tsx)                   |
+| `Slider`           | [82:265](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265) | [slider.stories.tsx](src/stories/slider.stories.tsx)                       | [slider.tsx](src/app/components/slider.tsx)                       |
 | `Spinner`          | [88:106](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-106) | [spinner.stories.tsx](src/stories/spinner.stories.tsx)                     | [spinner.tsx](src/app/components/spinner.tsx)                     |
 | `Stat`             | [88:247](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247) | [stat.stories.tsx](src/stories/stat.stories.tsx)                           | [stat.tsx](src/app/components/stat.tsx)                           |
 | `StatusListItem`   | [88:350](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-350) | [status-list-item.stories.tsx](src/stories/status-list-item.stories.tsx)   | [status-list-item.tsx](src/app/components/status-list-item.tsx)   |
@@ -201,6 +200,7 @@ Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, w
 | `Tag`              | [32:11](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11)   | [tag.stories.tsx](src/stories/tag.stories.tsx)                             | [tag.tsx](src/app/components/tag.tsx)                             |
 | `Textarea`         | [85:14](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14)   | [textarea.stories.tsx](src/stories/textarea.stories.tsx)                   | [textarea.tsx](src/app/components/textarea.tsx)                   |
 | `ToastProvider`    | [93:367](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367) | [toast.stories.tsx](src/stories/toast.stories.tsx)                         | [toast.tsx](src/app/components/toast.tsx)                         |
+| `Toggle`           | [37:19](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19)   | [toggle.stories.tsx](src/stories/toggle.stories.tsx)                       | [toggle.tsx](src/app/components/toggle.tsx)                       |
 
 <!-- design-links:end -->
 
@@ -218,7 +218,7 @@ The governing direction is "Editorial Enterprise" — enterprise rigor with edit
 The gates are deterministic and need no browser or live site:
 
 - **pre-commit** (`.husky/pre-commit`): secrets scan, Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
-- **pre-push** (`.husky/pre-push`): Vitest unit and contract tests, then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
+- **pre-push** (`.husky/pre-push`): `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
 - **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and a Storybook build.
 - **Visual review:** Storybook is the visual verification surface, and Chromatic (`.github/workflows/chromatic.yml`) runs it on pull requests. The earlier browser test suite drove a docs site that no longer exists; it is archived in `tests-archive/`.
 

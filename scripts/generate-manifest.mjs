@@ -30,7 +30,14 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['CodeBlock', 'CodeBlock'],
   ['ControlsPanel', 'ControlsPanel'],
   ['Divider', 'Divider'],
-  ['ExpandTooltip', 'Tooltip'],
+  // hds#315: the internal image-expand pill was `Tooltip`, then briefly
+  // `ExpandTooltip` again; the public bare name `Tooltip` now belongs to the
+  // Radix tooltip (was HdsTooltip). The five form controls de-prefixed the same way.
+  ['HdsTooltip', 'Tooltip'],
+  ['HdsRadio', 'Radio'],
+  ['HdsSelect', 'Select'],
+  ['HdsSlider', 'Slider'],
+  ['HdsToggle', 'Toggle'],
   // Lightbox was de-prefixed (HdsLightbox → Lightbox) but keeps its filename
   // (image-lightbox.tsx), so the filePath-based orphan prune can't clear the
   // old spec. Remap it here so the curated metadata migrates and no ghost

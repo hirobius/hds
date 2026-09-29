@@ -398,7 +398,7 @@ export function buildComponents(raw, manifest) {
     },
     {
       name: 'Toggles',
-      component: 'HdsToggle',
+      component: 'Toggle',
       radius: '`full` (pill track + circular thumb)',
       states: 'off · on · focus · disabled',
       notes:
@@ -410,7 +410,7 @@ export function buildComponents(raw, manifest) {
       radius: `Outer \`${cardRad}\` · inner segments \`${actionRad}\``,
       states: 'rest · hover · selected · disabled',
       notes:
-        'Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `HdsSelect`.',
+        'Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`.',
     },
   ];
 
