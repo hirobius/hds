@@ -25,7 +25,7 @@ import { Menu } from '@/app/components/menu';
 import { ContextMenu } from '@/app/components/context-menu';
 import { HoverCard } from '@/app/components/hover-card';
 import { HdsSelect } from '@/app/components/select';
-import { Tooltip } from '@/app/components/tooltip';
+import { HdsTooltip } from '@/app/components/hds-tooltip';
 import { Combobox } from '@/app/components/combobox';
 import { MultiSelector } from '@/app/components/multi-selector';
 
@@ -316,6 +316,9 @@ describe('Tab behaviour', () => {
     expect((OVERLAYS[0].surface() as HTMLElement).contains(document.activeElement)).toBe(true);
   });
 
+  // Note: the Tab loop is Radix's default FocusScope behaviour, not a design
+  // decision; WAI-ARIA lets non-modal popovers release Tab. Recorded here so a
+  // wrapper change is noticed, and flagged in the PR for a product call.
   // Radix Popover content runs a looping FocusScope: Tab cycles inside the open
   // content (it never walks the page behind it), but the popover is non-modal, so
   // the page stays reachable (no aria-hidden, no pointer-events lock).
@@ -340,10 +343,9 @@ describe('Tab behaviour', () => {
     const { u } = await openWithKeyboard(spec);
     const surface = spec.surface() as HTMLElement;
     await u.tab();
-    // Radix roving focus: Tab never walks the page; focus stays in the menu or the menu closes.
-    const stillInside = surface.contains(document.activeElement);
-    const closed = spec.surface() === null;
-    expect(stillInside || closed).toBe(true);
+    // Radix Menu content preventDefaults Tab: the menu stays open, focus stays inside.
+    expect(spec.surface()).not.toBeNull();
+    expect(surface.contains(document.activeElement)).toBe(true);
   });
 
   it('Select keeps Tab from leaving to the page while open', async () => {
@@ -351,7 +353,9 @@ describe('Tab behaviour', () => {
     const { u } = await openWithKeyboard(spec);
     const surface = spec.surface() as HTMLElement;
     await u.tab();
-    expect(surface.contains(document.activeElement) || spec.surface() === null).toBe(true);
+    // Radix Select content preventDefaults Tab: the listbox stays open, focus stays inside.
+    expect(spec.surface()).not.toBeNull();
+    expect(surface.contains(document.activeElement)).toBe(true);
   });
 
   it('Combobox: search field takes focus on open, Tab stays in the list, page stays non-modal', async () => {
@@ -562,7 +566,9 @@ describe('ContextMenu keyboard contract', () => {
     const { u } = await openContext();
     const menu = screen.getByRole('menu');
     await u.tab();
-    expect(menu.contains(document.activeElement) || screen.queryByRole('menu') === null).toBe(true);
+    // Radix ContextMenu content preventDefaults Tab: the menu stays open, focus stays inside.
+    expect(screen.queryByRole('menu')).not.toBeNull();
+    expect(menu.contains(document.activeElement)).toBe(true);
   });
 });
 
@@ -622,62 +628,66 @@ describe('HoverCard keyboard contract', () => {
 });
 
 // ── Tooltip ─────────────────────────────────────────────────────────────────
-// The HDS Tooltip is a presentational, pointer-follows pill (pointer-events:
-// none), not an ARIA tooltip widget. Its keyboard contract is therefore
-// "invisible to the keyboard": it never takes focus, never joins the Tab order,
-// never traps or swallows keys, and unmounts when `visible` goes false.
+// HdsTooltip is the public Radix tooltip wrapper. Keyboard users open it by
+// focusing the trigger; Escape dismisses it while focus stays on the trigger.
 
 describe('Tooltip keyboard contract', () => {
-  function TooltipFixture({ visible }: { visible: boolean }) {
+  function TooltipFixture() {
     return (
       <>
-        <button type="button">Before</button>
-        <div>
-          <Tooltip visible={visible} mode="centered" label="Expand" />
-        </div>
+        <HdsTooltip delayDuration={0}>
+          <HdsTooltip.Trigger>Copy</HdsTooltip.Trigger>
+          <HdsTooltip.Content>Copy link</HdsTooltip.Content>
+        </HdsTooltip>
         <button type="button">After</button>
       </>
     );
   }
 
-  it('renders its label when visible and nothing when hidden', async () => {
-    const { rerender } = render(<TooltipFixture visible />);
-    expect(screen.queryByText('Expand')).not.toBeNull();
-    rerender(<TooltipFixture visible={false} />);
-    await waitFor(() => expect(screen.queryByText('Expand')).toBeNull());
+  async function focusTrigger() {
+    const u = user();
+    render(<TooltipFixture />);
+    const trigger = screen.getByRole('button', { name: 'Copy' });
+    expect(trigger.getAttribute('data-state')).toBe('closed');
+    await u.tab();
+    expect(document.activeElement).toBe(trigger);
+    return { u, trigger };
+  }
+
+  it('is closed until the trigger is focused', () => {
+    render(<TooltipFixture />);
+    expect(screen.queryByRole('tooltip')).toBeNull();
   });
 
-  it('adds no focusable element to the Tab order', async () => {
-    const u = user();
-    render(<TooltipFixture visible />);
-    await u.tab();
-    expect(label()).toBe('Before');
+  it('opens when the trigger takes keyboard focus and exposes role=tooltip', async () => {
+    const { trigger } = await focusTrigger();
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
+    expect(screen.getByRole('tooltip').textContent).toContain('Copy link');
+    expect(trigger.getAttribute('data-state')).not.toBe('closed');
+  });
+
+  it('wires aria-describedby from the trigger to the tooltip', async () => {
+    const { trigger } = await focusTrigger();
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
+    const id = trigger.getAttribute('aria-describedby');
+    expect(id).toBeTruthy();
+    expect(document.getElementById(id as string)?.textContent).toContain('Copy link');
+  });
+
+  it('Escape closes it and focus stays on the trigger', async () => {
+    const { u, trigger } = await focusTrigger();
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
+    await u.keyboard('{Escape}');
+    await waitFor(() => expect(screen.queryByRole('tooltip')).toBeNull());
+    expect(document.activeElement).toBe(trigger);
+    expect(trigger.getAttribute('data-state')).toBe('closed');
+  });
+
+  it('Tab moves on to the next control and closes it', async () => {
+    const { u } = await focusTrigger();
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
     await u.tab();
     expect(label()).toBe('After');
-    await u.tab();
-    expect(document.activeElement).toBe(document.body);
-  });
-
-  it('never steals focus from the element that owns it', async () => {
-    const u = user();
-    render(<TooltipFixture visible />);
-    const before = screen.getByRole('button', { name: 'Before' });
-    before.focus();
-    await u.keyboard('{ArrowDown}{Escape}x');
-    expect(document.activeElement).toBe(before);
-  });
-
-  it('cursor mode portals a non-interactive pill that ignores pointer input', () => {
-    render(<Tooltip visible mode="cursor" label="Expand" x={10} y={10} />);
-    const pill = screen.getByText('Expand');
-    expect(pill.closest('[tabindex]')).toBeNull();
-    const positioned = pill.closest('div[style*="position: fixed"]') as HTMLElement;
-    expect(positioned.style.pointerEvents).toBe('none');
-  });
-
-  it('exposes no widget role or aria-expanded that a keyboard user could rely on', () => {
-    render(<TooltipFixture visible />);
-    expect(screen.queryByRole('tooltip')).toBeNull();
-    expect(document.querySelector('[aria-expanded]')).toBeNull();
+    await waitFor(() => expect(screen.queryByRole('tooltip')).toBeNull());
   });
 });
