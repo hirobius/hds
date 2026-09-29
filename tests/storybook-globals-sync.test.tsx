@@ -46,4 +46,15 @@ describe('GlobalsSync', () => {
     unmount();
     expect(root.hasAttribute('data-brand')).toBe(false);
   });
+
+  it('paints html and body with the page surface so no white canvas shows', () => {
+    const { unmount } = render(<GlobalsSync theme="dark" />);
+    const css = document.getElementById('hds-sb-canvas')?.textContent ?? '';
+    expect(css).toContain('html');
+    expect(css).toContain('body');
+    expect(css).toContain('var(--semantic-color-surface-page)');
+    expect(css).toContain('var(--semantic-color-content-primary)');
+    unmount();
+    expect(document.getElementById('hds-sb-canvas')).toBeNull();
+  });
 });
