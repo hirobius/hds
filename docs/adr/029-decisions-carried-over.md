@@ -5,18 +5,6 @@
 The root `DECISIONS.md` is now a pointer to this directory. The entries below were still live and had no ADR of their own, so they moved here unchanged.
 
 
-Archive pointer only.
-
-Architecture decisions now live under the process archive so they stop competing with active launch work for context.
-
-## Archive
-
-The `docs/archive/` tree was deleted on 2026-05-06. All historical content is retained in Git history and can be retrieved if needed.
-
-## Rule
-
-Do not add new ADRs by default. Only create or update decision records when Adrian explicitly asks for that documentation.
-
 ## Retained: publishable-package hardening decisions (from deleted `CLEANUP_RUN.md`, 2026 hardening pass)
 
 Salvaged during the #53 root-doc consolidation because these are still-live build decisions, not run-log noise:

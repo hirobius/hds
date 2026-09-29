@@ -269,7 +269,6 @@
     "sync-map": "node scripts/check-sync-map.mjs --gaps",
     "sync:health": "node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/build-tokens.mjs && node scripts/audit-tokens.mjs --report-only && node scripts/build-design-md.mjs",
     "test": "vitest run --passWithNoTests",
-    "test:a11y": "echo 'RETIRED (#161): the Playwright browser suite drove the docs SPA deleted in #90 — Storybook is the verification surface.' && exit 1",
     "test:compiler": "node -e \"import('./scripts/hds-jsx-compiler.mjs').then(m => console.log(JSON.stringify(m.compile(process.argv[1]), null, 2)))\" --",
     "test:coverage": "vitest run --coverage",
     "test:figma": "npx tsx scripts/figma-sync.ts",
