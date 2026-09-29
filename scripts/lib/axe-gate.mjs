@@ -31,10 +31,12 @@ export function evaluateScan(scans, allowlist) {
   const blocking = [];
   const allowed = [];
   const errored = [];
+  const retried = [];
   const matched = new Set();
   const allowKey = new Set(allowlist.map((e) => `${e.storyId}::${e.ruleId}`));
 
   for (const s of scans) {
+    if (s.retried) retried.push({ storyId: s.storyId, theme: s.theme });
     if (s.error) {
       errored.push({ storyId: s.storyId, theme: s.theme, error: s.error });
       continue;
@@ -64,6 +66,7 @@ export function evaluateScan(scans, allowlist) {
     blocking,
     allowed,
     errored,
+    retried,
     stale,
     ok: blocking.length === 0 && errored.length === 0 && stale.length === 0,
   };

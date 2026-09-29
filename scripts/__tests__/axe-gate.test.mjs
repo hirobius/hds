@@ -96,3 +96,16 @@ describe('axe gate: allowlist', () => {
     expect(validateAllowlist({})[0]).toMatch(/array/);
   });
 });
+
+describe('axe gate: retried scans', () => {
+  it('counts scans that only passed on retry without failing the gate', () => {
+    const retried = { ...scan('a--x', 'light'), retried: true };
+    const r = evaluateScan([retried, scan('a--x', 'dark')], []);
+    expect(r.retried).toEqual([{ storyId: 'a--x', theme: 'light' }]);
+    expect(r.ok).toBe(true);
+  });
+
+  it('reports no retries when none happened', () => {
+    expect(evaluateScan([scan('a--x', 'light')], []).retried).toEqual([]);
+  });
+});

@@ -123,6 +123,11 @@ async function openWorker(context, base, theme) {
   });
   await page.addStyleTag({ content: FREEZE_CSS });
   await page.evaluate(AXE_SOURCE);
+  // Keep a private handle: the a11y addon lazily loads its own axe-core build and
+  // may overwrite window.axe, so the gate always calls the engine injected above.
+  await page.evaluate(() => {
+    window.__gateAxe = window.axe;
+  });
   await page.waitForFunction(
     () => window.__STORYBOOK_ADDONS_CHANNEL__ && window.__STORYBOOK_PREVIEW__,
     null,
@@ -131,13 +136,18 @@ async function openWorker(context, base, theme) {
   // The URL globals only seed the first story; pin the theme explicitly so it
   // survives setCurrentStory (verified per scan below).
   await page.evaluate(
-    (t) => window.__STORYBOOK_ADDONS_CHANNEL__.emit('updateGlobals', { globals: { theme: t } }),
+    // a11y.manual stops the a11y addon running its own axe after each story, which
+    // otherwise collides with ours ("Axe is already running").
+    (t) =>
+      window.__STORYBOOK_ADDONS_CHANNEL__.emit('updateGlobals', {
+        globals: { theme: t, a11y: { manual: true } },
+      }),
     theme,
   );
   return { page };
 }
 
-/** Resolves to null once the story rendered, or to a short error string. */
+/** Resolves to null once the story finished (after play and afterEach), or to a short error string. */
 function renderStory(page, storyId) {
   return page.evaluate(
     (id) =>
@@ -159,7 +169,8 @@ function renderStory(page, storyId) {
           ch.on(ev, fn);
           handlers.push([ev, fn]);
         };
-        on('storyRendered', (rid) => (rid === id || rid === undefined) && finish(null));
+        // STORY_FINISHED fires after afterEach, so no addon work is still in flight.
+        on('storyFinished', (arg) => (arg?.storyId ?? arg) === id && finish(null));
         for (const [ev, msg] of Object.entries(failures)) {
           on(ev, (arg) =>
             finish(`${msg}: ${String(arg?.message ?? arg?.title ?? arg ?? '').slice(0, 160)}`),
@@ -186,11 +197,22 @@ async function scanOne(page, story, theme) {
     );
     if (applied !== theme)
       throw new Error(`theme not applied: wanted ${theme}, story rendered with ${applied}`);
-    await page.evaluate(() => document.fonts?.ready);
+    // Settle async content: fonts, and images (a broken src swaps in a fallback
+    // element on error, which otherwise races the scan and makes results flaky).
+    await page.evaluate(async () => {
+      await document.fonts?.ready;
+      const imgs = [...document.querySelectorAll('#storybook-root img')];
+      await Promise.all(
+        imgs.filter((i) => !i.complete).map((i) => new Promise((r) => (i.onload = i.onerror = r))),
+      );
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    });
     const t1 = Date.now();
+    // Scope is #storybook-root only: Radix portals in document.body (dialog, popover,
+    // menu, tooltip) are closed by default in every story, so nothing is skipped today.
     const r = await page.evaluate(
       (tags) =>
-        window.axe.run('#storybook-root', {
+        window.__gateAxe.run('#storybook-root', {
           runOnly: { type: 'tag', values: tags },
           resultTypes: ['violations'],
         }),
@@ -269,6 +291,7 @@ async function main() {
           await w.page.close().catch(() => {});
           w = await openWorker(context, base, q.theme);
           rec = await scanOne(w.page, story, q.theme);
+          rec.retried = true;
         }
         scans.push(rec);
         if (++done % 100 === 0) console.log(`  ${done}/${stories.length * THEMES.length} scans`);
@@ -318,7 +341,7 @@ async function main() {
 
   console.log(
     `\nscanned ${result.scanned} (${stories.length} stories x ${THEMES.length} themes) in ${seconds}s: ` +
-      `${result.blocking.length} blocking, ${result.allowed.length} allowlisted, ${result.errored.length} errored, ${result.stale.length} stale allowlist entries`,
+      `${result.blocking.length} blocking, ${result.allowed.length} allowlisted, ${result.errored.length} errored, ${result.retried.length} retried, ${result.stale.length} stale allowlist entries`,
   );
   for (const e of result.errored) console.error(`ERROR ${e.storyId} [${e.theme}]: ${e.error}`);
   for (const e of result.stale)
