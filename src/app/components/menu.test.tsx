@@ -79,6 +79,7 @@ describe('Menu highlighted row ring', () => {
     const cls = screen.getByRole('menuitem', { name: 'Profile' }).className;
     expect(cls).toContain('data-[highlighted]:ring-2');
     expect(cls).toContain('data-[highlighted]:ring-inset');
+    expect(cls.split(/\s+/)).not.toContain('hds-focus');
     expect(cls).toContain('data-[highlighted]:ring-ring');
   });
 });

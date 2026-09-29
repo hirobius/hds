@@ -49,6 +49,7 @@ describe('HdsSelect highlighted row ring', () => {
     const cls = screen.getAllByRole('option')[0].className;
     expect(cls).toContain('data-[highlighted]:ring-2');
     expect(cls).toContain('data-[highlighted]:ring-inset');
+    expect(cls.split(/\s+/)).not.toContain('hds-focus');
     expect(cls).toContain('data-[highlighted]:ring-ring');
   });
 });
