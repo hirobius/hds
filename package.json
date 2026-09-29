@@ -199,6 +199,7 @@
     "check:spacing": "node scripts/check-hardcoded-spacing.mjs",
     "check:spacing-vocabulary": "node scripts/check-spacing-vocabulary.mjs",
     "check:story-coverage": "node scripts/check-story-coverage.mjs",
+    "check:storybook-axe": "node scripts/check-storybook-axe.mjs",
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:sync-map": "node scripts/check-sync-map.mjs",
     "check:status-claims": "node scripts/check-status-claims.mjs --check",
