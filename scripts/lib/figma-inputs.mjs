@@ -12,6 +12,7 @@ import { buildFigmaModel } from './figma-model.mjs';
 import { loadBrandModes } from './figma-brand-modes.mjs';
 import { validateFigmaModel } from './figma-model-invariants.mjs';
 import { parseMigrationRenames } from '../check-token-renames.mjs';
+import { readTokenSource } from './token-source.mjs';
 
 /**
  * @param {string} root  A repo root (or a fixture mini-root) holding hirobius.tokens.json
@@ -19,7 +20,7 @@ import { parseMigrationRenames } from '../check-token-renames.mjs';
  * @returns {{ model: object, renames: Record<string, string> }}
  */
 export function loadFigmaInputs(root) {
-  const raw = JSON.parse(readFileSync(join(root, 'hirobius.tokens.json'), 'utf8'));
+  const raw = readTokenSource(join(root, 'hirobius.tokens.json'));
   const model = buildFigmaModel(raw, { brands: loadBrandModes(root, raw) });
   const violations = validateFigmaModel(model);
   if (violations.length > 0) {

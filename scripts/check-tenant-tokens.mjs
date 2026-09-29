@@ -24,6 +24,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import { validateTenantOverlay } from './build-tokens.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -68,7 +69,7 @@ function validateMetadata(meta, slug) {
 }
 
 function run() {
-  const baseRaw = JSON.parse(readFileSync(join(INPUT_ROOT, 'hirobius.tokens.json'), 'utf8'));
+  const baseRaw = readTokenSource(join(INPUT_ROOT, 'hirobius.tokens.json'));
 
   let slugDirs;
   try {

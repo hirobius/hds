@@ -670,14 +670,19 @@
         "$description": "Cubic bezier with restrained initial gain and steep terminal velocity."
       },
       "elastic": {
-        "$type": "spring",
-        "$value": {
-          "type": "spring",
-          "stiffness": 300,
-          "damping": 20,
-          "mass": 1
-        },
-        "$description": "Spring response defined by stiffness, damping, and mass parameters."
+        "$value": [0.34, 1.56, 0.64, 1],
+        "$description": "Spring response defined by stiffness, damping, and mass parameters.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$type": "spring",
+            "$value": {
+              "type": "spring",
+              "stiffness": 300,
+              "damping": 20,
+              "mass": 1
+            }
+          }
+        }
       }
     },
     "shadow": {
@@ -949,32 +954,53 @@
   },
   "semantic": {
     "motion": {
-      "$type": "motion",
+      "$type": "transition",
+      "$extensions": {
+        "com.hirobius.hds": {
+          "$type": "motion"
+        }
+      },
       "productive": {
         "$value": {
           "duration": "{primitive.duration.short}",
-          "easing": "{primitive.easing.decelerate}"
+          "delay": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "timingFunction": "{primitive.easing.decelerate}"
         },
         "$description": "For micro-interactions and status changes. No deformation."
       },
       "expressive": {
         "$value": {
           "duration": "{primitive.duration.medium}",
-          "easing": "{primitive.easing.elastic}"
+          "delay": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "timingFunction": "{primitive.easing.elastic}"
         },
         "$description": "For teaching moments and significant UI entries. Includes physics-based squish."
       },
       "spatial": {
         "$value": {
           "duration": "{primitive.duration.long}",
-          "easing": "{primitive.easing.emphasized}"
+          "delay": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "timingFunction": "{primitive.easing.emphasized}"
         },
         "$description": "For elements traveling long distances across the viewport."
       },
       "exit": {
         "$value": {
           "duration": "{primitive.duration.instant}",
-          "easing": "{primitive.easing.accelerate}"
+          "delay": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "timingFunction": "{primitive.easing.accelerate}"
         },
         "$description": "For elements being removed from the DOM."
       },
@@ -1934,38 +1960,58 @@
       }
     },
     "elevation": {
-      "$type": "elevation",
+      "$extensions": {
+        "com.hirobius.hds": {
+          "$type": "elevation"
+        }
+      },
       "flat": {
-        "$value": {
-          "surface": "{semantic.color.surface.page}",
-          "shadow": null,
-          "border": "{semantic.color.border.subtle}"
-        },
-        "$description": "Flat surface (no shadow, hairline border) for embedded panels."
+        "$description": "Flat surface (no shadow, hairline border) for embedded panels.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$value": {
+              "surface": "{semantic.color.surface.page}",
+              "shadow": null,
+              "border": "{semantic.color.border.subtle}"
+            }
+          }
+        }
       },
       "raised": {
-        "$value": {
-          "surface": "{semantic.color.surface.raised}",
-          "shadow": "{semantic.shadow.subtle}",
-          "border": null
-        },
-        "$description": "Resting card / panel elevation."
+        "$description": "Resting card / panel elevation.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$value": {
+              "surface": "{semantic.color.surface.raised}",
+              "shadow": "{semantic.shadow.subtle}",
+              "border": null
+            }
+          }
+        }
       },
       "floating": {
-        "$value": {
-          "surface": "{semantic.color.surface.raised}",
-          "shadow": "{semantic.shadow.floating}",
-          "border": null
-        },
-        "$description": "Hover, menu, and popover elevation."
+        "$description": "Hover, menu, and popover elevation.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$value": {
+              "surface": "{semantic.color.surface.raised}",
+              "shadow": "{semantic.shadow.floating}",
+              "border": null
+            }
+          }
+        }
       },
       "overlay": {
-        "$value": {
-          "surface": "{semantic.color.surface.overlay}",
-          "shadow": "{semantic.shadow.overlay}",
-          "border": null
-        },
-        "$description": "Modal, dialog, and drawer elevation."
+        "$description": "Modal, dialog, and drawer elevation.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$value": {
+              "surface": "{semantic.color.surface.overlay}",
+              "shadow": "{semantic.shadow.overlay}",
+              "border": null
+            }
+          }
+        }
       }
     },
     "size": {
@@ -2105,7 +2151,7 @@
         "$description": "Tag label weight."
       },
       "lineHeight": {
-        "$type": "dimension",
+        "$type": "number",
         "$value": "{primitive.typography.lineHeight.normal}",
         "$description": "Readable label rhythm for tags."
       },
