@@ -10,7 +10,7 @@ import { Grid } from "../app/components/grid";
 const meta = {
   title: "Primitives/Foundation Swatch",
   component: FoundationSwatch,
-  tags: ["autodocs", '!dev'],
+  tags: ['autodocs', '!dev'],
   parameters: {
     layout: "padded",
     docs: {

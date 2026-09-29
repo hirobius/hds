@@ -89,12 +89,61 @@ describe('published build', () => {
   });
 });
 
+describe('published build gating', () => {
+  it('drops the internals only when HDS_STORYBOOK_PUBLIC=1, so docs-site and Chromatic builds keep them', () => {
+    const main = read('.storybook/main.ts');
+    expect(main).toMatch(/process\.env\.HDS_STORYBOOK_PUBLIC\s*===\s*'1'/);
+    expect(main).not.toMatch(/configType\s*===\s*'PRODUCTION'/);
+  });
+
+  it('sets the flag in the Vercel build command only', () => {
+    const vercel = JSON.parse(read('vercel.json'));
+    expect(vercel.buildCommand).toMatch(/HDS_STORYBOOK_PUBLIC=1\s+pnpm build-storybook/);
+    for (const wf of ['docs-site.yml', 'chromatic.yml', 'ci.yml']) {
+      expect(read(`.github/workflows/${wf}`)).not.toContain('HDS_STORYBOOK_PUBLIC');
+    }
+  });
+
+  it('has no nested story files the flat production listing would miss', () => {
+    const nested = findStoryFiles(ROOT).filter((p) =>
+      p.replace(/\\/g, '/').split('src/stories/')[1]?.includes('/'),
+    );
+    expect(nested).toEqual([]);
+  });
+});
+
+describe('brand assets', () => {
+  it('pins the wordmark width so a fallback font cannot clip it', () => {
+    const logo = read('.storybook/static/hds-logo.svg');
+    expect(logo).toMatch(/<text[^>]*textLength="\d+"[^>]*lengthAdjust="spacingAndGlyphs"/);
+    const vb = /viewBox="0 0 (\d+) \d+"/.exec(logo);
+    const x = /<text[^>]*\bx="(\d+)"/.exec(logo);
+    const len = /textLength="(\d+)"/.exec(logo);
+    expect(Number(x[1]) + Number(len[1])).toBeLessThanOrEqual(Number(vb[1]));
+  });
+
+  it('pins the share-image title width inside the canvas', () => {
+    const og = read('.storybook/static/og-image.svg');
+    const title =
+      /<text[^>]*textLength="(\d+)"[^>]*lengthAdjust="spacingAndGlyphs"[^>]*>Hirobius Design System</.exec(
+        og,
+      );
+    const x = /<text[^>]*\bx="(\d+)"[^>]*textLength/.exec(og);
+    expect(title).not.toBeNull();
+    expect(Number(x[1]) + Number(title[1])).toBeLessThanOrEqual(1200 - 96);
+  });
+});
+
 describe('landing page and brand', () => {
   it('has an Introduction docs page that makes no untrue CI claims', () => {
     const mdx = read('src/stories/Introduction.mdx');
     expect(mdx).toMatch(/<Meta title="Introduction"/);
     expect(mdx).not.toMatch(/chromatic/i);
     expect(mdx).not.toMatch(/axe/i);
+    expect(mdx).not.toMatch(/Each component page has[^.]*Design tab/);
+    expect(mdx).toMatch(/Components with a Figma node\s+have a Design tab/);
+    expect(mdx).not.toMatch(/switch them here/);
+    expect(mdx).toMatch(/switch theme, density and brand here/);
     expect(mdx).toMatch(/npmjs\.com/);
     expect(mdx).toMatch(/github\.com\/hirobius\/hds/);
   });
