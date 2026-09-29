@@ -680,7 +680,8 @@
               "stiffness": 300,
               "damping": 20,
               "mass": 1
-            }
+            },
+            "bezierSource": "The cubicBezier is easeOutBack (easings.net), chosen as a stand-in for the spring, not fitted to it: both overshoot once, the curve by about 10% and spring(300, 20, 1) by about 11%."
           }
         }
       }
