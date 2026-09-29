@@ -27,12 +27,9 @@ The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens
 
 <!-- auto:start:consumer-usage -->
 
-The Ops dashboard (`hirobius/ops`) is the component-level consumer: **35** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main`.
+The Ops dashboard (`hirobius/ops`) is the only verified component-level consumer: **35** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main` (measured at commit `01fce2f`).
 
-| Consumer kind     | Count | How it uses HDS                           |
-| ----------------- | ----- | ----------------------------------------- |
-| Product apps      | 2     | Components and tokens                     |
-| Token-level sites | 4     | Tokens and CSS only, no component imports |
+Other consumers: the split into product apps and token-level sites is not yet confirmed, so it is not stated here.
 
 [![Ops library page](docs/images/ops-library.png)](docs/images/ops-library.png)
 
@@ -40,7 +37,7 @@ The Ops dashboard (`hirobius/ops`) is the component-level consumer: **35** of it
 
 <!-- auto:end:consumer-usage -->
 
-The numbers and the table come from `pnpm consumer:usage`, which measures the Ops checkout when present and otherwise reuses the committed snapshot in `docs/data/consumer-usage.json`. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file.
+The numbers come from `pnpm consumer:usage --root <ops checkout>`, which measures that checkout and records its commit in `docs/data/consumer-usage.json`; without a root it reuses the committed snapshot. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file and stays out of this section until `consumersConfirmed` there is set to true.
 
 ## Using the published package
 

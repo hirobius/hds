@@ -9,17 +9,19 @@
  *     `/tokens`, `/manifest`, `/contexts`, `/brand` are not component imports)
  *   - distinct imported names that are components in public/hds-manifest.json
  *
- * Measurement source: `--root <dir>`, else $OPS_ROOT, else /home/user/ops when
- * it exists. With none of those the committed snapshot
+ * Measurement source: `--root <dir>` or $OPS_ROOT (a checkout of the consumer's
+ * `main`; the measured commit is recorded). With neither the committed snapshot
  * (docs/data/consumer-usage.json) is used as-is, so CI and fresh clones still
  * regenerate the README block deterministically. When a consumer is measured
  * the snapshot is rewritten.
  *
  * `consumers` (product apps vs token-level sites) is a declared, hand-kept
- * figure: source-scanning cannot tell a site that only imports tokens.css.
+ * figure: source-scanning cannot tell a site that only imports tokens.css. It is
+ * not printed in the README until a human sets `consumersConfirmed` to true.
  *
  * Run: pnpm consumer:usage
  */
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -81,9 +83,27 @@ function alignTable(rows) {
 
 /** Markdown placed between the generated-block markers (starts and ends with a blank line). */
 export function renderInUseBlock(s) {
+  const shots = [
+    '[![Ops library page](docs/images/ops-library.png)](docs/images/ops-library.png)',
+    '',
+    '[![Ops fleet audit page](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)',
+    '',
+    '',
+  ];
+  const measured = `**${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The two screenshots below are Ops pages rendered from its \`main\` (measured at commit \`${s.commit.slice(0, 7)}\`).`;
+  if (!s.consumersConfirmed) {
+    return [
+      '',
+      `The Ops dashboard (\`hirobius/ops\`) is the only verified component-level consumer: ${measured}`,
+      '',
+      'Other consumers: the split into product apps and token-level sites is not yet confirmed, so it is not stated here.',
+      '',
+      ...shots,
+    ].join('\n');
+  }
   return [
     '',
-    `The Ops dashboard (\`hirobius/ops\`) is the component-level consumer: **${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The two screenshots below are Ops pages rendered from its \`main\`.`,
+    `The Ops dashboard (\`hirobius/ops\`) is one of ${s.consumers.productApps} product apps that use components: ${measured}`,
     '',
     ...alignTable([
       ['Consumer kind', 'Count', 'How it uses HDS'],
@@ -95,11 +115,7 @@ export function renderInUseBlock(s) {
       ],
     ]),
     '',
-    '[![Ops library page](docs/images/ops-library.png)](docs/images/ops-library.png)',
-    '',
-    '[![Ops fleet audit page](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)',
-    '',
-    '',
+    ...shots,
   ].join('\n');
 }
 
@@ -119,20 +135,27 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const argRoot = process.argv.includes('--root')
     ? process.argv[process.argv.indexOf('--root') + 1]
     : null;
-  const root = [argRoot, process.env.OPS_ROOT, '/home/user/ops'].find((p) => p && existsSync(p));
+  const root = [argRoot, process.env.OPS_ROOT].find((p) => p && existsSync(p));
   const snapshot = JSON.parse(readFileSync(snapshotPath, 'utf8'));
   if (root) {
+    const git = (...a) => execFileSync('git', ['-C', root, ...a], { encoding: 'utf8' }).trim();
     const manifest = JSON.parse(readFileSync(join(REPO, 'public/hds-manifest.json'), 'utf8'));
     Object.assign(
       snapshot,
       countConsumerUsage(root, new Set(Object.keys(manifest.componentSpecs))),
     );
+    snapshot.commit = git('rev-parse', 'HEAD');
+    const branch = git('rev-parse', '--abbrev-ref', 'HEAD');
+    if (branch !== 'main')
+      console.warn(
+        `consumer:usage: ${root} is on '${branch}', not main; the README says "main", so measure a main checkout before committing.`,
+      );
     writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2) + '\n');
     console.log(
-      `consumer:usage measured ${root}: ${snapshot.files} files, ${snapshot.components} components`,
+      `consumer:usage measured ${root}@${snapshot.commit.slice(0, 7)}: ${snapshot.files} files, ${snapshot.components} components`,
     );
   } else {
-    console.log('consumer:usage: no consumer checkout found, using the committed snapshot');
+    console.log('consumer:usage: no --root or OPS_ROOT given, using the committed snapshot');
   }
   const readmePath = join(REPO, 'README.md');
   writeFileSync(

@@ -12,13 +12,14 @@
  *   node codemods/patterns-subpath.mjs [--root <dir>] [--check] [--dry-run]
  *
  *   --root <dir>  directory to scan (default: current directory)
- *   --check       write nothing; exit 1 when a rewrite is needed
- *   --dry-run     write nothing; print what would change, exit 0
+ *   --check       write nothing; exit 1 when a rewrite is needed or a root namespace
+ *                 import (`import * as X`, `export *`) needs a manual look
+ *   --dry-run     write nothing; print each import line before (-) and after (+), exit 0
  *
  * The name list is codemods/patterns-subpath.names.json, generated from
  * src/index.ts by `pnpm codemod:names`.
  */
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -42,11 +43,18 @@ export function loadPatternNames() {
   return new Set(names);
 }
 
-const importRe = (pkg) =>
+const esc = (pkg) => pkg.replace(/[/@]/g, '\\$&');
+// indent, import|export, type?, default?, { body }, quote, semicolon
+const namedRe = (pkg) =>
   new RegExp(
-    `^import(\\s+type)?\\s*\\{([^}]*)\\}\\s*from\\s*(['"])${pkg.replace(/[/@]/g, '\\$&')}\\3(;?)`,
+    `^([ \\t]*)(import|export)(\\s+type)?\\s*(?:([\\w$]+)\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*(['"])${esc(pkg)}\\6(;?)`,
     'gm',
   );
+// `import * as X`, `import D, * as X`, `export * from`, `export * as X from` on the root
+const namespaceRe = new RegExp(
+  `^[ \\t]*(?:import\\s+(?:[\\w$]+\\s*,\\s*)?\\*\\s*as\\s+[\\w$]+|export\\s+\\*(?:\\s*as\\s+[\\w$]+)?)\\s*from\\s*['"]${esc(ROOT_PKG)}['"]`,
+  'gm',
+);
 
 const specName = (spec) =>
   spec
@@ -59,67 +67,99 @@ const splitSpecs = (body) =>
     .map((s) => s.trim())
     .filter(Boolean);
 
+/** Namespace imports and star re-exports of the root: names are not visible, so no rewrite. */
+export function findUnrewritable(source) {
+  return [...source.matchAll(namespaceRe)].map((m) => m[0].trim());
+}
+
+/** Renders one import/export statement. */
+function render({ indent, kw, typeKw, def, list, pkg, multiline, quote, semi }) {
+  const head = `${indent}${kw}${typeKw ? ' type' : ''} `;
+  const tail = ` from ${quote}${pkg}${quote}${semi}`;
+  if (list.length === 0) return `${head}${def}${tail}`;
+  const d = def ? `${def}, ` : '';
+  if (multiline)
+    return `${head}${d}{\n${list.map((s) => `${indent}  ${s},`).join('\n')}\n${indent}}${tail}`;
+  return `${head}${d}{ ${list.join(', ')} }${tail}`;
+}
+
 /**
  * Pure transform of one file's source.
- * @returns {{ source: string, changed: boolean, sites: number, moved: string[] }}
+ * @returns {{ source: string, changed: boolean, sites: number, moved: string[],
+ *   edits: {before: string, after: string}[] }}
  */
 export function transformSource(source, names) {
   const moved = [];
-  let sites = 0;
-  // Moved specifiers grouped by kind, so an existing /patterns import can absorb them.
-  const pending = { value: [], type: [] };
-  const kindOf = (isType) => (isType ? 'type' : 'value');
-
-  let out = source.replace(importRe(ROOT_PKG), (match, typeKw, body, quote, semi) => {
-    const specs = splitSpecs(body);
-    const go = specs.filter((s) => names.has(specName(s)));
-    if (go.length === 0) return match;
-    sites++;
-    moved.push(...go.map(specName));
-    const keep = specs.filter((s) => !go.includes(s));
-    const multiline = body.includes('\n');
-    const fmt = (list, pkg) =>
-      multiline
-        ? `import${typeKw ? ' type' : ''} {\n${list.map((s) => `  ${s},`).join('\n')}\n} from ${quote}${pkg}${quote}${semi}`
-        : `import${typeKw ? ' type' : ''} { ${list.join(', ')} } from ${quote}${pkg}${quote}${semi}`;
-    pending[kindOf(typeKw)].push({ list: go, fmt });
-    if (keep.length === 0) return fmt(go, SUBPATH) + '\u0000'; // sentinel: filled below
-    return fmt(keep, ROOT_PKG) + '\n' + fmt(go, SUBPATH) + '\u0000';
+  const edits = [];
+  const isType = (m) => !!m[3];
+  const parse = (m) => ({
+    indent: m[1],
+    kw: m[2],
+    typeKw: m[3],
+    def: m[4],
+    body: m[5],
+    quote: m[6],
+    semi: m[7],
   });
 
-  if (sites === 0) return { source, changed: false, sites: 0, moved: [] };
-
-  // Merge into an existing /patterns import of the same kind: append names to it and
-  // remove the freshly generated duplicate line.
-  for (const isType of [false, true]) {
-    const re = importRe(SUBPATH);
-    const existing = [...out.matchAll(re)].filter(
-      (m) => !!m[1] === isType && !m[0].includes('\u0000'),
-    );
-    // Generated lines carry the sentinel right after them, so exclude those by position.
-    const real = existing.filter((m) => out[m.index + m[0].length] !== '\u0000');
-    if (real.length === 0) continue;
-    const target = real[0];
-    const generatedRe = new RegExp(
-      `\\n?import${isType ? '\\s+type' : ''}\\s*\\{[^}]*\\}\\s*from\\s*(['"])${SUBPATH.replace(/[/@]/g, '\\$&')}\\1;?\\u0000`,
-      'g',
-    );
-    const addNames = [];
-    for (const p of pending[kindOf(isType)]) addNames.push(...p.list);
-    if (addNames.length === 0) continue;
-    const have = splitSpecs(target[2]);
-    const merged = [...have, ...addNames.filter((n) => !have.includes(n))];
-    const multiline = target[2].includes('\n');
-    const line = multiline
-      ? `import${target[1] ? ' type' : ''} {\n${merged.map((s) => `  ${s},`).join('\n')}\n} from ${target[3]}${SUBPATH}${target[3]}${target[4]}`
-      : `import${target[1] ? ' type' : ''} { ${merged.join(', ')} } from ${target[3]}${SUBPATH}${target[3]}${target[4]}`;
-    // Drop generated duplicates: if the whole root import was consumed, the generated line
-    // begins the statement (no leading newline to eat).
-    out = out.replace(generatedRe, (m) => (m.startsWith('\n') ? '' : '\u0001'));
-    out = out.replace(target[0], line);
+  // An existing `import { … } from '/patterns'` of each kind absorbs moved names.
+  const targets = {};
+  for (const m of source.matchAll(namedRe(SUBPATH))) {
+    if (m[2] !== 'import' || m[4]) continue;
+    targets[isType(m) ? 'type' : 'value'] ??= { m, add: [] };
   }
-  out = out.replace(/\u0001\n?/g, '').replace(/\u0000/g, '');
-  return { source: out, changed: out !== source, sites, moved };
+
+  const replacements = [];
+  for (const m of source.matchAll(namedRe(ROOT_PKG))) {
+    const p = parse(m);
+    const specs = splitSpecs(p.body);
+    const go = specs.filter((s) => names.has(specName(s)));
+    if (go.length === 0) continue;
+    moved.push(...go.map(specName));
+    const keep = specs.filter((s) => !go.includes(s));
+    const multiline = p.body.includes('\n');
+    const lines = [];
+    if (keep.length > 0 || p.def)
+      lines.push(render({ ...p, list: keep, pkg: ROOT_PKG, multiline }));
+    const target = p.kw === 'import' && targets[p.typeKw ? 'type' : 'value'];
+    if (target) target.add.push(...go);
+    else lines.push(render({ ...p, def: undefined, list: go, pkg: SUBPATH, multiline }));
+    replacements.push({ start: m.index, end: m.index + m[0].length, before: m[0], lines });
+  }
+
+  if (replacements.length === 0) return { source, changed: false, sites: 0, moved: [], edits: [] };
+
+  const sites = replacements.length;
+  for (const { m, add } of Object.values(targets)) {
+    if (add.length === 0) continue;
+    const p = parse(m);
+    const have = splitSpecs(p.body);
+    const merged = [...have, ...add.filter((n) => !have.includes(n))];
+    replacements.push({
+      start: m.index,
+      end: m.index + m[0].length,
+      before: m[0],
+      lines: [
+        render({
+          ...p,
+          def: undefined,
+          list: merged,
+          pkg: SUBPATH,
+          multiline: p.body.includes('\n'),
+        }),
+      ],
+    });
+  }
+
+  let out = source;
+  for (const r of replacements.sort((x, y) => y.start - x.start)) {
+    const after = r.lines.join('\n');
+    // A statement folded entirely into an existing import leaves nothing behind, not a blank line.
+    const end = after === '' && out[r.end] === '\n' ? r.end + 1 : r.end;
+    out = out.slice(0, r.start) + after + out.slice(end);
+    edits.unshift({ before: r.before, after });
+  }
+  return { source: out, changed: out !== source, sites, moved, edits };
 }
 
 function* walk(dir) {
@@ -135,19 +175,21 @@ function* walk(dir) {
 /** Scan a directory. Writes only when `write` is true. */
 export function runCodemod({ root, write = false, names = loadPatternNames() }) {
   const files = [];
+  const manual = [];
   const moved = new Set();
   let sites = 0;
   for (const file of walk(root)) {
     const src = readFileSync(file, 'utf8');
     if (!src.includes(ROOT_PKG)) continue;
+    for (const stmt of findUnrewritable(src)) manual.push({ file: relative(root, file), stmt });
     const r = transformSource(src, names);
     if (!r.changed) continue;
-    files.push({ file: relative(root, file), sites: r.sites, moved: r.moved });
+    files.push({ file: relative(root, file), sites: r.sites, moved: r.moved, edits: r.edits });
     r.moved.forEach((n) => moved.add(n));
     sites += r.sites;
     if (write) writeFileSync(file, r.source);
   }
-  return { files, sites, names: [...moved].sort() };
+  return { files, sites, manual, names: [...moved].sort() };
 }
 
 function main(argv) {
@@ -166,20 +208,47 @@ function main(argv) {
   const write = !args.check && !args.dryRun;
   const res = runCodemod({ root: args.root, write });
   const summary = `${res.files.length} files, ${res.sites} import sites, ${res.names.length} names (${res.names.join(', ') || 'none'})`;
+  const manualLines = res.manual.map(
+    (m) => `  ${m.file}: ${m.stmt} (namespace import: move pattern names to '${SUBPATH}' by hand)`,
+  );
   if (args.check) {
-    if (res.sites > 0) {
+    if (res.sites > 0 || res.manual.length > 0) {
       console.error(`patterns-subpath: rewrite needed: ${summary}`);
       for (const f of res.files) console.error(`  ${f.file}: ${f.moved.join(', ')}`);
+      for (const l of manualLines) console.error(l);
       return 1;
     }
     console.log('patterns-subpath: nothing to rewrite');
     return 0;
   }
   console.log(`patterns-subpath: ${write ? 'rewrote' : 'would rewrite'} ${summary}`);
-  for (const f of res.files) console.log(`  ${f.file}: ${f.moved.join(', ')}`);
+  for (const f of res.files) {
+    console.log(`  ${f.file}: ${f.moved.join(', ')}`);
+    if (args.dryRun)
+      for (const e of f.edits) {
+        for (const l of e.before.split('\n')) console.log(`- ${l}`);
+        for (const l of e.after.split('\n')) console.log(`+ ${l}`);
+      }
+  }
+  if (res.manual.length > 0) {
+    console.warn('patterns-subpath: cannot rewrite these, do them by hand:');
+    for (const l of manualLines) console.warn(l);
+  }
   return 0;
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+// Compare real paths: npm/yarn link the bin and pnpm links the package directory, so
+// argv[1] is a symlink while import.meta.url is already resolved.
+const isEntry = (() => {
+  try {
+    return (
+      !!process.argv[1] &&
+      realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))
+    );
+  } catch {
+    return false;
+  }
+})();
+if (isEntry) {
   process.exit(main(process.argv.slice(2)));
 }

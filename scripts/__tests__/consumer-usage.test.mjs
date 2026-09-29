@@ -55,8 +55,41 @@ describe('README "In use" section', () => {
     expect(m[1]).toBe(renderInUseBlock(snapshot));
   });
 
-  it('states the honest consumer split', () => {
-    expect(snapshot.consumers).toEqual({ productApps: 2, tokenLevelSites: 4 });
+  it('records which commit of the consumer was measured, so "main" can be checked', () => {
+    expect(snapshot.commit).toMatch(/^[0-9a-f]{40}$/);
+  });
+
+  it('does not publish the unconfirmed product-app / token-site split', () => {
+    expect(snapshot.consumersConfirmed).toBe(false);
+    expect(readme).not.toMatch(/Token-level sites/);
+    expect(readme).toMatch(/not yet confirmed/);
     expect(readme).toMatch(/^## In use$/m);
+  });
+});
+
+describe('renderInUseBlock consumer split', () => {
+  const base = { files: 35, components: 25, commit: 'a'.repeat(40) };
+
+  it('names Ops as the only verified component-level consumer while the split is unconfirmed', () => {
+    const out = renderInUseBlock({
+      ...base,
+      consumers: { productApps: 2, tokenLevelSites: 4 },
+      consumersConfirmed: false,
+    });
+    expect(out).toMatch(/only verified component-level consumer/);
+    expect(out).toMatch(/not yet confirmed/);
+    expect(out).not.toMatch(/Product apps/);
+  });
+
+  it('shows the table, and prose that agrees with it, once confirmed', () => {
+    const out = renderInUseBlock({
+      ...base,
+      consumers: { productApps: 2, tokenLevelSites: 4 },
+      consumersConfirmed: true,
+    });
+    expect(out).toMatch(/one of 2 product apps/);
+    expect(out).toMatch(/\| Product apps\s+\| 2 /);
+    expect(out).toMatch(/\| Token-level sites\s+\| 4 /);
+    expect(out).not.toMatch(/component-level consumer:/);
   });
 });

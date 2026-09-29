@@ -38,8 +38,12 @@ npx hds-patterns-subpath --root .
 
 Other named imports stay on the root. Aliases (`SideNav as Nav`), `type`
 modifiers and multi-line layout are kept, and a pattern name joins an existing
-`/patterns` import instead of adding a second one. `node_modules`, `dist` and
-`.git` are skipped.
+`/patterns` import instead of adding a second one. Default plus named imports
+(`import HDS, { Page }`), `export { Page } from` re-exports and indented imports
+are handled. `--dry-run` prints each import line before (`-`) and after (`+`).
+Namespace imports (`import * as HDS`, `export *`) hide the names, so the codemod
+cannot rewrite them: `--check` exits 1 and lists them for a manual edit.
+`node_modules`, `dist` and `.git` are skipped.
 
 Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
 

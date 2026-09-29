@@ -5,5 +5,7 @@
   "consumers": {
     "productApps": 2,
     "tokenLevelSites": 4
-  }
+  },
+  "commit": "01fce2f79f30a4a7585ef058c78289da5d45db1a",
+  "consumersConfirmed": false
 }
