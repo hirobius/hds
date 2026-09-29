@@ -15,7 +15,7 @@ the model against a committed snapshot of the file, not the live file.
 | `pnpm figma:snapshot`      | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`                                               | No (you run it)        |
 | `pnpm check:figma-drift`   | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                            | No                     |
 | `pnpm figma:native-import` | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                           | No                     |
-| `pnpm figma:links`         | Writes the README links section, and to `figma/links/` the steps that add dev resources and component descriptions in Figma                  | Only `--dev-resources` |
+| `pnpm figma:links`         | Writes `docs/DESIGN_LINKS.md`, and to `figma/links/` the steps that add dev resources and component descriptions in Figma                    | Only `--dev-resources` |
 
 `figma/model.json`, `figma/push/` and `figma/native-import/` are generated and
 gitignored. `figma/snapshot.json` is committed: it records Figma's state.
@@ -79,12 +79,12 @@ token, so Density carries only tenant Compact values today.
 Each component's Figma node has one source: the `@figma` tag in its JSDoc,
 which `pnpm manifest:generate` copies to `componentSpecs[<Name>].figmaUrl` in
 `public/hds-manifest.json`. Everything else reads that field
-(`scripts/lib/design-links.mjs`). The README and Storybook links need nothing in
+(`scripts/lib/design-links.mjs`). `docs/DESIGN_LINKS.md` and Storybook links need nothing in
 Figma. The two Figma-side links exist only after a person runs their step:
 
 | Where                                              | How                                                                                               | Needs                                                                                                                                                                                                         |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| README "Design ↔ Code links"                       | `pnpm figma:links` rewrites the marked section                                                    | Nothing                                                                                                                                                                                                       |
+| `docs/DESIGN_LINKS.md`                             | `pnpm figma:links` rewrites the marked section                                                    | Nothing                                                                                                                                                                                                       |
 | Storybook `parameters.design`                      | The story meta spreads `designParameters('<Name>')` (`src/stories/design-parameters.ts`)          | `@storybook/addon-designs` to show it as the Design tab                                                                                                                                                       |
 | Figma dev resources "HDS source" and "HDS story"   | `FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run`, then without `--dry-run` | A personal access token with `file_dev_resources:read` and `file_dev_resources:write`. **Unverified on a Professional plan**: Figma documents no plan limit for these endpoints, and no run has confirmed one |
 | Figma component description and documentation link | `figma/links/use-figma/descriptions-<file>.dry-run.js` through use_figma, then the `.js`          | Figma MCP write access to that file. It uses the Plugin API, the same path as `figma:push`                                                                                                                    |
@@ -97,7 +97,7 @@ To link a component:
 3. Run `pnpm manifest:generate && pnpm figma:links`.
 4. If its story meta does not spread `designParameters('<Name>')` yet, add it.
 
-`pnpm test` fails, and `pnpm figma:links --check` exits 1, when the README
+`pnpm test` fails, and `pnpm figma:links --check` exits 1, when `docs/DESIGN_LINKS.md`
 section is stale, a linked component has no story or its story skips
 `designParameters`, a story hardcodes a Figma URL, or a `figmaUrl` is not a node
 URL.
