@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { TextLockup } from "../app/components/text-lockup";
 
 const meta = {
-  title: "Primitives/text-lockup",
+  title: "Primitives/Text Lockup",
   component: TextLockup,
   tags: ["autodocs"],
   parameters: {

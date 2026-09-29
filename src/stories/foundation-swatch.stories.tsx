@@ -8,9 +8,9 @@ import { FoundationSwatch } from "../app/components/foundation-swatch";
 import { Grid } from "../app/components/grid";
 
 const meta = {
-  title: "Primitives/foundation-swatch",
+  title: "Primitives/Foundation Swatch",
   component: FoundationSwatch,
-  tags: ["autodocs"],
+  tags: ["autodocs", '!dev'],
   parameters: {
     layout: "padded",
     docs: {

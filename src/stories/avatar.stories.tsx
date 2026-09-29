@@ -7,7 +7,7 @@ import { Avatar } from '../app/components/avatar';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/avatar',
+  title: 'Primitives/Avatar',
   component: Avatar,
   tags: ['autodocs'],
   parameters: {

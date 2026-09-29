@@ -8,7 +8,7 @@ import { Lightbox } from '../app/components/image-lightbox';
 import { Button } from '../app/components/button';
 
 const meta = {
-  title: 'Primitives/image-lightbox',
+  title: 'Primitives/Image Lightbox',
   component: Lightbox,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

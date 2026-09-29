@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="40" viewBox="0 0 220 40" role="img" aria-label="Hirobius Design System">
+  <title>Hirobius Design System</title>
+  <rect x="0" y="4" width="32" height="32" rx="8" fill="#111111"/>
+  <path d="M10 12v16M22 12v16M10 20h12" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <text x="44" y="26" font-family="Satoshi, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" font-weight="700" fill="#111111">Hirobius Design System</text>
+</svg>

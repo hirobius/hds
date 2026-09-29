@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# Hirobius Design System
+
+HDS is a React component library built on a single token pipeline: design tokens
+compile to CSS variables, and every component reads only those variables. Change a
+variable and the whole system re-skins, with no rebuild.
+
+Use the sidebar to browse **Foundations**, **Primitives** and **Patterns**. Each
+component page has live examples, a props table and a Design tab linking to its
+Figma node.
+
+## Install
+
+```bash
+npm install @hirobius/design-system react react-dom
+```
+
+```tsx
+import '@hirobius/design-system/tokens.css';
+import { Button } from '@hirobius/design-system';
+
+export const App = () => (
+  <div data-hds>
+    <Button>Get started</Button>
+  </div>
+);
+```
+
+## The four dials
+
+Theming is root attributes and CSS variables, so it works without JavaScript. Use the
+toolbar above the canvas to switch them here.
+
+| Dial    | Set with                                       | Default              |
+| ------- | ---------------------------------------------- | -------------------- |
+| theme   | `data-theme="dark"`                            | light                |
+| density | `data-density="compact"`                       | comfortable          |
+| brand   | `data-brand="<slug>"`                          | base                 |
+| font    | `--hds-font-family` / `--hds-font-family-mono` | Satoshi / Geist Mono |
+
+## Links
+
+- [npm: @hirobius/design-system](https://www.npmjs.com/package/@hirobius/design-system)
+- [GitHub: hirobius/hds](https://github.com/hirobius/hds)
+- [Consuming guide](https://github.com/hirobius/hds/blob/main/docs/CONSUMING.md)

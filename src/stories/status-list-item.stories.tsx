@@ -7,7 +7,7 @@ import { StatusListItem } from '../app/components/status-list-item';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/status-list-item',
+  title: 'Primitives/Status List Item',
   component: StatusListItem,
   tags: ['autodocs'],
   parameters: {

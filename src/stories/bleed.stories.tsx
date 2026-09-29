@@ -23,7 +23,7 @@ const FullBleedBand = () => (
 );
 
 const meta = {
-  title: 'Primitives/bleed',
+  title: 'Primitives/Bleed',
   component: Bleed,
   tags: ['autodocs'],
   parameters: {

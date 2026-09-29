@@ -7,7 +7,7 @@ import { AppShell } from '../app/components/app-shell';
 import hds from '../app/design-system/tokens';
 
 const meta = {
-  title: 'Patterns/app-shell',
+  title: 'Patterns/App Shell',
   component: AppShell,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

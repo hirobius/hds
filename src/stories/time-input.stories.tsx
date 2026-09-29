@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { TimeInput } from '../app/components/time-input';
 
 const meta = {
-  title: 'Primitives/time-input',
+  title: 'Primitives/Time Input',
   component: TimeInput,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

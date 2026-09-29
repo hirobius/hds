@@ -8,7 +8,7 @@ import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/card',
+  title: 'Primitives/Card',
   component: Card,
   tags: ['autodocs'],
   parameters: {

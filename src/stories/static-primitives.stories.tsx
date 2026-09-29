@@ -21,7 +21,7 @@ function StaticPrimitivesShowcase({ children }: { children?: ReactNode }) {
 }
 
 const meta = {
-  title: 'Primitives/static-css',
+  title: 'Primitives/Static CSS',
   component: StaticPrimitivesShowcase,
   tags: ['autodocs'],
   parameters: {

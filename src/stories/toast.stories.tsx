@@ -15,7 +15,7 @@ import { designParameters } from './design-parameters';
 // Meta uses ToastProvider as the stand-in component since Toast has no
 // single exported React component to pass to `component`.
 const meta = {
-  title: 'Primitives/toast',
+  title: 'Primitives/Toast',
   component: ToastProvider,
   tags: ['autodocs'],
   parameters: {
