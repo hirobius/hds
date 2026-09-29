@@ -260,13 +260,13 @@
     {
       "id": "check-focus-states",
       "description": "A11y focus state checker for HDS components and pages. Every interactive element must have a visible focus indicator.",
-      "severity": "warn",
+      "severity": "error",
       "gateScript": "scripts/check-focus-states.mjs",
       "fixturePath": "fixtures/check-focus-states",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
-      "firingChannels": ["on-demand", "ralph-gate"]
+      "firingChannel": "pnpm-meta",
+      "firingChannels": ["pnpm-meta", "ralph-gate"]
     },
     {
       "id": "check-hardcoded-breakpoints",
