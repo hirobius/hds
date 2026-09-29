@@ -81,7 +81,7 @@ export function buildCountsSection({ components, tokens, stories, storyFiles }) 
   return [
     `- **${components}** ${PHRASES.components}, exported from \`src/index.ts\``,
     `- **${tokens}** ${PHRASES.tokens} in \`hirobius.tokens.json\`, compiled to CSS variables and TypeScript constants`,
-    `- **${stories}** ${PHRASES.stories} in **${storyFiles}** ${PHRASES.storyFiles}, reviewed visually in Chromatic`,
+    `- **${stories}** ${PHRASES.stories} in **${storyFiles}** ${PHRASES.storyFiles}`,
   ].join('\n');
 }
 
