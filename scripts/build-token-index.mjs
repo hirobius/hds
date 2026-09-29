@@ -15,6 +15,7 @@
 import { readFileSync, writeFileSync, mkdirSync , readdirSync, statSync } from 'fs';
 import { join, dirname, relative }                 from 'path';
 import { fileURLToPath }                           from 'url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT      = join(__dirname, '..');
@@ -224,7 +225,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const THEME_CSS_FILE = join(ROOT, 'src', 'styles', 'theme.css');
 
   // 1. Build expectedValues from the token source of truth
-  const tokenTree    = JSON.parse(readFileSync(TOKEN_FILE, 'utf8'));
+  const tokenTree    = readTokenSource(TOKEN_FILE);
   const expectedValues = buildExpectedValues(tokenTree);
 
   // 1b. Build allowlist from theme.css + tokens.css — both define valid CSS vars

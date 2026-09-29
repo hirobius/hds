@@ -1,0 +1,5 @@
+---
+'@hirobius/design-system': minor
+---
+
+`hirobius.tokens.json` now passes a strict W3C DTCG check. `component.tag.lineHeight` is typed `number`, matching the token it aliases, which also fixes `--component-tag-lineHeight` in `dist/hds-tokens.css` (it was `undefinedundefined`, now `1.5`). Generated CSS variables, TypeScript and Figma variables are otherwise unchanged, but the raw JSON (the file itself and the `tokens` export) changes shape in three places, so code that reads it directly must move: `semantic.motion.*.$value.easing` is now `semantic.motion.*.$value.timingFunction` (a DTCG `transition`, with a `delay` of 0ms, and the group's `$type` is `transition`); `primitive.easing.elastic.$value` is now a `cubicBezier` array, with the spring parameters under `$extensions["com.hirobius.hds"].$value`; and each `semantic.elevation.*` level has no `$value`, its surface, shadow and border sit under `$extensions["com.hirobius.hds"].$value`. The `$type` values `motion`, `spring` and `elevation` also moved into that extension.

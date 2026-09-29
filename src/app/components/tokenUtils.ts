@@ -4,6 +4,7 @@
  */
 
 import rawTokens from '../../../hirobius.tokens.json';
+import { fromDtcg } from '../../../scripts/lib/token-dialect.mjs';
 
 export type Tier = 'primitive' | 'semantic' | 'component';
 
@@ -347,7 +348,9 @@ function* walkRaw(
   }
 }
 
-const raw = rawTokens as TokenTreeNode;
+// The file is strict DTCG; fromDtcg gives back the HDS spring, motion and
+// elevation composites the token browser lists.
+const raw = fromDtcg(rawTokens) as TokenTreeNode;
 
 export const allTokens: FlatToken[] = [...walkRaw(raw)];
 

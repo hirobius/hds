@@ -14,9 +14,9 @@
  * actual token structure.
  */
 
-import { readFileSync } from 'fs';
 import { join, dirname }               from 'path';
 import { fileURLToPath }               from 'url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT      = join(__dirname, '..');
@@ -58,7 +58,7 @@ function getExamples(semantic, category) {
 // ── Build Reference ───────────────────────────────────────────────────────────
 
 export function buildTokenQuickReference(tokensJsonPath) {
-  const raw = JSON.parse(readFileSync(tokensJsonPath, 'utf-8'));
+  const raw = readTokenSource(tokensJsonPath);
   const semantic = raw.semantic || {};
 
   const rows = [
