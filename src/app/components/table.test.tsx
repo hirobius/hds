@@ -85,3 +85,48 @@ describe('Table — sortable columns', () => {
   // click test above covers the button's own onClick wiring, which is all
   // this component owns.
 });
+
+describe('Table — density follows the data-density dial (hds#336)', () => {
+  const COMPACT_ANCESTOR = '[[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)]';
+
+  function cellsOf(container: HTMLElement) {
+    return [
+      ...container.querySelectorAll('[role="columnheader"]'),
+      ...container.querySelectorAll('[role="cell"]'),
+    ];
+  }
+
+  it('with no density prop, header and data cells carry the compact-ancestor variant over comfortable defaults', () => {
+    const { container } = render(<Table columns={columnsWith({})} rows={rows} />);
+    const cells = cellsOf(container);
+    expect(cells.length).toBeGreaterThan(0);
+    for (const cell of cells) {
+      expect(cell.className).toContain('min-h-[var(--semantic-size-row-comfortable)]');
+      expect(cell.className).toContain(COMPACT_ANCESTOR);
+      expect(cell.className).toContain(
+        '[[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]',
+      );
+    }
+  });
+
+  it('explicit density="comfortable" inside a compact scope stays comfortable (no ancestor variant)', () => {
+    const { container } = render(
+      <div data-density="compact">
+        <Table columns={columnsWith({})} rows={rows} density="comfortable" />
+      </div>,
+    );
+    for (const cell of cellsOf(container)) {
+      expect(cell.className).toContain('min-h-[var(--semantic-size-row-comfortable)]');
+      expect(cell.className).not.toContain('[[data-density=compact]_&]');
+    }
+  });
+
+  it('explicit density="compact" renders compact rows', () => {
+    const { container } = render(<Table columns={columnsWith({})} rows={rows} density="compact" />);
+    for (const cell of cellsOf(container)) {
+      expect(cell.className).toContain('min-h-[var(--semantic-size-row-compact)]');
+      expect(cell.className).not.toContain('min-h-[var(--semantic-size-row-comfortable)]');
+      expect(cell.className).not.toContain('[[data-density=compact]_&]');
+    }
+  });
+});

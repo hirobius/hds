@@ -82,6 +82,8 @@ React in them, and marking them would turn their exports into opaque client
 references when you use them on the server (`tokens.color.primary` in a layout,
 `brand` at the edge). Import those from server code freely.
 
+**Density.** Put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
+
 ## 2.5. Lint discipline (optional)
 
 `@hirobius/eslint-plugin-hds` flags raw hex/px values in `style`, `className`,
