@@ -347,7 +347,9 @@ describe('isScannedFile', () => {
   });
 });
 
-describe('check-pure-annotations CLI', () => {
+// Each test spawns the gate one to three times; under a full `pnpm test` run
+// that sits close to vitest's 5 s default, so the block gets an explicit budget.
+describe('check-pure-annotations CLI', { timeout: 30_000 }, () => {
   it('the committed src/ tree has no bare top-level factory call', () => {
     const out = run();
     expect(out.stderr).toBe('');
