@@ -157,4 +157,9 @@ state in docs/ai/HANDOFF.md (in ops). Conventions for every session here:
 file; (b) before ending any session that changed project state, update
 root status.json (updatedAt, phase, headline, next, blocked) — the ops
 dashboard renders it; (c) read the ops HANDOFF before cross-project
-decisions.
+decisions; (d) Adrian often dictates — read past voice-transcription
+errors and act on evident intent; (e) every status, plan, audit or report
+page you publish (Artifact or HTML) is registered in the ops library that
+session: an entry in hirobius/ops docs/ai/library.json (`render: "artifact"`
+until rebuilt on HDS), or, if this session cannot write to ops, an ops
+issue with its title, date, link and one-line summary.
