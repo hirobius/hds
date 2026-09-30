@@ -91,6 +91,19 @@ and `Box` `sx` props so token discipline shows up in your editor, not just at
 review time. See [`docs/CONSUMING.md` §11](docs/CONSUMING.md#11-lint-discipline--the-consumer-eslint-plugin)
 and [`scripts/eslint-plugin-hds/README.md`](scripts/eslint-plugin-hds/README.md).
 
+## 2.6. Agent context
+
+The package ships the docs written for agents, so an agent in your repo can read
+them without network access. Under `node_modules/@hirobius/design-system/`:
+
+- `llms.txt` (also `public/llms.txt`) - the system map and index of topic slices in `public/llms/`
+- `public/llms-full.txt` - the map, the full `DESIGN.md` and a props digest for every component
+- `DESIGN.md` - the lean visual spec
+- `src/app/data/component-api.json` - full prop reference
+
+The same files are served at <https://hirobius-design-system.vercel.app/llms.txt>
+(and `/llms-full.txt`, `/llms/components.txt`, `/DESIGN.md`, `/component-api.json`).
+
 ## 3. Receiving updates
 
 Releases follow [semver](https://semver.org/) and are tracked in
