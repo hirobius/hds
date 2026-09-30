@@ -44,17 +44,20 @@ const MANIFEST = systemManifestData as SystemManifest;
 // state flag — not one of the contract's four axes — mirroring Menu's
 // data-[highlighted] treatment but driven by React state instead of a Radix
 // data-attribute, since results are a hand-rolled listbox.
-const cmdkRowVariants = cva('flex w-full items-start gap-3 px-4 py-2 text-left hds-focus', {
-  variants: {
-    active: {
-      true: 'bg-accent text-accent-foreground',
-      false: 'text-foreground',
+const cmdkRowVariants = /* @__PURE__ */ cva(
+  'flex w-full items-start gap-3 px-4 py-2 text-left hds-focus',
+  {
+    variants: {
+      active: {
+        true: 'bg-accent text-accent-foreground',
+        false: 'text-foreground',
+      },
     },
+    defaultVariants: { active: false },
   },
-  defaultVariants: { active: false },
-});
+);
 
-const cmdkKindBadgeVariants = cva(
+const cmdkKindBadgeVariants = /* @__PURE__ */ cva(
   'mt-0.5 inline-flex h-5 shrink-0 items-center rounded-sm border px-1.5 text-xs uppercase tracking-caps',
   {
     variants: {
@@ -67,7 +70,7 @@ const cmdkKindBadgeVariants = cva(
   },
 );
 
-const cmdkDescriptionVariants = cva('truncate text-xs', {
+const cmdkDescriptionVariants = /* @__PURE__ */ cva('truncate text-xs', {
   variants: {
     active: {
       true: 'text-accent-foreground/80',
@@ -88,8 +91,11 @@ export interface CommandPaletteProps {
  * Mountable trigger + dialog. Drop into header slot; component manages its
  * own open state and Cmd-K / Ctrl-K global keybinding.
  */
-export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteProps>(
-  function CommandPalette({ className }: CommandPaletteProps = {}, ref) {
+export const CommandPalette = /* @__PURE__ */ Object.assign(
+  /* @__PURE__ */ React.forwardRef<HTMLInputElement, CommandPaletteProps>(function CommandPalette(
+    { className }: CommandPaletteProps = {},
+    ref,
+  ) {
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = React.useState('');
     const [activeIndex, setActiveIndex] = React.useState(0);
@@ -271,10 +277,13 @@ export const CommandPalette = React.forwardRef<HTMLInputElement, CommandPaletteP
         </Dialog.Content>
       </Dialog>
     );
-  },
+  }),
+  // displayName is set inside the declaration rather than by a later
+  // `CommandPalette.displayName = ...` write: a top-level property write keeps
+  // this module, and the whole inlined manifest it imports, in every consumer
+  // bundle that only imports Button (which is what the size-limit probe measures).
+  { displayName: 'CommandPalette' },
 );
-
-CommandPalette.displayName = 'CommandPalette';
 
 /** @internal — CVA variant helpers; compose via CommandPalette instead. */
 export { cmdkRowVariants, cmdkKindBadgeVariants, cmdkDescriptionVariants };
