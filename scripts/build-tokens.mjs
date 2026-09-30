@@ -1195,8 +1195,8 @@ export function buildManifest(allTokens, raw) {
     generated: new Date().toISOString(),
     source: 'hirobius.tokens.json',
     format: 'W3C DTCG 2025.10',
-    docs: 'https://adrianmilsap.com/hds',
-    llmsTxt: 'https://adrianmilsap.com/llms.txt',
+    docs: 'https://hirobius-design-system.vercel.app/',
+    llmsTxt: 'https://hirobius-design-system.vercel.app/llms.txt',
     systemSpecs: SYSTEM_MANIFEST.systemSpecs ?? {
       engine: 'React + TypeScript',
       icons: 'Phosphor (Bold)',
@@ -1253,7 +1253,7 @@ export function buildManifest(allTokens, raw) {
     phases: SYSTEM_MANIFEST.phases ?? [],
     health: SYSTEM_MANIFEST.health ?? null,
     inventory: SYSTEM_MANIFEST.inventory ?? {},
-    agentEntrypoint: 'CLAUDE.md',
+    agentEntrypoint: 'llms.txt',
     breakingChangePolicy:
       'Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.',
     componentSpecs,

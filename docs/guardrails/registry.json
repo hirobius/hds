@@ -511,6 +511,16 @@
       "firingChannel": "ci-pr"
     },
     {
+      "id": "check-pack-contents",
+      "description": "Runs npm pack --dry-run and fails when the tarball lacks the agent context (llms.txt, llms-full.txt and slices, DESIGN.md, CONSUMING.md, component-api.json), the manifest, tokens or dist entry, or contains .env*, repo src/ (other than component-api.json) or storybook-static/. Consumers' agents read node_modules, so a file missing from the pack is a file they never see (#341).",
+      "severity": "error",
+      "gateScript": "scripts/check-pack-contents.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
+    },
+    {
       "id": "check-published-types",
       "description": "Runs attw over the packed tarball so the PUBLISHED types are proven to resolve for a node16/nodenext ESM consumer. Nothing else sees that surface: tsc and every test read src/, and smoke:consumer proves subpaths import but not that their .d.ts resolve. The gap shipped 150 extensionless specifiers into a \"type\": \"module\" package, breaking types across 7 entry points with CI green. Profile esm-only (no CJS build here, node10 cannot read exports); the four CSS subpaths are excluded because stylesheets have no types to resolve.",
       "severity": "error",
