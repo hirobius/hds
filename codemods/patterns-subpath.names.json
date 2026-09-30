@@ -1,0 +1,26 @@
+{
+  "subpath": "@hirobius/design-system/patterns",
+  "names": [
+    "ActivityFeed",
+    "AppShell",
+    "AssetImg",
+    "Calendar",
+    "Carousel",
+    "CodeBlock",
+    "CommandPalette",
+    "DocLinkCard",
+    "ErrorPattern",
+    "FileInput",
+    "Form",
+    "Lightbox",
+    "NavItem",
+    "OverflowList",
+    "Page",
+    "Reveal",
+    "SideNav",
+    "Stepper",
+    "Toolbar",
+    "TopNav",
+    "TreeList"
+  ]
+}
