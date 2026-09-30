@@ -26,11 +26,13 @@ import {
   VIEWPORTS,
   axeScanRow,
   buildEntry,
+  failedStages,
   installFailureMessage,
   pairwiseDiffs,
   peerSpecs,
   runDate,
   shotName,
+  trimBuildLog,
 } from '../lib/consistency/live-plan.mjs';
 import { stageApp } from '../lib/consistency/stage.mjs';
 import { runLive } from '../lib/consistency/live.mjs';
@@ -329,6 +331,13 @@ describe('the committed template', () => {
     expect(main).toMatch(/import ['"]@hirobius\/design-system\/tokens\.css['"]/);
   });
 
+  it('mounts src/App.tsx whether it exports the component as default or as App, and says so when neither', () => {
+    const main = read('src/main.tsx');
+    expect(main).toMatch(/import \* as \w+ from '\.\/App'/);
+    expect(main).toMatch(/default/);
+    expect(main).toMatch(/must export the root component as default or as App/);
+  });
+
   it('carries the language and title axe needs, and does not pin the design system', () => {
     expect(read('index.html')).toMatch(/<html lang="en"/);
     expect(read('index.html')).toMatch(/<title>[^<]+<\/title>/);
@@ -598,5 +607,37 @@ describe('the layout-diff fixture', () => {
     expect(r.code).toBe(0);
     expect(r.out).toMatch(/PASS jaccard: measured 1 /);
     expect(r.out).toMatch(/PASS violations: measured 0 /);
+  });
+});
+
+describe('trimBuildLog', () => {
+  it('keeps the first lines of a tool failure and drops the stack frames', () => {
+    const log = [
+      'src/main.tsx(4,10): error TS2614: Module has no exported member',
+      'error during build:',
+      '    at getRollupError (file:///x/parseAst.js:319:41)',
+      '    at error (file:///x/parseAst.js:315:42)',
+      'file: /x/main.tsx',
+    ].join('\n');
+    const out = trimBuildLog(log, 10);
+    expect(out).toContain('TS2614');
+    expect(out).toContain('file: /x/main.tsx');
+    expect(out).not.toMatch(/getRollupError/);
+  });
+
+  it('caps the number of lines', () => {
+    const log = Array.from({ length: 50 }, (_, i) => `line ${i}`).join('\n');
+    expect(trimBuildLog(log, 5).split('\n')).toHaveLength(6);
+    expect(trimBuildLog(log, 5)).toMatch(/45 more lines/);
+  });
+});
+
+describe('failedStages', () => {
+  it('names each stage that failed, so a vite failure is not blamed on the type check', () => {
+    expect(failedStages({ typechecked: true, built: false })).toBe('vite build failed');
+    expect(failedStages({ typechecked: false, built: true })).toBe('type check failed');
+    expect(failedStages({ typechecked: false, built: false })).toBe(
+      'type check and vite build failed',
+    );
   });
 });

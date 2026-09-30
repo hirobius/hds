@@ -63,7 +63,8 @@ backs a ledger entry.
 `template/` is a minimal Vite + React + TypeScript app. `src/main.tsx` owns the
 documented scope, `<div data-hds data-theme={theme}>`, with `theme` read from
 `?theme=light|dark`, and imports `@hirobius/design-system/tokens.css`.
-`src/App.tsx` is a placeholder that every generated app replaces. The template
+`src/App.tsx` is a placeholder that every generated app replaces; `main.tsx`
+mounts it whether it exports the component as `default` or as `App`. The template
 does not depend on the design system: the harness installs the packed tarball
 into a copy of it.
 

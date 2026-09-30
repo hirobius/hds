@@ -57,6 +57,22 @@ export function installFailureMessage(stderr) {
   return `npm install failed:\n${tail}`;
 }
 
+/** Which build stages failed, in words (a vite failure is not a type failure). */
+export function failedStages({ typechecked, built }) {
+  if (!typechecked && !built) return 'type check and vite build failed';
+  return typechecked ? 'vite build failed' : 'type check failed';
+}
+
+/** The start of a tool's failure output without its stack frames, capped at `maxLines`. */
+export function trimBuildLog(text, maxLines = 20) {
+  const lines = String(text ?? '')
+    .split('\n')
+    .filter((l) => !/^\s+at\s/.test(l));
+  while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+  if (lines.length <= maxLines) return lines.join('\n');
+  return `${lines.slice(0, maxLines).join('\n')}\n... ${lines.length - maxLines} more lines`;
+}
+
 /** One scan row (the shape evaluateScan reads) from an axe result or an error. */
 export function axeScanRow(appId, theme, outcome) {
   if (outcome?.error) {

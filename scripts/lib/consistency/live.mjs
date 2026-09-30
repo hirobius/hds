@@ -17,7 +17,14 @@ import path from 'node:path';
 import { formatCheck } from './evaluate.mjs';
 import { pairwiseJaccard } from './jaccard.mjs';
 import { appendEntry, readLedger } from './ledger.mjs';
-import { VIEWPORTS, buildEntry, pairwiseDiffs, shotName } from './live-plan.mjs';
+import {
+  VIEWPORTS,
+  buildEntry,
+  failedStages,
+  pairwiseDiffs,
+  shotName,
+  trimBuildLog,
+} from './live-plan.mjs';
 import { scanApp } from './violations.mjs';
 
 /**
@@ -50,18 +57,15 @@ export async function runLive(input, stages) {
     builds[app.id] = b.built === true && b.typechecked === true;
     buildLogs[app.id] = b.log;
     if (!builds[app.id]) {
-      log(
-        `[${app.id}] did not build: ${b.typechecked ? 'vite build failed' : 'type check failed'}`,
-      );
-      if (b.log)
+      log(`[${app.id}] did not build: ${failedStages(b)}`);
+      if (b.log) {
         log(
-          b.log
-            .trim()
+          trimBuildLog(b.log)
             .split('\n')
-            .slice(-12)
             .map((l) => `    ${l}`)
             .join('\n'),
         );
+      }
       continue;
     }
     log(`[${app.id}] rendering ${VIEWPORTS.map((v) => v.key).join(', ')}...`);
