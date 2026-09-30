@@ -1,0 +1,109 @@
+{
+  "$comment": "Append-only ledger for pnpm eval:consistency (hds#343). Never edit or delete an entry; add a new one. Thresholds below are the plan values and are not softened to make a baseline pass. Review-source entries were measured by hand in the 2026-09-28 and 2026-09-29 reviews: no tarball hash and no git commit were recorded, app ids are placeholders, and detail arrays hold the three pair values in the order the review reported them (pair labels were not recorded). darkDiff is informational and not gated.",
+  "thresholds": {
+    "builds": {
+      "min": 3,
+      "of": 3
+    },
+    "violations": {
+      "max": 0
+    },
+    "axe": {
+      "max": 0
+    },
+    "jaccard": {
+      "min": 0.85
+    },
+    "lightDiff": {
+      "max": 1.5
+    }
+  },
+  "entries": [
+    {
+      "date": "2026-09-28",
+      "source": "review",
+      "packageVersion": "0.16.0",
+      "tarballSha256": null,
+      "commit": null,
+      "apps": ["agent-1", "agent-2", "agent-3"],
+      "measured": {
+        "builds": {
+          "passing": 3,
+          "of": 3
+        },
+        "violations": 0,
+        "axe": 0,
+        "jaccardMin": 0.71,
+        "lightDiffMax": 2.37
+      },
+      "detail": {
+        "jaccard": [0.9, 0.71, 0.77],
+        "lightDiff": [2.37, 1.72, 2.35],
+        "darkDiff": [4.3, 3.09, 3.97]
+      },
+      "thresholds": {
+        "builds": {
+          "min": 3,
+          "of": 3
+        },
+        "violations": {
+          "max": 0
+        },
+        "axe": {
+          "max": 0
+        },
+        "jaccard": {
+          "min": 0.85
+        },
+        "lightDiff": {
+          "max": 1.5
+        }
+      },
+      "pass": false,
+      "notes": "Review run 1. Violations 0; axe serious/critical 0 in light and dark."
+    },
+    {
+      "date": "2026-09-29",
+      "source": "review",
+      "packageVersion": "0.16.0",
+      "tarballSha256": null,
+      "commit": null,
+      "apps": ["agent-1", "agent-2", "agent-3"],
+      "measured": {
+        "builds": {
+          "passing": 3,
+          "of": 3
+        },
+        "violations": 0,
+        "axe": 0,
+        "jaccardMin": 0.68,
+        "lightDiffMax": 2.39
+      },
+      "detail": {
+        "jaccard": [0.9, 0.68, 0.74],
+        "lightDiff": [2.39, 1.71, 2.35],
+        "darkDiff": [4.26, 3.04, 3.93]
+      },
+      "thresholds": {
+        "builds": {
+          "min": 3,
+          "of": 3
+        },
+        "violations": {
+          "max": 0
+        },
+        "axe": {
+          "max": 0
+        },
+        "jaccard": {
+          "min": 0.85
+        },
+        "lightDiff": {
+          "max": 1.5
+        }
+      },
+      "pass": false,
+      "notes": "Review run 2. Violations 0 (every regex hit was inside a comment); axe serious/critical 0 in light and dark."
+    }
+  ]
+}
