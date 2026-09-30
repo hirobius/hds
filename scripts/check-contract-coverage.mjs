@@ -13,8 +13,8 @@
  *   node scripts/check-contract-coverage.mjs --report    # lists misses, exits 0
  *   node scripts/check-contract-coverage.mjs --enforce   # exits 1 on any miss
  *
- * Report-only for now (firingChannel: on-demand; check-validator-wiring reads a package.json script as on-demand). hds#340 authors the remaining
- * tags and moves this to a pre-commit gate with --enforce.
+ * Runs from .husky/pre-commit with --enforce (hds#340). --manifest <path> reads
+ * another manifest, for the tests.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -22,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { CORE_COMPONENTS } from './lib/core-components.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
+const DEFAULT_MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
 
 export const MIN_WHEN_LENGTH = 20;
 
@@ -39,9 +39,11 @@ export function findContractGaps(names, specs) {
 
 function main() {
   const enforce = process.argv.includes('--enforce');
+  const at = process.argv.indexOf('--manifest');
+  const MANIFEST = at > -1 ? path.resolve(process.argv[at + 1]) : DEFAULT_MANIFEST;
 
   if (!existsSync(MANIFEST)) {
-    console.error('✗ check-contract-coverage — public/hds-manifest.json is missing');
+    console.error(`✗ check-contract-coverage — ${path.relative(ROOT, MANIFEST)} is missing`);
     console.error('  fix: pnpm manifest:generate');
     process.exit(1);
   }
