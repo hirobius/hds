@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T11:10:56.611Z
+Generated: 2026-09-30T11:45:32.758Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -54,15 +54,6 @@ Combobox: Pick one value from a long list of options, with a search field that f
 Container: Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 ContextMenu: Offer actions for an item on right-click, or the equivalent keyboard gesture. Use instead: Menu
 Dialog: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogClose: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogContent: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogDescription: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogFooter: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogHeader: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogOverlay: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogPortal: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogTitle: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
-DialogTrigger: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
 Disclosure: Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
 Divider: Separate two regions of content with a thin semantic rule. Use instead: Stack, Surface
 EmptyState: Say that a list, grid or section has no data yet, with a title and an optional description. Use instead: Skeleton, Alert
@@ -90,9 +81,6 @@ StatusTile: Show a titled status block with optional notes and a trailing badge 
 Surface: Wrap content in a padded, background-bearing inset surface with no header or footer anatomy. Use instead: Card, Stack
 Table: Show rows of structured data in aligned columns, with optional sorting. Use instead: Field, Stack
 Tabs: Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
-TabsContent: Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
-TabsList: Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
-TabsTrigger: Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
 Tag: Show an interactive filter or category chip that people can toggle. Use instead: Badge
 Text: Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: Collect multi-line free text such as a message, note or description. Use instead: Input

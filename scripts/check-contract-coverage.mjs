@@ -40,6 +40,10 @@ export function findContractGaps(names, specs) {
 function main() {
   const enforce = process.argv.includes('--enforce');
   const at = process.argv.indexOf('--manifest');
+  if (at > -1 && !process.argv[at + 1]) {
+    console.error('✗ check-contract-coverage — --manifest needs a path');
+    process.exit(1);
+  }
   const MANIFEST = at > -1 ? path.resolve(process.argv[at + 1]) : DEFAULT_MANIFEST;
 
   if (!existsSync(MANIFEST)) {

@@ -4686,11 +4686,6 @@
           "name": "trigger",
           "description": "The element that opens the dialog (Dialog.Trigger).",
           "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
         }
       ],
       "allowedChildren": [
@@ -6170,21 +6165,7 @@
         "primitives-tabs--default",
         "primitives-tabs--many-tabs",
         "primitives-tabs--with-disabled-tab"
-      ],
-      "usage": {
-        "when": "Switch between panels of related content in the same place, one visible at a time.",
-        "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
-        "useInstead": [
-          {
-            "component": "SegmentedControl",
-            "reason": "a compact switch with no panels"
-          },
-          {
-            "component": "Disclosure",
-            "reason": "optional content that expands in place"
-          }
-        ]
-      }
+      ]
     },
     "TabsList": {
       "category": "Navigation",
@@ -6228,21 +6209,7 @@
         "primitives-tabs--default",
         "primitives-tabs--many-tabs",
         "primitives-tabs--with-disabled-tab"
-      ],
-      "usage": {
-        "when": "Switch between panels of related content in the same place, one visible at a time.",
-        "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
-        "useInstead": [
-          {
-            "component": "SegmentedControl",
-            "reason": "a compact switch with no panels"
-          },
-          {
-            "component": "Disclosure",
-            "reason": "optional content that expands in place"
-          }
-        ]
-      }
+      ]
     },
     "TabsTrigger": {
       "category": "Navigation",
@@ -6286,21 +6253,7 @@
         "primitives-tabs--default",
         "primitives-tabs--many-tabs",
         "primitives-tabs--with-disabled-tab"
-      ],
-      "usage": {
-        "when": "Switch between panels of related content in the same place, one visible at a time.",
-        "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
-        "useInstead": [
-          {
-            "component": "SegmentedControl",
-            "reason": "a compact switch with no panels"
-          },
-          {
-            "component": "Disclosure",
-            "reason": "optional content that expands in place"
-          }
-        ]
-      }
+      ]
     },
     "Radio": {
       "category": "Inputs",
@@ -6583,7 +6536,7 @@
         "useInstead": [
           {
             "component": "Input",
-            "reason": "type=\"number\" a precise typed value"
+            "reason": "a precise typed value (type=\"number\")"
           }
         ]
       }
@@ -9001,6 +8954,18 @@
       "storyIds": [
         "primitives-context-menu--default"
       ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The area that opens the menu on right-click (ContextMenu.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The popup holding the items (ContextMenu.Content).",
+          "source": "jsdoc"
+        }
+      ],
       "usage": {
         "when": "Offer actions for an item on right-click, or the equivalent keyboard gesture.",
         "whenNot": "The only way to reach an action, or actions from a visible trigger.",
@@ -9035,18 +9000,6 @@
         {
           "keys": "Tab",
           "effect": "Does not leave the open menu."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The area that opens the menu on right-click (ContextMenu.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The popup holding the items (ContextMenu.Content).",
-          "source": "jsdoc"
         }
       ]
     },
@@ -9289,6 +9242,18 @@
       "storyIds": [
         "primitives-hover-card--default"
       ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The link or element that opens the card (HoverCard.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The preview (HoverCard.Content).",
+          "source": "jsdoc"
+        }
+      ],
       "usage": {
         "when": "Preview extra detail about a link or mention when it is hovered or focused, without navigating.",
         "whenNot": "Content people must reach, or a label for an interactive control.",
@@ -9315,18 +9280,6 @@
         {
           "keys": "Tab",
           "effect": "Moves on to the next element and closes the card."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The link or element that opens the card (HoverCard.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The preview (HoverCard.Content).",
-          "source": "jsdoc"
         }
       ]
     },
@@ -10759,54 +10712,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogContent": {
       "category": "Overlays",
@@ -10853,54 +10759,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogDescription": {
       "category": "Overlays",
@@ -10943,54 +10802,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogFooter": {
       "category": "Overlays",
@@ -11028,54 +10840,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogHeader": {
       "category": "Overlays",
@@ -11113,54 +10878,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogOverlay": {
       "category": "Overlays",
@@ -11203,54 +10921,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogPortal": {
       "category": "Overlays",
@@ -11288,54 +10959,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogTitle": {
       "category": "Overlays",
@@ -11378,54 +11002,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "DialogTrigger": {
       "category": "Overlays",
@@ -11468,54 +11045,7 @@
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
       ],
-      "usage": {
-        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
-        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
-        "useInstead": [
-          {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that needs no reply"
-          },
-          {
-            "component": "ToastProvider",
-            "reason": "a brief confirmation"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Enter/Space",
-          "effect": "Opens the dialog from the trigger and moves focus inside it."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the dialog and returns focus to the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Cycles focus inside the open dialog."
-        },
-        {
-          "keys": "Shift+Tab",
-          "effect": "Cycles focus backwards inside the open dialog."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The modal surface (Dialog.Content).",
-          "source": "jsdoc"
-        }
-      ]
+      "slots": []
     },
     "Tooltip": {
       "category": "Internal",

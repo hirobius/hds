@@ -139,3 +139,49 @@ describe('keyboard contract tags on core overlays', () => {
     expect(manifest.componentSpecs[name].keyboard?.length).toBeGreaterThan(0);
   });
 });
+
+describe('contract tags stay on the component they describe (hds#340 review)', () => {
+  const coreSet = new Set(CORE_COMPONENTS);
+  const subParts = Object.keys(manifest.componentSpecs).filter(
+    (n) => /^(Dialog|Tabs)[A-Z]/.test(n) && !coreSet.has(n),
+  );
+
+  it('finds the Dialog and Tabs sub-parts', () => {
+    expect(subParts.length).toBeGreaterThan(0);
+  });
+
+  it.each(subParts)('%s does not inherit its parent contract', (name) => {
+    const spec = manifest.componentSpecs[name];
+    expect(spec.usage?.when).toBeUndefined();
+    expect(spec.useInstead ?? []).toEqual([]);
+  });
+
+  it('no two "Which one when" lines share the same text', () => {
+    const llms = readFileSync(path.join(ROOT, 'public/llms.txt'), 'utf8');
+    const section = llms.split('## Which one when')[1]?.split(/\n## /)[0] ?? '';
+    const bodies = section
+      .split('\n')
+      .map((l) => l.match(/^[A-Za-z.]+: (.*)$/)?.[1])
+      .filter(Boolean);
+    expect(bodies.length - new Set(bodies).size).toBe(0);
+  });
+});
+
+describe('--manifest without a path', () => {
+  it('exits 1 with an actionable message', () => {
+    const r = run('--manifest');
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain('--manifest needs a path');
+  });
+});
+
+describe('registry entry', () => {
+  it('is severity error and lists the pre-commit channel', () => {
+    const registry = JSON.parse(
+      readFileSync(path.join(ROOT, 'docs/guardrails/registry.json'), 'utf8'),
+    );
+    const entry = registry.gates.find((g) => g.id === 'check-contract-coverage');
+    expect(entry.severity).toBe('error');
+    expect(entry.firingChannels).toEqual(['pre-commit']);
+  });
+});
