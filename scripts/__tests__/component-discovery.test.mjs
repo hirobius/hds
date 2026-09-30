@@ -19,6 +19,20 @@ const NODE_URL =
   'https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=1-2';
 
 describe('readComponentTags', () => {
+  it('carries the contract tags and keeps their text out of the description', () => {
+    const source = `/**\n * @category Actions\n */\n\n/**\n * Container.\n * @usage Group things.\n * @useInstead Card.Metric a KPI\n * @slot body The content.\n * @keyboard Escape Closes it.\n * @ai-rules sx colors MUST use token keys\n * not raw values.\n */\nexport const Box = () => null;\n`;
+    const tags = readComponentTags(source, 'Box');
+    expect(tags.description).toBe('Container.');
+    expect(tags.usage).toEqual({
+      when: 'Group things.',
+      whenNot: null,
+      useInstead: [{ component: 'Card.Metric', reason: 'a KPI' }],
+    });
+    expect(tags.slots).toEqual([{ name: 'body', description: 'The content.' }]);
+    expect(tags.keyboard).toEqual([{ keys: 'Escape', effect: 'Closes it.' }]);
+    expect(tags.aiRules).toBe('sx colors MUST use token keys not raw values.');
+  });
+
   it('reads a file-level JSDoc at the top of the file', () => {
     const source = `/**\n * Badge.\n * @category Feedback\n * @tier primitive\n * @figma ${NODE_URL}\n */\n\nexport const Badge = () => null;\n`;
     expect(readComponentTags(source, 'Badge')).toMatchObject({
