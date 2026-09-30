@@ -17,8 +17,11 @@
  * assembled with one pure `Object.assign(…)` whose inner call is also pure.
  * An un-annotated `Object.assign(…)` that wraps a tracked call is flagged too.
  *
- * Calls inside function, arrow, method and class bodies are not top-level and
- * are ignored. Tests, stories and `.d.ts` files are out of scope.
+ * Calls inside function, arrow, method, accessor, constructor and instance-field
+ * bodies run later and are ignored. A static class field or static block runs
+ * when the class is evaluated — module load, for a top-level class — so it is
+ * flagged like any other bare call. Tests, stories and `.d.ts` files are out of
+ * scope.
  *
  *   node scripts/check-pure-annotations.mjs            # exits 1 on any bare call
  *   node scripts/check-pure-annotations.mjs --fix      # inserts the annotation in place
@@ -84,9 +87,18 @@ function isAnnotated(node, sf) {
   return PURE_BEFORE_CALL.test(sf.text.slice(node.getFullStart(), node.getStart(sf)));
 }
 
-/** Nodes whose body runs later, not at module evaluation. */
+/**
+ * Nodes whose body runs later, not at module evaluation: any function-like
+ * (function, arrow, method, accessor, constructor) and an instance field, whose
+ * initialiser runs on construction. A class body is not deferred as a whole:
+ * `static x = …` and `static { … }` run when the class is evaluated.
+ */
 function isDeferredBody(node) {
-  return ts.isFunctionLike(node) || ts.isClassLike(node);
+  if (ts.isFunctionLike(node)) return true;
+  if (ts.isPropertyDeclaration(node)) {
+    return (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Static) === 0;
+  }
+  return false;
 }
 
 /** Whether any argument of `call` holds a tracked call evaluated at module scope. */

@@ -121,12 +121,34 @@ export const X = /* @__PURE__ */ Object.assign(Root, { Trigger, Content, display
     expect(findBareCalls(source, 'fixture.tsx')).toEqual([]);
   });
 
-  it('ignores calls made inside function, arrow, method and class bodies', () => {
+  it('ignores calls inside function, arrow, method, accessor, constructor and instance-field bodies', () => {
     const source = `function useThing() { const C = React.forwardRef(() => null); return C; }
 const make = () => cva('x', {});
-class K { m() { return createContext(null); } static s = forwardRef(() => null); }
+class K {
+  m() { return createContext(null); }
+  get g() { return cva('g', {}); }
+  constructor() { this.c = React.createContext(null); }
+  f = forwardRef(() => null);
+}
 export function Comp() { const Ctx = React.useMemo(() => React.createContext(null), []); return null; }`;
     expect(findBareCalls(source, 'fixture.tsx')).toEqual([]);
+  });
+
+  it('flags a static class field or static block: both run when the class is evaluated', () => {
+    // `static x = …` and `static { … }` run at class definition, which for a
+    // top-level class is module load — as live as a bare top-level call, and
+    // the one class shape a whole-class exemption would let through.
+    const source = `class K {
+  static s = forwardRef(() => null);
+  static { K.ctx = createContext(null); }
+  f = cva('instance', {});
+}
+const E = class { static v = React.forwardRef(() => null); };`;
+    expect(findBareCalls(source, 'fixture.tsx').map((f) => [f.callee, f.line])).toEqual([
+      ['forwardRef', 2],
+      ['createContext', 3],
+      ['React.forwardRef', 6],
+    ]);
   });
 
   it('ignores calls the gate does not track', () => {
@@ -262,6 +284,11 @@ describe('check-pure-annotations CLI', () => {
 });
 
 describe('gate wiring (hds#363)', () => {
+  it('package.json exposes it as pnpm check:pure-annotations, like every other check:* gate', () => {
+    const pkg = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    expect(pkg.scripts['check:pure-annotations']).toBe('node scripts/check-pure-annotations.mjs');
+  });
+
   it('.husky/pre-commit runs the gate', () => {
     const hook = readFileSync(path.join(ROOT, '.husky/pre-commit'), 'utf8');
     expect(hook).toMatch(/^node scripts\/check-pure-annotations\.mjs$/m);
