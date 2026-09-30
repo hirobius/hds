@@ -329,6 +329,7 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### DialogContent
 Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
   - asChild: boolean
+  - container: HTMLElement | null
   - forceMount: true
   - hideClose: boolean = false
   - onCloseAutoFocus: ((event: Event) => void)
@@ -747,6 +748,7 @@ SegmentedControl " segmented selection input for compact mutually-exclusive choi
 
 ### Select
 Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead…
+  - container: HTMLElement | null
   - label: string
   - onChange: (v: string) => void
   - options: { value: string; label: string; }[]

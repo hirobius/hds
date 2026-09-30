@@ -166,3 +166,58 @@ export const Information: Story = {
   },
   render: () => <InformationDemo />,
 };
+
+// ── Dark scope ───────────────────────────────────────────────────────────────
+
+function DarkScopeDemo() {
+  return (
+    // The wrapper, not <html>, carries the theme: the dialog portals into this
+    // scope, so it renders dark on a dark page whatever the toolbar theme is.
+    <div
+      data-hds
+      data-theme="dark"
+      style={{
+        padding: 'var(--semantic-space-layout-spacious)',
+        background: 'var(--semantic-color-surface-page)',
+        color: 'var(--semantic-color-content-primary)',
+      }}
+    >
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <Button variant="secondary">Open dark dialog</Button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Dark scope</Dialog.Title>
+            <Dialog.Description>
+              This dialog portals into the nearest data-hds scope, so it inherits the dark theme and
+              sits on a dark scrim.
+            </Dialog.Description>
+          </Dialog.Header>
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button variant="primary">Close</Button>
+            </Dialog.Close>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog>
+    </div>
+  );
+}
+
+export const DarkScope: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Overlays inherit the nearest `data-hds` scope. Here only the wrapper is `data-theme="dark"`; the open dialog and its scrim (`semantic.color.surface.scrim`) render dark.',
+      },
+    },
+  },
+  render: () => <DarkScopeDemo />,
+  // Open on load so visual review shows the dialog. Plain DOM click: the jsdom
+  // render gates never run `play`, and no test-utils dependency is needed.
+  play: async ({ canvasElement }) => {
+    canvasElement.querySelector<HTMLButtonElement>('button')?.click();
+  },
+};

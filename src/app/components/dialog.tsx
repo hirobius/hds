@@ -28,8 +28,10 @@
  *
  * Surface uses role.popover (semantic.color.surface.overlay) +
  * shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is
- * a foreground/80 wash so it picks up the theme without a hardcoded
- * black. The close affordance is rendered as an absolutely-positioned
+ * role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both
+ * themes, black in dark mode. The overlay portals into the nearest
+ * `data-hds` scope so it inherits the active theme; pass `container` to
+ * override. The close affordance is rendered as an absolutely-positioned
  * X inside Content; pass `hideClose` to opt out for fully-custom layouts.
  */
 
@@ -37,13 +39,14 @@ import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
 import { Text } from './text';
 
 // ── Root + leaf primitives (re-exported from Radix) ────────────────────────────
 
 const DialogRoot = DialogPrimitive.Root;
 const DialogTrigger = DialogPrimitive.Trigger;
-const DialogPortal = DialogPrimitive.Portal;
+const DialogPortal = withHdsPortal(DialogPrimitive.Portal);
 const DialogClose = DialogPrimitive.Close;
 
 // ── Overlay (scrim) ────────────────────────────────────────────────────────────
@@ -55,7 +58,7 @@ const DialogOverlay = React.forwardRef<
   return (
     <DialogPrimitive.Overlay
       ref={ref}
-      className={cn('fixed inset-0 z-50 bg-foreground/60 backdrop-blur-sm', className)}
+      className={cn('fixed inset-0 z-50 bg-scrim/60 backdrop-blur-sm', className)}
       {...props}
     />
   );
@@ -69,14 +72,19 @@ export interface DialogContentProps extends React.ComponentPropsWithoutRef<
 > {
   /** Hide the built-in close affordance. Useful for fully custom layouts. */
   hideClose?: boolean;
+  /**
+   * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+   * overlay inherits its theme; pass `null` to use `document.body`.
+   */
+  container?: HTMLElement | null;
 }
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   DialogContentProps
->(function DialogContent({ className, children, hideClose = false, ...props }, ref) {
+>(function DialogContent({ className, children, hideClose = false, container, ...props }, ref) {
   return (
-    <DialogPortal>
+    <DialogPortal container={container}>
       <DialogOverlay />
       <DialogPrimitive.Content
         ref={ref}
