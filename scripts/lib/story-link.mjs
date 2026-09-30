@@ -115,18 +115,140 @@ export function parseStoryExports(source) {
 }
 
 /**
- * The component source a story file exercises: the first relative import that
- * resolves to a known component file. Stories import helpers and fixtures too,
- * so "first match against the known set" beats "first relative import".
+ * Offset of the opening brace of the CSF meta object, or -1. The object is
+ * the literal after `export default`, or the `const` a bare `export default name`
+ * references (any name, not only `meta`), or a `const meta` when nothing is
+ * exported — the same region parseMetaTitle reads.
+ */
+function metaObjectStart(source) {
+  const inline = /\bexport\s+default\s*\{/.exec(source);
+  if (inline) return inline.index + inline[0].length - 1;
+  const named = /\bexport\s+default\s+([A-Za-z_$][\w$]*)/.exec(source);
+  const name = (named ? named[1] : 'meta').replace(/\$/g, '\\$');
+  const decl = new RegExp(`\\bconst\\s+${name}\\b[^{;]*\\{`).exec(source);
+  return decl ? decl.index + decl[0].length - 1 : -1;
+}
+
+/** Index of the closing quote of the string literal that opens at `i`. */
+function skipString(source, i) {
+  const quote = source[i];
+  for (let j = i + 1; j < source.length; j += 1) {
+    if (source[j] === '\\') j += 1;
+    else if (source[j] === quote) return j;
+  }
+  return source.length;
+}
+
+/**
+ * The identifier the CSF meta declares as its subject — `component: X` — read
+ * off the top level of the meta object only, or null.
+ *
+ * A flat regex over the meta region is not enough: `parameters.docs.description`
+ * has a `component` key too (prose, two objects deep, and type-specimen declares
+ * only that one), and a polymorphic prop under `args` may be called `component` as
+ * well. So walk the object literal, skipping strings and comments and tracking
+ * depth, and take the key only where it is a top-level property.
+ */
+export function parseMetaComponent(source) {
+  const start = metaObjectStart(source);
+  if (start < 0) return null;
+  let depth = 0;
+  let atKey = false; // right after `{` or `,` at depth 1, where a property name begins
+  for (let i = start; i < source.length; i += 1) {
+    const ch = source[i];
+    const pair = ch + (source[i + 1] ?? '');
+    if (pair === '//') {
+      const end = source.indexOf('\n', i);
+      i = end < 0 ? source.length : end;
+    } else if (pair === '/*') {
+      const end = source.indexOf('*/', i + 2);
+      i = end < 0 ? source.length : end + 1;
+    } else if (ch === "'" || ch === '"' || ch === '`') {
+      i = skipString(source, i);
+    } else if (ch === '{' || ch === '[' || ch === '(') {
+      depth += 1;
+      atKey = depth === 1;
+    } else if (ch === '}' || ch === ']' || ch === ')') {
+      depth -= 1;
+      if (depth === 0) return null;
+    } else if (depth === 1 && ch === ',') {
+      atKey = true;
+    } else if (depth === 1 && atKey && !/\s/.test(ch)) {
+      const key = /^component\s*:\s*([A-Za-z_$][\w$]*)/.exec(source.slice(i, i + 200));
+      if (key) return key[1];
+      atKey = false;
+    }
+  }
+  return null;
+}
+
+/**
+ * One import statement: an optional `type`, the clause (default binding, named
+ * braces, namespace, or default + braces), the module specifier.
+ */
+const IMPORT_STATEMENT =
+  /\bimport\s+(type\s+)?((?:[A-Za-z_$][\w$]*\s*,\s*)?(?:\{[^}]*\}|\*\s+as\s+[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*))\s+from\s+['"]([^'"]+)['"]/g;
+
+/**
+ * Local binding -> module specifier for every value import, in source order.
+ * `import { X as Y }` binds Y; `import X` binds X; type-only imports and inline
+ * `type` entries are dropped because a `component:` value has to exist at runtime;
+ * namespaces are dropped because `component: NS.X` is not an identifier.
+ */
+export function parseImportBindings(source) {
+  const bindings = new Map();
+  for (const [, typeOnly, clause, specifier] of source.matchAll(IMPORT_STATEMENT)) {
+    if (typeOnly) continue;
+    const brace = clause.indexOf('{');
+    const head = (brace === -1 ? clause : clause.slice(0, brace)).replace(',', '').trim();
+    if (head && !head.startsWith('*')) bindings.set(head, specifier);
+    if (brace === -1) continue;
+    for (const entry of clause.slice(brace + 1, clause.indexOf('}')).split(',')) {
+      const name = entry.trim();
+      if (!name || name.startsWith('type ')) continue;
+      const [imported, local] = name.split(/\s+as\s+/);
+      bindings.set((local ?? imported).trim(), specifier);
+    }
+  }
+  return bindings;
+}
+
+/**
+ * The component source a story file exercises.
+ *
+ * The CSF meta's `component:` field is the declared subject, so when it names an
+ * import that resolves to a known component file, that file is the answer.
+ * Import order used to decide instead, and it bit twice on 2026-09-30: a Badge
+ * import placed above StatusTile made StatusTile read as story-less on main,
+ * and the Client detail screen is credited to PageHeader because PageHeader is
+ * imported first (hds#369).
+ *
+ * The first relative import that resolves to a known component file remains
+ * the fallback: a meta with no `component:`, or one naming a helper composed in the
+ * story file itself, or a module outside the manifest. Stories import helpers
+ * and fixtures too, so "first match against the known set" beats "first
+ * relative import".
  */
 export function resolveStorySubject(storyFile, source, knownFilePaths) {
   const dir = path.posix.dirname(storyFile.split(path.sep).join('/'));
-  const candidates = [...source.matchAll(/from\s+['"](\.[^'"]+)['"]/g)].map((m) => m[1]);
-  for (const spec of candidates) {
+  const resolve = (spec) => {
     for (const suffix of ['.tsx', '.ts', '/index.tsx', '/index.ts', '']) {
       const resolved = path.posix.normalize(path.posix.join(dir, spec + suffix));
       if (knownFilePaths.has(resolved)) return resolved;
     }
+    return null;
+  };
+
+  const declared = parseMetaComponent(source);
+  const declaredFrom = declared ? parseImportBindings(source).get(declared) : undefined;
+  if (declaredFrom?.startsWith('.')) {
+    const subject = resolve(declaredFrom);
+    if (subject) return subject;
+  }
+
+  for (const m of source.matchAll(/from\s+['"](\.[^'"]+)['"]/g)) {
+    const subject = resolve(m[1]);
+    if (subject) return subject;
   }
   return null;
 }
