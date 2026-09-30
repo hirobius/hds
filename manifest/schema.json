@@ -73,6 +73,42 @@
         "$ref": "#/definitions/slotSpec"
       }
     },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Machine-readable guidance on choosing this component, parsed from the @usage, @whenNot and @useInstead JSDoc tags (hds#339). `when` is one sentence; `useInstead` lists alternatives, each with an optional reason.",
+      "properties": {
+        "when": { "type": "string" },
+        "whenNot": { "type": "string" },
+        "useInstead": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["component"],
+            "properties": {
+              "component": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "keyboard": {
+      "type": "array",
+      "description": "Keyboard contract parsed from the repeatable @keyboard JSDoc tag: one entry per key (or key chord) and the effect it has.",
+      "items": {
+        "type": "object",
+        "required": ["keys", "effect"],
+        "properties": {
+          "keys": { "type": "string" },
+          "effect": { "type": "string" }
+        }
+      }
+    },
+    "aiRules": {
+      "type": "string",
+      "description": "Agent-facing authoring rules parsed from the @ai-rules JSDoc tag."
+    },
     "tier": {
       "type": "string",
       "enum": ["primitive", "pattern", "template", "utility"],
@@ -152,9 +188,7 @@
     "propSpec": {
       "type": "object",
       "additionalProperties": true,
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "properties": {
         "type": {
           "type": "string"
@@ -171,9 +205,7 @@
     "propConstraint": {
       "type": "object",
       "additionalProperties": true,
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "properties": {
         "type": {
           "type": "string"
@@ -195,10 +227,7 @@
     "a11yRule": {
       "type": "object",
       "additionalProperties": true,
-      "required": [
-        "rule",
-        "required"
-      ],
+      "required": ["rule", "required"],
       "properties": {
         "rule": {
           "type": "string"
@@ -226,6 +255,15 @@
         },
         "tokenBinding": {
           "$ref": "#/definitions/tokenBinding"
+        },
+        "description": {
+          "type": "string",
+          "description": "What the slot holds. Written by the @slot JSDoc tag."
+        },
+        "source": {
+          "type": "string",
+          "enum": ["jsdoc"],
+          "description": "Present on slots generated from a @slot tag; those are rebuilt from the tags on every regen, hand-kept slots (no `source`) never are."
         },
         "defaultValue": {
           "description": "Optional fallback value for this slot when no tokenBinding resolves (e.g. a literal string for label slots, a hex color for background slots in tests). Mostly used by fixtures and snapshot tests."

@@ -7,6 +7,8 @@ import { MemoryRouter } from 'react-router';
 import { ThemeProvider } from '../src/app/context/ThemeContext';
 import { GlobalsSync } from './globals-sync';
 import '../src/styles/index.css';
+import componentApi from '../src/app/data/component-api.json';
+import { extractUsageDescription } from '../src/stories/lib/usage-description';
 
 // ── Brand/density/theme modes matrix (#126) ─────────────────────────────────
 //
@@ -63,6 +65,12 @@ const preview: Preview = {
         order: ['Introduction', 'Foundations', 'Primitives', ['Button'], 'Patterns'],
         method: 'alphabetical',
       },
+    },
+    docs: {
+      // Append the @usage / @whenNot / @useInstead contract (component-api.json)
+      // to the docgen description on every autodocs page (hds#339).
+      extractComponentDescription: (component?: Parameters<typeof extractUsageDescription>[0]) =>
+        extractUsageDescription(component, componentApi),
     },
     a11y: {
       // Run axe-core on every story automatically.

@@ -36,6 +36,7 @@ import { createRequire } from 'node:module';
 import reactDocgenTypescript from 'react-docgen-typescript';
 import ts from 'typescript';
 import { discoverHdsComponents } from './component-discovery.mjs';
+import { compactContract, stripJsdocTags } from './lib/jsdoc-contract.mjs';
 import {
   buildUtilityMap,
   mergeReferences,
@@ -182,16 +183,9 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// Prose above the first block tag; a tag's continuation lines are tag text.
 function stripJsDocBlock(block) {
-  const text = block
-    .replace(/^\/\*\*?/, '')
-    .replace(/\*\/$/, '')
-    .split('\n')
-    .map((line) => line.replace(/^\s*\*\s?/, '').trim())
-    .filter((line) => line && !line.startsWith('@'))
-    .join(' ');
-
-  return cleanText(text);
+  return stripJsdocTags(block);
 }
 
 function resolvePrimaryJsDocBlock(source, displayName) {
@@ -695,10 +689,13 @@ export function buildManifest() {
 
     components[doc.displayName] = {
       filePath: relativePath ?? metadata?.filePath,
+      // metadata.description is tag-stripped; docgen's own text is not (a
+      // wrapped @ai-rules body leaks into it), so it is only the fallback.
       description:
-        cleanText(doc.description) ||
         metadata?.description ||
+        cleanText(doc.description) ||
         extractComponentDescription(source, doc.displayName),
+      ...(metadata ? compactContract(metadata) : {}),
       ...(metadata?.category ? { category: metadata.category } : {}),
       ...(metadata ? { hidden: Boolean(metadata.hidden) } : {}),
       ...(metadata?.figmaUrl ? { figmaUrl: metadata.figmaUrl } : {}),
@@ -721,6 +718,7 @@ export function buildManifest() {
       filePath: metadata.filePath,
       description: metadata.description || extractComponentDescription(source, metadata.name),
       ...(metadata.category ? { category: metadata.category } : {}),
+      ...compactContract(metadata),
       hidden: Boolean(metadata.hidden),
       ...(metadata.figmaUrl ? { figmaUrl: metadata.figmaUrl } : {}),
       props: fallbackProps,

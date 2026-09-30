@@ -24,6 +24,10 @@ export interface StatusTileProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * Status colour belongs in the trailing slot, never as a left rule on the tile
  * — every tile should look the same so feedback signals stay reserved for
  * genuinely interrupting states.
+ * @usage Show a titled status block with optional notes and a trailing badge or affordance.
+ * @whenNot A single headline figure, or a row inside a list.
+ * @useInstead Card.Metric a headline figure (hds#254 folds StatusTile into the Card slot)
+ * @useInstead StatusListItem a status row inside a list
  */
 export const StatusTile = React.forwardRef<HTMLDivElement, StatusTileProps>(function StatusTile(
   { tone = 'neutral', title, notes, trailing, className, ...props },

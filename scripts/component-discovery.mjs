@@ -5,6 +5,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
+import { parseJsdocContract, stripJsdocTags } from './lib/jsdoc-contract.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -151,16 +152,24 @@ function findFileJsDocBlock(source) {
   return match?.[1] ?? '';
 }
 
-function stripJsDocBlock(block) {
-  return cleanText(
-    block
-      .replace(/^\/\*\*?/, '')
-      .replace(/\*\/$/, '')
-      .split('\n')
-      .map((line) => line.replace(/^\s*\*\s?/, '').trim())
-      .filter((line) => line && !line.startsWith('@'))
-      .join(' '),
-  );
+// Prose above the first block tag. Continuation lines of a tag (an @ai-rules
+// body wrapped over several lines, say) are tag text, not description.
+const stripJsDocBlock = stripJsdocTags;
+
+// A component-level contract field wins over the file-level block, field by field.
+function mergeContract(componentBlock, fileBlock) {
+  const own = parseJsdocContract(componentBlock);
+  const file = parseJsdocContract(fileBlock);
+  return {
+    usage: {
+      when: own.usage.when ?? file.usage.when,
+      whenNot: own.usage.whenNot ?? file.usage.whenNot,
+      useInstead: own.usage.useInstead.length ? own.usage.useInstead : file.usage.useInstead,
+    },
+    slots: own.slots.length ? own.slots : file.slots,
+    keyboard: own.keyboard.length ? own.keyboard : file.keyboard,
+    aiRules: own.aiRules ?? file.aiRules,
+  };
 }
 
 function parseTags(block, source) {
@@ -207,7 +216,7 @@ function parseTags(block, source) {
  *
  * @param {string} source module text
  * @param {string} exportName
- * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string }}
+ * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null }}
  */
 export function readComponentTags(source, exportName) {
   const fileBlock = findFileJsDocBlock(source);
@@ -225,6 +234,7 @@ export function readComponentTags(source, exportName) {
     // module, and MetricTile (a part) must not join MetricTiles (the composition).
     screenPattern: componentTags.screenPattern,
     description: stripJsDocBlock(componentBlock) || stripJsDocBlock(fileBlock),
+    ...mergeContract(componentBlock, fileBlock),
   };
 }
 
@@ -263,6 +273,10 @@ export function discoverHdsComponents() {
         tier,
         screenPattern,
         description,
+        usage,
+        slots,
+        keyboard,
+        aiRules,
       } = readComponentTags(source, name);
       // Components are PascalCase identifiers with at least one lowercase letter.
       // Filters out exported constants (ALL_UPPERCASE) and exported helper
@@ -294,6 +308,10 @@ export function discoverHdsComponents() {
         figmaUrl,
         tier,
         screenPattern,
+        usage,
+        slots,
+        keyboard,
+        aiRules,
         namespaceViolation: name.startsWith('Hds'),
         tagState: docExempt
           ? 'doc-exempt'

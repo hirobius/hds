@@ -127,6 +127,9 @@ export const STYLES = `
   figcaption code{color:var(--ink-3);font-size:11px}
   .rules{margin:0;padding-left:18px;color:var(--ink-2)}
   .rules li{margin-bottom:6px}
+  .usage{margin:0}
+  .usage dt{font-weight:600;margin-top:12px}
+  .usage dd{margin:4px 0 0;color:var(--ink-2)}
   footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12px}
   @media (max-width:600px){h1{font-size:30px}.wrap{padding-top:28px}}
 `;
@@ -137,6 +140,24 @@ const section = (id, title, body, note) => `
     ${note ? `<p class="note">${note}</p>` : ''}
     ${body}
   </section>`;
+
+/** The "When to use" body: when, when not, use instead. '' when nothing is tagged. */
+function renderUsage(usage) {
+  if (!usage) return '';
+  const rows = [];
+  if (usage.when) rows.push(`<dt>Use when</dt><dd>${esc(usage.when)}</dd>`);
+  if (usage.whenNot) rows.push(`<dt>Not when</dt><dd>${esc(usage.whenNot)}</dd>`);
+  if (usage.useInstead?.length) {
+    const items = usage.useInstead
+      .map(
+        (entry) =>
+          `<li><code>${esc(entry.component)}</code>${entry.reason ? ` — ${esc(entry.reason)}` : ''}</li>`,
+      )
+      .join('');
+    rows.push(`<dt>Use instead</dt><dd><ul class="rules">${items}</ul></dd>`);
+  }
+  return rows.length ? `<dl class="usage">${rows.join('')}</dl>` : '';
+}
 
 /**
  * One component's page.
@@ -238,6 +259,8 @@ export function renderPage({
         .join('')}</ul>`
     : '<p class="empty">No accessibility rules recorded.</p>';
 
+  const usageBlock = renderUsage(spec.usage);
+
   const blob = (p) => `${repo}/blob/${branch}/${p}`;
 
   return `<!doctype html>
@@ -298,6 +321,8 @@ export function renderPage({
     'API reference',
     `<table><thead><tr><th>Prop</th><th>Type</th><th>Description</th></tr></thead><tbody>${propRows}</tbody></table>`,
   )}
+
+  ${usageBlock ? section('when-to-use', 'When to use', usageBlock) : ''}
 
   ${section('a11y', 'Accessibility', a11y)}
 

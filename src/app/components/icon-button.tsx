@@ -1,5 +1,8 @@
 /**
  * IconButton ” icon-only action trigger built on the shared Button primitive.
+ * @usage Trigger an action from a compact icon-only control, always with an accessible label.
+ * @whenNot A control that needs a visible text label.
+ * @useInstead Button a control with a text label, or Button iconOnly (hds#254 folds IconButton into it)
  * @category Actions
  * @tier pattern
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39

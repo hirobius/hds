@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T12:35:45.550Z
+Generated: 2026-09-30T13:08:30.448Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -35,6 +35,20 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 - Detailed prop types, unions, defaults, and descriptions: read `src/app/data/component-api.json`.
 - Runtime behavior: read the actual component source under `src/app/components/` (and associated styles).
+
+## Which one when
+
+One line per component that declares when to use it (`@usage` / `@useInstead` in its JSDoc). Full detail, including `usage.whenNot`, `keyboard` and `aiRules`, is in `public/hds-manifest.json` and `src/app/data/component-api.json`.
+
+Button: Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft. Use instead: InlineLink
+Card: Group related content on a raised surface with header, body, footer and metric slots. Use instead: Surface, Card.Metric
+CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card.
+IconButton: Trigger an action from a compact icon-only control, always with an accessible label. Use instead: Button
+Menu: Offer a list of actions from a trigger, closed until opened. Use instead: Select
+Select: Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
+Stat: Show one standalone headline figure with its label and an optional sub-line. Use instead: Card.Metric, StatusTile
+StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: Card.Metric, StatusListItem
+Surface: Wrap content in a padded, background-bearing inset surface with no header or footer anatomy. Use instead: Card, Stack
 
 ## Tokens (Primary Source Of Truth)
 
@@ -485,7 +499,7 @@ Compact metadata/status chip. Tone is the only styling input.
   - tone: "neutral" | "danger" | "success" | "warning" | "info" | "inProgress" | null
 
 ### Bleed
-Bleed — controlled negative-margin full-bleed within a padded container. padding" (a full-width image inside a padded card, a divider that should touch both ed…
+Bleed — controlled negative-margin full-bleed within a padded container. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inve…
   - amount: 'tight' | 'normal' | 'inset' | 'spacious' = normal
   - as: ElementType<any, keyof IntrinsicElements> = div
   - axis: 'x' | 'y' | 'both' = x
@@ -499,7 +513,7 @@ A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
   - size: "sm" | "md" | "lg" | null
 
 ### Box
-Box — polymorphic layout primitive with a token-first `sx` engine. named primitive covers, without inviting ad hoc inline styles or raw hex/px values back into…
+Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing short…
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - sx: SxObject
@@ -535,7 +549,7 @@ Tone-driven side-rule callout for status, quotes, hypotheses.
   - tone: 'accent' | 'info' | 'success' | 'warning' | 'danger' = info
 
 ### Card
-Tagged per-export, not on the file block: this module exports eight components and a file-level
+Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.
   - as: ElementType<any, keyof IntrinsicElements>
   - bordered: boolean = false
   - gap: GapOption = tight
@@ -558,7 +572,7 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
   - metadata: ReactNode
 
 ### CardMetric
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
   - label: ReactNode
   - sub: ReactNode
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -581,7 +595,7 @@ Renders children as a snap-scrolling track with Prev/Next scroll buttons.
   - showControls: boolean = true
 
 ### Center
-Center — max-width column, auto-centered horizontally. max-width box with auto horizontal margins and, optionally, matching horizontal gutters — so agents stop…
+Center — max-width column, auto-centered horizontally. Every Layout reference: https://every-layout.dev/layouts/center/
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
@@ -611,7 +625,7 @@ A circular progress ring; pass `value`/`max` or set `indeterminate`.
   - value: number = 0
 
 ### Cluster
-Cluster — wrapping horizontal group with even gaps. (tag rows, button groups, chip lists, filter pills) with a single flex-wrap wrapper and a tokenized gap in …
+Cluster — wrapping horizontal group with even gaps. Every Layout reference: https://every-layout.dev/layouts/cluster/
   - align: 'start' | 'center' | 'end' | 'stretch' = center
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
@@ -660,7 +674,7 @@ ComponentInstanceMatrix — responsive specimen matrix for variant and state par
   - title: string
 
 ### Container
-Container — semantic width-constrained layout. semantic max-width scale, so agents stop hand-rolling `marginInline: auto` plus an ad hoc max-width pixel value …
+Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
   - children: ReactNode
   - className: string
   - maxWidth: 'content' | 'max' = max
@@ -676,7 +690,7 @@ ContextMenu root + parts. Wrap the right-clickable area in `ContextMenu.Trigger`
   - open: boolean
 
 ### Cover
-Cover — vertical shell with an auto-centered main region. centered hero/main region that absorbs the remaining space, and an optional footer" problem via the f…
+Cover — vertical shell with an auto-centered main region. Every Layout reference: https://every-layout.dev/layouts/cover/
   - as: ElementType<any, keyof IntrinsicElements> = div
   - centerSlot: ReactNode
   - children: ReactNode
@@ -718,7 +732,7 @@ Text date field + calendar popover, paired with a native time field, producing o
   - value: Date
 
 ### Dialog
-Tagged per-export, not on the file block: this module exports ten components and a file-level
+Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.
   - children: ReactNode
   - defaultOpen: boolean
   - modal: boolean
@@ -804,7 +818,7 @@ DocLinkCard - navigation card for editorial and documentation cross-links.
   - variant: "feature" | "pager" = feature
 
 ### EmptyState
-EmptyState — consistent no-data placeholder for lists, grids, and sections. communicate "no data yet" with consistent muted typography instead of agents invent…
+EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - className: string
   - description: ReactNode
   - title: ReactNode
@@ -826,7 +840,7 @@ A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
   - onFiles: ((files: File[]) => void)
 
 ### Form
-Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level
+Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-leve…
 
 ### FormActions
 Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.
@@ -872,7 +886,7 @@ FoundationSwatch - governed foundation specimen for color and semantic role prev
   - value: string
 
 ### Frame
-Frame — aspect-ratio-locked, token-clipped media box. cause layout shift while it loads, cropped to a token-governed corner radius" — a thin, token-skinned wra…
+Frame — aspect-ratio-locked, token-clipped media box. Every Layout reference: https://every-layout.dev/layouts/frame/
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
@@ -1100,7 +1114,7 @@ Paged navigation with first/last anchors, sibling pages, and ellipses.
   - siblingCount: number = 1
 
 ### Pin
-Pin — sticky-pin an element within its scroll region. section scrolls — the dependency-free basis for pinned scroll scenes (the "tall section + sticky child" p…
+Pin — sticky-pin an element within its scroll region.
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
@@ -1128,7 +1142,7 @@ Radio — radio button with animated selection indicator.
   - onChange: (v: boolean) => void
 
 ### Reveal
-Reveal — reveal-on-scroll primitive via CSS scroll-driven animation. purely by scroll position (`animation-timeline: view()`) — no JS, no deps, no Intersection…
+Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.
   - animation: 'fade' | 'fade-up' | 'fade-down' | 'scale' = fade-up
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
@@ -1174,7 +1188,7 @@ SideNav - sidebar navigation row primitive. Two levels: root — top-level secti
   - titleLabel: boolean = false
 
 ### Sidebar
-Sidebar — fixed-width rail beside fluid content, no media query. problem with the flex-basis/flex-grow disparity technique — the rail holds `sideWidth` and the…
+Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: [ReactNode, ReactNode]
   - className: string
@@ -1282,7 +1296,7 @@ Surface — governed inset surface primitive. Enforces the "Surface Inset" rule:
   - theme: "light" | "dark"
 
 ### Switcher
-Switcher — flips a row to a column below a width threshold, no media query. vertical stack once the container gets narrow" without a breakpoint or a resize obs…
+Switcher — flips a row to a column below a width threshold, no media query. Every Layout reference: https://every-layout.dev/layouts/the-switcher/
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
