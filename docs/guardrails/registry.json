@@ -774,7 +774,7 @@
       "fixturePath": null,
       "owner": "Adrian",
       "source": "agent",
-      "firingChannel": "pnpm-meta"
+      "firingChannel": "ci-pr"
     }
   ]
 }

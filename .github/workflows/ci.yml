@@ -82,8 +82,9 @@ jobs:
         run: pnpm test
 
       - name: Bundle budgets (size-limit)
-        # check:size = build:lib + scripts/build-button-probe.mjs (Button-only import) + size-limit
-        run: pnpm check:size
+        # Same chain as `pnpm check:size`, spelled out so check-validator-wiring
+        # sees scripts/build-button-probe.mjs on this channel (it ignores comments).
+        run: pnpm build:lib && node scripts/build-button-probe.mjs && pnpm size-limit
 
       - name: Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)
         run: pnpm smoke:consumer
