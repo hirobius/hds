@@ -12,6 +12,10 @@
  *   - FLOAT values and color channels are stored as 32-bit floats
  *   - text style font properties need the style's font loaded first, and a
  *     font must exist before it can be loaded
+ *   - writing a text style property directly detaches the variable bound to
+ *     it (hds#300: the 2026-09-30 push wrote new fontSize, lineHeight and
+ *     letterSpacing values, and the snapshot after it showed exactly those
+ *     bindings gone while the untouched ones stayed)
  *   - modes per collection are capped by plan
  *
  * Every write is appended to `figma.writes` so tests can assert ordering and
@@ -28,6 +32,21 @@ const TEXT_BINDING_TYPES = {
   lineHeight: 'FLOAT',
   paragraphSpacing: 'FLOAT',
   paragraphIndent: 'FLOAT',
+};
+
+/**
+ * The bindings a direct write to a text style property detaches. fontSize,
+ * lineHeight and letterSpacing are observed: replaying the 2026-09-30 push
+ * with this rule loses the same 12 bindings figma/snapshot.json recorded, and
+ * without it the push converges. fontName is modelled the same way without an
+ * observation (no push has changed a font yet): the pessimistic case, so the
+ * push is tested to re-bind the font fields whichever way Figma behaves.
+ */
+const DETACHED_BY_WRITE = {
+  fontName: ['fontFamily', 'fontStyle', 'fontWeight'],
+  fontSize: ['fontSize'],
+  lineHeight: ['lineHeight'],
+  letterSpacing: ['letterSpacing'],
 };
 
 const clone = (value) => (value === undefined ? undefined : JSON.parse(JSON.stringify(value)));
@@ -293,6 +312,8 @@ export function createFakeFigma({
       textCase: 'ORIGINAL',
     };
     const bound = {};
+    const detach = (property) =>
+      DETACHED_BY_WRITE[property].forEach((field) => delete bound[field]);
     const style = {
       id: id('S'),
       type: 'TEXT',
@@ -305,6 +326,7 @@ export function createFakeFigma({
         requireLoaded(next, 'text style');
         log(`textStyle.fontName:${style.name}`);
         fontName = { family: next.family, style: next.style };
+        detach('fontName');
       },
       get boundVariables() {
         return clone(bound);
@@ -336,6 +358,7 @@ export function createFakeFigma({
           requireLoaded(fontName, 'text style');
           log(`textStyle.${key}:${style.name}`);
           state[key] = key === 'fontSize' ? Math.fround(next) : clone(next);
+          if (key in DETACHED_BY_WRITE) detach(key);
         },
       });
     }

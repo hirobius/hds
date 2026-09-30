@@ -182,6 +182,17 @@ What a push does:
   push before anything is written.
 - **Refuses before writing** when a text style font is not installed, or when a
   script's aliases point at a collection that is not in the file yet.
+- **Binds a text style's variables again after writing its values.** Writing
+  a text style property detaches the variable bound to it. The 2026-09-30 push
+  (hds#300) wrote the new values hds#283 gave six styles while their bindings
+  were already right, so the plan held no binding change for them, and exactly
+  the 12 bindings on the written fields (`fontSize`, `lineHeight`,
+  `letterSpacing`) were gone afterwards; the 33 on unwritten fields stayed. A
+  push now binds every field it writes again, and a font change re-binds the
+  font fields the same way (no push has changed a font yet, so that part is a
+  precaution: binding the same variable again is harmless). The plan keeps
+  listing only the value. A file left in that state needs one more push: its
+  plan shows only `bound:` changes, which bind without writing a value.
 - **Cannot change a collection's default mode** (`defaultModeId` is read-only).
   Figma renders the default mode wherever no mode is set, so a collection whose
   default is not the model's first mode (Semantic defaulting to Dark) is a
