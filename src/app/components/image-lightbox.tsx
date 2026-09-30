@@ -28,7 +28,7 @@ import { Stack } from './stack';
 import { Surface } from './surface';
 
 // Raw Radix Dialog.Portal appends to document.body, outside a [data-hds] scope.
-const LightboxPortal = withHdsPortal(Dialog.Portal);
+const LightboxPortal = /* @__PURE__ */ withHdsPortal(Dialog.Portal);
 
 export interface LightboxProps {
   open: boolean;

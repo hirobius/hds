@@ -73,7 +73,7 @@ const getGapValue = (gap: GapOption): string => {
 };
 
 /** @public */
-export const Stack = React.forwardRef<HTMLDivElement, StackProps>(function Stack(
+export const Stack = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StackProps>(function Stack(
   {
     children,
     direction = 'column',

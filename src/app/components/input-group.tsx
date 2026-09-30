@@ -13,7 +13,7 @@ import { cn } from '../../lib/utils';
 // The wrapper carries the input chrome (border, surface, focus ring via
 // focus-within) and the inner <input> is transparent. Mirrors input.tsx tokens
 // so a grouped field is visually identical to a bare one.
-const inputGroupVariants = cva(
+const inputGroupVariants = /* @__PURE__ */ cva(
   'flex items-center gap-2 w-full rounded-md border border-input bg-background px-3 text-foreground ring-offset-background transition-colors focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted has-[input:disabled]:opacity-70',
   {
     variants: {
@@ -45,28 +45,27 @@ export interface InputGroupProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** A single-line input with optional `leading`/`trailing` adornments. */
-export const InputGroup = React.forwardRef<HTMLInputElement, InputGroupProps>(function InputGroup(
-  { className, size, leading, trailing, disabled, ...props },
-  ref,
-) {
-  return (
-    <div data-size={size ?? 'md'} className={cn(inputGroupVariants({ size }), className)}>
-      {leading != null && (
-        <span className="shrink-0 text-muted-foreground" aria-hidden="true">
-          {leading}
-        </span>
-      )}
-      <input
-        ref={ref}
-        disabled={disabled}
-        className="h-full w-full min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
-        {...props}
-      />
-      {trailing != null && (
-        <span className="shrink-0 text-muted-foreground" aria-hidden="true">
-          {trailing}
-        </span>
-      )}
-    </div>
-  );
-});
+export const InputGroup = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputGroupProps>(
+  function InputGroup({ className, size, leading, trailing, disabled, ...props }, ref) {
+    return (
+      <div data-size={size ?? 'md'} className={cn(inputGroupVariants({ size }), className)}>
+        {leading != null && (
+          <span className="shrink-0 text-muted-foreground" aria-hidden="true">
+            {leading}
+          </span>
+        )}
+        <input
+          ref={ref}
+          disabled={disabled}
+          className="h-full w-full min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+          {...props}
+        />
+        {trailing != null && (
+          <span className="shrink-0 text-muted-foreground" aria-hidden="true">
+            {trailing}
+          </span>
+        )}
+      </div>
+    );
+  },
+);

@@ -101,7 +101,7 @@ export function withHdsPortal<P extends { container?: PortalContainer }>(
 }
 
 /** Plain `createPortal` with the same container contract, for non-Radix overlays. */
-export const hdsDomPortal = withHdsPortal(function DomPortal({
+export const hdsDomPortal = /* @__PURE__ */ withHdsPortal(function DomPortal({
   container,
   children,
 }: {

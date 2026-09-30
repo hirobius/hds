@@ -96,37 +96,36 @@ function TreeItem({ node, expandedIds, onToggle, onSelect }: TreeItemProps) {
 /**
  * Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
  */
-export const TreeList = React.forwardRef<HTMLUListElement, TreeListProps>(function TreeList(
-  { items, defaultExpandedIds, onSelect, className, ...props },
-  ref,
-) {
-  const [expandedIds, setExpandedIds] = React.useState<Set<string>>(
-    () => new Set(defaultExpandedIds ?? []),
-  );
+export const TreeList = /* @__PURE__ */ React.forwardRef<HTMLUListElement, TreeListProps>(
+  function TreeList({ items, defaultExpandedIds, onSelect, className, ...props }, ref) {
+    const [expandedIds, setExpandedIds] = React.useState<Set<string>>(
+      () => new Set(defaultExpandedIds ?? []),
+    );
 
-  const toggle = React.useCallback((id: string) => {
-    setExpandedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
-  }, []);
+    const toggle = React.useCallback((id: string) => {
+      setExpandedIds((prev) => {
+        const next = new Set(prev);
+        if (next.has(id)) {
+          next.delete(id);
+        } else {
+          next.add(id);
+        }
+        return next;
+      });
+    }, []);
 
-  return (
-    <ul ref={ref} role="tree" className={cn('flex flex-col gap-1', className)} {...props}>
-      {items.map((node) => (
-        <TreeItem
-          key={node.id}
-          node={node}
-          expandedIds={expandedIds}
-          onToggle={toggle}
-          onSelect={onSelect}
-        />
-      ))}
-    </ul>
-  );
-});
+    return (
+      <ul ref={ref} role="tree" className={cn('flex flex-col gap-1', className)} {...props}>
+        {items.map((node) => (
+          <TreeItem
+            key={node.id}
+            node={node}
+            expandedIds={expandedIds}
+            onToggle={toggle}
+            onSelect={onSelect}
+          />
+        ))}
+      </ul>
+    );
+  },
+);

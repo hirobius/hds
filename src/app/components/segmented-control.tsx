@@ -32,7 +32,7 @@ import { useHdsMotion } from '../hooks/useHdsMotion';
 // ── Variants ───────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic space/radius/border tokens have no Tailwind-theme utility; var()-based so still token-driven
-const segmentedControlWrapperVariants = cva(
+const segmentedControlWrapperVariants = /* @__PURE__ */ cva(
   'inline-flex max-w-full flex-col items-start self-start gap-[var(--semantic-space-scale-xs)] p-0',
   {
     variants: {
@@ -46,7 +46,7 @@ const segmentedControlWrapperVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- rail border/radius/gap are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
-const segmentedControlRailVariants = cva(
+const segmentedControlRailVariants = /* @__PURE__ */ cva(
   'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[var(--semantic-color-border-default)] [scrollbar-width:thin]',
   {
     variants: {
@@ -71,7 +71,7 @@ const segmentedControlRailVariants = cva(
 // slot regardless of what else matched, mirroring the old `showDisabled ? … :
 // …` short-circuit.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- segment button color/spacing/motion tokens have no Tailwind-theme utility; var()-based so still token-driven
-const segmentedControlItemVariants = cva(
+const segmentedControlItemVariants = /* @__PURE__ */ cva(
   'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
   {
     variants: {
@@ -154,7 +154,7 @@ const segmentedControlItemVariants = cva(
 
 // The absolutely-positioned background/ring indicator behind each segment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- indicator background/ring colors are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
-const segmentedControlIndicatorVariants = cva(
+const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
   'pointer-events-none absolute inset-0 z-0 rounded-md bg-transparent shadow-none',
   {
     variants: {
@@ -242,7 +242,7 @@ const segmentedControlIndicatorVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- description text is the semantic caption composite (12px/16px/medium) plus content-* color tokens; no Tailwind-theme utility
-const segmentedControlDescriptionVariants = cva(
+const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.zIndex.10 (the discrete 0/10/100/1000 stacking scale, reached as hds.zIndex.focus) has no semantic alias — same primitive ref the pre-Tailwind inline style used
   'relative z-[var(--primitive-zIndex-10)] text-xs font-medium text-[var(--semantic-color-content-secondary)]',
   {
@@ -270,7 +270,7 @@ const segmentedControlDescriptionVariants = cva(
 // freezes the visual state to "focused" (`:focus-visible` can't be faked
 // without real keyboard focus).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- outline width/offset/color are semantic tokens with no Tailwind-theme utility
-const segmentedControlFocusRingVariants = cva(
+const segmentedControlFocusRingVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.borderWidth.sm (the 2px accent/selection-ring weight) has no semantic alias — same primitive ref the pre-Tailwind inline style used
   'outline outline-[length:var(--primitive-borderWidth-sm)] outline-offset-[length:var(--semantic-space-subgrid-gap)]',
   {
@@ -288,7 +288,7 @@ const segmentedControlFocusRingVariants = cva(
 // `currentColor` (set by segmentedControlItemVariants above), so this only
 // carries the typeStyles.ui composite (14px/20px/medium/60ch, hds#283: was 15px/24px) + stacking.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- zIndex.focus token + 60ch max-width have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (text-sm/leading-5).
-const segmentedControlLabelVariants = cva(
+const segmentedControlLabelVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.zIndex.10, reached as hds.zIndex.focus, has no semantic alias — same primitive ref the pre-Tailwind inline style used
   'relative z-[var(--primitive-zIndex-10)] max-w-[60ch] text-sm font-medium leading-5 text-current',
 );
@@ -332,7 +332,7 @@ export interface SegmentedControlProps {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
-export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
+export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, SegmentedControlProps>(
   function SegmentedControl(
     {
       label,

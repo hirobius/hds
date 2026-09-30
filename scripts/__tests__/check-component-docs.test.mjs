@@ -16,7 +16,77 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { collectStoryComponentNames, runComponentDocsCheck } from '../lib/check-component-docs.mjs';
+import {
+  collectCompoundMembers,
+  collectStoryComponentNames,
+  runComponentDocsCheck,
+} from '../lib/check-component-docs.mjs';
+
+describe('collectCompoundMembers', () => {
+  const members = (text) =>
+    Object.fromEntries(
+      [...collectCompoundMembers(text)].map(([ns, m]) => [ns, Object.fromEntries(m)]),
+    );
+
+  it('reads the property-write shape: Card.Header = CardHeader', () => {
+    expect(
+      members(`
+      export const Card = CardRoot as CardComponent;
+      Card.Header = CardHeader;
+      Card.Body = CardBody;
+      `),
+    ).toEqual({ Card: { Header: 'CardHeader', Body: 'CardBody' } });
+  });
+
+  it('reads the pure Object.assign shape hds#363 moved the compounds to', () => {
+    // `Card.Header = CardHeader` is a top-level property write every bundler
+    // keeps, so the compounds are now one pure Object.assign around the root.
+    // Same members, same names; this reading has to follow or every part
+    // becomes an undocumented "library" component with a fake Figma gap.
+    expect(
+      members(`
+      export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
+        Header: CardHeader,
+        Body: CardBody,
+        // strings are metadata, not members
+        displayName: 'Card',
+      });
+      export const Dialog = /* @__PURE__ */ Object.assign(DialogRoot, {
+        Trigger,
+        Content: DialogContent,
+      }) as DialogComponent;
+      `),
+    ).toEqual({
+      Card: { Header: 'CardHeader', Body: 'CardBody' },
+      Dialog: { Trigger: 'Trigger', Content: 'DialogContent' },
+    });
+  });
+
+  it('reads Object.assign around an inline forwardRef, and merges both shapes', () => {
+    expect(
+      members(`
+      export const Palette = /* @__PURE__ */ Object.assign(
+        /* @__PURE__ */ React.forwardRef(function Palette() { return null; }),
+        { Item: PaletteItem, displayName: 'Palette' },
+      );
+      Palette.Group = PaletteGroup;
+      `),
+    ).toEqual({ Palette: { Item: 'PaletteItem', Group: 'PaletteGroup' } });
+  });
+
+  it('ignores an Object.assign that is not a compound declaration', () => {
+    expect(
+      members(`
+      const merged = Object.assign({}, defaults, { Header: CardHeader });
+      function f() { const X = Object.assign(Root, { Part }); return X; }
+      `),
+    ).toEqual({});
+  });
+
+  it('returns an empty map for empty input', () => {
+    expect(members('')).toEqual({});
+  });
+});
 
 describe('collectStoryComponentNames', () => {
   it('reads the component named by the story meta', () => {

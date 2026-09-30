@@ -16,7 +16,7 @@ import { cn } from '../../lib/utils';
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `variant` is the structural axis: the Prev/Next scroll affordances share
 // every visual treatment except which edge they anchor to.
-const carouselControlVariants = cva(
+const carouselControlVariants = /* @__PURE__ */ cva(
   'hds-focus absolute top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-input bg-background hover:bg-accent',
   {
     variants: {
@@ -46,66 +46,68 @@ export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * Renders children as a snap-scrolling track with Prev/Next scroll buttons.
  */
-export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Carousel(
-  { className, children, ariaLabel = 'Carousel', showControls = true, ...rest },
-  ref,
-) {
-  const trackRef = React.useRef<HTMLDivElement>(null);
+export const Carousel = /* @__PURE__ */ React.forwardRef<HTMLElement, CarouselProps>(
+  function Carousel(
+    { className, children, ariaLabel = 'Carousel', showControls = true, ...rest },
+    ref,
+  ) {
+    const trackRef = React.useRef<HTMLDivElement>(null);
 
-  const scrollByTrack = (direction: 1 | -1) => {
-    const track = trackRef.current;
-    if (!track) return;
-    track.scrollBy({ left: direction * track.clientWidth, behavior: 'smooth' });
-  };
+    const scrollByTrack = (direction: 1 | -1) => {
+      const track = trackRef.current;
+      if (!track) return;
+      track.scrollBy({ left: direction * track.clientWidth, behavior: 'smooth' });
+    };
 
-  return (
-    <section
-      ref={ref}
-      aria-label={ariaLabel}
-      aria-roledescription="carousel"
-      className={cn('relative', className)}
-      {...rest}
-    >
-      <div
-        ref={trackRef}
-        role="region"
-        aria-label={`${ariaLabel} slides`}
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-focusable
-        tabIndex={0}
-        className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth rounded-md border border-border bg-background text-foreground"
+    return (
+      <section
+        ref={ref}
+        aria-label={ariaLabel}
+        aria-roledescription="carousel"
+        className={cn('relative', className)}
+        {...rest}
       >
-        {React.Children.map(children, (child, i) => (
-          <div
-            key={React.isValidElement(child) && child.key !== null ? child.key : i}
-            className="snap-start shrink-0"
-          >
-            {child}
-          </div>
-        ))}
-      </div>
-      {showControls && (
-        <>
-          <button
-            type="button"
-            aria-label="Previous"
-            onClick={() => scrollByTrack(-1)}
-            className={carouselControlVariants({ variant: 'prev' })}
-          >
-            <ChevronLeft className="size-4" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            aria-label="Next"
-            onClick={() => scrollByTrack(1)}
-            className={carouselControlVariants({ variant: 'next' })}
-          >
-            <ChevronRight className="size-4" aria-hidden="true" />
-          </button>
-        </>
-      )}
-    </section>
-  );
-});
+        <div
+          ref={trackRef}
+          role="region"
+          aria-label={`${ariaLabel} slides`}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-focusable
+          tabIndex={0}
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth rounded-md border border-border bg-background text-foreground"
+        >
+          {React.Children.map(children, (child, i) => (
+            <div
+              key={React.isValidElement(child) && child.key !== null ? child.key : i}
+              className="snap-start shrink-0"
+            >
+              {child}
+            </div>
+          ))}
+        </div>
+        {showControls && (
+          <>
+            <button
+              type="button"
+              aria-label="Previous"
+              onClick={() => scrollByTrack(-1)}
+              className={carouselControlVariants({ variant: 'prev' })}
+            >
+              <ChevronLeft className="size-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next"
+              onClick={() => scrollByTrack(1)}
+              className={carouselControlVariants({ variant: 'next' })}
+            >
+              <ChevronRight className="size-4" aria-hidden="true" />
+            </button>
+          </>
+        )}
+      </section>
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via Carousel instead. */
 export { carouselControlVariants };

@@ -20,7 +20,7 @@ import { cn } from '../../lib/utils';
 // axis: `default` is a hairline rule, `strong` steps up to the emphasis
 // border color for a firmer separator.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default/border-strong have no named Tailwind color utility (only the generic `border` role token is mapped); var()-based so still token-driven
-const dividerVariants = cva('m-0 shrink-0 border-solid', {
+const dividerVariants = /* @__PURE__ */ cva('m-0 shrink-0 border-solid', {
   variants: {
     orientation: {
       horizontal: 'w-full self-stretch border-t',
@@ -56,27 +56,29 @@ export interface DividerProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
-export const Divider = React.forwardRef<HTMLHRElement, DividerProps>(function Divider(
-  { orientation = 'horizontal', variant, spacing, strong, style, className, ...props },
-  ref,
-) {
-  const resolvedVariant: DividerVariantProps['variant'] =
-    strong !== undefined ? (strong ? 'strong' : 'default') : variant;
-  const isHorizontal = orientation === 'horizontal';
+export const Divider = /* @__PURE__ */ React.forwardRef<HTMLHRElement, DividerProps>(
+  function Divider(
+    { orientation = 'horizontal', variant, spacing, strong, style, className, ...props },
+    ref,
+  ) {
+    const resolvedVariant: DividerVariantProps['variant'] =
+      strong !== undefined ? (strong ? 'strong' : 'default') : variant;
+    const isHorizontal = orientation === 'horizontal';
 
-  return (
-    <hr
-      ref={ref}
-      aria-orientation={orientation ?? 'horizontal'}
-      data-variant={resolvedVariant ?? 'default'}
-      className={cn(dividerVariants({ orientation, variant: resolvedVariant }), className)}
-      style={{
-        ...(isHorizontal
-          ? { marginTop: spacing, marginBottom: spacing }
-          : { marginLeft: spacing, marginRight: spacing }),
-        ...style,
-      }}
-      {...props}
-    />
-  );
-});
+    return (
+      <hr
+        ref={ref}
+        aria-orientation={orientation ?? 'horizontal'}
+        data-variant={resolvedVariant ?? 'default'}
+        className={cn(dividerVariants({ orientation, variant: resolvedVariant }), className)}
+        style={{
+          ...(isHorizontal
+            ? { marginTop: spacing, marginBottom: spacing }
+            : { marginLeft: spacing, marginRight: spacing }),
+          ...style,
+        }}
+        {...props}
+      />
+    );
+  },
+);

@@ -21,7 +21,7 @@ import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-const hdsToggleButtonVariants = cva(
+const hdsToggleButtonVariants = /* @__PURE__ */ cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors hds-focus disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
@@ -54,7 +54,7 @@ export interface ToggleButtonProps
  * A single two-state toggle button exposing a native `aria-pressed` contract —
  * use for one independent on/off control such as bold, mute, or pin.
  */
-export const ToggleButton = React.forwardRef<
+export const ToggleButton = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
   ToggleButtonProps
 >(function ToggleButton({ className, variant, size, ...props }, ref) {

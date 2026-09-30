@@ -24,8 +24,11 @@ const GAP_PX: Record<NonNullable<TileGridProps['gap']>, string> = {
  * Auto-fill responsive grid for status/micro tiles. Wraps tile children in a
  * one-line grid declaration so pages don't repeat the auto-fill minmax recipe.
  */
-export const TileGrid = React.forwardRef<HTMLDivElement, TileGridProps>(
-  function TileGrid({ minTileWidth = '260px', gap = 'sm', className, style, children, ...props }, ref) {
+export const TileGrid = /* @__PURE__ */ React.forwardRef<HTMLDivElement, TileGridProps>(
+  function TileGrid(
+    { minTileWidth = '260px', gap = 'sm', className, style, children, ...props },
+    ref,
+  ) {
     return (
       <div
         ref={ref}

@@ -203,6 +203,7 @@
     "check:micromotion": "node scripts/check-motion.mjs",
     "check:mojibake": "node scripts/lib/mojibake.mjs",
     "check:motion": "node scripts/check-reduced-motion.mjs",
+    "check:pure-annotations": "node scripts/check-pure-annotations.mjs",
     "check:refs": "node scripts/check-ref-forwarding.mjs",
     "check:registry": "node scripts/check-registry.mjs",
     "check:release": "pnpm check:full && node scripts/check-style-discipline.mjs && pnpm build:lib && pnpm check:size",

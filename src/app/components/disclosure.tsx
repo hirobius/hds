@@ -29,7 +29,7 @@ type DisclosureVariant = 'panel' | 'nav' | 'card';
 // timing an accordion needs, not a CSS transition), so that animation is
 // untouched by this migration — only the static layout/color styling moved.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
-const disclosureTriggerVariants = cva(
+const disclosureTriggerVariants = /* @__PURE__ */ cva(
   'flex w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-primary transition-[border-color,box-shadow,color]',
   {
     variants: {
@@ -78,142 +78,144 @@ export type DisclosureProps = {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
-export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>(function Disclosure(
-  {
-    label,
-    defaultOpen = false,
-    open,
-    onOpenChange,
-    variant = 'panel',
-    accent: _accent = false,
-    className,
-    triggerStyle,
-    contentStyle,
-    children,
-  },
-  ref,
-) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const panelId = useId();
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const resolvedOpen = open ?? internalOpen;
-  const state = resolvedOpen ? 'open' : 'closed';
-  const productiveMotion = useHdsMotion('productive');
+export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, DisclosureProps>(
+  function Disclosure(
+    {
+      label,
+      defaultOpen = false,
+      open,
+      onOpenChange,
+      variant = 'panel',
+      accent: _accent = false,
+      className,
+      triggerStyle,
+      contentStyle,
+      children,
+    },
+    ref,
+  ) {
+    const [internalOpen, setInternalOpen] = useState(defaultOpen);
+    const panelId = useId();
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const panelRef = useRef<HTMLDivElement>(null);
+    const resolvedOpen = open ?? internalOpen;
+    const state = resolvedOpen ? 'open' : 'closed';
+    const productiveMotion = useHdsMotion('productive');
 
-  function handleToggle() {
-    const nextOpen = !resolvedOpen;
-    // If collapsing while focus sits on a child inside the (about-to-unmount)
-    // panel, return focus to the trigger so it doesn't fall to <body>.
-    if (!nextOpen && panelRef.current?.contains(document.activeElement)) {
-      triggerRef.current?.focus();
+    function handleToggle() {
+      const nextOpen = !resolvedOpen;
+      // If collapsing while focus sits on a child inside the (about-to-unmount)
+      // panel, return focus to the trigger so it doesn't fall to <body>.
+      if (!nextOpen && panelRef.current?.contains(document.activeElement)) {
+        triggerRef.current?.focus();
+      }
+      if (open === undefined) {
+        setInternalOpen(nextOpen);
+      }
+      onOpenChange?.(nextOpen);
     }
-    if (open === undefined) {
-      setInternalOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  }
 
-  const triggerClassName = cn(
-    'hds-focus',
-    disclosureTriggerVariants({ variant }),
-    variant === 'nav' ? 'hds-text-hover hds-bg-hover-neutral' : '',
-    className,
-  );
-
-  const containerGap = resolvedOpen ? disclosureContainerGap[variant] : 0;
-
-  const labelContent =
-    typeof label === 'string' ? (
-      <span
-        className="m-0 text-current"
-        style={variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption}
-      >
-        {label}
-      </span>
-    ) : (
-      label
+    const triggerClassName = cn(
+      'hds-focus',
+      disclosureTriggerVariants({ variant }),
+      variant === 'nav' ? 'hds-text-hover hds-bg-hover-neutral' : '',
+      className,
     );
 
-  const disclosureBody = (
-    <>
-      <button // audit-ok: hds-focus applied via triggerClassName variable
-        ref={triggerRef}
-        type="button"
-        onClick={handleToggle}
-        aria-expanded={resolvedOpen}
-        aria-controls={panelId}
-        data-state={state}
-        className={triggerClassName}
-        style={triggerStyle}
-      >
-        {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven */}
-        <div className="grid min-w-0 flex-1 items-start gap-[var(--semantic-space-subgrid-gap)]">
-          {labelContent}
-        </div>
-        <motion.span
-          aria-hidden="true"
-          animate={{ rotate: resolvedOpen ? 0 : -90 }}
-          transition={{
-            duration: productiveMotion.duration,
-            ease: productiveMotion.easing,
-          }}
-          // Was --primitive-typography-size-base: a chevron BOX sized off the body
-          // type rung, so a ramp change would have resized it. Now the icon token.
-          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
-          className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
-        >
-          <Icon icon={ChevronDown} size="small" color="currentColor" />
-        </motion.span>
-      </button>
+    const containerGap = resolvedOpen ? disclosureContainerGap[variant] : 0;
 
-      <AnimatePresence initial={false}>
-        {resolvedOpen && (
-          <motion.div
-            ref={panelRef}
-            id={panelId}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+    const labelContent =
+      typeof label === 'string' ? (
+        <span
+          className="m-0 text-current"
+          style={variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption}
+        >
+          {label}
+        </span>
+      ) : (
+        label
+      );
+
+    const disclosureBody = (
+      <>
+        <button // audit-ok: hds-focus applied via triggerClassName variable
+          ref={triggerRef}
+          type="button"
+          onClick={handleToggle}
+          aria-expanded={resolvedOpen}
+          aria-controls={panelId}
+          data-state={state}
+          className={triggerClassName}
+          style={triggerStyle}
+        >
+          {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven */}
+          <div className="grid min-w-0 flex-1 items-start gap-[var(--semantic-space-subgrid-gap)]">
+            {labelContent}
+          </div>
+          <motion.span
+            aria-hidden="true"
+            animate={{ rotate: resolvedOpen ? 0 : -90 }}
             transition={{
               duration: productiveMotion.duration,
               ease: productiveMotion.easing,
             }}
-            className="overflow-hidden"
+            // Was --primitive-typography-size-base: a chevron BOX sized off the body
+            // type rung, so a ramp change would have resized it. Now the icon token.
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
+            className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
           >
-            <div
-              style={{
-                ...contentStyle,
+            <Icon icon={ChevronDown} size="small" color="currentColor" />
+          </motion.span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {resolvedOpen && (
+            <motion.div
+              ref={panelRef}
+              id={panelId}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{
+                duration: productiveMotion.duration,
+                ease: productiveMotion.easing,
               }}
+              className="overflow-hidden"
             >
-              {children}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-
-  if (variant === 'nav') {
-    return (
-      <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
-        {disclosureBody}
-      </Stack>
+              <div
+                style={{
+                  ...contentStyle,
+                }}
+              >
+                {children}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </>
     );
-  }
 
-  return (
-    <Surface
-      ref={ref}
-      padding="component"
-      className={variant === 'card' ? 'overflow-hidden' : undefined}
-    >
-      <Stack gap="tight" style={{ gap: containerGap }}>
-        {disclosureBody}
-      </Stack>
-    </Surface>
-  );
-});
+    if (variant === 'nav') {
+      return (
+        <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
+          {disclosureBody}
+        </Stack>
+      );
+    }
+
+    return (
+      <Surface
+        ref={ref}
+        padding="component"
+        className={variant === 'card' ? 'overflow-hidden' : undefined}
+      >
+        <Stack gap="tight" style={{ gap: containerGap }}>
+          {disclosureBody}
+        </Stack>
+      </Surface>
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via Disclosure props instead. */
 export { disclosureTriggerVariants };

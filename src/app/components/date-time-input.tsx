@@ -51,7 +51,7 @@ function combine(day: Date, time: string): Date {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Text date field + calendar popover, paired with a native time field, producing one Date. */
-export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps>(
+export const DateTimeInput = /* @__PURE__ */ React.forwardRef<HTMLInputElement, DateTimeInputProps>(
   function DateTimeInput(
     { value, onChange, dateFormat = 'yyyy-MM-dd', disabled = false, id, 'aria-label': ariaLabel },
     ref,

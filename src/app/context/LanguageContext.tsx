@@ -29,7 +29,7 @@ const LANGUAGE_OPTIONS: Record<AppLanguage, LanguageOption> = {
   },
 };
 
-const LanguageContext = createContext<LanguageContextValue>({
+const LanguageContext = /* @__PURE__ */ createContext<LanguageContextValue>({
   language: 'en',
   direction: 'ltr',
   isRtl: false,
@@ -53,7 +53,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const isRtl = direction === 'rtl';
 
   useEffect(() => {
-    try { localStorage.setItem('hds-direction', direction); } catch {}
+    try {
+      localStorage.setItem('hds-direction', direction);
+    } catch {}
     document.documentElement.setAttribute('lang', 'en');
     document.documentElement.setAttribute('data-language', 'en');
     document.documentElement.setAttribute('dir', direction);
@@ -69,11 +71,21 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const toggleDirection = useCallback(() => {
-    setDirectionState(prev => (prev === 'ltr' ? 'rtl' : 'ltr'));
+    setDirectionState((prev) => (prev === 'ltr' ? 'rtl' : 'ltr'));
   }, []);
 
   return (
-    <LanguageContext.Provider value={{ language, direction, isRtl, setLanguage, setDirection, toggleDirection, options: LANGUAGE_OPTIONS }}>
+    <LanguageContext.Provider
+      value={{
+        language,
+        direction,
+        isRtl,
+        setLanguage,
+        setDirection,
+        toggleDirection,
+        options: LANGUAGE_OPTIONS,
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   );

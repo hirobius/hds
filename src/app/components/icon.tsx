@@ -45,7 +45,7 @@ export interface IconProps {
   'aria-hidden'?: boolean | 'true' | 'false';
 }
 
-export const Icon = React.forwardRef<SVGSVGElement, IconProps>(function Icon(
+export const Icon = /* @__PURE__ */ React.forwardRef<SVGSVGElement, IconProps>(function Icon(
   {
     icon: IconComponent,
     size = 'small',

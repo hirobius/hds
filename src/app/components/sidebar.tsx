@@ -52,40 +52,49 @@ export interface SidebarProps {
 }
 
 /** @public */
-export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(function Sidebar(
-  {
-    children,
-    side = 'start',
-    sideWidth = '16rem',
-    contentMin = '50%',
-    gap = 'normal',
-    className,
-    style,
-    as: Tag = 'div',
-  },
-  ref,
-) {
-  const [rail, content] = children;
+export const Sidebar = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SidebarProps>(
+  function Sidebar(
+    {
+      children,
+      side = 'start',
+      sideWidth = '16rem',
+      contentMin = '50%',
+      gap = 'normal',
+      className,
+      style,
+      as: Tag = 'div',
+    },
+    ref,
+  ) {
+    const [rail, content] = children;
 
-  return (
-    <Tag
-      ref={ref}
-      className={className}
-      data-hds-component="Sidebar"
-      data-hds-metrics={`side:${side}`}
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: gapMap[gap],
-        ...style,
-      }}
-    >
-      <div style={{ flexBasis: sideWidth, flexGrow: 1, order: side === 'end' ? 2 : 1 }}>{rail}</div>
-      <div
-        style={{ flexBasis: 0, flexGrow: 999, minWidth: contentMin, order: side === 'end' ? 1 : 2 }}
+    return (
+      <Tag
+        ref={ref}
+        className={className}
+        data-hds-component="Sidebar"
+        data-hds-metrics={`side:${side}`}
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: gapMap[gap],
+          ...style,
+        }}
       >
-        {content}
-      </div>
-    </Tag>
-  );
-});
+        <div style={{ flexBasis: sideWidth, flexGrow: 1, order: side === 'end' ? 2 : 1 }}>
+          {rail}
+        </div>
+        <div
+          style={{
+            flexBasis: 0,
+            flexGrow: 999,
+            minWidth: contentMin,
+            order: side === 'end' ? 1 : 2,
+          }}
+        >
+          {content}
+        </div>
+      </Tag>
+    );
+  },
+);

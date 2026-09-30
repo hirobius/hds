@@ -49,7 +49,7 @@ const TOGGLE_THUMB_TRAVEL = TOGGLE_TRACK_WIDTH - TOGGLE_THUMB_SIZE - TOGGLE_TRAC
 /** Root label chrome — position context for the absolutely-positioned native
  * input below, hover/press tint, focus ring, cursor affordance. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
-const toggleRootVariants = cva(
+const toggleRootVariants = /* @__PURE__ */ cva(
   'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] px-[var(--semantic-space-scale-xs)] outline-offset-2 select-none',
   {
     variants: {
@@ -77,7 +77,7 @@ const toggleRootVariants = cva(
  * silently eat its clicks (CSS stacks positioned siblings above static ones,
  * regardless of DOM order).
  */
-const toggleInputVariants = cva('absolute inset-0 m-0 opacity-0', {
+const toggleInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-0', {
   variants: {
     state: {
       rest: 'cursor-pointer',
@@ -100,7 +100,7 @@ const toggleInputVariants = cva('absolute inset-0 m-0 opacity-0', {
  * primitive tokens, on/off + disabled colors are semantic tokens.
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/padding; var()-based, no Tailwind-theme utility exists
-const toggleTrackVariants = cva(
+const toggleTrackVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.size.40 / primitive.size.20 / primitive.radius.full — no semantic alias for toggle-track geometry yet (same gap as checkbox/radio's glyph sizing)
   'inline-flex shrink-0 items-center rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)] p-[var(--semantic-space-subgrid-xs)] w-[var(--primitive-size-40)] h-[var(--primitive-size-20)]',
   {
@@ -147,7 +147,7 @@ const toggleTrackVariants = cva(
  * ignores `width`/`height`). Position is animated via framer's `animate={{x}}`
  * below (`TOGGLE_THUMB_TRAVEL`), not cva — it's a transform, not a class swap. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists
-const toggleThumbVariants = cva(
+const toggleThumbVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.size.16 / primitive.radius.full — no semantic alias for toggle-thumb geometry yet
   'pointer-events-none block w-[var(--primitive-size-16)] h-[var(--primitive-size-16)] rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-page)]',
 );
@@ -164,7 +164,7 @@ export interface ToggleProps extends Omit<
   onChange: (v: boolean) => void;
 }
 
-export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
+export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
   { label, checked, onChange, onFocus, onBlur, disabled, ...rest },
   ref,
 ) {

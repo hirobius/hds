@@ -19,7 +19,7 @@ import { useFrozenState } from '../context/DemoStateContext';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-const inputVariants = cva(
+const inputVariants = /* @__PURE__ */ cva(
   'flex w-full rounded-md border bg-background text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-70',
   {
     variants: {
@@ -114,7 +114,7 @@ const ADORNMENT_BY_SIZE = {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
+export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     type = 'text',
     size = 'md',

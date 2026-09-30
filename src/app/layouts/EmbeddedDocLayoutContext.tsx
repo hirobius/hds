@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 
-const EmbeddedDocLayoutBottomSlotContext = createContext<ReactNode | null>(null);
+const EmbeddedDocLayoutBottomSlotContext = /* @__PURE__ */ createContext<ReactNode | null>(null);
 
 export function EmbeddedDocLayoutProvider({
   bottomSlot,

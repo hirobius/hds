@@ -163,8 +163,17 @@ export function collectStoryComponentNames(
 }
 
 /**
- * The compound members a component module attaches to one of its exports:
- * `Card.Header = CardHeader` → { Card: { Header: 'CardHeader' } }.
+ * The compound members a component module attaches to one of its exports, in
+ * either shape the codebase uses:
+ *
+ *   Card.Header = CardHeader;                                   (property write)
+ *   const Card = Object.assign(CardRoot, { Header: CardHeader }) (hds#363)
+ *
+ * → { Card: { Header: 'CardHeader' } }. Only identifier-valued properties are
+ * members; `displayName: 'Card'` is metadata. The `Object.assign` form is read
+ * only from a top-level `const`/`let` declaration (through any `as` cast or
+ * parentheses), since that is where a compound is declared; a merge inside a
+ * function or of a plain object literal is not one.
  *
  * @param {string} text - component module source
  * @returns {Map<string, Map<string, string>>} namespace → member → component
@@ -181,18 +190,72 @@ export function collectCompoundMembers(text) {
     ts.ScriptKind.TSX,
   );
 
-  for (const statement of sourceFile.statements) {
-    if (!ts.isExpressionStatement(statement)) continue;
-    const expression = statement.expression;
-    if (!ts.isBinaryExpression(expression)) continue;
-    if (expression.operatorToken.kind !== ts.SyntaxKind.EqualsToken) continue;
-    if (!ts.isPropertyAccessExpression(expression.left)) continue;
-    if (!ts.isIdentifier(expression.left.expression)) continue;
-    if (!ts.isIdentifier(expression.right)) continue;
-
-    const namespace = expression.left.expression.text;
+  const record = (namespace, member, component) => {
     if (!byNamespace.has(namespace)) byNamespace.set(namespace, new Map());
-    byNamespace.get(namespace).set(expression.left.name.text, expression.right.text);
+    byNamespace.get(namespace).set(member, component);
+  };
+
+  const unwrap = (node) => {
+    let current = node;
+    while (
+      current &&
+      (ts.isAsExpression(current) ||
+        ts.isParenthesizedExpression(current) ||
+        ts.isSatisfiesExpression?.(current) ||
+        ts.isTypeAssertionExpression(current) ||
+        ts.isNonNullExpression(current))
+    ) {
+      current = current.expression;
+    }
+    return current;
+  };
+
+  const isObjectAssign = (node) =>
+    ts.isCallExpression(node) &&
+    ts.isPropertyAccessExpression(node.expression) &&
+    ts.isIdentifier(node.expression.expression) &&
+    node.expression.expression.text === 'Object' &&
+    node.expression.name.text === 'assign';
+
+  for (const statement of sourceFile.statements) {
+    // Property-write shape.
+    if (ts.isExpressionStatement(statement)) {
+      const expression = statement.expression;
+      if (!ts.isBinaryExpression(expression)) continue;
+      if (expression.operatorToken.kind !== ts.SyntaxKind.EqualsToken) continue;
+      if (!ts.isPropertyAccessExpression(expression.left)) continue;
+      if (!ts.isIdentifier(expression.left.expression)) continue;
+      if (!ts.isIdentifier(expression.right)) continue;
+      record(expression.left.expression.text, expression.left.name.text, expression.right.text);
+      continue;
+    }
+
+    // Object.assign shape.
+    if (!ts.isVariableStatement(statement)) continue;
+    for (const declaration of statement.declarationList.declarations) {
+      if (!ts.isIdentifier(declaration.name)) continue;
+      // A compound is a component: capitalised, assembled onto a component
+      // (an identifier or a factory call), never onto a plain `{}`.
+      if (!/^[A-Z]/.test(declaration.name.text)) continue;
+      const initializer = unwrap(declaration.initializer);
+      if (!initializer || !isObjectAssign(initializer)) continue;
+      const [target] = initializer.arguments;
+      if (!target || !(ts.isIdentifier(target) || ts.isCallExpression(target))) continue;
+      for (const arg of initializer.arguments) {
+        if (!ts.isObjectLiteralExpression(arg)) continue;
+        for (const prop of arg.properties) {
+          if (ts.isShorthandPropertyAssignment(prop)) {
+            record(declaration.name.text, prop.name.text, prop.name.text);
+          } else if (
+            ts.isPropertyAssignment(prop) &&
+            ts.isIdentifier(prop.name) &&
+            ts.isIdentifier(prop.initializer)
+          ) {
+            record(declaration.name.text, prop.name.text, prop.initializer.text);
+          }
+        }
+      }
+    }
   }
 
   return byNamespace;
