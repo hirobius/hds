@@ -19,10 +19,10 @@
  * handler is provided — no per-call configuration needed at the call site.
  */
 
-import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
+import { hdsDomPortal as CursorPortal } from '../context/hds-portal';
 import { Grid } from './grid';
 import { Stack } from './stack';
 import { Surface } from './surface';
@@ -78,26 +78,26 @@ function Pill({ label }: { label: string }) {
 
 export function ExpandTooltip({ visible, mode, label = 'Expand', x = 0, y = 0 }: TooltipProps) {
   if (mode === 'cursor') {
-    if (typeof document === 'undefined') return null;
-    return createPortal(
-      <AnimatePresence>
-        {visible && (
-          <Stack
-            gap="xs"
-            style={{
-              position: 'fixed',
-              left: x,
-              top: y,
-              zIndex: hds.zIndex.modal,
-              transform: 'translate(14px, -50%)',
-              pointerEvents: 'none',
-            }}
-          >
-            <Pill label={label} />
-          </Stack>
-        )}
-      </AnimatePresence>,
-      document.body,
+    return (
+      <CursorPortal>
+        <AnimatePresence>
+          {visible && (
+            <Stack
+              gap="xs"
+              style={{
+                position: 'fixed',
+                left: x,
+                top: y,
+                zIndex: hds.zIndex.modal,
+                transform: 'translate(14px, -50%)',
+                pointerEvents: 'none',
+              }}
+            >
+              <Pill label={label} />
+            </Stack>
+          )}
+        </AnimatePresence>
+      </CursorPortal>
     );
   }
 

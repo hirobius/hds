@@ -59,10 +59,11 @@ Scope the design system's authored base styles to a `[data-hds]` subtree.
   Documented in the README "Consuming HDS" section and shipped as a `minor`
   changeset with a migration note. The docs site is handled in-repo.
 - **Deferred — not yet scoped (still global), pending visual verification:**
-  1. **Tailwind v4 preflight** (`*,::before,::after { box-sizing; border:0;
-     margin:0; padding:0 }`). Scoping it means importing the Tailwind layers
-     without preflight (`@import "tailwindcss/theme.css" layer(theme);
-     @import "tailwindcss/utilities.css" layer(utilities);`) and supplying a
+  1. **Tailwind v4 preflight**
+     (`*,::before,::after { box-sizing; border:0; margin:0; padding:0 }`).
+     Scoping it means importing the Tailwind layers without preflight
+     (`@import "tailwindcss/theme.css" layer(theme);` and
+     `@import "tailwindcss/utilities.css" layer(utilities);`) and supplying a
      hand-authored preflight under `:where([data-hds])`. This needs a full
      visual regression pass against the docs site, which the current web
      sandbox cannot run (Playwright OOMs there), so it is held for a machine
@@ -73,3 +74,32 @@ Scope the design system's authored base styles to a `[data-hds]` subtree.
   HDS overlays that portal to `document.body` fall outside the scope. Until
   preflight scoping lands, the recommended placement is `data-hds` on a
   high-level wrapper (or `<html>`/`<body>`); documented for consumers.
+
+## Addendum (hds#335): overlays inherit the nearest `data-hds` scope
+
+The last Consequences bullet no longer holds. Every portalled HDS part (Dialog,
+AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip, and the
+ExpandTooltip cursor pill) now resolves its portal container to the nearest
+`data-hds` scope instead of `document.body`, so a `<div data-hds
+data-theme="dark">` themes its overlays. Resolution order: an explicit
+`container` prop, the `HdsThemeProvider` element, the closest `[data-hds]`
+ancestor of a hidden in-place anchor (bare `<div data-hds>` scopes), then
+`document.body`. A scope on `<html>` or `<body>` resolves to `document.body`,
+because `body` already inherits it and a node appended to `<html>` would sit
+outside `<body>`. Scoping at `<html>` continues to work. The dark theme also
+declares `color-scheme: dark` (dark selector only, so non-HDS hosts are
+untouched) and the modal scrim is the theme-aware `semantic.color.surface.scrim`.
+
+Trade-off: portalling into the scope element means a scope that creates a
+containing block (`transform`, `filter`, `contain`, `will-change`) re-anchors
+`position: fixed`, and a scope that creates a stacking context (`z-index`,
+`isolation`) traps the scrim and `z-50` content inside it instead of covering
+the viewport. Pass `container={null}` (portal to `document.body`) or a
+dedicated element to opt out.
+
+While a part has no explicit container and no mounted `HdsThemeProvider`, it
+keeps a hidden `<span data-hds-portal-anchor>` in place (also when closed) so
+the nearest scope can be measured. It takes no space, but it is one extra child
+for structural selectors such as `:last-child` or `> *`, and it is not valid
+directly inside `ul`, `table` or `tr`; pass `container` on those parts or mount
+an `HdsThemeProvider` to omit it.

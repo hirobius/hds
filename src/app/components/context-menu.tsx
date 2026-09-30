@@ -35,6 +35,7 @@ import * as React from 'react';
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
 
 const ContextMenuRoot = ContextMenuPrimitive.Root;
@@ -42,6 +43,7 @@ const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
 const ContextMenuGroup = ContextMenuPrimitive.Group;
 const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
 const ContextMenuSub = ContextMenuPrimitive.Sub;
+const ContextMenuPortal = withHdsPortal(ContextMenuPrimitive.Portal);
 
 // Shared skin — kept identical to menu.tsx so the two overlays read as one system.
 const SURFACE =
@@ -53,17 +55,23 @@ const ITEM =
 
 const ContextMenuContent = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
->(function ContextMenuContent({ className, ...props }, ref) {
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content> & {
+    /**
+     * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+     * overlay inherits its theme; pass `null` to use `document.body`.
+     */
+    container?: HTMLElement | null;
+  }
+>(function ContextMenuContent({ className, container, ...props }, ref) {
   return (
-    <ContextMenuPrimitive.Portal>
+    <ContextMenuPortal container={container}>
       <ContextMenuPrimitive.Content
         ref={ref}
         collisionPadding={8}
         className={cn(SURFACE, className)}
         {...props}
       />
-    </ContextMenuPrimitive.Portal>
+    </ContextMenuPortal>
   );
 });
 
@@ -154,12 +162,18 @@ const ContextMenuSubTrigger = React.forwardRef<
 
 const ContextMenuSubContent = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.SubContent>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent>
->(function ContextMenuSubContent({ className, ...props }, ref) {
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent> & {
+    /**
+     * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+     * overlay inherits its theme; pass `null` to use `document.body`.
+     */
+    container?: HTMLElement | null;
+  }
+>(function ContextMenuSubContent({ className, container, ...props }, ref) {
   return (
-    <ContextMenuPrimitive.Portal>
+    <ContextMenuPortal container={container}>
       <ContextMenuPrimitive.SubContent ref={ref} className={cn(SURFACE, className)} {...props} />
-    </ContextMenuPrimitive.Portal>
+    </ContextMenuPortal>
   );
 });
 

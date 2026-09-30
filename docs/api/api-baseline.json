@@ -1,7 +1,7 @@
 {
   "entry": "src/index.ts",
-  "version": "0.16.0",
-  "generatedAt": "2026-09-29",
+  "version": "0.18.0",
+  "generatedAt": "2026-09-30",
   "modules": {
     "(barrel)": [
       "ActivityFeed",
@@ -202,7 +202,7 @@
       "hdsToggleButtonVariants"
     ],
     "./app/components/aspect-ratio": ["AspectRatio", "AspectRatioProps"],
-    "./app/components/alert-dialog": ["AlertDialog"],
+    "./app/components/alert-dialog": ["AlertDialog", "AlertDialogContentProps"],
     "./app/components/hover-card": ["HoverCard"],
     "./app/components/context-menu": ["ContextMenu"],
     "./app/components/side-nav": ["SideNav", "SideNavLevel", "SideNavProps", "sideNavVariants"],
