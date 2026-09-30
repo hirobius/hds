@@ -45,7 +45,9 @@ export const WithMinHeight: Story = {
   render: (args) => (
     <ErrorBoundary {...args}>
       <div style={{ padding: '24px' }}>
-        <Text variant="heading3" as="h2">Component mounted cleanly</Text>
+        <Text variant="heading3" as="h2">
+          Component mounted cleanly
+        </Text>
         <Text variant="body">
           The boundary sits at minHeight 320 px — content occupies only the space it needs.
         </Text>

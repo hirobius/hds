@@ -13,9 +13,7 @@ function unlabelledRoleless(container: HTMLElement) {
 
 describe('AssetImg a11y', () => {
   it('detail placeholder exposes aria-label only with an img role', () => {
-    const { container } = render(
-      <AssetImg src="/x.png" alt="Diagram" context="detail" />,
-    );
+    const { container } = render(<AssetImg src="/x.png" alt="Diagram" context="detail" />);
     fireEvent.error(container.querySelector('img') as HTMLImageElement);
     expect(unlabelledRoleless(container)).toHaveLength(0);
   });

@@ -77,7 +77,8 @@ export const MobileLayout: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'isMobile=true signals consumer renderInstance callbacks to adapt to narrow layouts.',
+        story:
+          'isMobile=true signals consumer renderInstance callbacks to adapt to narrow layouts.',
       },
     },
   },

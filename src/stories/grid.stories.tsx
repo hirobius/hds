@@ -2,10 +2,10 @@
  * Grid stories — layout mode and column demos.
  * @see src/app/components/Grid.tsx
  */
-import type { Meta, StoryObj } from "@storybook/react";
-import { Grid } from "../app/components/grid";
-import { Surface } from "../app/components/surface";
-import { Text } from "../app/components/text";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Grid } from '../app/components/grid';
+import { Surface } from '../app/components/surface';
+import { Text } from '../app/components/text';
 
 const GridCard = ({ label }: { label: string }) => (
   <Surface padding="item">
@@ -14,11 +14,11 @@ const GridCard = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: "Primitives/Grid",
+  title: 'Primitives/Grid',
   component: Grid,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       description: {
         component:
@@ -28,14 +28,14 @@ const meta = {
   },
   argTypes: {
     layout: {
-      control: { type: "radio" },
-      options: ["fixed", "auto-fit"],
+      control: { type: 'radio' },
+      options: ['fixed', 'auto-fit'],
     },
     gap: {
-      control: { type: "select" },
-      options: ["tight", "normal", "inset", "spacious"],
+      control: { type: 'select' },
+      options: ['tight', 'normal', 'inset', 'spacious'],
     },
-    columns: { control: { type: "number", min: 1, max: 12 } },
+    columns: { control: { type: 'number', min: 1, max: 12 } },
   },
 } satisfies Meta<typeof Grid>;
 
@@ -45,7 +45,7 @@ type Story = StoryObj<typeof meta>;
 export const TwoColumn: Story = {
   parameters: {
     docs: {
-      description: { story: "Two equal columns via 6-span items in a 12-column grid." },
+      description: { story: 'Two equal columns via 6-span items in a 12-column grid.' },
     },
   },
   render: () => (
@@ -63,20 +63,26 @@ export const TwoColumn: Story = {
 export const ThreeColumn: Story = {
   parameters: {
     docs: {
-      description: { story: "Three equal columns via 4-span items." },
+      description: { story: 'Three equal columns via 4-span items.' },
     },
   },
   render: () => (
     <Grid>
-      <Grid.Item colSpan={4}><GridCard label="Column 1" /></Grid.Item>
-      <Grid.Item colSpan={4}><GridCard label="Column 2" /></Grid.Item>
-      <Grid.Item colSpan={4}><GridCard label="Column 3" /></Grid.Item>
+      <Grid.Item colSpan={4}>
+        <GridCard label="Column 1" />
+      </Grid.Item>
+      <Grid.Item colSpan={4}>
+        <GridCard label="Column 2" />
+      </Grid.Item>
+      <Grid.Item colSpan={4}>
+        <GridCard label="Column 3" />
+      </Grid.Item>
     </Grid>
   ),
 };
 
 export const AutoFit: Story = {
-  args: { layout: "auto-fit" },
+  args: { layout: 'auto-fit' },
   render: (args) => (
     <Grid {...args}>
       <GridCard label="Card A" />
@@ -91,7 +97,7 @@ export const AutoFit: Story = {
 export const AsideLayout: Story = {
   parameters: {
     docs: {
-      description: { story: "8/4 content-to-sidebar split." },
+      description: { story: '8/4 content-to-sidebar split.' },
     },
   },
   render: () => (

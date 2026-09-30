@@ -29,7 +29,13 @@ describe('HdsSelect', () => {
 
   it('omits the visible label when showLabel is false', () => {
     render(
-      <HdsSelect label="Plan" showLabel={false} value="free" onChange={() => {}} options={OPTIONS} />,
+      <HdsSelect
+        label="Plan"
+        showLabel={false}
+        value="free"
+        onChange={() => {}}
+        options={OPTIONS}
+      />,
     );
     expect(screen.queryByText('Plan')).toBeNull();
     expect(screen.getByText('Free')).not.toBeNull();

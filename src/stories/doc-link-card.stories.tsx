@@ -81,8 +81,7 @@ export const Disabled: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Disabled state reduces contrast and suppresses pointer interaction.',
+        story: 'Disabled state reduces contrast and suppresses pointer interaction.',
       },
     },
   },

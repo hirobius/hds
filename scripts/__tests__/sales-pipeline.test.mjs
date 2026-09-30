@@ -112,7 +112,7 @@ describe('computePipeline', () => {
 
   it('preserves nextTouchSuggestion on each output record', () => {
     const r = computePipeline(records, NOW);
-    const lilac = r.current.find((x) => x.slug === 'client-a');
-    expect(lilac.nextTouchSuggestion).toBe('call');
+    const clientA = r.current.find((x) => x.slug === 'client-a');
+    expect(clientA.nextTouchSuggestion).toBe('call');
   });
 });
