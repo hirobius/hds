@@ -493,6 +493,15 @@
       "firingChannels": ["pre-commit"]
     },
     {
+      "id": "check-storybook-axe",
+      "description": "Scans every built story (storybook-static) in light and dark with axe-core (wcag2a, wcag2aa, wcag21aa, wcag22aa) and fails on serious or critical violations that are not in scripts/axe-allowlist.json. An allowlist entry that matches nothing also fails, so the list cannot rot. Needs `pnpm build-storybook` first (hds#310).",
+      "severity": "error",
+      "gateScript": "scripts/check-storybook-axe.mjs",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-published-types",
       "description": "Runs attw over the packed tarball so the PUBLISHED types are proven to resolve for a node16/nodenext ESM consumer. Nothing else sees that surface: tsc and every test read src/, and smoke:consumer proves subpaths import but not that their .d.ts resolve. The gap shipped 150 extensionless specifiers into a \"type\": \"module\" package, breaking types across 7 entry points with CI green. Profile esm-only (no CJS build here, node10 cannot read exports); the four CSS subpaths are excluded because stylesheets have no types to resolve.",
       "severity": "error",

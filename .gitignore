@@ -174,3 +174,6 @@ docs/components/
 /src/mui/index.d.ts
 /src/brand/index.d.ts
 /src/scroll/index.d.ts
+
+# Generated gate reports (check-storybook-axe)
+reports/
