@@ -26,6 +26,14 @@ const shell = process.platform === 'win32';
 const run = (cmd, args, opts = {}) =>
   spawnSync(cmd, args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, shell, ...opts });
 
+// A git hook exports GIT_DIR and friends; left in place they make `git -C <dir>` describe the
+// repository being pushed, not <dir>. The commit and dirty flag must describe `root`.
+const gitEnv = () => {
+  const env = { ...process.env };
+  for (const k of ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_PREFIX']) delete env[k];
+  return env;
+};
+
 function fail(what, r) {
   const tail = `${r.stdout ?? ''}${r.stderr ?? ''}`.trim().split('\n').slice(-15).join('\n');
   throw new Error(`${what} failed (exit ${r.status}):\n${tail}`);
@@ -116,12 +124,12 @@ export function prepareApp({ templateDir, scratch, app, packed }) {
 }
 
 export function gitCommit(root) {
-  const r = run('git', ['rev-parse', 'HEAD'], { cwd: root });
+  const r = run('git', ['rev-parse', 'HEAD'], { cwd: root, env: gitEnv() });
   if (r.status !== 0) fail('git rev-parse HEAD', r);
   return r.stdout.trim();
 }
 
 export function gitDirty(root) {
-  const r = run('git', ['status', '--porcelain'], { cwd: root });
+  const r = run('git', ['status', '--porcelain'], { cwd: root, env: gitEnv() });
   return r.status === 0 && r.stdout.trim().length > 0;
 }

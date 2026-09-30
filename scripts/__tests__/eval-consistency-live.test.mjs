@@ -815,6 +815,26 @@ describe('packLibrary --skip-build: the commit comes from the pack record', () =
     expect(packed.version).toBe('9.9.9');
   });
 
+  it('is not confused by git hook environment variables pointing at another repository', () => {
+    // a pre-push hook exports GIT_DIR, and the repo being pushed may well be dirty
+    const { dir, tgz } = packDirWithTarball();
+    writeFileSync(
+      path.join(dir, 'pack.json'),
+      JSON.stringify({ commit: 'a'.repeat(40), sha256: sha(tgz), dirty: false }),
+    );
+    const saved = process.env.GIT_DIR;
+    process.env.GIT_DIR = spawnSync('git', ['rev-parse', '--absolute-git-dir'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    }).stdout.trim();
+    try {
+      expect(packLibrary({ root: dir, packDir: dir, skipBuild: true }).dirty).toBe(false);
+    } finally {
+      if (saved === undefined) delete process.env.GIT_DIR;
+      else process.env.GIT_DIR = saved;
+    }
+  });
+
   it('passes on a tarball packed from a dirty tree', () => {
     const { dir, tgz } = packDirWithTarball();
     writeFileSync(
