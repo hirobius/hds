@@ -1542,6 +1542,7 @@
         "sizing": "full"
       },
       "consumers": [
+        "src/stories/foundation-swatch.stories.test.ts",
         "src/stories/foundation-swatch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -2920,6 +2921,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/sketch.stories.test.tsx",
         "src/stories/sketch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5638,6 +5640,7 @@
       },
       "consumers": [
         "src/app/components/status-tile.tsx",
+        "src/stories/status-list-item.stories.test.tsx",
         "src/stories/status-list-item.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5689,17 +5692,8 @@
           "required": true
         }
       ],
-      "storyFiles": [
-        "src/stories/status-list-item.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-status-list-item--danger",
-        "primitives-status-list-item--default",
-        "primitives-status-list-item--info",
-        "primitives-status-list-item--success",
-        "primitives-status-list-item--warning",
-        "primitives-status-list-item--with-trailing"
-      ]
+      "storyFiles": [],
+      "storyIds": []
     },
     "StatusTile": {
       "category": "Display",
@@ -5722,6 +5716,7 @@
         "src/app/components/stat.tsx",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/status-list-item.stories.tsx",
+        "src/stories/status-tile.stories.test.tsx",
         "src/stories/status-tile.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5757,16 +5752,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/status-tile.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-status-tile--danger",
-        "primitives-status-tile--default",
-        "primitives-status-tile--tile-grid",
-        "primitives-status-tile--warning",
-        "primitives-status-tile--with-trailing-badge"
-      ],
+      "storyFiles": [],
+      "storyIds": [],
       "usage": {
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
         "whenNot": "A single headline figure, or a row inside a list.",
@@ -5799,6 +5786,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/status-tile.stories.test.tsx",
         "src/stories/status-tile.stories.tsx",
         "src/stories/tile-grid.stories.tsx"
       ],
@@ -5894,11 +5882,17 @@
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/static-primitives.stories.tsx",
+        "src/stories/status-list-item.stories.test.tsx",
+        "src/stories/status-list-item.stories.tsx",
+        "src/stories/status-tile.stories.test.tsx",
+        "src/stories/status-tile.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
       "storyFiles": [
-        "src/stories/badge.stories.tsx"
+        "src/stories/badge.stories.tsx",
+        "src/stories/status-list-item.stories.tsx",
+        "src/stories/status-tile.stories.tsx"
       ],
       "storyIds": [
         "primitives-badge--all-tones",
@@ -5906,7 +5900,18 @@
         "primitives-badge--info",
         "primitives-badge--neutral",
         "primitives-badge--success",
-        "primitives-badge--warning"
+        "primitives-badge--warning",
+        "primitives-status-list-item--danger",
+        "primitives-status-list-item--default",
+        "primitives-status-list-item--info",
+        "primitives-status-list-item--success",
+        "primitives-status-list-item--warning",
+        "primitives-status-list-item--with-trailing",
+        "primitives-status-tile--danger",
+        "primitives-status-tile--default",
+        "primitives-status-tile--tile-grid",
+        "primitives-status-tile--warning",
+        "primitives-status-tile--with-trailing-badge"
       ],
       "usage": {
         "when": "Label a status, state or count with a compact neutral or semantic chip.",
