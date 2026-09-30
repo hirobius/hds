@@ -14,7 +14,7 @@ const STATIC_CHECKS = [
   { name: 'TokenAndLayoutAudit', command: 'pnpm check:ghost-tokens' },
   { name: 'ContrastAudit', command: 'pnpm check:contrast' },
   // AccessibilityPages + LayoutIntegrity dropped: their Playwright suite drove
-  // the docs SPA deleted in #90 and was archived per #161 (tests-archive/).
+  // the docs SPA deleted in #90 and was removed per #161/#313 (see git history).
 ];
 
 const DEFAULT_SMOKE_PATHS = [

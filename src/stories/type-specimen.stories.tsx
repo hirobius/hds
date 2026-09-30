@@ -3,7 +3,7 @@
  *
  * It did not exist. `foundation-swatch.stories.tsx` exports colour stories only,
  * `src/app/data/foundations/typography.json` is imported by zero files, and the
- * Playwright spec that once screenshotted /hds/typography sits in tests-archive
+ * Playwright spec that once screenshotted /hds/typography was removed with tests-archive (see git history)
  * and does not run. So the scale had no review surface at all — and Chromatic
  * cannot supply one either, since it runs with exitZeroOnChanges and is gated
  * off unless CHROMATIC_ENABLED. Nothing could have shown you a ramp change.
