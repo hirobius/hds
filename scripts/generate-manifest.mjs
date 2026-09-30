@@ -11,7 +11,7 @@
  */
 
 import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
-import { basename, dirname, join } from 'path';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { discoverHdsComponents } from './component-discovery.mjs';
 import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
@@ -19,7 +19,6 @@ import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const MANIFEST_PATH = join(ROOT, 'public', 'hds-manifest.json');
-const PATTERNS_DIR = join(ROOT, 'src', 'app', 'pages', 'hds', 'patterns');
 const SRC_DIR = join(ROOT, 'src');
 const DOCS_PAGE_SEGMENT = 'src/app/pages/hds/';
 
@@ -60,33 +59,6 @@ function readJson(path) {
 
 function writeJson(path, value) {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
-}
-
-function collectTsxFiles(dir, base = '') {
-  if (!dir || !existsSync(dir)) return [];
-  const results = [];
-
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    const rel = base ? `${base}/${entry}` : entry;
-
-    if (statSync(full).isDirectory()) {
-      results.push(...collectTsxFiles(full, rel));
-      continue;
-    }
-
-    if (entry.endsWith('.tsx')) {
-      results.push(rel);
-    }
-  }
-
-  return results;
-}
-
-function toPatternName(fileName) {
-  return basename(fileName, '.tsx')
-    .replace(/PatternPage$/, '')
-    .replace(/Page$/, '');
 }
 
 function uniqueSorted(values) {
@@ -167,9 +139,6 @@ const discoveredComponents = discovery.components;
 const namespaceViolations = discovery.namespaceViolations;
 const activeDiscoveredComponents = discoveredComponents.filter((entry) => !entry.ignored);
 const sourceFiles = collectSourceFiles(SRC_DIR).map((file) => toRelativePath(join(SRC_DIR, file)));
-const discoveredPatterns = collectTsxFiles(PATTERNS_DIR)
-  .map((file) => toPatternName(file))
-  .filter(Boolean);
 
 // INVENTORY_TIERS must match generate-component-api.mjs exactly so that
 // componentInventory ↔ component-api.json stay in sync.
@@ -184,7 +153,13 @@ const componentInventory = uniqueSorted(
     .filter((entry) => entry.tier && INVENTORY_TIERS.has(entry.tier))
     .map((entry) => entry.name),
 );
-const patternInventory = uniqueSorted(discoveredPatterns);
+// patternInventory is the screen-level compositions: the exports whose JSDoc carries
+// `@screenPattern` (hds#337). It used to be read from a pages directory that no longer
+// exists, so it could never fill. The pattern *tier* is a different, larger set and
+// stays in componentInventory.
+const patternInventory = uniqueSorted(
+  activeDiscoveredComponents.filter((entry) => entry.screenPattern).map((entry) => entry.name),
+);
 
 // Fold utilities back into the working set so the discovery loop preserves
 // their spec data across runs. The move-pass at the bottom redistributes
