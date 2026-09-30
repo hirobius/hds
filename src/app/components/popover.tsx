@@ -32,7 +32,13 @@ import { withHdsPortal } from '../context/hds-portal';
 
 // ── Root + leaf primitives (re-exported from Radix) ────────────────────────────
 
-const PopoverRoot = PopoverPrimitive.Root;
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Writing them onto a component at module scope is a side
+// effect webpack and esbuild keep in every bundle that reaches the shared
+// chunk (hds#363, hds#365).
+function PopoverRoot(props: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+  return <PopoverPrimitive.Root {...props} />;
+}
 const PopoverTrigger = PopoverPrimitive.Trigger;
 const PopoverAnchor = PopoverPrimitive.Anchor;
 const PopoverClose = PopoverPrimitive.Close;
@@ -90,12 +96,14 @@ interface PopoverComponent extends React.FC<React.ComponentProps<typeof PopoverP
  * with `defaultOpen`.
  * @public
  */
-const Popover = ((props: React.ComponentProps<typeof PopoverPrimitive.Root>) => (
-  <PopoverRoot {...props} />
-)) as PopoverComponent;
-Popover.Trigger = PopoverTrigger;
-Popover.Anchor = PopoverAnchor;
-Popover.Content = PopoverContent;
-Popover.Close = PopoverClose;
+const Popover: PopoverComponent = /* @__PURE__ */ Object.assign(PopoverRoot, {
+  Trigger: PopoverTrigger,
+  Anchor: PopoverAnchor,
+  Content: PopoverContent,
+  Close: PopoverClose,
+  // Set here, not by a later `Popover.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'Popover',
+});
 
 export { Popover };
