@@ -7,6 +7,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { parse as parseYaml } from 'yaml';
 import { readFileSync, writeFileSync, mkdtempSync } from 'fs';
 import { tmpdir } from 'os';
 import { join, dirname } from 'path';
@@ -57,6 +58,14 @@ const build = (over = {}) =>
   });
 
 describe('buildConsumerSkill (in-memory)', () => {
+  it('frontmatter is valid YAML (a bare colon in the description broke skills add)', () => {
+    const fm = build().split('---\n')[1];
+    const data = parseYaml(fm);
+    expect(data.name).toBe('hds-consumer');
+    expect(typeof data.description).toBe('string');
+    expect(data.description).toContain('@hirobius/design-system');
+  });
+
   it('starts with frontmatter naming hds-consumer and a description', () => {
     const out = build();
     expect(out.startsWith('---\nname: hds-consumer\ndescription: ')).toBe(true);
