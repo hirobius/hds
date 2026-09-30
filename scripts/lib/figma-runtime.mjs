@@ -932,6 +932,17 @@ export async function hdsApply(figma, plan) {
     ['fontSize', 'lineHeight', 'letterSpacing', 'textCase'].forEach((key) => {
       if (has(key)) style[key] = ps.set[key];
     });
+    // Writing a property detaches the variable bound to it. hds#300: the
+    // 2026-09-30 push wrote six styles' new fontSize, lineHeight and
+    // letterSpacing values while their bindings were already right (so the
+    // plan held no bound: change for them), and exactly those bindings were
+    // gone afterwards. So every field whose property was just written is
+    // bound again; fontName carries the three font fields.
+    const written = [];
+    if (has('font')) written.push('fontFamily', 'fontStyle', 'fontWeight');
+    ['fontSize', 'lineHeight', 'letterSpacing'].forEach((key) => {
+      if (has(key)) written.push(key);
+    });
     const fields = Object.keys(ps.set.boundVariables);
     ps.changes
       .filter((c) => c.indexOf('bound:') === 0)
@@ -940,8 +951,9 @@ export async function hdsApply(figma, plan) {
         if (fields.indexOf(field) === -1) fields.push(field);
       });
     fields.forEach((field) => {
-      if (!has('bound:' + field)) return;
       const path = ps.set.boundVariables[field];
+      const detached = Boolean(path) && written.indexOf(field) !== -1;
+      if (!has('bound:' + field) && !detached) return;
       if (path && !byPath[path])
         throw new Error(`Text style ${ps.set.name} binds ${path}, which is not in Figma.`);
       style.setBoundVariable(field, path ? byPath[path] : null);
