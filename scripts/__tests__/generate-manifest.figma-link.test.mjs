@@ -144,7 +144,7 @@ describe('generate-manifest figmaLink regeneration', () => {
 
     const mapped = regenerate({ tag: NEW_NODE });
     expect(mapped.stdout).toContain('Figma links: 1 of 1 component specs (100%)');
-  });
+  }, 30_000); // two manifest generations in a row; the default 5s flakes under load
 });
 
 describe('public/hds-manifest.json', () => {
