@@ -8,7 +8,7 @@ import type { DateRange } from 'react-day-picker';
 import { Calendar } from '../app/components/calendar';
 
 const meta = {
-  title: 'Primitives/calendar',
+  title: 'Primitives/Calendar',
   component: Calendar,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

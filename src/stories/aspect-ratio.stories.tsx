@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AspectRatio } from '../app/components/aspect-ratio';
 
 const meta = {
-  title: 'Primitives/aspect-ratio',
+  title: 'Primitives/Aspect Ratio',
   component: AspectRatio,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

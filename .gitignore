@@ -178,3 +178,5 @@ docs/components/
 # Real client/person detection rules for scripts/lib/knowledge-classify.mjs (private data;
 # only knowledge-clients.example.json is tracked). Basename match, any depth.
 knowledge-clients.local.json
+# Generated gate reports (check-storybook-axe)
+reports/

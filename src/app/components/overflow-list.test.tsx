@@ -26,9 +26,35 @@ describe('OverflowList', () => {
         <span>d</span>
       </OverflowList>,
     );
-    expect(container.querySelectorAll('[role="listitem"]').length).toBe(2);
+    expect(container.querySelectorAll('[role="listitem"]').length).toBe(3);
     expect(screen.getByText('+2')).not.toBeNull();
-    expect(screen.getByLabelText('+2 more')).not.toBeNull();
+    expect(screen.getByText('more')).not.toBeNull();
+  });
+
+  it('renders every direct child of the list as a listitem, including the overflow node', () => {
+    const { container } = render(
+      <OverflowList max={1}>
+        <span>a</span>
+        <span>b</span>
+      </OverflowList>,
+    );
+    const list = container.querySelector('[role="list"]') as HTMLElement;
+    expect(list.children.length).toBe(2);
+    for (const child of Array.from(list.children)) {
+      expect(child.getAttribute('role')).toBe('listitem');
+    }
+    expect(container.querySelector('span[aria-label]')).toBeNull();
+  });
+
+  it('wraps a custom renderOverflow node in a listitem', () => {
+    const { container } = render(
+      <OverflowList max={1} renderOverflow={(n) => <button>{n} hidden</button>}>
+        <span>a</span>
+        <span>b</span>
+      </OverflowList>,
+    );
+    const list = container.querySelector('[role="list"]') as HTMLElement;
+    expect(list.lastElementChild?.getAttribute('role')).toBe('listitem');
   });
 
   it('uses a custom renderOverflow node when provided', () => {

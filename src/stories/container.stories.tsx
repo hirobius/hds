@@ -2,17 +2,17 @@
  * Container stories — maxWidth demos.
  * @see src/app/components/Container.tsx
  */
-import type { Meta, StoryObj } from "@storybook/react";
-import { Container } from "../app/components/container";
-import { Text } from "../app/components/text";
-import { Surface } from "../app/components/surface";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Container } from '../app/components/container';
+import { Text } from '../app/components/text';
+import { Surface } from '../app/components/surface';
 
 const meta = {
-  title: "Primitives/container",
+  title: 'Primitives/Container',
   component: Container,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "fullscreen",
+    layout: 'fullscreen',
     docs: {
       description: {
         component:
@@ -22,8 +22,8 @@ const meta = {
   },
   argTypes: {
     maxWidth: {
-      control: { type: "radio" },
-      options: ["content", "max"],
+      control: { type: 'radio' },
+      options: ['content', 'max'],
     },
   },
 } satisfies Meta<typeof Container>;
@@ -32,15 +32,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const ContentWidth: Story = {
-  args: { maxWidth: "content" },
+  args: { maxWidth: 'content' },
   render: (args) => (
-    <div style={{ padding: "24px", background: "var(--semantic-color-surface-page, #f9fafb)" }}>
+    <div style={{ padding: '24px', background: 'var(--semantic-color-surface-page, #f9fafb)' }}>
       <Container {...args}>
         <Surface>
           <Text variant="heading2">Content width (760px)</Text>
           <Text variant="body">
-            This container constrains prose to a comfortable reading measure.
-            Use for documentation pages, case studies, and article layouts.
+            This container constrains prose to a comfortable reading measure. Use for documentation
+            pages, case studies, and article layouts.
           </Text>
         </Surface>
       </Container>
@@ -49,15 +49,14 @@ export const ContentWidth: Story = {
 };
 
 export const MaxWidth: Story = {
-  args: { maxWidth: "max" },
+  args: { maxWidth: 'max' },
   render: (args) => (
-    <div style={{ padding: "24px", background: "var(--semantic-color-surface-page, #f9fafb)" }}>
+    <div style={{ padding: '24px', background: 'var(--semantic-color-surface-page, #f9fafb)' }}>
       <Container {...args}>
         <Surface>
           <Text variant="heading2">Max width (1200px)</Text>
           <Text variant="body">
-            Full layout width for dashboard surfaces, galleries, and
-            grid-heavy pages.
+            Full layout width for dashboard surfaces, galleries, and grid-heavy pages.
           </Text>
         </Surface>
       </Container>

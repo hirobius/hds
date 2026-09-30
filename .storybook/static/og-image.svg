@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect x="96" y="96" width="96" height="96" rx="24" fill="#ffffff"/>
+  <path d="M126 126v36M162 126v36M126 144h36" stroke="#111111" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <text x="96" y="352" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="88" font-weight="700" textLength="1008" lengthAdjust="spacingAndGlyphs" fill="#ffffff">Hirobius Design System</text>
+  <text x="96" y="428" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="36" fill="#b8b8b8">React components, four theming dials, one token pipeline.</text>
+  <text x="96" y="540" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="28" fill="#8a8a8a">hirobius-design-system.vercel.app</text>
+</svg>

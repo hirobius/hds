@@ -78,3 +78,14 @@ describe('Combobox', () => {
     expect(screen.getByText('No results')).not.toBeNull();
   });
 });
+
+describe('Combobox highlighted row ring', () => {
+  it('draws a 2px inset ring on the active option', () => {
+    render(<Example />);
+    fireEvent.click(screen.getByRole('combobox', { name: 'Country' }));
+    const cls = screen.getAllByRole('option')[0].className;
+    expect(cls).toContain('data-[active=true]:ring-2');
+    expect(cls).toContain('data-[active=true]:ring-inset');
+    expect(cls).toContain('data-[active=true]:ring-ring');
+  });
+});

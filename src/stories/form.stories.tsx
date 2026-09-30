@@ -123,7 +123,7 @@ function ControlledDemo() {
 }
 
 const meta = {
-  title: 'Patterns/form',
+  title: 'Patterns/Form',
   component: Form,
   tags: ['autodocs'],
   parameters: {

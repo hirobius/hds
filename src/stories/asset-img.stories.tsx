@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AssetImg } from '../app/components/asset-img';
 
 const meta = {
-  title: 'Primitives/asset-img',
+  title: 'Primitives/Asset Img',
   component: AssetImg,
   tags: ['autodocs'],
   parameters: {
@@ -97,8 +97,7 @@ export const DetailContext: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Detail context fills the parent container and uses the overlay surface color.',
+        story: 'Detail context fills the parent container and uses the overlay surface color.',
       },
     },
   },

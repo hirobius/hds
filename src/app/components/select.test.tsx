@@ -5,7 +5,7 @@
  */
 import { describe, it, expect, beforeAll, afterEach } from 'vitest';
 import { createRef } from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { HdsSelect } from './select';
 
 beforeAll(() => {
@@ -29,7 +29,13 @@ describe('HdsSelect', () => {
 
   it('omits the visible label when showLabel is false', () => {
     render(
-      <HdsSelect label="Plan" showLabel={false} value="free" onChange={() => {}} options={OPTIONS} />,
+      <HdsSelect
+        label="Plan"
+        showLabel={false}
+        value="free"
+        onChange={() => {}}
+        options={OPTIONS}
+      />,
     );
     expect(screen.queryByText('Plan')).toBeNull();
     expect(screen.getByText('Free')).not.toBeNull();
@@ -39,5 +45,17 @@ describe('HdsSelect', () => {
     const ref = createRef<HTMLButtonElement>();
     render(<HdsSelect ref={ref} label="Plan" value="pro" onChange={() => {}} options={OPTIONS} />);
     expect(ref.current?.tagName).toBe('BUTTON');
+  });
+});
+
+describe('HdsSelect highlighted row ring', () => {
+  it('draws a 2px inset ring on the highlighted option', () => {
+    render(<HdsSelect label="Plan" value="free" onChange={() => {}} options={OPTIONS} />);
+    fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' });
+    const cls = screen.getAllByRole('option')[0].className;
+    expect(cls).toContain('data-[highlighted]:ring-2');
+    expect(cls).toContain('data-[highlighted]:ring-inset');
+    expect(cls.split(/\s+/)).not.toContain('hds-focus');
+    expect(cls).toContain('data-[highlighted]:ring-ring');
   });
 });

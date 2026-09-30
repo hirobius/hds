@@ -11,7 +11,7 @@ import { HdsTooltip } from '../app/components/hds-tooltip';
 import { Button } from '../app/components/button';
 
 const meta = {
-  title: 'Primitives/hds-tooltip',
+  title: 'Primitives/HDS Tooltip',
   component: HdsTooltip,
   tags: ['autodocs'],
   parameters: {
@@ -51,7 +51,9 @@ function PlacementDemo() {
   return (
     <HdsTooltip>
       <HdsTooltip.Trigger asChild>
-        <Button variant="tertiary" size="sm">Tip on the right</Button>
+        <Button variant="tertiary" size="sm">
+          Tip on the right
+        </Button>
       </HdsTooltip.Trigger>
       <HdsTooltip.Content side="right">Opens beside the trigger</HdsTooltip.Content>
     </HdsTooltip>
@@ -62,7 +64,8 @@ export const Placement: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Pass Radix `side` (top | right | bottom | left) to steer placement; positioning stays collision-aware.',
+        story:
+          'Pass Radix `side` (top | right | bottom | left) to steer placement; positioning stays collision-aware.',
       },
     },
   },

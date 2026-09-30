@@ -56,3 +56,16 @@ describe('Carousel', () => {
     expect(screen.queryByLabelText('Next')).toBeNull();
   });
 });
+
+describe('Carousel scroll region a11y', () => {
+  it('makes the scroll track a focusable, named region', () => {
+    render(
+      <Carousel ariaLabel="Photos">
+        <div>Slide one</div>
+      </Carousel>,
+    );
+    const track = screen.getByRole('region', { name: 'Photos slides' });
+    expect(track.getAttribute('tabindex')).toBe('0');
+    expect(track.contains(screen.getByText('Slide one'))).toBe(true);
+  });
+});

@@ -2,17 +2,17 @@
  * FoundationSwatch stories — color specimen label, value, token path, details.
  * @see src/app/components/FoundationSwatch.tsx
  */
-import React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { FoundationSwatch } from "../app/components/foundation-swatch";
-import { Grid } from "../app/components/grid";
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { FoundationSwatch } from '../app/components/foundation-swatch';
+import { Grid } from '../app/components/grid';
 
 const meta = {
-  title: "Primitives/foundation-swatch",
+  title: 'Primitives/Foundation Swatch',
   component: FoundationSwatch,
-  tags: ["autodocs"],
+  tags: ['autodocs', '!dev'],
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       description: {
         component:
@@ -21,14 +21,14 @@ const meta = {
     },
   },
   argTypes: {
-    bordered: { control: "boolean" },
+    bordered: { control: 'boolean' },
     previewPosition: {
-      control: { type: "select" },
-      options: ["bottom-left", "top-left", "center"],
+      control: { type: 'select' },
+      options: ['bottom-left', 'top-left', 'center'],
     },
     tokenDisplayPreset: {
-      control: { type: "radio" },
-      options: ["depth1", "depth2", "full"],
+      control: { type: 'radio' },
+      options: ['depth1', 'depth2', 'full'],
     },
   },
 } satisfies Meta<typeof FoundationSwatch>;
@@ -40,8 +40,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: "bg.default",
-    background: "var(--semantic-color-bg-default, #ffffff)",
+    label: 'bg.default',
+    background: 'var(--semantic-color-bg-default, #ffffff)',
     bordered: true,
   },
 };
@@ -52,12 +52,12 @@ export const FeedbackPalette: Story = {
   parameters: {
     docs: {
       description: {
-        story: "All four feedback background tones rendered side-by-side.",
+        story: 'All four feedback background tones rendered side-by-side.',
       },
     },
   },
   render: () => (
-    <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
       <FoundationSwatch
         label="Info"
         background="var(--semantic-color-feedback-bg-info, #e8f0fe)"
@@ -92,7 +92,7 @@ export const WithDetails: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Token path, hex value, and detail lines for richer specimen documentation.",
+        story: 'Token path, hex value, and detail lines for richer specimen documentation.',
       },
     },
   },
@@ -102,7 +102,7 @@ export const WithDetails: Story = {
       background="var(--semantic-color-bg-default, #ffffff)"
       foreground="var(--semantic-color-content-primary, #111111)"
       value="#111111"
-      details={["Role: primary text", "Contrast: 16.1:1 on bg.default"]}
+      details={['Role: primary text', 'Contrast: 16.1:1 on bg.default']}
       tokenPath="semantic.color.content.primary"
       bordered
     />
@@ -115,7 +115,7 @@ export const WithSpecimen: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Custom specimen slot for non-color tokens such as border or spacing rulers.",
+        story: 'Custom specimen slot for non-color tokens such as border or spacing rulers.',
       },
     },
   },
@@ -126,10 +126,10 @@ export const WithSpecimen: Story = {
       specimen={
         <div
           style={{
-            width: "100%",
-            height: "2px",
-            background: "var(--semantic-color-border-default, #e5e5e5)",
-            borderRadius: "1px",
+            width: '100%',
+            height: '2px',
+            background: 'var(--semantic-color-border-default, #e5e5e5)',
+            borderRadius: '1px',
           }}
         />
       }
@@ -144,7 +144,7 @@ export const ColorGrid: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Grid layout showing multiple swatches — typical usage on a Color foundation page.",
+        story: 'Grid layout showing multiple swatches — typical usage on a Color foundation page.',
       },
     },
   },
@@ -152,36 +152,36 @@ export const ColorGrid: Story = {
     <Grid layout="auto-fit" gap="inset">
       {[
         {
-          label: "bg.default",
-          background: "var(--semantic-color-bg-default, #ffffff)",
-          foreground: "var(--semantic-color-content-primary, #111)",
+          label: 'bg.default',
+          background: 'var(--semantic-color-bg-default, #ffffff)',
+          foreground: 'var(--semantic-color-content-primary, #111)',
           bordered: true,
         },
         {
-          label: "bg.subtle",
-          background: "var(--semantic-color-bg-subtle, #f9f9f9)",
-          foreground: "var(--semantic-color-content-primary, #111)",
+          label: 'bg.subtle',
+          background: 'var(--semantic-color-bg-subtle, #f9f9f9)',
+          foreground: 'var(--semantic-color-content-primary, #111)',
           bordered: true,
         },
         {
-          label: "bg.brand",
-          background: "var(--semantic-color-bg-brand, #0066ff)",
-          foreground: "#ffffff",
+          label: 'bg.brand',
+          background: 'var(--semantic-color-bg-brand, #0066ff)',
+          foreground: '#ffffff',
         },
         {
-          label: "content.primary",
-          background: "var(--semantic-color-content-primary, #111111)",
-          foreground: "#ffffff",
+          label: 'content.primary',
+          background: 'var(--semantic-color-content-primary, #111111)',
+          foreground: '#ffffff',
         },
         {
-          label: "content.secondary",
-          background: "var(--semantic-color-content-secondary, #666666)",
-          foreground: "#ffffff",
+          label: 'content.secondary',
+          background: 'var(--semantic-color-content-secondary, #666666)',
+          foreground: '#ffffff',
         },
         {
-          label: "border.default",
-          background: "var(--semantic-color-border-default, #e5e5e5)",
-          foreground: "var(--semantic-color-content-primary, #111)",
+          label: 'border.default',
+          background: 'var(--semantic-color-border-default, #e5e5e5)',
+          foreground: 'var(--semantic-color-content-primary, #111)',
           bordered: true,
         },
       ].map(({ label, background, foreground, bordered }) => (

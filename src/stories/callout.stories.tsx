@@ -7,7 +7,7 @@ import { Callout } from '../app/components/callout';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/callout',
+  title: 'Primitives/Callout',
   component: Callout,
   tags: ['autodocs'],
   parameters: {
