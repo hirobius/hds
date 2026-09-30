@@ -57,6 +57,8 @@ tooling, or restore the cache are omitted because they are not gates.
 | ci         | Bundle budgets (size-limit)                                                    | `pnpm check:size`                                                                                                                                                                          |
 | ci         | Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck) | `pnpm smoke:consumer`                                                                                                                                                                      |
 | ci         | Storybook build                                                                | `pnpm build-storybook`                                                                                                                                                                     |
+| ci         | Install Chromium                                                               | `pnpm exec playwright install --with-deps chromium`                                                                                                                                        |
+| ci         | Storybook axe gate (light + dark, serious/critical)                            | `node scripts/check-storybook-axe.mjs`                                                                                                                                                     |
 
 Never use `--no-verify`. When a gate fails, fix the cause.
 
