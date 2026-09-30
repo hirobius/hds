@@ -3075,6 +3075,7 @@
       "consumers": [
         "src/app/components/table.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/app/data/manifest-types.ts",
         "src/docs-tooling/api-reference.tsx",
         "src/docs-tooling/propTableUtils.tsx",
         "src/stories/nav-group.stories.tsx",
