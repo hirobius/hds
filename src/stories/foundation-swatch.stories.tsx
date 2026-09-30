@@ -40,8 +40,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: 'bg.default',
-    background: 'var(--semantic-color-bg-default, #ffffff)',
+    label: 'surface.page',
+    background: 'var(--semantic-color-surface-page)',
     bordered: true,
   },
 };
@@ -99,10 +99,10 @@ export const WithDetails: Story = {
   render: () => (
     <FoundationSwatch
       label="Content Primary"
-      background="var(--semantic-color-bg-default, #ffffff)"
-      foreground="var(--semantic-color-content-primary, #111111)"
-      value="#111111"
-      details={['Role: primary text', 'Contrast: 16.1:1 on bg.default']}
+      background="var(--semantic-color-surface-page)"
+      foreground="var(--semantic-color-content-primary)"
+      value="#111111 (light) / #f5f5f5 (dark)"
+      details={['Role: primary text', 'Contrast: 4.5:1 minimum on surface.page']}
       tokenPath="semantic.color.content.primary"
       bordered
     />
@@ -122,7 +122,7 @@ export const WithSpecimen: Story = {
   render: () => (
     <FoundationSwatch
       label="Border Default"
-      background="var(--semantic-color-bg-subtle, #f9f9f9)"
+      background="var(--semantic-color-surface-raised)"
       specimen={
         <div
           style={{
@@ -152,36 +152,36 @@ export const ColorGrid: Story = {
     <Grid layout="auto-fit" gap="inset">
       {[
         {
-          label: 'bg.default',
-          background: 'var(--semantic-color-bg-default, #ffffff)',
-          foreground: 'var(--semantic-color-content-primary, #111)',
+          label: 'surface.page',
+          background: 'var(--semantic-color-surface-page)',
+          foreground: 'var(--semantic-color-content-primary)',
           bordered: true,
         },
         {
-          label: 'bg.subtle',
-          background: 'var(--semantic-color-bg-subtle, #f9f9f9)',
-          foreground: 'var(--semantic-color-content-primary, #111)',
+          label: 'surface.raised',
+          background: 'var(--semantic-color-surface-raised)',
+          foreground: 'var(--semantic-color-content-primary)',
           bordered: true,
         },
         {
-          label: 'bg.brand',
-          background: 'var(--semantic-color-bg-brand, #0066ff)',
-          foreground: '#ffffff',
+          label: 'surface.accent',
+          background: 'var(--semantic-color-surface-accent)',
+          foreground: 'var(--semantic-color-content-onAccent)',
         },
         {
           label: 'content.primary',
-          background: 'var(--semantic-color-content-primary, #111111)',
-          foreground: '#ffffff',
+          background: 'var(--semantic-color-content-primary)',
+          foreground: 'var(--semantic-color-content-inverse)',
         },
         {
           label: 'content.secondary',
-          background: 'var(--semantic-color-content-secondary, #666666)',
-          foreground: '#ffffff',
+          background: 'var(--semantic-color-content-secondary)',
+          foreground: 'var(--semantic-color-content-inverse)',
         },
         {
           label: 'border.default',
-          background: 'var(--semantic-color-border-default, #e5e5e5)',
-          foreground: 'var(--semantic-color-content-primary, #111)',
+          background: 'var(--semantic-color-border-default)',
+          foreground: 'var(--semantic-color-content-primary)',
           bordered: true,
         },
       ].map(({ label, background, foreground, bordered }) => (
