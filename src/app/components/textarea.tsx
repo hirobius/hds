@@ -19,7 +19,7 @@ import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-const textareaVariants = cva(
+const textareaVariants = /* @__PURE__ */ cva(
   'flex w-full rounded-md border bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-70',
   {
     variants: {
@@ -69,67 +69,69 @@ export interface TextareaProps extends Omit<
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  {
-    id: providedId,
-    label,
-    helperText,
-    error,
-    errorMessage,
-    disabled,
-    resize = 'vertical',
-    rows = 4,
-    className,
-    textareaClassName,
-    ...rest
+export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  function Textarea(
+    {
+      id: providedId,
+      label,
+      helperText,
+      error,
+      errorMessage,
+      disabled,
+      resize = 'vertical',
+      rows = 4,
+      className,
+      textareaClassName,
+      ...rest
+    },
+    ref,
+  ) {
+    const generatedId = React.useId();
+    const id = providedId ?? generatedId;
+
+    const hasError = Boolean(error);
+    const helperTextId = helperText ? `${id}-hint` : undefined;
+    const errorTextId = hasError && errorMessage ? `${id}-error` : undefined;
+    const describedBy = [helperTextId, errorTextId].filter(Boolean).join(' ') || undefined;
+    const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
+
+    return (
+      <div className={cn('flex flex-col gap-1.5', className)}>
+        {label && (
+          <label htmlFor={id} className="text-xs font-medium text-muted-foreground">
+            {label}
+          </label>
+        )}
+
+        <textarea
+          ref={ref}
+          id={id}
+          rows={rows}
+          disabled={disabled}
+          aria-disabled={disabled || undefined}
+          aria-describedby={describedBy}
+          aria-errormessage={errorTextId}
+          aria-invalid={hasError || undefined}
+          data-state={state}
+          className={cn(textareaVariants({ resize, invalid: hasError }), textareaClassName)}
+          {...rest}
+        />
+
+        {helperText && !errorTextId && (
+          <span id={helperTextId} className="text-xs text-muted-foreground">
+            {helperText}
+          </span>
+        )}
+
+        {hasError && errorMessage && (
+          <span id={errorTextId} role="alert" className="text-xs text-destructive">
+            {errorMessage}
+          </span>
+        )}
+      </div>
+    );
   },
-  ref,
-) {
-  const generatedId = React.useId();
-  const id = providedId ?? generatedId;
-
-  const hasError = Boolean(error);
-  const helperTextId = helperText ? `${id}-hint` : undefined;
-  const errorTextId = hasError && errorMessage ? `${id}-error` : undefined;
-  const describedBy = [helperTextId, errorTextId].filter(Boolean).join(' ') || undefined;
-  const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
-
-  return (
-    <div className={cn('flex flex-col gap-1.5', className)}>
-      {label && (
-        <label htmlFor={id} className="text-xs font-medium text-muted-foreground">
-          {label}
-        </label>
-      )}
-
-      <textarea
-        ref={ref}
-        id={id}
-        rows={rows}
-        disabled={disabled}
-        aria-disabled={disabled || undefined}
-        aria-describedby={describedBy}
-        aria-errormessage={errorTextId}
-        aria-invalid={hasError || undefined}
-        data-state={state}
-        className={cn(textareaVariants({ resize, invalid: hasError }), textareaClassName)}
-        {...rest}
-      />
-
-      {helperText && !errorTextId && (
-        <span id={helperTextId} className="text-xs text-muted-foreground">
-          {helperText}
-        </span>
-      )}
-
-      {hasError && errorMessage && (
-        <span id={errorTextId} role="alert" className="text-xs text-destructive">
-          {errorMessage}
-        </span>
-      )}
-    </div>
-  );
-});
+);
 
 /** @internal — CVA variant helper; compose via Textarea props instead. */
 export { textareaVariants };

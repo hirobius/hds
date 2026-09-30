@@ -44,14 +44,13 @@ import { Text } from './text';
 
 // ── Root + leaf primitives (re-exported from Radix) ────────────────────────────
 
-const DialogRoot = DialogPrimitive.Root;
 const DialogTrigger = DialogPrimitive.Trigger;
-const DialogPortal = withHdsPortal(DialogPrimitive.Portal);
+const DialogPortal = /* @__PURE__ */ withHdsPortal(DialogPrimitive.Portal);
 const DialogClose = DialogPrimitive.Close;
 
 // ── Overlay (scrim) ────────────────────────────────────────────────────────────
 
-const DialogOverlay = React.forwardRef<
+const DialogOverlay = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(function DialogOverlay({ className, ...props }, ref) {
@@ -79,7 +78,7 @@ export interface DialogContentProps extends React.ComponentPropsWithoutRef<
   container?: HTMLElement | null;
 }
 
-const DialogContent = React.forwardRef<
+const DialogContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   DialogContentProps
 >(function DialogContent({ className, children, hideClose = false, container, ...props }, ref) {
@@ -115,27 +114,29 @@ const DialogContent = React.forwardRef<
 
 // ── Layout parts ───────────────────────────────────────────────────────────────
 
-const DialogHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function DialogHeader({ className, ...props }, ref) {
-    return (
-      <div ref={ref} className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />
-    );
-  },
-);
+const DialogHeader = /* @__PURE__ */ React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(function DialogHeader({ className, ...props }, ref) {
+  return (
+    <div ref={ref} className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />
+  );
+});
 
-const DialogFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function DialogFooter({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-2', className)}
-        {...props}
-      />
-    );
-  },
-);
+const DialogFooter = /* @__PURE__ */ React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(function DialogFooter({ className, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-2', className)}
+      {...props}
+    />
+  );
+});
 
-const DialogTitle = React.forwardRef<
+const DialogTitle = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(function DialogTitle({ className, children, ...props }, ref) {
@@ -150,7 +151,7 @@ const DialogTitle = React.forwardRef<
   );
 });
 
-const DialogDescription = React.forwardRef<
+const DialogDescription = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(function DialogDescription({ className, children, ...props }, ref) {
@@ -182,6 +183,14 @@ export interface DialogProps extends React.ComponentProps<typeof DialogPrimitive
   children?: React.ReactNode;
 }
 
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Attaching them to `DialogPrimitive.Root` compiled to
+// property writes on a third-party export, which webpack and esbuild keep in
+// every bundle that reaches the shared chunk (hds#363).
+function DialogRoot(props: DialogProps) {
+  return <DialogPrimitive.Root {...props} />;
+}
+
 interface DialogComponent extends React.FC<DialogProps> {
   Trigger: typeof DialogTrigger;
   Portal: typeof DialogPortal;
@@ -210,16 +219,20 @@ interface DialogComponent extends React.FC<DialogProps> {
  * @keyboard Shift+Tab Cycles focus backwards inside the open dialog.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-27
  */
-export const Dialog = DialogRoot as unknown as DialogComponent;
-Dialog.Trigger = DialogTrigger;
-Dialog.Portal = DialogPortal;
-Dialog.Overlay = DialogOverlay;
-Dialog.Content = DialogContent;
-Dialog.Header = DialogHeader;
-Dialog.Footer = DialogFooter;
-Dialog.Title = DialogTitle;
-Dialog.Description = DialogDescription;
-Dialog.Close = DialogClose;
+export const Dialog: DialogComponent = /* @__PURE__ */ Object.assign(DialogRoot, {
+  Trigger: DialogTrigger,
+  Portal: DialogPortal,
+  Overlay: DialogOverlay,
+  Content: DialogContent,
+  Header: DialogHeader,
+  Footer: DialogFooter,
+  Title: DialogTitle,
+  Description: DialogDescription,
+  Close: DialogClose,
+  // Set here, not by a later `Dialog.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'Dialog',
+});
 
 export {
   DialogTrigger,

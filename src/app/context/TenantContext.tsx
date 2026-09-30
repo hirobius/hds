@@ -7,7 +7,7 @@ interface TenantCtx {
   tenantSlug: TenantSlug | null;
 }
 
-const TenantContext = createContext<TenantCtx>({ tenantSlug: null });
+const TenantContext = /* @__PURE__ */ createContext<TenantCtx>({ tenantSlug: null });
 
 /**
  * #62: the brand-scope attributes written to `<html>`. `data-brand` is the

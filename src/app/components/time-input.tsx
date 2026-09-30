@@ -17,7 +17,7 @@ import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-const hdsTimeInputVariants = cva(
+const hdsTimeInputVariants = /* @__PURE__ */ cva(
   'flex w-full rounded-md border border-input bg-background text-foreground ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-70',
   {
     variants: {
@@ -44,19 +44,18 @@ export interface TimeInputProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** A native time field skinned with HDS input chrome. Value is a `HH:mm` string. */
-export const TimeInput = React.forwardRef<HTMLInputElement, TimeInputProps>(function TimeInput(
-  { className, size, ...props },
-  ref,
-) {
-  return (
-    <input
-      ref={ref}
-      type="time"
-      className={cn(hdsTimeInputVariants({ size }), className)}
-      {...props}
-    />
-  );
-});
+export const TimeInput = /* @__PURE__ */ React.forwardRef<HTMLInputElement, TimeInputProps>(
+  function TimeInput({ className, size, ...props }, ref) {
+    return (
+      <input
+        ref={ref}
+        type="time"
+        className={cn(hdsTimeInputVariants({ size }), className)}
+        {...props}
+      />
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via TimeInput props instead. */
 export { hdsTimeInputVariants };

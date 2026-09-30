@@ -53,7 +53,7 @@ export interface BoxProps extends React.HTMLAttributes<HTMLElement> {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
-export const Box = React.forwardRef<HTMLDivElement, BoxProps>(function Box(
+export const Box = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoxProps>(function Box(
   { as: Tag = 'div', sx, className, children, ...rest },
   ref,
 ) {

@@ -27,7 +27,7 @@ import { cn } from '../../lib/utils';
 // ── Variants ───────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- 44px min interactive hit target has no semantic Tailwind size utility; var()-based so still token-driven
-const tagButtonVariants = cva(
+const tagButtonVariants = /* @__PURE__ */ cva(
   // 44px is the WCAG 2.5.5 / platform HIG minimum interactive target — a
   // regulatory floor, not a design-scale choice; no semantic size scale exists
   // yet for dimensional primitives (see hds#186 follow-up).
@@ -36,7 +36,7 @@ const tagButtonVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-tag-* sizing/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
-const tagPillVariants = cva(
+const tagPillVariants = /* @__PURE__ */ cva(
   'pointer-events-none box-border inline-flex min-h-[var(--component-tag-minHeight)] min-w-[var(--component-tag-minWidth)] items-center justify-center whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid px-[var(--component-tag-paddingX)] py-[var(--component-tag-paddingY)] text-xs font-medium leading-none transition-colors',
   {
     variants: {
@@ -63,7 +63,7 @@ export interface TagProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElem
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
-export const Tag = React.forwardRef<HTMLButtonElement, TagProps>(function Tag(
+export const Tag = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, TagProps>(function Tag(
   { children, active = false, className, type = 'button', ...props },
   ref,
 ) {

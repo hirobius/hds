@@ -32,7 +32,7 @@ export interface RevealProps {
 /**
  * @public
  */
-export const Reveal = React.forwardRef<HTMLDivElement, RevealProps>(function Reveal(
+export const Reveal = /* @__PURE__ */ React.forwardRef<HTMLDivElement, RevealProps>(function Reveal(
   { children, animation = 'fade-up', className, style, as: Tag = 'div' },
   ref,
 ) {

@@ -25,7 +25,7 @@ import { Surface } from './surface';
 // arbitrary-value classes over the same CSS custom properties the previous
 // inline styles referenced — same tokens, pixel-parity.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
-const tableHeaderCellVariants = cva(
+const tableHeaderCellVariants = /* @__PURE__ */ cva(
   'flex items-center bg-[var(--semantic-color-surface-overlay)] px-[var(--semantic-space-surface-padding)]',
   {
     variants: {
@@ -55,7 +55,7 @@ const tableHeaderCellVariants = cva(
 // alignment/typography (tableHeaderCellVariants + typeStyles.technical) keeps
 // driving pixel parity with the non-sortable render path.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
-const tableSortButtonVariants = cva(
+const tableSortButtonVariants = /* @__PURE__ */ cva(
   'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
   {
     variants: {
@@ -70,27 +70,30 @@ const tableSortButtonVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
-const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-surface-padding)]', {
-  variants: {
-    align: {
-      left: 'justify-start text-left',
-      center: 'justify-center text-center',
-      right: 'justify-end text-right',
+const tableDataCellVariants = /* @__PURE__ */ cva(
+  'flex items-start px-[var(--semantic-space-surface-padding)]',
+  {
+    variants: {
+      align: {
+        left: 'justify-start text-left',
+        center: 'justify-center text-center',
+        right: 'justify-end text-right',
+      },
+      density: {
+        follow:
+          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)] [[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)] [[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]',
+        comfortable:
+          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
+        compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-scale-xs)]',
+      },
+      divider: {
+        true: '[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
+        false: '',
+      },
     },
-    density: {
-      follow:
-        'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)] [[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)] [[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]',
-      comfortable:
-        'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
-      compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-scale-xs)]',
-    },
-    divider: {
-      true: '[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
-      false: '',
-    },
+    defaultVariants: { align: 'left', divider: true },
   },
-  defaultVariants: { align: 'left', divider: true },
-});
+);
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 

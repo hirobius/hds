@@ -6,12 +6,16 @@ interface TokenDisplayContextType {
   toggleCss: () => void;
 }
 
-const TokenDisplayContext = createContext<TokenDisplayContextType | undefined>(undefined);
+const TokenDisplayContext = /* @__PURE__ */ createContext<TokenDisplayContextType | undefined>(
+  undefined,
+);
 
 export function TokenDisplayProvider({ children }: { children: ReactNode }) {
   const [showCss, setShowCss] = useState(false);
   return (
-    <TokenDisplayContext.Provider value={{ showCss, setShowCss, toggleCss: () => setShowCss(s => !s) }}>
+    <TokenDisplayContext.Provider
+      value={{ showCss, setShowCss, toggleCss: () => setShowCss((s) => !s) }}
+    >
       {children}
     </TokenDisplayContext.Provider>
   );
@@ -22,4 +26,3 @@ export function useTokenDisplay() {
   if (!ctx) return { showCss: false, setShowCss: () => {}, toggleCss: () => {} };
   return ctx;
 }
-

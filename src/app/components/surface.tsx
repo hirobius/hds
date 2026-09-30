@@ -39,7 +39,7 @@ import type { PaddingOption } from './surface-padding';
 // token whose dark/light refs both pointed at the same context var, so forcing
 // was a silent no-op.)
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists
-const surfaceVariants = cva(
+const surfaceVariants = /* @__PURE__ */ cva(
   'box-border h-full border-none rounded-lg bg-[color:var(--semantic-color-surface-raised)] text-[color:var(--semantic-color-content-primary)]',
   {
     variants: {
@@ -91,40 +91,42 @@ export interface SurfaceProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
-export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(function Surface(
-  {
-    children,
-    padding = 'component',
-    shadow = false,
-    overflow,
-    theme: themeProp,
-    style,
-    className,
-    as: Tag = 'div',
-    ...rest
-  },
-  ref,
-) {
-  const surfaceStyle: CSSProperties | undefined =
-    overflow !== undefined || style
-      ? { ...(overflow !== undefined && { overflow }), ...style }
-      : undefined;
+export const Surface = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SurfaceProps>(
+  function Surface(
+    {
+      children,
+      padding = 'component',
+      shadow = false,
+      overflow,
+      theme: themeProp,
+      style,
+      className,
+      as: Tag = 'div',
+      ...rest
+    },
+    ref,
+  ) {
+    const surfaceStyle: CSSProperties | undefined =
+      overflow !== undefined || style
+        ? { ...(overflow !== undefined && { overflow }), ...style }
+        : undefined;
 
-  return (
-    <Tag
-      ref={ref}
-      data-theme={themeProp}
-      className={cn(surfaceVariants({ padding, shadow }), className)}
-      style={surfaceStyle}
-      data-hds-surface="true"
-      data-hds-component="Surface"
-      data-hds-metrics={`padding:${padding}`}
-      {...rest}
-    >
-      {children}
-    </Tag>
-  );
-});
+    return (
+      <Tag
+        ref={ref}
+        data-theme={themeProp}
+        className={cn(surfaceVariants({ padding, shadow }), className)}
+        style={surfaceStyle}
+        data-hds-surface="true"
+        data-hds-component="Surface"
+        data-hds-metrics={`padding:${padding}`}
+        {...rest}
+      >
+        {children}
+      </Tag>
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via Surface props instead. */
 export { surfaceVariants };

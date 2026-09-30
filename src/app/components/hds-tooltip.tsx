@@ -30,7 +30,7 @@ import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 
-const TooltipPortal = withHdsPortal(TooltipPrimitive.Portal);
+const TooltipPortal = /* @__PURE__ */ withHdsPortal(TooltipPrimitive.Portal);
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
@@ -45,7 +45,7 @@ export type HdsTooltipContentProps = React.ComponentPropsWithoutRef<
   container?: HTMLElement | null;
 };
 
-const HdsTooltipContent = React.forwardRef<
+const HdsTooltipContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   HdsTooltipContentProps
 >(function HdsTooltipContent({ className, sideOffset = 6, children, container, ...props }, ref) {

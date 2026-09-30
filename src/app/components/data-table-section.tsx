@@ -56,89 +56,82 @@ const ACTIONS_MIN = '6rem';
  * `minWidth` from the caller, and zero rows shows an `EmptyState`.
  * @screenPattern
  */
-export const DataTableSection = React.forwardRef<HTMLElement, DataTableSectionProps>(
-  function DataTableSection(
-    {
-      title,
-      toolbar,
-      columns,
-      rows,
-      actionsLabel = 'Actions',
-      emptyTitle = 'Nothing here yet',
-      emptyDescription,
-      level = 2,
-      ...props
-    },
-    ref,
-  ) {
-    const headingId = React.useId();
-    const hasActions = rows.some((row) => row.actions != null);
-
-    const tableColumns: TableColumn[] = hasActions
-      ? [
-          ...columns,
-          { key: '__actions', label: actionsLabel, align: 'right', width: 'max-content' },
-        ]
-      : columns;
-
-    const tableRows: TableRow[] = rows.map((row) => ({
-      key: row.key,
-      cells: [
-        ...row.cells.map((content, index) => ({
-          slot: 'custom' as const,
-          content,
-          align: columns[index]?.align,
-        })),
-        ...(hasActions
-          ? [
-              {
-                slot: 'action' as const,
-                align: 'right' as const,
-                content: (
-                  <Cluster gap="tight" align="center" justify="end">
-                    {row.actions}
-                  </Cluster>
-                ),
-              },
-            ]
-          : []),
-      ],
-    }));
-
-    const minWidth = `calc(${columns.length} * ${COLUMN_MIN}${hasActions ? ` + ${ACTIONS_MIN}` : ''})`;
-
-    return (
-      <section
-        ref={ref}
-        data-hds-component="DataTableSection"
-        aria-labelledby={headingId}
-        {...props}
-      >
-        <Stack gap="tight">
-          <Cluster gap="normal" align="center" justify="space-between">
-            <Text id={headingId} as={`h${level}`} variant="heading3">
-              {title}
-            </Text>
-            {toolbar ? (
-              <div data-slot="toolbar" className="ml-auto">
-                <Cluster gap="tight" align="center" justify="end">
-                  {toolbar}
-                </Cluster>
-              </div>
-            ) : null}
-          </Cluster>
-          {rows.length === 0 ? (
-            <EmptyState title={emptyTitle} description={emptyDescription} />
-          ) : (
-            <Table
-              columns={tableColumns}
-              rows={tableRows}
-              minWidth={minWidth}
-              labelledBy={headingId}
-            />
-          )}
-        </Stack>
-      </section>
-    );
+export const DataTableSection = /* @__PURE__ */ React.forwardRef<
+  HTMLElement,
+  DataTableSectionProps
+>(function DataTableSection(
+  {
+    title,
+    toolbar,
+    columns,
+    rows,
+    actionsLabel = 'Actions',
+    emptyTitle = 'Nothing here yet',
+    emptyDescription,
+    level = 2,
+    ...props
   },
-);
+  ref,
+) {
+  const headingId = React.useId();
+  const hasActions = rows.some((row) => row.actions != null);
+
+  const tableColumns: TableColumn[] = hasActions
+    ? [...columns, { key: '__actions', label: actionsLabel, align: 'right', width: 'max-content' }]
+    : columns;
+
+  const tableRows: TableRow[] = rows.map((row) => ({
+    key: row.key,
+    cells: [
+      ...row.cells.map((content, index) => ({
+        slot: 'custom' as const,
+        content,
+        align: columns[index]?.align,
+      })),
+      ...(hasActions
+        ? [
+            {
+              slot: 'action' as const,
+              align: 'right' as const,
+              content: (
+                <Cluster gap="tight" align="center" justify="end">
+                  {row.actions}
+                </Cluster>
+              ),
+            },
+          ]
+        : []),
+    ],
+  }));
+
+  const minWidth = `calc(${columns.length} * ${COLUMN_MIN}${hasActions ? ` + ${ACTIONS_MIN}` : ''})`;
+
+  return (
+    <section ref={ref} data-hds-component="DataTableSection" aria-labelledby={headingId} {...props}>
+      <Stack gap="tight">
+        <Cluster gap="normal" align="center" justify="space-between">
+          <Text id={headingId} as={`h${level}`} variant="heading3">
+            {title}
+          </Text>
+          {toolbar ? (
+            <div data-slot="toolbar" className="ml-auto">
+              <Cluster gap="tight" align="center" justify="end">
+                {toolbar}
+              </Cluster>
+            </div>
+          ) : null}
+        </Cluster>
+        {rows.length === 0 ? (
+          <EmptyState title={emptyTitle} description={emptyDescription} />
+        ) : (
+          <Table
+            columns={tableColumns}
+            rows={tableRows}
+            minWidth={minWidth}
+            labelledBy={headingId}
+          />
+        )}
+      </Stack>
+    </section>
+  );
+});

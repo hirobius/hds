@@ -30,18 +30,17 @@ export interface EmptyStateProps {
 }
 
 /** @public */
-export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
-  { title, description, className },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      data-hds-component="EmptyState"
-      className={cn('flex flex-col gap-1 text-sm italic text-muted-foreground', className)}
-    >
-      <p className="m-0">{title}</p>
-      {description && <p className="m-0 not-italic text-xs">{description}</p>}
-    </div>
-  );
-});
+export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, EmptyStateProps>(
+  function EmptyState({ title, description, className }, ref) {
+    return (
+      <div
+        ref={ref}
+        data-hds-component="EmptyState"
+        className={cn('flex flex-col gap-1 text-sm italic text-muted-foreground', className)}
+      >
+        <p className="m-0">{title}</p>
+        {description && <p className="m-0 not-italic text-xs">{description}</p>}
+      </div>
+    );
+  },
+);

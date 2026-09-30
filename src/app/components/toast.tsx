@@ -38,7 +38,7 @@ import { Icon } from './icon';
 // `neutral` preserves the prior hardcoded content-secondary color byte-for-byte
 // (text-muted-foreground resolves to the same --semantic-color-content-secondary
 // custom property).
-const toastIconVariants = cva('', {
+const toastIconVariants = /* @__PURE__ */ cva('', {
   variants: {
     tone: {
       neutral: 'text-muted-foreground',
@@ -86,7 +86,7 @@ interface ToastContextValue {
   dismiss: (id: string) => void;
 }
 
-const ToastContext = React.createContext<ToastContextValue | null>(null);
+const ToastContext = /* @__PURE__ */ React.createContext<ToastContextValue | null>(null);
 
 /** Access the imperative toast API. Must be called under <ToastProvider>. */
 export function useToast(): ToastContextValue {

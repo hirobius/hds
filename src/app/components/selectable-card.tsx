@@ -16,7 +16,7 @@ import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-const selectableCardVariants = cva(
+const selectableCardVariants = /* @__PURE__ */ cva(
   'w-full text-left rounded-lg border bg-card p-4 text-foreground transition-colors hds-focus disabled:opacity-50 disabled:pointer-events-none',
   {
     variants: {
@@ -49,29 +49,30 @@ export interface SelectableCardProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** A card-shaped single checkbox — click or activate to toggle selection. */
-export const SelectableCard = React.forwardRef<HTMLButtonElement, SelectableCardProps>(
-  function SelectableCard(
-    { className, selected = false, onSelectedChange, disabled, onClick, ...props },
-    ref,
-  ) {
-    return (
-      <button
-        ref={ref}
-        type="button"
-        role="checkbox"
-        aria-checked={selected}
-        data-state={selected ? 'checked' : 'unchecked'}
-        disabled={disabled}
-        onClick={(e) => {
-          onClick?.(e);
-          onSelectedChange?.(!selected);
-        }}
-        className={cn(selectableCardVariants({ selected }), className)}
-        {...props}
-      />
-    );
-  },
-);
+export const SelectableCard = /* @__PURE__ */ React.forwardRef<
+  HTMLButtonElement,
+  SelectableCardProps
+>(function SelectableCard(
+  { className, selected = false, onSelectedChange, disabled, onClick, ...props },
+  ref,
+) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      role="checkbox"
+      aria-checked={selected}
+      data-state={selected ? 'checked' : 'unchecked'}
+      disabled={disabled}
+      onClick={(e) => {
+        onClick?.(e);
+        onSelectedChange?.(!selected);
+      }}
+      className={cn(selectableCardVariants({ selected }), className)}
+      {...props}
+    />
+  );
+});
 
 /** @internal — CVA variant helper; compose via SelectableCard props instead. */
 export { selectableCardVariants };

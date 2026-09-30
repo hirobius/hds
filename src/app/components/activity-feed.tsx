@@ -97,7 +97,7 @@ function resolveTone(event: Pick<ActivityEvent, 'tone' | 'status'>): ActivityTon
 // `neutral`'s `--semantic-color-content-secondary` binding (which is exactly
 // what `text-muted-foreground` resolves to — see tokens.css `--role-muted-foreground`).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- info's accent-rest token has no matching Tailwind-theme utility (text-feedback-info binds to a different var); var()-based so still token-driven
-const activityToneVariants = cva('', {
+const activityToneVariants = /* @__PURE__ */ cva('', {
   variants: {
     tone: {
       neutral: 'text-muted-foreground',
@@ -111,7 +111,7 @@ const activityToneVariants = cva('', {
 });
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic-size-avatar/radius-full/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
-const activityAvatarVariants = cva(
+const activityAvatarVariants = /* @__PURE__ */ cva(
   // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186/hds#242
   'flex h-[var(--semantic-size-avatar)] w-[var(--semantic-size-avatar)] shrink-0 items-center justify-center rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-raised)]',
 );

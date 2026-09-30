@@ -48,39 +48,41 @@ export interface SwitcherProps {
 }
 
 /** @public */
-export const Switcher = React.forwardRef<HTMLDivElement, SwitcherProps>(function Switcher(
-  { children, threshold = '30rem', gap = 'normal', limit, className, style, as: Tag = 'div' },
-  ref,
-) {
-  const items = React.Children.toArray(children);
-  const forceStacked = limit !== undefined && items.length > limit;
+export const Switcher = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SwitcherProps>(
+  function Switcher(
+    { children, threshold = '30rem', gap = 'normal', limit, className, style, as: Tag = 'div' },
+    ref,
+  ) {
+    const items = React.Children.toArray(children);
+    const forceStacked = limit !== undefined && items.length > limit;
 
-  return (
-    <Tag
-      ref={ref}
-      className={className}
-      data-hds-component="Switcher"
-      data-hds-metrics={`threshold:${threshold}`}
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: gapMap[gap],
-        ...(forceStacked && { flexDirection: 'column' }),
-        ...style,
-      }}
-    >
-      {items.map((child, i) => (
-        <div
-          key={i}
-          style={
-            forceStacked
-              ? undefined
-              : { flexGrow: 1, flexBasis: `calc((${threshold} - 100%) * 999)` }
-          }
-        >
-          {child}
-        </div>
-      ))}
-    </Tag>
-  );
-});
+    return (
+      <Tag
+        ref={ref}
+        className={className}
+        data-hds-component="Switcher"
+        data-hds-metrics={`threshold:${threshold}`}
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: gapMap[gap],
+          ...(forceStacked && { flexDirection: 'column' }),
+          ...style,
+        }}
+      >
+        {items.map((child, i) => (
+          <div
+            key={i}
+            style={
+              forceStacked
+                ? undefined
+                : { flexGrow: 1, flexBasis: `calc((${threshold} - 100%) * 999)` }
+            }
+          >
+            {child}
+          </div>
+        ))}
+      </Tag>
+    );
+  },
+);

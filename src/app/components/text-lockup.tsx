@@ -40,7 +40,7 @@ const anchorCopyBtnStyle = {
 // Root wrapper layout. `size` drives only the gap (component vs subgrid
 // rhythm); `align` drives the cross-axis alignment + text-align pairing.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component/subgrid gap composite tokens have no Tailwind-theme spacing utility; var()-based so still token-driven
-const textLockupRootVariants = cva('flex w-full min-w-0 flex-col', {
+const textLockupRootVariants = /* @__PURE__ */ cva('flex w-full min-w-0 flex-col', {
   variants: {
     size: {
       hero: 'gap-[var(--semantic-space-scale-xs)]',
@@ -170,85 +170,87 @@ const SIZE_MAP: Record<
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export const TextLockup = forwardRef<HTMLElement, TextLockupProps>(function TextLockup(
-  {
-    title,
-    description,
-    eyebrow,
-    size,
-    align = 'left',
-    id,
-    as: RootTag = 'div',
-    titleAs,
-    descriptionAs: DescriptionTag = 'div',
-  },
-  ref,
-) {
-  const config = SIZE_MAP[size];
-  const TitleTag = titleAs ?? config.titleTag;
-  const centered = align === 'center';
-  const [copied, setCopied] = useState(false);
+export const TextLockup = /* @__PURE__ */ forwardRef<HTMLElement, TextLockupProps>(
+  function TextLockup(
+    {
+      title,
+      description,
+      eyebrow,
+      size,
+      align = 'left',
+      id,
+      as: RootTag = 'div',
+      titleAs,
+      descriptionAs: DescriptionTag = 'div',
+    },
+    ref,
+  ) {
+    const config = SIZE_MAP[size];
+    const TitleTag = titleAs ?? config.titleTag;
+    const centered = align === 'center';
+    const [copied, setCopied] = useState(false);
 
-  function copyLink() {
-    navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}#${id}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
+    function copyLink() {
+      navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}#${id}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
 
-  const showAnchor = size === 'numbered' && Boolean(id);
+    const showAnchor = size === 'numbered' && Boolean(id);
 
-  return (
-    <RootTag ref={ref} className={textLockupRootVariants({ size, align })}>
-      {eyebrow ? (
-        <Text
-          variant="ui"
-          as="p"
-          className={cn(DESC_COLOR_CLASS, centered && CENTERED_MAX_WIDTH_CLASS)}
-        >
-          {eyebrow}
-        </Text>
-      ) : null}
-
-      {showAnchor ? (
-        <div className="hds-doc-section-header flex">
-          <Text variant={config.titleVariant} as={TitleTag}>
-            <button
-              type="button"
-              onClick={copyLink}
-              className="hds-focus"
-              aria-label={`Copy link to ${title}`}
-              style={anchorCopyBtnStyle}
-            >
-              <span className={config.titleClassName}>{title}</span>
-              <span
-                aria-hidden="true"
-                data-copied={copied ? 'true' : undefined}
-                className="hds-doc-section-copy-icon flex flex-shrink-0 items-center text-accent-foreground"
-              >
-                {copied ? (
-                  <Icon icon={Check} size="small" color="var(--semantic-color-content-accent)" />
-                ) : (
-                  <Icon icon={Link} size="small" color="var(--semantic-color-content-accent)" />
-                )}
-              </span>
-            </button>
+    return (
+      <RootTag ref={ref} className={textLockupRootVariants({ size, align })}>
+        {eyebrow ? (
+          <Text
+            variant="ui"
+            as="p"
+            className={cn(DESC_COLOR_CLASS, centered && CENTERED_MAX_WIDTH_CLASS)}
+          >
+            {eyebrow}
           </Text>
-        </div>
-      ) : (
-        <Text variant={config.titleVariant} as={TitleTag} className={config.titleClassName}>
-          {title}
-        </Text>
-      )}
+        ) : null}
 
-      {description ? (
-        <Text
-          variant={config.descriptionVariant}
-          as={DescriptionTag}
-          className={cn(config.descriptionClassName, centered && CENTERED_MAX_WIDTH_CLASS)}
-        >
-          {description}
-        </Text>
-      ) : null}
-    </RootTag>
-  );
-});
+        {showAnchor ? (
+          <div className="hds-doc-section-header flex">
+            <Text variant={config.titleVariant} as={TitleTag}>
+              <button
+                type="button"
+                onClick={copyLink}
+                className="hds-focus"
+                aria-label={`Copy link to ${title}`}
+                style={anchorCopyBtnStyle}
+              >
+                <span className={config.titleClassName}>{title}</span>
+                <span
+                  aria-hidden="true"
+                  data-copied={copied ? 'true' : undefined}
+                  className="hds-doc-section-copy-icon flex flex-shrink-0 items-center text-accent-foreground"
+                >
+                  {copied ? (
+                    <Icon icon={Check} size="small" color="var(--semantic-color-content-accent)" />
+                  ) : (
+                    <Icon icon={Link} size="small" color="var(--semantic-color-content-accent)" />
+                  )}
+                </span>
+              </button>
+            </Text>
+          </div>
+        ) : (
+          <Text variant={config.titleVariant} as={TitleTag} className={config.titleClassName}>
+            {title}
+          </Text>
+        )}
+
+        {description ? (
+          <Text
+            variant={config.descriptionVariant}
+            as={DescriptionTag}
+            className={cn(config.descriptionClassName, centered && CENTERED_MAX_WIDTH_CLASS)}
+          >
+            {description}
+          </Text>
+        ) : null}
+      </RootTag>
+    );
+  },
+);

@@ -34,7 +34,7 @@ import { cn } from '../../lib/utils';
 // for these composite vars yet, so they're arbitrary-value classes bound to
 // CSS custom properties — same pattern as inline-code.tsx's mono composite.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic typography composite tokens (font-family/size/weight/letter-spacing/line-height/max-width/text-transform) have no Tailwind-theme utility; var()-based so still token-driven
-const textVariants = cva('m-0 min-w-0', {
+const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
   variants: {
     variant: {
       display:
@@ -105,7 +105,7 @@ export type TextProps = {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export const Text = forwardRef<HTMLElement, TextProps>(function Text(
+export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function Text(
   { children, variant, as: Tag = defaultTagMap[variant], className, style, ...rest },
   ref,
 ) {

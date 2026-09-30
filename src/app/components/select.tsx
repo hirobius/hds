@@ -26,7 +26,7 @@ import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
 
-const SelectPortal = withHdsPortal(RSelect.Portal);
+const SelectPortal = /* @__PURE__ */ withHdsPortal(RSelect.Portal);
 
 /**
  * Select — dropdown selector built on Radix Select (ADR-001 Radix convention).
@@ -53,7 +53,7 @@ export interface SelectProps {
   container?: HTMLElement | null;
 }
 
-export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
+export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>(function Select(
   { label, showLabel = true, options, value, onChange, container },
   ref,
 ) {

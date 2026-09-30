@@ -60,34 +60,36 @@ export interface ClusterProps {
 }
 
 /** @public */
-export const Cluster = React.forwardRef<HTMLDivElement, ClusterProps>(function Cluster(
-  {
-    children,
-    gap = 'tight',
-    align = 'center',
-    justify = 'start',
-    className,
-    style,
-    as: Tag = 'div',
+export const Cluster = /* @__PURE__ */ React.forwardRef<HTMLDivElement, ClusterProps>(
+  function Cluster(
+    {
+      children,
+      gap = 'tight',
+      align = 'center',
+      justify = 'start',
+      className,
+      style,
+      as: Tag = 'div',
+    },
+    ref,
+  ) {
+    return (
+      <Tag
+        ref={ref}
+        className={className}
+        data-hds-component="Cluster"
+        data-hds-metrics={`gap:${gap}`}
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: gapMap[gap],
+          alignItems: alignMap[align],
+          justifyContent: justifyMap[justify],
+          ...style,
+        }}
+      >
+        {children}
+      </Tag>
+    );
   },
-  ref,
-) {
-  return (
-    <Tag
-      ref={ref}
-      className={className}
-      data-hds-component="Cluster"
-      data-hds-metrics={`gap:${gap}`}
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: gapMap[gap],
-        alignItems: alignMap[align],
-        justifyContent: justifyMap[justify],
-        ...style,
-      }}
-    >
-      {children}
-    </Tag>
-  );
-});
+);

@@ -35,71 +35,73 @@ export interface TokenizerProps extends Omit<
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** A bordered field of Tag chips followed by a text input for adding more. */
-export const Tokenizer = React.forwardRef<HTMLInputElement, TokenizerProps>(function Tokenizer(
-  { value, onChange, placeholder, disabled, className, id, 'aria-label': ariaLabel, ...rest },
-  ref,
-) {
-  const [draft, setDraft] = React.useState('');
+export const Tokenizer = /* @__PURE__ */ React.forwardRef<HTMLInputElement, TokenizerProps>(
+  function Tokenizer(
+    { value, onChange, placeholder, disabled, className, id, 'aria-label': ariaLabel, ...rest },
+    ref,
+  ) {
+    const [draft, setDraft] = React.useState('');
 
-  function commitDraft() {
-    const next = draft.trim();
-    if (next === '') return;
-    onChange([...value, next]);
-    setDraft('');
-  }
-
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      commitDraft();
-      return;
+    function commitDraft() {
+      const next = draft.trim();
+      if (next === '') return;
+      onChange([...value, next]);
+      setDraft('');
     }
-    if (event.key === 'Backspace' && draft === '' && value.length > 0) {
-      onChange(value.slice(0, -1));
+
+    function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        commitDraft();
+        return;
+      }
+      if (event.key === 'Backspace' && draft === '' && value.length > 0) {
+        onChange(value.slice(0, -1));
+      }
     }
-  }
 
-  function handleRemove(index: number) {
-    onChange(value.filter((_, i) => i !== index));
-  }
+    function handleRemove(index: number) {
+      onChange(value.filter((_, i) => i !== index));
+    }
 
-  return (
-    <div
-      className={cn(
-        'flex flex-wrap items-center gap-1.5 min-h-10 w-full rounded-md border border-input bg-background px-2 py-1 text-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
-        disabled && 'cursor-not-allowed bg-muted text-muted-foreground',
-        className,
-      )}
-    >
-      {value.map((token, index) => (
-        <span key={`${token}-${index}`} className="inline-flex items-center gap-1">
-          <Tag>{token}</Tag>
-          <button
-            type="button"
-            onClick={() => handleRemove(index)}
-            disabled={disabled}
-            aria-label={`Remove ${token}`}
-            // tier-ok: compact hit-target floor is a primitive by definition (hds#287) — no semantic alias exists, mirrors --primitive-size-interactive-min's own unaliased use in side-nav.tsx/tag.tsx
-            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-size-interactive-minCompact WCAG 2.2 AA (2.5.8) compact hit target; no Tailwind-theme utility, var()-based so still token-driven
-            className="inline-flex size-[var(--primitive-size-interactive-minCompact)] shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <X className="size-3" aria-hidden="true" />
-          </button>
-        </span>
-      ))}
-      <input
-        ref={ref}
-        id={id}
-        aria-label={ariaLabel}
-        type="text"
-        value={draft}
-        onChange={(event) => setDraft(event.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={value.length === 0 ? placeholder : undefined}
-        disabled={disabled}
-        className="min-w-24 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
-        {...rest}
-      />
-    </div>
-  );
-});
+    return (
+      <div
+        className={cn(
+          'flex flex-wrap items-center gap-1.5 min-h-10 w-full rounded-md border border-input bg-background px-2 py-1 text-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
+          disabled && 'cursor-not-allowed bg-muted text-muted-foreground',
+          className,
+        )}
+      >
+        {value.map((token, index) => (
+          <span key={`${token}-${index}`} className="inline-flex items-center gap-1">
+            <Tag>{token}</Tag>
+            <button
+              type="button"
+              onClick={() => handleRemove(index)}
+              disabled={disabled}
+              aria-label={`Remove ${token}`}
+              // tier-ok: compact hit-target floor is a primitive by definition (hds#287) — no semantic alias exists, mirrors --primitive-size-interactive-min's own unaliased use in side-nav.tsx/tag.tsx
+              // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-size-interactive-minCompact WCAG 2.2 AA (2.5.8) compact hit target; no Tailwind-theme utility, var()-based so still token-driven
+              className="inline-flex size-[var(--primitive-size-interactive-minCompact)] shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X className="size-3" aria-hidden="true" />
+            </button>
+          </span>
+        ))}
+        <input
+          ref={ref}
+          id={id}
+          aria-label={ariaLabel}
+          type="text"
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={value.length === 0 ? placeholder : undefined}
+          disabled={disabled}
+          className="min-w-24 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+          {...rest}
+        />
+      </div>
+    );
+  },
+);

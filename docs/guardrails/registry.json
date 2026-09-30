@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "340dfcc405044cfc5561fee362ec90d661d7753bf1eb1377a3c9bc6899a1a669",
-  "precommitStructureHashUpdatedAt": "2026-09-30T11:09:34.752Z",
+  "precommitStructureHash": "7dc26f75ec8403193e5888e9ec0336b6c5d3d14d5a0dc25659faebd0160058be",
+  "precommitStructureHashUpdatedAt": "2026-09-30T15:35:40.775Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -437,6 +437,18 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pnpm-meta",
+      "scope": "full-tree",
+      "glob": "src/**/*.{ts,tsx}"
+    },
+    {
+      "id": "check-pure-annotations",
+      "description": "Every top-level component-factory call under src/ (React.forwardRef, forwardRef, cva, React.createContext, createContext, withHdsPortal, and an Object.assign that wraps one) is immediately preceded by /* @__PURE__ */. A bare top-level call is a side effect every bundler keeps, so one in a module that reaches the chunk shared with Button re-breaks the Button-only budget (hds#363, the way hds#358 did). Tests, stories and .d.ts are out of scope; --fix inserts the annotation. Source only: no build, no network.",
+      "severity": "error",
+      "gateScript": "scripts/check-pure-annotations.mjs",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
       "scope": "full-tree",
       "glob": "src/**/*.{ts,tsx}"
     },

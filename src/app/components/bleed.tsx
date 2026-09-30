@@ -46,7 +46,7 @@ export interface BleedProps {
 }
 
 /** @public */
-export const Bleed = React.forwardRef<HTMLDivElement, BleedProps>(function Bleed(
+export const Bleed = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BleedProps>(function Bleed(
   { children, amount = 'normal', axis = 'x', className, style, as: Tag = 'div' },
   ref,
 ) {

@@ -41,80 +41,82 @@ export interface DateInputProps {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Text field + calendar popover for picking a single date. */
-export const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(function DateInput(
-  {
-    value,
-    onChange,
-    displayFormat = 'yyyy-MM-dd',
-    placeholder,
-    disabled = false,
-    id,
-    'aria-label': ariaLabel,
+export const DateInput = /* @__PURE__ */ React.forwardRef<HTMLInputElement, DateInputProps>(
+  function DateInput(
+    {
+      value,
+      onChange,
+      displayFormat = 'yyyy-MM-dd',
+      placeholder,
+      disabled = false,
+      id,
+      'aria-label': ariaLabel,
+    },
+    ref,
+  ) {
+    const [open, setOpen] = React.useState(false);
+    const [text, setText] = React.useState(() => (value ? format(value, displayFormat) : ''));
+
+    React.useEffect(() => {
+      setText(value ? format(value, displayFormat) : '');
+    }, [value, displayFormat]);
+
+    function handleBlur() {
+      if (text === '') {
+        onChange?.(undefined);
+        return;
+      }
+      const parsed = parse(text, displayFormat, new Date());
+      if (isValid(parsed)) {
+        onChange?.(parsed);
+      }
+    }
+
+    return (
+      <div
+        className={cn(
+          'flex h-10 w-full items-center gap-2 rounded-md border border-input bg-background px-3',
+          'transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
+          disabled && 'cursor-not-allowed opacity-70',
+        )}
+      >
+        <input
+          ref={ref}
+          id={id}
+          aria-label={ariaLabel}
+          type="text"
+          value={text}
+          placeholder={placeholder ?? displayFormat.toLowerCase()}
+          disabled={disabled}
+          onChange={(event) => setText(event.target.value)}
+          onBlur={handleBlur}
+          className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed min-w-0"
+        />
+
+        <Popover open={open} onOpenChange={setOpen}>
+          <Popover.Trigger asChild>
+            <button
+              type="button"
+              aria-label="Open calendar"
+              disabled={disabled}
+              className="text-muted-foreground hover:text-foreground hds-focus disabled:pointer-events-none disabled:opacity-50 shrink-0"
+            >
+              <CalendarIcon className="size-4" aria-hidden="true" />
+            </button>
+          </Popover.Trigger>
+          <Popover.Content align="start" className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={value}
+              defaultMonth={value}
+              onSelect={(date) => {
+                onChange?.(date);
+                setOpen(false);
+              }}
+            />
+          </Popover.Content>
+        </Popover>
+      </div>
+    );
   },
-  ref,
-) {
-  const [open, setOpen] = React.useState(false);
-  const [text, setText] = React.useState(() => (value ? format(value, displayFormat) : ''));
-
-  React.useEffect(() => {
-    setText(value ? format(value, displayFormat) : '');
-  }, [value, displayFormat]);
-
-  function handleBlur() {
-    if (text === '') {
-      onChange?.(undefined);
-      return;
-    }
-    const parsed = parse(text, displayFormat, new Date());
-    if (isValid(parsed)) {
-      onChange?.(parsed);
-    }
-  }
-
-  return (
-    <div
-      className={cn(
-        'flex h-10 w-full items-center gap-2 rounded-md border border-input bg-background px-3',
-        'transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
-        disabled && 'cursor-not-allowed opacity-70',
-      )}
-    >
-      <input
-        ref={ref}
-        id={id}
-        aria-label={ariaLabel}
-        type="text"
-        value={text}
-        placeholder={placeholder ?? displayFormat.toLowerCase()}
-        disabled={disabled}
-        onChange={(event) => setText(event.target.value)}
-        onBlur={handleBlur}
-        className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed min-w-0"
-      />
-
-      <Popover open={open} onOpenChange={setOpen}>
-        <Popover.Trigger asChild>
-          <button
-            type="button"
-            aria-label="Open calendar"
-            disabled={disabled}
-            className="text-muted-foreground hover:text-foreground hds-focus disabled:pointer-events-none disabled:opacity-50 shrink-0"
-          >
-            <CalendarIcon className="size-4" aria-hidden="true" />
-          </button>
-        </Popover.Trigger>
-        <Popover.Content align="start" className="w-auto p-0">
-          <Calendar
-            mode="single"
-            selected={value}
-            defaultMonth={value}
-            onSelect={(date) => {
-              onChange?.(date);
-              setOpen(false);
-            }}
-          />
-        </Popover.Content>
-      </Popover>
-    </div>
-  );
-});
+);

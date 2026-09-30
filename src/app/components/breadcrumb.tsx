@@ -21,7 +21,7 @@ import { Icon } from './icon';
 // `current` is a component-specific state flag (not one of the contract's four
 // axes) — like Tag's `selected`, it distinguishes the trailing crumb (the
 // current page, plain text) from the linkable crumbs before it.
-const crumbLabelVariants = cva('', {
+const crumbLabelVariants = /* @__PURE__ */ cva('', {
   variants: {
     current: {
       true: 'text-foreground',
@@ -56,52 +56,51 @@ export interface BreadcrumbProps extends Omit<React.HTMLAttributes<HTMLElement>,
  * no router, client-side nav when a router adapter is provided). The final item
  * is marked aria-current="page".
  */
-export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(function Breadcrumb(
-  { items, label = 'Breadcrumb', className, ...props },
-  ref,
-) {
-  const { LinkComponent } = useHdsRouter();
+export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, BreadcrumbProps>(
+  function Breadcrumb({ items, label = 'Breadcrumb', className, ...props }, ref) {
+    const { LinkComponent } = useHdsRouter();
 
-  return (
-    <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
-      <ol className="flex flex-wrap items-center gap-2">
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
-          const linkable = Boolean(item.href) && !isLast;
-          return (
-            <li key={`${item.label}-${index}`} className="inline-flex items-center gap-2">
-              {linkable ? (
-                <LinkComponent
-                  to={item.href as string}
-                  style={hds.typeStyles.ui}
-                  className="hds-focus text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {item.label}
-                </LinkComponent>
-              ) : (
-                <span
-                  aria-current={isLast ? 'page' : undefined}
-                  style={hds.typeStyles.ui}
-                  className={crumbLabelVariants({ current: isLast })}
-                >
-                  {item.label}
-                </span>
-              )}
-              {!isLast && (
-                <Icon
-                  icon={ChevronRight}
-                  size="small"
-                  color="var(--semantic-color-content-secondary)"
-                  aria-hidden
-                />
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
-});
+    return (
+      <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
+        <ol className="flex flex-wrap items-center gap-2">
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+            const linkable = Boolean(item.href) && !isLast;
+            return (
+              <li key={`${item.label}-${index}`} className="inline-flex items-center gap-2">
+                {linkable ? (
+                  <LinkComponent
+                    to={item.href as string}
+                    style={hds.typeStyles.ui}
+                    className="hds-focus text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {item.label}
+                  </LinkComponent>
+                ) : (
+                  <span
+                    aria-current={isLast ? 'page' : undefined}
+                    style={hds.typeStyles.ui}
+                    className={crumbLabelVariants({ current: isLast })}
+                  >
+                    {item.label}
+                  </span>
+                )}
+                {!isLast && (
+                  <Icon
+                    icon={ChevronRight}
+                    size="small"
+                    color="var(--semantic-color-content-secondary)"
+                    aria-hidden
+                  />
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via Breadcrumb instead. */
 export { crumbLabelVariants };

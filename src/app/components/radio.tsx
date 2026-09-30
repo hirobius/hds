@@ -28,7 +28,7 @@ export type HdsRadioDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disa
 // keeping this a JS-driven cva axis rather than Tailwind pseudo-classes).
 
 /** Visually-hidden native input overlay — cursor affordance only. */
-const radioInputVariants = cva('absolute inset-0 m-0 opacity-0', {
+const radioInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-0', {
   variants: {
     state: {
       rest: 'cursor-pointer',
@@ -49,7 +49,7 @@ const radioInputVariants = cva('absolute inset-0 m-0 opacity-0', {
  * `radioRingVariants` below for the other half.
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
-const radioRootVariants = cva(
+const radioRootVariants = /* @__PURE__ */ cva(
   'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] select-none',
   {
     variants: {
@@ -76,7 +76,7 @@ const radioRootVariants = cva(
  * (see the `motion-ok` comment at the call site).
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border; var()-based, no Tailwind-theme utility exists
-const radioRingVariants = cva(
+const radioRingVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.size.20 / primitive.radius.full mirror checkbox's glyph box model 1:1 — no semantic alias for either
   'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)]',
   {
@@ -122,7 +122,7 @@ const radioRingVariants = cva(
 
 /** Selected-state inner dot — static sizing; color is disabled-only (no animation). */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists
-const radioDotVariants = cva(
+const radioDotVariants = /* @__PURE__ */ cva(
   // `inline-block` is the other half of the #225 fix: the dot's declared
   // width/height are ignored under the browser's default `display: inline`.
   // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186/hds#242
@@ -150,7 +150,7 @@ export interface RadioProps extends Omit<
   onChange: (v: boolean) => void;
 }
 
-export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
+export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(function Radio(
   {
     label,
     checked,

@@ -19,7 +19,7 @@ interface ThemeCtx {
   setDensity: (d: Density) => void;
 }
 
-const ThemeContext = createContext<ThemeCtx>({
+const ThemeContext = /* @__PURE__ */ createContext<ThemeCtx>({
   isDark: true,
   toggleDark: () => {},
   mode: 'system',

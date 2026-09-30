@@ -95,6 +95,18 @@
  * what a bundler actually ships. Shared chunk at measure time:
  * dist/chunks/activity-feed-*.js, 103.33 kB gzip.
  *
+ * Measured again 2026-09-30 (hds#363), budget unchanged: 62.20 kB gzip on
+ * main (c17d997) -> 31.62 kB after AlertDialog, Dialog and Card stopped
+ * writing their parts onto the Radix Root (one pure Object.assign around a
+ * wrapper of our own instead) and every top-level forwardRef / cva /
+ * createContext / withHdsPortal call under src/ got its /* @__PURE__ *\/
+ * (scripts/check-pure-annotations.mjs, pre-commit). The rollup number alone
+ * cannot see a property write on a Radix export — rollup drops it, webpack
+ * and esbuild keep it — so scripts/build-button-probe.mjs now also bundles
+ * the same entry with esbuild (dist/probe/button-only.esbuild.js, 86.10 kB
+ * gzip at measure time, not budgeted) and fails when @radix-ui/react-dialog
+ * or @radix-ui/react-alert-dialog code reaches it.
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.

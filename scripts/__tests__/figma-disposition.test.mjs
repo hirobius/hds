@@ -66,7 +66,10 @@ describe('classify', () => {
 describe('collectSlotMembers (real source)', () => {
   const slots = collectSlotMembers(path.join(ROOT, 'src/app/components'));
 
-  it('finds namespaced compounds like Card.Header = CardHeader', () => {
+  it('finds namespaced compounds, now assembled as Object.assign(CardRoot, { Header: CardHeader })', () => {
+    // hds#363 moved the compounds off `Card.Header = CardHeader` writes (a
+    // side effect every bundler keeps) onto one pure Object.assign; the
+    // members and their parent are the same and this reading must follow.
     expect(slots.get('CardHeader')).toBe('Card');
     expect(slots.get('CardFooter')).toBe('Card');
   });

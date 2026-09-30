@@ -13,7 +13,7 @@ import type { AvatarProps } from './avatar';
 // Non-interactive — no hover/active/focus states. The overflow "+N" bubble is
 // the only element AvatarGroup itself paints; sizing mirrors avatar.tsx's own
 // sm/md/lg ramp so the bubble lines up exactly with the avatars it follows.
-const overflowBubbleVariants = cva(
+const overflowBubbleVariants = /* @__PURE__ */ cva(
   'inline-flex -ml-2 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-muted-foreground ring-2 ring-background',
   {
     variants: {
@@ -45,43 +45,42 @@ export interface AvatarGroupProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Renders up to `max` overlapping avatars followed by a `+N` overflow chip. */
-export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(function AvatarGroup(
-  { className, children, max, size, ...props },
-  ref,
-) {
-  const resolvedSize: AvatarGroupSize = (size ?? 'md') as AvatarGroupSize;
-  const items = React.Children.toArray(children).filter(React.isValidElement);
-  const limit = max && max > 0 ? max : items.length;
-  const shown = items.slice(0, limit);
-  const overflow = items.length - shown.length;
+export const AvatarGroup = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AvatarGroupProps>(
+  function AvatarGroup({ className, children, max, size, ...props }, ref) {
+    const resolvedSize: AvatarGroupSize = (size ?? 'md') as AvatarGroupSize;
+    const items = React.Children.toArray(children).filter(React.isValidElement);
+    const limit = max && max > 0 ? max : items.length;
+    const shown = items.slice(0, limit);
+    const overflow = items.length - shown.length;
 
-  return (
-    <div
-      ref={ref}
-      role="group"
-      data-size={resolvedSize}
-      className={cn('flex items-center', className)}
-      {...props}
-    >
-      {shown.map((child, i) =>
-        React.cloneElement(child as React.ReactElement<AvatarProps>, {
-          key: (child as React.ReactElement).key ?? i,
-          size: resolvedSize,
-          className: cn(
-            'ring-2 ring-background',
-            i > 0 && '-ml-2',
-            (child.props as { className?: string }).className,
-          ),
-        }),
-      )}
-      {overflow > 0 && (
-        <span aria-label={`+${overflow} more`} className={overflowBubbleVariants({ size })}>
-          +{overflow}
-        </span>
-      )}
-    </div>
-  );
-});
+    return (
+      <div
+        ref={ref}
+        role="group"
+        data-size={resolvedSize}
+        className={cn('flex items-center', className)}
+        {...props}
+      >
+        {shown.map((child, i) =>
+          React.cloneElement(child as React.ReactElement<AvatarProps>, {
+            key: (child as React.ReactElement).key ?? i,
+            size: resolvedSize,
+            className: cn(
+              'ring-2 ring-background',
+              i > 0 && '-ml-2',
+              (child.props as { className?: string }).className,
+            ),
+          }),
+        )}
+        {overflow > 0 && (
+          <span aria-label={`+${overflow} more`} className={overflowBubbleVariants({ size })}>
+            +{overflow}
+          </span>
+        )}
+      </div>
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via AvatarGroup props instead. */
 export { overflowBubbleVariants };

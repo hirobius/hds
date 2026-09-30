@@ -22,7 +22,7 @@ import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Sidebar width is the only styling axis — three token-driven fixed widths.
-const appShellVariants = cva('shrink-0 border-r border-border', {
+const appShellVariants = /* @__PURE__ */ cva('shrink-0 border-r border-border', {
   variants: {
     sidebarWidth: {
       sm: 'w-56',
@@ -54,27 +54,30 @@ export interface AppShellProps extends Omit<React.HTMLAttributes<HTMLDivElement>
 /**
  * Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.
  */
-export const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function AppShell(
-  { className, header, sidebar, sidebarWidth = 'md', children, ...rest },
-  ref,
-) {
-  return (
-    <div ref={ref} className={cn('flex min-h-screen flex-col bg-background', className)} {...rest}>
-      {header !== undefined && <header>{header}</header>}
-      <div className="flex flex-1 min-w-0">
-        {sidebar !== undefined && (
-          <aside
-            data-sidebar-width={sidebarWidth}
-            className={cn(appShellVariants({ sidebarWidth }))}
-          >
-            {sidebar}
-          </aside>
-        )}
-        <main className="flex-1 min-w-0">{children}</main>
+export const AppShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AppShellProps>(
+  function AppShell({ className, header, sidebar, sidebarWidth = 'md', children, ...rest }, ref) {
+    return (
+      <div
+        ref={ref}
+        className={cn('flex min-h-screen flex-col bg-background', className)}
+        {...rest}
+      >
+        {header !== undefined && <header>{header}</header>}
+        <div className="flex flex-1 min-w-0">
+          {sidebar !== undefined && (
+            <aside
+              data-sidebar-width={sidebarWidth}
+              className={cn(appShellVariants({ sidebarWidth }))}
+            >
+              {sidebar}
+            </aside>
+          )}
+          <main className="flex-1 min-w-0">{children}</main>
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via AppShell props instead. */
 export { appShellVariants };

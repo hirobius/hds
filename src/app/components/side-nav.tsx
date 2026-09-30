@@ -54,7 +54,7 @@ export interface SideNavProps {
 // RTL/indent-aware horizontal padding stays dynamic (see LEVEL_HORIZONTAL_PADDING
 // below) since it depends on runtime indent depth, not just level.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-size-interactive-min a11y touch target + --component-nav-paddingY level spacing + --semantic-color-* state tokens have no Tailwind-theme utility; var()-based so still token-driven
-const sideNavVariants = cva(
+const sideNavVariants = /* @__PURE__ */ cva(
   // 44px is the WCAG 2.5.5 / platform HIG minimum interactive target — a
   // regulatory floor, not a design-scale choice; no semantic size scale exists
   // yet for dimensional primitives (see hds#186 follow-up).

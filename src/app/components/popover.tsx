@@ -36,7 +36,7 @@ const PopoverRoot = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 const PopoverAnchor = PopoverPrimitive.Anchor;
 const PopoverClose = PopoverPrimitive.Close;
-const PopoverPortal = withHdsPortal(PopoverPrimitive.Portal);
+const PopoverPortal = /* @__PURE__ */ withHdsPortal(PopoverPrimitive.Portal);
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
@@ -51,7 +51,7 @@ export type PopoverContentProps = React.ComponentPropsWithoutRef<
   container?: HTMLElement | null;
 };
 
-const PopoverContent = React.forwardRef<
+const PopoverContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   PopoverContentProps
 >(function PopoverContent(

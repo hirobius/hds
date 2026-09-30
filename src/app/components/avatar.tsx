@@ -14,7 +14,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
-const avatarVariants = cva(
+const avatarVariants = /* @__PURE__ */ cva(
   'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-muted-foreground font-medium uppercase select-none',
   {
     variants: {
@@ -57,33 +57,32 @@ export interface AvatarProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Circular avatar. Renders the image when available, else initials from `alt`. */
-export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
-  { className, size, src, alt, initials, ...props },
-  ref,
-) {
-  const [failed, setFailed] = React.useState(false);
-  const showImage = Boolean(src) && !failed;
-  const label = initials || deriveInitials(alt);
+export const Avatar = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, AvatarProps>(
+  function Avatar({ className, size, src, alt, initials, ...props }, ref) {
+    const [failed, setFailed] = React.useState(false);
+    const showImage = Boolean(src) && !failed;
+    const label = initials || deriveInitials(alt);
 
-  return (
-    <span
-      ref={ref}
-      data-size={size ?? 'md'}
-      className={cn(avatarVariants({ size }), className)}
-      {...props}
-    >
-      {showImage ? (
-        <img
-          src={src}
-          alt={alt}
-          className="h-full w-full object-cover"
-          onError={() => setFailed(true)}
-        />
-      ) : (
-        <span aria-label={alt} role="img">
-          {label}
-        </span>
-      )}
-    </span>
-  );
-});
+    return (
+      <span
+        ref={ref}
+        data-size={size ?? 'md'}
+        className={cn(avatarVariants({ size }), className)}
+        {...props}
+      >
+        {showImage ? (
+          <img
+            src={src}
+            alt={alt}
+            className="h-full w-full object-cover"
+            onError={() => setFailed(true)}
+          />
+        ) : (
+          <span aria-label={alt} role="img">
+            {label}
+          </span>
+        )}
+      </span>
+    );
+  },
+);

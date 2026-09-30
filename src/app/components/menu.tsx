@@ -35,7 +35,7 @@ const MenuTrigger = MenuPrimitive.Trigger;
 const MenuGroup = MenuPrimitive.Group;
 const MenuRadioGroup = MenuPrimitive.RadioGroup;
 const MenuSub = MenuPrimitive.Sub;
-const MenuPortal = withHdsPortal(MenuPrimitive.Portal);
+const MenuPortal = /* @__PURE__ */ withHdsPortal(MenuPrimitive.Portal);
 
 const SURFACE =
   'z-50 min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
@@ -44,7 +44,7 @@ const ITEM =
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
-const MenuContent = React.forwardRef<
+const MenuContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.Content> & {
     /**
@@ -69,14 +69,14 @@ const MenuContent = React.forwardRef<
 
 // ── Item ───────────────────────────────────────────────────────────────────────
 
-const MenuItem = React.forwardRef<
+const MenuItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item>
 >(function MenuItem({ className, ...props }, ref) {
   return <MenuPrimitive.Item ref={ref} className={cn(ITEM, className)} {...props} />;
 });
 
-const MenuCheckboxItem = React.forwardRef<
+const MenuCheckboxItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.CheckboxItem>
 >(function MenuCheckboxItem({ className, children, ...props }, ref) {
@@ -92,7 +92,7 @@ const MenuCheckboxItem = React.forwardRef<
   );
 });
 
-const MenuRadioItem = React.forwardRef<
+const MenuRadioItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.RadioItem>
 >(function MenuRadioItem({ className, children, ...props }, ref) {
@@ -110,7 +110,7 @@ const MenuRadioItem = React.forwardRef<
 
 // ── Label / Separator / Submenu ─────────────────────────────────────────────────
 
-const MenuLabel = React.forwardRef<
+const MenuLabel = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.Label>
 >(function MenuLabel({ className, ...props }, ref) {
@@ -123,7 +123,7 @@ const MenuLabel = React.forwardRef<
   );
 });
 
-const MenuSeparator = React.forwardRef<
+const MenuSeparator = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.Separator>
 >(function MenuSeparator({ className, ...props }, ref) {
@@ -136,7 +136,7 @@ const MenuSeparator = React.forwardRef<
   );
 });
 
-const MenuSubTrigger = React.forwardRef<
+const MenuSubTrigger = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubTrigger>
 >(function MenuSubTrigger({ className, children, ...props }, ref) {
@@ -152,7 +152,7 @@ const MenuSubTrigger = React.forwardRef<
   );
 });
 
-const MenuSubContent = React.forwardRef<
+const MenuSubContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubContent> & {
     /**

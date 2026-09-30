@@ -75,7 +75,7 @@ export interface HdsDocsShellProps {
 }
 
 /** @public */
-export const HdsDocsShell = React.forwardRef<HTMLDivElement, HdsDocsShellProps>(
+export const HdsDocsShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, HdsDocsShellProps>(
   function HdsDocsShell(
     { leftRail, children, rightRail, topOffset = '0px', className, style },
     ref,

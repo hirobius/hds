@@ -33,9 +33,15 @@ import { Text } from './text';
 
 // ── Root + leaf primitives ──────────────────────────────────────────────────────
 
-const AlertDialogRoot = AlertDialogPrimitive.Root;
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Attaching them to `AlertDialogPrimitive.Root` compiled to
+// property writes on a third-party export, which webpack and esbuild keep in
+// every bundle that reaches the shared chunk (hds#363).
+function AlertDialogRoot(props: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
+  return <AlertDialogPrimitive.Root {...props} />;
+}
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
-const AlertDialogPortal = withHdsPortal(AlertDialogPrimitive.Portal);
+const AlertDialogPortal = /* @__PURE__ */ withHdsPortal(AlertDialogPrimitive.Portal);
 const AlertDialogAction = AlertDialogPrimitive.Action;
 const AlertDialogCancel = AlertDialogPrimitive.Cancel;
 
@@ -164,14 +170,18 @@ interface AlertDialogComponent extends React.FC<
  * uncontrolled with `defaultOpen`.
  * @public
  */
-export const AlertDialog = AlertDialogRoot as unknown as AlertDialogComponent;
-AlertDialog.Trigger = AlertDialogTrigger;
-AlertDialog.Portal = AlertDialogPortal;
-AlertDialog.Overlay = AlertDialogOverlay;
-AlertDialog.Content = AlertDialogContent;
-AlertDialog.Header = AlertDialogHeader;
-AlertDialog.Footer = AlertDialogFooter;
-AlertDialog.Title = AlertDialogTitle;
-AlertDialog.Description = AlertDialogDescription;
-AlertDialog.Action = AlertDialogAction;
-AlertDialog.Cancel = AlertDialogCancel;
+export const AlertDialog: AlertDialogComponent = /* @__PURE__ */ Object.assign(AlertDialogRoot, {
+  Trigger: AlertDialogTrigger,
+  Portal: AlertDialogPortal,
+  Overlay: AlertDialogOverlay,
+  Content: AlertDialogContent,
+  Header: AlertDialogHeader,
+  Footer: AlertDialogFooter,
+  Title: AlertDialogTitle,
+  Description: AlertDialogDescription,
+  Action: AlertDialogAction,
+  Cancel: AlertDialogCancel,
+  // Set here, not by a later `AlertDialog.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'AlertDialog',
+});

@@ -3,8 +3,8 @@
  * @see src/app/components/status-list-item.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from '../app/components/badge';
 import { StatusListItem } from '../app/components/status-list-item';
+import { Badge } from '../app/components/badge';
 import { designParameters } from './design-parameters';
 
 const meta = {

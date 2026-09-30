@@ -3,8 +3,8 @@
  * @see src/app/components/status-tile.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from '../app/components/badge';
 import { StatusTile } from '../app/components/status-tile';
+import { Badge } from '../app/components/badge';
 import { designParameters } from './design-parameters';
 
 const meta = {

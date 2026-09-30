@@ -50,7 +50,7 @@ export interface CoverProps {
 }
 
 /** @public */
-export const Cover = React.forwardRef<HTMLDivElement, CoverProps>(function Cover(
+export const Cover = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CoverProps>(function Cover(
   {
     children,
     centerSlot,

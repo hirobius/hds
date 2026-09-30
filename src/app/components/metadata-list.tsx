@@ -14,7 +14,7 @@ import hds from '../design-system/tokens';
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Orientation is the only styling axis. Vertical stacks each term above its
 // description; horizontal lays each pair out as a two-column grid row.
-const metadataListVariants = cva('', {
+const metadataListVariants = /* @__PURE__ */ cva('', {
   variants: {
     orientation: {
       vertical: 'flex flex-col gap-3',
@@ -60,7 +60,7 @@ export interface MetadataListProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Renders object metadata as a semantic `<dl>` of term/description pairs. */
-export const MetadataList = React.forwardRef<HTMLDListElement, MetadataListProps>(
+export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, MetadataListProps>(
   function MetadataList(
     { className, items, orientation = 'vertical', variant = 'plain', footer, ...rest },
     ref,

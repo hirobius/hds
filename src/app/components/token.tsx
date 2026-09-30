@@ -23,7 +23,7 @@ import { allTokens } from './tokenUtils';
 // ── Variants ───────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-button-secondary-* / semantic-radius-action / primitive-space-* tokens have no Tailwind-theme utility; var()-based so still token-driven
-const tokenShellVariants = cva(
+const tokenShellVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.space.2 (8px shell padding) has no semantic alias — same primitive ref Token.module.css used
   '[font:inherit] mb-0 box-border flex items-center whitespace-normal border border-solid border-[var(--component-button-secondary-border-rest)] rounded-[var(--semantic-radius-action)] bg-[var(--component-button-secondary-bg-rest)] p-[var(--primitive-space-2)] text-left text-inherit',
   {
@@ -71,7 +71,7 @@ const tokenShellVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven
-const tokenNodeInlineVariants = cva(
+const tokenNodeInlineVariants = /* @__PURE__ */ cva(
   'flex w-full min-w-0 max-w-full gap-[var(--semantic-space-subgrid-gap)]',
   {
     variants: {
@@ -89,7 +89,7 @@ const tokenNodeInlineVariants = cva(
 // flips text direction so the ellipsis lands at the start instead of the end;
 // `selected` inverts the label color to sit on the accent fill.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono technical-typography composite (13px/1/regular/mono-family) + direction/overflow-wrap + content-* colors have no Tailwind-theme utility; var()-based so still token-driven
-const tokenLabelVariants = cva(
+const tokenLabelVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.typography.family.mono (Geist Mono stack) has no semantic alias — same primitive ref hds.typeStyles.technical used
   'relative block w-full max-w-full min-w-0 font-normal leading-none text-[13px] [font-family:var(--primitive-typography-family-mono)]',
   {

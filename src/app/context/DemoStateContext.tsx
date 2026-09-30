@@ -13,15 +13,11 @@
  */
 import { createContext, useContext, type ReactNode } from 'react';
 
-const DemoStateContext = createContext<string | null>(null);
+const DemoStateContext = /* @__PURE__ */ createContext<string | null>(null);
 
 /** Freeze all HDS demo components inside to the given visual state. */
 export function FreezeState({ state, children }: { state: string; children: ReactNode }) {
-  return (
-    <DemoStateContext.Provider value={state}>
-      {children}
-    </DemoStateContext.Provider>
-  );
+  return <DemoStateContext.Provider value={state}>{children}</DemoStateContext.Provider>;
 }
 
 /** Read the nearest frozen demo state, or null if not inside a FreezeState. */

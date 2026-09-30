@@ -64,61 +64,63 @@ export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>,
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Paged navigation with first/last anchors, sibling pages, and ellipses. */
-export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(function Pagination(
-  { page, count, onPageChange, siblingCount = 1, label = 'Pagination', className, ...props },
-  ref,
-) {
-  if (count <= 1) return null;
-  const tokens = paginationRange(page, count, siblingCount);
-  const go = (next: number) => onPageChange(Math.max(1, Math.min(count, next)));
+export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, PaginationProps>(
+  function Pagination(
+    { page, count, onPageChange, siblingCount = 1, label = 'Pagination', className, ...props },
+    ref,
+  ) {
+    if (count <= 1) return null;
+    const tokens = paginationRange(page, count, siblingCount);
+    const go = (next: number) => onPageChange(Math.max(1, Math.min(count, next)));
 
-  return (
-    <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
-      <ul className="flex flex-wrap items-center gap-1">
-        <li>
-          <IconButton
-            icon={ChevronLeft}
-            size="sm"
-            variant="tertiary"
-            aria-label="Previous page"
-            disabled={page <= 1}
-            onClick={() => go(page - 1)}
-          />
-        </li>
-        {tokens.map((token, index) =>
-          token === 'ellipsis' ? (
-            <li
-              key={`ellipsis-${index}`}
-              aria-hidden="true"
-              className="px-2 text-muted-foreground select-none"
-            >
-              …
-            </li>
-          ) : (
-            <li key={token}>
-              <Button
-                variant={token === page ? 'secondary' : 'tertiary'}
-                size="sm"
-                aria-label={`Page ${token}`}
-                aria-current={token === page ? 'page' : undefined}
-                onClick={() => go(token)}
+    return (
+      <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
+        <ul className="flex flex-wrap items-center gap-1">
+          <li>
+            <IconButton
+              icon={ChevronLeft}
+              size="sm"
+              variant="tertiary"
+              aria-label="Previous page"
+              disabled={page <= 1}
+              onClick={() => go(page - 1)}
+            />
+          </li>
+          {tokens.map((token, index) =>
+            token === 'ellipsis' ? (
+              <li
+                key={`ellipsis-${index}`}
+                aria-hidden="true"
+                className="px-2 text-muted-foreground select-none"
               >
-                {token}
-              </Button>
-            </li>
-          ),
-        )}
-        <li>
-          <IconButton
-            icon={ChevronRight}
-            size="sm"
-            variant="tertiary"
-            aria-label="Next page"
-            disabled={page >= count}
-            onClick={() => go(page + 1)}
-          />
-        </li>
-      </ul>
-    </nav>
-  );
-});
+                …
+              </li>
+            ) : (
+              <li key={token}>
+                <Button
+                  variant={token === page ? 'secondary' : 'tertiary'}
+                  size="sm"
+                  aria-label={`Page ${token}`}
+                  aria-current={token === page ? 'page' : undefined}
+                  onClick={() => go(token)}
+                >
+                  {token}
+                </Button>
+              </li>
+            ),
+          )}
+          <li>
+            <IconButton
+              icon={ChevronRight}
+              size="sm"
+              variant="tertiary"
+              aria-label="Next page"
+              disabled={page >= count}
+              onClick={() => go(page + 1)}
+            />
+          </li>
+        </ul>
+      </nav>
+    );
+  },
+);

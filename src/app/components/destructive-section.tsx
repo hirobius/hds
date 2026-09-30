@@ -37,68 +37,69 @@ export interface DestructiveSectionProps extends Omit<React.HTMLAttributes<HTMLE
  * dialog's confirm does. Place it last on the screen, below the form.
  * @screenPattern
  */
-export const DestructiveSection = React.forwardRef<HTMLElement, DestructiveSectionProps>(
-  function DestructiveSection(
-    {
-      title,
-      description,
-      actionLabel,
-      confirmLabel,
-      confirmBody,
-      onConfirm,
-      cancelLabel = 'Cancel',
-      level = 2,
-      ...props
-    },
-    ref,
-  ) {
-    const headingId = React.useId();
-    return (
-      <section
-        ref={ref}
-        data-hds-component="DestructiveSection"
-        aria-labelledby={headingId}
-        {...props}
-      >
-        <Card tone="danger">
-          <Cluster gap="normal" align="center" justify="space-between">
-            {/* The shared heading pair takes string-only text and no heading id; this section needs a ReactNode title and an id for aria-labelledby. */}
-            <div data-slot="copy" className="min-w-0 grow basis-64">
-              <Text id={headingId} as={`h${level}`} variant="heading3">
-                {title}
-              </Text>
-              <Text as="p" variant="caption" className="text-muted-foreground">
-                {description}
-              </Text>
-            </div>
-            <div data-slot="action" className="shrink-0">
-              <AlertDialog>
-                <AlertDialog.Trigger asChild>
-                  <Button variant="secondary" tone="danger">
-                    {actionLabel ?? confirmLabel}
-                  </Button>
-                </AlertDialog.Trigger>
-                <AlertDialog.Content>
-                  <AlertDialog.Header>
-                    <AlertDialog.Title>{title}</AlertDialog.Title>
-                    <AlertDialog.Description>{confirmBody}</AlertDialog.Description>
-                  </AlertDialog.Header>
-                  <AlertDialog.Footer>
-                    <AlertDialog.Cancel asChild>
-                      <Button variant="secondary">{cancelLabel}</Button>
-                    </AlertDialog.Cancel>
-                    <AlertDialog.Action asChild>
-                      <Button variant="primary" tone="danger" onClick={onConfirm}>
-                        {confirmLabel}
-                      </Button>
-                    </AlertDialog.Action>
-                  </AlertDialog.Footer>
-                </AlertDialog.Content>
-              </AlertDialog>
-            </div>
-          </Cluster>
-        </Card>
-      </section>
-    );
+export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
+  HTMLElement,
+  DestructiveSectionProps
+>(function DestructiveSection(
+  {
+    title,
+    description,
+    actionLabel,
+    confirmLabel,
+    confirmBody,
+    onConfirm,
+    cancelLabel = 'Cancel',
+    level = 2,
+    ...props
   },
-);
+  ref,
+) {
+  const headingId = React.useId();
+  return (
+    <section
+      ref={ref}
+      data-hds-component="DestructiveSection"
+      aria-labelledby={headingId}
+      {...props}
+    >
+      <Card tone="danger">
+        <Cluster gap="normal" align="center" justify="space-between">
+          {/* The shared heading pair takes string-only text and no heading id; this section needs a ReactNode title and an id for aria-labelledby. */}
+          <div data-slot="copy" className="min-w-0 grow basis-64">
+            <Text id={headingId} as={`h${level}`} variant="heading3">
+              {title}
+            </Text>
+            <Text as="p" variant="caption" className="text-muted-foreground">
+              {description}
+            </Text>
+          </div>
+          <div data-slot="action" className="shrink-0">
+            <AlertDialog>
+              <AlertDialog.Trigger asChild>
+                <Button variant="secondary" tone="danger">
+                  {actionLabel ?? confirmLabel}
+                </Button>
+              </AlertDialog.Trigger>
+              <AlertDialog.Content>
+                <AlertDialog.Header>
+                  <AlertDialog.Title>{title}</AlertDialog.Title>
+                  <AlertDialog.Description>{confirmBody}</AlertDialog.Description>
+                </AlertDialog.Header>
+                <AlertDialog.Footer>
+                  <AlertDialog.Cancel asChild>
+                    <Button variant="secondary">{cancelLabel}</Button>
+                  </AlertDialog.Cancel>
+                  <AlertDialog.Action asChild>
+                    <Button variant="primary" tone="danger" onClick={onConfirm}>
+                      {confirmLabel}
+                    </Button>
+                  </AlertDialog.Action>
+                </AlertDialog.Footer>
+              </AlertDialog.Content>
+            </AlertDialog>
+          </div>
+        </Cluster>
+      </Card>
+    </section>
+  );
+});

@@ -18,7 +18,7 @@ import {
   type HdsRouterAdapter,
 } from './RouterContext';
 
-const BridgeLink: HdsLinkComponent = forwardRef<HTMLAnchorElement, HdsLinkProps>(
+const BridgeLink: HdsLinkComponent = /* @__PURE__ */ forwardRef<HTMLAnchorElement, HdsLinkProps>(
   function BridgeLink({ to, children, ...rest }, ref) {
     return (
       <Link ref={ref} to={to} {...rest}>

@@ -28,7 +28,7 @@ export interface PinProps {
 }
 
 /** @public */
-export const Pin = React.forwardRef<HTMLDivElement, PinProps>(function Pin(
+export const Pin = /* @__PURE__ */ React.forwardRef<HTMLDivElement, PinProps>(function Pin(
   { children, top = '0', className, style, as: Tag = 'div' },
   ref,
 ) {

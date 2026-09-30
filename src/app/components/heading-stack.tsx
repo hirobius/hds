@@ -28,7 +28,7 @@ import { cn } from '../../lib/utils';
 // for h1/h2, regular for h3). `gap` is a layout axis (not one of the four
 // variant-contract axes), mirroring divider.tsx's `orientation`.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic space/typography tokens have no Tailwind-theme utility; var()-based so still token-driven
-const headingStackVariants = cva('flex flex-col', {
+const headingStackVariants = /* @__PURE__ */ cva('flex flex-col', {
   variants: {
     // tier-ok: subgrid-gap/component-gap resolve to var(--primitive-space-1)/-2 exactly
     // (tokens.generated.css) — mechanical alias swap, hds#186
@@ -41,18 +41,21 @@ const headingStackVariants = cva('flex flex-col', {
 });
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic typography composite tokens (font-size/font-weight/line-height/letter-spacing) have no Tailwind-theme utility; var()-based so still token-driven
-const headingStackLevelVariants = cva('m-0 text-[color:var(--semantic-color-content-primary)]', {
-  variants: {
-    level: {
-      heading1:
-        '[font-size:var(--semantic-typography-h1-font-size)] [font-weight:var(--semantic-typography-h1-font-weight)] [line-height:var(--semantic-typography-h1-line-height)] [letter-spacing:var(--semantic-typography-h1-letter-spacing)]',
-      heading2:
-        '[font-size:var(--semantic-typography-h2-font-size)] [font-weight:var(--semantic-typography-h2-font-weight)] [line-height:var(--semantic-typography-h2-line-height)] [letter-spacing:var(--semantic-typography-h2-letter-spacing)]',
-      heading3:
-        '[font-size:var(--semantic-typography-h3-font-size)] [font-weight:var(--semantic-typography-h3-font-weight)] [line-height:var(--semantic-typography-h3-line-height)] [letter-spacing:var(--semantic-typography-h3-letter-spacing)]',
+const headingStackLevelVariants = /* @__PURE__ */ cva(
+  'm-0 text-[color:var(--semantic-color-content-primary)]',
+  {
+    variants: {
+      level: {
+        heading1:
+          '[font-size:var(--semantic-typography-h1-font-size)] [font-weight:var(--semantic-typography-h1-font-weight)] [line-height:var(--semantic-typography-h1-line-height)] [letter-spacing:var(--semantic-typography-h1-letter-spacing)]',
+        heading2:
+          '[font-size:var(--semantic-typography-h2-font-size)] [font-weight:var(--semantic-typography-h2-font-weight)] [line-height:var(--semantic-typography-h2-line-height)] [letter-spacing:var(--semantic-typography-h2-letter-spacing)]',
+        heading3:
+          '[font-size:var(--semantic-typography-h3-font-size)] [font-weight:var(--semantic-typography-h3-font-weight)] [line-height:var(--semantic-typography-h3-line-height)] [letter-spacing:var(--semantic-typography-h3-letter-spacing)]',
+      },
     },
   },
-});
+);
 
 const headingStackSubheadingClassName =
   'm-0 leading-[1.5] text-[color:var(--semantic-color-content-secondary)] [font-size:var(--semantic-typography-body-font-size)] [font-weight:var(--semantic-typography-body-font-weight)]';
@@ -91,27 +94,29 @@ const DEFAULT_HEADING_TAG: Record<HdsHeadingLevel, HdsHeadingTag> = {
 };
 
 /** @public */
-export const HeadingStack = forwardRef<HTMLElement, HeadingStackProps>(function HeadingStack(
-  {
-    heading,
-    subheading,
-    level,
-    gap = 'px8',
-    as: RootTag = 'div',
-    headingAs,
-    subheadingAs: SubheadingTag = 'p',
-  },
-  ref,
-) {
-  const HeadingTag = headingAs ?? DEFAULT_HEADING_TAG[level];
+export const HeadingStack = /* @__PURE__ */ forwardRef<HTMLElement, HeadingStackProps>(
+  function HeadingStack(
+    {
+      heading,
+      subheading,
+      level,
+      gap = 'px8',
+      as: RootTag = 'div',
+      headingAs,
+      subheadingAs: SubheadingTag = 'p',
+    },
+    ref,
+  ) {
+    const HeadingTag = headingAs ?? DEFAULT_HEADING_TAG[level];
 
-  return (
-    <RootTag ref={ref} className={cn(headingStackVariants({ gap }))}>
-      <HeadingTag className={cn(headingStackLevelVariants({ level }))}>{heading}</HeadingTag>
-      <SubheadingTag className={headingStackSubheadingClassName}>{subheading}</SubheadingTag>
-    </RootTag>
-  );
-});
+    return (
+      <RootTag ref={ref} className={cn(headingStackVariants({ gap }))}>
+        <HeadingTag className={cn(headingStackLevelVariants({ level }))}>{heading}</HeadingTag>
+        <SubheadingTag className={headingStackSubheadingClassName}>{subheading}</SubheadingTag>
+      </RootTag>
+    );
+  },
+);
 
 /** @internal — CVA variant helpers; compose via HeadingStack props instead. */
 export { headingStackVariants, headingStackLevelVariants };

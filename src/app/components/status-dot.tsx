@@ -11,7 +11,7 @@ import { cn } from '../../lib/utils';
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Tone drives a single solid feedback hue; size is on the 8px grid. Neutral uses
 // the muted content color so the dot never introduces a second hue on its own.
-const statusDotVariants = cva('inline-block shrink-0 rounded-full', {
+const statusDotVariants = /* @__PURE__ */ cva('inline-block shrink-0 rounded-full', {
   variants: {
     tone: {
       neutral: 'bg-muted-foreground',
@@ -48,20 +48,19 @@ export interface StatusDotProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** A small solid dot conveying a semantic status via `tone`. */
-export const StatusDot = React.forwardRef<HTMLSpanElement, StatusDotProps>(function StatusDot(
-  { className, tone, size, label, ...props },
-  ref,
-) {
-  return (
-    <span
-      ref={ref}
-      data-tone={tone ?? 'neutral'}
-      className={cn(statusDotVariants({ tone, size }), className)}
-      {...(label ? { role: 'status', 'aria-label': label } : { 'aria-hidden': true })}
-      {...props}
-    />
-  );
-});
+export const StatusDot = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, StatusDotProps>(
+  function StatusDot({ className, tone, size, label, ...props }, ref) {
+    return (
+      <span
+        ref={ref}
+        data-tone={tone ?? 'neutral'}
+        className={cn(statusDotVariants({ tone, size }), className)}
+        {...(label ? { role: 'status', 'aria-label': label } : { 'aria-hidden': true })}
+        {...props}
+      />
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via StatusDot props instead. */
 export { statusDotVariants };

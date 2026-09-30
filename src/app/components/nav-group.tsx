@@ -31,15 +31,18 @@ type NavGroupVariant = 'side' | 'toc';
 // though side/toc don't currently diverge on color) is the only cva axis.
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --semantic-color-content-secondary has no Tailwind-theme utility; var()-based so still token-driven
-const navGroupLabelVariants = cva('text-[var(--semantic-color-content-secondary)]', {
-  variants: {
-    variant: {
-      side: '',
-      toc: '',
+const navGroupLabelVariants = /* @__PURE__ */ cva(
+  'text-[var(--semantic-color-content-secondary)]',
+  {
+    variants: {
+      variant: {
+        side: '',
+        toc: '',
+      },
     },
+    defaultVariants: { variant: 'side' },
   },
-  defaultVariants: { variant: 'side' },
-});
+);
 
 export type NavGroupProps = {
   label?: string;

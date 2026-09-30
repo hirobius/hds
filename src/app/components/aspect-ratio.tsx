@@ -31,7 +31,7 @@ export interface AspectRatioProps extends React.ComponentPropsWithoutRef<
  * Locks its single child to the given width-to-height `ratio` so media reserves
  * its box up front and never causes layout shift while it loads.
  */
-export const AspectRatio = React.forwardRef<
+export const AspectRatio = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof AspectRatioPrimitive.Root>,
   AspectRatioProps
 >(function AspectRatio({ ratio = 1, ...props }, ref) {

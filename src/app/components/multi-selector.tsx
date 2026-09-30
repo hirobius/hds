@@ -50,67 +50,68 @@ const ITEM =
   'relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hds-focus hover:bg-accent hover:text-accent-foreground focus-within:bg-accent focus-within:text-accent-foreground focus-within:ring-2 focus-within:ring-inset focus-within:ring-ring';
 
 /** @public */
-export const MultiSelector = React.forwardRef<HTMLButtonElement, MultiSelectorProps>(
-  function MultiSelector(
-    { options, value, onChange, placeholder = 'Select…', disabled = false, className },
-    ref,
-  ) {
-    const [open, setOpen] = React.useState(false);
-    const baseId = React.useId();
+export const MultiSelector = /* @__PURE__ */ React.forwardRef<
+  HTMLButtonElement,
+  MultiSelectorProps
+>(function MultiSelector(
+  { options, value, onChange, placeholder = 'Select…', disabled = false, className },
+  ref,
+) {
+  const [open, setOpen] = React.useState(false);
+  const baseId = React.useId();
 
-    function toggle(optionValue: string) {
-      const next = value.includes(optionValue)
-        ? value.filter((v) => v !== optionValue)
-        : [...value, optionValue];
-      onChange(next);
-    }
+  function toggle(optionValue: string) {
+    const next = value.includes(optionValue)
+      ? value.filter((v) => v !== optionValue)
+      : [...value, optionValue];
+    onChange(next);
+  }
 
-    return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <Popover.Trigger asChild>
-          <button
-            ref={ref}
-            type="button"
-            disabled={disabled}
-            className={cn(
-              'hds-focus inline-flex h-10 items-center justify-between gap-2 rounded-md border border-input',
-              'bg-background px-3 text-sm text-foreground hover:bg-accent hover:border-ring',
-              'disabled:pointer-events-none disabled:opacity-50',
-              className,
-            )}
-          >
-            <span className={cn('truncate', value.length === 0 && 'text-muted-foreground')}>
-              {value.length === 0 ? placeholder : `${value.length} selected`}
-            </span>
-          </button>
-        </Popover.Trigger>
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <Popover.Trigger asChild>
+        <button
+          ref={ref}
+          type="button"
+          disabled={disabled}
+          className={cn(
+            'hds-focus inline-flex h-10 items-center justify-between gap-2 rounded-md border border-input',
+            'bg-background px-3 text-sm text-foreground hover:bg-accent hover:border-ring',
+            'disabled:pointer-events-none disabled:opacity-50',
+            className,
+          )}
+        >
+          <span className={cn('truncate', value.length === 0 && 'text-muted-foreground')}>
+            {value.length === 0 ? placeholder : `${value.length} selected`}
+          </span>
+        </button>
+      </Popover.Trigger>
 
-        <Popover.Content align="start" className="w-64 p-1">
-          <div className="max-h-60 overflow-y-auto">
-            {options.map((option) => {
-              const checked = value.includes(option.value);
-              const inputId = `${baseId}-${option.value}`;
-              return (
-                <label key={option.value} htmlFor={inputId} className={ITEM}>
-                  <span className="pointer-events-none absolute left-2 inline-flex items-center justify-center">
-                    {checked ? (
-                      <Icon icon={Check} size={14} color="currentColor" aria-hidden />
-                    ) : null}
-                  </span>
-                  <input
-                    id={inputId}
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => toggle(option.value)}
-                    className="sr-only"
-                  />
-                  <span className="truncate">{option.label}</span>
-                </label>
-              );
-            })}
-          </div>
-        </Popover.Content>
-      </Popover>
-    );
-  },
-);
+      <Popover.Content align="start" className="w-64 p-1">
+        <div className="max-h-60 overflow-y-auto">
+          {options.map((option) => {
+            const checked = value.includes(option.value);
+            const inputId = `${baseId}-${option.value}`;
+            return (
+              <label key={option.value} htmlFor={inputId} className={ITEM}>
+                <span className="pointer-events-none absolute left-2 inline-flex items-center justify-center">
+                  {checked ? (
+                    <Icon icon={Check} size={14} color="currentColor" aria-hidden />
+                  ) : null}
+                </span>
+                <input
+                  id={inputId}
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => toggle(option.value)}
+                  className="sr-only"
+                />
+                <span className="truncate">{option.label}</span>
+              </label>
+            );
+          })}
+        </div>
+      </Popover.Content>
+    </Popover>
+  );
+});

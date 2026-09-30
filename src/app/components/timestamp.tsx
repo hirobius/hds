@@ -69,31 +69,30 @@ export interface TimestampProps extends Omit<
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Presents a date/time with a machine-readable `dateTime` for accessibility. */
-export const Timestamp = React.forwardRef<HTMLTimeElement, TimestampProps>(function Timestamp(
-  { className, date, format = 'datetime', locale, now, ...props },
-  ref,
-) {
-  const target = toDate(date);
-  const iso = Number.isNaN(target.getTime()) ? undefined : target.toISOString();
+export const Timestamp = /* @__PURE__ */ React.forwardRef<HTMLTimeElement, TimestampProps>(
+  function Timestamp({ className, date, format = 'datetime', locale, now, ...props }, ref) {
+    const target = toDate(date);
+    const iso = Number.isNaN(target.getTime()) ? undefined : target.toISOString();
 
-  let text: string;
-  if (Number.isNaN(target.getTime())) {
-    text = '';
-  } else if (format === 'relative') {
-    text = formatRelative(target, now != null ? toDate(now) : new Date(), locale);
-  } else {
-    text = new Intl.DateTimeFormat(locale, ABSOLUTE_OPTIONS[format]).format(target);
-  }
+    let text: string;
+    if (Number.isNaN(target.getTime())) {
+      text = '';
+    } else if (format === 'relative') {
+      text = formatRelative(target, now != null ? toDate(now) : new Date(), locale);
+    } else {
+      text = new Intl.DateTimeFormat(locale, ABSOLUTE_OPTIONS[format]).format(target);
+    }
 
-  return (
-    <time
-      ref={ref}
-      dateTime={iso}
-      data-format={format}
-      className={cn('tabular-nums', className)}
-      {...props}
-    >
-      {text}
-    </time>
-  );
-});
+    return (
+      <time
+        ref={ref}
+        dateTime={iso}
+        data-format={format}
+        className={cn('tabular-nums', className)}
+        {...props}
+      >
+        {text}
+      </time>
+    );
+  },
+);
