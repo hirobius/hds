@@ -12,6 +12,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { isDevelopment } from '../../lib/env';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -94,8 +95,17 @@ export interface ButtonProps
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
+// Warn once per module load: `iconOnly` renders only `iconLeft` (iconRight is
+// hidden), so an icon-only Button without one is an empty square. Not
+// `warnOnce` from lib/deprecation: that prefixes `[HDS deprecation]`, and this
+// is a misuse, not a deprecation.
+let warnedIconOnlyWithoutIcon = false;
+
 /**
  * Triggers an action when activated.
+ * @usage Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.
+ * @whenNot Navigating to another page, where a link is the correct element.
+ * @useInstead InlineLink navigation to another page
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
@@ -134,6 +144,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
       >
         {children as React.ReactElement}
       </Slot>
+    );
+  }
+
+  if (iconOnly && !iconLeft && !loading && !warnedIconOnlyWithoutIcon && isDevelopment()) {
+    warnedIconOnlyWithoutIcon = true;
+    console.warn(
+      '[Button] iconOnly renders only iconLeft; pass iconLeft (iconRight is hidden in iconOnly mode).',
     );
   }
 

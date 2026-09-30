@@ -4,6 +4,17 @@
  * Select — dropdown selector built on Radix Select.
  * @category Inputs
  * @tier primitive
+ * @usage Choose one value from a short list of options in a form field.
+ * @whenNot Firing actions, or choosing from a list long enough to need search.
+ * @useInstead Menu firing actions from a trigger
+ * @useInstead Combobox a long list that needs search
+ * @keyboard Enter/Space/ArrowDown Opens the listbox from the trigger with the selected option highlighted.
+ * @keyboard ArrowDown/ArrowUp Moves the highlight.
+ * @keyboard Home/End Jumps to the first or last option.
+ * @keyboard Character Highlights the option that matches the typed letters.
+ * @keyboard Enter Commits the highlighted option and returns focus to the trigger.
+ * @keyboard Escape Closes the listbox and returns focus to the trigger.
+ * @keyboard Tab Does not leave the open listbox.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49
  */
 

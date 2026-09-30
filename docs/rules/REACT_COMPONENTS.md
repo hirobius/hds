@@ -170,6 +170,32 @@ Bind to the role token — never write raw shadow, surface, or border values by 
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
+## Component Contract Tags (JSDoc)
+
+Say when to use a component in its JSDoc, on the block directly above the exported component (or the file-level block for a single-component file). `pnpm manifest:generate` parses these tags (`scripts/lib/jsdoc-contract.mjs`) into `usage`, `slots`, `keyboard` and `aiRules` on the spec in `public/hds-manifest.json`, into `src/app/data/component-api.json`, into the "Which one when" section of `public/llms.txt`, and into the "When to use" block of the generated component page and the Storybook Docs description.
+
+| Tag                                | Body                                                                                                                                                                         | Repeatable |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `@usage`                           | One sentence: when to use this component.                                                                                                                                    | no         |
+| `@whenNot`                         | When not to.                                                                                                                                                                 | no         |
+| `@useInstead <Component> [reason]` | The component to use in that case, and why.                                                                                                                                  | yes        |
+| `@slot <name> <description>`       | A named slot and what it holds. Merged into the hand-kept `slots`; a hand-kept slot of the same name wins.                                                                   | yes        |
+| `@keyboard <keys> <effect>`        | One key or chord and its effect. `<keys>` is a single token, so write `Enter/Space`, not `Enter / Space`. Must match `tests/primitive-contracts/keyboard.contract.test.tsx`. | yes        |
+| `@ai-rules`                        | Agent-facing authoring rules (existing tag, now parsed into `aiRules`).                                                                                                      | no         |
+
+A tag body runs until the next `@tag`, a blank line, or the end of the block; continuation lines belong to the tag and never appear in the description. Prose after a blank line stays description.
+
+```tsx
+/**
+ * Stat — headline metric.
+ * @usage Show one standalone headline figure with its label.
+ * @whenNot A figure inside a Card.
+ * @useInstead Card.Metric a figure inside a Card
+ */
+```
+
+`node scripts/check-contract-coverage.mjs` lists the 42 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It is report-only until hds#340.
+
 ## Component Inventory & Fallbacks
 
 - Inventory first: always use an existing `Hds...` component before inventing a new wrapper or control.
