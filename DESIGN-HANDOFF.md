@@ -533,6 +533,16 @@ Semantic layout tokens exist for layout decisions only: readable content widths,
 
 ---
 
+## Screen Patterns
+
+Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.md`). Import from `@hirobius/design-system/patterns`.
+
+- **Page title:** every screen has exactly one `PageHeader`. Its title is `heading2` (30px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` and `h1` are reserved for marketing and landing surfaces.
+- **Which metric component:** `MetricTiles` is the default for any row of headline numbers (fixed tile min-height, value `heading2`, `min(tiles, 4)` columns). `Stat` is for an inline number inside prose or a dense list. `Card.Metric` is only for use inside an existing `Card`. `StatusTile` shows state with notes and a trailing badge, never a number.
+- **Form footer:** `FormActions` puts the primary submit last in DOM order and right-most, the secondary to its left, and a destructive action on the far left, apart from both. Not sticky unless `sticky` is set.
+
+---
+
 ## Agent Creative Boundaries (Hard Constraints)
 
 <!-- auto:start:agent-constraints -->

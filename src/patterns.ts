@@ -35,3 +35,6 @@ export * from './app/components/toolbar';
 export * from './app/components/command-palette';
 export * from './app/components/image-lightbox';
 export * from './app/components/reveal';
+export * from './app/components/page-header';
+export * from './app/components/metric-tiles';
+export * from './app/components/form-actions';

@@ -11,7 +11,8 @@ const ROOT = join(__dirname, '..');
 const SRC_DIR = join(ROOT, 'src');
 const COMPONENTS_DIR = join(ROOT, 'src', 'app', 'components');
 const DOC_EXEMPT_PATTERN = /@doc-exempt:\s*(.+)/i;
-const TAG_PATTERN = /@(category|internal|doc-ignore|figma|tier)\b(?:\s+([^\r\n*]+))?/g;
+const TAG_PATTERN =
+  /@(category|internal|doc-ignore|figma|tier|screenPattern)\b(?:\s+([^\r\n*]+))?/g;
 const TIER_VALUES = new Set(['primitive', 'pattern', 'template', 'utility']);
 
 const SKIP_DIRS = new Set(['__tests__', 'figma']);
@@ -170,6 +171,7 @@ function parseTags(block, source) {
     figmaUrl: null,
     docExempt: DOC_EXEMPT_PATTERN.test(source),
     tier: null,
+    screenPattern: false,
   };
 
   if (!block) return tags;
@@ -179,6 +181,7 @@ function parseTags(block, source) {
     if (key === 'category') tags.category = cleanText(value);
     if (key === 'internal') tags.internal = true;
     if (key === 'doc-ignore') tags.docIgnore = true;
+    if (key === 'screenPattern') tags.screenPattern = true;
     if (key === 'figma') {
       const figmaCandidate = cleanText(value);
       if (/^(https?:\/\/|figma\.com\/)/i.test(figmaCandidate)) {
@@ -204,7 +207,7 @@ function parseTags(block, source) {
  *
  * @param {string} source module text
  * @param {string} exportName
- * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, description: string }}
+ * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string }}
  */
 export function readComponentTags(source, exportName) {
   const fileBlock = findFileJsDocBlock(source);
@@ -218,6 +221,9 @@ export function readComponentTags(source, exportName) {
     docExempt: componentTags.docExempt || fileTags.docExempt,
     figmaUrl: componentTags.figmaUrl ?? fileTags.figmaUrl ?? null,
     tier: componentTags.tier ?? fileTags.tier ?? null,
+    // Per-export only: a file-level `@screenPattern` would flag every export of the
+    // module, and MetricTile (a part) must not join MetricTiles (the composition).
+    screenPattern: componentTags.screenPattern,
     description: stripJsDocBlock(componentBlock) || stripJsDocBlock(fileBlock),
   };
 }
@@ -248,8 +254,16 @@ export function discoverHdsComponents() {
       // still real (e.g. Card ships in GENERATIVE_SUBSET) and must surface in
       // the manifest so its tier and metadata can be governed. Callers that build
       // public-doc lists must filter on docExempt explicitly.
-      const { category, internal, docIgnore, docExempt, figmaUrl, tier, description } =
-        readComponentTags(source, name);
+      const {
+        category,
+        internal,
+        docIgnore,
+        docExempt,
+        figmaUrl,
+        tier,
+        screenPattern,
+        description,
+      } = readComponentTags(source, name);
       // Components are PascalCase identifiers with at least one lowercase letter.
       // Filters out exported constants (ALL_UPPERCASE) and exported helper
       // functions (camelCase / lowercase-start) that share a doc-exempt source file.
@@ -279,6 +293,7 @@ export function discoverHdsComponents() {
         docExempt,
         figmaUrl,
         tier,
+        screenPattern,
         namespaceViolation: name.startsWith('Hds'),
         tagState: docExempt
           ? 'doc-exempt'

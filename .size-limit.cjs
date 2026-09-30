@@ -71,6 +71,17 @@
  * Storybook-built reference site. `component-api.json` now has two importers:
  * api-reference.tsx and component-instance-matrix.tsx. See docs/adr/029-decisions-carried-over.md.
  *
+ * Re-baselined 2026-09-30, manifest entry only: 54.46 kB -> 55.71 kB after
+ * hds#334 (Radix passthrough props for 7 overlay parts), hds#342 (the
+ * curated icon set) and hds#337 (three screen patterns plus a live
+ * patternInventory) landed in one wave, which broke the 55 kB budget by
+ * 711 B. Content again, not bloat: every byte is a documented prop, icon
+ * or pattern. The rest of the wave (hds#335 container props, hds#339/#340
+ * usage-contract tags on every core component, hds#338 two more patterns)
+ * adds the same kind of content, so the new budget is 65 kB: the ~17%
+ * headroom convention over 55.71 kB. Raised by the wave-2 merge train;
+ * Adrian to confirm or tighten.
+ *
  * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
  * byte-identical on all 44 linked components. Dropping one would shrink this
  * entry, but it is a breaking change for manifest consumers.
@@ -105,7 +116,7 @@ module.exports = [
   {
     name: 'manifest (hds-manifest.json ESM)',
     path: 'dist/manifest.js',
-    limit: '55 kB',
+    limit: '65 kB',
     gzip: true,
   },
   {
