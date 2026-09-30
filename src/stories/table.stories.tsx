@@ -159,17 +159,17 @@ export const FollowsDensityDial: Story = {
     docs: {
       description: {
         story:
-          'No `density` prop: rows follow the ancestor `data-density` attribute (comfortable by default, compact inside `[data-density="compact"]`). Compare the comfortable and compact modes.',
+          'No `density` prop: rows follow the ancestor `data-density` attribute (comfortable by default, compact inside `[data-density="compact"]`). The first table inherits the active mode; the second is forced into a compact scope. Comfortable is the absence of the attribute, so it cannot be nested inside a compact scope.',
       },
     },
   },
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      <div data-density="comfortable">
-        <Table columns={tokenColumns} rows={tokenRows} caption="Comfortable scope" />
-      </div>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-scale-md)' }}
+    >
+      <Table columns={tokenColumns} rows={tokenRows} caption="Inherits the active density" />
       <div data-density="compact">
-        <Table columns={tokenColumns} rows={tokenRows} caption="Compact scope" />
+        <Table columns={tokenColumns} rows={tokenRows} caption="Forced compact scope" />
       </div>
     </div>
   ),
