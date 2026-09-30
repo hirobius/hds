@@ -28,9 +28,21 @@ export type ManifestPropSpec = {
   optional?: boolean;
 };
 
+/** Contract parsed from the @usage / @whenNot / @useInstead JSDoc tags (hds#339). */
+export type ManifestUsage = {
+  when?: string;
+  whenNot?: string;
+  useInstead?: Array<{ component: string; reason?: string }>;
+};
+
+/** One @keyboard JSDoc line: the keys and what they do. */
+export type ManifestKeyboardEntry = { keys: string; effect: string };
+
 /** A named slot declared on a component spec. */
 export type ManifestSlot = {
   name?: string;
+  description?: string;
+  source?: 'jsdoc';
   figmaSlotName?: string;
   tokenBinding?: Record<string, string>;
 };
@@ -83,6 +95,9 @@ export type ManifestComponentSpec = {
   propConstraints?: Record<string, ManifestPropSpec | Record<string, unknown>>;
   requiredProps?: string[];
   slots?: ManifestSlot[];
+  usage?: ManifestUsage;
+  keyboard?: ManifestKeyboardEntry[];
+  aiRules?: string;
 };
 
 /**
@@ -123,6 +138,9 @@ export type ManifestApiComponent = {
   hidden?: boolean;
   figmaUrl?: string | null;
   description?: string;
+  usage?: ManifestUsage;
+  keyboard?: ManifestKeyboardEntry[];
+  aiRules?: string;
   /** Documentation prop rows — array, not a Record. */
   props?: ManifestApiPropRow[];
   /** Table only: what each `TableCellSlot` value renders. */
