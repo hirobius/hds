@@ -1844,7 +1844,6 @@
       },
       "consumers": [
         "src/app/components/button.test.tsx",
-        "src/app/components/button.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/pagination.tsx",
@@ -4818,16 +4817,12 @@
         "primitives-button--tertiary"
       ],
       "usage": {
-        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons.",
+        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
         "useInstead": [
           {
             "component": "InlineLink",
             "reason": "navigation to another page"
-          },
-          {
-            "component": "IconButton",
-            "reason": "an icon-only control (hds#254 folds it into Button iconOnly)"
           }
         ]
       }
@@ -5162,7 +5157,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/card.tsx",
         "src/stories/stat.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9891,13 +9885,7 @@
       ],
       "usage": {
         "when": "Show one headline figure (a KPI, a count, a total) with its label inside a Card.",
-        "whenNot": "A metric outside a Card, or several figures that share one label.",
-        "useInstead": [
-          {
-            "component": "Stat",
-            "reason": "a headline figure that is not inside a Card"
-          }
-        ]
+        "whenNot": "A metric outside a Card, or several figures that share one label."
       }
     },
     "CardProgress": {

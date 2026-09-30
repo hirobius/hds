@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T07:06:12.376Z
+Generated: 2026-09-30T09:28:02.992Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -40,9 +40,9 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 One line per component that declares when to use it (`@usage` / `@useInstead` in its JSDoc). Full detail, including `usage.whenNot`, `keyboard` and `aiRules`, is in `public/hds-manifest.json` and `src/app/data/component-api.json`.
 
-Button: Trigger an action (submit, save, open a dialog) with a text label and optional icons. Use instead: InlineLink, IconButton
+Button: Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft. Use instead: InlineLink
 Card: Group related content on a raised surface with header, body, footer and metric slots. Use instead: Surface, Card.Metric
-CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card. Use instead: Stat
+CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card.
 IconButton: Trigger an action from a compact icon-only control, always with an accessible label. Use instead: Button
 Menu: Offer a list of actions from a trigger, closed until opened. Use instead: Select
 Select: Choose one value from a short list of options in a form field. Use instead: Menu, Combobox

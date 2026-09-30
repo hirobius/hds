@@ -13,7 +13,7 @@
  *   node scripts/check-contract-coverage.mjs --report    # lists misses, exits 0
  *   node scripts/check-contract-coverage.mjs --enforce   # exits 1 on any miss
  *
- * Report-only for now (firingChannel: manual). hds#340 authors the remaining
+ * Report-only for now (firingChannel: on-demand; check-validator-wiring reads a package.json script as on-demand). hds#340 authors the remaining
  * tags and moves this to a pre-commit gate with --enforce.
  */
 import { existsSync, readFileSync } from 'node:fs';
