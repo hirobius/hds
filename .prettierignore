@@ -60,3 +60,6 @@ ralph/
 # Letting prettier reformat it makes the generator output disagree with the
 # committed file, and --check fails on a difference nobody introduced.
 figma/STAGING-INVENTORY.md
+
+# Codemod inputs are deliberately unformatted (hds#316)
+codemods/__fixtures__/
