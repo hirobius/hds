@@ -12,7 +12,14 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CORE_COMPONENTS } from '../lib/core-components.mjs';
-import { applyCoreFlag } from '../lib/core-set.mjs';
+import {
+  applyCoreFlag,
+  collectCoreSet,
+  CORE_SET_BLOCK,
+  findCoreSetDrift,
+  patternModuleNames,
+  renderCoreSetBlock,
+} from '../lib/core-set.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const readJson = (rel) => JSON.parse(readFileSync(path.join(ROOT, rel), 'utf8'));
@@ -159,5 +166,141 @@ describe('manifest schema', () => {
       expect(out.status).toBe(1);
       expect(out.stderr).toContain('Property removed: core');
     });
+  });
+});
+
+describe('patternModuleNames', () => {
+  const specs = {
+    Lightbox: { filePath: 'src/app/components/image-lightbox.tsx' },
+    Form: { filePath: 'src/app/components/form.tsx' },
+    FormField: { filePath: 'src/app/components/form.tsx' },
+    PageA: { filePath: 'src/app/components/two.tsx' },
+    PageB: { filePath: 'src/app/components/two.tsx' },
+  };
+
+  it('names each module by its PascalCase component, or its only component, sorted', () => {
+    expect(patternModuleNames(['image-lightbox', 'form'], specs)).toEqual(['Form', 'Lightbox']);
+  });
+
+  it('throws when a module has no single main component', () => {
+    expect(() => patternModuleNames(['two'], specs)).toThrow(/two/);
+    expect(() => patternModuleNames(['missing'], specs)).toThrow(/missing/);
+  });
+});
+
+describe('renderCoreSetBlock', () => {
+  const out = renderCoreSetBlock({
+    core: [
+      { category: 'Actions', names: ['Button', 'ButtonGroup'] },
+      { category: 'Layout', names: ['Stack'] },
+    ],
+    patterns: ['ActivityFeed', 'Page'],
+    rootDeprecated: 1,
+  });
+
+  it('states the counts and lists the core names by category', () => {
+    expect(out).toContain('**3** components are the core set');
+    expect(out).toContain('- **Actions:** `Button`, `ButtonGroup`');
+    expect(out).toContain('- **Layout:** `Stack`');
+  });
+
+  it('names the /patterns modules and the root re-exports kept until 1.0', () => {
+    expect(out).toContain('**2** pattern modules ship from `@hirobius/design-system/patterns`');
+    expect(out).toContain('`ActivityFeed`, `Page`');
+    expect(out).toMatch(/\*\*1\*\* of the pattern modules[^\n]*until 1\.0/);
+    expect(out).toContain('(MIGRATIONS.md#pattern-components-move-to-patterns)');
+    expect(out).toMatch(/fold[^\n]*until 1\.0/);
+  });
+
+  it('links the architecture doc and the ADR', () => {
+    expect(out).toContain('(docs/hds-architecture-2026-09-18.html)');
+    expect(out).toContain('(docs/adr/031-core-set-and-dispositions.md)');
+  });
+});
+
+describe('README "What belongs in the system"', () => {
+  const readme = readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+  const data = collectCoreSet(ROOT);
+
+  it('has exactly one core-set block, under its heading, between "In use" and the package guide', () => {
+    expect(readme.match(new RegExp(`<!-- auto:start:${CORE_SET_BLOCK} -->`, 'g'))).toHaveLength(1);
+    const heading = readme.indexOf('\n## What belongs in the system\n');
+    const block = readme.indexOf(`<!-- auto:start:${CORE_SET_BLOCK} -->`);
+    expect(heading).toBeGreaterThan(readme.indexOf('\n## In use\n'));
+    expect(block).toBeGreaterThan(heading);
+    expect(readme.slice(heading + 1, block)).not.toMatch(/\n## /);
+    expect(readme.indexOf('\n## Using the published package\n')).toBeGreaterThan(block);
+  });
+
+  it('is the generated block, byte for byte', () => {
+    expect(findCoreSetDrift(readme, data)).toEqual([]);
+  });
+
+  it('reports drift when the block is edited by hand', () => {
+    const altered = readme.replace('`Button`, `ButtonGroup`', '`Button`');
+    expect(altered).not.toBe(readme);
+    expect(findCoreSetDrift(altered, data)).toEqual([expect.stringMatching(/pnpm readme:counts/)]);
+  });
+
+  it('names all 42 core components and every /patterns module', () => {
+    const block = readme
+      .split(`<!-- auto:start:${CORE_SET_BLOCK} -->`)[1]
+      .split('<!-- auto:end')[0];
+    for (const name of CORE_COMPONENTS) expect(block).toContain(`\`${name}\``);
+    const modules = [
+      ...readFileSync(path.join(ROOT, 'src/patterns.ts'), 'utf8').matchAll(/^export \* from /gm),
+    ];
+    expect(data.patterns).toHaveLength(modules.length);
+    expect(block).toContain(`**${modules.length}** pattern modules`);
+    for (const name of data.patterns) expect(block).toContain(`\`${name}\``);
+  });
+});
+
+describe('llms.txt "Core set"', () => {
+  const files = ['llms.txt', 'public/llms.txt'];
+  const texts = files.map((f) => readFileSync(path.join(ROOT, f), 'utf8'));
+  const sectionOf = (text, heading) => text.split(`\n## ${heading}\n`)[1]?.split(/\n## /)[0] ?? '';
+
+  it.each(files)('%s has one "## Core set" section, before "## Which one when"', (file) => {
+    const text = texts[files.indexOf(file)];
+    expect(text.match(/^## Core set$/gm)).toHaveLength(1);
+    expect(text.indexOf('\n## Core set\n')).toBeLessThan(text.indexOf('\n## Which one when\n'));
+  });
+
+  it('lists the 42 core names, one per line', () => {
+    const names = [...sectionOf(texts[1], 'Core set').matchAll(/^- ([A-Za-z]+) \(/gm)].map(
+      (m) => m[1],
+    );
+    expect(names).toHaveLength(42);
+    expect(sorted(names)).toEqual(CORE);
+  });
+
+  it('marks exactly the core lines of "Which one when" with [core]', () => {
+    const lines = sectionOf(texts[1], 'Which one when')
+      .split('\n')
+      .filter((l) => /^[A-Za-z.]+: /.test(l));
+    const marked = lines
+      .filter((l) => /^[A-Za-z.]+: \[core\] /.test(l))
+      .map((l) => l.split(':')[0]);
+    expect(sorted(marked)).toEqual(CORE);
+  });
+
+  it('keeps the root and public copies identical', () => {
+    expect(texts[0]).toBe(texts[1]);
+  });
+});
+
+describe('consumer SKILL.md "Core set"', () => {
+  const skill = readFileSync(path.join(ROOT, 'skills/hds-consumer/SKILL.md'), 'utf8');
+
+  it('has one "## Core set" section, before the category allow-list', () => {
+    expect(skill.match(/^## Core set$/gm)).toHaveLength(1);
+    expect(skill.indexOf('\n## Core set\n')).toBeLessThan(skill.indexOf('\n## Allow-list'));
+  });
+
+  it('names exactly the 42 core components', () => {
+    const section = skill.split('\n## Core set\n')[1].split(/\n## /)[0];
+    const names = [...section.matchAll(/`([A-Za-z]+)`/g)].map((m) => m[1]);
+    expect(sorted(names)).toEqual(CORE);
   });
 });

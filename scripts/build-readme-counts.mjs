@@ -9,6 +9,12 @@
  *   - DTCG tokens: leaf nodes carrying `$value` in hirobius.tokens.json
  *   - Storybook stories: named `export const <Capitalized>` lines in src/**\/*.stories.tsx
  *
+ * It also regenerates the "What belongs in the system" block between
+ * <!-- auto:start:core-set --> and <!-- auto:end:core-set --> (hds#374): the
+ * 42 core components by category and the /patterns modules, rendered by
+ * scripts/lib/core-set.mjs from the manifest `core` flag, src/patterns.ts and
+ * src/index.ts. scripts/__tests__/core-set.test.mjs compares it byte for byte.
+ *
  * `pnpm tokens` runs it, so token PRs refresh the README with the handoff docs.
  * scripts/__tests__/front-door.test.mjs checks the README one way (claim <= source):
  * a PR that adds tokens or stories never fails on a README written before it,
@@ -20,6 +26,7 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { CORE_SET_BLOCK, collectCoreSet, renderCoreSetBlock } from './lib/core-set.mjs';
 
 export const COUNTS_BLOCK = 'front-door-counts';
 
@@ -91,8 +98,13 @@ export function buildCountsSection({ components, tokens, stories, storyFiles }) 
  * Throws when the markers are missing, so the README cannot silently stop updating.
  */
 export function replaceCountsBlock(readme, section) {
-  const start = `<!-- auto:start:${COUNTS_BLOCK} -->`;
-  const end = `<!-- auto:end:${COUNTS_BLOCK} -->`;
+  return replaceAutoBlock(readme, COUNTS_BLOCK, section);
+}
+
+/** Replaces the `<!-- auto:start:<block> -->` … `<!-- auto:end:<block> -->` body; throws without markers. */
+export function replaceAutoBlock(readme, block, section) {
+  const start = `<!-- auto:start:${block} -->`;
+  const end = `<!-- auto:end:${block} -->`;
   const from = readme.indexOf(start);
   const to = readme.indexOf(end);
   if (from === -1 || to === -1 || to < from) {
@@ -128,11 +140,15 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
   const readmePath = join(ROOT, 'README.md');
   const before = readFileSync(readmePath, 'utf8');
-  const after = replaceCountsBlock(before, buildCountsSection(collectCounts(ROOT)));
+  const after = replaceAutoBlock(
+    replaceCountsBlock(before, buildCountsSection(collectCounts(ROOT))),
+    CORE_SET_BLOCK,
+    renderCoreSetBlock(collectCoreSet(ROOT)),
+  );
   if (after === before) {
-    console.log('✓ README.md counts already match the source.');
+    console.log('✓ README.md counts and core set already match the source.');
   } else {
     writeFileSync(readmePath, after);
-    console.log('✓ README.md counts regenerated from source.');
+    console.log('✓ README.md counts and core set regenerated from source.');
   }
 }

@@ -34,6 +34,14 @@ describe('buildWhichOneWhen', () => {
     expect(line).toContain('Card.Metric');
   });
 
+  it('marks core components with [core] after the name (hds#374)', () => {
+    const lines = buildWhichOneWhen({
+      Button: { core: true, usage: { when: 'Trigger an action' } },
+      Stat: { usage: { when: 'Show one figure.' } },
+    }).split('\n');
+    expect(lines).toEqual(['Button: [core] Trigger an action.', 'Stat: Show one figure.']);
+  });
+
   it('returns an empty string when nothing is tagged', () => {
     expect(buildWhichOneWhen({ A: {} })).toBe('');
   });
