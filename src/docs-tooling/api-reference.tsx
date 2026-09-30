@@ -185,6 +185,7 @@ export function ApiReference({
 
   const rows = buildApiRowsFromManifest(componentName);
   const slots = (spec.slots ?? []).filter((s) => s && (s.name || s.figmaSlotName));
+  const cellSlots = COMPONENT_API.components?.[componentName]?.cellSlots ?? [];
 
   if (rows.length === 0 && slots.length === 0) {
     return null;
@@ -235,6 +236,21 @@ export function ApiReference({
                 </li>
               );
             })}
+          </ul>
+        </div>
+      ) : null}
+      {cellSlots.length > 0 ? (
+        <div>
+          <p style={slotsHeadingStyle}>Cell slots</p>
+          <ul id={`${componentName}-api-reference-cell-slots`} style={slotListStyle}>
+            {cellSlots.map((cellSlot) => (
+              <li key={cellSlot.name}>
+                <code>{cellSlot.name}</code>
+                <span style={{ color: 'var(--semantic-color-content-secondary)' }}>
+                  {` — ${cellSlot.description}`}
+                </span>
+              </li>
+            ))}
           </ul>
         </div>
       ) : null}
