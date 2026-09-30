@@ -8,6 +8,13 @@
  * Button-only budget. The gate flags the bare call, accepts the annotated one
  * (including the `Object.assign(…)` compound wrapper), and `--fix` inserts the
  * annotation.
+ *
+ * hds#365 widened it to the two shapes the six remaining compounds used: a
+ * top-level `Object.assign(…)` whose first argument is a component (a
+ * capitalised identifier, a namespaced one such as a Radix Root, or a call)
+ * without the annotation, and a top-level `X.Part = …` / `X.displayName = …`
+ * write on a capitalised identifier. A write has no annotation that makes it
+ * droppable, so `--fix` leaves it and exits 1.
  */
 import { afterAll, describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
@@ -144,17 +151,23 @@ export function Comp() { const Ctx = React.useMemo(() => React.createContext(nul
   f = cva('instance', {});
 }
 const E = class { static v = React.forwardRef(() => null); };`;
-    expect(findBareCalls(source, 'fixture.tsx').map((f) => [f.callee, f.line])).toEqual([
-      ['forwardRef', 2],
-      ['createContext', 3],
-      ['React.forwardRef', 6],
+    // The static block's `K.ctx = …` is a component write as well (hds#365).
+    expect(
+      findBareCalls(source, 'fixture.tsx').map((f) => [f.kind, f.callee ?? f.target, f.line]),
+    ).toEqual([
+      ['call', 'forwardRef', 2],
+      ['write', 'K.ctx', 3],
+      ['call', 'createContext', 3],
+      ['call', 'React.forwardRef', 6],
     ]);
   });
 
   it('ignores calls the gate does not track', () => {
+    // A lower-case first argument is a plain object merge, not a compound.
     const source = `const M = React.memo(function M() { return null; });
 const L = React.lazy(() => import('./x'));
-const G = Object.assign(Inner, { Item });
+const defaults = Object.assign({}, base, { item });
+const merged = Object.assign(target, { Item });
 const s = String(1);`;
     expect(findBareCalls(source, 'fixture.tsx')).toEqual([]);
   });
@@ -170,6 +183,99 @@ const s = String(1);`;
         'withHdsPortal',
       ].sort(),
     );
+  });
+});
+
+describe('findBareCalls — compound writes and un-annotated Object.assign (hds#365)', () => {
+  const writes = (source) =>
+    findBareCalls(source, 'fixture.tsx')
+      .filter((f) => f.kind === 'write')
+      .map((f) => f.target);
+
+  it('flags an un-annotated Object.assign whose first argument is a capitalised identifier', () => {
+    const source = `function Root(props) { return null; }
+export const X = Object.assign(Root, { Trigger, Content, displayName: 'X' });`;
+    const found = findBareCalls(source, 'fixture.tsx');
+    expect(found).toHaveLength(1);
+    expect(found[0]).toMatchObject({ kind: 'call', callee: 'Object.assign', line: 2 });
+  });
+
+  it('flags an un-annotated Object.assign whose first argument is a call', () => {
+    // React.memo is not a tracked callee, so only the wrapper is reported.
+    const source = `export const X = Object.assign(React.memo(function X() { return null; }), { Item });`;
+    expect(findBareCalls(source, 'fixture.tsx').map((f) => [f.kind, f.callee])).toEqual([
+      ['call', 'Object.assign'],
+    ]);
+  });
+
+  it('flags an un-annotated Object.assign onto a namespaced component such as a Radix Root', () => {
+    const source = 'export const X = Object.assign(XPrimitive.Root, { Trigger, Content });';
+    expect(callees(source)).toEqual(['Object.assign']);
+  });
+
+  it('sees through a cast or parentheses around the first argument', () => {
+    const source = 'export const X = Object.assign(Root as unknown as XComponent, { Trigger });';
+    expect(callees(source)).toEqual(['Object.assign']);
+    expect(callees('export const Y = Object.assign((Root), { Trigger });')).toEqual([
+      'Object.assign',
+    ]);
+  });
+
+  it('accepts the wrapped form and Object.assign used as a plain merge', () => {
+    const source = `function Root(props) { return null; }
+export const X = /* @__PURE__ */ Object.assign(Root, { Trigger, displayName: 'X' });
+export const Y = /* @__PURE__ */ Object.assign(XPrimitive.Root, { Trigger });
+const defaults = Object.assign({}, base, overrides);
+const merged = Object.assign(target, { Item });
+function assemble() { return Object.assign(Root, { Trigger }); }`;
+    expect(findBareCalls(source, 'fixture.tsx')).toEqual([]);
+  });
+
+  it.each([
+    ['X.displayName', "X.displayName = 'X';"],
+    ['Menu.Trigger', 'Menu.Trigger = MenuTrigger;'],
+    [
+      'HoverCard.Content',
+      'export const HoverCard = Root as unknown as HoverCardComponent;\nHoverCard.Content = HoverCardContent;',
+    ],
+  ])('flags a top-level %s = … write', (target, source) => {
+    const found = findBareCalls(source, 'fixture.tsx');
+    expect(found).toHaveLength(1);
+    expect(found[0]).toMatchObject({ kind: 'write', target });
+    expect(found[0].callee).toBeUndefined();
+    expect(found[0].snippet).toContain(target);
+  });
+
+  it('reports every write of a compound assembled by property writes, in source order', () => {
+    const source = `const Menu = ((props) => null) as MenuComponent;
+Menu.Trigger = MenuTrigger;
+Menu.Content = MenuContent;
+Menu.displayName = 'Menu';
+export { Menu };`;
+    expect(findBareCalls(source, 'fixture.tsx').map((f) => [f.target, f.line, f.column])).toEqual([
+      ['Menu.Trigger', 2, 1],
+      ['Menu.Content', 3, 1],
+      ['Menu.displayName', 4, 1],
+    ]);
+  });
+
+  it('flags a nested, cast, bracketed or compound-operator write whose root is a component', () => {
+    const source = `X.defaultProps.size = 'md';
+(X as any).Part = Part;
+X['Item'] = Item;
+X.count ??= 0;`;
+    expect(writes(source)).toEqual(['X.defaultProps.size', 'X.Part', 'X[…]', 'X.count']);
+  });
+
+  it('ignores writes on lower-case objects and writes inside deferred bodies', () => {
+    const source = `x.y = 1;
+config.Item = Item;
+module.exports.X = X;
+function assemble() { X.Part = Part; X.displayName = 'X'; }
+const wire = () => { Menu.Trigger = MenuTrigger; };
+class K { m() { K.count = 1; } f = (K.instances = 0); }
+const eq = X.Part === Part;`;
+    expect(findBareCalls(source, 'fixture.tsx')).toEqual([]);
   });
 });
 
@@ -190,6 +296,27 @@ export const X = /* @__PURE__ */ Object.assign(
 );
 const ok = /* @__PURE__ */ createContext(null);`);
     expect(findBareCalls(fixed, 'fixture.tsx')).toEqual([]);
+  });
+
+  it('annotates a bare Object.assign compound wrapper (hds#365)', () => {
+    const source = "export const X = Object.assign(Root, { Trigger, displayName: 'X' });";
+    const { source: fixed, count } = annotateSource(source, 'fixture.tsx');
+    expect(count).toBe(1);
+    expect(fixed).toBe(
+      "export const X = /* @__PURE__ */ Object.assign(Root, { Trigger, displayName: 'X' });",
+    );
+  });
+
+  it('leaves component property writes alone: they need restructuring, not an annotation', () => {
+    const source = "const X = React.forwardRef(() => null);\nX.displayName = 'X';";
+    const { source: fixed, count } = annotateSource(source, 'fixture.tsx');
+    expect(count).toBe(1);
+    expect(fixed).toBe(
+      "const X = /* @__PURE__ */ React.forwardRef(() => null);\nX.displayName = 'X';",
+    );
+    expect(findBareCalls(fixed, 'fixture.tsx').map((f) => [f.kind, f.target])).toEqual([
+      ['write', 'X.displayName'],
+    ]);
   });
 
   it('is idempotent', () => {
@@ -225,7 +352,9 @@ describe('check-pure-annotations CLI', () => {
     const out = run();
     expect(out.stderr).toBe('');
     expect(out.status).toBe(0);
-    expect(out.stdout).toMatch(/check-pure-annotations — 0 bare top-level call\(s\)/);
+    expect(out.stdout).toMatch(
+      /check-pure-annotations — 0 bare top-level call\(s\), 0 component property write\(s\)/,
+    );
   });
 
   describe('against a fixture root with offenders', () => {
@@ -273,6 +402,50 @@ describe('check-pure-annotations CLI', () => {
       expect(fixed).toContain('export const Bad = /* @__PURE__ */ React.forwardRef(() => null);');
       expect(fixed).toContain("const v = /* @__PURE__ */ cva('x', {});");
       expect(run('--root', dir).status).toBe(0);
+    });
+  });
+
+  describe('against a fixture root with component writes (hds#365)', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'pure-annotations-writes-'));
+    mkdirSync(path.join(dir, 'src/app/components'), { recursive: true });
+    const writes = path.join(dir, 'src/app/components/writes.tsx');
+    writeFileSync(
+      writes,
+      [
+        "import * as React from 'react';",
+        'export const W = ((props: WProps) => null) as WComponent;',
+        'W.Part = WPart;',
+        "W.displayName = 'W';",
+        'export const V = Object.assign(WRoot, { Part: WPart });',
+        '',
+      ].join('\n'),
+    );
+    afterAll(() => rmSync(dir, { recursive: true, force: true }));
+
+    it('names each write and the bare wrapper as file:line and exits 1', () => {
+      const out = run('--root', dir);
+      expect(out.status).toBe(1);
+      expect(out.stderr).toContain('src/app/components/writes.tsx:3');
+      expect(out.stderr).toContain('W.Part = …');
+      expect(out.stderr).toContain('src/app/components/writes.tsx:4');
+      expect(out.stderr).toContain('W.displayName = …');
+      expect(out.stderr).toContain('src/app/components/writes.tsx:5');
+      expect(out.stderr).toContain('Object.assign(…)');
+      expect(out.stderr).toContain('never `X.Part = …`');
+      expect(out.stderr).toContain('`X.displayName = …` writes');
+    });
+
+    it('--fix annotates the wrapper but cannot fix a write, so it still exits 1 naming it', () => {
+      const fix = run('--root', dir, '--fix');
+      expect(fix.stdout).toContain('annotated 1 call(s) in 1 file(s)');
+      expect(readFileSync(writes, 'utf8')).toContain(
+        'export const V = /* @__PURE__ */ Object.assign(WRoot, { Part: WPart });',
+      );
+      expect(fix.status).toBe(1);
+      expect(fix.stderr).toContain('2 component property write(s)');
+      expect(fix.stderr).toContain('W.Part = …');
+      expect(fix.stderr).toContain('W.displayName = …');
+      expect(fix.stderr).toContain('--fix cannot');
     });
   });
 
