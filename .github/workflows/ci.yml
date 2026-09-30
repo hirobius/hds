@@ -3,11 +3,12 @@ name: CI
 # ── Lean gate set (ADR-018 §5 / #52) ─────────────────────────────────────────
 # The single quality workflow: the deterministic, environment-agnostic lean set
 # — typecheck, eslint, token-pipeline validity, unit/type tests, app build +
-# bundle budgets, consumer smoke (+ publint), Storybook build. No Playwright /
-# browser lanes, no live-site fetches, no 56-gate check:full chain. Prettier is
-# enforced pre-commit (lint-staged); the heavier/browser/network lanes
-# (a11y, visual, responsive, collision, chromatic, figma-sync, llm-synthetic)
-# are archived in .github/workflows-archive/ — recoverable, not deleted.
+# bundle budgets, consumer smoke (+ publint), Storybook build, and the Storybook
+# axe gate (the one browser lane: Chromium, light + dark). No live-site fetches,
+# no 56-gate check:full chain. Prettier is enforced pre-commit (lint-staged);
+# the heavier/browser/network lanes (visual, responsive, collision,
+# figma-sync, llm-synthetic) were removed; see git history (chromatic runs in
+# its own chromatic.yml).
 
 on:
   push:
@@ -81,10 +82,18 @@ jobs:
         run: pnpm test
 
       - name: Bundle budgets (size-limit)
-        run: pnpm check:size
+        # Same chain as `pnpm check:size`, spelled out so check-validator-wiring
+        # sees scripts/build-button-probe.mjs on this channel (it ignores comments).
+        run: pnpm build:lib && node scripts/build-button-probe.mjs && pnpm size-limit
 
       - name: Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)
         run: pnpm smoke:consumer
 
       - name: Storybook build
         run: pnpm build-storybook
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Storybook axe gate (light + dark, serious/critical)
+        run: node scripts/check-storybook-axe.mjs
