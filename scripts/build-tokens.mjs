@@ -927,61 +927,12 @@ export function buildManifest(allTokens, raw) {
         },
       ],
       states: ['closed', 'open'],
-      slots: [
-        {
-          name: 'overlay',
-          figmaSlotName: 'Overlay',
-          tokenBinding: {
-            fill: 'role.foreground',
-          },
-        },
-        {
-          name: 'surface',
-          figmaSlotName: 'Surface',
-          tokenBinding: {
-            fill: 'role.popover',
-            stroke: 'role.border',
-            cornerRadius: 'role.radius',
-          },
-        },
-        {
-          name: 'header',
-          figmaSlotName: 'Header',
-          tokenBinding: {
-            fill: 'role.popover-foreground',
-          },
-        },
-        {
-          name: 'title',
-          figmaSlotName: 'Title',
-          tokenBinding: {
-            fill: 'role.popover-foreground',
-            typography: 'semantic.typography.h3',
-          },
-        },
-        {
-          name: 'description',
-          figmaSlotName: 'Description',
-          tokenBinding: {
-            fill: 'role.muted-foreground',
-            typography: 'semantic.typography.body',
-          },
-        },
-        {
-          name: 'footer',
-          figmaSlotName: 'Footer',
-          tokenBinding: {
-            fill: 'role.popover-foreground',
-          },
-        },
-        {
-          name: 'close',
-          figmaSlotName: 'Close',
-          tokenBinding: {
-            fill: 'role.muted-foreground',
-          },
-        },
-      ],
+      // No `slots` here (hds#379). generate-manifest owns every spec's slots:
+      // it keeps the hand-kept entries already in public/hds-manifest.json and
+      // merges the component's JSDoc `@slot` tags into them (mergeSlots,
+      // hds#339). A list written here replaced that merge, because build-tokens
+      // runs after generate-manifest in `pnpm tokens`, and dropped Dialog's
+      // `@slot trigger`. The spread above forwards the merged list as is.
     },
     // ── Generative-subset components without bespoke seed data ──────────────
     // These get full props/tokens via auto-discovery + tokenMapping preservation.
