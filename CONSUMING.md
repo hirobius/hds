@@ -19,7 +19,10 @@ pnpm add react react-dom
 ```
 
 The package also pulls in its own runtime deps (Radix, lucide-react, motion,
-clsx, class-variance-authority, tailwind-merge) automatically.
+clsx, class-variance-authority, tailwind-merge) automatically. Import icons
+from `@hirobius/design-system/icons` (a curated Lucide set, nothing extra to
+install); for an icon outside it, install `lucide-react@0.487.0` (the same
+version keeps the `LucideIcon` type identical).
 
 ## 2. Use
 
@@ -49,6 +52,7 @@ Available subpaths:
 | `@hirobius/design-system/brand`      | Palette → HDS-semantic overlay bridge (static / SSR / Astro; see [`docs/CONSUMING.md` §12](docs/CONSUMING.md#12-static-astro-sites--the-brand-overlay-bridge))                                                                              |
 | `@hirobius/design-system/scroll`     | Opt-in scroll-motion primitives — `SmoothScroll` (Lenis), `useScrollProgress` (Motion). Requires the optional peer `lenis`. See [`docs/CONSUMING.md` §13](docs/CONSUMING.md#13-scroll-motion-the-scroll-subpath)                            |
 | `@hirobius/design-system/patterns`   | The 22 `pattern`-tier components (nav shells, feeds, rails, pickers — see hds#254). Also still re-exported from the root for one minor (`@deprecated`, removed at the next major) — prefer this subpath in new code.                        |
+| `@hirobius/design-system/icons`      | Curated Lucide icon set for `IconButton` / `Icon` (`Ellipsis`, `Pencil`, `Trash2`, `X`, …). Names listed in the manifest `iconSet`.                                                                                                         |
 | `@hirobius/design-system/static.css` | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React. See [`docs/CONSUMING.md` §14](docs/CONSUMING.md#14-css-only-static-primitives--badgecardalertdividertag-with-no-react) |
 
 The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,

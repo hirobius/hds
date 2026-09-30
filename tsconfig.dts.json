@@ -27,7 +27,8 @@
     "src/mui/index.ts",
     "src/brand/index.ts",
     "src/scroll/index.ts",
-    "src/patterns.ts"
+    "src/patterns.ts",
+    "src/icons.ts"
   ],
   "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*", "**/*.stories.*"]
 }
