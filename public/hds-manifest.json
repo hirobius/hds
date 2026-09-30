@@ -1843,6 +1843,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button.test.tsx",
         "src/app/components/button.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
@@ -1851,7 +1852,8 @@
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/page-footer.tsx",
         "src/docs-tooling/shell-controls.tsx",
-        "src/stories/icon-button.stories.tsx"
+        "src/stories/icon-button.stories.tsx",
+        "src/stories/lib/usage-description.test.ts"
       ],
       "tokenMapping": {
         "Fill": "semantic.accent.rest",
@@ -2063,7 +2065,8 @@
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
-        "src/stories/inline-link.stories.tsx"
+        "src/stories/inline-link.stories.tsx",
+        "src/stories/lib/usage-description.test.ts"
       ],
       "tokenMapping": {
         "Link text": "semantic.color.content.accent",
@@ -4586,6 +4589,7 @@
         "src/app/components/animated-label.tsx",
         "src/app/components/button-group.test.tsx",
         "src/app/components/button-group.tsx",
+        "src/app/components/button.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/error-boundary.tsx",
@@ -4620,6 +4624,7 @@
         "src/stories/icon-button.stories.tsx",
         "src/stories/image-lightbox.stories.tsx",
         "src/stories/inline-code.stories.tsx",
+        "src/stories/lib/usage-description.test.ts",
         "src/stories/menu.stories.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
@@ -10459,6 +10464,18 @@
         "primitives-menu--with-radio-group",
         "primitives-menu--with-submenu"
       ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The element that opens the menu (Menu.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The popup holding the items (Menu.Content).",
+          "source": "jsdoc"
+        }
+      ],
       "usage": {
         "when": "Offer a list of actions from a trigger, closed until opened.",
         "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
@@ -10497,18 +10514,6 @@
         {
           "keys": "Tab",
           "effect": "Does not leave the open menu."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the menu (Menu.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The popup holding the items (Menu.Content).",
-          "source": "jsdoc"
         }
       ]
     },
