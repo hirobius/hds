@@ -3,12 +3,14 @@
  * the README says only what CI checks. Reads repo files only.
  */
 import { describe, it, expect } from 'vitest';
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = process.cwd();
 const read = (rel: string) => readFileSync(join(ROOT, rel), 'utf8');
 const readme = read('README.md');
+const accessibility = () => readme.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
 const head = readme.split('\n').slice(0, 20).join('\n');
 const links = JSON.parse(read('figma/links.json')) as { storybookUrl: string };
 
@@ -51,7 +53,7 @@ describe('README honesty', () => {
   });
 
   it('states only the accessibility checks that exist', () => {
-    const section = readme.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
+    const section = accessibility();
     expect(section).not.toBe('');
     for (const claim of ['check-contrast', 'jsx-a11y', 'check-focus-states', 'addon-a11y']) {
       expect(section).toContain(claim);
@@ -59,12 +61,47 @@ describe('README honesty', () => {
     expect(section).not.toMatch(/screen reader|VoiceOver|NVDA|fully accessible|WCAG 2\.\d AAA/i);
   });
 
-  it('does not present the focus check as green or as CI-gated while it is red', () => {
-    const section = readme.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
-    const focus = section.split('\n').find((l) => l.includes('check-focus-states')) ?? '';
-    expect(focus).toMatch(/violation/i);
-    expect(focus).toContain('asset-img');
-    expect(focus).not.toMatch(/not in CI/i);
+  it('states the focus check result the script produces, and that pretest runs it', () => {
+    const focus =
+      accessibility()
+        .split('\n')
+        .find((l) => l.includes('check-focus-states')) ?? '';
+    const run = spawnSync(process.execPath, ['scripts/check-focus-states.mjs'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+    const reportsViolations = /\b(?:[1-9]\d*|an?|one|some)\s+violations?\b/i.test(focus);
+    const claimsPass = /\bpass(?:es|ed)?\b/i.test(focus) && !reportsViolations;
+    if (run.status === 0) {
+      expect(reportsViolations, `script exits 0 but README says: ${focus}`).toBe(false);
+      expect(claimsPass, `script exits 0 but README does not say it passes: ${focus}`).toBe(true);
+    } else {
+      expect(claimsPass, `script exits ${run.status} but README says it passes: ${focus}`).toBe(
+        false,
+      );
+    }
+
+    expect(focus).toContain('pretest');
+    const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> };
+    expect(pkg.scripts.pretest).toContain('scripts/check-focus-states.mjs');
+  });
+
+  it('names the Storybook axe gate CI runs, and its allowlist as it is', () => {
+    const storybook =
+      accessibility()
+        .split('\n')
+        .find((l) => l.includes('addon-a11y')) ?? '';
+    expect(storybook).toContain('check-storybook-axe.mjs');
+    expect(storybook).not.toMatch(/does not gate/i);
+    expect(read('.github/workflows/ci.yml')).toContain('node scripts/check-storybook-axe.mjs');
+    const allowlist = JSON.parse(read('scripts/axe-allowlist.json')) as unknown[];
+    if (/empty allowlist/i.test(storybook)) expect(allowlist).toEqual([]);
+  });
+
+  it('points only at files that exist', () => {
+    const paths = [...accessibility().matchAll(/`([\w.-]+(?:\/[\w.-]+)+\.\w+)`/g)].map((m) => m[1]);
+    expect(paths.length).toBeGreaterThan(0);
+    for (const rel of paths) expect(existsSync(join(ROOT, rel)), rel).toBe(true);
   });
 
   it('keeps the design-links table out of the README, with a pointer to its home', () => {
