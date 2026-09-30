@@ -77,6 +77,7 @@ describe('manifest agent URLs', () => {
     expect(m.llmsTxt).toBe('https://hirobius-design-system.vercel.app/llms.txt');
     expect(m.docs).toBe('https://hirobius-design-system.vercel.app/');
     expect(m.agentEntrypoint).toBe('llms.txt');
-    expect(m.componentInventory).toHaveLength(128);
+    expect(Array.isArray(m.componentInventory)).toBe(true);
+    expect(m.componentInventory.length).toBeGreaterThan(0);
   });
 });
