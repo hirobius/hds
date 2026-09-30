@@ -77,7 +77,7 @@ export interface GridItemProps {
   as?: React.ElementType;
 }
 
-const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(function GridItem(
+const GridItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridItemProps>(function GridItem(
   { children, colSpan, colOffset, style, className, as: Tag = 'div' },
   ref,
 ) {
@@ -107,7 +107,7 @@ function getResponsiveColumns(width: number, columns: number) {
   return columns;
 }
 
-const GridInner = React.forwardRef<HTMLDivElement, GridProps>(function Grid(
+const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(function Grid(
   {
     children,
     layout = 'fixed',

@@ -17,7 +17,7 @@ import { isDevelopment } from '../../lib/env';
 // ── Variants ───────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list; Tailwind has no single utility for transition-[colors,filter]
-const buttonVariants = cva(
+const buttonVariants = /* @__PURE__ */ cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:brightness-95 dark:active:brightness-110 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
@@ -107,72 +107,74 @@ let warnedIconOnlyWithoutIcon = false;
  * @whenNot Navigating to another page, where a link is the correct element.
  * @useInstead InlineLink navigation to another page
  */
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  {
-    className,
-    variant,
-    tone,
-    size,
-    iconOnly = false,
-    asChild = false,
-    label,
-    loading = false,
-    iconLeft,
-    iconRight,
-    disabled,
-    children,
-    type = 'button',
-    ...props
-  },
-  ref,
-) {
-  const isDisabled = disabled || loading;
-  const content = children ?? label;
+export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    {
+      className,
+      variant,
+      tone,
+      size,
+      iconOnly = false,
+      asChild = false,
+      label,
+      loading = false,
+      iconLeft,
+      iconRight,
+      disabled,
+      children,
+      type = 'button',
+      ...props
+    },
+    ref,
+  ) {
+    const isDisabled = disabled || loading;
+    const content = children ?? label;
 
-  if (asChild) {
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref as React.Ref<HTMLElement>}
+          className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
+          aria-disabled={isDisabled || undefined}
+          aria-busy={loading || undefined}
+          data-state={loading ? 'loading' : undefined}
+          data-variant={variant ?? undefined}
+          data-tone={tone ?? undefined}
+          data-size={size ?? undefined}
+          {...(props as React.HTMLAttributes<HTMLElement>)}
+        >
+          {children as React.ReactElement}
+        </Slot>
+      );
+    }
+
+    if (iconOnly && !iconLeft && !loading && !warnedIconOnlyWithoutIcon && isDevelopment()) {
+      warnedIconOnlyWithoutIcon = true;
+      console.warn(
+        '[Button] iconOnly renders only iconLeft; pass iconLeft (iconRight is hidden in iconOnly mode).',
+      );
+    }
+
     return (
-      <Slot
-        ref={ref as React.Ref<HTMLElement>}
-        className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
-        aria-disabled={isDisabled || undefined}
+      <button
+        ref={ref}
+        type={type}
+        disabled={isDisabled}
         aria-busy={loading || undefined}
         data-state={loading ? 'loading' : undefined}
         data-variant={variant ?? undefined}
         data-tone={tone ?? undefined}
         data-size={size ?? undefined}
-        {...(props as React.HTMLAttributes<HTMLElement>)}
+        className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
+        {...props}
       >
-        {children as React.ReactElement}
-      </Slot>
+        {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : iconLeft}
+        {!iconOnly && content}
+        {!loading && !iconOnly && iconRight}
+      </button>
     );
-  }
-
-  if (iconOnly && !iconLeft && !loading && !warnedIconOnlyWithoutIcon && isDevelopment()) {
-    warnedIconOnlyWithoutIcon = true;
-    console.warn(
-      '[Button] iconOnly renders only iconLeft; pass iconLeft (iconRight is hidden in iconOnly mode).',
-    );
-  }
-
-  return (
-    <button
-      ref={ref}
-      type={type}
-      disabled={isDisabled}
-      aria-busy={loading || undefined}
-      data-state={loading ? 'loading' : undefined}
-      data-variant={variant ?? undefined}
-      data-tone={tone ?? undefined}
-      data-size={size ?? undefined}
-      className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
-      {...props}
-    >
-      {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : iconLeft}
-      {!iconOnly && content}
-      {!loading && !iconOnly && iconRight}
-    </button>
-  );
-});
+  },
+);
 
 /** @internal — CVA variant helper; compose via Button props instead. */
 export { buttonVariants };

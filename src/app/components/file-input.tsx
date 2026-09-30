@@ -15,7 +15,7 @@ import { cn } from '../../lib/utils';
 // Decorative dropzone chrome only — `dragging` and `disabled` are the two
 // boolean states the dropzone reacts to (not one of the contract's four
 // axes; like Tag's `selected`, this is a component-specific state flag).
-const fileInputVariants = cva(
+const fileInputVariants = /* @__PURE__ */ cva(
   'flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-border bg-background p-6 text-center text-sm text-muted-foreground transition-colors hover:border-ring hover:bg-accent hds-focus',
   {
     variants: {
@@ -55,50 +55,52 @@ export interface FileInputProps extends Omit<
 /**
  * A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
  */
-export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
-  {
-    onFiles,
-    label = 'Click to upload or drag and drop',
-    accept,
-    multiple,
-    disabled,
-    className,
-    ...rest
-  },
-  ref,
-) {
-  const [dragging, setDragging] = React.useState(false);
+export const FileInput = /* @__PURE__ */ React.forwardRef<HTMLInputElement, FileInputProps>(
+  function FileInput(
+    {
+      onFiles,
+      label = 'Click to upload or drag and drop',
+      accept,
+      multiple,
+      disabled,
+      className,
+      ...rest
+    },
+    ref,
+  ) {
+    const [dragging, setDragging] = React.useState(false);
 
-  return (
-    <label
-      onDragOver={(event) => {
-        event.preventDefault();
-        if (disabled) return;
-        setDragging(true);
-      }}
-      onDragLeave={() => setDragging(false)}
-      onDrop={(event) => {
-        event.preventDefault();
-        setDragging(false);
-        if (disabled) return;
-        onFiles?.(Array.from(event.dataTransfer.files ?? []));
-      }}
-      className={cn(fileInputVariants({ dragging, disabled, className }))}
-    >
-      {label}
-      <input
-        ref={ref}
-        type="file"
-        className="sr-only"
-        accept={accept}
-        multiple={multiple}
-        disabled={disabled}
-        onChange={(event) => onFiles?.(Array.from(event.target.files ?? []))}
-        {...rest}
-      />
-    </label>
-  );
-});
+    return (
+      <label
+        onDragOver={(event) => {
+          event.preventDefault();
+          if (disabled) return;
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(event) => {
+          event.preventDefault();
+          setDragging(false);
+          if (disabled) return;
+          onFiles?.(Array.from(event.dataTransfer.files ?? []));
+        }}
+        className={cn(fileInputVariants({ dragging, disabled, className }))}
+      >
+        {label}
+        <input
+          ref={ref}
+          type="file"
+          className="sr-only"
+          accept={accept}
+          multiple={multiple}
+          disabled={disabled}
+          onChange={(event) => onFiles?.(Array.from(event.target.files ?? []))}
+          {...rest}
+        />
+      </label>
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via FileInput props instead. */
 export { fileInputVariants };

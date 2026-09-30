@@ -53,9 +53,9 @@ export interface HdsThemeValue {
   fontFamilyMono?: string;
 }
 
-const HdsThemeContext = React.createContext<HdsThemeValue>({});
+const HdsThemeContext = /* @__PURE__ */ React.createContext<HdsThemeValue>({});
 
-const HdsScopeContext = React.createContext<HTMLElement | null>(null);
+const HdsScopeContext = /* @__PURE__ */ React.createContext<HTMLElement | null>(null);
 
 /**
  * The nearest HdsThemeProvider's `data-hds` wrapper element, for overlay parts

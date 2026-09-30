@@ -40,56 +40,57 @@ export interface DateRangeInputProps {
 }
 
 /** @public */
-export const DateRangeInput = React.forwardRef<HTMLButtonElement, DateRangeInputProps>(
-  function DateRangeInput(
-    {
-      value,
-      onChange,
-      displayFormat = 'yyyy-MM-dd',
-      placeholder = 'Select date range',
-      disabled = false,
-      numberOfMonths = 2,
-      id,
-      'aria-label': ariaLabel,
-    },
-    ref,
-  ) {
-    const [open, setOpen] = React.useState(false);
-
-    const label = value?.from
-      ? `${format(value.from, displayFormat)}${value.to ? ` – ${format(value.to, displayFormat)}` : ''}`
-      : null;
-
-    return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <Popover.Trigger asChild>
-          <button
-            ref={ref}
-            id={id}
-            type="button"
-            disabled={disabled}
-            aria-label={ariaLabel}
-            className={cn(
-              'inline-flex items-center gap-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-left transition-colors hds-focus disabled:opacity-50 disabled:pointer-events-none',
-            )}
-          >
-            <CalendarIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-            <span className={cn('truncate', !label && 'text-muted-foreground')}>
-              {label ?? placeholder}
-            </span>
-          </button>
-        </Popover.Trigger>
-
-        <Popover.Content align="start" className="w-auto p-0">
-          <Calendar
-            mode="range"
-            numberOfMonths={numberOfMonths}
-            selected={value}
-            onSelect={(range) => onChange?.(range)}
-            defaultMonth={value?.from}
-          />
-        </Popover.Content>
-      </Popover>
-    );
+export const DateRangeInput = /* @__PURE__ */ React.forwardRef<
+  HTMLButtonElement,
+  DateRangeInputProps
+>(function DateRangeInput(
+  {
+    value,
+    onChange,
+    displayFormat = 'yyyy-MM-dd',
+    placeholder = 'Select date range',
+    disabled = false,
+    numberOfMonths = 2,
+    id,
+    'aria-label': ariaLabel,
   },
-);
+  ref,
+) {
+  const [open, setOpen] = React.useState(false);
+
+  const label = value?.from
+    ? `${format(value.from, displayFormat)}${value.to ? ` – ${format(value.to, displayFormat)}` : ''}`
+    : null;
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <Popover.Trigger asChild>
+        <button
+          ref={ref}
+          id={id}
+          type="button"
+          disabled={disabled}
+          aria-label={ariaLabel}
+          className={cn(
+            'inline-flex items-center gap-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-left transition-colors hds-focus disabled:opacity-50 disabled:pointer-events-none',
+          )}
+        >
+          <CalendarIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+          <span className={cn('truncate', !label && 'text-muted-foreground')}>
+            {label ?? placeholder}
+          </span>
+        </button>
+      </Popover.Trigger>
+
+      <Popover.Content align="start" className="w-auto p-0">
+        <Calendar
+          mode="range"
+          numberOfMonths={numberOfMonths}
+          selected={value}
+          onSelect={(range) => onChange?.(range)}
+          defaultMonth={value?.from}
+        />
+      </Popover.Content>
+    </Popover>
+  );
+});

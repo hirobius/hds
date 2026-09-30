@@ -15,7 +15,7 @@ import { cn } from '../../lib/utils';
 // solid primary fill, current uses a thicker ring in the foreground tone, and
 // upcoming stays a quiet outline so the eye tracks progress left-to-right.
 /** @internal */
-const stepMarkerVariants = cva(
+const stepMarkerVariants = /* @__PURE__ */ cva(
   'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
   {
     variants: {
@@ -62,78 +62,77 @@ function stepState(index: number, activeStep: number): StepState {
 /**
  * Step indicator for multi-step flows. Purely presentational — no navigation.
  */
-export const Stepper = React.forwardRef<HTMLOListElement, StepperProps>(function Stepper(
-  { steps, activeStep, orientation = 'horizontal', className, ...props },
-  ref,
-) {
-  const isHorizontal = orientation === 'horizontal';
+export const Stepper = /* @__PURE__ */ React.forwardRef<HTMLOListElement, StepperProps>(
+  function Stepper({ steps, activeStep, orientation = 'horizontal', className, ...props }, ref) {
+    const isHorizontal = orientation === 'horizontal';
 
-  return (
-    <ol
-      ref={ref}
-      data-orientation={orientation}
-      className={cn(
-        'flex list-none',
-        isHorizontal ? 'w-full items-start' : 'flex-col items-stretch gap-4',
-        className,
-      )}
-      {...props}
-    >
-      {steps.map((step, index) => {
-        const state = stepState(index, activeStep);
-        const isLast = index === steps.length - 1;
-        const connectorComplete = index < activeStep;
+    return (
+      <ol
+        ref={ref}
+        data-orientation={orientation}
+        className={cn(
+          'flex list-none',
+          isHorizontal ? 'w-full items-start' : 'flex-col items-stretch gap-4',
+          className,
+        )}
+        {...props}
+      >
+        {steps.map((step, index) => {
+          const state = stepState(index, activeStep);
+          const isLast = index === steps.length - 1;
+          const connectorComplete = index < activeStep;
 
-        return (
-          <li
-            key={index}
-            data-state={state}
-            aria-current={index === activeStep ? 'step' : undefined}
-            className={cn(
-              'flex',
-              isHorizontal ? 'flex-1 flex-col items-center gap-2 text-center' : 'flex-row gap-3',
-            )}
-          >
-            <div
+          return (
+            <li
+              key={index}
+              data-state={state}
+              aria-current={index === activeStep ? 'step' : undefined}
               className={cn(
-                'flex items-center',
-                isHorizontal ? 'w-full' : 'flex-col items-center self-stretch',
+                'flex',
+                isHorizontal ? 'flex-1 flex-col items-center gap-2 text-center' : 'flex-row gap-3',
               )}
             >
-              <span className={cn(stepMarkerVariants({ state }))}>
-                {state === 'complete' ? <Check className="h-4 w-4" aria-hidden /> : index + 1}
-              </span>
-              {!isLast && (
-                <span
-                  aria-hidden
-                  className={cn(
-                    connectorComplete ? 'bg-primary' : 'bg-border',
-                    isHorizontal ? 'h-px flex-1' : 'my-1 w-px flex-1',
-                  )}
-                />
-              )}
-            </div>
-            <div
-              className={cn('flex flex-col', isHorizontal ? 'items-center' : 'items-start pb-4')}
-            >
-              <span
+              <div
                 className={cn(
-                  'text-sm font-medium',
-                  state === 'upcoming' ? 'text-muted-foreground' : 'text-foreground',
+                  'flex items-center',
+                  isHorizontal ? 'w-full' : 'flex-col items-center self-stretch',
                 )}
               >
-                {step.label}
-              </span>
-              {step.description && (
-                <span className="text-muted-foreground text-xs">{step.description}</span>
-              )}
-            </div>
-          </li>
-        );
-      })}
-    </ol>
-  );
-});
+                <span className={cn(stepMarkerVariants({ state }))}>
+                  {state === 'complete' ? <Check className="h-4 w-4" aria-hidden /> : index + 1}
+                </span>
+                {!isLast && (
+                  <span
+                    aria-hidden
+                    className={cn(
+                      connectorComplete ? 'bg-primary' : 'bg-border',
+                      isHorizontal ? 'h-px flex-1' : 'my-1 w-px flex-1',
+                    )}
+                  />
+                )}
+              </div>
+              <div
+                className={cn('flex flex-col', isHorizontal ? 'items-center' : 'items-start pb-4')}
+              >
+                <span
+                  className={cn(
+                    'text-sm font-medium',
+                    state === 'upcoming' ? 'text-muted-foreground' : 'text-foreground',
+                  )}
+                >
+                  {step.label}
+                </span>
+                {step.description && (
+                  <span className="text-muted-foreground text-xs">{step.description}</span>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    );
+  },
+);
 
 /** @internal — CVA variant helper; compose via Stepper's internal state instead. */
 export { stepMarkerVariants };

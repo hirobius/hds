@@ -15,7 +15,7 @@ import { cn } from '../../lib/utils';
 // `content-accent` values byte-for-byte (border/content-accent role tokens
 // mirror `bg-border`/`bg-feedback-info` in both themes), so this conversion
 // carries no visual change.
-const statusListItemDotVariants = cva('mt-1.5 h-2 w-2 shrink-0 rounded-full', {
+const statusListItemDotVariants = /* @__PURE__ */ cva('mt-1.5 h-2 w-2 shrink-0 rounded-full', {
   variants: {
     tone: {
       neutral: 'bg-border',
@@ -55,7 +55,7 @@ export interface StatusListItemProps
 /**
  * Status dot + title row with optional muted notes and trailing slot (e.g. badge).
  */
-export const StatusListItem = React.forwardRef<HTMLDivElement, StatusListItemProps>(
+export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatusListItemProps>(
   function StatusListItem({ tone, title, notes, trailing, className, ...props }, ref) {
     return (
       <div

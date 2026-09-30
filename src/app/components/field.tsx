@@ -16,7 +16,7 @@ import { cn } from '../../lib/utils';
 // Non-interactive — no hover/active/focus states. Tone drives only the value
 // color; the label stays muted regardless. Renamed the pre-contract 'default'
 // value to the fixed vocabulary's 'neutral' (#60 — check-prop-vocabulary rule C).
-const fieldValueVariants = cva('text-sm', {
+const fieldValueVariants = /* @__PURE__ */ cva('text-sm', {
   variants: {
     tone: {
       neutral: 'text-foreground',
@@ -48,7 +48,7 @@ export interface FieldProps
 /**
  * Caption label paired with a value — used in metadata grids and read-only forms.
  */
-export const Field = React.forwardRef<HTMLDivElement, FieldProps>(function Field(
+export const Field = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FieldProps>(function Field(
   { label, value, tone, mono, className, children, ...props },
   ref,
 ) {

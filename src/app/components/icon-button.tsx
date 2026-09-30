@@ -40,29 +40,41 @@ export interface IconButtonProps extends Omit<ButtonProps, 'iconOnly' | 'childre
  * IconButton — compact icon-only action surface.
  */
 /** @public */
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { icon, variant, size, iconSize, iconColor, label, disabled, 'aria-label': ariaLabel, ...props },
-  ref,
-) {
-  // IconButton owns a concrete icon-ramp default ('md') independent of Button's
-  // chrome default, so the icon stays sized even when size is left to Button.
-  const resolvedIconSize: IconSize = iconSize ?? SIZE_TO_ICON[size ?? 'md'];
-  // Let Button's disabled:opacity-50 mute the icon; only apply an explicit
-  // color when iconColor is provided. Using currentColor delegates to the
-  // button's text color, which is already managed by component.button.* tokens.
-  const resolvedIconColor = iconColor ?? 'currentColor';
-  const accessibleLabel = label ?? ariaLabel ?? 'Icon button';
+export const IconButton = /* @__PURE__ */ forwardRef<HTMLButtonElement, IconButtonProps>(
+  function IconButton(
+    {
+      icon,
+      variant,
+      size,
+      iconSize,
+      iconColor,
+      label,
+      disabled,
+      'aria-label': ariaLabel,
+      ...props
+    },
+    ref,
+  ) {
+    // IconButton owns a concrete icon-ramp default ('md') independent of Button's
+    // chrome default, so the icon stays sized even when size is left to Button.
+    const resolvedIconSize: IconSize = iconSize ?? SIZE_TO_ICON[size ?? 'md'];
+    // Let Button's disabled:opacity-50 mute the icon; only apply an explicit
+    // color when iconColor is provided. Using currentColor delegates to the
+    // button's text color, which is already managed by component.button.* tokens.
+    const resolvedIconColor = iconColor ?? 'currentColor';
+    const accessibleLabel = label ?? ariaLabel ?? 'Icon button';
 
-  return (
-    <Button
-      ref={ref}
-      iconOnly
-      size={size}
-      variant={variant}
-      disabled={disabled}
-      aria-label={accessibleLabel}
-      iconLeft={<Icon icon={icon} size={resolvedIconSize} color={resolvedIconColor} />}
-      {...props}
-    />
-  );
-});
+    return (
+      <Button
+        ref={ref}
+        iconOnly
+        size={size}
+        variant={variant}
+        disabled={disabled}
+        aria-label={accessibleLabel}
+        iconLeft={<Icon icon={icon} size={resolvedIconSize} color={resolvedIconColor} />}
+        {...props}
+      />
+    );
+  },
+);

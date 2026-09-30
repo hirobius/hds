@@ -43,29 +43,28 @@ export interface MetricTileProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a
  * tile needs no enclosing `Card`.
  */
-export const MetricTile = React.forwardRef<HTMLDivElement, MetricTileProps>(function MetricTile(
-  { label, value, sub, tone = 'neutral', style, ...props },
-  ref,
-) {
-  return (
-    <Surface
-      ref={ref}
-      padding="item"
-      data-hds-component="MetricTile"
-      data-tone={tone}
-      style={{ minHeight: TILE_MIN_HEIGHT, ...style }}
-      {...props}
-    >
-      <Card.Metric
-        label={label}
-        value={value}
-        sub={sub ?? EMPTY_SUB}
-        tone={tone}
-        className="px-0"
-      />
-    </Surface>
-  );
-});
+export const MetricTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, MetricTileProps>(
+  function MetricTile({ label, value, sub, tone = 'neutral', style, ...props }, ref) {
+    return (
+      <Surface
+        ref={ref}
+        padding="item"
+        data-hds-component="MetricTile"
+        data-tone={tone}
+        style={{ minHeight: TILE_MIN_HEIGHT, ...style }}
+        {...props}
+      >
+        <Card.Metric
+          label={label}
+          value={value}
+          sub={sub ?? EMPTY_SUB}
+          tone={tone}
+          className="px-0"
+        />
+      </Surface>
+    );
+  },
+);
 
 /** @public */
 export interface MetricTilesProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -89,16 +88,15 @@ function countTiles(children: React.ReactNode): number {
  * for state with notes (never a number).
  * @screenPattern
  */
-export const MetricTiles = React.forwardRef<HTMLDivElement, MetricTilesProps>(function MetricTiles(
-  { children, ...props },
-  ref,
-) {
-  const columns = Math.min(Math.max(countTiles(children), 1), MAX_COLUMNS);
-  return (
-    <div ref={ref} data-hds-component="MetricTiles" {...props}>
-      <Grid columns={columns} gap="tight">
-        {children}
-      </Grid>
-    </div>
-  );
-});
+export const MetricTiles = /* @__PURE__ */ React.forwardRef<HTMLDivElement, MetricTilesProps>(
+  function MetricTiles({ children, ...props }, ref) {
+    const columns = Math.min(Math.max(countTiles(children), 1), MAX_COLUMNS);
+    return (
+      <div ref={ref} data-hds-component="MetricTiles" {...props}>
+        <Grid columns={columns} gap="tight">
+          {children}
+        </Grid>
+      </div>
+    );
+  },
+);

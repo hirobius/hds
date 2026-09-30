@@ -18,7 +18,7 @@ import { cn } from '../../lib/utils';
 // (no runtime useTheme branch). Semantic tones use the named feedback utilities
 // (text-feedback-* / bg-feedback-bg-*) so there are no arbitrary color values.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven. text-xs matches component.badge.fontSize (primitive.typography.size.xs, hds#283: 12px).
-const badgeVariants = cva(
+const badgeVariants = /* @__PURE__ */ cva(
   'inline-flex w-fit items-center justify-center whitespace-nowrap box-border leading-none uppercase font-medium text-xs tracking-caps h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-[var(--component-badge-radius)]',
   {
     variants: {
@@ -50,7 +50,7 @@ export interface BadgeProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Compact metadata/status chip. Tone is the only styling input. */
-export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   { className, tone, as: Tag = 'span', children, ...props },
   ref,
 ) {

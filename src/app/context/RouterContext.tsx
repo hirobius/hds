@@ -59,17 +59,18 @@ export interface HdsRouterAdapter {
 }
 
 /** Default link: a forwardRef anchor. No router required. */
-const DefaultLinkComponent: HdsLinkComponent = forwardRef<HTMLAnchorElement, HdsLinkProps>(
-  function HdsAnchorLink({ to, children, ...rest }, ref) {
-    return (
-      <a ref={ref} href={to} {...rest}>
-        {children}
-      </a>
-    );
-  },
-);
+const DefaultLinkComponent: HdsLinkComponent = /* @__PURE__ */ forwardRef<
+  HTMLAnchorElement,
+  HdsLinkProps
+>(function HdsAnchorLink({ to, children, ...rest }, ref) {
+  return (
+    <a ref={ref} href={to} {...rest}>
+      {children}
+    </a>
+  );
+});
 
-const HdsRouterContext = createContext<HdsRouterAdapter | null>(null);
+const HdsRouterContext = /* @__PURE__ */ createContext<HdsRouterAdapter | null>(null);
 
 export interface HdsRouterProviderProps {
   adapter: HdsRouterAdapter;

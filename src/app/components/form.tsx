@@ -48,7 +48,7 @@ export type FormProps = React.FormHTMLAttributes<HTMLFormElement>;
  * Figma node, so a file-level @figma would claim this one for all three.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94
  */
-export const Form = React.forwardRef<HTMLFormElement, FormProps>(function Form(
+export const Form = /* @__PURE__ */ React.forwardRef<HTMLFormElement, FormProps>(function Form(
   { className, ...props },
   ref,
 ) {
@@ -124,7 +124,7 @@ export interface FormFieldShellProps {
  * callback ref. Pair it with `useFieldWiring` to apply ids/aria yourself.
  * @public
  */
-export const FormFieldShell = React.forwardRef<HTMLDivElement, FormFieldShellProps>(
+export const FormFieldShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FormFieldShellProps>(
   function FormFieldShell(
     { controlId, label, description, error, required = false, className, children },
     ref,
@@ -191,37 +191,39 @@ type WiredChildProps = {
  * ref (e.g. react-hook-form), use `FormFieldShell` + `useFieldWiring` instead.
  * @public
  */
-export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(function FormField(
-  { label, children, htmlFor, description, error, required = false, className },
-  ref,
-) {
-  const child = React.Children.only(children) as React.ReactElement<WiredChildProps>;
-  const { controlId, describedBy } = useFieldWiring({
-    htmlFor,
-    childId: child.props.id,
-    description,
-    error,
-  });
+export const FormField = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FormFieldProps>(
+  function FormField(
+    { label, children, htmlFor, description, error, required = false, className },
+    ref,
+  ) {
+    const child = React.Children.only(children) as React.ReactElement<WiredChildProps>;
+    const { controlId, describedBy } = useFieldWiring({
+      htmlFor,
+      childId: child.props.id,
+      description,
+      error,
+    });
 
-  const wired = React.cloneElement(child, {
-    id: controlId,
-    required: child.props.required ?? required,
-    'aria-invalid': error ? true : child.props['aria-invalid'],
-    'aria-describedby':
-      [child.props['aria-describedby'], describedBy].filter(Boolean).join(' ') || undefined,
-  });
+    const wired = React.cloneElement(child, {
+      id: controlId,
+      required: child.props.required ?? required,
+      'aria-invalid': error ? true : child.props['aria-invalid'],
+      'aria-describedby':
+        [child.props['aria-describedby'], describedBy].filter(Boolean).join(' ') || undefined,
+    });
 
-  return (
-    <FormFieldShell
-      ref={ref}
-      controlId={controlId}
-      label={label}
-      description={description}
-      error={error}
-      required={required}
-      className={className}
-    >
-      {wired}
-    </FormFieldShell>
-  );
-});
+    return (
+      <FormFieldShell
+        ref={ref}
+        controlId={controlId}
+        label={label}
+        description={description}
+        error={error}
+        required={required}
+        className={className}
+      >
+        {wired}
+      </FormFieldShell>
+    );
+  },
+);

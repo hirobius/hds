@@ -47,7 +47,7 @@ export interface DocLinkCardProps {
 // the variant contract (docs/architecture/variant-contract.md) so the axis is
 // discoverable/typed and future per-variant root styling has a home.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding; var()-based, no Tailwind-theme utility exists
-const docLinkCardVariants = cva(
+const docLinkCardVariants = /* @__PURE__ */ cva(
   'hds-focus hds-doc-link-card relative flex w-full h-full flex-col cursor-pointer p-[var(--semantic-space-layout-gap)] disabled:cursor-default',
   {
     variants: {

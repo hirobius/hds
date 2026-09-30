@@ -48,7 +48,7 @@ export interface CenterProps {
 }
 
 /** @public */
-export const Center = React.forwardRef<HTMLDivElement, CenterProps>(function Center(
+export const Center = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CenterProps>(function Center(
   { children, maxWidth = 'content', gutter, className, style, as: Tag = 'div' },
   ref,
 ) {

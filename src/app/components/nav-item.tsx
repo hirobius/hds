@@ -34,7 +34,7 @@ import { getNavLevelInset, type NavLevel } from '../lib/navLevels';
 // expressed as bare `hover:`/`focus-visible:` pseudo-classes alone.
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --primitive-size-interactive-min a11y touch target + --semantic-color-* state tokens have no Tailwind-theme utility; var()-based so still token-driven
-const navItemVariants = cva(
+const navItemVariants = /* @__PURE__ */ cva(
   // 44px is the WCAG 2.5.5 / platform HIG minimum interactive target — a
   // regulatory floor, not a design-scale choice; no semantic size scale exists
   // yet for dimensional primitives (see hds#186 follow-up).
@@ -64,7 +64,7 @@ const navItemVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- --semantic-borderWidth-emphasis indicator width + --semantic-color-border-* state tokens have no Tailwind-theme utility; var()-based so still token-driven
-const navIndicatorVariants = cva(
+const navIndicatorVariants = /* @__PURE__ */ cva(
   'absolute inset-y-0 w-[length:var(--semantic-borderWidth-emphasis)] transition-colors',
   {
     variants: {
