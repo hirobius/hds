@@ -556,7 +556,7 @@ Semantic layout tokens exist for layout decisions only: readable content widths,
 - `pnpm figma:push` writes the upsert scripts that apply that model to a Figma file, and `pnpm figma:native-import` writes the per-collection, per-mode DTCG files for Figma's own Variables ▸ Import. Both are run by hand — no workflow pushes to Figma. Runbook: `figma/README.md`.
 - `pnpm figma:snapshot --ingest` records the file's state in `figma/snapshot.json`, and `pnpm check:figma-drift` compares the model against that committed snapshot.
 - `pnpm figma-variables` (`scripts/build-figma-variables.mjs`) still writes the older plugin and REST export files, now projected from the same model.
-- The CI workflow that pushed variables through the Figma REST API is archived (`.github/workflows-archive/sync-figma-variables.yml`). That API is Enterprise-only.
+- The CI workflow that pushed variables through the Figma REST API was removed in #313 (see git history). That API is Enterprise-only.
 - Known Figma limitations: typography composite and shadow tokens are not Figma variable types. The model flattens each typography token into scalar variables (family, size, weight, line height, letter spacing) and emits text styles bound to them, and turns shadow and elevation tokens into effect styles.
 - Plan limits and the Pro-plan push, import, and drift path this follows: [ADR-025](docs/adr/025-figma-sync-pro-architecture.md).
 

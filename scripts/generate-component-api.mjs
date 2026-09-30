@@ -11,7 +11,7 @@
  * from `observedTokens`, which the src/ runtime consumers of this file
  * (api-reference.tsx, component-instance-matrix.tsx) never read — grep
  * confirms it). A third consumer, componentPreviewRegistry.tsx, was deleted
- * in hds#286 (dead island, see DECISIONS.md); the two below are current:
+ * in hds#286 (dead island, see docs/adr/029-decisions-carried-over.md); the two below are current:
  *
  *   src/app/data/component-api.json        bundled runtime copy: props +
  *                                           description only, no observedTokens.

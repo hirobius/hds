@@ -69,7 +69,7 @@
  * one of `component-api.json`'s three importers, was deleted along with its two
  * exclusive consumers — a dead island reachable from nothing, superseded by the
  * Storybook-built reference site. `component-api.json` now has two importers:
- * api-reference.tsx and component-instance-matrix.tsx. See DECISIONS.md.
+ * api-reference.tsx and component-instance-matrix.tsx. See docs/adr/029-decisions-carried-over.md.
  *
  * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
  * byte-identical on all 44 linked components. Dropping one would shrink this

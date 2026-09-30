@@ -138,7 +138,7 @@ function getTier(path) {
 // Spacing, font, radius, layout, fontWeight: component → primitive is acceptable
 // (industry standard — Material Design 3, IBM Carbon, Atlassian allow this for
 // non-semantic properties that don't change between themes or densities).
-// See ADR-009 in DECISIONS.md.
+// See docs/adr/029-decisions-carried-over.md.
 const COLOR_CROSS_TIER_TYPES = new Set(['color']);
 
 function walkTokens(node, path, inheritedType = null) {
