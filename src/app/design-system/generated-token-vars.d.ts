@@ -217,6 +217,7 @@ declare module 'react' {
     '--semantic-color-feedback-bg-warning'?: string | undefined;
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
+    '--semantic-color-state-pressed-overlay'?: string | undefined;
     '--semantic-space-scale-xs'?: string | undefined;
     '--semantic-space-scale-sm'?: string | undefined;
     '--semantic-space-scale-md'?: string | undefined;
@@ -429,6 +430,7 @@ declare module 'react' {
     '--role-card-foreground'?: string | undefined;
     '--role-popover'?: string | undefined;
     '--role-scrim'?: string | undefined;
+    '--role-pressed-overlay'?: string | undefined;
     '--role-popover-foreground'?: string | undefined;
     '--role-primary'?: string | undefined;
     '--role-primary-foreground'?: string | undefined;
