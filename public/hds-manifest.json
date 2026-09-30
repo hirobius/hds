@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T07:44:11.939Z",
+  "generated": "2026-09-28T00:14:31.544Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -4290,6 +4290,7 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
@@ -4354,7 +4355,7 @@
         "border": "role.border",
         "radius": "role.radius",
         "shadow": "semantic.shadow.overlay",
-        "scrim": "role.scrim",
+        "scrim": "role.foreground",
         "descriptionText": "role.muted-foreground",
         "closeHover": "role.accent",
         "closeHoverText": "role.accent-foreground",
@@ -5940,6 +5941,7 @@
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
@@ -6817,6 +6819,7 @@
       },
       "consumers": [
         "src/app/context/__tests__/context.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/context/hds-portal.tsx",
         "src/index.ts"
@@ -7472,6 +7475,8 @@
       },
       "consumers": [
         "src/app/components/image-lightbox.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
         "src/stories/asset-img.stories.tsx",
@@ -8117,6 +8122,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
         "src/styles/__tests__/scrim-and-color-scheme.test.ts"
@@ -8251,6 +8257,7 @@
       },
       "consumers": [
         "src/app/components/context-menu.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/context-menu.stories.tsx"
       ],
@@ -8491,6 +8498,7 @@
       },
       "consumers": [
         "src/app/components/hover-card.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/hover-card.stories.tsx"
       ],
@@ -10249,6 +10257,7 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/hover-card.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
@@ -10296,6 +10305,7 @@
         "src/app/components/hover-card.tsx",
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/docs-tooling/shell-controls.tsx",
         "src/stories/context-menu.stories.tsx",
@@ -10352,6 +10362,7 @@
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/popover.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
@@ -11771,6 +11782,7 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/hds-tooltip.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx"
       ],
       "tokenMapping": {},
@@ -12922,18 +12934,6 @@
         "dark": {
           "alias": "{primitive.color.neutral.850}",
           "resolvedValue": "#1a1a1a"
-        }
-      },
-      {
-        "path": "semantic.color.surface.scrim",
-        "cssVar": "--semantic-color-surface-scrim",
-        "type": "color",
-        "description": "Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.",
-        "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
-        "dark": {
-          "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#000000"
         }
       },
       {
@@ -14750,14 +14750,6 @@
         "resolvedValue": "#f5f5f5"
       },
       {
-        "path": "role.scrim",
-        "cssVar": "--role-scrim",
-        "type": "color",
-        "description": "Modal backdrop colour role. Apply alpha in the class, e.g. bg-scrim/60.",
-        "alias": "{semantic.color.surface.scrim}",
-        "resolvedValue": "#111111"
-      },
-      {
         "path": "role.popover-foreground",
         "cssVar": "--role-popover-foreground",
         "type": "color",
@@ -14877,6 +14869,61 @@
         "alias": "{semantic.radius.action}",
         "resolvedValue": "8px"
       }
+    ]
+  },
+  "iconSet": {
+    "subpath": "@hirobius/design-system/icons",
+    "names": [
+      "Archive",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "Bell",
+      "Bookmark",
+      "Calendar",
+      "Check",
+      "ChevronDown",
+      "ChevronLeft",
+      "ChevronRight",
+      "ChevronUp",
+      "CircleAlert",
+      "CircleCheck",
+      "CircleHelp",
+      "Clock",
+      "Copy",
+      "Download",
+      "Ellipsis",
+      "EllipsisVertical",
+      "ExternalLink",
+      "Eye",
+      "EyeOff",
+      "FileText",
+      "Funnel",
+      "Heart",
+      "House",
+      "Image",
+      "Info",
+      "Link",
+      "Lock",
+      "LogIn",
+      "LogOut",
+      "Mail",
+      "Menu",
+      "Minus",
+      "Pencil",
+      "Plus",
+      "RefreshCw",
+      "Save",
+      "Search",
+      "Settings",
+      "Share",
+      "Star",
+      "Trash2",
+      "TriangleAlert",
+      "Upload",
+      "User",
+      "X"
     ]
   }
 }
