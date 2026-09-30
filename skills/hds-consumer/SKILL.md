@@ -26,6 +26,7 @@ Subpath exports:
 - `@hirobius/design-system/brand`
 - `@hirobius/design-system/scroll`
 - `@hirobius/design-system/patterns`
+- `@hirobius/design-system/icons`
 
 ## Allow-list: components you may import
 
