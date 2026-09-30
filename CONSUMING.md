@@ -82,12 +82,27 @@ React in them, and marking them would turn their exports into opaque client
 references when you use them on the server (`tokens.color.primary` in a layout,
 `brand` at the edge). Import those from server code freely.
 
+**Density.** Put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
+
 ## 2.5. Lint discipline (optional)
 
 `@hirobius/eslint-plugin-hds` flags raw hex/px values in `style`, `className`,
 and `Box` `sx` props so token discipline shows up in your editor, not just at
 review time. See [`docs/CONSUMING.md` §11](docs/CONSUMING.md#11-lint-discipline--the-consumer-eslint-plugin)
 and [`scripts/eslint-plugin-hds/README.md`](scripts/eslint-plugin-hds/README.md).
+
+## 2.6. Agent context
+
+The package ships the docs written for agents, so an agent in your repo can read
+them without network access. Under `node_modules/@hirobius/design-system/`:
+
+- `llms.txt` (also `public/llms.txt`) - the system map and index of topic slices in `public/llms/`
+- `public/llms-full.txt` - the map, the full `DESIGN.md` and a props digest for every component
+- `DESIGN.md` - the lean visual spec
+- `src/app/data/component-api.json` - full prop reference
+
+The same files are served at <https://hirobius-design-system.vercel.app/llms.txt>
+(and `/llms-full.txt`, `/llms/components.txt`, `/DESIGN.md`, `/component-api.json`).
 
 ## 3. Receiving updates
 

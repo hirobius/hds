@@ -64,3 +64,7 @@ figma/STAGING-INVENTORY.md
 
 # Codemod inputs are deliberately unformatted (hds#316)
 codemods/__fixtures__/
+
+# Agent-built consistency runs are recorded inputs to the harness (hds#344);
+# formatting them would change what the ledger entry measured.
+eval/consistency/runs/

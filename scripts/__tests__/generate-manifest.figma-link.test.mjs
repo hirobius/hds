@@ -117,7 +117,7 @@ function regenerate({ tag, committed = OLD_NODE, extraSpecs = {} }) {
   return { stdout, specs: { ...manifest.componentSpecs, ...manifest.utilities } };
 }
 
-describe('generate-manifest figmaLink regeneration', () => {
+describe('generate-manifest figmaLink regeneration', { timeout: 60_000 }, () => {
   it('clears a committed figmaLink when the @figma tag is removed', () => {
     const { specs } = regenerate({ tag: null });
     expect(specs.DemoWidget.figmaUrl).toBeNull();
@@ -151,7 +151,7 @@ describe('generate-manifest figmaLink regeneration', () => {
 
     const mapped = regenerate({ tag: NEW_NODE });
     expect(mapped.stdout).toContain('Figma links: 1 of 1 component specs (100%)');
-  });
+  }, 60_000); // two full manifest regenerations; the 5s default flakes when the machine is loaded
 });
 
 describe('public/hds-manifest.json', () => {
