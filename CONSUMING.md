@@ -109,12 +109,17 @@ pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md
 
 CI (`.github/workflows/release.yml`) automates steps 2–3 on merge to `main`.
 
-Two repo secrets are required, and the workflow fails loudly naming either one
-if it is missing or expired:
+Publishing to npm uses **Trusted Publishing (OIDC)**: no npm token exists. The
+package's Trusted Publisher entry on npmjs.com (org `hirobius`, repo `hds`,
+workflow `release.yml`, no environment) lets the workflow mint a short-lived
+publish credential per run. If a publish fails with `ENEEDAUTH`/`E404`, that
+entry is missing or no longer matches the workflow filename.
+
+One repo secret is required, and the workflow fails loudly naming it if it is
+missing or expired:
 
 | Secret        | What it does                                                                                                                                            | If it lapses                                             |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `NPM_TOKEN`   | Publishes to public npm. An npm "Automation" token for an account with publish rights on the `@hirobius` scope.                                         | The publish step fails.                                  |
 | `RELEASE_PAT` | Authors the "Version Packages" PR and pushes tags. A **fine-grained** PAT scoped to `hirobius/hds` with Contents + Pull requests set to Read and write. | The run fails at the guard step, before anything builds. |
 
 `RELEASE_PAT` exists because GitHub does not start workflow runs from events

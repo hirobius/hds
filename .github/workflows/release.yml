@@ -11,14 +11,39 @@ name: Release
 #   3. Merging that PR runs `pnpm release` (build:lib + changeset publish),
 #      publishing the new version to public npm.
 #
-# Auth: publishing to public npm needs an npm token (GITHUB_TOKEN cannot publish
-# outside GitHub Packages). Provision it as the repo secret NPM_TOKEN:
-#   - npmjs.com → your account → Access Tokens → Generate → "Automation"
-#     (Automation tokens bypass 2FA, required for CI publishes).
-#   - The @hirobius scope/org must exist on npmjs.com and the token's account
-#     must be a member with publish rights.
-#   - Add the value as the GitHub repo secret NPM_TOKEN (Settings → Secrets and
-#     variables → Actions).
+# Auth: npm Trusted Publishing (OIDC). There is no npm token in this workflow.
+# The job asks GitHub for a short-lived OIDC token (`id-token: write` below) and
+# npm swaps it for a publish credential scoped to this one package, only when
+# the run comes from the repo + workflow file registered on npmjs.com. Nothing
+# to rotate and nothing that expires (the 2026-09-30 0.17.0 publish failed on
+# an expired Automation token; this replaces that mechanism).
+#
+# One-time setup on npmjs.com (a package admin does this; no secret to copy):
+#   https://www.npmjs.com/package/@hirobius/design-system/access
+#     → Trusted Publisher → GitHub Actions
+#       Organization or user:  hirobius
+#       Repository:            hds
+#       Workflow filename:     release.yml      (file name only, no path)
+#       Environment name:      (leave blank)
+#   Renaming this file breaks publishing until that form is updated to match.
+#
+# The chain: changesets/action@v1 (>= 1.7.0) writes no ~/.npmrc when NPM_TOKEN
+# is unset → `pnpm release` → `changeset publish` → `pnpm publish` → pnpm 10
+# delegates to the npm CLI on PATH, which does the OIDC exchange. That npm must
+# be >= 11.5.1, hence Node 24 below and the guard step that checks it.
+# Provenance is attached automatically (public repo + public package); do not
+# add --provenance or NPM_CONFIG_PROVENANCE.
+#
+# If publish fails with ENEEDAUTH / E404 / E401 after this change, the Trusted
+# Publisher entry on npmjs.com is missing or does not match (org hirobius, repo
+# hds, workflow release.yml, environment blank) — fix it at the URL above.
+#
+# Never set NPM_TOKEN or NODE_AUTH_TOKEN on this job again: changesets/action v1
+# writes NPM_TOKEN into ~/.npmrc when it is present, and a static token would
+# then be used instead of OIDC. After the first green publish through OIDC,
+# delete the old NPM_TOKEN repo secret
+# (https://github.com/hirobius/hds/settings/secrets/actions) and the granular
+# token on npmjs.com.
 #
 # Auth, part two: RELEASE_PAT, and why GITHUB_TOKEN is not enough here.
 #
@@ -62,6 +87,9 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 permissions:
   contents: write
   pull-requests: write
+  # npm Trusted Publishing: lets npm exchange this run's OIDC token for a
+  # publish credential. See the header.
+  id-token: write
 
 jobs:
   release:
@@ -115,12 +143,28 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
+      # Node 24: its bundled npm (11.19.0 on 24.21.0) meets the >= 11.5.1 that
+      # trusted publishing needs; Node 20/22 bundle npm 10.x. pnpm 10 publishes
+      # through this npm. No registry-url/scope: those only wire NODE_AUTH_TOKEN
+      # into a generated .npmrc, and OIDC does not use NODE_AUTH_TOKEN.
+      # package.json publishConfig.registry already targets registry.npmjs.org.
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
-          registry-url: https://registry.npmjs.org
-          scope: '@hirobius'
+
+      # Fail loud if the runner's cached Node 24 ships an npm too old for OIDC,
+      # rather than letting the publish die with an opaque 401/404.
+      - name: Require npm >= 11.5.1 (trusted publishing)
+        run: |
+          v="$(npm --version)"
+          if [ "$(printf '%s\n' 11.5.1 "$v" | sort -V | head -n1)" = "11.5.1" ]; then
+            echo "npm $v supports trusted publishing."
+            exit 0
+          fi
+          echo "::error::npm $v is too old for npm trusted publishing (needs >= 11.5.1)."
+          echo "Fix: add a step 'run: npm install -g npm@^11.5.1' after setup-node in .github/workflows/release.yml."
+          exit 1
 
       - run: pnpm install --frozen-lockfile
 
@@ -135,10 +179,9 @@ jobs:
           # workflow runs, so with it the release PR gets no CI and cannot
           # satisfy a required check. The step above guarantees it is set.
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
-          # NPM_TOKEN publishes to public npm. Must be an npm "Automation" token
-          # for an account with publish rights on the @hirobius scope (see the
-          # header comment for provisioning steps).
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # No NPM_TOKEN / NODE_AUTH_TOKEN: npm auth is Trusted Publishing (OIDC)
+          # via `id-token: write`. See the header. Setting NPM_TOKEN here would
+          # make changesets/action write it into ~/.npmrc and use it instead.
           # Skip husky git hooks ONLY for the bot "Version Packages" commit this
           # action makes. The hooks are local-dev guards (typecheck/lint/registry)
           # that assume gitignored generated data artifacts exist, which they
