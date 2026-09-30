@@ -20,7 +20,10 @@
  *   - integers inside a responsive map on a spacing key
  *     (`sx={{ p: { xs: 2, md: 4 } }}`) and inside `&`-selector blocks;
  *   - any spacing of the attribute (`sx={ { p: 4 } }`, `sx = {{ ... }}`);
- *   - either branch of a conditional (`p: dense ? 2 : 'md'`);
+ *   - either branch of a conditional and the operands of `&&`, `||` and
+ *     `??`, on a spacing value (`p: dense ? 2 : 'md'`, `p: size ?? 4`) or on
+ *     the sx object itself (`sx={dense ? { p: 3 } : base}`,
+ *     `sx={{ ...(dense && { m: 5 }) }}`);
  *   - an object declared in the same file and passed by name
  *     (`const style = { p: 4 }; sx={style}`), by member (`sx={styles.row}`,
  *     which scans all of `styles`) or spread (`sx={{ ...base }}`), following
@@ -122,6 +125,28 @@ function numericLiteral(node) {
   return null;
 }
 
+const LOGICAL_OPERATORS = new Set([
+  ts.SyntaxKind.AmpersandAmpersandToken,
+  ts.SyntaxKind.BarBarToken,
+  ts.SyntaxKind.QuestionQuestionToken,
+]);
+
+/**
+ * The operands an expression can evaluate to, or null when it is not a
+ * conditional or logical expression: both branches of `a ? b : c`, the right
+ * of `a && b` (the left is falsy there, never an object or a spacing
+ * integer), and both sides of `a || b` and `a ?? b`.
+ */
+function possibleResults(node) {
+  if (ts.isConditionalExpression(node)) return [node.whenTrue, node.whenFalse];
+  if (ts.isBinaryExpression(node) && LOGICAL_OPERATORS.has(node.operatorToken.kind)) {
+    return node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken
+      ? [node.right]
+      : [node.left, node.right];
+  }
+  return null;
+}
+
 /**
  * Scans a single file's text for banned raw-integer spacing values in Box
  * `sx` objects: inline (`sx={{ ... }}`, any spacing), or a same-file object
@@ -166,14 +191,17 @@ export function findViolationsInText(text, rel) {
     });
   };
 
-  /** A value on a spacing key: an integer, a responsive map of them, or a conditional. */
+  /**
+   * A value on a spacing key: an integer, a responsive map of them, or an
+   * expression that can evaluate to one (a conditional, `&&`, `||`, `??`).
+   */
   const scanSpacingValue = (key, node) => {
     const n = unwrap(node);
     const value = numericLiteral(n);
     if (value !== null) return report(key, n, value);
-    if (ts.isConditionalExpression(n)) {
-      scanSpacingValue(key, n.whenTrue);
-      scanSpacingValue(key, n.whenFalse);
+    const branches = possibleResults(n);
+    if (branches) {
+      for (const branch of branches) scanSpacingValue(key, branch);
     } else if (ts.isObjectLiteralExpression(n)) {
       for (const prop of n.properties) {
         if (ts.isPropertyAssignment(prop)) scanSpacingValue(key, prop.initializer);
@@ -200,11 +228,19 @@ export function findViolationsInText(text, rel) {
     }
   };
 
-  /** What an sx attribute (or a spread) holds: a literal, a name, or a member of a name. */
+  /**
+   * What an sx attribute (or a spread) holds: a literal, a name, a member of
+   * a name, or a conditional or logical expression over those.
+   */
   const scanSxExpression = (expression) => {
     let n = unwrap(expression);
     while (n && ts.isPropertyAccessExpression(n)) n = unwrap(n.expression);
     if (!n) return;
+    const branches = possibleResults(n);
+    if (branches) {
+      for (const branch of branches) scanSxExpression(branch);
+      return;
+    }
     if (ts.isObjectLiteralExpression(n)) return scanSxObject(n);
     if (ts.isIdentifier(n) && declarations.has(n.text)) scanSxObject(declarations.get(n.text));
   };

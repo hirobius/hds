@@ -177,6 +177,55 @@ describe('findViolationsInText: forms a line scan misses (hds#206 fix round)', (
   });
 });
 
+describe('findViolationsInText: conditional and logical sx expressions (hds#206 review)', () => {
+  const found = (text) =>
+    findViolationsInText(text, 'fake.tsx').map(({ line, key, value }) => ({ line, key, value }));
+
+  it('follows both branches of a conditional sx expression', () => {
+    expect(found(`<Box sx={dense ? { p: 3 } : { p: 'md' }} />`)).toEqual([
+      { line: 1, key: 'p', value: '3' },
+    ]);
+    expect(found(`<Box sx={dense ? { p: 'sm' } : { m: 5 }} />`)).toEqual([
+      { line: 1, key: 'm', value: '5' },
+    ]);
+  });
+
+  it('follows the object on the right of && inside a spread', () => {
+    expect(found(`<Box sx={{ ...(dense && { m: 5 }), p: 'md' }} />`)).toEqual([
+      { line: 1, key: 'm', value: '5' },
+    ]);
+  });
+
+  it('follows both operands of || and ??', () => {
+    expect(found(`<Box sx={custom ?? { gap: 2 }} />`)).toEqual([
+      { line: 1, key: 'gap', value: '2' },
+    ]);
+    const text = ['const base = { py: 4 };', '<Box sx={base || { px: 1 }} />'].join('\n');
+    expect(found(text)).toEqual([
+      { line: 1, key: 'py', value: '4' },
+      { line: 2, key: 'px', value: '1' },
+    ]);
+  });
+
+  it('follows a same-file const named in a conditional branch', () => {
+    const text = ['const tight = { p: 2 };', "<Box sx={dense ? tight : { p: 'md' }} />"].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'p', value: '2' }]);
+  });
+
+  it('follows && , || and ?? on a spacing value', () => {
+    expect(found(`<Box sx={{ p: size ?? 4, m: dense && 2, gap: g || 3 }} />`)).toEqual([
+      { line: 1, key: 'p', value: '4' },
+      { line: 1, key: 'm', value: '2' },
+      { line: 1, key: 'gap', value: '3' },
+    ]);
+  });
+
+  it('does not flag a conditional or logical sx expression built from names', () => {
+    expect(found(`<Box sx={dense ? { p: 'sm' } : { p: 'md' }} />`)).toEqual([]);
+    expect(found(`<Box sx={{ ...(dense && { m: 'xs' }), p: size ?? 'md' }} />`)).toEqual([]);
+  });
+});
+
 describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', () => {
   it('is error severity and fires at pre-commit in the registry', () => {
     const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
@@ -212,6 +261,8 @@ describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', ()
       'sx.p:',
       'sx.p:',
       'sx.gap:',
+      'sx.m:',
+      'sx.p:',
     ]);
     expect(new Set(violations.map((v) => v.severity))).toEqual(new Set(['error']));
   });
