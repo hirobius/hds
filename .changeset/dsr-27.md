@@ -1,0 +1,5 @@
+---
+'@hirobius/design-system': patch
+---
+
+Clears the last nine serious axe violations in Storybook (hds#349); the axe allowlist is now empty. `StatusTile` and `StatusListItem` stories showed their trailing status as a hand-rolled label with literal white text on a feedback fill, which drops to 1.7-2.8:1 in dark because those fills flip to their 400 stops; they now use `Badge` (`tone="success" | "warning" | "danger"`), whose feedback text and background pair holds in both themes. `FoundationSwatch` stories pointed at `--semantic-color-bg-default`, `bg-subtle` and `bg-brand`, which are not tokens, so they fell back to a fixed light hex (1.03-1.09:1 against the theme-aware label in dark), and two swatches forced white text; they now use `surface.page`, `surface.raised`, `surface.accent`, `content.primary` and `content.secondary` with `content.inverse` and `content.onAccent` labels. The layout `Sketch` `WithControls` story gives its range input an accessible name (`aria-label="Speed"`). No token value, component or export changes; consumers who hand-roll a solid feedback fill with white text should use `Badge` or a dark-safe foreground.

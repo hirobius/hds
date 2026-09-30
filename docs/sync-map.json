@@ -3,8 +3,9 @@
   "generated": "2026-09-30T12:27:39.299Z",
   "summary": {
     "components": 146,
-    "synced": 72,
+    "synced": 70,
     "byGap": {
+      "no-story": 2,
       "no-figma-node": 45,
       "rendered-defects": 47
     },
@@ -17,7 +18,7 @@
     "orphanStories": 4,
     "storyCoverage": {
       "expected": 127,
-      "covered": 127
+      "covered": 125
     },
     "figmaCoverage": {
       "expected": 92,
@@ -25,6 +26,36 @@
     }
   },
   "rows": [
+    {
+      "name": "StatusListItem",
+      "class": "library",
+      "filePath": "src/app/components/status-list-item.tsx",
+      "storyFiles": [],
+      "storyIds": [],
+      "storyCount": 0,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-350",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
+      "defects": 0,
+      "gaps": ["no-story"],
+      "synced": false
+    },
+    {
+      "name": "StatusTile",
+      "class": "library",
+      "filePath": "src/app/components/status-tile.tsx",
+      "storyFiles": [],
+      "storyIds": [],
+      "storyCount": 0,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-292",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
+      "defects": 0,
+      "gaps": ["no-story"],
+      "synced": false
+    },
     {
       "name": "ActivityFeed",
       "class": "library",
@@ -1525,16 +1556,31 @@
       "name": "Badge",
       "class": "library",
       "filePath": "src/app/components/badge.tsx",
-      "storyFiles": ["src/stories/badge.stories.tsx"],
+      "storyFiles": [
+        "src/stories/badge.stories.tsx",
+        "src/stories/status-list-item.stories.tsx",
+        "src/stories/status-tile.stories.tsx"
+      ],
       "storyIds": [
         "primitives-badge--all-tones",
         "primitives-badge--danger",
         "primitives-badge--info",
         "primitives-badge--neutral",
         "primitives-badge--success",
-        "primitives-badge--warning"
+        "primitives-badge--warning",
+        "primitives-status-list-item--danger",
+        "primitives-status-list-item--default",
+        "primitives-status-list-item--info",
+        "primitives-status-list-item--success",
+        "primitives-status-list-item--warning",
+        "primitives-status-list-item--with-trailing",
+        "primitives-status-tile--danger",
+        "primitives-status-tile--default",
+        "primitives-status-tile--tile-grid",
+        "primitives-status-tile--warning",
+        "primitives-status-tile--with-trailing-badge"
       ],
-      "storyCount": 6,
+      "storyCount": 17,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15",
       "figmaVia": "manifest",
       "expectFigma": true,
@@ -2629,49 +2675,6 @@
       ],
       "storyCount": 6,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247",
-      "figmaVia": "manifest",
-      "expectFigma": true,
-      "expectStory": true,
-      "defects": 0,
-      "gaps": [],
-      "synced": true
-    },
-    {
-      "name": "StatusListItem",
-      "class": "library",
-      "filePath": "src/app/components/status-list-item.tsx",
-      "storyFiles": ["src/stories/status-list-item.stories.tsx"],
-      "storyIds": [
-        "primitives-status-list-item--danger",
-        "primitives-status-list-item--default",
-        "primitives-status-list-item--info",
-        "primitives-status-list-item--success",
-        "primitives-status-list-item--warning",
-        "primitives-status-list-item--with-trailing"
-      ],
-      "storyCount": 6,
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-350",
-      "figmaVia": "manifest",
-      "expectFigma": true,
-      "expectStory": true,
-      "defects": 0,
-      "gaps": [],
-      "synced": true
-    },
-    {
-      "name": "StatusTile",
-      "class": "library",
-      "filePath": "src/app/components/status-tile.tsx",
-      "storyFiles": ["src/stories/status-tile.stories.tsx"],
-      "storyIds": [
-        "primitives-status-tile--danger",
-        "primitives-status-tile--default",
-        "primitives-status-tile--tile-grid",
-        "primitives-status-tile--warning",
-        "primitives-status-tile--with-trailing-badge"
-      ],
-      "storyCount": 5,
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-292",
       "figmaVia": "manifest",
       "expectFigma": true,
       "expectStory": true,

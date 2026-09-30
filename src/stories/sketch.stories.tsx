@@ -62,7 +62,14 @@ export const WithControls: Story = {
         <Text variant="caption" className="text-secondary">
           Speed
         </Text>
-        <input type="range" min={1} max={10} defaultValue={5} style={{ width: '80px' }} />
+        <input
+          type="range"
+          aria-label="Speed"
+          min={1}
+          max={10}
+          defaultValue={5}
+          style={{ width: '80px' }}
+        />
       </div>
     ),
   },
