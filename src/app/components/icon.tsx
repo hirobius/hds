@@ -2,6 +2,10 @@
  * Icon — semantic icon wrapper for Lucide icons.
  * @category Display
  * @tier primitive
+ * @usage Draw a Lucide glyph at a size and colour from the design tokens.
+ * @whenNot A control someone can activate, or a picture that carries content.
+ * @useInstead Button a clickable control, with iconOnly for an icon-only one
+ * @useInstead Avatar a picture of a person or entity
  */
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';

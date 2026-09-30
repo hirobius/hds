@@ -2,6 +2,10 @@
  * Toast — transient feedback notifications (Radix Toast).
  * @category Feedback
  * @tier pattern
+ * @usage Confirm an action with a brief message that appears and dismisses itself, through useToast.
+ * @whenNot A message people must act on or that must stay next to its content.
+ * @useInstead Alert a message that stays next to its content
+ * @useInstead Dialog a message that needs a decision
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367
  * @doc-exempt: no Overlays/Feedback-overlay doc page yet — add demo when created
  *

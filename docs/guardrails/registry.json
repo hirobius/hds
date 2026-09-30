@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "8c9524c6dca49bf64af45ab1bd6c592df940e7892d85b6c8dd861fdee98dd020",
-  "precommitStructureHashUpdatedAt": "2026-09-24T16:08:52.175Z",
+  "precommitStructureHash": "340dfcc405044cfc5561fee362ec90d661d7753bf1eb1377a3c9bc6899a1a669",
+  "precommitStructureHashUpdatedAt": "2026-09-30T11:09:34.752Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -156,12 +156,13 @@
     },
     {
       "id": "check-contract-coverage",
-      "description": "Lists core components (scripts/lib/core-components.mjs, the 42 core rows of hds#254) whose manifest spec has no usage.when of 20+ characters, so an agent has no machine-readable answer to which one when. Report-only for now: --report (default) always exits 0, --enforce exits 1 on any miss. hds#340 authors the remaining tags and moves it to pre-commit with --enforce (hds#339).",
-      "severity": "warn",
+      "description": "Lists core components (scripts/lib/core-components.mjs, the 42 core rows of hds#254) whose manifest spec has no usage.when of 20+ characters, so an agent has no machine-readable answer to which one when. --report (default) always exits 0, --enforce exits 1 on any miss. Runs at pre-commit with --enforce since hds#340 authored the remaining tags (plumbing: hds#339).",
+      "severity": "error",
       "gateScript": "scripts/check-contract-coverage.mjs",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand"
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"]
     },
     {
       "id": "check-contrast",

@@ -2,6 +2,10 @@
  * Checkbox — custom-drawn checkbox with check / indeterminate glyph.
  * @category Inputs
  * @tier primitive
+ * @usage Let people tick one or more independent options, or a parent choice that is partly selected.
+ * @whenNot An immediate on/off setting, or a choice of exactly one option from a set.
+ * @useInstead Toggle a setting that applies as soon as it flips
+ * @useInstead Radio exactly one choice from a set
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29
  */
 

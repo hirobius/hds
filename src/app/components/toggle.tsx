@@ -2,6 +2,10 @@
  * Toggle — boolean on/off toggle with animated thumb.
  * @category Inputs
  * @tier primitive
+ * @usage Switch one setting on or off, with the effect applying immediately.
+ * @whenNot A choice that only takes effect after submitting a form, or picking from several options.
+ * @useInstead Checkbox a form option confirmed on submit
+ * @useInstead Radio one choice from a set
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19
  */
 

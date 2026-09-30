@@ -2,6 +2,11 @@
  * Box — polymorphic layout primitive with a token-first `sx` engine.
  * @category Layout
  * @tier primitive
+ * @usage Build one-off layout that no named layout primitive covers, using token keys through `sx`.
+ * @whenNot Ordinary vertical or horizontal spacing, columns, or page-width constraint.
+ * @useInstead Stack a row or column of content with even gaps
+ * @useInstead Grid multi-column layout
+ * @useInstead Container a width-constrained page region
  * @ai-intent Provides one narrow escape hatch for genuinely one-off layout that no
  * named primitive covers, without inviting ad hoc inline styles or raw hex/px values
  * back into the system — the `sx` engine only accepts HDS token keys and a small,

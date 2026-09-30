@@ -2,6 +2,17 @@
  * ContextMenu — right-click context menu on Radix ContextMenu.
  * @category Overlays
  * @tier primitive
+ * @usage Offer actions for an item on right-click, or the equivalent keyboard gesture.
+ * @whenNot The only way to reach an action, or actions from a visible trigger.
+ * @useInstead Menu actions from a visible trigger
+ * @slot trigger The area that opens the menu on right-click (ContextMenu.Trigger).
+ * @slot content The popup holding the items (ContextMenu.Content).
+ * @keyboard ArrowDown/ArrowUp Moves the highlight and stops at the first and last item.
+ * @keyboard End Jumps to the last item.
+ * @keyboard Character Highlights the next item that starts with the typed letter.
+ * @keyboard Enter Selects the highlighted item and closes the menu.
+ * @keyboard Escape Closes the menu without leaving focus inside the removed content.
+ * @keyboard Tab Does not leave the open menu.
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix ContextMenu (@radix-ui/react-context-menu) themed with the same overlay

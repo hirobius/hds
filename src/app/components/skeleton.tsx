@@ -2,6 +2,10 @@
  * Skeleton - placeholder shimmer for content that is still loading.
  * @category Feedback
  * @tier primitive
+ * @usage Reserve the shape of content that is still loading, so the layout does not jump.
+ * @whenNot A task with measurable progress, or a wait with no layout to reserve.
+ * @useInstead Progress a task with measurable progress
+ * @useInstead Spinner a short wait with no layout to reserve
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-95
  */
 

@@ -2,6 +2,10 @@
  * Stack — one-dimensional layout primitive.
  * @category Layout
  * @tier primitive
+ * @usage Space a row or column of content with token gaps and simple flex alignment.
+ * @whenNot Multi-column layout, or giving content a background or padding.
+ * @useInstead Grid multi-column layout
+ * @useInstead Surface content that needs a background or padding
  * @ai-intent Solves vertical and horizontal rhythm with tokenized flex gaps so agents can compose sequences of content without inventing ad hoc spacer divs or margin-based stacking.
  * @ai-rules Use Stack for flow spacing and simple flex alignment only. Do NOT use Stack to create card chrome, internal surface padding, or page-width constraints. Do NOT apply arbitrary margins to Stack to fake spacing between children when the gap prop should own that rhythm. Do NOT use Stack for true two-dimensional layouts that require Grid.
  */

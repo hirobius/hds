@@ -3,6 +3,11 @@
  * Input — text field primitive with label, helper, and error slots.
  * @category Inputs
  * @tier primitive
+ * @usage Collect a single line of text, a number, an email or a password, with label, helper and error slots.
+ * @whenNot Multi-line text, or choosing from a fixed list of options.
+ * @useInstead Textarea multi-line text
+ * @useInstead Select a short fixed list
+ * @useInstead Combobox a long fixed list that needs search
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20
  */
 

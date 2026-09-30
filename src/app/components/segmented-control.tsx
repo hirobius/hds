@@ -2,6 +2,11 @@
  * SegmentedControl " segmented selection input for compact mutually-exclusive choices.
  * @category Inputs
  * @tier primitive
+ * @usage Switch between two to five mutually exclusive views or modes in a compact row.
+ * @whenNot A form choice that submits with the form, or more than five options.
+ * @useInstead Radio a form choice that submits with the form
+ * @useInstead Tabs switching between panels of content
+ * @useInstead Select more than five options
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334
  *
  * The active×hover×pressed×disabled×secondary state matrix is expressed

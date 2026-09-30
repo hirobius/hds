@@ -2,6 +2,10 @@
  * ButtonGroup — attaches Button children into one segmented control.
  * @category Actions
  * @tier primitive
+ * @usage Attach related Buttons into one segmented row or column that reads as a single control.
+ * @whenNot Buttons that are unrelated, or choosing one of several views.
+ * @useInstead SegmentedControl choosing one of several views
+ * @useInstead Stack loosely spaced buttons
  */
 
 import * as React from 'react';

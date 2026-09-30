@@ -2,6 +2,16 @@
  * Combobox — searchable single-select (Popover + filtered listbox).
  * @category Inputs
  * @tier pattern
+ * @usage Pick one value from a long list of options, with a search field that filters as you type.
+ * @whenNot A short list that needs no search, or an action list.
+ * @useInstead Select a short list without search
+ * @useInstead Menu firing actions from a trigger
+ * @keyboard Enter/Space Opens the list from the trigger and moves focus to the search field.
+ * @keyboard ArrowDown/ArrowUp Moves the active option and wraps at the ends.
+ * @keyboard Character Filters the options to those matching the typed text.
+ * @keyboard Enter Commits the active option and closes the list.
+ * @keyboard Escape Closes the list.
+ * @keyboard Tab Stays inside the open list.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237
  * @doc-exempt: no Inputs-overlay doc page yet — add demo when created
  *

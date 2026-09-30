@@ -2,6 +2,9 @@
  * Kbd — inline keyboard key / shortcut hint rendered as a native <kbd>.
  * @category Display
  * @tier primitive
+ * @usage Show a keyboard key or shortcut hint inline, as a native kbd element.
+ * @whenNot Code samples, or a control that runs the shortcut.
+ * @useInstead Text inline code and other typography
  */
 
 import * as React from 'react';

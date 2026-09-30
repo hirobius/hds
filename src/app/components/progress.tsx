@@ -2,6 +2,10 @@
  * Progress - linear progress bar (determinate or indeterminate).
  * @category Feedback
  * @tier primitive
+ * @usage Show how far a task has got, as a bar that is determinate or indeterminate.
+ * @whenNot A wait of unknown length with no bar, or content that is still loading.
+ * @useInstead Spinner a wait of unknown length
+ * @useInstead Skeleton placeholder shapes for loading content
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91
  */
 

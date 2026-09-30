@@ -2,6 +2,9 @@
  * Pagination - paged navigation control with truncation.
  * @category Navigation
  * @tier pattern
+ * @usage Move between pages of a long result set, with truncated page numbers.
+ * @whenNot A hierarchy trail, or a short list that fits on one page.
+ * @useInstead Breadcrumb a hierarchy trail
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194
  */
 // motion-ok: every interactive control is a Button or IconButton, which own

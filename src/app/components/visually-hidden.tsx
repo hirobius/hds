@@ -2,6 +2,9 @@
  * VisuallyHidden — content available to assistive tech but hidden visually.
  * @category Utility
  * @tier primitive
+ * @usage Give assistive technology a label or description that sighted people do not need to see.
+ * @whenNot Text everyone should read, or hiding an element from assistive technology too.
+ * @useInstead Text text that everyone should read
  */
 
 import * as React from 'react';

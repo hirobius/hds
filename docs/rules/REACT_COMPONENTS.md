@@ -194,7 +194,7 @@ A tag body runs until the next `@tag`, a blank line, or the end of the block; co
  */
 ```
 
-`node scripts/check-contract-coverage.mjs` lists the 42 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It is report-only until hds#340.
+`node scripts/check-contract-coverage.mjs` lists the 42 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
 
 ## Component Inventory & Fallbacks
 
