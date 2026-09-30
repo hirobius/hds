@@ -4,7 +4,7 @@
  * Enforces the "Surface Inset" rule: backgrounds MUST have internal padding.
  * - Default padding: px24 (cards) | px16 (items)
  * - Default border: none (elevation model — use shadow for lift)
- * - Fixed radius: var(--component-card-radius)
+ * - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card
  * - shadow prop: applies a two-layer elevation shadow for card lift
  *
  * Usage:
@@ -36,7 +36,7 @@ import type { PaddingOption } from './surface-padding';
 // was a silent no-op.)
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists
 const surfaceVariants = cva(
-  'box-border h-full border-none rounded-[var(--component-card-radius)] bg-[color:var(--semantic-color-surface-raised)] text-[color:var(--semantic-color-content-primary)]',
+  'box-border h-full border-none rounded-lg bg-[color:var(--semantic-color-surface-raised)] text-[color:var(--semantic-color-content-primary)]',
   {
     variants: {
       padding: {

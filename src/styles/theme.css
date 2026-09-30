@@ -434,7 +434,7 @@
   min-height: 0;
   max-width: var(--hds-local-sketchbookCanvas-maxWidth-stage);
   border: 1px solid var(--semantic-color-border-default);
-  border-radius: var(--component-card-radius);
+  border-radius: calc(var(--role-radius) + 4px);
   overflow: hidden;
 }
 
@@ -707,7 +707,7 @@ input[data-search-input='true'] {
 .hds-doc-link-card {
   background: transparent;
   border: none;
-  border-radius: var(--component-card-radius);
+  border-radius: calc(var(--role-radius) + 4px);
   color: var(--semantic-color-content-primary);
   transition:
     background-color var(--hds-motion-productive-duration),
@@ -737,7 +737,7 @@ input[data-search-input='true'] {
 .hds-soft-nav-card {
   background: transparent;
   border: none;
-  border-radius: var(--component-card-radius);
+  border-radius: calc(var(--role-radius) + 4px);
   box-sizing: border-box;
   transition:
     background-color var(--hds-motion-productive-duration),
