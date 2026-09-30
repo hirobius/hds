@@ -107,6 +107,54 @@ describe('axe gate: allowlist', () => {
   });
 });
 
+describe('axe gate: stories that pin a theme', () => {
+  it('reports a skipped pass without failing the gate or counting it as an error', () => {
+    const r = evaluateScan(
+      [
+        {
+          storyId: 'patterns-destructivesection--dark',
+          theme: 'light',
+          violations: [],
+          error: null,
+          skipped: 'story pins theme dark via globals',
+        },
+        {
+          storyId: 'patterns-destructivesection--dark',
+          theme: 'dark',
+          violations: [],
+          error: null,
+        },
+      ],
+      [],
+    );
+    expect(r.ok).toBe(true);
+    expect(r.errored).toEqual([]);
+    expect(r.skipped).toEqual([
+      {
+        storyId: 'patterns-destructivesection--dark',
+        theme: 'light',
+        reason: 'story pins theme dark via globals',
+      },
+    ]);
+  });
+
+  it('still fails when the mismatch is not a pinned story', () => {
+    const r = evaluateScan(
+      [
+        {
+          storyId: 'a--b',
+          theme: 'light',
+          violations: [],
+          error: 'theme not applied: wanted light, story rendered with dark',
+        },
+      ],
+      [],
+    );
+    expect(r.ok).toBe(false);
+    expect(r.skipped).toEqual([]);
+  });
+});
+
 describe('axe gate: retried scans', () => {
   it('counts scans that only passed on retry without failing the gate', () => {
     const retried = { ...scan('a--x', 'light'), retried: true };

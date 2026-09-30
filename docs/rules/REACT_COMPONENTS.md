@@ -60,7 +60,7 @@ The sanctioned escape hatch on every primitive is **`className`** — not inline
 
 ### Containers
 
-- **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="component"` (24px) for cards, `padding="item"` (16px) for compact items), consistent radius (`var(--primitive-radius-8)`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` on layout primitives accepts HDS token keys (`'normal'`, `'px24'`).
+- **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="component"` (24px) for cards, `padding="item"` (16px) for compact items), consistent radius (`rounded-lg`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` on layout primitives accepts HDS token keys (`'normal'`, `'px24'`).
 - **No `<Divider>` for layout separation** — use 48px gap (`space.12`) between major sections; whitespace is the separator.
 
 #### Card don'ts (explicit anti-pattern list)
@@ -69,7 +69,7 @@ Every item below is a build error. If an AI agent or human produces any of these
 
 - **No `linear-gradient` on card background** — card background is always `var(--semantic-color-surface-raised)`, a flat token-mapped color. Never a gradient, never `radial-gradient`, never a CSS custom property that resolves to a gradient.
 - **Card elevation via role tokens** — Cards default to `elevation.flat` (border, no shadow). Cards lift to `elevation.raised` on hover or when interactively elevated. Never use raw box-shadow values; always bind to a `semantic.elevation.{role}` role bundle.
-- **No `border-radius` greater than 8 px on cards** — the only valid radius is `var(--primitive-radius-8)`. Values of 12, 16, 20 px, `rounded-xl`, `rounded-2xl`, `rounded-full`, or any ad hoc radius are wrong.
+- **One container radius** — cards and every other container use `rounded-lg`, which is `role.radius` + 4 px (12 px by default, 4 px under `brutalist-demo`), so it follows the tenant knob. `var(--component-card-radius)`, hard-coded pixel values, `rounded-xl`, `rounded-2xl`, `rounded-full`, or any ad hoc radius are wrong.
 - **No colored or tinted card surfaces** — backgrounds like `rgba(59,130,246,0.1)`, `hsl(220 80% 96%)`, or any non-neutral token are forbidden. Cards must read as neutral surfaces.
 - **No decorative chrome inside cards** — no glow rings, no shimmer overlays, no `backdrop-filter: blur(...)` frosted glass, no gradient borders (`border-image`, pseudo-element gradients), no patterned fills, no AI-aesthetic particle or noise effects.
 - **No hover fill changes** — interactive cards respond to hover with `transform: scale(1.02)` only. Never change `background-color`, `opacity`, or `border-color` on hover as the primary interaction signal.
@@ -95,7 +95,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 
 - Background: `var(--semantic-color-surface-raised)`. No custom colors, gradients, or tinted fills.
 - Border: `1px solid var(--semantic-color-border-default)` (resting cards only — `elevation.flat`). Never use `box-shadow` as an elevation substitute.
-- Border radius: `var(--primitive-radius-8)` (8px). Never 12px, 16px, 20px, `rounded-xl`, or `rounded-full`.
+- Border radius: `rounded-lg` (`role.radius` + 4 px: 12 px default, 4 px `brutalist-demo`). Never `var(--component-card-radius)`, a hard-coded value, `rounded-xl`, or `rounded-full`.
 - Padding: `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`. No raw pixel values.
 - Shadow: none by default (`elevation.flat`). Lifted/interactive cards use `shadow.subtle` via `elevation.raised` — bind to the role token, never a raw box-shadow value.
 - Title: `hds.typeStyles.heading3` / `<Text variant="h3">`. No other type style for the primary card heading.

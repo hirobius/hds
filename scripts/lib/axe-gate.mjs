@@ -41,18 +41,25 @@ export function validateAllowlist(entries) {
 }
 
 /**
- * scans: [{ storyId, theme, violations: [{ id, impact, nodes }], error }]
+ * scans: [{ storyId, theme, violations: [{ id, impact, nodes }], error, skipped }]
  * allowlist: [{ storyId, ruleId, reason, addedOn }] (an entry covers both themes)
+ * A scan with `skipped` set (a story that pins its own theme via story-level
+ * globals, so the other theme cannot be applied) is reported but never fails.
  */
 export function evaluateScan(scans, allowlist) {
   const blocking = [];
   const allowed = [];
   const errored = [];
   const retried = [];
+  const skipped = [];
   const matched = new Set();
   const allowKey = new Set(allowlist.map((e) => `${e.storyId}::${e.ruleId}`));
 
   for (const s of scans) {
+    if (s.skipped) {
+      skipped.push({ storyId: s.storyId, theme: s.theme, reason: s.skipped });
+      continue;
+    }
     if (s.retried) retried.push({ storyId: s.storyId, theme: s.theme });
     if (s.error) {
       errored.push({ storyId: s.storyId, theme: s.theme, error: s.error });
@@ -84,6 +91,7 @@ export function evaluateScan(scans, allowlist) {
     allowed,
     errored,
     retried,
+    skipped,
     stale,
     ok: blocking.length === 0 && errored.length === 0 && stale.length === 0,
   };

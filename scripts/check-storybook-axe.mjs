@@ -185,8 +185,19 @@ async function scanOne(page, story, theme) {
       () =>
         document.querySelector('#storybook-root [data-theme]')?.getAttribute('data-theme') ?? null,
     );
-    if (applied !== theme)
+    if (applied !== theme) {
+      // A story-level `globals: { theme }` (Storybook >= 8.3) wins over the toolbar
+      // global the worker pinned, so such a story can only ever render in its own
+      // theme. Scan it in that theme (the other worker does) and skip this pass.
+      const pinned = await page.evaluate(
+        () => window.__STORYBOOK_PREVIEW__?.currentRender?.story?.storyGlobals?.theme ?? null,
+      );
+      if (pinned && pinned === applied) {
+        rec.skipped = `story pins theme ${pinned} via globals`;
+        return rec;
+      }
       throw new Error(`theme not applied: wanted ${theme}, story rendered with ${applied}`);
+    }
     // Settle async content: fonts, and images (a broken src swaps in a fallback
     // element on error, which otherwise races the scan and makes results flaky).
     await page.evaluate(async () => {
@@ -331,7 +342,7 @@ async function main() {
 
   console.log(
     `\nscanned ${result.scanned} (${stories.length} stories x ${THEMES.length} themes) in ${seconds}s: ` +
-      `${result.blocking.length} blocking, ${result.allowed.length} allowlisted, ${result.errored.length} errored, ${result.retried.length} retried, ${result.stale.length} stale allowlist entries`,
+      `${result.blocking.length} blocking, ${result.allowed.length} allowlisted, ${result.errored.length} errored, ${result.retried.length} retried, ${result.skipped.length} skipped (story pins a theme), ${result.stale.length} stale allowlist entries`,
   );
   for (const e of result.errored) console.error(`ERROR ${e.storyId} [${e.theme}]: ${e.error}`);
   for (const e of result.stale)

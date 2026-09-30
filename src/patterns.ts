@@ -38,3 +38,5 @@ export * from './app/components/reveal';
 export * from './app/components/page-header';
 export * from './app/components/metric-tiles';
 export * from './app/components/form-actions';
+export * from './app/components/destructive-section';
+export * from './app/components/data-table-section';

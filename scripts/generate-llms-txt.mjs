@@ -262,7 +262,7 @@ When building any card component or card-like surface, ALL of the following rule
 | --- | --- | --- |
 | Background | \`var(--semantic-color-surface-raised)\` | Custom colors, gradients, tinted fills, any non-token value |
 | Border | \`1px solid var(--semantic-color-border-default)\` | \`box-shadow\` as an elevation substitute |
-| Border radius | \`var(--primitive-radius-8)\` (8 px) | 12 px, 16 px, 20 px, \`rounded-full\`, or any other value |
+| Border radius | \`rounded-lg\` (\`role.radius\` + 4 px: 12 px by default, follows the tenant) | \`var(--component-card-radius)\`, \`rounded-full\`, or any hard-coded value |
 | Padding | \`var(--semantic-space-surface-padding)\` or \`<Surface padding="component">\` | Raw pixel values, Tailwind spacing classes, ad hoc insets |
 | Shadow | Resting cards: none (\`elevation.flat\`). Interactive lifted state: \`shadow.subtle\` via \`elevation.raised\`. Never reach for shadow values directly — bind via \`var(--semantic-elevation-{role}-shadow)\` | Raw \`box-shadow\` values, \`drop-shadow\`, glow, or any depth effect not bound to a role token |
 | Title | \`hds.typeStyles.heading3\` / \`<Text variant="heading3">\` | Any other type style for the primary card heading |
