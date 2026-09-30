@@ -21,7 +21,14 @@
  * stripped from the child environment.
  */
 
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+
+// Every test here runs the generator as a child process that loads TypeScript
+// and re-walks the component tree. On a loaded machine (CI, or several agent
+// sessions building at once) one run takes well over vitest's 5 s default, and
+// the pre-push suite failed on exactly that in #321, #326 and #347. The work is
+// bounded, so give it a real ceiling instead of a flaky one.
+vi.setConfig({ testTimeout: 60_000 });
 import { mkdtempSync, mkdirSync, cpSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -110,7 +117,7 @@ function regenerate({ tag, committed = OLD_NODE, extraSpecs = {} }) {
   return { stdout, specs: { ...manifest.componentSpecs, ...manifest.utilities } };
 }
 
-describe('generate-manifest figmaLink regeneration', () => {
+describe('generate-manifest figmaLink regeneration', { timeout: 60_000 }, () => {
   it('clears a committed figmaLink when the @figma tag is removed', () => {
     const { specs } = regenerate({ tag: null });
     expect(specs.DemoWidget.figmaUrl).toBeNull();
@@ -144,7 +151,7 @@ describe('generate-manifest figmaLink regeneration', () => {
 
     const mapped = regenerate({ tag: NEW_NODE });
     expect(mapped.stdout).toContain('Figma links: 1 of 1 component specs (100%)');
-  }, 30_000); // two manifest generations in a row; the default 5s flakes under load
+  }, 60_000); // two full manifest regenerations; the 5s default flakes when the machine is loaded
 });
 
 describe('public/hds-manifest.json', () => {

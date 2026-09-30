@@ -59,7 +59,7 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 
 Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `6px` (`primitive.space.px6`) · `8px` (`primitive.space.2`) · `10px` (`primitive.space.px10`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
 
-Use `primitive.space.*` for layout rhythm, padding, and gaps. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `--hds-space-{xs…4xl}` CSS vars provide comfortable/compact density scaling per `document.documentElement.dataset.density`.
+Use `primitive.space.*` for layout rhythm, padding, and gaps. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
 <!-- auto:end:spacing -->
 
 ## Corner-Radius Policy
@@ -127,7 +127,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 <!-- auto:start:components -->
 | Component | Radius | States | Guidance |
 | --- | --- | --- | --- |
-| **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Icon buttons (`IconButton`) follow the same token surface. |
+| **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Icon buttons (`IconButton`) follow the same token surface. Icon-only actions use `IconButton` with an icon from `@hirobius/design-system/icons`. |
 | **Inputs** (`Input`) | `8px` (`semantic.radius.action`) | default · focus · filled · error · disabled · loading | Border-driven treatment; no filled background by default. Focus uses `semantic.color.border.accent` plus a 2px outline offset. Error swaps to `component.input.borderError`. |
 | **Cards** (`Card`) | `8px` (`primitive.radius.8`) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `var(--primitive-radius-8)` (8 px) — never 12/16/20 px. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
@@ -155,6 +155,31 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                 | Background fill change, border color shift, or opacity fade on hover                        |
 
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
+
+## Screen Patterns
+
+Three patterns sit above the primitives so that every screen is composed the same way. Import them from `@hirobius/design-system/patterns`.
+
+### Page title rule
+
+Every screen has exactly one `PageHeader`. The page title is `heading2` (30px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` and `h1` are reserved for marketing and landing surfaces and are never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
+
+### Which one, when
+
+Four components show a headline number or a state. Pick by where it sits.
+
+| Component     | Use it for                                                                    | Use instead                                                                  |
+| ------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `MetricTiles` | The default for any row of headline numbers on a screen. One fixed tile size. | Nothing: start here.                                                         |
+| `Stat`        | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
+| `Card.Metric` | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
+| `StatusTile`  | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
+
+`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `heading2`, the label as an eyebrow and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
+
+### Form actions rule
+
+`FormActions` puts the primary submit last in DOM order and right-most, with the secondary or cancel action immediately to its left. A destructive action goes on the far left, apart from the other two, and never to the right of the primary. The row is not sticky unless `sticky` is set.
 
 ## Do's and Don'ts
 

@@ -12,6 +12,11 @@
  * Output:
  *   - public/llms.txt
  *   - llms.txt (repo-root mirror for local tooling)
+ *   - public/llms-full.txt (llms.txt + full DESIGN.md + props digest)
+ *   - public/llms/{layout,tokens,scroll,components}.txt (topic slices)
+ *
+ * Every section is written once (as a `## ` block of the llms.txt template) and
+ * the slices pick blocks by heading, so llms.txt and the slices share text.
  */
 
 import { mkdirSync, readFileSync } from 'fs';
@@ -43,6 +48,7 @@ const layoutRecipeSteps = [
   '`Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.',
   'Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).',
   '`Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.',
+  'Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile` with the "Which one, when" table in `DESIGN.md`.',
   '`Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.',
 ];
 
@@ -77,11 +83,62 @@ const tokenRules = [
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
 
-export function generateLlmsTxt() {
+const SLICES = [
+  { name: 'layout', blurb: 'screen layout recipe, card anatomy, elevation roles' },
+  { name: 'tokens', blurb: 'token rules and the quick token reference' },
+  { name: 'scroll', blurb: 'scroll-driven section recipe' },
+  { name: 'components', blurb: 'component inventory pointer, API pointer, props digest' },
+];
+
+/** Split generated text into `## ` sections (heading line + body). */
+function parseSections(text) {
+  const out = [];
+  let cur = null;
+  for (const line of text.split('\n')) {
+    if (line.startsWith('## ')) {
+      cur = { title: line.slice(3), lines: [line] };
+      out.push(cur);
+    } else if (cur) cur.lines.push(line);
+  }
+  return out.map((sec) => ({ title: sec.title, body: sec.lines.join('\n').trimEnd() }));
+}
+
+const clip = (v, n) => {
+  const one = String(v ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return one.length > n ? `${one.slice(0, n - 1)}…` : one;
+};
+
+/** Compact per-component digest: no examples, defaults clipped. */
+function buildPropsDigest(api) {
+  const comps = api.components ?? {};
+  return Object.keys(comps)
+    .sort()
+    .map((name) => {
+      const c = comps[name];
+      const first = String(c.description ?? '').split('\n')[0];
+      const props = (c.props ?? [])
+        .map((p) => {
+          const def = p.default != null && p.default !== '' ? ` = ${clip(p.default, 40)}` : '';
+          return `  - ${p.name}: ${clip(p.type, 80)}${def}`;
+        })
+        .join('\n');
+      return `### ${name}\n${clip(first, 160)}${props ? `\n${props}` : ''}`;
+    })
+    .join('\n\n');
+}
+
+/**
+ * @param {{ write?: boolean }} [opts] write:false performs no file writes and
+ *   returns { repoRelPath: text } for every output (used as a freshness check).
+ */
+export function generateLlmsTxt({ write = true } = {}) {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  writeComponentApiManifest();
+  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+  if (write) writeComponentApiManifest();
   // Keep as an existence check (and to ensure the generated artifact is present).
-  JSON.parse(readFileSync(componentApiPath, 'utf8'));
+  const componentApi = JSON.parse(readFileSync(componentApiPath, 'utf8'));
 
   const tokensPath = join(ROOT, 'hirobius.tokens.json');
   const quickTokenReference = buildTokenQuickReference(tokensPath);
@@ -107,7 +164,41 @@ export function generateLlmsTxt() {
     ? `## Which one when\n\nOne line per component that declares when to use it (\`@usage\` / \`@useInstead\` in its JSDoc). Full detail, including \`usage.whenNot\`, \`keyboard\` and \`aiRules\`, is in \`public/hds-manifest.json\` and \`src/app/data/component-api.json\`.\n\n${whichOneWhenLines}\n\n`
     : '';
 
+  const iconNames = manifest.iconSet?.names ?? [];
+  const hdsNames = new Set([
+    ...(manifest.componentInventory ?? []),
+    ...(manifest.patternInventory ?? []),
+  ]);
+  const iconCollisions = iconNames.filter((n) => hdsNames.has(n));
+  const collisionNote = iconCollisions.length
+    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} share names with HDS components; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
+    : '';
+  const lucideVersion = String(pkg.dependencies?.['lucide-react'] ?? '').replace(/^[^\d]*/, '');
+  const iconSection = iconNames.length
+    ? `## Icons
+
+Icons come from the curated subpath \`${manifest.iconSet.subpath}\`; nothing extra to install.
+
+\`\`\`tsx
+import { IconButton } from '@hirobius/design-system';
+import { Ellipsis } from '${manifest.iconSet.subpath}';
+
+<IconButton icon={Ellipsis} label="Row actions" />
+\`\`\`
+
+Rule: icon-only actions (row menus, close, edit) use \`IconButton\`; do not hand-roll a button with a glyph or text "...".
+
+Names: ${iconNames.join(', ')}
+
+Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.${collisionNote} For an icon outside the set, install \`lucide-react@${lucideVersion}\` (same version keeps the \`LucideIcon\` type identical).
+
+`
+    : '';
+
   const generated = new Date().toISOString();
+  const SLICE_INDEX = SLICES.map((sl) => `- \`public/llms/${sl.name}.txt\` - ${sl.blurb}`).join(
+    '\n',
+  );
 
   const txt = `# Hirobius Design System
 
@@ -162,6 +253,8 @@ Negative rules (apply everywhere, checked by \`scripts/audit-tokens.mjs --full\`
 
 ${layoutNegativeRules.map((rule) => `- ${rule}`).join('\n')}
 
+Density: put \`data-density="compact"\` on the same \`[data-hds]\` scope element (or \`<html>\`) to tighten \`semantic.space.scale.*\`, surface padding and region gutter; \`Table\` follows it unless given a \`density\` prop.
+
 Reference: \`docs/architecture/variant-contract.md\` for structural/semantic/size/density variance; \`src/app/data/component-api.json\` for every layout primitive's full prop table and \`@ai-rules\` guidance.
 
 ## How To Build A Scroll-Driven Section
@@ -204,6 +297,16 @@ When building any card component or card-like surface, ALL of the following rule
 
 Cards default to \`elevation.flat\`. Popovers/tooltips/dropdowns use \`elevation.floating\`. Dialogs/sheets use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
+## Slices And Full Bundle
+
+Load only what the task needs. Same text as this file, split by topic:
+
+${SLICE_INDEX}
+
+- \`public/llms-full.txt\` - this file + the full \`DESIGN.md\` + a compact props digest for every component.
+
+Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\`, \`src/stories/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+
 ## Context Loading Rules (Credit Efficiency)
 
 Default context (load first):
@@ -220,7 +323,7 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 - \`TOKEN_GOVERNANCE.md\`
 - \`SYSTEMS_REGISTRY.md\`
 
-${patternSection}## Token Rules
+${patternSection}${iconSection}## Token Rules
 
 ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 
@@ -242,16 +345,50 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 - \`DESIGN-HANDOFF.md\` - verbose visual language mirror (on-demand only)
 `;
 
-  mkdirSync(join(ROOT, 'public'), { recursive: true });
-  writeStableArtifact(join(ROOT, 'public', 'llms.txt'), txt);
-  writeStableArtifact(join(ROOT, 'llms.txt'), txt);
+  const sections = parseSections(txt);
+  const pick = (titles) =>
+    titles
+      .map((t) => {
+        const found = sections.find((sec) => sec.title.startsWith(t));
+        if (!found) throw new Error(`generate-llms-txt: no section "${t}"`);
+        return found.body;
+      })
+      .join('\n\n');
+
+  const digest = buildPropsDigest(componentApi);
+  const digestSection = `## Component Props Digest\n\nCompact: name, first line of description, then prop: type = default. Full detail in \`src/app/data/component-api.json\`.\n\n${digest}`;
+
+  const designMd = readFileSync(join(ROOT, 'DESIGN.md'), 'utf8').trim();
+  const full = `${txt.trimEnd()}\n\n---\n\n# DESIGN.md (full)\n\n${designMd}\n\n---\n\n${digestSection}\n`;
+
+  const slices = {
+    layout: pick(['How To Lay Out A Screen', 'HDS Card Anatomy', 'Elevation roles']),
+    tokens: pick(['Tokens (', 'Quick Token Reference', 'Token Rules']),
+    scroll: pick(['How To Build A Scroll-Driven Section']),
+    components: `${pick(['Component Inventory', 'Component API'])}\n\n${digestSection.trimEnd()}`,
+  };
+
+  const sliceHeader = (name) =>
+    `# Hirobius Design System - ${name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms.txt.\n\n`;
+  const outputs = {
+    'public/llms.txt': txt,
+    'llms.txt': txt,
+    'public/llms-full.txt': full,
+  };
+  for (const sl of SLICES) {
+    outputs[`public/llms/${sl.name}.txt`] = `${sliceHeader(sl.name)}${slices[sl.name]}\n`;
+  }
+  if (!write) return outputs;
+
+  mkdirSync(join(ROOT, 'public', 'llms'), { recursive: true });
+  for (const [rel, text] of Object.entries(outputs)) writeStableArtifact(join(ROOT, rel), text);
 
   return txt;
 }
 
 export function main() {
   generateLlmsTxt();
-  console.log('✓ public/llms.txt');
+  console.log('✓ public/llms.txt, public/llms-full.txt, public/llms/*.txt');
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

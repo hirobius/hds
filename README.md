@@ -14,7 +14,7 @@ pnpm add @hirobius/design-system
 
 - **109** public component modules, exported from `src/index.ts`
 - **379** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **455** Storybook stories in **115** story files
+- **469** Storybook stories in **118** story files
 
 <!-- auto:end:front-door-counts -->
 
@@ -193,6 +193,16 @@ The gates are deterministic and need no browser or live site:
 - **pre-push** (`.husky/pre-push`): `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
 - **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and a Storybook build.
 - **Visual review:** Storybook is the visual verification surface, reviewed by hand. The earlier browser test suite drove a docs site that no longer exists and was removed (ADR-018).
+
+### Agent consistency
+
+Three agents build the same Client-detail screen from the public docs, and `pnpm eval:consistency` measures how alike the results are: builds, token violations, axe, component-set overlap (Jaccard) and pixel diff. Today it runs the offline half over a directory of apps (`pnpm eval:consistency -- --apps <dir> --offline`, violations and Jaccard from source only). The ledger, the thresholds and the screen spec live in [`eval/consistency/`](eval/consistency/README.md). The latest recorded run, as printed by `pnpm eval:consistency -- --summary`:
+
+```text
+Agent consistency 2026-09-30 (harness, design-system 0.18.0): FAIL - builds 3/3, violations 0, axe 0, Jaccard min 0.7368 (limit >= 0.85), light diff max 1.0268% (limit <= 1.5%)
+```
+
+The baseline misses its thresholds on purpose: they are not softened to make it pass.
 
 `CLAUDE.md` is the operating contract for agents working in this repo.
 
