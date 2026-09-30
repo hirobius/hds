@@ -26,7 +26,7 @@ describe('status-list-item stories, theme-safe trailing status (hds#349)', () =>
   });
 
   it('WithTrailing renders every trailing status as an HDS Badge on the feedback pair', () => {
-    const story = stories.WithTrailing as { render: () => React.ReactNode };
+    const story = stories.WithTrailing as unknown as { render: () => React.ReactNode };
     const { container } = render(<>{story.render()}</>);
     const items = container.querySelectorAll('[data-tone]:has(> .shrink-0)');
     const trailing = container.querySelectorAll('.shrink-0 > *');
