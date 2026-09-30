@@ -225,7 +225,7 @@ export function buildSpacing(raw) {
   lines.push(`Scale: ${scale}`);
   lines.push('');
   lines.push(
-    'Use `primitive.space.*` for layout rhythm, padding, and gaps. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `--hds-space-{xs…4xl}` CSS vars provide comfortable/compact density scaling per `document.documentElement.dataset.density`.',
+    'Use `primitive.space.*` for layout rhythm, padding, and gaps. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
   );
   return lines.join('\n');
 }

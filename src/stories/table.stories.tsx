@@ -153,6 +153,28 @@ export const DensityCompact: Story = {
   render: () => <Table columns={tokenColumns} rows={tokenRows} density="compact" />,
 };
 
+export const FollowsDensityDial: Story = {
+  parameters: {
+    chromatic: { modes: MODES },
+    docs: {
+      description: {
+        story:
+          'No `density` prop: rows follow the ancestor `data-density` attribute (comfortable by default, compact inside `[data-density="compact"]`). Compare the comfortable and compact modes.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div data-density="comfortable">
+        <Table columns={tokenColumns} rows={tokenRows} caption="Comfortable scope" />
+      </div>
+      <div data-density="compact">
+        <Table columns={tokenColumns} rows={tokenRows} caption="Compact scope" />
+      </div>
+    </div>
+  ),
+};
+
 export const DensityComfortable: Story = {
   parameters: {
     docs: {
