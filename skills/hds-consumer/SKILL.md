@@ -56,7 +56,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
-- `CardMetric` — Card — surface container with slot anatomy (12d-card-anatomy).
+- `CardMetric` — Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `Carousel` — Renders children as a snap-scrolling track with Prev/Next scroll buttons.
