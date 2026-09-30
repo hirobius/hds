@@ -127,9 +127,13 @@ function buildPropsDigest(api) {
     .join('\n\n');
 }
 
-export function generateLlmsTxt() {
+/**
+ * @param {{ write?: boolean }} [opts] write:false performs no file writes and
+ *   returns { repoRelPath: text } for every output (used as a freshness check).
+ */
+export function generateLlmsTxt({ write = true } = {}) {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  writeComponentApiManifest();
+  if (write) writeComponentApiManifest();
   // Keep as an existence check (and to ensure the generated artifact is present).
   const componentApi = JSON.parse(readFileSync(componentApiPath, 'utf8'));
 
@@ -260,7 +264,7 @@ ${SLICE_INDEX}
 
 - \`public/llms-full.txt\` - this file + the full \`DESIGN.md\` + a compact props digest for every component.
 
-Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\`, \`src/stories/\` or that name \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\`, \`src/stories/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 
@@ -323,16 +327,20 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
     components: `${pick(['Component Inventory', 'Component API'])}\n\n${digestSection.trimEnd()}`,
   };
 
-  mkdirSync(join(ROOT, 'public', 'llms'), { recursive: true });
-  writeStableArtifact(join(ROOT, 'public', 'llms.txt'), txt);
-  writeStableArtifact(join(ROOT, 'llms.txt'), txt);
-  writeStableArtifact(join(ROOT, 'public', 'llms-full.txt'), full);
+  const sliceHeader = (name) =>
+    `# Hirobius Design System - ${name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms.txt.\n\n`;
+  const outputs = {
+    'public/llms.txt': txt,
+    'llms.txt': txt,
+    'public/llms-full.txt': full,
+  };
   for (const sl of SLICES) {
-    writeStableArtifact(
-      join(ROOT, 'public', 'llms', `${sl.name}.txt`),
-      `# Hirobius Design System - ${sl.name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms.txt.\n\n${slices[sl.name]}\n`,
-    );
+    outputs[`public/llms/${sl.name}.txt`] = `${sliceHeader(sl.name)}${slices[sl.name]}\n`;
   }
+  if (!write) return outputs;
+
+  mkdirSync(join(ROOT, 'public', 'llms'), { recursive: true });
+  for (const [rel, text] of Object.entries(outputs)) writeStableArtifact(join(ROOT, rel), text);
 
   return txt;
 }

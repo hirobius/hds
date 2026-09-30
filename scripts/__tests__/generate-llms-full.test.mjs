@@ -9,13 +9,31 @@ import { generateLlmsTxt } from '../generate-llms-txt.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 
-generateLlmsTxt();
+const normalize = (t) => t.replace(/\d{4}-\d{2}-\d{2}(T[\d:.]+Z)?/g, '<date>');
+
+describe('committed llms output is fresh', () => {
+  it('matches what the generator would write now', () => {
+    const outputs = generateLlmsTxt({ write: false });
+    expect(Object.keys(outputs)).toEqual(
+      expect.arrayContaining([
+        'public/llms.txt',
+        'public/llms-full.txt',
+        'public/llms/layout.txt',
+        'public/llms/components.txt',
+      ]),
+    );
+    const stale = Object.entries(outputs)
+      .filter(([rel, text]) => normalize(read(rel)) !== normalize(text))
+      .map(([rel]) => rel);
+    expect(stale, 'run pnpm llms:generate').toEqual([]);
+  });
+});
 
 describe('llms-full.txt and slices', () => {
   it('names every componentInventory entry', () => {
     const manifest = JSON.parse(read('public/hds-manifest.json'));
     const full = read('public/llms-full.txt');
-    const absent = manifest.componentInventory.filter((n) => !full.includes(n));
+    const absent = manifest.componentInventory.filter((n) => !full.includes(`### ${n}\n`));
     expect(absent).toEqual([]);
   });
 

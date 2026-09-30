@@ -15,6 +15,7 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const COPIES = [
   ['DESIGN.md', 'DESIGN.md'],
   ['CONSUMING.md', 'CONSUMING.md'],
+  ['docs/CONSUMING.md', 'docs/CONSUMING.md'],
   ['src/app/data/component-api.json', 'component-api.json'],
 ];
 
@@ -24,8 +25,8 @@ export function copyAgentContext(root = ROOT, outDir = 'storybook-static') {
       throw new Error(`copy-agent-context: source file missing: ${src}`);
     }
   }
-  mkdirSync(path.join(root, outDir), { recursive: true });
   for (const [src, dest] of COPIES) {
+    mkdirSync(path.dirname(path.join(root, outDir, dest)), { recursive: true });
     copyFileSync(path.join(root, src), path.join(root, outDir, dest));
   }
   return COPIES.map(([, d]) => d);

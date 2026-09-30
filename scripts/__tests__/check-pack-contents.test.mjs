@@ -55,17 +55,20 @@ describe('real npm pack --dry-run', () => {
     120_000,
   );
 
-  it('CLI exits 1 naming the path when a required file is missing', () => {
-    const res = spawnSync(
-      'node',
-      ['scripts/check-pack-contents.mjs', '--require', 'no-such-file.md'],
-      {
-        cwd: ROOT,
-        encoding: 'utf8',
-      },
-    );
-    if (!existsSync(join(ROOT, 'dist', 'hirobius-ui.js'))) return;
-    expect(res.status).toBe(1);
-    expect(res.stderr + res.stdout).toContain('no-such-file.md');
-  }, 120_000);
+  it.skipIf(!existsSync(join(ROOT, 'dist', 'hirobius-ui.js')))(
+    'CLI exits 1 naming the path when a required file is missing',
+    () => {
+      const res = spawnSync(
+        'node',
+        ['scripts/check-pack-contents.mjs', '--require', 'no-such-file.md'],
+        {
+          cwd: ROOT,
+          encoding: 'utf8',
+        },
+      );
+      expect(res.status).toBe(1);
+      expect(res.stderr + res.stdout).toContain('no-such-file.md');
+    },
+    120_000,
+  );
 });
