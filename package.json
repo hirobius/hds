@@ -20,7 +20,7 @@
   "author": "Adrian Milsap",
   "license": "SEE LICENSE IN NOTICE.md",
   "private": false,
-  "version": "0.17.0",
+  "version": "0.18.0",
   "engines": {
     "node": ">=20",
     "pnpm": ">=8"
@@ -91,6 +91,11 @@
       "types": "./dist/types/src/patterns.d.ts",
       "import": "./dist/patterns.js",
       "default": "./dist/patterns.js"
+    },
+    "./icons": {
+      "types": "./dist/types/src/icons.d.ts",
+      "import": "./dist/icons.js",
+      "default": "./dist/icons.js"
     },
     "./package.json": "./package.json"
   },

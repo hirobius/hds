@@ -143,6 +143,8 @@ export type ManifestApiComponent = {
   aiRules?: string;
   /** Documentation prop rows — array, not a Record. */
   props?: ManifestApiPropRow[];
+  /** Table only: what each `TableCellSlot` value renders. */
+  cellSlots?: Array<{ name: string; description: string }>;
   guides?: Array<{
     label: string;
     text: string;

@@ -79,6 +79,7 @@ const tokenRules = [
 
 export function generateLlmsTxt() {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
   writeComponentApiManifest();
   // Keep as an existence check (and to ensure the generated artifact is present).
   JSON.parse(readFileSync(componentApiPath, 'utf8'));
@@ -105,6 +106,37 @@ export function generateLlmsTxt() {
   const whichOneWhenLines = buildWhichOneWhen(manifest.componentSpecs ?? {});
   const whichOneWhenSection = whichOneWhenLines
     ? `## Which one when\n\nOne line per component that declares when to use it (\`@usage\` / \`@useInstead\` in its JSDoc). Full detail, including \`usage.whenNot\`, \`keyboard\` and \`aiRules\`, is in \`public/hds-manifest.json\` and \`src/app/data/component-api.json\`.\n\n${whichOneWhenLines}\n\n`
+    : '';
+
+  const iconNames = manifest.iconSet?.names ?? [];
+  const hdsNames = new Set([
+    ...(manifest.componentInventory ?? []),
+    ...(manifest.patternInventory ?? []),
+  ]);
+  const iconCollisions = iconNames.filter((n) => hdsNames.has(n));
+  const collisionNote = iconCollisions.length
+    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} share names with HDS components; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
+    : '';
+  const lucideVersion = String(pkg.dependencies?.['lucide-react'] ?? '').replace(/^[^\d]*/, '');
+  const iconSection = iconNames.length
+    ? `## Icons
+
+Icons come from the curated subpath \`${manifest.iconSet.subpath}\`; nothing extra to install.
+
+\`\`\`tsx
+import { IconButton } from '@hirobius/design-system';
+import { Ellipsis } from '${manifest.iconSet.subpath}';
+
+<IconButton icon={Ellipsis} label="Row actions" />
+\`\`\`
+
+Rule: icon-only actions (row menus, close, edit) use \`IconButton\`; do not hand-roll a button with a glyph or text "...".
+
+Names: ${iconNames.join(', ')}
+
+Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.${collisionNote} For an icon outside the set, install \`lucide-react@${lucideVersion}\` (same version keeps the \`LucideIcon\` type identical).
+
+`
     : '';
 
   const generated = new Date().toISOString();
@@ -220,7 +252,7 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 - \`TOKEN_GOVERNANCE.md\`
 - \`SYSTEMS_REGISTRY.md\`
 
-${patternSection}## Token Rules
+${patternSection}${iconSection}## Token Rules
 
 ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 
