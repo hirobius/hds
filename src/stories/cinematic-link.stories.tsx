@@ -52,7 +52,8 @@ export const ShortLabel: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Short single-word label — underline animation still fires across the full text width.',
+        story:
+          'Short single-word label — underline animation still fires across the full text width.',
       },
     },
   },

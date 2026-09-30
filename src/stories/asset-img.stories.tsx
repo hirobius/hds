@@ -97,8 +97,7 @@ export const DetailContext: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Detail context fills the parent container and uses the overlay surface color.',
+        story: 'Detail context fills the parent container and uses the overlay surface color.',
       },
     },
   },

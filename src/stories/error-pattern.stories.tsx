@@ -38,7 +38,8 @@ export const NotFound: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Mirrors the output of NotFoundPattern — 404 display text with a human-readable message.',
+        story:
+          'Mirrors the output of NotFoundPattern — 404 display text with a human-readable message.',
       },
     },
   },
