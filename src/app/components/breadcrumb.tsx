@@ -2,6 +2,10 @@
  * Breadcrumb - hierarchical navigation trail.
  * @category Navigation
  * @tier pattern
+ * @usage Show where the current page sits in a hierarchy and link back up it.
+ * @whenNot Switching between sibling views, or stepping through pages of results.
+ * @useInstead Tabs switching between sibling views
+ * @useInstead Pagination stepping through pages of results
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-159
  */
 

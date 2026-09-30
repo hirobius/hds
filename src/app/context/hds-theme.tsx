@@ -2,6 +2,9 @@
  * HdsThemeProvider — framework-agnostic theming contract for HDS.
  * @category Theming
  * @tier primitive
+ * @usage Wrap an app or region once to set theme, density and other root attributes for everything inside it.
+ * @whenNot Styling a single component, or per-component overrides.
+ * @useInstead Surface a single region with its own background
  * @doc-exempt: API/contract primitive, documented in README (no doc page yet)
  *
  * HDS theming is driven entirely by root attributes + CSS custom properties, so

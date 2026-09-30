@@ -19,6 +19,10 @@
  *
  * @category Navigation
  * @tier primitive
+ * @usage Switch between panels of related content in the same place, one visible at a time.
+ * @whenNot A compact mode switch with no panels, or content that must all be visible.
+ * @useInstead SegmentedControl a compact switch with no panels
+ * @useInstead Disclosure optional content that expands in place
  */
 
 import * as TabsPrimitive from '@radix-ui/react-tabs';

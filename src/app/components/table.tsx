@@ -2,6 +2,10 @@
  * Table - structured data table primitive for documentation and compact UI matrices.
  * @category Display
  * @tier primitive
+ * @usage Show rows of structured data in aligned columns, with optional sorting.
+ * @whenNot A single record, a short list of links, or content that reflows as cards.
+ * @useInstead Field one record as label and value pairs
+ * @useInstead Stack a short list of items
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300
  */
 import { useId, type CSSProperties, type ReactNode } from 'react';

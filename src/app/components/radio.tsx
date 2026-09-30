@@ -2,6 +2,11 @@
  * Radio — radio button with animated selection indicator.
  * @category Inputs
  * @tier primitive
+ * @usage Choose exactly one option from a small set that should stay visible together.
+ * @whenNot Independent yes/no options, or a long list of options.
+ * @useInstead Checkbox independent options that can be ticked together
+ * @useInstead Select a long list that can collapse into a dropdown
+ * @useInstead SegmentedControl a compact switch between two to five views or modes
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17
  */
 

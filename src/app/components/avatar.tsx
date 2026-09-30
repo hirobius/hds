@@ -2,6 +2,10 @@
  * Avatar - user or entity image with an initials fallback.
  * @category Display
  * @tier primitive
+ * @usage Show a person or entity as an image with an initials fallback.
+ * @whenNot A generic pictogram, or a status marker.
+ * @useInstead Icon a generic pictogram
+ * @useInstead Badge a status marker
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18
  */
 
