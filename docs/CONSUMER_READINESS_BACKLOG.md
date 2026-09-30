@@ -17,10 +17,9 @@ They are listed at the bottom with exact next steps.
 
 ## Release / publishing
 
-| Item                                             | Status | Notes                                                                                                                                                                                                                                                                |
-| ------------------------------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Release 0.7.0+**                               | ⬜ 👤  | Merge the **"Version Packages" PR (#19)** to publish to GitHub Packages. Held deliberately — publishing is irreversible + human-gated. Note: #19 needs a rebase to pick up the changesets that landed after it (form adapter, etc.); the changeset bot refreshes it. |
-| **P0.2 — npmjs.com publish (tokenless install)** | ✅     | Published to public npm as `@hirobius/design-system` (0.17.0 on 2026-09-30). `release.yml` authenticates with npm Trusted Publishing (OIDC), so there is no `NPM_TOKEN` to rotate; see `CONSUMING.md` § "Maintainers: cutting a release".                            |
+| Item                                             | Status | Notes                                                                                                                                                                                                                                     |
+| ------------------------------------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **P0.2 — npmjs.com publish (tokenless install)** | ✅     | Published to public npm as `@hirobius/design-system` (0.17.0 on 2026-09-30). `release.yml` authenticates with npm Trusted Publishing (OIDC), so there is no `NPM_TOKEN` to rotate; see `CONSUMING.md` § "Maintainers: cutting a release". |
 
 ## P0 — consumption blockers
 
