@@ -2,6 +2,10 @@
  * InlineLink ” inline navigation and external-link primitive for body copy.
  * @category Navigation
  * @tier primitive
+ * @usage Link to a route or external URL from inside body copy.
+ * @whenNot An action that changes something, or a control that needs button styling.
+ * @useInstead Button an action or a link that needs button styling
+ * @useInstead Text unlinked body copy
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161
  */
 import React from 'react';

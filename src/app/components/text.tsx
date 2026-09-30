@@ -3,6 +3,10 @@
  *
  * @category Typography
  * @tier primitive
+ * @usage Set any text on the type ramp, with the element chosen by `as`.
+ * @whenNot Navigation links, or a keyboard hint.
+ * @useInstead InlineLink a link inside body copy
+ * @useInstead Kbd a keyboard key hint
  * @doc-exempt: typography primitive is documented through the Typography ramp page (TypographyPage), not as a standalone component card
  */
 import {

@@ -2,6 +2,10 @@
  * Alert - compact feedback surface with contextual severity.
  * @category Feedback
  * @tier primitive
+ * @usage Show a persistent inline message with a severity, next to the content it concerns.
+ * @whenNot A brief confirmation that should disappear on its own, or a status label.
+ * @useInstead ToastProvider a brief confirmation that fades away
+ * @useInstead Badge a short status label
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34
  */
 

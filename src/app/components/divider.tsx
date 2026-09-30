@@ -2,6 +2,10 @@
  * Divider — semantic separator between content regions.
  * @category Layout
  * @tier primitive
+ * @usage Separate two regions of content with a thin semantic rule.
+ * @whenNot Spacing alone would do, or the separation needs a container.
+ * @useInstead Stack gap-based spacing between siblings
+ * @useInstead Surface a bounded region with its own background
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26
  */
 
