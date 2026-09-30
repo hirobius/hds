@@ -155,6 +155,15 @@
       "supportsJson": true
     },
     {
+      "id": "check-contract-coverage",
+      "description": "Lists core components (scripts/lib/core-components.mjs, the 42 core rows of hds#254) whose manifest spec has no usage.when of 20+ characters, so an agent has no machine-readable answer to which one when. Report-only for now: --report (default) always exits 0, --enforce exits 1 on any miss. hds#340 authors the remaining tags and moves it to pre-commit with --enforce (hds#339).",
+      "severity": "warn",
+      "gateScript": "scripts/check-contract-coverage.mjs",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-contrast",
       "description": "WCAG 2.1 contrast ratio checker for HDS semantic color pairs. Reads hirobius.tokens.json, resolves primitive + semantic color aliases, and reports contrast ratios for critical text/bg pairings in both light and dark mode. Also gates a non-text tier (§1.4.11, 3:1) for border tokens that bound an interactive control's only affordance (#230).",
       "severity": "warn",

@@ -26,6 +26,7 @@ import { layoutRecipeSteps, layoutNegativeRules } from './lib/layout-recipe.mjs'
 import { fileURLToPath } from 'url';
 import { writeManifest as writeComponentApiManifest } from './generate-component-api.mjs';
 import { buildTokenQuickReference } from './build-token-quick-reference.mjs';
+import { buildWhichOneWhen } from './lib/which-one-when.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -143,6 +144,11 @@ export function generateLlmsTxt({ write = true } = {}) {
       : '';
   const patternSection = patternLines ? `## Pattern Inventory\n\n${patternLines}\n\n` : '';
 
+  const whichOneWhenLines = buildWhichOneWhen(manifest.componentSpecs ?? {});
+  const whichOneWhenSection = whichOneWhenLines
+    ? `## Which one when\n\nOne line per component that declares when to use it (\`@usage\` / \`@useInstead\` in its JSDoc). Full detail, including \`usage.whenNot\`, \`keyboard\` and \`aiRules\`, is in \`public/hds-manifest.json\` and \`src/app/data/component-api.json\`.\n\n${whichOneWhenLines}\n\n`
+    : '';
+
   const iconNames = manifest.iconSet?.names ?? [];
   const hdsNames = new Set([
     ...(manifest.componentInventory ?? []),
@@ -212,7 +218,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 - Detailed prop types, unions, defaults, and descriptions: read \`src/app/data/component-api.json\`.
 - Runtime behavior: read the actual component source under \`src/app/components/\` (and associated styles).
 
-## Tokens (Primary Source Of Truth)
+${whichOneWhenSection}## Tokens (Primary Source Of Truth)
 
 - Primary token source of truth: \`hirobius.tokens.json\` (W3C DTCG).
 - Prefer \`semantic.*\` and \`component.*\` tokens for product UI. Use \`primitive.*\` only when editing the token system itself.

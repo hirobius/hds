@@ -173,6 +173,7 @@
     "check:brand": "node scripts/check-brand.mjs",
     "check:breakpoints": "node scripts/check-hardcoded-breakpoints.mjs",
     "check:colors": "node scripts/check-hardcoded-colors.mjs",
+    "check:contract-coverage": "node scripts/check-contract-coverage.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:css": "node scripts/check-css-integrity.mjs",
     "check:css-values": "node scripts/check-style-discipline.mjs --css-values-only",

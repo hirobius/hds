@@ -175,6 +175,18 @@ interface MenuComponent extends React.FC<React.ComponentProps<typeof MenuPrimiti
 /**
  * Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
  * `defaultOpen`.
+ * @usage Offer a list of actions from a trigger, closed until opened.
+ * @whenNot Choosing one value for a form field, or a set of options that must stay visible.
+ * @useInstead Select choosing a value for a form field
+ * @slot trigger The element that opens the menu (Menu.Trigger).
+ * @slot content The popup holding the items (Menu.Content).
+ * @keyboard Enter/Space/ArrowDown Opens the menu from the trigger and highlights the first item.
+ * @keyboard ArrowDown/ArrowUp Moves the highlight; it stops at the first and last item.
+ * @keyboard Home/End Jumps to the first or last item.
+ * @keyboard Character Highlights the next item that starts with the typed letter.
+ * @keyboard Enter Selects the highlighted item and closes the menu.
+ * @keyboard Escape Closes the menu and returns focus to the trigger.
+ * @keyboard Tab Does not leave the open menu.
  * @public
  */
 const Menu = ((props: React.ComponentProps<typeof MenuPrimitive.Root>) => (
