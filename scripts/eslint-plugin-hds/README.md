@@ -116,16 +116,26 @@ one-off nested alignment; this nudges rather than blocks.
 
 `Box`'s `sx` prop (`src/app/components/box.tsx`) is the sanctioned escape
 hatch specifically because it forces spacing/color through HDS tokens.
-Spacing takes the t-shirt scale by name: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`
-(8/16/24/32/48px, hds#206). This rule flags only values that prove the author
-reached past the token system. It does **not** flag bare numbers, which still
-resolve off the 4px scale, but a number reads as pixels when it is not
-(`p: 4` is 16px), so use the names.
+The spacing props (`p`, `m`, `gap` and their `t`/`r`/`b`/`l`/`x`/`y`,
+`rowGap`, `columnGap` forms) take the t-shirt scale by name:
+`'xs' | 'sm' | 'md' | 'lg' | 'xl'` (hds#206). That is 8/16/24/32/48px at
+comfortable density; `data-density="compact"` tightens each step. This rule
+flags only values that prove the author reached past the token system. A px
+string on a spacing prop is pointed at a step; on any other key
+(`width`, `top`, `padding`), where a step name is not valid CSS, it is pointed
+at a token: an `hds.space.*` value or a `var(--...)`. The rule does **not**
+flag bare numbers, which still resolve off the 4px scale, but a number reads
+as pixels when it is not (`p: 4` is 16px), so use the names.
 
 ```tsx
-// ❌ error
+// ❌ error — use a color token key ('content.primary', 'accent')
 <Box sx={{ color: '#fff' }} />
+
+// ❌ error — use a t-shirt step
 <Box sx={{ m: '16px' }} />
+
+// ❌ error — use a token (hds.space.*, var(--...))
+<Box sx={{ width: '200px' }} />
 
 // ✅ ok — spacing by t-shirt step; other strings are token keys/vars
 <Box sx={{ m: 'sm', gap: 'md' }} />
