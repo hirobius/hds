@@ -1042,6 +1042,14 @@ input[data-search-input='true'] {
  * Salesforce Lightning (comfy/compact), GitHub Primer (condensed/spacious).
  * --------------------------------------------------------------------------- */
 [data-density='compact'] {
+  /* The real dial: components read --semantic-space-scale-*, so compact remaps it one
+   * primitive step down (8/16/24/32/48px -> 6/12/20/24/40px). The --hds-space-* set
+   * below is a legacy bridge that no component reads. */
+  --semantic-space-scale-xs: var(--primitive-space-px6);
+  --semantic-space-scale-sm: var(--primitive-space-3);
+  --semantic-space-scale-md: var(--primitive-space-5);
+  --semantic-space-scale-lg: var(--primitive-space-6);
+  --semantic-space-scale-xl: var(--primitive-space-10);
   --hds-space-xs: var(--primitive-space-px2); /* 2px  (was 4px)  */
   --hds-space-sm: var(--primitive-space-px6); /* 6px  (was 8px)  */
   --hds-space-md: var(--primitive-space-3); /* 12px (was 16px) */
@@ -1050,4 +1058,22 @@ input[data-search-input='true'] {
   --hds-space-2xl: var(--primitive-space-10); /* 40px (was 48px) */
   --hds-space-3xl: var(--primitive-space-12); /* 48px (was 64px) */
   --hds-space-4xl: var(--primitive-space-16); /* 64px (was 80px) */
+}
+
+/* A var() resolves where the property is declared, so on a nested compact scope
+ * (<div data-hds data-density="compact">) the aliases must be declared again to pick
+ * up the remapped scale. :where() keeps specificity at zero so a [data-brand] tenant
+ * override of surface-padding still wins. On <html> the :root aliases already follow. */
+:where([data-density='compact']) {
+  --semantic-space-surface-padding: var(--semantic-space-scale-md);
+  --semantic-space-component-padding: var(--semantic-space-surface-padding);
+  --semantic-space-region-gutter: var(--semantic-space-scale-lg);
+  --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
+}
+
+@media (max-width: 639px) {
+  :where([data-density='compact']) {
+    --semantic-space-region-gutter: var(--semantic-space-scale-sm);
+    --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
+  }
 }

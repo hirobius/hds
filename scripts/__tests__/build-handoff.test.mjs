@@ -59,7 +59,7 @@ describe('row', () => {
 describe('header', () => {
   it('produces a header row + separator', () => {
     const result = header('Token', 'Value');
-    const lines  = result.split('\n');
+    const lines = result.split('\n');
     expect(lines).toHaveLength(2);
     expect(lines[0]).toBe('| Token | Value |');
     expect(lines[1]).toBe('| --- | --- |');
@@ -100,7 +100,7 @@ describe('replaceSection', () => {
 
   it('returns doc unchanged and warns when marker is not found', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const result  = replaceSection(DOC, 'missing-section', 'content');
+    const result = replaceSection(DOC, 'missing-section', 'content');
     expect(result).toBe(DOC);
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('missing-section'));
     warnSpy.mockRestore();
@@ -108,7 +108,7 @@ describe('replaceSection', () => {
 
   it('handles multi-line replacement content', () => {
     const content = 'line1\nline2\nline3';
-    const result  = replaceSection(DOC, 'colors', content);
+    const result = replaceSection(DOC, 'colors', content);
     expect(result).toContain('line1\nline2\nline3');
   });
 });
@@ -233,7 +233,7 @@ describe('buildSemanticAccent', () => {
       semantic: { accent: { primary: { $value: '#1e2fff' } } },
     };
     const result = buildSemanticAccent(rawNoDark);
-    const rows   = result.split('\n').slice(2);
+    const rows = result.split('\n').slice(2);
     expect(rows[0]).toContain('`#1e2fff` | `#1e2fff`');
   });
 
@@ -279,7 +279,7 @@ describe('buildSpacing', () => {
   const raw = {
     primitive: {
       space: {
-        px4:  { $value: { value: 4,  unit: 'px' }, $description: 'Micro' },
+        px4: { $value: { value: 4, unit: 'px' }, $description: 'Micro' },
         px16: { $value: { value: 16, unit: 'px' } },
       },
     },
@@ -303,25 +303,35 @@ describe('buildSpacing', () => {
 
   it('handles scalar (non-object) spacing values', () => {
     const rawScalar = { primitive: { space: { gap: { $value: '8px' } } } };
-    const result    = buildSpacing(rawScalar);
+    const result = buildSpacing(rawScalar);
     expect(result).toContain('`8px`');
   });
 });
 
 // ── buildDensity ──────────────────────────────────────────────────────────────
 describe('buildDensity', () => {
-  it('includes all 8 density scale entries', () => {
+  it('lists the five semantic scale steps components consume', () => {
     const result = buildDensity();
-    const dataRows = result.split('\n').filter(l => l.startsWith('|') && !l.includes('CSS var') && !l.includes('---'));
-    expect(dataRows).toHaveLength(8);
+    const dataRows = result
+      .split('\n')
+      .filter((l) => l.startsWith('|') && !l.includes('CSS var') && !l.includes('---'));
+    expect(dataRows).toHaveLength(5);
   });
 
-  it('includes comfortable and compact values for each size', () => {
+  it('includes comfortable and compact values for each step', () => {
     const result = buildDensity();
-    expect(result).toContain('4px');
-    expect(result).toContain('2px');
-    expect(result).toContain('--hds-space-xs');
-    expect(result).toContain('--hds-space-4xl');
+    for (const step of ['xs', 'sm', 'md', 'lg', 'xl']) {
+      expect(result).toContain(`--semantic-space-scale-${step}`);
+    }
+    expect(result).toContain('| 8px');
+    expect(result).toContain('6px');
+    expect(result).toContain('40px');
+  });
+
+  it('notes --hds-space-* as a legacy bridge, not the dial', () => {
+    const result = buildDensity();
+    expect(result).toMatch(/legacy/i);
+    expect(result).not.toMatch(/^\| `--hds-space/m);
   });
 
   it('includes the toggle usage hint', () => {

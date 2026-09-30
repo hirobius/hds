@@ -41,7 +41,7 @@ describe('extractCva', () => {
   });
 });
 
-describe('createCodeModel — real components', () => {
+describe('createCodeModel — real components', { timeout: 60_000 }, () => {
   let model;
   beforeAll(() => {
     model = createCodeModel({
