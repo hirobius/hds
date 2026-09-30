@@ -28,6 +28,7 @@
 import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
 
 // ── Root + leaf primitives (re-exported from Radix) ────────────────────────────
 
@@ -35,18 +36,30 @@ const PopoverRoot = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 const PopoverAnchor = PopoverPrimitive.Anchor;
 const PopoverClose = PopoverPrimitive.Close;
+const PopoverPortal = withHdsPortal(PopoverPrimitive.Portal);
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
 /** @public */
-export type PopoverContentProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>;
+export type PopoverContentProps = React.ComponentPropsWithoutRef<
+  typeof PopoverPrimitive.Content
+> & {
+  /**
+   * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+   * overlay inherits its theme; pass `null` to use `document.body`.
+   */
+  container?: HTMLElement | null;
+};
 
 const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   PopoverContentProps
->(function PopoverContent({ className, align = 'center', sideOffset = 4, ...props }, ref) {
+>(function PopoverContent(
+  { className, align = 'center', sideOffset = 4, container, ...props },
+  ref,
+) {
   return (
-    <PopoverPrimitive.Portal>
+    <PopoverPortal container={container}>
       <PopoverPrimitive.Content
         ref={ref}
         align={align}
@@ -59,7 +72,7 @@ const PopoverContent = React.forwardRef<
         )}
         {...props}
       />
-    </PopoverPrimitive.Portal>
+    </PopoverPortal>
   );
 });
 

@@ -188,6 +188,7 @@
   --semantic-color-surface-page: var(--primitive-color-neutral-white);
   --semantic-color-surface-raised: var(--primitive-color-neutral-50);
   --semantic-color-surface-overlay: var(--primitive-color-neutral-100);
+  --semantic-color-surface-scrim: var(--primitive-color-neutral-900);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-black);
   --semantic-color-surface-accent: var(--primitive-color-neutral-900);
   --semantic-color-surface-accentSubtle: var(--primitive-color-neutral-100);
@@ -451,6 +452,7 @@
   --role-card: var(--semantic-color-surface-raised);
   --role-card-foreground: var(--semantic-color-content-primary);
   --role-popover: var(--semantic-color-surface-overlay);
+  --role-scrim: var(--semantic-color-surface-scrim);
   --role-popover-foreground: var(--semantic-color-content-primary);
   --role-primary: var(--semantic-color-surface-accent);
   --role-primary-foreground: var(--semantic-color-content-onAccent);
@@ -474,6 +476,7 @@
   --semantic-color-surface-page: var(--primitive-color-neutral-black);
   --semantic-color-surface-raised: var(--primitive-color-neutral-950);
   --semantic-color-surface-overlay: var(--primitive-color-neutral-850);
+  --semantic-color-surface-scrim: var(--primitive-color-neutral-black);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-white);
   --semantic-color-surface-accent: var(--primitive-color-neutral-100);
   --semantic-color-surface-accentSubtle: var(--primitive-color-neutral-900);
@@ -560,6 +563,7 @@
   --role-card: var(--semantic-color-surface-raised);
   --role-card-foreground: var(--semantic-color-content-primary);
   --role-popover: var(--semantic-color-surface-overlay);
+  --role-scrim: var(--semantic-color-surface-scrim);
   --role-popover-foreground: var(--semantic-color-content-primary);
   --role-primary: var(--semantic-color-surface-accent);
   --role-primary-foreground: var(--semantic-color-content-onAccent);

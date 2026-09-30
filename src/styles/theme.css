@@ -279,6 +279,10 @@
 /* Both selectors are kept in sync so legacy .dark hooks still follow the active theme. */
 [data-theme='dark'],
 .dark {
+  /* Native scrollbars, form controls and the canvas follow the dark theme. Declared here
+     only: a light value on :root would leak into non-HDS host pages. */
+  color-scheme: dark;
+
   /* Text colors: --semantic-color-content-* resolved via tokens.css (dark mode auto-switches) */
   --hds-accent-bar: var(--primitive-color-blue-400);
   --hds-text-on-image: var(--semantic-color-content-inverse);

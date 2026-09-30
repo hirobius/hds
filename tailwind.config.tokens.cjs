@@ -19,6 +19,7 @@ const config = {
           DEFAULT: 'var(--role-popover)',
           foreground: 'var(--role-popover-foreground)',
         },
+        scrim: 'var(--role-scrim)',
         primary: {
           DEFAULT: 'var(--role-primary)',
           foreground: 'var(--role-primary-foreground)',

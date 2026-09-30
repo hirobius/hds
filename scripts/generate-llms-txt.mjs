@@ -297,6 +297,8 @@ When building any card component or card-like surface, ALL of the following rule
 
 Cards default to \`elevation.flat\`. Popovers/tooltips/dropdowns use \`elevation.floating\`. Dialogs/sheets use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
+Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest \`data-hds\` scope, so they inherit its theme (for example \`<div data-hds data-theme="dark">\`); pass \`container\` on the Content part to override.
+
 ## Slices And Full Bundle
 
 Load only what the task needs. Same text as this file, split by topic:

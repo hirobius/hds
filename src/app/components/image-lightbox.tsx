@@ -17,6 +17,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'motion/react';
 import { X } from 'lucide-react';
 import hds from '../design-system/tokens';
+import { withHdsPortal } from '../context/hds-portal';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { AssetImg } from './asset-img';
 import { Button } from './button';
@@ -25,6 +26,9 @@ import { Icon } from './icon';
 import { InlineLink } from './inline-link';
 import { Stack } from './stack';
 import { Surface } from './surface';
+
+// Raw Radix Dialog.Portal appends to document.body, outside a [data-hds] scope.
+const LightboxPortal = withHdsPortal(Dialog.Portal);
 
 export interface LightboxProps {
   open: boolean;
@@ -64,7 +68,7 @@ export function Lightbox({
     >
       <AnimatePresence>
         {open ? (
-          <Dialog.Portal forceMount>
+          <LightboxPortal forceMount>
             <Dialog.Overlay asChild forceMount>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -219,7 +223,7 @@ export function Lightbox({
                 </Grid>
               </motion.div>
             </Dialog.Content>
-          </Dialog.Portal>
+          </LightboxPortal>
         ) : null}
       </AnimatePresence>
     </Dialog.Root>

@@ -27,6 +27,7 @@ import * as React from 'react';
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
 
 const MenuRoot = MenuPrimitive.Root;
@@ -34,6 +35,7 @@ const MenuTrigger = MenuPrimitive.Trigger;
 const MenuGroup = MenuPrimitive.Group;
 const MenuRadioGroup = MenuPrimitive.RadioGroup;
 const MenuSub = MenuPrimitive.Sub;
+const MenuPortal = withHdsPortal(MenuPrimitive.Portal);
 
 const SURFACE =
   'z-50 min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
@@ -44,10 +46,16 @@ const ITEM =
 
 const MenuContent = React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Content>
->(function MenuContent({ className, sideOffset = 4, ...props }, ref) {
+  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Content> & {
+    /**
+     * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+     * overlay inherits its theme; pass `null` to use `document.body`.
+     */
+    container?: HTMLElement | null;
+  }
+>(function MenuContent({ className, sideOffset = 4, container, ...props }, ref) {
   return (
-    <MenuPrimitive.Portal>
+    <MenuPortal container={container}>
       <MenuPrimitive.Content
         ref={ref}
         sideOffset={sideOffset}
@@ -55,7 +63,7 @@ const MenuContent = React.forwardRef<
         className={cn(SURFACE, className)}
         {...props}
       />
-    </MenuPrimitive.Portal>
+    </MenuPortal>
   );
 });
 
@@ -146,12 +154,18 @@ const MenuSubTrigger = React.forwardRef<
 
 const MenuSubContent = React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.SubContent>,
-  React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubContent>
->(function MenuSubContent({ className, ...props }, ref) {
+  React.ComponentPropsWithoutRef<typeof MenuPrimitive.SubContent> & {
+    /**
+     * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+     * overlay inherits its theme; pass `null` to use `document.body`.
+     */
+    container?: HTMLElement | null;
+  }
+>(function MenuSubContent({ className, container, ...props }, ref) {
   return (
-    <MenuPrimitive.Portal>
+    <MenuPortal container={container}>
       <MenuPrimitive.SubContent ref={ref} className={cn(SURFACE, className)} {...props} />
-    </MenuPrimitive.Portal>
+    </MenuPortal>
   );
 });
 

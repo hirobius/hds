@@ -882,7 +882,7 @@ export function buildManifest(allTokens, raw) {
         border: 'role.border',
         radius: 'role.radius',
         shadow: 'semantic.shadow.overlay',
-        scrim: 'role.foreground',
+        scrim: 'role.scrim',
         descriptionText: 'role.muted-foreground',
         closeHover: 'role.accent',
         closeHoverText: 'role.accent-foreground',

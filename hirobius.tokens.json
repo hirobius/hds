@@ -1023,6 +1023,18 @@
             }
           }
         },
+        "scrim": {
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.black}"
+              }
+            }
+          }
+        },
         "inverse": {
           "$value": "{primitive.color.neutral.black}",
           "$description": "Inverted background for contrast sections",
@@ -2489,6 +2501,11 @@
       "$type": "color",
       "$value": "{semantic.color.surface.overlay}",
       "$description": "Popover/menu surface. shadcn role: popover."
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": "{semantic.color.surface.scrim}",
+      "$description": "Modal backdrop colour role. Apply alpha in the class, e.g. bg-scrim/60."
     },
     "popover-foreground": {
       "$type": "color",
