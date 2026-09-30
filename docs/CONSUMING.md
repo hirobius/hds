@@ -103,8 +103,11 @@ Put `data-hds` as high as makes sense — on `<html>`/`<body>` for an
 HDS-first app, or on a wrapper for a section. Overlays (Dialog, AlertDialog,
 Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) inherit the nearest
 `data-hds` scope, so a `<div data-hds data-theme="dark">` themes them too; pass
-`container` on the Content part to portal elsewhere. Scoping at `<html>` still
-works. See [ADR-016](adr/016-scoped-base-styles.md).
+`container` on the Content part to portal elsewhere. If the scope element
+creates a containing block or stacking context (`transform`, `filter`, `z-index`,
+`isolation`), pass `container={null}` (portal to `document.body`) or a dedicated
+element so `position: fixed` overlays still cover the viewport. Scoping at
+`<html>` still works. See [ADR-016](adr/016-scoped-base-styles.md).
 
 ## 5. Routing — optional, via the adapter seam
 

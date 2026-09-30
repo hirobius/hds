@@ -177,7 +177,7 @@ function DarkScopeDemo() {
       data-hds
       data-theme="dark"
       style={{
-        padding: '48px',
+        padding: 'var(--semantic-space-layout-spacious)',
         background: 'var(--semantic-color-surface-page)',
         color: 'var(--semantic-color-content-primary)',
       }}

@@ -15,6 +15,11 @@
  *
  * Nothing is portalled until the container is known, so an overlay never
  * flashes into `body` first and never remounts (which would break the focus trap).
+ * The hidden anchor (`<span hidden data-hds-portal-anchor>`) stays in place, also
+ * while the overlay is closed, until a provider or explicit container makes it
+ * unnecessary. It renders on the server too so the first client render hydrates
+ * cleanly. It takes no space, but is one extra child for `:last-child` / `> *`
+ * selectors and is not valid directly inside `ul`, `table` or `tr`.
  * A scope on `<html>` or `<body>` resolves to `undefined`: `body` already
  * inherits it, and a node appended to `<html>` would sit outside `<body>`.
  */
@@ -79,11 +84,15 @@ export function withHdsPortal<P extends { container?: PortalContainer }>(
     const { ready, container, anchor } = useHdsPortalContainer(
       props.container as HTMLElement | null | undefined,
     );
-    if (typeof document === 'undefined') return null;
+    // The anchor renders on the server too: the first client render emits it
+    // (no scope is known yet), so omitting it here would fail hydration. Only
+    // the Portal itself is client-only.
     return (
       <>
         {anchor}
-        {ready ? <Portal {...props} container={container} /> : null}
+        {ready && typeof document !== 'undefined' ? (
+          <Portal {...props} container={container} />
+        ) : null}
       </>
     );
   }

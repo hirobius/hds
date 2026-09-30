@@ -22,6 +22,7 @@ import { Select } from '../../components/select';
 import { HoverCard } from '../../components/hover-card';
 import { Tooltip } from '../../components/hds-tooltip';
 import { ExpandTooltip } from '../../components/tooltip';
+import { Lightbox } from '../../components/image-lightbox';
 
 type Container = HTMLElement | null | undefined;
 
@@ -217,5 +218,33 @@ describe('ExpandTooltip cursor pill portal scope', () => {
     );
     expect(pill).toBeDefined();
     expect(getByTestId('scope').contains(pill as Element)).toBe(true);
+  });
+});
+
+describe('Lightbox portal scope (raw Radix Dialog.Portal, forceMount)', () => {
+  const lightbox = (open: boolean) => (
+    <Lightbox open={open} onClose={() => {}} src="/x.png" alt="Pic" />
+  );
+
+  it('lands inside HdsThemeProvider theme="dark"', () => {
+    const { container } = render(
+      <HdsThemeProvider theme="dark">{lightbox(true)}</HdsThemeProvider>,
+    );
+    const scope = container.querySelector<HTMLElement>('[data-hds][data-theme="dark"]');
+    const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
+    expect(scope).not.toBeNull();
+    expect(dialog).not.toBeNull();
+    expect(dialog!.closest('[data-hds]')).toBe(scope);
+  });
+
+  it('lands inside a bare <div data-hds data-theme="dark"> with no provider', () => {
+    const { getByTestId } = render(
+      <div data-hds="" data-theme="dark" data-testid="scope">
+        {lightbox(true)}
+      </div>,
+    );
+    const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
+    expect(dialog).not.toBeNull();
+    expect(dialog!.closest('[data-hds]')).toBe(getByTestId('scope'));
   });
 });
