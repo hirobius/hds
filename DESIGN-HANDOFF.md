@@ -549,7 +549,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 
 - **One accent color:** `#111111` (`semantic.accent.rest`) only — no other hues
 - **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and Geist Mono for code; no other faces
-- **Action radius:** `4px` for interactive controls; `8px` cards
+- **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale
 - **True monochromatic neutrals:** No warm/cool tint in neutral scale
 - **No drop shadows as primary depth mechanism:** Use motion (parallax, scale)

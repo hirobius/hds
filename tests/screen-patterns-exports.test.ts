@@ -1,6 +1,6 @@
 // @vitest-environment node
 /**
- * The screen-level patterns (hds#337) ship on `./patterns` only. They are new
+ * The screen-level patterns (hds#337, hds#338) ship on `./patterns` only. They are new
  * surface, so they never appear on the root barrel: consumers reach them through
  * `@hirobius/design-system/patterns`, and the root re-export window (hds#254)
  * does not apply to something that was never there.
@@ -14,8 +14,23 @@ const ROOT = resolve(__dirname, '..');
 const PATTERNS = resolve(ROOT, 'src/patterns.ts');
 const INDEX = resolve(ROOT, 'src/index.ts');
 
-const VALUES = ['PageHeader', 'MetricTiles', 'MetricTile', 'FormActions'];
-const TYPES = ['PageHeaderProps', 'MetricTilesProps', 'MetricTileProps', 'FormActionsProps'];
+const VALUES = [
+  'PageHeader',
+  'MetricTiles',
+  'MetricTile',
+  'FormActions',
+  'DestructiveSection',
+  'DataTableSection',
+];
+const TYPES = [
+  'PageHeaderProps',
+  'MetricTilesProps',
+  'MetricTileProps',
+  'FormActionsProps',
+  'DestructiveSectionProps',
+  'DataTableSectionProps',
+  'DataTableSectionRow',
+];
 
 function exportedNames(entry: string) {
   const config = ts.readConfigFile(resolve(ROOT, 'tsconfig.json'), ts.sys.readFile);

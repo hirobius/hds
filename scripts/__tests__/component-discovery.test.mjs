@@ -69,12 +69,18 @@ describe('readComponentTags — @screenPattern (hds#337)', () => {
 });
 
 describe('discoverHdsComponents — screen patterns (hds#337)', () => {
-  it('flags exactly the three screen-level compositions', () => {
+  it('flags exactly the five screen-level compositions', () => {
     const tagged = discoverHdsComponents()
       .components.filter((c) => c.screenPattern)
       .map((c) => c.name)
       .sort();
-    expect(tagged).toEqual(['FormActions', 'MetricTiles', 'PageHeader']);
+    expect(tagged).toEqual([
+      'DataTableSection',
+      'DestructiveSection',
+      'FormActions',
+      'MetricTiles',
+      'PageHeader',
+    ]);
   }, 60_000);
 });
 

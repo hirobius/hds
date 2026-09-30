@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T07:03:56.458Z
+Generated: 2026-09-30T09:20:12.584Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -63,7 +63,7 @@ Canonical skeleton, outermost to innermost:
 2. `Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.
 3. Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
-5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile` with the "Which one, when" table in `DESIGN.md`.
+5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile`, and between `Card` and `Surface`, with the "Which one, when" table in `DESIGN.md`.
 6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
 
 Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, `check-hardcoded-spacing.mjs`, `check-hardcoded-colors.mjs`):
@@ -101,7 +101,7 @@ When building any card component or card-like surface, ALL of the following rule
 | --- | --- | --- |
 | Background | `var(--semantic-color-surface-raised)` | Custom colors, gradients, tinted fills, any non-token value |
 | Border | `1px solid var(--semantic-color-border-default)` | `box-shadow` as an elevation substitute |
-| Border radius | `var(--primitive-radius-8)` (8 px) | 12 px, 16 px, 20 px, `rounded-full`, or any other value |
+| Border radius | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant) | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value |
 | Padding | `var(--semantic-space-surface-padding)` or `<Surface padding="component">` | Raw pixel values, Tailwind spacing classes, ad hoc insets |
 | Shadow | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`. Never reach for shadow values directly — bind via `var(--semantic-elevation-{role}-shadow)` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title | `hds.typeStyles.heading3` / `<Text variant="heading3">` | Any other type style for the primary card heading |
@@ -139,6 +139,8 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 
 ## Pattern Inventory
 
+- DataTableSection
+- DestructiveSection
 - FormActions
 - MetricTiles
 - PageHeader

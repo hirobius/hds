@@ -75,9 +75,11 @@
     "Container",
     "ContextMenu",
     "Cover",
+    "DataTableSection",
     "DateInput",
     "DateRangeInput",
     "DateTimeInput",
+    "DestructiveSection",
     "Dialog",
     "DialogClose",
     "DialogContent",
@@ -245,6 +247,8 @@
     ]
   },
   "patternInventory": [
+    "DataTableSection",
+    "DestructiveSection",
     "FormActions",
     "MetricTiles",
     "PageHeader"
@@ -1851,6 +1855,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/data-table-section.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/pagination.tsx",
@@ -1858,7 +1863,9 @@
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/page-footer.tsx",
         "src/docs-tooling/shell-controls.tsx",
-        "src/stories/icon-button.stories.tsx"
+        "src/stories/data-table-section.stories.tsx",
+        "src/stories/icon-button.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "tokenMapping": {
         "Fill": "semantic.accent.rest",
@@ -2802,6 +2809,7 @@
         "src/stories/grid.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/page.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/stack.stories.tsx"
       ],
@@ -3073,10 +3081,12 @@
         "sizing": "full"
       },
       "consumers": [
+        "src/app/components/data-table-section.tsx",
         "src/app/components/table.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/api-reference.tsx",
         "src/docs-tooling/propTableUtils.tsx",
+        "src/stories/data-table-section.stories.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
@@ -3501,7 +3511,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/surface.tsx",
-      "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (items) - Default border: none (elevation model — use shadow for lift) - Fixed radius: var(--component-card-radius) - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
+      "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (items) - Default border: none (elevation model — use shadow for lift) - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-27",
       "figmaId": null,
       "preview": {
@@ -3608,6 +3618,7 @@
       "figmaId": null,
       "consumers": [
         "src/app/components/card-progress.test.tsx",
+        "src/app/components/destructive-section.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
@@ -4225,8 +4236,10 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/animated-label.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/data-table-section.tsx",
         "src/app/components/date-input.tsx",
         "src/app/components/date-time-input.tsx",
+        "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
@@ -4553,6 +4566,8 @@
         "src/app/components/button-group.test.tsx",
         "src/app/components/button-group.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/data-table-section.tsx",
+        "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
@@ -4581,6 +4596,7 @@
         "src/stories/button.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/combobox.stories.tsx",
+        "src/stories/data-table-section.stories.tsx",
         "src/stories/dialog.stories.tsx",
         "src/stories/form-actions.stories.tsx",
         "src/stories/form.stories.tsx",
@@ -4591,6 +4607,7 @@
         "src/stories/menu.stories.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/page-header.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/popover.stories.tsx",
         "src/stories/table.stories.tsx",
@@ -4876,7 +4893,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/data-table-section.tsx",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
+        "src/stories/data-table-section.stories.tsx",
         "src/stories/empty-state.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
@@ -5427,8 +5446,10 @@
         "src/stories/code-block.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/component-instance-matrix.stories.tsx",
+        "src/stories/data-table-section.stories.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/page-header.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/static-primitives.stories.tsx",
         "src/stories/table.stories.tsx"
@@ -5709,6 +5730,7 @@
       },
       "consumers": [
         "src/stories/combobox.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5753,6 +5775,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5797,6 +5820,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5841,6 +5865,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6419,7 +6444,8 @@
         "src/app/components/page-header.tsx",
         "src/app/components/table.tsx",
         "src/stories/breadcrumb.stories.tsx",
-        "src/stories/page-header.stories.tsx"
+        "src/stories/page-header.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8042,6 +8068,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/data-table-section.tsx",
         "src/app/components/toolbar.test.tsx",
         "src/index.ts",
         "src/stories/toolbar.stories.tsx"
@@ -8137,7 +8164,9 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
-        "src/stories/alert-dialog.stories.tsx"
+        "src/app/components/destructive-section.tsx",
+        "src/stories/alert-dialog.stories.tsx",
+        "src/stories/destructive-section.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8932,6 +8961,8 @@
       },
       "consumers": [
         "src/app/components/cluster.test.tsx",
+        "src/app/components/data-table-section.tsx",
+        "src/app/components/destructive-section.tsx",
         "src/app/components/form-actions.test.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/page-header.tsx",
@@ -9467,6 +9498,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/textarea.stories.tsx"
       ],
       "tokenMapping": {},
@@ -10301,6 +10333,7 @@
       "consumers": [
         "src/app/components/command-palette.tsx",
         "src/app/components/context-menu.tsx",
+        "src/app/components/data-table-section.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/menu.test.tsx",
@@ -10530,7 +10563,8 @@
       },
       "consumers": [
         "src/app/components/form-actions.test.tsx",
-        "src/stories/form-actions.stories.tsx"
+        "src/stories/form-actions.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10586,7 +10620,8 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
-        "src/stories/metric-tiles.stories.tsx"
+        "src/stories/metric-tiles.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10648,7 +10683,8 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
-        "src/stories/metric-tiles.stories.tsx"
+        "src/stories/metric-tiles.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10696,7 +10732,8 @@
       },
       "consumers": [
         "src/app/components/page-header.test.tsx",
-        "src/stories/page-header.stories.tsx"
+        "src/stories/page-header.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10729,14 +10766,160 @@
       "requiredProps": [],
       "a11yRules": [],
       "storyFiles": [
-        "src/stories/page-header.stories.tsx"
+        "src/stories/page-header.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "storyIds": [
+        "patterns-client-detail-screen--compact",
+        "patterns-client-detail-screen--dark",
+        "patterns-client-detail-screen--light",
+        "patterns-client-detail-screen--phone-390",
         "patterns-pageheader--default",
         "patterns-pageheader--long-title-wraps",
         "patterns-pageheader--nested-level",
         "patterns-pageheader--title-only",
         "patterns-pageheader--with-actions"
+      ]
+    },
+    "DataTableSection": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/data-table-section.tsx",
+      "description": "Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `minWidth` from the caller, and zero rows shows an `EmptyState`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "DataTableSection",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/data-table-section.test.tsx",
+        "src/stories/data-table-section.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "actionsLabel": {
+          "type": "string",
+          "default": "Actions"
+        },
+        "columns": {
+          "type": "TableColumn[]"
+        },
+        "emptyDescription": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "emptyTitle": {
+          "type": "ReactNode",
+          "default": "Nothing here yet"
+        },
+        "level": {
+          "type": "2 | 3 | 4 | 5 | 6",
+          "default": 2
+        },
+        "rows": {
+          "type": "DataTableSectionRow[]"
+        },
+        "title": {
+          "type": "ReactNode"
+        },
+        "toolbar": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/data-table-section.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-datatablesection--dark",
+        "patterns-datatablesection--default",
+        "patterns-datatablesection--empty",
+        "patterns-datatablesection--phone-390",
+        "patterns-datatablesection--without-row-actions"
+      ]
+    },
+    "DestructiveSection": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/destructive-section.tsx",
+      "description": "Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "DestructiveSection",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/destructive-section.test.tsx",
+        "src/stories/destructive-section.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "actionLabel": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "cancelLabel": {
+          "type": "string",
+          "default": "Cancel"
+        },
+        "confirmBody": {
+          "type": "ReactNode"
+        },
+        "confirmLabel": {
+          "type": "string"
+        },
+        "description": {
+          "type": "ReactNode"
+        },
+        "level": {
+          "type": "2 | 3 | 4 | 5 | 6",
+          "default": 2
+        },
+        "onConfirm": {
+          "type": "() => void"
+        },
+        "title": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/destructive-section.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-destructivesection--dark",
+        "patterns-destructivesection--default",
+        "patterns-destructivesection--phone",
+        "patterns-destructivesection--separate-button-label"
       ]
     },
     "HdsPhosphor": {
