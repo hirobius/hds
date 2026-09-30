@@ -11,8 +11,7 @@
 
 All P0/P1/P2 build work, the RHF+Zod form adapter, the full Storybook backfill,
 and the entire docs-nav refactor (ADR-017) are merged to `main`. The **only**
-open items are either **human-gated** (cutting the release / choosing a registry)
-or **browser-gated** (need a Playwright/Chromium machine this sandbox lacks).
+open items are **browser-gated** (need a Playwright/Chromium machine this sandbox lacks).
 They are listed at the bottom with exact next steps.
 
 ## Release / publishing
@@ -83,5 +82,4 @@ sidebar + Cmd-K search.
 
 Nothing further is completable in this sandbox. Remaining work is gated on:
 
-- **A human decision** — cut the release (#19) and choose npm-vs-GitHub-Packages (P0.2).
 - **A browser/Playwright machine** — Tailwind-preflight scoping (P0.5), the visual-regression + Web-Vitals CI lanes (#18), and the ADR-017 Phase-4 renderer swap. None should be shipped without visual verification.
