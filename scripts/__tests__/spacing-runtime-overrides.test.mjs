@@ -18,6 +18,7 @@ import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
+import { chromiumPath } from '../lib/storybook-host.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -83,9 +84,11 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
  * is declared, so the two can differ). The deprecated name must compute to the same
  * pixels as its replacement in every cell, and both must keep today's values.
  */
-const CHROMIUM =
-  process.env.PLAYWRIGHT_CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
-const hasBrowser = existsSync(CHROMIUM);
+// The pinned container browser if there is one (scripts/lib/storybook-host.mjs),
+// else Playwright's own download, so the lock also runs on a developer machine
+// with `playwright install`. A path that does not exist is not a browser: skip.
+const CHROMIUM = chromiumPath() ?? chromium.executablePath();
+const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
 
 /** Today's surface.padding in px per tenant, [comfortable, compact]. */
 const SURFACE_PX = {

@@ -2,12 +2,15 @@
  * box-sx.ts — pure resolver + CSS injector for Box's `sx` prop.
  *
  * Deliberately dependency-free (no React import) so the resolver is unit
- * testable in isolation from the component tree. `box.tsx` is the only
- * consumer; it re-exports the types below as part of the public `Box` API.
+ * testable in isolation from the component tree. Two consumers: `box.tsx`
+ * re-exports the types below as part of the public `Box` API, and `stack.tsx`
+ * resolves its `gap` through `resolveSpacingValue`, the one spacing resolver
+ * (hds#206).
  *
  * @internal — the resolver internals (`resolveSx`, `sxClassName`, `injectSx`)
- * are exported for testing but the supported public surface is `Box` + the
- * `Sx*` types, both re-exported from `box.tsx`.
+ * are exported for testing, and `resolveSpacingValue` for Stack. The
+ * supported public surface is `Box` + the `Sx*` types, both re-exported from
+ * `box.tsx`.
  */
 
 // ── Breakpoints ──────────────────────────────────────────────────────────────
