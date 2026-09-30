@@ -25,9 +25,15 @@ function section(text: string, heading: string) {
 describe('llms.txt screen recipe', () => {
   const llms = read('public/llms.txt');
 
-  it('names PageHeader, MetricTiles and FormActions in "How To Lay Out A Screen"', () => {
+  it('names all five screen patterns in "How To Lay Out A Screen"', () => {
     const recipe = section(llms, 'How To Lay Out A Screen');
-    for (const name of ['PageHeader', 'MetricTiles', 'FormActions']) {
+    for (const name of [
+      'PageHeader',
+      'MetricTiles',
+      'FormActions',
+      'DestructiveSection',
+      'DataTableSection',
+    ]) {
       expect(recipe, `${name} missing from the layout recipe`).toContain(name);
     }
   });
@@ -36,9 +42,15 @@ describe('llms.txt screen recipe', () => {
     expect(section(llms, 'How To Lay Out A Screen')).toMatch(/Which one, when/);
   });
 
-  it('lists the three patterns under "Pattern Inventory"', () => {
+  it('lists the five patterns under "Pattern Inventory"', () => {
     const inventory = section(llms, 'Pattern Inventory');
-    for (const name of ['FormActions', 'MetricTiles', 'PageHeader']) {
+    for (const name of [
+      'DataTableSection',
+      'DestructiveSection',
+      'FormActions',
+      'MetricTiles',
+      'PageHeader',
+    ]) {
       expect(inventory).toContain(`- ${name}`);
     }
   });
@@ -59,6 +71,19 @@ describe('DESIGN.md screen rules', () => {
       const found = rows.some((l) => l.split('|')[1]?.includes(`\`${name}\``));
       expect(found, `no table row led by \`${name}\``).toBe(true);
     }
+  });
+
+  it('has a row for Card, Surface, DestructiveSection and DataTableSection', () => {
+    const rows = design.split('\n').filter((l) => l.startsWith('|'));
+    for (const name of ['Card', 'Surface', 'DestructiveSection', 'DataTableSection']) {
+      const found = rows.some((l) => l.split('|')[1]?.includes(`\`${name}\``));
+      expect(found, `no table row led by \`${name}\``).toBe(true);
+    }
+  });
+
+  it('does not contradict itself on the container radius or the action radius', () => {
+    expect(design).not.toMatch(/never 12\/16\/20/);
+    expect(design).not.toMatch(/4px action radius/);
   });
 
   it('states the page-title rule and names heading2', () => {

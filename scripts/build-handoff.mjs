@@ -414,6 +414,16 @@ export function buildMotion(raw) {
   }
   return sections.join('\n');
 }
+/**
+ * Container radius: one step above the action radius (`rounded-lg`, role + 4px),
+ * so it follows the tenant knob. Returns e.g. `12px` for an `8px` action radius.
+ */
+export function containerRadius(raw) {
+  const action = resolveRef(raw.semantic?.radius?.action?.$value ?? '{primitive.radius.4}', raw);
+  const px = /^(\d+(?:\.\d+)?)px$/.exec(action);
+  return px ? `${Number(px[1]) + 4}px` : `${action} + 4px`;
+}
+
 /** Builds the Agent Creative Constraints list with live brand values. */
 export function buildAgentConstraints(raw) {
   // #246: was `primitive.color.blue.500` falling back to '#1E2FFF' — a typo of the
@@ -425,7 +435,7 @@ export function buildAgentConstraints(raw) {
   return [
     `- **One accent color:** \`${accent}\` (\`semantic.accent.rest\`) only — no other hues`,
     `- **Body / UI typeface:** ${font} — use Satoshi Bold (700) for headings and Geist Mono for code; no other faces`,
-    '- **Action radius:** `4px` for interactive controls; `8px` cards',
+    `- **Action radius:** \`${resolveRef(raw.semantic?.radius?.action?.$value ?? '{primitive.radius.4}', raw)}\` for interactive controls; \`${containerRadius(raw)}\` containers (\`rounded-lg\`, one step above the action radius)`,
     '- **4px spacing grid:** All spacing snaps to `primitive.space.*` scale',
     '- **True monochromatic neutrals:** No warm/cool tint in neutral scale',
     '- **No drop shadows as primary depth mechanism:** Use motion (parallax, scale)',

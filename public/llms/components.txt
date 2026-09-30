@@ -284,6 +284,17 @@ Cover — vertical shell with an auto-centered main region. Every Layout referen
   - minHeight: string = 100svh
   - style: CSSProperties
 
+### DataTableSection
+Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `min…
+  - actionsLabel: string = Actions
+  - columns: TableColumn[]
+  - emptyDescription: ReactNode
+  - emptyTitle: ReactNode = Nothing here yet
+  - level: 2 | 3 | 4 | 5 | 6 = 2
+  - rows: DataTableSectionRow[]
+  - title: ReactNode
+  - toolbar: ReactNode
+
 ### DateInput
 Text field + calendar popover for picking a single date.
   - aria-label: string
@@ -313,6 +324,17 @@ Text date field + calendar popover, paired with a native time field, producing o
   - id: string
   - onChange: ((date: Date) => void) | undefined
   - value: Date
+
+### DestructiveSection
+Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's …
+  - actionLabel: ReactNode
+  - cancelLabel: string = Cancel
+  - confirmBody: ReactNode
+  - confirmLabel: string
+  - description: ReactNode
+  - level: 2 | 3 | 4 | 5 | 6 = 2
+  - onConfirm: () => void
+  - title: ReactNode
 
 ### Dialog
 Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.
@@ -898,6 +920,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - density: 'compact' | 'comfortable'
   - description: ReactNode
   - flush: boolean = false
+  - labelledBy: string
   - minWidth: string | number
   - rows: TableRow[]
   - stickyHeader: boolean = false

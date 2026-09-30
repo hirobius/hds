@@ -130,9 +130,9 @@
   height: 100%;
   flex-direction: column;
   box-sizing: border-box;
-  border-radius: var(
-    --primitive-radius-8
-  ); /* tier-ok: REACT_COMPONENTS.md Card recipe mandates var(--primitive-radius-8) directly (no semantic radius alias for the 8px card corner) */
+  border-radius: calc(
+    var(--role-radius) + 4px
+  ); /* tier-ok: same container radius as the React Card's rounded-lg (role radius + 4px); the offset has no token */
   background-color: var(--role-card);
   color: var(--role-card-foreground);
   border-style: solid;

@@ -34,7 +34,14 @@ import { fileURLToPath } from 'url';
 
 import { brandAccent } from './lib/brand-truth.mjs';
 
-import { walk, resolveRef, header, row, replaceSection } from './build-handoff.mjs';
+import {
+  walk,
+  resolveRef,
+  header,
+  row,
+  replaceSection,
+  containerRadius,
+} from './build-handoff.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -236,7 +243,7 @@ export function buildSpacing(raw) {
  */
 export function buildRadius(raw) {
   const action = resolveRef(raw.semantic?.radius?.action?.$value ?? '{primitive.radius.4}', raw);
-  const container = resolveRef(raw.primitive?.radius?.[8]?.$value ?? '8px', raw);
+  const container = containerRadius(raw);
   const full = resolveRef(raw.primitive?.radius?.full?.$value ?? '9999px', raw);
   const zero = resolveRef(raw.primitive?.radius?.[0]?.$value ?? '0px', raw);
 
@@ -253,8 +260,8 @@ export function buildRadius(raw) {
     row(
       'Container',
       `\`${container}\``,
-      '`primitive.radius.8`',
-      'Cards, segmented control surface, modal/sheet containers',
+      '`role.radius` + 4px (`rounded-lg`)',
+      'Cards, surfaces, segmented control surface, modal/sheet containers',
     ),
   );
   lines.push(
@@ -345,7 +352,7 @@ export function buildComponents(raw, manifest) {
   const inventory = new Set(manifest?.componentInventory ?? []);
   const present = (name) => inventory.has(name);
   const actionRad = resolveRef(raw.semantic?.radius?.action?.$value ?? '{primitive.radius.4}', raw);
-  const cardRad = resolveRef(raw.primitive?.radius?.[8]?.$value ?? '8px', raw);
+  const cardRad = containerRadius(raw);
 
   const specs = [
     {
@@ -367,10 +374,10 @@ export function buildComponents(raw, manifest) {
     {
       name: 'Cards',
       component: 'Card',
-      radius: `\`${cardRad}\` (\`primitive.radius.8\`)`,
+      radius: `\`${cardRad}\` (\`rounded-lg\`, role radius + 4px)`,
       states: 'default · hover (optional parallax) · pressed (when interactive)',
       notes:
-        'Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `var(--primitive-radius-8)` (8 px) — never 12/16/20 px. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows.',
+        'Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows.',
     },
     {
       name: 'Badges',

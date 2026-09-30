@@ -41,7 +41,7 @@ const AlertDialogCancel = AlertDialogPrimitive.Cancel;
 
 // ── Overlay (scrim) ─────────────────────────────────────────────────────────────
 
-const AlertDialogOverlay = React.forwardRef<
+const AlertDialogOverlay = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>
 >(function AlertDialogOverlay({ className, ...props }, ref) {
@@ -67,7 +67,7 @@ export interface AlertDialogContentProps extends React.ComponentPropsWithoutRef<
   container?: HTMLElement | null;
 }
 
-const AlertDialogContent = React.forwardRef<
+const AlertDialogContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Content>,
   AlertDialogContentProps
 >(function AlertDialogContent({ className, container, ...props }, ref) {
@@ -88,27 +88,29 @@ const AlertDialogContent = React.forwardRef<
 
 // ── Layout parts ────────────────────────────────────────────────────────────────
 
-const AlertDialogHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function AlertDialogHeader({ className, ...props }, ref) {
-    return (
-      <div ref={ref} className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />
-    );
-  },
-);
+const AlertDialogHeader = /* @__PURE__ */ React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(function AlertDialogHeader({ className, ...props }, ref) {
+  return (
+    <div ref={ref} className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />
+  );
+});
 
-const AlertDialogFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function AlertDialogFooter({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-2', className)}
-        {...props}
-      />
-    );
-  },
-);
+const AlertDialogFooter = /* @__PURE__ */ React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(function AlertDialogFooter({ className, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-2', className)}
+      {...props}
+    />
+  );
+});
 
-const AlertDialogTitle = React.forwardRef<
+const AlertDialogTitle = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
 >(function AlertDialogTitle({ className, children, ...props }, ref) {
@@ -121,7 +123,7 @@ const AlertDialogTitle = React.forwardRef<
   );
 });
 
-const AlertDialogDescription = React.forwardRef<
+const AlertDialogDescription = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>
 >(function AlertDialogDescription({ className, children, ...props }, ref) {

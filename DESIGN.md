@@ -70,7 +70,7 @@ Shape is one knob. `semantic.radius.action` is the system's single shape value �
 | Tier | Value | Token | Applies to |
 | --- | --- | --- | --- |
 | Action | `8px` | `semantic.radius.action` | Buttons, inputs, badges, alerts, disclosures, segmented control items |
-| Container | `8px` | `primitive.radius.8` | Cards, segmented control surface, modal/sheet containers |
+| Container | `12px` | `role.radius` + 4px (`rounded-lg`) | Cards, surfaces, segmented control surface, modal/sheet containers |
 | Full | `9999px` | `primitive.radius.full` | Pills, avatars, indicator dots, any intentionally circular form |
 | Zero | `0px` | `primitive.radius.0` | Outer canvas / substrate boundaries only — never on everyday UI controls |
 <!-- auto:end:radius -->
@@ -131,12 +131,12 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 | --- | --- | --- | --- |
 | **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Icon buttons (`IconButton`) follow the same token surface. Icon-only actions use `IconButton` with an icon from `@hirobius/design-system/icons`. |
 | **Inputs** (`Input`) | `8px` (`semantic.radius.action`) | default · focus · filled · error · disabled · loading | Border-driven treatment; no filled background by default. Focus uses `semantic.color.border.accent` plus a 2px outline offset. Error swaps to `component.input.borderError`. |
-| **Cards** (`Card`) | `8px` (`primitive.radius.8`) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `var(--primitive-radius-8)` (8 px) — never 12/16/20 px. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
+| **Cards** (`Card`) | `12px` (`rounded-lg`, role radius + 4px) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
 | **Alerts** (`Alert`) | `8px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by left-border color, not by tinted fills. |
 | **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
 | **Toggles** (`Toggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
-| **Segmented Control** (`SegmentedControl`) | Outer `8px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`. |
+| **Segmented Control** (`SegmentedControl`) | Outer `12px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`. |
 
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
@@ -149,7 +149,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | ------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | Background               | `var(--semantic-color-surface-raised)`                                                                   | Any gradient, tinted fill, or custom color                                                  |
 | Border                   | `1px solid var(--semantic-color-border-default)`                                                         | `box-shadow` as an elevation substitute                                                     |
-| Border radius            | `var(--primitive-radius-8)` (8 px)                                                                       | 12 px, 16 px, 20 px, `rounded-full`, or any other value                                     |
+| Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
 | Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                          | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title                    | `hds.typeStyles.heading3` / `<HdsText variant="heading3">`                                               | Any other type style for the primary card heading                                           |
@@ -160,7 +160,7 @@ Never use on any card surface: gradient backgrounds, glow effects, frosted glass
 
 ## Screen Patterns
 
-Three patterns sit above the primitives so that every screen is composed the same way. Import them from `@hirobius/design-system/patterns`.
+Five patterns sit above the primitives so that every screen is composed the same way. Import them from `@hirobius/design-system/patterns`.
 
 ### Page title rule
 
@@ -168,16 +168,26 @@ Every screen has exactly one `PageHeader`. The page title is `heading2` (30px), 
 
 ### Which one, when
 
-Four components show a headline number or a state. Pick by where it sits.
+Pick by what the thing is. The first four rows are for a headline number or a state; the rest are for containers and sections.
 
-| Component     | Use it for                                                                    | Use instead                                                                  |
-| ------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `MetricTiles` | The default for any row of headline numbers on a screen. One fixed tile size. | Nothing: start here.                                                         |
-| `Stat`        | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
-| `Card.Metric` | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
-| `StatusTile`  | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
+| Component            | Use it for                                                                    | Use instead                                                                  |
+| -------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `MetricTiles`        | The default for any row of headline numbers on a screen. One fixed tile size. | Nothing: start here.                                                         |
+| `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
+| `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
+| `StatusTile`         | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
+| `Card`               | A titled or interactive content object (header, body, footer, or selectable). | `Surface` when there is no title and nothing to press.                       |
+| `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
+| `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
+| `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
+
+`Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
 `MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `heading2`, the label as an eyebrow and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
+
+### Destructive and table sections
+
+`DestructiveSection` is a titled danger zone with one danger `Button` that opens an `AlertDialog`; it never runs the action from the button itself, only from the dialog's confirm. Put it last on the screen, below the form. `DataTableSection` puts a `Table` under a heading and a toolbar slot. Row actions are consumer nodes in a trailing column, an empty `rows` array shows an `EmptyState`, and the table scrolls horizontally inside the section on narrow widths, so a caller never sets `minWidth`.
 
 ### Form actions rule
 
@@ -185,7 +195,7 @@ Four components show a headline number or a state. Pick by where it sits.
 
 ## Do's and Don'ts
 
-- Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared 4px action radius.
+- Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
 - Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob (#208) and defaults to neutral — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
