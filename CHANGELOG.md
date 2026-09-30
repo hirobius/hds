@@ -1,5 +1,210 @@
 # Changelog
 
+## 0.17.0
+
+### Minor Changes
+
+- 43fd957: Turn on `strict` TypeScript for the package; export the six previously `Hds`-prefixed components under bare names (`Toggle`, `Checkbox`, `Radio`, `Slider`, `Select`, `Tooltip`) with the `Hds*` names kept as `@deprecated` aliases until the 1.0 alias-removal window (hds#254); add a size-limit budget for a Button-only root import.
+- 643860b: hds#206 slice 3: the two runtime-overridden spacing tokens get canonical names,
+  with their overrides expressed as t-shirt scale steps. No computed value changes.
+  - New `semantic.space.surface.padding` (`--semantic-space-surface-padding`,
+    `hds.semantic.space.surface.padding`), default `scale.md` (24px). Tenants
+    override it per brand and density (brutalist-demo: `scale.sm`, `scale.xs`
+    under `[data-density="compact"]`).
+  - New `semantic.space.region.gutter` (`--semantic-space-region-gutter`,
+    `hds.semantic.space.region.gutter`), default `scale.md`. `theme.css` sets it
+    to `scale.lg` (32px), and `scale.sm` (16px) below 640px.
+  - `semantic.space.component.padding` and `semantic.space.layout.gutter` stay
+    as `$deprecated` aliases of the new names. Each tenant block redeclares the
+    deprecated alias next to its override, so consumers still reading the old
+    var inside a `[data-brand]` subtree keep the tenant value.
+  - `$deprecated` (DTCG) now marks all seven hds#206 aliases in
+    `hirobius.tokens.json`.
+  - hds's own `src/` now reads the new names, rewritten by
+    `scripts/codemod-spacing-vocabulary.mjs`.
+
+- d41c65e: Add `semantic.space.scale.{xs,sm,md,lg,xl}` — one monotonic t-shirt spacing
+  scale (8/16/24/32/48px) per Adrian's 2026-09-26 decision on hds#206. The
+  existing gap families (`layout.tight/normal/gutter/inset/spacious`,
+  `component.gap/padding`) are unchanged and kept live as deprecated aliases —
+  no breaking change. Adds `check-spacing-vocabulary` (warn-severity, manual/
+  on-demand) flagging raw integer literals on Box `sx` spacing props (the
+  px-ambiguous form hds#206 identifies), registered in
+  `docs/guardrails/registry.json`. Consumer codemod off the deprecated names,
+  alias removal, and unifying `Stack`'s gap resolver with `box-sx`'s are
+  tracked as remaining hds#206 work.
+- d41c65e: Add `semantic.size.{control,icon,avatar,row}` and `semantic.zIndex.{control,sticky}`
+  to `hirobius.tokens.json` per Adrian's 2026-09-26 decision on hds#242, plus
+  `semantic.radius.control` (checkbox glyph corner radius, a real design-scale
+  value distinct from `semantic.radius.action`) and `semantic.motion.distance`
+  (scroll-reveal `translateY` offset). Repoints all 15 `check-tier-bypass`
+  judgement-call violations named in hds#242 — activity-feed, checkbox,
+  code-block, radio, slider, table, `scroll-motion.css` — onto the new semantic
+  tokens, and adds `// tier-ok:` exemptions (matching #186's precedent) for the
+  two `radius-full` "fully round, one possible value" references that share a
+  line with a now-fixed size token. `pnpm check:tier-bypass` is green (was 15).
+
+  `scripts/lib/figma-model.mjs`: `semantic.radius.control` needed its own
+  `$type` (siblings inherit it from a group `$type` that `semantic.radius`
+  doesn't set); `semantic.motion.distance` is declared in `NOT_IN_FIGMA` (a
+  translateY offset has nothing to bind to in Figma, same as duration/easing).
+
+- d41c65e: Adds `@hirobius/design-system/patterns` (hds#254, ratified 2026-09-26): the 22
+  `pattern`-tier components from the disposition table — `Calendar`,
+  `FileInput`, `Form`, `AppShell`, `OverflowList`, `Page`, `ActivityFeed`,
+  `AssetImg`, `Carousel`, `CodeBlock`, `StackedCardRail`, `DocLinkCard`,
+  `NavItem`, `SideNav`, `Stepper`, `TopNav`, `TreeList`, `ErrorPattern`,
+  `Toolbar`, `CommandPalette`, `Lightbox`, `Reveal` — now importable from their
+  own subpath (`vite.config.lib.ts` entry, `package.json#exports`). Non-breaking:
+  21 of the 22 stay re-exported from the package root too, each now carrying a
+  `@deprecated`/`@removeIn 1.0.0` JSDoc notice pointing at the new subpath; the
+  root re-export is dropped at the next major once ops has a codemod
+  (`StackedCardRail` is new to the published surface either way — it was
+  `pattern`-tiered in the manifest but missing from `src/index.ts`, so it has no
+  root re-export to deprecate).
+
+  This is the non-breaking half of the hds#254 decision. The 41 `fold` API
+  absorptions in the same disposition table wait for 1.0 and an `ops` codemod —
+  tracked on hds#254/hds#124, not filed as new issues.
+
+- d41c65e: Standard type ramp (Adrian's 2026-09-26 decision on hds#283): lift Tailwind 4's
+  ten default `fontSize` steps into `primitive.typography.size.*` verbatim —
+  `xs` 13→12, `sm` 15→14, `base` 17→16, `lg` 20→18, `xl` 24→20, `2xl` 30→24,
+  `3xl` 36→30, `4xl` 48→36, `5xl` 72→48, `6xl` 80→60 — and repoint every
+  semantic composite at its new rung per the 2026-09-24 audit table:
+  - Rendered size changes: `body` 17→16px, `ui` 15→14px, `display` 72→60px,
+    `eyebrow`/`caption` 13→12px (closes the eyebrow/caption duplicate), `mono`
+    13→14px (repointed off `xs`, since `xs` alone now gives 12px).
+  - Rendered size unchanged, rung renamed to keep the primitive scale
+    monotonic: `h1` (`4xl`→`5xl`, 48px), `h2` (`2xl`→`3xl`, 30px, line-height
+    42px→40px onto the 4px grid), `h3` (`lg`→`xl`, 20px).
+  - `component.button.size.{sm,md,lg}.fontSize` descriptions corrected
+    (13/15/17px → 12/14/16px); `tag`/`badge`.fontSize already referenced
+    `primitive.typography.size.xs` and pick up 12px automatically.
+  - `--semantic-typography-display-font-size` clamp max in `src/styles/theme.css`
+    updated 72px→60px to match.
+  - Hardcoded `text-[10px]` / `text-[11px]` / `text-[15px]` classes that bypassed
+    the ramp (`command-palette.tsx`, `badge.tsx`, `segmented-control.tsx`)
+    replaced with ramp-driven `text-xs` / `text-sm` utilities (now that
+    `tailwind.config.tokens.cjs` wires `fontSize.*` straight onto these same
+    primitives, this also closes the fork with `hirobius/concrete`'s Tailwind
+    defaults).
+
+  Base-size rationale recorded in `DECISIONS.md`. Not in this pass: concrete's
+  duplicated display/h1 CSS clamp mins, Figma `figma:push`/`figma:snapshot
+--ingest` re-sync, and ops's 54 call sites on the `xs` rung (tracked as
+  remaining work on hds#283).
+
+- d41c65e: Table: `TableColumn` gains optional `sortable`, `sortDirection` (`'ascending' | 'descending' | 'none'`), and `onSort`. Sortable columns render a real button inside the header cell, set `aria-sort` on the header cell, and show a token-sized direction glyph (ArrowUp/ArrowDown/ArrowUpDown). Non-sortable columns render exactly as before (pixel parity).
+
+### Patch Changes
+
+- 999cc04: Storybook front door: an Introduction landing page that opens first, the Hirobius brand in the sidebar, share-preview tags, a Foundations/Primitives/Patterns sort order, spaced story titles (story ids unchanged), and six internal components hidden from the published build.
+- 0b32d55: Accessibility fixes from the axe sweep (#311): StepperField label/input pairing, Card.Progress accessible name, Carousel and StackedCardRail focusable named scroll regions, OverflowList and MetadataList valid list semantics, AssetImg aria-label only on roled elements, Calendar outside-month day contrast, Tokenizer state contrast, Bleed story token colour, unconditional `:focus-visible` ring for `.hds-focus`, highlighted-row inset ring in Menu, Select, Combobox and MultiSelector.
+- d41c65e: Delete dead internal (non-exported) files with zero consumers: `morph-card.tsx`,
+  `CascadeText.tsx`, `controls.tsx`. None were in `src/index.ts`'s public barrel
+  and none were imported anywhere in the repo — confirmed by grep before removal
+  (hds#133, Tier-1 zero-risk bucket, Adrian's option-A decision 2026-09-26).
+- 75cf4ab: Relocate the docs-tooling bucket (hds#133 ISSUE-09, Adrian's option-A decision:
+  delete/relocate only non-exported internals, keep every exported component) out
+  of `src/app/components/` into `src/docs-tooling/`: `api-reference`,
+  `component-preview`, `controls-panel`, `demo-block`, `doc-page-header`
+  (+ its test), `health-rail`, `page-footer`, `preview-frame`, `propTableUtils`,
+  `shell-controls`, `sketch-controls`, `theme-toggle`, `variant-strip`,
+  `DocPageSpec`, `TokenDisplayToggle`. None were exported from `src/index.ts` or
+  `src/patterns.ts`, so this is a zero-risk, non-breaking move — only internal
+  relative import paths changed. `pnpm manifest:generate` now correctly drops
+  these from `public/hds-manifest.json` (component-discovery only scans
+  `src/app/components/`), which is the intended effect: they were never
+  consumer-facing. `lab/*` relocation stays remaining — its earlier blocker
+  (extracting `lab/tokenUtils.ts` from the public `Token` primitive) was already
+  resolved in hds#233/369dce5; the file lives at `src/app/components/tokenUtils.ts`
+  now.
+- 643860b: Relocate the internal token-lab views (hds#133, Adrian's option-A decision) from
+  `src/app/components/lab/` to `src/docs-tooling/lab/`: `legacy-token-detail`,
+  `legacy-token-list`, `token-collection-list`, `token-list`. None were exported
+  from `src/index.ts` or `src/patterns.ts`, and the shared `tokenUtils` module the
+  public `Token` primitive depends on already lives outside `lab/`
+  (`src/app/components/tokenUtils.ts`, hds#233), so no exported component is
+  removed or renamed and the published package is unchanged. A new
+  docs-tooling boundary test keeps lab modules out of the component tree.
+- 75cf4ab: Reviewer-fix follow-up to the docs-tooling relocation (hds#133, commit edb31c0):
+  re-key `.token-path-baseline.txt`'s `health-rail.tsx` line to its new location
+  `src/docs-tooling/health-rail.tsx` (the stale `src/app/components/` path was
+  tripping `check-token-paths-ratchet.mjs`'s default-mode gate with a "new"
+  violation that was really the same pre-existing one, just moved). Regenerate
+  `src/app/design-system/token-usage-map.json` (`pnpm tokens:index`) and
+  `docs/audits/exceptions-audit.md` (`node scripts/audit-exceptions.mjs`) so both
+  reference the moved docs-tooling paths instead of the old
+  `src/app/components/*` ones. No component code changed.
+
+  Refs hirobius/hds#133
+
+- 75cf4ab: hds#206 remaining work: codemod hds's own internal spacing-token references
+  (CSS `var(--semantic-space-{layout,component}-*)` reads and
+  `hds.semantic.space.{layout,component}.*` / bare `semantic.space.*` dotted
+  paths in `src/`) off the deprecated aliases and onto the canonical
+  `semantic.space.scale.{xs,sm,md,lg,xl}` t-shirt scale added in #297. Pure
+  rename — every rewritten reference resolves to the identical px value, no
+  visual or behavioral change. Added `hds.semantic.space.scale.*` to the token
+  bridge (`tokens.ts`) so the canonical accessor exists in JS, not just CSS.
+
+  Script: `scripts/codemod-spacing-vocabulary.mjs` (idempotent, `--check` for a
+  dry run, unit-tested in `scripts/__tests__/codemod-spacing-vocabulary.test.mjs`).
+
+  Out of scope for this slice (unchanged): the public `gap`/`padding` prop
+  VALUES components accept (`gap="tight"`, `padding="component"`, etc.) and
+  `box-sx.ts`'s own resolver (it builds the deprecated var name dynamically,
+  not as a literal — unifying it with Stack's resolver is hds#206 item #4).
+  The deprecated aliases in `hirobius.tokens.json` are kept live and the
+  `check-spacing-vocabulary` gate stays in warn mode, per Adrian's 2026-09-26
+  decision.
+
+- 75cf4ab: hds#206 review fix: the previous codemod commit rewrote two spacing-token
+  sites onto `semantic.space.scale.md` when it should not have, because that
+  scale token has no runtime override where the original alias did:
+  - `semantic.space.layout.gutter` — `theme.css` overrides
+    `--semantic-space-layout-gutter` to 32px desktop / 16px under 639px;
+    `scale.md` is a fixed 24px. Reverted `tokens.ts`'s `layout.gutter` accessor
+    and `shell-controls.tsx`'s `paddingInlineStart` back to the alias var.
+  - `semantic.space.component.padding` — `tenants.css` overrides
+    `--semantic-space-component-padding` per tenant/density (brutalist-demo).
+    Reverted the `tokens.ts` `component.padding` accessor and its 14
+    consumption sites (`callout.tsx`, `code-block.tsx` x2, `container.tsx`,
+    `surface-padding.ts`, `surface.tsx`, `table.tsx` x2, `static.css`
+    `.hds-card`, `legacy-token-detail.tsx`, `shell-controls.tsx`
+    `paddingInlineEnd`, `sketch-controls.tsx`, `sketch.tsx`) back to the alias
+    var so tenant/density and responsive overrides keep working.
+
+  `semantic.space.component.gap` and `semantic.space.layout.normal` (also
+  touched by the codemod) have no such override and are left on `scale.xs`/
+  `scale.md` — genuinely pure renames.
+
+- d41c65e: Fix hds#254 review defect: the `@deprecated`/`@removeIn 1.0.0` JSDoc on the 21
+  pattern-tier components was on the component declarations themselves (e.g.
+  `export const AppShell` in `app-shell.tsx`), so TypeScript attached the
+  deprecation to the symbol everywhere — including the new
+  `@hirobius/design-system/patterns` subpath the notice tells consumers to
+  migrate to (`import { AppShell } from '.../patterns'` produced TS6385).
+
+  The declarations are now plain (undeprecated); the `@deprecated` notice lives
+  only on a root-only `const` alias in `src/index.ts` for each of the 21 names,
+  which shadows the star-exported binding for root-import consumers per ES
+  module semantics. Importing from `/patterns` now gives no deprecation
+  warning; importing the same name from the package root still does.
+
+- d41c65e: Delete the dead `componentPreviewRegistry` island: `componentPreviewRegistry.tsx`,
+  `specimen-block.tsx`, `variant-preview-deck.tsx` (~900 lines). None were exported
+  from `src/index.ts`'s public barrel, none were imported outside this trio, and
+  knip flagged all three as unused — the remains of the docs SPA deleted in #90.
+  The Storybook-built component reference site (#280) replaces what this was
+  reaching for; its hand-written `DEFAULT_PREVIEW_PROPS` table had decayed to 46
+  entries covering 30 of 139 manifest components. Decision and the pattern worth
+  keeping (`import.meta.glob` module discovery + manifest-driven
+  `preview.exportName`/`preview.sizing`) recorded in `DECISIONS.md` (hds#286,
+  Adrian's decision 2026-09-26).
+- d41c65e: Table: fix invalid ARIA structure from the sortable-columns change (hds#294 review). The grid now carries `role="table"`, header/data rows are wrapped in `role="row"` elements (`display: contents`, so CSS Grid layout is unaffected), every header cell has `role="columnheader"` (not just sortable ones), and data cells have `role="cell"` — so `aria-sort` no longer sits on an orphan columnheader outside any table/row ancestry. Also drops the manual `onKeyDown` on the sort button (native `<button>` already turns Enter/Space into a click; the duplicate handler risked a double-toggle in browsers with inconsistent Space-keyup behavior).
+
 ## 0.16.0
 
 ### Minor Changes
