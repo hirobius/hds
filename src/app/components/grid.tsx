@@ -174,4 +174,4 @@ const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(fu
 });
 
 /** @public */
-export const Grid = Object.assign(GridInner, { Item: GridItem });
+export const Grid = /* @__PURE__ */ Object.assign(GridInner, { Item: GridItem });
