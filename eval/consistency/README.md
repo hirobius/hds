@@ -40,8 +40,7 @@ eval/consistency/runs/<YYYY-MM-DD>/<app-id>/src/App.tsx   (plus any extra files 
    > `eval/consistency/runs/<date>/<app-id>/src/` with `App.tsx` as the entry.
    > Do not read any other app under `runs/`.
 
-`runs/` is not committed by default; commit a run only when it backs a ledger
-entry.
+`runs/` is gitignored; `git add -f` a run only when it backs a ledger entry.
 
 ## Running
 

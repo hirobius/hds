@@ -4,10 +4,10 @@
  * Every metric is tested at its module seam with small hand-computed fixtures;
  * the CLI is tested by spawning it. No network, no browser.
  */
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 import { scanApp, stripComments } from '../lib/consistency/violations.mjs';
 import { spawnSync } from 'node:child_process';
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,6 +28,16 @@ import { extractImports, jaccard, pairwiseJaccard } from '../lib/consistency/jac
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const png = (name) => readFileSync(path.join(ROOT, 'eval/consistency/fixtures/png', name));
+
+const tmpDirs = [];
+const makeTmp = (prefix) => {
+  const dir = mkdtempSync(path.join(os.tmpdir(), prefix));
+  tmpDirs.push(dir);
+  return dir;
+};
+afterAll(() => {
+  for (const d of tmpDirs) rmSync(d, { recursive: true, force: true });
+});
 
 const kinds = (hits) => hits.map((h) => h.kind).sort();
 
@@ -50,6 +60,12 @@ describe('violations: comment stripping', () => {
     expect(stripComments(src)).toBe(src);
   });
 
+  it('does not treat a URL in JSX text as a line comment', () => {
+    const src = "<p>See https://x.io</p><Box style={{ color: '#f00' }} />";
+    expect(stripComments(src)).toBe(src);
+    expect(kinds(scanApp({ 'src/App.tsx': src }))).toEqual(['hex']);
+  });
+
   it('preserves line numbers', () => {
     const src = 'a\n/* x\ny */\nb';
     expect(stripComments(src).split('\n')).toHaveLength(4);
@@ -57,6 +73,24 @@ describe('violations: comment stripping', () => {
 });
 
 describe('violations: scanApp', () => {
+  it('does not count in-page anchors that happen to be valid hex', () => {
+    const files = {
+      'src/App.tsx': [
+        'export const Nav = () => (',
+        '  <nav><a href="#add">Add</a><a href={"#fade"}>Fade</a><Link to="#bad">Bad</Link></nav>',
+        ');',
+      ].join('\n'),
+    };
+    expect(scanApp(files)).toEqual([]);
+  });
+
+  it('still counts a hex colour that is not an href/to target', () => {
+    const files = {
+      'src/App.tsx': 'const c = \'#add\'; const h = <a href="#x" data-c="#fade" />;',
+    };
+    expect(kinds(scanApp(files))).toEqual(['hex', 'hex']);
+  });
+
   it('counts nothing for a clean app', () => {
     const files = {
       'src/App.tsx':
@@ -330,6 +364,20 @@ describe('evaluate: the five thresholds on recorded results', () => {
   });
   const check = (report, name) => report.checks.find((c) => c.name === name);
 
+  it('fails builds unless every app built (3 of 4 is not a pass)', () => {
+    const r = evaluate(
+      {
+        ...good(),
+        apps: ['a', 'b', 'c', 'd'],
+        builds: { a: true, b: true, c: true, d: false },
+      },
+      thresholds,
+    );
+    expect(check(r, 'builds').status).toBe('fail');
+    expect(r.pass).toBe(false);
+    expect(formatCheck(check(r, 'builds'))).toMatch(/^FAIL builds: measured 3\/4/);
+  });
+
   it('passes every threshold at its exact boundary', () => {
     const r = evaluate(good(), thresholds);
     expect(r.pass).toBe(true);
@@ -527,7 +575,7 @@ describe('ledger: validation', () => {
 describe('ledger: append-only writer', () => {
   const src = path.join(ROOT, 'eval/consistency/ledger.json');
   const fresh = () => {
-    const dir = mkdtempSync(path.join(os.tmpdir(), 'ledger-'));
+    const dir = makeTmp('ledger-');
     const file = path.join(dir, 'ledger.json');
     copyFileSync(src, file);
     return file;
@@ -737,6 +785,19 @@ describe('pnpm eval:consistency (CLI, offline)', () => {
   });
 });
 
+describe('eval/consistency/runs/', () => {
+  it('is gitignored so a run cannot be committed by `git add -A`', () => {
+    const r = spawnSync(
+      'git',
+      ['check-ignore', '-q', 'eval/consistency/runs/2026-10-01/app-a/src/App.tsx'],
+      {
+        cwd: ROOT,
+      },
+    );
+    expect(r.status).toBe(0);
+  });
+});
+
 describe('the README "Agent consistency" block', () => {
   it('contains exactly the line --summary prints', () => {
     const readme = readFileSync(path.join(ROOT, 'README.md'), 'utf8');
@@ -754,7 +815,7 @@ describe('the README "Agent consistency" block', () => {
 
 describe('status-sync: checkRepo and check-status-claims --check', () => {
   const fixtureRepo = (mutate) => {
-    const dir = mkdtempSync(path.join(os.tmpdir(), 'status-sync-'));
+    const dir = makeTmp('status-sync-');
     mkdirSync(path.join(dir, 'eval/consistency'), { recursive: true });
     for (const f of ['README.md', 'status.json', 'eval/consistency/ledger.json']) {
       copyFileSync(path.join(ROOT, f), path.join(dir, f));

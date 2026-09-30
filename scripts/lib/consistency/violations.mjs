@@ -25,7 +25,8 @@ export function stripComments(src) {
   while (i < src.length) {
     const c = src[i];
     const next = src[i + 1];
-    if (c === '/' && next === '/') {
+    // `://` is a URL scheme (JSX text, unquoted), not a line comment.
+    if (c === '/' && next === '/' && src[i - 1] !== ':') {
       while (i < src.length && src[i] !== '\n') i += 1;
       continue;
     }
@@ -261,6 +262,11 @@ function collect(src, file, kind, re, hits) {
   }
 }
 
+// `href="#add"` / `to="#fade"` are in-page anchors that happen to be valid hex.
+const ANCHOR_TARGET_BEFORE = /\b(?:href|to)\s*=\s*\{?\s*["'`]$/;
+const isAnchorTarget = (src, index) =>
+  ANCHOR_TARGET_BEFORE.test(src.slice(Math.max(0, index - 24), index));
+
 /**
  * @param {Record<string,string>} files relative path -> source text for one app
  * @returns {{kind:string,file:string,line:number,match:string}[]}
@@ -275,7 +281,9 @@ export function scanApp(files) {
     if (!CODE_EXT.test(file)) continue;
     const src = stripComments(files[file]);
     const hits = [];
-    collect(src, file, 'hex', HEX_RE, hits);
+    const hex = [];
+    collect(src, file, 'hex', HEX_RE, hex);
+    hits.push(...hex.filter((h) => !isAnchorTarget(src, h.index)));
     collect(src, file, 'colour-fn', COLOUR_FN_RE, hits);
     collect(src, file, 'px', PX_RE, hits);
     collect(src, file, 'raw-control', RAW_CONTROL_RE, hits);

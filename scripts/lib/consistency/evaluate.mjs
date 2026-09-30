@@ -103,6 +103,11 @@ export function judgeMeasured(measured, thresholds, details = {}) {
     if (s.value === undefined || s.value === null) return { ...check, status: 'not-measured' };
     return { ...check, status: cmp(s.value, s.comparator, s.limit) ? 'pass' : 'fail' };
   });
+  // Every app that was built must build: 3 of 4 does not satisfy a 3/3 threshold.
+  const built = checks[0];
+  if (built.status === 'pass' && measured.builds.passing !== measured.builds.of) {
+    built.status = 'fail';
+  }
   // builds reads best as "2/3" against the required "3/3"
   const b = checks[0];
   if (b.value !== null)
