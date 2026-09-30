@@ -37,6 +37,8 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // jsdom polyfills (ResizeObserver, pointer capture, scrollIntoView) for Radix overlays.
+    setupFiles: ['./tests/setup/jsdom-polyfills.ts'],
     // Keep `pnpm test` focused on repo-owned unit tests. (Playwright specs live
     // under /tests and are run via `pnpm test:*`.)
     include: [
