@@ -247,6 +247,8 @@ Negative rules (apply everywhere, checked by \`scripts/audit-tokens.mjs --full\`
 
 ${layoutNegativeRules.map((rule) => `- ${rule}`).join('\n')}
 
+Density: put \`data-density="compact"\` on the same \`[data-hds]\` scope element (or \`<html>\`) to tighten \`semantic.space.scale.*\`, surface padding and region gutter; \`Table\` follows it unless given a \`density\` prop.
+
 Reference: \`docs/architecture/variant-contract.md\` for structural/semantic/size/density variance; \`src/app/data/component-api.json\` for every layout primitive's full prop table and \`@ai-rules\` guidance.
 
 ## How To Build A Scroll-Driven Section

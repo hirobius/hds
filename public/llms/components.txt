@@ -893,7 +893,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - caption: ReactNode
   - captionAction: ReactNode
   - columns: TableColumn[]
-  - density: 'compact' | 'comfortable' = comfortable
+  - density: 'compact' | 'comfortable'
   - description: ReactNode
   - flush: boolean = false
   - minWidth: string | number

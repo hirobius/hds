@@ -3153,6 +3153,7 @@
         "primitives-table--density-comfortable",
         "primitives-table--density-compact",
         "primitives-table--flush",
+        "primitives-table--follows-density-dial",
         "primitives-table--sortable",
         "primitives-table--with-badge-slots",
         "primitives-table--with-caption"

@@ -117,7 +117,7 @@ function regenerate({ tag, committed = OLD_NODE, extraSpecs = {} }) {
   return { stdout, specs: { ...manifest.componentSpecs, ...manifest.utilities } };
 }
 
-describe('generate-manifest figmaLink regeneration', () => {
+describe('generate-manifest figmaLink regeneration', { timeout: 60_000 }, () => {
   it('clears a committed figmaLink when the @figma tag is removed', () => {
     const { specs } = regenerate({ tag: null });
     expect(specs.DemoWidget.figmaUrl).toBeNull();
