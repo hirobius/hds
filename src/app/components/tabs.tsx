@@ -28,6 +28,10 @@ import { cn } from '../../lib/utils';
  * The tab set itself. Tagged here rather than in the file block because
  * TabsList and TabsContent share this module and have no Figma node of their
  * own — a file-level @figma would silently claim this node for all four.
+ * @usage Switch between panels of related content in the same place, one visible at a time.
+ * @whenNot A compact mode switch with no panels, or content that must all be visible.
+ * @useInstead SegmentedControl a compact switch with no panels
+ * @useInstead Disclosure optional content that expands in place
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-89
  */
 export const Tabs = TabsPrimitive.Root;

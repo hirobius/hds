@@ -2,6 +2,15 @@
  * HoverCard — rich preview shown on hover/focus, on Radix HoverCard.
  * @category Overlays
  * @tier primitive
+ * @usage Preview extra detail about a link or mention when it is hovered or focused, without navigating.
+ * @whenNot Content people must reach, or a label for an interactive control.
+ * @useInstead Dialog content people must act on
+ * @useInstead Tooltip a short label for a control
+ * @slot trigger The link or element that opens the card (HoverCard.Trigger).
+ * @slot content The preview (HoverCard.Content).
+ * @keyboard Focus Opens the card when the trigger receives keyboard focus.
+ * @keyboard Escape Closes the card and keeps focus on the trigger.
+ * @keyboard Tab Moves on to the next element and closes the card.
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix HoverCard (@radix-ui/react-hover-card) themed with the overlay role

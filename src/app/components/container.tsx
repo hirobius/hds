@@ -2,6 +2,11 @@
  * Container — semantic width-constrained layout.
  * @category Layout
  * @tier primitive
+ * @usage Constrain a page region to the content or maximum width and centre it.
+ * @whenNot Spacing between siblings, columns, or a surface with padding.
+ * @useInstead Stack spacing between siblings
+ * @useInstead Grid columns
+ * @useInstead Box one-off layout that no named primitive covers
  * @ai-intent Solves horizontal width constraint and page centering with a
  * semantic max-width scale, so agents stop hand-rolling `marginInline: auto`
  * plus an ad hoc max-width pixel value for page shells.

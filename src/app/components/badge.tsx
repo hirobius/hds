@@ -2,6 +2,10 @@
  * Badge - compact feedback badge for neutral and semantic states.
  * @category Feedback
  * @tier primitive
+ * @usage Label a status, state or count with a compact neutral or semantic chip.
+ * @whenNot A chip people can toggle, or a message that needs a sentence.
+ * @useInstead Tag an interactive filter or category chip
+ * @useInstead Alert a message that needs a sentence
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15
  */
 

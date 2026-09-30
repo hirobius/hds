@@ -758,6 +758,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/badge.tsx",
+        "src/app/components/dialog.tsx",
+        "src/app/components/empty-state.tsx",
+        "src/app/components/toast.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
@@ -880,7 +884,21 @@
         "primitives-alert--success",
         "primitives-alert--warning",
         "primitives-alert--with-title"
-      ]
+      ],
+      "usage": {
+        "when": "Show a persistent inline message with a severity, next to the content it concerns.",
+        "whenNot": "A brief confirmation that should disappear on its own, or a status label.",
+        "useInstead": [
+          {
+            "component": "ToastProvider",
+            "reason": "a brief confirmation that fades away"
+          },
+          {
+            "component": "Badge",
+            "reason": "a short status label"
+          }
+        ]
+      }
     },
     "CinematicLink": {
       "category": "Branding",
@@ -1080,6 +1098,24 @@
         "primitives-container--content-width",
         "primitives-container--max-width"
       ],
+      "usage": {
+        "when": "Constrain a page region to the content or maximum width and centre it.",
+        "whenNot": "Spacing between siblings, columns, or a surface with padding.",
+        "useInstead": [
+          {
+            "component": "Stack",
+            "reason": "spacing between siblings"
+          },
+          {
+            "component": "Grid",
+            "reason": "columns"
+          },
+          {
+            "component": "Box",
+            "reason": "one-off layout that no named primitive covers"
+          }
+        ]
+      },
       "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. Use Center instead when you also need a horizontal gutter, which Container does not support."
     },
     "Disclosure": {
@@ -1097,6 +1133,7 @@
       },
       "consumers": [
         "src/app/components/nav-group.tsx",
+        "src/app/components/tabs.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
         "src/stories/disclosure.stories.tsx",
         "src/stories/nav-group.stories.tsx"
@@ -1204,7 +1241,17 @@
         "primitives-disclosure--multiple-items",
         "primitives-disclosure--open-by-default",
         "primitives-disclosure--panel"
-      ]
+      ],
+      "usage": {
+        "when": "Hide optional explanatory content behind a heading that people can expand.",
+        "whenNot": "Content people must see, or switching between panels.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between panels of content"
+          }
+        ]
+      }
     },
     "Divider": {
       "category": "Layout",
@@ -1309,7 +1356,21 @@
         "primitives-divider--legacy-strong-prop",
         "primitives-divider--vertical",
         "primitives-divider--with-spacing"
-      ]
+      ],
+      "usage": {
+        "when": "Separate two regions of content with a thin semantic rule.",
+        "whenNot": "Spacing alone would do, or the separation needs a container.",
+        "useInstead": [
+          {
+            "component": "Stack",
+            "reason": "gap-based spacing between siblings"
+          },
+          {
+            "component": "Surface",
+            "reason": "a bounded region with its own background"
+          }
+        ]
+      }
     },
     "DocLinkCard": {
       "category": "Navigation",
@@ -1613,6 +1674,7 @@
       "consumers": [
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
+        "src/app/components/container.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/metric-tiles.test.tsx",
@@ -1732,6 +1794,20 @@
         "primitives-grid--three-column",
         "primitives-grid--two-column"
       ],
+      "usage": {
+        "when": "Lay out content in responsive columns with token-governed gaps, or align nested content with subgrid.",
+        "whenNot": "A single row or column, or styling a surface.",
+        "useInstead": [
+          {
+            "component": "Stack",
+            "reason": "a single row or column"
+          },
+          {
+            "component": "Box",
+            "reason": "one-off layout that no named primitive covers"
+          }
+        ]
+      },
       "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
     },
     "Icon": {
@@ -1751,6 +1827,7 @@
         "src/app/components/activity-feed.test.tsx",
         "src/app/components/activity-feed.tsx",
         "src/app/components/alert.tsx",
+        "src/app/components/avatar.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
@@ -1897,7 +1974,21 @@
         "primitives-icon--semantic-color",
         "primitives-icon--semantic-colors",
         "primitives-icon--size-gallery"
-      ]
+      ],
+      "usage": {
+        "when": "Draw a Lucide glyph at a size and colour from the design tokens.",
+        "whenNot": "A control someone can activate, or a picture that carries content.",
+        "useInstead": [
+          {
+            "component": "Button",
+            "reason": "a clickable control, with iconOnly for an icon-only one"
+          },
+          {
+            "component": "Avatar",
+            "reason": "a picture of a person or entity"
+          }
+        ]
+      }
     },
     "IconButton": {
       "category": "Actions",
@@ -2136,6 +2227,7 @@
         "src/app/components/button.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/text.tsx",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/stories/inline-link.stories.tsx",
         "src/stories/lib/usage-description.test.ts"
@@ -2186,7 +2278,21 @@
         "primitives-inline-link--external-no-icon",
         "primitives-inline-link--in-body-copy",
         "primitives-inline-link--internal-route"
-      ]
+      ],
+      "usage": {
+        "when": "Link to a route or external URL from inside body copy.",
+        "whenNot": "An action that changes something, or a control that needs button styling.",
+        "useInstead": [
+          {
+            "component": "Button",
+            "reason": "an action or a link that needs button styling"
+          },
+          {
+            "component": "Text",
+            "reason": "unlinked body copy"
+          }
+        ]
+      }
     },
     "Input": {
       "category": "Inputs",
@@ -2202,8 +2308,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/field.tsx",
         "src/app/components/form.tsx",
         "src/app/components/segmented-control.tsx",
+        "src/app/components/slider.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/components/textarea.tsx",
         "src/app/components/time-input.tsx",
@@ -2446,7 +2554,25 @@
         "primitives-input--size-variants",
         "primitives-input--with-error",
         "primitives-input--with-helper"
-      ]
+      ],
+      "usage": {
+        "when": "Collect a single line of text, a number, an email or a password, with label, helper and error slots.",
+        "whenNot": "Multi-line text, or choosing from a fixed list of options.",
+        "useInstead": [
+          {
+            "component": "Textarea",
+            "reason": "multi-line text"
+          },
+          {
+            "component": "Select",
+            "reason": "a short fixed list"
+          },
+          {
+            "component": "Combobox",
+            "reason": "a long fixed list that needs search"
+          }
+        ]
+      }
     },
     "NavGroup": {
       "category": "Navigation",
@@ -2666,7 +2792,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button-group.tsx",
+        "src/app/components/radio.tsx",
         "src/app/components/segmented-control.test.tsx",
+        "src/app/components/tabs.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.ts",
         "src/docs-tooling/TokenDisplayToggle.tsx",
@@ -2757,7 +2886,25 @@
         "primitives-segmented-control--full-width",
         "primitives-segmented-control--primary",
         "primitives-segmented-control--secondary"
-      ]
+      ],
+      "usage": {
+        "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
+        "whenNot": "A form choice that submits with the form, or more than five options.",
+        "useInstead": [
+          {
+            "component": "Radio",
+            "reason": "a form choice that submits with the form"
+          },
+          {
+            "component": "Tabs",
+            "reason": "switching between panels of content"
+          },
+          {
+            "component": "Select",
+            "reason": "more than five options"
+          }
+        ]
+      }
     },
     "Sketch": {
       "category": "Layout",
@@ -2853,11 +3000,13 @@
       "consumers": [
         "src/app/components/activity-feed.tsx",
         "src/app/components/box.tsx",
+        "src/app/components/button-group.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
         "src/app/components/cover.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/disclosure.tsx",
+        "src/app/components/divider.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
@@ -2869,6 +3018,7 @@
         "src/app/components/page.tsx",
         "src/app/components/sketch.tsx",
         "src/app/components/surface.tsx",
+        "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
@@ -3039,6 +3189,20 @@
         "primitives-stack--spacious-gap",
         "primitives-stack--tight-gap"
       ],
+      "usage": {
+        "when": "Space a row or column of content with token gaps and simple flex alignment.",
+        "whenNot": "Multi-column layout, or giving content a background or padding.",
+        "useInstead": [
+          {
+            "component": "Grid",
+            "reason": "multi-column layout"
+          },
+          {
+            "component": "Surface",
+            "reason": "content that needs a background or padding"
+          }
+        ]
+      },
       "aiRules": "Use Stack for flow spacing and simple flex alignment only. Do NOT use Stack to create card chrome, internal surface padding, or page-width constraints. Do NOT apply arbitrary margins to Stack to fake spacing between children when the gap prop should own that rhythm. Do NOT use Stack for true two-dimensional layouts that require Grid."
     },
     "StepperField": {
@@ -3242,7 +3406,21 @@
         "primitives-table--sortable",
         "primitives-table--with-badge-slots",
         "primitives-table--with-caption"
-      ]
+      ],
+      "usage": {
+        "when": "Show rows of structured data in aligned columns, with optional sorting.",
+        "whenNot": "A single record, a short list of links, or content that reflows as cards.",
+        "useInstead": [
+          {
+            "component": "Field",
+            "reason": "one record as label and value pairs"
+          },
+          {
+            "component": "Stack",
+            "reason": "a short list of items"
+          }
+        ]
+      }
     },
     "Tag": {
       "category": "Inputs",
@@ -3411,7 +3589,17 @@
         "primitives-tag--filter-row",
         "primitives-tag--interactive",
         "primitives-tag--state-matrix"
-      ]
+      ],
+      "usage": {
+        "when": "Show an interactive filter or category chip that people can toggle.",
+        "whenNot": "A read-only status or count label.",
+        "useInstead": [
+          {
+            "component": "Badge",
+            "reason": "a read-only status or count"
+          }
+        ]
+      }
     },
     "Token": {
       "category": "Display",
@@ -3600,6 +3788,7 @@
         "src/app/components/container.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/disclosure.tsx",
+        "src/app/components/divider.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
@@ -3609,12 +3798,14 @@
         "src/app/components/popover.tsx",
         "src/app/components/sketch.tsx",
         "src/app/components/slider.tsx",
+        "src/app/components/stack.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/components/tokenUtils.ts",
         "src/app/components/tooltip.tsx",
+        "src/app/context/hds-theme.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/docs-tooling/api-reference.tsx",
@@ -3714,6 +3905,7 @@
         "src/app/components/destructive-section.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/field.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
@@ -4353,11 +4545,14 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/hds-tooltip.tsx",
+        "src/app/components/inline-link.tsx",
+        "src/app/components/kbd.tsx",
         "src/app/components/nav-item.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/components/toolbar.test.tsx",
+        "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
         "src/docs-tooling/preview-frame.tsx",
@@ -4399,7 +4594,21 @@
         "primitives-text--heading-3",
         "primitives-text--technical",
         "primitives-text--ui"
-      ]
+      ],
+      "usage": {
+        "when": "Set any text on the type ramp, with the element chosen by `as`.",
+        "whenNot": "Navigation links, or a keyboard hint.",
+        "useInstead": [
+          {
+            "component": "InlineLink",
+            "reason": "a link inside body copy"
+          },
+          {
+            "component": "Kbd",
+            "reason": "a keyboard key hint"
+          }
+        ]
+      }
     },
     "Dialog": {
       "category": "Overlays",
@@ -4421,10 +4630,12 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
+        "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
+        "src/app/components/toast.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
@@ -4559,6 +4770,11 @@
           "tokenBinding": {
             "fill": "role.muted-foreground"
           }
+        },
+        {
+          "name": "trigger",
+          "description": "The element that opens the dialog (Dialog.Trigger).",
+          "source": "jsdoc"
         }
       ],
       "allowedChildren": [
@@ -4609,6 +4825,42 @@
         "primitives-dialog--destructive",
         "primitives-dialog--information",
         "primitives-dialog--no-close-affordance"
+      ],
+      "usage": {
+        "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
+        "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
+        "useInstead": [
+          {
+            "component": "HoverCard",
+            "reason": "a preview on hover or focus"
+          },
+          {
+            "component": "Alert",
+            "reason": "a message that needs no reply"
+          },
+          {
+            "component": "ToastProvider",
+            "reason": "a brief confirmation"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space",
+          "effect": "Opens the dialog from the trigger and moves focus inside it."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the dialog and returns focus to the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Cycles focus inside the open dialog."
+        },
+        {
+          "keys": "Shift+Tab",
+          "effect": "Cycles focus backwards inside the open dialog."
+        }
       ]
     },
     "StackedCardRail": {
@@ -4680,6 +4932,7 @@
         "src/app/components/button-group.tsx",
         "src/app/components/button.test.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
@@ -4688,7 +4941,9 @@
         "src/app/components/form-actions.tsx",
         "src/app/components/form.tsx",
         "src/app/components/icon-button.tsx",
+        "src/app/components/icon.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/pagination.tsx",
@@ -5055,6 +5310,20 @@
         "primitives-empty-state--title-only",
         "primitives-empty-state--with-description"
       ],
+      "usage": {
+        "when": "Say that a list, grid or section has no data yet, with a title and an optional description.",
+        "whenNot": "Content that is still loading, or a full-page error.",
+        "useInstead": [
+          {
+            "component": "Skeleton",
+            "reason": "content that is still loading"
+          },
+          {
+            "component": "Alert",
+            "reason": "a message about something that went wrong"
+          }
+        ]
+      },
       "aiRules": "Use only for inline empty states inside an existing section. Do NOT use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container."
     },
     "Field": {
@@ -5077,6 +5346,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
+        "src/app/components/table.tsx",
         "src/app/components/textarea.tsx",
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
@@ -5152,7 +5422,21 @@
         "primitives-field--success",
         "primitives-field--warning",
         "primitives-field--with-children"
-      ]
+      ],
+      "usage": {
+        "when": "Show a labelled read-only value, such as a name and its value in a detail view.",
+        "whenNot": "Editable input, or a single headline figure.",
+        "useInstead": [
+          {
+            "component": "Input",
+            "reason": "an editable single-line value"
+          },
+          {
+            "component": "Card.Metric",
+            "reason": "a headline figure inside a Card"
+          }
+        ]
+      }
     },
     "Page": {
       "category": "Layout",
@@ -5592,8 +5876,10 @@
       },
       "consumers": [
         "src/app/components/alert.tsx",
+        "src/app/components/avatar.tsx",
         "src/app/components/card.tsx",
         "src/app/components/page-header.tsx",
+        "src/app/components/tag.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
@@ -5621,7 +5907,21 @@
         "primitives-badge--neutral",
         "primitives-badge--success",
         "primitives-badge--warning"
-      ]
+      ],
+      "usage": {
+        "when": "Label a status, state or count with a compact neutral or semantic chip.",
+        "whenNot": "A chip people can toggle, or a message that needs a sentence.",
+        "useInstead": [
+          {
+            "component": "Tag",
+            "reason": "an interactive filter or category chip"
+          },
+          {
+            "component": "Alert",
+            "reason": "a message that needs a sentence"
+          }
+        ]
+      }
     },
     "TextLockup": {
       "variantAxes": [
@@ -5886,6 +6186,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/breadcrumb.tsx",
+        "src/app/components/disclosure.tsx",
+        "src/app/components/segmented-control.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
@@ -5913,7 +6216,21 @@
         "primitives-tabs--default",
         "primitives-tabs--many-tabs",
         "primitives-tabs--with-disabled-tab"
-      ]
+      ],
+      "usage": {
+        "when": "Switch between panels of related content in the same place, one visible at a time.",
+        "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
+        "useInstead": [
+          {
+            "component": "SegmentedControl",
+            "reason": "a compact switch with no panels"
+          },
+          {
+            "component": "Disclosure",
+            "reason": "optional content that expands in place"
+          }
+        ]
+      }
     },
     "TabsContent": {
       "category": "Navigation",
@@ -6066,6 +6383,8 @@
       "consumers": [
         "src/app/components/checkbox.tsx",
         "src/app/components/radio.test.tsx",
+        "src/app/components/segmented-control.tsx",
+        "src/app/components/toggle.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
         "src/index.ts",
@@ -6116,7 +6435,25 @@
         "primitives-radio--disabled-selected",
         "primitives-radio--group",
         "primitives-radio--selected"
-      ]
+      ],
+      "usage": {
+        "when": "Choose exactly one option from a small set that should stay visible together.",
+        "whenNot": "Independent yes/no options, or a long list of options.",
+        "useInstead": [
+          {
+            "component": "Checkbox",
+            "reason": "independent options that can be ticked together"
+          },
+          {
+            "component": "Select",
+            "reason": "a long list that can collapse into a dropdown"
+          },
+          {
+            "component": "SegmentedControl",
+            "reason": "a compact switch between two to five views or modes"
+          }
+        ]
+      }
     },
     "Select": {
       "category": "Inputs",
@@ -6138,9 +6475,12 @@
         "src/app/components/date-range-input.test.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/input.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/radio.tsx",
+        "src/app/components/segmented-control.tsx",
         "src/app/components/select.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
@@ -6303,7 +6643,17 @@
         "primitives-slider--default",
         "primitives-slider--stepped",
         "primitives-slider--typography-controls"
-      ]
+      ],
+      "usage": {
+        "when": "Pick a number within a known range by dragging, when the exact value matters less than the position.",
+        "whenNot": "A precise number the person must type or read exactly.",
+        "useInstead": [
+          {
+            "component": "Input",
+            "reason": "a precise typed value (type=\"number\")"
+          }
+        ]
+      }
     },
     "Toggle": {
       "category": "Inputs",
@@ -6376,7 +6726,21 @@
         "primitives-toggle--disabled-on",
         "primitives-toggle--on",
         "primitives-toggle--settings-group"
-      ]
+      ],
+      "usage": {
+        "when": "Switch one setting on or off, with the effect applying immediately.",
+        "whenNot": "A choice that only takes effect after submitting a form, or picking from several options.",
+        "useInstead": [
+          {
+            "component": "Checkbox",
+            "reason": "a form option confirmed on submit"
+          },
+          {
+            "component": "Radio",
+            "reason": "one choice from a set"
+          }
+        ]
+      }
     },
     "Avatar": {
       "category": "Display",
@@ -6398,6 +6762,7 @@
         "src/app/components/avatar-group.test.tsx",
         "src/app/components/avatar-group.tsx",
         "src/app/components/avatar.test.tsx",
+        "src/app/components/icon.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/avatar-group.stories.tsx",
         "src/stories/avatar.stories.tsx"
@@ -6445,7 +6810,21 @@
         "primitives-avatar--large",
         "primitives-avatar--small",
         "primitives-avatar--with-image"
-      ]
+      ],
+      "usage": {
+        "when": "Show a person or entity as an image with an initials fallback.",
+        "whenNot": "A generic pictogram, or a status marker.",
+        "useInstead": [
+          {
+            "component": "Icon",
+            "reason": "a generic pictogram"
+          },
+          {
+            "component": "Badge",
+            "reason": "a status marker"
+          }
+        ]
+      }
     },
     "Progress": {
       "category": "Feedback",
@@ -6467,6 +6846,8 @@
         "src/app/components/card-progress.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
+        "src/app/components/skeleton.tsx",
+        "src/app/components/spinner.tsx",
         "src/stories/card.stories.tsx",
         "src/stories/circular-progress.stories.tsx",
         "src/stories/progress.stories.tsx",
@@ -6508,7 +6889,21 @@
         "primitives-progress--complete",
         "primitives-progress--default",
         "primitives-progress--indeterminate"
-      ]
+      ],
+      "usage": {
+        "when": "Show how far a task has got, as a bar that is determinate or indeterminate.",
+        "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
+        "useInstead": [
+          {
+            "component": "Spinner",
+            "reason": "a wait of unknown length"
+          },
+          {
+            "component": "Skeleton",
+            "reason": "placeholder shapes for loading content"
+          }
+        ]
+      }
     },
     "Skeleton": {
       "category": "Feedback",
@@ -6527,7 +6922,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/empty-state.tsx",
+        "src/app/components/progress.tsx",
         "src/app/components/skeleton.test.tsx",
+        "src/app/components/spinner.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/patterns-scroll.stories.tsx",
         "src/stories/skeleton.stories.tsx"
@@ -6569,7 +6967,21 @@
         "primitives-skeleton--circular",
         "primitives-skeleton--default",
         "primitives-skeleton--text"
-      ]
+      ],
+      "usage": {
+        "when": "Reserve the shape of content that is still loading, so the layout does not jump.",
+        "whenNot": "A task with measurable progress, or a wait with no layout to reserve.",
+        "useInstead": [
+          {
+            "component": "Progress",
+            "reason": "a task with measurable progress"
+          },
+          {
+            "component": "Spinner",
+            "reason": "a short wait with no layout to reserve"
+          }
+        ]
+      }
     },
     "Spinner": {
       "category": "Feedback",
@@ -6588,6 +7000,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/progress.tsx",
+        "src/app/components/skeleton.tsx",
         "src/app/components/spinner.test.tsx",
         "src/stories/spinner.stories.tsx"
       ],
@@ -6625,7 +7039,21 @@
         "primitives-spinner--default",
         "primitives-spinner--large",
         "primitives-spinner--small"
-      ]
+      ],
+      "usage": {
+        "when": "Show that something is loading when the wait is short or has no measurable end.",
+        "whenNot": "A task with measurable progress, or a region whose layout is known.",
+        "useInstead": [
+          {
+            "component": "Progress",
+            "reason": "a task with measurable progress"
+          },
+          {
+            "component": "Skeleton",
+            "reason": "a region whose layout is known"
+          }
+        ]
+      }
     },
     "Breadcrumb": {
       "category": "Navigation",
@@ -6646,6 +7074,7 @@
       "consumers": [
         "src/app/components/breadcrumb.test.tsx",
         "src/app/components/page-header.tsx",
+        "src/app/components/pagination.tsx",
         "src/app/components/table.tsx",
         "src/stories/breadcrumb.stories.tsx",
         "src/stories/page-header.stories.tsx",
@@ -6678,7 +7107,21 @@
         "primitives-breadcrumb--default",
         "primitives-breadcrumb--shallow-trail",
         "primitives-breadcrumb--single-crumb"
-      ]
+      ],
+      "usage": {
+        "when": "Show where the current page sits in a hierarchy and link back up it.",
+        "whenNot": "Switching between sibling views, or stepping through pages of results.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between sibling views"
+          },
+          {
+            "component": "Pagination",
+            "reason": "stepping through pages of results"
+          }
+        ]
+      }
     },
     "Pagination": {
       "category": "Navigation",
@@ -6697,6 +7140,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/breadcrumb.tsx",
         "src/app/components/pagination.test.tsx",
         "src/stories/pagination.stories.tsx"
       ],
@@ -6737,7 +7181,17 @@
         "primitives-pagination--last-page",
         "primitives-pagination--middle-page",
         "primitives-pagination--wide-siblings"
-      ]
+      ],
+      "usage": {
+        "when": "Move between pages of a long result set, with truncated page numbers.",
+        "whenNot": "A hierarchy trail, or a short list that fits on one page.",
+        "useInstead": [
+          {
+            "component": "Breadcrumb",
+            "reason": "a hierarchy trail"
+          }
+        ]
+      }
     },
     "ToastProvider": {
       "category": "Feedback",
@@ -6756,6 +7210,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert.tsx",
+        "src/app/components/dialog.tsx",
         "src/app/components/toast.test.tsx",
         "src/stories/toast.stories.tsx"
       ],
@@ -6787,7 +7243,21 @@
         "primitives-toast--info",
         "primitives-toast--success",
         "primitives-toast--warning"
-      ]
+      ],
+      "usage": {
+        "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
+        "whenNot": "A message people must act on or that must stay next to its content.",
+        "useInstead": [
+          {
+            "component": "Alert",
+            "reason": "a message that stays next to its content"
+          },
+          {
+            "component": "Dialog",
+            "reason": "a message that needs a decision"
+          }
+        ]
+      }
     },
     "Combobox": {
       "category": "Inputs",
@@ -6809,6 +7279,7 @@
         "src/app/components/combobox.test.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/input.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/stories/combobox.stories.tsx",
@@ -6867,6 +7338,46 @@
         "primitives-combobox--few-options",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
+      ],
+      "usage": {
+        "when": "Pick one value from a long list of options, with a search field that filters as you type.",
+        "whenNot": "A short list that needs no search, or an action list.",
+        "useInstead": [
+          {
+            "component": "Select",
+            "reason": "a short list without search"
+          },
+          {
+            "component": "Menu",
+            "reason": "firing actions from a trigger"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space",
+          "effect": "Opens the list from the trigger and moves focus to the search field."
+        },
+        {
+          "keys": "ArrowDown/ArrowUp",
+          "effect": "Moves the active option and wraps at the ends."
+        },
+        {
+          "keys": "Character",
+          "effect": "Filters the options to those matching the typed text."
+        },
+        {
+          "keys": "Enter",
+          "effect": "Commits the active option and closes the list."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the list."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Stays inside the open list."
+        }
       ]
     },
     "Form": {
@@ -7127,7 +7638,17 @@
       "requiredProps": [],
       "a11yRules": [],
       "storyFiles": [],
-      "storyIds": []
+      "storyIds": [],
+      "usage": {
+        "when": "Wrap an app or region once to set theme, density and other root attributes for everything inside it.",
+        "whenNot": "Styling a single component, or per-component overrides.",
+        "useInstead": [
+          {
+            "component": "Surface",
+            "reason": "a single region with its own background"
+          }
+        ]
+      }
     },
     "AvatarGroup": {
       "category": "Display",
@@ -7278,7 +7799,21 @@
       "storyIds": [
         "primitives-button-group--default",
         "primitives-button-group--vertical"
-      ]
+      ],
+      "usage": {
+        "when": "Attach related Buttons into one segmented row or column that reads as a single control.",
+        "whenNot": "Buttons that are unrelated, or choosing one of several views.",
+        "useInstead": [
+          {
+            "component": "SegmentedControl",
+            "reason": "choosing one of several views"
+          },
+          {
+            "component": "Stack",
+            "reason": "loosely spaced buttons"
+          }
+        ]
+      }
     },
     "InputGroup": {
       "category": "Inputs",
@@ -7358,6 +7893,7 @@
       },
       "consumers": [
         "src/app/components/kbd.test.tsx",
+        "src/app/components/text.tsx",
         "src/stories/kbd.stories.tsx"
       ],
       "tokenMapping": {},
@@ -7387,7 +7923,17 @@
         "primitives-kbd--combination",
         "primitives-kbd--default",
         "primitives-kbd--sizes"
-      ]
+      ],
+      "usage": {
+        "when": "Show a keyboard key or shortcut hint inline, as a native kbd element.",
+        "whenNot": "Code samples, or a control that runs the shortcut.",
+        "useInstead": [
+          {
+            "component": "Text",
+            "reason": "inline code and other typography"
+          }
+        ]
+      }
     },
     "StatusDot": {
       "category": "Feedback",
@@ -7554,7 +8100,17 @@
       ],
       "storyIds": [
         "primitives-visually-hidden--default"
-      ]
+      ],
+      "usage": {
+        "when": "Give assistive technology a label or description that sighted people do not need to see.",
+        "whenNot": "Text everyone should read, or hiding an element from assistive technology too.",
+        "useInstead": [
+          {
+            "component": "Text",
+            "reason": "text that everyone should read"
+          }
+        ]
+      }
     },
     "CircularProgress": {
       "category": "Feedback",
@@ -8530,6 +9086,54 @@
       ],
       "storyIds": [
         "primitives-context-menu--default"
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The area that opens the menu on right-click (ContextMenu.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The popup holding the items (ContextMenu.Content).",
+          "source": "jsdoc"
+        }
+      ],
+      "usage": {
+        "when": "Offer actions for an item on right-click, or the equivalent keyboard gesture.",
+        "whenNot": "The only way to reach an action, or actions from a visible trigger.",
+        "useInstead": [
+          {
+            "component": "Menu",
+            "reason": "actions from a visible trigger"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "ArrowDown/ArrowUp",
+          "effect": "Moves the highlight and stops at the first and last item."
+        },
+        {
+          "keys": "End",
+          "effect": "Jumps to the last item."
+        },
+        {
+          "keys": "Character",
+          "effect": "Highlights the next item that starts with the typed letter."
+        },
+        {
+          "keys": "Enter",
+          "effect": "Selects the highlighted item and closes the menu."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the menu without leaving focus inside the removed content."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Does not leave the open menu."
+        }
       ]
     },
     "DateInput": {
@@ -8751,6 +9355,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/dialog.tsx",
         "src/app/components/hover-card.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
@@ -8771,6 +9376,46 @@
       ],
       "storyIds": [
         "primitives-hover-card--default"
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The link or element that opens the card (HoverCard.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The preview (HoverCard.Content).",
+          "source": "jsdoc"
+        }
+      ],
+      "usage": {
+        "when": "Preview extra detail about a link or mention when it is hovered or focused, without navigating.",
+        "whenNot": "Content people must reach, or a label for an interactive control.",
+        "useInstead": [
+          {
+            "component": "Dialog",
+            "reason": "content people must act on"
+          },
+          {
+            "component": "Tooltip",
+            "reason": "a short label for a control"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Focus",
+          "effect": "Opens the card when the trigger receives keyboard focus."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the card and keeps focus on the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Moves on to the next element and closes the card."
+        }
       ]
     },
     "MultiSelector": {
@@ -8970,6 +9615,7 @@
         "src/app/components/container.tsx",
         "src/app/components/cover.tsx",
         "src/app/components/frame.tsx",
+        "src/app/components/grid.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/toggle.tsx",
@@ -9010,6 +9656,24 @@
         "primitives-box--spacing-shorthands",
         "primitives-box--token-colors"
       ],
+      "usage": {
+        "when": "Build one-off layout that no named layout primitive covers, using token keys through `sx`.",
+        "whenNot": "Ordinary vertical or horizontal spacing, columns, or page-width constraint.",
+        "useInstead": [
+          {
+            "component": "Stack",
+            "reason": "a row or column of content with even gaps"
+          },
+          {
+            "component": "Grid",
+            "reason": "multi-column layout"
+          },
+          {
+            "component": "Container",
+            "reason": "a width-constrained page region"
+          }
+        ]
+      },
       "aiRules": "Reach for Stack/Grid/Container/the every-layout primitives first. Use Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex."
     },
     "Bleed": {
@@ -9726,6 +10390,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/input.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/textarea.stories.tsx"
       ],
@@ -9781,7 +10446,17 @@
         "primitives-textarea--disabled",
         "primitives-textarea--error",
         "primitives-textarea--with-helper"
-      ]
+      ],
+      "usage": {
+        "when": "Collect multi-line free text such as a message, note or description.",
+        "whenNot": "A single line of text, or choosing from a list.",
+        "useInstead": [
+          {
+            "component": "Input",
+            "reason": "a single line of text"
+          }
+        ]
+      }
     },
     "CardBody": {
       "category": "Display",
@@ -10574,6 +11249,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/context-menu.tsx",
         "src/app/components/data-table-section.tsx",
@@ -10806,6 +11482,7 @@
       "consumers": [
         "src/app/components/checkbox.test.tsx",
         "src/app/components/radio.tsx",
+        "src/app/components/toggle.tsx",
         "src/index.ts",
         "src/stories/checkbox.stories.tsx"
       ],
@@ -10843,7 +11520,21 @@
         "primitives-checkbox--disabled-checked",
         "primitives-checkbox--group",
         "primitives-checkbox--indeterminate"
-      ]
+      ],
+      "usage": {
+        "when": "Let people tick one or more independent options, or a parent choice that is partly selected.",
+        "whenNot": "An immediate on/off setting, or a choice of exactly one option from a set.",
+        "useInstead": [
+          {
+            "component": "Toggle",
+            "reason": "a setting that applies as soon as it flips"
+          },
+          {
+            "component": "Radio",
+            "reason": "exactly one choice from a set"
+          }
+        ]
+      }
     },
     "FormActions": {
       "category": "Actions",

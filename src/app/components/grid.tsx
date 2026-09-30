@@ -2,6 +2,10 @@
  * Grid — responsive grid composition primitive.
  * @category Layout
  * @tier primitive
+ * @usage Lay out content in responsive columns with token-governed gaps, or align nested content with subgrid.
+ * @whenNot A single row or column, or styling a surface.
+ * @useInstead Stack a single row or column
+ * @useInstead Box one-off layout that no named primitive covers
  * @ai-intent Solves multi-column layout and repeatable alignment with token-governed gaps, responsive column collapse, and a first-class subgrid escape hatch for nested structure.
  * @ai-rules Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient.
  *

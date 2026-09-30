@@ -2,11 +2,13 @@
 /**
  * scripts/lib/core-components.mjs and scripts/check-contract-coverage.mjs.
  * The gate reports core components with no usage.when of 20+ characters:
- * --report always exits 0, --enforce exits 1 while any is missing.
+ * --report always exits 0, --enforce exits 1 while any is missing, and the
+ * committed manifest has none missing.
  */
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CORE_COMPONENTS } from '../lib/core-components.mjs';
@@ -66,25 +68,120 @@ describe('findContractGaps', () => {
 });
 
 describe('check-contract-coverage CLI', () => {
-  const gaps = findContractGaps(CORE_COMPONENTS, manifest.componentSpecs);
-
-  it('the worked examples leave some core components uncovered (plumbing ticket)', () => {
-    expect(gaps.length).toBeGreaterThan(0);
+  it('every core component has a usage.when in the committed manifest (hds#340)', () => {
+    expect(findContractGaps(CORE_COMPONENTS, manifest.componentSpecs)).toEqual([]);
   });
 
-  it('--report prints the core misses and exits 0', () => {
-    const out = run('--report');
+  it('--enforce exits 0 and reports 42/42 core components covered', () => {
+    const out = run('--enforce');
     expect(out.status).toBe(0);
-    for (const name of gaps) expect(out.stdout).toContain(name);
+    expect(out.stdout).toContain('42/42');
   });
 
-  it('defaults to --report', () => {
+  it('defaults to --report and exits 0', () => {
     expect(run().status).toBe(0);
   });
 
-  it('--enforce exits 1 while any core component lacks usage.when', () => {
-    const out = run('--enforce');
-    expect(out.status).toBe(1);
-    expect(out.stderr + out.stdout).toContain(gaps[0]);
+  describe('against a manifest with a gap', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'contract-cov-'));
+    const file = path.join(dir, 'manifest.json');
+    const specs = Object.fromEntries(
+      CORE_COMPONENTS.map((n) => [n, { usage: { when: 'x'.repeat(MIN_WHEN_LENGTH) } }]),
+    );
+    specs.Toggle = {};
+    writeFileSync(file, JSON.stringify({ componentSpecs: specs }));
+    afterAll(() => rmSync(dir, { recursive: true, force: true }));
+
+    it('--report lists the gap and exits 0', () => {
+      const out = run('--report', '--manifest', file);
+      expect(out.status).toBe(0);
+      expect(out.stdout).toContain('Toggle');
+    });
+
+    it('--enforce names the gap and exits 1', () => {
+      const out = run('--enforce', '--manifest', file);
+      expect(out.status).toBe(1);
+      expect(out.stderr).toContain('Toggle');
+    });
+  });
+});
+
+describe('gate wiring (hds#340)', () => {
+  it('.husky/pre-commit runs the gate with --enforce', () => {
+    const hook = readFileSync(path.join(ROOT, '.husky/pre-commit'), 'utf8');
+    expect(hook).toMatch(/^node scripts\/check-contract-coverage\.mjs --enforce$/m);
+  });
+
+  it('the registry fires it at pre-commit', () => {
+    const registry = JSON.parse(
+      readFileSync(path.join(ROOT, 'docs/guardrails/registry.json'), 'utf8'),
+    );
+    const entry = registry.gates.find((g) => g.id === 'check-contract-coverage');
+    expect(entry.firingChannel).toBe('pre-commit');
+  });
+});
+
+describe('llms.txt "Which one when"', () => {
+  const llms = readFileSync(path.join(ROOT, 'public/llms.txt'), 'utf8');
+  const section = llms.split('## Which one when')[1]?.split(/\n## /)[0] ?? '';
+  const names = section
+    .split('\n')
+    .map((line) => line.match(/^([A-Za-z.]+): /)?.[1])
+    .filter(Boolean);
+
+  it('lists every core component', () => {
+    expect(CORE_COMPONENTS.filter((n) => !names.includes(n))).toEqual([]);
+  });
+});
+
+describe('keyboard contract tags on core overlays', () => {
+  it.each(['Combobox', 'ContextMenu', 'Dialog', 'HoverCard'])('%s declares keyboard', (name) => {
+    expect(manifest.componentSpecs[name].keyboard?.length).toBeGreaterThan(0);
+  });
+});
+
+describe('contract tags stay on the component they describe (hds#340 review)', () => {
+  const coreSet = new Set(CORE_COMPONENTS);
+  const subParts = Object.keys(manifest.componentSpecs).filter(
+    (n) => /^(Dialog|Tabs)[A-Z]/.test(n) && !coreSet.has(n),
+  );
+
+  it('finds the Dialog and Tabs sub-parts', () => {
+    expect(subParts.length).toBeGreaterThan(0);
+  });
+
+  it.each(subParts)('%s does not inherit its parent contract', (name) => {
+    const spec = manifest.componentSpecs[name];
+    expect(spec.usage?.when).toBeUndefined();
+    expect(spec.useInstead ?? []).toEqual([]);
+  });
+
+  it('no two "Which one when" lines share the same text', () => {
+    const llms = readFileSync(path.join(ROOT, 'public/llms.txt'), 'utf8');
+    const section = llms.split('## Which one when')[1]?.split(/\n## /)[0] ?? '';
+    const bodies = section
+      .split('\n')
+      .map((l) => l.match(/^[A-Za-z.]+: (.*)$/)?.[1])
+      .filter(Boolean);
+    expect(bodies.length - new Set(bodies).size).toBe(0);
+  });
+});
+
+describe('--manifest without a path', () => {
+  it('exits 1 with an actionable message', () => {
+    const r = run('--manifest');
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain('--manifest needs a path');
+  });
+});
+
+describe('registry entry', () => {
+  it('is severity error and lists the pre-commit channel', () => {
+    const registry = JSON.parse(
+      readFileSync(path.join(ROOT, 'docs/guardrails/registry.json'), 'utf8'),
+    );
+    const entry = registry.gates.find((g) => g.id === 'check-contract-coverage');
+    expect(entry.severity).toBe('error');
+    expect(entry.firingChannels).toEqual(['pre-commit']);
   });
 });
