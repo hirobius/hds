@@ -524,6 +524,7 @@
     "primitives-table--default",
     "primitives-table--density-comfortable",
     "primitives-table--density-compact",
+    "primitives-table--follows-density-dial",
     "primitives-table--docs",
     "primitives-table--flush",
     "primitives-table--sortable",

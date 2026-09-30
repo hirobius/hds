@@ -16,7 +16,7 @@
  *   spacing             — primitive.space.* scale
  *   size                — primitive.size.* scale + width measures
  *   semantic-space      — semantic.space.* usage-tier aliases
- *   density             — --hds-space-* comfortable/compact table (hardcoded design decision)
+ *   density             — --semantic-space-scale-* comfortable/compact table (hardcoded design decision)
  *   radius              — primitive.radius.* table
  *   motion              — primitive.duration.* + primitive.easing.* table
  *   agent-constraints   — hard design constraints with live brand values
@@ -475,19 +475,23 @@ export function buildTokenCount(raw) {
  *  not token primitives — they cannot be auto-sourced from tokens.json. */
 export function buildDensity() {
   const scale = [
-    ['xs', '4px', '2px', 'Icon padding, micro nudges'],
-    ['sm', '8px', '6px', 'Row gaps, label spacing'],
-    ['md', '16px', '12px', 'Standard component padding'],
-    ['lg', '24px', '20px', 'Card padding, form gaps'],
-    ['xl', '32px', '24px', 'Between card groups'],
-    ['2xl', '48px', '40px', 'Between page sections'],
-    ['3xl', '64px', '48px', 'Major layout divisions'],
-    ['4xl', '80px', '64px', 'Hero / page breathing'],
+    ['xs', '8px', '6px', 'Icon padding, table row padding, micro nudges'],
+    ['sm', '16px', '12px', 'Row gaps, mobile gutter'],
+    ['md', '24px', '20px', 'Surface padding (cards, forms, panels)'],
+    ['lg', '32px', '24px', 'Region gutter, between card groups'],
+    ['xl', '48px', '40px', 'Between page sections'],
   ];
   const lines = [header('CSS var', 'Comfortable', 'Compact', 'Use')];
   for (const [name, comfortable, compact, use] of scale) {
-    lines.push(row(`\`--hds-space-${name}\``, comfortable, compact, use));
+    lines.push(row(`\`--semantic-space-scale-${name}\``, comfortable, compact, use));
   }
+  lines.push('');
+  lines.push(
+    '`[data-density="compact"]` remaps `--semantic-space-scale-*` and re-declares `surface.padding` and `region.gutter` (with their deprecated aliases). `Table` follows it unless given a `density` prop.',
+  );
+  lines.push(
+    'The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; do not treat them as the dial.',
+  );
   lines.push('');
   lines.push("Toggle: `document.documentElement.dataset.density = 'compact'`");
   lines.push("Or via `useTheme().setDensity('compact')`");

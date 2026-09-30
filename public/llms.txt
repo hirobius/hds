@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T11:24:14.879Z
+Generated: 2026-09-30T12:25:13.802Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -71,6 +71,8 @@ Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, 
 - No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Cluster/Switcher/Sidebar/Cover) owns rhythm, not margin on the child.
 - No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.
 - No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.
+
+Density: put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
 
 Reference: `docs/architecture/variant-contract.md` for structural/semantic/size/density variance; `src/app/data/component-api.json` for every layout primitive's full prop table and `@ai-rules` guidance.
 
