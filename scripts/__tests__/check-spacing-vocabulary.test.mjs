@@ -80,6 +80,103 @@ describe('findViolationsInText', () => {
   });
 });
 
+describe('findViolationsInText: forms a line scan misses (hds#206 fix round)', () => {
+  const found = (text) =>
+    findViolationsInText(text, 'fake.tsx').map(({ line, key, value }) => ({ line, key, value }));
+
+  it('flags integers inside a responsive map on a spacing key', () => {
+    expect(found(`<Box sx={{ p: { base: 2, md: 4 } }} />`)).toEqual([
+      { line: 1, key: 'p', value: '2' },
+      { line: 1, key: 'p', value: '4' },
+    ]);
+  });
+
+  it('flags only the integer in a mixed responsive map, across lines', () => {
+    const text = ['<Box', '  sx={{', "    gap: { xs: 'sm',", '      md: 6 },', '  }}', '/>'].join(
+      '\n',
+    );
+    expect(found(text)).toEqual([{ line: 4, key: 'gap', value: '6' }]);
+  });
+
+  it('does not flag integers in a responsive map on a non-spacing key', () => {
+    expect(found(`<Box sx={{ width: { xs: 120, md: 320 }, p: 'md' }} />`)).toEqual([]);
+  });
+
+  it('flags a spacing integer inside a nested &-selector block', () => {
+    expect(found(`<Box sx={{ '&:hover': { p: 4 } }} />`)).toEqual([
+      { line: 1, key: 'p', value: '4' },
+    ]);
+  });
+
+  it('flags whitespace variants of the sx attribute', () => {
+    expect(found(`<Box sx={ { p: 4 } } />`)).toEqual([{ line: 1, key: 'p', value: '4' }]);
+    expect(found(`<Box sx = {{ mt: 2 }} />`)).toEqual([{ line: 1, key: 'mt', value: '2' }]);
+    expect(found(['<Box sx={', '  { px: 3 }', '} />'].join('\n'))).toEqual([
+      { line: 2, key: 'px', value: '3' },
+    ]);
+  });
+
+  it('flags a negative integer', () => {
+    expect(found(`<Box sx={{ mt: -2 }} />`)).toEqual([{ line: 1, key: 'mt', value: '-2' }]);
+  });
+
+  it('is not fooled by braces inside strings', () => {
+    expect(found(`<Box sx={{ content: '"}}"', p: 4 }} />`)).toEqual([
+      { line: 1, key: 'p', value: '4' },
+    ]);
+  });
+
+  it('does not scan text after the sx object closes', () => {
+    expect(found(`<Box sx={{ p: 'md' }}>px: 6, py: 2 (axis shorthand)</Box>`)).toEqual([]);
+  });
+
+  it('follows a same-file const passed by name', () => {
+    const text = ['const style = { p: 4 };', '<Box sx={style} />'].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'p', value: '4' }]);
+  });
+
+  it('follows a typed or as-const hoisted object, and a member of it', () => {
+    const text = [
+      'const card: SxObject = { gap: 2 };',
+      'const styles = { row: { mx: 3 } } as const;',
+      '<Box sx={card} />;',
+      '<Box sx={styles.row} />;',
+    ].join('\n');
+    expect(found(text)).toEqual([
+      { line: 1, key: 'gap', value: '2' },
+      { line: 2, key: 'mx', value: '3' },
+    ]);
+  });
+
+  it('follows a same-file const spread into an sx object', () => {
+    const text = ['const base = { m: 2 };', "<Box sx={{ ...base, p: 'md' }} />"].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'm', value: '2' }]);
+  });
+
+  it('reports a hoisted object once however often it is used', () => {
+    const text = ['const style = { p: 4 };', '<Box sx={style} />;', '<Box sx={style} />;'].join(
+      '\n',
+    );
+    expect(found(text)).toHaveLength(1);
+  });
+
+  it('ignores a hoisted object that never reaches sx', () => {
+    const text = ['const style = { padding: 4, p: 4 };', '<div style={style} />'].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+
+  it('honors // spacing-vocab-ok on the line before a hoisted integer', () => {
+    const text = [
+      'const style = {',
+      '  // spacing-vocab-ok: intentional legacy exception',
+      '  p: 4,',
+      '};',
+      '<Box sx={style} />',
+    ].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+});
+
 describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', () => {
   it('is error severity and fires at pre-commit in the registry', () => {
     const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
@@ -108,7 +205,24 @@ describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', ()
     });
     expect(run.status).toBe(1);
     const { violations } = JSON.parse(run.stdout);
-    expect(violations.map((v) => v.severity)).toEqual(['error', 'error', 'error']);
+    expect(violations.map((v) => v.message.split(' ')[0])).toEqual([
+      'sx.p:',
+      'sx.gap:',
+      'sx.mt:',
+      'sx.p:',
+      'sx.p:',
+      'sx.gap:',
+    ]);
+    expect(new Set(violations.map((v) => v.severity))).toEqual(new Set(['error']));
+  });
+
+  it('finds nothing in src/ (pnpm test runs this in CI, where the hook does not)', () => {
+    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+    expect(run.stderr).toBe('');
+    expect(run.status).toBe(0);
   });
 });
 

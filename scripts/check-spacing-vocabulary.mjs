@@ -12,16 +12,30 @@
  * What it catches:
  *   A raw numeric literal on a spacing shorthand key (`p`, `m`, `gap`, `pt`,
  *   `pr`, `pb`, `pl`, `px`, `py`, `mt`, `mr`, `mb`, `ml`, `mx`, `my`,
- *   `rowGap`, `columnGap`) inside a Box `sx={{ ... }}` object literal —
- *   e.g. `sx={{ p: 2 }}` or `sx={{ gap: 4 }}`. This is the exact ambiguity
- *   from hds#206 defect 1: the numeric scale is a count of 4px units
- *   (`p: 4` renders 16px, not 4px), so a bare integer here is unpredictable
- *   at the call site.
+ *   `rowGap`, `columnGap`) in a Box `sx` object — e.g. `sx={{ p: 2 }}` or
+ *   `sx={{ gap: 4 }}`. This is the exact ambiguity from hds#206 defect 1: the
+ *   numeric scale is a count of 4px units (`p: 4` renders 16px, not 4px), so a
+ *   bare integer here is unpredictable at the call site. It parses each file
+ *   with the TypeScript API, so it also sees:
+ *   - integers inside a responsive map on a spacing key
+ *     (`sx={{ p: { xs: 2, md: 4 } }}`) and inside `&`-selector blocks;
+ *   - any spacing of the attribute (`sx={ { p: 4 } }`, `sx = {{ ... }}`);
+ *   - either branch of a conditional (`p: dense ? 2 : 'md'`);
+ *   - an object declared in the same file and passed by name
+ *     (`const style = { p: 4 }; sx={style}`), by member (`sx={styles.row}`,
+ *     which scans all of `styles`) or spread (`sx={{ ...base }}`), following
+ *     `as`, `satisfies` and parentheses.
+ *
+ * What it does not follow (a known limit, also in the registry entry): an
+ * object imported from another file, returned from a function, built at
+ * runtime (`Object.assign`, a computed key), or a spacing key given as a
+ * shorthand property (`{ p }`). Those reach sx without a literal the gate can
+ * see; review catches them.
  *
  * What it ignores:
  *   - String values (`p: 'md'`, `gap: 'var(--...)'`) — already named.
- *   - Non-sx object literals (style props are a different, existing gate:
- *     check-hardcoded-spacing.mjs).
+ *   - Objects that never reach an sx attribute (style props are a different,
+ *     existing gate: check-hardcoded-spacing.mjs).
  *   - Lines with `// spacing-vocab-ok: <reason>` on the same or preceding line.
  *
  * Fix: replace the integer with a named step off
@@ -36,6 +50,7 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import ts from 'typescript';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -70,63 +85,145 @@ export const SPACING_KEYS = new Set([
 
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '__tests__']);
 
+/** Unwraps `(x)`, `x as T` and `x satisfies T` down to the expression itself. */
+function unwrap(node) {
+  let n = node;
+  while (
+    n &&
+    (ts.isParenthesizedExpression(n) ||
+      ts.isAsExpression(n) ||
+      ts.isSatisfiesExpression(n) ||
+      ts.isTypeAssertionExpression(n))
+  ) {
+    n = n.expression;
+  }
+  return n;
+}
+
+/** The property name as written (`p`, `'p'`, `"&:hover"`), or null for a computed key. */
+function propertyName(name) {
+  if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) {
+    return name.text;
+  }
+  return null;
+}
+
+/** `4` → '4', `-2` → '-2', anything else → null. */
+function numericLiteral(node) {
+  const n = unwrap(node);
+  if (ts.isNumericLiteral(n)) return n.text;
+  if (
+    ts.isPrefixUnaryExpression(n) &&
+    (n.operator === ts.SyntaxKind.MinusToken || n.operator === ts.SyntaxKind.PlusToken) &&
+    ts.isNumericLiteral(n.operand)
+  ) {
+    return `${n.operator === ts.SyntaxKind.MinusToken ? '-' : ''}${n.operand.text}`;
+  }
+  return null;
+}
+
 /**
- * Scans a single file's text for banned raw-integer spacing values inside
- * `sx={{ ... }}` object literals (tracked between the opening `sx={{` and
- * its matching `}}`, so a multi-line sx object is still covered).
+ * Scans a single file's text for banned raw-integer spacing values in Box
+ * `sx` objects: inline (`sx={{ ... }}`, any spacing), or a same-file object
+ * passed by name, member or spread.
  *
  * @param {string} text
  * @param {string} rel - repo-relative path used in reported violations
  * @returns {Array<{file:string, line:number, key:string, value:string, raw:string}>}
  */
 export function findViolationsInText(text, rel) {
+  if (!/\bsx\s*=/.test(text)) return [];
   const lines = text.split('\n');
+  const kind = rel.endsWith('.ts') ? ts.ScriptKind.TS : ts.ScriptKind.TSX;
+  const source = ts.createSourceFile(rel, text, ts.ScriptTarget.Latest, true, kind);
+
+  // Same-file `const|let|var name = <object literal>` declarations, by name.
+  const declarations = new Map();
+  const collectDeclarations = (node) => {
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
+      const init = unwrap(node.initializer);
+      if (init && ts.isObjectLiteralExpression(init)) declarations.set(node.name.text, init);
+    }
+    ts.forEachChild(node, collectDeclarations);
+  };
+  collectDeclarations(source);
+
   const violations = [];
-  let insideSx = false;
+  const scanned = new Set();
 
-  const keyValueRe = new RegExp(
-    `\\b(${[...SPACING_KEYS].join('|')})\\s*:\\s*(-?\\d+(?:\\.\\d+)?)\\b`,
-    'g',
-  );
+  const report = (key, valueNode, value) => {
+    const line = source.getLineAndCharacterOfPosition(valueNode.getStart(source)).line;
+    const suppressed =
+      lines[line].includes('spacing-vocab-ok') ||
+      (line > 0 && lines[line - 1].includes('spacing-vocab-ok'));
+    if (suppressed) return;
+    violations.push({
+      file: rel,
+      line: line + 1,
+      key,
+      value,
+      raw: lines[line].trim().slice(0, 120),
+    });
+  };
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+  /** A value on a spacing key: an integer, a responsive map of them, or a conditional. */
+  const scanSpacingValue = (key, node) => {
+    const n = unwrap(node);
+    const value = numericLiteral(n);
+    if (value !== null) return report(key, n, value);
+    if (ts.isConditionalExpression(n)) {
+      scanSpacingValue(key, n.whenTrue);
+      scanSpacingValue(key, n.whenFalse);
+    } else if (ts.isObjectLiteralExpression(n)) {
+      for (const prop of n.properties) {
+        if (ts.isPropertyAssignment(prop)) scanSpacingValue(key, prop.initializer);
+      }
+    }
+  };
 
-    const opensHere = !insideSx && line.includes('sx={{');
-    if (opensHere) insideSx = true;
-
-    if (insideSx) {
-      // Only scan the sx-object portion of the line: from where the object
-      // opens (or the start of the line, if it was already open) through
-      // its closing `}}` (or the end of the line, if it doesn't close here).
-      // Otherwise trailing prose after `}}` on the same line (e.g. a story
-      // caption like "px: 6, py: 2 (axis shorthand)") gets double-scanned.
-      const startIdx = opensHere ? line.indexOf('sx={{') : 0;
-      const closeIdx = line.indexOf('}}', startIdx);
-      const segment = closeIdx === -1 ? line.slice(startIdx) : line.slice(startIdx, closeIdx + 2);
-
-      const isSuppressed =
-        line.includes('spacing-vocab-ok') || (i > 0 && lines[i - 1].includes('spacing-vocab-ok'));
-
-      if (!isSuppressed) {
-        keyValueRe.lastIndex = 0;
-        let m;
-        while ((m = keyValueRe.exec(segment)) !== null) {
-          violations.push({
-            file: rel,
-            line: i + 1,
-            key: m[1],
-            value: m[2],
-            raw: line.trim().slice(0, 120),
-          });
+  /** An sx object: spacing keys, nested `&` blocks, and spreads of same-file objects. */
+  const scanSxObject = (obj) => {
+    if (scanned.has(obj)) return;
+    scanned.add(obj);
+    for (const prop of obj.properties) {
+      if (ts.isSpreadAssignment(prop)) {
+        scanSxExpression(prop.expression);
+      } else if (ts.isPropertyAssignment(prop)) {
+        const key = propertyName(prop.name);
+        if (key !== null && SPACING_KEYS.has(key)) {
+          scanSpacingValue(key, prop.initializer);
+        } else {
+          const value = unwrap(prop.initializer);
+          if (ts.isObjectLiteralExpression(value)) scanSxObject(value);
         }
       }
-
-      if (closeIdx !== -1) insideSx = false;
     }
-  }
+  };
 
-  return violations;
+  /** What an sx attribute (or a spread) holds: a literal, a name, or a member of a name. */
+  const scanSxExpression = (expression) => {
+    let n = unwrap(expression);
+    while (n && ts.isPropertyAccessExpression(n)) n = unwrap(n.expression);
+    if (!n) return;
+    if (ts.isObjectLiteralExpression(n)) return scanSxObject(n);
+    if (ts.isIdentifier(n) && declarations.has(n.text)) scanSxObject(declarations.get(n.text));
+  };
+
+  const visit = (node) => {
+    if (
+      ts.isJsxAttribute(node) &&
+      propertyName(node.name) === 'sx' &&
+      node.initializer &&
+      ts.isJsxExpression(node.initializer) &&
+      node.initializer.expression
+    ) {
+      scanSxExpression(node.initializer.expression);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+
+  return violations.sort((a, b) => a.line - b.line);
 }
 
 function collectFiles(dir, results = []) {
