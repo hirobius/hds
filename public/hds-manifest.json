@@ -1027,6 +1027,7 @@
         "src/app/components/center.tsx",
         "src/app/components/page.tsx",
         "src/app/components/switcher.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
         "src/stories/box.stories.tsx",
@@ -4424,11 +4425,14 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/dialog.stories.tsx",
-        "src/stories/table.stories.tsx"
+        "src/stories/table.stories.tsx",
+        "src/styles/__tests__/scrim-and-color-scheme.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -4600,6 +4604,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -6137,6 +6142,8 @@
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/index.ts",
@@ -7063,6 +7070,9 @@
       },
       "consumers": [
         "src/app/context/__tests__/context.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
+        "src/app/context/hds-portal.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -7716,6 +7726,8 @@
       },
       "consumers": [
         "src/app/components/image-lightbox.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
         "src/stories/asset-img.stories.tsx",
@@ -8363,8 +8375,11 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/destructive-section.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
-        "src/stories/destructive-section.stories.tsx"
+        "src/stories/destructive-section.stories.tsx",
+        "src/styles/__tests__/scrim-and-color-scheme.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8380,6 +8395,7 @@
         "src/stories/alert-dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-alert-dialog--dark-scope",
         "primitives-alert-dialog--default"
       ]
     },
@@ -8495,6 +8511,8 @@
       },
       "consumers": [
         "src/app/components/context-menu.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/context-menu.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8734,6 +8752,8 @@
       },
       "consumers": [
         "src/app/components/hover-card.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/hover-card.stories.tsx"
       ],
       "tokenMapping": {},
@@ -10125,7 +10145,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10154,6 +10174,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10167,7 +10188,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10200,6 +10221,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10213,7 +10235,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10242,6 +10264,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10255,7 +10278,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10279,6 +10302,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10292,7 +10316,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10316,6 +10340,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10329,7 +10354,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10358,6 +10383,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10371,7 +10397,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10395,6 +10421,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10408,7 +10435,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10437,6 +10464,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10450,7 +10478,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is a foreground/80 wash so it picks up the theme without a hardcoded black. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.overlay) + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -10479,6 +10507,7 @@
         "src/stories/dialog.stories.tsx"
       ],
       "storyIds": [
+        "primitives-dialog--dark-scope",
         "primitives-dialog--default",
         "primitives-dialog--destructive",
         "primitives-dialog--information",
@@ -10503,6 +10532,8 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/hover-card.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
         "src/stories/hds-tooltip.stories.tsx"
@@ -10551,6 +10582,8 @@
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/docs-tooling/shell-controls.tsx",
         "src/stories/context-menu.stories.tsx",
         "src/stories/menu.stories.tsx"
@@ -10658,6 +10691,8 @@
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/popover.test.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
         "src/stories/date-input.stories.tsx",
@@ -12448,7 +12483,9 @@
       },
       "consumers": [
         "src/app/components/asset-img.tsx",
-        "src/app/components/hds-tooltip.tsx"
+        "src/app/components/hds-tooltip.tsx",
+        "src/app/context/__tests__/portal-hydration.test.tsx",
+        "src/app/context/__tests__/portal-scope.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],

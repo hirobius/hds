@@ -28,13 +28,14 @@
 import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
 import { Text } from './text';
 
 // ── Root + leaf primitives ──────────────────────────────────────────────────────
 
 const AlertDialogRoot = AlertDialogPrimitive.Root;
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
-const AlertDialogPortal = AlertDialogPrimitive.Portal;
+const AlertDialogPortal = withHdsPortal(AlertDialogPrimitive.Portal);
 const AlertDialogAction = AlertDialogPrimitive.Action;
 const AlertDialogCancel = AlertDialogPrimitive.Cancel;
 
@@ -47,7 +48,7 @@ const AlertDialogOverlay = /* @__PURE__ */ React.forwardRef<
   return (
     <AlertDialogPrimitive.Overlay
       ref={ref}
-      className={cn('fixed inset-0 z-50 bg-foreground/60 backdrop-blur-sm', className)}
+      className={cn('fixed inset-0 z-50 bg-scrim/60 backdrop-blur-sm', className)}
       {...props}
     />
   );
@@ -55,12 +56,23 @@ const AlertDialogOverlay = /* @__PURE__ */ React.forwardRef<
 
 // ── Content ─────────────────────────────────────────────────────────────────────
 
+/** @public */
+export interface AlertDialogContentProps extends React.ComponentPropsWithoutRef<
+  typeof AlertDialogPrimitive.Content
+> {
+  /**
+   * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+   * overlay inherits its theme; pass `null` to use `document.body`.
+   */
+  container?: HTMLElement | null;
+}
+
 const AlertDialogContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
->(function AlertDialogContent({ className, ...props }, ref) {
+  AlertDialogContentProps
+>(function AlertDialogContent({ className, container, ...props }, ref) {
   return (
-    <AlertDialogPortal>
+    <AlertDialogPortal container={container}>
       <AlertDialogOverlay />
       <AlertDialogPrimitive.Content
         ref={ref}

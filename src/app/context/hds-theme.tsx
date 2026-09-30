@@ -52,6 +52,18 @@ export interface HdsThemeValue {
 
 const HdsThemeContext = React.createContext<HdsThemeValue>({});
 
+const HdsScopeContext = React.createContext<HTMLElement | null>(null);
+
+/**
+ * The nearest HdsThemeProvider's `data-hds` wrapper element, for overlay parts
+ * to portal into (hds#335). `null` until the wrapper mounts, and outside any
+ * provider.
+ * @internal
+ */
+export function useHdsScope(): HTMLElement | null {
+  return React.useContext(HdsScopeContext);
+}
+
 /**
  * Read the nearest HdsThemeProvider's active dial values. Returns an empty
  * object when no provider is present (styles still work off the defaults).
@@ -91,6 +103,10 @@ export function HdsThemeProvider({
     [theme, density, brand, fontFamily, fontFamilyMono],
   );
 
+  // State-backed callback ref: the context value is an element once mounted, so
+  // consumers re-render with it instead of reading a stale `null` from a ref object.
+  const [scope, setScope] = React.useState<HTMLElement | null>(null);
+
   const fontVars: React.CSSProperties = {};
   if (fontFamily) (fontVars as Record<string, string>)['--hds-font-family'] = fontFamily;
   if (fontFamilyMono)
@@ -98,21 +114,24 @@ export function HdsThemeProvider({
 
   return (
     <HdsThemeContext.Provider value={value}>
-      <Comp
-        data-hds=""
-        // `data-theme`/`data-density` only take effect for the non-default value
-        // ("dark"/"compact"); the comfortable/light defaults leave them unset.
-        data-theme={theme === 'dark' ? 'dark' : undefined}
-        data-density={density === 'compact' ? 'compact' : undefined}
-        // Brand keys off `data-brand` (the ADR-020 §4 public attribute) with
-        // `data-tenant` mirrored for back-compat with today's compiled overlays.
-        data-brand={brand}
-        data-tenant={brand}
-        className={className}
-        style={{ ...fontVars, ...style }}
-      >
-        {children}
-      </Comp>
+      <HdsScopeContext.Provider value={scope}>
+        <Comp
+          ref={setScope}
+          data-hds=""
+          // `data-theme`/`data-density` only take effect for the non-default value
+          // ("dark"/"compact"); the comfortable/light defaults leave them unset.
+          data-theme={theme === 'dark' ? 'dark' : undefined}
+          data-density={density === 'compact' ? 'compact' : undefined}
+          // Brand keys off `data-brand` (the ADR-020 §4 public attribute) with
+          // `data-tenant` mirrored for back-compat with today's compiled overlays.
+          data-brand={brand}
+          data-tenant={brand}
+          className={className}
+          style={{ ...fontVars, ...style }}
+        >
+          {children}
+        </Comp>
+      </HdsScopeContext.Provider>
     </HdsThemeContext.Provider>
   );
 }

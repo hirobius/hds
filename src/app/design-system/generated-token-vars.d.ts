@@ -181,6 +181,7 @@ declare module 'react' {
     '--semantic-color-surface-page'?: string | undefined;
     '--semantic-color-surface-raised'?: string | undefined;
     '--semantic-color-surface-overlay'?: string | undefined;
+    '--semantic-color-surface-scrim'?: string | undefined;
     '--semantic-color-surface-inverse'?: string | undefined;
     '--semantic-color-surface-accent'?: string | undefined;
     '--semantic-color-surface-accentSubtle'?: string | undefined;
@@ -427,6 +428,7 @@ declare module 'react' {
     '--role-card'?: string | undefined;
     '--role-card-foreground'?: string | undefined;
     '--role-popover'?: string | undefined;
+    '--role-scrim'?: string | undefined;
     '--role-popover-foreground'?: string | undefined;
     '--role-primary'?: string | undefined;
     '--role-primary-foreground'?: string | undefined;

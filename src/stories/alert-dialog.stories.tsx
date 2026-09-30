@@ -41,3 +41,51 @@ export const Default: Story = {
     </AlertDialog>
   ),
 };
+
+export const DarkScope: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Overlays inherit the nearest `data-hds` scope. Only the wrapper is `data-theme="dark"`; the alert dialog and its scrim render dark.',
+      },
+    },
+  },
+  render: () => (
+    <div
+      data-hds
+      data-theme="dark"
+      style={{
+        padding: 'var(--semantic-space-layout-spacious)',
+        background: 'var(--semantic-color-surface-page)',
+        color: 'var(--semantic-color-content-primary)',
+      }}
+    >
+      <AlertDialog>
+        <AlertDialog.Trigger asChild>
+          <Button tone="danger">Delete project</Button>
+        </AlertDialog.Trigger>
+        <AlertDialog.Content>
+          <AlertDialog.Header>
+            <AlertDialog.Title>Delete project?</AlertDialog.Title>
+            <AlertDialog.Description>
+              This permanently removes the project and all of its data.
+            </AlertDialog.Description>
+          </AlertDialog.Header>
+          <AlertDialog.Footer>
+            <AlertDialog.Cancel asChild>
+              <Button variant="secondary">Cancel</Button>
+            </AlertDialog.Cancel>
+            <AlertDialog.Action asChild>
+              <Button tone="danger">Delete</Button>
+            </AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
+    </div>
+  ),
+  // Open on load for visual review (plain DOM click; jsdom gates never run `play`).
+  play: async ({ canvasElement }) => {
+    canvasElement.querySelector<HTMLButtonElement>('button')?.click();
+  },
+};
