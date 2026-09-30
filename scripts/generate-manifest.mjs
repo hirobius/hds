@@ -204,6 +204,21 @@ for (const [componentName, spec] of Object.entries(seedSpecs)) {
 
 manifest.componentInventory = componentInventory;
 manifest.patternInventory = patternInventory;
+// hds#342: the curated ./icons subpath. Names are parsed from src/icons.ts so
+// the manifest can never drift from what the subpath actually exports.
+if (existsSync(join(SRC_DIR, 'icons.ts'))) {
+  const iconsSrc = readFileSync(join(SRC_DIR, 'icons.ts'), 'utf8');
+  const block = iconsSrc.match(/export\s*\{([^}]*)\}\s*from\s*'lucide-react'/);
+  manifest.iconSet = {
+    subpath: '@hirobius/design-system/icons',
+    names: uniqueSorted(
+      (block ? block[1] : '')
+        .split(',')
+        .map((n) => n.trim())
+        .filter(Boolean),
+    ),
+  };
+}
 manifest.componentSpecs = remappedSpecs;
 manifest.inventory = manifest.inventory ?? {};
 

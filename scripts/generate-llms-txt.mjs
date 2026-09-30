@@ -101,6 +101,28 @@ export function generateLlmsTxt() {
       : '';
   const patternSection = patternLines ? `## Pattern Inventory\n\n${patternLines}\n\n` : '';
 
+  const iconNames = manifest.iconSet?.names ?? [];
+  const iconSection = iconNames.length
+    ? `## Icons
+
+Icons come from the curated subpath \`${manifest.iconSet.subpath}\`; nothing extra to install.
+
+\`\`\`tsx
+import { IconButton } from '@hirobius/design-system';
+import { Ellipsis } from '${manifest.iconSet.subpath}';
+
+<IconButton icon={Ellipsis} label="Row actions" />
+\`\`\`
+
+Rule: icon-only actions (row menus, close, edit) use \`IconButton\`; do not hand-roll a button with a glyph or text "...".
+
+Names: ${iconNames.join(', ')}
+
+Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel. For an icon outside the set, install \`lucide-react@0.487.0\` (same version keeps the \`LucideIcon\` type identical).
+
+`
+    : '';
+
   const generated = new Date().toISOString();
 
   const txt = `# Hirobius Design System
@@ -214,7 +236,7 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 - \`TOKEN_GOVERNANCE.md\`
 - \`SYSTEMS_REGISTRY.md\`
 
-${patternSection}## Token Rules
+${patternSection}${iconSection}## Token Rules
 
 ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 

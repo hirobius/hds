@@ -145,6 +145,9 @@ export default defineConfig({
         // from the main barrel too (deprecated, root re-export kept for one
         // minor) — this entry is the forward-looking import path.
         patterns: path.resolve(__dirname, 'src/patterns.ts'),
+        // Subpath: curated Lucide icon re-export for IconButton (hds#342).
+        // lucide-react stays external below; consumers tree-shake the bare import.
+        icons: path.resolve(__dirname, 'src/icons.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],

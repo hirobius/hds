@@ -692,6 +692,7 @@
       },
       "consumers": [
         "src/app/data/hdsEditorial.tsx",
+        "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
       ],
@@ -1557,7 +1558,8 @@
         "src/stories/grid.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
-        "src/stories/surface.stories.tsx"
+        "src/stories/surface.stories.tsx",
+        "src/stories/tile-grid.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -1700,6 +1702,7 @@
         "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/docs-tooling/shell-controls.tsx",
         "src/docs-tooling/theme-toggle.tsx",
+        "src/icons.ts",
         "src/stories/activity-feed.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/icon.stories.tsx",
@@ -1846,6 +1849,7 @@
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/page-footer.tsx",
         "src/docs-tooling/shell-controls.tsx",
+        "src/icons.ts",
         "src/stories/icon-button.stories.tsx"
       ],
       "tokenMapping": {
@@ -2119,9 +2123,15 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
+        "src/stories/date-input.stories.tsx",
+        "src/stories/date-range-input.stories.tsx",
+        "src/stories/date-time-input.stories.tsx",
+        "src/stories/file-input.stories.tsx",
+        "src/stories/input-group.stories.tsx",
         "src/stories/input.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
-        "src/stories/textarea.stories.tsx"
+        "src/stories/textarea.stories.tsx",
+        "src/stories/time-input.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "role.background",
@@ -2781,6 +2791,7 @@
         "src/stories/box.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/heading-stack.stories.tsx",
         "src/stories/page.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/stack.stories.tsx"
@@ -2952,6 +2963,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/stepper-field.test.tsx",
         "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
@@ -3585,6 +3597,7 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/card-progress.test.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
@@ -3596,7 +3609,12 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/card.stories.tsx",
+        "src/stories/doc-link-card.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/history-card.stories.tsx",
+        "src/stories/hover-card.stories.tsx",
+        "src/stories/selectable-card.stories.tsx",
+        "src/stories/stacked-card-rail.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
       ],
       "tokenMapping": {
@@ -4220,6 +4238,7 @@
         "src/stories/skeleton.stories.tsx",
         "src/stories/sketch.stories.tsx",
         "src/stories/surface.stories.tsx",
+        "src/stories/text-lockup.stories.tsx",
         "src/stories/text.stories.tsx",
         "src/stories/toolbar.stories.tsx"
       ],
@@ -4272,6 +4291,7 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
+        "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/dialog.stories.tsx",
@@ -4470,6 +4490,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/stacked-card-rail.test.tsx",
         "src/index.ts",
         "src/stories/stacked-card-rail.stories.tsx"
       ],
@@ -4560,6 +4581,7 @@
         "src/stories/table.stories.tsx",
         "src/stories/text-lockup.stories.tsx",
         "src/stories/toast.stories.tsx",
+        "src/stories/toggle-button.stories.tsx",
         "src/stories/toolbar.stories.tsx",
         "src/stories/top-nav.stories.tsx"
       ],
@@ -4899,7 +4921,8 @@
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
-        "src/stories/sketch.stories.tsx"
+        "src/stories/sketch.stories.tsx",
+        "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5488,6 +5511,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/asset-img.test.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.tsx",
@@ -6054,6 +6078,7 @@
         "src/app/hooks/useInteractionState.ts",
         "src/docs-tooling/shell-controls.tsx",
         "src/index.ts",
+        "src/stories/toggle-button.stories.tsx",
         "src/stories/toggle.stories.tsx"
       ],
       "tokenMapping": {
@@ -6189,6 +6214,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/card-progress.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
         "src/stories/card.stories.tsx",
@@ -7938,6 +7964,7 @@
       "consumers": [
         "src/app/components/stepper.test.tsx",
         "src/index.ts",
+        "src/stories/stepper-field.stories.tsx",
         "src/stories/stepper.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8174,6 +8201,7 @@
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/date-time-input.tsx",
+        "src/icons.ts",
         "src/index.ts",
         "src/stories/calendar.stories.tsx",
         "src/stories/date-input.stories.tsx",
@@ -10250,6 +10278,8 @@
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/docs-tooling/shell-controls.tsx",
+        "src/icons.ts",
+        "src/stories/context-menu.stories.tsx",
         "src/stories/menu.stories.tsx"
       ],
       "tokenMapping": {},
@@ -14806,6 +14836,61 @@
         "alias": "{semantic.radius.action}",
         "resolvedValue": "8px"
       }
+    ]
+  },
+  "iconSet": {
+    "subpath": "@hirobius/design-system/icons",
+    "names": [
+      "Archive",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "Bell",
+      "Bookmark",
+      "Calendar",
+      "Check",
+      "ChevronDown",
+      "ChevronLeft",
+      "ChevronRight",
+      "ChevronUp",
+      "CircleAlert",
+      "CircleCheck",
+      "CircleHelp",
+      "Clock",
+      "Copy",
+      "Download",
+      "Ellipsis",
+      "EllipsisVertical",
+      "ExternalLink",
+      "Eye",
+      "EyeOff",
+      "FileText",
+      "Funnel",
+      "Heart",
+      "House",
+      "Image",
+      "Info",
+      "Link",
+      "Lock",
+      "LogIn",
+      "LogOut",
+      "Mail",
+      "Menu",
+      "Minus",
+      "Pencil",
+      "Plus",
+      "RefreshCw",
+      "Save",
+      "Search",
+      "Settings",
+      "Share",
+      "Star",
+      "Trash2",
+      "TriangleAlert",
+      "Upload",
+      "User",
+      "X"
     ]
   }
 }
