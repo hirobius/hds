@@ -1248,6 +1248,8 @@ export function buildManifest(allTokens, raw) {
     ],
     typographyRamp: SYSTEM_MANIFEST.typographyRamp ?? null,
     patternInventory: SYSTEM_MANIFEST.patternInventory ?? [],
+    // hds#342: forwarded verbatim from generate-manifest (build-tokens runs after it).
+    ...(SYSTEM_MANIFEST.iconSet ? { iconSet: SYSTEM_MANIFEST.iconSet } : {}),
     phases: SYSTEM_MANIFEST.phases ?? [],
     health: SYSTEM_MANIFEST.health ?? null,
     inventory: SYSTEM_MANIFEST.inventory ?? {},

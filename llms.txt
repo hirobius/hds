@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T13:10:24.793Z
+Generated: 2026-09-30T13:25:37.148Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -35,6 +35,20 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 - Detailed prop types, unions, defaults, and descriptions: read `src/app/data/component-api.json`.
 - Runtime behavior: read the actual component source under `src/app/components/` (and associated styles).
+
+## Which one when
+
+One line per component that declares when to use it (`@usage` / `@useInstead` in its JSDoc). Full detail, including `usage.whenNot`, `keyboard` and `aiRules`, is in `public/hds-manifest.json` and `src/app/data/component-api.json`.
+
+Button: Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft. Use instead: InlineLink
+Card: Group related content on a raised surface with header, body, footer and metric slots. Use instead: Surface, Card.Metric
+CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card.
+IconButton: Trigger an action from a compact icon-only control, always with an accessible label. Use instead: Button
+Menu: Offer a list of actions from a trigger, closed until opened. Use instead: Select
+Select: Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
+Stat: Show one standalone headline figure with its label and an optional sub-line. Use instead: Card.Metric, StatusTile
+StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: Card.Metric, StatusListItem
+Surface: Wrap content in a padded, background-bearing inset surface with no header or footer anatomy. Use instead: Card, Stack
 
 ## Tokens (Primary Source Of Truth)
 
