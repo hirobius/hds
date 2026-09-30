@@ -1,5 +1,5 @@
 {
-  "$comment": "Story and docs ids from a build of the tree before the #308 retitle. Retitles must keep every id (existing links) except the hidden internals.",
+  "$comment": "Story and docs ids from a build of the tree before the #308 retitle. Retitles must keep every id (existing links) except the hidden internals. Ids added later (hds#335 DarkScope stories) are appended at the end so the 'adds no ids' check keeps guarding everything else.",
   "ids": [
     "feedback-error-boundary--default",
     "feedback-error-boundary--docs",
@@ -569,6 +569,8 @@
     "primitives-token--selected",
     "primitives-token--source-node",
     "primitives-visually-hidden--default",
-    "primitives-visually-hidden--docs"
+    "primitives-visually-hidden--docs",
+    "primitives-alert-dialog--dark-scope",
+    "primitives-dialog--dark-scope"
   ]
 }

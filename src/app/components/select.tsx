@@ -12,7 +12,10 @@ import * as RSelect from '@radix-ui/react-select';
 import { ChevronDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
+
+const SelectPortal = withHdsPortal(RSelect.Portal);
 
 /**
  * Select — dropdown selector built on Radix Select (ADR-001 Radix convention).
@@ -32,10 +35,15 @@ export interface SelectProps {
   value: string;
   /** Called when the user picks a different option. */
   onChange: (v: string) => void;
+  /**
+   * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+   * overlay inherits its theme; pass `null` to use `document.body`.
+   */
+  container?: HTMLElement | null;
 }
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
-  { label, showLabel = true, options, value, onChange },
+  { label, showLabel = true, options, value, onChange, container },
   ref,
 ) {
   const selected = options.find((o) => o.value === value) ?? options[0];
@@ -67,7 +75,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           </RSelect.Icon>
         </RSelect.Trigger>
 
-        <RSelect.Portal>
+        <SelectPortal container={container}>
           <RSelect.Content
             position="popper"
             sideOffset={4}
@@ -101,7 +109,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
               ))}
             </RSelect.Viewport>
           </RSelect.Content>
-        </RSelect.Portal>
+        </SelectPortal>
       </RSelect.Root>
     </div>
   );

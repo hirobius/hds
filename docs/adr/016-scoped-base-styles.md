@@ -60,9 +60,9 @@ Scope the design system's authored base styles to a `[data-hds]` subtree.
   changeset with a migration note. The docs site is handled in-repo.
 - **Deferred — not yet scoped (still global), pending visual verification:**
   1. **Tailwind v4 preflight** (`*,::before,::after { box-sizing; border:0;
-     margin:0; padding:0 }`). Scoping it means importing the Tailwind layers
+margin:0; padding:0 }`). Scoping it means importing the Tailwind layers
      without preflight (`@import "tailwindcss/theme.css" layer(theme);
-     @import "tailwindcss/utilities.css" layer(utilities);`) and supplying a
+@import "tailwindcss/utilities.css" layer(utilities);`) and supplying a
      hand-authored preflight under `:where([data-hds])`. This needs a full
      visual regression pass against the docs site, which the current web
      sandbox cannot run (Playwright OOMs there), so it is held for a machine
@@ -73,3 +73,18 @@ Scope the design system's authored base styles to a `[data-hds]` subtree.
   HDS overlays that portal to `document.body` fall outside the scope. Until
   preflight scoping lands, the recommended placement is `data-hds` on a
   high-level wrapper (or `<html>`/`<body>`); documented for consumers.
+
+## Addendum (hds#335): overlays inherit the nearest `data-hds` scope
+
+The last Consequences bullet no longer holds. Every portalled HDS part (Dialog,
+AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip, and the
+ExpandTooltip cursor pill) now resolves its portal container to the nearest
+`data-hds` scope instead of `document.body`, so a `<div data-hds
+data-theme="dark">` themes its overlays. Resolution order: an explicit
+`container` prop, the `HdsThemeProvider` element, the closest `[data-hds]`
+ancestor of a hidden in-place anchor (bare `<div data-hds>` scopes), then
+`document.body`. A scope on `<html>` or `<body>` resolves to `document.body`,
+because `body` already inherits it and a node appended to `<html>` would sit
+outside `<body>`. Scoping at `<html>` continues to work. The dark theme also
+declares `color-scheme: dark` (dark selector only, so non-HDS hosts are
+untouched) and the modal scrim is the theme-aware `semantic.color.surface.scrim`.
