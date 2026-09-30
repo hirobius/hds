@@ -9057,6 +9057,18 @@
       "storyIds": [
         "primitives-context-menu--default"
       ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The area that opens the menu on right-click (ContextMenu.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The popup holding the items (ContextMenu.Content).",
+          "source": "jsdoc"
+        }
+      ],
       "usage": {
         "when": "Offer actions for an item on right-click, or the equivalent keyboard gesture.",
         "whenNot": "The only way to reach an action, or actions from a visible trigger.",
@@ -9091,18 +9103,6 @@
         {
           "keys": "Tab",
           "effect": "Does not leave the open menu."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The area that opens the menu on right-click (ContextMenu.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The popup holding the items (ContextMenu.Content).",
-          "source": "jsdoc"
         }
       ]
     },
@@ -9347,6 +9347,18 @@
       "storyIds": [
         "primitives-hover-card--default"
       ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The link or element that opens the card (HoverCard.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The preview (HoverCard.Content).",
+          "source": "jsdoc"
+        }
+      ],
       "usage": {
         "when": "Preview extra detail about a link or mention when it is hovered or focused, without navigating.",
         "whenNot": "Content people must reach, or a label for an interactive control.",
@@ -9373,18 +9385,6 @@
         {
           "keys": "Tab",
           "effect": "Moves on to the next element and closes the card."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The link or element that opens the card (HoverCard.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The preview (HoverCard.Content).",
-          "source": "jsdoc"
         }
       ]
     },
