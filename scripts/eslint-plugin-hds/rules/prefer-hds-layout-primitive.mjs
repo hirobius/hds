@@ -20,7 +20,7 @@ export default {
       description:
         'Warn on ad-hoc display:flex/grid in inline style where a named HDS layout primitive (Stack/Grid) likely fits.',
       recommended: true,
-      url: 'https://github.com/hirobius/hirobius-design-system/blob/main/scripts/eslint-plugin-hds/README.md#hdsprefer-hds-layout-primitive',
+      url: 'https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md#hdsprefer-hds-layout-primitive',
     },
     schema: [],
     messages: {

@@ -223,5 +223,5 @@ Finish every task with the last step below.
 
 1. Compose the screen from the allow-list using the layout recipe.
 2. Style with tokens only.
-3. Add the lint plugin: `pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hirobius-design-system#path:/scripts/eslint-plugin-hds"`.
+3. Add the lint plugin: `pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"`.
 4. Enable `@hirobius/eslint-plugin-hds` with its `recommended` config, run ESLint, and fix every error before reporting done.

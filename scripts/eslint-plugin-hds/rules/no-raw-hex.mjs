@@ -18,7 +18,7 @@ export default {
       description:
         'Disallow raw hex color literals in style or className — use an HDS color token instead.',
       recommended: true,
-      url: 'https://github.com/hirobius/hirobius-design-system/blob/main/scripts/eslint-plugin-hds/README.md#hdsno-raw-hex',
+      url: 'https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md#hdsno-raw-hex',
     },
     schema: [],
     messages: {

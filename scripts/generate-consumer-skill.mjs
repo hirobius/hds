@@ -33,7 +33,7 @@ export const SKILL_PATH = 'skills/hds-consumer/SKILL.md';
 
 /** Copied verbatim from docs/CONSUMING.md section 11 (a test pins the match). */
 export const LINT_INSTALL_LINE =
-  'pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hirobius-design-system#path:/scripts/eslint-plugin-hds"';
+  'pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"';
 
 const PKG = '@hirobius/design-system';
 

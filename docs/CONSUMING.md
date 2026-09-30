@@ -432,7 +432,7 @@ raw hex/px values in `style`, `className`, and `Box` `sx` props before they
 reach code review.
 
 ```bash
-pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hirobius-design-system#path:/scripts/eslint-plugin-hds"
+pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"
 ```
 
 ```js
