@@ -96,6 +96,10 @@ export interface ButtonProps
 
 /**
  * Triggers an action when activated.
+ * @usage Trigger an action (submit, save, open a dialog) with a text label and optional icons.
+ * @whenNot Navigating to another page, where a link is the correct element.
+ * @useInstead InlineLink navigation to another page
+ * @useInstead IconButton an icon-only control (hds#254 folds it into Button iconOnly)
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {

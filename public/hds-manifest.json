@@ -692,6 +692,7 @@
       },
       "consumers": [
         "src/app/data/hdsEditorial.tsx",
+        "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
       ],
@@ -946,7 +947,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/container.tsx",
-      "description": "Container — semantic width-constrained layout. semantic max-width scale, so agents stop hand-rolling `marginInline: auto` plus an ad hoc max-width pixel value for page shells. use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. Use Center instead when you also need a horizontal gutter, which Container does not support. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -1010,7 +1011,8 @@
       "storyIds": [
         "primitives-container--content-width",
         "primitives-container--max-width"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. Use Center instead when you also need a horizontal gutter, which Container does not support."
     },
     "Disclosure": {
       "category": "Layout",
@@ -1557,7 +1559,8 @@
         "src/stories/grid.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
-        "src/stories/surface.stories.tsx"
+        "src/stories/surface.stories.tsx",
+        "src/stories/tile-grid.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -1658,7 +1661,8 @@
         "primitives-grid--auto-fit",
         "primitives-grid--three-column",
         "primitives-grid--two-column"
-      ]
+      ],
+      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
     },
     "Icon": {
       "category": "Display",
@@ -1839,6 +1843,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/pagination.tsx",
@@ -1962,7 +1967,17 @@
         "primitives-icon-button--primary",
         "primitives-icon-button--size-gallery",
         "primitives-icon-button--tertiary"
-      ]
+      ],
+      "usage": {
+        "when": "Trigger an action from a compact icon-only control, always with an accessible label.",
+        "whenNot": "A control that needs a visible text label.",
+        "useInstead": [
+          {
+            "component": "Button",
+            "reason": "a control with a text label, or Button iconOnly (hds#254 folds IconButton into it)"
+          }
+        ]
+      }
     },
     "InlineCode": {
       "category": "Display",
@@ -2044,6 +2059,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
@@ -2119,9 +2135,15 @@
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
+        "src/stories/date-input.stories.tsx",
+        "src/stories/date-range-input.stories.tsx",
+        "src/stories/date-time-input.stories.tsx",
+        "src/stories/file-input.stories.tsx",
+        "src/stories/input-group.stories.tsx",
         "src/stories/input.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
-        "src/stories/textarea.stories.tsx"
+        "src/stories/textarea.stories.tsx",
+        "src/stories/time-input.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "role.background",
@@ -2769,6 +2791,7 @@
         "src/app/components/nav-group.tsx",
         "src/app/components/page.tsx",
         "src/app/components/sketch.tsx",
+        "src/app/components/surface.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
@@ -2781,6 +2804,7 @@
         "src/stories/box.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/heading-stack.stories.tsx",
         "src/stories/page.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/stack.stories.tsx"
@@ -2936,7 +2960,8 @@
         "primitives-stack--space-between",
         "primitives-stack--spacious-gap",
         "primitives-stack--tight-gap"
-      ]
+      ],
+      "aiRules": "Use Stack for flow spacing and simple flex alignment only. Do NOT use Stack to create card chrome, internal surface padding, or page-width constraints. Do NOT apply arbitrary margins to Stack to fake spacing between children when the gap prop should own that rhythm. Do NOT use Stack for true two-dimensional layouts that require Grid."
     },
     "StepperField": {
       "category": "Inputs",
@@ -2952,6 +2977,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/stepper-field.test.tsx",
         "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
@@ -3488,6 +3514,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/card.tsx",
         "src/app/components/container.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/disclosure.tsx",
@@ -3573,7 +3600,22 @@
         "primitives-surface--forced-dark",
         "primitives-surface--item-padding",
         "primitives-surface--with-shadow"
-      ]
+      ],
+      "usage": {
+        "when": "Wrap content in a padded, background-bearing inset surface with no header or footer anatomy.",
+        "whenNot": "Page layout, section spacing, width constraints, or content that needs slots.",
+        "useInstead": [
+          {
+            "component": "Card",
+            "reason": "content that needs header, body or footer slots"
+          },
+          {
+            "component": "Stack",
+            "reason": "spacing between siblings"
+          }
+        ]
+      },
+      "aiRules": "Use Surface only when content needs a background-bearing inset wrapper. Do NOT use Surface for macro page layouts, section spacing, or pure width constraints. Do NOT nest extra padded wrappers inside Surface to simulate another card. Do NOT recreate surface behavior with raw div padding, backgroundColor, or border styles elsewhere."
     },
     "Card": {
       "category": "Display",
@@ -3585,18 +3627,26 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/card-progress.test.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/components/stacked-card-rail.tsx",
+        "src/app/components/stat.tsx",
+        "src/app/components/status-tile.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/card.stories.tsx",
+        "src/stories/doc-link-card.stories.tsx",
         "src/stories/grid.stories.tsx",
+        "src/stories/history-card.stories.tsx",
+        "src/stories/hover-card.stories.tsx",
+        "src/stories/selectable-card.stories.tsx",
+        "src/stories/stacked-card-rail.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
       ],
       "tokenMapping": {
@@ -3821,7 +3871,21 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--variant-accent"
-      ]
+      ],
+      "usage": {
+        "when": "Group related content on a raised surface with header, body, footer and metric slots.",
+        "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
+        "useInstead": [
+          {
+            "component": "Surface",
+            "reason": "a padded background without slot anatomy"
+          },
+          {
+            "component": "Card.Metric",
+            "reason": "a single headline figure"
+          }
+        ]
+      }
     },
     "ComponentInstanceMatrix": {
       "category": "Utilities",
@@ -4220,6 +4284,7 @@
         "src/stories/skeleton.stories.tsx",
         "src/stories/sketch.stories.tsx",
         "src/stories/surface.stories.tsx",
+        "src/stories/text-lockup.stories.tsx",
         "src/stories/text.stories.tsx",
         "src/stories/toolbar.stories.tsx"
       ],
@@ -4272,6 +4337,7 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
+        "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/dialog.stories.tsx",
@@ -4470,6 +4536,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/stacked-card-rail.test.tsx",
         "src/index.ts",
         "src/stories/stacked-card-rail.stories.tsx"
       ],
@@ -4560,6 +4627,7 @@
         "src/stories/table.stories.tsx",
         "src/stories/text-lockup.stories.tsx",
         "src/stories/toast.stories.tsx",
+        "src/stories/toggle-button.stories.tsx",
         "src/stories/toolbar.stories.tsx",
         "src/stories/top-nav.stories.tsx"
       ],
@@ -4743,7 +4811,21 @@
         "primitives-button--secondary",
         "primitives-button--small",
         "primitives-button--tertiary"
-      ]
+      ],
+      "usage": {
+        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons.",
+        "whenNot": "Navigating to another page, where a link is the correct element.",
+        "useInstead": [
+          {
+            "component": "InlineLink",
+            "reason": "navigation to another page"
+          },
+          {
+            "component": "IconButton",
+            "reason": "an icon-only control (hds#254 folds it into Button iconOnly)"
+          }
+        ]
+      }
     },
     "Callout": {
       "category": "Feedback",
@@ -4829,7 +4911,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/empty-state.tsx",
-      "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections. communicate \"no data yet\" with consistent muted typography instead of agents inventing one-off `<p>No items.</p>` lines. use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container.",
+      "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352",
@@ -4873,7 +4955,8 @@
         "primitives-empty-state--in-grid",
         "primitives-empty-state--title-only",
         "primitives-empty-state--with-description"
-      ]
+      ],
+      "aiRules": "Use only for inline empty states inside an existing section. Do NOT use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container."
     },
     "Field": {
       "category": "Display",
@@ -4899,7 +4982,8 @@
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
-        "src/stories/sketch.stories.tsx"
+        "src/stories/sketch.stories.tsx",
+        "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4992,6 +5076,7 @@
         "src/app/components/not-found-pattern.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
+        "src/app/components/surface.tsx",
         "src/app/components/toast.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
@@ -5072,6 +5157,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/card.tsx",
         "src/stories/stat.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5134,7 +5220,21 @@
         "primitives-stat--success",
         "primitives-stat--warning",
         "primitives-stat--with-sub"
-      ]
+      ],
+      "usage": {
+        "when": "Show one standalone headline figure with its label and an optional sub-line.",
+        "whenNot": "A figure inside a Card, or a status with a trailing badge.",
+        "useInstead": [
+          {
+            "component": "Card.Metric",
+            "reason": "a figure inside a Card (hds#254 folds Stat into the Card slot)"
+          },
+          {
+            "component": "StatusTile",
+            "reason": "a titled status with notes and a trailing badge"
+          }
+        ]
+      }
     },
     "StatusListItem": {
       "category": "Display",
@@ -5234,6 +5334,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/stat.tsx",
         "src/stories/status-list-item.stories.tsx",
         "src/stories/status-tile.stories.tsx"
       ],
@@ -5279,7 +5380,21 @@
         "primitives-status-tile--tile-grid",
         "primitives-status-tile--warning",
         "primitives-status-tile--with-trailing-badge"
-      ]
+      ],
+      "usage": {
+        "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
+        "whenNot": "A single headline figure, or a row inside a list.",
+        "useInstead": [
+          {
+            "component": "Card.Metric",
+            "reason": "a headline figure (hds#254 folds StatusTile into the Card slot)"
+          },
+          {
+            "component": "StatusListItem",
+            "reason": "a status row inside a list"
+          }
+        ]
+      }
     },
     "TileGrid": {
       "category": "Layout",
@@ -5469,7 +5584,8 @@
         "primitives-text-lockup--numbered",
         "primitives-text-lockup--section",
         "primitives-text-lockup--with-eyebrow"
-      ]
+      ],
+      "aiRules": "Use TextLockup when content is a semantic title lockup with optional eyebrow and supporting text. Do NOT use TextLockup for arbitrary prose groups, data tables, or freeform mixed layouts. Do NOT restyle the internal type pairing with custom heading stacks when an existing size already fits. Do NOT use TextLockup to replace standalone body text or labels that do not form a title-description unit."
     },
     "AssetImg": {
       "category": "Display",
@@ -5488,6 +5604,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/asset-img.test.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.tsx",
@@ -5911,6 +6028,7 @@
         "src/app/components/date-range-input.test.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/menu.tsx",
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.test.tsx",
@@ -5964,6 +6082,50 @@
       "storyIds": [
         "primitives-select--default",
         "primitives-select--no-label"
+      ],
+      "usage": {
+        "when": "Choose one value from a short list of options in a form field.",
+        "whenNot": "Firing actions, or choosing from a list long enough to need search.",
+        "useInstead": [
+          {
+            "component": "Menu",
+            "reason": "firing actions from a trigger"
+          },
+          {
+            "component": "Combobox",
+            "reason": "a long list that needs search"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space/ArrowDown",
+          "effect": "Opens the listbox from the trigger with the selected option highlighted."
+        },
+        {
+          "keys": "ArrowDown/ArrowUp",
+          "effect": "Moves the highlight."
+        },
+        {
+          "keys": "Home/End",
+          "effect": "Jumps to the first or last option."
+        },
+        {
+          "keys": "Character",
+          "effect": "Highlights the option that matches the typed letters."
+        },
+        {
+          "keys": "Enter",
+          "effect": "Commits the highlighted option and returns focus to the trigger."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the listbox and returns focus to the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Does not leave the open listbox."
+        }
       ]
     },
     "Slider": {
@@ -6054,6 +6216,7 @@
         "src/app/hooks/useInteractionState.ts",
         "src/docs-tooling/shell-controls.tsx",
         "src/index.ts",
+        "src/stories/toggle-button.stories.tsx",
         "src/stories/toggle.stories.tsx"
       ],
       "tokenMapping": {
@@ -6189,6 +6352,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/card-progress.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
         "src/stories/card.stories.tsx",
@@ -6531,6 +6695,7 @@
         "src/app/components/date-range-input.tsx",
         "src/app/components/form.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/select.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/popover.stories.tsx"
       ],
@@ -7938,6 +8103,7 @@
       "consumers": [
         "src/app/components/stepper.test.tsx",
         "src/index.ts",
+        "src/stories/stepper-field.stories.tsx",
         "src/stories/stepper.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8653,7 +8819,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/box.tsx",
-      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. named primitive covers, without inviting ad hoc inline styles or raw hex/px values back into the system — the `sx` engine only accepts HDS token keys and a small, deliberate CSS subset. Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) resolve numbers off the 4px HDS scale (`--primitive-space-<n>`) and named steps ('tight'|'normal'|'inset'|'spacious') off `--semantic-space-layout-*`. - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ xs, sm, md, lg, xl }` objects compile to `min-width` media queries off the HDS breakpoint scale. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
+      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) resolve numbers off the 4px HDS scale (`--primitive-space-<n>`) and named steps ('tight'|'normal'|'inset'|'spacious') off `--semantic-space-layout-*`. - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ xs, sm, md, lg, xl }` objects compile to `min-width` media queries off the HDS breakpoint scale. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8710,7 +8876,8 @@
         "primitives-box--responsive-values",
         "primitives-box--spacing-shorthands",
         "primitives-box--token-colors"
-      ]
+      ],
+      "aiRules": "Reach for Stack/Grid/Container/the every-layout primitives first. Use Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex."
     },
     "Bleed": {
       "category": "Layout",
@@ -8719,7 +8886,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/bleed.tsx",
-      "description": "Bleed — controlled negative-margin full-bleed within a padded container. padding\" (a full-width image inside a padded card, a divider that should touch both edges) with a single tokenized negative-margin wrapper, so agents stop hand-rolling `margin: -24px` guesses that drift from the parent's actual padding token. use a semantic space step, never raw px, and MUST match the ancestor padding it is meant to cancel out. Do NOT use Bleed to fake extra spacing — its only job is canceling a specific known padding value on a specific axis. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inverse of a padded Center/Container — HDS names it separately since \"every-layout\" itself does not ship a dedicated Bleed recipe).",
+      "description": "Bleed — controlled negative-margin full-bleed within a padded container. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inverse of a padded Center/Container — HDS names it separately since \"every-layout\" itself does not ship a dedicated Bleed recipe).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8783,7 +8950,8 @@
       "storyIds": [
         "primitives-bleed--bleed-both",
         "primitives-bleed--bleed-x"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx. amount MUST use a semantic space step, never raw px, and MUST match the ancestor padding it is meant to cancel out. Do NOT use Bleed to fake extra spacing — its only job is canceling a specific known padding value on a specific axis."
     },
     "Center": {
       "category": "Layout",
@@ -8792,7 +8960,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/center.tsx",
-      "description": "Center — max-width column, auto-centered horizontally. max-width box with auto horizontal margins and, optionally, matching horizontal gutters — so agents stop hand-rolling `marginInline: auto` plus an ad hoc max-width value. use the semantic width scale ('content' | 'max'), never a raw px value. gutter, when set, MUST use a semantic space step, never raw px. Do NOT use Center for full-bleed page shells — use Container. Do NOT use Center when you need the deprecated Container padding prop — gutter replaces it. Every Layout reference: https://every-layout.dev/layouts/center/",
+      "description": "Center — max-width column, auto-centered horizontally. Every Layout reference: https://every-layout.dev/layouts/center/",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8860,7 +9028,8 @@
         "primitives-center--content-width",
         "primitives-center--max-width",
         "primitives-center--with-gutter"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. gutter, when set, MUST use a semantic space step, never raw px. Do NOT use Center for full-bleed page shells — use Container. Do NOT use Center when you need the deprecated Container padding prop — gutter replaces it."
     },
     "Cluster": {
       "category": "Layout",
@@ -8869,7 +9038,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/cluster.tsx",
-      "description": "Cluster — wrapping horizontal group with even gaps. (tag rows, button groups, chip lists, filter pills) with a single flex-wrap wrapper and a tokenized gap in both axes, so agents stop hand-rolling `flexWrap` + `gap` + alignment combinations inline. horizontal groups that should wrap as a unit. Spacing MUST use semantic steps, never raw px. Do NOT use Cluster for a strict single-line row — use Stack with `direction=\"row\"` when wrapping is never desired. Do NOT use Cluster for two-dimensional grid layouts — use Grid. Every Layout reference: https://every-layout.dev/layouts/cluster/",
+      "description": "Cluster — wrapping horizontal group with even gaps. Every Layout reference: https://every-layout.dev/layouts/cluster/",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8947,7 +9116,8 @@
         "primitives-cluster--default",
         "primitives-cluster--space-between",
         "primitives-cluster--spacious-gap"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx. Use Cluster for horizontal groups that should wrap as a unit. Spacing MUST use semantic steps, never raw px. Do NOT use Cluster for a strict single-line row — use Stack with `direction=\"row\"` when wrapping is never desired. Do NOT use Cluster for two-dimensional grid layouts — use Grid."
     },
     "Cover": {
       "category": "Layout",
@@ -8956,7 +9126,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/cover.tsx",
-      "description": "Cover — vertical shell with an auto-centered main region. centered hero/main region that absorbs the remaining space, and an optional footer\" problem via the flex auto-margin centering technique, so agents stop hand-rolling `position: absolute` centering or a fixed 50vh split. semantic space step, never raw px. minHeight is a CSS length dimension (not spacing) — defaults to '100svh' (small viewport height, safe against mobile browser chrome). Pass minHeight=\"100vh\" explicitly if you need the classic viewport unit for a target that predates svh support. Do NOT use Cover for ordinary page content flow — use Stack. Every Layout reference: https://every-layout.dev/layouts/cover/",
+      "description": "Cover — vertical shell with an auto-centered main region. Every Layout reference: https://every-layout.dev/layouts/cover/",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9031,7 +9201,8 @@
         "primitives-cover--header-main-footer",
         "primitives-cover--header-only",
         "primitives-cover--main-only"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. minHeight is a CSS length dimension (not spacing) — defaults to '100svh' (small viewport height, safe against mobile browser chrome). Pass minHeight=\"100vh\" explicitly if you need the classic viewport unit for a target that predates svh support. Do NOT use Cover for ordinary page content flow — use Stack."
     },
     "Frame": {
       "category": "Layout",
@@ -9040,7 +9211,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/frame.tsx",
-      "description": "Frame — aspect-ratio-locked, token-clipped media box. cause layout shift while it loads, cropped to a token-governed corner radius\" — a thin, token-skinned wrapper over `AspectRatio` (`@radix-ui/react-aspect-ratio`), which already owns the ratio-lock mechanics. Frame adds the overflow-hidden clip and semantic radius that a bare media frame needs and `AspectRatio` deliberately leaves undecorated. media (image, video, embed, map tile). radius MUST use a semantic borderRadius token, never a raw px value. Do NOT reach for bare `AspectRatio` in product code just to add a border-radius by hand — use Frame. Do NOT use Frame for non-media layout — it exists purely as a media clipping frame. Every Layout reference: https://every-layout.dev/layouts/frame/",
+      "description": "Frame — aspect-ratio-locked, token-clipped media box. Every Layout reference: https://every-layout.dev/layouts/frame/",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9101,7 +9272,8 @@
         "primitives-frame--no-radius",
         "primitives-frame--square",
         "primitives-frame--widescreen"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx when framing media (image, video, embed, map tile). radius MUST use a semantic borderRadius token, never a raw px value. Do NOT reach for bare `AspectRatio` in product code just to add a border-radius by hand — use Frame. Do NOT use Frame for non-media layout — it exists purely as a media clipping frame."
     },
     "Sidebar": {
       "category": "Layout",
@@ -9110,7 +9282,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/sidebar.tsx",
-      "description": "Sidebar — fixed-width rail beside fluid content, no media query. problem with the flex-basis/flex-grow disparity technique — the rail holds `sideWidth` and the content flex-basis 0 with an overwhelming flex-grow, so the pair wraps to stacked automatically once the container can no longer fit both without squeezing content below `contentMin`. No CSS media query, no JS resize observer. EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
+      "description": "Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9189,7 +9361,8 @@
         "primitives-sidebar--narrow-container-stacks",
         "primitives-sidebar--rail-end",
         "primitives-sidebar--rail-start"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx. Sidebar expects EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid."
     },
     "Switcher": {
       "category": "Layout",
@@ -9198,7 +9371,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/switcher.tsx",
-      "description": "Switcher — flips a row to a column below a width threshold, no media query. vertical stack once the container gets narrow\" without a breakpoint or a resize observer, using the flex-basis calc() technique: each item's flex-basis resolves to a huge negative or huge positive number depending on whether the container is above or below `threshold`, forcing every item onto its own line once it flips. semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Cluster. Every Layout reference: https://every-layout.dev/layouts/the-switcher/",
+      "description": "Switcher — flips a row to a column below a width threshold, no media query. Every Layout reference: https://every-layout.dev/layouts/the-switcher/",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9262,7 +9435,8 @@
         "primitives-switcher--default",
         "primitives-switcher--limit-forces-stacked",
         "primitives-switcher--narrow-container-stacks"
-      ]
+      ],
+      "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Cluster."
     },
     "Pin": {
       "category": "Layout",
@@ -9271,7 +9445,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/pin.tsx",
-      "description": "Pin — sticky-pin an element within its scroll region. section scrolls — the dependency-free basis for pinned scroll scenes (the \"tall section + sticky child\" pattern that GSAP's `pin: true` solves imperatively). Reach for this before hand-rolling sticky positioning. Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021.",
+      "description": "Pin — sticky-pin an element within its scroll region.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9321,7 +9495,8 @@
       ],
       "storyIds": [
         "primitives-pin--sidebar"
-      ]
+      ],
+      "aiRules": "`top` is a CSS length offset (a dimension, not a spacing step). Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021."
     },
     "Reveal": {
       "category": "Motion",
@@ -9330,7 +9505,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/reveal.tsx",
-      "description": "Reveal — reveal-on-scroll primitive via CSS scroll-driven animation. purely by scroll position (`animation-timeline: view()`) — no JS, no deps, no IntersectionObserver. Reach for this before hand-rolling reveal logic. `animation-timeline` is supported AND the user has not requested reduced motion (both fall back to visible, never stuck hidden). Pick `animation` from the fixed set — do not hand-roll keyframes. For momentum/inertia scrolling wrap the app in `SmoothScroll`; for a scroll-progress value in JS use `useScrollProgress` — both from `@hirobius/design-system/scroll`. See ADR-021.",
+      "description": "Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9392,7 +9567,8 @@
         "patterns-scroll--simple-parallax",
         "primitives-reveal--animations",
         "primitives-reveal--scale-reveal-scene"
-      ]
+      ],
+      "aiRules": "Content is fully visible by DEFAULT; the effect applies only where `animation-timeline` is supported AND the user has not requested reduced motion (both fall back to visible, never stuck hidden). Pick `animation` from the fixed set — do not hand-roll keyframes. For momentum/inertia scrolling wrap the app in `SmoothScroll`; for a scroll-progress value in JS use `useScrollProgress` — both from `@hirobius/design-system/scroll`. See ADR-021."
     },
     "Textarea": {
       "category": "Inputs",
@@ -9651,7 +9827,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9707,7 +9883,17 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--variant-accent"
-      ]
+      ],
+      "usage": {
+        "when": "Show one headline figure (a KPI, a count, a total) with its label inside a Card.",
+        "whenNot": "A metric outside a Card, or several figures that share one label.",
+        "useInstead": [
+          {
+            "component": "Stat",
+            "reason": "a headline figure that is not inside a Card"
+          }
+        ]
+      }
     },
     "CardProgress": {
       "category": "Display",
@@ -10249,7 +10435,9 @@
         "src/app/components/hover-card.tsx",
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/select.tsx",
         "src/docs-tooling/shell-controls.tsx",
+        "src/stories/context-menu.stories.tsx",
         "src/stories/menu.stories.tsx"
       ],
       "tokenMapping": {},
@@ -10270,6 +10458,58 @@
         "primitives-menu--with-checkbox-items",
         "primitives-menu--with-radio-group",
         "primitives-menu--with-submenu"
+      ],
+      "usage": {
+        "when": "Offer a list of actions from a trigger, closed until opened.",
+        "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
+        "useInstead": [
+          {
+            "component": "Select",
+            "reason": "choosing a value for a form field"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space/ArrowDown",
+          "effect": "Opens the menu from the trigger and highlights the first item."
+        },
+        {
+          "keys": "ArrowDown/ArrowUp",
+          "effect": "Moves the highlight; it stops at the first and last item."
+        },
+        {
+          "keys": "Home/End",
+          "effect": "Jumps to the first or last item."
+        },
+        {
+          "keys": "Character",
+          "effect": "Highlights the next item that starts with the typed letter."
+        },
+        {
+          "keys": "Enter",
+          "effect": "Selects the highlighted item and closes the menu."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the menu and returns focus to the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Does not leave the open menu."
+        }
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The element that opens the menu (Menu.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The popup holding the items (Menu.Content).",
+          "source": "jsdoc"
+        }
       ]
     },
     "Popover": {
@@ -11443,7 +11683,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/docs-tooling/lab/legacy-token-list.tsx",
-      "description": "LegacyTokenList - legacy token grouping list retained for lab-side maintenance workflows. architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md.",
+      "description": "LegacyTokenList - legacy token grouping list retained for lab-side maintenance workflows.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -11487,7 +11727,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/docs-tooling/lab/token-collection-list.tsx",
-      "description": "TokenCollectionList - grouped token inventory list for lab and explorer maintenance. architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md.",
+      "description": "TokenCollectionList - grouped token inventory list for lab and explorer maintenance.",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {

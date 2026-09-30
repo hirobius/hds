@@ -14,6 +14,7 @@ import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from '
 import { basename, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { discoverHdsComponents } from './component-discovery.mjs';
+import { compactContract, mergeSlots } from './lib/jsdoc-contract.mjs';
 import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -208,7 +209,16 @@ manifest.componentSpecs = remappedSpecs;
 manifest.inventory = manifest.inventory ?? {};
 
 for (const entry of activeDiscoveredComponents) {
-  const current = manifest.componentSpecs[entry.name] ?? {};
+  // Contract fields are rebuilt from the tags on every run: drop last run's so
+  // a removed tag removes its field. `slots` is hand-kept, merged below.
+  const {
+    usage: _u,
+    keyboard: _k,
+    aiRules: _a,
+    ...current
+  } = manifest.componentSpecs[entry.name] ?? {};
+  const contract = compactContract(entry);
+  const slots = mergeSlots(current.slots, entry.slots);
 
   let category = current.category ?? 'Uncategorized';
   let categorySource =
@@ -238,6 +248,10 @@ for (const entry of activeDiscoveredComponents) {
     docExempt: entry.docExempt,
     filePath: entry.filePath,
     description: entry.description || current.description,
+    ...(contract.usage ? { usage: contract.usage } : {}),
+    ...(contract.keyboard ? { keyboard: contract.keyboard } : {}),
+    ...(contract.aiRules ? { aiRules: contract.aiRules } : {}),
+    ...(slots ? { slots } : {}),
     // The component's `@figma` JSDoc tag is the only source: removing the tag
     // unmaps the component (and its Code Connect template) on the next regen.
     figmaUrl: entry.figmaUrl ?? null,

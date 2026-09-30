@@ -71,12 +71,7 @@ function validateStringArray(component, field, value, violations) {
   });
 }
 
-const TIER_VALUES = new Set([
-  'primitive',
-  'pattern',
-  'template',
-  'utility',
-]);
+const TIER_VALUES = new Set(['primitive', 'pattern', 'template', 'utility']);
 
 const TOKEN_BINDING_KEYS = new Set([
   'fill',
@@ -103,11 +98,21 @@ function validateTokenBinding(component, slotIndex, value, violations) {
 
   for (const [key, val] of Object.entries(value)) {
     if (!TOKEN_BINDING_KEYS.has(key)) {
-      pushViolation(violations, component, `${baseField}.${key}`, `unknown binding key (allowed: ${[...TOKEN_BINDING_KEYS].join(', ')})`);
+      pushViolation(
+        violations,
+        component,
+        `${baseField}.${key}`,
+        `unknown binding key (allowed: ${[...TOKEN_BINDING_KEYS].join(', ')})`,
+      );
       continue;
     }
     if (val !== null && typeof val !== 'string') {
-      pushViolation(violations, component, `${baseField}.${key}`, 'must be a string token path or null');
+      pushViolation(
+        violations,
+        component,
+        `${baseField}.${key}`,
+        'must be a string token path or null',
+      );
     }
   }
 }
@@ -130,6 +135,10 @@ function validateSlots(component, value, violations) {
       pushViolation(violations, component, `${baseField}.name`, 'must be a non-empty string');
     }
 
+    if ('description' in slot && typeof slot.description !== 'string') {
+      pushViolation(violations, component, `${baseField}.description`, 'must be a string');
+    }
+
     if ('figmaSlotName' in slot && typeof slot.figmaSlotName !== 'string') {
       pushViolation(violations, component, `${baseField}.figmaSlotName`, 'must be a string');
     }
@@ -139,7 +148,12 @@ function validateSlots(component, value, violations) {
       // figmaSlotName is required whenever tokenBinding is present so the
       // 8v-3 projection step knows which Figma layer to bind to.
       if (typeof slot.figmaSlotName !== 'string' || slot.figmaSlotName.length === 0) {
-        pushViolation(violations, component, `${baseField}.figmaSlotName`, 'is required when tokenBinding is present');
+        pushViolation(
+          violations,
+          component,
+          `${baseField}.figmaSlotName`,
+          'is required when tokenBinding is present',
+        );
       }
     }
   });
@@ -171,6 +185,61 @@ function validateA11yRules(component, value, violations) {
       pushViolation(violations, component, `${baseField}.selector`, 'must be a string');
     }
   });
+}
+
+// Contract fields written from the JSDoc tags (hds#339). All optional.
+function validateContract(component, spec, violations) {
+  if ('usage' in spec) {
+    if (!isPlainObject(spec.usage)) {
+      pushViolation(violations, component, 'usage', 'must be an object');
+    } else {
+      for (const key of ['when', 'whenNot']) {
+        if (key in spec.usage && (typeof spec.usage[key] !== 'string' || !spec.usage[key])) {
+          pushViolation(violations, component, `usage.${key}`, 'must be a non-empty string');
+        }
+      }
+      if ('useInstead' in spec.usage && !Array.isArray(spec.usage.useInstead)) {
+        pushViolation(violations, component, 'usage.useInstead', 'must be an array');
+      }
+      (Array.isArray(spec.usage.useInstead) ? spec.usage.useInstead : []).forEach(
+        (entry, index) => {
+          if (!isPlainObject(entry) || typeof entry.component !== 'string') {
+            pushViolation(
+              violations,
+              component,
+              `usage.useInstead[${index}].component`,
+              'must be a string',
+            );
+          }
+        },
+      );
+    }
+  }
+
+  if ('keyboard' in spec) {
+    if (!Array.isArray(spec.keyboard)) {
+      pushViolation(violations, component, 'keyboard', 'must be an array');
+    } else {
+      spec.keyboard.forEach((entry, index) => {
+        if (
+          !isPlainObject(entry) ||
+          typeof entry.keys !== 'string' ||
+          typeof entry.effect !== 'string'
+        ) {
+          pushViolation(
+            violations,
+            component,
+            `keyboard[${index}]`,
+            'must be { keys: string, effect: string }',
+          );
+        }
+      });
+    }
+  }
+
+  if ('aiRules' in spec && typeof spec.aiRules !== 'string') {
+    pushViolation(violations, component, 'aiRules', 'must be a string');
+  }
 }
 
 function validateComponent(component, spec, schemaRequired, violations) {
@@ -206,7 +275,9 @@ function validateComponent(component, spec, schemaRequired, violations) {
   }
 
   if ('propConstraints' in spec) {
-    validatePropMap(component, 'propConstraints', spec.propConstraints, violations, { constraints: true });
+    validatePropMap(component, 'propConstraints', spec.propConstraints, violations, {
+      constraints: true,
+    });
   }
 
   if ('requiredProps' in spec) {
@@ -220,6 +291,8 @@ function validateComponent(component, spec, schemaRequired, violations) {
   if ('slots' in spec) {
     validateSlots(component, spec.slots, violations);
   }
+
+  validateContract(component, spec, violations);
 
   if ('tier' in spec) {
     if (typeof spec.tier !== 'string' || !TIER_VALUES.has(spec.tier)) {
@@ -236,7 +309,12 @@ function validateComponent(component, spec, schemaRequired, violations) {
 function validateSection(sectionName, sectionValue, schemaRequired, violations) {
   if (sectionValue === undefined) return 0;
   if (!isPlainObject(sectionValue)) {
-    pushViolation(violations, sectionName, sectionName, 'must be an object keyed by component name');
+    pushViolation(
+      violations,
+      sectionName,
+      sectionName,
+      'must be an object keyed by component name',
+    );
     return 0;
   }
   for (const [component, spec] of Object.entries(sectionValue)) {
@@ -262,7 +340,12 @@ for (const [component, spec] of Object.entries(componentSpecs)) {
   validateComponent(component, spec, schemaRequired, violations);
 }
 
-const utilityCount = validateSection('utilities', manifest.utilities, NON_PUBLIC_API_REQUIRED, violations);
+const utilityCount = validateSection(
+  'utilities',
+  manifest.utilities,
+  NON_PUBLIC_API_REQUIRED,
+  violations,
+);
 
 if (violations.length > 0) {
   for (const violation of violations) {

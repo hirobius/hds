@@ -397,6 +397,12 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
   tone?: CardTone;
 }
 
+/**
+ * Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
+ * @usage Show one headline figure (a KPI, a count, a total) with its label inside a Card.
+ * @whenNot A metric outside a Card, or several figures that share one label.
+ * @useInstead Stat a headline figure that is not inside a Card
+ */
 const CardMetric = React.forwardRef<HTMLDivElement, CardMetricProps>(function CardMetric(
   { className, label, value, sub, tone = 'neutral', style, ...props },
   ref,
@@ -444,6 +450,10 @@ const CardMetric = React.forwardRef<HTMLDivElement, CardMetricProps>(function Ca
  * Tagged per-export, not on the file block: this module exports eight
  * components and a file-level @figma would hand all eight this one node.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11
+ * @usage Group related content on a raised surface with header, body, footer and metric slots.
+ * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
+ * @useInstead Surface a padded background without slot anatomy
+ * @useInstead Card.Metric a single headline figure
  */
 export const Card = CardRoot as CardComponent;
 Card.Header = CardHeader;
