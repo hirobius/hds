@@ -31,6 +31,12 @@ describe('generate-component-api: Radix passthrough props', () => {
     });
   }
 
+  it('Tabs value is optional and described (taken from Radix, not a same-named trigger prop)', () => {
+    const row = components.Tabs.props.find((r) => r.name === 'value');
+    expect(row.required).toBe(false);
+    expect(row.description).not.toBe('');
+  });
+
   it('HoverCard and ContextMenu have at least 4 rows each', () => {
     expect(names('HoverCard').length).toBeGreaterThanOrEqual(4);
     expect(names('ContextMenu').length).toBeGreaterThanOrEqual(4);
@@ -55,6 +61,10 @@ describe('generate-component-api: Radix passthrough props', () => {
 });
 
 describe('generate-component-api: Table cellSlots', () => {
+  it('descriptions carry no Markdown backticks (rendered as plain text)', () => {
+    for (const slot of components.Table.cellSlots) expect(slot.description).not.toContain('`');
+  });
+
   it('lists the nine TableCellSlot names in order with descriptions', () => {
     const slots = components.Table?.cellSlots ?? [];
     expect(slots.map((slot) => slot.name)).toEqual([

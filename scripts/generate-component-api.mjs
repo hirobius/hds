@@ -121,6 +121,7 @@ function checkerProps(program, filePath, exportName) {
       .typeToString(propType, declaration, ts.TypeFormatFlags.NoTruncation)
       .replace(/\s*\|\s*undefined$/, '');
     rows.push({
+      radix: /node_modules\/@radix-ui\//.test(declaredIn),
       name: propSymbol.getName(),
       prop: {
         type: { name: text },
@@ -675,8 +676,11 @@ export function buildManifest() {
     const metadata = metadataByName.get(doc.displayName);
     const docProps = { ...(doc.props ?? {}) };
     if (doc.filePath) {
-      for (const { name, prop } of checkerProps(program, doc.filePath, doc.displayName)) {
-        if (!(name in docProps)) docProps[name] = prop;
+      // Docgen can attribute a same-named prop from a sibling component in the file
+      // (Tabs.value picks up the required TabsTrigger value), so the checker row wins
+      // for props declared by Radix.
+      for (const { name, prop, radix } of checkerProps(program, doc.filePath, doc.displayName)) {
+        if (radix || !(name in docProps)) docProps[name] = prop;
       }
     }
     const props = Object.entries(docProps)
