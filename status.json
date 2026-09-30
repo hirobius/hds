@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T16:40:35.000Z",
+  "updatedAt": "2026-09-30T16:48:19.000Z",
   "phase": "active",
   "headline": "Hiring-readiness burndown waves 1+2 merged (hds#306, 23 of 25 children closed). 0.19.0 published 2026-09-30 through npm Trusted Publishing (OIDC, SLSA provenance attached): the first release with no npm token. Wave 2 shipped portal scope + theme-aware scrim, compact density remap, five screen patterns (PageHeader, MetricTiles, FormActions, DestructiveSection, DataTableSection), contract JSDoc into manifest/llms.txt, curated icons subpath, consumer SKILL.md, tarball agent context, and the live consistency harness. Open agent work: hds#349 (nine axe failures), hds#363 (Button-only budget fragility). Figma promotion stays an Adrian step.",
   "next": [
