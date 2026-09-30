@@ -14,7 +14,7 @@ pnpm add @hirobius/design-system
 
 - **109** public component modules, exported from `src/index.ts`
 - **381** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **457** Storybook stories in **115** story files
+- **471** Storybook stories in **118** story files
 
 <!-- auto:end:front-door-counts -->
 

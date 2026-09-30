@@ -392,16 +392,16 @@ Comfortable (default) vs compact - toggled via `data-density` attribute or `useT
 
 <!-- auto:start:density -->
 
-| CSS var           | Comfortable | Compact | Use                        |
-| ----------------- | ----------- | ------- | -------------------------- |
-| `--hds-space-xs`  | 4px         | 2px     | Icon padding, micro nudges |
-| `--hds-space-sm`  | 8px         | 6px     | Row gaps, label spacing    |
-| `--hds-space-md`  | 16px        | 12px    | Standard component padding |
-| `--hds-space-lg`  | 24px        | 20px    | Card padding, form gaps    |
-| `--hds-space-xl`  | 32px        | 24px    | Between card groups        |
-| `--hds-space-2xl` | 48px        | 40px    | Between page sections      |
-| `--hds-space-3xl` | 64px        | 48px    | Major layout divisions     |
-| `--hds-space-4xl` | 80px        | 64px    | Hero / page breathing      |
+| CSS var                     | Comfortable | Compact | Use                                           |
+| --------------------------- | ----------- | ------- | --------------------------------------------- |
+| `--semantic-space-scale-xs` | 8px         | 6px     | Icon padding, table row padding, micro nudges |
+| `--semantic-space-scale-sm` | 16px        | 12px    | Row gaps, mobile gutter                       |
+| `--semantic-space-scale-md` | 24px        | 20px    | Surface padding (cards, forms, panels)        |
+| `--semantic-space-scale-lg` | 32px        | 24px    | Region gutter, between card groups            |
+| `--semantic-space-scale-xl` | 48px        | 40px    | Between page sections                         |
+
+`[data-density="compact"]` remaps `--semantic-space-scale-*` and re-declares `surface.padding` and `region.gutter` (with their deprecated aliases). `Table` follows it unless given a `density` prop.
+The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; do not treat them as the dial.
 
 Toggle: `document.documentElement.dataset.density = 'compact'`
 Or via `useTheme().setDensity('compact')`
@@ -517,20 +517,20 @@ Use tokenized values when a suitable primitive, semantic, or component token exi
 Primitive layout dimensions live in `primitive.breakpoint.*`, `primitive.size.*`, `primitive.size.width.*`, and `primitive.grid.columns.*`.
 Semantic layout tokens exist for layout decisions only: readable content widths, section rhythm, gutters, and grid spacing.
 
-| Token                              | Resolves to                        | Use                                                                                                          |
-| ---------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `semantic.layout.content.maxWidth` | `primitive.size.width.760` (760px) | Broader readable content width for long-form docs and case studies                                           |
-| `semantic.layout.prose.maxWidth`   | `primitive.size.width.50ch` (50ch) | Canonical prose measure for body copy and narrative text                                                     |
-| `semantic.layout.section.paddingY` | `primitive.space.20` (80px)        | Airier top-level page section spacing                                                                        |
-| `semantic.layout.grid.gap`         | `primitive.space.8` (32px)         | Two-up and three-up editorial grid spacing                                                                   |
-| `semantic.space.layout.tight`      | `primitive.space.4` (16px)         | Compact rhythm for dense lists and tight pairings                                                            |
-| `semantic.space.layout.normal`     | `primitive.space.6` (24px)         | Default vertical rhythm between layout blocks and grids                                                      |
-| `semantic.space.layout.gutter`     | `primitive.space.6` (24px)         | Horizontal gutter for full-width page sections; density-aware `--hds-space-*` vars handle responsive scaling |
-| `semantic.space.layout.inset`      | `primitive.space.8` (32px)         | Block inset padding inside layout containers                                                                 |
-| `semantic.space.layout.spacious`   | `primitive.space.12` (48px)        | Generous rhythm for hero sections and split layouts                                                          |
-| `semantic.space.section.stack`     | `primitive.space.20` (80px)        | Vertical stack between top-level page sections                                                               |
-| `semantic.space.section.inset`     | `primitive.space.24` (96px)        | Outer section padding for overview headers and chrome blocks                                                 |
-| `semantic.space.section.heroMax`   | `primitive.space.32` (128px)       | Maximum hero section padding                                                                                 |
+| Token                              | Resolves to                        | Use                                                                                                                                                  |
+| ---------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.layout.content.maxWidth` | `primitive.size.width.760` (760px) | Broader readable content width for long-form docs and case studies                                                                                   |
+| `semantic.layout.prose.maxWidth`   | `primitive.size.width.50ch` (50ch) | Canonical prose measure for body copy and narrative text                                                                                             |
+| `semantic.layout.section.paddingY` | `primitive.space.20` (80px)        | Airier top-level page section spacing                                                                                                                |
+| `semantic.layout.grid.gap`         | `primitive.space.8` (32px)         | Two-up and three-up editorial grid spacing                                                                                                           |
+| `semantic.space.layout.tight`      | `primitive.space.4` (16px)         | Compact rhythm for dense lists and tight pairings                                                                                                    |
+| `semantic.space.layout.normal`     | `primitive.space.6` (24px)         | Default vertical rhythm between layout blocks and grids                                                                                              |
+| `semantic.space.layout.gutter`     | `primitive.space.6` (24px)         | Horizontal gutter for full-width page sections; `--semantic-space-region-gutter` steps to scale.lg (scale.sm below 640px) and follows `data-density` |
+| `semantic.space.layout.inset`      | `primitive.space.8` (32px)         | Block inset padding inside layout containers                                                                                                         |
+| `semantic.space.layout.spacious`   | `primitive.space.12` (48px)        | Generous rhythm for hero sections and split layouts                                                                                                  |
+| `semantic.space.section.stack`     | `primitive.space.20` (80px)        | Vertical stack between top-level page sections                                                                                                       |
+| `semantic.space.section.inset`     | `primitive.space.24` (96px)        | Outer section padding for overview headers and chrome blocks                                                                                         |
+| `semantic.space.section.heroMax`   | `primitive.space.32` (128px)       | Maximum hero section padding                                                                                                                         |
 
 ---
 
