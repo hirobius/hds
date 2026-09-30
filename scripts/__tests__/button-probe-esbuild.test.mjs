@@ -1,20 +1,25 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 // @vitest-environment node
 /**
- * scripts/lib/button-probe-esbuild.mjs (hds#363). Beside the rollup probe that
- * .size-limit.cjs budgets, `import { Button } from '@hirobius/design-system'`
- * is also bundled with esbuild — the bundler that, like webpack, keeps every
- * un-annotated top-level statement in a chunk it reaches — and the result must
- * hold no @radix-ui/react-dialog or @radix-ui/react-alert-dialog code.
+ * scripts/lib/button-probe-esbuild.mjs (hds#363, hds#365). Beside the rollup
+ * probe that .size-limit.cjs budgets, `import { Button } from
+ * '@hirobius/design-system'` is also bundled with esbuild — the bundler that,
+ * like webpack, keeps every un-annotated top-level statement in a chunk it
+ * reaches — and the only @radix-ui packages allowed in the result are the ones
+ * button.tsx itself pulls in: @radix-ui/react-slot and what it depends on. Any
+ * other @radix-ui package reaching the bundle means a compound leaked into the
+ * chunk shared with Button.
  */
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  FORBIDDEN_PACKAGES,
+  ALLOWED_PACKAGES,
   buttonOnlyEsbuildOptions,
-  forbiddenInputs,
+  buttonRadixClosure,
+  disallowedInputs,
+  disallowedPackages,
   radixInputs,
   resolveEsbuild,
 } from '../lib/button-probe-esbuild.mjs';
@@ -23,10 +28,12 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 
 const DIALOG =
   'node_modules/.pnpm/@radix-ui+react-dialog@1.1.15_react@18.3.1/node_modules/@radix-ui/react-dialog/dist/index.mjs';
-const ALERT =
-  'node_modules/.pnpm/@radix-ui+react-alert-dialog@1.1.15/node_modules/@radix-ui/react-alert-dialog/dist/index.mjs';
+const MENU =
+  'node_modules/.pnpm/@radix-ui+react-dropdown-menu@2.1.16_react@18.3.1/node_modules/@radix-ui/react-dropdown-menu/dist/index.mjs';
 const SLOT =
   'node_modules/.pnpm/@radix-ui+react-slot@1.2.3/node_modules/@radix-ui/react-slot/dist/index.mjs';
+const COMPOSE =
+  'node_modules/.pnpm/@radix-ui+react-compose-refs@1.1.2/node_modules/@radix-ui/react-compose-refs/dist/index.mjs';
 
 const metafile = (inputs) => ({
   inputs: Object.fromEntries(inputs.map((i) => [i, { bytes: 1, imports: [] }])),
@@ -38,35 +45,53 @@ const metafile = (inputs) => ({
   },
 });
 
-describe('forbiddenInputs', () => {
-  it('names the radix dialog and alert-dialog modules that reached the output', () => {
-    const found = forbiddenInputs(metafile([DIALOG, ALERT, SLOT, 'dist/chunks/activity-feed.js']));
-    expect(found).toEqual([ALERT, DIALOG]);
+describe('ALLOWED_PACKAGES', () => {
+  it('is exactly what button.tsx pulls in: @radix-ui/react-slot and its own @radix-ui dependencies', () => {
+    expect([...ALLOWED_PACKAGES].sort()).toEqual([
+      '@radix-ui/react-compose-refs',
+      '@radix-ui/react-slot',
+    ]);
   });
 
-  it('is empty when only other radix packages and our own chunks are present', () => {
-    expect(forbiddenInputs(metafile([SLOT, 'dist/hirobius-ui.js']))).toEqual([]);
+  it('equals the closure derived from button.tsx, its local imports and the installed tree', () => {
+    // Button gaining a @radix-ui import, or react-slot gaining a dependency,
+    // shows up here as a deliberate allow-list change, not a silent pass.
+    expect(buttonRadixClosure(ROOT)).toEqual([...ALLOWED_PACKAGES].sort());
   });
+});
 
-  it('does not match a package whose name merely starts the same way', () => {
-    expect(forbiddenInputs(metafile(['node_modules/@radix-ui/react-dialog-extras/x.js']))).toEqual(
-      [],
+describe('disallowedInputs', () => {
+  it('names every input from a @radix-ui package outside the allow-list, sorted', () => {
+    const found = disallowedInputs(
+      metafile([MENU, DIALOG, SLOT, COMPOSE, 'dist/chunks/activity-feed.js']),
     );
+    expect(found).toEqual([DIALOG, MENU]);
   });
 
-  it('forbids exactly the two dialog packages', () => {
-    expect([...FORBIDDEN_PACKAGES].sort()).toEqual([
-      '@radix-ui/react-alert-dialog',
+  it('is empty when only allow-listed radix packages and our own chunks are present', () => {
+    expect(disallowedInputs(metafile([SLOT, COMPOSE, 'dist/hirobius-ui.js']))).toEqual([]);
+  });
+
+  it('does not let a package through because its name merely starts like an allowed one', () => {
+    const extras = 'node_modules/@radix-ui/react-slot-extras/dist/index.mjs';
+    expect(disallowedInputs(metafile([extras]))).toEqual([extras]);
+  });
+});
+
+describe('disallowedPackages', () => {
+  it('lists each offending package once, sorted', () => {
+    expect(disallowedPackages(metafile([MENU, DIALOG, MENU, SLOT, COMPOSE]))).toEqual([
       '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
     ]);
   });
 });
 
 describe('radixInputs', () => {
   it('lists every @radix-ui package in the output once, sorted', () => {
-    expect(radixInputs(metafile([SLOT, DIALOG, SLOT, ALERT, 'dist/x.js']))).toEqual([
-      '@radix-ui/react-alert-dialog',
+    expect(radixInputs(metafile([SLOT, DIALOG, SLOT, MENU, 'dist/x.js']))).toEqual([
       '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
       '@radix-ui/react-slot',
     ]);
   });

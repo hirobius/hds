@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "7dc26f75ec8403193e5888e9ec0336b6c5d3d14d5a0dc25659faebd0160058be",
-  "precommitStructureHashUpdatedAt": "2026-09-30T15:35:40.775Z",
+  "precommitStructureHash": "2312da551ce5886a56d8612d65ffddc16466439519d44d36efb7d3704a72b966",
+  "precommitStructureHashUpdatedAt": "2026-09-30T19:23:24.444Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -442,7 +442,7 @@
     },
     {
       "id": "check-pure-annotations",
-      "description": "Every top-level component-factory call under src/ (React.forwardRef, forwardRef, cva, React.createContext, createContext, withHdsPortal, and an Object.assign that wraps one) is immediately preceded by /* @__PURE__ */. A bare top-level call is a side effect every bundler keeps, so one in a module that reaches the chunk shared with Button re-breaks the Button-only budget (hds#363, the way hds#358 did). Tests, stories and .d.ts are out of scope; --fix inserts the annotation. Source only: no build, no network.",
+      "description": "Every top-level component-factory call under src/ (React.forwardRef, forwardRef, cva, React.createContext, createContext, withHdsPortal, and an Object.assign that wraps one or whose first argument is a component) is immediately preceded by /* @__PURE__ */, and no top-level X.Part = … or X.displayName = … write assembles a compound (hds#365). A bare top-level call or property write is a side effect webpack and esbuild keep, so one in a module that reaches the chunk shared with Button re-breaks the Button-only budget (hds#363, the way hds#358 did). Tests, stories and .d.ts are out of scope; --fix inserts the annotation and reports the writes it cannot. Source only: no build, no network.",
       "severity": "error",
       "gateScript": "scripts/check-pure-annotations.mjs",
       "owner": "Adrian",

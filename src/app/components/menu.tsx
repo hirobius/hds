@@ -30,7 +30,13 @@ import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
 
-const MenuRoot = MenuPrimitive.Root;
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Writing them onto a component at module scope is a side
+// effect webpack and esbuild keep in every bundle that reaches the shared
+// chunk (hds#363, hds#365).
+function MenuRoot(props: React.ComponentProps<typeof MenuPrimitive.Root>) {
+  return <MenuPrimitive.Root {...props} />;
+}
 const MenuTrigger = MenuPrimitive.Trigger;
 const MenuGroup = MenuPrimitive.Group;
 const MenuRadioGroup = MenuPrimitive.RadioGroup;
@@ -203,20 +209,22 @@ interface MenuComponent extends React.FC<React.ComponentProps<typeof MenuPrimiti
  * @keyboard Tab Does not leave the open menu.
  * @public
  */
-const Menu = ((props: React.ComponentProps<typeof MenuPrimitive.Root>) => (
-  <MenuRoot {...props} />
-)) as MenuComponent;
-Menu.Trigger = MenuTrigger;
-Menu.Content = MenuContent;
-Menu.Item = MenuItem;
-Menu.CheckboxItem = MenuCheckboxItem;
-Menu.RadioGroup = MenuRadioGroup;
-Menu.RadioItem = MenuRadioItem;
-Menu.Label = MenuLabel;
-Menu.Separator = MenuSeparator;
-Menu.Group = MenuGroup;
-Menu.Sub = MenuSub;
-Menu.SubTrigger = MenuSubTrigger;
-Menu.SubContent = MenuSubContent;
+const Menu: MenuComponent = /* @__PURE__ */ Object.assign(MenuRoot, {
+  Trigger: MenuTrigger,
+  Content: MenuContent,
+  Item: MenuItem,
+  CheckboxItem: MenuCheckboxItem,
+  RadioGroup: MenuRadioGroup,
+  RadioItem: MenuRadioItem,
+  Label: MenuLabel,
+  Separator: MenuSeparator,
+  Group: MenuGroup,
+  Sub: MenuSub,
+  SubTrigger: MenuSubTrigger,
+  SubContent: MenuSubContent,
+  // Set here, not by a later `Menu.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'Menu',
+});
 
 export { Menu };

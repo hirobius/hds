@@ -4,6 +4,7 @@
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import * as ToolbarPrimitive from '@radix-ui/react-toolbar';
 import { Toolbar } from './toolbar';
 
 afterEach(cleanup);
@@ -43,5 +44,28 @@ describe('Toolbar', () => {
     expect(bold.getAttribute('data-state')).toBe('off');
     fireEvent.click(bold);
     expect(bold.getAttribute('data-state')).toBe('on');
+  });
+});
+
+describe('Toolbar compound assembly (hds#365)', () => {
+  const PARTS = ['Button', 'Separator', 'ToggleGroup', 'ToggleItem', 'Link'] as const;
+
+  it('does not write the parts onto the Radix Root export', () => {
+    expect(Toolbar).not.toBe(ToolbarPrimitive.Root);
+    const root = ToolbarPrimitive.Root as unknown as Record<string, unknown>;
+    for (const part of PARTS) expect(root[part], `Radix Root.${part}`).toBeUndefined();
+  });
+
+  it('keeps every static part and the display name', () => {
+    expect(Toolbar.displayName).toBe('Toolbar');
+    for (const part of PARTS) expect(Toolbar[part], part).toBeDefined();
+  });
+
+  it('still forwards root props to Radix and merges its own classes', () => {
+    render(<Toolbar aria-label="Vertical" orientation="vertical" className="mt-2" />);
+    const toolbar = screen.getByRole('toolbar', { name: 'Vertical' });
+    expect(toolbar.getAttribute('aria-orientation')).toBe('vertical');
+    expect(toolbar.classList.contains('mt-2')).toBe(true);
+    expect(toolbar.classList.contains('flex')).toBe(true);
   });
 });

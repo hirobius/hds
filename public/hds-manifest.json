@@ -3910,6 +3910,7 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/field.tsx",
         "src/app/components/grid.tsx",
+        "src/app/components/hover-card.test.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
@@ -4633,6 +4634,7 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
+        "src/app/components/hover-card.test.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
@@ -8943,6 +8945,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/destructive-section.tsx",
+        "src/app/components/hover-card.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
@@ -11250,6 +11253,7 @@
       },
       "consumers": [
         "src/app/components/asset-img.tsx",
+        "src/app/components/hds-tooltip.test.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",

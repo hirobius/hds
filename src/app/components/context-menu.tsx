@@ -38,7 +38,13 @@ import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
 
-const ContextMenuRoot = ContextMenuPrimitive.Root;
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Writing them onto a component at module scope is a side
+// effect webpack and esbuild keep in every bundle that reaches the shared
+// chunk (hds#363, hds#365).
+function ContextMenuRoot(props: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
+  return <ContextMenuPrimitive.Root {...props} />;
+}
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
 const ContextMenuGroup = ContextMenuPrimitive.Group;
 const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
@@ -201,18 +207,20 @@ interface ContextMenuComponent extends React.FC<
  * `ContextMenu.Trigger`. Controlled via `onOpenChange`.
  * @public
  */
-export const ContextMenu = ((props: React.ComponentProps<typeof ContextMenuPrimitive.Root>) => (
-  <ContextMenuRoot {...props} />
-)) as ContextMenuComponent;
-ContextMenu.Trigger = ContextMenuTrigger;
-ContextMenu.Content = ContextMenuContent;
-ContextMenu.Item = ContextMenuItem;
-ContextMenu.CheckboxItem = ContextMenuCheckboxItem;
-ContextMenu.RadioGroup = ContextMenuRadioGroup;
-ContextMenu.RadioItem = ContextMenuRadioItem;
-ContextMenu.Label = ContextMenuLabel;
-ContextMenu.Separator = ContextMenuSeparator;
-ContextMenu.Group = ContextMenuGroup;
-ContextMenu.Sub = ContextMenuSub;
-ContextMenu.SubTrigger = ContextMenuSubTrigger;
-ContextMenu.SubContent = ContextMenuSubContent;
+export const ContextMenu: ContextMenuComponent = /* @__PURE__ */ Object.assign(ContextMenuRoot, {
+  Trigger: ContextMenuTrigger,
+  Content: ContextMenuContent,
+  Item: ContextMenuItem,
+  CheckboxItem: ContextMenuCheckboxItem,
+  RadioGroup: ContextMenuRadioGroup,
+  RadioItem: ContextMenuRadioItem,
+  Label: ContextMenuLabel,
+  Separator: ContextMenuSeparator,
+  Group: ContextMenuGroup,
+  Sub: ContextMenuSub,
+  SubTrigger: ContextMenuSubTrigger,
+  SubContent: ContextMenuSubContent,
+  // Set here, not by a later `ContextMenu.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'ContextMenu',
+});

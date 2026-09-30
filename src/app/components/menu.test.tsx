@@ -7,6 +7,7 @@
  */
 import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import * as MenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { Menu } from './menu';
 
 beforeAll(() => {
@@ -81,5 +82,52 @@ describe('Menu highlighted row ring', () => {
     expect(cls).toContain('data-[highlighted]:ring-inset');
     expect(cls.split(/\s+/)).not.toContain('hds-focus');
     expect(cls).toContain('data-[highlighted]:ring-ring');
+  });
+});
+
+describe('Menu compound assembly (hds#365)', () => {
+  const PARTS = [
+    'Trigger',
+    'Content',
+    'Item',
+    'CheckboxItem',
+    'RadioGroup',
+    'RadioItem',
+    'Label',
+    'Separator',
+    'Group',
+    'Sub',
+    'SubTrigger',
+    'SubContent',
+  ] as const;
+
+  it('does not write the parts onto the Radix Root export', () => {
+    expect(Menu).not.toBe(MenuPrimitive.Root);
+    const root = MenuPrimitive.Root as unknown as Record<string, unknown>;
+    for (const part of PARTS) expect(root[part], `Radix Root.${part}`).toBeUndefined();
+  });
+
+  it('keeps every static part and the display name', () => {
+    expect(Menu.displayName).toBe('Menu');
+    for (const part of PARTS) expect(Menu[part], part).toBeDefined();
+    expect(Menu.Trigger).toBe(MenuPrimitive.Trigger);
+    expect(Menu.Group).toBe(MenuPrimitive.Group);
+    expect(Menu.RadioGroup).toBe(MenuPrimitive.RadioGroup);
+    expect(Menu.Sub).toBe(MenuPrimitive.Sub);
+  });
+
+  it('still forwards root props to Radix (controlled open)', () => {
+    render(
+      <Menu open>
+        <Menu.Trigger>Actions</Menu.Trigger>
+        <Menu.Content>
+          <Menu.Item>Profile</Menu.Item>
+        </Menu.Content>
+      </Menu>,
+    );
+    expect(screen.getByRole('menu')).not.toBeNull();
+    // The open modal menu hides the rest of the page from the a11y tree.
+    const trigger = screen.getByRole('button', { name: 'Actions', hidden: true });
+    expect(trigger.getAttribute('data-state')).toBe('open');
   });
 });

@@ -15,15 +15,22 @@
  * hds#363) into dist/probe/button-only.esbuild.js. Rollup drops a property
  * write on an unused object; webpack and esbuild keep it, so the rollup number
  * alone missed a compound assembled by writing parts onto a Radix Root. This
- * exits 1 if any @radix-ui/react-dialog or @radix-ui/react-alert-dialog code
- * reaches the esbuild bundle. It lives here rather than in a sibling script so
- * it runs in the CI "Bundle budgets" step, which calls this file by name.
+ * exits 1 if any @radix-ui package outside the allow-list — the packages
+ * button.tsx itself pulls in (ALLOWED_PACKAGES) — reaches the esbuild bundle,
+ * and prints every package that did (hds#365: the earlier "no dialog packages"
+ * check passed while 33 @radix-ui packages still got in). It lives here rather
+ * than in a sibling script so it runs in the CI "Bundle budgets" step, which
+ * calls this file by name.
  */
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
-import { bundleButtonOnly, FORBIDDEN_PACKAGES } from './lib/button-probe-esbuild.mjs';
+import {
+  ALLOWED_PACKAGES,
+  bundleButtonOnly,
+  disallowedPackages,
+} from './lib/button-probe-esbuild.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -84,14 +91,20 @@ try {
 }
 
 // After `finally`, so the temp entry is gone on failure too (process.exit skips it).
-if (esbuildProbe.forbidden.length > 0) {
+if (esbuildProbe.disallowed.length > 0) {
+  const offenders = disallowedPackages(esbuildProbe.metafile);
   console.error(
-    `\n✗ build-button-probe — a Button-only consumer bundled with esbuild receives ` +
-      `${[...FORBIDDEN_PACKAGES].join(' / ')} code (hds#363):\n`,
+    `\n✗ build-button-probe — a Button-only consumer bundled with esbuild receives code from ` +
+      `${offenders.length} @radix-ui package(s) Button does not need (hds#363, hds#365):\n`,
   );
-  for (const input of esbuildProbe.forbidden) console.error(`    ${input}`);
+  for (const name of offenders) console.error(`    ${name}`);
   console.error(
-    '\n  fix: something in the chunk shared with Button keeps the dialog stack alive —\n' +
+    `\n  allowed (what src/app/components/button.tsx pulls in): ${[...ALLOWED_PACKAGES].sort().join(', ')}` +
+      `\n  reached: ${esbuildProbe.radix.join(', ')}\n\n  inputs that got in:`,
+  );
+  for (const input of esbuildProbe.disallowed) console.error(`    ${input}`);
+  console.error(
+    '\n  fix: something in the chunk shared with Button keeps that stack alive —\n' +
       '  a bare top-level factory call (node scripts/check-pure-annotations.mjs), a\n' +
       '  `X.Part = …` or `X.displayName = …` write, or an un-annotated Object.assign.\n' +
       '  dist/probe/button-only.esbuild.meta.json lists every input that got in.',

@@ -84,6 +84,14 @@ const ToolbarLink = /* @__PURE__ */ React.forwardRef<
 
 // ── Compound export ──────────────────────────────────────────────────────────────
 
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Writing them onto a component at module scope is a side
+// effect webpack and esbuild keep in every bundle that reaches the shared
+// chunk (hds#363, hds#365).
+function ToolbarRoot({ className, ...props }: React.ComponentProps<typeof ToolbarPrimitive.Root>) {
+  return <ToolbarPrimitive.Root className={cn(ROOT, className)} {...props} />;
+}
+
 export interface ToolbarComponent extends React.FC<
   React.ComponentProps<typeof ToolbarPrimitive.Root>
 > {
@@ -99,14 +107,13 @@ export interface ToolbarComponent extends React.FC<
  * Supports the native `orientation` prop (`horizontal` | `vertical`).
  * @public
  */
-export const Toolbar = (({
-  className,
-  ...props
-}: React.ComponentProps<typeof ToolbarPrimitive.Root>) => (
-  <ToolbarPrimitive.Root className={cn(ROOT, className)} {...props} />
-)) as ToolbarComponent;
-Toolbar.Button = ToolbarButton;
-Toolbar.Separator = ToolbarSeparator;
-Toolbar.ToggleGroup = ToolbarToggleGroup;
-Toolbar.ToggleItem = ToolbarToggleItem;
-Toolbar.Link = ToolbarLink;
+export const Toolbar: ToolbarComponent = /* @__PURE__ */ Object.assign(ToolbarRoot, {
+  Button: ToolbarButton,
+  Separator: ToolbarSeparator,
+  ToggleGroup: ToolbarToggleGroup,
+  ToggleItem: ToolbarToggleItem,
+  Link: ToolbarLink,
+  // Set here, not by a later `Toolbar.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'Toolbar',
+});
