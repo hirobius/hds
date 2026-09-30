@@ -26,6 +26,7 @@ src/app/data/**.json
 public/hds-manifest.json
 public/llms.txt
 llms.txt
+skills/hds-consumer/SKILL.md
 docs/guardrails/baselines/**
 docs/guardrails/full-strictness-inventory.json
 docs/ai/swarm-watchdog-decisions.jsonl
