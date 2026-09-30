@@ -92,6 +92,11 @@
       "import": "./dist/patterns.js",
       "default": "./dist/patterns.js"
     },
+    "./icons": {
+      "types": "./dist/types/src/icons.d.ts",
+      "import": "./dist/icons.js",
+      "default": "./dist/icons.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -206,6 +211,7 @@
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:sync-map": "node scripts/check-sync-map.mjs",
     "check:status-claims": "node scripts/check-status-claims.mjs --check",
+    "eval:consistency": "node scripts/eval-consistency.mjs",
     "check:record-freshness": "node scripts/check-record-freshness.mjs",
     "check:tailwind": "pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}'",
     "check:tailwind-arbitrary": "pnpm lint --rule '{\"tailwindcss/no-arbitrary-value\":\"error\"}'",

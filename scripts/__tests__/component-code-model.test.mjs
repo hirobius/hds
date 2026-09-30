@@ -6,7 +6,13 @@
  * useful if it reads the repo's actual forwardRef / compound / cva shapes.
  */
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
+
+// The "real components" block builds a TypeScript program over the whole
+// component tree. On a loaded machine (CI, several agent sessions building at
+// once) a single case exceeds vitest's 5 s default, which failed pre-push runs
+// in #321, #326 and #343. The work is bounded, so give it a real ceiling.
+vi.setConfig({ testTimeout: 60_000 });
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCodeModel, extractCva } from '../lib/component-code-model.mjs';

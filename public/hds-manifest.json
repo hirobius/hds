@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-28T00:14:31.544Z",
+  "generated": "2026-09-30T11:23:12.971Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -3085,6 +3085,7 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/table.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/app/data/manifest-types.ts",
         "src/docs-tooling/api-reference.tsx",
         "src/docs-tooling/propTableUtils.tsx",
         "src/stories/data-table-section.stories.tsx",
@@ -10693,10 +10694,6 @@
       "props": {
         "children": {
           "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
         }
       },
       "allowedChildren": [
@@ -15274,6 +15271,61 @@
         "alias": "{semantic.radius.action}",
         "resolvedValue": "8px"
       }
+    ]
+  },
+  "iconSet": {
+    "subpath": "@hirobius/design-system/icons",
+    "names": [
+      "Archive",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "Bell",
+      "Bookmark",
+      "Calendar",
+      "Check",
+      "ChevronDown",
+      "ChevronLeft",
+      "ChevronRight",
+      "ChevronUp",
+      "CircleAlert",
+      "CircleCheck",
+      "CircleHelp",
+      "Clock",
+      "Copy",
+      "Download",
+      "Ellipsis",
+      "EllipsisVertical",
+      "ExternalLink",
+      "Eye",
+      "EyeOff",
+      "FileText",
+      "Funnel",
+      "Heart",
+      "House",
+      "Image",
+      "Info",
+      "Link",
+      "Lock",
+      "LogIn",
+      "LogOut",
+      "Mail",
+      "Menu",
+      "Minus",
+      "Pencil",
+      "Plus",
+      "RefreshCw",
+      "Save",
+      "Search",
+      "Settings",
+      "Share",
+      "Star",
+      "Trash2",
+      "TriangleAlert",
+      "Upload",
+      "User",
+      "X"
     ]
   }
 }
