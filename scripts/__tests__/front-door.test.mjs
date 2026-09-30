@@ -162,7 +162,7 @@ describe('README claims', () => {
     const broken = named.filter((name) => {
       if (PNPM_BUILTINS.has(name)) return false;
       const script = pkg.scripts[name];
-      return script === undefined || /\bRETIRED\b/.test(script);
+      return script === undefined || /\bretired\b/i.test(script);
     });
     expect(broken).toEqual([]);
   });

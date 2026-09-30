@@ -39,7 +39,7 @@ describe('modeValue', () => {
 // retired namespace, so every Figma Dark value equalled Light. Nothing outside
 // the shared reader may spell a mode path out again.
 describe('no script reads the retired mode namespace', () => {
-  const RETIRED = ['com', 'hirobius', 'modes'].join('.');
+  const LEGACY_MODES_KEY = ['com', 'hirobius', 'modes'].join('.');
 
   function* sourceFiles(dir) {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -54,7 +54,7 @@ describe('no script reads the retired mode namespace', () => {
   it('finds no reference in scripts/ or validators/', () => {
     const offenders = [join(ROOT, 'scripts'), join(ROOT, 'validators')]
       .flatMap((dir) => [...sourceFiles(dir)])
-      .filter((file) => readFileSync(file, 'utf8').includes(RETIRED))
+      .filter((file) => readFileSync(file, 'utf8').includes(LEGACY_MODES_KEY))
       .map((file) => relative(ROOT, file));
     expect(offenders).toEqual([]);
   });

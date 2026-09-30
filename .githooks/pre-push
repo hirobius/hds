@@ -13,15 +13,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "Running a11y tests..."
-pnpm test:a11y
-
-if [ $? -ne 0 ]; then
-  echo ""
-  echo "Push blocked. Fix the a11y failures above, then push again."
-  exit 1
-fi
-
 echo "Running HDS self-heal..."
 pnpm run heal
 

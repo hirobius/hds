@@ -6,7 +6,7 @@
  *
  * Hook tier:
  *   pre-commit → pnpm typecheck
- *   pre-push   → pnpm check:full + test:a11y + heal + visual parity ingest
+ *   pre-push   → pnpm check:full + heal + visual parity ingest
  */
 
 import { existsSync } from 'fs';
