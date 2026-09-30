@@ -279,6 +279,11 @@ export const tokens = {
           info: "var(--semantic-color-feedback-bg-info)",
           inProgress: "var(--semantic-color-feedback-bg-inProgress)"
         }
+      },
+      state: {
+        pressed: {
+          overlay: "var(--semantic-color-state-pressed-overlay)"
+        }
       }
     },
     space: {
@@ -528,6 +533,7 @@ export const tokens = {
     "card-foreground": "var(--role-card-foreground)",
     popover: "var(--role-popover)",
     scrim: "var(--role-scrim)",
+    "pressed-overlay": "var(--role-pressed-overlay)",
     "popover-foreground": "var(--role-popover-foreground)",
     primary: "var(--role-primary)",
     "primary-foreground": "var(--role-primary-foreground)",

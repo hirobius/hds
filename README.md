@@ -13,7 +13,7 @@ pnpm add @hirobius/design-system
 <!-- auto:start:front-door-counts -->
 
 - **109** public component modules, exported from `src/index.ts`
-- **381** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **383** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 - **484** Storybook stories in **121** story files
 
 <!-- auto:end:front-door-counts -->
@@ -51,7 +51,7 @@ guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**.
 > `@hirobius/design-system` entry under GitHub Packages
 > (`/pkgs/npm/design-system`). That listing is **frozen and no longer updated** —
 > publishing moved to the public npm registry in
-> [#39](https://github.com/hirobius/hirobius-design-system/pull/39). Always
+> [#39](https://github.com/hirobius/hds/pull/39). Always
 > install from npm:
 > **[npmjs.com/package/@hirobius/design-system](https://www.npmjs.com/package/@hirobius/design-system)**.
 

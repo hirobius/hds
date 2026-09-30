@@ -160,6 +160,10 @@ describe('buildConsumerSkill (in-memory)', () => {
     expect(out).toContain(LINT_INSTALL_LINE);
   });
 
+  it('lint install line points at the hds repo', () => {
+    expect(LINT_INSTALL_LINE).toContain('github:hirobius/hds#path:/scripts/eslint-plugin-hds');
+  });
+
   it('changes when a name is added to the inventory', () => {
     const m = fixtureManifest();
     m.componentInventory.push('Gamma');

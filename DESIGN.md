@@ -129,7 +129,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 <!-- auto:start:components -->
 | Component | Radius | States | Guidance |
 | --- | --- | --- | --- |
-| **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Icon buttons (`IconButton`) follow the same token surface. Icon-only actions use `IconButton` with an icon from `@hirobius/design-system/icons`. |
+| **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon buttons (`IconButton`) follow the same token surface. Icon-only actions use `IconButton` with an icon from `@hirobius/design-system/icons`. |
 | **Inputs** (`Input`) | `8px` (`semantic.radius.action`) | default · focus · filled · error · disabled · loading | Border-driven treatment; no filled background by default. Focus uses `semantic.color.border.accent` plus a 2px outline offset. Error swaps to `component.input.borderError`. |
 | **Cards** (`Card`) | `12px` (`rounded-lg`, role radius + 4px) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
@@ -215,6 +215,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (381 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (383 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

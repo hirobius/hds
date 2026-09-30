@@ -25,7 +25,7 @@ dependency (see below) or copy `index.mjs` + `rules/` into your own repo.
 Not yet published to npm (see packaging note above). Point at the repo directly:
 
 ```bash
-pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hirobius-design-system#path:/scripts/eslint-plugin-hds"
+pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"
 # peer dependency:
 pnpm add -D eslint
 ```
