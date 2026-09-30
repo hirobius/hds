@@ -64,6 +64,7 @@ const ALL_CHANGES = args.includes('--all');
  */
 const AUTO_GEN_MAP = {
   'public/llms.txt': ['scripts/generate-llms-txt.mjs'],
+  'skills/hds-consumer/SKILL.md': ['scripts/generate-consumer-skill.mjs'],
   'DESIGN.md': ['scripts/build-design-md.mjs', 'DESIGN.source.md'],
   'DESIGN-HANDOFF.md': ['scripts/build-handoff.mjs', 'hirobius.tokens.json'],
   'public/hds-manifest.json': ['scripts/generate-manifest.mjs'],

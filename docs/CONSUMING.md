@@ -452,6 +452,18 @@ and the "why `scripts/eslint-plugin-hds/` and not a top-level workspace
 package" packaging note live in
 [`scripts/eslint-plugin-hds/README.md`](../scripts/eslint-plugin-hds/README.md).
 
+### Agent skill
+
+An agent building a screen with HDS can load one consumer skill instead of reading
+the manifest, `llms.txt` and this guide separately. It carries the allow-list of
+importable components, the screen layout recipe, the do/don't rules, and the lint
+step (§11) as its final required step. It is generated from the manifest by
+`pnpm skill:generate` and drift-checked by `pnpm check:consumer-skill`.
+
+```bash
+npx skills add hirobius/hds --skill hds-consumer
+```
+
 ## Troubleshooting
 
 | Symptom                                            | Cause / fix                                                                                                                                                             |
