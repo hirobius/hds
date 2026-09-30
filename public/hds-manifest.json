@@ -5,8 +5,8 @@
   "generated": "2026-09-30T11:23:12.971Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
-  "docs": "https://adrianmilsap.com/hds",
-  "llmsTxt": "https://adrianmilsap.com/llms.txt",
+  "docs": "https://hirobius-design-system.vercel.app/",
+  "llmsTxt": "https://hirobius-design-system.vercel.app/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -593,7 +593,7 @@
     ],
     "namespaceViolations": []
   },
-  "agentEntrypoint": "CLAUDE.md",
+  "agentEntrypoint": "llms.txt",
   "breakingChangePolicy": "Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.",
   "componentSpecs": {
     "CaseStudyLayout": {

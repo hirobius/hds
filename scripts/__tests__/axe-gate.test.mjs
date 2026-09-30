@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { BLOCKING_IMPACTS, evaluateScan, validateAllowlist } from '../lib/axe-gate.mjs';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  BLOCKING_IMPACTS,
+  evaluateScan,
+  loadAxeSource,
+  validateAllowlist,
+} from '../lib/axe-gate.mjs';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const v = (id, impact, nodes = 1) => ({ id, impact, nodes });
 const scan = (storyId, theme, violations = [], error = null) => ({
@@ -107,5 +117,25 @@ describe('axe gate: retried scans', () => {
 
   it('reports no retries when none happened', () => {
     expect(evaluateScan([scan('a--x', 'light')], []).retried).toEqual([]);
+  });
+});
+
+describe('axe gate: one axe-core source loader', () => {
+  it('returns the axe-core engine source, ready to inject into a page', () => {
+    const src = loadAxeSource(ROOT);
+    expect(typeof src).toBe('string');
+    expect(src.length).toBeGreaterThan(100_000);
+    expect(src).toMatch(/axe\.run|\.run=function|run:/);
+  });
+
+  it('is imported, not re-implemented, by both scripts that scan with axe', () => {
+    for (const script of ['check-storybook-axe.mjs', 'consistency/axe-run.mjs']) {
+      const text = readFileSync(
+        path.join(ROOT, 'scripts', script.includes('/') ? 'lib' : '', script),
+        'utf8',
+      );
+      expect(text).toMatch(/loadAxeSource/);
+      expect(text).not.toMatch(/createRequire|axe\.min\.js/);
+    }
   });
 });

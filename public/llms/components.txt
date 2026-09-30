@@ -1,0 +1,1088 @@
+# Hirobius Design System - components slice
+
+See `public/llms.txt` for the index. Generated from the same sections as llms.txt.
+
+## Component Inventory (Source Of Truth)
+
+This file intentionally does not embed the full component list to avoid duplication and excess context.
+
+- Canonical inventory + metadata: read `public/hds-manifest.json`.
+- If you see references to `public/manifest.json`, treat it as an optional alias; in this repo prefer `public/hds-manifest.json`.
+
+## Component API (Source Of Truth)
+
+This file intentionally does not embed prop tables or long-form API docs.
+
+- Detailed prop types, unions, defaults, and descriptions: read `src/app/data/component-api.json`.
+- Runtime behavior: read the actual component source under `src/app/components/` (and associated styles).
+
+## Component Props Digest
+
+Compact: name, first line of description, then prop: type = default. Full detail in `src/app/data/component-api.json`.
+
+### ActivityFeed
+ActivityFeed — chronological system event log. Renders a list of activity events using white space as the sole separator. No dividers, no borders between items…
+  - events: ActivityEvent[] = [ { id: 'evt-001', title: 'File Uploade…
+
+### Alert
+Alert - compact feedback surface with contextual severity.
+  - children: ReactNode
+  - title: string
+  - tone: 'success' | 'danger' | 'warning' | 'info' = info
+
+### AlertDialog
+AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
+### AspectRatio
+Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.
+  - asChild: boolean
+  - ratio: number = 1
+
+### AssetImg
+AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.
+  - alt: string
+  - className: string
+  - context: 'default' | 'lightbox' | 'detail' = default
+  - draggable: boolean = false
+  - expandable: boolean = true
+  - expandLabel: string
+  - isDark: boolean = false
+  - loading: "lazy" | "eager" = lazy
+  - naturalHeight: number
+  - naturalWidth: number
+  - onClick: ((e: MouseEvent<Element, MouseEvent>) => void)
+  - onMouseDown: ((e: MouseEvent<Element, MouseEvent>) => void)
+  - onMouseLeave: ((e: MouseEvent<Element, MouseEvent>) => void)
+  - onMouseMove: ((e: MouseEvent<Element, MouseEvent>) => void)
+  - onMouseUp: ((e: MouseEvent<Element, MouseEvent>) => void)
+  - src: string
+  - style: CSSProperties = {}
+  - title: string
+
+### Avatar
+Circular avatar. Renders the image when available, else initials from `alt`.
+  - alt: string
+  - initials: string
+  - size: "sm" | "md" | "lg" | null
+  - src: string
+
+### AvatarGroup
+Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
+  - children: ReactNode
+  - max: number
+  - size: "sm" | "md" | "lg" | null
+
+### Badge
+Compact metadata/status chip. Tone is the only styling input.
+  - as: ElementType<any, keyof IntrinsicElements> = span
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | "inProgress" | null
+
+### Bleed
+Bleed — controlled negative-margin full-bleed within a padded container. padding" (a full-width image inside a padded card, a divider that should touch both ed…
+  - amount: 'tight' | 'normal' | 'inset' | 'spacious' = normal
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - axis: 'x' | 'y' | 'both' = x
+  - children: ReactNode
+  - className: string
+  - style: CSSProperties
+
+### Blockquote
+A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
+  - attribution: ReactNode
+  - size: "sm" | "md" | "lg" | null
+
+### Box
+Box — polymorphic layout primitive with a token-first `sx` engine. named primitive covers, without inviting ad hoc inline styles or raw hex/px values back into…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - sx: SxObject
+
+### Breadcrumb
+Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is …
+  - items: BreadcrumbItem[]
+  - label: string = Breadcrumb
+
+### Button
+Triggers an action when activated.
+  - asChild: boolean = false
+  - disabled: boolean
+  - iconLeft: ReactNode
+  - iconOnly: boolean = false
+  - iconRight: ReactNode
+  - label: string
+  - loading: boolean = false
+  - size: "sm" | "md" | "lg" | null
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - variant: "primary" | "secondary" | "tertiary" | null
+
+### ButtonGroup
+Groups Button (or button-like) children into a single attached segment.
+  - orientation: "horizontal" | "vertical" | null
+
+### Calendar
+Renders an accessible month grid; compose it inside a Popover for the date inputs.
+
+### Callout
+Tone-driven side-rule callout for status, quotes, hypotheses.
+  - italic: boolean = false
+  - tone: 'accent' | 'info' | 'success' | 'warning' | 'danger' = info
+
+### Card
+Tagged per-export, not on the file block: this module exports eight components and a file-level
+  - as: ElementType<any, keyof IntrinsicElements>
+  - bordered: boolean = false
+  - gap: GapOption = tight
+  - noPadding: boolean = false
+  - padding: PaddingOption = component
+  - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
+  - variant: 'default' | 'accent' = default
+
+### CardBody
+Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+
+### CardDescription
+Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+
+### CardFooter
+Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+
+### CardHeader
+Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+  - metadata: ReactNode
+
+### CardMetric
+Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+  - label: ReactNode
+  - sub: ReactNode
+  - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
+  - value: ReactNode
+
+### CardProgress
+Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+  - label: ReactNode
+  - max: number = 100
+  - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
+  - value: number
+
+### CardTitle
+Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+
+### Carousel
+Renders children as a snap-scrolling track with Prev/Next scroll buttons.
+  - ariaLabel: string = Carousel
+  - children: ReactNode
+  - showControls: boolean = true
+
+### Center
+Center — max-width column, auto-centered horizontally. max-width box with auto horizontal margins and, optionally, matching horizontal gutters — so agents stop…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - gutter: 'tight' | 'normal' | 'inset' | 'spacious'
+  - maxWidth: 'content' | 'max' = content
+  - style: CSSProperties
+
+### Checkbox
+Checkbox — custom-drawn checkbox with check / indeterminate glyph.
+  - checked: boolean
+  - indeterminate: boolean = false
+  - label: string
+  - onChange: (v: boolean) => void
+
+### CinematicLink
+CinematicLink - cinematic editorial link treatment for portfolio surfaces.
+  - children: string
+  - href: string
+
+### CircularProgress
+A circular progress ring; pass `value`/`max` or set `indeterminate`.
+  - indeterminate: boolean = false
+  - label: string
+  - max: number = 100
+  - size: "sm" | "md" | "lg" = md
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - value: number = 0
+
+### Cluster
+Cluster — wrapping horizontal group with even gaps. (tag rows, button groups, chip lists, filter pills) with a single flex-wrap wrapper and a tokenized gap in …
+  - align: 'start' | 'center' | 'end' | 'stretch' = center
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = tight
+  - justify: 'start' | 'center' | 'end' | 'space-between' = start
+  - style: CSSProperties
+
+### CodeBlock
+CodeBlock - code display with copy button and optional collapsible toggle.
+  - className: string
+  - code: string
+  - collapsible: boolean = false
+  - defaultExpanded: boolean = false
+  - filename: string
+  - language: string
+  - truncateFromStart: boolean = false
+  - variant: "inline" | "block" = block
+
+### Combobox
+Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; openi…
+  - aria-label: string
+  - className: string
+  - disabled: boolean = false
+  - emptyMessage: string = No results
+  - onChange: (value: string) => void
+  - options: ComboboxOption[]
+  - placeholder: string = Select…
+  - searchPlaceholder: string = Search…
+  - value: string | null
+
+### CommandPalette
+Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.
+  - className: string
+
+### ComponentInstanceMatrix
+ComponentInstanceMatrix — responsive specimen matrix for variant and state parity.
+  - componentName: string
+  - dimensionX: string
+  - dimensionY: string
+  - freezeRowState: boolean = false
+  - isMobile: boolean
+  - renderInstance: (rowKey: string, columnKey: string) => ReactNode
+  - rowLabelTone: "primary" | "secondary" = primary
+  - rowLabelWidth: number = 120
+  - title: string
+
+### Container
+Container — semantic width-constrained layout. semantic max-width scale, so agents stop hand-rolling `marginInline: auto` plus an ad hoc max-width pixel value …
+  - children: ReactNode
+  - className: string
+  - maxWidth: 'content' | 'max' = max
+  - padding: string = var(--semantic-space-surface-padding)
+  - style: CSSProperties
+
+### ContextMenu
+ContextMenu root + parts. Wrap the right-clickable area in `ContextMenu.Trigger`. Controlled via `onOpenChange`.
+  - children: React.ReactNode
+  - dir: ("ltr" | "rtl")
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
+### Cover
+Cover — vertical shell with an auto-centered main region. centered hero/main region that absorbs the remaining space, and an optional footer" problem via the f…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - centerSlot: ReactNode
+  - children: ReactNode
+  - className: string
+  - footer: ReactNode
+  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = normal
+  - header: ReactNode
+  - minHeight: string = 100svh
+  - style: CSSProperties
+
+### DataTableSection
+Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `min…
+  - actionsLabel: string = Actions
+  - columns: TableColumn[]
+  - emptyDescription: ReactNode
+  - emptyTitle: ReactNode = Nothing here yet
+  - level: 2 | 3 | 4 | 5 | 6 = 2
+  - rows: DataTableSectionRow[]
+  - title: ReactNode
+  - toolbar: ReactNode
+
+### DateInput
+Text field + calendar popover for picking a single date.
+  - aria-label: string
+  - disabled: boolean = false
+  - displayFormat: string = yyyy-MM-dd
+  - id: string
+  - onChange: ((date: Date) => void) | undefined
+  - placeholder: string
+  - value: Date
+
+### DateRangeInput
+DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Com…
+  - aria-label: string
+  - disabled: boolean = false
+  - displayFormat: string = yyyy-MM-dd
+  - id: string
+  - numberOfMonths: number = 2
+  - onChange: ((range: DateRange) => void) | undefined
+  - placeholder: string = Select date range
+  - value: DateRange
+
+### DateTimeInput
+Text date field + calendar popover, paired with a native time field, producing one Date.
+  - aria-label: string
+  - dateFormat: string = yyyy-MM-dd
+  - disabled: boolean = false
+  - id: string
+  - onChange: ((date: Date) => void) | undefined
+  - value: Date
+
+### DestructiveSection
+Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's …
+  - actionLabel: ReactNode
+  - cancelLabel: string = Cancel
+  - confirmBody: ReactNode
+  - confirmLabel: string
+  - description: ReactNode
+  - level: 2 | 3 | 4 | 5 | 6 = 2
+  - onConfirm: () => void
+  - title: ReactNode
+
+### Dialog
+Tagged per-export, not on the file block: this module exports ten components and a file-level
+  - children: ReactNode
+  - defaultOpen: boolean
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
+### DialogClose
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - asChild: boolean
+
+### DialogContent
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - asChild: boolean
+  - forceMount: true
+  - hideClose: boolean = false
+  - onCloseAutoFocus: ((event: Event) => void)
+  - onEscapeKeyDown: ((event: KeyboardEvent) => void)
+  - onFocusOutside: ((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)
+  - onInteractOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ original…
+  - onOpenAutoFocus: ((event: Event) => void)
+  - onPointerDownOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)
+
+### DialogDescription
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - asChild: boolean
+
+### DialogFooter
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+
+### DialogHeader
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+
+### DialogOverlay
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - asChild: boolean
+  - forceMount: true
+
+### DialogPortal
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - children: React.ReactNode
+  - container: Element | DocumentFragment | null
+  - forceMount: true
+
+### DialogTitle
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - asChild: boolean
+
+### DialogTrigger
+Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - asChild: boolean
+
+### Disclosure
+Disclosure - compact disclosure surface for optional explanatory content.
+  - accent: boolean = false
+  - children: ReactNode
+  - className: string
+  - contentStyle: CSSProperties
+  - defaultOpen: boolean = false
+  - label: ReactNode
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+  - triggerStyle: CSSProperties
+  - variant: 'panel' | 'nav' | 'card' = panel
+
+### Divider
+Divider — semantic separator between content regions.
+  - orientation: "horizontal" | "vertical" | null = horizontal
+  - spacing: string | number
+  - strong: boolean
+  - variant: "strong" | "default" | null
+
+### DocLinkCard
+DocLinkCard - navigation card for editorial and documentation cross-links.
+  - accent: boolean = false
+  - affordance: "up-right" | "right" | "left" = up-right
+  - description: string
+  - disabled: boolean = false
+  - href: string
+  - icon: LucideIcon
+  - meta: string
+  - metaStyle: "caption" | "ui" = caption
+  - title: string
+  - variant: "feature" | "pager" = feature
+
+### EmptyState
+EmptyState — consistent no-data placeholder for lists, grids, and sections. communicate "no data yet" with consistent muted typography instead of agents invent…
+  - className: string
+  - description: ReactNode
+  - title: ReactNode
+
+### Field
+Caption label paired with a value — used in metadata grids and read-only forms.
+  - children: React.ReactNode
+  - label: string
+  - mono: boolean | null
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - value: ReactNode
+
+### FileInput
+A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
+  - accept: string
+  - disabled: boolean
+  - label: ReactNode = Click to upload or drag and drop
+  - multiple: boolean
+  - onFiles: ((files: File[]) => void)
+
+### Form
+Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level
+
+### FormActions
+Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.
+  - destructive: ReactNode
+  - primary: ReactNode
+  - secondary: ReactNode
+  - sticky: boolean = false
+
+### FormField
+Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement. Validation-library agnostic — pass `error…
+  - children: ReactElement<any, string | JSXElementConstructor<any>>
+  - className: string
+  - description: string
+  - error: string
+  - htmlFor: string
+  - label: string
+  - required: boolean = false
+
+### FormFieldShell
+Presentational label + control slot + helper/error markup. Renders `children` verbatim — it does NOT clone — so it is safe to use with controls that own a call…
+  - children: ReactNode
+  - className: string
+  - controlId: string
+  - description: string
+  - error: string
+  - label: string
+  - required: boolean = false
+
+### FoundationSwatch
+FoundationSwatch - governed foundation specimen for color and semantic role previews.
+  - background: string
+  - bordered: boolean = false
+  - details: string[]
+  - foreground: string = var(--semantic-color-content-primary)
+  - hidePreviewLabel: boolean = false
+  - label: string
+  - note: ReactNode
+  - previewPosition: 'bottom-left' | 'top-left' | 'center' = center
+  - specimen: ReactNode
+  - swatchVar: string
+  - tokenDisplayPreset: 'depth1' | 'depth2' | 'full' = depth2
+  - tokenPath: string
+  - value: string
+
+### Frame
+Frame — aspect-ratio-locked, token-clipped media box. cause layout shift while it loads, cropped to a token-governed corner radius" — a thin, token-skinned wra…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - radius: 'none' | 'sm' | 'md' | 'full' = md
+  - ratio: number = 16 / 9
+  - style: CSSProperties
+
+### Grid
+Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via …
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - columns: number = 12
+  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = inset
+  - layout: 'fixed' | 'auto-fit' = fixed
+  - style: CSSProperties
+  - subgrid: boolean = false
+
+### HdsDocsShell
+HdsDocsShell — three-region docs shell (left nav rail, content, right TOC rail), driven by grid columns that default to 0 and are set per breakpoint. hds#280 s…
+  - children: ReactNode
+  - className: string
+  - leftRail: ReactNode
+  - rightRail: ReactNode
+  - style: CSSProperties
+  - topOffset: string = 0px
+
+### HdsThemeProvider
+Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - brand: string
+  - children: React.ReactNode
+  - className: string
+  - density: 'comfortable' | 'compact'
+  - fontFamily: string
+  - fontFamilyMono: string
+  - style: CSSProperties
+  - theme: 'light' | 'dark'
+
+### HeadingStack
+HeadingStack — enforced vertical rhythm for heading + subheading pairs. Automatically handles gap and secondary color, preventing manual stacking. - Heading le…
+  - as: ElementType = div
+  - gap: HdsHeadingGap = px8
+  - heading: string
+  - headingAs: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  - level: HdsHeadingLevel
+  - subheading: string
+  - subheadingAs: 'p' | 'div' | 'span' = p
+
+### HoverCard
+HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.
+  - children: React.ReactNode
+  - closeDelay: number
+  - defaultOpen: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+  - openDelay: number
+
+### Icon
+Icon — semantic icon wrapper for Lucide icons.
+  - aria-hidden: boolean | "true" | "false" = true
+  - className: string
+  - color: string = currentColor
+  - icon: LucideIcon
+  - size: IconSize = small
+  - style: CSSProperties
+  - weight: "fill" | "bold" | "light" | "thin" | "regular" | "duotone"
+
+### IconButton
+IconButton ” icon-only action trigger built on the shared Button primitive.
+  - aria-label: string
+  - asChild: boolean
+  - disabled: boolean
+  - icon: LucideIcon
+  - iconColor: string
+  - iconLeft: ReactNode
+  - iconRight: ReactNode
+  - iconSize: IconSize
+  - label: string
+  - loading: boolean
+  - size: "sm" | "md" | "lg"
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - variant: "primary" | "secondary" | "tertiary" | null
+
+### InlineCode
+InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
+  - children: ReactNode
+  - compact: boolean
+  - copyable: boolean = false
+  - density: "comfortable" | "compact" | null
+  - style: CSSProperties
+
+### InlineLink
+InlineLink ” inline navigation and external-link primitive for body copy.
+  - children: ReactNode
+  - externalIcon: boolean = true
+  - href: string
+
+### Input
+Input — text field primitive with label, helper, and error slots.
+  - className: string
+  - disabled: boolean
+  - error: boolean
+  - errorMessage: string
+  - helperText: string
+  - inputClassName: string
+  - label: string
+  - leadingVisual: ReactNode
+  - loading: boolean = false
+  - size: InputSize = md
+  - textStyle: "body" | "mono" = body
+  - trailingVisual: ReactNode
+  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' = text
+
+### InputGroup
+A single-line input with optional `leading`/`trailing` adornments.
+  - className: string
+  - leading: ReactNode
+  - size: "sm" | "md" | "lg" | null
+  - trailing: ReactNode
+
+### Kbd
+Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
+  - size: "sm" | "md" | "lg" | null
+
+### Lightbox
+Lightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a ligh…
+  - alt: string
+  - caption: string
+  - captionHref: string
+  - captionLabel: string
+  - naturalHeight: number
+  - naturalWidth: number
+  - onClose: () => void
+  - open: boolean
+  - src: string
+
+### Menu
+Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - dir: ("ltr" | "rtl")
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
+### MetadataList
+Renders object metadata as a semantic `<dl>` of term/description pairs.
+  - footer: ReactNode
+  - items: MetadataListItem[]
+  - orientation: "horizontal" | "vertical" | null = vertical
+  - variant: "plain" | "divided" = plain
+
+### MetricTile
+One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyeb…
+  - label: ReactNode
+  - sub: ReactNode
+  - tone: 'neutral' | 'success' | 'warning' | 'danger' | 'info' = neutral
+  - value: ReactNode
+
+### MetricTiles
+A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of hea…
+  - children: ReactNode
+
+### MultiSelector
+MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one over…
+  - className: string
+  - disabled: boolean = false
+  - onChange: (next: string[]) => void
+  - options: MultiSelectorOption[]
+  - placeholder: string = Select…
+  - value: string[]
+
+### NavGroup
+NavGroup - labeled navigation group for stacks of nav items.
+  - children: ReactNode
+  - className: string
+  - collapsible: boolean = false
+  - contentStyle: CSSProperties
+  - getExact: ((item: NavItem) => boolean)
+  - items: NavItem[]
+  - label: string
+  - level: NavLevel = section
+  - onNavigate: (() => void)
+  - style: CSSProperties
+  - variant: 'side' | 'toc' = side
+
+### NavItem
+NavItem - navigation row primitive for sidebars, table of contents, and list navigation.
+  - active: boolean = false
+  - disabled: boolean = false
+  - label: string
+  - level: NavLevel = root
+  - onNavigate: ((event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void)
+  - variant: NavVariant = side
+
+### OverflowList
+Renders up to `max` children followed by a `+N` overflow chip (or custom node).
+  - children: ReactNode
+  - max: number
+  - renderOverflow: ((count: number) => ReactNode)
+
+### Page
+Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
+  - children: ReactNode
+  - className: string
+  - maxWidth: 'content' | 'max' = max
+  - paddingY: 'default' | 'compact' | 'none' = default
+  - style: CSSProperties
+
+### PageHeader
+Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
+  - actions: ReactNode
+  - breadcrumb: ReactNode
+  - level: PageHeaderLevel = 1
+  - status: ReactNode
+  - title: ReactNode
+
+### Pagination
+Paged navigation with first/last anchors, sibling pages, and ellipses.
+  - count: number
+  - label: string = Pagination
+  - onPageChange: (page: number) => void
+  - page: number
+  - siblingCount: number = 1
+
+### Pin
+Pin — sticky-pin an element within its scroll region. section scrolls — the dependency-free basis for pinned scroll scenes (the "tall section + sticky child" p…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - style: CSSProperties
+  - top: string = 0
+
+### Popover
+Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
+### Progress
+Linear progress. Determinate when `value` is a number, else indeterminate.
+  - label: string = Progress
+  - size: "sm" | "md" | "lg" | null
+  - value: number | null = null
+
+### Radio
+Radio — radio button with animated selection indicator.
+  - checked: boolean
+  - label: string
+  - onChange: (v: boolean) => void
+
+### Reveal
+Reveal — reveal-on-scroll primitive via CSS scroll-driven animation. purely by scroll position (`animation-timeline: view()`) — no JS, no deps, no Intersection…
+  - animation: 'fade' | 'fade-up' | 'fade-down' | 'scale' = fade-up
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - style: CSSProperties
+
+### SegmentedControl
+SegmentedControl " segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed thro…
+  - aria-label: string
+  - fullWidth: boolean = false
+  - label: string
+  - onChange: (value: string) => void
+  - options: HdsSegmentedOption[]
+  - railPadding: Padding<string | number>
+  - segmentPaddingX: PaddingLeft<string | number>
+  - size: NonNullable<"sm" | "md" | null> | undefined = md
+  - value: string
+  - variant: NonNullable<"primary" | "secondary" | null> | undefined = primary
+
+### Select
+Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead…
+  - label: string
+  - onChange: (v: string) => void
+  - options: { value: string; label: string; }[]
+  - showLabel: boolean = true
+  - value: string
+
+### SelectableCard
+A card-shaped single checkbox — click or activate to toggle selection.
+  - disabled: boolean
+  - onSelectedChange: ((selected: boolean) => void)
+  - selected: boolean = false
+
+### SideNav
+SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child pag…
+  - active: boolean = false
+  - disabled: boolean = false
+  - href: string
+  - indent: number | boolean = 0
+  - label: string
+  - level: 'root' | 'nested' = nested
+  - onNavigate: ((event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void)
+  - titleLabel: boolean = false
+
+### Sidebar
+Sidebar — fixed-width rail beside fluid content, no media query. problem with the flex-basis/flex-grow disparity technique — the rail holds `sideWidth` and the…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: [ReactNode, ReactNode]
+  - className: string
+  - contentMin: string = 50%
+  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = normal
+  - side: 'start' | 'end' = start
+  - sideWidth: string = 16rem
+  - style: CSSProperties
+
+### Skeleton
+Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.
+  - height: string | number
+  - variant: "text" | "rectangular" | "circular" | null = rectangular
+  - width: string | number
+
+### Sketch
+Sketch — shared shell for generative canvases and WebGL sketches.
+  - children: ReactNode
+  - controls: ReactNode
+  - title: string
+
+### Slider
+Slider — range slider with label and value display.
+  - label: string
+  - max: number
+  - min: number
+  - onChange: (v: number) => void
+  - step: number = 1
+  - value: number
+
+### Spinner
+Indeterminate spinner. Inherits the surrounding text color via currentColor.
+  - label: string = Loading
+  - size: "sm" | "md" | "lg" | null
+
+### Stack
+Stack — one-dimensional layout primitive.
+  - align: 'start' | 'center' | 'end' | 'stretch'
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - direction: "row" | "column" = column
+  - gap: GapOption = tight
+  - justify: 'start' | 'center' | 'end' | 'space-between'
+  - style: CSSProperties
+  - wrap: FlexWrap
+
+### StackedCardRail
+StackedCardRail — horizontally-scrolling stacked card carousel. Scroll mechanism: vertical scroll on an absolutely-positioned inner container is mapped to hori…
+  - cards: StackedCardRailCard[]
+
+### Stat
+Headline metric — large value, uppercase caption label, optional sub-line.
+  - label: string
+  - sub: ReactNode
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - value: ReactNode
+
+### StatusDot
+A small solid dot conveying a semantic status via `tone`.
+  - label: string
+  - size: "sm" | "md" | "lg" | null
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | "inProgress" | null
+
+### StatusListItem
+Status dot + title row with optional muted notes and trailing slot (e.g. badge).
+  - notes: ReactNode[]
+  - title: ReactNode
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - trailing: ReactNode
+
+### StatusTile
+Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status c…
+  - notes: ReactNode[]
+  - title: ReactNode
+  - tone: 'success' | 'warning' | 'danger' | 'info' | 'neutral' = neutral
+  - trailing: ReactNode
+
+### Stepper
+Step indicator for multi-step flows. Purely presentational — no navigation.
+  - activeStep: number
+  - orientation: "horizontal" | "vertical" = horizontal
+  - steps: Step[]
+
+### StepperField
+StepperField ” numeric input with decrement/increment controls. Classification baseline: Material Design, Chakra UI, and Ant Design treat steppers as numeric i…
+  - inputStep: number
+  - label: string
+  - max: number
+  - min: number
+  - onChange: (value: number) => void
+  - precision: number
+  - step: number
+  - value: number
+
+### Surface
+Surface — governed inset surface primitive. Enforces the "Surface Inset" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - overflow: Overflow
+  - padding: PaddingOption = component
+  - shadow: boolean = false
+  - style: CSSProperties
+  - theme: "light" | "dark"
+
+### Switcher
+Switcher — flips a row to a column below a width threshold, no media query. vertical stack once the container gets narrow" without a breakpoint or a resize obs…
+  - as: ElementType<any, keyof IntrinsicElements> = div
+  - children: ReactNode
+  - className: string
+  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = normal
+  - limit: number
+  - style: CSSProperties
+  - threshold: string = 30rem
+
+### Table
+Table - structured data table primitive for documentation and compact UI matrices.
+  - caption: ReactNode
+  - captionAction: ReactNode
+  - columns: TableColumn[]
+  - density: 'compact' | 'comfortable'
+  - description: ReactNode
+  - flush: boolean = false
+  - labelledBy: string
+  - minWidth: string | number
+  - rows: TableRow[]
+  - stickyHeader: boolean = false
+
+### Tabs
+The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-l…
+  - activationMode: "automatic" | "manual"
+  - asChild: boolean
+  - defaultValue: string
+  - dir: ("ltr" | "rtl")
+  - onValueChange: ((value: string) => void)
+  - orientation: "horizontal" | "vertical"
+  - value: string
+
+### TabsContent
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+  - asChild: boolean
+  - forceMount: true
+  - value: string
+
+### TabsList
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+  - asChild: boolean
+  - loop: boolean
+
+### TabsTrigger
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+  - asChild: boolean
+  - value: string
+
+### Tag
+Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps th…
+  - active: boolean = false
+  - children: ReactNode
+
+### Text
+Text — polymorphic typography primitive spanning the full HDS type ramp.
+  - as: "symbol" | "object" | "map" | "filter" | "title" | "a" | "button" | "div" | "fo… = defaultTagMap[variant]
+  - children: ReactNode
+  - className: string
+  - style: CSSProperties
+  - variant: TextVariant
+
+### TextLockup
+TextLockup - governed title-and-description pairing primitive.
+  - align: 'left' | 'center' = left
+  - as: ElementType = div
+  - description: ReactNode
+  - descriptionAs: 'div' | 'p' | 'span' = div
+  - eyebrow: string
+  - id: string
+  - size: 'hero' | 'heroXl' | 'section' | 'metric' | 'detail' | 'numbered'
+  - title: string
+  - titleAs: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span'
+
+### Textarea
+Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the …
+  - className: string
+  - disabled: boolean
+  - error: boolean
+  - errorMessage: string
+  - helperText: string
+  - label: string
+  - resize: TextareaResize = vertical
+  - textareaClassName: string
+
+### TileGrid
+Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.
+  - gap: "sm" | "md" | "xs" = sm
+  - minTileWidth: string = 260px
+
+### TimeInput
+A native time field skinned with HDS input chrome. Value is a `HH:mm` string.
+  - size: "sm" | "md" | "lg" | null
+
+### Timestamp
+Presents a date/time with a machine-readable `dateTime` for accessibility.
+  - date: string | number | Date
+  - format: 'date' | 'time' | 'datetime' | 'relative' = datetime
+  - locale: string
+  - now: string | number | Date
+
+### ToastProvider
+Provider + viewport for the toast system. Wrap the app root once.
+  - children: React.ReactNode
+  - duration: number = 5000
+  - swipeDirection: SwipeDirection = right
+
+### Toggle
+Toggle — boolean on/off toggle with animated thumb.
+  - checked: boolean
+  - label: string
+  - onChange: (v: boolean) => void
+
+### ToggleButton
+A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
+  - asChild: boolean
+  - defaultPressed: boolean
+  - onPressedChange: ((pressed: boolean) => void)
+  - pressed: boolean
+  - size: "sm" | "md" | "lg" | null
+  - variant: "secondary" | "ghost" | null
+
+### Token
+Token - reflective token specimen for unified node-based token views. The `variant` axis (node | diagram — diagram is a deprecated alias that resolves to the s…
+  - accentColor: string
+  - aria-label: string
+  - className: string
+  - description: ReactNode
+  - fullWidth: boolean
+  - isSelected: boolean
+  - isSourceNode: boolean
+  - label: string
+  - leadingSlot: ReactNode
+  - nodeRef: ((el: HTMLElement | null) => void)
+  - nowrap: boolean
+  - onClick: (() => void) | (() => void)
+  - pathDisplayDepth: number
+  - pathDisplayLeadingDot: boolean
+  - pathDisplayMode: "full" | "compressed"
+  - rawValue: ReactNode
+  - swatchVar: string
+  - tokenPath: string
+  - truncateFromStart: boolean
+  - value: string
+  - variant: "node" | "diagram"
+
+### Tokenizer
+A bordered field of Tag chips followed by a text input for adding more.
+  - className: string
+  - disabled: boolean
+  - onChange: (next: string[]) => void
+  - placeholder: string
+  - value: string[]
+
+### Toolbar
+Toolbar root. Groups related controls with a single roving tab-stop. Supports the native `orientation` prop (`horizontal` | `vertical`).
+  - asChild: boolean
+  - dir: ("ltr" | "rtl")
+  - loop: boolean
+  - orientation: "horizontal" | "vertical"
+
+### Tooltip
+Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - delayDuration: number
+  - disableHoverableContent: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
+### TopNav
+Top navigation bar with brand, nav, and trailing action slots.
+  - brand: ReactNode
+  - children: ReactNode
+  - sticky: boolean
+  - trailing: ReactNode
+
+### TreeList
+Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
+  - defaultExpandedIds: string[]
+  - items: TreeNode[]
+  - onSelect: ((id: string) => void)
+
+### VisuallyHidden
+Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-onl…
+  - as: ElementType<any, keyof IntrinsicElements> = span

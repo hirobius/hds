@@ -1,0 +1,52 @@
+# Hirobius Design System - layout slice
+
+See `public/llms.txt` for the index. Generated from the same sections as llms.txt.
+
+## How To Lay Out A Screen
+
+Canonical skeleton, outermost to innermost:
+
+1. `Page` (or `Container`/`Center` for a full-bleed, non-page surface) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.
+2. `Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.
+3. Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).
+4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
+5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile`, and between `Card` and `Surface`, with the "Which one, when" table in `DESIGN.md`.
+6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
+
+Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, `check-hardcoded-spacing.mjs`, `check-hardcoded-colors.mjs`):
+
+- No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Cluster/Switcher/Sidebar/Cover) owns rhythm, not margin on the child.
+- No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.
+- No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.
+
+Density: put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
+
+Reference: `docs/architecture/variant-contract.md` for structural/semantic/size/density variance; `src/app/data/component-api.json` for every layout primitive's full prop table and `@ai-rules` guidance.
+
+## HDS Card Anatomy (mandatory — every property is non-negotiable)
+
+When building any card component or card-like surface, ALL of the following rules apply. There is no creative latitude here — deviation from any property is a bug.
+
+| Property | Required value | Forbidden |
+| --- | --- | --- |
+| Background | `var(--semantic-color-surface-raised)` | Custom colors, gradients, tinted fills, any non-token value |
+| Border | `1px solid var(--semantic-color-border-default)` | `box-shadow` as an elevation substitute |
+| Border radius | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant) | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value |
+| Padding | `var(--semantic-space-surface-padding)` or `<Surface padding="component">` | Raw pixel values, Tailwind spacing classes, ad hoc insets |
+| Shadow | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`. Never reach for shadow values directly — bind via `var(--semantic-elevation-{role}-shadow)` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
+| Title | `hds.typeStyles.heading3` / `<Text variant="heading3">` | Any other type style for the primary card heading |
+| Subtitle / meta | `hds.typeStyles.caption` / `<Text variant="caption">` + `var(--semantic-color-content-secondary)` | Primary color, body size, or custom color for secondary text |
+| Hover (interactive cards only) | `transform: scale(1.02)` CSS transform | Background color change, fill swap, border color shift on hover |
+
+**NEVER on any card surface:** gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted card backgrounds, inner shadows, patterned backgrounds, AI-aesthetic shimmer or particle effects. Never reach for shadow values directly — bind to a `semantic.elevation.*` role bundle so surface + shadow + border stay coherent.
+
+## Elevation roles
+
+| Surface | Role token | Background | Shadow | Border |
+| --- | --- | --- | --- | --- |
+| Card / panel resting | `semantic.elevation.flat` | `surface.page` | none | `border.subtle` 1px |
+| Card / panel lifted (interactive only) | `semantic.elevation.raised` | `surface.raised` | `shadow.subtle` | none |
+| Popover / dropdown / tooltip | `semantic.elevation.floating` | `surface.raised` | `shadow.floating` | none |
+| Dialog / sheet / modal | `semantic.elevation.overlay` | `surface.overlay` | `shadow.overlay` | none |
+
+Cards default to `elevation.flat`. Popovers/tooltips/dropdowns use `elevation.floating`. Dialogs/sheets use `elevation.overlay`. Interactive cards lift to `elevation.raised` on hover. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
