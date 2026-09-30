@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T12:54:11.960Z
+Generated: 2026-09-30T13:10:58.205Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -124,6 +124,19 @@ When building any card component or card-like surface, ALL of the following rule
 Cards default to `elevation.flat`. Popovers/tooltips/dropdowns use `elevation.floating`. Dialogs/sheets use `elevation.overlay`. Interactive cards lift to `elevation.raised` on hover. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
 Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
+
+## Slices And Full Bundle
+
+Load only what the task needs. Same text as this file, split by topic:
+
+- `public/llms/layout.txt` - screen layout recipe, card anatomy, elevation roles
+- `public/llms/tokens.txt` - token rules and the quick token reference
+- `public/llms/scroll.txt` - scroll-driven section recipe
+- `public/llms/components.txt` - component inventory pointer, API pointer, props digest
+
+- `public/llms-full.txt` - this file + the full `DESIGN.md` + a compact props digest for every component.
+
+Paths in this file that begin with `docs/architecture/`, `src/app/components/`, `src/scroll/`, `src/stories/` or under `scripts/`, or that name `public/manifest.json`, `DESIGN-HANDOFF.md`, `TOKEN_GOVERNANCE.md` or `SYSTEMS_REGISTRY.md` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 
