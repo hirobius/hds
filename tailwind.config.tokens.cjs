@@ -20,6 +20,7 @@ const config = {
           foreground: 'var(--role-popover-foreground)',
         },
         scrim: 'var(--role-scrim)',
+        'pressed-overlay': 'var(--role-pressed-overlay)',
         primary: {
           DEFAULT: 'var(--role-primary)',
           foreground: 'var(--role-primary-foreground)',

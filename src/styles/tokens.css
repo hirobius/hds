@@ -224,6 +224,7 @@
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-50);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-50);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
+  --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-black);
   --semantic-space-scale-xs: var(--primitive-space-2);
   --semantic-space-scale-sm: var(--primitive-space-4);
   --semantic-space-scale-md: var(--primitive-space-6);
@@ -453,6 +454,7 @@
   --role-card-foreground: var(--semantic-color-content-primary);
   --role-popover: var(--semantic-color-surface-overlay);
   --role-scrim: var(--semantic-color-surface-scrim);
+  --role-pressed-overlay: var(--semantic-color-state-pressed-overlay);
   --role-popover-foreground: var(--semantic-color-content-primary);
   --role-primary: var(--semantic-color-surface-accent);
   --role-primary-foreground: var(--semantic-color-content-onAccent);
@@ -512,6 +514,7 @@
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-950);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-900);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-950);
+  --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
   --semantic-accent-rest: var(--primitive-color-neutral-100);
   --semantic-accent-hover: var(--primitive-color-neutral-200);
   --semantic-accent-pressed: var(--primitive-color-neutral-300);
@@ -564,6 +567,7 @@
   --role-card-foreground: var(--semantic-color-content-primary);
   --role-popover: var(--semantic-color-surface-overlay);
   --role-scrim: var(--semantic-color-surface-scrim);
+  --role-pressed-overlay: var(--semantic-color-state-pressed-overlay);
   --role-popover-foreground: var(--semantic-color-content-primary);
   --role-primary: var(--semantic-color-surface-accent);
   --role-primary-foreground: var(--semantic-color-content-onAccent);
