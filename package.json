@@ -92,6 +92,11 @@
       "import": "./dist/patterns.js",
       "default": "./dist/patterns.js"
     },
+    "./icons": {
+      "types": "./dist/types/src/icons.d.ts",
+      "import": "./dist/icons.js",
+      "default": "./dist/icons.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
