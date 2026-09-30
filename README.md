@@ -23,6 +23,8 @@ pnpm add @hirobius/design-system
 
 The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens` also runs. `scripts/__tests__/front-door.test.mjs` fails if this README claims more than the source has.
 
+Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds-consumer` (see `docs/CONSUMING.md`, "Agent skill").
+
 ## In use
 
 <!-- auto:start:consumer-usage -->
