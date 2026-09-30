@@ -28,20 +28,29 @@ import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
+
+const TooltipPortal = withHdsPortal(TooltipPrimitive.Portal);
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
 /** @public */
 export type HdsTooltipContentProps = React.ComponentPropsWithoutRef<
   typeof TooltipPrimitive.Content
->;
+> & {
+  /**
+   * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+   * overlay inherits its theme; pass `null` to use `document.body`.
+   */
+  container?: HTMLElement | null;
+};
 
 const HdsTooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   HdsTooltipContentProps
->(function HdsTooltipContent({ className, sideOffset = 6, children, ...props }, ref) {
+>(function HdsTooltipContent({ className, sideOffset = 6, children, container, ...props }, ref) {
   return (
-    <TooltipPrimitive.Portal>
+    <TooltipPortal container={container}>
       <TooltipPrimitive.Content
         ref={ref}
         sideOffset={sideOffset}
@@ -66,7 +75,7 @@ const HdsTooltipContent = React.forwardRef<
           height={5}
         />
       </TooltipPrimitive.Content>
-    </TooltipPrimitive.Portal>
+    </TooltipPortal>
   );
 });
 

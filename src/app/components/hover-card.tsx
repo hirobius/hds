@@ -19,18 +19,29 @@
 import * as React from 'react';
 import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
 import { cn } from '../../lib/utils';
+import { withHdsPortal } from '../context/hds-portal';
 
 const HoverCardRoot = HoverCardPrimitive.Root;
 const HoverCardTrigger = HoverCardPrimitive.Trigger;
+const HoverCardPortal = withHdsPortal(HoverCardPrimitive.Portal);
 
 // ── Content ─────────────────────────────────────────────────────────────────────
 
 const HoverCardContent = React.forwardRef<
   React.ElementRef<typeof HoverCardPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
->(function HoverCardContent({ className, align = 'center', sideOffset = 6, ...props }, ref) {
+  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> & {
+    /**
+     * Element to portal into. Defaults to the nearest `data-hds` scope, so the
+     * overlay inherits its theme; pass `null` to use `document.body`.
+     */
+    container?: HTMLElement | null;
+  }
+>(function HoverCardContent(
+  { className, align = 'center', sideOffset = 6, container, ...props },
+  ref,
+) {
   return (
-    <HoverCardPrimitive.Portal>
+    <HoverCardPortal container={container}>
       <HoverCardPrimitive.Content
         ref={ref}
         align={align}
@@ -42,7 +53,7 @@ const HoverCardContent = React.forwardRef<
         )}
         {...props}
       />
-    </HoverCardPrimitive.Portal>
+    </HoverCardPortal>
   );
 });
 

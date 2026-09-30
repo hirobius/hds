@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T13:08:30.448Z
+Generated: 2026-09-30T13:27:02.301Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -136,6 +136,8 @@ When building any card component or card-like surface, ALL of the following rule
 | Dialog / sheet / modal | `semantic.elevation.overlay` | `surface.overlay` | `shadow.overlay` | none |
 
 Cards default to `elevation.flat`. Popovers/tooltips/dropdowns use `elevation.floating`. Dialogs/sheets use `elevation.overlay`. Interactive cards lift to `elevation.raised` on hover. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
+
+Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
 
 ## Slices And Full Bundle
 
@@ -314,6 +316,8 @@ Depth is communicated through 4 elevation roles bundled by `semantic.elevation.*
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
+Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
+
 ## Motion
 
 <!-- auto:start:motion -->
@@ -427,7 +431,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (379 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (381 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -746,6 +750,7 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### DialogContent
 Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
   - asChild: boolean
+  - container: HTMLElement | null
   - forceMount: true
   - hideClose: boolean = false
   - onCloseAutoFocus: ((event: Event) => void)
@@ -1164,6 +1169,7 @@ SegmentedControl " segmented selection input for compact mutually-exclusive choi
 
 ### Select
 Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead…
+  - container: HTMLElement | null
   - label: string
   - onChange: (v: string) => void
   - options: { value: string; label: string; }[]
