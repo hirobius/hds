@@ -504,13 +504,15 @@ describe('ledger: the committed file', () => {
     });
   });
 
-  it('is seeded with the two review runs, both honestly failing', () => {
-    expect(ledger.entries.map((e) => [e.date, e.source, e.pass])).toEqual([
+  it('starts with the two review runs, both honestly failing', () => {
+    // The ledger is append-only, so later harness entries follow these two.
+    const seeds = ledger.entries.slice(0, 2);
+    expect(seeds.map((e) => [e.date, e.source, e.pass])).toEqual([
       ['2026-09-28', 'review', false],
       ['2026-09-29', 'review', false],
     ]);
-    const [one, two] = ledger.entries;
-    for (const e of ledger.entries) {
+    const [one, two] = seeds;
+    for (const e of seeds) {
       expect(e.packageVersion).toBe('0.16.0');
       expect(e.tarballSha256).toBeNull();
       expect(e.measured.builds).toEqual({ passing: 3, of: 3 });
@@ -534,12 +536,27 @@ describe('ledger: the committed file', () => {
 
   it('records a pass flag that agrees with re-judging the measured figures', () => {
     for (const e of ledger.entries) {
+      expect(e.pass).toBe(judgeMeasured(e.measured, e.thresholds).pass);
+    }
+  });
+
+  it('shows both review runs failing the Jaccard and light pixel diff thresholds', () => {
+    for (const e of ledger.entries.slice(0, 2)) {
       const judged = judgeMeasured(e.measured, e.thresholds);
       expect(judged.checks.filter((c) => c.status === 'fail').map((c) => c.name)).toEqual([
         'jaccard',
         'lightDiff',
       ]);
-      expect(e.pass).toBe(judged.pass);
+    }
+  });
+
+  it('holds at least three dated runs, and every harness run records a tarball hash and a commit', () => {
+    expect(ledger.entries.length).toBeGreaterThanOrEqual(3);
+    const harness = ledger.entries.filter((e) => e.source === 'harness');
+    expect(harness.length).toBeGreaterThanOrEqual(1);
+    for (const e of harness) {
+      expect(e.tarballSha256).toMatch(/^[0-9a-f]{64}$/);
+      expect(e.commit).toMatch(/^[0-9a-f]{7,40}$/);
     }
   });
 });
@@ -581,7 +598,7 @@ describe('ledger: append-only writer', () => {
     return file;
   };
   const harnessEntry = (over = {}) => ({
-    date: '2026-10-01',
+    date: '2099-01-01',
     source: 'harness',
     packageVersion: '0.18.0',
     tarballSha256: 'a'.repeat(64),
@@ -608,10 +625,11 @@ describe('ledger: append-only writer', () => {
     const head = before.slice(0, before.lastIndexOf('\n  ]'));
     expect(after.startsWith(`${head},\n`)).toBe(true);
     const parsed = JSON.parse(after);
-    expect(parsed.entries).toHaveLength(3);
-    expect(parsed.entries[2].date).toBe('2026-10-01');
+    const count = JSON.parse(before).entries.length;
+    expect(parsed.entries).toHaveLength(count + 1);
+    expect(parsed.entries[count].date).toBe('2099-01-01');
     expect(validateLedger(parsed)).toEqual([]);
-    expect(latestEntry(parsed).date).toBe('2026-10-01');
+    expect(latestEntry(parsed).date).toBe('2099-01-01');
   });
 
   it('refuses an invalid entry and writes nothing', () => {
@@ -634,8 +652,15 @@ describe('ledger: append-only writer', () => {
   });
 });
 
+// The committed ledger grows with every harness run, so the fixed-text checks below
+// use a copy holding only the two seeded review entries.
+const seedLedger = () => {
+  const full = readLedger(path.join(ROOT, 'eval/consistency/ledger.json'));
+  return { ...full, entries: full.entries.slice(0, 2) };
+};
+
 describe('ledger: one-line summary and status projection', () => {
-  const ledger = readLedger(path.join(ROOT, 'eval/consistency/ledger.json'));
+  const ledger = seedLedger();
 
   it('summarises the latest entry on one line', () => {
     expect(summaryLine(latestEntry(ledger))).toBe(
@@ -655,7 +680,7 @@ describe('ledger: one-line summary and status projection', () => {
 });
 
 describe('status-sync: status.json and README against the latest ledger entry', () => {
-  const ledger = readLedger(path.join(ROOT, 'eval/consistency/ledger.json'));
+  const ledger = seedLedger();
   const latest = latestEntry(ledger);
   const synced = () => ({ ...consistencyFromEntry(latest) });
 
@@ -696,7 +721,7 @@ describe('status-sync: status.json and README against the latest ledger entry', 
     const r = checkSurfaces({
       status: JSON.parse(readFileSync(path.join(ROOT, 'status.json'), 'utf8')).consistency,
       readme: readFileSync(path.join(ROOT, 'README.md'), 'utf8'),
-      ledger,
+      ledger: readLedger(path.join(ROOT, 'eval/consistency/ledger.json')),
     });
     expect(r.problems).toEqual([]);
   });
