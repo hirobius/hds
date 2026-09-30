@@ -52,3 +52,33 @@ Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
 Ops (`hirobius/ops`) pins `^0.16.0`. A read-only dry run on 2026-09-29 found 11
 import sites in 11 files, all four names being `Page`, `ErrorPattern`,
 `AssetImg` and `CodeBlock`. The rewrite is tracked as an issue on the Ops repo.
+
+## Spacing names move to the t-shirt scale
+
+- **Deprecated in:** 0.17 (hds#206). Spacing is one scale,
+  `semantic.space.scale.{xs,sm,md,lg,xl}` (8/16/24/32/48px). The old names
+  still resolve to the same computed values and carry `$deprecated` in
+  `hirobius.tokens.json`.
+- **Removed in:** not before 1.0, because removal happens in a major (step 4).
+  No window is set yet: steps 2 and 3 come first.
+- **Codemod:** `scripts/codemod-spacing-vocabulary.mjs` rewrites the token
+  references below, but only inside HDS's own `src/`. A consumer codemod in
+  `codemods/` with `--root`, `--check` and `--dry-run` does not exist yet.
+
+| Old                                                  | New                                |
+| ---------------------------------------------------- | ---------------------------------- |
+| `semantic.space.component.gap`                       | `semantic.space.scale.xs`          |
+| `semantic.space.layout.tight`                        | `semantic.space.scale.sm`          |
+| `semantic.space.layout.normal`                       | `semantic.space.scale.md`          |
+| `semantic.space.layout.inset`                        | `semantic.space.scale.lg`          |
+| `semantic.space.layout.spacious`                     | `semantic.space.scale.xl`          |
+| `semantic.space.component.padding`                   | `semantic.space.surface.padding`   |
+| `semantic.space.layout.gutter`                       | `semantic.space.region.gutter`     |
+| Box `sx` `'tight'` `'normal'` `'inset'` `'spacious'` | `'sm'` `'md'` `'lg'` `'xl'`        |
+| Box `sx` integer `2` `4` `6` `8` `12` (4px units)    | `'xs'` `'sm'` `'md'` `'lg'` `'xl'` |
+
+The CSS variables follow the paths (`--semantic-space-layout-tight` becomes
+`--semantic-space-scale-sm`). `surface.padding` and `region.gutter` are not
+scale steps: tenants and `theme.css` override them at runtime, always with a
+scale step. Stack's `gap` keeps its old names for now, because its `'xs'` is the
+2px subgrid step, not `scale.xs`.

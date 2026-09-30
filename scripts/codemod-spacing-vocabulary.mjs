@@ -99,14 +99,6 @@ export const REPLACEMENTS = [
 // Files/paths (repo-relative, forward-slash) this codemod never touches:
 // generated build output and generated audit/report snapshots.
 const SKIP_FILES = new Set([
-  // box-sx.ts's resolver builds the deprecated var name dynamically
-  // (`` `var(--semantic-space-layout-${value})` ``, box-sx.ts ~L108) rather
-  // than as a literal string, so this codemod correctly can't (and
-  // shouldn't) touch that resolver — it's the one-resolver unification,
-  // hds#206 item #4, out of scope for this slice. Its test pins that
-  // still-deprecated literal output; skip it so the codemod doesn't rewrite
-  // the expectation out from under the (unchanged) code under test.
-  'src/app/components/box-sx.test.ts',
   'src/app/design-system/generated-token-descriptions.ts',
   'src/app/design-system/generated-token-refs.ts',
   'src/app/design-system/generated-token-values.ts',

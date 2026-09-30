@@ -24,18 +24,47 @@ describe('resolveSx — spacing shorthands', () => {
     expect(rules).toEqual(['.cls{margin-top:calc(var(--primitive-space-1) * -2)}']); // tier-ok: pins bridge output, hds#186
   });
 
-  it('maps a named semantic step to --semantic-space-layout-<step>', () => {
-    const rules = resolveSx({ m: 'tight' }, 'cls');
-    expect(rules).toEqual(['.cls{margin:var(--semantic-space-layout-tight)}']);
+  it.each(['xs', 'sm', 'md', 'lg', 'xl'])(
+    'maps the t-shirt step %s to --semantic-space-scale-<step> (hds#206)',
+    (step) => {
+      expect(resolveSx({ p: step }, 'cls')).toEqual([
+        `.cls{padding:var(--semantic-space-scale-${step})}`,
+      ]);
+      expect(resolveSx({ gap: step }, 'cls')).toEqual([
+        `.cls{gap:var(--semantic-space-scale-${step})}`,
+      ]);
+    },
+  );
+
+  it.each([
+    ['tight', 'sm'],
+    ['normal', 'md'],
+    ['inset', 'lg'],
+    ['spacious', 'xl'],
+  ])('maps the deprecated step %s to scale.%s, the step with the same value', (name, step) => {
+    expect(resolveSx({ m: name }, 'cls')).toEqual([
+      `.cls{margin:var(--semantic-space-scale-${step})}`,
+    ]);
+  });
+
+  it('takes a t-shirt step inside a responsive map', () => {
+    expect(resolveSx({ p: { xs: 'sm', md: 'lg' } }, 'cls')).toEqual([
+      '@media (min-width:375px){.cls{padding:var(--semantic-space-scale-sm)}}',
+      '@media (min-width:768px){.cls{padding:var(--semantic-space-scale-lg)}}',
+    ]);
   });
 
   it('expands axis shorthands (mx/my/px/py) to two declarations', () => {
     expect(resolveSx({ mx: 2 }, 'cls')).toEqual([
       '.cls{margin-left:var(--primitive-space-2);margin-right:var(--primitive-space-2)}', // tier-ok: pins bridge output, hds#186
     ]);
-    expect(resolveSx({ py: 'normal' }, 'cls')).toEqual([
-      '.cls{padding-top:var(--semantic-space-layout-normal);padding-bottom:var(--semantic-space-layout-normal)}',
+    expect(resolveSx({ py: 'md' }, 'cls')).toEqual([
+      '.cls{padding-top:var(--semantic-space-scale-md);padding-bottom:var(--semantic-space-scale-md)}',
     ]);
+  });
+
+  it('does not resolve an inherited object key as a spacing name', () => {
+    expect(resolveSx({ p: 'constructor' }, 'cls')).toEqual(['.cls{padding:constructor}']);
   });
 
   it('passes a raw string spacing value through unchanged', () => {

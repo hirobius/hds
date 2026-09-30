@@ -12,6 +12,7 @@
 
 import React from 'react';
 import hds from '../design-system/tokens';
+import { resolveSpacingValue } from './box-sx';
 
 type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type ComponentGap = 'gap' | 'medium';
@@ -57,19 +58,19 @@ export interface StackProps {
   as?: React.ElementType;
 }
 
-const getGapValue = (gap: GapOption): string => {
-  const semanticGaps: Record<string, string> = {
-    tight: 'var(--semantic-space-scale-sm)',
-    normal: 'var(--semantic-space-scale-md)',
-    inset: 'var(--semantic-space-scale-lg)',
-    spacious: 'var(--semantic-space-scale-xl)',
-    stack: 'var(--semantic-space-section-stack)',
-    gap: 'var(--semantic-space-scale-xs)',
-    medium: 'var(--semantic-space-component-medium)',
-    hairline: 'var(--semantic-space-subgrid-hairline)',
-    xs: 'var(--semantic-space-subgrid-xs)',
-  };
-  return semanticGaps[gap] || ((hds.space as Record<string, unknown>)[gap] as string) || gap;
+/**
+ * Stack's older gap names that are not on the t-shirt scale, frozen until the
+ * hds#206 alias removal. `xs` is the 2px subgrid step, not scale.xs (8px), so
+ * Stack cannot take the t-shirt names until this `xs` goes. Everything else
+ * (tight, normal, inset, spacious) resolves in box-sx, shared with Box `sx`.
+ */
+const STACK_GAP_ALIASES: Readonly<Record<string, string>> = {
+  ...(hds.space as Record<string, string>),
+  gap: 'var(--semantic-space-scale-xs)',
+  medium: 'var(--semantic-space-component-medium)',
+  hairline: 'var(--semantic-space-subgrid-hairline)',
+  xs: 'var(--semantic-space-subgrid-xs)',
+  stack: 'var(--semantic-space-section-stack)',
 };
 
 /** @public */
@@ -96,7 +97,7 @@ export const Stack = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StackProps
       style={{
         display: 'flex',
         flexDirection: direction,
-        gap: getGapValue(gap),
+        gap: resolveSpacingValue(gap, STACK_GAP_ALIASES),
         alignItems: align ? alignMap[align] : direction === 'row' ? 'stretch' : undefined,
         justifyContent: justify ? justifyMap[justify] : undefined,
         flexWrap: wrap,

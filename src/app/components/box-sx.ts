@@ -71,7 +71,30 @@ const UNITLESS = new Set([
 // 4px unit rather than a raw px literal.
 const EXISTING_SPACE_SCALE = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 16, 20, 24, 32]);
 
-const SEMANTIC_SPACE_STEPS = new Set(['tight', 'normal', 'inset', 'spacious']);
+// hds#206 item 4: Box `sx` and Stack `gap` resolve names through this one
+// table and `resolveSpacingValue` below, so the two cannot drift. They had:
+// compact density retuned Stack's steps while Box still read the old layout
+// vars.
+
+/** The canonical t-shirt scale, `semantic.space.scale.{xs,sm,md,lg,xl}` (hds#206). */
+const SPACE_SCALE = {
+  xs: 'var(--semantic-space-scale-xs)',
+  sm: 'var(--semantic-space-scale-sm)',
+  md: 'var(--semantic-space-scale-md)',
+  lg: 'var(--semantic-space-scale-lg)',
+  xl: 'var(--semantic-space-scale-xl)',
+} as const;
+
+/** Deprecated step names (hds#206), each resolving to the scale step with the same value. */
+const DEPRECATED_SPACE_STEPS: Readonly<Record<string, string>> = {
+  tight: SPACE_SCALE.sm,
+  normal: SPACE_SCALE.md,
+  inset: SPACE_SCALE.lg,
+  spacious: SPACE_SCALE.xl,
+};
+
+const own = (table: Readonly<Record<string, string>>, key: string): string | undefined =>
+  Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
 
 const SPACING_PROP_MAP: Record<string, string[]> = {
   m: ['margin'],
@@ -93,7 +116,16 @@ const SPACING_PROP_MAP: Record<string, string[]> = {
   columnGap: ['column-gap'],
 };
 
-function resolveSpacingValue(value: SxValue): string {
+/**
+ * The one spacing resolver for Box `sx` and Stack `gap`. A number is a count
+ * of 4px units. A string is looked up in the caller's own `aliases` first
+ * (Stack's older gap names), then the t-shirt scale, then the deprecated
+ * steps; anything else ('auto', '1rem', a `var()`) passes through.
+ */
+export function resolveSpacingValue(
+  value: SxValue,
+  aliases: Readonly<Record<string, string>> = {},
+): string {
   if (typeof value === 'number') {
     // This IS the primitive-tier bridge for Box's numeric spacing shorthand
     // (`p`, `m`, `gap`, ...) — same pipeline role as the allowlisted
@@ -104,11 +136,9 @@ function resolveSpacingValue(value: SxValue): string {
       ? `var(--primitive-space-${value})` // tier-ok: primitive-tier bridge, hds#186
       : `calc(var(--primitive-space-1) * ${value})`; // tier-ok: primitive-tier bridge, hds#186
   }
-  if (SEMANTIC_SPACE_STEPS.has(value)) {
-    return `var(--semantic-space-layout-${value})`;
-  }
-  // Raw string (e.g. 'auto', '1rem', 'calc(50% - 8px)') — pass through.
-  return value;
+  return (
+    own(aliases, value) ?? own(SPACE_SCALE, value) ?? own(DEPRECATED_SPACE_STEPS, value) ?? value
+  );
 }
 
 // ── Token colors ──────────────────────────────────────────────────────────────
