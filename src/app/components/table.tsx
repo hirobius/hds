@@ -106,14 +106,23 @@ export type TableColumn = {
 };
 
 export type TableCellSlot =
+  /** UI text: the row label. */
   | 'label'
+  /** Renders in monospace: a literal value. */
   | 'value'
+  /** Secondary-colour caption text explaining the row. */
   | 'description'
+  /** Renders in monospace: a token name. */
   | 'token'
+  /** Renders in monospace: a code snippet. */
   | 'code'
+  /** UI text: arbitrary content you supply. */
   | 'custom'
+  /** Caption-size text: an icon or glyph. */
   | 'icon'
+  /** Caption-size text: a status badge. */
   | 'badge'
+  /** UI text: a button or link. */
   | 'action';
 
 export type TableCell = {
