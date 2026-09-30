@@ -19,7 +19,9 @@ describe('./icons subpath', () => {
   it('exports a curated set of at least 40 defined icon components', () => {
     expect(exportNames.length).toBeGreaterThanOrEqual(40);
     for (const name of exportNames) {
-      expect(icons[name as keyof typeof icons], name).toBeDefined();
+      const icon = icons[name as keyof typeof icons] as unknown as object;
+      expect(typeof icon, name).toBe('object');
+      expect(icon, name).toHaveProperty('$$typeof');
     }
   });
 
@@ -60,5 +62,34 @@ describe('./icons subpath', () => {
   it('IconButton renders an svg for an icon from the subpath', () => {
     const { container } = render(<IconButton icon={Ellipsis} label="Row actions" />);
     expect(container.querySelector('svg')).not.toBeNull();
+  });
+
+  it('documents icon names that collide with HDS components', () => {
+    const manifest = JSON.parse(read('public/hds-manifest.json'));
+    const hds = new Set([
+      ...(manifest.componentInventory ?? []),
+      ...(manifest.patternInventory ?? []),
+    ]);
+    const collisions = exportNames.filter((n) => hds.has(n));
+    expect(collisions).toEqual(expect.arrayContaining(['Calendar', 'Menu']));
+    for (const file of ['public/llms.txt', 'docs/CONSUMING.md']) {
+      const text = read(file);
+      for (const name of collisions) {
+        expect(text, `${file} ${name}`).toContain(`${name} as ${name}Icon`);
+      }
+    }
+  });
+
+  it('docs pin the same lucide-react version as package.json', () => {
+    const pkg = JSON.parse(read('package.json'));
+    const version = String(pkg.dependencies['lucide-react']).replace(/^[^\d]*/, '');
+    for (const file of ['public/llms.txt', 'CONSUMING.md', 'docs/CONSUMING.md']) {
+      expect(read(file), file).toContain(`lucide-react@${version}`);
+    }
+  });
+
+  it('manifest does not list src/icons.ts as a component consumer', () => {
+    const manifest = JSON.parse(read('public/hds-manifest.json'));
+    expect(JSON.stringify(manifest)).not.toContain('"src/icons.ts"');
   });
 });

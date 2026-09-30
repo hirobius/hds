@@ -145,15 +145,20 @@ function findConsumers(componentName, filePath, sourceFiles) {
 
   // Figma Code Connect templates (*.figma.ts) name the component in a snippet
   // for Figma's runtime; they are not consumers of it.
-  return sourceFiles
-    .filter((candidate) => candidate !== filePath)
-    .filter((candidate) => !candidate.startsWith(DOCS_PAGE_SEGMENT))
-    .filter((candidate) => !/\.figma\.tsx?$/.test(candidate))
-    .filter((candidate) => {
-      const content = readFileSync(join(ROOT, candidate), 'utf8');
-      return pattern.test(content);
-    })
-    .sort((a, b) => a.localeCompare(b));
+  return (
+    sourceFiles
+      .filter((candidate) => candidate !== filePath)
+      .filter((candidate) => !candidate.startsWith(DOCS_PAGE_SEGMENT))
+      .filter((candidate) => !/\.figma\.tsx?$/.test(candidate))
+      // src/icons.ts is a bare re-export; its doc comment and Lucide names
+      // (Calendar, Menu) are not component usage.
+      .filter((candidate) => candidate !== 'src/icons.ts')
+      .filter((candidate) => {
+        const content = readFileSync(join(ROOT, candidate), 'utf8');
+        return pattern.test(content);
+      })
+      .sort((a, b) => a.localeCompare(b))
+  );
 }
 
 const manifest = readJson(MANIFEST_PATH);
@@ -209,15 +214,19 @@ manifest.patternInventory = patternInventory;
 if (existsSync(join(SRC_DIR, 'icons.ts'))) {
   const iconsSrc = readFileSync(join(SRC_DIR, 'icons.ts'), 'utf8');
   const block = iconsSrc.match(/export\s*\{([^}]*)\}\s*from\s*'lucide-react'/);
-  manifest.iconSet = {
-    subpath: '@hirobius/design-system/icons',
-    names: uniqueSorted(
-      (block ? block[1] : '')
-        .split(',')
-        .map((n) => n.trim())
-        .filter(Boolean),
-    ),
-  };
+  const names = uniqueSorted(
+    (block ? block[1] : '')
+      .replace(/\/\/[^\n]*/g, '')
+      .split(',')
+      .map((n) => n.trim())
+      .filter(Boolean),
+  );
+  if (names.length === 0 || names.some((n) => /\s/.test(n))) {
+    throw new Error(
+      "src/icons.ts: could not parse the `export { ... } from 'lucide-react'` block (one plain name per entry, no `as` aliases).",
+    );
+  }
+  manifest.iconSet = { subpath: '@hirobius/design-system/icons', names };
 }
 manifest.componentSpecs = remappedSpecs;
 manifest.inventory = manifest.inventory ?? {};

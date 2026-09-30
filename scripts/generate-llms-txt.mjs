@@ -78,6 +78,7 @@ const tokenRules = [
 
 export function generateLlmsTxt() {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
   writeComponentApiManifest();
   // Keep as an existence check (and to ensure the generated artifact is present).
   JSON.parse(readFileSync(componentApiPath, 'utf8'));
@@ -102,6 +103,15 @@ export function generateLlmsTxt() {
   const patternSection = patternLines ? `## Pattern Inventory\n\n${patternLines}\n\n` : '';
 
   const iconNames = manifest.iconSet?.names ?? [];
+  const hdsNames = new Set([
+    ...(manifest.componentInventory ?? []),
+    ...(manifest.patternInventory ?? []),
+  ]);
+  const iconCollisions = iconNames.filter((n) => hdsNames.has(n));
+  const collisionNote = iconCollisions.length
+    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} share names with HDS components; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
+    : '';
+  const lucideVersion = String(pkg.dependencies?.['lucide-react'] ?? '').replace(/^[^\d]*/, '');
   const iconSection = iconNames.length
     ? `## Icons
 
@@ -118,7 +128,7 @@ Rule: icon-only actions (row menus, close, edit) use \`IconButton\`; do not hand
 
 Names: ${iconNames.join(', ')}
 
-Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel. For an icon outside the set, install \`lucide-react@0.487.0\` (same version keeps the \`LucideIcon\` type identical).
+Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.${collisionNote} For an icon outside the set, install \`lucide-react@${lucideVersion}\` (same version keeps the \`LucideIcon\` type identical).
 
 `
     : '';

@@ -737,3 +737,6 @@ The full name list is `iconSet.names` in the manifest (and the Icons section of
 menus, close, edit) use `IconButton`; do not hand-roll a button with a glyph. For
 an icon outside the set, install `lucide-react@0.487.0` so the `LucideIcon` type
 stays identical.
+
+`Calendar` and `Menu` share names with HDS components; alias them:
+`import { Calendar as CalendarIcon, Menu as MenuIcon } from '@hirobius/design-system/icons'`.

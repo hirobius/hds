@@ -1702,7 +1702,6 @@
         "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/docs-tooling/shell-controls.tsx",
         "src/docs-tooling/theme-toggle.tsx",
-        "src/icons.ts",
         "src/stories/activity-feed.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/icon.stories.tsx",
@@ -1849,7 +1848,6 @@
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/page-footer.tsx",
         "src/docs-tooling/shell-controls.tsx",
-        "src/icons.ts",
         "src/stories/icon-button.stories.tsx"
       ],
       "tokenMapping": {
@@ -8201,7 +8199,6 @@
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/date-time-input.tsx",
-        "src/icons.ts",
         "src/index.ts",
         "src/stories/calendar.stories.tsx",
         "src/stories/date-input.stories.tsx",
@@ -10278,7 +10275,6 @@
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/docs-tooling/shell-controls.tsx",
-        "src/icons.ts",
         "src/stories/context-menu.stories.tsx",
         "src/stories/menu.stories.tsx"
       ],
