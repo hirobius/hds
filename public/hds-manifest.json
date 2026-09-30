@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T20:30:34.719Z",
+  "generated": "2026-09-30T21:20:34.067Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -4778,11 +4778,6 @@
           "tokenBinding": {
             "fill": "role.muted-foreground"
           }
-        },
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
         }
       ],
       "allowedChildren": [
@@ -14203,7 +14198,7 @@
         "path": "primitive.size.interactive.minCompact",
         "cssVar": "--primitive-size-interactive-minCompact",
         "type": "dimension",
-        "description": "WCAG 2.2 AA (2.5.8) minimum target size for a compact inline control, such as a tokenizer chip's remove button, where the 44px AAA floor (2.5.5) does not apply.",
+        "description": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA (2.5.8), not the 44px AAA floor (2.5.5).",
         "value": "24px"
       },
       {
@@ -14217,7 +14212,7 @@
         "path": "primitive.size.width.280",
         "cssVar": "--primitive-size-width-280",
         "type": "dimension",
-        "description": "Docs-shell rail width (hds#280). Our own number, not HeroUI's 268px — wide enough for the longest top-level nav label at the default type ramp with room to spare.",
+        "description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room.",
         "value": "280px"
       },
       {
@@ -14344,7 +14339,7 @@
         "path": "semantic.motion.distance",
         "cssVar": "--semantic-motion-distance",
         "type": "dimension",
-        "description": "Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242).",
+        "description": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242).",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -14831,7 +14826,7 @@
         "path": "semantic.space.scale.md",
         "cssVar": "--semantic-space-scale-md",
         "type": "dimension",
-        "description": "24px — same value as layout.normal (deprecated alias). Default of the overridable roles surface.padding and region.gutter, which replace the deprecated component.padding / layout.gutter.",
+        "description": "24px. Default of the overridable roles surface.padding and region.gutter. The deprecated layout.normal has the same value.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -14855,7 +14850,7 @@
         "path": "semantic.space.surface.padding",
         "cssVar": "--semantic-space-surface-padding",
         "type": "dimension",
-        "description": "24px (scale.md) default inset for cards, forms, panels, and grouped surfaces. Tenants override it with another scale step (tenants/*/tokens.json, incl. a Compact density mode). Replaces the deprecated semantic.space.component.padding.",
+        "description": "24px (scale.md) inset for cards, forms and panels. Tenants override it per brand and density. Replaces component.padding.",
         "alias": "{semantic.space.scale.md}",
         "resolvedValue": "24px"
       },
@@ -14863,7 +14858,7 @@
         "path": "semantic.space.region.gutter",
         "cssVar": "--semantic-space-region-gutter",
         "type": "dimension",
-        "description": "24px (scale.md) column and region gutters. theme.css sets it responsively to scale.lg (32px) and, below 640px, scale.sm (16px). Replaces the deprecated semantic.space.layout.gutter.",
+        "description": "24px (scale.md) column and region gutters; theme.css sets scale.lg (32px), and scale.sm (16px) below 640px. Replaces layout.gutter.",
         "alias": "{semantic.space.scale.md}",
         "resolvedValue": "24px"
       },
@@ -14911,7 +14906,7 @@
         "path": "semantic.space.component.padding",
         "cssVar": "--semantic-space-component-padding",
         "type": "dimension",
-        "description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.surface.padding (tenant/density-overridable); kept live, no removal yet.",
+        "description": "24px inset for cards, forms and panels. DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
         "alias": "{semantic.space.surface.padding}",
         "resolvedValue": "24px"
       },
@@ -14951,7 +14946,7 @@
         "path": "semantic.space.layout.spacious",
         "cssVar": "--semantic-space-layout-spacious",
         "type": "dimension",
-        "description": "48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
+        "description": "48px break between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
         "alias": "{primitive.space.12}",
         "resolvedValue": "48px"
       },
@@ -15015,7 +15010,7 @@
         "path": "semantic.space.sidebar.railWidth",
         "cssVar": "--semantic-space-sidebar-railWidth",
         "type": "dimension",
-        "description": "Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell).",
+        "description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
         "alias": "{primitive.size.width.280}",
         "resolvedValue": "280px"
       },
@@ -15352,7 +15347,7 @@
         "path": "semantic.radius.control",
         "cssVar": "--semantic-radius-control",
         "type": "dimension",
-        "description": "Corner radius for small interactive control glyphs (e.g. checkbox glyph box) that are not fully round and not the standard action radius. Real design-scale value, distinct from semantic.radius.action (hds#242).",
+        "description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242).",
         "alias": "{primitive.radius.4}",
         "resolvedValue": "4px"
       },
@@ -15513,7 +15508,7 @@
         "path": "semantic.size.avatar",
         "cssVar": "--semantic-size-avatar",
         "type": "dimension",
-        "description": "Avatar diagonal (width/height) for activity-feed and similar identity glyphs. Coincides in pixels with row.compact today; kept as a separate role per hds#242 so either can change independently.",
+        "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
       },
