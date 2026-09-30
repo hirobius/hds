@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Kbd } from '../app/components/kbd';
 
 const meta = {
-  title: 'Primitives/kbd',
+  title: 'Primitives/Kbd',
   component: Kbd,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

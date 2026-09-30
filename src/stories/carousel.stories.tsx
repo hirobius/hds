@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Carousel } from '../app/components/carousel';
 
 const meta = {
-  title: 'Patterns/carousel',
+  title: 'Patterns/Carousel',
   component: Carousel,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

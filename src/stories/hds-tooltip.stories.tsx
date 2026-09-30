@@ -1,5 +1,5 @@
 /**
- * HdsTooltip stories — accessible hover/focus tooltip.
+ * Tooltip stories — accessible hover/focus tooltip.
  * @see src/app/components/hds-tooltip.tsx
  *
  * NOTE: Overlays stay CLOSED on mount. jsdom lacks pointer-capture so the
@@ -7,23 +7,23 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { HdsTooltip } from '../app/components/hds-tooltip';
+import { Tooltip } from '../app/components/hds-tooltip';
 import { Button } from '../app/components/button';
 
 const meta = {
-  title: 'Primitives/hds-tooltip',
-  component: HdsTooltip,
+  title: 'Primitives/HDS Tooltip',
+  component: Tooltip,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component:
-          'Accessible hover/focus tooltip on Radix Tooltip. Collision-aware positioning, ARIA wiring, keyboard focus, and open delay out of the box. Inverse-surface bubble with arrow. Self-contained (Provider baked in). Compound API: HdsTooltip.Trigger / HdsTooltip.Content.',
+          'Accessible hover/focus tooltip on Radix Tooltip. Collision-aware positioning, ARIA wiring, keyboard focus, and open delay out of the box. Inverse-surface bubble with arrow. Self-contained (Provider baked in). Compound API: Tooltip.Trigger / Tooltip.Content.',
       },
     },
   },
-} satisfies Meta<typeof HdsTooltip>;
+} satisfies Meta<typeof Tooltip>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -32,12 +32,12 @@ type Story = StoryObj<typeof meta>;
 
 function DefaultDemo() {
   return (
-    <HdsTooltip>
-      <HdsTooltip.Trigger asChild>
+    <Tooltip>
+      <Tooltip.Trigger asChild>
         <Button variant="secondary">Hover me</Button>
-      </HdsTooltip.Trigger>
-      <HdsTooltip.Content>Saved to your library</HdsTooltip.Content>
-    </HdsTooltip>
+      </Tooltip.Trigger>
+      <Tooltip.Content>Saved to your library</Tooltip.Content>
+    </Tooltip>
   );
 }
 
@@ -49,12 +49,14 @@ export const Default: Story = {
 
 function PlacementDemo() {
   return (
-    <HdsTooltip>
-      <HdsTooltip.Trigger asChild>
-        <Button variant="tertiary" size="sm">Tip on the right</Button>
-      </HdsTooltip.Trigger>
-      <HdsTooltip.Content side="right">Opens beside the trigger</HdsTooltip.Content>
-    </HdsTooltip>
+    <Tooltip>
+      <Tooltip.Trigger asChild>
+        <Button variant="tertiary" size="sm">
+          Tip on the right
+        </Button>
+      </Tooltip.Trigger>
+      <Tooltip.Content side="right">Opens beside the trigger</Tooltip.Content>
+    </Tooltip>
   );
 }
 
@@ -62,7 +64,8 @@ export const Placement: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Pass Radix `side` (top | right | bottom | left) to steer placement; positioning stays collision-aware.',
+        story:
+          'Pass Radix `side` (top | right | bottom | left) to steer placement; positioning stays collision-aware.',
       },
     },
   },

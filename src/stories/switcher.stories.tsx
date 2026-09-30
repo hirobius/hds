@@ -22,7 +22,7 @@ const Panel = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: 'Primitives/switcher',
+  title: 'Primitives/Switcher',
   component: Switcher,
   tags: ['autodocs'],
   parameters: {

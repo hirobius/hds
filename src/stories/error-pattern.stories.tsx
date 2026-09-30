@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ErrorPattern } from '../app/components/error-pattern';
 
 const meta = {
-  title: 'Feedback/error-pattern',
+  title: 'Feedback/Error Pattern',
   component: ErrorPattern,
   tags: ['autodocs'],
   parameters: {
@@ -38,7 +38,8 @@ export const NotFound: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Mirrors the output of NotFoundPattern — 404 display text with a human-readable message.',
+        story:
+          'Mirrors the output of NotFoundPattern — 404 display text with a human-readable message.',
       },
     },
   },

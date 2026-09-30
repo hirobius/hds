@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { HoverCard } from '../app/components/hover-card';
 
 const meta = {
-  title: 'Primitives/hover-card',
+  title: 'Primitives/Hover Card',
   component: HoverCard,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

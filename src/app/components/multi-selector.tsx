@@ -47,7 +47,7 @@ export interface MultiSelectorProps {
 }
 
 const ITEM =
-  'relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hds-focus hover:bg-accent hover:text-accent-foreground focus-within:bg-accent focus-within:text-accent-foreground';
+  'relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hds-focus hover:bg-accent hover:text-accent-foreground focus-within:bg-accent focus-within:text-accent-foreground focus-within:ring-2 focus-within:ring-inset focus-within:ring-ring';
 
 /** @public */
 export const MultiSelector = React.forwardRef<HTMLButtonElement, MultiSelectorProps>(

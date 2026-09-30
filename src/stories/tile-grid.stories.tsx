@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { TileGrid } from '../app/components/tile-grid';
 
 const meta = {
-  title: 'Primitives/tile-grid',
+  title: 'Primitives/Tile Grid',
   component: TileGrid,
   tags: ['autodocs'],
   parameters: {

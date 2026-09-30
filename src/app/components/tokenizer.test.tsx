@@ -43,4 +43,13 @@ describe('Tokenizer', () => {
     fireEvent.click(screen.getByLabelText('Remove react'));
     expect(value).toEqual(['design']);
   });
+
+  it('signals the disabled state with a token colour, not reduced opacity', () => {
+    const { container } = render(
+      <Tokenizer value={['react']} onChange={() => {}} aria-label="Tags" disabled />,
+    );
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper.className).not.toContain('opacity-70');
+    expect(wrapper.className).toContain('text-muted-foreground');
+  });
 });

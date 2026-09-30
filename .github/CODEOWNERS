@@ -5,23 +5,23 @@
 # Reference: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Default: all files require Adrian
-* @adrianmilsap
+* @adr-eng
 
 # HDS component source — changes to primitives / compositions affect every consumer
-/src/app/components/ @adrianmilsap
-/src/app/data/ @adrianmilsap
+/src/app/components/ @adr-eng
+/src/app/data/ @adr-eng
 
 # Token source — the single source of truth for the design system
-/hirobius.tokens.json @adrianmilsap
-/src/app/styles/ @adrianmilsap
+/hirobius.tokens.json @adr-eng
+/src/app/styles/ @adr-eng
 
 # Manifest + LLM context — machine-readable inventory; drift breaks agents
-/public/hds-manifest.* @adrianmilsap
-/public/llms.txt @adrianmilsap
+/public/hds-manifest.* @adr-eng
+/public/llms.txt @adr-eng
 
 # Autonomous build pipeline + orchestration — agent behaviour definitions
-/docs/ai/ @adrianmilsap
-/scripts/ @adrianmilsap
+/docs/ai/ @adr-eng
+/scripts/ @adr-eng
 
 # CI/CD + quality gates — changes here affect every merge
-/.github/ @adrianmilsap
+/.github/ @adr-eng

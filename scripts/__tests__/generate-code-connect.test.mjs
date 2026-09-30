@@ -185,7 +185,7 @@ describe('validateTemplateEntry', () => {
   it('requires every required prop to be mapped or given a static value', () => {
     const entry = checkboxEntry();
     delete entry.staticProps;
-    expect(validateTemplateEntry('HdsCheckbox', entry, CHECKBOX_CODE).join('\n')).toMatch(
+    expect(validateTemplateEntry('Checkbox', entry, CHECKBOX_CODE).join('\n')).toMatch(
       /required prop "onChange"/,
     );
   });
@@ -366,17 +366,17 @@ describe('generated template renders the HDS snippet', () => {
 
   it('emits required props even when false, gated text, and static props', () => {
     const values = { Label: 'Accept', State: 'unchecked', 'Show hint': false, Hint: 'x' };
-    expect(render('HdsCheckbox', checkboxEntry(), CHECKBOX_CODE, values).snippet).toBe(
-      '<HdsCheckbox label="Accept" checked={false} onChange={setChecked} />',
+    expect(render('Checkbox', checkboxEntry(), CHECKBOX_CODE, values).snippet).toBe(
+      '<Checkbox label="Accept" checked={false} onChange={setChecked} />',
     );
     expect(
-      render('HdsCheckbox', checkboxEntry(), CHECKBOX_CODE, {
+      render('Checkbox', checkboxEntry(), CHECKBOX_CODE, {
         ...values,
         State: 'indeterminate',
         'Show hint': true,
       }).snippet,
     ).toBe(
-      '<HdsCheckbox label="Accept" checked={false} indeterminate aria-description="x" onChange={setChecked} />',
+      '<Checkbox label="Accept" checked={false} indeterminate aria-description="x" onChange={setChecked} />',
     );
   });
 

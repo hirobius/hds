@@ -1,18 +1,18 @@
 /**
- * HdsSlider stories — integer, decimal, and multi-slider demos.
+ * Slider stories — integer, decimal, and multi-slider demos.
  * @see src/app/components/slider.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { HdsSlider } from '../app/components/slider';
+import { Slider } from '../app/components/slider';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/slider',
-  component: HdsSlider,
+  title: 'Primitives/Slider',
+  component: Slider,
   tags: ['autodocs'],
   parameters: {
-    ...designParameters('HdsSlider'),
+    ...designParameters('Slider'),
     layout: 'padded',
     docs: {
       description: {
@@ -21,7 +21,7 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof HdsSlider>;
+} satisfies Meta<typeof Slider>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -30,7 +30,7 @@ function DefaultDemo() {
   const [value, setValue] = useState(40);
   return (
     <div style={{ width: '320px' }}>
-      <HdsSlider label="Opacity" min={0} max={100} value={value} onChange={setValue} />
+      <Slider label="Opacity" min={0} max={100} value={value} onChange={setValue} />
     </div>
   );
 }
@@ -43,7 +43,7 @@ function SteppedDemo() {
   const [value, setValue] = useState(3);
   return (
     <div style={{ width: '320px' }}>
-      <HdsSlider label="Columns" min={1} max={6} step={1} value={value} onChange={setValue} />
+      <Slider label="Columns" min={1} max={6} step={1} value={value} onChange={setValue} />
     </div>
   );
 }
@@ -63,14 +63,7 @@ function DecimalDemo() {
   const [value, setValue] = useState(1.5);
   return (
     <div style={{ width: '320px' }}>
-      <HdsSlider
-        label="Scale factor"
-        min={0.5}
-        max={3}
-        step={0.1}
-        value={value}
-        onChange={setValue}
-      />
+      <Slider label="Scale factor" min={0.5} max={3} step={0.1} value={value} onChange={setValue} />
     </div>
   );
 }
@@ -92,15 +85,8 @@ function MultiSliderDemo() {
   const [letterSpacing, setLetterSpacing] = useState(0);
   return (
     <div style={{ width: '320px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <HdsSlider
-        label="Font size"
-        min={8}
-        max={96}
-        step={1}
-        value={fontSize}
-        onChange={setFontSize}
-      />
-      <HdsSlider
+      <Slider label="Font size" min={8} max={96} step={1} value={fontSize} onChange={setFontSize} />
+      <Slider
         label="Line height"
         min={1}
         max={2.5}
@@ -108,7 +94,7 @@ function MultiSliderDemo() {
         value={lineHeight}
         onChange={setLineHeight}
       />
-      <HdsSlider
+      <Slider
         label="Letter spacing"
         min={-2}
         max={10}

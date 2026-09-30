@@ -13,7 +13,7 @@ import { Button } from '../app/components/button';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/dialog',
+  title: 'Primitives/Dialog',
   component: Dialog,
   tags: ['autodocs'],
   parameters: {

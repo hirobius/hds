@@ -104,16 +104,16 @@ function findUpstreamAliases(token: FlatToken): FlatToken[] {
   });
 }
 
-function isHexColor(value: string | null | undefined): value is string {
-  return typeof value === 'string' && /^#[0-9a-fA-F]{6}$/.test(value);
+function isHexColor(value: string): boolean {
+  return /^#[0-9a-fA-F]{6}$/.test(value);
 }
 
 function resolveHexForMode(ref: string, mode: ThemeMode) {
   const value = resolveTokenLiteralValue(ref, mode);
+  if (value === null) return null;
   if (isHexColor(value)) return value.toLowerCase();
-  const colorValue = typeof value === 'string' ? value : null;
-  if (colorValue && /^oklch\(/i.test(colorValue.trim())) {
-    return convertCssColorToHex(colorValue);
+  if (/^oklch\(/i.test(value.trim())) {
+    return convertCssColorToHex(value);
   }
   return null;
 }
@@ -153,7 +153,7 @@ function dedupeTokens(tokens: FlatToken[]) {
   });
 }
 
-function formatTraceRawValue(rawValue: unknown, mode: ThemeMode) {
+function formatTraceRawValue(rawValue: unknown, mode: ThemeMode): string {
   if (typeof rawValue === 'string') {
     const resolved = resolveTokenLiteralValue(rawValue, mode);
     if (resolved) return resolved;
@@ -163,7 +163,7 @@ function formatTraceRawValue(rawValue: unknown, mode: ThemeMode) {
   if (rawValue && typeof rawValue === 'object' && !Array.isArray(rawValue)) {
     const record = rawValue as { value?: unknown; unit?: unknown };
     if ('value' in record || 'unit' in record) {
-      const valueText = formatTraceRawValue(record.value, mode);
+      const valueText: string = formatTraceRawValue(record.value, mode);
       const unitText = typeof record.unit === 'string' ? record.unit : '';
       if (valueText && unitText) return `${valueText}${unitText}`;
       if (valueText) return valueText;

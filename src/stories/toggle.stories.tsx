@@ -1,18 +1,18 @@
 /**
- * HdsToggle stories — on, off, disabled, and group demos.
+ * Toggle stories — on, off, disabled, and group demos.
  * @see src/app/components/toggle.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { HdsToggle } from '../app/components/toggle';
+import { Toggle } from '../app/components/toggle';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/toggle',
-  component: HdsToggle,
+  title: 'Primitives/Toggle',
+  component: Toggle,
   tags: ['autodocs'],
   parameters: {
-    ...designParameters('HdsToggle'),
+    ...designParameters('Toggle'),
     layout: 'centered',
     docs: {
       description: {
@@ -25,14 +25,14 @@ const meta = {
     checked: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
-} satisfies Meta<typeof HdsToggle>;
+} satisfies Meta<typeof Toggle>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 function DefaultDemo() {
   const [checked, setChecked] = useState(false);
-  return <HdsToggle label="Enable notifications" checked={checked} onChange={setChecked} />;
+  return <Toggle label="Enable notifications" checked={checked} onChange={setChecked} />;
 }
 
 export const Default: Story = {
@@ -41,7 +41,7 @@ export const Default: Story = {
 
 function OnDemo() {
   const [checked, setChecked] = useState(true);
-  return <HdsToggle label="Show component previews" checked={checked} onChange={setChecked} />;
+  return <Toggle label="Show component previews" checked={checked} onChange={setChecked} />;
 }
 
 export const On: Story = {
@@ -76,17 +76,17 @@ function SettingsGroupDemo() {
     setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-      <HdsToggle
+      <Toggle
         label="Push notifications"
         checked={settings.notifications}
         onChange={() => toggle('notifications')}
       />
-      <HdsToggle
+      <Toggle
         label="Usage analytics"
         checked={settings.analytics}
         onChange={() => toggle('analytics')}
       />
-      <HdsToggle
+      <Toggle
         label="Auto-save drafts"
         checked={settings.autoSave}
         onChange={() => toggle('autoSave')}

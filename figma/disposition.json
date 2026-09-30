@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-09-22",
+  "generatedAt": "2026-09-29",
   "overrides": {
     "Frame": {
       "class": "library",
@@ -22,11 +22,11 @@
     }
   },
   "summary": {
-    "total": 139,
+    "total": 140,
     "byClass": {
       "library": 88,
       "slot": 18,
-      "layout": 14,
+      "layout": 15,
       "internal": 19
     },
     "libraryLinked": 47,
@@ -257,6 +257,14 @@
       "category": "Layout",
       "tier": "primitive",
       "figmaUrl": null
+    },
+    {
+      "name": "Checkbox",
+      "class": "library",
+      "parent": null,
+      "category": "Inputs",
+      "tier": "primitive",
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29"
     },
     {
       "name": "CinematicLink",
@@ -566,11 +574,11 @@
     },
     {
       "name": "HdsCheckbox",
-      "class": "library",
+      "class": "internal",
       "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29"
+      "category": "Compiler",
+      "tier": "utility",
+      "figmaUrl": null
     },
     {
       "name": "HdsChip",
@@ -578,6 +586,14 @@
       "parent": null,
       "category": "Compiler",
       "tier": "utility",
+      "figmaUrl": null
+    },
+    {
+      "name": "HdsDocsShell",
+      "class": "layout",
+      "parent": null,
+      "category": "Layout",
+      "tier": "pattern",
       "figmaUrl": null
     },
     {
@@ -613,30 +629,6 @@
       "figmaUrl": null
     },
     {
-      "name": "HdsRadio",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17"
-    },
-    {
-      "name": "HdsSelect",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49"
-    },
-    {
-      "name": "HdsSlider",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265"
-    },
-    {
       "name": "HdsSystemDocLayout",
       "class": "internal",
       "parent": null,
@@ -649,22 +641,6 @@
       "class": "internal",
       "parent": null,
       "category": "Theming",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "HdsToggle",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19"
-    },
-    {
-      "name": "HdsTooltip",
-      "class": "internal",
-      "parent": null,
-      "category": "Internal",
       "tier": "primitive",
       "figmaUrl": null
     },
@@ -839,6 +815,14 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91"
     },
     {
+      "name": "Radio",
+      "class": "library",
+      "parent": null,
+      "category": "Inputs",
+      "tier": "primitive",
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17"
+    },
+    {
       "name": "Reveal",
       "class": "internal",
       "parent": null,
@@ -853,6 +837,14 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334"
+    },
+    {
+      "name": "Select",
+      "class": "library",
+      "parent": null,
+      "category": "Inputs",
+      "tier": "primitive",
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49"
     },
     {
       "name": "SelectableCard",
@@ -897,12 +889,12 @@
       "overrideReason": "A 'shared shell for generative canvases and WebGL sketches' — demo chrome with a title header and a bottom border. Zero consumers outside its own story. It scaffolds lab work rather than shipping to a consumer, so it belongs with the doc tooling, not in a published library."
     },
     {
-      "name": "SpecimenBlock",
-      "class": "internal",
+      "name": "Slider",
+      "class": "library",
       "parent": null,
-      "category": "Utilities",
+      "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265"
     },
     {
       "name": "Spinner",
@@ -1097,6 +1089,14 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367"
     },
     {
+      "name": "Toggle",
+      "class": "library",
+      "parent": null,
+      "category": "Inputs",
+      "tier": "primitive",
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19"
+    },
+    {
       "name": "ToggleButton",
       "class": "library",
       "parent": null,
@@ -1126,6 +1126,14 @@
       "parent": null,
       "category": "Actions",
       "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "Tooltip",
+      "class": "internal",
+      "parent": null,
+      "category": "Internal",
+      "tier": "primitive",
       "figmaUrl": null
     },
     {

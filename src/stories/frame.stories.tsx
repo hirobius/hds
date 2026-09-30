@@ -25,7 +25,7 @@ const Fill = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: 'Primitives/frame',
+  title: 'Primitives/Frame',
   component: Frame,
   tags: ['autodocs'],
   parameters: {

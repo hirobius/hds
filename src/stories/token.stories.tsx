@@ -10,9 +10,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Token } from '../app/components/token';
 
 const meta = {
-  title: 'Primitives/token',
+  title: 'Primitives/Token',
   component: Token,
-  tags: ['autodocs'],
+  tags: ['autodocs', '!dev'],
   parameters: {
     layout: 'centered',
     docs: {

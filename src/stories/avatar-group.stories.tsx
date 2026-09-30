@@ -7,7 +7,7 @@ import { AvatarGroup } from '../app/components/avatar-group';
 import { Avatar } from '../app/components/avatar';
 
 const meta = {
-  title: 'Primitives/avatar-group',
+  title: 'Primitives/Avatar Group',
   component: AvatarGroup,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { CinematicLink } from '../app/components/cinematic-link';
 
 const meta = {
-  title: 'Primitives/cinematic-link',
+  title: 'Primitives/Cinematic Link',
   component: CinematicLink,
-  tags: ['autodocs'],
+  tags: ['autodocs', '!dev'],
   parameters: {
     layout: 'centered',
     docs: {
@@ -52,7 +52,8 @@ export const ShortLabel: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Short single-word label — underline animation still fires across the full text width.',
+        story:
+          'Short single-word label — underline animation still fires across the full text width.',
       },
     },
   },

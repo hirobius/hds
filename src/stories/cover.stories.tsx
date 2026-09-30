@@ -23,7 +23,7 @@ const Block = ({ label }: { label: string }) => (
 );
 
 const meta = {
-  title: 'Primitives/cover',
+  title: 'Primitives/Cover',
   component: Cover,
   tags: ['autodocs'],
   parameters: {

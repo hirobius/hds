@@ -6,10 +6,10 @@ import { createRoot } from 'react-dom/client';
 import { Button } from '../src/app/components/button';
 import { Input } from '../src/app/components/input';
 import { Textarea } from '../src/app/components/textarea';
-import { HdsSelect } from '../src/app/components/select';
-import { HdsCheckbox } from '../src/app/components/checkbox';
-import { HdsRadio } from '../src/app/components/radio';
-import { HdsToggle } from '../src/app/components/toggle';
+import { Select } from '../src/app/components/select';
+import { Checkbox } from '../src/app/components/checkbox';
+import { Radio } from '../src/app/components/radio';
+import { Toggle } from '../src/app/components/toggle';
 import { SegmentedControl } from '../src/app/components/segmented-control';
 import { Badge } from '../src/app/components/badge';
 import { Card } from '../src/app/components/card';
@@ -208,7 +208,7 @@ function App() {
           <Section title="Inputs">
             <div data-probe="input" className="pv-grid2">
               <Input label="Email address" placeholder="you@example.com" />
-              <HdsSelect
+              <Select
                 label="Framework"
                 value={sel}
                 onChange={setSel}
@@ -220,9 +220,9 @@ function App() {
             </div>
             <Textarea label="Project brief" placeholder="Describe the work…" />
             <div className="pv-row">
-              <HdsCheckbox label="Include archived" checked={check} onChange={setCheck} />
-              <HdsRadio label="Dark mode" checked={radio} onChange={setRadio} />
-              <HdsToggle label="Notifications" checked={toggle} onChange={setToggle} />
+              <Checkbox label="Include archived" checked={check} onChange={setCheck} />
+              <Radio label="Dark mode" checked={radio} onChange={setRadio} />
+              <Toggle label="Notifications" checked={toggle} onChange={setToggle} />
             </div>
             <SegmentedControl
               label="View"
