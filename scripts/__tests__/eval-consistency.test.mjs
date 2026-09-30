@@ -752,7 +752,6 @@ describe('pnpm eval:consistency (CLI, offline)', () => {
 
   it('exits 2 on usage and input errors', () => {
     expect(run().code).toBe(2);
-    expect(run('--apps', `${fixtures}/pass`).code).toBe(2); // full run is the follow-up ticket
     expect(run('--apps', `${fixtures}/does-not-exist`, '--offline').code).toBe(2);
     expect(run('--apps', `${fixtures}/png`, '--offline').code).toBe(2); // no app directories
     expect(run('--apps', `${fixtures}/pass/app-a`, '--offline').code).toBe(2); // one app has no pair
