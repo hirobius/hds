@@ -304,3 +304,50 @@ describe('consumer SKILL.md "Core set"', () => {
     expect(sorted(names)).toEqual(CORE);
   });
 });
+
+describe('CONSUMING rows (hds#374)', () => {
+  const docs = { 'CONSUMING.md': 'README.md', 'docs/CONSUMING.md': '../README.md' };
+  const moduleCount = [
+    ...readFileSync(path.join(ROOT, 'src/patterns.ts'), 'utf8').matchAll(/^export \* from /gm),
+  ].length;
+  const row = (text, subpath) =>
+    text.split('\n').find((l) => l.startsWith(`| \`@hirobius/design-system${subpath}\` `)) ?? '';
+
+  it.each(Object.keys(docs))('%s: the root row names the core set and links the README', (doc) => {
+    const text = readFileSync(path.join(ROOT, doc), 'utf8');
+    expect(row(text, '')).toContain('42-component core set');
+    expect(row(text, '')).toContain(`(${docs[doc]}#what-belongs-in-the-system)`);
+  });
+
+  it.each(Object.keys(docs))('%s: the /patterns row states the module count', (doc) => {
+    const text = readFileSync(path.join(ROOT, doc), 'utf8');
+    expect(text).not.toMatch(/22 .pattern.-tier/);
+    expect(row(text, '/patterns')).toContain(`The ${moduleCount} pattern modules`);
+  });
+});
+
+describe('the ratified disposition table and its ADR', () => {
+  const doc = readFileSync(path.join(ROOT, 'docs/hds-architecture-2026-09-18.html'), 'utf8');
+
+  it('no longer calls the dispositions a proposal', () => {
+    expect(doc).not.toMatch(/proposal/i);
+    expect(doc.match(/Ratified 2026-09-26 \(hds#254\)/g)).toHaveLength(2);
+  });
+
+  it('is linked from the README Architecture section', () => {
+    const readme = readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+    const section = readme.split('\n## Architecture\n')[1].split(/\n## /)[0];
+    expect(section).toContain('(docs/hds-architecture-2026-09-18.html)');
+  });
+
+  it('ADR-031 is Accepted and cites hds#254 and ADR-006', () => {
+    const adr = readFileSync(path.join(ROOT, 'docs/adr/031-core-set-and-dispositions.md'), 'utf8');
+    expect(adr).toMatch(/^# ADR-031: /);
+    expect(adr).toMatch(/^\*\*Status:\*\* Accepted \(\d{4}-\d{2}-\d{2}\)/m);
+    expect(adr).toContain('hds#254');
+    expect(adr).toContain('ADR-006');
+    for (const heading of ['## Context', '## Decision', '## Rationale', '## Consequences']) {
+      expect(adr).toContain(heading);
+    }
+  });
+});
