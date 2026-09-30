@@ -128,3 +128,47 @@ export const AllVariantsRow: Story = {
     </div>
   ),
 };
+
+// ── Tone over variant ───────────────────────────────────────────────────────
+
+const TONE_MATRIX_VARIANTS = ['primary', 'secondary', 'tertiary'] as const;
+const TONE_MATRIX_TONES = ['danger', 'success', 'warning', 'info'] as const;
+
+export const ToneMatrix: Story = {
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        story:
+          'Every variant × status tone, plus a disabled and a loading toned button. `tone` replaces the variant colours (fill, border, text and their hover states) through tailwind-merge class-group replacement, not the `!` important modifier (ADR-030), so each row must look the same across variants.',
+      },
+    },
+    // hds#372 — the 12 variant × tone combos reach the axe gate and the
+    // brand/density/theme modes matrix through this one story.
+    chromatic: { modes: MODES },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      {TONE_MATRIX_VARIANTS.map((variant) => (
+        <div
+          key={variant}
+          style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}
+        >
+          {TONE_MATRIX_TONES.map((tone) => (
+            <Button key={tone} variant={variant} tone={tone}>
+              {`${variant} ${tone}`}
+            </Button>
+          ))}
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+        <Button variant="primary" tone="danger" disabled>
+          Disabled danger
+        </Button>
+        <Button variant="secondary" tone="warning" loading>
+          Loading warning
+        </Button>
+      </div>
+    </div>
+  ),
+};

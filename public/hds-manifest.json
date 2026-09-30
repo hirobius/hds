@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T18:11:35.736Z",
+  "generated": "2026-09-30T20:05:18.933Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -5175,7 +5175,8 @@
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
-        "primitives-button--tertiary"
+        "primitives-button--tertiary",
+        "primitives-button--tone-matrix"
       ],
       "usage": {
         "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.",
