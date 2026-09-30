@@ -13,7 +13,12 @@ import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
-import { buildConsumerSkill, LINT_INSTALL_LINE, SKILL_PATH } from '../generate-consumer-skill.mjs';
+import {
+  buildConsumerSkill,
+  firstSentence,
+  LINT_INSTALL_LINE,
+  SKILL_PATH,
+} from '../generate-consumer-skill.mjs';
 import { layoutRecipeSteps, layoutNegativeRules } from '../lib/layout-recipe.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -56,6 +61,38 @@ const build = (over = {}) =>
     packageExports: fixtureExports,
     ...over,
   });
+
+describe('firstSentence', () => {
+  it('does not end on an abbreviation such as e.g.', () => {
+    expect(firstSentence('Renders a key, e.g. `<Kbd>K</Kbd>`. More.')).toBe(
+      'Renders a key, e.g. `<Kbd>K</Kbd>`.',
+    );
+    expect(firstSentence('A row (i.e. a list item). Next.')).toBe('A row (i.e. a list item).');
+    expect(firstSentence('Hides text, etc. from view. Next.')).toBe('Hides text, etc. from view.');
+  });
+  it('still splits plain sentences', () => {
+    expect(firstSentence('One. Two.')).toBe('One.');
+  });
+});
+
+describe('allow-list wording', () => {
+  it('does not claim the list is the only importable surface', () => {
+    const out = build();
+    expect(out).not.toContain('Import only these names');
+    expect(out).toContain('HdsThemeProvider');
+  });
+});
+
+describe('module import safety', () => {
+  it('imports without process.argv[1]', () => {
+    const r = spawnSync(
+      process.execPath,
+      ['--input-type=module', '-e', "await import('./scripts/generate-consumer-skill.mjs')"],
+      { cwd: ROOT, encoding: 'utf8' },
+    );
+    expect(r.status).toBe(0);
+  });
+});
 
 describe('buildConsumerSkill (in-memory)', () => {
   it('frontmatter is valid YAML (a bare colon in the description broke skills add)', () => {

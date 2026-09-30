@@ -29,7 +29,7 @@ Subpath exports:
 
 ## Allow-list: components you may import
 
-Import only these names from `@hirobius/design-system`. If a need is not covered, route it upstream instead of hand-rolling it.
+Components you may import from `@hirobius/design-system`. Providers, hooks and helpers documented in `docs/CONSUMING.md` (for example `HdsThemeProvider`, `useHdsTheme`, `cn`) are also public. If a need is not covered, route it upstream instead of hand-rolling it.
 
 ### Actions
 
@@ -64,10 +64,10 @@ Import only these names from `@hirobius/design-system`. If a need is not covered
 - `Field` — Caption label paired with a value — used in metadata grids and read-only forms.
 - `Icon` — Icon — semantic icon wrapper for Lucide icons.
 - `InlineCode` — InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
-- `Kbd` — Renders a keyboard key or shortcut token, e.g.
+- `Kbd` — Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
 - `Stat` — Headline metric — large value, uppercase caption label, optional sub-line.
-- `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g.
+- `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `StatusTile` — Block-layout sibling of StatusListItem.
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `TextLockup` — TextLockup - governed title-and-description pairing primitive.
@@ -189,7 +189,7 @@ Import only these names from `@hirobius/design-system`. If a need is not covered
 
 ### Utility
 
-- `VisuallyHidden` — Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g.
+- `VisuallyHidden` — Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.
 
 ## How to lay out a screen
 

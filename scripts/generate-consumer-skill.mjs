@@ -49,10 +49,17 @@ function barrelModules(indexSource) {
 
 const moduleOf = (filePath) => filePath.replace(/^src\//, '').replace(/\.(tsx?|jsx?)$/, '');
 
-function firstSentence(text = '') {
+const ABBREVIATION = /(?:e\.g|i\.e|etc|vs)\.$/i;
+
+export function firstSentence(text = '') {
   const flat = String(text).replace(/\s+/g, ' ').trim();
-  const m = /^(.*?[.!?])(\s|$)/.exec(flat);
-  return m ? m[1] : flat;
+  const end = /[.!?](?=\s|$)/g;
+  let m;
+  while ((m = end.exec(flat))) {
+    const upTo = flat.slice(0, m.index + 1);
+    if (!ABBREVIATION.test(upTo)) return upTo;
+  }
+  return flat;
 }
 
 function allowList(manifest, indexSource) {
@@ -123,7 +130,7 @@ export function buildConsumerSkill({ manifest, indexSource, packageExports = {} 
       '',
       '## Allow-list: components you may import',
       '',
-      `Import only these names from \`${PKG}\`. If a need is not covered, route it upstream instead of hand-rolling it.`,
+      `Components you may import from \`${PKG}\`. Providers, hooks and helpers documented in \`docs/CONSUMING.md\` (for example \`HdsThemeProvider\`, \`useHdsTheme\`, \`cn\`) are also public. If a need is not covered, route it upstream instead of hand-rolling it.`,
       '',
       allowList(manifest, indexSource).join('\n\n'),
       '',
@@ -178,4 +185,4 @@ function main() {
   console.log(`✓ wrote ${SKILL_PATH}`);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) main();
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
