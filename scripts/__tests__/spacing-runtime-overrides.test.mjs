@@ -131,10 +131,13 @@ describe('every tenant has a row in the computed-value table', () => {
 describe.skipIf(!hasBrowser)('computed spacing, every tenant x density x breakpoint', () => {
   let browser;
   let page;
+  // Launching Chromium takes longer than vitest's 10s hook default when other
+  // browser suites (spacing-computed-lock) start at the same moment on a busy
+  // machine, so give the launch the same headroom the computed lock has.
   beforeAll(async () => {
     browser = await chromium.launch({ executablePath: CHROMIUM });
     page = await browser.newPage();
-  });
+  }, 120_000);
   afterAll(async () => {
     await browser?.close();
   });
