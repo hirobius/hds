@@ -8,7 +8,7 @@ import { NavItem } from '../app/components/nav-item';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/nav-item',
+  title: 'Primitives/Nav Item',
   component: NavItem,
   tags: ['autodocs'],
   parameters: {

@@ -8,7 +8,7 @@ import { Toggle } from '../app/components/toggle';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/toggle',
+  title: 'Primitives/Toggle',
   component: Toggle,
   tags: ['autodocs'],
   parameters: {

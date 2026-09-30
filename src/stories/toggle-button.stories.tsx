@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ToggleButton } from '../app/components/toggle-button';
 
 const meta = {
-  title: 'Primitives/toggle-button',
+  title: 'Primitives/Toggle Button',
   component: ToggleButton,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -11,7 +11,7 @@ import { Select } from '../app/components/select';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/select',
+  title: 'Primitives/Select',
   component: Select,
   tags: ['autodocs'],
   parameters: {

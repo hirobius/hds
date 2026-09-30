@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FileInput } from '../app/components/file-input';
 
 const meta = {
-  title: 'Patterns/file-input',
+  title: 'Patterns/File Input',
   component: FileInput,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

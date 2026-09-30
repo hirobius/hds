@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Pin } from '../app/components/pin';
 
 const meta = {
-  title: 'Primitives/pin',
+  title: 'Primitives/Pin',
   component: Pin,
   tags: ['autodocs'],
   parameters: {

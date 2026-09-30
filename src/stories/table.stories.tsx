@@ -15,7 +15,7 @@ import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/table',
+  title: 'Primitives/Table',
   component: Table,
   tags: ['autodocs'],
   parameters: {

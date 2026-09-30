@@ -12,9 +12,9 @@ import { Sketch } from '../app/components/sketch';
 import { Text } from '../app/components/text';
 
 const meta = {
-  title: 'Layout/sketch',
+  title: 'Layout/Sketch',
   component: Sketch,
-  tags: ['autodocs'],
+  tags: ['autodocs', '!dev'],
   parameters: {
     layout: 'padded',
     docs: {
@@ -59,7 +59,9 @@ export const WithControls: Story = {
     title: 'Noise Field',
     controls: (
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <Text variant="caption" className="text-secondary">Speed</Text>
+        <Text variant="caption" className="text-secondary">
+          Speed
+        </Text>
         <input type="range" min={1} max={10} defaultValue={5} style={{ width: '80px' }} />
       </div>
     ),

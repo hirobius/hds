@@ -8,7 +8,7 @@ import { Checkbox } from '../app/components/checkbox';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/checkbox',
+  title: 'Primitives/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
   parameters: {

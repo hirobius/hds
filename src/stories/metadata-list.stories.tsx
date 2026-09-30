@@ -7,7 +7,7 @@ import { MetadataList } from '../app/components/metadata-list';
 import { InlineCode } from '../app/components/inline-code';
 
 const meta = {
-  title: 'Patterns/metadata-list',
+  title: 'Patterns/Metadata List',
   component: MetadataList,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -5,7 +5,7 @@
  */
 import { describe, it, expect, beforeAll, afterEach } from 'vitest';
 import { createRef } from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { Select } from './select';
 
 beforeAll(() => {
@@ -39,5 +39,17 @@ describe('Select', () => {
     const ref = createRef<HTMLButtonElement>();
     render(<Select ref={ref} label="Plan" value="pro" onChange={() => {}} options={OPTIONS} />);
     expect(ref.current?.tagName).toBe('BUTTON');
+  });
+});
+
+describe('Select highlighted row ring', () => {
+  it('draws a 2px inset ring on the highlighted option', () => {
+    render(<Select label="Plan" value="free" onChange={() => {}} options={OPTIONS} />);
+    fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' });
+    const cls = screen.getAllByRole('option')[0].className;
+    expect(cls).toContain('data-[highlighted]:ring-2');
+    expect(cls).toContain('data-[highlighted]:ring-inset');
+    expect(cls.split(/\s+/)).not.toContain('hds-focus');
+    expect(cls).toContain('data-[highlighted]:ring-ring');
   });
 });

@@ -55,6 +55,15 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    options: {
+      // Front door (#308): landing page first, then the three public tiers, with
+      // Button leading Primitives; everything else (Layout, Navigation,
+      // Feedback) follows alphabetically.
+      storySort: {
+        order: ['Introduction', 'Foundations', 'Primitives', ['Button'], 'Patterns'],
+        method: 'alphabetical',
+      },
+    },
     a11y: {
       // Run axe-core on every story automatically.
       config: {},

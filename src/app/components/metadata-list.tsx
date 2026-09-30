@@ -114,7 +114,8 @@ export const MetadataList = React.forwardRef<HTMLDListElement, MetadataListProps
                 color: 'var(--semantic-color-content-secondary)',
               }}
             >
-              {footer}
+              <dt className="sr-only">Summary</dt>
+              <dd className="m-0">{footer}</dd>
             </div>
           )}
         </dl>

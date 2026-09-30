@@ -8,7 +8,7 @@ import { Slider } from '../app/components/slider';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/slider',
+  title: 'Primitives/Slider',
   component: Slider,
   tags: ['autodocs'],
   parameters: {

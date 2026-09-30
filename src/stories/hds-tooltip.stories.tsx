@@ -11,7 +11,7 @@ import { Tooltip } from '../app/components/hds-tooltip';
 import { Button } from '../app/components/button';
 
 const meta = {
-  title: 'Primitives/hds-tooltip',
+  title: 'Primitives/HDS Tooltip',
   component: Tooltip,
   tags: ['autodocs'],
   parameters: {

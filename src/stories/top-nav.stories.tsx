@@ -7,7 +7,7 @@ import { TopNav } from '../app/components/top-nav';
 import { Button } from '../app/components/button';
 
 const meta = {
-  title: 'Patterns/top-nav',
+  title: 'Patterns/Top Nav',
   component: TopNav,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

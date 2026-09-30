@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { HistoryCard } from '../app/components/history-card';
 
 const meta = {
-  title: 'Primitives/history-card',
+  title: 'Primitives/History Card',
   component: HistoryCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', '!dev'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -12,7 +12,7 @@ import { Button } from '../app/components/button';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/popover',
+  title: 'Primitives/Popover',
   component: Popover,
   tags: ['autodocs'],
   parameters: {

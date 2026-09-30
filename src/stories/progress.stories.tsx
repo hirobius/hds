@@ -7,7 +7,7 @@ import { Progress } from '../app/components/progress';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/progress',
+  title: 'Primitives/Progress',
   component: Progress,
   tags: ['autodocs'],
   parameters: {

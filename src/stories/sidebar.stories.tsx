@@ -23,7 +23,7 @@ const Panel = ({ label, minHeight = 80 }: { label: string; minHeight?: number })
 );
 
 const meta = {
-  title: 'Primitives/sidebar',
+  title: 'Primitives/Sidebar',
   component: Sidebar,
   tags: ['autodocs'],
   parameters: {

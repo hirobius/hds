@@ -8,7 +8,7 @@ import { Field } from '../app/components/field';
 import { designParameters } from './design-parameters';
 
 const meta = {
-  title: 'Primitives/field',
+  title: 'Primitives/Field',
   component: Field,
   tags: ['autodocs'],
   parameters: {

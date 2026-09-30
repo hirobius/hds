@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Blockquote } from '../app/components/blockquote';
 
 const meta = {
-  title: 'Primitives/blockquote',
+  title: 'Primitives/Blockquote',
   component: Blockquote,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
