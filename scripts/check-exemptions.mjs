@@ -60,6 +60,13 @@ const MARKERS = [
   'vocab-ok',
   'deprecation-ok',
   'style-prop-ok',
+  // Two more markers other gates define and document, missing here the same way
+  // `layout-ok` was: check-spacing-vocabulary.mjs honors `spacing-vocab-ok`, and
+  // src/app/components/__tests__/no-css-var-in-motion-animate.test.ts honors
+  // `motion-animate-var-ok`. Without them this gate failed on those gates' own
+  // docs (hds#372). scripts/__tests__/check-exemptions.test.mjs pins both.
+  'spacing-vocab-ok',
+  'motion-animate-var-ok',
 ];
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);

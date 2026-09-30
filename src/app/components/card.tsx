@@ -94,11 +94,13 @@ export type CardTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 // dividers, rails, disclosures, and whitespace unless the content is a
 // genuinely discrete repeated object."
 //
-// `tone` uses `!border-[…]` (important) so a feedback tone always wins over
-// `variant`'s border treatment, the same tone-overrides-variant precedent as
-// Button. `bordered` only takes effect via the compound below (variant is
-// still `default` and tone is still `neutral`) so it never fights `accent`'s
-// border for the border-color utility group.
+// A feedback `tone` always wins over `variant`'s border treatment by
+// tailwind-merge class-group replacement, the same mechanism as Button
+// (ADR-030): the tone string sets both border groups the variants set, width
+// (`border` replaces `accent`'s `border-2`) and colour, and cva emits it after
+// the variant, so `cn` keeps only the tone's classes. `bordered` only takes
+// effect via the compound below (variant is still `default` and tone is still
+// `neutral`) so it never fights `accent`'s border for the border-color group.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven
 const cardVariants = /* @__PURE__ */ cva(
   'flex h-full flex-col rounded-lg bg-card text-card-foreground',
@@ -110,10 +112,10 @@ const cardVariants = /* @__PURE__ */ cva(
       },
       tone: {
         neutral: '',
-        danger: '!border !border-[var(--semantic-color-feedback-error)]',
-        success: '!border !border-[var(--semantic-color-feedback-success)]',
-        warning: '!border !border-[var(--semantic-color-feedback-warning)]',
-        info: '!border !border-[var(--semantic-color-feedback-info)]',
+        danger: 'border border-[var(--semantic-color-feedback-error)]',
+        success: 'border border-[var(--semantic-color-feedback-success)]',
+        warning: 'border border-[var(--semantic-color-feedback-warning)]',
+        info: 'border border-[var(--semantic-color-feedback-info)]',
       },
       bordered: {
         true: '',

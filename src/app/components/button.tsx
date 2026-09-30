@@ -48,19 +48,24 @@ const buttonVariants = /* @__PURE__ */ cva(
       // Semantic action color. `neutral` (default) keeps the variant's own
       // colors; the status tones apply a token-driven tonal fill (tinted
       // surface + matching feedback text) that clears AA in BOTH light and dark
-      // because the fg/bg feedback token pair flips together per theme. `!`
-      // (important) lets the tone override whichever `variant` colors are set,
-      // so `tone` composes with any variant. Drives the destructive/status
-      // actions consumers previously kept on MUI.
+      // because the fg/bg feedback token pair flips together per theme. Tone
+      // beats variant by tailwind-merge class-group replacement (ADR-030): cva
+      // emits tone classes after variant classes and the output is only ever
+      // rendered through `cn`, so each tone class replaces the variant class in
+      // its group. That holds only if a tone sets EVERY group a variant sets,
+      // hover fill and hover border included; a group the tone leaves out
+      // leaks the variant's class through (the reason the hover pair is here).
+      // A consumer `className` comes last and overrides tone the same way.
+      // Drives the destructive/status actions consumers previously kept on MUI.
       tone: {
         neutral: '',
         danger:
-          '!border-transparent !bg-feedback-bg-danger !text-feedback-danger hover:!brightness-95 dark:hover:!brightness-110',
+          'border-transparent bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
         success:
-          '!border-transparent !bg-feedback-bg-success !text-feedback-success hover:!brightness-95 dark:hover:!brightness-110',
+          'border-transparent bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
         warning:
-          '!border-transparent !bg-feedback-bg-warning !text-feedback-warning hover:!brightness-95 dark:hover:!brightness-110',
-        info: '!border-transparent !bg-feedback-bg-info !text-feedback-info hover:!brightness-95 dark:hover:!brightness-110',
+          'border-transparent bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
+        info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
       },
       size: {
         sm: 'h-8 px-3 text-xs [&_svg]:size-3.5',
