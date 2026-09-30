@@ -7,6 +7,7 @@
 import * as React from 'react';
 import { Cluster } from './cluster';
 import { EmptyState } from './empty-state';
+import { Stack } from './stack';
 import { Table, type TableColumn, type TableRow } from './table';
 import { Text } from './text';
 
@@ -44,7 +45,8 @@ export interface DataTableSectionProps extends Omit<React.HTMLAttributes<HTMLEle
 }
 
 // The table never squeezes a column below this, so a narrow viewport scrolls
-// horizontally inside the section instead of crushing its text.
+// horizontally inside the section instead of crushing its text. Raw rem values
+// because the table's grid minWidth is a per-column-count calc with no size token.
 const COLUMN_MIN = '8rem';
 const ACTIONS_MIN = '6rem';
 
@@ -112,7 +114,7 @@ export const DataTableSection = React.forwardRef<HTMLElement, DataTableSectionPr
         aria-labelledby={headingId}
         {...props}
       >
-        <div className="flex flex-col gap-3">
+        <Stack gap="tight">
           <Cluster gap="normal" align="center" justify="space-between">
             <Text id={headingId} as={`h${level}`} variant="heading3">
               {title}
@@ -128,9 +130,14 @@ export const DataTableSection = React.forwardRef<HTMLElement, DataTableSectionPr
           {rows.length === 0 ? (
             <EmptyState title={emptyTitle} description={emptyDescription} />
           ) : (
-            <Table columns={tableColumns} rows={tableRows} minWidth={minWidth} />
+            <Table
+              columns={tableColumns}
+              rows={tableRows}
+              minWidth={minWidth}
+              labelledBy={headingId}
+            />
           )}
-        </div>
+        </Stack>
       </section>
     );
   },

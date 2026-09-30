@@ -2784,6 +2784,7 @@
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
         "src/app/components/cover.tsx",
+        "src/app/components/data-table-section.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",

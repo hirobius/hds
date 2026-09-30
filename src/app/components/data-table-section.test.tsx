@@ -97,4 +97,22 @@ describe('DataTableSection', () => {
     expect(cells[0].className).not.toContain('text-right');
     expect(cells[1].className).toContain('text-right');
   });
+
+  it('names the table and its scroll region after the section heading', () => {
+    render(
+      <>
+        <DataTableSection title="Projects" columns={columns} rows={rows} />
+        <DataTableSection title="Invoices" columns={columns} rows={rows} />
+      </>,
+    );
+    expect(screen.getByRole('table', { name: 'Projects' })).not.toBeNull();
+    expect(screen.getByRole('table', { name: 'Invoices' })).not.toBeNull();
+    // Each scroll region carries its own section's name, so two on one screen stay distinct.
+    expect(
+      screen.getByRole('region', { name: 'Projects Scrollable table content' }),
+    ).not.toBeNull();
+    expect(
+      screen.getByRole('region', { name: 'Invoices Scrollable table content' }),
+    ).not.toBeNull();
+  });
 });

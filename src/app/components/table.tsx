@@ -158,6 +158,7 @@ export function Table({
   caption,
   captionAction,
   description,
+  labelledBy,
   minWidth,
   density = 'comfortable',
   flush = false,
@@ -169,13 +170,21 @@ export function Table({
   /** Optional action rendered to the right of the caption. */
   captionAction?: ReactNode;
   description?: ReactNode;
+  /**
+   * Id of an element that names the table when there is no `caption`. Applied to
+   * the `role="table"` element, and to the scroll region together with its own
+   * label so two tables on one screen keep distinct region names.
+   */
+  labelledBy?: string;
   minWidth?: number | string;
   density?: TableDensity;
   flush?: boolean;
   stickyHeader?: boolean;
 }) {
   const captionId = useId();
+  const regionId = useId();
   const hasCaption = Boolean(caption);
+  const nameId = hasCaption ? captionId : labelledBy;
 
   return (
     <div>
@@ -202,15 +211,18 @@ export function Table({
       ) : null}
       <Surface
         padding={flush ? 'none' : 'component'}
+        id={regionId}
         role="region"
         tabIndex={0}
-        aria-labelledby={hasCaption ? captionId : undefined}
+        aria-labelledby={
+          hasCaption ? captionId : labelledBy ? `${labelledBy} ${regionId}` : undefined
+        }
         aria-label={hasCaption ? undefined : 'Scrollable table content'}
         style={{ overflowX: 'auto', overflowY: 'visible' }}
       >
         <div
           role="table"
-          aria-labelledby={hasCaption ? captionId : undefined}
+          aria-labelledby={nameId}
           className="grid"
           style={{
             minWidth,

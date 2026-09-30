@@ -62,6 +62,7 @@ export const DestructiveSection = React.forwardRef<HTMLElement, DestructiveSecti
       >
         <Card tone="danger">
           <Cluster gap="normal" align="center" justify="space-between">
+            {/* The shared heading pair takes string-only text and no heading id; this section needs a ReactNode title and an id for aria-labelledby. */}
             <div data-slot="copy" className="min-w-0 grow basis-64">
               <Text id={headingId} as={`h${level}`} variant="heading3">
                 {title}

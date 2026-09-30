@@ -36,4 +36,21 @@ describe('container radius', () => {
     const css = readFileSync(resolve(__dirname, '../src/styles/theme.css'), 'utf8');
     expect(css).not.toContain('var(--component-card-radius)');
   });
+
+  it('the static .hds-card rule follows the tenant knob, not a fixed radius', () => {
+    const css = readFileSync(resolve(__dirname, '../src/styles/static.css'), 'utf8');
+    const block = css.match(/\n\.hds-card\s*\{([^}]*)\}/)?.[1] ?? '';
+    expect(block).toContain('border-radius');
+    expect(block).not.toContain('--primitive-radius-8');
+    expect(block).not.toContain('--component-card-radius');
+    expect(block).toContain('var(--role-radius)');
+  });
+
+  it('the component rules doc no longer forbids the container radius', () => {
+    const doc = readFileSync(resolve(__dirname, '../docs/rules/REACT_COMPONENTS.md'), 'utf8');
+    expect(doc).not.toMatch(/Never 12px/);
+    expect(doc).not.toMatch(/No `border-radius` greater than 8 px/);
+    expect(doc).not.toContain('consistent radius (`var(--primitive-radius-8)`)');
+    expect(doc).toContain('rounded-lg');
+  });
 });
