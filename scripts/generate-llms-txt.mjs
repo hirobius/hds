@@ -47,6 +47,7 @@ const layoutRecipeSteps = [
   '`Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.',
   'Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).',
   '`Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.',
+  'Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile` with the "Which one, when" table in `DESIGN.md`.',
   '`Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.',
 ];
 
@@ -133,6 +134,7 @@ function buildPropsDigest(api) {
  */
 export function generateLlmsTxt({ write = true } = {}) {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
   if (write) writeComponentApiManifest();
   // Keep as an existence check (and to ensure the generated artifact is present).
   const componentApi = JSON.parse(readFileSync(componentApiPath, 'utf8'));
@@ -155,6 +157,37 @@ export function generateLlmsTxt({ write = true } = {}) {
       ? manifest.patternInventory.map((name) => `- ${name}`).join('\n')
       : '';
   const patternSection = patternLines ? `## Pattern Inventory\n\n${patternLines}\n\n` : '';
+
+  const iconNames = manifest.iconSet?.names ?? [];
+  const hdsNames = new Set([
+    ...(manifest.componentInventory ?? []),
+    ...(manifest.patternInventory ?? []),
+  ]);
+  const iconCollisions = iconNames.filter((n) => hdsNames.has(n));
+  const collisionNote = iconCollisions.length
+    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} share names with HDS components; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
+    : '';
+  const lucideVersion = String(pkg.dependencies?.['lucide-react'] ?? '').replace(/^[^\d]*/, '');
+  const iconSection = iconNames.length
+    ? `## Icons
+
+Icons come from the curated subpath \`${manifest.iconSet.subpath}\`; nothing extra to install.
+
+\`\`\`tsx
+import { IconButton } from '@hirobius/design-system';
+import { Ellipsis } from '${manifest.iconSet.subpath}';
+
+<IconButton icon={Ellipsis} label="Row actions" />
+\`\`\`
+
+Rule: icon-only actions (row menus, close, edit) use \`IconButton\`; do not hand-roll a button with a glyph or text "...".
+
+Names: ${iconNames.join(', ')}
+
+Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.${collisionNote} For an icon outside the set, install \`lucide-react@${lucideVersion}\` (same version keeps the \`LucideIcon\` type identical).
+
+`
+    : '';
 
   const generated = new Date().toISOString();
   const SLICE_INDEX = SLICES.map((sl) => `- \`public/llms/${sl.name}.txt\` - ${sl.blurb}`).join(
@@ -282,7 +315,7 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 - \`TOKEN_GOVERNANCE.md\`
 - \`SYSTEMS_REGISTRY.md\`
 
-${patternSection}## Token Rules
+${patternSection}${iconSection}## Token Rules
 
 ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 

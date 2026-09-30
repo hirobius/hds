@@ -499,7 +499,7 @@
       "gateScript": "scripts/check-storybook-axe.mjs",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand"
+      "firingChannel": "ci-pr"
     },
     {
       "id": "check-pack-contents",
@@ -784,7 +784,7 @@
       "fixturePath": null,
       "owner": "Adrian",
       "source": "agent",
-      "firingChannel": "pnpm-meta"
+      "firingChannel": "ci-pr"
     }
   ]
 }

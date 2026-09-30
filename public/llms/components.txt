@@ -32,6 +32,10 @@ Alert - compact feedback surface with contextual severity.
 
 ### AlertDialog
 AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
 
 ### AspectRatio
 Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.
@@ -191,6 +195,7 @@ Checkbox — custom-drawn checkbox with check / indeterminate glyph.
 
 ### CinematicLink
 CinematicLink - cinematic editorial link treatment for portfolio surfaces.
+  - children: string
   - href: string
 
 ### CircularProgress
@@ -261,6 +266,11 @@ Container — semantic width-constrained layout. semantic max-width scale, so ag
 
 ### ContextMenu
 ContextMenu root + parts. Wrap the right-clickable area in `ContextMenu.Trigger`. Controlled via `onOpenChange`.
+  - children: React.ReactNode
+  - dir: ("ltr" | "rtl")
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
 
 ### Cover
 Cover — vertical shell with an auto-centered main region. centered hero/main region that absorbs the remaining space, and an optional footer" problem via the f…
@@ -309,6 +319,7 @@ Tagged per-export, not on the file block: this module exports ten components and
   - children: ReactNode
   - defaultOpen: boolean
   - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
 ### DialogClose
@@ -318,7 +329,14 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### DialogContent
 Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
   - asChild: boolean
+  - forceMount: true
   - hideClose: boolean = false
+  - onCloseAutoFocus: ((event: Event) => void)
+  - onEscapeKeyDown: ((event: KeyboardEvent) => void)
+  - onFocusOutside: ((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)
+  - onInteractOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ original…
+  - onOpenAutoFocus: ((event: Event) => void)
+  - onPointerDownOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)
 
 ### DialogDescription
 Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
@@ -333,9 +351,13 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### DialogOverlay
 Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
   - asChild: boolean
+  - forceMount: true
 
 ### DialogPortal
 Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+  - children: React.ReactNode
+  - container: Element | DocumentFragment | null
+  - forceMount: true
 
 ### DialogTitle
 Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
@@ -386,6 +408,7 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections. co
 
 ### Field
 Caption label paired with a value — used in metadata grids and read-only forms.
+  - children: React.ReactNode
   - label: string
   - mono: boolean | null
   - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
@@ -401,6 +424,13 @@ A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
 
 ### Form
 Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level
+
+### FormActions
+Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.
+  - destructive: ReactNode
+  - primary: ReactNode
+  - secondary: ReactNode
+  - sticky: boolean = false
 
 ### FormField
 Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement. Validation-library agnostic — pass `error…
@@ -471,6 +501,7 @@ HdsDocsShell — three-region docs shell (left nav rail, content, right TOC rail
 Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.
   - as: ElementType<any, keyof IntrinsicElements> = div
   - brand: string
+  - children: React.ReactNode
   - className: string
   - density: 'comfortable' | 'compact'
   - fontFamily: string
@@ -490,6 +521,12 @@ HeadingStack — enforced vertical rhythm for heading + subheading pairs. Automa
 
 ### HoverCard
 HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.
+  - children: React.ReactNode
+  - closeDelay: number
+  - defaultOpen: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+  - openDelay: number
 
 ### Icon
 Icon — semantic icon wrapper for Lucide icons.
@@ -519,6 +556,7 @@ IconButton ” icon-only action trigger built on the shared Button primitive.
 
 ### InlineCode
 InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
+  - children: ReactNode
   - compact: boolean
   - copyable: boolean = false
   - density: "comfortable" | "compact" | null
@@ -571,6 +609,12 @@ Lightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image vie
 
 ### Menu
 Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - dir: ("ltr" | "rtl")
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
 
 ### MetadataList
 Renders object metadata as a semantic `<dl>` of term/description pairs.
@@ -578,6 +622,17 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - items: MetadataListItem[]
   - orientation: "horizontal" | "vertical" | null = vertical
   - variant: "plain" | "divided" = plain
+
+### MetricTile
+One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyeb…
+  - label: ReactNode
+  - sub: ReactNode
+  - tone: 'neutral' | 'success' | 'warning' | 'danger' | 'info' = neutral
+  - value: ReactNode
+
+### MetricTiles
+A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of hea…
+  - children: ReactNode
 
 ### MultiSelector
 MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one over…
@@ -590,6 +645,7 @@ MultiSelector — multi-select dropdown composing the existing Popover with a ch
 
 ### NavGroup
 NavGroup - labeled navigation group for stacks of nav items.
+  - children: ReactNode
   - className: string
   - collapsible: boolean = false
   - contentStyle: CSSProperties
@@ -618,10 +674,19 @@ Renders up to `max` children followed by a `+N` overflow chip (or custom node).
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
+  - children: ReactNode
   - className: string
   - maxWidth: 'content' | 'max' = max
   - paddingY: 'default' | 'compact' | 'none' = default
   - style: CSSProperties
+
+### PageHeader
+Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
+  - actions: ReactNode
+  - breadcrumb: ReactNode
+  - level: PageHeaderLevel = 1
+  - status: ReactNode
+  - title: ReactNode
 
 ### Pagination
 Paged navigation with first/last anchors, sibling pages, and ellipses.
@@ -641,6 +706,11 @@ Pin — sticky-pin an element within its scroll region. section scrolls — the 
 
 ### Popover
 Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
 
 ### Progress
 Linear progress. Determinate when `value` is a number, else indeterminate.
@@ -719,6 +789,7 @@ Decorative loading placeholder. Marked aria-hidden — announce the loading stat
 
 ### Sketch
 Sketch — shared shell for generative canvases and WebGL sketches.
+  - children: ReactNode
   - controls: ReactNode
   - title: string
 
@@ -831,19 +902,29 @@ Table - structured data table primitive for documentation and compact UI matrice
 
 ### Tabs
 The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-l…
+  - activationMode: "automatic" | "manual"
   - asChild: boolean
+  - defaultValue: string
+  - dir: ("ltr" | "rtl")
+  - onValueChange: ((value: string) => void)
+  - orientation: "horizontal" | "vertical"
+  - value: string
 
 ### TabsContent
 Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
   - asChild: boolean
+  - forceMount: true
+  - value: string
 
 ### TabsList
 Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
   - asChild: boolean
+  - loop: boolean
 
 ### TabsTrigger
 Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
   - asChild: boolean
+  - value: string
 
 ### Tag
 Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps th…
@@ -853,6 +934,7 @@ Tag — interactive filter and category chip. The outer <button> carries the acc
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.
   - as: "symbol" | "object" | "map" | "filter" | "title" | "a" | "button" | "div" | "fo… = defaultTagMap[variant]
+  - children: ReactNode
   - className: string
   - style: CSSProperties
   - variant: TextVariant
@@ -898,6 +980,7 @@ Presents a date/time with a machine-readable `dateTime` for accessibility.
 
 ### ToastProvider
 Provider + viewport for the toast system. Wrap the app root once.
+  - children: React.ReactNode
   - duration: number = 5000
   - swipeDirection: SwipeDirection = right
 
@@ -910,6 +993,9 @@ Toggle — boolean on/off toggle with animated thumb.
 ### ToggleButton
 A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
   - asChild: boolean
+  - defaultPressed: boolean
+  - onPressedChange: ((pressed: boolean) => void)
+  - pressed: boolean
   - size: "sm" | "md" | "lg" | null
   - variant: "secondary" | "ghost" | null
 
@@ -948,9 +1034,18 @@ A bordered field of Tag chips followed by a text input for adding more.
 ### Toolbar
 Toolbar root. Groups related controls with a single roving tab-stop. Supports the native `orientation` prop (`horizontal` | `vertical`).
   - asChild: boolean
+  - dir: ("ltr" | "rtl")
+  - loop: boolean
+  - orientation: "horizontal" | "vertical"
 
 ### Tooltip
 Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …
+  - children: React.ReactNode
+  - defaultOpen: boolean
+  - delayDuration: number
+  - disableHoverableContent: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
 
 ### TopNav
 Top navigation bar with brand, nav, and trailing action slots.
