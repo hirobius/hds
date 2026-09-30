@@ -19,11 +19,16 @@
  *   node scripts/check-status-claims.mjs             # print the derived counts
  *   node scripts/check-status-claims.mjs --write      # (re)write the witness file
  *   node scripts/check-status-claims.mjs --check      # exit 1 on drift
+ *
+ * `--check` also compares status.json's `consistency` object and the README
+ * "Agent consistency" line with the latest eval/consistency/ledger.json entry
+ * (hds#343, scripts/lib/consistency/status-sync.mjs).
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findStoryFiles } from './lib/story-link.mjs';
+import { checkRepo as checkConsistency } from './lib/consistency/status-sync.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'docs/guardrails/status-claims.json');
@@ -81,6 +86,18 @@ function main() {
       return;
     }
     console.log(`✓ status claim witness matches reality (${JSON.stringify(derived)})`);
+
+    const consistency = checkConsistency(ROOT);
+    if (!consistency.ok) {
+      console.error('✗ agent-consistency figures have drifted from eval/consistency/ledger.json:');
+      for (const problem of consistency.problems) console.error(`  ${problem}`);
+      console.error(
+        '  Update status.json `consistency` and the README "Agent consistency" line to match the latest ledger entry (node scripts/eval-consistency.mjs --summary prints the line).',
+      );
+      process.exitCode = 1;
+      return;
+    }
+    console.log('✓ status.json consistency and README match the latest consistency ledger entry');
     return;
   }
 

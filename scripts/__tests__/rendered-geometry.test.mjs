@@ -288,19 +288,22 @@ describe.skipIf(!hasBrowser)('#282 — freezing animations removes measurement f
     const page = await context.newPage();
     await page.goto(`data:text/html,${encodeURIComponent(ANIMATED_HTML)}`);
 
-    // Near the 0%/100% keyframe: the child is at its 20px resting width, well
-    // inside the 40px frame.
-    await page.waitForTimeout(50);
-    const atRest = (await measure(page)).map((f) => f.kind);
-
-    // Near the 50% keyframe (t=1s of the 2s loop): the child is near its
-    // 140px peak, well past the frame's width.
-    await page.waitForTimeout(950);
-    const midCycle = (await measure(page)).map((f) => f.kind);
+    // The child breathes between its 20px resting width (0%/100% keyframes,
+    // inside the 40px frame) and a 140px peak (50% keyframe, well past it) on
+    // a 2 s loop. Two fixed instants used to be sampled, but under machine
+    // load a 50 ms wait can already land mid-cycle and the case failed for a
+    // timing reason, not a geometry one. Sample the whole loop instead: the
+    // measurement is non-deterministic exactly when the same page reports
+    // both an overflow and no overflow depending on when it is asked.
+    const seen = new Set();
+    for (let i = 0; i < 12; i += 1) {
+      seen.add((await measure(page)).some((f) => f.kind === 'overflow-x'));
+      await page.waitForTimeout(200);
+    }
 
     await context.close();
-    expect(atRest.includes('overflow-x')).toBe(false);
-    expect(midCycle.includes('overflow-x')).toBe(true);
+    expect(seen.has(false)).toBe(true);
+    expect(seen.has(true)).toBe(true);
   });
 
   it('is stable once animations are frozen before the first paint', async () => {

@@ -180,3 +180,6 @@ docs/components/
 knowledge-clients.local.json
 # Generated gate reports (check-storybook-axe)
 reports/
+
+# Agent-built consistency runs (eval/consistency/README.md); force-add only a run that backs a ledger entry
+eval/consistency/runs/
