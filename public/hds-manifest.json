@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T18:11:35.736Z",
+  "generated": "2026-09-30T22:59:25.312Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -898,7 +898,8 @@
             "reason": "a short status label"
           }
         ]
-      }
+      },
+      "core": true
     },
     "CinematicLink": {
       "category": "Branding",
@@ -1116,7 +1117,8 @@
           }
         ]
       },
-      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. Use Center instead when you also need a horizontal gutter, which Container does not support."
+      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. Use Center instead when you also need a horizontal gutter, which Container does not support.",
+      "core": true
     },
     "Disclosure": {
       "category": "Layout",
@@ -1251,7 +1253,8 @@
             "reason": "switching between panels of content"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Divider": {
       "category": "Layout",
@@ -1370,7 +1373,8 @@
             "reason": "a bounded region with its own background"
           }
         ]
-      }
+      },
+      "core": true
     },
     "DocLinkCard": {
       "category": "Navigation",
@@ -1809,7 +1813,8 @@
           }
         ]
       },
-      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
+      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient.",
+      "core": true
     },
     "Icon": {
       "category": "Display",
@@ -1989,7 +1994,8 @@
             "reason": "a picture of a person or entity"
           }
         ]
-      }
+      },
+      "core": true
     },
     "IconButton": {
       "category": "Actions",
@@ -2294,7 +2300,8 @@
             "reason": "unlinked body copy"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Input": {
       "category": "Inputs",
@@ -2574,7 +2581,8 @@
             "reason": "a long fixed list that needs search"
           }
         ]
-      }
+      },
+      "core": true
     },
     "NavGroup": {
       "category": "Navigation",
@@ -2906,7 +2914,8 @@
             "reason": "more than five options"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Sketch": {
       "category": "Layout",
@@ -3206,7 +3215,8 @@
           }
         ]
       },
-      "aiRules": "Use Stack for flow spacing and simple flex alignment only. Do NOT use Stack to create card chrome, internal surface padding, or page-width constraints. Do NOT apply arbitrary margins to Stack to fake spacing between children when the gap prop should own that rhythm. Do NOT use Stack for true two-dimensional layouts that require Grid."
+      "aiRules": "Use Stack for flow spacing and simple flex alignment only. Do NOT use Stack to create card chrome, internal surface padding, or page-width constraints. Do NOT apply arbitrary margins to Stack to fake spacing between children when the gap prop should own that rhythm. Do NOT use Stack for true two-dimensional layouts that require Grid.",
+      "core": true
     },
     "StepperField": {
       "category": "Inputs",
@@ -3423,7 +3433,8 @@
             "reason": "a short list of items"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Tag": {
       "category": "Inputs",
@@ -3602,7 +3613,8 @@
             "reason": "a read-only status or count"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Token": {
       "category": "Display",
@@ -3892,7 +3904,8 @@
           }
         ]
       },
-      "aiRules": "Use Surface only when content needs a background-bearing inset wrapper. Do NOT use Surface for macro page layouts, section spacing, or pure width constraints. Do NOT nest extra padded wrappers inside Surface to simulate another card. Do NOT recreate surface behavior with raw div padding, backgroundColor, or border styles elsewhere."
+      "aiRules": "Use Surface only when content needs a background-bearing inset wrapper. Do NOT use Surface for macro page layouts, section spacing, or pure width constraints. Do NOT nest extra padded wrappers inside Surface to simulate another card. Do NOT recreate surface behavior with raw div padding, backgroundColor, or border styles elsewhere.",
+      "core": true
     },
     "Card": {
       "category": "Display",
@@ -4168,7 +4181,8 @@
             "reason": "a single headline figure"
           }
         ]
-      }
+      },
+      "core": true
     },
     "ComponentInstanceMatrix": {
       "category": "Utilities",
@@ -4613,7 +4627,8 @@
             "reason": "a keyboard key hint"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Dialog": {
       "category": "Overlays",
@@ -4776,11 +4791,6 @@
           "tokenBinding": {
             "fill": "role.muted-foreground"
           }
-        },
-        {
-          "name": "trigger",
-          "description": "The element that opens the dialog (Dialog.Trigger).",
-          "source": "jsdoc"
         }
       ],
       "allowedChildren": [
@@ -4867,7 +4877,8 @@
           "keys": "Shift+Tab",
           "effect": "Cycles focus backwards inside the open dialog."
         }
-      ]
+      ],
+      "core": true
     },
     "StackedCardRail": {
       "category": "Display",
@@ -5186,7 +5197,8 @@
             "reason": "navigation to another page"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Callout": {
       "category": "Feedback",
@@ -5333,7 +5345,8 @@
           }
         ]
       },
-      "aiRules": "Use only for inline empty states inside an existing section. Do NOT use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container."
+      "aiRules": "Use only for inline empty states inside an existing section. Do NOT use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container.",
+      "core": true
     },
     "Field": {
       "category": "Display",
@@ -5445,7 +5458,8 @@
             "reason": "a headline figure inside a Card"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Page": {
       "category": "Layout",
@@ -5937,7 +5951,8 @@
             "reason": "a message that needs a sentence"
           }
         ]
-      }
+      },
+      "core": true
     },
     "TextLockup": {
       "variantAxes": [
@@ -6246,7 +6261,8 @@
             "reason": "optional content that expands in place"
           }
         ]
-      }
+      },
+      "core": true
     },
     "TabsContent": {
       "category": "Navigation",
@@ -6469,7 +6485,8 @@
             "reason": "a compact switch between two to five views or modes"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Select": {
       "category": "Inputs",
@@ -6594,7 +6611,8 @@
           "keys": "Tab",
           "effect": "Does not leave the open listbox."
         }
-      ]
+      ],
+      "core": true
     },
     "Slider": {
       "category": "Inputs",
@@ -6669,7 +6687,8 @@
             "reason": "a precise typed value (type=\"number\")"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Toggle": {
       "category": "Inputs",
@@ -6756,7 +6775,8 @@
             "reason": "one choice from a set"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Avatar": {
       "category": "Display",
@@ -6840,7 +6860,8 @@
             "reason": "a status marker"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Progress": {
       "category": "Feedback",
@@ -6920,7 +6941,8 @@
             "reason": "placeholder shapes for loading content"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Skeleton": {
       "category": "Feedback",
@@ -6998,7 +7020,8 @@
             "reason": "a short wait with no layout to reserve"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Spinner": {
       "category": "Feedback",
@@ -7070,7 +7093,8 @@
             "reason": "a region whose layout is known"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Breadcrumb": {
       "category": "Navigation",
@@ -7138,7 +7162,8 @@
             "reason": "stepping through pages of results"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Pagination": {
       "category": "Navigation",
@@ -7208,7 +7233,8 @@
             "reason": "a hierarchy trail"
           }
         ]
-      }
+      },
+      "core": true
     },
     "ToastProvider": {
       "category": "Feedback",
@@ -7274,7 +7300,8 @@
             "reason": "a message that needs a decision"
           }
         ]
-      }
+      },
+      "core": true
     },
     "Combobox": {
       "category": "Inputs",
@@ -7395,7 +7422,8 @@
           "keys": "Tab",
           "effect": "Stays inside the open list."
         }
-      ]
+      ],
+      "core": true
     },
     "Form": {
       "category": "Inputs",
@@ -7665,7 +7693,8 @@
             "reason": "a single region with its own background"
           }
         ]
-      }
+      },
+      "core": true
     },
     "AvatarGroup": {
       "category": "Display",
@@ -7830,7 +7859,8 @@
             "reason": "loosely spaced buttons"
           }
         ]
-      }
+      },
+      "core": true
     },
     "InputGroup": {
       "category": "Inputs",
@@ -7950,7 +7980,8 @@
             "reason": "inline code and other typography"
           }
         ]
-      }
+      },
+      "core": true
     },
     "StatusDot": {
       "category": "Feedback",
@@ -8127,7 +8158,8 @@
             "reason": "text that everyone should read"
           }
         ]
-      }
+      },
+      "core": true
     },
     "CircularProgress": {
       "category": "Feedback",
@@ -9152,7 +9184,8 @@
           "keys": "Tab",
           "effect": "Does not leave the open menu."
         }
-      ]
+      ],
+      "core": true
     },
     "DateInput": {
       "category": "Inputs",
@@ -9434,7 +9467,8 @@
           "keys": "Tab",
           "effect": "Moves on to the next element and closes the card."
         }
-      ]
+      ],
+      "core": true
     },
     "MultiSelector": {
       "category": "Inputs",
@@ -9692,7 +9726,8 @@
           }
         ]
       },
-      "aiRules": "Reach for Stack/Grid/Container/the every-layout primitives first. Use Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex."
+      "aiRules": "Reach for Stack/Grid/Container/the every-layout primitives first. Use Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex.",
+      "core": true
     },
     "Bleed": {
       "category": "Layout",
@@ -10474,7 +10509,8 @@
             "reason": "a single line of text"
           }
         ]
-      }
+      },
+      "core": true
     },
     "CardBody": {
       "category": "Display",
@@ -11585,7 +11621,8 @@
             "reason": "exactly one choice from a set"
           }
         ]
-      }
+      },
+      "core": true
     },
     "FormActions": {
       "category": "Actions",
