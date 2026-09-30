@@ -66,7 +66,10 @@ documented scope, `<div data-hds data-theme={theme}>`, with `theme` read from
 `src/App.tsx` is a placeholder that every generated app replaces; `main.tsx`
 mounts it whether it exports the component as `default` or as `App`. The template
 does not depend on the design system: the harness installs the packed tarball
-into a copy of it.
+into a copy of it. Its dev dependencies (`typescript`, `@types/react`,
+`@types/react-dom`, vite) are pinned to exact versions, so the "built and type
+checked" figure of one dated run is comparable with the next; change a pin only
+on purpose.
 
 ## Running
 
@@ -83,15 +86,19 @@ registry and Chromium (`PLAYWRIGHT_BROWSERS_PATH`, `/opt/pw-browsers` in remote
 sessions). It:
 
 1. runs `build:lib` and `npm pack`, records the tarball sha256 and the git
-   commit (`--skip-build` reuses the tarball a previous run left in
-   `reports/consistency/pack/`);
+   commit, and writes both to `reports/consistency/pack/pack.json`
+   (`--skip-build` reuses that tarball and takes the commit from `pack.json`,
+   not from HEAD; it refuses if the record is missing or is for a different
+   file). Both values are printed in the run log and go into the ledger entry;
 2. installs that tarball and the declared peers into a copy of the template for
    each app, so an app is built against what a consumer gets, not the source
    tree;
 3. runs `tsc --noEmit` and `vite build` for each app;
 4. serves each build and screenshots it at 1280x800 light, 1280x800 dark and 390
    wide (full page, motion frozen, fonts loaded) into
-   `reports/consistency/<date>/`;
+   `reports/consistency/<date>/` (input under `fixtures/` goes to
+   `reports/consistency/fixtures/<path>/` instead, so a fixture run cannot
+   overwrite a recorded run's images);
 5. axe-scans each app in light and dark (WCAG 2.0 to 2.2 A and AA rules, the same
    engine and rule sets as `scripts/check-storybook-axe.mjs`);
 6. pixel-diffs every pair of light PNGs, and every pair of dark PNGs for the
@@ -101,7 +108,10 @@ sessions). It:
 
 If an app does not build, the run exits 1 and writes no ledger entry: nothing
 can be rendered or scanned for it, so the other figures would describe a
-different set of apps. Input under `fixtures/` never writes a ledger entry.
+different set of apps. Input under `fixtures/` never writes a ledger entry. A
+run that would write an entry refuses (exit 2) when the git tree has
+uncommitted changes, because the commit would not describe what was tested;
+commit or stash first. Fixture runs only warn.
 
 `--offline` computes violations and Jaccard from source and checks only those
 two thresholds. It needs no network or browser and never writes a ledger entry.

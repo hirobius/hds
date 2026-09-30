@@ -9,6 +9,7 @@
  */
 import { afterAll, describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import {
   existsSync,
   mkdirSync,
@@ -30,10 +31,13 @@ import {
   installFailureMessage,
   pairwiseDiffs,
   peerSpecs,
+  checkPackRecord,
   runDate,
+  screenshotDir,
   shotName,
   trimBuildLog,
 } from '../lib/consistency/live-plan.mjs';
+import { packLibrary } from '../lib/consistency/pack.mjs';
 import { stageApp } from '../lib/consistency/stage.mjs';
 import { runLive } from '../lib/consistency/live.mjs';
 import { readLedger, validateEntry } from '../lib/consistency/ledger.mjs';
@@ -345,6 +349,13 @@ describe('the committed template', () => {
     expect(JSON.stringify(pkg)).not.toMatch(/hirobius/);
   });
 
+  it('pins every dev dependency to an exact version, so a dated run is reproducible', () => {
+    const pkg = JSON.parse(read('package.json'));
+    for (const [name, range] of Object.entries(pkg.devDependencies)) {
+      expect(range, name).toMatch(/^\d+\.\d+\.\d+$/);
+    }
+  });
+
   it('is not linted or typechecked as repo source', () => {
     // the repo's typecheck includes only src/, and lint covers src scripts validators tests.
     const ts = JSON.parse(readFileSync(path.join(ROOT, 'tsconfig.json'), 'utf8'));
@@ -359,7 +370,13 @@ function fakeStages(over = {}) {
     calls,
     pack: async (o) => {
       calls.push(['pack', o.skipBuild]);
-      return { tarball: '/x/pkg.tgz', sha256: 'c'.repeat(64), version: '0.18.0' };
+      return {
+        tarball: '/x/pkg.tgz',
+        sha256: 'c'.repeat(64),
+        version: '0.18.0',
+        commit: 'd'.repeat(40),
+        dirty: false,
+      };
     },
     prepare: async (app) => {
       calls.push(['prepare', app.id]);
@@ -378,7 +395,6 @@ function fakeStages(over = {}) {
       calls.push(['axe', app.id]);
       return ['light', 'dark'].map((theme) => axeScanRow(app.id, theme, { violations: [] }));
     },
-    commit: () => 'd'.repeat(40),
     ...over,
   };
   return stages;
@@ -528,6 +544,86 @@ describe('runLive: the orchestration, with its stages injected', () => {
     expect(readLedger(input.ledgerFile).entries).toHaveLength(0);
   });
 
+  it('records the commit the tarball was packed from, not the commit at judge time', async () => {
+    const input = fakeInput();
+    const stages = fakeStages({
+      pack: async () => ({
+        tarball: '/x/pkg.tgz',
+        sha256: 'c'.repeat(64),
+        version: '0.18.0',
+        commit: 'a'.repeat(40),
+        dirty: false,
+      }),
+      // a stage that would report HEAD must not be consulted
+      commit: () => 'f'.repeat(40),
+    });
+    await runLive(input, stages);
+    expect(readLedger(input.ledgerFile).entries[0].commit).toBe('a'.repeat(40));
+  });
+
+  it('logs the commit next to the tarball sha256, and again when the entry is appended', async () => {
+    const lines = [];
+    await runLive(fakeInput({ log: (l) => lines.push(l) }), fakeStages());
+    const commit = 'd'.repeat(40);
+    expect(lines.some((l) => l.includes('tarball sha256') && l.includes('c'.repeat(64)))).toBe(
+      true,
+    );
+    expect(lines.some((l) => l.startsWith('commit ') && l.includes(commit))).toBe(true);
+    expect(lines.some((l) => l.includes('ledger entry appended') && l.includes(commit))).toBe(true);
+  });
+
+  it('refuses to append a ledger entry when the tarball was packed from a dirty tree', async () => {
+    const input = fakeInput();
+    const stages = fakeStages({
+      pack: async () => ({
+        tarball: '/x/pkg.tgz',
+        sha256: 'c'.repeat(64),
+        version: '0.18.0',
+        commit: 'd'.repeat(40),
+        dirty: true,
+      }),
+    });
+    await expect(runLive(input, stages)).rejects.toThrow(/uncommitted changes.*commit or stash/is);
+    // it stops before the slow work, and writes nothing
+    expect(stages.calls.some((c) => c[0] === 'prepare')).toBe(false);
+    expect(readLedger(input.ledgerFile).entries).toHaveLength(0);
+  });
+
+  it('still runs a fixture input from a dirty tree, with a warning and no ledger entry', async () => {
+    const lines = [];
+    const input = fakeInput({ writeLedger: false, log: (l) => lines.push(l) });
+    const stages = fakeStages({
+      pack: async () => ({
+        tarball: '/x/pkg.tgz',
+        sha256: 'c'.repeat(64),
+        version: '0.18.0',
+        commit: 'd'.repeat(40),
+        dirty: true,
+      }),
+    });
+    const r = await runLive(input, stages);
+    expect(r.code).toBe(0);
+    expect(lines.some((l) => /warning.*uncommitted changes/i.test(l))).toBe(true);
+    expect(readLedger(input.ledgerFile).entries).toHaveLength(0);
+  });
+
+  it('writes to outDir when given, so two inputs on the same date do not collide', async () => {
+    const first = fakeInput();
+    const second = fakeInput({ reportsDir: first.reportsDir, date: first.date });
+    const black = solidPng(8, 8, [0, 0, 0]);
+    const white = solidPng(8, 8, [255, 255, 255]);
+    const paint = (png) => ({
+      render: async () => Object.fromEntries(VIEWPORTS.map((v) => [v.key, png])),
+    });
+    const dirA = path.join(first.reportsDir, '2026-10-01');
+    const dirB = path.join(first.reportsDir, 'fixtures', 'pass');
+    await runLive({ ...first, outDir: dirA }, fakeStages(paint(black)));
+    await runLive({ ...second, outDir: dirB, writeLedger: false }, fakeStages(paint(white)));
+    const shot = shotName('app-a', VIEWPORTS[0]);
+    expect(readFileSync(path.join(dirA, shot)).equals(black)).toBe(true);
+    expect(readFileSync(path.join(dirB, shot)).equals(white)).toBe(true);
+  });
+
   it('passes --skip-build through to the pack stage', async () => {
     const stages = fakeStages();
     await runLive(fakeInput({ skipBuild: true }), stages);
@@ -638,6 +734,111 @@ describe('failedStages', () => {
     expect(failedStages({ typechecked: false, built: true })).toBe('type check failed');
     expect(failedStages({ typechecked: false, built: false })).toBe(
       'type check and vite build failed',
+    );
+  });
+});
+
+describe('screenshotDir: where a run puts its PNGs', () => {
+  const reports = '/r/reports/consistency';
+
+  it('keeps recorded runs in reports/<date>/', () => {
+    expect(screenshotDir(reports, '2026-09-30', 'eval/consistency/runs/2026-09-30')).toBe(
+      path.join(reports, '2026-09-30'),
+    );
+  });
+
+  it('keys fixture input by its own path, so it never lands in a dated folder', () => {
+    const pass = screenshotDir(reports, '2026-09-30', 'eval/consistency/fixtures/pass');
+    const layout = screenshotDir(
+      reports,
+      '2026-09-30',
+      'eval/consistency/fixtures/fail/layout-diff',
+    );
+    expect(pass).toBe(path.join(reports, 'fixtures', 'pass'));
+    expect(layout).toBe(path.join(reports, 'fixtures', 'fail', 'layout-diff'));
+    expect(pass).not.toBe(layout);
+    expect(pass).not.toBe(path.join(reports, '2026-09-30'));
+  });
+});
+
+describe('checkPackRecord: provenance of a reused tarball', () => {
+  const record = { commit: 'a'.repeat(40), sha256: 'c'.repeat(64), dirty: false };
+
+  it('returns the recorded commit and dirty flag when the sha256 matches', () => {
+    expect(checkPackRecord(record, 'c'.repeat(64))).toEqual({
+      commit: 'a'.repeat(40),
+      dirty: false,
+    });
+  });
+
+  it('refuses when there is no record, naming the fix', () => {
+    expect(() => checkPackRecord(null, 'c'.repeat(64))).toThrow(/without --skip-build/);
+  });
+
+  it('refuses when the tarball is not the one that was recorded', () => {
+    expect(() => checkPackRecord(record, 'e'.repeat(64))).toThrow(
+      /does not match.*without --skip-build/is,
+    );
+  });
+
+  it('refuses a malformed record', () => {
+    expect(() => checkPackRecord({ commit: 'a' }, 'c'.repeat(64))).toThrow(/without --skip-build/);
+  });
+});
+
+describe('packLibrary --skip-build: the commit comes from the pack record', () => {
+  function packDirWithTarball() {
+    const dir = makeTmp('pack-');
+    const pkgDir = path.join(dir, 'package');
+    mkdirSync(pkgDir);
+    writeFileSync(
+      path.join(pkgDir, 'package.json'),
+      JSON.stringify({ name: 'x', version: '9.9.9' }),
+    );
+    const tgz = path.join(dir, 'x-9.9.9.tgz');
+    const r = spawnSync('tar', ['-czf', tgz, '-C', dir, 'package']);
+    expect(r.status).toBe(0);
+    rmSync(pkgDir, { recursive: true });
+    return { dir, tgz };
+  }
+  const sha = (file) => createHash('sha256').update(readFileSync(file)).digest('hex');
+
+  it('reads the commit from pack.json, not from HEAD', () => {
+    const { dir, tgz } = packDirWithTarball();
+    writeFileSync(
+      path.join(dir, 'pack.json'),
+      JSON.stringify({ commit: 'a'.repeat(40), sha256: sha(tgz), dirty: false }),
+    );
+    const packed = packLibrary({ root: dir, packDir: dir, skipBuild: true });
+    expect(packed.commit).toBe('a'.repeat(40));
+    expect(packed.dirty).toBe(false);
+    expect(packed.version).toBe('9.9.9');
+  });
+
+  it('passes on a tarball packed from a dirty tree', () => {
+    const { dir, tgz } = packDirWithTarball();
+    writeFileSync(
+      path.join(dir, 'pack.json'),
+      JSON.stringify({ commit: 'a'.repeat(40), sha256: sha(tgz), dirty: true }),
+    );
+    expect(packLibrary({ root: dir, packDir: dir, skipBuild: true }).dirty).toBe(true);
+  });
+
+  it('refuses when pack.json is missing', () => {
+    const { dir } = packDirWithTarball();
+    expect(() => packLibrary({ root: dir, packDir: dir, skipBuild: true })).toThrow(
+      /without --skip-build/,
+    );
+  });
+
+  it('refuses when the sha256 in pack.json is not the tarball on disk', () => {
+    const { dir } = packDirWithTarball();
+    writeFileSync(
+      path.join(dir, 'pack.json'),
+      JSON.stringify({ commit: 'a'.repeat(40), sha256: 'e'.repeat(64), dirty: false }),
+    );
+    expect(() => packLibrary({ root: dir, packDir: dir, skipBuild: true })).toThrow(
+      /does not match/,
     );
   });
 });

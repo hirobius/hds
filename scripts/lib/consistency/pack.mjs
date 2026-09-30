@@ -7,10 +7,18 @@
  */
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { installFailureMessage, peerSpecs } from './live-plan.mjs';
+import { checkPackRecord, installFailureMessage, peerSpecs } from './live-plan.mjs';
 import { stageApp } from './stage.mjs';
 
 // npm, pnpm and npx are .cmd shims on Windows and cannot be spawned by bare name.
@@ -25,10 +33,16 @@ function fail(what, r) {
 
 /**
  * @param {{ root:string, packDir:string, skipBuild:boolean }} o
- * @returns {{ tarball:string, sha256:string, version:string, pkg:object }}
+ * A full pack writes `pack.json` (commit, sha256, dirty) beside the tarball;
+ * `--skip-build` takes the commit from it, and refuses when it is missing or
+ * describes a different tarball, so the ledger's commit is always the one the
+ * tested tarball was built from.
+ * @returns {{ tarball:string, sha256:string, version:string, pkg:object, commit:string, dirty:boolean }}
  */
 export function packLibrary({ root, packDir, skipBuild }) {
   mkdirSync(packDir, { recursive: true });
+  const recordFile = path.join(packDir, 'pack.json');
+  let packedFrom = null;
   if (skipBuild) {
     if (!readdirSync(packDir).some((f) => f.endsWith('.tgz'))) {
       throw new Error(
@@ -38,6 +52,9 @@ export function packLibrary({ root, packDir, skipBuild }) {
     }
   } else {
     for (const f of readdirSync(packDir)) if (f.endsWith('.tgz')) rmSync(path.join(packDir, f));
+    rmSync(recordFile, { force: true });
+    // read before build:lib, which writes only ignored paths but is not ours to trust
+    packedFrom = { commit: gitCommit(root), dirty: gitDirty(root) };
     const built = run('pnpm', ['build:lib'], { cwd: root });
     if (built.status !== 0) fail('pnpm build:lib', built);
     const packed = run('npm', ['pack', '--pack-destination', packDir, '--silent'], { cwd: root });
@@ -49,10 +66,25 @@ export function packLibrary({ root, packDir, skipBuild }) {
   }
   const tarball = path.join(packDir, files[0]);
   const sha256 = createHash('sha256').update(readFileSync(tarball)).digest('hex');
+  let provenance;
+  if (skipBuild) {
+    let record = null;
+    try {
+      record = existsSync(recordFile) ? JSON.parse(readFileSync(recordFile, 'utf8')) : null;
+    } catch {
+      record = null;
+    }
+    provenance = checkPackRecord(record, sha256);
+    // The tarball may be clean, but a tree edited since still changes the template and scripts.
+    provenance.dirty ||= gitDirty(root);
+  } else {
+    provenance = packedFrom;
+    writeFileSync(recordFile, `${JSON.stringify({ ...provenance, sha256 }, null, 2)}\n`);
+  }
   const manifest = run('tar', ['-xzOf', tarball, 'package/package.json']);
   if (manifest.status !== 0) fail('reading package.json from the tarball', manifest);
   const pkg = JSON.parse(manifest.stdout);
-  return { tarball, sha256, version: pkg.version, pkg };
+  return { tarball, sha256, version: pkg.version, pkg, ...provenance };
 }
 
 /** The scratch directory the per-app copies live in. */

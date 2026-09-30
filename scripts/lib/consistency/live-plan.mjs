@@ -7,6 +7,7 @@
  * that do the work (pack, build, render, axe-run) call in here and are not
  * imported by `pnpm test`.
  */
+import path from 'node:path';
 import { evaluate } from './evaluate.mjs';
 import { diffPng } from './pixeldiff.mjs';
 
@@ -20,6 +21,44 @@ export const VIEWPORTS = [
 export const AXE_THEMES = ['light', 'dark'];
 
 export const shotName = (appId, viewport) => `${appId}-${viewport.key}.png`;
+
+const FIXTURES_PREFIX = 'eval/consistency/fixtures/';
+
+/**
+ * Where a run writes its PNGs. A recorded run keeps `reports/<date>/`, which is
+ * the evidence a ledger entry points at. Fixture input is keyed by its own path
+ * instead: fixture apps are named app-a/b/c too, so sharing the dated folder
+ * would overwrite a recorded run's images on the same day.
+ * @param {string} inputRel the --apps directory, relative to the repo root, with forward slashes
+ */
+export function screenshotDir(reportsDir, date, inputRel) {
+  const rel = String(inputRel ?? '').replace(/\/+$/, '');
+  if (`${rel}/`.startsWith(FIXTURES_PREFIX)) {
+    return path.join(reportsDir, 'fixtures', ...rel.slice(FIXTURES_PREFIX.length).split('/'));
+  }
+  return path.join(reportsDir, date);
+}
+
+/**
+ * What a reused (--skip-build) tarball is known to have been packed from. The
+ * record is written next to the tarball by a full pack; reusing a tarball whose
+ * record is absent, malformed or for a different file would put a commit in the
+ * ledger that says nothing about the bits that were tested.
+ * @returns {{ commit:string, dirty:boolean }}
+ */
+export function checkPackRecord(record, sha256) {
+  const fix = 'Run once without --skip-build to build and pack the library again.';
+  if (!record || !/^[0-9a-f]{40}$/.test(String(record.commit)) || !record.sha256) {
+    throw new Error(`reports/consistency/pack/pack.json is missing or unreadable. ${fix}`);
+  }
+  if (record.sha256 !== sha256) {
+    throw new Error(
+      `the tarball on disk (${sha256.slice(0, 12)}...) does not match the one pack.json recorded ` +
+        `(${String(record.sha256).slice(0, 12)}...). ${fix}`,
+    );
+  }
+  return { commit: record.commit, dirty: record.dirty === true };
+}
 
 /** The UTC calendar date of a run, YYYY-MM-DD. */
 export const runDate = (now = new Date()) => now.toISOString().slice(0, 10);

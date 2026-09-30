@@ -19,7 +19,7 @@ import { existsSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { evaluate, formatCheck } from './lib/consistency/evaluate.mjs';
-import { runDate } from './lib/consistency/live-plan.mjs';
+import { runDate, screenshotDir } from './lib/consistency/live-plan.mjs';
 import { runLive } from './lib/consistency/live.mjs';
 import { pairwiseJaccard } from './lib/consistency/jaccard.mjs';
 import { latestEntry, readLedger, summaryLine } from './lib/consistency/ledger.mjs';
@@ -42,10 +42,15 @@ Modes:
                            (not for input under eval/consistency/fixtures/).
                            Needs network access and Chromium (PLAYWRIGHT_BROWSERS_PATH,
                            /opt/pw-browsers in remote sessions). PNGs go to
-                           reports/consistency/<date>/.
+                           reports/consistency/<date>/ (fixture input: to
+                           reports/consistency/fixtures/<path>/, so it cannot
+                           overwrite a recorded run's images). A run that records
+                           a ledger entry needs a clean git tree.
   --apps <dir> --skip-build
                            Same, reusing the tarball a previous full run left in
                            reports/consistency/pack/ instead of build:lib + npm pack.
+                           The commit recorded is the one that tarball was packed from
+                           (pack.json); it refuses if that record is missing or stale.
   --apps <dir> --offline   Measure violations and component-set Jaccard from source
                            only and check them against the ledger thresholds. No
                            network, no browser, no ledger entry.
@@ -155,11 +160,6 @@ async function live(dir, opts) {
   let browser = null;
   const getBrowser = async () => (browser ??= await launch());
   const log = (line) => console.log(line);
-  if (pack.gitDirty(ROOT)) {
-    log(
-      'warning: the working tree has uncommitted changes, so the recorded commit does not describe the tarball exactly.',
-    );
-  }
   log(`scratch directory ${scratch}`);
   const stages = {
     pack: async ({ skipBuild }) => pack.packLibrary({ root: ROOT, packDir, skipBuild }),
@@ -171,15 +171,17 @@ async function live(dir, opts) {
     build: async (app) => buildApp(app.dir),
     render: async (app) => renderApp(await getBrowser(), app.dir),
     axe: async (app) => scanApp(await getBrowser(), ROOT, app),
-    commit: () => pack.gitCommit(ROOT),
   };
   const rel = path.relative(ROOT, root).split(path.sep).join('/');
+  const reportsDir = path.join(ROOT, 'reports/consistency');
+  const date = runDate();
   const result = await runLive(
     {
       root: ROOT,
       ledgerFile: LEDGER,
-      reportsDir: path.join(ROOT, 'reports/consistency'),
-      date: runDate(),
+      reportsDir,
+      outDir: screenshotDir(reportsDir, date, rel),
+      date,
       apps: Object.entries(apps).map(([id, files]) => ({ id, dir: path.join(root, id), files })),
       skipBuild: opts.skipBuild,
       writeLedger: !isFixture,

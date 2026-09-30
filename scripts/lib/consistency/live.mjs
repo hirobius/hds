@@ -1,16 +1,16 @@
 /** @internal — the live half of scripts/eval-consistency.mjs (hds#344). */
 /**
  * Runs every stage for every app and judges the result against the ledger
- * thresholds. The stages are passed in (pack, prepare, build, render, axe,
- * commit) so this orchestration can be tested without a network, a browser or a
+ * thresholds. The stages are passed in (pack, prepare, build, render, axe) so this orchestration can be tested without a network, a browser or a
  * build; scripts/eval-consistency.mjs wires the real ones.
  *
- *   pack     -> { tarball, sha256, version }      once per run
+ *   pack     -> { tarball, sha256, version, commit, dirty }   once per run;
+ *               commit is what the tarball was packed from, dirty whether the
+ *               tree had uncommitted changes then
  *   prepare  -> { dir }                            template + app src + tarball installed
  *   build    -> { typechecked, built, log }        tsc --noEmit, then vite build
  *   render   -> { [viewportKey]: Buffer }          full-page PNG per viewport
  *   axe      -> scan rows (light and dark)
- *   commit   -> git sha the tarball was built from
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -30,7 +30,7 @@ import { scanApp } from './violations.mjs';
 /**
  * @param {{ root:string, ledgerFile:string, reportsDir:string, date:string,
  *   apps:{id:string, dir:string, files:Record<string,string>}[],
- *   skipBuild:boolean, writeLedger:boolean, notes?:string, log:(line:string)=>void }} input
+ *   outDir?:string, skipBuild:boolean, writeLedger:boolean, notes?:string, log:(line:string)=>void }} input
  * @returns {Promise<{ code:number, report:object, entry:object|null }>}
  */
 export async function runLive(input, stages) {
@@ -44,6 +44,17 @@ export async function runLive(input, stages) {
   const packed = await stages.pack({ skipBuild: input.skipBuild });
   log(`tarball ${path.basename(packed.tarball)}`);
   log(`tarball sha256 ${packed.sha256}`);
+  log(`commit ${packed.commit}${packed.dirty ? ' (uncommitted changes)' : ''}`);
+  if (packed.dirty) {
+    if (input.writeLedger) {
+      throw new Error(
+        'the tree has uncommitted changes, so the commit would not describe what was tested, ' +
+          'and no ledger entry can be recorded. Commit or stash them and run again ' +
+          '(a run over eval/consistency/fixtures/ is allowed from a dirty tree).',
+      );
+    }
+    log('warning: the tree has uncommitted changes, so the commit above is approximate.');
+  }
 
   const builds = {};
   const buildLogs = {};
@@ -74,7 +85,7 @@ export async function runLive(input, stages) {
     axeRows.push(...(await stages.axe(prepared)));
   }
 
-  const outDir = path.join(input.reportsDir, input.date);
+  const outDir = input.outDir ?? path.join(input.reportsDir, input.date);
   mkdirSync(outDir, { recursive: true });
   for (const [id, byViewport] of Object.entries(shots)) {
     for (const v of VIEWPORTS) writeFileSync(path.join(outDir, shotName(id, v)), byViewport[v.key]);
@@ -101,7 +112,7 @@ export async function runLive(input, stages) {
     date: input.date,
     packageVersion: packed.version,
     tarballSha256: packed.sha256,
-    commit: stages.commit(),
+    commit: packed.commit,
     apps: ids,
     results,
     thresholds,
@@ -126,7 +137,9 @@ export async function runLive(input, stages) {
     );
   } else if (input.writeLedger) {
     appendEntry(input.ledgerFile, entry);
-    log(`ledger entry appended: ${input.date} harness, pass ${entry.pass}`);
+    log(
+      `ledger entry appended: ${input.date} harness, commit ${packed.commit}, pass ${entry.pass}`,
+    );
   } else {
     log('ledger entry NOT written: fixture input.');
   }
