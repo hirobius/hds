@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T09:13:24.000Z",
+  "updatedAt": "2026-09-30T09:42:10.000Z",
   "phase": "active",
   "headline": "Hiring-readiness burndown wave 1 (hds#306, review 2026-09-29): 13 PRs \u2014 Storybook dark canvas + front door, README front door, CI axe gate, a11y fixes, keyboard contracts, repo curation, privacy, strict TS + bare exports, patterns codemod, DTCG tokens + Figma staging states, wayfinder skills. Merging 2026-09-29/30; Figma promotion and workflow-file edits are Adrian steps (see hds#325, #327, #326, #321 bodies).",
   "next": [
@@ -82,5 +82,12 @@
     "Doc-rot fixed twice, both self-inflicted and caught by review rather than shipped: scripts/figma-disposition.mjs told every future reader to go ratify a closed issue, and then its replacement asserted '17 layout primitives' in the present tense while the tool reports 14. It now gives both numbers and says the tool's output beats any count quoted in prose, that comment included",
     "figma/links.json storybookUrl set to https://hirobius-design-system.vercel.app and rebaked, so design-to-code story links point at rendered stories. A previous session left this undone specifically because it could not run the generator",
     "Environment verified end to end and all three inherited environment blockers cleared: pnpm install works (registry.npmjs.org via the default-package-managers option, NOT the Custom allowlist), pnpm figma:inventory --fetch works, the rotated Figma PAT authenticates"
-  ]
+  ],
+  "consistency": {
+    "date": "2026-09-29",
+    "source": "review",
+    "pass": false,
+    "jaccardMin": 0.68,
+    "lightDiffMax": 2.39
+  }
 }
