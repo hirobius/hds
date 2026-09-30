@@ -107,6 +107,18 @@
  * gzip at measure time, not budgeted) and fails when @radix-ui/react-dialog
  * or @radix-ui/react-alert-dialog code reaches it.
  *
+ * Measured again 2026-09-30 (hds#365), budget unchanged: the esbuild probe
+ * passed the "no dialog packages" check above while its metafile still
+ * listed 33 @radix-ui packages, because ContextMenu, Menu, Toolbar, Popover,
+ * Tooltip and HoverCard wrote their parts onto a component the same way (37
+ * `X.Part = …` writes). Moved onto the pure Object.assign shape: rollup
+ * Button-only 30.81 kB gzip before and after (rollup already dropped the
+ * writes); esbuild Button-only 85.58 kB -> 42.11 kB gzip, @radix-ui packages
+ * reached 33 -> 2 (react-slot and react-compose-refs, what button.tsx itself
+ * pulls in). scripts/build-button-probe.mjs now fails on any @radix-ui
+ * package outside that allow-list, and check-pure-annotations also flags a
+ * bare Object.assign(<Component>, …) and any top-level `X.Part = …` write.
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.

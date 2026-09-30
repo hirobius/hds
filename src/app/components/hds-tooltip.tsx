@@ -81,6 +81,22 @@ const HdsTooltipContent = /* @__PURE__ */ React.forwardRef<
 
 // ── Compound export ──────────────────────────────────────────────────────────
 
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Writing them onto a component at module scope is a side
+// effect webpack and esbuild keep in every bundle that reaches the shared
+// chunk (hds#363, hds#365).
+function TooltipRoot({
+  delayDuration = 300,
+  children,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Root> & { delayDuration?: number }) {
+  return (
+    <TooltipPrimitive.Provider delayDuration={delayDuration}>
+      <TooltipPrimitive.Root {...props}>{children}</TooltipPrimitive.Root>
+    </TooltipPrimitive.Provider>
+  );
+}
+
 interface HdsTooltipComponent extends React.FC<
   React.ComponentProps<typeof TooltipPrimitive.Root> & {
     /** Hover-open delay in ms (Radix Provider). Default 300. */
@@ -97,16 +113,12 @@ interface HdsTooltipComponent extends React.FC<
  * `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
  * @public
  */
-const Tooltip = (({
-  delayDuration = 300,
-  children,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root> & { delayDuration?: number }) => (
-  <TooltipPrimitive.Provider delayDuration={delayDuration}>
-    <TooltipPrimitive.Root {...props}>{children}</TooltipPrimitive.Root>
-  </TooltipPrimitive.Provider>
-)) as HdsTooltipComponent;
-Tooltip.Trigger = TooltipPrimitive.Trigger;
-Tooltip.Content = HdsTooltipContent;
+const Tooltip: HdsTooltipComponent = /* @__PURE__ */ Object.assign(TooltipRoot, {
+  Trigger: TooltipPrimitive.Trigger,
+  Content: HdsTooltipContent,
+  // Set here, not by a later `Tooltip.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'Tooltip',
+});
 
 export { Tooltip };
