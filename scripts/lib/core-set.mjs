@@ -126,7 +126,7 @@ export function renderCoreSetBlock({ core, patterns, rootDeprecated }) {
   return [
     `**${coreCount}** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries \`core: true\` in \`public/hds-manifest.json\`.`,
     '',
-    ...core.map(({ category, names }) => `- **${category}:** ${code(names)}`),
+    ...renderCoreSetByCategory(core),
     '',
     `**${patterns.length}** pattern modules ship from \`@hirobius/design-system/patterns\`: composed surfaces that assume a product (app shells, navigation, feeds, rails, pickers, screen sections), built from the core set. One name per module; its parts and props types come with it.`,
     '',
@@ -159,7 +159,7 @@ export function renderCoreSetLines(core) {
   return core.flatMap(({ category, names }) => names.map((name) => `- ${name} (${category})`));
 }
 
-/** The consumer SKILL.md "## Core set" body lines: one bullet per category. */
+/** One `- **Category:** \`A\`, \`B\`` bullet per category (README block and SKILL.md "## Core set"). */
 export function renderCoreSetByCategory(core) {
   return core.map(({ category, names }) => `- **${category}:** ${code(names)}`);
 }
