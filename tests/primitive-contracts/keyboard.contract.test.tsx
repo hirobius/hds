@@ -24,8 +24,8 @@ import { Popover } from '@/app/components/popover';
 import { Menu } from '@/app/components/menu';
 import { ContextMenu } from '@/app/components/context-menu';
 import { HoverCard } from '@/app/components/hover-card';
-import { HdsSelect } from '@/app/components/select';
-import { HdsTooltip } from '@/app/components/hds-tooltip';
+import { Select } from '@/app/components/select';
+import { Tooltip } from '@/app/components/hds-tooltip';
 import { Combobox } from '@/app/components/combobox';
 import { MultiSelector } from '@/app/components/multi-selector';
 
@@ -129,7 +129,7 @@ function HoverCardFixture() {
 
 function SelectFixture() {
   const [value, setValue] = useState('apple');
-  return <HdsSelect label="Fruit" options={FRUIT} value={value} onChange={setValue} />;
+  return <Select label="Fruit" options={FRUIT} value={value} onChange={setValue} />;
 }
 
 function ComboboxFixture() {
@@ -628,17 +628,17 @@ describe('HoverCard keyboard contract', () => {
 });
 
 // ── Tooltip ─────────────────────────────────────────────────────────────────
-// HdsTooltip is the public Radix tooltip wrapper. Keyboard users open it by
+// Tooltip is the public Radix tooltip wrapper. Keyboard users open it by
 // focusing the trigger; Escape dismisses it while focus stays on the trigger.
 
 describe('Tooltip keyboard contract', () => {
   function TooltipFixture() {
     return (
       <>
-        <HdsTooltip delayDuration={0}>
-          <HdsTooltip.Trigger>Copy</HdsTooltip.Trigger>
-          <HdsTooltip.Content>Copy link</HdsTooltip.Content>
-        </HdsTooltip>
+        <Tooltip delayDuration={0}>
+          <Tooltip.Trigger>Copy</Tooltip.Trigger>
+          <Tooltip.Content>Copy link</Tooltip.Content>
+        </Tooltip>
         <button type="button">After</button>
       </>
     );

@@ -75,6 +75,15 @@
  * byte-identical on all 44 linked components. Dropping one would shrink this
  * entry, but it is a breaking change for manifest consumers.
  *
+ * Button-only root import (hds#315, 2026-09-29): `import { Button } from
+ * '@hirobius/design-system'`, tree-shaken and minified with react/react-dom
+ * external, built by scripts/build-button-probe.mjs (run by `pnpm check:size`
+ * after `build:lib`). Measured 113.01 kB gzip -> budget 119 kB (+5%), so the
+ * shared graph behind the barrel cannot grow silently under a one-component
+ * consumer. The 262 kB the issue quotes is the un-shaken chunk graph; this is
+ * what a bundler actually ships. Shared chunk at measure time:
+ * dist/chunks/activity-feed-*.js, 103.33 kB gzip.
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.
@@ -109,6 +118,12 @@ module.exports = [
     name: 'styles.css (scoped-only CSS bundle)',
     path: 'dist/styles.css',
     limit: '140 kB',
+    gzip: true,
+  },
+  {
+    name: 'Button-only root import (dist/probe/button-only.js)',
+    path: 'dist/probe/button-only.js',
+    limit: '119 kB',
     gzip: true,
   },
   {

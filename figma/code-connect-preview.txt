@@ -42,16 +42,11 @@ State=Loading            <Button variant="primary" loading>Button</Button>
 Show icon=true           <Button variant="primary" iconLeft={<IconInstance />}>Button</Button>
 Show trail icon=true     <Button variant="primary" iconRight={<IconInstance />}>Button</Button>
 
-## HdsCheckbox (6 combinations, 6 distinct snippets)
-default                  <HdsCheckbox label="Label" checked={false} onChange={setChecked} />
-State=checked            <HdsCheckbox label="Label" checked onChange={setChecked} />
-State=indeterminate      <HdsCheckbox label="Label" checked={false} indeterminate onChange={setChecked} />
-Disabled=true            <HdsCheckbox label="Label" checked={false} disabled onChange={setChecked} />
-
-## HdsRadio (4 combinations, 4 distinct snippets)
-default                  <HdsRadio label="Label" checked={false} onChange={setChecked} />
-Checked=true             <HdsRadio label="Label" checked onChange={setChecked} />
-Disabled=true            <HdsRadio label="Label" checked={false} disabled onChange={setChecked} />
+## Checkbox (6 combinations, 6 distinct snippets)
+default                  <Checkbox label="Label" checked={false} onChange={setChecked} />
+State=checked            <Checkbox label="Label" checked onChange={setChecked} />
+State=indeterminate      <Checkbox label="Label" checked={false} indeterminate onChange={setChecked} />
+Disabled=true            <Checkbox label="Label" checked={false} disabled onChange={setChecked} />
 
 ## Input (24 combinations, 18 distinct snippets)
 default                  <Input label="Label" defaultValue="Value" />
@@ -60,6 +55,11 @@ State=Disabled           <Input disabled label="Label" defaultValue="Value" />
 Size=lg                  <Input size="lg" label="Label" defaultValue="Value" />
 Size=sm                  <Input size="sm" label="Label" defaultValue="Value" />
 Show label=false         <Input defaultValue="Value" />
+
+## Radio (4 combinations, 4 distinct snippets)
+default                  <Radio label="Label" checked={false} onChange={setChecked} />
+Checked=true             <Radio label="Label" checked onChange={setChecked} />
+Disabled=true            <Radio label="Label" checked={false} disabled onChange={setChecked} />
 
 ## Tag (4 combinations, 2 distinct snippets)
 default                  <Tag>Tag</Tag>

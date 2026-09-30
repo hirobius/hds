@@ -1,7 +1,7 @@
 // motion-ok: interaction feedback (open/close, chevron rotate, item highlight) is
 // provided by Radix Select + CSS transitions, not motion/react.
 /**
- * HdsSelect — dropdown selector built on Radix Select.
+ * Select — dropdown selector built on Radix Select.
  * @category Inputs
  * @tier primitive
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49
@@ -15,7 +15,7 @@ import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 
 /**
- * HdsSelect — dropdown selector built on Radix Select (ADR-001 Radix convention).
+ * Select — dropdown selector built on Radix Select (ADR-001 Radix convention).
  * Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead,
  * full keyboard (Home/End/PageUp-Down/wrap), Popper collision/flip positioning, and
  * dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by
@@ -34,7 +34,7 @@ export interface SelectProps {
   onChange: (v: string) => void;
 }
 
-export const HdsSelect = forwardRef<HTMLButtonElement, SelectProps>(function HdsSelect(
+export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
   { label, showLabel = true, options, value, onChange },
   ref,
 ) {

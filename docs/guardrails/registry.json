@@ -765,6 +765,16 @@
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "build-button-probe",
+      "description": "Builds the tree-shaken Button-only root-import bundle (dist/probe/button-only.js) that .size-limit.cjs budgets at 119 kB gzip; runs inside `pnpm check:size` after build:lib.",
+      "severity": "error",
+      "gateScript": "scripts/build-button-probe.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
     }
   ]
 }

@@ -133,8 +133,8 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
 | **Alerts** (`Alert`) | `8px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by left-border color, not by tinted fills. |
 | **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
-| **Toggles** (`HdsToggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
-| **Segmented Control** (`SegmentedControl`) | Outer `8px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `HdsSelect`. |
+| **Toggles** (`Toggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
+| **Segmented Control** (`SegmentedControl`) | Outer `8px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`. |
 
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
