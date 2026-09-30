@@ -1,4 +1,4 @@
-// motion-ok: motion delivered via Tailwind transition-[colors,filter] + active:brightness; gate accepts only hds.duration refs
+// motion-ok: motion delivered via Tailwind transition-[colors,filter] (colours + the tone hover:brightness filter); the pressed overlay is a token-bound inset shadow that snaps on :active; gate accepts only hds.duration refs
 /**
  * @category Actions
  * @tier primitive
@@ -16,9 +16,27 @@ import { isDevelopment } from '../../lib/env';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list; Tailwind has no single utility for transition-[colors,filter]
+/**
+ * Pressed state (hds#322): an inset box-shadow wash bound to
+ * `role.pressed-overlay` (`semantic.color.state.pressed.overlay`: black in
+ * light, white in dark; the 5% alpha lives in the class, like `bg-scrim/60`),
+ * not the brightness filter it replaces (95% in light, 110% in dark), which
+ * had no token behind it and no Figma equivalent. Why an inset shadow and not
+ * a pseudo-element: Tailwind v4 composes `--tw-inset-shadow` with the
+ * `focus-visible:ring-*` and any consumer `shadow-*` into one `box-shadow`
+ * list, so the focus ring, an outer shadow and the press wash all render at
+ * once with no `relative`/`after:` classes and no extra DOM; the
+ * `inset-shadow-[0_0_0_9999px]` spread fills the padding box, so it works on
+ * a transparent tertiary fill and respects the radius. `disabled:pointer-events-none`
+ * keeps a disabled control from ever matching `:active`. The wash snaps on
+ * and off (`transition-[colors,filter]` is unchanged: the tone variants still
+ * hover through the brightness filter), which is also how the Figma Pressed
+ * variant behaves. Without `color-mix()` support the fallback is the opaque
+ * token, the same fallback Tailwind emits for `bg-scrim/60`.
+ */
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (Tailwind has no single utility for transition-[colors,filter]) and the 9999px inset-shadow spread that fills the padding box for the pressed wash
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:brightness-95 dark:active:brightness-110 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {

@@ -723,6 +723,7 @@ export function buildManifest(allTokens, raw) {
         border: 'role.input',
         hoverSurface: 'role.accent',
         hoverText: 'role.accent-foreground',
+        pressedOverlay: 'role.pressed-overlay',
         focusRing: 'role.ring',
         radius: 'role.radius',
       },
