@@ -115,18 +115,20 @@ one-off nested alignment; this nudges rather than blocks.
 ### `hds/sx-token-first`
 
 `Box`'s `sx` prop (`src/app/components/box.tsx`) is the sanctioned escape
-hatch specifically because it forces spacing/color through HDS tokens: bare
-numbers are a _feature_ there (they resolve off the 4px space scale), so
-this rule does **not** flag numeric literals — only values that prove the
-author reached past the token system.
+hatch specifically because it forces spacing/color through HDS tokens.
+Spacing takes the t-shirt scale by name: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`
+(8/16/24/32/48px, hds#206). This rule flags only values that prove the author
+reached past the token system. It does **not** flag bare numbers, which still
+resolve off the 4px scale, but a number reads as pixels when it is not
+(`p: 4` is 16px), so use the names.
 
 ```tsx
 // ❌ error
 <Box sx={{ color: '#fff' }} />
 <Box sx={{ m: '16px' }} />
 
-// ✅ ok — bare numbers resolve off the scale; strings are token keys/vars
-<Box sx={{ m: 2, gap: 4 }} />
+// ✅ ok — spacing by t-shirt step; other strings are token keys/vars
+<Box sx={{ m: 'sm', gap: 'md' }} />
 <Box sx={{ color: 'content.primary', top: 'var(--primitive-space-2)' }} />
 ```
 

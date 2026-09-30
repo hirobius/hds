@@ -4,11 +4,13 @@
  * Errors on raw hex colors or raw px strings inside a `sx={{ ... }}` prop
  * (Box's token-first layout engine — src/app/components/box.tsx). `sx` is
  * the sanctioned escape hatch specifically because it forces spacing/color
- * through HDS tokens: bare numbers are a *feature* there (they resolve off
- * the 4px space scale), so this rule does NOT flag numeric literals — only
- * values that prove the author reached past the token system (hex strings,
- * explicit 'Npx' strings). Nested objects (responsive `{ xs, sm, ... }` and
- * `&`-selector blocks) are walked recursively since sx supports both.
+ * through HDS tokens. Spacing takes the t-shirt scale by name
+ * ('xs' | 'sm' | 'md' | 'lg' | 'xl', hds#206), and the fix this rule offers
+ * points there. Bare numbers still resolve off the 4px space scale (`p: 4` is
+ * 16px), so this rule does NOT flag them — only values that prove the author
+ * reached past the token system (hex strings, explicit 'Npx' strings). Nested
+ * objects (responsive `{ xs, sm, ... }` and `&`-selector blocks) are walked
+ * recursively since sx supports both.
  */
 import { attrName, jsxObjectExpression, propName, stringLiteralValue } from './utils.mjs';
 
@@ -29,7 +31,7 @@ export default {
       rawHexInSx:
         'Raw hex color "{{value}}" in sx prop "{{prop}}" bypasses HDS color tokens. Use a dotted token key (e.g. "content.primary", "surface.raised", "accent").',
       rawPxInSx:
-        'Raw px string "{{value}}" in sx prop "{{prop}}" bypasses the HDS spacing scale. Use a bare number (resolves off the 4px scale) or a named step ("tight" | "normal" | "inset" | "spacious").',
+        'Raw px string "{{value}}" in sx prop "{{prop}}" bypasses the HDS spacing scale. Use a t-shirt step: "xs" | "sm" | "md" | "lg" | "xl" (8/16/24/32/48px).',
     },
   },
   create(context) {
