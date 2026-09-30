@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T03:15:25.000Z",
+  "updatedAt": "2026-09-30T08:01:17.000Z",
   "phase": "active",
   "headline": "Hiring-readiness burndown wave 1 (hds#306, review 2026-09-29): 13 PRs — Storybook dark canvas + front door, README front door, CI axe gate, a11y fixes, keyboard contracts, repo curation, privacy, strict TS + bare exports, patterns codemod, DTCG tokens + Figma staging states, wayfinder skills. Merging 2026-09-29/30; Figma promotion and workflow-file edits are Adrian steps (see hds#325, #327, #326, #321 bodies).",
   "next": [
