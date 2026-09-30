@@ -60,4 +60,19 @@ describe('FormActions', () => {
     expect(root.getAttribute('data-sticky')).toBe('true');
     expect(root.style.position).toBe('sticky');
   });
+
+  it('keeps the primary/secondary group right-aligned when the row wraps', () => {
+    const { container } = render(
+      <FormActions
+        primary={<button type="submit">Save</button>}
+        secondary={<button type="button">Cancel</button>}
+        destructive={<button type="button">Delete</button>}
+      />,
+    );
+    const group = screen.getByText('Save').closest('[data-slot="group"]') as HTMLElement;
+    expect(group).not.toBeNull();
+    expect(group.classList.contains('ml-auto')).toBe(true);
+    expect(group.contains(screen.getByText('Cancel'))).toBe(true);
+    expect(container.querySelector('[data-slot="destructive"]')?.contains(group)).toBe(false);
+  });
 });

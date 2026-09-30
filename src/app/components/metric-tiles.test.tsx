@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
 import { MetricTile, MetricTiles } from './metric-tiles';
@@ -74,5 +75,33 @@ describe('MetricTiles', () => {
   it('never resolves to zero columns', () => {
     const { container } = render(<MetricTiles>{null}</MetricTiles>);
     expect(grid(container).style.gridTemplateColumns).toBe('repeat(1, minmax(0, 1fr))');
+  });
+
+  it('counts tiles wrapped in a fragment', () => {
+    const { container } = render(
+      <MetricTiles>
+        <>
+          <MetricTile label="A" value="1" />
+          <MetricTile label="B" value="2" />
+        </>
+        <MetricTile label="C" value="3" />
+      </MetricTiles>,
+    );
+    expect(grid(container).style.gridTemplateColumns).toBe('repeat(3, minmax(0, 1fr))');
+  });
+
+  it('forwards a ref and HTML attributes to its root', () => {
+    const ref = React.createRef<HTMLDivElement>();
+    const { container } = render(
+      <MetricTiles ref={ref} aria-label="Key numbers" id="key-numbers" className="mt-4">
+        <MetricTile label="A" value="1" />
+      </MetricTiles>,
+    );
+    const root = container.querySelector('[data-hds-component="MetricTiles"]') as HTMLElement;
+    expect(ref.current).toBe(root);
+    expect(root.getAttribute('aria-label')).toBe('Key numbers');
+    expect(root.id).toBe('key-numbers');
+    expect(root.classList.contains('mt-4')).toBe(true);
+    expect(root.contains(grid(container))).toBe(true);
   });
 });

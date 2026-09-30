@@ -43,10 +43,13 @@ export const FormActions = React.forwardRef<HTMLDivElement, FormActionsProps>(fu
     >
       <Cluster gap="tight" align="center" justify={destructive ? 'space-between' : 'end'}>
         {destructive ? <div data-slot="destructive">{destructive}</div> : null}
-        <Cluster gap="tight" align="center" justify="end">
-          {secondary}
-          {primary}
-        </Cluster>
+        {/* ml-auto keeps the group right-aligned when the row wraps below the destructive slot. */}
+        <div data-slot="group" className="ml-auto">
+          <Cluster gap="tight" align="center" justify="end">
+            {secondary}
+            {primary}
+          </Cluster>
+        </div>
       </Cluster>
     </div>
   );

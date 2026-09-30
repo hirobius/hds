@@ -68,11 +68,17 @@ export const MetricTile = React.forwardRef<HTMLDivElement, MetricTileProps>(func
 });
 
 /** @public */
-export interface MetricTilesProps {
-  /** `MetricTile` children. */
+export interface MetricTilesProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  /** `MetricTile` children. Fragments are looked through when counting tiles. */
   children: React.ReactNode;
-  /** Escape hatch for narrow layout adjustments. */
-  className?: string;
+}
+
+/** Count valid elements, looking through fragments so wrapped tiles still count. */
+function countTiles(children: React.ReactNode): number {
+  return React.Children.toArray(children).reduce<number>((total, child) => {
+    if (!React.isValidElement<{ children?: React.ReactNode }>(child)) return total;
+    return child.type === React.Fragment ? total + countTiles(child.props.children) : total + 1;
+  }, 0);
 }
 
 /**
@@ -83,11 +89,16 @@ export interface MetricTilesProps {
  * for state with notes (never a number).
  * @screenPattern
  */
-export function MetricTiles({ children, className }: MetricTilesProps) {
-  const count = React.Children.toArray(children).filter(React.isValidElement).length;
+export const MetricTiles = React.forwardRef<HTMLDivElement, MetricTilesProps>(function MetricTiles(
+  { children, ...props },
+  ref,
+) {
+  const columns = Math.min(Math.max(countTiles(children), 1), MAX_COLUMNS);
   return (
-    <Grid columns={Math.min(Math.max(count, 1), MAX_COLUMNS)} gap="tight" className={className}>
-      {children}
-    </Grid>
+    <div ref={ref} data-hds-component="MetricTiles" {...props}>
+      <Grid columns={columns} gap="tight">
+        {children}
+      </Grid>
+    </div>
   );
-}
+});
