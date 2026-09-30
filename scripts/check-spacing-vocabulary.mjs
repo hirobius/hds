@@ -5,10 +5,9 @@
  *
  * hds#206 — spacing vocabulary gate. Adrian's decision (2026-09-26): spacing
  * uses t-shirt sizes (xs/sm/md/lg/xl — semantic.space.scale.*), and raw
- * integers are banned on padding/gap props. This is step one of that ban: a
- * WARN-severity gate (see docs/guardrails/registry.json) that flags the
- * banned form without yet blocking anything, so consumers can see the debt
- * before the codemod (hds#206 remaining work) migrates them.
+ * integers are banned on padding/gap props. ERROR severity, run by
+ * .husky/pre-commit (see docs/guardrails/registry.json): it shipped as warn
+ * and was promoted once hds's own src/ had zero findings.
  *
  * What it catches:
  *   A raw numeric literal on a spacing shorthand key (`p`, `m`, `gap`, `pt`,
@@ -26,9 +25,9 @@
  *   - Lines with `// spacing-vocab-ok: <reason>` on the same or preceding line.
  *
  * Fix: replace the integer with a named step off
- * `semantic.space.scale.{xs,sm,md,lg,xl}` (e.g. `sx={{ p: 'md' }}` once Box's
- * resolver accepts the named scale — tracked as hds#206 remaining work), or
- * suppress with `// spacing-vocab-ok: <reason>` for an intentional exception.
+ * `semantic.space.scale.{xs,sm,md,lg,xl}` (e.g. `sx={{ p: 'md' }}`; Box's
+ * resolver takes the scale), or suppress with `// spacing-vocab-ok: <reason>`
+ * for an intentional exception.
  *
  * Run: node scripts/check-spacing-vocabulary.mjs
  * Or:  pnpm check:spacing-vocabulary
@@ -161,7 +160,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
       file: v.file,
       line: v.line,
       rule: 'spacing-vocabulary-raw-integer',
-      severity: 'warn',
+      severity: 'error',
       message: `sx.${v.key}: ${v.value} — raw integer on a spacing prop; hds#206 bans this in favor of semantic.space.scale.{xs,sm,md,lg,xl}`,
       sample: v.raw,
     }));
@@ -178,7 +177,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   }
 
   console.error(
-    `\n✗ check-spacing-vocabulary — ${violations.length} raw-integer spacing value(s) found (hds#206, warn-only for now):\n`,
+    `\n✗ check-spacing-vocabulary — ${violations.length} raw-integer spacing value(s) found (hds#206):\n`,
   );
   for (const v of violations) {
     console.error(`  ${v.file}:${v.line}  [${v.key}: ${v.value}]`);

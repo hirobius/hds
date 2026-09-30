@@ -53,3 +53,9 @@ node scripts/check-contract-coverage.mjs --enforce
 # only: parses src/ with the TypeScript API, no build, no network.
 echo "Pure annotations (top-level factory calls, compound Object.assign and X.Part writes)…"
 node scripts/check-pure-annotations.mjs
+
+# hds#206: spacing is the t-shirt scale (xs/sm/md/lg/xl). A raw integer on a Box
+# sx spacing prop reads as px but is a count of 4px units (p: 4 is 16px). Source
+# only: a line scan of src/, no build, no network.
+echo "Spacing vocabulary (no raw integers on sx spacing props)…"
+node scripts/check-spacing-vocabulary.mjs

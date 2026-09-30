@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "2312da551ce5886a56d8612d65ffddc16466439519d44d36efb7d3704a72b966",
-  "precommitStructureHashUpdatedAt": "2026-09-30T19:23:24.444Z",
+  "precommitStructureHash": "65d618e0a506c4aa5647c275bf2d02ef263465c46e45502f753456f936133089",
+  "precommitStructureHashUpdatedAt": "2026-09-30T20:29:59.670Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -465,14 +465,14 @@
     },
     {
       "id": "check-spacing-vocabulary",
-      "description": "hds#206 -- flags raw integer literals on sx spacing shorthand props (p/m/gap/px/py/mx/my/pt/pr/pb/pl/mt/mr/mb/ml/rowGap/columnGap), the exact px-ambiguous numeric-scale form Adrian's 2026-09-26 decision bans in favor of semantic.space.scale.{xs,sm,md,lg,xl}. Warn severity: reports the debt, does not yet block -- promotion to error, wiring into an automatic channel, and the consumer codemod are hds#206 remaining work.",
-      "severity": "warn",
+      "description": "hds#206 -- flags raw integer literals on sx spacing shorthand props (p/m/gap/px/py/mx/my/pt/pr/pb/pl/mt/mr/mb/ml/rowGap/columnGap), the exact px-ambiguous numeric-scale form Adrian's 2026-09-26 decision bans in favor of semantic.space.scale.{xs,sm,md,lg,xl}, which Box sx takes by name. Error severity, run by .husky/pre-commit: it shipped as warn and was promoted once src/ had zero findings.",
+      "severity": "error",
       "gateScript": "scripts/check-spacing-vocabulary.mjs",
       "fixturePath": "fixtures/check-spacing-vocabulary",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
-      "firingChannels": ["on-demand"],
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
       "supportsJson": true
     },
     {

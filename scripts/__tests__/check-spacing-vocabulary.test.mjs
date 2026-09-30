@@ -2,11 +2,18 @@
 /**
  * Unit tests for scripts/check-spacing-vocabulary.mjs (hds#206).
  *
- * All tests operate purely in memory — no filesystem reads or writes.
+ * The findViolationsInText tests run in memory. The last block reads the
+ * registry and the pre-commit hook, and runs the gate on its fixture.
  */
 
 import { describe, it, expect } from 'vitest';
+import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { findViolationsInText, SPACING_KEYS } from '../check-spacing-vocabulary.mjs';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 describe('SPACING_KEYS', () => {
   it('covers the full box-sx.ts spacing shorthand set', () => {
@@ -70,5 +77,37 @@ describe('findViolationsInText', () => {
       '<Box sx={{ p: 2 }} />',
     ].join('\n');
     expect(findViolationsInText(text, 'fake.tsx')).toHaveLength(0);
+  });
+});
+
+describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', () => {
+  it('is error severity and fires at pre-commit in the registry', () => {
+    const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
+    const entry = registry.gates.find((g) => g.id === 'check-spacing-vocabulary');
+    expect(entry).toMatchObject({
+      severity: 'error',
+      firingChannel: 'pre-commit',
+      firingChannels: ['pre-commit'],
+    });
+  });
+
+  it('runs in .husky/pre-commit', () => {
+    const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
+    expect(hook).toMatch(/^node scripts\/check-spacing-vocabulary\.mjs$/m);
+  });
+
+  it('reports its findings as errors and exits 1 on the violating fixture', () => {
+    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs', '--json'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: 'fixtures/check-spacing-vocabulary/violating.example.tsx',
+      },
+    });
+    expect(run.status).toBe(1);
+    const { violations } = JSON.parse(run.stdout);
+    expect(violations.map((v) => v.severity)).toEqual(['error', 'error', 'error']);
   });
 });
