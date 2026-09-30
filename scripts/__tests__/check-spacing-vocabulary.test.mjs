@@ -111,3 +111,21 @@ describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', ()
     expect(violations.map((v) => v.severity)).toEqual(['error', 'error', 'error']);
   });
 });
+
+describe('its exemption marker (hds#206)', () => {
+  it('is one check-exemptions knows, so pnpm check does not reject it', () => {
+    // check:full runs check-exemptions over src/ and scripts/, and an unknown
+    // `*-ok:` marker fails it. This gate documents `spacing-vocab-ok`.
+    const run = spawnSync(process.execPath, ['scripts/check-exemptions.mjs'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: 'scripts/check-spacing-vocabulary.mjs',
+      },
+    });
+    expect(run.stderr).not.toMatch(/unknown exemption marker "spacing-vocab-ok"/);
+    expect(run.status).toBe(0);
+  });
+});
