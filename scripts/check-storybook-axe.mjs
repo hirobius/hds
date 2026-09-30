@@ -23,23 +23,13 @@
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
-import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { evaluateScan, validateAllowlist } from './lib/axe-gate.mjs';
+import { AXE_TAGS, evaluateScan, loadAxeSource, validateAllowlist } from './lib/axe-gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-// axe-core is a dependency of @axe-core/playwright, not a direct one; resolve it
-// from there so no new dependency is added. It is injected once per page and run
-// directly: going through AxeBuilder re-injects the engine on every call, which
-// dominated the runtime.
-const AXE_SOURCE = fs.readFileSync(
-  createRequire(
-    fs.realpathSync(path.join(ROOT, 'node_modules/@axe-core/playwright/package.json')),
-  ).resolve('axe-core/axe.min.js'),
-  'utf8',
-);
-const TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+// Injected once per page and run directly (see loadAxeSource).
+const AXE_SOURCE = loadAxeSource(ROOT);
 const THEMES = ['light', 'dark'];
 const FREEZE_CSS =
   '*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}';
@@ -216,7 +206,7 @@ async function scanOne(page, story, theme) {
           runOnly: { type: 'tag', values: tags },
           resultTypes: ['violations'],
         }),
-      TAGS,
+      AXE_TAGS,
     );
     timing.renderMs += t1 - t0;
     timing.axeMs += Date.now() - t1;
@@ -329,7 +319,7 @@ async function main() {
         generatedAt: new Date().toISOString(),
         seconds,
         timing,
-        tags: TAGS,
+        tags: AXE_TAGS,
         stories: stories.length,
         ...result,
         scans,
