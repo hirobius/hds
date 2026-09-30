@@ -106,14 +106,23 @@ export type TableColumn = {
 };
 
 export type TableCellSlot =
+  /** UI text (`typeStyles.ui`): the row label. */
   | 'label'
+  /** Renders in monospace (`typeStyles.technical`, `semantic.typography.mono`): a literal value. */
   | 'value'
+  /** Secondary-colour caption text explaining the row. */
   | 'description'
+  /** Renders in monospace (`typeStyles.technical`, `semantic.typography.mono`): a token name. */
   | 'token'
+  /** Renders in monospace (`typeStyles.technical`, `semantic.typography.mono`): a code snippet. */
   | 'code'
+  /** UI text (`typeStyles.ui`): arbitrary content you supply. */
   | 'custom'
+  /** Caption-size text (`typeStyles.caption`): an icon or glyph. */
   | 'icon'
+  /** Caption-size text (`typeStyles.caption`): a status badge. */
   | 'badge'
+  /** UI text (`typeStyles.ui`): a button or link. */
   | 'action';
 
 export type TableCell = {

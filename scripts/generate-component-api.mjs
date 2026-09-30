@@ -34,6 +34,7 @@ import { dirname, join, relative } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { createRequire } from 'node:module';
 import reactDocgenTypescript from 'react-docgen-typescript';
+import ts from 'typescript';
 import { discoverHdsComponents } from './component-discovery.mjs';
 import {
   buildUtilityMap,
@@ -53,11 +54,107 @@ const parser = reactDocgenTypescript.withCustomConfig(TSCONFIG_FILE, {
   shouldExtractValuesFromUnion: true,
   shouldRemoveUndefinedFromOptional: true,
   savePropValueAsString: true,
-  propFilter: (prop) => {
-    const parentFile = prop.parent?.fileName ?? '';
-    return !parentFile.includes('node_modules');
-  },
+  propFilter: (prop) => keepPropSource(prop.parent?.fileName ?? ''),
 });
+
+/**
+ * Which declaring files may contribute a prop row. Props declared in
+ * node_modules are dropped (React/DOM attributes such as className, style,
+ * onClick, aria-*), except those declared by Radix, which are the real
+ * behavioural API of Radix-backed parts (open, onOpenChange, value, ...) and
+ * exist nowhere else in the docs. Hoisted store paths still contain
+ * `node_modules/`, so match the `@radix-ui/` segment, not a prefix.
+ */
+function keepPropSource(fileName) {
+  const normalized = String(fileName).replace(/\\/g, '/');
+  if (!normalized.includes('node_modules')) return true;
+  return normalized.includes('node_modules/@radix-ui/');
+}
+
+/** One TypeScript program for the whole run, shared with docgen. */
+let SHARED_PROGRAM;
+function sharedProgram(files) {
+  if (!SHARED_PROGRAM) {
+    const config = ts.readConfigFile(TSCONFIG_FILE, ts.sys.readFile);
+    const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, ROOT);
+    SHARED_PROGRAM = ts.createProgram({
+      rootNames: [...new Set([...parsed.fileNames, ...files])],
+      options: parsed.options,
+    });
+  }
+  return SHARED_PROGRAM;
+}
+
+/**
+ * Props for a component docgen cannot see through: `((props) => <Root {...props} />) as X`
+ * and `Root as unknown as X` have no props type docgen recognises. Read the first
+ * parameter of the exported symbol's call signature with the checker instead,
+ * under the same source filter.
+ *
+ * @returns {Array<{ name: string, prop: object }>} docgen-shaped prop entries
+ */
+function checkerProps(program, filePath, exportName) {
+  const checker = program.getTypeChecker();
+  const sourceFile = program.getSourceFile(filePath);
+  const moduleSymbol = sourceFile && checker.getSymbolAtLocation(sourceFile);
+  if (!moduleSymbol) return [];
+  const exported = checker.getExportsOfModule(moduleSymbol).find((sym) => sym.name === exportName);
+  if (!exported) return [];
+
+  const declaration = exported.valueDeclaration ?? exported.declarations?.[0];
+  if (!declaration) return [];
+  const symbol =
+    exported.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(exported) : exported;
+  const type = checker.getTypeOfSymbolAtLocation(symbol, declaration);
+  const signature = type.getCallSignatures()[0];
+  const param = signature?.getParameters()[0];
+  if (!param) return [];
+  const paramType = checker.getTypeOfSymbolAtLocation(param, declaration);
+
+  const rows = [];
+  for (const propSymbol of checker.getPropertiesOfType(paramType)) {
+    const declaredIn = propSymbol.declarations?.[0]?.getSourceFile().fileName ?? '';
+    if (!keepPropSource(declaredIn)) continue;
+    const optional = Boolean(propSymbol.flags & ts.SymbolFlags.Optional);
+    const propType = checker.getTypeOfSymbolAtLocation(propSymbol, declaration);
+    const text = checker
+      .typeToString(propType, declaration, ts.TypeFormatFlags.NoTruncation)
+      .replace(/\s*\|\s*undefined$/, '');
+    rows.push({
+      name: propSymbol.getName(),
+      prop: {
+        type: { name: text },
+        required: !optional,
+        description: ts.displayPartsToString(propSymbol.getDocumentationComment(checker)),
+      },
+    });
+  }
+  return rows;
+}
+
+/** JSDoc on each member of a string-literal union alias, in declaration order. */
+function unionMemberDocs(program, filePath, typeName) {
+  const sourceFile = program.getSourceFile(filePath);
+  if (!sourceFile) return [];
+  const alias = sourceFile.statements.find(
+    (node) => ts.isTypeAliasDeclaration(node) && node.name.text === typeName,
+  );
+  if (!alias || !ts.isUnionTypeNode(alias.type)) return [];
+
+  // The comment sits before the `|` separator, so it is not the member's own
+  // leading trivia. Read the source between the previous member and this one.
+  const text = sourceFile.text;
+  let cursor = alias.type.getFullStart();
+  return alias.type.types
+    .filter((member) => ts.isLiteralTypeNode(member) && ts.isStringLiteral(member.literal))
+    .map((member) => {
+      const gap = text.slice(cursor, member.getStart(sourceFile));
+      cursor = member.getEnd();
+      const blocks = gap.match(/\/\*\*[\s\S]*?\*\//g);
+      const comment = blocks ? stripJsDocBlock(blocks[blocks.length - 1]) : '';
+      return { name: member.literal.text, description: comment };
+    });
+}
 
 function cleanText(value) {
   return String(value ?? '')
@@ -561,8 +658,9 @@ export function buildManifest() {
     ]),
   );
 
+  const program = sharedProgram(files);
   const docs = parser
-    .parse(files)
+    .parseWithProgramProvider(files, () => program)
     .filter((doc) => doc?.displayName && discoveredNames.has(doc.displayName))
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
@@ -575,9 +673,19 @@ export function buildManifest() {
     const source = relativePath ? (fileSourceByRelativePath.get(relativePath) ?? '') : '';
     const aliases = extractTypeAliases(source);
     const metadata = metadataByName.get(doc.displayName);
-    const props = Object.entries(doc.props ?? {})
+    const docProps = { ...(doc.props ?? {}) };
+    if (doc.filePath) {
+      for (const { name, prop } of checkerProps(program, doc.filePath, doc.displayName)) {
+        if (!(name in docProps)) docProps[name] = prop;
+      }
+    }
+    const props = Object.entries(docProps)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([propName, prop]) => toPropRow(propName, prop, aliases));
+    const cellSlots =
+      doc.displayName === 'Table' && doc.filePath
+        ? unionMemberDocs(program, doc.filePath, 'TableCellSlot')
+        : [];
     const observedTokens = extractObservedTokens(source);
     const guides = extractComponentGuides(source, doc.displayName);
 
@@ -591,6 +699,7 @@ export function buildManifest() {
       ...(metadata ? { hidden: Boolean(metadata.hidden) } : {}),
       ...(metadata?.figmaUrl ? { figmaUrl: metadata.figmaUrl } : {}),
       props,
+      ...(cellSlots.length > 0 ? { cellSlots } : {}),
       ...(guides.length > 0 ? { guides } : {}),
       observedTokens,
     };
@@ -599,6 +708,10 @@ export function buildManifest() {
   for (const metadata of discoveredComponents) {
     if (components[metadata.name]) continue;
     const source = fileSourceByRelativePath.get(metadata.filePath) ?? '';
+    const fallbackAliases = extractTypeAliases(source);
+    const fallbackProps = checkerProps(program, join(ROOT, metadata.filePath), metadata.name)
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map(({ name, prop }) => toPropRow(name, prop, fallbackAliases));
 
     components[metadata.name] = {
       filePath: metadata.filePath,
@@ -606,7 +719,7 @@ export function buildManifest() {
       ...(metadata.category ? { category: metadata.category } : {}),
       hidden: Boolean(metadata.hidden),
       ...(metadata.figmaUrl ? { figmaUrl: metadata.figmaUrl } : {}),
-      props: [],
+      props: fallbackProps,
       ...(extractComponentGuides(source, metadata.name).length > 0
         ? { guides: extractComponentGuides(source, metadata.name) }
         : {}),
