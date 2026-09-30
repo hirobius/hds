@@ -14,7 +14,7 @@ pnpm add @hirobius/design-system
 
 - **109** public component modules, exported from `src/index.ts`
 - **379** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **455** Storybook stories in **115** story files
+- **469** Storybook stories in **118** story files
 
 <!-- auto:end:front-door-counts -->
 
@@ -196,13 +196,13 @@ The gates are deterministic and need no browser or live site:
 
 ### Agent consistency
 
-Three agents build the same Client-detail screen from the public docs, and `pnpm eval:consistency` measures how alike the results are: builds, token violations, axe, component-set overlap (Jaccard) and pixel diff. `pnpm eval:consistency -- --apps <dir>` runs the whole harness over a directory of generated apps: it installs the packed tarball into a clean template, builds, renders, axe-scans and pixel-diffs each app, and appends a dated entry to the ledger (it needs the network and Chromium). With `--offline` it measures violations and Jaccard from source only. The ledger, the thresholds, the template and the screen spec live in [`eval/consistency/`](eval/consistency/README.md). The latest recorded run, as printed by `pnpm eval:consistency -- --summary`:
+Three agents build the same Client-detail screen from the public docs, and `pnpm eval:consistency` measures how alike the results are: builds, token violations, axe, component-set overlap (Jaccard) and pixel diff. Today it runs the offline half over a directory of apps (`pnpm eval:consistency -- --apps <dir> --offline`, violations and Jaccard from source only). The ledger, the thresholds and the screen spec live in [`eval/consistency/`](eval/consistency/README.md). The latest recorded run, as printed by `pnpm eval:consistency -- --summary`:
 
 ```text
 Agent consistency 2026-09-30 (harness, design-system 0.18.0): FAIL - builds 3/3, violations 0, axe 0, Jaccard min 0.7368 (limit >= 0.85), light diff max 1.0268% (limit <= 1.5%)
 ```
 
-The runs miss the component-overlap threshold, and the thresholds are not softened to make one pass. n = 3 is a sample: read the trend across ledger entries, not one row.
+The baseline misses its thresholds on purpose: they are not softened to make it pass.
 
 `CLAUDE.md` is the operating contract for agents working in this repo.
 

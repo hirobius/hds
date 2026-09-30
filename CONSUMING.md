@@ -19,7 +19,10 @@ pnpm add react react-dom
 ```
 
 The package also pulls in its own runtime deps (Radix, lucide-react, motion,
-clsx, class-variance-authority, tailwind-merge) automatically.
+clsx, class-variance-authority, tailwind-merge) automatically. Import icons
+from `@hirobius/design-system/icons` (a curated Lucide set, nothing extra to
+install); for an icon outside it, install `lucide-react@0.487.0` (the same
+version keeps the `LucideIcon` type identical).
 
 ## 2. Use
 
@@ -49,6 +52,7 @@ Available subpaths:
 | `@hirobius/design-system/brand`      | Palette → HDS-semantic overlay bridge (static / SSR / Astro; see [`docs/CONSUMING.md` §12](docs/CONSUMING.md#12-static-astro-sites--the-brand-overlay-bridge))                                                                              |
 | `@hirobius/design-system/scroll`     | Opt-in scroll-motion primitives — `SmoothScroll` (Lenis), `useScrollProgress` (Motion). Requires the optional peer `lenis`. See [`docs/CONSUMING.md` §13](docs/CONSUMING.md#13-scroll-motion-the-scroll-subpath)                            |
 | `@hirobius/design-system/patterns`   | The 22 `pattern`-tier components (nav shells, feeds, rails, pickers — see hds#254). Also still re-exported from the root for one minor (`@deprecated`, removed at the next major) — prefer this subpath in new code.                        |
+| `@hirobius/design-system/icons`      | Curated Lucide icon set for `IconButton` / `Icon` (`Ellipsis`, `Pencil`, `Trash2`, `X`, …). Names listed in the manifest `iconSet`.                                                                                                         |
 | `@hirobius/design-system/static.css` | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React. See [`docs/CONSUMING.md` §14](docs/CONSUMING.md#14-css-only-static-primitives--badgecardalertdividertag-with-no-react) |
 
 The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,
@@ -77,6 +81,8 @@ components with no wrapper. The framework-free subpaths — `tokens`, `cn`,
 React in them, and marking them would turn their exports into opaque client
 references when you use them on the server (`tokens.color.primary` in a layout,
 `brand` at the edge). Import those from server code freely.
+
+**Density.** Put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
 
 ## 2.5. Lint discipline (optional)
 
@@ -109,12 +115,17 @@ pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md
 
 CI (`.github/workflows/release.yml`) automates steps 2–3 on merge to `main`.
 
-Two repo secrets are required, and the workflow fails loudly naming either one
-if it is missing or expired:
+Publishing to npm uses **Trusted Publishing (OIDC)**: no npm token exists. The
+package's Trusted Publisher entry on npmjs.com (org `hirobius`, repo `hds`,
+workflow `release.yml`, no environment) lets the workflow mint a short-lived
+publish credential per run. If a publish fails with `ENEEDAUTH`/`E404`, that
+entry is missing or no longer matches the workflow filename.
+
+One repo secret is required, and the workflow fails loudly naming it if it is
+missing or expired:
 
 | Secret        | What it does                                                                                                                                            | If it lapses                                             |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `NPM_TOKEN`   | Publishes to public npm. An npm "Automation" token for an account with publish rights on the `@hirobius` scope.                                         | The publish step fails.                                  |
 | `RELEASE_PAT` | Authors the "Version Packages" PR and pushes tags. A **fine-grained** PAT scoped to `hirobius/hds` with Contents + Pull requests set to Read and write. | The run fails at the guard step, before anything builds. |
 
 `RELEASE_PAT` exists because GitHub does not start workflow runs from events

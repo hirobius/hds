@@ -31,6 +31,8 @@ const tableHeaderCellVariants = cva(
         right: 'justify-end text-right',
       },
       density: {
+        follow:
+          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)] [[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)] [[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]',
         comfortable:
           'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
         compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-scale-xs)]',
@@ -40,7 +42,7 @@ const tableHeaderCellVariants = cva(
         false: '',
       },
     },
-    defaultVariants: { align: 'left', density: 'comfortable', sticky: false },
+    defaultVariants: { align: 'left', sticky: false },
   },
 );
 
@@ -72,6 +74,8 @@ const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-sur
       right: 'justify-end text-right',
     },
     density: {
+      follow:
+        'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)] [[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)] [[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]',
       comfortable:
         'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
       compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-scale-xs)]',
@@ -81,7 +85,7 @@ const tableDataCellVariants = cva('flex items-start px-[var(--semantic-space-sur
       false: '',
     },
   },
-  defaultVariants: { align: 'left', density: 'comfortable', divider: true },
+  defaultVariants: { align: 'left', divider: true },
 });
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -106,14 +110,23 @@ export type TableColumn = {
 };
 
 export type TableCellSlot =
+  /** UI text: the row label. */
   | 'label'
+  /** Renders in monospace: a literal value. */
   | 'value'
+  /** Secondary-colour caption text explaining the row. */
   | 'description'
+  /** Renders in monospace: a token name. */
   | 'token'
+  /** Renders in monospace: a code snippet. */
   | 'code'
+  /** UI text: arbitrary content you supply. */
   | 'custom'
+  /** Caption-size text: an icon or glyph. */
   | 'icon'
+  /** Caption-size text: a status badge. */
   | 'badge'
+  /** UI text: a button or link. */
   | 'action';
 
 export type TableCell = {
@@ -159,7 +172,7 @@ export function Table({
   captionAction,
   description,
   minWidth,
-  density = 'comfortable',
+  density,
   flush = false,
   stickyHeader = false,
 }: {
@@ -170,6 +183,10 @@ export function Table({
   captionAction?: ReactNode;
   description?: ReactNode;
   minWidth?: number | string;
+  /**
+   * Row density. Omit it to follow the ancestor `data-density` dial (comfortable by
+   * default, compact inside `[data-density="compact"]`); pass a value to fix it.
+   */
   density?: TableDensity;
   flush?: boolean;
   stickyHeader?: boolean;
@@ -237,7 +254,7 @@ export function Table({
                     className={cn(
                       tableHeaderCellVariants({
                         align: column.align ?? 'left',
-                        density,
+                        density: density ?? 'follow',
                         sticky: Boolean(stickyHeader),
                       }),
                     )}
@@ -264,7 +281,7 @@ export function Table({
                   className={cn(
                     tableHeaderCellVariants({
                       align: column.align ?? 'left',
-                      density,
+                      density: density ?? 'follow',
                       sticky: Boolean(stickyHeader),
                     }),
                   )}
@@ -291,7 +308,7 @@ export function Table({
                   className={cn(
                     tableDataCellVariants({
                       align: cell.align ?? 'left',
-                      density,
+                      density: density ?? 'follow',
                       divider: rowIndex < rows.length - 1,
                     }),
                   )}

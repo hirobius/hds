@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T11:35:03.000Z",
+  "updatedAt": "2026-09-30T10:35:34.000Z",
   "phase": "active",
   "headline": "Hiring-readiness burndown wave 1 (hds#306, review 2026-09-29): 13 PRs — Storybook dark canvas + front door, README front door, CI axe gate, a11y fixes, keyboard contracts, repo curation, privacy, strict TS + bare exports, patterns codemod, DTCG tokens + Figma staging states, wayfinder skills. Merging 2026-09-29/30; Figma promotion and workflow-file edits are Adrian steps (see hds#325, #327, #326, #321 bodies).",
   "next": [
@@ -52,13 +52,6 @@
     "gitleaks is not installed locally, so check:secrets skips on every commit. .gitleaks.toml with the HDS token-path allowlists is already committed, so the gate works the moment the binary is on PATH",
     "Adrian, hds#316: confirm the product-app / token-level-site split (2 and 4) in docs/data/consumer-usage.json, then set consumersConfirmed to true and run `pnpm consumer:usage` to publish the table in README. Only Ops is verified as a component-level consumer (Folio uses CSS only)."
   ],
-  "consistency": {
-    "date": "2026-09-30",
-    "source": "harness",
-    "pass": false,
-    "jaccardMin": 0.7368,
-    "lightDiffMax": 1.0268
-  },
   "resolvedThisSession": [
     "hds#206 SLICE SHIPPED (2026-09-27): codemod-spacing-vocabulary.mjs (scripts/, idempotent, --check dry-run, unit-tested) rewrote hds's own internal spacing-token references (CSS var(--semantic-space-{layout,component}-*) reads + hds.semantic.space dotted paths, 130 refs / 51 files) from the deprecated aliases onto semantic.space.scale.{xs,sm,md,lg,xl} (added hds.semantic.space.scale.* to tokens.ts so the JS accessor exists). Pure rename, no value/behavior change. Deprecated aliases kept live, check-spacing-vocabulary gate stays warn-only, box-sx.ts resolver and public gap/padding prop VALUES untouched (out of scope — hds#206 item #4 / consumer migration). pnpm tokens:verify, typecheck, full test suite (165 files, 2683 passed) all green. Patch changeset added.",
     "hds#294 DONE (2026-09-26): Table sortable columns. TableColumn gains sortable/sortDirection('ascending'|'descending'|'none')/onSort; sortable header cells render a real <button> (Enter/Space handled explicitly since native default-action isn't jsdom-simulable, preventDefault avoids double-fire in real browsers) with aria-sort on the header cell and a token-sized ArrowUp/ArrowDown/ArrowUpDown glyph; non-sortable path untouched. table.test.tsx added (7 tests: aria-sort none/ascending/descending, no aria-sort/button when non-sortable, onSort via click/Enter/Space). Sortable Storybook story added. manifest:generate run, minor changeset added. pnpm typecheck / pnpm test (164 files, 2672 passed) green.",
@@ -90,5 +83,12 @@
     "Doc-rot fixed twice, both self-inflicted and caught by review rather than shipped: scripts/figma-disposition.mjs told every future reader to go ratify a closed issue, and then its replacement asserted '17 layout primitives' in the present tense while the tool reports 14. It now gives both numbers and says the tool's output beats any count quoted in prose, that comment included",
     "figma/links.json storybookUrl set to https://hirobius-design-system.vercel.app and rebaked, so design-to-code story links point at rendered stories. A previous session left this undone specifically because it could not run the generator",
     "Environment verified end to end and all three inherited environment blockers cleared: pnpm install works (registry.npmjs.org via the default-package-managers option, NOT the Custom allowlist), pnpm figma:inventory --fetch works, the rotated Figma PAT authenticates"
-  ]
+  ],
+  "consistency": {
+    "date": "2026-09-30",
+    "source": "harness",
+    "pass": false,
+    "jaccardMin": 0.7368,
+    "lightDiffMax": 1.0268
+  }
 }
