@@ -64,6 +64,8 @@ const ALL_CHANGES = args.includes('--all');
  */
 const AUTO_GEN_MAP = {
   'public/llms.txt': ['scripts/generate-llms-txt.mjs'],
+  'public/llms-full.txt': ['scripts/generate-llms-txt.mjs'],
+  'public/llms/': ['scripts/generate-llms-txt.mjs'],
   'DESIGN.md': ['scripts/build-design-md.mjs', 'DESIGN.source.md'],
   'DESIGN-HANDOFF.md': ['scripts/build-handoff.mjs', 'hirobius.tokens.json'],
   'public/hds-manifest.json': ['scripts/generate-manifest.mjs'],
@@ -171,7 +173,15 @@ const changedFiles = getChangedFiles();
 const bypass = hasRegenOnlyBypass();
 const violations = [];
 
-for (const [output, generators] of Object.entries(AUTO_GEN_MAP)) {
+// A key ending in "/" is a generated directory: every changed file under it is an output.
+const outputs = [];
+for (const [key, generators] of Object.entries(AUTO_GEN_MAP)) {
+  if (key.endsWith('/')) {
+    for (const f of changedFiles) if (f.startsWith(key)) outputs.push([f, generators]);
+  } else outputs.push([key, generators]);
+}
+
+for (const [output, generators] of outputs) {
   if (!changedFiles.has(output)) continue;
 
   // Output file was changed. Check that at least one generator is also changed.

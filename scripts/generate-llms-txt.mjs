@@ -12,6 +12,11 @@
  * Output:
  *   - public/llms.txt
  *   - llms.txt (repo-root mirror for local tooling)
+ *   - public/llms-full.txt (llms.txt + full DESIGN.md + props digest)
+ *   - public/llms/{layout,tokens,scroll,components}.txt (topic slices)
+ *
+ * Every section is written once (as a `## ` block of the llms.txt template) and
+ * the slices pick blocks by heading, so llms.txt and the slices share text.
  */
 
 import { mkdirSync, readFileSync } from 'fs';
@@ -76,11 +81,57 @@ const tokenRules = [
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
 
+const SLICES = [
+  { name: 'layout', blurb: 'screen layout recipe, card anatomy, elevation roles' },
+  { name: 'tokens', blurb: 'token rules and the quick token reference' },
+  { name: 'scroll', blurb: 'scroll-driven section recipe' },
+  { name: 'components', blurb: 'component inventory pointer, API pointer, props digest' },
+];
+
+/** Split generated text into `## ` sections (heading line + body). */
+function parseSections(text) {
+  const out = [];
+  let cur = null;
+  for (const line of text.split('\n')) {
+    if (line.startsWith('## ')) {
+      cur = { title: line.slice(3), lines: [line] };
+      out.push(cur);
+    } else if (cur) cur.lines.push(line);
+  }
+  return out.map((sec) => ({ title: sec.title, body: sec.lines.join('\n').trimEnd() }));
+}
+
+const clip = (v, n) => {
+  const one = String(v ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return one.length > n ? `${one.slice(0, n - 1)}…` : one;
+};
+
+/** Compact per-component digest: no examples, defaults clipped. */
+function buildPropsDigest(api) {
+  const comps = api.components ?? {};
+  return Object.keys(comps)
+    .sort()
+    .map((name) => {
+      const c = comps[name];
+      const first = String(c.description ?? '').split('\n')[0];
+      const props = (c.props ?? [])
+        .map((p) => {
+          const def = p.default != null && p.default !== '' ? ` = ${clip(p.default, 40)}` : '';
+          return `  - ${p.name}: ${clip(p.type, 80)}${def}`;
+        })
+        .join('\n');
+      return `### ${name}\n${clip(first, 160)}${props ? `\n${props}` : ''}`;
+    })
+    .join('\n\n');
+}
+
 export function generateLlmsTxt() {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
   writeComponentApiManifest();
   // Keep as an existence check (and to ensure the generated artifact is present).
-  JSON.parse(readFileSync(componentApiPath, 'utf8'));
+  const componentApi = JSON.parse(readFileSync(componentApiPath, 'utf8'));
 
   const tokensPath = join(ROOT, 'hirobius.tokens.json');
   const quickTokenReference = buildTokenQuickReference(tokensPath);
@@ -102,6 +153,9 @@ export function generateLlmsTxt() {
   const patternSection = patternLines ? `## Pattern Inventory\n\n${patternLines}\n\n` : '';
 
   const generated = new Date().toISOString();
+  const SLICE_INDEX = SLICES.map((sl) => `- \`public/llms/${sl.name}.txt\` - ${sl.blurb}`).join(
+    '\n',
+  );
 
   const txt = `# Hirobius Design System
 
@@ -198,6 +252,16 @@ When building any card component or card-like surface, ALL of the following rule
 
 Cards default to \`elevation.flat\`. Popovers/tooltips/dropdowns use \`elevation.floating\`. Dialogs/sheets use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
+## Slices And Full Bundle
+
+Load only what the task needs. Same text as this file, split by topic:
+
+${SLICE_INDEX}
+
+- \`public/llms-full.txt\` - this file + the full \`DESIGN.md\` + a compact props digest for every component.
+
+Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\`, \`src/stories/\` or that name \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+
 ## Context Loading Rules (Credit Efficiency)
 
 Default context (load first):
@@ -236,16 +300,46 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 - \`DESIGN-HANDOFF.md\` - verbose visual language mirror (on-demand only)
 `;
 
-  mkdirSync(join(ROOT, 'public'), { recursive: true });
+  const sections = parseSections(txt);
+  const pick = (titles) =>
+    titles
+      .map((t) => {
+        const found = sections.find((sec) => sec.title.startsWith(t));
+        if (!found) throw new Error(`generate-llms-txt: no section "${t}"`);
+        return found.body;
+      })
+      .join('\n\n');
+
+  const digest = buildPropsDigest(componentApi);
+  const digestSection = `## Component Props Digest\n\nCompact: name, first line of description, then prop: type = default. Full detail in \`src/app/data/component-api.json\`.\n\n${digest}`;
+
+  const designMd = readFileSync(join(ROOT, 'DESIGN.md'), 'utf8').trim();
+  const full = `${txt.trimEnd()}\n\n---\n\n# DESIGN.md (full)\n\n${designMd}\n\n---\n\n${digestSection}\n`;
+
+  const slices = {
+    layout: pick(['How To Lay Out A Screen', 'HDS Card Anatomy', 'Elevation roles']),
+    tokens: pick(['Tokens (', 'Quick Token Reference', 'Token Rules']),
+    scroll: pick(['How To Build A Scroll-Driven Section']),
+    components: `${pick(['Component Inventory', 'Component API'])}\n\n${digestSection.trimEnd()}`,
+  };
+
+  mkdirSync(join(ROOT, 'public', 'llms'), { recursive: true });
   writeStableArtifact(join(ROOT, 'public', 'llms.txt'), txt);
   writeStableArtifact(join(ROOT, 'llms.txt'), txt);
+  writeStableArtifact(join(ROOT, 'public', 'llms-full.txt'), full);
+  for (const sl of SLICES) {
+    writeStableArtifact(
+      join(ROOT, 'public', 'llms', `${sl.name}.txt`),
+      `# Hirobius Design System - ${sl.name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms.txt.\n\n${slices[sl.name]}\n`,
+    );
+  }
 
   return txt;
 }
 
 export function main() {
   generateLlmsTxt();
-  console.log('✓ public/llms.txt');
+  console.log('✓ public/llms.txt, public/llms-full.txt, public/llms/*.txt');
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
