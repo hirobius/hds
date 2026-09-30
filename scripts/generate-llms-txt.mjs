@@ -43,6 +43,7 @@ const layoutRecipeSteps = [
   '`Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.',
   'Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).',
   '`Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.',
+  'Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile` with the "Which one, when" table in `DESIGN.md`.',
   '`Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.',
 ];
 
@@ -193,6 +194,8 @@ ${layoutRecipeSteps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
 Negative rules (apply everywhere, checked by \`scripts/audit-tokens.mjs --full\`, \`check-hardcoded-spacing.mjs\`, \`check-hardcoded-colors.mjs\`):
 
 ${layoutNegativeRules.map((rule) => `- ${rule}`).join('\n')}
+
+Density: put \`data-density="compact"\` on the same \`[data-hds]\` scope element (or \`<html>\`) to tighten \`semantic.space.scale.*\`, surface padding and region gutter; \`Table\` follows it unless given a \`density\` prop.
 
 Reference: \`docs/architecture/variant-contract.md\` for structural/semantic/size/density variance; \`src/app/data/component-api.json\` for every layout primitive's full prop table and \`@ai-rules\` guidance.
 

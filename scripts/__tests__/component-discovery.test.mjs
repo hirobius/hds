@@ -69,6 +69,29 @@ describe('readComponentTags', () => {
   });
 });
 
+describe('readComponentTags — @screenPattern (hds#337)', () => {
+  it('reads a bare @screenPattern tag on the export block', () => {
+    const source = `/**\n * @category Layout\n * @tier pattern\n */\n\n/**\n * Header.\n * @screenPattern\n */\nexport const PageHeader = () => null;\n`;
+    expect(readComponentTags(source, 'PageHeader').screenPattern).toBe(true);
+  });
+
+  it('is false when the tag is absent, and does not leak to a sibling export', () => {
+    const source = `/**\n * @category Display\n */\n\n/**\n * Tile.\n */\nexport const MetricTile = () => null;\n\n/**\n * Row.\n * @screenPattern\n */\nexport const MetricTiles = () => null;\n`;
+    expect(readComponentTags(source, 'MetricTile').screenPattern).toBe(false);
+    expect(readComponentTags(source, 'MetricTiles').screenPattern).toBe(true);
+  });
+});
+
+describe('discoverHdsComponents — screen patterns (hds#337)', () => {
+  it('flags exactly the three screen-level compositions', () => {
+    const tagged = discoverHdsComponents()
+      .components.filter((c) => c.screenPattern)
+      .map((c) => c.name)
+      .sort();
+    expect(tagged).toEqual(['FormActions', 'MetricTiles', 'PageHeader']);
+  }, 60_000);
+});
+
 describe('discoverHdsComponents — repository', () => {
   it('discovers every component that has a Code Connect template, so its @figma tag reaches the manifest', () => {
     const registry = JSON.parse(

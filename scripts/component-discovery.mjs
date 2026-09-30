@@ -12,7 +12,8 @@ const ROOT = join(__dirname, '..');
 const SRC_DIR = join(ROOT, 'src');
 const COMPONENTS_DIR = join(ROOT, 'src', 'app', 'components');
 const DOC_EXEMPT_PATTERN = /@doc-exempt:\s*(.+)/i;
-const TAG_PATTERN = /@(category|internal|doc-ignore|figma|tier)\b(?:\s+([^\r\n*]+))?/g;
+const TAG_PATTERN =
+  /@(category|internal|doc-ignore|figma|tier|screenPattern)\b(?:\s+([^\r\n*]+))?/g;
 const TIER_VALUES = new Set(['primitive', 'pattern', 'template', 'utility']);
 
 const SKIP_DIRS = new Set(['__tests__', 'figma']);
@@ -179,6 +180,7 @@ function parseTags(block, source) {
     figmaUrl: null,
     docExempt: DOC_EXEMPT_PATTERN.test(source),
     tier: null,
+    screenPattern: false,
   };
 
   if (!block) return tags;
@@ -188,6 +190,7 @@ function parseTags(block, source) {
     if (key === 'category') tags.category = cleanText(value);
     if (key === 'internal') tags.internal = true;
     if (key === 'doc-ignore') tags.docIgnore = true;
+    if (key === 'screenPattern') tags.screenPattern = true;
     if (key === 'figma') {
       const figmaCandidate = cleanText(value);
       if (/^(https?:\/\/|figma\.com\/)/i.test(figmaCandidate)) {
@@ -213,7 +216,7 @@ function parseTags(block, source) {
  *
  * @param {string} source module text
  * @param {string} exportName
- * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null }}
+ * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null }}
  */
 export function readComponentTags(source, exportName) {
   const fileBlock = findFileJsDocBlock(source);
@@ -227,6 +230,9 @@ export function readComponentTags(source, exportName) {
     docExempt: componentTags.docExempt || fileTags.docExempt,
     figmaUrl: componentTags.figmaUrl ?? fileTags.figmaUrl ?? null,
     tier: componentTags.tier ?? fileTags.tier ?? null,
+    // Per-export only: a file-level `@screenPattern` would flag every export of the
+    // module, and MetricTile (a part) must not join MetricTiles (the composition).
+    screenPattern: componentTags.screenPattern,
     description: stripJsDocBlock(componentBlock) || stripJsDocBlock(fileBlock),
     ...mergeContract(componentBlock, fileBlock),
   };
@@ -265,6 +271,7 @@ export function discoverHdsComponents() {
         docExempt,
         figmaUrl,
         tier,
+        screenPattern,
         description,
         usage,
         slots,
@@ -300,6 +307,7 @@ export function discoverHdsComponents() {
         docExempt,
         figmaUrl,
         tier,
+        screenPattern,
         usage,
         slots,
         keyboard,

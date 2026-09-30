@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-28T00:14:31.544Z",
+  "generated": "2026-09-30T12:10:11.055Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -95,6 +95,7 @@
     "Field",
     "FileInput",
     "Form",
+    "FormActions",
     "FormField",
     "FormFieldShell",
     "FoundationSwatch",
@@ -114,11 +115,14 @@
     "Lightbox",
     "Menu",
     "MetadataList",
+    "MetricTile",
+    "MetricTiles",
     "MultiSelector",
     "NavGroup",
     "NavItem",
     "OverflowList",
     "Page",
+    "PageHeader",
     "Pagination",
     "Pin",
     "Popover",
@@ -240,7 +244,11 @@
       "monoSm"
     ]
   },
-  "patternInventory": [],
+  "patternInventory": [
+    "FormActions",
+    "MetricTiles",
+    "PageHeader"
+  ],
   "phases": [
     {
       "id": "foundation",
@@ -1547,6 +1555,8 @@
         "src/app/components/cluster.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/metric-tiles.test.tsx",
+        "src/app/components/metric-tiles.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
@@ -2791,6 +2801,7 @@
         "src/app/components/heading-stack.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/nav-group.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/page.tsx",
         "src/app/components/sketch.tsx",
         "src/app/components/surface.tsx",
@@ -3160,6 +3171,7 @@
         "primitives-table--density-comfortable",
         "primitives-table--density-compact",
         "primitives-table--flush",
+        "primitives-table--follows-density-dial",
         "primitives-table--sortable",
         "primitives-table--with-badge-slots",
         "primitives-table--with-caption"
@@ -3526,6 +3538,7 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/metric-tiles.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/sketch.tsx",
         "src/app/components/slider.tsx",
@@ -3635,6 +3648,7 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/metadata-list.tsx",
+        "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/components/stacked-card-rail.tsx",
         "src/app/components/stat.tsx",
@@ -3648,6 +3662,7 @@
         "src/stories/grid.stories.tsx",
         "src/stories/history-card.stories.tsx",
         "src/stories/hover-card.stories.tsx",
+        "src/stories/metric-tiles.stories.tsx",
         "src/stories/selectable-card.stories.tsx",
         "src/stories/stacked-card-rail.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
@@ -4594,6 +4609,7 @@
         "src/app/components/dialog.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
+        "src/app/components/form-actions.tsx",
         "src/app/components/form.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
@@ -4619,6 +4635,7 @@
         "src/stories/code-block.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/dialog.stories.tsx",
+        "src/stories/form-actions.stories.tsx",
         "src/stories/form.stories.tsx",
         "src/stories/hds-tooltip.stories.tsx",
         "src/stories/icon-button.stories.tsx",
@@ -4627,6 +4644,7 @@
         "src/stories/lib/usage-description.test.ts",
         "src/stories/menu.stories.tsx",
         "src/stories/nav-group.stories.tsx",
+        "src/stories/page-header.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/popover.stories.tsx",
         "src/stories/table.stories.tsx",
@@ -5158,6 +5176,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/metric-tiles.tsx",
+        "src/stories/metric-tiles.stories.tsx",
         "src/stories/stat.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5334,7 +5354,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/metric-tiles.tsx",
         "src/app/components/stat.tsx",
+        "src/stories/metric-tiles.stories.tsx",
         "src/stories/status-list-item.stories.tsx",
         "src/stories/status-tile.stories.tsx"
       ],
@@ -5491,6 +5513,7 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/docs-tooling/lab/legacy-token-detail.tsx",
@@ -5500,6 +5523,7 @@
         "src/stories/combobox.stories.tsx",
         "src/stories/component-instance-matrix.stories.tsx",
         "src/stories/nav-group.stories.tsx",
+        "src/stories/page-header.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/static-primitives.stories.tsx",
         "src/stories/table.stories.tsx"
@@ -6533,8 +6557,10 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.test.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/table.tsx",
-        "src/stories/breadcrumb.stories.tsx"
+        "src/stories/breadcrumb.stories.tsx",
+        "src/stories/page-header.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6771,12 +6797,14 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/form-actions.tsx",
         "src/app/components/form.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts",
         "src/index.ts",
+        "src/stories/form-actions.stories.tsx",
         "src/stories/form.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
@@ -9049,6 +9077,9 @@
       },
       "consumers": [
         "src/app/components/cluster.test.tsx",
+        "src/app/components/form-actions.test.tsx",
+        "src/app/components/form-actions.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/switcher.tsx",
         "src/stories/cluster.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
@@ -9455,6 +9486,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/form-actions.tsx",
         "src/app/components/pin.test.tsx",
         "src/stories/patterns-scroll.stories.tsx",
         "src/stories/pin.stories.tsx",
@@ -10453,18 +10485,6 @@
         "primitives-menu--with-radio-group",
         "primitives-menu--with-submenu"
       ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the menu (Menu.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The popup holding the items (Menu.Content).",
-          "source": "jsdoc"
-        }
-      ],
       "usage": {
         "when": "Offer a list of actions from a trigger, closed until opened.",
         "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
@@ -10503,6 +10523,18 @@
         {
           "keys": "Tab",
           "effect": "Does not leave the open menu."
+        }
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The element that opens the menu (Menu.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The popup holding the items (Menu.Content).",
+          "source": "jsdoc"
         }
       ]
     },
@@ -10687,6 +10719,229 @@
         "primitives-checkbox--disabled-checked",
         "primitives-checkbox--group",
         "primitives-checkbox--indeterminate"
+      ]
+    },
+    "FormActions": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/form-actions.tsx",
+      "description": "Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "FormActions",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/form-actions.test.tsx",
+        "src/stories/form-actions.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "destructive": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "primary": {
+          "type": "ReactNode"
+        },
+        "secondary": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "sticky": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/form-actions.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-formactions--primary-only",
+        "patterns-formactions--sticky",
+        "patterns-formactions--with-destructive",
+        "patterns-formactions--with-secondary"
+      ]
+    },
+    "MetricTile": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/metric-tiles.tsx",
+      "description": "One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a tile needs no enclosing `Card`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "MetricTile",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/metric-tiles.test.tsx",
+        "src/stories/metric-tiles.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "label": {
+          "type": "ReactNode"
+        },
+        "sub": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "success",
+            "warning",
+            "danger",
+            "info"
+          ],
+          "default": "neutral"
+        },
+        "value": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/metric-tiles.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-metrictiles--four-tiles",
+        "patterns-metrictiles--sub-line-optional",
+        "patterns-metrictiles--three-tiles",
+        "patterns-metrictiles--tones"
+      ]
+    },
+    "MetricTiles": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/metric-tiles.tsx",
+      "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of headline numbers on a screen; use `Stat` only for an inline number inside prose or a dense list, `Card.Metric` only inside an existing `Card`, and `StatusTile` for state with notes (never a number).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "MetricTiles",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/metric-tiles.test.tsx",
+        "src/stories/metric-tiles.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/metric-tiles.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-metrictiles--four-tiles",
+        "patterns-metrictiles--sub-line-optional",
+        "patterns-metrictiles--three-tiles",
+        "patterns-metrictiles--tones"
+      ]
+    },
+    "PageHeader": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/page-header.tsx",
+      "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces. Distinct from the docs-only page header in `src/docs-tooling`.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "PageHeader",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/page-header.test.tsx",
+        "src/stories/page-header.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "actions": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "breadcrumb": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "level": {
+          "type": "PageHeaderLevel",
+          "default": 1
+        },
+        "status": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/page-header.stories.tsx"
+      ],
+      "storyIds": [
+        "patterns-pageheader--default",
+        "patterns-pageheader--long-title-wraps",
+        "patterns-pageheader--nested-level",
+        "patterns-pageheader--title-only",
+        "patterns-pageheader--with-actions"
       ]
     },
     "HdsPhosphor": {
@@ -15040,61 +15295,6 @@
         "alias": "{semantic.radius.action}",
         "resolvedValue": "8px"
       }
-    ]
-  },
-  "iconSet": {
-    "subpath": "@hirobius/design-system/icons",
-    "names": [
-      "Archive",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      "ArrowUp",
-      "Bell",
-      "Bookmark",
-      "Calendar",
-      "Check",
-      "ChevronDown",
-      "ChevronLeft",
-      "ChevronRight",
-      "ChevronUp",
-      "CircleAlert",
-      "CircleCheck",
-      "CircleHelp",
-      "Clock",
-      "Copy",
-      "Download",
-      "Ellipsis",
-      "EllipsisVertical",
-      "ExternalLink",
-      "Eye",
-      "EyeOff",
-      "FileText",
-      "Funnel",
-      "Heart",
-      "House",
-      "Image",
-      "Info",
-      "Link",
-      "Lock",
-      "LogIn",
-      "LogOut",
-      "Mail",
-      "Menu",
-      "Minus",
-      "Pencil",
-      "Plus",
-      "RefreshCw",
-      "Save",
-      "Search",
-      "Settings",
-      "Share",
-      "Star",
-      "Trash2",
-      "TriangleAlert",
-      "Upload",
-      "User",
-      "X"
     ]
   }
 }
