@@ -50,7 +50,8 @@ inline styles. `button.tsx`'s base string is the pattern to copy:
 
 ```
 hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring
-disabled:pointer-events-none disabled:opacity-50 active:brightness-95
+disabled:pointer-events-none disabled:opacity-50
+active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5
 ```
 
 Non-interactive display primitives (`StatusDot`, `Badge`) have no interactive

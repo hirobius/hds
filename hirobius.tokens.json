@@ -1456,6 +1456,22 @@
             }
           }
         }
+      },
+      "state": {
+        "pressed": {
+          "overlay": {
+            "$value": "{primitive.color.neutral.black}",
+            "$description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
+            "$extensions": {
+              "com.figma.variables": {
+                "modes": {
+                  "Light": "{primitive.color.neutral.black}",
+                  "Dark": "{primitive.color.neutral.white}"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "space": {
@@ -2506,6 +2522,11 @@
       "$type": "color",
       "$value": "{semantic.color.surface.scrim}",
       "$description": "Modal backdrop colour role. Apply alpha in the class, e.g. bg-scrim/60."
+    },
+    "pressed-overlay": {
+      "$type": "color",
+      "$value": "{semantic.color.state.pressed.overlay}",
+      "$description": "Pressed-state overlay colour role. Apply alpha in the class, e.g. inset-shadow-pressed-overlay/5."
     },
     "popover-foreground": {
       "$type": "color",
