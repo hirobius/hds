@@ -8,9 +8,9 @@
  * (hds#206).
  *
  * @internal — the resolver internals (`resolveSx`, `sxClassName`, `injectSx`)
- * are exported for testing, and `resolveSpacingValue` for Stack. The
- * supported public surface is `Box` + the `Sx*` types, both re-exported from
- * `box.tsx`.
+ * are exported for testing, and `resolveSpacingValue`, `SpacingVocabulary`
+ * and `SPACE_SCALE` for Stack. The supported public surface is `Box` + the
+ * `Sx*` types, both re-exported from `box.tsx`.
  */
 
 // ── Breakpoints ──────────────────────────────────────────────────────────────
@@ -74,13 +74,14 @@ const UNITLESS = new Set([
 // 4px unit rather than a raw px literal.
 const EXISTING_SPACE_SCALE = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 16, 20, 24, 32]);
 
-// hds#206 item 4: Box `sx` and Stack `gap` resolve names through this one
-// table and `resolveSpacingValue` below, so the two cannot drift. They had:
-// compact density retuned Stack's steps while Box still read the old layout
-// vars.
+// hds#206 item 4: Box `sx` and Stack `gap` resolve spacing through
+// `resolveSpacingValue` below. Each passes its own vocabulary: the names it
+// accepts and what a number means. The vocabularies are frozen at what each
+// rendered before hds#206, so no consumer's spacing moves before the 1.0
+// alias removal (scripts/__tests__/spacing-computed-lock.test.mjs).
 
 /** The canonical t-shirt scale, `semantic.space.scale.{xs,sm,md,lg,xl}` (hds#206). */
-const SPACE_SCALE = {
+export const SPACE_SCALE = {
   xs: 'var(--semantic-space-scale-xs)',
   sm: 'var(--semantic-space-scale-sm)',
   md: 'var(--semantic-space-scale-md)',
@@ -88,12 +89,36 @@ const SPACE_SCALE = {
   xl: 'var(--semantic-space-scale-xl)',
 } as const;
 
-/** Deprecated step names (hds#206), each resolving to the scale step with the same value. */
-const DEPRECATED_SPACE_STEPS: Readonly<Record<string, string>> = {
-  tight: SPACE_SCALE.sm,
-  normal: SPACE_SCALE.md,
-  inset: SPACE_SCALE.lg,
-  spacious: SPACE_SCALE.xl,
+/**
+ * The names a spacing prop accepts, and what a number means there:
+ * `'units'` is a count of 4px units (Box `sx`), `'raw'` returns the number
+ * as-is for React's inline style to read as px (Stack `gap`).
+ */
+export interface SpacingVocabulary {
+  readonly names: Readonly<Record<string, string>>;
+  readonly numbers: 'units' | 'raw';
+}
+
+/**
+ * Box `sx`: the t-shirt scale, plus the deprecated 'tight' | 'normal' |
+ * 'inset' | 'spacious' at the vars they read before hds#206. Those are
+ * `semantic.space.layout.*`, fixed pixels that compact density does not
+ * remap, unlike the scale steps (and unlike Stack's same four names), so
+ * they keep their layout var until they are removed in 1.0. The var names
+ * are built, not written out, so the internal spacing codemod cannot
+ * rewrite them to scale steps and change compact pixels.
+ */
+export const BOX_SX_SPACING: SpacingVocabulary = {
+  names: {
+    ...SPACE_SCALE,
+    ...Object.fromEntries(
+      ['tight', 'normal', 'inset', 'spacious'].map((step) => [
+        step,
+        `var(--semantic-space-layout-${step})`,
+      ]),
+    ),
+  },
+  numbers: 'units',
 };
 
 const own = (table: Readonly<Record<string, string>>, key: string): string | undefined =>
@@ -120,16 +145,16 @@ const SPACING_PROP_MAP: Record<string, string[]> = {
 };
 
 /**
- * The one spacing resolver for Box `sx` and Stack `gap`. A number is a count
- * of 4px units. A string is looked up in the caller's own `aliases` first
- * (Stack's older gap names), then the t-shirt scale, then the deprecated
- * steps; anything else ('auto', '1rem', a `var()`) passes through.
+ * The one spacing resolver for Box `sx` and Stack `gap`. A name is looked up
+ * in the caller's vocabulary (own keys only, so 'constructor' is not a name);
+ * anything else ('auto', '1rem', a `var()`) passes through.
  */
 export function resolveSpacingValue(
   value: SxValue,
-  aliases: Readonly<Record<string, string>> = {},
-): string {
+  vocabulary: SpacingVocabulary,
+): string | number {
   if (typeof value === 'number') {
+    if (vocabulary.numbers === 'raw') return value;
     // This IS the primitive-tier bridge for Box's numeric spacing shorthand
     // (`p`, `m`, `gap`, ...) — same pipeline role as the allowlisted
     // src/app/design-system/tokens.ts, just resolving a scale index to a
@@ -139,9 +164,7 @@ export function resolveSpacingValue(
       ? `var(--primitive-space-${value})` // tier-ok: primitive-tier bridge, hds#186
       : `calc(var(--primitive-space-1) * ${value})`; // tier-ok: primitive-tier bridge, hds#186
   }
-  return (
-    own(aliases, value) ?? own(SPACE_SCALE, value) ?? own(DEPRECATED_SPACE_STEPS, value) ?? value
-  );
+  return own(vocabulary.names, value) ?? value;
 }
 
 // ── Token colors ──────────────────────────────────────────────────────────────
@@ -187,7 +210,7 @@ function camelToKebab(prop: string): string {
 function buildDeclarations(key: string, value: SxValue): string[] {
   const spacingProps = SPACING_PROP_MAP[key];
   if (spacingProps) {
-    const resolved = resolveSpacingValue(value);
+    const resolved = resolveSpacingValue(value, BOX_SX_SPACING);
     return spacingProps.map((prop) => `${prop}:${resolved}`);
   }
 

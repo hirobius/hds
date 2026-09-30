@@ -1,6 +1,7 @@
 /**
  * hds#206 item 4: Stack's `gap` and Box's `sx` spacing resolve through one
- * resolver (box-sx.ts `resolveSpacingValue`), so the two cannot drift.
+ * resolver (box-sx.ts `resolveSpacingValue`), each with its own vocabulary
+ * frozen at what it rendered before hds#206.
  */
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -24,7 +25,7 @@ const TODAY: Record<string, string> = {
   gap: 'var(--semantic-space-scale-xs)',
   medium: 'var(--semantic-space-component-medium)',
   hairline: 'var(--semantic-space-subgrid-hairline)',
-  // The 2px subgrid step, not scale.xs (8px): see STACK_GAP_ALIASES in stack.tsx.
+  // The 2px subgrid step, not scale.xs (8px): see STACK_GAP in stack.tsx.
   xs: 'var(--semantic-space-subgrid-xs)',
   ...(hds.space as Record<string, string>),
 };
@@ -53,13 +54,25 @@ describe('Stack gap', () => {
     expect((screen.getByText('a').parentElement as HTMLElement).style.gap).toBe(TODAY.tight);
   });
 
-  it.each(['tight', 'normal', 'inset', 'spacious'])(
-    'resolves the shared name %s to the same CSS as Box sx',
-    (gap) => {
-      const [rule] = resolveSx({ gap }, 'c');
-      expect(`.c{gap:${gapOf(gap as Gap)}}`).toBe(rule);
-    },
-  );
+  it.each([
+    ['gap', 'xs'],
+    ['tight', 'sm'],
+    ['normal', 'md'],
+    ['inset', 'lg'],
+    ['spacious', 'xl'],
+  ])('renders %s as the scale step Box sx names %s', (gap, step) => {
+    const [rule] = resolveSx({ gap: step }, 'c');
+    expect(`.c{gap:${gapOf(gap as Gap)}}`).toBe(rule);
+  });
+
+  // Untyped strings ('sm'..'xl') pass through too; jsdom drops them as invalid
+  // CSS, so spacing-computed-lock.test.mjs checks those from the SSR markup.
+  it.each([
+    [4, '4px'],
+    [0, '0px'],
+  ])('keeps an untyped number %s as raw px, as before hds#206', (gap, css) => {
+    expect(gapOf(gap as unknown as Gap)).toBe(css);
+  });
 
   it('has no resolver of its own: it calls box-sx resolveSpacingValue', () => {
     const source = readFileSync(join(__dirname, 'stack.tsx'), 'utf8');

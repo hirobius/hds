@@ -12,7 +12,7 @@
 
 import React from 'react';
 import hds from '../design-system/tokens';
-import { resolveSpacingValue } from './box-sx';
+import { resolveSpacingValue, SPACE_SCALE, type SpacingVocabulary } from './box-sx';
 
 type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type ComponentGap = 'gap' | 'medium';
@@ -42,7 +42,10 @@ export interface StackProps {
   children: React.ReactNode;
   /** Flex direction for the stack. */
   direction?: 'row' | 'column';
-  /** Gap token: semantic (tight, normal, inset, spacious) or primitive (px4, px8, etc). Defaults to 'tight' (16px). */
+  /**
+   * Gap token: semantic (tight, normal, inset, spacious) or primitive (px4, px8, etc). Defaults to 'tight' (16px).
+   * Not the t-shirt scale: Stack's 'xs' is the 2px subgrid step, while Box `sx` 'xs' is scale.xs (8px), until the 1.0 rename (hds#206).
+   */
   gap?: GapOption;
   /** Cross-axis alignment: start | center | end | stretch. */
   align?: FlexAlign;
@@ -59,18 +62,28 @@ export interface StackProps {
 }
 
 /**
- * Stack's older gap names that are not on the t-shirt scale, frozen until the
- * hds#206 alias removal. `xs` is the 2px subgrid step, not scale.xs (8px), so
- * Stack cannot take the t-shirt names until this `xs` goes. Everything else
- * (tight, normal, inset, spacious) resolves in box-sx, shared with Box `sx`.
+ * Stack's gap vocabulary, frozen at what each value rendered before hds#206
+ * until the 1.0 alias removal. Its four layout names read the scale steps,
+ * which compact density remaps; Box `sx`'s same four names read the fixed
+ * `layout.*` vars, so the two differ under compact until both names go.
+ * `xs` is the 2px subgrid step, not scale.xs (8px), so Stack cannot take the
+ * t-shirt names until this `xs` goes; 'sm' to 'xl' pass through as before.
+ * A number stays raw px, the way React's inline style reads it.
  */
-const STACK_GAP_ALIASES: Readonly<Record<string, string>> = {
-  ...(hds.space as Record<string, string>),
-  gap: 'var(--semantic-space-scale-xs)',
-  medium: 'var(--semantic-space-component-medium)',
-  hairline: 'var(--semantic-space-subgrid-hairline)',
-  xs: 'var(--semantic-space-subgrid-xs)',
-  stack: 'var(--semantic-space-section-stack)',
+const STACK_GAP: SpacingVocabulary = {
+  names: {
+    ...(hds.space as Record<string, string>),
+    tight: SPACE_SCALE.sm,
+    normal: SPACE_SCALE.md,
+    inset: SPACE_SCALE.lg,
+    spacious: SPACE_SCALE.xl,
+    gap: SPACE_SCALE.xs,
+    medium: 'var(--semantic-space-component-medium)',
+    hairline: 'var(--semantic-space-subgrid-hairline)',
+    xs: 'var(--semantic-space-subgrid-xs)',
+    stack: 'var(--semantic-space-section-stack)',
+  },
+  numbers: 'raw',
 };
 
 /** @public */
@@ -97,7 +110,7 @@ export const Stack = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StackProps
       style={{
         display: 'flex',
         flexDirection: direction,
-        gap: resolveSpacingValue(gap, STACK_GAP_ALIASES),
+        gap: resolveSpacingValue(gap, STACK_GAP),
         alignItems: align ? alignMap[align] : direction === 'row' ? 'stretch' : undefined,
         justifyContent: justify ? justifyMap[justify] : undefined,
         flexWrap: wrap,

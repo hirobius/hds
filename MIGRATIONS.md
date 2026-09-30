@@ -57,8 +57,8 @@ import sites in 11 files, all four names being `Page`, `ErrorPattern`,
 
 - **Deprecated in:** 0.17 (hds#206). Spacing is one scale,
   `semantic.space.scale.{xs,sm,md,lg,xl}` (8/16/24/32/48px). The old names
-  still resolve to the same computed values and carry `$deprecated` in
-  `hirobius.tokens.json`.
+  keep computing exactly what they did, at both densities, and carry
+  `$deprecated` in `hirobius.tokens.json`.
 - **Removed in:** not before 1.0, because removal happens in a major (step 4).
   No window is set yet: steps 2 and 3 come first.
 - **Codemod:** `scripts/codemod-spacing-vocabulary.mjs` rewrites the token
@@ -80,15 +80,27 @@ import sites in 11 files, all four names being `Page`, `ErrorPattern`,
 The CSS variables follow the paths (`--semantic-space-layout-tight` becomes
 `--semantic-space-scale-sm`). `surface.padding` and `region.gutter` are not
 scale steps: tenants and `theme.css` override them at runtime, always with a
-scale step. Stack's `gap` keeps its old names for now, because its `'xs'` is the
-2px subgrid step, not `scale.xs`.
+scale step.
+
+Compact density: each swap in the table is pixel-identical at the default
+density, but not under `data-density="compact"`. `component.gap`,
+`layout.tight|normal|inset|spacious`, Box `sx`'s `'tight'` to `'spacious'` and
+Box `sx` integers are fixed pixels. The `scale.*` steps that replace them
+tighten one step under compact (8, 16, 24, 32, 48px become 6, 12, 20, 24,
+40px). Moving to the scale therefore tightens compact screens, the way Stack's
+gaps already do. To keep the old compact pixels exactly, use the fixed step
+instead: `hds.space.px8|px16|px24|px32|px48`, or
+`--primitive-space-2|4|6|8|12`.
+
+Stack's `gap` keeps its old names for now, because its `'xs'` is the 2px
+subgrid step, not `scale.xs`. Its `'tight'` to `'spacious'` read the scale
+steps, so unlike Box `sx`'s same four names they tighten under compact. That
+difference stays until both sets of names are removed. Stack's numbers (raw px)
+and anything else untyped callers pass render what they did before.
 
 Upgrade first: Box `sx` takes `'xs'` to `'xl'` only from the first release after
 0.19.1. On 0.19.1 and earlier the string passes through, so `p: 'sm'` becomes
-`padding: sm`, which is invalid CSS and renders no padding. From the same
-release, a number on Stack's `gap` resolves the way Box `sx` does, as a count of
-4px units (it used to pass through as raw px). Stack's types never allowed a
-number, so only untyped callers see this.
+`padding: sm`, which is invalid CSS and renders no padding.
 
 `hds.density.*` (the `hds` token bridge) is deprecated from that release too,
 with the same removal window (`@removeIn 1.0.0`). Its names sit one step off the

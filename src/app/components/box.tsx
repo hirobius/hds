@@ -17,11 +17,11 @@
  *
  * `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature:
  *   - Spacing shorthands (m/p/gap family) take the t-shirt scale
- *     ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206), the one
+ *     ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the
  *     resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units
- *     (`p: 4` is 16px) and the deprecated 'tight'|'normal'|'inset'|'spacious' as
- *     their scale step, but HDS source may not use raw integers
- *     (check-spacing-vocabulary).
+ *     (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still
+ *     read `--semantic-space-layout-*`, fixed px that compact density does not
+ *     remap. HDS source may not use raw integers (check-spacing-vocabulary).
  *   - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys
  *     ('content.primary', 'surface.raised', 'border.subtle', 'accent',
  *     'accent.hover', 'feedback.success', …) to the matching semantic CSS var.
