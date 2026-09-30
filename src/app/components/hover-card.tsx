@@ -30,7 +30,13 @@ import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 
-const HoverCardRoot = HoverCardPrimitive.Root;
+// A wrapper of our own, not the Radix Root itself: the compound below attaches
+// the parts to it. Attaching them to `HoverCardPrimitive.Root` compiled to
+// property writes on a third-party export, which webpack and esbuild keep in
+// every bundle that reaches the shared chunk (hds#363, hds#365).
+function HoverCardRoot(props: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
+  return <HoverCardPrimitive.Root {...props} />;
+}
 const HoverCardTrigger = HoverCardPrimitive.Trigger;
 const HoverCardPortal = /* @__PURE__ */ withHdsPortal(HoverCardPrimitive.Portal);
 
@@ -80,6 +86,10 @@ interface HoverCardComponent extends React.FC<
  * with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.
  * @public
  */
-export const HoverCard = HoverCardRoot as unknown as HoverCardComponent;
-HoverCard.Trigger = HoverCardTrigger;
-HoverCard.Content = HoverCardContent;
+export const HoverCard: HoverCardComponent = /* @__PURE__ */ Object.assign(HoverCardRoot, {
+  Trigger: HoverCardTrigger,
+  Content: HoverCardContent,
+  // Set here, not by a later `HoverCard.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive.
+  displayName: 'HoverCard',
+});
