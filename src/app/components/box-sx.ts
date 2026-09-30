@@ -104,19 +104,17 @@ export interface SpacingVocabulary {
  * 'inset' | 'spacious' at the vars they read before hds#206. Those are
  * `semantic.space.layout.*`, fixed pixels that compact density does not
  * remap, unlike the scale steps (and unlike Stack's same four names), so
- * they keep their layout var until they are removed in 1.0. The var names
- * are built, not written out, so the internal spacing codemod cannot
- * rewrite them to scale steps and change compact pixels.
+ * they keep their layout var until they are removed in 1.0. The internal
+ * spacing codemod skips this file, so it cannot rewrite them to scale steps
+ * and change compact pixels.
  */
-export const BOX_SX_SPACING: SpacingVocabulary = {
+const BOX_SX_SPACING: SpacingVocabulary = {
   names: {
     ...SPACE_SCALE,
-    ...Object.fromEntries(
-      ['tight', 'normal', 'inset', 'spacious'].map((step) => [
-        step,
-        `var(--semantic-space-layout-${step})`,
-      ]),
-    ),
+    tight: 'var(--semantic-space-layout-tight)',
+    normal: 'var(--semantic-space-layout-normal)',
+    inset: 'var(--semantic-space-layout-inset)',
+    spacious: 'var(--semantic-space-layout-spacious)',
   },
   numbers: 'units',
 };

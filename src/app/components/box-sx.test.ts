@@ -38,14 +38,14 @@ describe('resolveSx — spacing shorthands', () => {
 
   // Frozen until the 1.0 removal: layout.* is fixed px, and the scale step
   // would tighten under compact density (spacing-computed-lock.test.mjs).
-  it.each(['tight', 'normal', 'inset', 'spacious'])(
-    'keeps the deprecated step %s on --semantic-space-layout-<step>, as before hds#206',
-    (name) => {
-      expect(resolveSx({ m: name }, 'cls')).toEqual([
-        `.cls{margin:var(--semantic-space-layout-${name})}`,
-      ]);
-    },
-  );
+  it.each([
+    ['tight', 'var(--semantic-space-layout-tight)'],
+    ['normal', 'var(--semantic-space-layout-normal)'],
+    ['inset', 'var(--semantic-space-layout-inset)'],
+    ['spacious', 'var(--semantic-space-layout-spacious)'],
+  ])('keeps the deprecated step %s on %s, as before hds#206', (name, layoutVar) => {
+    expect(resolveSx({ m: name }, 'cls')).toEqual([`.cls{margin:${layoutVar}}`]);
+  });
 
   it('takes a t-shirt step inside a responsive map', () => {
     expect(resolveSx({ p: { xs: 'sm', md: 'lg' } }, 'cls')).toEqual([
