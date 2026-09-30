@@ -5,7 +5,10 @@ import { Button, Card, Table } from '@hirobius/design-system';
 export function App() {
   return (
     <Card>
-      <Table />
+      <Table
+        columns={[{ key: 'name', label: 'Name' }]}
+        rows={[{ cells: [{ slot: 'label', content: 'Alpha' }] }]}
+      />
       <Button>Save</Button>
     </Card>
   );
