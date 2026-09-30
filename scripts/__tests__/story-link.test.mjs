@@ -284,6 +284,27 @@ describe('parseImportBindings', () => {
       ['useState', 'react'],
     ]);
   });
+
+  it('binds a default import that comes with a namespace import', () => {
+    expect([...parseImportBindings("import Table, * as columns from './table';")]).toEqual([
+      ['Table', './table'],
+    ]);
+  });
+
+  it('ignores import statements inside line and block comments', () => {
+    const source = [
+      "import { Card } from './card';",
+      "// import { Card } from '../legacy/card';",
+      '/*',
+      " * import { Ghost } from './ghost';",
+      ' */',
+      "import { Button } from './button'; // was: import { Button } from '../old/button';",
+    ].join('\n');
+    expect([...parseImportBindings(source)]).toEqual([
+      ['Card', './card'],
+      ['Button', './button'],
+    ]);
+  });
 });
 
 /**

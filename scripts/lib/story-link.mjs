@@ -190,17 +190,53 @@ const IMPORT_STATEMENT =
   /\bimport\s+(type\s+)?((?:[A-Za-z_$][\w$]*\s*,\s*)?(?:\{[^}]*\}|\*\s+as\s+[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*))\s+from\s+['"]([^'"]+)['"]/g;
 
 /**
+ * `source` with every `//` and `/* *\/` comment blanked to spaces, string
+ * literals left intact (a `//` inside one is not a comment) and newlines kept so
+ * offsets stay line-stable. Import parsing runs over this: a commented-out
+ * legacy import such as `// import { Card } from '../legacy/card'` would
+ * otherwise re-bind Card to a module that no longer resolves.
+ */
+function stripComments(source) {
+  let out = '';
+  for (let i = 0; i < source.length; i += 1) {
+    const ch = source[i];
+    const pair = ch + (source[i + 1] ?? '');
+    if (pair === '//') {
+      const end = source.indexOf('\n', i);
+      const stop = end < 0 ? source.length : end;
+      out += ' '.repeat(stop - i);
+      i = stop - 1;
+    } else if (pair === '/*') {
+      const end = source.indexOf('*/', i + 2);
+      const stop = end < 0 ? source.length : end + 2;
+      out += source.slice(i, stop).replace(/[^\n]/g, ' ');
+      i = stop - 1;
+    } else if (ch === "'" || ch === '"' || ch === '`') {
+      const close = skipString(source, i);
+      out += source.slice(i, close + 1);
+      i = close;
+    } else {
+      out += ch;
+    }
+  }
+  return out;
+}
+
+/**
  * Local binding -> module specifier for every value import, in source order.
  * `import { X as Y }` binds Y; `import X` binds X; type-only imports and inline
  * `type` entries are dropped because a `component:` value has to exist at runtime;
  * namespaces are dropped because `component: NS.X` is not an identifier.
+ * Comments are stripped first so a commented-out import cannot bind anything.
  */
 export function parseImportBindings(source) {
   const bindings = new Map();
-  for (const [, typeOnly, clause, specifier] of source.matchAll(IMPORT_STATEMENT)) {
+  for (const [, typeOnly, clause, specifier] of stripComments(source).matchAll(IMPORT_STATEMENT)) {
     if (typeOnly) continue;
     const brace = clause.indexOf('{');
-    const head = (brace === -1 ? clause : clause.slice(0, brace)).replace(',', '').trim();
+    // The head is the default binding: everything before the braces or, in
+    // `import X, * as NS`, before the comma that introduces the namespace.
+    const head = (brace === -1 ? clause : clause.slice(0, brace)).split(',')[0].trim();
     if (head && !head.startsWith('*')) bindings.set(head, specifier);
     if (brace === -1) continue;
     for (const entry of clause.slice(brace + 1, clause.indexOf('}')).split(',')) {
