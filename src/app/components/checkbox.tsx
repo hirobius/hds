@@ -33,7 +33,7 @@ export type HdsCheckboxDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'd
 
 /** Root label chrome — hover/press tint + cursor affordance. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
-const checkboxRootVariants = cva(
+const checkboxRootVariants = /* @__PURE__ */ cva(
   'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] px-[var(--semantic-space-scale-xs)] select-none',
   {
     variants: {
@@ -50,7 +50,7 @@ const checkboxRootVariants = cva(
 );
 
 /** Visually-hidden native input overlay — cursor affordance only. */
-const checkboxInputVariants = cva('absolute inset-0 m-0 opacity-0', {
+const checkboxInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-0', {
   variants: {
     state: {
       rest: 'cursor-pointer',
@@ -65,7 +65,7 @@ const checkboxInputVariants = cva('absolute inset-0 m-0 opacity-0', {
 
 /** Glyph box — border/background driven by `state` (interaction) x `on` (checked/indeterminate). */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/color; var()-based, no Tailwind-theme utility exists
-const checkboxGlyphVariants = cva(
+const checkboxGlyphVariants = /* @__PURE__ */ cva(
   'inline-flex shrink-0 items-center justify-center w-[var(--semantic-size-control-md)] h-[var(--semantic-size-control-md)] rounded-[var(--semantic-radius-control)] border-solid border-[length:var(--semantic-borderWidth-emphasis)] outline-offset-2',
   {
     variants: {
@@ -134,99 +134,102 @@ function setRef(ref: React.ForwardedRef<HTMLInputElement>, node: HTMLInputElemen
   else if (ref) ref.current = node;
 }
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, checked, onChange, indeterminate = false, onFocus, onBlur, disabled, ...rest },
-  ref,
-) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const frozenState = useFrozenState();
-  // Shared single-element interaction machine (ADR-015) — same seam as Toggle/Radio.
-  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
-    disabled,
-    frozenState: frozenState as InteractionVisualState | null,
-  });
+export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxProps>(
+  function Checkbox(
+    { label, checked, onChange, indeterminate = false, onFocus, onBlur, disabled, ...rest },
+    ref,
+  ) {
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const frozenState = useFrozenState();
+    // Shared single-element interaction machine (ADR-015) — same seam as Toggle/Radio.
+    const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } =
+      useInteractionState({
+        disabled,
+        frozenState: frozenState as InteractionVisualState | null,
+      });
 
-  // `indeterminate` is a DOM property, not an attribute — set it imperatively.
-  useEffect(() => {
-    if (inputRef.current) inputRef.current.indeterminate = indeterminate;
-  }, [indeterminate]);
+    // `indeterminate` is a DOM property, not an attribute — set it imperatively.
+    useEffect(() => {
+      if (inputRef.current) inputRef.current.indeterminate = indeterminate;
+    }, [indeterminate]);
 
-  const isOn = checked || indeterminate;
-  const glyphColor = isDisabled
-    ? 'var(--semantic-color-content-disabled)'
-    : 'var(--semantic-color-content-onAccent)';
-  const productiveMotion = useHdsMotion('productive');
+    const isOn = checked || indeterminate;
+    const glyphColor = isDisabled
+      ? 'var(--semantic-color-content-disabled)'
+      : 'var(--semantic-color-content-onAccent)';
+    const productiveMotion = useHdsMotion('productive');
 
-  return (
-    <motion.label
-      whileTap={isDisabled ? undefined : { scale: 0.99 }}
-      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
-      onMouseEnter={handlers.onMouseEnter}
-      onMouseLeave={handlers.onMouseLeave}
-      onPointerDown={handlers.onPointerDown}
-      onPointerUp={handlers.onPointerUp}
-      onPointerCancel={handlers.onPointerCancel}
-      className={checkboxRootVariants({ state: visualState })}
-    >
-      {/* Visually-hidden native input drives state, keyboard, and a11y. */}
-      <input
-        ref={(node) => {
-          inputRef.current = node;
-          setRef(ref, node);
-        }}
-        type="checkbox"
-        checked={checked}
-        disabled={isDisabled}
-        aria-checked={indeterminate ? 'mixed' : checked}
-        onChange={(e) => onChange(e.target.checked)}
-        onFocus={(e) => {
-          handlers.onFocus();
-          onFocus?.(e);
-        }}
-        onBlur={(e) => {
-          handlers.onBlur();
-          onBlur?.(e);
-        }}
-        className={checkboxInputVariants({ state: visualState })}
-        {...rest}
-      />
-      <motion.span
-        aria-hidden="true"
-        animate={{ scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1 }}
-        transition={{
-          duration: productiveMotion.duration,
-          ease: productiveMotion.easing,
-        }}
-        className={checkboxGlyphVariants({ state: visualState, on: isOn })}
-        // motion-ok: background-color/border-color swap on state change; the CSS
-        // transition (not a framer `animate` target) is left inline so the color
-        // fade keeps working even though the colors themselves now live in cva.
-        style={{
-          transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
-        }}
+    return (
+      <motion.label
+        whileTap={isDisabled ? undefined : { scale: 0.99 }}
+        transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+        onMouseEnter={handlers.onMouseEnter}
+        onMouseLeave={handlers.onMouseLeave}
+        onPointerDown={handlers.onPointerDown}
+        onPointerUp={handlers.onPointerUp}
+        onPointerCancel={handlers.onPointerCancel}
+        className={checkboxRootVariants({ state: visualState })}
       >
-        {indeterminate ? (
-          <Icon icon={Minus} size={14} color={glyphColor} aria-hidden />
-        ) : checked ? (
-          <Icon icon={Check} size={14} color={glyphColor} aria-hidden />
-        ) : null}
-      </motion.span>
-      <motion.span
-        className="text-secondary"
-        animate={{ x: isPressed ? hds.space.px1 : 0 }}
-        transition={{
-          duration: productiveMotion.duration,
-          ease: productiveMotion.easing,
-        }}
-        style={{
-          ...hds.typeStyles.ui,
-          color: isDisabled
-            ? 'var(--semantic-color-content-disabled)'
-            : 'var(--semantic-color-content-primary)',
-        }}
-      >
-        {label}
-      </motion.span>
-    </motion.label>
-  );
-});
+        {/* Visually-hidden native input drives state, keyboard, and a11y. */}
+        <input
+          ref={(node) => {
+            inputRef.current = node;
+            setRef(ref, node);
+          }}
+          type="checkbox"
+          checked={checked}
+          disabled={isDisabled}
+          aria-checked={indeterminate ? 'mixed' : checked}
+          onChange={(e) => onChange(e.target.checked)}
+          onFocus={(e) => {
+            handlers.onFocus();
+            onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            handlers.onBlur();
+            onBlur?.(e);
+          }}
+          className={checkboxInputVariants({ state: visualState })}
+          {...rest}
+        />
+        <motion.span
+          aria-hidden="true"
+          animate={{ scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1 }}
+          transition={{
+            duration: productiveMotion.duration,
+            ease: productiveMotion.easing,
+          }}
+          className={checkboxGlyphVariants({ state: visualState, on: isOn })}
+          // motion-ok: background-color/border-color swap on state change; the CSS
+          // transition (not a framer `animate` target) is left inline so the color
+          // fade keeps working even though the colors themselves now live in cva.
+          style={{
+            transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
+          }}
+        >
+          {indeterminate ? (
+            <Icon icon={Minus} size={14} color={glyphColor} aria-hidden />
+          ) : checked ? (
+            <Icon icon={Check} size={14} color={glyphColor} aria-hidden />
+          ) : null}
+        </motion.span>
+        <motion.span
+          className="text-secondary"
+          animate={{ x: isPressed ? hds.space.px1 : 0 }}
+          transition={{
+            duration: productiveMotion.duration,
+            ease: productiveMotion.easing,
+          }}
+          style={{
+            ...hds.typeStyles.ui,
+            color: isDisabled
+              ? 'var(--semantic-color-content-disabled)'
+              : 'var(--semantic-color-content-primary)',
+          }}
+        >
+          {label}
+        </motion.span>
+      </motion.label>
+    );
+  },
+);

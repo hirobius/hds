@@ -25,14 +25,14 @@ const BUTTON =
 
 // ── Button / Separator / ToggleGroup / ToggleItem / Link ────────────────────────
 
-const ToolbarButton = React.forwardRef<
+const ToolbarButton = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ToolbarPrimitive.Button>,
   React.ComponentPropsWithoutRef<typeof ToolbarPrimitive.Button>
 >(function ToolbarButton({ className, ...props }, ref) {
   return <ToolbarPrimitive.Button ref={ref} className={cn(BUTTON, className)} {...props} />;
 });
 
-const ToolbarSeparator = React.forwardRef<
+const ToolbarSeparator = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ToolbarPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof ToolbarPrimitive.Separator>
 >(function ToolbarSeparator({ className, ...props }, ref) {
@@ -45,7 +45,7 @@ const ToolbarSeparator = React.forwardRef<
   );
 });
 
-const ToolbarToggleGroup = React.forwardRef<
+const ToolbarToggleGroup = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ToolbarPrimitive.ToggleGroup>,
   React.ComponentPropsWithoutRef<typeof ToolbarPrimitive.ToggleGroup>
 >(function ToolbarToggleGroup({ className, ...props }, ref) {
@@ -58,7 +58,7 @@ const ToolbarToggleGroup = React.forwardRef<
   );
 });
 
-const ToolbarToggleItem = React.forwardRef<
+const ToolbarToggleItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ToolbarPrimitive.ToggleItem>,
   React.ComponentPropsWithoutRef<typeof ToolbarPrimitive.ToggleItem>
 >(function ToolbarToggleItem({ className, ...props }, ref) {
@@ -75,7 +75,7 @@ const ToolbarToggleItem = React.forwardRef<
   );
 });
 
-const ToolbarLink = React.forwardRef<
+const ToolbarLink = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ToolbarPrimitive.Link>,
   React.ComponentPropsWithoutRef<typeof ToolbarPrimitive.Link>
 >(function ToolbarLink({ className, ...props }, ref) {

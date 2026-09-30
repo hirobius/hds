@@ -12,7 +12,7 @@ import { cn } from '../../lib/utils';
 // Non-interactive — no hover/active/focus states. Tone drives only the value
 // color; label/sub stay muted regardless. Renamed the pre-contract 'default'
 // value to the fixed vocabulary's 'neutral' (#60 — check-prop-vocabulary rule C).
-const statVariants = cva('m-0 text-2xl font-medium leading-tight', {
+const statVariants = /* @__PURE__ */ cva('m-0 text-2xl font-medium leading-tight', {
   variants: {
     tone: {
       neutral: 'text-foreground',
@@ -44,7 +44,7 @@ export interface StatProps
  * @useInstead Card.Metric a figure inside a Card (hds#254 folds Stat into the Card slot)
  * @useInstead StatusTile a titled status with notes and a trailing badge
  */
-export const Stat = React.forwardRef<HTMLDivElement, StatProps>(function Stat(
+export const Stat = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatProps>(function Stat(
   { label, value, sub, tone, className, ...props },
   ref,
 ) {

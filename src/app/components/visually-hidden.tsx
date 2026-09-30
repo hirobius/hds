@@ -25,7 +25,7 @@ export interface VisuallyHiddenProps extends React.HTMLAttributes<HTMLElement> {
  * screen readers without occupying visual space — e.g. a text label for an
  * icon-only control.
  */
-export const VisuallyHidden = React.forwardRef<HTMLElement, VisuallyHiddenProps>(
+export const VisuallyHidden = /* @__PURE__ */ React.forwardRef<HTMLElement, VisuallyHiddenProps>(
   function VisuallyHidden({ as: Tag = 'span', className, children, ...props }, ref) {
     return (
       <Tag ref={ref} className={cn('sr-only', className)} {...props}>

@@ -23,35 +23,37 @@ const TECHNICAL_TYPE_CLASSES =
   '[font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)] [line-height:var(--semantic-typography-mono-line-height)] max-w-[var(--semantic-typography-mono-max-width)]';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
-const blockContainerVariants = cva(
+const blockContainerVariants = /* @__PURE__ */ cva(
   'overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
-const inlineWrapperVariants = cva(
+const inlineWrapperVariants = /* @__PURE__ */ cva(
   'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
-const blockHeaderVariants = cva(
+const blockHeaderVariants = /* @__PURE__ */ cva(
   'flex items-center justify-between border-b border-solid border-[var(--semantic-color-border-default)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-surface-padding)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
-const headerGroupVariants = cva('flex items-center gap-[var(--semantic-space-scale-xs)]');
+const headerGroupVariants = /* @__PURE__ */ cva(
+  'flex items-center gap-[var(--semantic-space-scale-xs)]',
+);
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/scale-xs spacing + content-primary token + mono typography composite have no matching Tailwind-theme utility; var()-based so still token-driven
-const collapsibleToggleVariants = cva(
+const collapsibleToggleVariants = /* @__PURE__ */ cva(
   `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-surface-padding)] py-[var(--semantic-space-scale-xs)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default token has no matching Tailwind-theme utility; var()-based so still token-driven
-const collapsiblePanelVariants = cva(
+const collapsiblePanelVariants = /* @__PURE__ */ cva(
   'border-t border-solid border-[var(--semantic-color-border-default)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- motion.productive.duration token has no matching Tailwind-theme utility; var()-based so still token-driven
-const chevronVariants = cva(
+const chevronVariants = /* @__PURE__ */ cva(
   'inline-flex transition-transform duration-[var(--hds-motion-productive-duration)] ease',
   {
     variants: {
@@ -65,7 +67,7 @@ const chevronVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + radius-action + border-default/surface-raised tokens + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven
-const copyButtonVariants = cva(
+const copyButtonVariants = /* @__PURE__ */ cva(
   'flex cursor-pointer items-center gap-[var(--semantic-space-subgrid-gap)]',
   {
     variants: {
@@ -81,7 +83,7 @@ const copyButtonVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono typography composite + content-primary token have no matching Tailwind-theme utility; var()-based so still token-driven
-const inlineCodeTextVariants = cva(
+const inlineCodeTextVariants = /* @__PURE__ */ cva(
   `block min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap not-italic text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
   {
     variants: {
@@ -95,12 +97,12 @@ const inlineCodeTextVariants = cva(
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono typography composite + content-primary token have no matching Tailwind-theme utility; var()-based so still token-driven
-const blockCodeTextVariants = cva(
+const blockCodeTextVariants = /* @__PURE__ */ cva(
   `whitespace-pre text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- section-stack spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
-const prePanelVariants = cva(
+const prePanelVariants = /* @__PURE__ */ cva(
   'm-0 overflow-x-auto p-[var(--semantic-space-section-stack)] pr-[calc(var(--semantic-space-section-stack)_+_var(--semantic-size-control-lg))]',
   {
     variants: {

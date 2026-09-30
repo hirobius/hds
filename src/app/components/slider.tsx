@@ -30,7 +30,7 @@ export interface SliderProps {
   onChange: (v: number) => void;
 }
 
-export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
+export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(function Slider(
   { label, min, max, step = 1, value, onChange },
   ref,
 ) {

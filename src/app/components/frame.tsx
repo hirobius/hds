@@ -47,7 +47,7 @@ export interface FrameProps {
 }
 
 /** @public */
-export const Frame = React.forwardRef<HTMLDivElement, FrameProps>(function Frame(
+export const Frame = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FrameProps>(function Frame(
   { children, ratio = 16 / 9, radius = 'md', className, style, as: Tag = 'div' },
   ref,
 ) {

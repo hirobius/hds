@@ -3904,6 +3904,7 @@
       "figmaId": null,
       "consumers": [
         "src/app/components/card-progress.test.tsx",
+        "src/app/components/card.test.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
@@ -4933,6 +4934,7 @@
         "src/app/components/button-group.test.tsx",
         "src/app/components/button-group.tsx",
         "src/app/components/button.test.tsx",
+        "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
@@ -5692,8 +5694,17 @@
           "required": true
         }
       ],
-      "storyFiles": [],
-      "storyIds": []
+      "storyFiles": [
+        "src/stories/status-list-item.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-status-list-item--danger",
+        "primitives-status-list-item--default",
+        "primitives-status-list-item--info",
+        "primitives-status-list-item--success",
+        "primitives-status-list-item--warning",
+        "primitives-status-list-item--with-trailing"
+      ]
     },
     "StatusTile": {
       "category": "Display",
@@ -5752,8 +5763,16 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": [],
+      "storyFiles": [
+        "src/stories/status-tile.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-status-tile--danger",
+        "primitives-status-tile--default",
+        "primitives-status-tile--tile-grid",
+        "primitives-status-tile--warning",
+        "primitives-status-tile--with-trailing-badge"
+      ],
       "usage": {
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
         "whenNot": "A single headline figure, or a row inside a list.",
@@ -5890,9 +5909,7 @@
       ],
       "tokenMapping": {},
       "storyFiles": [
-        "src/stories/badge.stories.tsx",
-        "src/stories/status-list-item.stories.tsx",
-        "src/stories/status-tile.stories.tsx"
+        "src/stories/badge.stories.tsx"
       ],
       "storyIds": [
         "primitives-badge--all-tones",
@@ -5900,18 +5917,7 @@
         "primitives-badge--info",
         "primitives-badge--neutral",
         "primitives-badge--success",
-        "primitives-badge--warning",
-        "primitives-status-list-item--danger",
-        "primitives-status-list-item--default",
-        "primitives-status-list-item--info",
-        "primitives-status-list-item--success",
-        "primitives-status-list-item--warning",
-        "primitives-status-list-item--with-trailing",
-        "primitives-status-tile--danger",
-        "primitives-status-tile--default",
-        "primitives-status-tile--tile-grid",
-        "primitives-status-tile--warning",
-        "primitives-status-tile--with-trailing-badge"
+        "primitives-badge--warning"
       ],
       "usage": {
         "when": "Label a status, state or count with a compact neutral or semantic chip.",
@@ -6849,6 +6855,7 @@
       },
       "consumers": [
         "src/app/components/card-progress.test.tsx",
+        "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/progress.test.tsx",
         "src/app/components/skeleton.tsx",
@@ -10479,7 +10486,9 @@
         "exportName": "CardBody",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/card.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10522,7 +10531,9 @@
         "exportName": "CardDescription",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/card.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10565,7 +10576,9 @@
         "exportName": "CardFooter",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/card.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10608,7 +10621,9 @@
         "exportName": "CardHeader",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/card.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10656,7 +10671,9 @@
         "exportName": "CardMetric",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/card.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10725,7 +10742,9 @@
         "exportName": "CardProgress",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/card.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10791,7 +10810,9 @@
         "exportName": "CardTitle",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/card.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10834,7 +10855,9 @@
         "exportName": "DialogClose",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10877,7 +10900,9 @@
         "exportName": "DialogContent",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10924,7 +10949,9 @@
         "exportName": "DialogDescription",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10967,7 +10994,9 @@
         "exportName": "DialogFooter",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11005,7 +11034,9 @@
         "exportName": "DialogHeader",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11043,7 +11074,9 @@
         "exportName": "DialogOverlay",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11086,7 +11119,9 @@
         "exportName": "DialogPortal",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11124,7 +11159,9 @@
         "exportName": "DialogTitle",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11167,7 +11204,9 @@
         "exportName": "DialogTrigger",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dialog.test.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],

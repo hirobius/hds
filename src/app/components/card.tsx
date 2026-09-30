@@ -100,34 +100,37 @@ export type CardTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 // still `default` and tone is still `neutral`) so it never fights `accent`'s
 // border for the border-color utility group.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven
-const cardVariants = cva('flex h-full flex-col rounded-lg bg-card text-card-foreground', {
-  variants: {
-    variant: {
-      default: 'border border-transparent', // 1px transparent preserves the layout box
-      accent: 'border-2 border-[var(--semantic-color-border-accent)]',
+const cardVariants = /* @__PURE__ */ cva(
+  'flex h-full flex-col rounded-lg bg-card text-card-foreground',
+  {
+    variants: {
+      variant: {
+        default: 'border border-transparent', // 1px transparent preserves the layout box
+        accent: 'border-2 border-[var(--semantic-color-border-accent)]',
+      },
+      tone: {
+        neutral: '',
+        danger: '!border !border-[var(--semantic-color-feedback-error)]',
+        success: '!border !border-[var(--semantic-color-feedback-success)]',
+        warning: '!border !border-[var(--semantic-color-feedback-warning)]',
+        info: '!border !border-[var(--semantic-color-feedback-info)]',
+      },
+      bordered: {
+        true: '',
+        false: '',
+      },
     },
-    tone: {
-      neutral: '',
-      danger: '!border !border-[var(--semantic-color-feedback-error)]',
-      success: '!border !border-[var(--semantic-color-feedback-success)]',
-      warning: '!border !border-[var(--semantic-color-feedback-warning)]',
-      info: '!border !border-[var(--semantic-color-feedback-info)]',
-    },
-    bordered: {
-      true: '',
-      false: '',
-    },
+    compoundVariants: [
+      {
+        variant: 'default',
+        tone: 'neutral',
+        bordered: true,
+        className: 'border-[var(--semantic-color-border-default)]',
+      },
+    ],
+    defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
   },
-  compoundVariants: [
-    {
-      variant: 'default',
-      tone: 'neutral',
-      bordered: true,
-      className: 'border-[var(--semantic-color-border-default)]',
-    },
-  ],
-  defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
-});
+);
 
 /** @public */
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -166,7 +169,7 @@ interface CardComponent extends React.ForwardRefExoticComponent<
   Metric: typeof CardMetric;
 }
 
-const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
+const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(function Card(
   {
     className,
     padding = 'component',
@@ -221,44 +224,44 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   metadata?: React.ReactNode;
 }
 
-const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(function CardHeader(
-  { className, metadata, children, ...props },
-  ref,
-) {
-  if (metadata !== undefined) {
-    // Top-of-card metadata + stacked title/description below. Inline-flex
-    // wrapper around the metadata keeps the badge sized to its content
-    // (no full-width stretch). The 12px gap reads as a single header
-    // section without crowding either zone.
+const CardHeader = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardHeaderProps>(
+  function CardHeader({ className, metadata, children, ...props }, ref) {
+    if (metadata !== undefined) {
+      // Top-of-card metadata + stacked title/description below. Inline-flex
+      // wrapper around the metadata keeps the badge sized to its content
+      // (no full-width stretch). The 12px gap reads as a single header
+      // section without crowding either zone.
+      return (
+        <div ref={ref} className={cn('flex flex-col gap-3 p-6', className)} {...props}>
+          <div className="flex flex-wrap items-center gap-2">{metadata}</div>
+          <div className="flex flex-col space-y-1.5 min-w-0">{children}</div>
+        </div>
+      );
+    }
     return (
-      <div ref={ref} className={cn('flex flex-col gap-3 p-6', className)} {...props}>
-        <div className="flex flex-wrap items-center gap-2">{metadata}</div>
-        <div className="flex flex-col space-y-1.5 min-w-0">{children}</div>
+      <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props}>
+        {children}
       </div>
     );
-  }
-  return (
-    <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props}>
-      {children}
-    </div>
-  );
-});
+  },
+);
 
 // D1: route Card titles through the Text seam (HDS type ramp) instead of raw
 // Tailwind classes — the same raw strings were duplicated in dialog.tsx, leaking
 // the Card-Anatomy contract. Text owns the type decision; the description keeps
 // its muted tone (a secondary-content concern, not part of the type ramp).
-const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  function CardTitle({ className, children, ...rest }, ref) {
-    return (
-      <Text ref={ref} variant="heading3" className={className} {...rest}>
-        {children}
-      </Text>
-    );
-  },
-);
+const CardTitle = /* @__PURE__ */ React.forwardRef<
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(function CardTitle({ className, children, ...rest }, ref) {
+  return (
+    <Text ref={ref} variant="heading3" className={className} {...rest}>
+      {children}
+    </Text>
+  );
+});
 
-const CardDescription = React.forwardRef<
+const CardDescription = /* @__PURE__ */ React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(function CardDescription({ className, children, ...rest }, ref) {
@@ -269,17 +272,19 @@ const CardDescription = React.forwardRef<
   );
 });
 
-const CardBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function CardBody({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />;
-  },
-);
+const CardBody = /* @__PURE__ */ React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(function CardBody({ className, ...props }, ref) {
+  return <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />;
+});
 
-const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function CardFooter({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />;
-  },
-);
+const CardFooter = /* @__PURE__ */ React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(function CardFooter({ className, ...props }, ref) {
+  return <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />;
+});
 
 // ── Progress slot ─────────────────────────────────────────────────────────────
 
@@ -312,66 +317,68 @@ export interface CardProgressProps extends Omit<
   tone?: CardTone;
 }
 
-const CardProgress = React.forwardRef<HTMLDivElement, CardProgressProps>(function CardProgress(
-  { className, value, max = 100, label, tone = 'neutral', style, ...props },
-  ref,
-) {
-  const clamped = Math.max(0, Math.min(value, max));
-  const pct = max > 0 ? (clamped / max) * 100 : 0;
-  return (
-    <div
-      ref={ref}
-      className={cn('px-6 pb-2', className)}
-      // The Progress slot owns its vertical rail. Padding-x matches the
-      // Header/Body 24px inset; padding-bottom reserves 8px below the
-      // optional label. NO direct collision with adjacent prose.
-      style={style}
-      {...props}
-    >
+const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgressProps>(
+  function CardProgress(
+    { className, value, max = 100, label, tone = 'neutral', style, ...props },
+    ref,
+  ) {
+    const clamped = Math.max(0, Math.min(value, max));
+    const pct = max > 0 ? (clamped / max) * 100 : 0;
+    return (
       <div
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={max}
-        aria-valuenow={clamped}
-        aria-label={typeof label === 'string' ? label : 'Progress'}
-        /* hds-bypass: INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */
-        style={{
-          height: '4px',
-          background: 'var(--semantic-color-border-default)',
-          borderRadius: hds.borderRadius[2],
-          overflow: 'hidden',
-        }}
+        ref={ref}
+        className={cn('px-6 pb-2', className)}
+        // The Progress slot owns its vertical rail. Padding-x matches the
+        // Header/Body 24px inset; padding-bottom reserves 8px below the
+        // optional label. NO direct collision with adjacent prose.
+        style={style}
+        {...props}
       >
         <div
-          // inline-ok: token-driven progress fill transform is dynamic.
-          // transform: scaleX (not width) so the fill animates on the compositor
-          // instead of triggering layout on every frame.
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={max}
+          aria-valuenow={clamped}
+          aria-label={typeof label === 'string' ? label : 'Progress'}
+          /* hds-bypass: INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */
           style={{
-            height: '100%',
-            width: '100%',
-            transform: `scaleX(${pct / 100})`,
-            transformOrigin: 'left',
-            background: PROGRESS_TONE_FILL[tone],
+            height: '4px',
+            background: 'var(--semantic-color-border-default)',
             borderRadius: hds.borderRadius[2],
-            transition: `transform ${hds.motion.expressive.duration}s ease-out`,
-          }}
-        />
-      </div>
-      {label !== undefined && (
-        <p
-          // inline-ok: token-driven caption inside structural slot
-          style={{
-            ...hds.typeStyles.caption,
-            margin: '6px 0 0',
-            color: 'var(--semantic-color-content-secondary)',
+            overflow: 'hidden',
           }}
         >
-          {label}
-        </p>
-      )}
-    </div>
-  );
-});
+          <div
+            // inline-ok: token-driven progress fill transform is dynamic.
+            // transform: scaleX (not width) so the fill animates on the compositor
+            // instead of triggering layout on every frame.
+            style={{
+              height: '100%',
+              width: '100%',
+              transform: `scaleX(${pct / 100})`,
+              transformOrigin: 'left',
+              background: PROGRESS_TONE_FILL[tone],
+              borderRadius: hds.borderRadius[2],
+              transition: `transform ${hds.motion.expressive.duration}s ease-out`,
+            }}
+          />
+        </div>
+        {label !== undefined && (
+          <p
+            // inline-ok: token-driven caption inside structural slot
+            style={{
+              ...hds.typeStyles.caption,
+              margin: '6px 0 0',
+              color: 'var(--semantic-color-content-secondary)',
+            }}
+          >
+            {label}
+          </p>
+        )}
+      </div>
+    );
+  },
+);
 
 // ── Metric slot ───────────────────────────────────────────────────────────────
 
@@ -402,46 +409,45 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
  * @usage Show one headline figure (a KPI, a count, a total) with its label inside a Card.
  * @whenNot A metric outside a Card, or several figures that share one label.
  */
-const CardMetric = React.forwardRef<HTMLDivElement, CardMetricProps>(function CardMetric(
-  { className, label, value, sub, tone = 'neutral', style, ...props },
-  ref,
-) {
-  return (
-    <div ref={ref} className={cn('flex flex-col px-6', className)} style={style} {...props}>
-      <p
-        style={{
-          ...hds.typeStyles.eyebrow,
-          margin: '0 0 6px',
-          color: 'var(--semantic-color-content-secondary)',
-        }}
-      >
-        {label}
-      </p>
-      <p
-        // inline-ok: token-driven value, slot-internal
-        style={{
-          ...hds.typeStyles.h2,
-          margin: 0,
-          color: METRIC_TONE_VALUE_COLOR[tone],
-        }}
-      >
-        {value}
-      </p>
-      {sub !== undefined && (
+const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
+  function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {
+    return (
+      <div ref={ref} className={cn('flex flex-col px-6', className)} style={style} {...props}>
         <p
-          // inline-ok: token-driven sub-line, slot-internal
           style={{
-            ...hds.typeStyles.caption,
-            margin: '4px 0 0',
+            ...hds.typeStyles.eyebrow,
+            margin: '0 0 6px',
             color: 'var(--semantic-color-content-secondary)',
           }}
         >
-          {sub}
+          {label}
         </p>
-      )}
-    </div>
-  );
-});
+        <p
+          // inline-ok: token-driven value, slot-internal
+          style={{
+            ...hds.typeStyles.h2,
+            margin: 0,
+            color: METRIC_TONE_VALUE_COLOR[tone],
+          }}
+        >
+          {value}
+        </p>
+        {sub !== undefined && (
+          <p
+            // inline-ok: token-driven sub-line, slot-internal
+            style={{
+              ...hds.typeStyles.caption,
+              margin: '4px 0 0',
+              color: 'var(--semantic-color-content-secondary)',
+            }}
+          >
+            {sub}
+          </p>
+        )}
+      </div>
+    );
+  },
+);
 
 // ── Compound assembly ─────────────────────────────────────────────────────────
 
@@ -454,14 +460,18 @@ const CardMetric = React.forwardRef<HTMLDivElement, CardMetricProps>(function Ca
  * @useInstead Surface a padded background without slot anatomy
  * @useInstead Card.Metric a single headline figure
  */
-export const Card = CardRoot as CardComponent;
-Card.Header = CardHeader;
-Card.Title = CardTitle;
-Card.Description = CardDescription;
-Card.Body = CardBody;
-Card.Footer = CardFooter;
-Card.Progress = CardProgress;
-Card.Metric = CardMetric;
+export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
+  Header: CardHeader,
+  Title: CardTitle,
+  Description: CardDescription,
+  Body: CardBody,
+  Footer: CardFooter,
+  Progress: CardProgress,
+  Metric: CardMetric,
+  // Set here, not by a later `Card.displayName = …` write: a top-level
+  // property write is a side effect that keeps the module alive (hds#363).
+  displayName: 'Card',
+});
 
 export { CardHeader, CardTitle, CardDescription, CardBody, CardFooter, CardProgress, CardMetric };
 

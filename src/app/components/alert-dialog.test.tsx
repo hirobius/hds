@@ -4,6 +4,7 @@
  */
 import { describe, it, expect, beforeAll, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { AlertDialog } from './alert-dialog';
 
 beforeAll(() => {
@@ -55,5 +56,58 @@ describe('AlertDialog', () => {
       </AlertDialog>,
     );
     expect(screen.getByRole('alertdialog')).not.toBeNull();
+  });
+});
+
+describe('AlertDialog compound assembly (hds#363)', () => {
+  it('does not write the parts onto the Radix Root export', () => {
+    expect(AlertDialog).not.toBe(AlertDialogPrimitive.Root);
+    const root = AlertDialogPrimitive.Root as unknown as Record<string, unknown>;
+    for (const part of [
+      'Trigger',
+      'Portal',
+      'Overlay',
+      'Content',
+      'Header',
+      'Footer',
+      'Title',
+      'Description',
+      'Action',
+      'Cancel',
+    ]) {
+      expect(root[part], `Radix Root.${part}`).toBeUndefined();
+    }
+  });
+
+  it('keeps every static part and the display name', () => {
+    expect(AlertDialog.displayName).toBe('AlertDialog');
+    for (const part of [
+      'Trigger',
+      'Portal',
+      'Overlay',
+      'Content',
+      'Header',
+      'Footer',
+      'Title',
+      'Description',
+      'Action',
+      'Cancel',
+    ] as const) {
+      expect(AlertDialog[part], part).toBeDefined();
+    }
+    expect(AlertDialog.Trigger).toBe(AlertDialogPrimitive.Trigger);
+    expect(AlertDialog.Action).toBe(AlertDialogPrimitive.Action);
+    expect(AlertDialog.Cancel).toBe(AlertDialogPrimitive.Cancel);
+  });
+
+  it('still forwards root props to Radix (uncontrolled defaultOpen)', () => {
+    render(
+      <AlertDialog defaultOpen>
+        <AlertDialog.Content>
+          <AlertDialog.Title>Default open</AlertDialog.Title>
+        </AlertDialog.Content>
+      </AlertDialog>,
+    );
+    expect(screen.getByRole('alertdialog', { name: 'Default open' })).toBeTruthy();
   });
 });

@@ -32,11 +32,11 @@ import { withHdsPortal } from '../context/hds-portal';
 
 const HoverCardRoot = HoverCardPrimitive.Root;
 const HoverCardTrigger = HoverCardPrimitive.Trigger;
-const HoverCardPortal = withHdsPortal(HoverCardPrimitive.Portal);
+const HoverCardPortal = /* @__PURE__ */ withHdsPortal(HoverCardPrimitive.Portal);
 
 // ── Content ─────────────────────────────────────────────────────────────────────
 
-const HoverCardContent = React.forwardRef<
+const HoverCardContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof HoverCardPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> & {
     /**

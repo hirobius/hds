@@ -28,29 +28,31 @@ export interface FormActionsProps extends Omit<React.HTMLAttributes<HTMLDivEleme
  * then primary last and right-most. Gap is the tight layout token.
  * @screenPattern
  */
-export const FormActions = React.forwardRef<HTMLDivElement, FormActionsProps>(function FormActions(
-  { primary, secondary, destructive, sticky = false, className, style, ...props },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      data-hds-component="FormActions"
-      data-sticky={sticky ? 'true' : undefined}
-      className={cn(sticky && 'border-t border-border bg-background py-3', className)}
-      style={sticky ? { position: 'sticky', bottom: 0, ...style } : style}
-      {...props}
-    >
-      <Cluster gap="tight" align="center" justify={destructive ? 'space-between' : 'end'}>
-        {destructive ? <div data-slot="destructive">{destructive}</div> : null}
-        {/* ml-auto keeps the group right-aligned when the row wraps below the destructive slot. */}
-        <div data-slot="group" className="ml-auto">
-          <Cluster gap="tight" align="center" justify="end">
-            {secondary}
-            {primary}
-          </Cluster>
-        </div>
-      </Cluster>
-    </div>
-  );
-});
+export const FormActions = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FormActionsProps>(
+  function FormActions(
+    { primary, secondary, destructive, sticky = false, className, style, ...props },
+    ref,
+  ) {
+    return (
+      <div
+        ref={ref}
+        data-hds-component="FormActions"
+        data-sticky={sticky ? 'true' : undefined}
+        className={cn(sticky && 'border-t border-border bg-background py-3', className)}
+        style={sticky ? { position: 'sticky', bottom: 0, ...style } : style}
+        {...props}
+      >
+        <Cluster gap="tight" align="center" justify={destructive ? 'space-between' : 'end'}>
+          {destructive ? <div data-slot="destructive">{destructive}</div> : null}
+          {/* ml-auto keeps the group right-aligned when the row wraps below the destructive slot. */}
+          <div data-slot="group" className="ml-auto">
+            <Cluster gap="tight" align="center" justify="end">
+              {secondary}
+              {primary}
+            </Cluster>
+          </div>
+        </Cluster>
+      </div>
+    );
+  },
+);

@@ -43,7 +43,7 @@ const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
 const ContextMenuGroup = ContextMenuPrimitive.Group;
 const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
 const ContextMenuSub = ContextMenuPrimitive.Sub;
-const ContextMenuPortal = withHdsPortal(ContextMenuPrimitive.Portal);
+const ContextMenuPortal = /* @__PURE__ */ withHdsPortal(ContextMenuPrimitive.Portal);
 
 // Shared skin — kept identical to menu.tsx so the two overlays read as one system.
 const SURFACE =
@@ -53,7 +53,7 @@ const ITEM =
 
 // ── Content ─────────────────────────────────────────────────────────────────────
 
-const ContextMenuContent = React.forwardRef<
+const ContextMenuContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content> & {
     /**
@@ -77,14 +77,14 @@ const ContextMenuContent = React.forwardRef<
 
 // ── Items ───────────────────────────────────────────────────────────────────────
 
-const ContextMenuItem = React.forwardRef<
+const ContextMenuItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item>
 >(function ContextMenuItem({ className, ...props }, ref) {
   return <ContextMenuPrimitive.Item ref={ref} className={cn(ITEM, className)} {...props} />;
 });
 
-const ContextMenuCheckboxItem = React.forwardRef<
+const ContextMenuCheckboxItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.CheckboxItem>
 >(function ContextMenuCheckboxItem({ className, children, ...props }, ref) {
@@ -100,7 +100,7 @@ const ContextMenuCheckboxItem = React.forwardRef<
   );
 });
 
-const ContextMenuRadioItem = React.forwardRef<
+const ContextMenuRadioItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioItem>
 >(function ContextMenuRadioItem({ className, children, ...props }, ref) {
@@ -118,7 +118,7 @@ const ContextMenuRadioItem = React.forwardRef<
 
 // ── Label / Separator / Submenu ──────────────────────────────────────────────────
 
-const ContextMenuLabel = React.forwardRef<
+const ContextMenuLabel = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label>
 >(function ContextMenuLabel({ className, ...props }, ref) {
@@ -131,7 +131,7 @@ const ContextMenuLabel = React.forwardRef<
   );
 });
 
-const ContextMenuSeparator = React.forwardRef<
+const ContextMenuSeparator = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Separator>
 >(function ContextMenuSeparator({ className, ...props }, ref) {
@@ -144,7 +144,7 @@ const ContextMenuSeparator = React.forwardRef<
   );
 });
 
-const ContextMenuSubTrigger = React.forwardRef<
+const ContextMenuSubTrigger = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger>
 >(function ContextMenuSubTrigger({ className, children, ...props }, ref) {
@@ -160,7 +160,7 @@ const ContextMenuSubTrigger = React.forwardRef<
   );
 });
 
-const ContextMenuSubContent = React.forwardRef<
+const ContextMenuSubContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent> & {
     /**

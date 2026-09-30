@@ -39,43 +39,42 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
  * Distinct from the docs-only page header in `src/docs-tooling`.
  * @screenPattern
  */
-export const PageHeader = React.forwardRef<HTMLElement, PageHeaderProps>(function PageHeader(
-  { breadcrumb, title, status, actions, level = 1, className, ...props },
-  ref,
-) {
-  const Heading = `h${level}` as const;
-  return (
-    <header
-      ref={ref}
-      data-hds-component="PageHeader"
-      className={cn('w-full', className)}
-      {...props}
-    >
-      <Stack gap="tight">
-        {breadcrumb ? <div data-slot="breadcrumb">{breadcrumb}</div> : null}
-        <Cluster gap="normal" align="start" justify="space-between">
-          <Cluster gap="tight" align="center">
-            <Heading
-              // inline-ok: the one canonical page-title size, bound to the heading2 type style
-              style={{
-                ...hds.typeStyles.heading2,
-                margin: 0,
-                color: 'var(--semantic-color-content-primary)',
-              }}
-            >
-              {title}
-            </Heading>
-            {status ? <div data-slot="status">{status}</div> : null}
+export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHeaderProps>(
+  function PageHeader({ breadcrumb, title, status, actions, level = 1, className, ...props }, ref) {
+    const Heading = `h${level}` as const;
+    return (
+      <header
+        ref={ref}
+        data-hds-component="PageHeader"
+        className={cn('w-full', className)}
+        {...props}
+      >
+        <Stack gap="tight">
+          {breadcrumb ? <div data-slot="breadcrumb">{breadcrumb}</div> : null}
+          <Cluster gap="normal" align="start" justify="space-between">
+            <Cluster gap="tight" align="center">
+              <Heading
+                // inline-ok: the one canonical page-title size, bound to the heading2 type style
+                style={{
+                  ...hds.typeStyles.heading2,
+                  margin: 0,
+                  color: 'var(--semantic-color-content-primary)',
+                }}
+              >
+                {title}
+              </Heading>
+              {status ? <div data-slot="status">{status}</div> : null}
+            </Cluster>
+            {actions ? (
+              <div data-slot="actions" className="ml-auto">
+                <Cluster gap="tight" align="center" justify="end">
+                  {actions}
+                </Cluster>
+              </div>
+            ) : null}
           </Cluster>
-          {actions ? (
-            <div data-slot="actions" className="ml-auto">
-              <Cluster gap="tight" align="center" justify="end">
-                {actions}
-              </Cluster>
-            </div>
-          ) : null}
-        </Cluster>
-      </Stack>
-    </header>
-  );
-});
+        </Stack>
+      </header>
+    );
+  },
+);

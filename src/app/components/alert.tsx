@@ -26,7 +26,7 @@ type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 // TONE_CONFIG below — those are not CSS-class concerns (glyph is a component,
 // the Icon takes a color value). `hasTitle` flips cross-axis alignment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists
-const alertVariants = cva(
+const alertVariants = /* @__PURE__ */ cva(
   'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-scale-xs)] rounded-[var(--primitive-radius-4)]', // tier-ok: 4px primitive radius, no semantic 4px token
   {
     variants: {
@@ -62,7 +62,7 @@ const TONE_CONFIG: Record<AlertTone, { icon: LucideIcon; colorVar: string }> = {
 };
 
 /** @public */
-export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   { tone = 'info', title, children },
   ref,
 ) {
