@@ -142,7 +142,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -164,6 +164,7 @@ const importChecks = [
   [PKG + '/cn', (m) => assert.equal(typeof m.cn, 'function', 'cn() missing')],
   [PKG + '/tokens', (m) => assert.ok(m.default && typeof m.default === 'object', 'tokens default missing')],
   [PKG + '/manifest', (m) => assert.ok(m.default && typeof m.default === 'object', 'manifest default missing')],
+  [PKG + '/icons', (m) => assert.equal(typeof m.Ellipsis, 'object', 'Ellipsis icon missing')],
   [PKG + '/contexts', (m) => assert.equal(typeof m.ThemeProvider, 'function', 'ThemeProvider missing')],
   [PKG + '/mui', (m) => {
     assert.equal(typeof m.hdsMuiThemeOptions, 'function', 'hdsMuiThemeOptions missing');
@@ -367,11 +368,14 @@ if (ok) {
     join(app, 'consumer-typecheck.tsx'),
     [
       "import { Button, hds } from '@hirobius/design-system';",
+      "import { IconButton } from '@hirobius/design-system';",
+      "import { Ellipsis } from '@hirobius/design-system/icons';",
       "import { cn } from '@hirobius/design-system/cn';",
       "import manifest from '@hirobius/design-system/manifest';",
       '// Types must resolve from dist/*.d.ts (not source) under skipLibCheck.',
       'export const a = <Button className={cn(String(hds ? 1 : 0))}>Hi</Button>;',
       'export const b = Object.keys(manifest).length;',
+      'export const c = <IconButton icon={Ellipsis} label="Row actions" />;',
       '',
     ].join('\n'),
   );
