@@ -82,3 +82,23 @@ The CSS variables follow the paths (`--semantic-space-layout-tight` becomes
 scale steps: tenants and `theme.css` override them at runtime, always with a
 scale step. Stack's `gap` keeps its old names for now, because its `'xs'` is the
 2px subgrid step, not `scale.xs`.
+
+Upgrade first: Box `sx` takes `'xs'` to `'xl'` only from the first release after
+0.19.1. On 0.19.1 and earlier the string passes through, so `p: 'sm'` becomes
+`padding: sm`, which is invalid CSS and renders no padding. From the same
+release, a number on Stack's `gap` resolves the way Box `sx` does, as a count of
+4px units (it used to pass through as raw px). Stack's types never allowed a
+number, so only untyped callers see this.
+
+`hds.density.*` (the `hds` token bridge) is deprecated from that release too,
+with the same removal window (`@removeIn 1.0.0`). Its names sit one step off the
+scale, and each replacement computes the same pixels at both densities:
+
+| Old                                         | New                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------ |
+| `hds.density.sm` (`var(--hds-space-sm)`)    | `hds.semantic.space.scale.xs`                                      |
+| `hds.density.md` (`var(--hds-space-md)`)    | `hds.semantic.space.scale.sm`                                      |
+| `hds.density.lg` (`var(--hds-space-lg)`)    | `hds.semantic.space.scale.md`                                      |
+| `hds.density.xl` (`var(--hds-space-xl)`)    | `hds.semantic.space.scale.lg`                                      |
+| `hds.density.xl2` (`var(--hds-space-2xl)`)  | `hds.semantic.space.scale.xl`                                      |
+| `hds.density.xs`, `hds.density.xl3`, `.xl4` | no scale step; `hds.space.px4`, `px64`, `px80` (not density-aware) |

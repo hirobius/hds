@@ -308,7 +308,7 @@
     },
     {
       "id": "check-hardcoded-spacing",
-      "description": "Scans all TSX/TS component files for raw pixel values in style props that should use hds.space.*, hds.density.*, or var(--hds-space-*) instead.",
+      "description": "Scans all TSX/TS component files for raw pixel values in style props that should use hds.semantic.space.scale.*, hds.space.*, or a var(--semantic-space-*) token instead.",
       "severity": "warn",
       "gateScript": "scripts/check-hardcoded-spacing.mjs",
       "fixturePath": "fixtures/check-hardcoded-spacing",

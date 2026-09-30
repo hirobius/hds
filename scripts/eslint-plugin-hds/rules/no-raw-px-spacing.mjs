@@ -56,7 +56,7 @@ export default {
     schema: [],
     messages: {
       rawPxSpacing:
-        'Raw spacing value "{{value}}" on "{{prop}}" bypasses the HDS spacing scale. Use hds.space.*, hds.density.*, var(--semantic-space-...), or Box sx prop "{{prop}}" with a token key.',
+        'Raw spacing value "{{value}}" on "{{prop}}" bypasses the HDS spacing scale. Use hds.semantic.space.scale.*, hds.space.*, var(--semantic-space-...), or Box sx prop "{{prop}}" with a t-shirt step such as "md".',
     },
   },
   create(context) {
