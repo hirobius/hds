@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T12:10:11.055Z",
+  "generated": "2026-09-30T12:27:39.299Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://adrianmilsap.com/hds",
@@ -249,6 +249,61 @@
     "MetricTiles",
     "PageHeader"
   ],
+  "iconSet": {
+    "subpath": "@hirobius/design-system/icons",
+    "names": [
+      "Archive",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "Bell",
+      "Bookmark",
+      "Calendar",
+      "Check",
+      "ChevronDown",
+      "ChevronLeft",
+      "ChevronRight",
+      "ChevronUp",
+      "CircleAlert",
+      "CircleCheck",
+      "CircleHelp",
+      "Clock",
+      "Copy",
+      "Download",
+      "Ellipsis",
+      "EllipsisVertical",
+      "ExternalLink",
+      "Eye",
+      "EyeOff",
+      "FileText",
+      "Funnel",
+      "Heart",
+      "House",
+      "Image",
+      "Info",
+      "Link",
+      "Lock",
+      "LogIn",
+      "LogOut",
+      "Mail",
+      "Menu",
+      "Minus",
+      "Pencil",
+      "Plus",
+      "RefreshCw",
+      "Save",
+      "Search",
+      "Settings",
+      "Share",
+      "Star",
+      "Trash2",
+      "TriangleAlert",
+      "Upload",
+      "User",
+      "X"
+    ]
+  },
   "phases": [
     {
       "id": "foundation",
@@ -10485,6 +10540,18 @@
         "primitives-menu--with-radio-group",
         "primitives-menu--with-submenu"
       ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The element that opens the menu (Menu.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "content",
+          "description": "The popup holding the items (Menu.Content).",
+          "source": "jsdoc"
+        }
+      ],
       "usage": {
         "when": "Offer a list of actions from a trigger, closed until opened.",
         "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
@@ -10523,18 +10590,6 @@
         {
           "keys": "Tab",
           "effect": "Does not leave the open menu."
-        }
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The element that opens the menu (Menu.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The popup holding the items (Menu.Content).",
-          "source": "jsdoc"
         }
       ]
     },
