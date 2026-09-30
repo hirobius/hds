@@ -4,6 +4,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { StatusTile } from '../app/components/status-tile';
+import { Badge } from '../app/components/badge';
 import { designParameters } from './design-parameters';
 
 const meta = {
@@ -44,19 +45,7 @@ export const WithTrailingBadge: Story = {
     tone: 'success',
     title: 'CI pipeline',
     notes: ['All checks passed', 'Last run 4 min ago'],
-    trailing: (
-      <span
-        style={{
-          fontSize: '11px',
-          padding: '2px 6px',
-          borderRadius: '4px',
-          background: 'var(--semantic-color-feedback-success)',
-          color: '#fff',
-        }}
-      >
-        Pass
-      </span>
-    ),
+    trailing: <Badge tone="success">Pass</Badge>,
   },
 };
 
@@ -65,19 +54,7 @@ export const Warning: Story = {
     tone: 'warning',
     title: 'Bundle size',
     notes: ['213 kB gzipped', 'Target: 200 kB'],
-    trailing: (
-      <span
-        style={{
-          fontSize: '11px',
-          padding: '2px 6px',
-          borderRadius: '4px',
-          background: 'var(--semantic-color-feedback-warning)',
-          color: '#fff',
-        }}
-      >
-        Over
-      </span>
-    ),
+    trailing: <Badge tone="warning">Over</Badge>,
   },
 };
 
@@ -86,19 +63,7 @@ export const Danger: Story = {
     tone: 'danger',
     title: 'Snapshot tests',
     notes: ['3 snapshots out of date', 'Blocking merge'],
-    trailing: (
-      <span
-        style={{
-          fontSize: '11px',
-          padding: '2px 6px',
-          borderRadius: '4px',
-          background: 'var(--semantic-color-feedback-error)',
-          color: '#fff',
-        }}
-      >
-        Fail
-      </span>
-    ),
+    trailing: <Badge tone="danger">Fail</Badge>,
   },
 };
 
@@ -118,73 +83,25 @@ export const TileGrid: Story = {
         tone="success"
         title="Design tokens"
         notes={['Last synced: today']}
-        trailing={
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              background: 'var(--semantic-color-feedback-success)',
-              color: '#fff',
-            }}
-          >
-            Synced
-          </span>
-        }
+        trailing={<Badge tone="success">Synced</Badge>}
       />
       <StatusTile
         tone="success"
         title="Accessibility"
         notes={['Score: 98 / 100']}
-        trailing={
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              background: 'var(--semantic-color-feedback-success)',
-              color: '#fff',
-            }}
-          >
-            Pass
-          </span>
-        }
+        trailing={<Badge tone="success">Pass</Badge>}
       />
       <StatusTile
         tone="warning"
         title="Bundle size"
         notes={['213 kB gzipped', 'Target: 200 kB']}
-        trailing={
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              background: 'var(--semantic-color-feedback-warning)',
-              color: '#fff',
-            }}
-          >
-            Over
-          </span>
-        }
+        trailing={<Badge tone="warning">Over</Badge>}
       />
       <StatusTile
         tone="danger"
         title="Snapshot tests"
         notes={['3 outdated']}
-        trailing={
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              background: 'var(--semantic-color-feedback-error)',
-              color: '#fff',
-            }}
-          >
-            Fail
-          </span>
-        }
+        trailing={<Badge tone="danger">Fail</Badge>}
       />
     </div>
   ),

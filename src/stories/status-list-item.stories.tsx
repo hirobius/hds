@@ -4,6 +4,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { StatusListItem } from '../app/components/status-list-item';
+import { Badge } from '../app/components/badge';
 import { designParameters } from './design-parameters';
 
 const meta = {
@@ -86,55 +87,19 @@ export const WithTrailing: Story = {
         tone="success"
         title="Design system audit"
         notes={['Score: 98 / 100']}
-        trailing={
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              background: 'var(--semantic-color-feedback-success)',
-              color: '#fff',
-            }}
-          >
-            Pass
-          </span>
-        }
+        trailing={<Badge tone="success">Pass</Badge>}
       />
       <StatusListItem
         tone="warning"
         title="Bundle size check"
         notes={['213 kB gzipped']}
-        trailing={
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              background: 'var(--semantic-color-feedback-warning)',
-              color: '#fff',
-            }}
-          >
-            Warn
-          </span>
-        }
+        trailing={<Badge tone="warning">Warn</Badge>}
       />
       <StatusListItem
         tone="danger"
         title="Snapshot tests"
         notes={['3 snapshots out of date']}
-        trailing={
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              background: 'var(--semantic-color-feedback-error)',
-              color: '#fff',
-            }}
-          >
-            Fail
-          </span>
-        }
+        trailing={<Badge tone="danger">Fail</Badge>}
       />
       <StatusListItem tone="neutral" title="Token manifest sync" notes={['No changes detected']} />
     </div>

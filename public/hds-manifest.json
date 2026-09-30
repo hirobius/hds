@@ -1542,6 +1542,7 @@
         "sizing": "full"
       },
       "consumers": [
+        "src/stories/foundation-swatch.stories.test.ts",
         "src/stories/foundation-swatch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -2920,6 +2921,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/sketch.stories.test.tsx",
         "src/stories/sketch.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5640,6 +5642,7 @@
       },
       "consumers": [
         "src/app/components/status-tile.tsx",
+        "src/stories/status-list-item.stories.test.tsx",
         "src/stories/status-list-item.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5724,6 +5727,7 @@
         "src/app/components/stat.tsx",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/status-list-item.stories.tsx",
+        "src/stories/status-tile.stories.test.tsx",
         "src/stories/status-tile.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5801,6 +5805,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/stories/status-tile.stories.test.tsx",
         "src/stories/status-tile.stories.tsx",
         "src/stories/tile-grid.stories.tsx"
       ],
@@ -5896,6 +5901,10 @@
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/static-primitives.stories.tsx",
+        "src/stories/status-list-item.stories.test.tsx",
+        "src/stories/status-list-item.stories.tsx",
+        "src/stories/status-tile.stories.test.tsx",
+        "src/stories/status-tile.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
