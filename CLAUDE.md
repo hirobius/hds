@@ -132,12 +132,20 @@ may skip:
 - **Design-touching / new module → `/codebase-design`**; periodic design-debt
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
+- **Charting a multi-decision lane → `/wayfinder`.**
+- **Spec before implement-spec → `/to-spec`.**
 
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
 `blocked` · `needs-adrian` (+ the Ralph labels in `AGENTS.md`). Dependencies:
 **sub-issues** for epic→child, **"Depends on #N"** in the body for cross-task
 prerequisites.
+
+## Agent skills
+
+Issue tracker: GitHub Issues, see `docs/agents/issue-tracker.md` (includes Wayfinding operations).
+Triage labels: see `docs/agents/triage-labels.md`.
+Domain docs: single-context, see `docs/agents/domain.md`.
 
 ## Fleet hub
 
