@@ -17,6 +17,7 @@ import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { createFakeFigma } from './helpers/fake-figma.mjs';
 import {
   FIXTURE_FONTS,
+  FIXTURE_TOKENS_PATH,
   fixtureModel,
   newFixtureFile as newFile,
 } from './helpers/figma-fixture.mjs';
@@ -444,6 +445,55 @@ describe('figma:push restores hand edits to styles', () => {
     expect(restored.boundVariables.fontSize).toBe(
       (await liveVariable(figma, 'typography/h1/font-size')).id,
     );
+  });
+});
+
+describe('figma:push when a value a text style binds changes (hds#300)', () => {
+  // hds#283 in miniature: the size rung h1 binds gets a new value, so the
+  // style's fontSize, and the line height and letter spacing derived from it,
+  // differ from Figma while every binding is already right. Figma detaches a
+  // binding when its property is written, which is how the 2026-09-30 push
+  // lost six styles' fontSize, lineHeight and letterSpacing bindings.
+  const bumped = (() => {
+    const tokens = JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8'));
+    tokens.primitive.typography.size['4xl'].$value.value = 56;
+    return buildFigmaModel(tokens);
+  })();
+  const boundFields = ['fontFamily', 'fontSize', 'fontWeight', 'letterSpacing', 'lineHeight'];
+
+  it('writes the new values, keeps every binding, and converges', async () => {
+    const figma = newFile();
+    await push(figma);
+
+    const report = await push(figma, {}, bumped);
+
+    expect(report.changes).toContain(
+      'update text style typography/h1: fontSize, lineHeight, letterSpacing',
+    );
+    const h1 = (await hdsReadState(figma)).textStyles.find((s) => s.name === 'typography/h1');
+    expect(h1.fontSize).toBe(56);
+    expect(h1.lineHeight).toEqual({ unit: 'PIXELS', value: 70 });
+    expect(Object.keys(h1.boundVariables)).toEqual(boundFields);
+    expect(h1.boundVariables.fontSize).toBe(
+      (await liveVariable(figma, 'typography/h1/font-size')).id,
+    );
+    expect((await push(figma, {}, bumped)).line).toBe('updated 0 · created 0 · deleted 0');
+  });
+
+  it('re-binds the font fields too when the font changes', async () => {
+    const figma = newFile();
+    await push(figma);
+    const tokens = JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8'));
+    tokens.semantic.typography.h1.$value.fontWeight = '{primitive.typography.weight.medium}';
+    const reweighted = buildFigmaModel(tokens);
+
+    const report = await push(figma, {}, reweighted);
+
+    expect(report.changes).toContain('update text style typography/h1: font');
+    const h1 = (await hdsReadState(figma)).textStyles.find((s) => s.name === 'typography/h1');
+    expect(h1.fontStyle).toBe('Medium');
+    expect(Object.keys(h1.boundVariables)).toEqual(boundFields);
+    expect((await push(figma, {}, reweighted)).line).toBe('updated 0 · created 0 · deleted 0');
   });
 });
 

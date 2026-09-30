@@ -51,7 +51,7 @@ export default {
       description:
         'Disallow raw px strings or bare numbers on margin/padding/gap in inline style — use an HDS spacing token.',
       recommended: true,
-      url: 'https://github.com/hirobius/hirobius-design-system/blob/main/scripts/eslint-plugin-hds/README.md#hdsno-raw-px-spacing',
+      url: 'https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md#hdsno-raw-px-spacing',
     },
     schema: [],
     messages: {

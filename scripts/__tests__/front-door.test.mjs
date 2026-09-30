@@ -17,6 +17,9 @@
  *      variable export the docs still offer really carries what the model has
  *      (Dark values and the role tier); and a Proposed ADR is not presented as
  *      settled architecture.
+ *   4. Repo references — no doc, script, or skill names the repository by its
+ *      pre-rename path. The repo is hirobius/hds; consumers copy install lines
+ *      and follow rule-documentation URLs straight out of these files.
  *
  * Reads repo files. The export check copies the exporter and the token file to
  * an OS temp directory and runs it there with `node`, so nothing in the repo is
@@ -446,5 +449,41 @@ describe('Figma claims in the core docs', () => {
 
   it('marks ADR-004 (the retired in-house plugin) as superseded', () => {
     expect(adrStatus('004').line).toMatch(/Superseded by ADR-019/);
+  });
+});
+
+// ── 4. Repo references ────────────────────────────────────────────────────────
+/** The pre-rename repository path, assembled so this file does not match itself. */
+const OLD_REPO = ['hirobius', 'hirobius-design-system'].join('/');
+
+const BINARY_EXT = /\.(png|jpe?g|gif|webp|ico|woff2?|ttf|otf|pdf|zip|gz)$/i;
+
+/** Files under `rel` (a file or a directory), skipping node_modules and binaries. */
+function textFilesUnder(rel) {
+  const abs = join(ROOT, rel);
+  if (statSync(abs).isFile()) return [rel];
+  return readdirSync(abs, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.name === 'node_modules') return [];
+    const child = `${rel}/${entry.name}`;
+    if (entry.isDirectory()) return textFilesUnder(child);
+    return entry.isFile() && !BINARY_EXT.test(entry.name) ? [child] : [];
+  });
+}
+
+describe('repo references', () => {
+  it('no doc, script or skill names the pre-rename repo', () => {
+    // A failure means a file still names the repo by its pre-rename path (OLD_REPO).
+    // The repo is hirobius/hds; repoint the line (skills/hds-consumer/SKILL.md is generated:
+    // edit scripts/generate-consumer-skill.mjs and run `pnpm skill:generate`).
+    const stale = ['README.md', 'docs', 'scripts', 'skills']
+      .flatMap(textFilesUnder)
+      .flatMap((file) =>
+        read(file)
+          .split('\n')
+          .map((line, i) => ({ line, at: `${file}:${i + 1}` }))
+          .filter(({ line }) => line.includes(OLD_REPO))
+          .map(({ at }) => at),
+      );
+    expect(stale).toEqual([]);
   });
 });
