@@ -16,14 +16,14 @@ pnpm dev          # Vite dev server
 
 ### Key documents
 
-| File | Purpose |
-|---|---|
-| `CLAUDE.md` | Agent operating instructions (read first) |
-| `public/llms.txt` | AI entry point — generated, do not edit directly |
-| `DESIGN.md` | Lean visual spec — generated from `DESIGN.source.md` |
-| `public/hds-manifest.json` | Machine-readable component inventory — generated |
+| File                          | Purpose                                                  |
+| ----------------------------- | -------------------------------------------------------- |
+| `CLAUDE.md`                   | Agent operating instructions (read first)                |
+| `public/llms.txt`             | AI entry point — generated, do not edit directly         |
+| `DESIGN.md`                   | Lean visual spec — generated from `DESIGN.source.md`     |
+| `public/hds-manifest.json`    | Machine-readable component inventory — generated         |
 | `docs/ai/AGENT_GUIDELINES.md` | Sub-agent dispatch doctrine, token rules, commit hygiene |
-| `docs/ai/orchestration.json` | Unit queue — 339+ build units, source of truth for work |
+| `docs/ai/orchestration.json`  | Unit queue — 339+ build units, source of truth for work  |
 
 ---
 
@@ -35,28 +35,28 @@ Three places run gates: `.husky/pre-commit`, `.husky/pre-push` and
 hook or workflow and this table together. CI steps that only check out, set up
 tooling, or restore the cache are omitted because they are not gates.
 
-| Stage | Step | Command |
-| --- | --- | --- |
-| pre-commit | Secrets scan (gitleaks; skips gracefully if absent) | `pnpm check:secrets` |
-| pre-commit | Prettier (staged files) | `pnpm exec lint-staged` |
-| pre-commit | Typecheck | `pnpm typecheck` |
-| pre-commit | ESLint (zero warnings) | `pnpm lint --max-warnings=0` |
-| pre-commit | Token pipeline validity (verify-tokens + check-contrast) | `node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs` |
-| pre-commit | Record join (source ↔ manifest ↔ Storybook ↔ Figma) | `node scripts/check-sync-map.mjs && node scripts/check-sync-map.mjs --check` |
-| pre-commit | Story coverage (every consumer-facing component is visible) | `node scripts/check-story-coverage.mjs` |
-| pre-push | Unit + contract tests (vitest) | `pnpm exec vitest run` |
-| pre-push | Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck) | `pnpm smoke:consumer` |
-| pre-push | Record freshness (status.json + changeset presence) | `node scripts/check-record-freshness.mjs` |
-| ci | Install dependencies | `pnpm install --frozen-lockfile` |
-| ci | Generate data artifacts | `node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full` |
-| ci | Typecheck | `pnpm typecheck` |
-| ci | ESLint (zero warnings) | `pnpm lint --max-warnings=0` |
-| ci | Token pipeline validity (verify-tokens + check-contrast) | `node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs` |
-| ci | Figma drift (committed snapshot) | `node scripts/check-figma-drift.mjs --ci` |
-| ci | Gate chain + unit/contract tests (pretest + vitest) | `pnpm test` |
-| ci | Bundle budgets (size-limit) | `pnpm check:size` |
-| ci | Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck) | `pnpm smoke:consumer` |
-| ci | Storybook build | `pnpm build-storybook` |
+| Stage      | Step                                                                           | Command                                                                                                                                                                                    |
+| ---------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| pre-commit | Secrets scan (gitleaks; skips gracefully if absent)                            | `pnpm check:secrets`                                                                                                                                                                       |
+| pre-commit | Prettier (staged files)                                                        | `pnpm exec lint-staged`                                                                                                                                                                    |
+| pre-commit | Typecheck                                                                      | `pnpm typecheck`                                                                                                                                                                           |
+| pre-commit | ESLint (zero warnings)                                                         | `pnpm lint --max-warnings=0`                                                                                                                                                               |
+| pre-commit | Token pipeline validity (verify-tokens + check-contrast)                       | `node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs`                                                                                                                        |
+| pre-commit | Record join (source ↔ manifest ↔ Storybook ↔ Figma)                            | `node scripts/check-sync-map.mjs && node scripts/check-sync-map.mjs --check`                                                                                                               |
+| pre-commit | Story coverage (every consumer-facing component is visible)                    | `node scripts/check-story-coverage.mjs`                                                                                                                                                    |
+| pre-push   | Unit + contract tests (pnpm test: pretest gates + vitest)                      | `pnpm test`                                                                                                                                                                                |
+| pre-push   | Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck) | `pnpm smoke:consumer`                                                                                                                                                                      |
+| pre-push   | Record freshness (status.json + changeset presence)                            | `node scripts/check-record-freshness.mjs`                                                                                                                                                  |
+| ci         | Install dependencies                                                           | `pnpm install --frozen-lockfile`                                                                                                                                                           |
+| ci         | Generate data artifacts                                                        | `node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full` |
+| ci         | Typecheck                                                                      | `pnpm typecheck`                                                                                                                                                                           |
+| ci         | ESLint (zero warnings)                                                         | `pnpm lint --max-warnings=0`                                                                                                                                                               |
+| ci         | Token pipeline validity (verify-tokens + check-contrast)                       | `node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs`                                                                                                                        |
+| ci         | Figma drift (committed snapshot)                                               | `node scripts/check-figma-drift.mjs --ci`                                                                                                                                                  |
+| ci         | Gate chain + unit/contract tests (pretest + vitest)                            | `pnpm test`                                                                                                                                                                                |
+| ci         | Bundle budgets (size-limit)                                                    | `pnpm check:size`                                                                                                                                                                          |
+| ci         | Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck) | `pnpm smoke:consumer`                                                                                                                                                                      |
+| ci         | Storybook build                                                                | `pnpm build-storybook`                                                                                                                                                                     |
 
 Never use `--no-verify`. When a gate fails, fix the cause.
 

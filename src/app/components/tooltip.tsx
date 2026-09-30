@@ -4,7 +4,7 @@
  */
 // @doc-exempt: image affordance utility, not a consumer-facing HDS component
 /**
- * Tooltip — HDS image interaction tooltip
+ * ExpandTooltip — HDS image interaction tooltip
  *
  * A pill-shaped label (brand blue / white text) that indicates an image
  * is expandable. Supports two render modes:
@@ -76,7 +76,7 @@ function Pill({ label }: { label: string }) {
   );
 }
 
-export function Tooltip({ visible, mode, label = 'Expand', x = 0, y = 0 }: TooltipProps) {
+export function ExpandTooltip({ visible, mode, label = 'Expand', x = 0, y = 0 }: TooltipProps) {
   if (mode === 'cursor') {
     if (typeof document === 'undefined') return null;
     return createPortal(

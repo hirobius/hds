@@ -275,3 +275,22 @@ export const Toolbar = _Toolbar254;
 export const TopNav = _TopNav254;
 /** @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. */
 export const TreeList = _TreeList254;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// hds#315 — six primitives shipped as `Hds`-prefixed names while the rest of the
+// surface is bare. They are now exported bare (via `export *` above); the old
+// spellings stay as deprecated aliases until the 1.0 alias-removal window
+// (hds#254). tests/public-export-names.test.ts pins both halves.
+// ─────────────────────────────────────────────────────────────────────────────
+/** @deprecated Use `Checkbox` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254). */
+export { Checkbox as HdsCheckbox } from './app/components/checkbox';
+/** @deprecated Use `Radio` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254). */
+export { Radio as HdsRadio } from './app/components/radio';
+/** @deprecated Use `Select` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254). */
+export { Select as HdsSelect } from './app/components/select';
+/** @deprecated Use `Slider` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254). */
+export { Slider as HdsSlider } from './app/components/slider';
+/** @deprecated Use `Toggle` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254). */
+export { Toggle as HdsToggle } from './app/components/toggle';
+/** @deprecated Use `Tooltip` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254). */
+export { Tooltip as HdsTooltip } from './app/components/hds-tooltip';

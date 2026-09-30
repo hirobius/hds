@@ -4,7 +4,6 @@
 
 The root `DECISIONS.md` is now a pointer to this directory. The entries below were still live and had no ADR of their own, so they moved here unchanged.
 
-
 ## Retained: publishable-package hardening decisions (from deleted `CLEANUP_RUN.md`, 2026 hardening pass)
 
 Salvaged during the #53 root-doc consolidation because these are still-live build decisions, not run-log noise:

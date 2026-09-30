@@ -1,5 +1,5 @@
 /**
- * HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph.
+ * Checkbox — custom-drawn checkbox with check / indeterminate glyph.
  * @category Inputs
  * @tier primitive
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29
@@ -16,7 +16,7 @@ import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 import { Icon } from './icon';
 
-/** HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph. */
+/** Checkbox — custom-drawn checkbox with check / indeterminate glyph. */
 export type HdsCheckboxDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -130,7 +130,7 @@ function setRef(ref: React.ForwardedRef<HTMLInputElement>, node: HTMLInputElemen
   else if (ref) ref.current = node;
 }
 
-export const HdsCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(function HdsCheckbox(
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
   { label, checked, onChange, indeterminate = false, onFocus, onBlur, disabled, ...rest },
   ref,
 ) {

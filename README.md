@@ -125,7 +125,7 @@ Core verification commands:
 ```bash
 pnpm typecheck
 pnpm lint
-pnpm exec vitest run   # unit + contract tests, as the pre-push hook and CI run them
+pnpm test              # pretest gates + unit + contract tests, exactly as the pre-push hook and CI run them
 pnpm tokens:verify
 pnpm check:size
 pnpm build-storybook
@@ -174,7 +174,7 @@ The governing direction is "Editorial Enterprise" — enterprise rigor with edit
 The gates are deterministic and need no browser or live site:
 
 - **pre-commit** (`.husky/pre-commit`): secrets scan, Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
-- **pre-push** (`.husky/pre-push`): Vitest unit and contract tests, then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
+- **pre-push** (`.husky/pre-push`): `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
 - **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and a Storybook build.
 - **Visual review:** Storybook is the visual verification surface, reviewed by hand. The earlier browser test suite drove a docs site that no longer exists and was removed (ADR-018).
 

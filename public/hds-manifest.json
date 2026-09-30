@@ -64,6 +64,7 @@
     "CardTitle",
     "Carousel",
     "Center",
+    "Checkbox",
     "CinematicLink",
     "CircularProgress",
     "Cluster",
@@ -99,14 +100,8 @@
     "FoundationSwatch",
     "Frame",
     "Grid",
-    "HdsCheckbox",
     "HdsDocsShell",
-    "HdsRadio",
-    "HdsSelect",
-    "HdsSlider",
     "HdsThemeProvider",
-    "HdsToggle",
-    "HdsTooltip",
     "HeadingStack",
     "HoverCard",
     "Icon",
@@ -128,13 +123,16 @@
     "Pin",
     "Popover",
     "Progress",
+    "Radio",
     "Reveal",
     "SegmentedControl",
+    "Select",
     "SelectableCard",
     "Sidebar",
     "SideNav",
     "Skeleton",
     "Sketch",
+    "Slider",
     "Spinner",
     "Stack",
     "StackedCardRail",
@@ -159,10 +157,12 @@
     "TimeInput",
     "Timestamp",
     "ToastProvider",
+    "Toggle",
     "ToggleButton",
     "Token",
     "Tokenizer",
     "Toolbar",
+    "Tooltip",
     "TopNav",
     "TreeList",
     "VisuallyHidden"
@@ -579,32 +579,7 @@
         "filePath": "src/docs-tooling/lab/legacy-token-detail.tsx"
       }
     ],
-    "namespaceViolations": [
-      {
-        "name": "HdsCheckbox",
-        "filePath": "src/app/components/checkbox.tsx"
-      },
-      {
-        "name": "HdsRadio",
-        "filePath": "src/app/components/radio.tsx"
-      },
-      {
-        "name": "HdsSelect",
-        "filePath": "src/app/components/select.tsx"
-      },
-      {
-        "name": "HdsSlider",
-        "filePath": "src/app/components/slider.tsx"
-      },
-      {
-        "name": "HdsToggle",
-        "filePath": "src/app/components/toggle.tsx"
-      },
-      {
-        "name": "HdsTooltip",
-        "filePath": "src/app/components/hds-tooltip.tsx"
-      }
-    ]
+    "namespaceViolations": []
   },
   "agentEntrypoint": "CLAUDE.md",
   "breakingChangePolicy": "Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.",
@@ -5848,24 +5823,26 @@
         "primitives-tabs--with-disabled-tab"
       ]
     },
-    "HdsRadio": {
+    "Radio": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/radio.tsx",
-      "description": "HdsRadio — radio button with animated selection indicator.",
+      "description": "Radio — radio button with animated selection indicator.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17",
       "figmaId": null,
       "preview": {
-        "exportName": "HdsRadio",
+        "exportName": "Radio",
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/checkbox.tsx",
         "src/app/components/radio.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
+        "src/index.ts",
+        "src/stories/menu.stories.tsx",
         "src/stories/radio.stories.tsx"
       ],
       "tokenMapping": {
@@ -5914,22 +5891,34 @@
         "primitives-radio--selected"
       ]
     },
-    "HdsSelect": {
+    "Select": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/select.tsx",
-      "description": "HdsSelect — dropdown selector built on Radix Select.",
+      "description": "Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead, full keyboard (Home/End/PageUp-Down/wrap), Popper collision/flip positioning, and dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by tabs.tsx / command-palette.tsx; `ref` targets the trigger button.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49",
       "figmaId": null,
       "preview": {
-        "exportName": "HdsSelect",
+        "exportName": "Select",
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/checkbox.test.tsx",
+        "src/app/components/combobox.test.tsx",
+        "src/app/components/combobox.tsx",
+        "src/app/components/date-range-input.test.tsx",
+        "src/app/components/date-range-input.tsx",
+        "src/app/components/form.tsx",
+        "src/app/components/multi-selector.test.tsx",
+        "src/app/components/multi-selector.tsx",
         "src/app/components/select.test.tsx",
         "src/app/data/hdsEditorial.tsx",
+        "src/docs-tooling/lab/legacy-token-detail.tsx",
+        "src/index.ts",
+        "src/stories/checkbox.stories.tsx",
+        "src/stories/combobox.stories.tsx",
         "src/stories/select.stories.tsx"
       ],
       "tokenMapping": {
@@ -5977,21 +5966,21 @@
         "primitives-select--no-label"
       ]
     },
-    "HdsSlider": {
+    "Slider": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/slider.tsx",
-      "description": "HdsSlider — range slider with label and value display.",
+      "description": "Slider — range slider with label and value display.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265",
       "figmaId": null,
       "preview": {
-        "exportName": "HdsSlider",
+        "exportName": "Slider",
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/slider.stories.tsx"
       ],
       "tokenMapping": {
@@ -6042,25 +6031,29 @@
         "primitives-slider--typography-controls"
       ]
     },
-    "HdsToggle": {
+    "Toggle": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/toggle.tsx",
-      "description": "HdsToggle — boolean on/off toggle with animated thumb.",
+      "description": "Toggle — boolean on/off toggle with animated thumb.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19",
       "figmaId": null,
       "preview": {
-        "exportName": "HdsToggle",
+        "exportName": "Toggle",
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/checkbox.tsx",
         "src/app/components/radio.tsx",
+        "src/app/components/toggle-button.tsx",
         "src/app/components/toggle.test.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
+        "src/docs-tooling/shell-controls.tsx",
+        "src/index.ts",
         "src/stories/toggle.stories.tsx"
       ],
       "tokenMapping": {
@@ -6465,49 +6458,6 @@
         "primitives-pagination--last-page",
         "primitives-pagination--middle-page",
         "primitives-pagination--wide-siblings"
-      ]
-    },
-    "HdsCheckbox": {
-      "category": "Inputs",
-      "filePath": "src/app/components/checkbox.tsx",
-      "description": "HdsCheckbox — custom-drawn checkbox with check / indeterminate glyph.",
-      "hidden": false,
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {
-        "exportName": "HdsCheckbox",
-        "sizing": "panel"
-      },
-      "tokenMapping": {},
-      "tier": "primitive",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "docExempt": false,
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
-      "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
-      "consumers": [
-        "src/app/components/checkbox.test.tsx",
-        "src/app/components/radio.tsx",
-        "src/stories/checkbox.stories.tsx"
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "storyFiles": [
-        "src/stories/checkbox.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-checkbox--checked",
-        "primitives-checkbox--default",
-        "primitives-checkbox--disabled",
-        "primitives-checkbox--disabled-checked",
-        "primitives-checkbox--group",
-        "primitives-checkbox--indeterminate"
       ]
     },
     "ToastProvider": {
@@ -10235,29 +10185,32 @@
         "primitives-dialog--no-close-affordance"
       ]
     },
-    "HdsTooltip": {
+    "Tooltip": {
       "category": "Internal",
       "categorySource": "internal-jsdoc",
       "governedCategory": true,
       "hidden": true,
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
-      "description": "Tooltip root. Bakes in the Radix Provider so a single `<HdsTooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+      "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": null,
       "tier": "primitive",
       "preview": {
-        "exportName": "HdsTooltip",
+        "exportName": "Tooltip",
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/asset-img.tsx",
         "src/app/components/hover-card.tsx",
+        "src/app/data/hdsEditorial.tsx",
+        "src/index.ts",
         "src/stories/hds-tooltip.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
+      "figmaLink": null,
       "props": {},
       "allowedChildren": [
         "*"
@@ -10444,6 +10397,64 @@
         "layout-hdsdocsshell--with-top-offset"
       ]
     },
+    "Checkbox": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/checkbox.tsx",
+      "description": "Checkbox — custom-drawn checkbox with check / indeterminate glyph.",
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
+      "figmaId": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Checkbox",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/checkbox.test.tsx",
+        "src/app/components/radio.tsx",
+        "src/index.ts",
+        "src/stories/checkbox.stories.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "checked": {
+          "type": "boolean"
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string"
+        },
+        "onChange": {
+          "type": "(v: boolean) => void"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [
+        "src/stories/checkbox.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-checkbox--checked",
+        "primitives-checkbox--default",
+        "primitives-checkbox--disabled",
+        "primitives-checkbox--disabled-checked",
+        "primitives-checkbox--group",
+        "primitives-checkbox--indeterminate"
+      ]
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -10512,6 +10523,22 @@
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
       "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
+    },
+    "HdsCheckbox": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
       "hidden": true,
       "tier": "utility",
       "props": {},
@@ -10829,6 +10856,22 @@
       "preview": {},
       "tokenMapping": {},
       "tier": "utility"
+    },
+    "HdsCheckbox": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": []
     },
     "HdsChip": {
       "category": "Compiler",
@@ -11274,32 +11317,6 @@
       "componentProperties": [],
       "figmaLink": null
     },
-    "Tooltip": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/tooltip.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "Tooltip",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/asset-img.tsx",
-        "src/app/components/hds-tooltip.tsx",
-        "src/app/data/hdsEditorial.tsx",
-        "src/stories/hds-tooltip.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "NotFoundPattern": {
       "category": "Feedback",
       "categorySource": "internal-jsdoc",
@@ -11682,6 +11699,29 @@
         "sizing": "panel"
       },
       "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": []
+    },
+    "ExpandTooltip": {
+      "category": "Internal",
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
+      "docExempt": true,
+      "filePath": "src/app/components/tooltip.tsx",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "utility",
+      "preview": {
+        "exportName": "ExpandTooltip",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/asset-img.tsx",
+        "src/app/components/hds-tooltip.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": []

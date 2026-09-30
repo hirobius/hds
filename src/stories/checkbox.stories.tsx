@@ -1,18 +1,18 @@
 /**
- * HdsCheckbox stories — checked, indeterminate, and disabled states.
+ * Checkbox stories — checked, indeterminate, and disabled states.
  * @see src/app/components/checkbox.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { HdsCheckbox } from '../app/components/checkbox';
+import { Checkbox } from '../app/components/checkbox';
 import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Checkbox',
-  component: HdsCheckbox,
+  component: Checkbox,
   tags: ['autodocs'],
   parameters: {
-    ...designParameters('HdsCheckbox'),
+    ...designParameters('Checkbox'),
     layout: 'centered',
     docs: {
       description: {
@@ -26,16 +26,14 @@ const meta = {
     indeterminate: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
-} satisfies Meta<typeof HdsCheckbox>;
+} satisfies Meta<typeof Checkbox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 function DefaultDemo() {
   const [checked, setChecked] = useState(false);
-  return (
-    <HdsCheckbox label="Receive project update emails" checked={checked} onChange={setChecked} />
-  );
+  return <Checkbox label="Receive project update emails" checked={checked} onChange={setChecked} />;
 }
 
 export const Default: Story = {
@@ -44,7 +42,7 @@ export const Default: Story = {
 
 function CheckedDemo() {
   const [checked, setChecked] = useState(true);
-  return <HdsCheckbox label="Include archived projects" checked={checked} onChange={setChecked} />;
+  return <Checkbox label="Include archived projects" checked={checked} onChange={setChecked} />;
 }
 
 export const Checked: Story = {
@@ -54,12 +52,7 @@ export const Checked: Story = {
 function IndeterminateDemo() {
   const [checked, setChecked] = useState(false);
   return (
-    <HdsCheckbox
-      label="Select all components"
-      checked={checked}
-      onChange={setChecked}
-      indeterminate
-    />
+    <Checkbox label="Select all components" checked={checked} onChange={setChecked} indeterminate />
   );
 }
 
@@ -95,21 +88,13 @@ function GroupDemo() {
     setValues((prev) => ({ ...prev, [key]: !prev[key] }));
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-      <HdsCheckbox
+      <Checkbox
         label="Components"
         checked={values.components}
         onChange={() => toggle('components')}
       />
-      <HdsCheckbox
-        label="Design tokens"
-        checked={values.tokens}
-        onChange={() => toggle('tokens')}
-      />
-      <HdsCheckbox
-        label="Motion presets"
-        checked={values.motion}
-        onChange={() => toggle('motion')}
-      />
+      <Checkbox label="Design tokens" checked={values.tokens} onChange={() => toggle('tokens')} />
+      <Checkbox label="Motion presets" checked={values.motion} onChange={() => toggle('motion')} />
     </div>
   );
 }

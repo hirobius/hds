@@ -1,18 +1,18 @@
 /**
- * HdsRadio stories — selected, unselected, disabled, and group demos.
+ * Radio stories — selected, unselected, disabled, and group demos.
  * @see src/app/components/radio.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { HdsRadio } from '../app/components/radio';
+import { Radio } from '../app/components/radio';
 import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Radio',
-  component: HdsRadio,
+  component: Radio,
   tags: ['autodocs'],
   parameters: {
-    ...designParameters('HdsRadio'),
+    ...designParameters('Radio'),
     layout: 'centered',
     docs: {
       description: {
@@ -25,14 +25,14 @@ const meta = {
     checked: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
-} satisfies Meta<typeof HdsRadio>;
+} satisfies Meta<typeof Radio>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 function DefaultDemo() {
   const [checked, setChecked] = useState(false);
-  return <HdsRadio label="Automatic theme detection" checked={checked} onChange={setChecked} />;
+  return <Radio label="Automatic theme detection" checked={checked} onChange={setChecked} />;
 }
 
 export const Default: Story = {
@@ -41,7 +41,7 @@ export const Default: Story = {
 
 function SelectedDemo() {
   const [checked, setChecked] = useState(true);
-  return <HdsRadio label="Dark mode" checked={checked} onChange={setChecked} />;
+  return <Radio label="Dark mode" checked={checked} onChange={setChecked} />;
 }
 
 export const Selected: Story = {
@@ -82,7 +82,7 @@ function GroupDemo() {
       style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
     >
       {options.map((opt) => (
-        <HdsRadio
+        <Radio
           key={opt.value}
           name="theme"
           label={opt.label}

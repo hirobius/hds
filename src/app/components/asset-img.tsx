@@ -8,7 +8,7 @@
 import { useState, CSSProperties } from 'react';
 import type React from 'react';
 import hds from '../design-system/tokens';
-import { Tooltip } from './tooltip';
+import { ExpandTooltip } from './tooltip';
 
 const MAX_SIZE = 280; // max default frame size before the placeholder shifts to responsive fill behavior
 
@@ -164,8 +164,14 @@ export function AssetImg({
           draggable={draggable}
           onError={() => setFailed(true)}
         />
-        <Tooltip mode="centered" visible={focused && !hovered} label={expandLabel} />
-        <Tooltip mode="cursor" visible={hovered} x={cursorX} y={cursorY} label={expandLabel} />
+        <ExpandTooltip mode="centered" visible={focused && !hovered} label={expandLabel} />
+        <ExpandTooltip
+          mode="cursor"
+          visible={hovered}
+          x={cursorX}
+          y={cursorY}
+          label={expandLabel}
+        />
       </div>
     );
   }

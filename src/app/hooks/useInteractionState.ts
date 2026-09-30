@@ -1,9 +1,9 @@
 /** @internal — shared single-element interaction state machine; not part of the public API. */
 /**
  * useInteractionState — the hover/press/focus state machine shared by the
- * single-element control primitives (HdsToggle, HdsRadio).
+ * single-element control primitives (Toggle, Radio).
  *
- * After the HdsToggle disabled-bug fix (71f453f) the two ran byte-identical
+ * After the Toggle disabled-bug fix (71f453f) the two ran byte-identical
  * resolution logic; this hook is the one place that logic now lives. Per
  * ADR-015 it is deliberately scoped to single-element primitives — it does NOT
  * serve SegmentedControl (per-segment `string | null` cardinality) or NavItem

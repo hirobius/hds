@@ -1,5 +1,5 @@
 /**
- * HdsToggle — boolean on/off toggle with animated thumb.
+ * Toggle — boolean on/off toggle with animated thumb.
  * @category Inputs
  * @tier primitive
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19
@@ -15,7 +15,7 @@ import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 
-/** HdsToggle — boolean on/off toggle with animated thumb. */
+/** Toggle — boolean on/off toggle with animated thumb. */
 export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
 // ── Geometry ───────────────────────────────────────────────────────────────────
@@ -160,7 +160,7 @@ export interface ToggleProps extends Omit<
   onChange: (v: boolean) => void;
 }
 
-export const HdsToggle = forwardRef<HTMLInputElement, ToggleProps>(function HdsToggle(
+export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
   { label, checked, onChange, onFocus, onBlur, disabled, ...rest },
   ref,
 ) {

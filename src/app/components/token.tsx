@@ -414,7 +414,7 @@ function TokenNodeSurface({
     >
       <TokenNodeInline
         label={displayText}
-        swatchVar={resolvedSwatchVar}
+        swatchVar={resolvedSwatchVar ?? undefined}
         leadingSlot={leadingSlot}
         isColorValue={isColorValue}
         isSelected={isSelected}

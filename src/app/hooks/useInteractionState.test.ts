@@ -1,6 +1,6 @@
 /**
  * Tests for useInteractionState — the single-element interaction machine shared
- * by HdsToggle and HdsRadio (ADR-015). Pure state machine: no context, driven
+ * by Toggle and Radio (ADR-015). Pure state machine: no context, driven
  * entirely by the `disabled` / `frozenState` inputs and the returned handlers.
  */
 import { describe, it, expect } from 'vitest';

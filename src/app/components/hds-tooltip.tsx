@@ -1,21 +1,21 @@
 /**
- * HdsTooltip — accessible hover/focus tooltip on Radix (Overlays).
+ * Tooltip — accessible hover/focus tooltip on Radix (Overlays).
  * @category Overlays
  * @tier primitive
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix Tooltip (@radix-ui/react-tooltip) themed with role tokens. Provides
  * Floating-UI collision-aware positioning, ARIA wiring, keyboard focus support,
- * open/close delay, and portal mounting out of the box. Unlike the legacy
- * `Tooltip` (an @internal image-expand pill bound to AssetImg), this is the
+ * open/close delay, and portal mounting out of the box. Unlike the
+ * internal `ExpandTooltip` (an @internal image-expand pill bound to AssetImg), this is the
  * general-purpose accessible tooltip for labelling controls.
  *
- *   <HdsTooltip>
- *     <HdsTooltip.Trigger asChild>
+ *   <Tooltip>
+ *     <Tooltip.Trigger asChild>
  *       <IconButton icon={Link} aria-label="Copy link" />
- *     </HdsTooltip.Trigger>
- *     <HdsTooltip.Content>Copy link</HdsTooltip.Content>
- *   </HdsTooltip>
+ *     </Tooltip.Trigger>
+ *     <Tooltip.Content>Copy link</Tooltip.Content>
+ *   </Tooltip>
  *
  * Skin: inverse surface bubble (semantic.color.surface.inverse) + inverse
  * content text (semantic.color.content.inverse) — these are a designed pair, so
@@ -72,24 +72,23 @@ const HdsTooltipContent = React.forwardRef<
 
 // ── Compound export ──────────────────────────────────────────────────────────
 
-interface HdsTooltipComponent
-  extends React.FC<
-    React.ComponentProps<typeof TooltipPrimitive.Root> & {
-      /** Hover-open delay in ms (Radix Provider). Default 300. */
-      delayDuration?: number;
-    }
-  > {
+interface HdsTooltipComponent extends React.FC<
+  React.ComponentProps<typeof TooltipPrimitive.Root> & {
+    /** Hover-open delay in ms (Radix Provider). Default 300. */
+    delayDuration?: number;
+  }
+> {
   Trigger: typeof TooltipPrimitive.Trigger;
   Content: typeof HdsTooltipContent;
 }
 
 /**
- * Tooltip root. Bakes in the Radix Provider so a single `<HdsTooltip>` is
+ * Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is
  * self-contained — no app-level provider required. Controlled via
  * `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
  * @public
  */
-const HdsTooltip = (({
+const Tooltip = (({
   delayDuration = 300,
   children,
   ...props
@@ -98,7 +97,7 @@ const HdsTooltip = (({
     <TooltipPrimitive.Root {...props}>{children}</TooltipPrimitive.Root>
   </TooltipPrimitive.Provider>
 )) as HdsTooltipComponent;
-HdsTooltip.Trigger = TooltipPrimitive.Trigger;
-HdsTooltip.Content = HdsTooltipContent;
+Tooltip.Trigger = TooltipPrimitive.Trigger;
+Tooltip.Content = HdsTooltipContent;
 
-export { HdsTooltip };
+export { Tooltip };

@@ -33,6 +33,6 @@ export function useHdsForm<TFieldValues extends FieldValues>(
     // input/output generics that don't unify against a single TFieldValues
     // parameter. The schema parses TO TFieldValues here, so the cast is sound
     // and keeps the public return type a plain UseFormReturn<TFieldValues>.
-    resolver: zodResolver(schema as ZodType) as UseFormProps<TFieldValues>['resolver'],
+    resolver: zodResolver(schema as ZodType<FieldValues, FieldValues>) as UseFormProps<TFieldValues>['resolver'],
   });
 }

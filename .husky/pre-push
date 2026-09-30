@@ -10,8 +10,8 @@ set -e
 # The heavier lean gates that need a full toolchain — Storybook build and
 # size-limit — run in CI (chromatic.yml / quality.yml), not at push time.
 
-echo "Unit + contract tests (vitest)…"
-pnpm exec vitest run
+echo "Unit + contract tests (pnpm test: pretest gates + vitest)…"
+pnpm test
 
 echo "Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)…"
 pnpm smoke:consumer

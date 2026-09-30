@@ -1,5 +1,5 @@
 /**
- * HdsSlider — range slider with label and value display.
+ * Slider — range slider with label and value display.
  * @category Inputs
  * @tier primitive
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265
@@ -11,7 +11,7 @@ import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Surface } from './surface';
 
-/** HdsSlider — range slider with label and value display. */
+/** Slider — range slider with label and value display. */
 export interface SliderProps {
   /** Slider label. */
   label: string;
@@ -27,7 +27,7 @@ export interface SliderProps {
   onChange: (v: number) => void;
 }
 
-export const HdsSlider = forwardRef<HTMLInputElement, SliderProps>(function HdsSlider(
+export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   { label, min, max, step = 1, value, onChange },
   ref,
 ) {
