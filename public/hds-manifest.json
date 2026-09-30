@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T12:27:39.299Z",
+  "generated": "2026-09-30T18:11:35.736Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -2017,7 +2017,8 @@
         "src/stories/data-table-section.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/lib/usage-description.test.ts",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/stories/patterns-client-detail.stories.tsx",
+        "src/styles/__tests__/pressed-overlay-token.test.ts"
       ],
       "tokenMapping": {
         "Fill": "semantic.accent.rest",
@@ -3910,6 +3911,7 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/field.tsx",
         "src/app/components/grid.tsx",
+        "src/app/components/hover-card.test.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
@@ -4633,6 +4635,7 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
+        "src/app/components/hover-card.test.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.test.tsx",
         "src/app/components/image-lightbox.tsx",
@@ -4704,7 +4707,7 @@
         "border": "role.border",
         "radius": "role.radius",
         "shadow": "semantic.shadow.overlay",
-        "scrim": "role.foreground",
+        "scrim": "role.scrim",
         "descriptionText": "role.muted-foreground",
         "closeHover": "role.accent",
         "closeHoverText": "role.accent-foreground",
@@ -4989,7 +4992,8 @@
         "src/stories/toast.stories.tsx",
         "src/stories/toggle-button.stories.tsx",
         "src/stories/toolbar.stories.tsx",
-        "src/stories/top-nav.stories.tsx"
+        "src/stories/top-nav.stories.tsx",
+        "src/styles/__tests__/pressed-overlay-token.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -5087,6 +5091,7 @@
         "border": "role.input",
         "hoverSurface": "role.accent",
         "hoverText": "role.accent-foreground",
+        "pressedOverlay": "role.pressed-overlay",
         "focusRing": "role.ring",
         "radius": "role.radius"
       },
@@ -8943,6 +8948,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/destructive-section.tsx",
+        "src/app/components/hover-card.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
@@ -11250,6 +11256,7 @@
       },
       "consumers": [
         "src/app/components/asset-img.tsx",
+        "src/app/components/hds-tooltip.test.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
@@ -14374,6 +14381,18 @@
         }
       },
       {
+        "path": "semantic.color.surface.scrim",
+        "cssVar": "--semantic-color-surface-scrim",
+        "type": "color",
+        "description": "Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
+        "dark": {
+          "alias": "{primitive.color.neutral.black}",
+          "resolvedValue": "#000000"
+        }
+      },
+      {
         "path": "semantic.color.surface.inverse",
         "cssVar": "--semantic-color-surface-inverse",
         "type": "color",
@@ -14774,6 +14793,18 @@
         "dark": {
           "alias": "{primitive.color.violet.950}",
           "resolvedValue": "#2e1065"
+        }
+      },
+      {
+        "path": "semantic.color.state.pressed.overlay",
+        "cssVar": "--semantic-color-state-pressed-overlay",
+        "type": "color",
+        "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
+        "alias": "{primitive.color.neutral.black}",
+        "resolvedValue": "#000000",
+        "dark": {
+          "alias": "{primitive.color.neutral.white}",
+          "resolvedValue": "#ffffff"
         }
       },
       {
@@ -16185,6 +16216,22 @@
         "description": "Popover/menu surface. shadcn role: popover.",
         "alias": "{semantic.color.surface.overlay}",
         "resolvedValue": "#f5f5f5"
+      },
+      {
+        "path": "role.scrim",
+        "cssVar": "--role-scrim",
+        "type": "color",
+        "description": "Modal backdrop colour role. Apply alpha in the class, e.g. bg-scrim/60.",
+        "alias": "{semantic.color.surface.scrim}",
+        "resolvedValue": "#111111"
+      },
+      {
+        "path": "role.pressed-overlay",
+        "cssVar": "--role-pressed-overlay",
+        "type": "color",
+        "description": "Pressed-state overlay colour role. Apply alpha in the class, e.g. inset-shadow-pressed-overlay/5.",
+        "alias": "{semantic.color.state.pressed.overlay}",
+        "resolvedValue": "#000000"
       },
       {
         "path": "role.popover-foreground",

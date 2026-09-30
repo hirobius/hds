@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 421 tokens, aliases, and TS refs in one shot.
+Checks all 423 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -213,6 +213,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.950}     |                                                                                                                                    |
 | `semantic.color.feedback.bg.info`       | {primitive.color.blue.50}       | {primitive.color.blue.900}      |                                                                                                                                    |
 | `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.950}    |                                                                                                                                    |
+| `semantic.color.state.pressed.overlay`  | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5). |
 
 <!-- auto:end:semantic-color -->
 
