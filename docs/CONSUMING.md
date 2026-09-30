@@ -729,3 +729,26 @@ still belongs on the markup):
 with real state (forms, dialogs, dropdowns, `ContactForm`) still needs a React
 island (§12.4) — this layer doesn't attempt to reimplement component logic in
 CSS, only the visual surface of the five primitives above.
+
+## 15. Icons — the `/icons` subpath
+
+`IconButton` and `Icon` take an `icon` prop. Get one from the curated subpath;
+`lucide-react` does not need to be installed separately.
+
+```tsx
+import { IconButton } from '@hirobius/design-system';
+import { Ellipsis } from '@hirobius/design-system/icons';
+
+<IconButton icon={Ellipsis} label="Row actions" />;
+```
+
+The full name list is `iconSet.names` in the manifest (and the Icons section of
+`llms.txt`). Canonical Lucide 0.487.0 names only: `MoreHorizontal` is
+`Ellipsis`, `MoreVertical` is `EllipsisVertical`, `AlertTriangle` is
+`TriangleAlert`, `Home` is `House`, `Filter` is `Funnel`. Icon-only actions (row
+menus, close, edit) use `IconButton`; do not hand-roll a button with a glyph. For
+an icon outside the set, install `lucide-react@0.487.0` so the `LucideIcon` type
+stays identical.
+
+`Calendar` and `Menu` share names with HDS components; alias them:
+`import { Calendar as CalendarIcon, Menu as MenuIcon } from '@hirobius/design-system/icons'`.
