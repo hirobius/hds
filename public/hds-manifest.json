@@ -5692,8 +5692,17 @@
           "required": true
         }
       ],
-      "storyFiles": [],
-      "storyIds": []
+      "storyFiles": [
+        "src/stories/status-list-item.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-status-list-item--danger",
+        "primitives-status-list-item--default",
+        "primitives-status-list-item--info",
+        "primitives-status-list-item--success",
+        "primitives-status-list-item--warning",
+        "primitives-status-list-item--with-trailing"
+      ]
     },
     "StatusTile": {
       "category": "Display",
@@ -5752,8 +5761,16 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": [],
+      "storyFiles": [
+        "src/stories/status-tile.stories.tsx"
+      ],
+      "storyIds": [
+        "primitives-status-tile--danger",
+        "primitives-status-tile--default",
+        "primitives-status-tile--tile-grid",
+        "primitives-status-tile--warning",
+        "primitives-status-tile--with-trailing-badge"
+      ],
       "usage": {
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
         "whenNot": "A single headline figure, or a row inside a list.",
@@ -5890,9 +5907,7 @@
       ],
       "tokenMapping": {},
       "storyFiles": [
-        "src/stories/badge.stories.tsx",
-        "src/stories/status-list-item.stories.tsx",
-        "src/stories/status-tile.stories.tsx"
+        "src/stories/badge.stories.tsx"
       ],
       "storyIds": [
         "primitives-badge--all-tones",
@@ -5900,18 +5915,7 @@
         "primitives-badge--info",
         "primitives-badge--neutral",
         "primitives-badge--success",
-        "primitives-badge--warning",
-        "primitives-status-list-item--danger",
-        "primitives-status-list-item--default",
-        "primitives-status-list-item--info",
-        "primitives-status-list-item--success",
-        "primitives-status-list-item--warning",
-        "primitives-status-list-item--with-trailing",
-        "primitives-status-tile--danger",
-        "primitives-status-tile--default",
-        "primitives-status-tile--tile-grid",
-        "primitives-status-tile--warning",
-        "primitives-status-tile--with-trailing-badge"
+        "primitives-badge--warning"
       ],
       "usage": {
         "when": "Label a status, state or count with a compact neutral or semantic chip.",
