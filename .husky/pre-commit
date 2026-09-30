@@ -51,5 +51,5 @@ node scripts/check-contract-coverage.mjs --enforce
 # is a side effect every bundler keeps, so one in a module that reaches the
 # chunk shared with Button re-breaks the Button-only budget (hds#363). Source
 # only: parses src/ with the TypeScript API, no build, no network.
-echo "Pure annotations (every top-level component-factory call is marked pure)…"
+echo "Pure annotations (top-level factory calls, compound Object.assign and X.Part writes)…"
 node scripts/check-pure-annotations.mjs
