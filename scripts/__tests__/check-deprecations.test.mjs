@@ -51,15 +51,18 @@ describe('check-deprecations', () => {
     expect(status).toBe(0);
   });
 
-  it('fails when one src/index.ts deprecation loses its @removeIn tag', () => {
+  // src/index.ts has carried no deprecation since 0.20.0 removed its aliases
+  // (hds#389), so the tag is taken off a deprecation the ./tokens entry still
+  // ships; the root barrel stays covered by the unplanned-deprecation cases below.
+  it('fails when one public-surface deprecation loses its @removeIn tag', () => {
     withCopy((dir) => {
-      edit(dir, 'src/index.ts', (src) => {
-        const tag = /^ \* @removeIn 1\.0\.0\n/m;
+      edit(dir, 'src/app/design-system/tokens.ts', (src) => {
+        const tag = /^[ \t]*\* @removeIn 1\.0\.0\n/m;
         expect(src).toMatch(tag);
         return src.replace(tag, '');
       });
       const { status, output } = run(dir);
-      expect(output).toMatch(/src\/index\.ts/);
+      expect(output).toMatch(/src\/app\/design-system\/tokens\.ts/);
       expect(status).toBe(1);
     });
   });
@@ -67,6 +70,7 @@ describe('check-deprecations', () => {
   const UNPLANNED = '\n/**\n * @deprecated Probe.\n */\nexport const __deprecationProbe = 1;\n';
 
   it.each([
+    ['the root barrel', 'src/index.ts'],
     ['the /patterns barrel', 'src/patterns.ts'],
     ['a layout', 'src/app/layouts/DocLayout.tsx'],
     ['the ./tokens entry', 'src/app/design-system/tokens.ts'],
