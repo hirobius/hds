@@ -59,7 +59,7 @@ describe('Card contract', () => {
     const { container } = render(
       <Card>
         <Card.Header>Header</Card.Header>
-      </Card>
+      </Card>,
     );
     const header = container.querySelector('.flex-col');
     expect(header).not.toBeNull();
@@ -71,11 +71,30 @@ describe('Card contract', () => {
         <Card.Header>
           <Card.Title>Title</Card.Title>
         </Card.Header>
-      </Card>
+      </Card>,
     );
     const h3 = container.querySelector('h3');
     expect(h3).not.toBeNull();
     expect(h3?.textContent).toBe('Title');
+  });
+
+  it('tone=danger over variant=accent renders the 1px feedback border, not the accent border, with no !', () => {
+    // hds#372 / ADR-030: tone wins over variant by tailwind-merge class-group
+    // replacement (`border` replaces `border-2`, the feedback colour replaces the
+    // accent colour), not by the `!` important modifier.
+    const { container } = render(
+      <Card variant="accent" tone="danger">
+        Content
+      </Card>,
+    );
+    const el = container.firstChild as HTMLElement;
+    const classes = el.className.split(/\s+/);
+    expect(classes).toEqual(
+      expect.arrayContaining(['border', 'border-[var(--semantic-color-feedback-error)]']),
+    );
+    expect(classes).not.toContain('border-2');
+    expect(classes).not.toContain('border-[var(--semantic-color-border-accent)]');
+    expect(el.className).not.toContain('!');
   });
 
   it('as prop changes the rendered element', () => {

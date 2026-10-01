@@ -5178,7 +5178,8 @@
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
-        "primitives-button--tertiary"
+        "primitives-button--tertiary",
+        "primitives-button--tone-matrix"
       ],
       "usage": {
         "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.",

@@ -1600,9 +1600,10 @@
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
-        "primitives-button--tertiary"
+        "primitives-button--tertiary",
+        "primitives-button--tone-matrix"
       ],
-      "storyCount": 9,
+      "storyCount": 10,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138",
       "figmaVia": "manifest",
       "expectFigma": true,

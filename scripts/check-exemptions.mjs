@@ -63,6 +63,10 @@ const MARKERS = [
   // check-spacing-vocabulary.mjs (hds#206) documents and honors this marker;
   // leaving it out made this gate reject the other gate's own escape hatch.
   'spacing-vocab-ok',
+  // Same gap for src/app/components/__tests__/no-css-var-in-motion-animate.test.ts,
+  // which honors `motion-animate-var-ok` (hds#372).
+  // scripts/__tests__/check-exemptions.test.mjs pins both.
+  'motion-animate-var-ok',
 ];
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);
