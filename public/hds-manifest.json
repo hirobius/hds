@@ -946,7 +946,9 @@
         "primitives-cinematic-link--external-href",
         "primitives-cinematic-link--long-label",
         "primitives-cinematic-link--short-label"
-      ]
+      ],
+      "deprecated": "CinematicLink is an HDS docs/lab internal (editorial link treatment for portfolio/case-study specimen surfaces), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "CodeBlock": {
       "category": "Display",
@@ -1657,7 +1659,9 @@
         "primitives-foundation-swatch--feedback-palette",
         "primitives-foundation-swatch--with-details",
         "primitives-foundation-swatch--with-specimen"
-      ]
+      ],
+      "deprecated": "FoundationSwatch is an HDS docs/lab internal (foundation specimen preview for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "Grid": {
       "category": "Layout",
@@ -2985,7 +2989,9 @@
         "layout-sketch--default",
         "layout-sketch--narrow-canvas",
         "layout-sketch--with-controls"
-      ]
+      ],
+      "deprecated": "Sketch is an HDS docs/lab internal (shell for generative canvas/WebGL specimen pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "Stack": {
       "category": "Layout",
@@ -3771,7 +3777,9 @@
         "primitives-token--explicit-swatch",
         "primitives-token--selected",
         "primitives-token--source-node"
-      ]
+      ],
+      "deprecated": "Token is an HDS docs/lab internal (reflective token specimen for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "Surface": {
       "category": "Layout",
@@ -4207,7 +4215,9 @@
         "primitives-component-instance-matrix--default",
         "primitives-component-instance-matrix--frozen-row-state",
         "primitives-component-instance-matrix--mobile-layout"
-      ]
+      ],
+      "deprecated": "ComponentInstanceMatrix is an HDS docs/lab internal (specimen matrix helper for the component doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "ActivityFeed": {
       "category": "Display",
@@ -12984,7 +12994,8 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": false,
-      "figmaLink": null
+      "figmaLink": null,
+      "deprecated": "2026-05-01 (10d-11): superseded by the headless scan architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md."
     },
     "TokenCollectionList": {
       "category": "Lab",
@@ -13024,7 +13035,8 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": false,
-      "figmaLink": null
+      "figmaLink": null,
+      "deprecated": "2026-05-01 (10d-11): superseded by the headless scan architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md."
     },
     "TokenList": {
       "category": "Uncategorized",

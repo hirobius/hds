@@ -5,7 +5,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
-import { parseJsdocContract, stripJsdocTags } from './lib/jsdoc-contract.mjs';
+import { parseDeprecation, parseJsdocContract, stripJsdocTags } from './lib/jsdoc-contract.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -220,7 +220,7 @@ function parseTags(block, source) {
  *
  * @param {string} source module text
  * @param {string} exportName
- * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null }}
+ * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null , deprecation: { deprecated: string, removeIn?: string, useInstead?: string } | null }}
  */
 export function readComponentTags(source, exportName) {
   const fileBlock = findFileJsDocBlock(source);
@@ -239,6 +239,9 @@ export function readComponentTags(source, exportName) {
     screenPattern: componentTags.screenPattern,
     description: stripJsDocBlock(componentBlock) || stripJsDocBlock(fileBlock),
     ...mergeContract(componentBlock, fileBlock),
+    // hds#390: the export's own block wins; a file-block @deprecated retires
+    // every export of the module.
+    deprecation: parseDeprecation(componentBlock) ?? parseDeprecation(fileBlock),
   };
 }
 
@@ -281,6 +284,7 @@ export function discoverHdsComponents() {
         slots,
         keyboard,
         aiRules,
+        deprecation,
       } = readComponentTags(source, name);
       // Components are PascalCase identifiers with at least one lowercase letter.
       // Filters out exported constants (ALL_UPPERCASE) and exported helper
@@ -316,6 +320,7 @@ export function discoverHdsComponents() {
         slots,
         keyboard,
         aiRules,
+        deprecation,
         namespaceViolation: name.startsWith('Hds'),
         tagState: docExempt
           ? 'doc-exempt'

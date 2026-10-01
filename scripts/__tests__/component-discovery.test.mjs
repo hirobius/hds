@@ -82,6 +82,49 @@ describe('readComponentTags', () => {
   });
 });
 
+describe('readComponentTags — deprecation (hds#390)', () => {
+  it('reads @deprecated, @removeIn and @useInstead from the export block', () => {
+    const source = `/**\n * @category Layout\n */\n\n/**\n * Row.\n * @deprecated Use Stack with wrap.\n * @removeIn 1.0.0\n * @useInstead Stack\n */\nexport const Cluster = () => null;\n`;
+    expect(readComponentTags(source, 'Cluster').deprecation).toEqual({
+      deprecated: 'Use Stack with wrap.',
+      removeIn: '1.0.0',
+      useInstead: 'Stack',
+    });
+  });
+
+  it('falls back to the file block, and is null when neither block is deprecated', () => {
+    const fileLevel = `/**\n * @category Layout\n * @deprecated The whole module goes.\n * @removeIn 1.0.0\n */\n\n/**\n * Row.\n */\nexport const Cluster = () => null;\n`;
+    expect(readComponentTags(fileLevel, 'Cluster').deprecation).toEqual({
+      deprecated: 'The whole module goes.',
+      removeIn: '1.0.0',
+    });
+    const none = `/**\n * @category Layout\n */\n\n/**\n * Row.\n */\nexport const Cluster = () => null;\n`;
+    expect(readComponentTags(none, 'Cluster').deprecation).toBeNull();
+  });
+
+  it('does not deprecate a component for a deprecated prop inside its props interface', () => {
+    const source = `/**\n * @category Display\n */\n\nexport interface DividerProps {\n  /**\n   * @deprecated Use variant="strong".\n   */\n  strong?: boolean;\n}\n\n/**\n * Rule.\n */\nexport const Divider = () => null;\n`;
+    expect(readComponentTags(source, 'Divider').deprecation).toBeNull();
+  });
+});
+
+describe('discoverHdsComponents — deprecations (hds#390)', () => {
+  it('finds exactly the five hds#232 docs/lab internals among the components, each removed in 1.0.0', () => {
+    // src/docs-tooling/lab also has deprecated JSDoc (no @removeIn: that tree
+    // is deleted outright, hds#391), so the assertion scopes to components.
+    const deprecated = discoverHdsComponents()
+      .components.filter((c) => c.deprecation && c.filePath.startsWith('src/app/components/'))
+      .map((c) => [c.name, c.deprecation.removeIn]);
+    expect(deprecated.sort()).toEqual([
+      ['CinematicLink', '1.0.0'],
+      ['ComponentInstanceMatrix', '1.0.0'],
+      ['FoundationSwatch', '1.0.0'],
+      ['Sketch', '1.0.0'],
+      ['Token', '1.0.0'],
+    ]);
+  }, 60_000);
+});
+
 describe('discoverHdsComponents — Tooltip (hds#390)', () => {
   it('discovers the exported Tooltip as public', () => {
     const tooltip = discoverHdsComponents().components.find(
