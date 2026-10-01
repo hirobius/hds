@@ -100,6 +100,11 @@ invalid CSS and renders no spacing. Logical props (`paddingInline`,
 `marginBlockStart`, ...) have no `sx` shorthand (`px`/`py`/`mx`/`my` set
 physical sides), so for them the message offers the token only.
 
+The shorthand-with-step advice needs a `@hirobius/design-system` release newer
+than 0.19.1. On 0.19.1 and earlier `sx` passes the step through as invalid CSS
+and renders no spacing ([MIGRATIONS.md](../../MIGRATIONS.md), "Upgrade first"),
+so use the token there.
+
 ```tsx
 // ❌ error
 <div style={{ marginBottom: '12px' }} />

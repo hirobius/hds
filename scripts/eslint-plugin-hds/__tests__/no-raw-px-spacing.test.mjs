@@ -94,7 +94,7 @@ test('a prop with no sx shorthand is pointed at the scale token only', () => {
 });
 
 // Every style prop the rule checks. Kept here, not imported, so a prop added
-// to the rule without a matching case here is caught by the length check.
+// to the rule without a matching case here fails the set-equality test below.
 const SPACING_PROPS = [
   'margin',
   'marginTop',
@@ -143,6 +143,14 @@ function boxSxSpacingPropMap() {
 }
 
 const kebab = (prop) => prop.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+
+test('the props listed here are exactly the props the rule checks', () => {
+  const src = readFileSync(new URL('../rules/no-raw-px-spacing.mjs', import.meta.url), 'utf8');
+  const body = src.match(/const SPACING_PROPS = new Set\(\[([\s\S]*?)\]\)/);
+  assert.ok(body, 'SPACING_PROPS not found in no-raw-px-spacing.mjs');
+  const ruleProps = [...body[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
+  assert.deepEqual([...ruleProps].sort(), [...SPACING_PROPS].sort());
+});
 
 test('every Box sx prop the message names sets exactly the flagged CSS property', () => {
   const sxMap = boxSxSpacingPropMap();
