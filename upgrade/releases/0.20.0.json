@@ -4633,6 +4633,20 @@
       "source": "CHANGELOG.md:8"
     },
     {
+      "id": "0.20.0/deprecated/Stack-gap-layout-names",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then.",
+      "detect": {
+        "regex": [
+          "<Stack\\b[^>]*\\sgap=\\{?\\s*['\"](?:tight|normal|inset|spacious)['\"]"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:8"
+    },
+    {
       "id": "0.20.0/deprecated/StatusDot",
       "kind": "deprecated",
       "impact": "none",
@@ -4686,6 +4700,35 @@
       "removeIn": "1.0.0",
       "backfilled": true,
       "source": "CHANGELOG.md:12"
+    },
+    {
+      "id": "0.20.0/deprecated/kept-utilities",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind.",
+      "detect": {
+        "classes": [
+          "pt-1",
+          "pb-8",
+          "p-16",
+          "max-w-2xl",
+          "h-3.5",
+          "w-3.5",
+          "sm:text-4xl",
+          "sm:inline-block",
+          "group-hover:opacity-100",
+          "text-muted-foreground/70",
+          "transition-[transform,opacity]",
+          "data-[highlighted]:text-foreground",
+          "data-[state=checked]:text-foreground",
+          "bg-[color:var(--semantic-color-feedback-bg-warning)]",
+          "border-[color:var(--semantic-color-feedback-warning)]/40",
+          "text-[color:var(--semantic-color-feedback-warning)]"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:80"
     },
     {
       "id": "0.20.0/look/AssetImg-expand-label",

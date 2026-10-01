@@ -207,6 +207,67 @@ describe('0.20.0 package steps', () => {
   });
 });
 
+describe('0.20.0 deprecations the release announced for 1.0 (hds#450)', () => {
+  it("deprecates Stack's 'tight' to 'spacious' gap names, which CHANGELOG.md:8 removes in 1.0 with Box's", () => {
+    const step = byId('0.20.0/deprecated/Stack-gap-layout-names');
+    expect(step).toMatchObject({
+      impact: 'none',
+      removeIn: '1.0.0',
+      backfilled: true,
+      source: 'CHANGELOG.md:8',
+    });
+    for (const name of ['tight', 'normal', 'inset', 'spacious']) expect(step.plain).toContain(name);
+    // Only an explicit gap name is a use; a bare <Stack> is not.
+    const [source] = step.detect.regex;
+    const re = new RegExp(source);
+    expect(re.test('<Stack direction="row" gap="normal">')).toBe(true);
+    expect(re.test("<Stack gap={'spacious'}>")).toBe(true);
+    expect(re.test('<Stack gap="md">')).toBe(false);
+    expect(re.test('<Stack direction="row">')).toBe(false);
+    expect(step.detect.jsx).toBeUndefined();
+  });
+
+  it('deprecates the 16 Tailwind utilities CHANGELOG.md:80 keeps in styles.css and tokens.css until 1.0', () => {
+    expect(byId('0.20.0/deprecated/kept-utilities')).toMatchObject({
+      impact: 'none',
+      removeIn: '1.0.0',
+      backfilled: true,
+      source: 'CHANGELOG.md:80',
+      detect: {
+        classes: [
+          'pt-1',
+          'pb-8',
+          'p-16',
+          'max-w-2xl',
+          'h-3.5',
+          'w-3.5',
+          'sm:text-4xl',
+          'sm:inline-block',
+          'group-hover:opacity-100',
+          'text-muted-foreground/70',
+          'transition-[transform,opacity]',
+          'data-[highlighted]:text-foreground',
+          'data-[state=checked]:text-foreground',
+          'bg-[color:var(--semantic-color-feedback-bg-warning)]',
+          'border-[color:var(--semantic-color-feedback-warning)]/40',
+          'text-[color:var(--semantic-color-feedback-warning)]',
+        ],
+      },
+    });
+  });
+
+  it('records every deprecation 0.20.0 announced, and no other', () => {
+    expect(stepsOf('deprecated').map(subject).sort()).toEqual([
+      'Box-sx-layout-names',
+      'Stack-gap-layout-names',
+      'StatusDot',
+      'StatusDotProps',
+      'hds.density',
+      'kept-utilities',
+    ]);
+  });
+});
+
 describe('0.20.0 look and behavior steps (CHANGELOG prose)', () => {
   it('cites the pressed Button, the selectable Card keys and the overlay names at the lines hds#447 names', () => {
     expect(byId('0.20.0/look/Button-pressed')).toMatchObject({
