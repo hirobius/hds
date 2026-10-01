@@ -2,11 +2,17 @@
 /**
  * Unit tests for scripts/codemod-spacing-vocabulary.mjs (hds#206 remaining work).
  *
- * All tests operate purely in memory — no filesystem reads or writes.
+ * The applyReplacements tests run in memory. The rewriteFile tests read two
+ * source files and never write.
  */
 
 import { describe, it, expect } from 'vitest';
-import { applyReplacements, REPLACEMENTS } from '../codemod-spacing-vocabulary.mjs';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { applyReplacements, rewriteFile, REPLACEMENTS } from '../codemod-spacing-vocabulary.mjs';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 describe('applyReplacements', () => {
   it('rewrites a CSS var() consumption site to the canonical scale token', () => {
@@ -132,4 +138,27 @@ describe('REPLACEMENTS table', () => {
       }
     }
   });
+});
+
+describe('rewriteFile', () => {
+  it('rewrites a file that is not on the skip list', () => {
+    expect(
+      rewriteFile('src/app/components/example.tsx', 'gap: var(--semantic-space-layout-tight);'),
+    ).toEqual({ text: 'gap: var(--semantic-space-scale-sm);', count: 1 });
+  });
+
+  // Box sx's deprecated 'tight' | 'normal' | 'inset' | 'spacious' read the
+  // fixed layout vars until 1.0; the scale steps would tighten them under
+  // compact density. box-sx.ts spells the vars out so grep and the token
+  // usage map see them, so the codemod has to skip it (and its test).
+  it.each(['src/app/components/box-sx.ts', 'src/app/components/box-sx.test.ts'])(
+    'leaves %s and its literal layout vars alone',
+    (rel) => {
+      const text = readFileSync(join(ROOT, rel), 'utf8');
+      for (const step of ['tight', 'normal', 'inset', 'spacious']) {
+        expect(text).toContain(`'var(--semantic-space-layout-${step})'`);
+      }
+      expect(rewriteFile(rel, text)).toEqual({ text, count: 0 });
+    },
+  );
 });

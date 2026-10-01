@@ -259,10 +259,21 @@ const hds = {
     large: 'var(--primitive-size-24)', // 24px — hero / large empty states
   },
 
-  // ── Density-aware spacing ────────────────────────────────────────────────────
-  // These vars respond to [data-density="compact"] on <html>.
-  // Use for component padding/gap that should tighten in compact mode.
-  // hds.space.px* for fixed measurements that never participate in density.
+  // ── Density-aware spacing (deprecated) ───────────────────────────────────────
+  // These vars respond to [data-density="compact"] on <html>, and so does
+  // semantic.space.scale.*, the one spacing vocabulary (hds#206). The same
+  // names mean different pixels here (density.sm is 8px, scale.sm is 16px),
+  // so this group is deprecated. Nothing in HDS reads it.
+  /**
+   * @deprecated hds#206 — use `hds.semantic.space.scale.*`, which compact density
+   * remaps too. Same pixels at both densities, one step down the name ladder:
+   * `density.sm` → `scale.xs`, `density.md` → `scale.sm`, `density.lg` → `scale.md`,
+   * `density.xl` → `scale.lg`, `density.xl2` → `scale.xl`. `density.xs` (4px),
+   * `density.xl3` (64px) and `density.xl4` (80px) have no scale step:
+   * `hds.space.px4` / `px64` / `px80` keep their comfortable pixels, without the
+   * compact remap.
+   * @removeIn 1.0.0
+   */
   density: {
     xs: 'var(--hds-space-xs)', // 4px comfortable / 2px compact
     sm: 'var(--hds-space-sm)', // 8px comfortable / 6px compact
@@ -278,7 +289,7 @@ const hds = {
   // CSS var strings — valid in any inline style property that accepts a length.
   // Note: avoid interpolating these into template literal shorthand strings,
   // e.g. `margin: \`0 0 ${hds.space.px20}\`` — use individual properties instead.
-  // For component spacing that adapts to density, use hds.density.* instead.
+  // For component spacing that adapts to density, use hds.semantic.space.scale.* instead.
   space: {
     px1: 'var(--primitive-space-px1)',
     px2: 'var(--primitive-space-px2)',
