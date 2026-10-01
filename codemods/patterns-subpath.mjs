@@ -31,6 +31,9 @@
  * A name 0.20.0 removed with no replacement (codemods/removed-0.20.json, hds#394)
  * has nowhere to move: an import of one from the root or `/patterns` is reported
  * for a manual edit ("removed in 0.20.0, no replacement") and `--check` exits 1.
+ * A removed name that folded into a survivor (`replaced` in that file, hds#394
+ * wave 4b) is reported the same way, naming the survivor instead
+ * ("removed in 0.20.0, use Button iconOnly").
  */
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -57,10 +60,21 @@ export function loadPatternNames() {
   return new Set(names);
 }
 
-/** Names 0.20.0 removed with no replacement (codemods/removed-0.20.json): reported, never moved. */
+/** Names 0.20.0 removed (codemods/removed-0.20.json `modules` and `replaced`): reported, never moved. */
 export function loadRemovedNames() {
-  const { modules } = JSON.parse(readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'));
-  return new Set(Object.values(modules).flat());
+  const { modules, replaced = {} } = JSON.parse(
+    readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'),
+  );
+  return new Set([
+    ...Object.values(modules).flat(),
+    ...Object.values(replaced).flatMap(Object.keys),
+  ]);
+}
+
+/** What replaces a removed name that has a survivor (removed-0.20.json `replaced`), by name. */
+export function loadReplacements() {
+  const { replaced = {} } = JSON.parse(readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'));
+  return new Map(Object.values(replaced).flatMap((names) => Object.entries(names)));
 }
 
 const esc = (pkg) => pkg.replace(/[/@]/g, '\\$&');
@@ -94,7 +108,7 @@ export function findUnrewritable(source, names = loadPatternNames()) {
 }
 
 /** Each named import or re-export of a removed name from the root or `/patterns`, in source order. */
-export function findRemoved(source, removed = loadRemovedNames()) {
+export function findRemoved(source, removed = loadRemovedNames(), use = loadReplacements()) {
   const found = [];
   for (const pkg of [ROOT_PKG, SUBPATH])
     for (const m of source.matchAll(namedRe(pkg)))
@@ -102,7 +116,7 @@ export function findRemoved(source, removed = loadRemovedNames()) {
         if (removed.has(name))
           found.push({
             at: m.index,
-            text: `${name} from '${pkg}' (removed in 0.20.0, no replacement)`,
+            text: `${name} from '${pkg}' (removed in 0.20.0, ${use.has(name) ? `use ${use.get(name)}` : 'no replacement'})`,
           });
   return found.sort((a, b) => a.at - b.at).map((f) => f.text);
 }
@@ -213,6 +227,7 @@ export function runCodemod({
   write = false,
   names = loadPatternNames(),
   removed = loadRemovedNames(),
+  replacements = loadReplacements(),
 }) {
   const files = [];
   const manual = [];
@@ -223,7 +238,7 @@ export function runCodemod({
     if (!src.includes(ROOT_PKG)) continue;
     for (const stmt of findUnrewritable(src, names))
       manual.push({ file: relative(root, file), stmt });
-    for (const stmt of findRemoved(src, removed))
+    for (const stmt of findRemoved(src, removed, replacements))
       manual.push({ file: relative(root, file), stmt, removed: true });
     const r = transformSource(src, names);
     if (!r.changed) continue;
