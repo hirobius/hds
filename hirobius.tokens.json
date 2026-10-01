@@ -830,6 +830,14 @@
         },
         "$description": "96px size step."
       },
+      "120": {
+        "$type": "dimension",
+        "$value": {
+          "value": 120,
+          "unit": "px"
+        },
+        "$description": "120px size step. Backs semantic.size.tile."
+      },
       "$description": "Unaliased dimensional values.",
       "interactive": {
         "$description": "Interactive control size minimums.",
@@ -2032,6 +2040,10 @@
       "avatar": {
         "$value": "{primitive.size.40}",
         "$description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242)."
+      },
+      "tile": {
+        "$value": "{primitive.size.120}",
+        "$description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403)."
       },
       "row": {
         "$description": "Table row minimum height by density.",

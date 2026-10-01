@@ -18,9 +18,9 @@ const MAX_COLUMNS = 4;
 /**
  * The one tile height. Every tile in every row is at least this tall, whatever
  * its tone and whether or not it has a sub line, so tiles line up across rows
- * and across screens. 120px, expressed from size tokens.
+ * and across screens. `semantic.size.tile`, 120px.
  */
-const TILE_MIN_HEIGHT = 'calc(var(--primitive-size-96) + var(--primitive-size-24))';
+const TILE_MIN_HEIGHT = 'var(--semantic-size-tile)';
 
 /** A non-breaking space keeps the sub line's height when there is no sub text. */
 const EMPTY_SUB = ' ';

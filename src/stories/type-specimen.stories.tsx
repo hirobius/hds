@@ -175,6 +175,22 @@ const COMPOSITE_SPECS = COMPOSITES.map((c) => ({
   lineHeight: `var(--semantic-typography-${c}-line-height)`,
 }));
 
+/**
+ * A semantic composite applied through its live CSS vars, so the specimen
+ * shows what the cascade resolves (tenant, theme, density), not a copy of the
+ * token values. Both views below render their sample text with it.
+ */
+function compositeStyle(c: (typeof COMPOSITES)[number]): React.CSSProperties {
+  return {
+    fontFamily: `var(--semantic-typography-${c}-font-family)`,
+    fontSize: `var(--semantic-typography-${c}-font-size)`,
+    fontWeight: `var(--semantic-typography-${c}-font-weight)` as never,
+    letterSpacing: `var(--semantic-typography-${c}-letter-spacing)`,
+    lineHeight: `var(--semantic-typography-${c}-line-height)`,
+    textTransform: c === 'eyebrow' ? 'uppercase' : undefined,
+  };
+}
+
 function CompositesView() {
   const m = useMetrics(COMPOSITE_SPECS);
   return (
@@ -187,17 +203,7 @@ function CompositesView() {
           const onGrid = lh !== null && lh !== undefined && lh % GRID === 0;
           return (
             <div key={c} style={band}>
-              <span
-                style={{
-                  fontFamily: `var(--semantic-typography-${c}-font-family)`,
-                  fontSize: `var(--semantic-typography-${c}-font-size)`,
-                  fontWeight: `var(--semantic-typography-${c}-font-weight)` as never,
-                  letterSpacing: `var(--semantic-typography-${c}-letter-spacing)`,
-                  lineHeight: `var(--semantic-typography-${c}-line-height)`,
-                  textTransform: c === 'eyebrow' ? 'uppercase' : undefined,
-                  minWidth: 0,
-                }}
-              >
+              <span style={{ ...compositeStyle(c), minWidth: 0 }}>
                 {c === 'body' || c === 'ui'
                   ? 'The quick brown fox jumps over the lazy dog'
                   : 'Ag — The quick brown fox'}
@@ -257,18 +263,7 @@ function RhythmView() {
                 outline: onGrid ? 'none' : '1px solid var(--semantic-color-feedback-warning)',
               }}
             >
-              <span
-                style={{
-                  fontFamily: `var(--semantic-typography-${c}-font-family)`,
-                  fontSize: `var(--semantic-typography-${c}-font-size)`,
-                  fontWeight: `var(--semantic-typography-${c}-font-weight)` as never,
-                  letterSpacing: `var(--semantic-typography-${c}-letter-spacing)`,
-                  lineHeight: `var(--semantic-typography-${c}-line-height)`,
-                  textTransform: c === 'eyebrow' ? 'uppercase' : undefined,
-                }}
-              >
-                Hamburgefonstiv
-              </span>
+              <span style={compositeStyle(c)}>Hamburgefonstiv</span>
               <span style={{ ...mono, whiteSpace: 'nowrap' }}>
                 {c} · {lh ?? '—'}px {onGrid ? '' : '⚠'}
               </span>

@@ -152,6 +152,7 @@ declare module 'react' {
     '--primitive-size-64'?: string | undefined;
     '--primitive-size-80'?: string | undefined;
     '--primitive-size-96'?: string | undefined;
+    '--primitive-size-120'?: string | undefined;
     '--primitive-size-interactive-min'?: string | undefined;
     '--primitive-size-interactive-minCompact'?: string | undefined;
     '--primitive-size-width-96'?: string | undefined;
@@ -341,6 +342,7 @@ declare module 'react' {
     '--semantic-size-icon-md'?: string | undefined;
     '--semantic-size-icon-lg'?: string | undefined;
     '--semantic-size-avatar'?: string | undefined;
+    '--semantic-size-tile'?: string | undefined;
     '--semantic-size-row-compact'?: string | undefined;
     '--semantic-size-row-comfortable'?: string | undefined;
     '--semantic-zIndex-control'?: string | undefined;

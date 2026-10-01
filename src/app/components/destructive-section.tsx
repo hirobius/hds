@@ -3,6 +3,10 @@
  * @category Actions
  * @tier pattern
  */
+// motion-ok: composition only. The one control is a danger Button, which owns
+// its hover/press transition (transition-[colors,filter]); the AlertDialog it
+// opens owns open/close. The section has no hover, press or open state of its
+// own, so there is nothing here to animate.
 
 import * as React from 'react';
 import { AlertDialog } from './alert-dialog';

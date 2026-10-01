@@ -51,12 +51,15 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
 );
 
 // Sortable header cells render a real `<button>` filling the cell so the whole
-// header remains one hit target; unstyled beyond layout so the cell's own
+// header remains one hit target; unstyled at rest beyond layout so the cell's own
 // alignment/typography (tableHeaderCellVariants + typeStyles.technical) keeps
-// driving pixel parity with the non-sortable render path.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
+// driving pixel parity with the non-sortable render path. On hover the label and
+// glyph ease to the muted foreground over the productive motion token (zeroed
+// under prefers-reduced-motion): a colour change, not a wash, because the button
+// carries no padding for a fill and the header already rests at full contrast.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing and productive-motion duration/easing tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const tableSortButtonVariants = /* @__PURE__ */ cva(
-  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
   {
     variants: {
       align: {

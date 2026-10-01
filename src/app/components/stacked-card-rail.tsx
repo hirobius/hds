@@ -407,13 +407,14 @@ export function StackedCardRail({ cards }: StackedCardRailProps) {
 
   return (
     <>
-      {/* dangerouslySetInnerHTML (not a `{STYLES}` text child) so the server renderer
-          does not HTML-escape the quotes in `[data-fallback="true"]` — a `<style>`
+      {/* Set as an HTML string, not a `{STYLES}` text child, so the server renderer
+          does not HTML-escape the quotes in `[data-fallback="true"]`: a `<style>`
           text child is entity-escaped by renderToStaticMarkup/renderToString but
           browsers parse `<style>` as raw text, so `&quot;` is never decoded and the
-          selector is invalid until hydration replaces the subtree (hds#284). STYLES
-          is a module-scope literal, not user input, so this is safe. */}
-      <style dangerouslySetInnerHTML={{ __html: STYLES }} />
+          selector is invalid until hydration replaces the subtree (hds#284). */}
+      <style
+        dangerouslySetInnerHTML={{ __html: STYLES }} // security-ok: STYLES is module-scope CSS built only from numeric constants and one token string; no prop or user data reaches it (pinned by stacked-card-rail.test.tsx)
+      />
       <div
         ref={outerRef}
         className="hds-scr-outer"

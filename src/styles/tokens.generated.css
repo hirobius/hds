@@ -153,6 +153,7 @@
   --primitive-size-64: 64px;
   --primitive-size-80: 80px;
   --primitive-size-96: 96px;
+  --primitive-size-120: 120px;
   --primitive-size-interactive-min: 44px;
   --primitive-size-interactive-minCompact: 24px;
   --primitive-size-width-96: 96px;
@@ -361,6 +362,7 @@
   --semantic-size-icon-md: var(--primitive-size-20);
   --semantic-size-icon-lg: var(--primitive-size-24);
   --semantic-size-avatar: var(--primitive-size-40);
+  --semantic-size-tile: var(--primitive-size-120);
   --semantic-size-row-compact: var(--primitive-size-40);
   --semantic-size-row-comfortable: var(--primitive-size-48);
   --semantic-zIndex-control: var(--primitive-zIndex-10);

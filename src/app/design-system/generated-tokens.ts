@@ -195,6 +195,7 @@ export const tokens = {
       "64": "var(--primitive-size-64)",
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
+      "120": "var(--primitive-size-120)",
       interactive: {
         min: "var(--primitive-size-interactive-min)",
         minCompact: "var(--primitive-size-interactive-minCompact)"
@@ -403,6 +404,7 @@ export const tokens = {
         lg: "var(--semantic-size-icon-lg)"
       },
       avatar: "var(--semantic-size-avatar)",
+      tile: "var(--semantic-size-tile)",
       row: {
         compact: "var(--semantic-size-row-compact)",
         comfortable: "var(--semantic-size-row-comfortable)"
