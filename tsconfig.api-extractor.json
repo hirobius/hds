@@ -63,7 +63,6 @@
     "src/app/components/HdsPreviewFrame.tsx",
     "src/app/components/HdsErrorBoundary.tsx",
     "src/app/components/HdsToken.tsx",
-    "src/app/layouts/CaseStudyLayout.tsx",
     "src/app/pages/hds/HdsSystemDocLayout.tsx",
     "src/app/pages/hds/HdsTocContext.tsx"
   ],

@@ -163,15 +163,15 @@ describe('collectPublicApi walks every package.json#exports JS entry (hds#390)',
     const surface = collectPublicApi(REPO);
     const patterns = surface.modules['@subpath/patterns'] ?? [];
     expect(surface.modules['@subpath/contexts']?.length).toBeGreaterThan(0);
-    // Six /patterns modules are not root `export *` targets, so before hds#390
-    // no baseline entry covered them.
+    // Six /patterns modules were never root `export *` targets, so before hds#390
+    // no baseline entry covered them. StackedCardRail, the sixth, was removed in
+    // 0.20.0 (hds#394).
     for (const name of [
       'PageHeader',
       'MetricTiles',
       'FormActions',
       'DestructiveSection',
       'DataTableSection',
-      'StackedCardRail',
     ]) {
       expect(patterns).toContain(name);
     }

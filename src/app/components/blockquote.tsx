@@ -57,6 +57,3 @@ export const Blockquote = /* @__PURE__ */ React.forwardRef<HTMLQuoteElement, Blo
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Blockquote props instead. */
-export { blockquoteVariants };

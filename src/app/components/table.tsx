@@ -346,6 +346,3 @@ export function Table({
     </div>
   );
 }
-
-/** @internal — CVA variant helpers; compose via Table props instead. */
-export { tableHeaderCellVariants, tableDataCellVariants, tableSortButtonVariants };

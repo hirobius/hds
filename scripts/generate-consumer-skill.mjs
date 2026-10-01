@@ -68,7 +68,7 @@ export function firstSentence(text = '') {
 /**
  * The documented components a barrel exports, grouped by category. Reads every
  * componentSpecs entry, not only componentInventory, so template-tier components
- * such as `ErrorPattern` and `AppShell` are listed too.
+ * such as `ErrorPattern` are listed too.
  */
 function allowList(manifest, barrelSource) {
   const modules = barrelModules(barrelSource);

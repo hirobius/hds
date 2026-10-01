@@ -429,6 +429,3 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
     </div>
   );
 });
-
-/** @internal — CVA variant helper; compose via Input props instead. */
-export { inputVariants };

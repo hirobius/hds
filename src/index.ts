@@ -20,12 +20,17 @@
 // HdsSelect, HdsSlider, HdsToggle, HdsTooltip; hds#315). Each component is
 // exported under its bare name only;
 // `npx -p @hirobius/design-system@^0.20.0 hds-prefix` rewrites consumer code.
+//
+// 0.20.0 also removed 32 components with no survivor (hds#394 wave 4a: the
+// three docs-shell templates, the nav and date-picker families, ContextMenu,
+// HoverCard, ButtonGroup and more) and every root `*Variants` cva helper, which
+// stays private to its module. MIGRATIONS.md lists each removed name.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Side-effect import: design system base styles (tokens + theme + utilities)
 import './styles/index.css';
 
-// ── primitives (38) ──
+// ── primitives (36) ──
 export * from './app/components/alert';
 export * from './app/components/avatar';
 export * from './app/components/badge';
@@ -43,8 +48,6 @@ export * from './app/components/menu';
 export * from './app/components/popover';
 export * from './app/components/hds-tooltip';
 export * from './app/components/grid';
-export * from './app/components/heading-stack';
-export * from './app/components/history-card';
 export * from './app/components/icon';
 export * from './app/components/inline-code';
 export * from './app/components/inline-link';
@@ -72,7 +75,6 @@ export * from './app/components/timestamp';
 export * from './app/components/blockquote';
 export * from './app/components/visually-hidden';
 export * from './app/components/avatar-group';
-export * from './app/components/button-group';
 export * from './app/components/input-group';
 export * from './app/components/circular-progress';
 
@@ -80,20 +82,14 @@ export * from './app/components/circular-progress';
 export * from './app/components/toggle-button';
 export * from './app/components/aspect-ratio';
 export * from './app/components/alert-dialog';
-export * from './app/components/hover-card';
-export * from './app/components/context-menu';
 
 // ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
 export * from './app/components/metadata-list';
 export * from './app/components/selectable-card';
-export * from './app/components/tokenizer';
 export * from './app/components/multi-selector';
 
-// ── Astryx-gap coverage — Tier 3 date/time family (ADR-020) ──
+// ── Astryx-gap coverage — Tier 3 date/time family (ADR-020; the date pickers went in 0.20.0, ADR-034) ──
 export * from './app/components/time-input';
-export * from './app/components/date-input';
-export * from './app/components/date-range-input';
-export * from './app/components/date-time-input';
 
 // ── every-layout primitives (#96) ──
 export * from './app/components/cluster';
@@ -108,33 +104,27 @@ export * from './app/components/pin';
 
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/empty-state';
-export * from './app/components/error-boundary';
 export * from './app/components/not-found-pattern';
 export * from './app/components/tabs';
 export * from './app/components/tile-grid';
 export * from './app/components/status-tile';
 
-// ── patterns (9) ──
+// ── patterns (6) ──
 export * from './app/components/breadcrumb';
 export * from './app/components/combobox';
 export * from './app/components/disclosure';
 export * from './app/components/icon-button';
-export * from './app/components/nav-group';
 export * from './app/components/pagination';
-export * from './app/components/stepper-field';
-export * from './app/components/text-lockup';
 export * from './app/components/toast';
 
-// ── templates (3) ──
+// No template ships from the root: CaseStudyLayout, HdsSystemDocLayout and
+// HdsDocsShell were removed in 0.20.0 (hds#394).
 // NOTE: ComponentDocPage and HdsSpecimenBlock are intentionally NOT part of the
 // published surface — they are docs-shell renderers that pull the entire
 // component preview universe (import.meta.glob over every component + lab module,
 // and the token-audit/component-api artifacts) into the library bundle. They remain available to the in-repo doc site via direct import.
 // InfoPage was removed (dead-portfolio scaffolding, hardcoded the deleted
 // /assets/adrian.webp; 0 DS-consumer use) — see CHANGELOG / changeset.
-export * from './app/layouts/CaseStudyLayout';
-export * from './app/layouts/HdsSystemDocLayout';
-export * from './app/layouts/HdsDocsShell';
 
 // ── Token bridge (CSS variables wrapped as TS constants + raw DTCG JSON) ──
 export { default as hds } from './app/design-system/tokens';

@@ -19,13 +19,10 @@ import { HdsThemeProvider } from '../hds-theme';
 import { Dialog } from '../../components/dialog';
 import { AlertDialog } from '../../components/alert-dialog';
 import { Menu } from '../../components/menu';
-import { ContextMenu } from '../../components/context-menu';
 import { Popover } from '../../components/popover';
 import { Select } from '../../components/select';
-import { HoverCard } from '../../components/hover-card';
 import { Tooltip } from '../../components/hds-tooltip';
 import { ExpandTooltip } from '../../components/tooltip';
-import { Lightbox } from '../../components/image-lightbox';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -63,17 +60,6 @@ const PARTS: Array<[string, () => React.ReactElement]> = [
     ),
   ],
   [
-    'ContextMenu',
-    () => (
-      <ContextMenu>
-        <ContextMenu.Trigger>Right-click</ContextMenu.Trigger>
-        <ContextMenu.Content>
-          <ContextMenu.Item>Cut</ContextMenu.Item>
-        </ContextMenu.Content>
-      </ContextMenu>
-    ),
-  ],
-  [
     'Popover',
     () => (
       <Popover>
@@ -94,15 +80,6 @@ const PARTS: Array<[string, () => React.ReactElement]> = [
     ),
   ],
   [
-    'HoverCard',
-    () => (
-      <HoverCard>
-        <HoverCard.Trigger>@ada</HoverCard.Trigger>
-        <HoverCard.Content>Ada</HoverCard.Content>
-      </HoverCard>
-    ),
-  ],
-  [
     'Tooltip',
     () => (
       <Tooltip>
@@ -112,7 +89,6 @@ const PARTS: Array<[string, () => React.ReactElement]> = [
     ),
   ],
   ['ExpandTooltip', () => <ExpandTooltip visible mode="cursor" label="Pill" x={1} y={1} />],
-  ['Lightbox', () => <Lightbox open onClose={() => {}} src="/x.png" alt="Pic" />],
 ];
 
 const SETUPS: Array<[string, (child: React.ReactElement) => React.ReactElement]> = [

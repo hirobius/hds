@@ -116,6 +116,3 @@ export const CircularProgress = /* @__PURE__ */ React.forwardRef<
     </span>
   );
 });
-
-/** @internal — CVA variant helper; compose via CircularProgress props instead. */
-export { circularProgressVariants };

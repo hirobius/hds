@@ -49,7 +49,7 @@ describe('createCodeModel — real components', { timeout: 60_000 }, () => {
       files: [
         'src/app/components/button.tsx',
         'src/app/components/dialog.tsx',
-        'src/app/components/heading-stack.tsx',
+        'src/app/components/tile-grid.tsx',
         'src/app/components/checkbox.tsx',
         'src/app/components/alert.tsx',
         'src/app/components/input.tsx',
@@ -83,20 +83,19 @@ describe('createCodeModel — real components', { timeout: 60_000 }, () => {
   });
 
   it('does not invent props', () => {
-    const headingStack = model.component('src/app/components/heading-stack.tsx', 'HeadingStack');
-    expect(headingStack.props).toHaveProperty('subheading');
-    expect(headingStack.props).not.toHaveProperty('subtext');
+    const tileGrid = model.component('src/app/components/tile-grid.tsx', 'TileGrid');
+    expect(tileGrid.props).toHaveProperty('minTileWidth');
+    expect(tileGrid.props).not.toHaveProperty('minWidth');
   });
 
   it('reads the @figma node URL from the component JSDoc (null when there is none)', () => {
     expect(model.component('src/app/components/alert.tsx', 'Alert').figmaUrl).toMatch(
       /^https:\/\/www\.figma\.com\/design\/.+node-id=/,
     );
-    // heading-stack carries no @figma tag at all — the null case. Button used to
-    // stand in for it, until the 2026-09-20 library walk gave Button a real node.
-    expect(
-      model.component('src/app/components/heading-stack.tsx', 'HeadingStack').figmaUrl,
-    ).toBeNull();
+    // tile-grid carries no @figma tag at all — the null case (heading-stack was
+    // it until 0.20.0 removed HeadingStack, hds#394). Button used to stand in
+    // for it, until the 2026-09-20 library walk gave Button a real node.
+    expect(model.component('src/app/components/tile-grid.tsx', 'TileGrid').figmaUrl).toBeNull();
   });
 
   it('ignores @figma tags whose value is not a URL', () => {

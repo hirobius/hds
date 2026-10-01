@@ -61,6 +61,3 @@ export const Skeleton = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Skeleto
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Skeleton props instead. */
-export { skeletonVariants };

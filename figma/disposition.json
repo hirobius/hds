@@ -11,33 +11,21 @@
     "Frame": {
       "class": "library",
       "reason": "Not invisible. Frame's whole job is the overflow-hidden clip and semantic radius it adds on top of AspectRatio — its own JSDoc says 'Do NOT reach for bare AspectRatio in product code just to add a border-radius by hand — use Frame.' That radius is paint, and a media card with a clipped corner is exactly what a designer places."
-    },
-    "OverflowList": {
-      "class": "library",
-      "reason": "Not invisible. It renders its own '+N' pill — `rounded-md bg-muted px-2 h-6 text-sm` — which is a visible, styled affordance a designer needs to see and match, not a layout wrapper."
     }
   },
   "summary": {
-    "total": 141,
+    "total": 111,
     "byClass": {
-      "library": 91,
+      "library": 65,
       "slot": 19,
-      "layout": 16,
-      "internal": 15
+      "layout": 15,
+      "internal": 12
     },
-    "libraryLinked": 47,
-    "libraryMissing": 44,
+    "libraryLinked": 43,
+    "libraryMissing": 22,
     "unexpectedlyLinked": 0
   },
   "components": [
-    {
-      "name": "ActivityFeed",
-      "class": "library",
-      "parent": null,
-      "category": "Display",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
     {
       "name": "Alert",
       "class": "library",
@@ -52,14 +40,6 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "AppShell",
-      "class": "internal",
-      "parent": null,
-      "category": "Layout",
-      "tier": "template",
       "figmaUrl": null
     },
     {
@@ -143,22 +123,6 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138"
     },
     {
-      "name": "ButtonGroup",
-      "class": "library",
-      "parent": null,
-      "category": "Actions",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "Calendar",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "Callout",
       "class": "library",
       "parent": null,
@@ -231,22 +195,6 @@
       "figmaUrl": null
     },
     {
-      "name": "Carousel",
-      "class": "library",
-      "parent": null,
-      "category": "Display",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "CaseStudyLayout",
-      "class": "internal",
-      "parent": null,
-      "category": "Layout",
-      "tier": "template",
-      "figmaUrl": null
-    },
-    {
       "name": "Center",
       "class": "layout",
       "parent": null,
@@ -295,26 +243,10 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237"
     },
     {
-      "name": "CommandPalette",
-      "class": "library",
-      "parent": null,
-      "category": "Overlays",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "Container",
       "class": "layout",
       "parent": null,
       "category": "Layout",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "ContextMenu",
-      "class": "library",
-      "parent": null,
-      "category": "Overlays",
       "tier": "primitive",
       "figmaUrl": null
     },
@@ -331,30 +263,6 @@
       "class": "library",
       "parent": null,
       "category": "Display",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "DateInput",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "DateRangeInput",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "DateTimeInput",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
       "tier": "pattern",
       "figmaUrl": null
     },
@@ -463,14 +371,6 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26"
     },
     {
-      "name": "DocLinkCard",
-      "class": "library",
-      "parent": null,
-      "category": "Navigation",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "EmptyState",
       "class": "library",
       "parent": null,
@@ -493,14 +393,6 @@
       "category": "Display",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-81"
-    },
-    {
-      "name": "FileInput",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "pattern",
-      "figmaUrl": null
     },
     {
       "name": "Form",
@@ -585,14 +477,6 @@
       "figmaUrl": null
     },
     {
-      "name": "HdsDocsShell",
-      "class": "layout",
-      "parent": null,
-      "category": "Layout",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
       "name": "HdsFrame",
       "class": "internal",
       "parent": null,
@@ -625,34 +509,10 @@
       "figmaUrl": null
     },
     {
-      "name": "HdsSystemDocLayout",
-      "class": "internal",
-      "parent": null,
-      "category": "Uncategorized",
-      "tier": "template",
-      "figmaUrl": null
-    },
-    {
       "name": "HdsThemeProvider",
       "class": "internal",
       "parent": null,
       "category": "Theming",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "HeadingStack",
-      "class": "library",
-      "parent": null,
-      "category": "Typography",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "HoverCard",
-      "class": "library",
-      "parent": null,
-      "category": "Overlays",
       "tier": "primitive",
       "figmaUrl": null
     },
@@ -713,14 +573,6 @@
       "figmaUrl": null
     },
     {
-      "name": "Lightbox",
-      "class": "library",
-      "parent": null,
-      "category": "Overlays",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "Menu",
       "class": "library",
       "parent": null,
@@ -759,32 +611,6 @@
       "category": "Inputs",
       "tier": "pattern",
       "figmaUrl": null
-    },
-    {
-      "name": "NavGroup",
-      "class": "library",
-      "parent": null,
-      "category": "Navigation",
-      "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-304"
-    },
-    {
-      "name": "NavItem",
-      "class": "library",
-      "parent": null,
-      "category": "Navigation",
-      "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-258"
-    },
-    {
-      "name": "OverflowList",
-      "class": "library",
-      "parent": null,
-      "category": "Layout",
-      "tier": "pattern",
-      "figmaUrl": null,
-      "overriddenFrom": "layout",
-      "overrideReason": "Not invisible. It renders its own '+N' pill — `rounded-md bg-muted px-2 h-6 text-sm` — which is a visible, styled affordance a designer needs to see and match, not a layout wrapper."
     },
     {
       "name": "Page",
@@ -883,14 +709,6 @@
       "figmaUrl": null
     },
     {
-      "name": "SideNav",
-      "class": "library",
-      "parent": null,
-      "category": "Navigation",
-      "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-332"
-    },
-    {
       "name": "Skeleton",
       "class": "library",
       "parent": null,
@@ -920,14 +738,6 @@
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "StackedCardRail",
-      "class": "library",
-      "parent": null,
-      "category": "Display",
-      "tier": "pattern",
       "figmaUrl": null
     },
     {
@@ -961,22 +771,6 @@
       "category": "Display",
       "tier": "pattern",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-292"
-    },
-    {
-      "name": "Stepper",
-      "class": "library",
-      "parent": null,
-      "category": "Navigation",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "StepperField",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-425"
     },
     {
       "name": "Surface",
@@ -1059,14 +853,6 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14"
     },
     {
-      "name": "TextLockup",
-      "class": "library",
-      "parent": null,
-      "category": "Display",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
       "name": "TileGrid",
       "class": "layout",
       "parent": null,
@@ -1115,43 +901,11 @@
       "figmaUrl": null
     },
     {
-      "name": "Tokenizer",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "Toolbar",
-      "class": "library",
-      "parent": null,
-      "category": "Actions",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
       "name": "Tooltip",
       "class": "library",
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "TopNav",
-      "class": "library",
-      "parent": null,
-      "category": "Navigation",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "TreeList",
-      "class": "library",
-      "parent": null,
-      "category": "Navigation",
-      "tier": "pattern",
       "figmaUrl": null
     },
     {

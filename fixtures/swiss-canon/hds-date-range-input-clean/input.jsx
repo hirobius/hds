@@ -1,1 +1,0 @@
-<DateRangeInput placeholder="Select range" />;

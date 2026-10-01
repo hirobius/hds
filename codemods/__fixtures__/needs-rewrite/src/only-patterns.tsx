@@ -1,6 +1,10 @@
 import {
-  AppShell,
-  SideNav as Nav,
+  Page,
+  CodeBlock as Code,
 } from '@hirobius/design-system';
 
-export const Only = () => <AppShell nav={<Nav />} />;
+export const Only = () => (
+  <Page>
+    <Code code="x" />
+  </Page>
+);

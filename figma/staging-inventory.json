@@ -3,11 +3,6 @@
   "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
   "drawnOn": "2026-09-23",
   "components": {
-    "ActivityFeed": {
-      "kind": "set",
-      "variants": 4,
-      "node": "2043-184"
-    },
     "AlertDialog": {
       "kind": "component",
       "variants": null,
@@ -28,75 +23,15 @@
       "variants": 6,
       "node": "2024-18"
     },
-    "ButtonGroup": {
-      "kind": "set",
-      "variants": 2,
-      "node": "2028-118"
-    },
-    "Calendar": {
-      "kind": "component",
-      "variants": null,
-      "node": "2043-3"
-    },
-    "Carousel": {
-      "kind": "component",
-      "variants": null,
-      "node": "2042-71"
-    },
     "CircularProgress": {
       "kind": "set",
       "variants": 15,
       "node": "2029-48"
     },
-    "CommandPalette": {
-      "kind": "component",
-      "variants": null,
-      "node": "2043-99"
-    },
-    "ContextMenu": {
-      "kind": "component",
-      "variants": null,
-      "node": "2034-7"
-    },
-    "DateInput": {
-      "kind": "component",
-      "variants": null,
-      "node": "2039-3"
-    },
-    "DateRangeInput": {
-      "kind": "component",
-      "variants": null,
-      "node": "2039-37"
-    },
-    "DateTimeInput": {
-      "kind": "component",
-      "variants": null,
-      "node": "2039-23"
-    },
-    "DocLinkCard": {
-      "kind": "set",
-      "variants": 2,
-      "node": "2044-51"
-    },
-    "FileInput": {
-      "kind": "set",
-      "variants": 4,
-      "node": "2036-29"
-    },
     "Frame": {
       "kind": "set",
       "variants": 4,
       "node": "2038-36"
-    },
-    "HeadingStack": {
-      "kind": "set",
-      "variants": 6,
-      "node": "2025-21"
-    },
-    "HoverCard": {
-      "kind": "component",
-      "variants": null,
-      "node": "2034-3"
     },
     "InputGroup": {
       "kind": "set",
@@ -108,11 +43,6 @@
       "variants": 3,
       "node": "2026-9"
     },
-    "Lightbox": {
-      "kind": "component",
-      "variants": null,
-      "node": "2043-125"
-    },
     "MetadataList": {
       "kind": "set",
       "variants": 4,
@@ -123,35 +53,15 @@
       "variants": null,
       "node": "2042-54"
     },
-    "OverflowList": {
-      "kind": "component",
-      "variants": null,
-      "node": "2038-16"
-    },
     "SelectableCard": {
       "kind": "set",
       "variants": 2,
       "node": "2032-9"
     },
-    "StackedCardRail": {
-      "kind": "component",
-      "variants": null,
-      "node": "2044-53"
-    },
-    "Stepper": {
-      "kind": "set",
-      "variants": 2,
-      "node": "2033-50"
-    },
     "Text": {
       "kind": "set",
       "variants": 14,
       "node": "2022-31"
-    },
-    "TextLockup": {
-      "kind": "set",
-      "variants": 12,
-      "node": "2044-39"
     },
     "TimeInput": {
       "kind": "set",
@@ -167,26 +77,6 @@
       "kind": "set",
       "variants": 12,
       "node": "2028-27"
-    },
-    "Tokenizer": {
-      "kind": "set",
-      "variants": 2,
-      "node": "2042-52"
-    },
-    "Toolbar": {
-      "kind": "component",
-      "variants": null,
-      "node": "2038-3"
-    },
-    "TopNav": {
-      "kind": "component",
-      "variants": null,
-      "node": "2042-3"
-    },
-    "TreeList": {
-      "kind": "component",
-      "variants": null,
-      "node": "2040-3"
     }
   },
   "drawnEarlier": {

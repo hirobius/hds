@@ -10,14 +10,12 @@ const componentApiPath = path.join(repoRoot, 'src', 'app', 'data', 'component-ap
 
 const targets = new Set([
   'Button',
-  'HdsButtonGroup',
   'IconButton',
   'Alert',
   'Callout',
   'Stack',
   'Input',
   'SegmentedControl',
-  'StepperField',
   'Card',
   'Dialog',
   'Badge',
@@ -26,12 +24,7 @@ const targets = new Set([
   'Icon',
   'Tag',
   'Divider',
-  'HeadingStack',
-  'TextLockup',
-  'DocLinkCard',
   'InlineLink',
-  'NavGroup',
-  'NavItem',
   'AssetImg',
   'Table',
   'Field',
@@ -53,8 +46,6 @@ const allowedChildrenDefaults = {
   Alert: ['*'],
   Callout: ['*'],
   Input: [],
-  HeadingStack: [],
-  TextLockup: [],
   Field: ['*'],
   Stat: [],
   StatusListItem: [],
@@ -65,13 +56,6 @@ const a11yDefaults = {
   Button: [
     { rule: 'Must have accessible name via label prop or aria-label', required: true },
     { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
-  ],
-  HdsButtonGroup: [
-    { rule: 'Buttons in group must each have accessible names', required: true },
-    {
-      rule: 'Group role (role="group") should be set when buttons are semantically related',
-      required: false,
-    },
   ],
   IconButton: [
     { rule: 'Must have aria-label (icon-only buttons have no visible text)', required: true },
@@ -95,10 +79,6 @@ const a11yDefaults = {
       required: true,
     },
   ],
-  StepperField: [
-    { rule: 'Must have associated label via label prop or aria-labelledby', required: true },
-    { rule: 'Decrement/increment buttons must have aria-label', required: true },
-  ],
   Tag: [
     {
       rule: 'When used as interactive chip (onClick), must have role="button" and keyboard activation',
@@ -110,30 +90,12 @@ const a11yDefaults = {
     },
   ],
   // ── Navigation ───────────────────────────────────────────────────────────────
-  DocLinkCard: [
-    { rule: 'Card link must have descriptive accessible name (not just the URL)', required: true },
-    { rule: 'Focus ring visible on keyboard navigation', required: true },
-  ],
   InlineLink: [
     { rule: 'Link text must be descriptive — avoid "click here" or "read more"', required: true },
     {
       rule: 'External links must signal new-tab behavior via aria-label or visually hidden text',
       required: false,
     },
-  ],
-  NavGroup: [
-    {
-      rule: 'Navigation group must have accessible label (aria-label on the nav element)',
-      required: true,
-    },
-    { rule: 'Expanded/collapsed state communicated via aria-expanded', required: true },
-  ],
-  NavItem: [
-    {
-      rule: 'Active item must be communicated via aria-current="page" or aria-selected',
-      required: true,
-    },
-    { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
   ],
   // ── Display / Media ──────────────────────────────────────────────────────────
   AssetImg: [
@@ -260,7 +222,6 @@ const compilerStubSpecs = {
 
 const legacyFilePaths = {
   AssetImg: 'src/app/components/AssetImg.tsx',
-  DocLinkCard: 'src/app/components/DocLinkCard.tsx',
   ComponentDocPage: 'src/app/components/ComponentDocPage.tsx',
   ReflectiveTokenTable: '',
 };

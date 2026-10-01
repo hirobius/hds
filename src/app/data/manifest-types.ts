@@ -106,12 +106,6 @@ export type ManifestComponentSpec = {
   useInstead?: string;
 };
 
-/**
- * Alias of ManifestComponentSpec for hds-search.ts back-compat.
- * @deprecated Use ManifestComponentSpec directly in new code.
- */
-export type ManifestSpec = ManifestComponentSpec;
-
 /** The root SystemManifest shape (virtual:hds-manifest). */
 export type SystemManifest = {
   name?: string;

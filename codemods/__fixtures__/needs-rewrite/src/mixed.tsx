@@ -1,8 +1,8 @@
-import { Button, Page, TopNav, Badge } from '@hirobius/design-system';
+import { Button, Page, ErrorPattern, Badge } from '@hirobius/design-system';
 
 export const Mixed = () => (
   <Page>
-    <TopNav />
+    <ErrorPattern />
     <Button />
     <Badge />
   </Page>

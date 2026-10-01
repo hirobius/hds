@@ -216,6 +216,3 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Disclosure props instead. */
-export { disclosureTriggerVariants };

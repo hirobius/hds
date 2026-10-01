@@ -4,7 +4,7 @@
  *
  *   - retitling keeps every story id that existed before (links in the wild),
  *   - no kebab-case leaf titles reach the sidebar,
- *   - exactly the six internal components are hidden from it,
+ *   - exactly the internal components (none since 0.20.0) are hidden from it,
  *   - the landing page, brand theme and share tags exist and stay honest.
  *
  * Ids are derived from source (scripts/lib/story-link.mjs) so this runs with no
@@ -26,8 +26,9 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const read = (rel) => readFileSync(path.join(ROOT, rel), 'utf8');
 
-// The other five hidden internals were deleted in 0.20.0 (hds#389).
-const HIDDEN_FILES = ['history-card'].map((n) => `src/stories/${n}.stories.tsx`);
+// None left: five hidden internals were deleted in 0.20.0 (hds#389) and the
+// last, HistoryCard, in the same release (hds#394).
+const HIDDEN_FILES = [];
 
 const files = findStoryFiles(ROOT).map((p) => ({ path: p, source: read(p) }));
 const isHidden = (source) => /^\s*tags:\s*\[[^\]]*['"]!dev['"][^\]]*\]/m.test(source);

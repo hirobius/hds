@@ -8,7 +8,7 @@
  *   import { hds, tokens } from '@hirobius/design-system/tokens';
  *   import { cn } from '@hirobius/design-system/cn';
  *   import manifest from '@hirobius/design-system/manifest';
- *   import { Form, TopNav } from '@hirobius/design-system/patterns';
+ *   import { Form, Page } from '@hirobius/design-system/patterns';
  *
  * Output is ESM-only (no CJS dual emit) — modern, smaller footprint, matches
  * shadcn/Radix/cva-style packaging conventions. Consumers must use a bundler

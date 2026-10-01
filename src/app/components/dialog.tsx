@@ -208,7 +208,7 @@ interface DialogComponent extends React.FC<DialogProps> {
  * and a file-level @figma would hand all ten this one node.
  * @usage Interrupt the page with a modal that needs a decision or focused input before people continue.
  * @whenNot A preview on hover, a message that needs no reply, or content that can stay inline.
- * @useInstead HoverCard a preview on hover or focus
+ * @useInstead Tooltip a short hint on hover or focus
  * @useInstead Alert a message that needs no reply
  * @useInstead ToastProvider a brief confirmation
  * @slot trigger The element that opens the dialog (Dialog.Trigger).

@@ -6,14 +6,12 @@
  * After the Toggle disabled-bug fix (71f453f) the two ran byte-identical
  * resolution logic; this hook is the one place that logic now lives. Per
  * ADR-015 it is deliberately scoped to single-element primitives — it does NOT
- * serve SegmentedControl (per-segment `string | null` cardinality) or NavItem
- * (`active`-priority enum + focus-visible-from-modality), which keep their own
- * deeper machines.
+ * serve SegmentedControl (per-segment `string | null` cardinality), which keeps
+ * its own deeper machine.
  *
  * The frozen demo state is passed in (the component still calls
  * `useFrozenState()`) so the hook stays a pure, context-free state machine that
- * is unit-tested directly with `renderHook` — same rationale as the hds-search
- * extraction (ADR-011).
+ * is unit-tested directly with `renderHook` (ADR-011).
  */
 import { useState } from 'react';
 

@@ -1,9 +1,10 @@
 // @vitest-environment node
 /**
  * The docs-site data under src/app/data is hand-kept, so the 0.20.0 removals
- * (hds#389 R1) do not regenerate it. It must not keep listing a component the
- * package no longer has: the six Hds* aliases and the five hds#232 docs/lab
- * components (plus the "Token node" variant of the deleted Token).
+ * (hds#389 R1, hds#394) do not regenerate it. It must not keep listing a component the
+ * package no longer has: the six Hds* aliases, the five hds#232 docs/lab
+ * components (plus the "Token node" variant of the deleted Token) and every
+ * name in codemods/removed-0.20.json.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -27,6 +28,13 @@ const REMOVED = new Set([
   'Token',
   'Token node',
 ]);
+// Plus every name codemods/removed-0.20.json lists (hds#394 wave 4a and the rest
+// of the no-replacement removals).
+for (const names of Object.values(
+  JSON.parse(readFileSync(resolve(__dirname, '..', 'codemods/removed-0.20.json'), 'utf8'))
+    .modules as Record<string, string[]>,
+))
+  names.forEach((n) => REMOVED.add(n));
 
 /** Every value under a key named `key`, anywhere in the tree. */
 function valuesOf(node: unknown, key: string, out: string[] = []): string[] {

@@ -66,12 +66,6 @@
     "summary": "Do/don't usage rules for the Hirobius Design System. Every rule traces back to a specific token or contrast requirement â€” nothing is subjective. Rules are grouped by category: color, typography, spacing, motion, and component usage."
   },
   {
-    "page": "HdsSystemDocLayout",
-    "path": "/hds/hds-system-doc-layout",
-    "category": "foundations",
-    "summary": "Internal HDS documentation layout primitive that composes the shared sidebar, content column, and context-aware table of contents for system-authored doc pages."
-  },
-  {
     "page": "LegacyTokenExplorerPanel",
     "path": "/hds/legacy-token-explorer-panel",
     "category": "foundations",
@@ -698,14 +692,6 @@
     "navOrder": 5,
     "summary": "Components that provide spatial orientation and page-level routing. Validated against Material Design, Ant Design, Radix UI, and Chakra UI â€” components whose primary purpose is spatial orientation are universally grouped under Navigation.",
     "components": [
-      {
-        "name": "DocLinkCard",
-        "description": "Navigation card for cross-linking between case studies and docs.",
-        "variants": [
-          "feature",
-          "compact"
-        ]
-      },
       {
         "name": "InlineLink",
         "description": "Routing-aware inline text link. Internal routes (href starts with /) use React Router for client-side navigation. External destinations open in a new tab with rel=noopener noreferrer. Always underlined â€” WCAG accessibility requirement.",

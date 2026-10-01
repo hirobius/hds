@@ -118,6 +118,3 @@ export function InlineCode({
     </span>
   );
 }
-
-/** @internal — CVA variant helper; compose via InlineCode props instead. */
-export { inlineCodeVariants };

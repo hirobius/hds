@@ -58,6 +58,3 @@ export const Spinner = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, Spinner
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Spinner props instead. */
-export { spinnerVariants };

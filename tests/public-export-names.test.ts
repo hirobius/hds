@@ -16,6 +16,7 @@ import ts from 'typescript';
 
 const ROOT = resolve(__dirname, '..');
 const INDEX = resolve(ROOT, 'src/index.ts');
+const PATTERNS = resolve(ROOT, 'src/patterns.ts');
 
 /** The components de-prefixed by hds#315: bare name -> legacy alias (removed in 0.20.0). */
 const REMOVED_ALIASES: Record<string, string> = {
@@ -33,19 +34,55 @@ const REMOVED_ALIASES: Record<string, string> = {
  * points such as ./form are out of scope here).
  * Adding a component to this list is a review decision, not a shortcut.
  */
-const HDS_PREFIXED_ALLOWLIST = new Set([
-  'HdsThemeProvider',
-  'HdsRouterProvider',
+const HDS_PREFIXED_ALLOWLIST = new Set(['HdsThemeProvider', 'HdsRouterProvider']);
+
+/**
+ * hds#394 wave 4a: removed in 0.20.0 with no survivor (hds#389). The /patterns
+ * ones left the root earlier in the same release and now leave /patterns too.
+ */
+const WAVE_4A_ROOT = [
+  'CaseStudyLayout',
   'HdsSystemDocLayout',
   'HdsDocsShell',
-]);
+  'ErrorBoundary',
+  'HistoryCard',
+  'NavGroup',
+  'Tokenizer',
+  'StepperField',
+  'HeadingStack',
+  'TextLockup',
+  'DateInput',
+  'DateRangeInput',
+  'DateTimeInput',
+  'ContextMenu',
+  'HoverCard',
+  'ButtonGroup',
+];
+const WAVE_4A_PATTERNS = [
+  'DocLinkCard',
+  'ActivityFeed',
+  'StackedCardRail',
+  'CommandPalette',
+  'Lightbox',
+  'NavItem',
+  'SideNav',
+  'AppShell',
+  'TopNav',
+  'TreeList',
+  'Stepper',
+  'Toolbar',
+  'OverflowList',
+  'Carousel',
+  'FileInput',
+  'Calendar',
+];
 
-function readBarrel() {
+function readBarrel(entry = INDEX) {
   const config = ts.readConfigFile(resolve(ROOT, 'tsconfig.json'), ts.sys.readFile);
   const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, ROOT);
-  const program = ts.createProgram([INDEX], { ...parsed.options, noEmit: true });
+  const program = ts.createProgram([entry], { ...parsed.options, noEmit: true });
   const checker = program.getTypeChecker();
-  const source = program.getSourceFile(INDEX)!; // tier-ok: root file passed to createProgram above
+  const source = program.getSourceFile(entry)!; // tier-ok: root file passed to createProgram above
   const moduleSymbol = checker.getSymbolAtLocation(source)!; // tier-ok: barrel is a module
   return { checker, exports: checker.getExportsOfModule(moduleSymbol) };
 }
@@ -84,10 +121,42 @@ describe('public component export names', () => {
     }
   });
 
+  it('no longer exports the hds#394 wave 4a components (removed in 0.20.0)', () => {
+    for (const gone of [...WAVE_4A_ROOT, ...WAVE_4A_PATTERNS]) {
+      expect(names, `${gone} is still exported from the root`).not.toContain(gone);
+    }
+  });
+
+  it('exports FormField and FormFieldShell from /patterns only, not the root', () => {
+    expect(names).not.toContain('FormField');
+    expect(names).not.toContain('FormFieldShell');
+  });
+
+  it('exports no cva *Variants helper from the root (hds#394)', () => {
+    expect(names.filter((n) => /Variants$/.test(n))).toEqual([]);
+  });
+
   it('has no Hds-prefixed component export outside the allowlist', () => {
     const offenders = valueNames.filter(
       (n) => /^Hds[A-Z]/.test(n) && !HDS_PREFIXED_ALLOWLIST.has(n),
     );
     expect(offenders).toEqual([]);
+  });
+});
+
+describe('/patterns export names', () => {
+  const { exports } = readBarrel(PATTERNS);
+  const names = exports.map((s) => s.name);
+
+  it('no longer exports the hds#394 wave 4a pattern components (removed in 0.20.0)', () => {
+    for (const gone of WAVE_4A_PATTERNS) {
+      expect(names, `${gone} is still exported from /patterns`).not.toContain(gone);
+    }
+  });
+
+  it('keeps FormField, FormFieldShell and the other kept patterns', () => {
+    for (const kept of ['FormField', 'FormFieldShell', 'Page', 'CodeBlock', 'AssetImg']) {
+      expect(names, `${kept} is missing from /patterns`).toContain(kept);
+    }
   });
 });

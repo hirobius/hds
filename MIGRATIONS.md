@@ -26,12 +26,18 @@ Token renames live in [TOKEN_MIGRATION.md](TOKEN_MIGRATION.md).
   exported from `@hirobius/design-system/patterns`.
 - **Removed from the root in:** 0.20.0 (hds#389 R1). The root no longer
   exports these 21 components or anything else from their modules (props types,
-  parts, hooks, `*Variants`); `/patterns` exports all of it. See
-  [0.20.0 removals](#0200-removals-2026-10-01).
+  parts, hooks, `*Variants`). `/patterns` keeps six of them with every name:
+  AssetImg, CodeBlock, ErrorPattern, Form, Page and Reveal. The other 15 are
+  removed outright in the same release, from `/patterns` too (hds#394 wave 4a).
+  See [0.20.0 removals](#0200-removals-2026-10-01).
 - **Codemod:** `codemods/patterns-subpath.mjs`, also installed as the
   `hds-patterns-subpath` binary. The names it moves are everything
   `/patterns` exports and the root does not (`pnpm codemod:names`), never
-  listed by hand.
+  listed by hand. A name of the 15 removed modules has nowhere to move: the
+  codemod reports a named import or re-export of it as removed in 0.20.0 for
+  a manual edit, and `--check` exits 1 (the list is
+  `codemods/removed-0.20.json`). A removed name read through a namespace
+  import or a dynamic `import()` is left to the type checker.
 
 ```bash
 # Preview what would change, writes nothing
@@ -44,7 +50,7 @@ npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root . --check
 npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .
 ```
 
-Other named imports stay on the root. Aliases (`SideNav as Nav`), `type`
+Other named imports stay on the root. Aliases (`Page as Screen`), `type`
 modifiers and multi-line layout are kept, and a pattern name joins an existing
 `/patterns` import instead of adding a second one. Default plus named imports
 (`import HDS, { Page }`), `export { Page } from` re-exports and indented imports
@@ -136,10 +142,13 @@ scale, and each replacement computes the same pixels at both densities:
 
 ## 0.20.0 removals (2026-10-01)
 
-The first removal batch under step 4 (hds#389 R1). Every name below was
-deprecated in an earlier 0.x release: 79 root names that moved to `/patterns`,
-six `Hds*` aliases and five docs/lab components (12 names). Nothing else left
-the public API. Ops,
+The first removal batches under step 4. hds#389 R1 removes names deprecated in
+an earlier 0.x release: 79 root names that moved to `/patterns`, six `Hds*`
+aliases and five docs/lab components (12 names). hds#394 wave 4a then removes,
+without a deprecation release, 32 components no consumer imports (87 names,
+from the root and `/patterns`) and makes the 38 remaining root `*Variants` cva
+helpers private (hds#389's 2026-10-01 decision update). Nothing else left the
+public API. Ops,
 the one consumer that imports components, pins a caret range below 0.20, so
 nothing breaks until it upgrades; run the codemods first.
 
@@ -160,51 +169,27 @@ After upgrading, the installed copies run without a download:
 ### Pattern components leave the root
 
 The 21 pattern modules are no longer re-exported from the package root (hds#254).
-Every name they exported is unchanged on `@hirobius/design-system/patterns`.
+Six of them (AssetImg, CodeBlock, ErrorPattern, Form, Page, Reveal) export every
+name unchanged on `@hirobius/design-system/patterns`; their names are below. The
+other 15 are removed outright in the same release, from `/patterns` too: their
+names are under [Components removed with no survivor](#components-removed-with-no-survivor-hds394-wave-4a).
 
 | Removed from `@hirobius/design-system` | Use instead                                                         | Codemod                                                                |
 | -------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `activityAvatarVariants`               | `activityAvatarVariants` from `@hirobius/design-system/patterns`    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `ActivityEvent`                        | `ActivityEvent` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `ActivityFeed`                         | `ActivityFeed` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `ActivityFeedProps`                    | `ActivityFeedProps` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `ActivityStatus`                       | `ActivityStatus` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `ActivityTone`                         | `ActivityTone` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `activityToneVariants`                 | `activityToneVariants` from `@hirobius/design-system/patterns`      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `AppShell`                             | `AppShell` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `AppShellProps`                        | `AppShellProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `appShellVariants`                     | `appShellVariants` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `AssetImg`                             | `AssetImg` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `AssetImgProps`                        | `AssetImgProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `blockCodeTextVariants`                | `blockCodeTextVariants` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `blockContainerVariants`               | `blockContainerVariants` from `@hirobius/design-system/patterns`    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `blockHeaderVariants`                  | `blockHeaderVariants` from `@hirobius/design-system/patterns`       | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `Calendar`                             | `Calendar` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `CalendarProps`                        | `CalendarProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `Carousel`                             | `Carousel` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `carouselControlVariants`              | `carouselControlVariants` from `@hirobius/design-system/patterns`   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `CarouselProps`                        | `CarouselProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `chevronVariants`                      | `chevronVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `cmdkDescriptionVariants`              | `cmdkDescriptionVariants` from `@hirobius/design-system/patterns`   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `cmdkKindBadgeVariants`                | `cmdkKindBadgeVariants` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `cmdkRowVariants`                      | `cmdkRowVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `CodeBlock`                            | `CodeBlock` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `CodeBlockProps`                       | `CodeBlockProps` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `collapsibleToggleVariants`            | `collapsibleToggleVariants` from `@hirobius/design-system/patterns` | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `CommandPalette`                       | `CommandPalette` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `CommandPaletteProps`                  | `CommandPaletteProps` from `@hirobius/design-system/patterns`       | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `copyButtonVariants`                   | `copyButtonVariants` from `@hirobius/design-system/patterns`        | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `defaultActivityEvents`                | `defaultActivityEvents` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `DocLinkCard`                          | `DocLinkCard` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `DocLinkCardProps`                     | `DocLinkCardProps` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `docLinkCardVariants`                  | `docLinkCardVariants` from `@hirobius/design-system/patterns`       | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `ErrorPattern`                         | `ErrorPattern` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `ErrorPatternProps`                    | `ErrorPatternProps` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `FieldWiring`                          | `FieldWiring` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `FieldWiringInput`                     | `FieldWiringInput` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `FileInput`                            | `FileInput` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `FileInputProps`                       | `FileInputProps` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `fileInputVariants`                    | `fileInputVariants` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `Form`                                 | `Form` from `@hirobius/design-system/patterns`                      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `FormField`                            | `FormField` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `FormFieldProps`                       | `FormFieldProps` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
@@ -213,35 +198,12 @@ Every name they exported is unchanged on `@hirobius/design-system/patterns`.
 | `FormProps`                            | `FormProps` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `inlineCodeTextVariants`               | `inlineCodeTextVariants` from `@hirobius/design-system/patterns`    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `inlineWrapperVariants`                | `inlineWrapperVariants` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `Lightbox`                             | `Lightbox` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `LightboxProps`                        | `LightboxProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `navIndicatorVariants`                 | `navIndicatorVariants` from `@hirobius/design-system/patterns`      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `NavItem`                              | `NavItem` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `navItemVariants`                      | `navItemVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `NavProps`                             | `NavProps` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `OverflowList`                         | `OverflowList` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `OverflowListProps`                    | `OverflowListProps` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `Page`                                 | `Page` from `@hirobius/design-system/patterns`                      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `PageProps`                            | `PageProps` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `prePanelVariants`                     | `prePanelVariants` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `Reveal`                               | `Reveal` from `@hirobius/design-system/patterns`                    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `RevealAnimation`                      | `RevealAnimation` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `RevealProps`                          | `RevealProps` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `SideNav`                              | `SideNav` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `SideNavLevel`                         | `SideNavLevel` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `SideNavProps`                         | `SideNavProps` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `sideNavVariants`                      | `sideNavVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `Step`                                 | `Step` from `@hirobius/design-system/patterns`                      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `stepMarkerVariants`                   | `stepMarkerVariants` from `@hirobius/design-system/patterns`        | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `Stepper`                              | `Stepper` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `StepperProps`                         | `StepperProps` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `Toolbar`                              | `Toolbar` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `ToolbarComponent`                     | `ToolbarComponent` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `TopNav`                               | `TopNav` from `@hirobius/design-system/patterns`                    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `TopNavProps`                          | `TopNavProps` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `TreeList`                             | `TreeList` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `TreeListProps`                        | `TreeListProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
-| `TreeNode`                             | `TreeNode` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 | `useFieldWiring`                       | `useFieldWiring` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 
 ### `Hds*` aliases
@@ -297,3 +259,162 @@ staging file were never promoted and leave the promotion list.
 | `tokenLabelVariants`                   | No replacement; dropped with `Token`.                                                                        | none: no consumer imports it |
 | `tokenNodeInlineVariants`              | No replacement; dropped with `Token`.                                                                        | none: no consumer imports it |
 | `tokenShellVariants`                   | No replacement; dropped with `Token`.                                                                        | none: no consumer imports it |
+
+### Components removed with no survivor (hds#394 wave 4a)
+
+Thirty-two components fail hds#389's survival rule and have no replacement in
+HDS (ADR-034 covers the date pickers). None is imported by a consumer: ops
+origin/main (76ef65e) has 0 import sites for any of them, folio and concrete
+import only `variables.css`, and site-engine has no HDS dependency. So there is
+no codemod to run. `hds-patterns-subpath --check` reports a named import or
+re-export of any of these names from the root or from `/patterns` as "removed
+in 0.20.0, no replacement" for a manual edit (the list is
+`codemods/removed-0.20.json`). It reads named imports only: a removed name read
+through a namespace import or a dynamic `import()` is left to the type checker.
+Their stories, manifest specs, Figma disposition rows, Code Connect exemptions
+and staging-promotion entries go with them, and so do the `styles.css` and
+`tokens.css` rules only they used: `.hds-doc-link-card` (DocLinkCard),
+`.hds-stepper-input` (StepperField), `.hds-doc-section-header` and
+`.hds-doc-section-copy-icon` (TextLockup), and `.hds-page-enter` with its
+keyframes (HdsSystemDocLayout). ButtonGroup, ContextMenu and
+HoverCard also leave the curated core set, which is 39 components now.
+
+| Removed                     | From        | Use instead                                                                                                                                     | Codemod                                                                        |
+| --------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `activityAvatarVariants`    | `/patterns` | No replacement; dropped with `ActivityFeed`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ActivityEvent`             | `/patterns` | No replacement; dropped with `ActivityFeed`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ActivityFeed`              | `/patterns` | No replacement; the activity feed is dropped.                                                                                                   | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ActivityFeedProps`         | `/patterns` | No replacement; dropped with `ActivityFeed`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ActivityStatus`            | `/patterns` | No replacement; dropped with `ActivityFeed`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ActivityTone`              | `/patterns` | No replacement; dropped with `ActivityFeed`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `activityToneVariants`      | `/patterns` | No replacement; dropped with `ActivityFeed`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `AppShell`                  | `/patterns` | No replacement; the app shell is dropped. Compose `Sidebar` for a navigation and content split.                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `AppShellProps`             | `/patterns` | No replacement; dropped with `AppShell`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `appShellVariants`          | `/patterns` | No replacement; dropped with `AppShell`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ButtonGroup`               | root        | No replacement; the joined button row is dropped. Lay buttons out with `Stack direction="row"`.                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ButtonGroupProps`          | root        | No replacement; dropped with `ButtonGroup`.                                                                                                     | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `buttonGroupVariants`       | root        | No replacement; dropped with `ButtonGroup`.                                                                                                     | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `Calendar`                  | `/patterns` | The calendar picker is dropped (ADR-034). Use `Input type="date"`.                                                                              | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CalendarProps`             | `/patterns` | No replacement; dropped with `Calendar`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `Carousel`                  | `/patterns` | No replacement; the carousel is dropped.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `carouselControlVariants`   | `/patterns` | No replacement; dropped with `Carousel`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CarouselProps`             | `/patterns` | No replacement; dropped with `Carousel`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CaseStudyLayout`           | root        | No replacement; the case-study page template is dropped. Compose `Container` and `Stack`.                                                       | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CaseStudyLayoutProps`      | root        | No replacement; dropped with `CaseStudyLayout`.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `cmdkDescriptionVariants`   | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `cmdkKindBadgeVariants`     | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `cmdkRowVariants`           | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CommandPalette`            | `/patterns` | No replacement; the command palette is dropped.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CommandPaletteProps`       | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ContextMenu`               | root        | No replacement; the right-click menu is dropped. `Menu` covers a menu behind a visible trigger.                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DateInput`                 | root        | The date picker is dropped (ADR-034). Use `Input type="date"`.                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DateInputProps`            | root        | No replacement; dropped with `DateInput`.                                                                                                       | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DateRangeInput`            | root        | The date-range picker is dropped (ADR-034). Use two `Input type="date"` fields.                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DateRangeInputProps`       | root        | No replacement; dropped with `DateRangeInput`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DateTimeInput`             | root        | The date-and-time picker is dropped (ADR-034). Use `Input type="datetime-local"`.                                                               | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DateTimeInputProps`        | root        | No replacement; dropped with `DateTimeInput`.                                                                                                   | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `defaultActivityEvents`     | `/patterns` | No replacement; dropped with `ActivityFeed`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DocLinkCard`               | `/patterns` | No replacement; the docs link card is dropped. Compose `Card` and `InlineLink`.                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `DocLinkCardProps`          | `/patterns` | No replacement; dropped with `DocLinkCard`.                                                                                                     | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `docLinkCardVariants`       | `/patterns` | No replacement; dropped with `DocLinkCard`.                                                                                                     | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ErrorBoundary`             | root        | No replacement; the render-error boundary is dropped. Use a React error boundary of your own with `ErrorPattern` (`/patterns`) as its fallback. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ErrorBoundaryProps`        | root        | No replacement; dropped with `ErrorBoundary`.                                                                                                   | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `FileInput`                 | `/patterns` | No replacement; the styled file picker is dropped. Use a native `<input type="file">`.                                                          | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `FileInputProps`            | `/patterns` | No replacement; dropped with `FileInput`.                                                                                                       | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `fileInputVariants`         | `/patterns` | No replacement; dropped with `FileInput`.                                                                                                       | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HdsDocsShell`              | root        | No replacement; the docs-site shell (nav and contents rails) is dropped.                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HdsDocsShellProps`         | root        | No replacement; dropped with `HdsDocsShell`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HdsSystemDocLayout`        | root        | No replacement; the docs-page column layout is dropped.                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HeadingStack`              | root        | `Stack` + `Text`: a heading `Text` and a `text-muted-foreground` body `Text` in a `Stack gap="gap"` (docs/rules/REACT_COMPONENTS.md).           | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `headingStackLevelVariants` | root        | `Stack` + `Text`: a heading `Text` and a `text-muted-foreground` body `Text` in a `Stack gap="gap"` (docs/rules/REACT_COMPONENTS.md).           | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HeadingStackProps`         | root        | `Stack` + `Text`: a heading `Text` and a `text-muted-foreground` body `Text` in a `Stack gap="gap"` (docs/rules/REACT_COMPONENTS.md).           | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `headingStackVariants`      | root        | `Stack` + `Text`: a heading `Text` and a `text-muted-foreground` body `Text` in a `Stack gap="gap"` (docs/rules/REACT_COMPONENTS.md).           | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HistoryCard`               | root        | No replacement; the commit-history card is dropped.                                                                                             | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HistoryCardCommit`         | root        | No replacement; dropped with `HistoryCard`.                                                                                                     | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HistoryCardProps`          | root        | No replacement; dropped with `HistoryCard`.                                                                                                     | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `HoverCard`                 | root        | No replacement; the hover preview card is dropped. `Tooltip` covers a short hint, `Popover` richer content.                                     | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `Lightbox`                  | `/patterns` | No replacement; the full-screen image viewer is dropped. `AssetImg` stays.                                                                      | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `LightboxProps`             | `/patterns` | No replacement; dropped with `Lightbox`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `NavGroup`                  | root        | No replacement; the collapsible navigation group is dropped.                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `navGroupLabelVariants`     | root        | No replacement; dropped with `NavGroup`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `NavGroupProps`             | root        | No replacement; dropped with `NavGroup`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `navIndicatorVariants`      | `/patterns` | No replacement; dropped with `NavItem`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `NavItem`                   | `/patterns` | No replacement; the navigation item is dropped.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `navItemVariants`           | `/patterns` | No replacement; dropped with `NavItem`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `NavProps`                  | `/patterns` | No replacement; dropped with `NavItem`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `OverflowList`              | `/patterns` | No replacement; the "+N" overflow list is dropped.                                                                                              | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `OverflowListProps`         | `/patterns` | No replacement; dropped with `OverflowList`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `SideNav`                   | `/patterns` | No replacement; the side navigation is dropped.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `SideNavLevel`              | `/patterns` | No replacement; dropped with `SideNav`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `SideNavProps`              | `/patterns` | No replacement; dropped with `SideNav`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `sideNavVariants`           | `/patterns` | No replacement; dropped with `SideNav`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `StackedCardRail`           | `/patterns` | No replacement; the pinned card rail is dropped.                                                                                                | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `StackedCardRailCard`       | `/patterns` | No replacement; dropped with `StackedCardRail`.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `StackedCardRailProps`      | `/patterns` | No replacement; dropped with `StackedCardRail`.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `Step`                      | `/patterns` | No replacement; dropped with `Stepper`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `stepMarkerVariants`        | `/patterns` | No replacement; dropped with `Stepper`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `Stepper`                   | `/patterns` | No replacement; the step indicator is dropped.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `StepperField`              | root        | No replacement; the number stepper is dropped. Use `Input type="number"`.                                                                       | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `StepperFieldProps`         | root        | No replacement; dropped with `StepperField`.                                                                                                    | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `StepperProps`              | `/patterns` | No replacement; dropped with `Stepper`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TextLockup`                | root        | `Stack` + `Text`: a heading `Text` and a `text-muted-foreground` body `Text` in a `Stack gap="gap"` (docs/rules/REACT_COMPONENTS.md).           | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TextLockupProps`           | root        | `Stack` + `Text`: a heading `Text` and a `text-muted-foreground` body `Text` in a `Stack gap="gap"` (docs/rules/REACT_COMPONENTS.md).           | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `Tokenizer`                 | root        | No replacement; the token (chip) input is dropped.                                                                                              | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TokenizerProps`            | root        | No replacement; dropped with `Tokenizer`.                                                                                                       | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `Toolbar`                   | `/patterns` | No replacement; the toolbar is dropped. A row of buttons is `Stack direction="row"`.                                                            | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `ToolbarComponent`          | `/patterns` | No replacement; dropped with `Toolbar`.                                                                                                         | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TopNav`                    | `/patterns` | No replacement; the top navigation bar is dropped.                                                                                              | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TopNavProps`               | `/patterns` | No replacement; dropped with `TopNav`.                                                                                                          | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TreeList`                  | `/patterns` | No replacement; the tree list is dropped.                                                                                                       | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TreeListProps`             | `/patterns` | No replacement; dropped with `TreeList`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `TreeNode`                  | `/patterns` | No replacement; dropped with `TreeList`.                                                                                                        | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+
+### Root `*Variants` helpers become private (hds#394)
+
+The root no longer exports any `*Variants` cva helper. Each one still styles
+its own component inside the package; it is just not public API any more, so a
+component's look changes only through its props. No consumer imports one (ops
+origin/main: 0 sites). `hds-patterns-subpath --check` reports an import of one
+for a manual edit. The `/patterns` modules keep their exports, `*Variants`
+included. The helpers of the removed components above are listed in that table.
+
+| Removed from `@hirobius/design-system` | Module              | Use instead                                                                                   | Codemod                                                                        |
+| -------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `badgeVariants`                        | `badge`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `blockquoteVariants`                   | `blockquote`        | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `buttonVariants`                       | `button`            | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `cardVariants`                         | `card`              | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `circularProgressVariants`             | `circular-progress` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `crumbLabelVariants`                   | `breadcrumb`        | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `disclosureTriggerVariants`            | `disclosure`        | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `fieldValueVariants`                   | `field`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `hdsTimeInputVariants`                 | `time-input`        | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `hdsToggleButtonVariants`              | `toggle-button`     | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `inlineCodeVariants`                   | `inline-code`       | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `inputVariants`                        | `input`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `kbdVariants`                          | `kbd`               | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `metadataListVariants`                 | `metadata-list`     | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `overflowBubbleVariants`               | `avatar-group`      | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `progressTrackVariants`                | `progress`          | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `segmentedControlDescriptionVariants`  | `segmented-control` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `segmentedControlFocusRingVariants`    | `segmented-control` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `segmentedControlIndicatorVariants`    | `segmented-control` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `segmentedControlItemVariants`         | `segmented-control` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `segmentedControlLabelVariants`        | `segmented-control` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `segmentedControlRailVariants`         | `segmented-control` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `segmentedControlWrapperVariants`      | `segmented-control` | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `selectableCardVariants`               | `selectable-card`   | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `skeletonVariants`                     | `skeleton`          | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `spinnerVariants`                      | `spinner`           | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `statusDotVariants`                    | `status-dot`        | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `statusListItemDotVariants`            | `status-list-item`  | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `statVariants`                         | `stat`              | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `surfaceVariants`                      | `surface`           | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `tableDataCellVariants`                | `table`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `tableHeaderCellVariants`              | `table`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `tableSortButtonVariants`              | `table`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `tagButtonVariants`                    | `tag`               | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `tagPillVariants`                      | `tag`               | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `textareaVariants`                     | `textarea`          | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `textVariants`                         | `text`              | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `toastIconVariants`                    | `toast`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |

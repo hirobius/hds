@@ -1,1 +1,0 @@
-<FileInput accept="image/png" />;

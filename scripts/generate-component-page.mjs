@@ -132,7 +132,7 @@ for (const fp of baseline.accepted ?? []) {
  * `scrollIntoView` first when asked: a story can render its content inside a
  * NESTED scroll container, where the content sits thousands of pixels down
  * while document.scrollHeight stays at the viewport height. StackedCardRail
- * does exactly that — a 4000px spacer drives a pinned strip, so its cards sit
+ * (removed in 0.20.0) did exactly that — a 4000px spacer drove a pinned strip, so its cards sat
  * at y≈2708 in a 700px page that cannot scroll. Measuring without scrolling
  * yields a clip outside the image, and Playwright rejects it.
  */

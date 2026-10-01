@@ -16,13 +16,10 @@ import { HdsThemeProvider } from '../hds-theme';
 import { Dialog } from '../../components/dialog';
 import { AlertDialog } from '../../components/alert-dialog';
 import { Menu } from '../../components/menu';
-import { ContextMenu } from '../../components/context-menu';
 import { Popover } from '../../components/popover';
 import { Select } from '../../components/select';
-import { HoverCard } from '../../components/hover-card';
 import { Tooltip } from '../../components/hds-tooltip';
 import { ExpandTooltip } from '../../components/tooltip';
-import { Lightbox } from '../../components/image-lightbox';
 
 type Container = HTMLElement | null | undefined;
 
@@ -77,20 +74,6 @@ const PARTS: Part[] = [
     find: byTestId,
   },
   {
-    name: 'ContextMenu',
-    ui: (container) => (
-      <ContextMenu>
-        <ContextMenu.Trigger data-testid="cm-trigger">Right-click me</ContextMenu.Trigger>
-        <ContextMenu.Content container={container} data-testid="portal-content">
-          <ContextMenu.Item>Cut</ContextMenu.Item>
-        </ContextMenu.Content>
-      </ContextMenu>
-    ),
-    open: () =>
-      fireEvent.contextMenu(document.querySelector('[data-testid="cm-trigger"]') as Element),
-    find: byTestId,
-  },
-  {
     name: 'Popover',
     ui: (container) => (
       <Popover defaultOpen>
@@ -121,18 +104,6 @@ const PARTS: Part[] = [
         key: 'ArrowDown',
       }),
     find: () => document.querySelector<HTMLElement>('[role="listbox"]'),
-  },
-  {
-    name: 'HoverCard',
-    ui: (container) => (
-      <HoverCard open>
-        <HoverCard.Trigger>@ada</HoverCard.Trigger>
-        <HoverCard.Content container={container} data-testid="portal-content">
-          Ada
-        </HoverCard.Content>
-      </HoverCard>
-    ),
-    find: byTestId,
   },
   {
     name: 'Tooltip',
@@ -218,33 +189,5 @@ describe('ExpandTooltip cursor pill portal scope', () => {
     );
     expect(pill).toBeDefined();
     expect(getByTestId('scope').contains(pill as Element)).toBe(true);
-  });
-});
-
-describe('Lightbox portal scope (raw Radix Dialog.Portal, forceMount)', () => {
-  const lightbox = (open: boolean) => (
-    <Lightbox open={open} onClose={() => {}} src="/x.png" alt="Pic" />
-  );
-
-  it('lands inside HdsThemeProvider theme="dark"', () => {
-    const { container } = render(
-      <HdsThemeProvider theme="dark">{lightbox(true)}</HdsThemeProvider>,
-    );
-    const scope = container.querySelector<HTMLElement>('[data-hds][data-theme="dark"]');
-    const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
-    expect(scope).not.toBeNull();
-    expect(dialog).not.toBeNull();
-    expect(dialog!.closest('[data-hds]')).toBe(scope);
-  });
-
-  it('lands inside a bare <div data-hds data-theme="dark"> with no provider', () => {
-    const { getByTestId } = render(
-      <div data-hds="" data-theme="dark" data-testid="scope">
-        {lightbox(true)}
-      </div>,
-    );
-    const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
-    expect(dialog).not.toBeNull();
-    expect(dialog!.closest('[data-hds]')).toBe(getByTestId('scope'));
   });
 });
