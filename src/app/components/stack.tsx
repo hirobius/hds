@@ -12,7 +12,12 @@
 
 import React from 'react';
 import hds from '../design-system/tokens';
-import { resolveSpacingValue, SPACE_SCALE, type SpacingVocabulary } from './box-sx';
+import {
+  LAYOUT_GAP_NAMES,
+  resolveSpacingValue,
+  SPACE_SCALE,
+  type SpacingVocabulary,
+} from './box-sx';
 
 type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type ComponentGap = 'gap' | 'medium';
@@ -63,9 +68,10 @@ export interface StackProps {
 
 /**
  * Stack's gap vocabulary, frozen at what each value rendered before hds#206
- * until the 1.0 alias removal. Its four layout names read the scale steps,
- * which compact density remaps; Box `sx`'s same four names read the fixed
- * `layout.*` vars, so the two differ under compact until both names go.
+ * until the 1.0 alias removal. Its four layout names are the shared
+ * layout-gap names (hds#404), which read the scale steps that compact density
+ * remaps; Box `sx`'s same four names read the fixed `layout.*` vars, so the
+ * two differ under compact until both names go.
  * `xs` is the 2px subgrid step, not scale.xs (8px), so Stack cannot take the
  * t-shirt names until this `xs` goes; 'sm' to 'xl' pass through as before.
  * A number stays raw px, the way React's inline style reads it.
@@ -73,10 +79,7 @@ export interface StackProps {
 const STACK_GAP: SpacingVocabulary = {
   names: {
     ...(hds.space as Record<string, string>),
-    tight: SPACE_SCALE.sm,
-    normal: SPACE_SCALE.md,
-    inset: SPACE_SCALE.lg,
-    spacious: SPACE_SCALE.xl,
+    ...LAYOUT_GAP_NAMES,
     gap: SPACE_SCALE.xs,
     medium: 'var(--semantic-space-component-medium)',
     hairline: 'var(--semantic-space-subgrid-hairline)',

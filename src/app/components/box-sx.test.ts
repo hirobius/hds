@@ -1,9 +1,29 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { __resetDeprecationWarnings } from '../../lib/deprecation';
-import { resolveSx, sxClassName, injectSx, __resetBoxSxForTests, type SxObject } from './box-sx';
+import {
+  resolveSx,
+  resolveSpacingValue,
+  sxClassName,
+  injectSx,
+  __resetBoxSxForTests,
+  LAYOUT_GAP,
+  LAYOUT_GAP_NAMES,
+  SPACE_SCALE,
+  type SxObject,
+} from './box-sx';
 import { Stack } from './stack';
+import { Cluster } from './cluster';
+import { Grid } from './grid';
+import { Sidebar, type SidebarProps } from './sidebar';
+import { Cover } from './cover';
+import { Switcher } from './switcher';
+import { Bleed } from './bleed';
+import { Center } from './center';
+import { Card } from './card';
 
 afterEach(() => {
   __resetBoxSxForTests();
@@ -112,6 +132,66 @@ describe("resolveSx — deprecated 'tight'..'spacious' warn once (hds#206, ADR-0
       renderToStaticMarkup(createElement(Stack, { gap }, 'x'));
     }
     expect(warn).not.toHaveBeenCalled();
+  });
+});
+
+// hds#404: one copy of the layout-gap names, here, for every layout component.
+describe('LAYOUT_GAP — the one layout-gap vocabulary (hds#404)', () => {
+  it("maps the four names to the scale steps Stack's gap reads", () => {
+    expect(LAYOUT_GAP_NAMES).toEqual({
+      tight: SPACE_SCALE.sm,
+      normal: SPACE_SCALE.md,
+      inset: SPACE_SCALE.lg,
+      spacious: SPACE_SCALE.xl,
+    });
+  });
+
+  it.each(Object.entries(LAYOUT_GAP_NAMES))('resolves %s to %s', (name, css) => {
+    expect(resolveSpacingValue(name, LAYOUT_GAP)).toBe(css);
+  });
+
+  it('is closed: anything else resolves to undefined, so the prop sets no style', () => {
+    for (const value of [0, 12, 'sm', 'xl', '1rem', 'gap', 'px16', 'constructor', 'var(--x)']) {
+      expect(resolveSpacingValue(value, LAYOUT_GAP)).toBeUndefined();
+    }
+  });
+
+  const LAYOUT_FILES = [
+    'cluster',
+    'grid',
+    'sidebar',
+    'cover',
+    'switcher',
+    'bleed',
+    'center',
+    'card',
+    'stack',
+  ];
+
+  it.each(LAYOUT_FILES)('%s.tsx has no gap map of its own: it resolves through box-sx', (name) => {
+    const source = readFileSync(join(__dirname, `${name}.tsx`), 'utf8');
+    expect(source).toMatch(/import \{[^}]*\bresolveSpacingValue\b[^}]*\} from '\.\/box-sx'/);
+    expect(source).toMatch(/import \{[^}]*\bLAYOUT_GAP(_NAMES)?\b[^}]*\} from '\.\/box-sx'/);
+    expect(source).not.toMatch(/var\(--semantic-space-scale-/);
+    expect(source).not.toMatch(/\b(tight|normal|inset|spacious): SPACE_SCALE\./);
+  });
+
+  it("the layout components' names do not warn: only Box sx's are deprecated", () => {
+    __resetDeprecationWarnings();
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const two = [createElement('i', { key: 'a' }), createElement('i', { key: 'b' })];
+    for (const gap of Object.keys(LAYOUT_GAP_NAMES) as (keyof typeof LAYOUT_GAP_NAMES)[]) {
+      renderToStaticMarkup(createElement(Cluster, { gap }, 'x'));
+      renderToStaticMarkup(createElement(Grid, { gap }, 'x'));
+      renderToStaticMarkup(createElement(Sidebar, { gap } as SidebarProps, ...two));
+      renderToStaticMarkup(createElement(Cover, { gap }, 'x'));
+      renderToStaticMarkup(createElement(Switcher, { gap }, 'x'));
+      renderToStaticMarkup(createElement(Bleed, { amount: gap }, 'x'));
+      renderToStaticMarkup(createElement(Center, { gutter: gap }, 'x'));
+      renderToStaticMarkup(createElement(Card, { gap }, 'x'));
+    }
+    expect(warn).not.toHaveBeenCalled();
+    vi.restoreAllMocks();
   });
 });
 
