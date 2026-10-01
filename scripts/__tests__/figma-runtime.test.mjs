@@ -198,14 +198,60 @@ describe('use_figma scripts', () => {
       expect(report.summary.variables.created).toBe(57);
     });
 
-    it('refuse, naming the plugin as the fix, where Figma hides function source', async () => {
-      const figma = newFixtureFile();
+    describe('where Figma hides function source, refuse and name the plugin that does the job (hds#415)', () => {
       const hidden =
         "Function.prototype.toString = function () { return 'function () { [native code] }'; };\n";
-      await expect(runUseFigma(hidden + buildUseFigmaPushScript(model), figma)).rejects.toThrow(
-        /cannot read its own code.*development plugin/,
-      );
-      expect(figma.writes).toEqual([]);
+      const HIDDEN =
+        'This Figma runtime does not expose function source, so the script cannot read its own code to check it. Nothing was read or written.';
+      const TO_SYNC =
+        'Use the Sync plugin "HDS tokens sync" (figma/push/plugin/manifest.json), which Figma loads from disk.';
+      const TO_PROMOTE =
+        'Use the promote plugin "HDS tokens promote (baked)" (figma/push/promote/manifest.json), which Figma loads from disk.';
+      /** The message a script throws in a sandbox that hides function source, and the writes it made. */
+      const refusal = async (script) => {
+        const figma = newFixtureFile();
+        const error = await runUseFigma(hidden + script, figma).then(
+          () => null,
+          (thrown) => thrown,
+        );
+        return { message: error && error.message, writes: figma.writes };
+      };
+
+      it('a --prune push script names the promote plugin, the only plugin that prunes', async () => {
+        for (const chunk of [{ id: 'full push', scope: null }, ...PUSH_CHUNKS]) {
+          const script = buildUseFigmaPushScript(model, { scope: chunk.scope, prune: true });
+          expect(await refusal(script), chunk.id).toEqual({
+            message: `${HIDDEN} ${TO_PROMOTE}`,
+            writes: [],
+          });
+        }
+      });
+
+      it('a push script without prune names the Sync plugin', async () => {
+        for (const chunk of [{ id: 'full push', scope: null }, ...PUSH_CHUNKS]) {
+          const script = buildUseFigmaPushScript(model, { scope: chunk.scope });
+          expect(await refusal(script), chunk.id).toEqual({
+            message: `${HIDDEN} ${TO_SYNC}`,
+            writes: [],
+          });
+        }
+      });
+
+      it('the snapshot script, which never prunes, names the Sync plugin', async () => {
+        expect(await refusal(buildUseFigmaSnapshotScript())).toEqual({
+          message: `${HIDDEN} ${TO_SYNC}`,
+          writes: [],
+        });
+      });
+
+      it('name each plugin exactly as its manifest does', () => {
+        const links = JSON.parse(
+          readFileSync(join(HERE, '..', '..', 'figma', 'links.json'), 'utf8'),
+        );
+        const nameOf = (files) => JSON.parse(files['manifest.json']).name;
+        expect(TO_SYNC).toContain(`"${nameOf(buildSyncPlugin(links))}"`);
+        expect(TO_PROMOTE).toContain(`"${nameOf(buildPromotePlugin(model, { prune: true }))}"`);
+      });
     });
   });
 });
