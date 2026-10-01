@@ -153,6 +153,19 @@ describe('transformSource', () => {
     ]);
   });
 
+  // The --dry-run hunks come from the edits themselves, so their cost does not
+  // grow with the distance between the first and the last change.
+  it('rewrites and reports a 20,000-line file changed at both ends in under a second', () => {
+    const lines = [`import { NotFoundPattern } from '${ROOT}';`];
+    for (let i = 1; i < 19999; i++) lines.push(`export const n${i} = ${i};`);
+    lines.push('export const NotFound = () => <NotFoundPattern />;');
+    const t0 = performance.now();
+    const out = transformSource(`${lines.join('\n')}\n`);
+    expect(performance.now() - t0).toBeLessThan(1000);
+    expect(out.sites).toBe(1);
+    expect(out.edits.map((e) => e.line)).toEqual([1, 20000]);
+  });
+
   it('is idempotent: a second run changes nothing and reports nothing', () => {
     for (const file of ['needs-rewrite/src/NotFoundPage.tsx', 'needs-rewrite/src/routes.tsx']) {
       const once = transformSource(readFileSync(join(FIXTURES, file), 'utf8'));

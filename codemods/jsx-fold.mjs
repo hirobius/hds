@@ -250,45 +250,36 @@ function addSpec(source, st, text) {
   return { start: last.comma + 1, end: last.comma + 1, text: ` ${text},` };
 }
 
-/** Changed lines between two sources, as hunks for `--dry-run`: `line` is 1-based in `before`. */
-export function lineDiff(before, after) {
-  const a = before.split('\n');
-  const b = after.split('\n');
-  let p = 0;
-  while (p < a.length && p < b.length && a[p] === b[p]) p++;
-  let s = 0;
-  while (s < a.length - p && s < b.length - p && a[a.length - 1 - s] === b[b.length - 1 - s]) s++;
-  const A = a.slice(p, a.length - s);
-  const B = b.slice(p, b.length - s);
-  // Longest common subsequence of the lines between the shared head and tail.
-  const w = B.length + 1;
-  const lcs = new Uint32Array((A.length + 1) * w);
-  for (let i = A.length - 1; i >= 0; i--)
-    for (let j = B.length - 1; j >= 0; j--)
-      lcs[i * w + j] =
-        A[i] === B[j]
-          ? lcs[(i + 1) * w + j + 1] + 1
-          : Math.max(lcs[(i + 1) * w + j], lcs[i * w + j + 1]);
-  const hunks = [];
-  let open = null;
-  let i = 0;
-  let j = 0;
-  const flush = () => {
-    if (open) hunks.push(open);
-    open = null;
-  };
-  const hunk = () => (open ??= { line: p + i + 1, before: [], after: [] });
-  while (i < A.length || j < B.length) {
-    if (i < A.length && j < B.length && A[i] === B[j]) {
-      flush();
-      i++;
-      j++;
-    } else if (j < B.length && (i === A.length || lcs[i * w + j + 1] >= lcs[(i + 1) * w + j])) {
-      hunk().after.push(B[j++]);
-    } else hunk().before.push(A[i++]);
+/**
+ * The lines the edits change, as hunks for `--dry-run`: `line` is 1-based in
+ * `source`. Built from the edits, so the cost is linear in the file whatever
+ * the distance between the first and the last change. Edits on one line share a
+ * hunk; a whole line an edit deletes (its newline included) shows as removed.
+ * @param {string} source
+ * @param {Edit[]} edits
+ */
+function editHunks(source, edits) {
+  const clusters = [];
+  for (const e of [...edits].sort((a, b) => a.start - b.start || a.end - b.end)) {
+    const from = lineStart(source, e.start);
+    const to = e.end > e.start && source[e.end - 1] === '\n' ? e.end - 1 : lineEnd(source, e.end);
+    const last = clusters[clusters.length - 1];
+    if (last && from <= last.to) {
+      last.to = Math.max(last.to, to);
+      last.edits.push(e);
+    } else clusters.push({ from, to, edits: [e] });
   }
-  flush();
-  return hunks;
+  return clusters.map(({ from, to, edits: group }) => {
+    let text = source.slice(from, to);
+    for (const e of group.sort((a, b) => b.start - a.start || b.end - a.end))
+      text = text.slice(0, e.start - from) + e.text + text.slice(Math.min(e.end, to) - from);
+    const wholeLines = group.every((e) => e.end > to);
+    return {
+      line: lineOf(source, from),
+      before: source.slice(from, to).split('\n'),
+      after: wholeLines && text === '' ? [] : text.split('\n'),
+    };
+  });
 }
 
 const unchanged = (source, manual) => ({ source, changed: false, sites: 0, manual, edits: [] });
@@ -410,7 +401,7 @@ export function foldComponent(source, rule) {
     changed: out !== source,
     sites: opens.length,
     manual,
-    edits: lineDiff(source, out),
+    edits: editHunks(source, edits),
   };
 }
 
