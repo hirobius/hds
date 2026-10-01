@@ -121,7 +121,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 
 | Token | Value | Purpose |
 | --- | --- | --- |
-| `semantic.motion.distance` | `24px` | Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242). |
+| `semantic.motion.distance` | `24px` | Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242). |
 <!-- auto:end:motion -->
 
 ## Components

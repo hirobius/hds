@@ -60,6 +60,9 @@ const MARKERS = [
   'vocab-ok',
   'deprecation-ok',
   'style-prop-ok',
+  // check-spacing-vocabulary.mjs (hds#206) documents and honors this marker;
+  // leaving it out made this gate reject the other gate's own escape hatch.
+  'spacing-vocab-ok',
 ];
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);

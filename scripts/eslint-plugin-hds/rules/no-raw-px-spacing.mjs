@@ -5,6 +5,12 @@
  * margin/padding/gap family properties inside a JSX `style={{ ... }}`
  * object. Zero is exempt (a reset has no scale to violate). Mirrors the
  * intent of scripts/check-hardcoded-spacing.mjs for consumer app code.
+ *
+ * The fix it offers is the t-shirt scale token, and, where Box `sx` has a
+ * key for the same CSS property, that key with a step name. Box `sx` resolves
+ * step names on its spacing keys only (`mb: 'md'`); a long-hand key
+ * (`marginBottom: 'md'`) passes through as invalid CSS and renders no
+ * spacing, so the message names the shorthand, never the flagged prop.
  */
 import {
   attrName,
@@ -42,6 +48,26 @@ const SPACING_PROPS = new Set([
   'columnGap',
 ]);
 
+// Long-hand style prop → the Box sx key that sets the same CSS property and
+// resolves t-shirt steps (src/app/components/box-sx.ts SPACING_PROP_MAP).
+// Logical props have none: sx `mx`/`my`/`px`/`py` set physical sides, which
+// match `*Inline`/`*Block` only in horizontal writing modes.
+const SX_SHORTHAND = {
+  margin: 'm',
+  marginTop: 'mt',
+  marginBottom: 'mb',
+  marginLeft: 'ml',
+  marginRight: 'mr',
+  padding: 'p',
+  paddingTop: 'pt',
+  paddingBottom: 'pb',
+  paddingLeft: 'pl',
+  paddingRight: 'pr',
+  gap: 'gap',
+  rowGap: 'rowGap',
+  columnGap: 'columnGap',
+};
+
 const PX_STRING_RE = /^-?\d+(?:\.\d+)?px$/;
 
 export default {
@@ -56,10 +82,21 @@ export default {
     schema: [],
     messages: {
       rawPxSpacing:
-        'Raw spacing value "{{value}}" on "{{prop}}" bypasses the HDS spacing scale. Use hds.space.*, hds.density.*, var(--semantic-space-...), or Box sx prop "{{prop}}" with a token key.',
+        'Raw spacing value "{{value}}" on "{{prop}}" bypasses the HDS spacing scale. Use hds.semantic.space.scale.* (var(--semantic-space-scale-*)), or Box sx prop "{{sxProp}}" with a t-shirt step such as "md".',
+      rawPxSpacingNoSxShorthand:
+        'Raw spacing value "{{value}}" on "{{prop}}" bypasses the HDS spacing scale. Use hds.semantic.space.scale.* (var(--semantic-space-scale-*)). Box sx has no shorthand for "{{prop}}", so its t-shirt steps do not apply.',
     },
   },
   create(context) {
+    function report(node, prop, value) {
+      const sxProp = Object.hasOwn(SX_SHORTHAND, prop) ? SX_SHORTHAND[prop] : undefined;
+      context.report(
+        sxProp
+          ? { node, messageId: 'rawPxSpacing', data: { prop, value, sxProp } }
+          : { node, messageId: 'rawPxSpacingNoSxShorthand', data: { prop, value } },
+      );
+    }
+
     return {
       JSXAttribute(node) {
         if (attrName(node) !== 'style') return;
@@ -73,21 +110,13 @@ export default {
 
           const strVal = stringLiteralValue(prop.value);
           if (strVal != null && PX_STRING_RE.test(strVal)) {
-            context.report({
-              node: prop.value,
-              messageId: 'rawPxSpacing',
-              data: { prop: name, value: strVal },
-            });
+            report(prop.value, name, strVal);
             continue;
           }
 
           const numVal = numberLiteralValue(prop.value);
           if (numVal != null && numVal !== 0) {
-            context.report({
-              node: prop.value,
-              messageId: 'rawPxSpacing',
-              data: { prop: name, value: String(numVal) },
-            });
+            report(prop.value, name, String(numVal));
           }
         }
       },
