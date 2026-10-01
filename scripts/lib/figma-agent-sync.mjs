@@ -80,9 +80,10 @@ const syntaxOf = (code) =>
   );
 
 /**
- * The runtime delta.js reaches, without indentation (it is a fifth of the
- * text, and use_figma takes 50,000 characters), plus the hdsVerifyRuntime
- * statement over exactly that text. Throws if dropping the indentation
+ * The runtime delta.js reaches, compacted (use_figma takes 50,000
+ * characters): no indentation, no blank lines, and no line break after
+ * ( [ { , or before ) ] } . ? : (Prettier's wrapping), plus the
+ * hdsVerifyRuntime statement over exactly that text. Throws if compacting
  * changed what the code means (a template literal spanning lines).
  */
 function compactRuntime() {
@@ -93,10 +94,17 @@ function compactRuntime() {
     agentRuntimeSource(),
   ].join('\n\n');
   const functions = reachableRuntime(['hdsAgentRun'], source);
-  const texts = functions.map((fn) => fn.text.replace(/\r/g, '').replace(/^[ \t]+/gm, ''));
+  const texts = functions.map((fn) =>
+    fn.text
+      .replace(/\r/g, '')
+      .replace(/^[ \t]+/gm, '')
+      .replace(/\n{2,}/g, '\n')
+      .replace(/([([{,])\n/g, '$1')
+      .replace(/\n(?=[)\]}.?:])/g, ''),
+  );
   if (syntaxOf(texts.join('\n')) !== syntaxOf(functions.map((fn) => fn.text).join('\n'))) {
     throw new Error(
-      'delta.js: dropping the runtime indentation changed its syntax tree (a template literal spans lines). Keep that text on one line.',
+      'delta.js: compacting the runtime changed its syntax tree, so a dropped space or line break meant something there (a template literal spanning lines). Keep that text on one line.',
     );
   }
   return [

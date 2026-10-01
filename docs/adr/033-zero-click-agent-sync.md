@@ -58,16 +58,16 @@ Only variable descriptions are decoded, because that is what was measured. Wheth
 
 The pin fails closed only when a committed style description already holds one of those characters. None does in `figma/snapshot.json` `242fe0c9` (2026-10-01). Once a live read settles it, either the decoding extends to style descriptions or the refusal goes.
 
-### 4. The runtime is copied without indentation
+### 4. The runtime is copied compacted
 
-Indentation is about 5,000 of the runtime's 43,000 characters. `delta.js` carries the functions `hdsAgentRun` reaches, from four sources:
+`delta.js` carries the functions `hdsAgentRun` reaches, about 44,300 characters as written, from four sources:
 
 - the runtime;
 - the snapshot delta codec;
 - the receipt head and writer;
 - `figma-agent-runtime.mjs`.
 
-It copies them with the leading whitespace removed, which leaves about 38,300 characters. `pnpm figma:push --delta` throws unless the copy parses to the same syntax tree as the source. `hdsVerifyRuntime` checks the text exactly as copied.
+It copies them without indentation (about 5,500 characters), blank lines, or the line breaks Prettier adds to wrap an expression: after `(` `[` `{` `,` and before `)` `]` `}` `.` `?` `:` (about 700 more). That leaves about 38,000 characters. `pnpm figma:push --delta` throws unless the copy parses to the same syntax tree as the source, so a dropped space or line break can never change what the code does. `hdsVerifyRuntime` checks the text exactly as copied.
 
 ## Rationale
 

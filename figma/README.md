@@ -329,8 +329,9 @@ Measured on 2026-10-01 against `figma/snapshot.json` `242fe0c9`, for
 The 19-variable Primitives `space/*` rename (hds#206 item 2) builds to about
 42,400 characters and returns about 9,400 inline.
 
-The runtime is copied into `delta.js` without its indentation, which saves about
-5,000 characters. The build checks that the copy parses to the same syntax tree
+The runtime is copied into `delta.js` without indentation, blank lines or the
+line breaks that only wrap an expression, which takes it from about 44,300 to
+38,000 characters. The build checks that the copy parses to the same syntax tree
 as the source, and `hdsVerifyRuntime` checks the copy as it runs.
 
 ### Promote plugin and use_figma scripts
