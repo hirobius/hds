@@ -35,6 +35,12 @@ for (const names of Object.values(
     .modules as Record<string, string[]>,
 ))
   names.forEach((n) => REMOVED.add(n));
+// And the names removed with a survivor (`replaced`, hds#394 wave 4b).
+for (const names of Object.values(
+  (JSON.parse(readFileSync(resolve(__dirname, '..', 'codemods/removed-0.20.json'), 'utf8'))
+    .replaced ?? {}) as Record<string, Record<string, string>>,
+))
+  Object.keys(names).forEach((n) => REMOVED.add(n));
 
 /** Every value under a key named `key`, anywhere in the tree. */
 function valuesOf(node: unknown, key: string, out: string[] = []): string[] {

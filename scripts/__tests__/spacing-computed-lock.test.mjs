@@ -26,7 +26,9 @@
  * hds#404 extends the lock to the eight layout components that kept a private
  * copy of the 'tight' | 'normal' | 'inset' | 'spacious' map: Cluster, Grid,
  * Sidebar, Cover and Switcher `gap`, Bleed `amount`, Center `gutter`, and
- * Card `gap` (which also takes `hds.space` keys) and `padding`. Their fixture
+ * Card `gap` (which also takes `hds.space` keys) and `padding`. Cluster,
+ * Cover, Bleed and Center went in 0.20.0 (hds#394), and their entries left
+ * the fixture with them; the other four are still locked. Their fixture
  * is captured from 8e53a8a, the commit before they moved onto the shared
  * resolver, and nothing there may move: every probe, typed or not, must emit
  * and compute what it did on 8e53a8a. Recapture it the same way, only from a
@@ -46,13 +48,9 @@ import { chromium } from 'playwright';
 import { chromiumPath } from '../lib/storybook-host.mjs';
 import { resolveSx } from '../../src/app/components/box-sx.ts';
 import { Stack } from '../../src/app/components/stack.tsx';
-import { Cluster } from '../../src/app/components/cluster.tsx';
 import { Grid } from '../../src/app/components/grid.tsx';
 import { Sidebar } from '../../src/app/components/sidebar.tsx';
-import { Cover } from '../../src/app/components/cover.tsx';
 import { Switcher } from '../../src/app/components/switcher.tsx';
-import { Bleed } from '../../src/app/components/bleed.tsx';
-import { Center } from '../../src/app/components/center.tsx';
 import { Card } from '../../src/app/components/card.tsx';
 import hds from '../../src/app/design-system/tokens.ts';
 
@@ -130,7 +128,7 @@ const emitted = Object.fromEntries(PROBES.map((p, i) => [p.key, emit(p, i)]));
 
 // ── The layout components (hds#404) ───────────────────────────────────────────
 
-/** The four names each of the eight takes. */
+/** The four names each layout component takes. */
 const LAYOUT_NAMES = ['tight', 'normal', 'inset', 'spacious'];
 /** Values their types reject but a JavaScript caller can still pass. */
 const LAYOUT_UNTYPED = [0, 4, 12, 'sm', 'md', 'xl', '1rem', 'gap', 'px16'];
@@ -143,7 +141,6 @@ const child = () => React.createElement('i');
  * that its type accepts.
  */
 const LAYOUT_COMPONENTS = [
-  { name: 'cluster', Component: Cluster, prop: 'gap', measure: 'rowGap' },
   { name: 'grid', Component: Grid, prop: 'gap', measure: 'rowGap' },
   {
     name: 'sidebar',
@@ -155,10 +152,7 @@ const LAYOUT_COMPONENTS = [
       React.createElement('i', { key: 'c' }),
     ],
   },
-  { name: 'cover', Component: Cover, prop: 'gap', measure: 'rowGap' },
   { name: 'switcher', Component: Switcher, prop: 'gap', measure: 'rowGap' },
-  { name: 'bleed', Component: Bleed, prop: 'amount', measure: 'marginLeft' },
-  { name: 'center', Component: Center, prop: 'gutter', measure: 'paddingLeft' },
   {
     name: 'card',
     Component: Card,
@@ -433,7 +427,7 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
 
 // ── The layout-gap lock (hds#404) ─────────────────────────────────────────────
 
-describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the eight layout components match 8e53a8a', () => {
+describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a', () => {
   const fixture = existsSync(LAYOUT_FIXTURE)
     ? JSON.parse(readFileSync(LAYOUT_FIXTURE, 'utf8'))
     : { cells: [], emitted: {}, computed: {} };

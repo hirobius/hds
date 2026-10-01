@@ -14,7 +14,7 @@
  * (column) layout once there are more than `limit` children, regardless of
  * container width — use it to stop a row from thinning out into an
  * unreadable N-up strip. Do NOT use Switcher for content that should always
- * wrap in place — use Cluster.
+ * wrap in place — use Stack with `direction="row"` and `wrap="wrap"`.
  *
  * Every Layout reference: https://every-layout.dev/layouts/the-switcher/
  */

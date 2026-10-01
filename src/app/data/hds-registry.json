@@ -504,15 +504,6 @@
           "secondary",
           "tertiary"
         ]
-      },
-      {
-        "name": "IconButton",
-        "description": "Icon-only action button. Same variants as HdsButton. Square aspect ratio. Accessible via aria-label.",
-        "variants": [
-          "primary",
-          "secondary",
-          "tertiary"
-        ]
       }
     ],
     "tokens": [
@@ -726,7 +717,7 @@
     ],
     "decisions": [
       {
-        "rule": "Directional icon buttons (prev/next arrows) are IconButton (Actions) used in a navigation context",
+        "rule": "Directional icon buttons (prev/next arrows) are icon-only Buttons (Actions) used in a navigation context",
         "rationale": "The component is a trigger; the combined navigation composition is documented as Sequential Navigator."
       }
     ]

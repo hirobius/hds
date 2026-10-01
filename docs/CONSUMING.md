@@ -227,7 +227,7 @@ export function Example() {
 | `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                  |
 | `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14) |
 | `@hirobius/design-system/patterns`      | The `pattern`-tier components (`Page`, `PageHeader`, `Form`, `FormField`, `CodeBlock`); root copies removed in 0.20.0         |
-| `@hirobius/design-system/icons`         | Curated Lucide icon set for `IconButton` / `Icon` (see §15)                                                                   |
+| `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                            |
 
 ### Semantic feedback / status tokens
 
@@ -740,21 +740,23 @@ CSS, only the visual surface of the five primitives above.
 
 ## 15. Icons — the `/icons` subpath
 
-`IconButton` and `Icon` take an `icon` prop. Get one from the curated subpath;
-`lucide-react` does not need to be installed separately.
+`Icon` takes an `icon` prop. Get one from the curated subpath;
+`lucide-react` does not need to be installed separately. An icon-only button is
+`Button iconOnly` with a `label` (its accessible name) and the `Icon` in
+`iconLeft`.
 
 ```tsx
-import { IconButton } from '@hirobius/design-system';
+import { Button, Icon } from '@hirobius/design-system';
 import { Ellipsis } from '@hirobius/design-system/icons';
 
-<IconButton icon={Ellipsis} label="Row actions" />;
+<Button iconOnly label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />;
 ```
 
 The full name list is `iconSet.names` in the manifest (and the Icons section of
 `llms.txt`). Canonical Lucide 0.487.0 names only: `MoreHorizontal` is
 `Ellipsis`, `MoreVertical` is `EllipsisVertical`, `AlertTriangle` is
 `TriangleAlert`, `Home` is `House`, `Filter` is `Funnel`. Icon-only actions (row
-menus, close, edit) use `IconButton`; do not hand-roll a button with a glyph. For
+menus, close, edit) use `Button iconOnly`; do not hand-roll a button with a glyph. For
 an icon outside the set, install `lucide-react@0.487.0` so the `LucideIcon` type
 stays identical.
 

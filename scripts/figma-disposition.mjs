@@ -15,7 +15,7 @@
  *      two deliberately extracted parts) and one `Dialog` COMPONENT, against
  *      8 and 10 code exports respectively. Creating a Figma component per
  *      member would add ~21 assets no designer would ever place.
- *   3. Layout primitives — Box, Stack, Cluster, Switcher. These render no
+ *   3. Layout primitives — Box, Stack, Switcher (and Cluster until 0.20.0). These render no
  *      pixels of their own; in Figma their behaviour IS auto-layout. The
  *      library's `Layout Primitives` page (111:7) already reflects that: it
  *      documents Container, Grid, Stack and Page as SPEC CARDS — key/value
@@ -44,8 +44,8 @@
  * misapplying the rules (Frame and OverflowList paint, Sketch is lab chrome),
  * leaving 14 `layout` / 88 `library` at hds#235's close (on 2026-10-01 the
  * tool reports 16 `layout` / 93 `library`). Those three are recorded in
- * `overrides` with their reasons (Sketch's and OverflowList's went with their
- * components in 0.20.0, hds#389 and hds#394). Trust this tool's current output over any
+ * `overrides` with their reasons (all three went with their components in
+ * 0.20.0: Sketch's in hds#389, OverflowList's and Frame's in hds#394). Trust this tool's current output over any
  * count quoted in prose, including this comment.
  *
  * So this output is now the ratified set, not a proposal. Correct an individual

@@ -1,11 +1,13 @@
 /**
  * Button dev warning: `iconOnly` renders only `iconLeft`, so an icon-only
  * Button without one is an empty square. The warning fires once per module
- * load, in development only, and never for IconButton, asChild or loading.
+ * load, in development only, and never for the IconButton recipe (iconOnly +
+ * label + iconLeft Icon, which replaced IconButton in 0.20.0), asChild or loading.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { Search } from 'lucide-react';
+import { Icon } from './icon';
 
 const MESSAGE =
   '[Button] iconOnly renders only iconLeft; pass iconLeft (iconRight is hidden in iconOnly mode).';
@@ -14,8 +16,7 @@ const MESSAGE =
 async function load() {
   vi.resetModules();
   const { Button } = await import('./button');
-  const { IconButton } = await import('./icon-button');
-  return { Button, IconButton };
+  return { Button };
 }
 
 const originalEnv = process.env.NODE_ENV;
@@ -60,10 +61,10 @@ describe('Button iconOnly without an icon', () => {
     expect(messages()).not.toContain(MESSAGE);
   });
 
-  it('stays silent for IconButton, which always passes iconLeft', async () => {
-    const { IconButton } = await load();
-    render(<IconButton icon={Search} label="Search" />);
-    expect(messages()).not.toContain(MESSAGE);
+  it('stays silent for the IconButton recipe: iconOnly, label and an Icon in iconLeft', async () => {
+    const { Button } = await load();
+    render(<Button iconOnly label="Search" iconLeft={<Icon icon={Search} />} />);
+    expect(messages()).toEqual([]);
   });
 
   it('stays silent with asChild', async () => {

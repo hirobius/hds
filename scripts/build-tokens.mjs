@@ -1085,7 +1085,6 @@ export function buildManifest(allTokens, raw) {
       'Stack',
       'Divider',
       'Icon',
-      'IconButton',
       'SegmentedControl',
       'InlineCode',
       'InlineLink',

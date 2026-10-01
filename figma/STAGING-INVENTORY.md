@@ -24,7 +24,7 @@ promotion — not because the components are absent, but because the only record
 the gate can read is the one the recipe says not to write yet. That is a gap in
 the measurement, not drift.
 
-## Drawn 2026-09-23 (15 components)
+## Drawn 2026-09-23 (8 components)
 
 | Component | Kind | Variants | Node |
 |---|---|---|---|
@@ -32,17 +32,10 @@ the measurement, not drift.
 | [AssetImg](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-67) | set | 2 | `2041-67` |
 | [AvatarGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2030-63) | set | 6 | `2030-63` |
 | [Blockquote](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2024-18) | set | 6 | `2024-18` |
-| [CircularProgress](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2029-48) | set | 15 | `2029-48` |
-| [Frame](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-36) | set | 4 | `2038-36` |
-| [InputGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2036-15) | set | 3 | `2036-15` |
 | [Kbd](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2026-9) | set | 3 | `2026-9` |
 | [MetadataList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-47) | set | 4 | `2041-47` |
-| [MultiSelector](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-54) | component | — | `2042-54` |
-| [SelectableCard](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2032-9) | set | 2 | `2032-9` |
 | [Text](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2022-31) | set | 14 | `2022-31` |
-| [TimeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-21) | set | 3 | `2039-21` |
 | [Timestamp](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2031-11) | set | 4 | `2031-11` |
-| [ToggleButton](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2028-27) | set | 12 | `2028-27` |
 
 Drawn earlier, same status: **[Icon](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=27-2)** (70 components) and **[StatusDot](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2003-2)** (1 set).
 

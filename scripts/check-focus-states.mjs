@@ -17,7 +17,7 @@
  *
  *  2. MISSING FOCUS — raw <button> or <a> JSX element without any focus class
  *     Catches un-wrapped interactive elements that bypass HDS components.
- *     HDS components (Button, IconButton, Input) add hds-focus internally.
+ *     HDS components (Button, Input) add hds-focus internally.
  *
  * Usage:   pnpm check:focus
  * Exempt:  Add // audit-ok: <reason> to suppress a specific line
@@ -120,7 +120,7 @@ function checkRawInteractive(lines, filePath) {
           lineNum: i + 1,
           text: trimmed,
           rule: 'MISSING FOCUS',
-          fix: 'Add className="hds-focus" — or use Button/IconButton/Input which include it',
+          fix: 'Add className="hds-focus" — or use Button/Input which include it',
         });
       }
     }

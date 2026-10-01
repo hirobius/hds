@@ -7,7 +7,7 @@ import { Pencil } from 'lucide-react';
 import { DataTableSection } from '../app/components/data-table-section';
 import { Badge } from '../app/components/badge';
 import { Button } from '../app/components/button';
-import { IconButton } from '../app/components/icon-button';
+import { Icon } from '../app/components/icon';
 
 const columns = [
   { key: 'project', label: 'Project' },
@@ -27,7 +27,15 @@ const rows = [
       'Oct 14',
       '$8,400',
     ],
-    actions: <IconButton icon={Pencil} label="Edit Site rebuild" size="sm" variant="tertiary" />,
+    actions: (
+      <Button
+        iconOnly
+        label="Edit Site rebuild"
+        size="sm"
+        variant="tertiary"
+        iconLeft={<Icon icon={Pencil} size="small" />}
+      />
+    ),
   },
   {
     key: 'brand',
@@ -39,7 +47,15 @@ const rows = [
       'Nov 2',
       '$3,200',
     ],
-    actions: <IconButton icon={Pencil} label="Edit Brand refresh" size="sm" variant="tertiary" />,
+    actions: (
+      <Button
+        iconOnly
+        label="Edit Brand refresh"
+        size="sm"
+        variant="tertiary"
+        iconLeft={<Icon icon={Pencil} size="small" />}
+      />
+    ),
   },
   {
     key: 'retainer',
@@ -52,7 +68,13 @@ const rows = [
       '$3,500',
     ],
     actions: (
-      <IconButton icon={Pencil} label="Edit Monthly retainer" size="sm" variant="tertiary" />
+      <Button
+        iconOnly
+        label="Edit Monthly retainer"
+        size="sm"
+        variant="tertiary"
+        iconLeft={<Icon icon={Pencil} size="small" />}
+      />
     ),
   },
 ];

@@ -77,6 +77,27 @@ const WAVE_4A_PATTERNS = [
   'Calendar',
 ];
 
+/**
+ * hds#394 wave 4b: removed in 0.20.0, each folded into a survivor hds#393
+ * shipped (MIGRATIONS.md maps every prop). StatusDot is not here: ops passes it
+ * `style`, which Badge `dot` does not take, so it stays for now.
+ */
+const WAVE_4B = [
+  'IconButton',
+  'Cluster',
+  'Center',
+  'Cover',
+  'Frame',
+  'Bleed',
+  'AspectRatio',
+  'TimeInput',
+  'CircularProgress',
+  'SelectableCard',
+  'MultiSelector',
+  'ToggleButton',
+  'InputGroup',
+];
+
 function readBarrel(entry = INDEX) {
   const config = ts.readConfigFile(resolve(ROOT, 'tsconfig.json'), ts.sys.readFile);
   const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, ROOT);
@@ -125,6 +146,19 @@ describe('public component export names', () => {
     for (const gone of [...WAVE_4A_ROOT, ...WAVE_4A_PATTERNS]) {
       expect(names, `${gone} is still exported from the root`).not.toContain(gone);
     }
+  });
+
+  it('no longer exports the hds#394 wave 4b components or their props types (removed in 0.20.0)', () => {
+    for (const gone of [...WAVE_4B, ...WAVE_4B.map((n) => `${n}Props`), 'MultiSelectorOption']) {
+      expect(names, `${gone} is still exported from the root`).not.toContain(gone);
+    }
+    // Their survivors stay.
+    for (const kept of ['Button', 'Stack', 'Container', 'Box', 'Input', 'Progress', 'Card']) {
+      expect(valueNames, `${kept} missing from the root barrel`).toContain(kept);
+    }
+    expect(valueNames).toContain('Combobox');
+    expect(valueNames).toContain('Badge');
+    expect(valueNames, 'StatusDot stays until ops stops passing it style').toContain('StatusDot');
   });
 
   it('exports FormField and FormFieldShell from /patterns only, not the root', () => {

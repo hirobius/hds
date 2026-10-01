@@ -1,6 +1,7 @@
 /**
  * The ./icons subpath (hds#342): a curated Lucide re-export so a consumer can
- * get an `icon` for IconButton with nothing extra installed. The manifest
+ * get an `icon` for Icon (and an icon-only Button through it) with nothing
+ * extra installed. The manifest
  * lists the names; build wiring must reference the entry in all places.
  */
 import { describe, it, expect } from 'vitest';
@@ -9,7 +10,6 @@ import { resolve } from 'node:path';
 import { render } from '@testing-library/react';
 import * as icons from '../src/icons';
 import { Ellipsis } from '../src/icons';
-import { IconButton } from '../src/app/components/icon-button';
 import { Button } from '../src/app/components/button';
 import { Icon } from '../src/app/components/icon';
 
@@ -61,11 +61,6 @@ describe('./icons subpath', () => {
     expect(read('scripts/smoke-consumer.mjs')).toContain("'./icons'");
   });
 
-  it('IconButton renders an svg for an icon from the subpath', () => {
-    const { container } = render(<IconButton icon={Ellipsis} label="Row actions" />);
-    expect(container.querySelector('svg')).not.toBeNull();
-  });
-
   it('Button iconOnly renders an svg for an icon from the subpath through Icon', () => {
     const { container } = render(
       <Button iconOnly aria-label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />,
@@ -75,12 +70,11 @@ describe('./icons subpath', () => {
     expect(button.querySelector('svg')).not.toBeNull();
   });
 
-  // The consumer typecheck proves LucideIcon types resolve from dist. IconButton
-  // is slated for deprecation (#389), so the check also runs through Button
-  // iconOnly + Icon, which survives 1.0; the IconButton line stays until then (hds#392).
-  it('smoke-consumer typechecks both IconButton and Button iconOnly with an Icon from ./icons', () => {
+  // The consumer typecheck proves LucideIcon types resolve from dist, through
+  // Button iconOnly + Icon (IconButton went in 0.20.0, hds#394).
+  it('smoke-consumer typechecks Button iconOnly with an Icon from ./icons', () => {
     const smoke = read('scripts/smoke-consumer.mjs');
-    expect(smoke).toContain('<IconButton icon={Ellipsis} label="Row actions" />');
+    expect(smoke).not.toContain('IconButton');
     expect(smoke).toContain(
       '<Button iconOnly aria-label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />',
     );

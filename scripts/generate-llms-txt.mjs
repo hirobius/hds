@@ -170,13 +170,13 @@ export function generateLlmsTxt({ write = true } = {}) {
 Icons come from the curated subpath \`${manifest.iconSet.subpath}\`; nothing extra to install.
 
 \`\`\`tsx
-import { IconButton } from '@hirobius/design-system';
+import { Button, Icon } from '@hirobius/design-system';
 import { Ellipsis } from '${manifest.iconSet.subpath}';
 
-<IconButton icon={Ellipsis} label="Row actions" />
+<Button iconOnly label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />
 \`\`\`
 
-Rule: icon-only actions (row menus, close, edit) use \`IconButton\`; do not hand-roll a button with a glyph or text "...".
+Rule: icon-only actions (row menus, close, edit) use \`Button iconOnly\` with a \`label\` and an \`Icon\` in \`iconLeft\`; do not hand-roll a button with a glyph or text "...".
 
 Names: ${iconNames.join(', ')}
 

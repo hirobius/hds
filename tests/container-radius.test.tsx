@@ -9,7 +9,6 @@ import { render, cleanup } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { Card } from '../src/app/components/card';
-import { SelectableCard } from '../src/app/components/selectable-card';
 import { Surface } from '../src/app/components/surface';
 import { StatusTile } from '../src/app/components/status-tile';
 
@@ -20,9 +19,13 @@ const radiusUtilities = (el: Element) =>
   (el.getAttribute('class') ?? '').split(/\s+/).filter((c) => /^rounded(-|$)/.test(c));
 
 describe('container radius', () => {
-  it('Card, SelectableCard, Surface and StatusTile resolve to the same radius utility', () => {
+  it('Card, a selectable Card, Surface and StatusTile resolve to the same radius utility', () => {
     const card = render(<Card>x</Card>).container.firstElementChild!;
-    const selectable = render(<SelectableCard>x</SelectableCard>).container.firstElementChild!;
+    const selectable = render(
+      <Card selectable selected={false}>
+        x
+      </Card>,
+    ).container.firstElementChild!;
     const surface = render(<Surface>x</Surface>).container.firstElementChild!;
     const tile = render(<StatusTile title="x" />).container.firstElementChild!;
 

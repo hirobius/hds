@@ -1,12 +1,12 @@
 /**
- * Kept components must not render the components #389 deprecates (hds#392).
- * A deprecated component warns at render (src/lib/deprecation.ts), so if
- * Pagination or InlineCode still drew IconButton inside, or a screen pattern
- * still drew Cluster, every consumer of theirs would see a warning about a
- * component they never used. The mocks below make the deprecated components
- * throw on render; a kept component that still uses one fails here.
+ * Kept components must not render the components #389 prunes (hds#392). The
+ * screen patterns drew Cluster, and Pagination and InlineCode drew IconButton;
+ * hds#392 moved them onto Stack and Button so both could go, and 0.20.0
+ * removed them (hds#394 wave 4b). A kept component that still imported either
+ * would now fail the type check and the build, so these renders stay as the
+ * smoke test that each kept component still draws without them.
  */
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import { Pagination } from '../src/app/components/pagination';
 import { InlineCode } from '../src/app/components/inline-code';
@@ -14,18 +14,6 @@ import { PageHeader } from '../src/app/components/page-header';
 import { FormActions } from '../src/app/components/form-actions';
 import { DataTableSection } from '../src/app/components/data-table-section';
 import { DestructiveSection } from '../src/app/components/destructive-section';
-
-vi.mock('../src/app/components/icon-button', () => ({
-  IconButton: () => {
-    throw new Error('IconButton rendered inside a kept component');
-  },
-}));
-
-vi.mock('../src/app/components/cluster', () => ({
-  Cluster: () => {
-    throw new Error('Cluster rendered inside a kept component');
-  },
-}));
 
 afterEach(cleanup);
 

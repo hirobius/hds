@@ -1,5 +1,5 @@
 {
-  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; scripts/__tests__/patterns-subpath-removed.test.mjs fails if any listed name is exported from the root or /patterns again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row.",
+  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; scripts/__tests__/patterns-subpath-removed.test.mjs fails if any listed name is exported from the root or /patterns again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row. `replaced` holds the names removed with a survivor (hds#394 wave 4b), by module, each with the survivor the codemod's report names (\"use <survivor>\") instead of \"no replacement\".",
   "release": "0.20.0",
   "modules": {
     "src/app/components/activity-feed.tsx": [
@@ -128,5 +128,60 @@
     "src/app/layouts/CaseStudyLayout.tsx": ["CaseStudyLayout", "CaseStudyLayoutProps"],
     "src/app/layouts/HdsDocsShell.tsx": ["HdsDocsShell", "HdsDocsShellProps"],
     "src/app/layouts/HdsSystemDocLayout.tsx": ["HdsSystemDocLayout"]
+  },
+  "replaced": {
+    "src/app/components/aspect-ratio.tsx": {
+      "AspectRatio": "Box style={{ aspectRatio: '16 / 9' }}",
+      "AspectRatioProps": "BoxProps"
+    },
+    "src/app/components/bleed.tsx": {
+      "Bleed": "Box style={{ marginInline: 'calc(-1 * var(--semantic-space-scale-md))' }}",
+      "BleedProps": "BoxProps"
+    },
+    "src/app/components/center.tsx": {
+      "Center": "Container maxWidth=\"content\", with a Box style={{ paddingInline }} inside for the gutter",
+      "CenterProps": "ContainerProps"
+    },
+    "src/app/components/circular-progress.tsx": {
+      "CircularProgress": "Progress variant=\"circular\"",
+      "CircularProgressProps": "ProgressProps"
+    },
+    "src/app/components/cluster.tsx": {
+      "Cluster": "Stack direction=\"row\" wrap=\"wrap\" align=\"center\"",
+      "ClusterProps": "StackProps"
+    },
+    "src/app/components/cover.tsx": {
+      "Cover": "Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }} around a Box style={{ marginBlock: 'auto' }}",
+      "CoverProps": "BoxProps"
+    },
+    "src/app/components/frame.tsx": {
+      "Frame": "Box style={{ aspectRatio: '16 / 9', overflow: 'hidden', borderRadius: hds.borderRadius.md }}",
+      "FrameProps": "BoxProps"
+    },
+    "src/app/components/icon-button.tsx": {
+      "IconButton": "Button iconOnly label=\"…\" iconLeft={<Icon icon={…} />}",
+      "IconButtonProps": "ButtonProps"
+    },
+    "src/app/components/input-group.tsx": {
+      "InputGroup": "Input prefix / suffix",
+      "InputGroupProps": "InputProps"
+    },
+    "src/app/components/multi-selector.tsx": {
+      "MultiSelector": "Combobox multiple",
+      "MultiSelectorOption": "ComboboxOption",
+      "MultiSelectorProps": "ComboboxMultipleProps"
+    },
+    "src/app/components/selectable-card.tsx": {
+      "SelectableCard": "Card selectable selected onSelectedChange",
+      "SelectableCardProps": "CardProps"
+    },
+    "src/app/components/time-input.tsx": {
+      "TimeInput": "Input type=\"time\"",
+      "TimeInputProps": "InputProps"
+    },
+    "src/app/components/toggle-button.tsx": {
+      "ToggleButton": "Button pressed onPressedChange (variant=\"ghost\" is variant=\"tertiary\")",
+      "ToggleButtonProps": "ButtonProps"
+    }
   }
 }

@@ -60,7 +60,6 @@ export const Default: Story = {
 | Input            | Input.stories.tsx            | done   |
 | Tag              | Tag.stories.tsx              | done   |
 | Icon             | Icon.stories.tsx             | done   |
-| IconButton       | IconButton.stories.tsx       | done   |
 | Disclosure       | Disclosure.stories.tsx       | done   |
 | Surface          | surface.stories.tsx          | done   |
 | InlineCode       | InlineCode.stories.tsx       | done   |

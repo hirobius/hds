@@ -22,7 +22,7 @@ describe('component-api contract fields', () => {
   });
 
   it('carries usage.when for every worked-example component', () => {
-    for (const name of ['Button', 'IconButton', 'Menu', 'Select', 'Card']) {
+    for (const name of ['Button', 'Combobox', 'Menu', 'Select', 'Card']) {
       expect(components[name]?.usage?.when, name).toEqual(expect.any(String));
       expect(components[name].usage.when.length, name).toBeGreaterThan(19);
     }

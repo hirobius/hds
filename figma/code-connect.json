@@ -396,27 +396,7 @@
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },
-    "src/app/components/input-group.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/circular-progress.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/toggle-button.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
     "src/app/components/metadata-list.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/selectable-card.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/time-input.tsx": {
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },

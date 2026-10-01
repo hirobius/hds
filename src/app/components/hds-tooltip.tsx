@@ -13,7 +13,7 @@
  *
  *   <Tooltip>
  *     <Tooltip.Trigger asChild>
- *       <IconButton icon={Link} aria-label="Copy link" />
+ *       <Button iconOnly label="Copy link" iconLeft={<Icon icon={Link} />} />
  *     </Tooltip.Trigger>
  *     <Tooltip.Content>Copy link</Tooltip.Content>
  *   </Tooltip>
