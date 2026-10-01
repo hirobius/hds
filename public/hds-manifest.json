@@ -1759,7 +1759,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/grid.tsx",
-      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
+      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -1773,6 +1773,7 @@
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
         "src/app/components/foundation-swatch.tsx",
+        "src/app/components/grid.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/metric-tiles.test.tsx",
         "src/app/components/metric-tiles.tsx",
@@ -1809,6 +1810,7 @@
         "gap": {
           "type": "enum",
           "values": [
+            "medium",
             "tight",
             "normal",
             "inset",
@@ -1820,9 +1822,14 @@
           "type": "enum",
           "values": [
             "fixed",
-            "auto-fit"
+            "auto-fit",
+            "auto-fill"
           ],
           "default": "fixed"
+        },
+        "minItemWidth": {
+          "type": "string",
+          "optional": true
         },
         "style": {
           "type": "CSSProperties",
@@ -1843,6 +1850,7 @@
         "gap": {
           "type": "enum",
           "values": [
+            "medium",
             "tight",
             "normal",
             "inset",
@@ -1853,8 +1861,12 @@
           "type": "enum",
           "values": [
             "fixed",
-            "auto-fit"
+            "auto-fit",
+            "auto-fill"
           ]
+        },
+        "minItemWidth": {
+          "type": "string"
         },
         "subgrid": {
           "type": "boolean"
@@ -1892,6 +1904,7 @@
       ],
       "storyIds": [
         "primitives-grid--aside-layout",
+        "primitives-grid--auto-fill",
         "primitives-grid--auto-fit",
         "primitives-grid--three-column",
         "primitives-grid--two-column"
@@ -1910,7 +1923,7 @@
           }
         ]
       },
-      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
+      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, auto-fill, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
     },
     "Icon": {
       "category": "Display",
@@ -2498,6 +2511,7 @@
       "consumers": [
         "src/app/components/field.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/input.test.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/stepper-field.tsx",
@@ -2561,9 +2575,17 @@
           "type": "boolean",
           "default": false
         },
+        "prefix": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "size": {
           "type": "InputSize",
           "default": "md"
+        },
+        "suffix": {
+          "type": "ReactNode",
+          "optional": true
         },
         "textStyle": {
           "type": "enum",
@@ -2586,7 +2608,10 @@
             "search",
             "tel",
             "url",
-            "number"
+            "number",
+            "date",
+            "time",
+            "datetime-local"
           ],
           "default": "text"
         }
@@ -2658,7 +2683,10 @@
             "search",
             "tel",
             "url",
-            "number"
+            "number",
+            "date",
+            "time",
+            "datetime-local"
           ]
         }
       },
@@ -2736,16 +2764,18 @@
         "src/stories/input.stories.tsx"
       ],
       "storyIds": [
+        "primitives-input--date-and-time",
         "primitives-input--default",
         "primitives-input--disabled",
         "primitives-input--loading",
         "primitives-input--mono",
+        "primitives-input--prefix-and-suffix",
         "primitives-input--size-variants",
         "primitives-input--with-error",
         "primitives-input--with-helper"
       ],
       "usage": {
-        "when": "Collect a single line of text, a number, an email or a password, with label, helper and error slots.",
+        "when": "Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots.",
         "whenNot": "Multi-line text, or choosing from a fixed list of options.",
         "useInstead": [
           {
@@ -6124,6 +6154,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.ts",
+        "src/app/components/grid.test.tsx",
+        "src/app/components/grid.tsx",
+        "src/stories/grid.stories.tsx",
         "src/stories/status-tile.stories.test.tsx",
         "src/stories/status-tile.stories.tsx",
         "src/stories/tile-grid.stories.tsx"
@@ -7856,7 +7890,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/combobox.tsx",
-      "description": "Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
+      "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
@@ -7909,8 +7943,12 @@
           "type": "string",
           "optional": true
         },
+        "multiple": {
+          "type": "boolean",
+          "optional": true
+        },
         "onChange": {
-          "type": "(value: string) => void"
+          "type": "((value: string) => void) | ((value: string[]) => void)"
         },
         "options": {
           "type": "ComboboxOption[]"
@@ -7924,7 +7962,7 @@
           "default": "Search…"
         },
         "value": {
-          "type": "string"
+          "type": "string | readonly string[]"
         }
       },
       "allowedChildren": [
@@ -7940,12 +7978,14 @@
         "primitives-combobox--default",
         "primitives-combobox--disabled-trigger",
         "primitives-combobox--few-options",
+        "primitives-combobox--multiple",
         "primitives-combobox--open",
+        "primitives-combobox--open-multiple",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
       ],
       "usage": {
-        "when": "Pick one value from a long list of options, with a search field that filters as you type.",
+        "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
         "whenNot": "A short list that needs no search, or an action list.",
         "useInstead": [
           {
@@ -7973,7 +8013,7 @@
         },
         {
           "keys": "Enter",
-          "effect": "Commits the active option and closes the list."
+          "effect": "Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open."
         },
         {
           "keys": "Escape",
