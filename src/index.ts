@@ -88,7 +88,7 @@ export * from './app/components/metadata-list';
 export * from './app/components/selectable-card';
 export * from './app/components/multi-selector';
 
-// ── Astryx-gap coverage — Tier 3 date/time family (ADR-020; the date pickers went in 0.20.0, ADR-033) ──
+// ── Astryx-gap coverage — Tier 3 date/time family (ADR-020; the date pickers went in 0.20.0, ADR-034) ──
 export * from './app/components/time-input';
 
 // ── every-layout primitives (#96) ──

@@ -1,6 +1,6 @@
 # ADR-020: Date/time components on react-day-picker v10 + date-fns
 
-- **Status:** Superseded by ADR-033 (2026-10-01): the date pickers were removed in 0.20.0 (hds#394); TimeInput remains until wave 4b.
+- **Status:** Superseded by ADR-034 (2026-10-01): the date pickers were removed in 0.20.0 (hds#394); TimeInput remains until wave 4b.
 - **Date:** 2026-07-05
 - **Decider:** Adrian (default applied by the Astryx coverage build, #76)
 - **Related:** Issue #76 (Astryx coverage — Tier 3), ADR-013 (escape-hatch policy), `.size-limit.cjs` (bundle budgets)
