@@ -6,7 +6,7 @@
 /**
  * ExpandTooltip — HDS image interaction tooltip
  *
- * A pill-shaped label (brand blue / white text) that indicates an image
+ * A pill-shaped label (accent fill / onAccent text) that indicates an image
  * is expandable. Supports two render modes:
  *
  *   'cursor'   — fixed-positioned portal tracking the mouse cursor.
@@ -44,7 +44,9 @@ const PILL_SURFACE_STYLE: React.CSSProperties = {
   background: 'var(--semantic-color-surface-accent)',
   border: 'none',
   borderRadius: hds.borderRadius.full,
-  color: hds.color.white,
+  // content.onAccent flips with the accent fill: white on the dark light-mode
+  // fill, a dark neutral on the light dark-mode fill (fixed white read ~1.1:1).
+  color: hds.color.content.onAccent,
   display: 'inline-flex',
   pointerEvents: 'none',
   paddingBlock: hds.space.px6,
