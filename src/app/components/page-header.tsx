@@ -7,7 +7,6 @@
 import * as React from 'react';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
-import { Cluster } from './cluster';
 import { Stack } from './stack';
 
 /** @public */
@@ -51,8 +50,8 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
       >
         <Stack gap="tight">
           {breadcrumb ? <div data-slot="breadcrumb">{breadcrumb}</div> : null}
-          <Cluster gap="normal" align="start" justify="space-between">
-            <Cluster gap="tight" align="center">
+          <Stack direction="row" wrap="wrap" gap="normal" align="start" justify="space-between">
+            <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="start">
               <Heading
                 // inline-ok: the one canonical page-title size, bound to the heading2 type style
                 style={{
@@ -64,15 +63,15 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
                 {title}
               </Heading>
               {status ? <div data-slot="status">{status}</div> : null}
-            </Cluster>
+            </Stack>
             {actions ? (
               <div data-slot="actions" className="ml-auto">
-                <Cluster gap="tight" align="center" justify="end">
+                <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
                   {actions}
-                </Cluster>
+                </Stack>
               </div>
             ) : null}
-          </Cluster>
+          </Stack>
         </Stack>
       </header>
     );
