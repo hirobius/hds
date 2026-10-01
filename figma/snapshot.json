@@ -1,8 +1,8 @@
 {
-  "checksum": "50d3fa5e",
+  "checksum": "242fe0c9",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-09-30T21:50:39.300Z",
+    "takenAt": "2026-10-01T05:00:00.000Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": null
@@ -1644,32 +1644,6 @@
             "valuesByMode": {
               "Default": {
                 "value": 9999
-              }
-            }
-          },
-          {
-            "id": "VariableID:7:19",
-            "name": "shadow/color",
-            "path": null,
-            "resolvedType": "COLOR",
-            "description": "HSL channels for shadow-color alpha compositing. Light: cool neutral; dark: black.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR",
-              "EFFECT_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--primitive-shadow-color)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "value": {
-                  "r": 0.1566,
-                  "g": 0.1722,
-                  "b": 0.2034,
-                  "a": 1
-                }
               }
             }
           },
@@ -6168,28 +6142,6 @@
         ],
         "variables": [
           {
-            "id": "VariableID:14:28",
-            "name": "badge/bg",
-            "path": null,
-            "resolvedType": "COLOR",
-            "description": "Badge background color.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR",
-              "EFFECT_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-badge-bg)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:10:27",
-                "to": "Hirobius/Semantic: color/feedback/bg/info"
-              }
-            }
-          },
-          {
             "id": "VariableID:14:25",
             "name": "badge/fontSize",
             "path": "component.badge.fontSize",
@@ -6451,28 +6403,6 @@
               "Default": {
                 "alias": "VariableID:10:7",
                 "to": "Hirobius/Semantic: color/surface/accentSubtle"
-              }
-            }
-          },
-          {
-            "id": "VariableID:15:18",
-            "name": "button/primary/textDisabled",
-            "path": null,
-            "resolvedType": "COLOR",
-            "description": "Disabled primary button text color.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR",
-              "EFFECT_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-primary-textDisabled)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:10:13",
-                "to": "Hirobius/Semantic: color/content/onAccent"
               }
             }
           },
