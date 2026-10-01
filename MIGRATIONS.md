@@ -283,7 +283,7 @@ and staging-promotion entries go with them, and so do the `styles.css` and
 `.hds-stepper-input` (StepperField), `.hds-doc-section-header` and
 `.hds-doc-section-copy-icon` (TextLockup), and `.hds-page-enter` with its
 keyframes (HdsSystemDocLayout). ButtonGroup, ContextMenu and
-HoverCard also leave the curated core set, which is 39 components now.
+HoverCard also leave the curated core set; with Menu, Popover, Tooltip and HdsRouterProvider added (hds#393) it is 43 components.
 
 | Removed                     | From        | Use instead                                                                                                                                     | Codemod                                                                        |
 | --------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
