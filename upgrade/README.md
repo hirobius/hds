@@ -46,27 +46,49 @@ of a release snapshot.
    `facts`. Changes the diff cannot see (how something looks or behaves, a
    deprecation, a rename) come from the CHANGELOG and cite its line.
 
-Releases that shipped before ledgers existed are backfilled.
-`node scripts/upgrade/build-ledger.mjs <version>` builds each one from its two
-snapshots and inputs frozen in `upgrade/sources/<version>/`: `release.json`
-(the release fields, how its removed and moved names are classified, and the
-steps only the CHANGELOG records, each with its line and the text that finds
-it) and any data file it names. For 0.20.0 those are copies of
-`codemods/removed-0.20.json` and the `RENAMES` map in `codemods/hds-prefix.mjs`
-as 0.20.0 published them, so a later edit to the live codemod data can never
-rewrite the shipped ledger. A test keeps every committed ledger equal to the
-build of its sources (`build-ledger.mjs --check`). Next, each changeset carries an
-`upgrade/pending/<name>.json` note (hds#448) and `changeset version` compiles
-the notes into the release's ledger (hds#451). CSS facts, such as removed
-classes and changed variable values, come with hds#449.
+Releases that shipped before ledgers existed are backfilled: 0.17.0 to
+0.20.0. `node scripts/upgrade/build-ledger.mjs <version>` builds each one from
+its two snapshots and inputs frozen in `upgrade/sources/<version>/`:
+`release.json` (the release fields, how its removed and moved names are
+classified, and the steps only the CHANGELOG records, each with its line and
+the text that finds it) and any data file it names. For 0.20.0 those are
+copies of `codemods/removed-0.20.json` and the `RENAMES` map in
+`codemods/hds-prefix.mjs` as 0.20.0 published them, so a later edit to the
+live codemod data, or to the CHANGELOG, can never rewrite a shipped ledger. A
+test keeps every committed ledger equal to the build of its sources
+(`build-ledger.mjs --check`), and another that each cited line still holds its
+text.
+
+The 0.16.0 to 0.19.1 diffs hold only additions (`/patterns`, `/icons`, the
+`hds-patterns-subpath` bin, new names), so those ledgers carry the look,
+behavior and deprecation steps from each CHANGELOG section. 0.18.0 and 0.19.1
+have no step: nothing in them asks anything of a consumer. Every tarball from
+0.16.0 on has `dist/types` for each JS entry, so `snapshot.mjs` reads them all
+unchanged; a tarball without one would stop it with the entry named, rather
+than record a guess.
+
+A deprecated step's `removeIn` is what its release announced. A later release
+may remove the name sooner: 0.17.0 deprecated the root pattern imports and the
+`Hds*` names for 1.0.0, and 0.20.0 removed them. Coming next (hds#451, #452)
+lists a deprecation only while no later step removes, moves, renames or folds
+the same name.
+
+Next, each changeset carries an `upgrade/pending/<name>.json` note (hds#448)
+and `changeset version` compiles the notes into the release's ledger (hds#451).
+CSS facts, such as removed classes and changed variable values, come with
+hds#449.
 
 ## The floor
 
 The floor is the oldest version the upgrade command can upgrade from. Below
 it, the command changes nothing and exits 2; follow MIGRATIONS.md by hand up to
-the floor. It is `floor` in `upgrade/index.json` and will be 0.16.0 once the
-0.17.0 to 0.19.1 ledgers are backfilled (hds#450). Today only 0.20.0, from
-0.19.1, has a ledger.
+the floor. It is 0.16.0, the oldest committed snapshot, which ops and folio
+resolve: the 0.17.0 to 0.20.0 ledgers cover every release after it.
+`floor()` in `scripts/upgrade/history.mjs` computes it, for `floor` in
+`upgrade/index.json` (hds#451). Its `historyProblems()`, run by a test, fails
+when a snapshot after the floor has no ledger, a ledger names the wrong bump,
+or a fact between two consecutive snapshots (an export removed or moved, a
+dependency, peer, engine, exports key or bin) has no step.
 
 ## Who is a consumer
 

@@ -1,0 +1,150 @@
+{
+  "$comment": "Frozen inputs of the 0.19.0 ledger (hds#450), read by scripts/upgrade/build-ledger.mjs. 0.19.0 shipped before ledgers existed, so its record was written after the fact from the published tarball's snapshot (docs/api/releases/0.19.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.19.0 shipped (its section starts on line 3, and is byte-identical to the one at tag v0.19.0); its needle is the text that finds the line.",
+  "version": "0.19.0",
+  "previous": "0.18.0",
+  "date": "2026-09-30",
+  "summary": "Overlays portal into the nearest data-hds scope, compact density tightens spacing, containers share one radius; adds /icons.",
+  "backfilled": true,
+  "steps": [
+    {
+      "kind": "behavior",
+      "subject": "overlay-portals",
+      "impact": "behavior",
+      "plain": "Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip, Lightbox and AssetImg's expand pill now mount inside the nearest data-hds element instead of document.body, so they take its theme, and CSS or tests that expect them under body may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Dialog",
+              "AlertDialog",
+              "Menu",
+              "ContextMenu",
+              "Popover",
+              "Select",
+              "HoverCard",
+              "Tooltip",
+              "Lightbox",
+              "AssetImg",
+              "HdsSelect",
+              "HdsTooltip"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["Lightbox", "AssetImg"]
+          }
+        ],
+        "jsx": [
+          "Dialog",
+          "AlertDialog",
+          "Menu",
+          "ContextMenu",
+          "Popover",
+          "Select",
+          "HoverCard",
+          "Tooltip",
+          "Lightbox",
+          "AssetImg"
+        ]
+      },
+      "needle": "731c669:",
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "kind": "look",
+      "subject": "modal-scrim",
+      "impact": "look",
+      "plain": "The scrim behind an open Dialog or AlertDialog is now the theme-aware scrim color, black in dark mode where it was a white wash.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Dialog", "AlertDialog"]
+          }
+        ],
+        "jsx": ["Dialog", "AlertDialog"]
+      },
+      "needle": "The modal scrim uses the new theme-aware",
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "kind": "look",
+      "subject": "dark-color-scheme",
+      "impact": "look",
+      "plain": "The dark theme now declares color-scheme: dark, so native scrollbars and form controls inside it render dark.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/contexts",
+            "names": ["ThemeProvider", "useTheme"]
+          }
+        ],
+        "regex": ["data-theme\\W{0,4}dark"]
+      },
+      "needle": "the dark theme now declares `color-scheme: dark`",
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "kind": "look",
+      "subject": "compact-density",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\" the spacing scale, surface padding and region gutter that components read now tighten, so compact screens render visibly tighter than before.",
+      "detect": {
+        "regex": ["data-density\\W{0,4}compact"]
+      },
+      "needle": "a47459b:",
+      "source": "CHANGELOG.md:8"
+    },
+    {
+      "kind": "look",
+      "subject": "Table-density-inherit",
+      "impact": "look",
+      "plain": "A Table with no density prop now follows the nearest data-density attribute, so a Table inside a compact region renders compact unless you pass density.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Table"]
+          }
+        ],
+        "jsx": ["Table"]
+      },
+      "needle": "a47459b:",
+      "source": "CHANGELOG.md:8"
+    },
+    {
+      "kind": "look",
+      "subject": "container-radius",
+      "impact": "look",
+      "plain": "Surface, StatusTile, DocLinkCard and static.css's .hds-card now round to the tenant's container radius, 12px by default, instead of a fixed 8px.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Surface", "StatusTile", "DocLinkCard"]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["DocLinkCard"]
+          }
+        ],
+        "jsx": ["Surface", "StatusTile", "DocLinkCard"],
+        "classes": ["hds-card"]
+      },
+      "needle": "Containers now share one radius that follows the tenant knob",
+      "source": "CHANGELOG.md:10"
+    },
+    {
+      "kind": "behavior",
+      "subject": "Button-iconOnly-warning",
+      "impact": "behavior",
+      "plain": "In development, a Button with iconOnly and no iconLeft now logs one warning, so a test that fails on console warnings will flag it.",
+      "detect": {
+        "regex": ["\\biconOnly\\b"]
+      },
+      "needle": "In development, `<Button iconOnly>` with no `iconLeft` now warns once",
+      "source": "CHANGELOG.md:11"
+    }
+  ]
+}

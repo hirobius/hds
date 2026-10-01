@@ -1,0 +1,8 @@
+{
+  "version": "0.18.0",
+  "date": "2026-09-30",
+  "bump": "minor",
+  "summary": "Adds the hds-patterns-subpath codemod, which moves root imports of the deprecated pattern components to /patterns.",
+  "backfilled": true,
+  "steps": []
+}

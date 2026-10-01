@@ -1,0 +1,183 @@
+{
+  "version": "0.19.0",
+  "date": "2026-09-30",
+  "bump": "minor",
+  "summary": "Overlays portal into the nearest data-hds scope, compact density tightens spacing, containers share one radius; adds /icons.",
+  "backfilled": true,
+  "steps": [
+    {
+      "id": "0.19.0/look/Table-density-inherit",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A Table with no density prop now follows the nearest data-density attribute, so a Table inside a compact region renders compact unless you pass density.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Table"
+            ]
+          }
+        ],
+        "jsx": [
+          "Table"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:8"
+    },
+    {
+      "id": "0.19.0/look/compact-density",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\" the spacing scale, surface padding and region gutter that components read now tighten, so compact screens render visibly tighter than before.",
+      "detect": {
+        "regex": [
+          "data-density\\W{0,4}compact"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:8"
+    },
+    {
+      "id": "0.19.0/look/container-radius",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Surface, StatusTile, DocLinkCard and static.css's .hds-card now round to the tenant's container radius, 12px by default, instead of a fixed 8px.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Surface",
+              "StatusTile",
+              "DocLinkCard"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "DocLinkCard"
+            ]
+          }
+        ],
+        "jsx": [
+          "Surface",
+          "StatusTile",
+          "DocLinkCard"
+        ],
+        "classes": [
+          "hds-card"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:10"
+    },
+    {
+      "id": "0.19.0/look/dark-color-scheme",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The dark theme now declares color-scheme: dark, so native scrollbars and form controls inside it render dark.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/contexts",
+            "names": [
+              "ThemeProvider",
+              "useTheme"
+            ]
+          }
+        ],
+        "regex": [
+          "data-theme\\W{0,4}dark"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.19.0/look/modal-scrim",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The scrim behind an open Dialog or AlertDialog is now the theme-aware scrim color, black in dark mode where it was a white wash.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Dialog",
+              "AlertDialog"
+            ]
+          }
+        ],
+        "jsx": [
+          "Dialog",
+          "AlertDialog"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.19.0/behavior/Button-iconOnly-warning",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "In development, a Button with iconOnly and no iconLeft now logs one warning, so a test that fails on console warnings will flag it.",
+      "detect": {
+        "regex": [
+          "\\biconOnly\\b"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:11"
+    },
+    {
+      "id": "0.19.0/behavior/overlay-portals",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip, Lightbox and AssetImg's expand pill now mount inside the nearest data-hds element instead of document.body, so they take its theme, and CSS or tests that expect them under body may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Dialog",
+              "AlertDialog",
+              "Menu",
+              "ContextMenu",
+              "Popover",
+              "Select",
+              "HoverCard",
+              "Tooltip",
+              "Lightbox",
+              "AssetImg",
+              "HdsSelect",
+              "HdsTooltip"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Lightbox",
+              "AssetImg"
+            ]
+          }
+        ],
+        "jsx": [
+          "Dialog",
+          "AlertDialog",
+          "Menu",
+          "ContextMenu",
+          "Popover",
+          "Select",
+          "HoverCard",
+          "Tooltip",
+          "Lightbox",
+          "AssetImg"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    }
+  ]
+}

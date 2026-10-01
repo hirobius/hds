@@ -1,0 +1,405 @@
+{
+  "$comment": "Frozen inputs of the 0.17.0 ledger (hds#450), read by scripts/upgrade/build-ledger.mjs. 0.17.0 shipped before ledgers existed, so its record was written after the fact from the published tarball's snapshot (docs/api/releases/0.17.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.17.0 shipped (its section starts on line 3, and is byte-identical to the one at tag v0.17.0); its needle is the text that finds the line.",
+  "version": "0.17.0",
+  "previous": "0.16.0",
+  "date": "2026-09-30",
+  "summary": "Adds /patterns and the standard type ramp; root pattern imports, Hds* names and seven spacing tokens are deprecated.",
+  "backfilled": true,
+  "steps": [
+    {
+      "kind": "deprecated",
+      "each": [
+        "ActivityFeed",
+        "AppShell",
+        "AssetImg",
+        "Calendar",
+        "Carousel",
+        "CodeBlock",
+        "CommandPalette",
+        "DocLinkCard",
+        "ErrorPattern",
+        "FileInput",
+        "Form",
+        "Lightbox",
+        "NavItem",
+        "OverflowList",
+        "Page",
+        "Reveal",
+        "SideNav",
+        "Stepper",
+        "Toolbar",
+        "TopNav",
+        "TreeList"
+      ],
+      "subject": "{name}",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "Importing {name} from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["{name}"]
+          }
+        ]
+      },
+      "needle": "`@deprecated`/`@removeIn 1.0.0` JSDoc notice pointing at the new subpath",
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "kind": "deprecated",
+      "each": {
+        "HdsCheckbox": "Checkbox",
+        "HdsRadio": "Radio",
+        "HdsSelect": "Select",
+        "HdsSlider": "Slider",
+        "HdsToggle": "Toggle",
+        "HdsTooltip": "Tooltip"
+      },
+      "subject": "{name}",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "{name} still works but is deprecated; use {to}, the same component under its bare name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["{name}"]
+          }
+        ]
+      },
+      "needle": "with the `Hds*` names kept as `@deprecated`",
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "semantic.space.component.gap",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "The spacing token semantic.space.component.gap (--semantic-space-component-gap) still works but is deprecated; use semantic.space.scale.xs, the same 8px at the default density.",
+      "detect": {
+        "cssVars": ["--semantic-space-component-gap"],
+        "regex": ["\\bhds\\.semantic\\.space\\.component\\.gap\\b"]
+      },
+      "needle": "`$deprecated` (DTCG) now marks all seven hds#206 aliases",
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "semantic.space.component.padding",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "The spacing token semantic.space.component.padding (--semantic-space-component-padding) still works but is deprecated; use semantic.space.surface.padding, which it now aliases.",
+      "detect": {
+        "cssVars": ["--semantic-space-component-padding"],
+        "regex": ["\\bhds\\.semantic\\.space\\.component\\.padding\\b"]
+      },
+      "needle": "`$deprecated` (DTCG) now marks all seven hds#206 aliases",
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "semantic.space.layout.tight",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "The spacing token semantic.space.layout.tight (--semantic-space-layout-tight) still works but is deprecated; use semantic.space.scale.sm, the same 16px at the default density.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-tight"]
+      },
+      "needle": "`$deprecated` (DTCG) now marks all seven hds#206 aliases",
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "semantic.space.layout.normal",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "The spacing token semantic.space.layout.normal (--semantic-space-layout-normal) still works but is deprecated; use semantic.space.scale.md, the same 24px at the default density.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-normal"]
+      },
+      "needle": "`$deprecated` (DTCG) now marks all seven hds#206 aliases",
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "semantic.space.layout.gutter",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "The spacing token semantic.space.layout.gutter (--semantic-space-layout-gutter) still works but is deprecated; use semantic.space.region.gutter, which it now aliases.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-gutter"],
+        "regex": ["\\bhds\\.semantic\\.space\\.layout\\.gutter\\b"]
+      },
+      "needle": "`$deprecated` (DTCG) now marks all seven hds#206 aliases",
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "semantic.space.layout.inset",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "The spacing token semantic.space.layout.inset (--semantic-space-layout-inset) still works but is deprecated; use semantic.space.scale.lg, the same 32px at the default density.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-inset"]
+      },
+      "needle": "`$deprecated` (DTCG) now marks all seven hds#206 aliases",
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "semantic.space.layout.spacious",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "The spacing token semantic.space.layout.spacious (--semantic-space-layout-spacious) still works but is deprecated; use semantic.space.scale.xl, the same 48px at the default density.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-spacious"]
+      },
+      "needle": "`$deprecated` (DTCG) now marks all seven hds#206 aliases",
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "kind": "look",
+      "subject": "type-ramp",
+      "impact": "look",
+      "plain": "Text follows Tailwind's default type ramp, so body text renders at 16px instead of 17px, UI and button text 1px smaller, captions and eyebrows at 12px instead of 13px, mono at 14px instead of 13px, display at 60px instead of 72px, and text-xs to text-6xl shrink to match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-size-xs",
+          "--primitive-typography-size-sm",
+          "--primitive-typography-size-base",
+          "--primitive-typography-size-lg",
+          "--primitive-typography-size-xl",
+          "--primitive-typography-size-2xl",
+          "--primitive-typography-size-3xl",
+          "--primitive-typography-size-4xl",
+          "--primitive-typography-size-5xl",
+          "--primitive-typography-size-6xl",
+          "--semantic-typography-body-font-size",
+          "--semantic-typography-ui-font-size",
+          "--semantic-typography-display-font-size",
+          "--semantic-typography-eyebrow-font-size",
+          "--semantic-typography-caption-font-size",
+          "--semantic-typography-mono-font-size"
+        ],
+        "classes": [
+          "text-xs",
+          "text-sm",
+          "text-base",
+          "text-lg",
+          "text-xl",
+          "text-2xl",
+          "text-3xl",
+          "text-4xl",
+          "text-5xl",
+          "text-6xl"
+        ],
+        "regex": ["['\"]@hirobius/design-system(?:/[^'\"\\s]*)?['\"]"]
+      },
+      "needle": "- Rendered size changes: `body` 17→16px",
+      "source": "CHANGELOG.md:75"
+    },
+    {
+      "kind": "look",
+      "subject": "Badge-CommandPalette-SegmentedControl-text",
+      "impact": "look",
+      "plain": "Badge text grows from 11px to 12px, CommandPalette's kind badges, shortcuts and footer from 10px to 12px, and SegmentedControl labels shrink from 15px to 14px on a 20px line, now that they use the ramp's text-xs and text-sm.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Badge", "CommandPalette", "SegmentedControl"]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["CommandPalette"]
+          }
+        ],
+        "jsx": ["Badge", "CommandPalette", "SegmentedControl"]
+      },
+      "needle": "- Hardcoded `text-[10px]` / `text-[11px]` / `text-[15px]` classes that bypassed",
+      "source": "CHANGELOG.md:86"
+    },
+    {
+      "kind": "look",
+      "subject": "hds-focus-ring",
+      "impact": "look",
+      "plain": "Elements with the hds-focus class, which many HDS components use (Dialog, Select, Radio, Toggle and Slider among them), now show their focus ring on every keyboard focus, where before it showed only if the page set data-input-modality=\"keyboard\" on html, which no HDS code did.",
+      "detect": {
+        "classes": ["hds-focus"],
+        "regex": ["['\"]@hirobius/design-system(?:/[^'\"\\s]*)?['\"]"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "look",
+      "subject": "highlighted-row-ring",
+      "impact": "look",
+      "plain": "The highlighted option in Menu, Select, Combobox and MultiSelector now also shows an inset ring in the focus color.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Menu", "Select", "HdsSelect", "Combobox", "MultiSelector"]
+          }
+        ],
+        "jsx": ["Menu", "Select", "Combobox", "MultiSelector"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "look",
+      "subject": "Calendar-outside-days",
+      "impact": "look",
+      "plain": "Calendar's days outside the shown month are no longer drawn at half opacity, so they read darker.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Calendar"]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["Calendar"]
+          }
+        ],
+        "jsx": ["Calendar"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "look",
+      "subject": "Tokenizer-disabled",
+      "impact": "look",
+      "plain": "A disabled Tokenizer shows muted text instead of fading the whole field to 70% opacity.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Tokenizer"]
+          }
+        ],
+        "jsx": ["Tokenizer"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "behavior",
+      "subject": "Table-aria-structure",
+      "impact": "behavior",
+      "plain": "Table now renders role table, row, columnheader and cell, wrapping each row in an element with display: contents, so selectors and tests that query its cells by role or by position in the DOM may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Table"]
+          }
+        ],
+        "jsx": ["Table"]
+      },
+      "needle": "Table: fix invalid ARIA structure",
+      "source": "CHANGELOG.md:206"
+    },
+    {
+      "kind": "behavior",
+      "subject": "scroll-region-tab-stop",
+      "impact": "behavior",
+      "plain": "Carousel's slide strip and StackedCardRail's scroll areas are now named regions that take keyboard focus, so each adds a Tab stop and tests that count Tab presses past them need one more.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Carousel"]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["Carousel", "StackedCardRail"]
+          }
+        ],
+        "jsx": ["Carousel", "StackedCardRail"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "behavior",
+      "subject": "StepperField-label",
+      "impact": "behavior",
+      "plain": "StepperField's label is now tied to its input, so the input is announced and found by its label text.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["StepperField"]
+          }
+        ],
+        "jsx": ["StepperField"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "behavior",
+      "subject": "CardProgress-name",
+      "impact": "behavior",
+      "plain": "Card.Progress now carries an aria-label, its string label or \"Progress\", so tests that find it by role and name may need the new name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Card", "CardProgress"]
+          }
+        ],
+        "jsx": ["Card.Progress", "CardProgress"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "behavior",
+      "subject": "list-semantics",
+      "impact": "behavior",
+      "plain": "OverflowList puts its +N item in a list item and names it with hidden text instead of aria-label, and MetadataList wraps its footer in a dt and dd pair, so tests that query that markup or the \"+N more\" label may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["OverflowList", "MetadataList"]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["OverflowList"]
+          }
+        ],
+        "jsx": ["OverflowList", "MetadataList"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "kind": "behavior",
+      "subject": "AssetImg-aria",
+      "impact": "behavior",
+      "plain": "AssetImg with alt text is now role img named by it, and one with neither alt nor onClick is hidden from assistive technology, so tests that find it by role or name may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["AssetImg"]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["AssetImg"]
+          }
+        ],
+        "jsx": ["AssetImg"]
+      },
+      "needle": "0b32d55:",
+      "source": "CHANGELOG.md:103"
+    }
+  ]
+}

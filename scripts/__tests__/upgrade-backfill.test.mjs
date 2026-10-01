@@ -1,0 +1,225 @@
+/**
+ * The backfilled ledgers 0.17.0, 0.18.0, 0.19.0 and 0.19.1 (hds#450): ops and
+ * folio resolve 0.16.0, so their upgrade crosses these releases too. API and
+ * package steps come from the snapshot diffs, which hold only additions here;
+ * look, behavior and deprecation steps come from each release's CHANGELOG
+ * section, cited as the file read when it shipped.
+ *
+ * Expectations come from hds#450 (the lines it names, in today's CHANGELOG),
+ * npm's publish dates and the release notes, not from the generator.
+ */
+import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { checkReleaseDir } from '../upgrade/schema.mjs';
+
+const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
+const read = (file) => JSON.parse(readFileSync(join(REPO, file), 'utf8'));
+const CHANGELOG = readFileSync(join(REPO, 'CHANGELOG.md'), 'utf8').split('\n');
+const ROOT = '@hirobius/design-system';
+
+const BACKFILLED = ['0.17.0', '0.18.0', '0.19.0', '0.19.1'];
+const ledger = (version) => read(`upgrade/releases/${version}.json`);
+const byId = (id) => ledger(id.split('/')[0]).steps.find((step) => step.id === id);
+
+/**
+ * The 1-based line of today's CHANGELOG.md that a citation names. A citation
+ * is numbered as the file read when its release shipped, with the release
+ * heading on line 3; later releases only ever prepend sections.
+ */
+function liveLine(version, source) {
+  const heading = CHANGELOG.indexOf(`## ${version}`);
+  return heading + Number(source.split(':')[1]) - 3 + 1;
+}
+
+describe('the backfilled ledgers 0.17.0 to 0.19.1', () => {
+  it('are the releases after 0.16.0, with their npm publish day and bump, backfilled', () => {
+    const expected = {
+      '0.17.0': 'minor',
+      '0.18.0': 'minor',
+      '0.19.0': 'minor',
+      '0.19.1': 'patch',
+    };
+    for (const [version, bump] of Object.entries(expected)) {
+      // npm published all four on 2026-09-30 (UTC).
+      expect(ledger(version), version).toMatchObject({
+        version,
+        date: '2026-09-30',
+        bump,
+        backfilled: true,
+      });
+    }
+  });
+
+  it('validate against upgrade/schema.json', () => {
+    expect(checkReleaseDir(join(REPO, 'upgrade/releases'))).toEqual([]);
+  });
+
+  it('mark every prose step backfilled, citing a nonblank line inside its own release section', () => {
+    for (const version of BACKFILLED) {
+      const heading = CHANGELOG.indexOf(`## ${version}`);
+      const end = CHANGELOG.findIndex((line, i) => i > heading && line.startsWith('## '));
+      for (const step of ledger(version).steps) {
+        expect(step.source, step.id).toMatch(/^CHANGELOG\.md:\d+$/);
+        expect(step.backfilled, step.id).toBe(true);
+        const line = liveLine(version, step.source);
+        expect(line - 1, step.id).toBeGreaterThan(heading);
+        expect(line - 1, step.id).toBeLessThan(end);
+        expect(CHANGELOG[line - 1].trim(), step.id).not.toBe('');
+      }
+    }
+  });
+
+  it('give every look and behavior step a way to find it in consumer code', () => {
+    for (const version of BACKFILLED) {
+      for (const step of ledger(version).steps) {
+        if (step.kind === 'look' || step.kind === 'behavior') {
+          expect(step.detect, step.id).toBeDefined();
+        }
+      }
+    }
+  });
+});
+
+describe('0.17.0', () => {
+  it('records the type ramp as a look step, at the lines hds#450 names (CHANGELOG.md:203-209 today)', () => {
+    const step = byId('0.17.0/look/type-ramp');
+    expect(step).toMatchObject({ kind: 'look', impact: 'look', backfilled: true });
+    const line = liveLine('0.17.0', step.source);
+    expect(line).toBeGreaterThanOrEqual(203);
+    expect(line).toBeLessThanOrEqual(209);
+    expect(step.plain).toMatch(/16px instead of 17px/);
+    expect(step.detect.classes).toContain('text-xs');
+    expect(step.detect.cssVars).toContain('--primitive-typography-size-xs');
+  });
+
+  it('records the Table ARIA structure as a behavior step (CHANGELOG.md:337 today)', () => {
+    const step = byId('0.17.0/behavior/Table-aria-structure');
+    expect(step).toMatchObject({
+      impact: 'behavior',
+      detect: { imports: [{ from: ROOT, names: ['Table'] }], jsx: ['Table'] },
+    });
+    expect(liveLine('0.17.0', step.source)).toBe(337);
+    expect(step.plain).toMatch(/columnheader/);
+  });
+
+  it('deprecates the 21 root pattern imports, for removal in 1.0.0', () => {
+    // CHANGELOG.md 0.20.0 names the 21 when it removes them (hds#389 D6).
+    const patterns = [
+      'ActivityFeed',
+      'AppShell',
+      'AssetImg',
+      'Calendar',
+      'Carousel',
+      'CodeBlock',
+      'CommandPalette',
+      'DocLinkCard',
+      'ErrorPattern',
+      'FileInput',
+      'Form',
+      'Lightbox',
+      'NavItem',
+      'OverflowList',
+      'Page',
+      'Reveal',
+      'SideNav',
+      'Stepper',
+      'Toolbar',
+      'TopNav',
+      'TreeList',
+    ];
+    for (const name of patterns) {
+      const step = byId(`0.17.0/deprecated/${name}`);
+      expect(step, name).toMatchObject({
+        impact: 'none',
+        removeIn: '1.0.0',
+        detect: { imports: [{ from: ROOT, names: [name] }] },
+      });
+      expect(step.plain, name).toContain(`${ROOT}/patterns`);
+    }
+  });
+
+  it('deprecates the six Hds* names for their bare names, for removal in 1.0.0', () => {
+    const bare = {
+      HdsCheckbox: 'Checkbox',
+      HdsRadio: 'Radio',
+      HdsSelect: 'Select',
+      HdsSlider: 'Slider',
+      HdsToggle: 'Toggle',
+      HdsTooltip: 'Tooltip',
+    };
+    for (const [name, to] of Object.entries(bare)) {
+      const step = byId(`0.17.0/deprecated/${name}`);
+      expect(step, name).toMatchObject({
+        removeIn: '1.0.0',
+        detect: { imports: [{ from: ROOT, names: [name] }] },
+      });
+      expect(step.plain, name).toContain(`use ${to},`);
+    }
+  });
+
+  it('deprecates the seven hds#206 spacing aliases, each naming its replacement', () => {
+    // $deprecated in the 0.17.0 tarball's hirobius.tokens.json.
+    const aliases = {
+      'semantic.space.component.gap': 'semantic.space.scale.xs',
+      'semantic.space.component.padding': 'semantic.space.surface.padding',
+      'semantic.space.layout.tight': 'semantic.space.scale.sm',
+      'semantic.space.layout.normal': 'semantic.space.scale.md',
+      'semantic.space.layout.gutter': 'semantic.space.region.gutter',
+      'semantic.space.layout.inset': 'semantic.space.scale.lg',
+      'semantic.space.layout.spacious': 'semantic.space.scale.xl',
+    };
+    for (const [path, to] of Object.entries(aliases)) {
+      const step = byId(`0.17.0/deprecated/${path}`);
+      expect(step, path).toMatchObject({ impact: 'none', removeIn: '1.0.0' });
+      expect(step.detect.cssVars, path).toEqual([`--${path.replaceAll('.', '-')}`]);
+      expect(step.plain, path).toContain(to);
+    }
+  });
+
+  it('holds exactly those 34 deprecations', () => {
+    expect(ledger('0.17.0').steps.filter((s) => s.kind === 'deprecated')).toHaveLength(34);
+  });
+
+  it('records that hds-focus rings now show on every keyboard focus, which no HDS code enabled before', () => {
+    const step = byId('0.17.0/look/hds-focus-ring');
+    expect(step.detect.classes).toEqual(['hds-focus']);
+    expect(step.plain).toMatch(/data-input-modality/);
+  });
+});
+
+describe('0.19.0', () => {
+  it('records the overlay portals as a behavior step (CHANGELOG.md:114 today)', () => {
+    const step = byId('0.19.0/behavior/overlay-portals');
+    expect(step.impact).toBe('behavior');
+    expect(liveLine('0.19.0', step.source)).toBe(114);
+    expect(step.plain).toMatch(/data-hds/);
+    const imported = step.detect.imports.flatMap((i) => i.names);
+    for (const name of ['Dialog', 'AlertDialog', 'Menu', 'Popover', 'Select', 'Tooltip']) {
+      expect(imported, name).toContain(name);
+    }
+  });
+
+  it('records the compact density remap as a look step (CHANGELOG.md:115 today)', () => {
+    const step = byId('0.19.0/look/compact-density');
+    expect(step.impact).toBe('look');
+    expect(liveLine('0.19.0', step.source)).toBe(115);
+    const [source] = step.detect.regex;
+    expect(new RegExp(source).test('<main data-density="compact">')).toBe(true);
+    expect(new RegExp(source).test("root.setAttribute('data-density', 'compact')")).toBe(true);
+    expect(new RegExp(source).test('<main data-density="comfortable">')).toBe(false);
+  });
+
+  it('records the Table density inheritance from the same entry', () => {
+    expect(liveLine('0.19.0', byId('0.19.0/look/Table-density-inherit').source)).toBe(115);
+  });
+});
+
+describe('0.18.0 and 0.19.1', () => {
+  it('hold no step: 0.18.0 only added the hds-patterns-subpath bin, 0.19.1 changed no export, prop or markup', () => {
+    expect(ledger('0.18.0').steps).toEqual([]);
+    expect(ledger('0.19.1').steps).toEqual([]);
+    expect(ledger('0.18.0').summary).toMatch(/hds-patterns-subpath/);
+  });
+});
