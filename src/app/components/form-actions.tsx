@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
-import { Cluster } from './cluster';
+import { Stack } from './stack';
 
 /** @public */
 export interface FormActionsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -42,16 +42,22 @@ export const FormActions = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Form
         style={sticky ? { position: 'sticky', bottom: 0, ...style } : style}
         {...props}
       >
-        <Cluster gap="tight" align="center" justify={destructive ? 'space-between' : 'end'}>
+        <Stack
+          direction="row"
+          wrap="wrap"
+          gap="tight"
+          align="center"
+          justify={destructive ? 'space-between' : 'end'}
+        >
           {destructive ? <div data-slot="destructive">{destructive}</div> : null}
           {/* ml-auto keeps the group right-aligned when the row wraps below the destructive slot. */}
           <div data-slot="group" className="ml-auto">
-            <Cluster gap="tight" align="center" justify="end">
+            <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
               {secondary}
               {primary}
-            </Cluster>
+            </Stack>
           </div>
-        </Cluster>
+        </Stack>
       </div>
     );
   },

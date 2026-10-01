@@ -10,6 +10,8 @@ import { render } from '@testing-library/react';
 import * as icons from '../src/icons';
 import { Ellipsis } from '../src/icons';
 import { IconButton } from '../src/app/components/icon-button';
+import { Button } from '../src/app/components/button';
+import { Icon } from '../src/app/components/icon';
 
 const ROOT = resolve(__dirname, '..');
 const read = (rel: string) => readFileSync(resolve(ROOT, rel), 'utf8');
@@ -62,6 +64,27 @@ describe('./icons subpath', () => {
   it('IconButton renders an svg for an icon from the subpath', () => {
     const { container } = render(<IconButton icon={Ellipsis} label="Row actions" />);
     expect(container.querySelector('svg')).not.toBeNull();
+  });
+
+  it('Button iconOnly renders an svg for an icon from the subpath through Icon', () => {
+    const { container } = render(
+      <Button iconOnly aria-label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />,
+    );
+    const button = container.querySelector('button') as HTMLButtonElement;
+    expect(button.getAttribute('aria-label')).toBe('Row actions');
+    expect(button.querySelector('svg')).not.toBeNull();
+  });
+
+  // The consumer typecheck proves LucideIcon types resolve from dist. IconButton
+  // is slated for deprecation (#389), so the check also runs through Button
+  // iconOnly + Icon, which survives 1.0; the IconButton line stays until then (hds#392).
+  it('smoke-consumer typechecks both IconButton and Button iconOnly with an Icon from ./icons', () => {
+    const smoke = read('scripts/smoke-consumer.mjs');
+    expect(smoke).toContain('<IconButton icon={Ellipsis} label="Row actions" />');
+    expect(smoke).toContain(
+      '<Button iconOnly aria-label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />',
+    );
+    expect(smoke).toMatch(/import \{[^}]*\bIcon\b[^}]*\} from '@hirobius\/design-system';/);
   });
 
   it('documents icon names that collide with HDS components', () => {
