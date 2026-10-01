@@ -16,7 +16,7 @@ const COMMON = `
 Repo: hirobius/hds. FIRST STEP: create your worktree from the snapshot branch so you have today's snapshot: git -C /home/user/hds fetch -q origin claude/dsr-36-figma-snapshot main && git -C /home/user/hds worktree add -B ${BR} ${WT} origin/claude/dsr-36-figma-snapshot && ln -s /home/user/hds/node_modules ${WT}/node_modules. Work ONLY inside ${WT}; do not run pnpm install; never touch /home/user/hds or other worktrees.
 Rules: never read or write .env*; never edit .github/workflows/*; never use --no-verify; never push (orchestrator pushes); never rewrite commits; never run pnpm check:release or deploy; never skip or quarantine a test. Figma: you have NO write access and must not call any Figma MCP tool that writes; you may read the Figma Plugin API documentation via WebFetch (developers.figma.com) if needed. Do NOT bump status.json. Method: /diagnosing-bugs then /tdd.
 Commit message: "<scope>(<area>): <summary>" body explaining the why, then these two trailer lines exactly:
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Co-Authored-By: <the trailer named in the session attribution reminder>
 Claude-Session: https://claude.ai/code/session_01YaJAxDFfxi1XRSGfV8i6ck
 Your final output is data for an orchestrator, not prose.`
 

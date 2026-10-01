@@ -16,7 +16,7 @@ const COMMON = `
 Repo: hirobius/hds, main at ${BASE} (design-system 0.19.1). FIRST STEP: create your worktree if it does not exist: git -C /home/user/hds fetch -q origin main && git -C /home/user/hds worktree add -B ${BR} ${WT} origin/main && ln -s /home/user/hds/node_modules ${WT}/node_modules. Then work ONLY inside ${WT}; never cd to /home/user/hds or any other worktree; do not run pnpm install.
 Rules: never read or write .env* files; never edit .github/workflows/*; never use --no-verify; never push (the orchestrator pushes); never rewrite commits on the branch; never run pnpm check:release, deploy commands or bulk pnpm lint:fix; never skip, disable or quarantine a test; never touch Figma. Method: /implement + /tdd (red test first). Do NOT bump status.json (orchestrator does it at merge time).
 Commit message: "<scope>(<area>): <summary>" body explaining the why, then these two trailer lines exactly:
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Co-Authored-By: <the trailer named in the session attribution reminder>
 Claude-Session: https://claude.ai/code/session_01YaJAxDFfxi1XRSGfV8i6ck
 Your final output is data for an orchestrator, not prose: fill the structured output honestly, including gates you could not run and why.`
 
