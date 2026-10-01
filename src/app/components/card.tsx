@@ -50,23 +50,21 @@ import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Text } from './text';
 import { resolvePaddingValue, type PaddingOption } from './surface-padding';
+import { LAYOUT_GAP_NAMES, resolveSpacingValue, type SpacingVocabulary } from './box-sx';
 
 // ── Legacy padding/gap helpers (retained for backward compat) ─────────────────
 
 type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof hds.space;
 
-const GAP_MAP: Record<string, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
-
-function resolveGap(g: GapOption): string {
-  if (typeof g === 'string' && g in GAP_MAP) return GAP_MAP[g];
-  const fromSpace = (hds.space as Record<string, unknown>)[g as string];
-  return (fromSpace as string) ?? (g as string);
-}
+/**
+ * Card's `gap`: the four layout-gap names, plus the `hds.space` keys. Open,
+ * as it was before hds#404: any other string and any number pass through,
+ * a number as raw px.
+ */
+const CARD_GAP = {
+  names: { ...(hds.space as Record<string, string>), ...LAYOUT_GAP_NAMES },
+  numbers: 'raw',
+} satisfies SpacingVocabulary;
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 
@@ -188,7 +186,7 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
   const Comp = (as ?? 'div') as React.ElementType;
   const resolvedPadding = noPadding ? 'none' : padding;
   const paddingValue = resolvePaddingValue(resolvedPadding);
-  const gapValue = resolvedPadding === 'none' ? '0' : resolveGap(gap);
+  const gapValue = resolvedPadding === 'none' ? '0' : resolveSpacingValue(gap, CARD_GAP);
 
   return (
     <Comp

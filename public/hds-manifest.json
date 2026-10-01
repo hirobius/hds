@@ -1767,6 +1767,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
@@ -4113,6 +4115,8 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/card-progress.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/destructive-section.tsx",
@@ -10343,6 +10347,8 @@
       },
       "consumers": [
         "src/app/components/bleed.test.tsx",
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/stories/bleed.stories.tsx"
       ],
       "tokenMapping": {},
@@ -10417,6 +10423,8 @@
       },
       "consumers": [
         "src/app/components/bleed.tsx",
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/center.test.tsx",
         "src/app/components/container.tsx",
         "src/stories/button-group.stories.tsx",
@@ -10494,6 +10502,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/cluster.test.tsx",
         "src/app/components/switcher.tsx",
         "src/stories/cluster.stories.tsx",
@@ -10582,6 +10592,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/cover.test.tsx",
         "src/app/components/stacked-card-rail.tsx",
         "src/stories/cover.stories.tsx",
@@ -10738,6 +10750,8 @@
       },
       "consumers": [
         "src/app/components/app-shell.tsx",
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/sidebar.test.tsx",
         "src/app/data/nav-model.ts",
         "src/stories/app-shell.stories.tsx",
@@ -10826,6 +10840,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/switcher.test.tsx",
         "src/stories/switcher.stories.tsx"
       ],

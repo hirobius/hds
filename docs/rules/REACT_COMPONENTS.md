@@ -40,6 +40,8 @@ Do not use `technical` for status tags, categories, dates, user names, or genera
 
 `surface.padding` is the default inset for breathable shared surfaces (tenants may retune it per brand and density; it replaces the deprecated `component.padding`, hds#206). Use it for cards, forms, and panels; reserve `scale.xs` (was `component.gap`) for the 8px label/input rhythm and `subgrid.gap` for micro-spacing only.
 
+**Spacing is the t-shirt scale**, `semantic.space.scale.{xs,sm,md,lg,xl}`: 8/16/24/32/48px at the default density, 6/12/20/24/40px under `data-density="compact"` (hds#206). Box `sx` spacing shorthands (`m`, `mb`, `p`, `gap`, …) take the steps by name (`sx={{ p: 'md' }}`); a raw integer there is a count of 4px units and fails `check-spacing-vocabulary`, and Box `sx`'s `'tight'` to `'spacious'` are deprecated. The layout components' `gap`, `amount` and `gutter` (Cluster, Grid, Sidebar, Cover, Switcher, Bleed, Center, Card, Stack) still take `'tight'` | `'normal'` | `'inset'` | `'spacious'`, which read `sm` to `xl`. A component resolves those names through `resolveSpacingValue` with `LAYOUT_GAP` or `LAYOUT_GAP_NAMES` from `src/app/components/box-sx.ts`, never its own map: `check-layout-gap-vocabulary` fails a second copy (hds#404). [MIGRATIONS.md](../../MIGRATIONS.md) maps the old names to the steps.
+
 ## Forbidden Patterns — Compositional Guardrails
 
 ## UI Integrity Constitution
