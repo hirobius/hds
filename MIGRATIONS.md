@@ -505,9 +505,10 @@ after the run.
 
 ### StatusDot is deprecated (removed in 0.21.0, hds#395)
 
-StatusDot stays in 0.20.0 and is deprecated: its JSDoc carries `@deprecated`
-with `@removeIn 0.21.0`, and in a development build it logs one
-`[HDS deprecation]` console warning. Its survivor is `<Badge dot>`: `tone` (all
+StatusDot stays in 0.20.0 and is deprecated: its JSDoc and StatusDotProps'
+carry `@deprecated` with `@removeIn 0.21.0`, so an editor strikes both
+through, and in a development build it logs one `[HDS deprecation]` console
+warning. Its survivor is `<Badge dot>`: `tone` (all
 six), `size` (`sm`, `md` by default, `lg`) and `label` (a `role="status"` with
 that `aria-label`; decorative without one) are the same, and so is the dot.
 

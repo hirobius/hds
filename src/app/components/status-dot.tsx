@@ -35,7 +35,13 @@ const statusDotVariants = /* @__PURE__ */ cva('inline-block shrink-0 rounded-ful
 
 type StatusDotVariantProps = VariantProps<typeof statusDotVariants>;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use `BadgeProps` with `dot`: `tone`, `size` and `label` are the
+ * same. Badge takes no `style`, so move a `style` to a wrapper or a
+ * `className` first (MIGRATIONS.md, hds#395).
+ * @removeIn 0.21.0
+ */
 export interface StatusDotProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>, StatusDotVariantProps {
   /**
