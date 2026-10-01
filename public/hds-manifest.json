@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T22:26:53.989Z",
+  "generated": "2026-10-01T04:33:03.030Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -640,12 +640,7 @@
     }
   },
   "inventory": {
-    "uncategorized": [
-      {
-        "name": "HdsLegacyTokenGovernancePanel",
-        "filePath": "src/docs-tooling/lab/legacy-token-detail.tsx"
-      }
-    ],
+    "uncategorized": [],
     "namespaceViolations": []
   },
   "agentEntrypoint": "llms.txt",
@@ -762,7 +757,6 @@
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/toast.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/stories/alert-dialog.stories.tsx",
         "src/stories/alert.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
@@ -914,7 +908,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/animated-label.tsx",
         "src/stories/cinematic-link.stories.tsx"
       ],
       "tokenMapping": {},
@@ -964,7 +957,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/index.ts",
         "src/stories/code-block.stories.tsx"
       ],
@@ -1278,7 +1270,6 @@
       },
       "consumers": [
         "src/app/components/metadata-list.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/stories/divider.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
       ],
@@ -1516,7 +1507,6 @@
       "figmaLink": null,
       "consumers": [
         "src/app/components/doc-link-card.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
         "src/stories/doc-link-card.stories.tsx"
       ],
@@ -1791,8 +1781,6 @@
         "src/app/components/stack.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
-        "src/docs-tooling/shell-controls.tsx",
-        "src/docs-tooling/sketch-controls.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/foundation-swatch.stories.tsx",
         "src/stories/grid.stories.tsx",
@@ -1952,21 +1940,18 @@
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/toast.tsx",
-        "src/app/components/tokenTableUtils.ts",
         "src/app/components/tokenUtils.ts",
-        "src/app/data/hdsEditorial.tsx",
-        "src/docs-tooling/lab/legacy-token-detail.tsx",
-        "src/docs-tooling/shell-controls.tsx",
-        "src/docs-tooling/theme-toggle.tsx",
         "src/stories/activity-feed.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/icon.stories.tsx",
@@ -2124,9 +2109,6 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/stepper-field.tsx",
-        "src/app/data/hdsEditorial.tsx",
-        "src/docs-tooling/page-footer.tsx",
-        "src/docs-tooling/shell-controls.tsx",
         "src/stories/data-table-section.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/lib/usage-description.test.ts",
@@ -2331,7 +2313,6 @@
       "consumers": [
         "src/app/components/inline-code.test.tsx",
         "src/app/components/metadata-list.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/stories/inline-code.stories.tsx",
         "src/stories/metadata-list.stories.tsx"
       ],
@@ -2411,7 +2392,6 @@
         "src/app/components/hover-card.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/text.tsx",
-        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/stories/inline-link.stories.tsx",
         "src/stories/lib/usage-description.test.ts"
       ],
@@ -2505,7 +2485,6 @@
         "src/app/components/stepper-field.tsx",
         "src/app/components/textarea.tsx",
         "src/app/components/time-input.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
         "src/stories/date-input.stories.tsx",
@@ -3015,9 +2994,7 @@
         "src/app/components/radio.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/tabs.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.ts",
-        "src/docs-tooling/TokenDisplayToggle.tsx",
         "src/stories/segmented-control.stories.tsx"
       ],
       "tokenMapping": {
@@ -3275,14 +3252,8 @@
         "src/app/components/surface.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
         "src/app/layouts/DocLayout.tsx",
-        "src/docs-tooling/controls-panel.tsx",
-        "src/docs-tooling/doc-page-header.tsx",
-        "src/docs-tooling/lab/token-collection-list.tsx",
-        "src/docs-tooling/shell-controls.tsx",
-        "src/docs-tooling/sketch-controls.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
@@ -3560,10 +3531,7 @@
       "consumers": [
         "src/app/components/data-table-section.tsx",
         "src/app/components/table.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/data/manifest-types.ts",
-        "src/docs-tooling/api-reference.tsx",
-        "src/docs-tooling/propTableUtils.tsx",
         "src/stories/data-table-section.stories.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx",
@@ -3715,7 +3683,6 @@
         "src/app/components/text.tsx",
         "src/app/components/tokenizer.tsx",
         "src/app/components/visually-hidden.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/static-primitives.stories.tsx",
         "src/stories/tag.stories.tsx"
@@ -3855,15 +3822,8 @@
         "src/app/components/code-block.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/side-nav.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/app/lib/hds-search.ts",
-        "src/app/stores/mobiusStore.ts",
-        "src/docs-tooling/health-rail.tsx",
-        "src/docs-tooling/lab/legacy-token-detail.tsx",
-        "src/docs-tooling/lab/legacy-token-list.tsx",
-        "src/docs-tooling/lab/token-collection-list.tsx",
-        "src/docs-tooling/TokenDisplayToggle.tsx",
         "src/index.ts",
         "src/stories/activity-feed.stories.tsx",
         "src/stories/card.stories.tsx",
@@ -4038,21 +3998,11 @@
         "src/app/components/stepper-field.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
-        "src/app/components/tokenTableUtils.ts",
         "src/app/components/tokenUtils.ts",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/context/hds-theme.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
-        "src/docs-tooling/api-reference.tsx",
-        "src/docs-tooling/component-preview.tsx",
-        "src/docs-tooling/controls-panel.tsx",
-        "src/docs-tooling/doc-page-header.tsx",
-        "src/docs-tooling/lab/token-list.tsx",
-        "src/docs-tooling/preview-frame.tsx",
-        "src/docs-tooling/shell-controls.tsx",
-        "src/docs-tooling/sketch-controls.tsx",
         "src/stories/card.stories.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/grid.stories.tsx",
@@ -4183,7 +4133,6 @@
         "src/app/components/status-tile.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/card.stories.tsx",
         "src/stories/doc-link-card.stories.tsx",
@@ -4831,7 +4780,6 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
-        "src/app/components/animated-label.tsx",
         "src/app/components/card.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/date-input.tsx",
@@ -4846,12 +4794,10 @@
         "src/app/components/nav-item.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
-        "src/app/components/tokenTableUtils.ts",
         "src/app/components/toolbar.test.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
-        "src/docs-tooling/preview-frame.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/disclosure.stories.tsx",
         "src/stories/error-boundary.stories.tsx",
@@ -5228,7 +5174,6 @@
       "consumers": [
         "src/app/components/activity-feed.tsx",
         "src/app/components/alert-dialog.tsx",
-        "src/app/components/animated-label.tsx",
         "src/app/components/button-group.test.tsx",
         "src/app/components/button-group.tsx",
         "src/app/components/button.test.tsx",
@@ -5259,10 +5204,6 @@
         "src/app/components/toolbar.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/docs-tooling/api-reference.tsx",
-        "src/docs-tooling/doc-page-header.test.tsx",
-        "src/docs-tooling/sketch-controls.tsx",
-        "src/docs-tooling/variant-strip.tsx",
         "src/form/index.ts",
         "src/mui/index.ts",
         "src/stories/alert-dialog.stories.tsx",
@@ -5588,7 +5529,6 @@
       },
       "consumers": [
         "src/app/components/data-table-section.tsx",
-        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/stories/data-table-section.stories.tsx",
         "src/stories/empty-state.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
@@ -6238,9 +6178,7 @@
         "src/app/components/card.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/tag.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/mui/index.ts",
         "src/stories/badge.stories.tsx",
         "src/stories/code-block.stories.tsx",
@@ -6488,7 +6426,6 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
         "src/stories/asset-img.stories.tsx"
       ],
@@ -7004,11 +6941,11 @@
         "src/app/components/select.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
-        "src/docs-tooling/lab/legacy-token-detail.tsx",
         "src/index.ts",
         "src/stories/checkbox.stories.tsx",
         "src/stories/combobox.stories.tsx",
+        "src/stories/lib/open-listbox.test.tsx",
+        "src/stories/lib/open-listbox.ts",
         "src/stories/select.stories.tsx"
       ],
       "tokenMapping": {
@@ -7020,8 +6957,20 @@
         "radius": "semantic.radius.action"
       },
       "props": {
+        "aria-describedby": {
+          "type": "string",
+          "optional": true
+        },
+        "aria-invalid": {
+          "type": "boolean",
+          "optional": true
+        },
         "container": {
           "type": "HTMLElement",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
           "optional": true
         },
         "label": {
@@ -7057,7 +7006,8 @@
       ],
       "storyIds": [
         "primitives-select--default",
-        "primitives-select--no-label"
+        "primitives-select--no-label",
+        "primitives-select--open"
       ],
       "usage": {
         "when": "Choose one value from a short list of options in a form field.",
@@ -7197,10 +7147,8 @@
         "src/app/components/radio.tsx",
         "src/app/components/toggle-button.tsx",
         "src/app/components/toggle.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/docs-tooling/shell-controls.tsx",
         "src/index.ts",
         "src/stories/toggle-button.stories.tsx",
         "src/stories/toggle.stories.tsx"
@@ -7811,12 +7759,22 @@
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/stories/combobox.stories.tsx",
+        "src/stories/lib/open-listbox.test.tsx",
+        "src/stories/lib/open-listbox.ts",
         "src/stories/popover.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "aria-describedby": {
+          "type": "string",
+          "optional": true
+        },
+        "aria-invalid": {
+          "type": "boolean",
+          "optional": true
+        },
         "aria-label": {
           "type": "string",
           "optional": true
@@ -7832,6 +7790,10 @@
         "emptyMessage": {
           "type": "string",
           "default": "No results"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
         },
         "onChange": {
           "type": "(value: string) => void"
@@ -7864,6 +7826,7 @@
         "primitives-combobox--default",
         "primitives-combobox--disabled-trigger",
         "primitives-combobox--few-options",
+        "primitives-combobox--open",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
       ],
@@ -7927,7 +7890,6 @@
       "consumers": [
         "src/app/components/form-actions.tsx",
         "src/app/components/form.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts",
@@ -7973,7 +7935,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/select.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx",
         "src/stories/form.stories.tsx",
@@ -8867,7 +8831,6 @@
         "src/app/components/image-lightbox.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
         "src/stories/asset-img.stories.tsx",
         "src/stories/image-lightbox.stories.tsx"
@@ -10717,7 +10680,6 @@
       },
       "consumers": [
         "src/app/components/frame.test.tsx",
-        "src/app/components/mobius-distortion.ts",
         "src/stories/frame.stories.tsx"
       ],
       "tokenMapping": {},
@@ -11988,7 +11950,6 @@
         "src/app/components/hover-card.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
         "src/stories/hds-tooltip.stories.tsx"
       ],
@@ -12064,7 +12025,6 @@
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/docs-tooling/shell-controls.tsx",
         "src/stories/context-menu.stories.tsx",
         "src/stories/menu.stories.tsx"
       ],
@@ -12558,7 +12518,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/page-header.tsx",
-      "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces. Distinct from the docs-only page header in `src/docs-tooling`.",
+      "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -13247,210 +13207,6 @@
       "sourcePath": "src/app/components/HistoryCard.tsx",
       "figmaLink": null
     },
-    "ComponentPreview": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/component-preview.tsx",
-      "description": "ComponentPreview - framed preview harness for utility and lab specimens.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "ComponentPreview",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/data/hdsEditorial.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "AnimatedLabel": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/animated-label.tsx",
-      "description": "AnimatedLabel — animated text slot for use inside interactive surfaces. Renders the shared CinematicLink text treatment (slide-up reveal + underline draw) as a composable span, not a standalone anchor. Designed to slot inside HdsButton asChild or any other interactive surface that owns the hover group. Usage: add className=\"group\" to the parent HdsButton (or any ancestor), then wrap the label text in <AnimatedLabel>. The group-hover classes activate on CSS :hover of the parent group element — no JS hover state needed. level. The parent surface (button, anchor, etc.) owns semantic role, focus, and pointer events. AnimatedLabel only owns the visual animation layer.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "AnimatedLabel",
-        "sizing": "compact"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "ControlsPanel": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/controls-panel.tsx",
-      "description": "shared shell composition documented alongside the HDS doc utilities.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "ControlsPanel",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/data/hdsEditorial.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "ControlsSection": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/controls-panel.tsx",
-      "description": "shared shell composition documented alongside the HDS doc utilities.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "ControlsSection",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/data/hdsEditorial.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "HdsMobileTopBar": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/shell-controls.tsx",
-      "description": "shell-only extraction for HDS navigation chrome, not a consumer-facing reusable HDS component.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "HdsMobileTopBar",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "PreviewFrame": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/docs-tooling/preview-frame.tsx",
-      "description": "PreviewFrame - documentation preview shell for storefront component demos.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "PreviewFrame",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/docs-tooling/demo-block.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "HdsSidebarUtilityButton": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/shell-controls.tsx",
-      "description": "shell-only extraction for HDS navigation chrome, not a consumer-facing reusable HDS component.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "HdsSidebarUtilityButton",
-        "sizing": "compact"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "ImageLightbox": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -13475,146 +13231,6 @@
         "exportName": "ImageLightbox",
         "sizing": "panel"
       },
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "SketchButton": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/sketch-controls.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "SketchButton",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "SketchCheckbox": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/sketch-controls.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "SketchCheckbox",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "SketchPanelToggle": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/sketch-controls.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "SketchPanelToggle",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "SketchRange": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/sketch-controls.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "SketchRange",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "SketchTextarea": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/docs-tooling/sketch-controls.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "SketchTextarea",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
       "tier": "utility",
       "docExempt": true,
       "variantAxes": [],
@@ -13652,209 +13268,6 @@
       "docExempt": true,
       "figmaLink": null
     },
-    "DocPageSpec": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/docs-tooling/DocPageSpec.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "DocPageSpec",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "TokenDisplayToggle": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/docs-tooling/TokenDisplayToggle.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "TokenDisplayToggle",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/data/hdsEditorial.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
-    "HdsLegacyTokenGovernancePanel": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/docs-tooling/lab/legacy-token-detail.tsx",
-      "description": "LegacyTokenDetail - lab-facing token inspection panels used to maintain legacy token views.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "HdsLegacyTokenGovernancePanel",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/docs-tooling/health-rail.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "isDark": {
-          "type": "boolean"
-        },
-        "onSelectToken": {
-          "type": "(token: FlatToken) => void",
-          "optional": true
-        },
-        "showHeading": {
-          "type": "boolean",
-          "default": true
-        },
-        "token": {
-          "type": "FlatToken"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "utility",
-      "docExempt": false,
-      "figmaLink": null
-    },
-    "LegacyTokenList": {
-      "category": "Lab",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/docs-tooling/lab/legacy-token-list.tsx",
-      "description": "LegacyTokenList - legacy token grouping list retained for lab-side maintenance workflows.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "LegacyTokenList",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {
-        "isDark": {
-          "type": "boolean"
-        },
-        "onSelect": {
-          "type": "(token: FlatToken) => void"
-        },
-        "selectedPath": {
-          "type": "string"
-        },
-        "tier": {
-          "type": "Tier"
-        },
-        "tokens": {
-          "type": "FlatToken[]"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "utility",
-      "docExempt": false,
-      "figmaLink": null,
-      "deprecated": "2026-05-01 (10d-11): superseded by the headless scan architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md."
-    },
-    "TokenCollectionList": {
-      "category": "Lab",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/docs-tooling/lab/token-collection-list.tsx",
-      "description": "TokenCollectionList - grouped token inventory list for lab and explorer maintenance.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "TokenCollectionList",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/docs-tooling/lab/legacy-token-list.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "onSelect": {
-          "type": "(token: FlatToken) => void"
-        },
-        "sections": {
-          "type": "TokenCollectionSection[]"
-        },
-        "selectedPath": {
-          "type": "string"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "utility",
-      "docExempt": false,
-      "figmaLink": null,
-      "deprecated": "2026-05-01 (10d-11): superseded by the headless scan architecture per TASKS.md \"Stale / Superseded\" → \"Live token inspector UI\". Pruning deferred until /hds/tokens is retired or rewritten — see docs/archive/work/2026-05-01-token-explorer-prune-deferred.md."
-    },
-    "TokenList": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/docs-tooling/lab/token-list.tsx",
-      "description": "TokenList - searchable token rail for interactive lab-side token inspection.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "TokenList",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "ErrorBoundary": {
       "category": "Uncategorized",
       "categorySource": "internal-jsdoc",
@@ -13879,135 +13292,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "figmaLink": null
-    },
-    "ApiReference": {
-      "category": "Utilities",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/docs-tooling/api-reference.tsx",
-      "description": "ApiReference — collapsed <details> rendering of a component's public API. Returns `null` when: - The component is missing from the manifest (nothing to render). - The component is a template and `forceForTemplate` is not set. - The component has no props AND no slots (genuinely empty surface).",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "ApiReference",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "DocPageHeader": {
-      "category": "Layout",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": false,
-      "filePath": "src/docs-tooling/doc-page-header.tsx",
-      "description": "DocPageHeader — standardized header zone mounted at the top of every primitive / pattern / template doc page. Projected from the live HDS manifest; the unit `9d-9` batch refactor wires this component into the doc routes — this file only CREATES the surface. 9d-4 contract (from `docs/ai/orchestration.json`): - H1: component name - Lede: single-line summary derived from `componentSpec.description` (truncated at the first newline / sentence break for the header zone; the full description still flows into the doc body downstream). - Status badge: Stable / Beta — derived from a new optional `componentSpec.stability` field (additive, schema 9d-4). When absent, the default falls back to the unit-spec rule: primitives → 'stable'; patterns and templates → 'beta' when they lack `slots[]` or carry propConstraints warnings, otherwise 'stable'. - Tier chip: primitive / pattern / template / utility (manifest field). - Source link: GitHub blob URL projected from `componentSpec.filePath` against the repo's origin remote (hirobius/adrian-milsap, branch `main` for canonical permalinks). - Figma link: rendered when `componentSpec.figmaUrl` is non-null. Surface rules (component-zone CLAUDE.md): - Heavy prop restriction — one slot, no business logic. - Theming via CSS variables / role tokens only (no inline hex). - Composes Stack rather than re-implementing layout primitives. Anti-goals: - Not a doc-shell — `DocShell` already owns the wordmark, search, theme-toggle, and rail nav. This component lives INSIDE the content column, not the header bar. - Does not render badges as decorative stickers next to prose; they sit in a dedicated metadata row below the H1, per CLAUDE.md.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "DocPageHeader",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/docs-tooling/doc-page-header.test.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "ThemeToggle": {
-      "category": "Layout",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": false,
-      "filePath": "src/docs-tooling/theme-toggle.tsx",
-      "description": "ThemeToggle — System / Light / Dark theme dropdown for the doc shell. 9d-3 baseline: a header-slot dropdown with three options: - System — follow `prefers-color-scheme`, react live to OS changes. - Light — force light mode. - Dark — force dark mode. Persistence: - Stored in localStorage under `hds-theme-mode` ('system' | 'light' | 'dark'). - Mirrored to the legacy `hds-theme` key ('light' | 'dark') so the existing ThemeContext binary toggle (if mounted) stays in sync without a hard dependency between the two. Application: - Sets `data-theme=\"light\"` or `data-theme=\"dark\"` on `<html>` so the 8e-2 `role.*` alias layer (theme-aware CSS vars) flips automatically. - Also toggles `<html>.dark` for parity with Tailwind's class-based dark variant (matching the convention already used in ThemeContext). Dependencies: - Zero new npm deps. Native button + click-outside listener. - SVG icons inlined (Sun / Moon / Monitor) — no icon-library dep added. Slot: - Renders into the `data-hds-slot=\"theme-toggle\"` zone in DocShell.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "ThemeToggle",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/context/ThemeContext.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "VariantStrip": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/docs-tooling/variant-strip.tsx",
-      "description": "VariantStrip renders a horizontal family strip of component specimens with short labels. Designed for component docs to show all variants, sizes, or tones in a single scannable row.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "VariantStrip",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "DemoBlock": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/docs-tooling/demo-block.tsx",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "DemoBlock",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
-    },
-    "PageFooter": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/docs-tooling/page-footer.tsx",
-      "description": "PageFooter — minimal page footer rendered by the route shell. Currently houses a binary light/dark theme toggle on the left, with the footer owning its own bottom breathing room so the toggle never pins to the viewport edge. Add elements here as the page footer grows — keeping the shape in one place so every HDSLayout-mounted page gets a consistent footer surface without per-page rendering.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "PageFooter",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": []
     },
     "ExpandTooltip": {
       "category": "Internal",
@@ -14989,6 +14273,13 @@
         "type": "dimension",
         "description": "96px size step.",
         "value": "96px"
+      },
+      {
+        "path": "primitive.size.120",
+        "cssVar": "--primitive-size-120",
+        "type": "dimension",
+        "description": "120px size step. Backs semantic.size.tile.",
+        "value": "120px"
       },
       {
         "path": "primitive.size.interactive.min",
@@ -16314,6 +15605,14 @@
         "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.tile",
+        "cssVar": "--semantic-size-tile",
+        "type": "dimension",
+        "description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403).",
+        "alias": "{primitive.size.120}",
+        "resolvedValue": "120px"
       },
       {
         "path": "semantic.size.row.compact",

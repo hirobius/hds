@@ -59,6 +59,15 @@ export interface ComboboxProps {
   emptyMessage?: string;
   /** Accessible label for the trigger (when not labelled by a <Field>). */
   'aria-label'?: string;
+  /**
+   * Id of the trigger, so a `<label for>` names it. `FormField` sets it, with
+   * `aria-describedby` and `aria-invalid`.
+   */
+  id?: string;
+  /** Ids of the elements that describe the trigger (helper text, error). */
+  'aria-describedby'?: string;
+  /** Marks the trigger invalid, for example while the field shows an error. */
+  'aria-invalid'?: boolean;
   className?: string;
   disabled?: boolean;
 }
@@ -74,6 +83,9 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       searchPlaceholder = 'Search…',
       emptyMessage = 'No results',
       'aria-label': ariaLabel,
+      id,
+      'aria-describedby': ariaDescribedBy,
+      'aria-invalid': ariaInvalid,
       className,
       disabled = false,
     },
@@ -85,8 +97,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
     const baseId = React.useId();
     const listId = `${baseId}-list`;
     // Names the open popover and the listbox inside it (hds#399): the field
-    // label, or the placeholder when the field has none.
-    const popupName = ariaLabel ?? placeholder;
+    // label, or the placeholder when the field has none or it is empty (hds#408).
+    const popupName = ariaLabel || placeholder;
 
     const selected = options.find((o) => o.value === value) ?? null;
     const filtered = React.useMemo(() => {
@@ -135,12 +147,15 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
         <Popover.Anchor asChild>
           <button
             ref={ref}
+            id={id}
             type="button"
             role="combobox"
             aria-expanded={open}
             aria-haspopup="listbox"
             aria-controls={open ? listId : undefined}
             aria-label={ariaLabel}
+            aria-describedby={ariaDescribedBy}
+            aria-invalid={ariaInvalid}
             disabled={disabled}
             onClick={() => setOpen((o) => !o)}
             className={cn(
@@ -190,50 +205,55 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
               'outline-none placeholder:text-muted-foreground',
             )}
           />
+          {/* Each <li> is role="none": the listbox, not a list item, is the
+              accessibility-tree parent of every option, so options carry their
+              real position and set size (hds#407). */}
           <ul
             id={listId}
             role="listbox"
             aria-label={popupName}
-            className="max-h-60 overflow-y-auto p-1"
+            className={cn('max-h-60 overflow-y-auto', filtered.length > 0 && 'p-1')}
           >
-            {filtered.length === 0 ? (
-              <li className="px-2 py-6 text-center text-sm text-muted-foreground">
-                {emptyMessage}
-              </li>
-            ) : (
-              filtered.map((option, i) => {
-                const isSelected = option.value === value;
-                const isActive = i === activeIndex;
-                return (
-                  <li key={option.value}>
-                    <button
-                      type="button"
-                      id={`${baseId}-opt-${option.value}`}
-                      role="option"
-                      aria-selected={isSelected}
-                      data-active={isActive ? 'true' : undefined}
-                      disabled={option.disabled}
-                      onMouseEnter={() => setActiveIndex(i)}
-                      onClick={() => commit(option)}
-                      className={cn(
-                        'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
-                        'data-[active=true]:bg-accent data-[active=true]:text-accent-foreground',
-                        'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
-                        'disabled:pointer-events-none disabled:opacity-50',
-                      )}
-                    >
-                      <span className="flex size-4 items-center justify-center">
-                        {isSelected ? (
-                          <Icon icon={Check} size="small" color="currentColor" aria-hidden />
-                        ) : null}
-                      </span>
-                      <span className="truncate">{option.label}</span>
-                    </button>
-                  </li>
-                );
-              })
-            )}
+            {filtered.map((option, i) => {
+              const isSelected = option.value === value;
+              const isActive = i === activeIndex;
+              return (
+                <li key={option.value} role="none">
+                  <button
+                    type="button"
+                    id={`${baseId}-opt-${option.value}`}
+                    role="option"
+                    aria-selected={isSelected}
+                    data-active={isActive ? 'true' : undefined}
+                    disabled={option.disabled}
+                    onMouseEnter={() => setActiveIndex(i)}
+                    onClick={() => commit(option)}
+                    className={cn(
+                      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
+                      'data-[active=true]:bg-accent data-[active=true]:text-accent-foreground',
+                      'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
+                      'disabled:pointer-events-none disabled:opacity-50',
+                    )}
+                  >
+                    <span className="flex size-4 items-center justify-center">
+                      {isSelected ? (
+                        <Icon icon={Check} size="small" color="currentColor" aria-hidden />
+                      ) : null}
+                    </span>
+                    <span className="truncate">{option.label}</span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
+          {/* Beside the listbox, not in it: a listbox holding text but no
+              option fails axe aria-required-children (hds#407). m-1 stands in
+              for the empty listbox's padding, so the box is unchanged. */}
+          {filtered.length === 0 ? (
+            <p className="m-1 px-2 py-6 text-center text-sm text-muted-foreground">
+              {emptyMessage}
+            </p>
+          ) : null}
         </Popover.Content>
       </Popover>
     );

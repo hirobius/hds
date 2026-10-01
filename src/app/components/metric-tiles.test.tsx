@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import * as React from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
@@ -6,6 +8,14 @@ import { MetricTile, MetricTiles } from './metric-tiles';
 afterEach(cleanup);
 
 const TONES = ['neutral', 'success', 'warning', 'danger', 'info'] as const;
+
+const tokensCss = readFileSync(resolve(__dirname, '../../styles/tokens.css'), 'utf8');
+
+/** Value of the first `prop: value;` declaration in generated tokens.css. */
+function cssDeclaration(prop: string): string | null {
+  const match = tokensCss.match(new RegExp(`${prop}:\\s*([^;]+);`));
+  return match ? match[1].trim() : null;
+}
 
 function tileMinHeight(ui: React.ReactElement) {
   const { container, unmount } = render(ui);
@@ -26,6 +36,13 @@ describe('MetricTile', () => {
     }
     expect(heights.size).toBe(1);
     expect([...heights][0]).not.toBe('');
+  });
+
+  it('takes that min-height from the semantic tile size token, which resolves to 120px', () => {
+    expect(tileMinHeight(<MetricTile label="Open" value="12" />)).toBe('var(--semantic-size-tile)');
+    // Same 120px the tile had as calc(96 + 24) from two primitive steps (hds#403).
+    expect(cssDeclaration('--semantic-size-tile')).toBe('var(--primitive-size-120)'); // tier-ok: reads the semantic token's declaration in generated tokens.css; its primitive alias is the tier contract
+    expect(cssDeclaration('--primitive-size-120')).toBe('120px');
   });
 
   it('renders label, value and sub', () => {
