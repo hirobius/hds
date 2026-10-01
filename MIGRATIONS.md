@@ -35,13 +35,13 @@ Token renames live in [TOKEN_MIGRATION.md](TOKEN_MIGRATION.md).
 
 ```bash
 # Preview what would change, writes nothing
-npx hds-patterns-subpath --root . --dry-run
+npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root . --dry-run
 
 # CI guard: exit 1 while any root pattern import remains
-npx hds-patterns-subpath --root . --check
+npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root . --check
 
 # Rewrite in place
-npx hds-patterns-subpath --root .
+npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .
 ```
 
 Other named imports stay on the root. Aliases (`SideNav as Nav`), `type`
@@ -138,118 +138,127 @@ the one consumer that imports components, pins a caret range below 0.20, so
 nothing breaks until it upgrades; run the codemods first.
 
 ```bash
-# Preview, then rewrite in place (both need the package at 0.17 or later)
-npx hds-patterns-subpath --root . --dry-run
-npx hds-prefix --root . --dry-run
-npx hds-patterns-subpath --root .
-npx hds-prefix --root .
+# Preview, then rewrite in place. `-p` runs the bins from the 0.20 package
+# (hds-prefix first ships in 0.20.0), so npx never looks the bin name up on
+# its own in the registry. Works before or after you upgrade.
+npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root . --dry-run
+npx -p @hirobius/design-system@^0.20.0 hds-prefix --root . --dry-run
+npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .
+npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .
 ```
+
+After upgrading, the installed copies run without a download:
+`pnpm exec hds-prefix --root .`, or
+`node node_modules/@hirobius/design-system/codemods/hds-prefix.mjs --root .`.
 
 ### Pattern components leave the root
 
 The 21 pattern modules are no longer re-exported from the package root (hds#254).
 Every name they exported is unchanged on `@hirobius/design-system/patterns`.
 
-| Removed from `@hirobius/design-system` | Use instead                                                         | Codemod                             |
-| -------------------------------------- | ------------------------------------------------------------------- | ----------------------------------- |
-| `activityAvatarVariants`               | `activityAvatarVariants` from `@hirobius/design-system/patterns`    | `npx hds-patterns-subpath --root .` |
-| `ActivityEvent`                        | `ActivityEvent` from `@hirobius/design-system/patterns`             | `npx hds-patterns-subpath --root .` |
-| `ActivityFeed`                         | `ActivityFeed` from `@hirobius/design-system/patterns`              | `npx hds-patterns-subpath --root .` |
-| `ActivityFeedProps`                    | `ActivityFeedProps` from `@hirobius/design-system/patterns`         | `npx hds-patterns-subpath --root .` |
-| `ActivityStatus`                       | `ActivityStatus` from `@hirobius/design-system/patterns`            | `npx hds-patterns-subpath --root .` |
-| `ActivityTone`                         | `ActivityTone` from `@hirobius/design-system/patterns`              | `npx hds-patterns-subpath --root .` |
-| `activityToneVariants`                 | `activityToneVariants` from `@hirobius/design-system/patterns`      | `npx hds-patterns-subpath --root .` |
-| `AppShell`                             | `AppShell` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `AppShellProps`                        | `AppShellProps` from `@hirobius/design-system/patterns`             | `npx hds-patterns-subpath --root .` |
-| `appShellVariants`                     | `appShellVariants` from `@hirobius/design-system/patterns`          | `npx hds-patterns-subpath --root .` |
-| `AssetImg`                             | `AssetImg` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `AssetImgProps`                        | `AssetImgProps` from `@hirobius/design-system/patterns`             | `npx hds-patterns-subpath --root .` |
-| `blockCodeTextVariants`                | `blockCodeTextVariants` from `@hirobius/design-system/patterns`     | `npx hds-patterns-subpath --root .` |
-| `blockContainerVariants`               | `blockContainerVariants` from `@hirobius/design-system/patterns`    | `npx hds-patterns-subpath --root .` |
-| `blockHeaderVariants`                  | `blockHeaderVariants` from `@hirobius/design-system/patterns`       | `npx hds-patterns-subpath --root .` |
-| `Calendar`                             | `Calendar` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `CalendarProps`                        | `CalendarProps` from `@hirobius/design-system/patterns`             | `npx hds-patterns-subpath --root .` |
-| `Carousel`                             | `Carousel` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `carouselControlVariants`              | `carouselControlVariants` from `@hirobius/design-system/patterns`   | `npx hds-patterns-subpath --root .` |
-| `CarouselProps`                        | `CarouselProps` from `@hirobius/design-system/patterns`             | `npx hds-patterns-subpath --root .` |
-| `chevronVariants`                      | `chevronVariants` from `@hirobius/design-system/patterns`           | `npx hds-patterns-subpath --root .` |
-| `cmdkDescriptionVariants`              | `cmdkDescriptionVariants` from `@hirobius/design-system/patterns`   | `npx hds-patterns-subpath --root .` |
-| `cmdkKindBadgeVariants`                | `cmdkKindBadgeVariants` from `@hirobius/design-system/patterns`     | `npx hds-patterns-subpath --root .` |
-| `cmdkRowVariants`                      | `cmdkRowVariants` from `@hirobius/design-system/patterns`           | `npx hds-patterns-subpath --root .` |
-| `CodeBlock`                            | `CodeBlock` from `@hirobius/design-system/patterns`                 | `npx hds-patterns-subpath --root .` |
-| `CodeBlockProps`                       | `CodeBlockProps` from `@hirobius/design-system/patterns`            | `npx hds-patterns-subpath --root .` |
-| `collapsibleToggleVariants`            | `collapsibleToggleVariants` from `@hirobius/design-system/patterns` | `npx hds-patterns-subpath --root .` |
-| `CommandPalette`                       | `CommandPalette` from `@hirobius/design-system/patterns`            | `npx hds-patterns-subpath --root .` |
-| `CommandPaletteProps`                  | `CommandPaletteProps` from `@hirobius/design-system/patterns`       | `npx hds-patterns-subpath --root .` |
-| `copyButtonVariants`                   | `copyButtonVariants` from `@hirobius/design-system/patterns`        | `npx hds-patterns-subpath --root .` |
-| `defaultActivityEvents`                | `defaultActivityEvents` from `@hirobius/design-system/patterns`     | `npx hds-patterns-subpath --root .` |
-| `DocLinkCard`                          | `DocLinkCard` from `@hirobius/design-system/patterns`               | `npx hds-patterns-subpath --root .` |
-| `DocLinkCardProps`                     | `DocLinkCardProps` from `@hirobius/design-system/patterns`          | `npx hds-patterns-subpath --root .` |
-| `docLinkCardVariants`                  | `docLinkCardVariants` from `@hirobius/design-system/patterns`       | `npx hds-patterns-subpath --root .` |
-| `ErrorPattern`                         | `ErrorPattern` from `@hirobius/design-system/patterns`              | `npx hds-patterns-subpath --root .` |
-| `ErrorPatternProps`                    | `ErrorPatternProps` from `@hirobius/design-system/patterns`         | `npx hds-patterns-subpath --root .` |
-| `FieldWiring`                          | `FieldWiring` from `@hirobius/design-system/patterns`               | `npx hds-patterns-subpath --root .` |
-| `FieldWiringInput`                     | `FieldWiringInput` from `@hirobius/design-system/patterns`          | `npx hds-patterns-subpath --root .` |
-| `FileInput`                            | `FileInput` from `@hirobius/design-system/patterns`                 | `npx hds-patterns-subpath --root .` |
-| `FileInputProps`                       | `FileInputProps` from `@hirobius/design-system/patterns`            | `npx hds-patterns-subpath --root .` |
-| `fileInputVariants`                    | `fileInputVariants` from `@hirobius/design-system/patterns`         | `npx hds-patterns-subpath --root .` |
-| `Form`                                 | `Form` from `@hirobius/design-system/patterns`                      | `npx hds-patterns-subpath --root .` |
-| `FormField`                            | `FormField` from `@hirobius/design-system/patterns`                 | `npx hds-patterns-subpath --root .` |
-| `FormFieldProps`                       | `FormFieldProps` from `@hirobius/design-system/patterns`            | `npx hds-patterns-subpath --root .` |
-| `FormFieldShell`                       | `FormFieldShell` from `@hirobius/design-system/patterns`            | `npx hds-patterns-subpath --root .` |
-| `FormFieldShellProps`                  | `FormFieldShellProps` from `@hirobius/design-system/patterns`       | `npx hds-patterns-subpath --root .` |
-| `FormProps`                            | `FormProps` from `@hirobius/design-system/patterns`                 | `npx hds-patterns-subpath --root .` |
-| `inlineCodeTextVariants`               | `inlineCodeTextVariants` from `@hirobius/design-system/patterns`    | `npx hds-patterns-subpath --root .` |
-| `inlineWrapperVariants`                | `inlineWrapperVariants` from `@hirobius/design-system/patterns`     | `npx hds-patterns-subpath --root .` |
-| `Lightbox`                             | `Lightbox` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `LightboxProps`                        | `LightboxProps` from `@hirobius/design-system/patterns`             | `npx hds-patterns-subpath --root .` |
-| `navIndicatorVariants`                 | `navIndicatorVariants` from `@hirobius/design-system/patterns`      | `npx hds-patterns-subpath --root .` |
-| `NavItem`                              | `NavItem` from `@hirobius/design-system/patterns`                   | `npx hds-patterns-subpath --root .` |
-| `navItemVariants`                      | `navItemVariants` from `@hirobius/design-system/patterns`           | `npx hds-patterns-subpath --root .` |
-| `NavProps`                             | `NavProps` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `OverflowList`                         | `OverflowList` from `@hirobius/design-system/patterns`              | `npx hds-patterns-subpath --root .` |
-| `OverflowListProps`                    | `OverflowListProps` from `@hirobius/design-system/patterns`         | `npx hds-patterns-subpath --root .` |
-| `Page`                                 | `Page` from `@hirobius/design-system/patterns`                      | `npx hds-patterns-subpath --root .` |
-| `PageProps`                            | `PageProps` from `@hirobius/design-system/patterns`                 | `npx hds-patterns-subpath --root .` |
-| `prePanelVariants`                     | `prePanelVariants` from `@hirobius/design-system/patterns`          | `npx hds-patterns-subpath --root .` |
-| `Reveal`                               | `Reveal` from `@hirobius/design-system/patterns`                    | `npx hds-patterns-subpath --root .` |
-| `RevealAnimation`                      | `RevealAnimation` from `@hirobius/design-system/patterns`           | `npx hds-patterns-subpath --root .` |
-| `RevealProps`                          | `RevealProps` from `@hirobius/design-system/patterns`               | `npx hds-patterns-subpath --root .` |
-| `SideNav`                              | `SideNav` from `@hirobius/design-system/patterns`                   | `npx hds-patterns-subpath --root .` |
-| `SideNavLevel`                         | `SideNavLevel` from `@hirobius/design-system/patterns`              | `npx hds-patterns-subpath --root .` |
-| `SideNavProps`                         | `SideNavProps` from `@hirobius/design-system/patterns`              | `npx hds-patterns-subpath --root .` |
-| `sideNavVariants`                      | `sideNavVariants` from `@hirobius/design-system/patterns`           | `npx hds-patterns-subpath --root .` |
-| `Step`                                 | `Step` from `@hirobius/design-system/patterns`                      | `npx hds-patterns-subpath --root .` |
-| `stepMarkerVariants`                   | `stepMarkerVariants` from `@hirobius/design-system/patterns`        | `npx hds-patterns-subpath --root .` |
-| `Stepper`                              | `Stepper` from `@hirobius/design-system/patterns`                   | `npx hds-patterns-subpath --root .` |
-| `StepperProps`                         | `StepperProps` from `@hirobius/design-system/patterns`              | `npx hds-patterns-subpath --root .` |
-| `Toolbar`                              | `Toolbar` from `@hirobius/design-system/patterns`                   | `npx hds-patterns-subpath --root .` |
-| `ToolbarComponent`                     | `ToolbarComponent` from `@hirobius/design-system/patterns`          | `npx hds-patterns-subpath --root .` |
-| `TopNav`                               | `TopNav` from `@hirobius/design-system/patterns`                    | `npx hds-patterns-subpath --root .` |
-| `TopNavProps`                          | `TopNavProps` from `@hirobius/design-system/patterns`               | `npx hds-patterns-subpath --root .` |
-| `TreeList`                             | `TreeList` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `TreeListProps`                        | `TreeListProps` from `@hirobius/design-system/patterns`             | `npx hds-patterns-subpath --root .` |
-| `TreeNode`                             | `TreeNode` from `@hirobius/design-system/patterns`                  | `npx hds-patterns-subpath --root .` |
-| `useFieldWiring`                       | `useFieldWiring` from `@hirobius/design-system/patterns`            | `npx hds-patterns-subpath --root .` |
+| Removed from `@hirobius/design-system` | Use instead                                                         | Codemod                                                                |
+| -------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `activityAvatarVariants`               | `activityAvatarVariants` from `@hirobius/design-system/patterns`    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ActivityEvent`                        | `ActivityEvent` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ActivityFeed`                         | `ActivityFeed` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ActivityFeedProps`                    | `ActivityFeedProps` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ActivityStatus`                       | `ActivityStatus` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ActivityTone`                         | `ActivityTone` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `activityToneVariants`                 | `activityToneVariants` from `@hirobius/design-system/patterns`      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `AppShell`                             | `AppShell` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `AppShellProps`                        | `AppShellProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `appShellVariants`                     | `appShellVariants` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `AssetImg`                             | `AssetImg` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `AssetImgProps`                        | `AssetImgProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `blockCodeTextVariants`                | `blockCodeTextVariants` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `blockContainerVariants`               | `blockContainerVariants` from `@hirobius/design-system/patterns`    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `blockHeaderVariants`                  | `blockHeaderVariants` from `@hirobius/design-system/patterns`       | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Calendar`                             | `Calendar` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `CalendarProps`                        | `CalendarProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Carousel`                             | `Carousel` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `carouselControlVariants`              | `carouselControlVariants` from `@hirobius/design-system/patterns`   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `CarouselProps`                        | `CarouselProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `chevronVariants`                      | `chevronVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `cmdkDescriptionVariants`              | `cmdkDescriptionVariants` from `@hirobius/design-system/patterns`   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `cmdkKindBadgeVariants`                | `cmdkKindBadgeVariants` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `cmdkRowVariants`                      | `cmdkRowVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `CodeBlock`                            | `CodeBlock` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `CodeBlockProps`                       | `CodeBlockProps` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `collapsibleToggleVariants`            | `collapsibleToggleVariants` from `@hirobius/design-system/patterns` | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `CommandPalette`                       | `CommandPalette` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `CommandPaletteProps`                  | `CommandPaletteProps` from `@hirobius/design-system/patterns`       | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `copyButtonVariants`                   | `copyButtonVariants` from `@hirobius/design-system/patterns`        | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `defaultActivityEvents`                | `defaultActivityEvents` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `DocLinkCard`                          | `DocLinkCard` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `DocLinkCardProps`                     | `DocLinkCardProps` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `docLinkCardVariants`                  | `docLinkCardVariants` from `@hirobius/design-system/patterns`       | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ErrorPattern`                         | `ErrorPattern` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ErrorPatternProps`                    | `ErrorPatternProps` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FieldWiring`                          | `FieldWiring` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FieldWiringInput`                     | `FieldWiringInput` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FileInput`                            | `FileInput` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FileInputProps`                       | `FileInputProps` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `fileInputVariants`                    | `fileInputVariants` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Form`                                 | `Form` from `@hirobius/design-system/patterns`                      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FormField`                            | `FormField` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FormFieldProps`                       | `FormFieldProps` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FormFieldShell`                       | `FormFieldShell` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FormFieldShellProps`                  | `FormFieldShellProps` from `@hirobius/design-system/patterns`       | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `FormProps`                            | `FormProps` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `inlineCodeTextVariants`               | `inlineCodeTextVariants` from `@hirobius/design-system/patterns`    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `inlineWrapperVariants`                | `inlineWrapperVariants` from `@hirobius/design-system/patterns`     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Lightbox`                             | `Lightbox` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `LightboxProps`                        | `LightboxProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `navIndicatorVariants`                 | `navIndicatorVariants` from `@hirobius/design-system/patterns`      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `NavItem`                              | `NavItem` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `navItemVariants`                      | `navItemVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `NavProps`                             | `NavProps` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `OverflowList`                         | `OverflowList` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `OverflowListProps`                    | `OverflowListProps` from `@hirobius/design-system/patterns`         | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Page`                                 | `Page` from `@hirobius/design-system/patterns`                      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `PageProps`                            | `PageProps` from `@hirobius/design-system/patterns`                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `prePanelVariants`                     | `prePanelVariants` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Reveal`                               | `Reveal` from `@hirobius/design-system/patterns`                    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `RevealAnimation`                      | `RevealAnimation` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `RevealProps`                          | `RevealProps` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `SideNav`                              | `SideNav` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `SideNavLevel`                         | `SideNavLevel` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `SideNavProps`                         | `SideNavProps` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `sideNavVariants`                      | `sideNavVariants` from `@hirobius/design-system/patterns`           | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Step`                                 | `Step` from `@hirobius/design-system/patterns`                      | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `stepMarkerVariants`                   | `stepMarkerVariants` from `@hirobius/design-system/patterns`        | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Stepper`                              | `Stepper` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `StepperProps`                         | `StepperProps` from `@hirobius/design-system/patterns`              | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `Toolbar`                              | `Toolbar` from `@hirobius/design-system/patterns`                   | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `ToolbarComponent`                     | `ToolbarComponent` from `@hirobius/design-system/patterns`          | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `TopNav`                               | `TopNav` from `@hirobius/design-system/patterns`                    | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `TopNavProps`                          | `TopNavProps` from `@hirobius/design-system/patterns`               | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `TreeList`                             | `TreeList` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `TreeListProps`                        | `TreeListProps` from `@hirobius/design-system/patterns`             | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `TreeNode`                             | `TreeNode` from `@hirobius/design-system/patterns`                  | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
+| `useFieldWiring`                       | `useFieldWiring` from `@hirobius/design-system/patterns`            | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` |
 
 ### `Hds*` aliases
 
 The six `Hds`-prefixed spellings (hds#315) are gone; each component is exported
-under its bare name only. `npx hds-prefix` (`codemods/hds-prefix.mjs`) rewrites
-the import and renames the uses in the same file. Where the bare name is already
-taken in that file, it imports `Checkbox as HdsCheckbox` instead. A re-export
+under its bare name only. The `hds-prefix` codemod (`codemods/hds-prefix.mjs`)
+rewrites the import and renames the uses in the same file. Where the bare name is
+already taken in that file, or where renaming would change what the file exports
+or looks up (`export { HdsCheckbox }`, a `{ HdsCheckbox }` shorthand property, an
+`HdsCheckbox:` key, a whole string `'HdsCheckbox'`), it imports
+`Checkbox as HdsCheckbox` instead and leaves the uses alone. A re-export
 keeps its own export name (`export { Toggle as HdsToggle }`), and
 `HDS.HdsSlider` on a namespace import becomes `HDS.Slider`. It cannot see
 through `export * from '@hirobius/design-system'`; `--check` lists those.
 
-| Removed from `@hirobius/design-system` | Use instead | Codemod                   |
-| -------------------------------------- | ----------- | ------------------------- |
-| `HdsCheckbox`                          | `Checkbox`  | `npx hds-prefix --root .` |
-| `HdsRadio`                             | `Radio`     | `npx hds-prefix --root .` |
-| `HdsSelect`                            | `Select`    | `npx hds-prefix --root .` |
-| `HdsSlider`                            | `Slider`    | `npx hds-prefix --root .` |
-| `HdsToggle`                            | `Toggle`    | `npx hds-prefix --root .` |
-| `HdsTooltip`                           | `Tooltip`   | `npx hds-prefix --root .` |
+| Removed from `@hirobius/design-system` | Use instead | Codemod                                                      |
+| -------------------------------------- | ----------- | ------------------------------------------------------------ |
+| `HdsCheckbox`                          | `Checkbox`  | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
+| `HdsRadio`                             | `Radio`     | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
+| `HdsSelect`                            | `Select`    | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
+| `HdsSlider`                            | `Slider`    | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
+| `HdsToggle`                            | `Toggle`    | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
+| `HdsTooltip`                           | `Tooltip`   | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
 
 Ops imports `HdsCheckbox` in one file. A read-only dry run on 2026-10-01 (ops
 main 76ef65e) rewrites the import and one JSX tag in
