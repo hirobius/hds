@@ -1,5 +1,0 @@
----
-'@hirobius/design-system': minor
----
-
-`Input` takes the native date and time types and two in-flow slots (hds#393). `type` now also accepts `date`, `time` and `datetime-local` (not `file`), so `<Input type="time">` covers what `TimeInput` does; like `number`, these types show no clear button, because the platform picker owns the value UI. New `prefix` and `suffix` props render text or any node inside the field frame, beside the value, so `<Input prefix="https://">` and `<Input suffix="kg">` cover what `InputGroup`'s `leading` and `trailing` do. With either slot set, the border, surface and focus ring move from the `<input>` to a frame around the slots and the input; without them the markup is unchanged. The slots are not part of the accessible name or `aria-describedby`, so the label carries anything essential. `leadingVisual`, `trailingVisual` and every other prop work as before. `prefix` was previously typed as the RDFa `prefix` attribute (a string) and passed to the `<input>`; it is now a `ReactNode` slot, so every string still compiles.
