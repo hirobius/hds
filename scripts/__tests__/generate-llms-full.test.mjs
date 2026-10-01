@@ -30,11 +30,29 @@ describe('committed llms output is fresh', () => {
 });
 
 describe('llms-full.txt and slices', () => {
-  it('names every componentInventory entry', () => {
+  it('names every componentInventory entry that is not deprecated', () => {
     const manifest = JSON.parse(read('public/hds-manifest.json'));
     const full = read('public/llms-full.txt');
-    const absent = manifest.componentInventory.filter((n) => !full.includes(`### ${n}\n`));
+    const absent = manifest.componentInventory
+      .filter((n) => !manifest.componentSpecs[n]?.deprecated)
+      .filter((n) => !full.includes(`### ${n}\n`));
     expect(absent).toEqual([]);
+  });
+
+  it('leaves the deprecated hds#232 docs/lab internals out of the props digest (hds#390)', () => {
+    const components = read('public/llms/components.txt');
+    const full = read('public/llms-full.txt');
+    for (const name of [
+      'CinematicLink',
+      'ComponentInstanceMatrix',
+      'FoundationSwatch',
+      'Sketch',
+      'Token',
+    ]) {
+      expect(components).not.toContain(`### ${name}\n`);
+      expect(full).not.toContain(`### ${name}\n`);
+    }
+    expect(components).toContain('### Tooltip\n');
   });
 
   it('embeds DESIGN.md in full', () => {

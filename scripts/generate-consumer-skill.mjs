@@ -67,7 +67,9 @@ function allowList(manifest, indexSource) {
   const groups = new Map();
   for (const name of manifest.componentInventory ?? []) {
     const spec = manifest.componentSpecs?.[name];
-    if (!spec || spec.hidden || !spec.filePath) continue;
+    // Deprecated specs stay importable until their removeIn release, but the
+    // skill stops advertising them (hds#390).
+    if (!spec || spec.hidden || spec.deprecated || !spec.filePath) continue;
     if (!modules.has(moduleOf(spec.filePath))) continue;
     const category = spec.category || 'Other';
     if (!groups.has(category)) groups.set(category, []);
