@@ -605,6 +605,11 @@
     "primitives-alert-dialog--dark-scope",
     "primitives-dialog--dark-scope",
     "primitives-combobox--open",
-    "primitives-select--open"
+    "primitives-select--open",
+    "primitives-button--icon-only",
+    "primitives-button--toggle",
+    "primitives-badge--dot",
+    "primitives-progress--circular",
+    "primitives-card--selectable"
   ]
 }

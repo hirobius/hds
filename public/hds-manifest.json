@@ -1953,6 +1953,7 @@
         "src/app/components/toast.tsx",
         "src/app/components/tokenUtils.ts",
         "src/stories/activity-feed.stories.tsx",
+        "src/stories/button.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/icon.stories.tsx",
         "src/stories/nav-group.stories.tsx"
@@ -2133,6 +2134,10 @@
           "type": "boolean",
           "optional": true
         },
+        "defaultPressed": {
+          "type": "boolean",
+          "optional": true
+        },
         "disabled": {
           "type": "boolean",
           "optional": true
@@ -2161,6 +2166,14 @@
           "optional": true
         },
         "loading": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onPressedChange": {
+          "type": "(pressed: boolean) => void",
+          "optional": true
+        },
+        "pressed": {
           "type": "boolean",
           "optional": true
         },
@@ -2204,6 +2217,9 @@
         "asChild": {
           "type": "boolean"
         },
+        "defaultPressed": {
+          "type": "boolean"
+        },
         "disabled": {
           "type": "boolean"
         },
@@ -2214,6 +2230,9 @@
           "type": "string"
         },
         "loading": {
+          "type": "boolean"
+        },
+        "pressed": {
           "type": "boolean"
         },
         "size": {
@@ -4168,9 +4187,21 @@
           "type": "boolean",
           "default": false
         },
+        "onSelectedChange": {
+          "type": "(selected: boolean) => void",
+          "optional": true
+        },
         "padding": {
           "type": "PaddingOption",
           "default": "component"
+        },
+        "selectable": {
+          "type": "boolean",
+          "default": false
+        },
+        "selected": {
+          "type": "boolean",
+          "default": false
         },
         "tone": {
           "type": "enum",
@@ -4289,6 +4320,12 @@
         "noPadding": {
           "type": "boolean"
         },
+        "selectable": {
+          "type": "boolean"
+        },
+        "selected": {
+          "type": "boolean"
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -4320,10 +4357,11 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ],
       "usage": {
-        "when": "Group related content on a raised surface with header, body, footer and metric slots.",
+        "when": "Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.",
         "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
         "useInstead": [
           {
@@ -5274,6 +5312,10 @@
           "type": "boolean",
           "default": false
         },
+        "defaultPressed": {
+          "type": "boolean",
+          "optional": true
+        },
         "disabled": {
           "type": "boolean",
           "optional": true
@@ -5297,6 +5339,14 @@
         "loading": {
           "type": "boolean",
           "default": false
+        },
+        "onPressedChange": {
+          "type": "(pressed: boolean) => void",
+          "optional": true
+        },
+        "pressed": {
+          "type": "boolean",
+          "optional": true
         },
         "size": {
           "type": "enum",
@@ -5370,6 +5420,9 @@
         "asChild": {
           "type": "boolean"
         },
+        "defaultPressed": {
+          "type": "boolean"
+        },
         "disabled": {
           "type": "boolean"
         },
@@ -5380,6 +5433,9 @@
           "type": "string"
         },
         "loading": {
+          "type": "boolean"
+        },
+        "pressed": {
           "type": "boolean"
         },
         "size": {
@@ -5415,16 +5471,18 @@
       "storyIds": [
         "primitives-button--all-variants-row",
         "primitives-button--disabled",
+        "primitives-button--icon-only",
         "primitives-button--large",
         "primitives-button--loading",
         "primitives-button--medium",
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
-        "primitives-button--tertiary"
+        "primitives-button--tertiary",
+        "primitives-button--toggle"
       ],
       "usage": {
-        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.",
+        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
         "useInstead": [
           {
@@ -6129,6 +6187,23 @@
           "type": "ElementType<any, keyof IntrinsicElements>",
           "default": "span"
         },
+        "dot": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -6144,6 +6219,20 @@
       },
       "allowedChildren": [],
       "propConstraints": {
+        "dot": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -6175,6 +6264,7 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/badge.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/tag.tsx",
@@ -6203,13 +6293,14 @@
       "storyIds": [
         "primitives-badge--all-tones",
         "primitives-badge--danger",
+        "primitives-badge--dot",
         "primitives-badge--info",
         "primitives-badge--neutral",
         "primitives-badge--success",
         "primitives-badge--warning"
       ],
       "usage": {
-        "when": "Label a status, state or count with a compact neutral or semantic chip.",
+        "when": "Label a status, state or count with a compact neutral or semantic chip, or a dot.",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
         "useInstead": [
           {
@@ -7143,6 +7234,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle-button.tsx",
@@ -7150,6 +7242,7 @@
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
         "src/index.ts",
+        "src/stories/button.stories.tsx",
         "src/stories/toggle-button.stories.tsx",
         "src/stories/toggle.stories.tsx"
       ],
@@ -7303,7 +7396,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/progress.tsx",
-      "description": "Linear progress. Determinate when `value` is a number, else indeterminate.",
+      "description": "Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
@@ -7332,6 +7425,10 @@
           "type": "string",
           "default": "Progress"
         },
+        "max": {
+          "type": "number",
+          "default": 100
+        },
         "size": {
           "type": "enum",
           "values": [
@@ -7341,9 +7438,28 @@
           ],
           "optional": true
         },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "default": "neutral"
+        },
         "value": {
           "type": "number",
           "default": "null"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "linear",
+            "circular"
+          ],
+          "default": "linear"
         }
       },
       "allowedChildren": [
@@ -7357,12 +7473,13 @@
       ],
       "storyIds": [
         "primitives-progress--all-sizes",
+        "primitives-progress--circular",
         "primitives-progress--complete",
         "primitives-progress--default",
         "primitives-progress--indeterminate"
       ],
       "usage": {
-        "when": "Show how far a task has got, as a bar that is determinate or indeterminate.",
+        "when": "Show how far a task has got, as a bar or ring that is determinate or indeterminate.",
         "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
         "useInstead": [
           {
@@ -7413,8 +7530,8 @@
           "type": "enum",
           "values": [
             "text",
-            "rectangular",
-            "circular"
+            "circular",
+            "rectangular"
           ],
           "default": "rectangular"
         },
@@ -8452,7 +8569,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/badge.test.tsx",
+        "src/app/components/badge.tsx",
         "src/app/components/status-dot.test.tsx",
+        "src/stories/badge.stories.tsx",
         "src/stories/status-dot.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8630,7 +8750,10 @@
       },
       "consumers": [
         "src/app/components/circular-progress.test.tsx",
-        "src/stories/circular-progress.stories.tsx"
+        "src/app/components/progress.test.tsx",
+        "src/app/components/progress.tsx",
+        "src/stories/circular-progress.stories.tsx",
+        "src/stories/progress.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -9118,7 +9241,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/card.test.tsx",
+        "src/app/components/card.tsx",
         "src/app/components/selectable-card.test.tsx",
+        "src/stories/card.stories.tsx",
         "src/stories/selectable-card.stories.tsx"
       ],
       "tokenMapping": {},
@@ -10184,6 +10310,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button.tsx",
         "src/app/components/toggle-button.test.tsx",
         "src/stories/toggle-button.stories.tsx"
       ],
@@ -10916,8 +11043,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button.test.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/pin.test.tsx",
+        "src/stories/button.stories.tsx",
         "src/stories/patterns-scroll.stories.tsx",
         "src/stories/pin.stories.tsx",
         "src/stories/reveal.stories.tsx"
@@ -11159,6 +11288,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11204,6 +11334,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11249,6 +11380,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11299,6 +11431,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11366,6 +11499,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ],
       "usage": {
@@ -11438,6 +11572,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11483,6 +11618,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },

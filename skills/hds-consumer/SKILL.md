@@ -76,7 +76,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Badge` — Compact metadata/status chip.
 - `Callout` — Tone-driven side-rule callout for status, quotes, hypotheses.
 - `CircularProgress` — A circular progress ring; pass `value`/`max` or set `indeterminate`.
-- `Progress` — Linear progress.
+- `Progress` — Linear bar or circular ring.
 - `Skeleton` — Decorative loading placeholder.
 - `Spinner` — Indeterminate spinner.
 - `StatusDot` — A small solid dot conveying a semantic status via `tone`.
