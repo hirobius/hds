@@ -20,7 +20,7 @@ The `code` input takes 50,000 characters, and the result should stay under about
 It plans offline against the committed `figma/snapshot.json`. It refuses, naming the route, any plan Sync or a person must handle instead:
 
 - a plan that moves a variable between collections, or that has conflicts: route it to Sync;
-- `--prune`, or any removal or mode removal: `delta.js` never deletes, and a prune uses the promote plugin;
+- `--prune`, or any variable, mode or style that staging holds and the model does not (an extra, such as a token deleted from `hirobius.tokens.json`): `delta.js` and Sync never delete, so a deliberate deletion or prune uses the promote plugin (`pnpm figma:push --prune`). Without this, `delta.js` would apply the rest and plain `check:figma-drift` would fail only after the write;
 - a `delta.js` over 45,000 characters: route it to Sync;
 - no committed snapshot: route it to Sync.
 
@@ -33,7 +33,8 @@ When staging already holds the model, it writes no `delta.js`.
 - the collections, variables and styles the plan touches, as **patches** over the snapshot records they start from (a new record goes whole);
 - every variable they alias, as id-only **anchors**;
 - the pin (the committed checksum, `takenAt` and `file`), both file keys, and the renames the matches use;
-- `planSum`, the checksum of the plan that slice gives against the snapshot.
+- `planSum`, the checksum of the plan that slice gives against the snapshot;
+- `held`, what staging must hold (`hdsAgentHeld`: variables, modes, and stamped text and effect styles), counted as the snapshot less the full plan's extras.
 
 At build time the slice must equal the model, record for record, and must plan exactly the full plan's writes. Otherwise `--delta` refuses.
 
@@ -42,9 +43,10 @@ In staging, `hdsAgentRun` (`scripts/lib/figma-agent-runtime.mjs`) runs these ste
 1. **Refuse any file but staging.** The script's first statement is `if (figma.fileKey !== staging || figma.fileKey === library) throw`, with both keys baked in from `figma/links.json`. `hdsAgentRun` checks the keys again from `PLAN`.
 2. **Check `PLAN` against `PLAN_CHECKSUM`,** and the runtime against `hdsVerifyRuntime`.
 3. **The pin.** It reads staging with `hdsAgentReadState` (variable descriptions decoded, `file` set to the committed one) and sets `takenAt` to the committed value. The result must hash to the committed checksum. Otherwise it writes nothing.
-4. **Plan in staging.** It builds the slice over the pinned state and plans it. It refuses a plan whose `removals.*` or any `modes.remove` is not empty, then requires the plan to hash to `planSum`, then checks conflicts and fonts.
-5. **Apply and verify.** It runs `hdsApply`. The re-plan must give 0, and only then does it write `lastPush` (the full model's hash). Then it writes the C2 receipt: `snapshotDelta(pinned, post)`, in raw pages of at most 15,000 characters, with the receipt writer of ADR-032 §6.
-6. **Return the receipt.** It returns what `receipt.js` would read for page 0, plus the plan line, when the receipt fits one page. Otherwise it returns the head, and `receipt.js` collects the pages.
+4. **Nothing to delete.** Staging must hold exactly `held`. A slice cannot see an extra outside it, so this count is how staging re-checks the build's extras refusal: with that refusal skipped, a deleted token's `delta.js` refuses here and writes nothing.
+5. **Plan in staging.** It builds the slice over the pinned state and plans it. It refuses a plan whose `removals.*` or any `modes.remove` is not empty, then requires the plan to hash to `planSum`, then checks conflicts and fonts.
+6. **Apply and verify.** It runs `hdsApply`. The re-plan must give 0, and only then does it write `lastPush` (the full model's hash). Then it writes the C2 receipt: `snapshotDelta(pinned, post)`, in raw pages of at most 15,000 characters, with the receipt writer of ADR-032 §6.
+7. **Return the receipt.** It returns what `receipt.js` would read for page 0, plus the plan line, when the receipt fits one page. Otherwise it returns the head, and `receipt.js` collects the pages.
 
 ### 3. Decoding is a use_figma shim, and writes stay raw
 
@@ -68,7 +70,7 @@ It copies them with the leading whitespace removed, which leaves about 38,300 ch
 ## Rationale
 
 - **Smallest faithful data.** A patch slice of today's plan (10 descriptions, 2 creates) is 4,200 characters. The whole touched records would be 9,000, and the plan plus a model for the re-plan about 15,000. Planning in staging also means the re-plan runs the same `hdsPlan` on the same slice.
-- **Fail closed at every step.** Each refusal before the apply writes nothing, and each has a vm test on `scripts/__tests__/helpers/fake-figma.mjs` that asserts zero writes. Mutating any guard turns its test red: the pin, `PLAN_CHECKSUM`, the removals assertion, the font preflight and the re-plan.
+- **Fail closed at every step.** Each refusal before the apply writes nothing, and each has a vm test on `scripts/__tests__/helpers/fake-figma.mjs` that asserts zero writes. Mutating any guard turns its test red: the pin, `PLAN_CHECKSUM`, the extras count, the removals assertion, the font preflight and the re-plan.
 - **Measured, not estimated.** Today's plan builds to 43,049 characters. On a file seeded from the committed snapshot it makes 26 writes and returns 3,890 characters inline. The 19-variable Primitives `space/*` rename builds to about 42,400 and returns about 9,400.
 
 ## Consequences

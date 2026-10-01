@@ -18,10 +18,12 @@
  * Its first statement refuses any file but staging. See hdsAgentRun for what
  * it checks and does in Figma.
  *
- * It refuses to build, naming the route, a plan Sync must make instead: one
- * that moves variables between collections, deletes (prune, removals, mode
- * removals), has conflicts, or makes a delta.js over 45,000 characters
- * (use_figma takes 50,000).
+ * It refuses to build, naming the route: a plan that moves variables between
+ * collections, has conflicts, or makes a delta.js over 45,000 characters
+ * (use_figma takes 50,000) goes to Sync; --prune, and any variable, mode or
+ * style staging holds that the model does not (an extra: a token deleted
+ * from hirobius.tokens.json), go to the promote plugin, because delta.js
+ * and Sync never delete. delta.js checks the extras again in staging.
  */
 
 import {
@@ -42,16 +44,18 @@ import {
   syncConfigFromLinks,
   syncRuntimeSource,
 } from './figma-scripts.mjs';
-import { hdsAgentSlice, hdsAgentVariable } from './figma-agent-runtime.mjs';
+import { hdsAgentHeld, hdsAgentSlice, hdsAgentVariable } from './figma-agent-runtime.mjs';
 
 /** The most characters delta.js may have: use_figma takes 50,000, and an agent retypes it. */
 export const DELTA_MAX_CHARS = 45000;
 /** Receipt pages (C2): delta.js returns the receipt inline when it fits one page. */
 export const DELTA_PAGE_CHARS = 15000;
 const RECEIPT_MAX_PAGES = 64;
+/** Where a deletion goes instead: delta.js and Sync never delete. */
+const ROUTE_TO_PROMOTE =
+  ' A deliberate deletion or prune uses the promote plugin (pnpm figma:push --prune), from Figma desktop (figma/README.md "Promote plugin and use_figma scripts"). No delta.js was written.';
 /** Why --delta never builds with --prune. */
-export const DELTA_PRUNE_REFUSAL =
-  'delta.js refused: it never deletes, so --delta refuses --prune. A deliberate prune uses the promote plugin (pnpm figma:push --prune). No delta.js was written.';
+export const DELTA_PRUNE_REFUSAL = `delta.js refused: it never deletes, so --delta refuses --prune.${ROUTE_TO_PROMOTE}`;
 const ROUTE_TO_SYNC =
   ' Route it to Sync: ask Adrian to run Sync in staging (Plugins > Development > HDS tokens sync > Sync), then collect its receipt (figma/README.md "Agent: collect a sync"). No delta.js was written.';
 
@@ -242,13 +246,23 @@ export function buildUseFigmaDeltaScript(
       `the plan moves ${plan.moves.length} variable(s) between collections (${plan.moves.map((m) => `${m.collection}: ${m.name} -> ${m.to}`).join('; ')}), which leaves the old variable for a person to rebind.${ROUTE_TO_SYNC}`,
     );
   }
-  const removals = Object.values(plan.removals).reduce((n, list) => n + list.length, 0);
-  if (removals || plan.collections.some((c) => c.modes.remove.length)) {
-    refuse(`the plan deletes ${removals} item(s), and delta.js never deletes.${ROUTE_TO_SYNC}`);
-  }
   if (plan.conflicts.length) {
     refuse(
       `the plan has ${plan.conflicts.length} conflict(s) a person must fix in Figma first: ${plan.conflicts.join(' | ')}${ROUTE_TO_SYNC}`,
+    );
+  }
+  // Without prune a plan keeps what the model no longer has, as an extra that
+  // plain check:figma-drift then reports: only a deliberate prune deletes it.
+  const { extras } = plan;
+  const extra = [
+    ...extras.variables.map((v) => `variable ${v.path || `${v.collection}: ${v.name}`}`),
+    ...extras.modes.map((m) => `mode ${m.collection}: ${m.mode}`),
+    ...extras.textStyles.map((s) => `text style ${s.path}`),
+    ...extras.effectStyles.map((s) => `effect style ${s.path}`),
+  ];
+  if (extra.length) {
+    refuse(
+      `staging holds ${extra.length} item(s) the model does not have (${extra.join('; ')}), and delta.js never deletes.${ROUTE_TO_PROMOTE}`,
     );
   }
   const writes = writesOf(plan);
@@ -279,6 +293,11 @@ export function buildUseFigmaDeltaScript(
     textStyles,
     effectStyles,
     options: { prune: false, scope: null, renames: usedRenames(storedPaths, renames) },
+    // What staging must hold (hdsAgentHeld): the snapshot less the extras.
+    held: hdsAgentHeld(snapshot).map(
+      (count, i) =>
+        count - [extras.variables, extras.modes, extras.textStyles, extras.effectStyles][i].length,
+    ),
     pageChars,
     maxPages: RECEIPT_MAX_PAGES,
   });

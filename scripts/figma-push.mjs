@@ -171,18 +171,18 @@ export function writeSyncBundle({ root, out, commit }) {
 }
 
 /**
- * `pnpm figma:push --delta`: writes every carrier, then delta.js for the
- * change from the committed figma/snapshot.json to the model
- * (scripts/lib/figma-agent-sync.mjs). Throws, with delta.js absent, when the
- * builder refuses (or anything before it fails); writes no delta.js when
- * there is nothing to sync.
+ * `pnpm figma:push --delta`: builds delta.js for the change from the
+ * committed figma/snapshot.json to the model
+ * (scripts/lib/figma-agent-sync.mjs), then writes every carrier and it.
+ * Throws, writing no file and leaving no delta.js (not even an earlier one),
+ * when the builder refuses or anything before it fails; writes the carriers
+ * but no delta.js when there is nothing to sync.
  *
  * @param {{ root: string, outDir: string, commit: string }} options
  */
 export function writeDeltaScript({ root, outDir, commit }) {
   const path = join(outDir, 'use-figma', 'delta.js');
   rmSync(path, { force: true });
-  writePushArtifacts({ root, outDir });
   const { model, renames } = loadFigmaInputs(root);
   const snapshotPath = join(root, 'figma', 'snapshot.json');
   const snapshotFile = existsSync(snapshotPath)
@@ -194,6 +194,7 @@ export function writeDeltaScript({ root, outDir, commit }) {
     links: readLinks(root),
     commit,
   });
+  writePushArtifacts({ root, outDir });
   if (built.text) writeFileSync(path, built.text);
   return { ...built, path, shown: relative(root, path).replaceAll('\\', '/') };
 }

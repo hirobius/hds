@@ -252,6 +252,9 @@ applies it, and these guards:
   snapshot's checksum, or it writes nothing. Normalized means: the variable
   descriptions use_figma HTML-escapes are decoded, and `takenAt` and `file` are
   set to the committed values.
+- Staging must hold nothing the model does not: no variable, mode or style a
+  token change deleted. `--delta` refuses such a change first, and `delta.js`
+  counts again in staging, because it never deletes.
 - It plans in staging, and that plan must be the one `--delta` made. It
   refuses a plan that deletes anything, and checks for conflicts and missing
   fonts.
@@ -293,20 +296,21 @@ Steps:
 notification with the exact reason, word for word. Every refusal says whether
 anything was written:
 
-| It refuses                                               | Where     | Route                                                                                     |
-| -------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------- |
-| a plan that moves a variable between collections         | `--delta` | Sync (it creates the new variable and warns; a person rebinds the old one)                |
-| a plan with conflicts                                    | `--delta` | a person fixes them in Figma, then Sync                                                   |
-| `--prune`, or any removal or mode removal                | `--delta` | never `delta.js` or Sync: a deliberate prune uses the promote plugin                      |
-| a `delta.js` over 45,000 characters                      | `--delta` | Sync                                                                                      |
-| no committed `figma/snapshot.json`                       | `--delta` | Sync, then collect its receipt                                                            |
-| any file but staging                                     | in Figma  | run it on staging                                                                         |
-| `PLAN` or the runtime changed on the way in              | in Figma  | Sync                                                                                      |
-| the pin: staging is not the committed snapshot           | in Figma  | if a Sync ran, collect its receipt; otherwise Sync                                        |
-| a plan that deletes, or another plan than `--delta` made | in Figma  | Sync (or the promote plugin for a prune)                                                  |
-| a missing font, or a conflict                            | in Figma  | a font: Sync, from Figma desktop; a conflict: a person fixes it in Figma, then Sync       |
-| an apply that failed partway, or a re-plan that is not 0 | in Figma  | Sync: it is idempotent and finishes the push. `lastPush` and the receipt were not written |
-| a receipt Figma did not keep                             | in Figma  | Sync: it changes nothing and writes the receipt. The push and `lastPush` are done         |
+| It refuses                                                                                                                  | Where     | Route                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------- |
+| a plan that moves a variable between collections                                                                            | `--delta` | Sync (it creates the new variable and warns; a person rebinds the old one)                |
+| a plan with conflicts                                                                                                       | `--delta` | a person fixes them in Figma, then Sync                                                   |
+| `--prune`, or a variable, mode or style staging holds that the model does not (a token deleted from `hirobius.tokens.json`) | `--delta` | the promote plugin (`pnpm figma:push --prune`): `delta.js` and Sync never delete          |
+| a `delta.js` over 45,000 characters                                                                                         | `--delta` | Sync                                                                                      |
+| no committed `figma/snapshot.json`                                                                                          | `--delta` | Sync, then collect its receipt                                                            |
+| any file but staging                                                                                                        | in Figma  | run it on staging                                                                         |
+| `PLAN` or the runtime changed on the way in                                                                                 | in Figma  | Sync                                                                                      |
+| the pin: staging is not the committed snapshot                                                                              | in Figma  | if a Sync ran, collect its receipt; otherwise Sync                                        |
+| staging holding more than the model, or a plan that deletes                                                                 | in Figma  | the promote plugin (`pnpm figma:push --prune`)                                            |
+| another plan than `--delta` made                                                                                            | in Figma  | Sync                                                                                      |
+| a missing font, or a conflict                                                                                               | in Figma  | a font: Sync, from Figma desktop; a conflict: a person fixes it in Figma, then Sync       |
+| an apply that failed partway, or a re-plan that is not 0                                                                    | in Figma  | Sync: it is idempotent and finishes the push. `lastPush` and the receipt were not written |
+| a receipt Figma did not keep                                                                                                | in Figma  | Sync: it changes nothing and writes the receipt. The push and `lastPush` are done         |
 
 Budget: one `use_figma` call, plus 1–2 `receipt.js` reads when the receipt needs
 more than one page, plus the figma-use skill load if it is not loaded yet.

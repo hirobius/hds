@@ -80,6 +80,19 @@ export function hdsAgentVariable(v, path, pathOf) {
 }
 
 /**
+ * What `state` holds, counted the way delta.js checks it never leaves an
+ * extra behind: variables, modes, and the text and effect styles HDS stamped
+ * (a style without a path is never an extra). `pnpm figma:push --delta` bakes
+ * the committed snapshot's count less its full plan's extras; staging must
+ * hold exactly that.
+ */
+export function hdsAgentHeld(state) {
+  const sum = (key) => state.collections.reduce((n, c) => n + c[key].length, 0);
+  const stamped = (styles) => styles.filter((s) => s.path).length;
+  return [sum('variables'), sum('modes'), stamped(state.textStyles), stamped(state.effectStyles)];
+}
+
+/**
  * The model slice delta.js plans with: the collections, variables and styles
  * the change touches, plus every variable they alias. `data.slice` holds
  * `[key, collectionId, patch, variables]` per collection and
@@ -122,7 +135,8 @@ export function hdsAgentSlice(state, data) {
 
 /**
  * delta.js: refuses unless this is staging and its data is intact, pins
- * staging to the committed snapshot, plans the slice against it (the plan
+ * staging to the committed snapshot, refuses when staging holds more than
+ * the model (it never deletes), plans the slice against it (the plan
  * figma:push --delta made, or refuses), applies it, re-plans to 0, stamps
  * lastPush and the C2 receipt (raw pages: use_figma has no
  * CompressionStream), and returns the receipt as receipt.js reads page 0,
@@ -159,6 +173,17 @@ export async function hdsAgentRun(figma, data, checksum) {
         ' Then collect its receipt.',
     );
   }
+  const prune =
+    ' A deliberate deletion or prune uses the promote plugin (pnpm figma:push --prune).';
+  const held = hdsAgentHeld(base);
+  if (held.join() !== data.held.join()) {
+    refuse(
+      'staging holds ' +
+        held.reduce((n, count, i) => n + count - data.held[i], 0) +
+        ' item(s) the model does not have, and delta.js never deletes.',
+      prune,
+    );
+  }
   const model = hdsAgentSlice(base, data);
   const plan = hdsPlan(model, base, data.options);
   const gone = plan.removals;
@@ -166,10 +191,7 @@ export async function hdsAgentRun(figma, data, checksum) {
     gone.variables.length + gone.textStyles.length + gone.effectStyles.length + gone.modes.length ||
     plan.collections.some((c) => c.modes.remove.length)
   ) {
-    refuse(
-      'the plan deletes, and delta.js never deletes.',
-      ' A deliberate prune uses the promote plugin.',
-    );
+    refuse('the plan deletes, and delta.js never deletes.', prune);
   }
   if (hdsChecksum(JSON.stringify(plan)) !== data.planSum) {
     refuse('the plan made in staging is not the one pnpm figma:push --delta made.', sync);

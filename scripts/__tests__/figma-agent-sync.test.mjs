@@ -191,6 +191,66 @@ const describeAndCreate = (model) => {
   return model;
 };
 
+/**
+ * Deletions: staging (pushed from `base(model)`) holds what `drop` takes out
+ * of the next model. Without prune a plan keeps it as an extra, which plain
+ * check:figma-drift then reports; `item` is how a refusal names it.
+ */
+const deletions = {
+  'a variable': {
+    base: (model) => {
+      model.collections
+        .find((c) => c.key === 'role')
+        .variables.push(
+          newVariable(model, 'role.background', 'role.retired', 'retired', {
+            Default: { alias: 'semantic.color.surface.page' },
+          }),
+        );
+      return model;
+    },
+    drop: (model) => {
+      const role = model.collections.find((c) => c.key === 'role');
+      role.variables = role.variables.filter((v) => v.path !== 'role.retired');
+      return model;
+    },
+    item: 'variable role.retired',
+  },
+  'a mode': {
+    base: (model) => {
+      const semantic = model.collections.find((c) => c.key === 'semantic');
+      semantic.modes.push('Dim');
+      semantic.variables.forEach((v) => (v.valuesByMode.Dim = v.valuesByMode.Dark));
+      return model;
+    },
+    drop: (model) => {
+      const semantic = model.collections.find((c) => c.key === 'semantic');
+      semantic.modes = semantic.modes.filter((m) => m !== 'Dim');
+      semantic.variables.forEach((v) => delete v.valuesByMode.Dim);
+      return model;
+    },
+    item: 'mode Hirobius/Semantic: Dim',
+  },
+  'a text style': {
+    base: (model) => model,
+    drop: (model) => {
+      model.textStyles = model.textStyles.filter((s) => s.path !== 'semantic.typography.caption');
+      return model;
+    },
+    item: 'text style semantic.typography.caption',
+  },
+  'an effect style': {
+    base: (model) => model,
+    drop: (model) => {
+      model.effectStyles = model.effectStyles.filter((s) => s.path !== 'semantic.elevation.raised');
+      return model;
+    },
+    item: 'effect style semantic.elevation.raised',
+  },
+};
+/** The route every deletion refusal names: the promote plugin, never delta.js or Sync. */
+const PROMOTE_ROUTE =
+  /A deliberate deletion or prune uses the promote plugin \(pnpm figma:push --prune\)/;
+
 /** Runs delta.js the way use_figma does: async, top-level await and return, `figma` in scope. */
 async function runDelta(text, figma) {
   const result = await vm.runInNewContext(`(async () => {\n${text}\n})()`, { figma });
@@ -465,54 +525,26 @@ describe('delta.js refuses, writing nothing', () => {
     );
   });
 
-  /** Staging holds what `drop` takes out of the next model: a variable, or a mode. */
-  const deletions = {
+  /** A forged PLAN that asks for prune: under prune, a partial slice deletes everything outside it. */
+  const prunes = {
     'a variable': {
-      base: (model) => {
-        model.collections
-          .find((c) => c.key === 'role')
-          .variables.push(
-            newVariable(model, 'role.background', 'role.retired', 'retired', {
-              Default: { alias: 'semantic.color.surface.page' },
-            }),
-          );
-        return model;
-      },
-      drop: (model) => {
-        const role = model.collections.find((c) => c.key === 'role');
-        role.variables = role.variables.filter((v) => v.path !== 'role.retired');
-        return model;
-      },
-      // A slice is partial: under prune, every variable outside it would go too.
-      deletes: (plan) =>
-        plan.removals.variables.some((v) => v.path === 'role.retired') &&
-        !plan.removals.modes.length,
+      base: deletions['a variable'].base,
+      slice: () => {},
+      deletes: (plan) => plan.removals.variables.some((v) => v.path === 'role.retired'),
     },
     'a mode': {
-      base: (model) => {
-        const semantic = model.collections.find((c) => c.key === 'semantic');
-        semantic.modes.push('Dim');
-        semantic.variables.forEach((v) => (v.valuesByMode.Dim = v.valuesByMode.Dark));
-        return model;
-      },
-      drop: (model) => {
-        const semantic = model.collections.find((c) => c.key === 'semantic');
-        semantic.modes = semantic.modes.filter((m) => m !== 'Dim');
-        semantic.variables.forEach((v) => delete v.valuesByMode.Dim);
-        return model;
-      },
-      deletes: (plan) => plan.collections.some((c) => c.modes.remove.indexOf('Dim') !== -1),
+      base: (model) => model,
+      // The semantic collection's head names only Light, so prune removes Dark.
+      slice: (plan) => (plan.slice.find((c) => c[0] === 'semantic')[2].modes = ['Light']),
+      deletes: (plan) => plan.collections.some((c) => c.modes.remove.indexOf('Dark') !== -1),
     },
   };
-  for (const [what, { base, drop, deletes }] of Object.entries(deletions)) {
+  for (const [what, { base, slice, deletes }] of Object.entries(prunes)) {
     it(`a plan that would delete ${what}, even forged with both checksums right`, async () => {
-      const s = await pending({
-        base: base(trickyModel()),
-        edit: (model) => describeAndCreate(drop(model)),
-      });
-      // Without prune the plan keeps it as an extra; a forged PLAN asks for prune.
+      const s = await pending({ base: base(trickyModel()) });
       const forgery = forged(s.built.text, (plan) => {
         plan.options.prune = true;
+        slice(plan);
         const state = s.snapshotFile.snapshot;
         const pruned = hdsPlan(hdsAgentSlice(state, plan), state, plan.options);
         expect(deletes(pruned)).toBe(true);
@@ -524,8 +556,34 @@ describe('delta.js refuses, writing nothing', () => {
         /the plan deletes, and delta\.js never deletes.*Nothing was written/s,
         forgery,
       );
+      await expect(runDelta(forgery, s.figma)).rejects.toThrow(PROMOTE_ROUTE);
     });
   }
+
+  it('staging holds a variable the model no longer has (a build that skipped its refusal), even with both checksums right', async () => {
+    const { base, drop } = deletions['a variable'];
+    const s = await pending({ base: base(trickyModel()) });
+    // A build without its refusal, for the model that drops role.retired, bakes
+    // the same slice (role.retired is outside it) and expects staging to hold
+    // the snapshot less the full plan's extras: 57 variables, not 58.
+    const dropped = buildPushPayload(describeAndCreate(drop(base(trickyModel())))).payload;
+    const state = s.snapshotFile.snapshot;
+    const { extras } = hdsPlan(dropped.model, state, { prune: false });
+    expect(extras.variables.map((v) => v.path)).toEqual(['role.retired']);
+    const forgery = forged(s.built.text, (plan) => {
+      // Variables, modes, text styles and effect styles staging holds.
+      expect(plan.held).toEqual([58, 5, 3, 3]);
+      plan.held = [57, 5, 3, 3];
+      plan.modelHash = dropped.modelHash;
+      return plan;
+    });
+    await refuses(
+      s,
+      /staging holds 1 item\(s\) the model does not have, and delta\.js never deletes.*Nothing was written/s,
+      forgery,
+    );
+    await expect(runDelta(forgery, s.figma)).rejects.toThrow(PROMOTE_ROUTE);
+  });
 
   it('a text style font this editor does not have', async () => {
     const s = await pending({
@@ -610,6 +668,21 @@ describe('pnpm figma:push --delta refuses to build what Sync must do', () => {
     expect(built).toMatchObject({ text: null, line: NOTHING_LINE });
     expect(built.nothing).toMatch(/nothing to sync/);
   });
+});
+
+describe('pnpm figma:push --delta refuses to build a deletion: delta.js never deletes', () => {
+  for (const [what, { base, drop, item }] of Object.entries(deletions)) {
+    it(`${what} the model no longer has, among other changes or alone, routed to the promote plugin`, async () => {
+      for (const edit of [(model) => describeAndCreate(drop(model)), drop]) {
+        const refusal = pending({ base: base(trickyModel()), edit });
+        await expect(refusal).rejects.toThrow(
+          `delta.js refused: staging holds 1 item(s) the model does not have (${item}), and delta.js never deletes.`,
+        );
+        await expect(refusal).rejects.toThrow(PROMOTE_ROUTE);
+        await expect(refusal).rejects.toThrow(/No delta\.js was written\.$/);
+      }
+    });
+  }
 });
 
 // ── The real model ───────────────────────────────────────────────────────────
@@ -758,6 +831,14 @@ describe('pnpm figma:push --delta', () => {
     expect(() => writeDeltaScript({ root, outDir, commit: COMMIT })).toThrow(/Route it to Sync/);
     expect(existsSync(join(outDir, 'use-figma', 'delta.js'))).toBe(false);
     expect(existsSync(join(outDir, 'use-figma', 'receipt.js'))).toBe(true);
+  });
+
+  it('refuses a token deleted from hirobius.tokens.json, writing no file at all', async () => {
+    const { root, outDir } = await rootWithChange((tokens) => delete tokens.role.ring);
+    expect(() => writeDeltaScript({ root, outDir, commit: COMMIT })).toThrow(
+      'staging holds 1 item(s) the model does not have (variable role.ring)',
+    );
+    expect(existsSync(outDir)).toBe(false);
   });
 
   it('says there is nothing to sync, and writes no delta.js, when staging holds the model', async () => {
