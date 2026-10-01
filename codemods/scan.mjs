@@ -12,8 +12,8 @@
  * `}`), `ok` is false and a caller must not rely on `isCode`.
  */
 
-const ID_START = /[A-Za-z_$\u0080-￿]/;
-const ID_PART = /[\w$\u0080-￿]/;
+const ID_START = /[A-Za-z_$\u0080-\uffff]/;
+const ID_PART = /[\w$\u0080-\uffff]/;
 // After these words an expression starts, so `/` is a regex and `<` is JSX.
 const EXPR_KEYWORDS = new Set([
   'return',
