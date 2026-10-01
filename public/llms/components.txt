@@ -79,6 +79,9 @@ Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 ### Badge
 Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
+  - dot: boolean = false
+  - label: string
+  - size: "sm" | "md" | "lg"
   - tone: "neutral" | "danger" | "success" | "warning" | "info" | "inProgress" | null
 
 ### Bleed
@@ -109,12 +112,15 @@ Breadcrumb trail. Links route through the HDS router seam (plain anchors with no
 ### Button
 Triggers an action when activated.
   - asChild: boolean = false
+  - defaultPressed: boolean
   - disabled: boolean
   - iconLeft: ReactNode
   - iconOnly: boolean = false
   - iconRight: ReactNode
   - label: string
   - loading: boolean = false
+  - onPressedChange: ((pressed: boolean) => void)
+  - pressed: boolean
   - size: "sm" | "md" | "lg" | null
   - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
   - variant: "primary" | "secondary" | "tertiary" | null
@@ -137,7 +143,10 @@ Tagged per-export, not on the file block: this module exports eight components a
   - bordered: boolean = false
   - gap: GapOption = tight
   - noPadding: boolean = false
+  - onSelectedChange: ((selected: boolean) => void)
   - padding: PaddingOption = component
+  - selectable: boolean = false
+  - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
   - variant: 'default' | 'accent' = default
 
@@ -537,6 +546,7 @@ Icon — semantic icon wrapper for Lucide icons.
 IconButton ” icon-only action trigger built on the shared Button primitive.
   - aria-label: string
   - asChild: boolean
+  - defaultPressed: boolean
   - disabled: boolean
   - icon: LucideIcon
   - iconColor: string
@@ -545,6 +555,8 @@ IconButton ” icon-only action trigger built on the shared Button primitive.
   - iconSize: IconSize
   - label: string
   - loading: boolean
+  - onPressedChange: ((pressed: boolean) => void)
+  - pressed: boolean
   - size: "sm" | "md" | "lg"
   - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
   - variant: "primary" | "secondary" | "tertiary" | null
@@ -710,10 +722,13 @@ Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
   - open: boolean
 
 ### Progress
-Linear progress. Determinate when `value` is a number, else indeterminate.
+Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.
   - label: string = Progress
+  - max: number = 100
   - size: "sm" | "md" | "lg" | null
+  - tone: "neutral" | "danger" | "success" | "warning" | "info" = neutral
   - value: number | null = null
+  - variant: "linear" | "circular" = linear
 
 ### Radio
 Radio — radio button with animated selection indicator.
@@ -785,7 +800,7 @@ Sidebar — fixed-width rail beside fluid content, no media query. Every Layout 
 ### Skeleton
 Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.
   - height: string | number
-  - variant: "text" | "rectangular" | "circular" | null = rectangular
+  - variant: "text" | "circular" | "rectangular" | null = rectangular
   - width: string | number
 
 ### Slider

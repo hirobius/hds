@@ -33,6 +33,12 @@ import { isDevelopment } from '../../lib/env';
  * hover through the brightness filter), which is also how the Figma Pressed
  * variant behaves. Without `color-mix()` support the fallback is the opaque
  * token, the same fallback Tailwind emits for `bg-scrim/60`.
+ *
+ * Toggled on (`pressed`, hds#393) is a different state from that momentary
+ * wash: `data-pressed="true"` fills with `role.accent` and its foreground,
+ * the on-state a toggle needs, so it reads as on at rest, not only mid-click.
+ * Only toggle buttons get these classes, so every other Button renders the
+ * same markup as before.
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (Tailwind has no single utility for transition-[colors,filter]) and the 9999px inset-shadow spread that fills the padding box for the pressed wash
 const buttonVariants = /* @__PURE__ */ cva(
@@ -86,6 +92,8 @@ const buttonVariants = /* @__PURE__ */ cva(
   },
 );
 
+const toggleOnClasses = 'data-[pressed=true]:bg-accent data-[pressed=true]:text-accent-foreground';
+
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
@@ -105,10 +113,16 @@ export interface ButtonProps
   iconLeft?: React.ReactNode;
   /** Trailing icon rendered after the label. */
   iconRight?: React.ReactNode;
-  /** Render the button as a square icon-only control. Requires aria-label. */
+  /** Render a square icon-only control; `label` becomes its aria-label. */
   iconOnly?: boolean;
   /** Disable interaction. Mirrors the native HTML attribute. */
   disabled?: boolean;
+  /** Make it a toggle button (aria-pressed), controlled. */
+  pressed?: boolean;
+  /** Initial toggle state when `pressed` is not set. */
+  defaultPressed?: boolean;
+  /** Called with the next pressed state on click. */
+  onPressedChange?: (pressed: boolean) => void;
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -118,10 +132,13 @@ export interface ButtonProps
 // `warnOnce` from lib/deprecation: that prefixes `[HDS deprecation]`, and this
 // is a misuse, not a deprecation.
 let warnedIconOnlyWithoutIcon = false;
+// Warn once per module load: iconOnly hides the label text, so without label,
+// aria-label, aria-labelledby or title the button has no accessible name.
+let warnedIconOnlyWithoutName = false;
 
 /**
  * Triggers an action when activated.
- * @usage Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.
+ * @usage Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed.
  * @whenNot Navigating to another page, where a link is the correct element.
  * @useInstead InlineLink navigation to another page
  */
@@ -141,6 +158,10 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       disabled,
       children,
       type = 'button',
+      pressed: pressedProp,
+      defaultPressed,
+      onPressedChange,
+      onClick,
       ...props
     },
     ref,
@@ -148,17 +169,43 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     const isDisabled = disabled || loading;
     const content = children ?? label;
 
+    // A toggle (hds#393): any of the three pressed props makes this a toggle
+    // button; `pressed` controls it, otherwise it keeps its own state. The
+    // state goes out as aria-pressed and data-pressed (data-state is loading's).
+    const isToggle =
+      pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
+    const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
+    const isPressed = pressedProp ?? ownPressed;
+    const toggleProps = isToggle
+      ? {
+          'aria-pressed': isPressed,
+          'data-pressed': isPressed ? 'true' : 'false',
+          onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+            onClick?.(event);
+            if (event.defaultPrevented) return;
+            if (pressedProp === undefined) setOwnPressed(!isPressed);
+            onPressedChange?.(!isPressed);
+          },
+        }
+      : { onClick };
+    const classes = cn(
+      buttonVariants({ variant, tone, size, iconOnly }),
+      isToggle && toggleOnClasses,
+      className,
+    );
+
     if (asChild) {
       return (
         <Slot
           ref={ref as React.Ref<HTMLElement>}
-          className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
+          className={classes}
           aria-disabled={isDisabled || undefined}
           aria-busy={loading || undefined}
           data-state={loading ? 'loading' : undefined}
           data-variant={variant ?? undefined}
           data-tone={tone ?? undefined}
           data-size={size ?? undefined}
+          {...(toggleProps as React.HTMLAttributes<HTMLElement>)}
           {...(props as React.HTMLAttributes<HTMLElement>)}
         >
           {children as React.ReactElement}
@@ -173,17 +220,38 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       );
     }
 
+    if (
+      iconOnly &&
+      !label &&
+      !props['aria-label'] &&
+      !props['aria-labelledby'] &&
+      !props.title &&
+      !warnedIconOnlyWithoutName &&
+      isDevelopment()
+    ) {
+      warnedIconOnlyWithoutName = true;
+      console.warn(
+        '[Button] iconOnly hides the label text, so the button has no accessible name; pass label (or aria-label / aria-labelledby).',
+      );
+    }
+
+    // iconOnly hides the label text, so the label becomes the name instead.
+    // Spread only when set, so an aria-label from props keeps its old position.
+    const nameProps = iconOnly && label ? { 'aria-label': label } : {};
+
     return (
       <button
         ref={ref}
         type={type}
         disabled={isDisabled}
         aria-busy={loading || undefined}
+        {...nameProps}
         data-state={loading ? 'loading' : undefined}
         data-variant={variant ?? undefined}
         data-tone={tone ?? undefined}
         data-size={size ?? undefined}
-        className={cn(buttonVariants({ variant, tone, size, iconOnly, className }))}
+        className={classes}
+        {...toggleProps}
         {...props}
       >
         {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : iconLeft}
