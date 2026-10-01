@@ -249,7 +249,10 @@ describe('snapshotDelta / applySnapshotDelta', () => {
     for (const [name, count] of Object.entries(seen)) {
       expect(count, `no run made a "${name}" edit`).toBeGreaterThan(0);
     }
-  });
+    // About 3.3 s of CPU on an idle machine (snapshotDelta checks its own round
+    // trip on the real snapshot 200 times): over vitest's 5 s default on a busy
+    // runner or in the pre-push hook, so it gets its own budget.
+  }, 30_000);
 
   it('is empty when nothing changed, and applying it changes nothing', () => {
     const base = AFTER_PRUNE.snapshot;
