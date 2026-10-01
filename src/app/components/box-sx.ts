@@ -123,7 +123,8 @@ export type SpacingVocabulary =
  *
  * They read the scale steps, so compact density tightens them. Box `sx`'s
  * deprecated names of the same spelling read the fixed layout vars instead
- * (BOX_SX_SPACING below).
+ * (BOX_SX_SPACING below). scripts/check-layout-gap-vocabulary.mjs fails a
+ * second copy anywhere else in src/.
  */
 export const LAYOUT_GAP_NAMES = {
   tight: SPACE_SCALE.sm,

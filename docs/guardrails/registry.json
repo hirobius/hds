@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "65d618e0a506c4aa5647c275bf2d02ef263465c46e45502f753456f936133089",
-  "precommitStructureHashUpdatedAt": "2026-09-30T20:29:59.670Z",
+  "precommitStructureHash": "2c9805dc4a1d03882dd13199746c22e7217f557fabd0841406ca755b3ede5080",
+  "precommitStructureHashUpdatedAt": "2026-10-01T05:03:35.699Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -469,6 +469,18 @@
       "severity": "error",
       "gateScript": "scripts/check-spacing-vocabulary.mjs",
       "fixturePath": "fixtures/check-spacing-vocabulary",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
+      "id": "check-layout-gap-vocabulary",
+      "description": "hds#404 -- fails a second copy of the layout-gap name map anywhere in src/: one of 'tight', 'normal', 'inset' or 'spacious' paired with a t-shirt scale step, read as a var(--semantic-space-scale-*) string (also inside calc() or a template literal), SPACE_SCALE.<step> or <x>.space.scale.<step>. The one copy is LAYOUT_GAP_NAMES in src/app/components/box-sx.ts; Cluster, Grid, Sidebar, Cover, Switcher, Bleed, Center, Card and Stack each kept their own until hds#404, with nothing keeping the copies in step. Parses with the TypeScript API and finds the pairing as an object property (quoted or not, through as/satisfies/parentheses), a [name, step] entry pair (a Map or Object.fromEntries), a switch case (following fall-through) or a comparison that picks a step. Ignores box-sx.ts, *.test.*/*.spec.* files and __tests__/ (a test pins rendered output; it resolves nothing), the same names on Box sx's fixed --semantic-space-layout-* vars, the words as CSS keywords, and lines marked // layout-gap-ok: <reason>. Known limit: a step reached through another name, a computed key, a var name assembled at runtime and an if chain are not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-layout-gap-vocabulary.mjs",
+      "fixturePath": "fixtures/check-layout-gap-vocabulary",
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
