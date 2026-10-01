@@ -108,10 +108,12 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
 | `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
 | `StatusTile`         | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
-| `Card`               | A titled or interactive content object (header, body, footer, or selectable). | `Surface` when there is no title and nothing to press.                       |
+| `Card`               | A titled or interactive content object (header, body, footer, `selectable`).  | `Surface` when there is no title and nothing to press.                       |
 | `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
 | `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
+
+Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state.
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 

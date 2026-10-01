@@ -94,6 +94,14 @@ interface PopoverComponent extends React.FC<React.ComponentProps<typeof PopoverP
 /**
  * Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled
  * with `defaultOpen`.
+ * @usage Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.
+ * @whenNot A short label on hover or focus, a list of actions, or a decision that must block the page.
+ * @useInstead Tooltip a short label shown on hover or focus
+ * @useInstead Menu a list of actions
+ * @useInstead Dialog a decision that blocks the page
+ * @keyboard Enter/Space Opens the popover from the trigger and moves focus inside it.
+ * @keyboard Escape Closes the popover and returns focus to the trigger.
+ * @keyboard Tab Cycles focus inside the open popover; the page behind stays reachable.
  * @public
  */
 const Popover: PopoverComponent = /* @__PURE__ */ Object.assign(PopoverRoot, {

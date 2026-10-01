@@ -15,9 +15,10 @@
  * IMPORTANT: this module MUST NOT import react-router (or any router). It is the
  * router-free contract every consumer can satisfy.
  *
- * @doc-ignore — provider/hook seam (like ThemeProvider et al.), not a visual
- *   component; it carries no Figma specimen or docs page, so manifest discovery
- *   must skip it despite the Hds* name prefix.
+ * @category Theming
+ * @tier primitive
+ * @usage Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors.
+ * @doc-exempt: provider/hook seam like HdsThemeProvider, not a visual component; no Figma node or docs page, documented in README.md and docs/CONSUMING.md
  */
 import {
   createContext,

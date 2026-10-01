@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-01T11:39:45.847Z
+Generated: 2026-10-01T11:58:54.804Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -59,6 +59,7 @@ Divider: Separate two regions of content with a thin semantic rule. Use instead:
 EmptyState: Say that a list, grid or section has no data yet, with a title and an optional description. Use instead: Skeleton, Alert
 Field: Show a labelled read-only value, such as a name and its value in a detail view. Use instead: Input, Card.Metric
 Grid: Lay out content in responsive columns with token-governed gaps, or align nested content with subgrid. Use instead: Stack, Box
+HdsRouterProvider: Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors.
 HdsThemeProvider: Wrap an app or region once to set theme, density and other root attributes for everything inside it. Use instead: Surface
 HoverCard: Preview extra detail about a link or mention when it is hovered or focused, without navigating. Use instead: Dialog, Tooltip
 Icon: Draw a Lucide glyph at a size and colour from the design tokens. Use instead: Button, Avatar
@@ -68,6 +69,7 @@ Input: Collect a single line of text, a number, an email, a password, a date or 
 Kbd: Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 Menu: Offer a list of actions from a trigger, closed until opened. Use instead: Select
 Pagination: Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
+Popover: Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open. Use instead: Tooltip, Menu, Dialog
 Progress: Show how far a task has got, as a bar or ring that is determinate or indeterminate. Use instead: Spinner, Skeleton
 Radio: Choose exactly one option from a small set that should stay visible together. Use instead: Checkbox, Select, SegmentedControl
 SegmentedControl: Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
@@ -86,6 +88,7 @@ Text: Set any text on the type ramp, with the element chosen by `as`. Use instea
 Textarea: Collect multi-line free text such as a message, note or description. Use instead: Input
 ToastProvider: Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
+Tooltip: Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
 VisuallyHidden: Give assistive technology a label or description that sighted people do not need to see. Use instead: Text
 
 ## Tokens (Primary Source Of Truth)
@@ -442,10 +445,12 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
 | `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
 | `StatusTile`         | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
-| `Card`               | A titled or interactive content object (header, body, footer, or selectable). | `Surface` when there is no title and nothing to press.                       |
+| `Card`               | A titled or interactive content object (header, body, footer, `selectable`).  | `Surface` when there is no title and nothing to press.                       |
 | `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
 | `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
+
+Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state.
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
@@ -971,6 +976,11 @@ HdsDocsShell — three-region docs shell (left nav rail, content, right TOC rail
   - rightRail: ReactNode
   - style: CSSProperties
   - topOffset: string = 0px
+
+### HdsRouterProvider
+Provide a router adapter to all HDS components below. Wrap your app root once.
+  - adapter: HdsRouterAdapter
+  - children: ReactNode
 
 ### HdsThemeProvider
 Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.

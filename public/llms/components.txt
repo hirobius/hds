@@ -501,6 +501,11 @@ HdsDocsShell — three-region docs shell (left nav rail, content, right TOC rail
   - style: CSSProperties
   - topOffset: string = 0px
 
+### HdsRouterProvider
+Provide a router adapter to all HDS components below. Wrap your app root once.
+  - adapter: HdsRouterAdapter
+  - children: ReactNode
+
 ### HdsThemeProvider
 Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.
   - as: ElementType<any, keyof IntrinsicElements> = div

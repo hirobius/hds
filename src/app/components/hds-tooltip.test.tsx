@@ -34,6 +34,22 @@ describe('Tooltip', () => {
       'closed',
     );
   });
+
+  // hds#393: a tooltip is a floating surface (semantic.elevation.floating), like
+  // a popover or dropdown; shadow.overlay is reserved for dialogs and sheets.
+  // Figma 93:15 binds shadow/floating too.
+  it('casts the floating shadow, not the modal overlay shadow', () => {
+    render(
+      <Tooltip open>
+        <Tooltip.Trigger>Copy</Tooltip.Trigger>
+        <Tooltip.Content>Copy link</Tooltip.Content>
+      </Tooltip>,
+    );
+    const bubble = document.querySelector('[data-side]') as HTMLElement;
+    expect(bubble.textContent).toContain('Copy link');
+    expect(bubble.className).toContain('shadow-floating');
+    expect(bubble.className).not.toContain('shadow-overlay');
+  });
 });
 
 describe('Tooltip compound assembly (hds#365)', () => {
