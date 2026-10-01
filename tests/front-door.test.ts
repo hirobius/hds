@@ -1,6 +1,8 @@
 /**
  * Front door: what a reviewer sees in the first screen of README.md, and that
- * the README says only what CI checks. Reads repo files only.
+ * the README says only what CI checks. Reads repo files, and runs
+ * scripts/check-focus-states.mjs to compare its exit code with the README's
+ * focus line.
  */
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
@@ -15,6 +17,16 @@ const head = readme.split('\n').slice(0, 20).join('\n');
 const links = JSON.parse(read('figma/links.json')) as { storybookUrl: string };
 
 const SCREENSHOT = 'docs/images/storybook-brand-theme-dials.png';
+
+/**
+ * What a README focus line claims: violations reported, or a clean pass. Any
+ * "violation(s)" counts as reported unless it reads "0", "no" or "zero" violations.
+ */
+function focusClaim(line: string) {
+  const reportsViolations = /(?<!\b(?:0|no|zero)\s+)\bviolations?\b/i.test(line);
+  const claimsPass = /\bpass(?:es|ed)?\b/i.test(line) && !reportsViolations;
+  return { reportsViolations, claimsPass };
+}
 
 describe('README front door (first 20 lines)', () => {
   it('links the live Storybook from figma/links.json', () => {
@@ -61,6 +73,18 @@ describe('README honesty', () => {
     expect(section).not.toMatch(/screen reader|VoiceOver|NVDA|fully accessible|WCAG 2\.\d AAA/i);
   });
 
+  it('reads a focus line as a pass only when it reports no violations', () => {
+    const pass = { reportsViolations: false, claimsPass: true };
+    const fail = { reportsViolations: true, claimsPass: false };
+    expect(focusClaim('and passes with 0 violations.')).toEqual(pass);
+    expect(focusClaim('and passes with no violations.')).toEqual(pass);
+    expect(focusClaim('and passes with zero violations.')).toEqual(pass);
+    expect(focusClaim('and reports 1 violation in `asset-img.tsx`.')).toEqual(fail);
+    expect(focusClaim('and passes, with 10 violations.')).toEqual(fail);
+    expect(focusClaim('and passes, but reports violations.')).toEqual(fail);
+    expect(focusClaim('and passes; violations are listed below.')).toEqual(fail);
+  });
+
   it('states the focus check result the script produces, and that pretest runs it', () => {
     const focus =
       accessibility()
@@ -70,8 +94,7 @@ describe('README honesty', () => {
       cwd: ROOT,
       encoding: 'utf8',
     });
-    const reportsViolations = /\b(?:[1-9]\d*|an?|one|some)\s+violations?\b/i.test(focus);
-    const claimsPass = /\bpass(?:es|ed)?\b/i.test(focus) && !reportsViolations;
+    const { reportsViolations, claimsPass } = focusClaim(focus);
     if (run.status === 0) {
       expect(reportsViolations, `script exits 0 but README says: ${focus}`).toBe(false);
       expect(claimsPass, `script exits 0 but README does not say it passes: ${focus}`).toBe(true);

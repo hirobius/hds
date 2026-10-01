@@ -2,8 +2,9 @@
  * Shared jsdom polyfills for Radix / Floating UI primitives.
  *
  * jsdom lacks ResizeObserver, pointer capture and scrollIntoView, which every
- * Radix overlay touches while positioning or handling focus. Registered once via
- * `test.setupFiles` so keyboard contract tests do not each carry their own copy.
+ * Radix overlay touches while positioning or handling focus, and CSS.escape,
+ * which the virtual screen-reader uses to resolve idrefs. Registered once via
+ * `test.setupFiles` so the contract tests do not each carry their own copy.
  * Guarded so script tests running in the node environment are unaffected.
  */
 if (typeof window !== 'undefined' && typeof Element !== 'undefined') {
