@@ -165,7 +165,7 @@
     "changelog:generate": "node scripts/generate-changelog.mjs",
     "changeset": "changeset",
     "changeset:add": "changeset",
-    "changeset:version": "changeset version",
+    "changeset:version": "changeset version && node scripts/audit-component-integrity.mjs --api --update-baseline",
     "check": "pnpm check:full",
     "check:a11y": "pnpm lint --rule '{\"jsx-a11y/alt-text\":\"error\",\"jsx-a11y/img-redundant-alt\":\"error\"}'",
     "check:attributions": "node scripts/check-attributions.mjs",

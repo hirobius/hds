@@ -122,7 +122,7 @@ CHANGELOG entry. Token or export changes are released as majors.
 
 ```bash
 pnpm changeset add        # record a patch/minor/major bump + notes
-pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md
+pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md + refresh docs/api/api-baseline.json
 # commit + push to main → the Release workflow publishes to public npm
 ```
 

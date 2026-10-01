@@ -190,9 +190,25 @@ describe('API baseline wiring (hds#390)', () => {
     expect(pkg.scripts.pretest).toContain('node scripts/audit-component-integrity.mjs --api');
   });
 
+  // release.yml's changesets/action runs `pnpm changeset:version` to build the
+  // "Version Packages" PR, and that PR gets the same CI as any other (it runs
+  // `pnpm test`). `changeset version` alone bumps package.json and leaves the
+  // baseline one version behind, which fails the assertion below on every
+  // release. The refresh must run after the bump so it records the new version.
+  it('refreshes the baseline after the bump in changeset:version', () => {
+    const steps = pkg.scripts['changeset:version'].split('&&').map((step) => step.trim());
+    expect(steps[0]).toBe('changeset version');
+    expect(
+      steps.indexOf('node scripts/audit-component-integrity.mjs --api --update-baseline'),
+    ).toBe(steps.length - 1);
+  });
+
   it('keeps the committed baseline at the package version', () => {
     const baseline = JSON.parse(readFileSync(join(REPO, 'docs/api/api-baseline.json'), 'utf8'));
-    expect(baseline.version).toBe(pkg.version);
+    expect(
+      baseline.version,
+      'docs/api/api-baseline.json is behind package.json: run `pnpm api:update` (`pnpm changeset:version` does this after the bump)',
+    ).toBe(pkg.version);
     expect(baseline.modules['@subpath/patterns']?.length).toBeGreaterThan(0);
     expect(baseline.modules['@subpath/contexts']?.length).toBeGreaterThan(0);
   });
