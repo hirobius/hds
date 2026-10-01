@@ -200,13 +200,13 @@
     },
     {
       "id": "check-deprecations",
-      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc in the component tier must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version).",
+      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc on the public surface (src/app/components, src/app/layouts, src/index.ts, src/patterns.ts and every package.json#exports JS entry with its re-exports) must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version). Runs in pretest since hds#389 D6.",
       "severity": "warn",
       "gateScript": "scripts/check-deprecations.mjs",
       "fixturePath": "fixtures/check-deprecations",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "manual",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
