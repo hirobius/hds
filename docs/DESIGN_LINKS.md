@@ -8,7 +8,7 @@ Where each component lives in Figma, Storybook and source.
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](../figma/README.md).
 
-**45 of 147** components link a Figma node.
+**45 of 142** components link a Figma node.
 
 | Component          | Figma node                                                                                         | Story                                                                         | Source                                                               |
 | ------------------ | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------- |

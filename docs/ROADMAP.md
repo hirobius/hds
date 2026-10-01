@@ -49,8 +49,8 @@ Only 3 Radix primitives are in use (dialog, slot, tabs); the rest are hand-rolle
 with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
 **and** closes ~6 coverage gaps.
 
-- `HdsSelect` (`controls.tsx:472`) — no `aria-activedescendant` (screen-reader
-  failure) → Radix Select / Combobox.
+- ✅ `Select` (`select.tsx`) wraps Radix Select; the `HdsSelect` alias left in 0.20.0.
+  It was hand-rolled in `controls.tsx`, with no `aria-activedescendant`.
 - `Disclosure` (`disclosure.tsx`) — not `<details>`/Radix → Radix Accordion/Collapsible.
 - `SegmentedControl` (`segmented-control.tsx:113`) — `aria-pressed` instead of a
   radiogroup pattern → Radix Radio Group or Toggle Group.
@@ -76,11 +76,13 @@ with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
   values (`tokens.ts`) that ignore the CSS cascade and only switch via JS
   `isDark`. Make every `hds.*` reference a CSS var.
 
-### P4 🔴 Curate the public API
+### P4 🟡 Curate the public API
 
-- Stop exporting doc-infra from the barrel (`src/index.ts`): `SpecimenBlock`,
-  `ComponentDocPage`, `FoundationSwatch`, `ComponentInstanceMatrix`,
-  `HdsSystemDocLayout`, `DocLinkCard`.
+- 🟡 Stop exporting doc-infra from the barrel (`src/index.ts`). `SpecimenBlock`
+  and `ComponentDocPage` left in 0.5.0.
+  0.20.0 deleted `FoundationSwatch` and `ComponentInstanceMatrix` (hds#389 R1).
+  `DocLinkCard` is exported from `/patterns` only since 0.20.0. Still on the
+  root: `HdsSystemDocLayout`.
 - Remove stray `"use client"` directives (`surface.tsx`, `badge.tsx`) — no-ops in
   Vite/React-Router; decide RSC posture explicitly before re-adding.
 

@@ -65,13 +65,11 @@
     "Carousel",
     "Center",
     "Checkbox",
-    "CinematicLink",
     "CircularProgress",
     "Cluster",
     "CodeBlock",
     "Combobox",
     "CommandPalette",
-    "ComponentInstanceMatrix",
     "Container",
     "ContextMenu",
     "Cover",
@@ -100,7 +98,6 @@
     "FormActions",
     "FormField",
     "FormFieldShell",
-    "FoundationSwatch",
     "Frame",
     "Grid",
     "HdsDocsShell",
@@ -138,7 +135,6 @@
     "Sidebar",
     "SideNav",
     "Skeleton",
-    "Sketch",
     "Slider",
     "Spinner",
     "Stack",
@@ -166,7 +162,6 @@
     "ToastProvider",
     "Toggle",
     "ToggleButton",
-    "Token",
     "Tokenizer",
     "Toolbar",
     "Tooltip",
@@ -895,55 +890,6 @@
         ]
       }
     },
-    "CinematicLink": {
-      "category": "Branding",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/cinematic-link.tsx",
-      "description": "CinematicLink - cinematic editorial link treatment for portfolio surfaces.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "CinematicLink",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/stories/cinematic-link.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "children": {
-          "type": "string"
-        },
-        "href": {
-          "type": "string"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "primitive",
-      "docExempt": false,
-      "sourcePath": "src/app/components/CinematicLink.tsx",
-      "figmaLink": null,
-      "storyFiles": [
-        "src/stories/cinematic-link.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-cinematic-link--default",
-        "primitives-cinematic-link--external-href",
-        "primitives-cinematic-link--long-label",
-        "primitives-cinematic-link--short-label"
-      ],
-      "deprecated": "CinematicLink is an HDS docs/lab internal (editorial link treatment for portfolio/case-study specimen surfaces), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
-      "removeIn": "1.0.0"
-    },
     "CodeBlock": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -958,7 +904,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/index.ts",
         "src/stories/code-block.stories.tsx"
       ],
       "tokenMapping": {
@@ -1508,7 +1453,6 @@
       "figmaLink": null,
       "consumers": [
         "src/app/components/doc-link-card.test.tsx",
-        "src/index.ts",
         "src/stories/doc-link-card.stories.tsx"
       ],
       "variantAxes": [],
@@ -1539,7 +1483,6 @@
       },
       "consumers": [
         "src/app/components/not-found-pattern.tsx",
-        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx"
       ],
@@ -1621,139 +1564,6 @@
         "feedback-error-pattern--unauthorized"
       ]
     },
-    "FoundationSwatch": {
-      "category": "Utilities",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/foundation-swatch.tsx",
-      "description": "FoundationSwatch - governed foundation specimen for color and semantic role previews.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "FoundationSwatch",
-        "sizing": "full"
-      },
-      "consumers": [
-        "src/stories/foundation-swatch.stories.test.ts",
-        "src/stories/foundation-swatch.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "background": {
-          "type": "string"
-        },
-        "bordered": {
-          "type": "boolean",
-          "default": false
-        },
-        "details": {
-          "type": "string[]",
-          "optional": true
-        },
-        "foreground": {
-          "type": "string",
-          "default": "var(--semantic-color-content-primary)"
-        },
-        "hidePreviewLabel": {
-          "type": "boolean",
-          "default": false
-        },
-        "label": {
-          "type": "string"
-        },
-        "note": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "previewPosition": {
-          "type": "enum",
-          "values": [
-            "bottom-left",
-            "top-left",
-            "center"
-          ],
-          "default": "center"
-        },
-        "specimen": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "swatchVar": {
-          "type": "string",
-          "optional": true
-        },
-        "tokenDisplayPreset": {
-          "type": "enum",
-          "values": [
-            "depth1",
-            "depth2",
-            "full"
-          ],
-          "default": "depth2"
-        },
-        "tokenPath": {
-          "type": "string",
-          "optional": true
-        },
-        "value": {
-          "type": "string",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "pattern",
-      "docExempt": false,
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {}
-        },
-        {
-          "name": "specimen",
-          "figmaSlotName": "Specimen",
-          "tokenBinding": {
-            "stroke": "semantic.color.border.default"
-          }
-        },
-        {
-          "name": "label",
-          "figmaSlotName": "Label",
-          "tokenBinding": {
-            "fill": "semantic.color.content.primary"
-          }
-        },
-        {
-          "name": "note",
-          "figmaSlotName": "Note",
-          "tokenBinding": {
-            "fill": "semantic.color.content.secondary"
-          }
-        }
-      ],
-      "sourcePath": "src/app/components/FoundationSwatch.tsx",
-      "figmaLink": null,
-      "storyFiles": [
-        "src/stories/foundation-swatch.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-foundation-swatch--color-grid",
-        "primitives-foundation-swatch--default",
-        "primitives-foundation-swatch--feedback-palette",
-        "primitives-foundation-swatch--with-details",
-        "primitives-foundation-swatch--with-specimen"
-      ],
-      "deprecated": "FoundationSwatch is an HDS docs/lab internal (foundation specimen preview for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
-      "removeIn": "1.0.0"
-    },
     "Grid": {
       "category": "Layout",
       "categorySource": "jsdoc",
@@ -1773,7 +1583,6 @@
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
-        "src/app/components/foundation-swatch.tsx",
         "src/app/components/grid.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/metric-tiles.test.tsx",
@@ -1784,7 +1593,6 @@
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
         "src/stories/box.stories.tsx",
-        "src/stories/foundation-swatch.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
@@ -1965,7 +1773,6 @@
         "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
         "src/app/components/toast.tsx",
-        "src/app/components/tokenUtils.ts",
         "src/stories/activity-feed.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/icon.stories.tsx",
@@ -2951,7 +2758,6 @@
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
         "src/app/layouts/HdsDocsShell.tsx",
-        "src/index.ts",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx"
       ],
@@ -3178,87 +2984,6 @@
         ]
       }
     },
-    "Sketch": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/sketch.tsx",
-      "description": "Sketch — shared shell for generative canvases and WebGL sketches.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "Sketch",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/stories/sketch.stories.test.tsx",
-        "src/stories/sketch.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "children": {
-          "type": "ReactNode"
-        },
-        "controls": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "title": {
-          "type": "string"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "pattern",
-      "docExempt": false,
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {
-            "fill": "semantic.color.surface.canvas"
-          }
-        },
-        {
-          "name": "header",
-          "figmaSlotName": "Header",
-          "tokenBinding": {
-            "stroke": "semantic.color.border.default"
-          }
-        },
-        {
-          "name": "title",
-          "figmaSlotName": "Title",
-          "tokenBinding": {
-            "fill": "semantic.color.content.primary"
-          }
-        },
-        {
-          "name": "canvas",
-          "figmaSlotName": "Canvas",
-          "tokenBinding": {}
-        }
-      ],
-      "sourcePath": "src/app/components/Sketch.tsx",
-      "figmaLink": null,
-      "storyFiles": [
-        "src/stories/sketch.stories.tsx"
-      ],
-      "storyIds": [
-        "layout-sketch--default",
-        "layout-sketch--narrow-canvas",
-        "layout-sketch--with-controls"
-      ],
-      "deprecated": "Sketch is an HDS docs/lab internal (shell for generative canvas/WebGL specimen pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
-      "removeIn": "1.0.0"
-    },
     "Stack": {
       "category": "Layout",
       "categorySource": "jsdoc",
@@ -3289,14 +3014,12 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/form-actions.test.tsx",
         "src/app/components/form-actions.tsx",
-        "src/app/components/foundation-swatch.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/heading-stack.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/nav-group.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/page.tsx",
-        "src/app/components/sketch.tsx",
         "src/app/components/stack.test.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/table.tsx",
@@ -3851,170 +3574,6 @@
         ]
       }
     },
-    "Token": {
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/token.tsx",
-      "description": "Token - reflective token specimen for unified node-based token views. The `variant` axis (node | diagram — diagram is a deprecated alias that resolves to the same node treatment) plus the `selected` / `fullWidth` / `asButton` / `nowrap` / `sourceNode` states used to be a Token.module.css `[data-*]` attribute stylesheet, with a duplicate `isSelected` branch re-painted inline on top of it. Both now live as one `cva` variant set — same `--semantic-*`/`--component-*`/`--primitive-*` custom properties, same pixels, no CSS module.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "Token",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/activity-feed.tsx",
-        "src/app/components/box-sx.ts",
-        "src/app/components/box.tsx",
-        "src/app/components/code-block.tsx",
-        "src/app/components/foundation-swatch.tsx",
-        "src/app/components/side-nav.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/lib/hds-search.ts",
-        "src/index.ts",
-        "src/stories/activity-feed.stories.tsx",
-        "src/stories/card.stories.tsx",
-        "src/stories/foundation-swatch.stories.tsx",
-        "src/stories/heading-stack.stories.tsx",
-        "src/stories/input.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/stacked-card-rail.stories.tsx",
-        "src/stories/status-list-item.stories.tsx",
-        "src/stories/table.stories.tsx",
-        "src/stories/tabs.stories.tsx",
-        "src/stories/text-lockup.stories.tsx",
-        "src/stories/text.stories.tsx",
-        "src/stories/toast.stories.tsx",
-        "src/stories/token.stories.tsx"
-      ],
-      "tokenMapping": {
-        "Node label text": "semantic.color.content.primary",
-        "Diagram label text": "semantic.color.content.secondary",
-        "Diagram accent color": "semantic.color.content.accent",
-        "Border stroke": "semantic.color.border.default",
-        "Font family": "primitive.typography.family.mono",
-        "Corner radius (sm)": "primitive.radius.4",
-        "Corner radius (xs)": "primitive.radius.2"
-      },
-      "props": {
-        "accentColor": {
-          "type": "string"
-        },
-        "aria-label": {
-          "type": "string",
-          "optional": true
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "description": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "fullWidth": {
-          "type": "boolean",
-          "optional": true
-        },
-        "isSelected": {
-          "type": "boolean",
-          "optional": true
-        },
-        "isSourceNode": {
-          "type": "boolean",
-          "optional": true
-        },
-        "label": {
-          "type": "string"
-        },
-        "leadingSlot": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "nodeRef": {
-          "type": "(el: HTMLElement | null) => void",
-          "optional": true
-        },
-        "nowrap": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onClick": {
-          "type": "(() => void) | (() => void)",
-          "optional": true
-        },
-        "pathDisplayDepth": {
-          "type": "number",
-          "optional": true
-        },
-        "pathDisplayLeadingDot": {
-          "type": "boolean",
-          "optional": true
-        },
-        "pathDisplayMode": {
-          "type": "enum",
-          "values": [
-            "full",
-            "compressed"
-          ],
-          "optional": true
-        },
-        "rawValue": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "swatchVar": {
-          "type": "string",
-          "optional": true
-        },
-        "tokenPath": {
-          "type": "string",
-          "optional": true
-        },
-        "truncateFromStart": {
-          "type": "boolean",
-          "optional": true
-        },
-        "value": {
-          "type": "string"
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "node",
-            "diagram"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "primitive",
-      "docExempt": false,
-      "sourcePath": "src/app/components/Token.tsx",
-      "figmaLink": null,
-      "storyFiles": [
-        "src/stories/token.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-token--color-token",
-        "primitives-token--compressed-path",
-        "primitives-token--default",
-        "primitives-token--explicit-swatch",
-        "primitives-token--selected",
-        "primitives-token--source-node"
-      ],
-      "deprecated": "Token is an HDS docs/lab internal (reflective token specimen for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
-      "removeIn": "1.0.0"
-    },
     "Surface": {
       "category": "Layout",
       "categorySource": "jsdoc",
@@ -4037,17 +3596,14 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
-        "src/app/components/foundation-swatch.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/popover.tsx",
-        "src/app/components/sketch.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
-        "src/app/components/tokenUtils.ts",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/context/hds-theme.tsx",
@@ -4405,83 +3961,6 @@
         ]
       }
     },
-    "ComponentInstanceMatrix": {
-      "category": "Utilities",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/component-instance-matrix.tsx",
-      "description": "ComponentInstanceMatrix — responsive specimen matrix for variant and state parity.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "ComponentInstanceMatrix",
-        "sizing": "full"
-      },
-      "consumers": [
-        "src/stories/component-instance-matrix.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "componentName": {
-          "type": "string"
-        },
-        "dimensionX": {
-          "type": "string"
-        },
-        "dimensionY": {
-          "type": "string"
-        },
-        "freezeRowState": {
-          "type": "boolean",
-          "default": false
-        },
-        "isMobile": {
-          "type": "boolean"
-        },
-        "renderInstance": {
-          "type": "(rowKey: string, columnKey: string) => ReactNode"
-        },
-        "rowLabelTone": {
-          "type": "enum",
-          "values": [
-            "primary",
-            "secondary"
-          ],
-          "default": "primary"
-        },
-        "rowLabelWidth": {
-          "type": "number",
-          "default": 120
-        },
-        "title": {
-          "type": "string",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "primitive",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "sourcePath": "src/app/components/ComponentInstanceMatrix.tsx",
-      "figmaLink": null,
-      "storyFiles": [
-        "src/stories/component-instance-matrix.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-component-instance-matrix--default",
-        "primitives-component-instance-matrix--frozen-row-state",
-        "primitives-component-instance-matrix--mobile-layout"
-      ],
-      "deprecated": "ComponentInstanceMatrix is an HDS docs/lab internal (specimen matrix helper for the component doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
-      "removeIn": "1.0.0"
-    },
     "ActivityFeed": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -4497,7 +3976,6 @@
       },
       "consumers": [
         "src/app/components/activity-feed.test.tsx",
-        "src/index.ts",
         "src/stories/activity-feed.stories.tsx"
       ],
       "tokenMapping": {},
@@ -4855,7 +4333,6 @@
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
-        "src/app/components/foundation-swatch.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
@@ -4875,7 +4352,6 @@
         "src/stories/page.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/skeleton.stories.tsx",
-        "src/stories/sketch.stories.tsx",
         "src/stories/surface.stories.tsx",
         "src/stories/text-lockup.stories.tsx",
         "src/stories/text.stories.tsx",
@@ -5197,7 +4673,6 @@
       },
       "consumers": [
         "src/app/components/stacked-card-rail.test.tsx",
-        "src/index.ts",
         "src/stories/stacked-card-rail.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5693,7 +5168,6 @@
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
-        "src/stories/sketch.stories.tsx",
         "src/stories/stepper-field.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5812,7 +5286,6 @@
         "src/app/components/toast.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
-        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx",
@@ -6307,7 +5780,6 @@
         "src/stories/badge.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/combobox.stories.tsx",
-        "src/stories/component-instance-matrix.stories.tsx",
         "src/stories/data-table-section.stories.tsx",
         "src/stories/nav-group.stories.tsx",
         "src/stories/page-header.stories.tsx",
@@ -6551,7 +6023,6 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/index.ts",
         "src/stories/asset-img.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6969,7 +6440,6 @@
         "src/app/components/toggle.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/index.ts",
         "src/stories/menu.stories.tsx",
         "src/stories/radio.stories.tsx"
       ],
@@ -7066,7 +6536,6 @@
         "src/app/components/select.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/index.ts",
         "src/stories/checkbox.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/lib/open-listbox.test.tsx",
@@ -7193,7 +6662,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/index.ts",
         "src/stories/slider.stories.tsx"
       ],
       "tokenMapping": {
@@ -7274,7 +6742,6 @@
         "src/app/components/toggle.test.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/index.ts",
         "src/stories/toggle-button.stories.tsx",
         "src/stories/toggle.stories.tsx"
       ],
@@ -8048,7 +7515,6 @@
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts",
-        "src/index.ts",
         "src/stories/form-actions.stories.tsx",
         "src/stories/form.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
@@ -8857,7 +8323,6 @@
       "consumers": [
         "src/app/components/side-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
-        "src/index.ts",
         "src/stories/side-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8942,7 +8407,6 @@
       "consumers": [
         "src/app/data/nav-model.test.ts",
         "src/app/lib/hds-search.ts",
-        "src/index.ts",
         "src/stories/command-palette.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8987,7 +8451,6 @@
         "src/app/components/image-lightbox.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/index.ts",
         "src/stories/asset-img.stories.tsx",
         "src/stories/image-lightbox.stories.tsx"
       ],
@@ -9060,7 +8523,6 @@
       },
       "consumers": [
         "src/app/components/app-shell.test.tsx",
-        "src/index.ts",
         "src/stories/app-shell.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9100,7 +8562,6 @@
       },
       "consumers": [
         "src/app/components/file-input.test.tsx",
-        "src/index.ts",
         "src/stories/file-input.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9224,7 +8685,6 @@
       },
       "consumers": [
         "src/app/components/overflow-list.test.tsx",
-        "src/index.ts",
         "src/stories/overflow-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9387,7 +8847,6 @@
       "consumers": [
         "src/app/components/top-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
-        "src/index.ts",
         "src/stories/top-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9443,7 +8902,6 @@
       },
       "consumers": [
         "src/app/components/carousel.test.tsx",
-        "src/index.ts",
         "src/stories/carousel.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9494,7 +8952,6 @@
       },
       "consumers": [
         "src/app/components/stepper.test.tsx",
-        "src/index.ts",
         "src/stories/stepper-field.stories.tsx",
         "src/stories/stepper.stories.tsx"
       ],
@@ -9550,7 +9007,6 @@
       "consumers": [
         "src/app/components/data-table-section.tsx",
         "src/app/components/toolbar.test.tsx",
-        "src/index.ts",
         "src/stories/toolbar.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9609,7 +9065,6 @@
       },
       "consumers": [
         "src/app/components/tree-list.test.tsx",
-        "src/index.ts",
         "src/stories/tree-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9773,7 +9228,6 @@
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/date-time-input.tsx",
-        "src/index.ts",
         "src/stories/calendar.stories.tsx",
         "src/stories/date-input.stories.tsx",
         "src/stories/date-range-input.stories.tsx",
@@ -11135,7 +10589,6 @@
       "consumers": [
         "src/app/components/pin.tsx",
         "src/app/components/reveal.test.tsx",
-        "src/index.ts",
         "src/stories/patterns-scroll.stories.tsx",
         "src/stories/reveal.stories.tsx"
       ],
@@ -12114,7 +11567,6 @@
         "src/app/components/popover.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/index.ts",
         "src/stories/hds-tooltip.stories.tsx"
       ],
       "tokenMapping": {},
@@ -12519,7 +11971,6 @@
         "src/app/components/checkbox.test.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.tsx",
-        "src/index.ts",
         "src/stories/checkbox.stories.tsx"
       ],
       "tokenMapping": {},

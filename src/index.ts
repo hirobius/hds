@@ -9,28 +9,24 @@
 // Validators, scripts, figma-agent-plugin sources, and other utility-tier
 // modules are marked @internal and are NOT part of this surface.
 //
-// hds#254 (ratified 2026-09-26): 21 of the 22 `pattern`-tier components are
-// ALSO available from `@hirobius/design-system/patterns` (src/patterns.ts;
-// `StackedCardRail` is /patterns-only, see the hds#254 changeset). The root
-// re-export of each is kept for one minor, then dropped at the next major
-// once ops has a codemod — but the `@deprecated` / `@removeIn 1.0.0` JSDoc
-// notice lives ONLY on the root-only alias block at the bottom of this file,
-// not on the component declaration itself. Tagging the declaration would
-// attach the deprecation to the symbol everywhere, including the `/patterns`
-// import this notice tells people to use (TS suggestion 6385 either way) —
-// so each of those 21 modules keeps a plain, undeprecated declaration, and
-// this barrel re-exports it twice: once untagged via `export *` (superseded
-// below) and once tagged via a local `const` alias, which — per ES module
-// semantics — shadows the star-exported binding of the same name for
-// consumers of the package root. Prefer the `/patterns` subpath in new code.
+// The modules in src/patterns.ts ship only from
+// `@hirobius/design-system/patterns`; none of them is re-exported here. Until
+// 0.20.0 the root also re-exported 21 of them behind `@deprecated` aliases
+// (hds#254); hds#389 R1 removed those re-exports in that 0.x minor.
+// `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath` moves consumer
+// imports to the subpath (MIGRATIONS.md, "0.20.0 removals").
+//
+// The same release removed the six `Hds*` aliases (HdsCheckbox, HdsRadio,
+// HdsSelect, HdsSlider, HdsToggle, HdsTooltip; hds#315). Each component is
+// exported under its bare name only;
+// `npx -p @hirobius/design-system@^0.20.0 hds-prefix` rewrites consumer code.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Side-effect import: design system base styles (tokens + theme + utilities)
 import './styles/index.css';
 
-// ── primitives (29) ──
+// ── primitives (38) ──
 export * from './app/components/alert';
-export * from './app/components/asset-img';
 export * from './app/components/avatar';
 export * from './app/components/badge';
 export * from './app/components/box';
@@ -40,16 +36,12 @@ export * from './app/components/field';
 export * from './app/components/stat';
 export * from './app/components/status-list-item';
 export * from './app/components/card';
-export * from './app/components/cinematic-link';
-export * from './app/components/code-block';
-export * from './app/components/component-instance-matrix';
 export * from './app/components/container';
 export * from './app/components/dialog';
 export * from './app/components/divider';
 export * from './app/components/menu';
 export * from './app/components/popover';
 export * from './app/components/hds-tooltip';
-export * from './app/components/doc-link-card';
 export * from './app/components/grid';
 export * from './app/components/heading-stack';
 export * from './app/components/history-card';
@@ -62,7 +54,6 @@ export * from './app/components/checkbox';
 export * from './app/components/radio';
 export * from './app/components/slider';
 export * from './app/components/toggle';
-export * from './app/components/nav-item';
 export * from './app/components/progress';
 export * from './app/components/skeleton';
 export * from './app/components/spinner';
@@ -73,7 +64,6 @@ export * from './app/components/surface';
 export * from './app/components/table';
 export * from './app/components/tag';
 export * from './app/components/text';
-export * from './app/components/token';
 
 // ── Astryx-gap coverage — Tier 1 native primitives (0.12.0) ──
 export * from './app/components/kbd';
@@ -93,27 +83,13 @@ export * from './app/components/alert-dialog';
 export * from './app/components/hover-card';
 export * from './app/components/context-menu';
 
-// ── Astryx-gap coverage — promoted internals (0.12.0) ──
-export * from './app/components/side-nav';
-export * from './app/components/command-palette';
-export * from './app/components/image-lightbox';
-
 // ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
 export * from './app/components/metadata-list';
-export * from './app/components/overflow-list';
-export * from './app/components/top-nav';
-export * from './app/components/app-shell';
 export * from './app/components/selectable-card';
 export * from './app/components/tokenizer';
-export * from './app/components/file-input';
 export * from './app/components/multi-selector';
-export * from './app/components/toolbar';
-export * from './app/components/tree-list';
-export * from './app/components/stepper';
-export * from './app/components/carousel';
 
 // ── Astryx-gap coverage — Tier 3 date/time family (ADR-020) ──
-export * from './app/components/calendar';
 export * from './app/components/time-input';
 export * from './app/components/date-input';
 export * from './app/components/date-range-input';
@@ -128,11 +104,9 @@ export * from './app/components/cover';
 export * from './app/components/frame';
 export * from './app/components/bleed';
 // Scroll-motion primitives — CSS scroll-driven, zero JS/deps (#116).
-export * from './app/components/reveal';
 export * from './app/components/pin';
 
 // ── app-shell + layout primitives consumed by the ops dashboard ──
-export * from './app/components/page';
 export * from './app/components/empty-state';
 export * from './app/components/error-boundary';
 export * from './app/components/not-found-pattern';
@@ -140,17 +114,13 @@ export * from './app/components/tabs';
 export * from './app/components/tile-grid';
 export * from './app/components/status-tile';
 
-// ── patterns (8) ──
-export * from './app/components/activity-feed';
+// ── patterns (9) ──
 export * from './app/components/breadcrumb';
 export * from './app/components/combobox';
 export * from './app/components/disclosure';
-export * from './app/components/form';
-export * from './app/components/foundation-swatch';
 export * from './app/components/icon-button';
 export * from './app/components/nav-group';
 export * from './app/components/pagination';
-export * from './app/components/sketch';
 export * from './app/components/stepper-field';
 export * from './app/components/text-lockup';
 export * from './app/components/toast';
@@ -163,7 +133,6 @@ export * from './app/components/toast';
 // InfoPage was removed (dead-portfolio scaffolding, hardcoded the deleted
 // /assets/adrian.webp; 0 DS-consumer use) — see CHANGELOG / changeset.
 export * from './app/layouts/CaseStudyLayout';
-export * from './app/components/error-pattern';
 export * from './app/layouts/HdsSystemDocLayout';
 export * from './app/layouts/HdsDocsShell';
 
@@ -199,178 +168,3 @@ export type {
   HdsLinkProps,
   HdsNavigateOptions,
 } from './app/context/RouterContext';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// hds#254 — root-only deprecation of the 21 pattern-tier components that also
-// ship via `@hirobius/design-system/patterns`. Each underlying module (above,
-// via `export *`) keeps an UNDEPRECATED declaration so the `/patterns` import
-// path stays clean; the `@deprecated` notice below is a local `const` alias,
-// which shadows the star-exported binding of the same name for root-import
-// consumers only. Do not add `@deprecated` back onto the source declarations
-// (see the review fix on hds#254 — that flagged consumers of `/patterns` too,
-// since TS attaches deprecation to the symbol, not the export site).
-// ─────────────────────────────────────────────────────────────────────────────
-import { ActivityFeed as _ActivityFeed254 } from './app/components/activity-feed';
-import { AppShell as _AppShell254 } from './app/components/app-shell';
-import { AssetImg as _AssetImg254 } from './app/components/asset-img';
-import { Calendar as _Calendar254 } from './app/components/calendar';
-import { Carousel as _Carousel254 } from './app/components/carousel';
-import { CodeBlock as _CodeBlock254 } from './app/components/code-block';
-import { CommandPalette as _CommandPalette254 } from './app/components/command-palette';
-import { DocLinkCard as _DocLinkCard254 } from './app/components/doc-link-card';
-import { ErrorPattern as _ErrorPattern254 } from './app/components/error-pattern';
-import { FileInput as _FileInput254 } from './app/components/file-input';
-import { Form as _Form254 } from './app/components/form';
-import { Lightbox as _Lightbox254 } from './app/components/image-lightbox';
-import { NavItem as _NavItem254 } from './app/components/nav-item';
-import { OverflowList as _OverflowList254 } from './app/components/overflow-list';
-import { Page as _Page254 } from './app/components/page';
-import { Reveal as _Reveal254 } from './app/components/reveal';
-import { SideNav as _SideNav254 } from './app/components/side-nav';
-import { Stepper as _Stepper254 } from './app/components/stepper';
-import { Toolbar as _Toolbar254 } from './app/components/toolbar';
-import { TopNav as _TopNav254 } from './app/components/top-nav';
-import { TreeList as _TreeList254 } from './app/components/tree-list';
-
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const ActivityFeed = _ActivityFeed254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const AppShell = _AppShell254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod. `ops` is a current importer of this component — its codemod is tracked under hds#124 before this is dropped.
- * @removeIn 1.0.0
- */
-export const AssetImg = _AssetImg254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Calendar = _Calendar254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Carousel = _Carousel254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const CodeBlock = _CodeBlock254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const CommandPalette = _CommandPalette254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const DocLinkCard = _DocLinkCard254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const ErrorPattern = _ErrorPattern254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const FileInput = _FileInput254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Form = _Form254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Lightbox = _Lightbox254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const NavItem = _NavItem254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const OverflowList = _OverflowList254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Page = _Page254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Reveal = _Reveal254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const SideNav = _SideNav254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Stepper = _Stepper254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const Toolbar = _Toolbar254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const TopNav = _TopNav254;
-/**
- * @deprecated Import from `@hirobius/design-system/patterns` instead — the root re-export is kept for one minor (hds#254) and removed at the next major once ops has a codemod.
- * @removeIn 1.0.0
- */
-export const TreeList = _TreeList254;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// hds#315 — six primitives shipped as `Hds`-prefixed names while the rest of the
-// surface is bare. They are now exported bare (via `export *` above); the old
-// spellings stay as deprecated aliases until the 1.0 alias-removal window
-// (hds#254). tests/public-export-names.test.ts pins both halves.
-// ─────────────────────────────────────────────────────────────────────────────
-/**
- * @deprecated Use `Checkbox` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254).
- * @removeIn 1.0.0
- */
-export { Checkbox as HdsCheckbox } from './app/components/checkbox';
-/**
- * @deprecated Use `Radio` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254).
- * @removeIn 1.0.0
- */
-export { Radio as HdsRadio } from './app/components/radio';
-/**
- * @deprecated Use `Select` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254).
- * @removeIn 1.0.0
- */
-export { Select as HdsSelect } from './app/components/select';
-/**
- * @deprecated Use `Slider` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254).
- * @removeIn 1.0.0
- */
-export { Slider as HdsSlider } from './app/components/slider';
-/**
- * @deprecated Use `Toggle` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254).
- * @removeIn 1.0.0
- */
-export { Toggle as HdsToggle } from './app/components/toggle';
-/**
- * @deprecated Use `Tooltip` — the `Hds` prefix is dropped to match the rest of the surface. This alias is kept until the 1.0 alias-removal window (hds#254).
- * @removeIn 1.0.0
- */
-export { Tooltip as HdsTooltip } from './app/components/hds-tooltip';

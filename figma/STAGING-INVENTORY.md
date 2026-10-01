@@ -24,7 +24,7 @@ promotion — not because the components are absent, but because the only record
 the gate can read is the one the recipe says not to write yet. That is a gap in
 the measurement, not drift.
 
-## Drawn 2026-09-23 (39 components)
+## Drawn 2026-09-23 (37 components)
 
 | Component | Kind | Variants | Node |
 |---|---|---|---|
@@ -36,7 +36,6 @@ the measurement, not drift.
 | [ButtonGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2028-118) | set | 2 | `2028-118` |
 | [Calendar](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-3) | component | — | `2043-3` |
 | [Carousel](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-71) | component | — | `2042-71` |
-| [CinematicLink](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2040-34) | set | 2 | `2040-34` |
 | [CircularProgress](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2029-48) | set | 15 | `2029-48` |
 | [CommandPalette](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-99) | component | — | `2043-99` |
 | [ContextMenu](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2034-7) | component | — | `2034-7` |
@@ -62,7 +61,6 @@ the measurement, not drift.
 | [TimeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-21) | set | 3 | `2039-21` |
 | [Timestamp](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2031-11) | set | 4 | `2031-11` |
 | [ToggleButton](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2028-27) | set | 12 | `2028-27` |
-| [Token](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-61) | set | 4 | `2041-61` |
 | [Tokenizer](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-52) | set | 2 | `2042-52` |
 | [Toolbar](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-3) | component | — | `2038-3` |
 | [TopNav](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-3) | component | — | `2042-3` |

@@ -13,11 +13,12 @@
  * confirms it). A third consumer, componentPreviewRegistry.tsx, was deleted
  * in hds#286 (dead island, see docs/adr/029-decisions-carried-over.md); the two below are current:
  *
- *   src/app/data/component-api.json        bundled runtime copy: props +
- *                                           description only, no observedTokens.
- *                                           Consumed by the two files above,
- *                                           one of which (component-instance-matrix)
- *                                           is re-exported from the public barrel.
+ *   src/app/data/component-api.json        runtime copy: props + description
+ *                                           only, no observedTokens. Shipped as a
+ *                                           package file. Since 0.20.0 nothing
+ *                                           under src/ imports it: api-reference.tsx
+ *                                           went in hds#391 and
+ *                                           component-instance-matrix.tsx in hds#389.
  *   docs/generated/component-api-full.json full corpus INCLUDING observedTokens
  *                                           (raw/tokenPath/sourceSnippet/sourceLine).
  *                                           Gitignored generated output, read only
@@ -739,10 +740,10 @@ export function buildManifest() {
 /**
  * Strip `observedTokens` from every component entry — hds#279. Nothing in
  * src/ reads it (confirmed by grep across api-reference.tsx and
- * component-instance-matrix.tsx, the only two importers of this file —
- * componentPreviewRegistry.tsx, the former third importer, was deleted in
- * hds#286); it exists solely for the docs-site token table, which reads the
- * full corpus from FULL_OUTPUT_FILE instead.
+ * component-instance-matrix.tsx, its importers then; componentPreviewRegistry.tsx
+ * went in hds#286, and since 0.20.0 nothing under src/ imports this file); it
+ * exists solely for the docs-site token table, which reads the full corpus
+ * from FULL_OUTPUT_FILE instead.
  */
 function stripObservedTokens(manifest) {
   const components = {};

@@ -4,10 +4,10 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 88 | 88 | 0 |
+| eslint-disable | 85 | 85 | 0 |
 | @ts-ignore/@ts-expect-error | 10 | 10 | 0 |
-| custom-sentinels (*-ok / hds-bypass) | 38 | 38 | 0 |
-| **Total** | **136** | **136** | **0** |
+| custom-sentinels (*-ok / hds-bypass) | 37 | 37 | 0 |
+| **Total** | **132** | **132** | **0** |
 
 ## eslint-disable
 
@@ -90,9 +90,6 @@
 | `src/app/components/toggle.tsx` | 51 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/toggle.tsx` | 102 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven size/radius/border/padding; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/toggle.tsx` | 149 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists` | justified |
-| `src/app/components/token.tsx` | 25 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-button-secondary-* / semantic-radius-action / primitive-space-* tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/token.tsx` | 73 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/token.tsx` | 91 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- mono technical-typography composite (13px/1/regular/mono-family) + direction/overflow-wrap + content-* colors have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/tokenizer.tsx` | 84 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- --primitive-size-interactive-minCompact WCAG 2.2 AA (2.5.8) compact hit target; no Tailwind-theme utility, var()-based so still token-driven` | justified |
 | `src/app/context/__tests__/context.test.tsx` | 17 | `eslint-disable-next-line` | `@typescript-eslint/no-explicit-any` | justified |
 | `src/stories/field.stories.tsx` | 141 | `eslint-disable-next-line` | `no-restricted-syntax -- story demo: a raw grid is the point of the layout showcase` | justified |
@@ -126,7 +123,6 @@
 | `src/app/components/command-palette.tsx` | 231 | `audit-ok` | `hds-focus is baked into cmdkRowVariants() base class above` | justified |
 | `src/app/components/disclosure.tsx` | 141 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
 | `src/app/components/doc-link-card.tsx` | 125 | `audit-ok` | `hds-focus is baked into docLinkCardVariants() base class above` | justified |
-| `src/app/components/foundation-swatch.tsx` | 175 | `hds-bypass` | `fixed specimen height keeps foundation swatches visually comparable across token demos` | justified |
 | `src/app/components/image-lightbox.tsx` | 116 | `audit-ok` | `Radix Dialog.Content container (tabIndex=-1, auto-focused on open). The dialog surface intentionally shows no focus ring; the visible focus affordance is the Close button (Button → hds-focus).` | justified |
 | `src/app/components/nav-item.tsx` | 249 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
 | `src/app/components/nav-item.tsx` | 269 | `audit-ok` | `focus ring driven by the state-keyed cva `focus` branch (outline utilities above), not a literal hds-focus/focus-visible: substring — see ADR-015 useFocusVisible` | justified |
@@ -162,8 +158,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 136
-- **Justified (reason >= 10 chars):** 136
+- **Total suppressions:** 132
+- **Justified (reason >= 10 chars):** 132
 - **Untriaged (reason < 10 chars or missing):** 0
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.

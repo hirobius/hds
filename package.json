@@ -108,7 +108,9 @@
     "docs/CONSUMING.md",
     "src/app/data/component-api.json",
     "codemods/patterns-subpath.mjs",
-    "codemods/patterns-subpath.names.json"
+    "codemods/patterns-subpath.names.json",
+    "codemods/hds-prefix.mjs",
+    "codemods/unrewritable.mjs"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -417,6 +419,7 @@
     ]
   },
   "bin": {
-    "hds-patterns-subpath": "codemods/patterns-subpath.mjs"
+    "hds-patterns-subpath": "codemods/patterns-subpath.mjs",
+    "hds-prefix": "codemods/hds-prefix.mjs"
   }
 }

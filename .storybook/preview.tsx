@@ -114,10 +114,10 @@ const preview: Preview = {
     theme: 'light',
   },
   decorators: [
-    // MemoryRouter mirrors the app shell: primitives such as Token call
-    // react-router hooks (useNavigate/useLocation), which throw outside a
-    // Router. Without this, any story rendering a Token (e.g. FoundationSwatch
-    // with a tokenPath) errors in Chromatic. See src/app/components/token.tsx.
+    // MemoryRouter mirrors the app shell, so a story whose component reaches
+    // react-router hooks (useNavigate/useLocation) does not throw outside a
+    // Router in Chromatic. (Token, which first needed it, was removed in
+    // 0.20.0, hds#389.)
     // `data-hds` scopes the HDS base styles (Satoshi type baseline, resets,
     // theme-change transition) — they live under `:where([data-hds])`, so
     // without it every story falls back to the system sans and skips the base

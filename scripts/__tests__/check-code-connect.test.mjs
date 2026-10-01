@@ -400,6 +400,32 @@ describe('check-code-connect — repository', () => {
     }
   }, 120_000);
 
+  it('counts a cva module exported only from /patterns as public (0.20.0 left the root, hds#389)', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'hds-cc-public-'));
+    try {
+      fs.mkdirSync(path.join(root, 'src/app/components'), { recursive: true });
+      const cvaModule =
+        'import { cva } from "class-variance-authority";\nexport const v = cva("");\n';
+      fs.writeFileSync(path.join(root, 'src/app/components/root-one.tsx'), cvaModule);
+      fs.writeFileSync(path.join(root, 'src/app/components/pattern-one.tsx'), cvaModule);
+      fs.writeFileSync(path.join(root, 'src/app/components/plain.tsx'), 'export const x = 1;\n');
+      fs.writeFileSync(
+        path.join(root, 'src/index.ts'),
+        "export * from './app/components/root-one';\nexport * from './app/components/plain';\n",
+      );
+      fs.writeFileSync(
+        path.join(root, 'src/patterns.ts'),
+        "export * from './app/components/pattern-one';\n",
+      );
+      expect(publicCvaModules(root).sort()).toEqual([
+        'src/app/components/pattern-one.tsx',
+        'src/app/components/root-one.tsx',
+      ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   // These assertions derive what they expect from figma/code-connect.json and
   // the component source, never from a pinned count or name list, so adding a
   // node URL or exempting a new cva module does not require editing this file.
