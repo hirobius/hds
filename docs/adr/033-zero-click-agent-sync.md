@@ -21,7 +21,7 @@ It plans offline against the committed `figma/snapshot.json`. It refuses, naming
 
 - a plan that moves a variable between collections, or that has conflicts: route it to Sync;
 - `--prune`, or any variable, mode or style that staging holds and the model does not (an extra, such as a token deleted from `hirobius.tokens.json`): `delta.js` and Sync never delete, so a deliberate deletion or prune uses the promote plugin (`pnpm figma:push --prune`). Without this, `delta.js` would apply the rest and plain `check:figma-drift` would fail only after the write;
-- a `delta.js` over 45,000 characters: route it to Sync;
+- a `delta.js` over 45,000 characters, or a plan that writes a text or effect style description holding `" ' < > &` (§3): route it to Sync;
 - no committed snapshot: route it to Sync.
 
 When staging already holds the model, it writes no `delta.js`.
@@ -44,7 +44,7 @@ In staging, `hdsAgentRun` (`scripts/lib/figma-agent-runtime.mjs`) runs these ste
 2. **Check `PLAN` against `PLAN_CHECKSUM`,** and the runtime against `hdsVerifyRuntime`.
 3. **The pin.** It reads staging with `hdsAgentReadState` (variable descriptions decoded, `file` set to the committed one) and sets `takenAt` to the committed value. The result must hash to the committed checksum. Otherwise it writes nothing.
 4. **Nothing to delete.** Staging must hold exactly `held`. A slice cannot see an extra outside it, so this count is how staging re-checks the build's extras refusal: with that refusal skipped, a deleted token's `delta.js` refuses here and writes nothing.
-5. **Plan in staging.** It builds the slice over the pinned state and plans it. It refuses a plan whose `removals.*` or any `modes.remove` is not empty, then requires the plan to hash to `planSum`, then checks conflicts and fonts.
+5. **Plan in staging.** It builds the slice over the pinned state and plans it. It refuses a plan whose `removals.*` or any `modes.remove` is not empty, then requires the plan to hash to `planSum`, then refuses a style description holding `" ' < > &` (§3), then checks conflicts and fonts.
 6. **Apply and verify.** It runs `hdsApply`. The re-plan must give 0, and only then does it write `lastPush` (the full model's hash). Then it writes the C2 receipt: `snapshotDelta(pinned, post)`, in raw pages of at most 15,000 characters, with the receipt writer of ADR-032 §6.
 7. **Return the receipt.** It returns what `receipt.js` would read for page 0, plus the plan line, when the receipt fits one page. Otherwise it returns the head, and `receipt.js` collects the pages.
 
@@ -54,7 +54,9 @@ In staging, `hdsAgentRun` (`scripts/lib/figma-agent-runtime.mjs`) runs these ste
 
 The Sync and promote plugins never carry it. Their files are byte-identical before and after this change, and the Sync `code.js` stays at 59,470 of its 60,000 B.
 
-Only variable descriptions are decoded, because that is what was measured. If a style description ever reads escaped, the pin fails closed, and the decoding extends to it.
+Only variable descriptions are decoded, because that is what was measured. Whether use_figma also escapes a text or effect style's description on read is not measured yet. Until it is, `--delta` refuses, and `delta.js` refuses again in staging before the apply, any plan that writes a style description holding `" ' < > &`, and routes it to Sync. Without that, the write would land, and a re-plan reading the description back escaped would fail only after it, leaving `lastPush` and the receipt unwritten.
+
+The pin fails closed only when a committed style description already holds one of those characters. None does in `figma/snapshot.json` `242fe0c9` (2026-10-01). Once a live read settles it, either the decoding extends to style descriptions or the refusal goes.
 
 ### 4. The runtime is copied without indentation
 
@@ -70,7 +72,7 @@ It copies them with the leading whitespace removed, which leaves about 38,300 ch
 ## Rationale
 
 - **Smallest faithful data.** A patch slice of today's plan (10 descriptions, 2 creates) is 4,200 characters. The whole touched records would be 9,000, and the plan plus a model for the re-plan about 15,000. Planning in staging also means the re-plan runs the same `hdsPlan` on the same slice.
-- **Fail closed at every step.** Each refusal before the apply writes nothing, and each has a vm test on `scripts/__tests__/helpers/fake-figma.mjs` that asserts zero writes. Mutating any guard turns its test red: the pin, `PLAN_CHECKSUM`, the extras count, the removals assertion, the font preflight and the re-plan.
+- **Fail closed at every step.** Each refusal before the apply writes nothing, and each has a vm test on `scripts/__tests__/helpers/fake-figma.mjs` that asserts zero writes. Mutating any guard turns its test red: the pin, `PLAN_CHECKSUM`, the extras count, the removals assertion, `planSum`, the style-description refusal, the font preflight and the re-plan.
 - **Measured, not estimated.** Today's plan builds to 43,049 characters. On a file seeded from the committed snapshot it makes 26 writes and returns 3,890 characters inline. The 19-variable Primitives `space/*` rename builds to about 42,400 and returns about 9,400.
 
 ## Consequences
@@ -78,4 +80,4 @@ It copies them with the leading whitespace removed, which leaves about 38,300 ch
 - A small token change reaches staging and `figma/snapshot.json` with no step by Adrian. That takes one `use_figma` call, plus 1–2 `receipt.js` reads when the receipt needs more than one page, all logged in `figma/MCP-LEDGER.md`. Adrian gets one phone notification.
 - About 2,000 characters of headroom remain for today's kind of change. Larger changes go to Sync, and say so.
 - Something else may write to staging after the committed snapshot: a Sync whose receipt nobody collected, or a hand edit. The pin then refuses until the snapshot is current again.
-- Unverified, failing closed: whether style descriptions also read escaped in use_figma (§3). The first live run settles whether the inline return stays under use_figma's output cap, at about 4 KB today.
+- Unmeasured: whether use_figma escapes a style description on read (§3). Until a live read settles it, a plan that writes a style description holding `" ' < > &` goes to Sync. The first live run settles whether the inline return stays under use_figma's output cap, at about 4 KB today.

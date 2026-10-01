@@ -20,7 +20,9 @@
  *
  * It refuses to build, naming the route: a plan that moves variables between
  * collections, has conflicts, or makes a delta.js over 45,000 characters
- * (use_figma takes 50,000) goes to Sync; --prune, and any variable, mode or
+ * (use_figma takes 50,000), or that writes a text or effect style
+ * description holding " ' < > & (use_figma's read of one is not measured),
+ * goes to Sync; --prune, and any variable, mode or
  * style staging holds that the model does not (an extra: a token deleted
  * from hirobius.tokens.json), go to the promote plugin, because delta.js
  * and Sync never delete. delta.js checks the extras again in staging.
@@ -44,7 +46,12 @@ import {
   syncConfigFromLinks,
   syncRuntimeSource,
 } from './figma-scripts.mjs';
-import { hdsAgentHeld, hdsAgentSlice, hdsAgentVariable } from './figma-agent-runtime.mjs';
+import {
+  hdsAgentHeld,
+  hdsAgentSlice,
+  hdsAgentStyleText,
+  hdsAgentVariable,
+} from './figma-agent-runtime.mjs';
 
 /** The most characters delta.js may have: use_figma takes 50,000, and an agent retypes it. */
 export const DELTA_MAX_CHARS = 45000;
@@ -263,6 +270,12 @@ export function buildUseFigmaDeltaScript(
   if (extra.length) {
     refuse(
       `staging holds ${extra.length} item(s) the model does not have (${extra.join('; ')}), and delta.js never deletes.${ROUTE_TO_PROMOTE}`,
+    );
+  }
+  const styled = hdsAgentStyleText(plan);
+  if (styled.length) {
+    refuse(
+      `the plan writes a style description holding one of " ' < > & (${styled.join(', ')}), and use_figma's read of a style description is not measured yet (a variable's reads back HTML-escaped), so delta.js could not check its own write.${ROUTE_TO_SYNC}`,
     );
   }
   const writes = writesOf(plan);

@@ -272,6 +272,8 @@ collects the pages.
 text as given, and `figma.root.name` is `"Document"`. So `delta.js` writes the
 model's raw text and decodes every read: `&quot;`, `&#39;`, `&lt;` and `&gt;`
 first, then `&amp;` last. The Sync and promote plugins never carry that decoding.
+Only variable descriptions were measured: until a read of a text or effect
+style's description is, a plan that writes one holding `" ' < > &` goes to Sync.
 
 Steps:
 
@@ -296,21 +298,22 @@ Steps:
 notification with the exact reason, word for word. Every refusal says whether
 anything was written:
 
-| It refuses                                                                                                                  | Where     | Route                                                                                     |
-| --------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------- |
-| a plan that moves a variable between collections                                                                            | `--delta` | Sync (it creates the new variable and warns; a person rebinds the old one)                |
-| a plan with conflicts                                                                                                       | `--delta` | a person fixes them in Figma, then Sync                                                   |
-| `--prune`, or a variable, mode or style staging holds that the model does not (a token deleted from `hirobius.tokens.json`) | `--delta` | the promote plugin (`pnpm figma:push --prune`): `delta.js` and Sync never delete          |
-| a `delta.js` over 45,000 characters                                                                                         | `--delta` | Sync                                                                                      |
-| no committed `figma/snapshot.json`                                                                                          | `--delta` | Sync, then collect its receipt                                                            |
-| any file but staging                                                                                                        | in Figma  | run it on staging                                                                         |
-| `PLAN` or the runtime changed on the way in                                                                                 | in Figma  | Sync                                                                                      |
-| the pin: staging is not the committed snapshot                                                                              | in Figma  | if a Sync ran, collect its receipt; otherwise Sync                                        |
-| staging holding more than the model, or a plan that deletes                                                                 | in Figma  | the promote plugin (`pnpm figma:push --prune`)                                            |
-| another plan than `--delta` made                                                                                            | in Figma  | Sync                                                                                      |
-| a missing font, or a conflict                                                                                               | in Figma  | a font: Sync, from Figma desktop; a conflict: a person fixes it in Figma, then Sync       |
-| an apply that failed partway, or a re-plan that is not 0                                                                    | in Figma  | Sync: it is idempotent and finishes the push. `lastPush` and the receipt were not written |
-| a receipt Figma did not keep                                                                                                | in Figma  | Sync: it changes nothing and writes the receipt. The push and `lastPush` are done         |
+| It refuses                                                                                                                  | Where                    | Route                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------- |
+| a plan that moves a variable between collections                                                                            | `--delta`                | Sync (it creates the new variable and warns; a person rebinds the old one)                |
+| a plan with conflicts                                                                                                       | `--delta`                | a person fixes them in Figma, then Sync                                                   |
+| `--prune`, or a variable, mode or style staging holds that the model does not (a token deleted from `hirobius.tokens.json`) | `--delta`                | the promote plugin (`pnpm figma:push --prune`): `delta.js` and Sync never delete          |
+| a plan that writes a text or effect style description holding `" ' < > &`                                                   | `--delta`, then in Figma | Sync (use_figma's read of a style description is not measured yet)                        |
+| a `delta.js` over 45,000 characters                                                                                         | `--delta`                | Sync                                                                                      |
+| no committed `figma/snapshot.json`                                                                                          | `--delta`                | Sync, then collect its receipt                                                            |
+| any file but staging                                                                                                        | in Figma                 | run it on staging                                                                         |
+| `PLAN` or the runtime changed on the way in                                                                                 | in Figma                 | Sync                                                                                      |
+| the pin: staging is not the committed snapshot                                                                              | in Figma                 | if a Sync ran, collect its receipt; otherwise Sync                                        |
+| staging holding more than the model, or a plan that deletes                                                                 | in Figma                 | the promote plugin (`pnpm figma:push --prune`)                                            |
+| another plan than `--delta` made                                                                                            | in Figma                 | Sync                                                                                      |
+| a missing font, or a conflict                                                                                               | in Figma                 | a font: Sync, from Figma desktop; a conflict: a person fixes it in Figma, then Sync       |
+| an apply that failed partway, or a re-plan that is not 0                                                                    | in Figma                 | Sync: it is idempotent and finishes the push. `lastPush` and the receipt were not written |
+| a receipt Figma did not keep                                                                                                | in Figma                 | Sync: it changes nothing and writes the receipt. The push and `lastPush` are done         |
 
 Budget: one `use_figma` call, plus 1–2 `receipt.js` reads when the receipt needs
 more than one page, plus the figma-use skill load if it is not loaded yet.

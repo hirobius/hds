@@ -340,7 +340,7 @@ describe('delta.js lands every kind of change a push makes without deleting', ()
     'a text style value (its bound variables bound again) and an effect style': (model) => {
       const h1 = model.textStyles.find((t) => t.path === 'semantic.typography.h1');
       h1.letterSpacing = { unit: 'PERCENT', value: -3 };
-      h1.description = 'Page title, "tight".';
+      h1.description = 'Page title, set tight.';
       model.effectStyles[0].effects[0].radius += 2;
       return model;
     },
@@ -602,6 +602,33 @@ describe('delta.js refuses, writing nothing', () => {
     await expect(runDelta(forgery, s.figma)).rejects.toThrow(PROMOTE_ROUTE);
   });
 
+  it('a plan that writes a style description use_figma may read back escaped, even forged with both checksums right', async () => {
+    const s = await pending({
+      edit: (model) => {
+        model.textStyles.find((t) => t.path === 'semantic.typography.h1').letterSpacing = {
+          unit: 'PERCENT',
+          value: -3,
+        };
+        return model;
+      },
+    });
+    const forgery = forged(s.built.text, (plan) => {
+      const [h1] = plan.textStyles;
+      expect(h1.path).toBe('semantic.typography.h1');
+      h1.description = 'Page title, "tight".';
+      const state = s.snapshotFile.snapshot;
+      plan.planSum = hdsChecksum(
+        JSON.stringify(hdsPlan(hdsAgentSlice(state, plan), state, plan.options)),
+      );
+      return plan;
+    });
+    await refuses(
+      s,
+      /writes a style description holding one of " ' < > & \(semantic\.typography\.h1\).*Nothing was written\. Ask Adrian to run Sync/s,
+      forgery,
+    );
+  });
+
   it('a text style font this editor does not have', async () => {
     const s = await pending({
       edit: (model) => {
@@ -651,6 +678,37 @@ describe('pnpm figma:push --delta refuses to build what Sync must do', () => {
     await expect(pending({ prune: true })).rejects.toThrow(
       /never deletes, so --delta refuses --prune.*promote plugin/s,
     );
+  });
+
+  it('a plan that writes a text or effect style description holding " \' < > & (use_figma reads of style descriptions are not measured)', async () => {
+    const h1 = (model) => model.textStyles.find((t) => t.path === 'semantic.typography.h1');
+    const cases = {
+      'semantic.typography.h1': (model) => {
+        h1(model).description = 'Page title, "tight".';
+        return model;
+      },
+      'semantic.shadow.subtle': (model) => {
+        model.effectStyles.find((e) => e.path === 'semantic.shadow.subtle').description =
+          'Resting shadow & glow.';
+        return model;
+      },
+      'semantic.typography.h9': (model) => {
+        model.textStyles.push({
+          ...copy(h1(model)),
+          path: 'semantic.typography.h9',
+          name: 'typography/h9',
+          description: "Don't <use> it.",
+        });
+        return model;
+      },
+    };
+    for (const [path, edit] of Object.entries(cases)) {
+      const refusal = pending({ edit });
+      await expect(refusal).rejects.toThrow(
+        `delta.js refused: the plan writes a style description holding one of " ' < > & (${path})`,
+      );
+      await expect(refusal).rejects.toThrow(ROUTE);
+    }
   });
 
   it('a delta.js over 45,000 chars', async () => {

@@ -93,6 +93,24 @@ export function hdsAgentHeld(state) {
 }
 
 /**
+ * The paths of the text and effect styles `plan` writes a description to
+ * that holds a character use_figma escapes in a variable description
+ * (" ' < > &). Whether it escapes a style description on read is not
+ * measured yet, so delta.js refuses such a plan before any write
+ * (pnpm figma:push --delta first, then staging again), and Sync makes it.
+ */
+export function hdsAgentStyleText(plan) {
+  return plan.textStyles
+    .concat(plan.effectStyles)
+    .filter(
+      (s) =>
+        /["'<>&]/.test(s.set.description) &&
+        (s.action === 'create' || s.changes.indexOf('description') !== -1),
+    )
+    .map((s) => s.path);
+}
+
+/**
  * The model slice delta.js plans with: the collections, variables and styles
  * the change touches, plus every variable they alias. `data.slice` holds
  * `[key, collectionId, patch, variables]` per collection and
@@ -195,6 +213,15 @@ export async function hdsAgentRun(figma, data, checksum) {
   }
   if (hdsChecksum(JSON.stringify(plan)) !== data.planSum) {
     refuse('the plan made in staging is not the one pnpm figma:push --delta made.', sync);
+  }
+  const styled = hdsAgentStyleText(plan);
+  if (styled.length) {
+    refuse(
+      'the plan writes a style description holding one of " \' < > & (' +
+        styled.join(', ') +
+        "), and use_figma's read of a style description is not measured yet.",
+      sync,
+    );
   }
   const problems = plan.conflicts.concat(await hdsFontPreflight(figma, plan));
   if (problems.length) refuse(problems.join(' | '), sync);
