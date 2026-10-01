@@ -75,6 +75,30 @@ export function ingestReceipt({ root, files }) {
   return { ...ingestSnapshot({ root, text: serializeSnapshotFile({ checksum, snapshot }) }), head };
 }
 
+/**
+ * What `pnpm figma:snapshot` prints with no arguments: after a Sync, the agent
+ * collects the snapshot from the receipt (figma/README.md "Agent: collect a
+ * sync"); Download JSON and the other carriers are the fallback.
+ *
+ * @param {string} rel  the carriers' folder, relative to the repo root (figma/push)
+ * @returns {string[]} lines
+ */
+export function snapshotSteps(rel) {
+  return [
+    'figma:snapshot — take a snapshot of the Figma file, then ingest it:',
+    '  After a Sync (figma/README.md "Agent: collect a sync"): run',
+    `    ${rel}/use-figma/receipt.js through use_figma once per page and save each result,`,
+    '    then pnpm figma:snapshot --from-receipt <files...>. No download.',
+    '  Fallback, when there is no receipt to collect:',
+    `    Sync plugin (${rel}/plugin): run Sync, then click Download JSON.`,
+    `    Promote plugin: import ${rel}/promote/manifest.json, run "Take snapshot", click Download JSON.`,
+    `    use_figma: run ${rel}/use-figma/snapshot.js unmodified and save the returned JSON to a file.`,
+    '    Then: pnpm figma:snapshot --ingest <file>   (verifies the checksum, writes figma/snapshot.json)',
+    '  Commit figma/snapshot.json only when pnpm check:figma-drift exits 0 AND pnpm figma:push --plan',
+    '  prints "updated 0 · created 0 · deleted 0".',
+  ];
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const at = args.indexOf('--ingest');
@@ -102,17 +126,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     } else if (at === -1) {
       const outDir = join(ROOT, 'figma', 'push');
       writePushArtifacts({ root: ROOT, outDir });
-      const rel = relative(ROOT, outDir).replaceAll('\\', '/');
-      console.log(
-        [
-          'figma:snapshot — take a snapshot of the Figma file, then ingest it:',
-          `  Sync plugin (${rel}/plugin): run Sync, then click Download JSON.`,
-          `  Promote plugin: import ${rel}/promote/manifest.json, run "Take snapshot", click Download JSON.`,
-          `  use_figma: run ${rel}/use-figma/snapshot.js unmodified and save the returned JSON to a file.`,
-          '  Then: pnpm figma:snapshot --ingest <file>   (verifies the checksum, writes figma/snapshot.json)',
-          '  Commit figma/snapshot.json, then run pnpm check:figma-drift.',
-        ].join('\n'),
-      );
+      console.log(snapshotSteps(relative(ROOT, outDir).replaceAll('\\', '/')).join('\n'));
     } else {
       const from = args[at + 1];
       if (!from) throw new Error('--ingest needs the path of the snapshot file.');
