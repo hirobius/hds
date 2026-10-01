@@ -14,6 +14,8 @@
  *                                 with the model baked in, for library promotion and prunes
  *   figma/push/use-figma/NN-*.js  use_figma scripts for the Figma MCP server, run in order
  *   figma/push/use-figma/snapshot.js
+ *   figma/push/use-figma/receipt.js  reads a Sync's receipt from staging, for
+ *                                 pnpm figma:snapshot --from-receipt (hds#417)
  *
  * A push matches by token path (then TOKEN_MIGRATION.md renames, codeSyntax,
  * name), updates before it creates, renames a collection's initial mode, and
@@ -47,6 +49,7 @@ import {
   buildSyncBundle,
   buildSyncPlugin,
   buildUseFigmaPushScript,
+  buildUseFigmaReceiptScript,
   buildUseFigmaSnapshotScript,
   modelHash,
   syncPluginBuild,
@@ -63,7 +66,7 @@ import { parseSnapshotFile } from './lib/figma-snapshot.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /** figma/links.json, or {} when the root has none (the Sync plugin then refuses to build). */
-function readLinks(root) {
+export function readLinks(root) {
   const path = join(root, 'figma', 'links.json');
   return existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : {};
 }
@@ -79,7 +82,8 @@ function readLinks(root) {
  */
 export function writePushArtifacts({ root, outDir, prune = false }) {
   const { model, renames } = loadFigmaInputs(root);
-  const sync = buildSyncPlugin(readLinks(root));
+  const links = readLinks(root);
+  const sync = buildSyncPlugin(links);
   const outputs = [
     ...Object.entries(sync).map(([name, text]) => [join('plugin', name), text]),
     ...Object.entries(buildPromotePlugin(model, { prune, renames })).map(([name, text]) => [
@@ -94,6 +98,7 @@ export function writePushArtifacts({ root, outDir, prune = false }) {
     ]);
   }
   outputs.push([join('use-figma', 'snapshot.js'), buildUseFigmaSnapshotScript()]);
+  outputs.push([join('use-figma', 'receipt.js'), buildUseFigmaReceiptScript(links)]);
 
   rmSync(outDir, { recursive: true, force: true });
   const files = outputs.map(([path, text]) => {
@@ -170,7 +175,7 @@ function formatRun({ model, prune, files, pluginBuild }, outDir) {
   const rel = relative(ROOT, outDir).replaceAll('\\', '/');
   const sizeOf = (path) => files.find((f) => f.path === path).bytes;
   const scripts = files.filter(
-    (f) => f.path.startsWith('use-figma/') && !f.path.endsWith('snapshot.js'),
+    (f) => f.path.startsWith('use-figma/') && /\/\d\d-[^/]+\.js$/.test(f.path),
   );
   return [
     `figma:push — carriers written to ${rel}/ (model ${modelHash(model)}, prune ${prune ? 'ON: deletes extras' : 'off'})`,
@@ -188,6 +193,8 @@ function formatRun({ model, prune, files, pluginBuild }, outDir) {
     ...scripts.map((f) => `    ${rel}/${f.path}  (${kb(f.bytes)})`),
     '',
     '  Then take a snapshot (pnpm figma:snapshot) and run pnpm check:figma-drift.',
+    '',
+    `  After a Sync, an agent collects its receipt with ${rel}/use-figma/receipt.js (reads only; figma/README.md "Agent: collect a sync").`,
   ].join('\n');
 }
 
