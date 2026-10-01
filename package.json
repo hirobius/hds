@@ -110,7 +110,7 @@
     "codemods/patterns-subpath.mjs",
     "codemods/patterns-subpath.names.json",
     "codemods/hds-prefix.mjs",
-    "codemods/scan.mjs"
+    "codemods/unrewritable.mjs"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
