@@ -3002,6 +3002,7 @@
       },
       "consumers": [
         "src/app/components/activity-feed.tsx",
+        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
         "src/app/components/button-group.tsx",
@@ -9628,6 +9629,7 @@
       },
       "consumers": [
         "src/app/components/bleed.tsx",
+        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.test.tsx",
         "src/app/components/center.tsx",

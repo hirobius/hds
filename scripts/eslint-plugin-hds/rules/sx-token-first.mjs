@@ -49,7 +49,7 @@ export default {
       description:
         'Disallow raw hex/px string values inside Box sx — sx must resolve colors and spacing through HDS token keys.',
       recommended: true,
-      url: 'https://github.com/hirobius/hirobius-design-system/blob/main/scripts/eslint-plugin-hds/README.md#hdssx-token-first',
+      url: 'https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md#hdssx-token-first',
     },
     schema: [],
     messages: {
