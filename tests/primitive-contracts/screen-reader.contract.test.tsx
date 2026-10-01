@@ -33,10 +33,9 @@ import {
 
 // Component defects this suite found (#376). Each case that shows one is
 // test.fails: it goes green while the defect is there and turns red the day it
-// is fixed, at which point swap test.fails for it. Filed as new issues from #376:
-// replace each TBD with the filed issue's URL.
-const SELECT_LISTBOX_NAME_ISSUE = 'hds#TBD: Select open listbox has no accessible name';
-const COMBOBOX_DIALOG_NAME_ISSUE = 'hds#TBD: Combobox popover dialog has no accessible name';
+// is fixed, at which point swap test.fails for it.
+const SELECT_LISTBOX_NAME_ISSUE = 'https://github.com/hirobius/hds/issues/398';
+const COMBOBOX_DIALOG_NAME_ISSUE = 'https://github.com/hirobius/hds/issues/399';
 
 afterEach(async () => {
   await virtual.stop();
