@@ -8,7 +8,7 @@ Where each component lives in Figma, Storybook and source.
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](../figma/README.md).
 
-**41 of 112** components link a Figma node.
+**40 of 99** components link a Figma node.
 
 | Component          | Figma node                                                                                         | Story                                                                         | Source                                                               |
 | ------------------ | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -28,7 +28,6 @@ Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, w
 | `EmptyState`       | [88:352](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352) | [empty-state.stories.tsx](../src/stories/empty-state.stories.tsx)             | [empty-state.tsx](../src/app/components/empty-state.tsx)             |
 | `Field`            | [85:81](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-81)   | [field.stories.tsx](../src/stories/field.stories.tsx)                         | [field.tsx](../src/app/components/field.tsx)                         |
 | `Form`             | [85:94](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94)   | [form.stories.tsx](../src/stories/form.stories.tsx)                           | [form.tsx](../src/app/components/form.tsx)                           |
-| `IconButton`       | [40:39](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39)   | [icon-button.stories.tsx](../src/stories/icon-button.stories.tsx)             | [icon-button.tsx](../src/app/components/icon-button.tsx)             |
 | `InlineCode`       | [89:155](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155) | [inline-code.stories.tsx](../src/stories/inline-code.stories.tsx)             | [inline-code.tsx](../src/app/components/inline-code.tsx)             |
 | `InlineLink`       | [89:161](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161) | [inline-link.stories.tsx](../src/stories/inline-link.stories.tsx)             | [inline-link.tsx](../src/app/components/inline-link.tsx)             |
 | `Input`            | [38:20](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20)   | [input.stories.tsx](../src/stories/input.stories.tsx)                         | [input.tsx](../src/app/components/input.tsx)                         |

@@ -144,7 +144,7 @@ export default defineConfig({
         // Subpath: the pattern-tier components (hds#254). The only entry that
         // exports them since 0.20.0 removed their root re-exports (hds#389).
         patterns: path.resolve(__dirname, 'src/patterns.ts'),
-        // Subpath: curated Lucide icon re-export for IconButton (hds#342).
+        // Subpath: curated Lucide icon re-export for Icon and icon-only Button (hds#342).
         // lucide-react stays external below; consumers tree-shake the bare import.
         icons: path.resolve(__dirname, 'src/icons.ts'),
       },

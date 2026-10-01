@@ -23,21 +23,6 @@
       "variants": 6,
       "node": "2024-18"
     },
-    "CircularProgress": {
-      "kind": "set",
-      "variants": 15,
-      "node": "2029-48"
-    },
-    "Frame": {
-      "kind": "set",
-      "variants": 4,
-      "node": "2038-36"
-    },
-    "InputGroup": {
-      "kind": "set",
-      "variants": 3,
-      "node": "2036-15"
-    },
     "Kbd": {
       "kind": "set",
       "variants": 3,
@@ -48,35 +33,15 @@
       "variants": 4,
       "node": "2041-47"
     },
-    "MultiSelector": {
-      "kind": "component",
-      "variants": null,
-      "node": "2042-54"
-    },
-    "SelectableCard": {
-      "kind": "set",
-      "variants": 2,
-      "node": "2032-9"
-    },
     "Text": {
       "kind": "set",
       "variants": 14,
       "node": "2022-31"
     },
-    "TimeInput": {
-      "kind": "set",
-      "variants": 3,
-      "node": "2039-21"
-    },
     "Timestamp": {
       "kind": "set",
       "variants": 4,
       "node": "2031-11"
-    },
-    "ToggleButton": {
-      "kind": "set",
-      "variants": 12,
-      "node": "2028-27"
     }
   },
   "drawnEarlier": {

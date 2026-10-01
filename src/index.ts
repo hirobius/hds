@@ -25,6 +25,11 @@
 // three docs-shell templates, the nav and date-picker families, ContextMenu,
 // HoverCard, ButtonGroup and more) and every root `*Variants` cva helper, which
 // stays private to its module. MIGRATIONS.md lists each removed name.
+// It also removed 13 components that fold into a survivor (hds#394 wave 4b):
+// IconButton and ToggleButton into Button, InputGroup and TimeInput into
+// Input, CircularProgress into Progress, SelectableCard into Card,
+// MultiSelector into Combobox, Cluster into Stack, Center into Container, and
+// Cover, Frame, Bleed and AspectRatio into Box.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Side-effect import: design system base styles (tokens + theme + utilities)
@@ -75,30 +80,18 @@ export * from './app/components/timestamp';
 export * from './app/components/blockquote';
 export * from './app/components/visually-hidden';
 export * from './app/components/avatar-group';
-export * from './app/components/input-group';
-export * from './app/components/circular-progress';
 
 // ── Astryx-gap coverage — Tier 1 Radix skins (0.12.0) ──
-export * from './app/components/toggle-button';
-export * from './app/components/aspect-ratio';
 export * from './app/components/alert-dialog';
 
 // ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
 export * from './app/components/metadata-list';
-export * from './app/components/selectable-card';
-export * from './app/components/multi-selector';
 
-// ── Astryx-gap coverage — Tier 3 date/time family (ADR-020; the date pickers went in 0.20.0, ADR-034) ──
-export * from './app/components/time-input';
+// Tier 3 date/time family (ADR-020): none left. The date pickers went in 0.20.0 (ADR-034), and TimeInput folded into Input type="time" (hds#394).
 
 // ── every-layout primitives (#96) ──
-export * from './app/components/cluster';
-export * from './app/components/center';
 export * from './app/components/sidebar';
 export * from './app/components/switcher';
-export * from './app/components/cover';
-export * from './app/components/frame';
-export * from './app/components/bleed';
 // Scroll-motion primitives — CSS scroll-driven, zero JS/deps (#116).
 export * from './app/components/pin';
 
@@ -109,11 +102,10 @@ export * from './app/components/tabs';
 export * from './app/components/tile-grid';
 export * from './app/components/status-tile';
 
-// ── patterns (6) ──
+// ── patterns (5) ──
 export * from './app/components/breadcrumb';
 export * from './app/components/combobox';
 export * from './app/components/disclosure';
-export * from './app/components/icon-button';
 export * from './app/components/pagination';
 export * from './app/components/toast';
 

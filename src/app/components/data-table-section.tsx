@@ -17,7 +17,7 @@ export interface DataTableSectionRow {
   /** One node per column, in column order. */
   cells: React.ReactNode[];
   /**
-   * Row actions (a `Button` group, a `Menu` trigger, `IconButton`s). Rendered in a
+   * Row actions (a `Button` group, a `Menu` trigger, icon-only `Button`s). Rendered in a
    * trailing column; the pattern bakes in no icon.
    */
   actions?: React.ReactNode;

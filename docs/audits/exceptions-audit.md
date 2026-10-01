@@ -17,7 +17,7 @@
 | `src/app/components/alert.tsx` | 97 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic subgrid-hairline gap; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/asset-img.tsx` | 98 | `eslint-disable-next-line` | `jsx-a11y/no-noninteractive-element-interactions` | justified |
 | `src/app/components/badge.tsx` | 20 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven. text-xs matches component.badge.fontSize (primitive.typography.size.xs, hds#283: 12px).` | justified |
-| `src/app/components/button.tsx` | 37 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list (Tailwind has no single utility for transition-[colors,filter]) and the 9999px inset-shadow spread that fills the padding box for the pressed wash` | justified |
+| `src/app/components/button.tsx` | 43 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- compound transition list (Tailwind has no single utility for transition-[colors,filter]) and the 9999px inset-shadow spread that fills the padding box for the pressed wash` | justified |
 | `src/app/components/callout.tsx` | 24 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven padding + accent/surface vars have no Tailwind-theme utility` | justified |
 | `src/app/components/card.tsx` | 100 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven` | justified |
 | `src/app/components/checkbox.tsx` | 35 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists` | justified |
@@ -36,12 +36,12 @@
 | `src/app/components/code-block.tsx` | 104 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- section-stack spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 266 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 270 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/combobox.tsx` | 189 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus -- combobox search field is the expected focus target on open` | justified |
+| `src/app/components/combobox.tsx` | 262 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus -- combobox search field is the expected focus target on open` | justified |
 | `src/app/components/disclosure.tsx` | 31 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/disclosure.tsx` | 151 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/disclosure.tsx` | 164 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/divider.tsx` | 22 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- border-default/border-strong have no named Tailwind color utility (only the generic `border` role token is mapped); var()-based so still token-driven` | justified |
-| `src/app/components/hds-tooltip.tsx` | 72 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- inverse-surface fill matches the bubble; var()-based` | justified |
+| `src/app/components/hds-tooltip.tsx` | 75 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- inverse-surface fill matches the bubble; var()-based` | justified |
 | `src/app/components/inline-code.tsx` | 24 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- mono typography composite + subgrid/badge tokens have no named Tailwind utility; var()-based so still token-driven` | justified |
 | `src/app/components/radio.tsx` | 51 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/radio.tsx` | 78 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven size/radius/border; var()-based, no Tailwind-theme utility exists` | justified |
@@ -83,7 +83,7 @@
 
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
-| `src/app/components/box-sx.test.ts` | 457 | `@ts-expect-error` | `— simulate an SSR environment where `document` is undefined.` | justified |
+| `src/app/components/box-sx.test.ts` | 440 | `@ts-expect-error` | `— simulate an SSR environment where `document` is undefined.` | justified |
 | `src/app/components/combobox.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/menu.test.tsx` | 14 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/popover.test.tsx` | 14 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
@@ -94,8 +94,8 @@
 
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
-| `src/app/components/box-sx.test.ts` | 103 | `spacing-ok` | `token-scale index, not a raw px value` | justified |
-| `src/app/components/card.tsx` | 341 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
+| `src/app/components/box-sx.test.ts` | 99 | `spacing-ok` | `token-scale index, not a raw px value` | justified |
+| `src/app/components/card.tsx` | 395 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
 | `src/app/components/disclosure.tsx` | 141 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
 | `src/app/components/surface.tsx` | 48 | `spacing-ok` | `16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to` | justified |
 | `scripts/__tests__/build-token-index.test.mjs` | 262 | `audit-ok` | `hardcoded because WebGL shader constants` | justified |

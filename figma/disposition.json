@@ -7,22 +7,17 @@
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
   "generatedAt": "2026-10-01",
-  "overrides": {
-    "Frame": {
-      "class": "library",
-      "reason": "Not invisible. Frame's whole job is the overflow-hidden clip and semantic radius it adds on top of AspectRatio — its own JSDoc says 'Do NOT reach for bare AspectRatio in product code just to add a border-radius by hand — use Frame.' That radius is paint, and a media card with a clipped corner is exactly what a designer places."
-    }
-  },
+  "overrides": {},
   "summary": {
-    "total": 111,
+    "total": 99,
     "byClass": {
-      "library": 65,
+      "library": 57,
       "slot": 19,
-      "layout": 15,
-      "internal": 12
+      "layout": 10,
+      "internal": 13
     },
     "libraryLinked": 43,
-    "libraryMissing": 22,
+    "libraryMissing": 14,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -39,14 +34,6 @@
       "class": "library",
       "parent": null,
       "category": "Overlays",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "AspectRatio",
-      "class": "layout",
-      "parent": null,
-      "category": "Layout",
       "tier": "primitive",
       "figmaUrl": null
     },
@@ -81,14 +68,6 @@
       "category": "Feedback",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15"
-    },
-    {
-      "name": "Bleed",
-      "class": "layout",
-      "parent": null,
-      "category": "Layout",
-      "tier": "primitive",
-      "figmaUrl": null
     },
     {
       "name": "Blockquote",
@@ -195,36 +174,12 @@
       "figmaUrl": null
     },
     {
-      "name": "Center",
-      "class": "layout",
-      "parent": null,
-      "category": "Layout",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "Checkbox",
       "class": "library",
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29"
-    },
-    {
-      "name": "CircularProgress",
-      "class": "library",
-      "parent": null,
-      "category": "Feedback",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "Cluster",
-      "class": "layout",
-      "parent": null,
-      "category": "Layout",
-      "tier": "primitive",
-      "figmaUrl": null
     },
     {
       "name": "CodeBlock",
@@ -244,14 +199,6 @@
     },
     {
       "name": "Container",
-      "class": "layout",
-      "parent": null,
-      "category": "Layout",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "Cover",
       "class": "layout",
       "parent": null,
       "category": "Layout",
@@ -427,16 +374,6 @@
       "figmaUrl": null
     },
     {
-      "name": "Frame",
-      "class": "library",
-      "parent": null,
-      "category": "Layout",
-      "tier": "primitive",
-      "figmaUrl": null,
-      "overriddenFrom": "layout",
-      "overrideReason": "Not invisible. Frame's whole job is the overflow-hidden clip and semantic radius it adds on top of AspectRatio — its own JSDoc says 'Do NOT reach for bare AspectRatio in product code just to add a border-radius by hand — use Frame.' That radius is paint, and a media card with a clipped corner is exactly what a designer places."
-    },
-    {
       "name": "Grid",
       "class": "layout",
       "parent": null,
@@ -509,6 +446,14 @@
       "figmaUrl": null
     },
     {
+      "name": "HdsRouterProvider",
+      "class": "internal",
+      "parent": null,
+      "category": "Theming",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
       "name": "HdsThemeProvider",
       "class": "internal",
       "parent": null,
@@ -523,14 +468,6 @@
       "category": "Display",
       "tier": "primitive",
       "figmaUrl": null
-    },
-    {
-      "name": "IconButton",
-      "class": "library",
-      "parent": null,
-      "category": "Actions",
-      "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39"
     },
     {
       "name": "InlineCode",
@@ -555,14 +492,6 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20"
-    },
-    {
-      "name": "InputGroup",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": null
     },
     {
       "name": "Kbd",
@@ -601,14 +530,6 @@
       "class": "slot",
       "parent": "MetricTile",
       "category": "Display",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "MultiSelector",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
       "tier": "pattern",
       "figmaUrl": null
     },
@@ -691,14 +612,6 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49"
-    },
-    {
-      "name": "SelectableCard",
-      "class": "library",
-      "parent": null,
-      "category": "Actions",
-      "tier": "pattern",
-      "figmaUrl": null
     },
     {
       "name": "Sidebar",
@@ -861,14 +774,6 @@
       "figmaUrl": null
     },
     {
-      "name": "TimeInput",
-      "class": "library",
-      "parent": null,
-      "category": "Inputs",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "Timestamp",
       "class": "library",
       "parent": null,
@@ -893,20 +798,12 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19"
     },
     {
-      "name": "ToggleButton",
-      "class": "library",
-      "parent": null,
-      "category": "Actions",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "Tooltip",
       "class": "library",
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15"
     },
     {
       "name": "VisuallyHidden",

@@ -361,7 +361,7 @@ export function buildComponents(raw, manifest) {
       radius: `\`${actionRad}\` (\`semantic.radius.action\`)`,
       states: 'default · hover · focus · active · disabled · loading',
       notes:
-        'Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon buttons (`IconButton`) follow the same token surface. Icon-only actions use `IconButton` with an icon from `@hirobius/design-system/icons`.',
+        'Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon-only buttons (`iconOnly`) follow the same token surface. Icon-only actions use `Button iconOnly` with a `label` and an `Icon` from `@hirobius/design-system/icons` in `iconLeft`.',
     },
     {
       name: 'Inputs',

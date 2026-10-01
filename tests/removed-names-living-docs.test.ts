@@ -43,6 +43,11 @@ const { modules } = JSON.parse(
   readFileSync(resolve(ROOT, 'codemods/removed-0.20.json'), 'utf8'),
 ) as { modules: Record<string, string[]> };
 REMOVED.push(...Object.values(modules).flat());
+// And the names removed with a survivor (`replaced`, hds#394 wave 4b).
+const { replaced = {} } = JSON.parse(
+  readFileSync(resolve(ROOT, 'codemods/removed-0.20.json'), 'utf8'),
+) as { replaced?: Record<string, Record<string, string>> };
+REMOVED.push(...Object.values(replaced).flatMap((names) => Object.keys(names)));
 
 // One capitalised word (`Sketch`, `Token`, `Calendar`, `Step`) is ordinary prose
 // too, so only its code spans count.
