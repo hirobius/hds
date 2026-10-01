@@ -460,8 +460,12 @@ codemod rewrites every ops site, so each has one:
   `<Grid layout="auto-fill" minItemWidth="280px" gap="medium">`. TileGrid's
   `gap="sm"` (12px, its default) is Grid's fixed 12px `medium` step, and
   TileGrid's 260px default width is written out because Grid defaults to
-  280px. An expression width keeps that fallback: `minTileWidth={w}` becomes
-  `minItemWidth={w ?? '260px'}`. The `hds-tile-grid` codemod
+  280px. An expression width that can be undefined keeps that fallback:
+  `minTileWidth={w}` becomes `minItemWidth={w ?? '260px'}`. One that never is
+  (a string or template literal, or a conditional whose branches all are) is
+  written through as it is, since TypeScript rejects `??` on it (TS2869), and
+  one the codemod does not read (a concatenation, a cast) is left for a manual
+  edit. The `hds-tile-grid` codemod
   (`codemods/tile-grid.mjs`) makes the rewrite, and the rendered tracks and
   gap are the same as TileGrid's under every tenant and density
   (`scripts/__tests__/grid-tile-grid-parity.test.mjs`, in Chromium, for each

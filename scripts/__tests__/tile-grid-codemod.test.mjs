@@ -15,6 +15,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } f
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import ts from 'typescript';
 import { transformSource } from '../../codemods/tile-grid.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
@@ -59,6 +60,90 @@ describe('transformSource', () => {
     expect(one('<TileGrid minTileWidth={a.b || c}><i /></TileGrid>;').source).toContain(
       `<Grid layout="auto-fill" minItemWidth={(a.b || c) ?? '260px'} gap="medium"><i /></Grid>;`,
     );
+  });
+
+  // TypeScript 6 rejects `x ?? y` when x can never be nullish (TS2869) or always
+  // is (TS2871), and judges that from the syntax alone. A width that is never
+  // undefined never took TileGrid's fallback, so it goes through as written.
+  it.each([
+    ['a string literal', `{'280px'}`],
+    ['a double-quoted literal in parentheses', `{("280px")}`],
+    ['a template literal', '{`${n}px`}'],
+    ['a template literal with a nested template', '{`${c ? `${n}px` : "1px"}`}'],
+    ['a conditional with literal branches', `{c ? '200px' : '300px'}`],
+    ['nested conditionals with literal branches', '{c ? (d ? `${n}px` : "1px") : \'300px\'}'],
+    ['a literal with a comment', `{/* wide */ '280px'}`],
+    ['a nullish fallback to a literal', `{w ?? '200px'}`],
+    ['a conditional on a cast test', `{w as unknown as boolean ? '200px' : '300px'}`],
+  ])('writes %s through as it is: it is never undefined', (_label, value) => {
+    const out = one(`<TileGrid minTileWidth=${value}><i /></TileGrid>;`);
+    expect(out.manual).toEqual([]);
+    expect(out.source).toContain(
+      `<Grid layout="auto-fill" minItemWidth=${value} gap="medium"><i /></Grid>;`,
+    );
+  });
+
+  it.each([
+    ['a member access', '{theme.tile}', `{theme.tile ?? '260px'}`],
+    ['an optional chain', '{theme?.tile}', `{theme?.tile ?? '260px'}`],
+    ['a non-null assertion', '{w!}', `{w! ?? '260px'}`],
+    ['a call', `{width('tile')}`, `{width('tile') ?? '260px'}`],
+    ['an element access', '{sizes[k]}', `{sizes[k] ?? '260px'}`],
+    ['a nullish fallback to a name', '{w ?? v}', `{(w ?? v) ?? '260px'}`],
+    ['a tagged template', '{css`1px`}', "{css`1px` ?? '260px'}"],
+    [
+      'an expression after a comment',
+      `{/* tile */ c ? w : '1px'}`,
+      `{/* tile */ (c ? w : '1px') ?? '260px'}`,
+    ],
+    ['an expression before a line comment', '{w // tile\n}', `{w ?? '260px' // tile\n}`],
+    ['a conditional with a nullable branch', `{c ? w : '300px'}`, `{(c ? w : '300px') ?? '260px'}`],
+    [
+      'a conditional with an undefined branch',
+      `{c ? undefined : '300px'}`,
+      `{(c ? undefined : '300px') ?? '260px'}`,
+    ],
+    [
+      'a conditional whose test compares',
+      `{n >= 4 ? w : '300px'}`,
+      `{(n >= 4 ? w : '300px') ?? '260px'}`,
+    ],
+  ])("keeps TileGrid's 260px fallback for %s, which can be undefined", (_label, value, written) => {
+    const out = one(`<TileGrid minTileWidth=${value}><i /></TileGrid>;`);
+    expect(out.manual).toEqual([]);
+    expect(out.source).toContain(
+      `<Grid layout="auto-fill" minItemWidth=${written} gap="medium"><i /></Grid>;`,
+    );
+  });
+
+  it.each([
+    [
+      'undefined',
+      '{undefined}',
+      /minTileWidth=\{undefined\} is always null or undefined.*minItemWidth="260px"/,
+    ],
+    ['null', '{null}', /always null or undefined/],
+    [
+      'a conditional with only undefined branches',
+      '{c ? undefined : null}',
+      /always null or undefined/,
+    ],
+    [
+      'a concatenation',
+      `{n + 'px'}`,
+      /cannot tell whether minTileWidth=\{n \+ 'px'\} can be undefined/,
+    ],
+    ['a cast', '{w as string}', /cannot tell/],
+    ['an arrow function', '{() => w}', /cannot tell/],
+    ['an assignment', '{w = v}', /cannot tell/],
+    ['a comma expression', '{(a, w)}', /cannot tell/],
+    ['an empty expression', '{/* none */}', /cannot tell/],
+  ])('leaves the file as written and lists %s for a manual edit', (_label, value, report) => {
+    const src = `import { TileGrid } from '${ROOT}';\n<TileGrid minTileWidth=${value}><i /></TileGrid>;\n`;
+    const out = transformSource(src);
+    expect(out.changed).toBe(false);
+    expect(out.source).toBe(src);
+    expect(out.manual.join('\n')).toMatch(report);
   });
 
   it('keeps every other attribute, comment and layout as written; the Grid props sit together', () => {
@@ -165,6 +250,94 @@ describe('transformSource', () => {
   });
 });
 
+// ── The rewrite typechecks ────────────────────────────────────────────────────
+
+/**
+ * The package as the fixture sees it: TileGrid with the props 0.19.1 shipped
+ * (src/app/components/tile-grid.tsx at a4dfa2e, removed in 0.20.0), next to the
+ * real Grid. Never written to disk: the compiler host serves it.
+ */
+const PACKAGE_STUB = `import * as React from 'react';
+export { Grid } from '../app/components/grid';
+export interface TileGridProps extends React.HTMLAttributes<HTMLDivElement> {
+  minTileWidth?: string;
+  gap?: 'xs' | 'sm' | 'md';
+}
+export declare const TileGrid: React.ForwardRefExoticComponent<
+  TileGridProps & React.RefAttributes<HTMLDivElement>
+>;
+`;
+
+/** Each file's TypeScript errors, under the repo's tsconfig, with the package resolved to the stub. */
+function typecheck(files) {
+  const dir = join(REPO, 'src/__tile-grid-typecheck__');
+  const stub = join(dir, 'index.ts');
+  const virtual = new Map([
+    [stub, PACKAGE_STUB],
+    ...Object.entries(files).map(([name, text]) => [join(dir, name), text]),
+  ]);
+  const config = ts.readConfigFile(join(REPO, 'tsconfig.json'), ts.sys.readFile);
+  const { options } = ts.parseJsonConfigFileContent(config.config, ts.sys, REPO);
+  options.noEmit = true;
+  options.paths = { ...options.paths, [ROOT]: [stub] };
+  const host = ts.createCompilerHost(options);
+  const { fileExists, readFile, getSourceFile } = host;
+  host.fileExists = (f) => virtual.has(f) || fileExists.call(host, f);
+  host.readFile = (f) => virtual.get(f) ?? readFile.call(host, f);
+  host.getSourceFile = (f, lang, ...rest) =>
+    virtual.has(f)
+      ? ts.createSourceFile(f, virtual.get(f), lang)
+      : getSourceFile.call(host, f, lang, ...rest);
+  const names = Object.keys(files);
+  const program = ts.createProgram(
+    names.map((name) => join(dir, name)),
+    options,
+    host,
+  );
+  return Object.fromEntries(
+    names.map((name) => {
+      const sf = program.getSourceFile(join(dir, name));
+      const errors = [
+        ...program.getSyntacticDiagnostics(sf),
+        ...program.getSemanticDiagnostics(sf),
+      ];
+      return [
+        name,
+        errors.map(
+          (e) =>
+            `TS${e.code} at line ${sf.getLineAndCharacterOfPosition(e.start ?? 0).line + 1}: ${ts.flattenDiagnosticMessageText(e.messageText, ' ')}`,
+        ),
+      ];
+    }),
+  );
+}
+
+describe('the rewrite typechecks (TypeScript 6 rejects `??` on a width that is never undefined)', () => {
+  it('every width the fixture holds typechecks with TileGrid before the rewrite and with Grid after it', () => {
+    const before = readFileSync(join(FIXTURES, 'typecheck/src/ExpressionWidths.tsx'), 'utf8');
+    const out = transformSource(before);
+    expect(out.manual).toEqual([]);
+    expect(out.sites).toBe(18);
+    expect(out.source).not.toMatch(/<\/?TileGrid\b|\{ TileGrid \}/);
+    expect(typecheck({ 'before.tsx': before, 'after.tsx': out.source })).toEqual({
+      'before.tsx': [],
+      'after.tsx': [],
+    });
+    expect(out.source).toContain(`<Grid layout="auto-fill" minItemWidth={'280px'} gap="medium">`);
+    expect(out.source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={c ? '200px' : '300px'} gap="medium">`,
+    );
+    expect(out.source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={w ?? '260px'} gap="medium">`,
+    );
+  }, 60_000);
+
+  it('would catch the error: `??` on a literal width is TS2869', () => {
+    const src = `import { Grid } from '${ROOT}';\nexport const X = () => <Grid minItemWidth={('280px') ?? '260px'}><i /></Grid>;\n`;
+    expect(typecheck({ 'probe.tsx': src })['probe.tsx'].join('\n')).toMatch(/^TS2869 at line 2/);
+  }, 60_000);
+});
+
 describe('package', () => {
   it('ships the codemod as the hds-tile-grid bin', () => {
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
@@ -177,7 +350,9 @@ describe('CLI', () => {
   let dir;
   beforeEach(() => {
     dir = mkdtempSync(join(tmpdir(), 'hds-tile-grid-'));
-    cpSync(FIXTURES, dir, { recursive: true });
+    // The CLI fixtures only: typecheck/ is read by the typecheck test above.
+    for (const own of ['needs-rewrite', 'clean'])
+      cpSync(join(FIXTURES, own), join(dir, own), { recursive: true });
     // node_modules is gitignored, so the fixture is built here rather than committed.
     mkdirSync(join(dir, 'clean/node_modules/x'), { recursive: true });
     writeFileSync(
