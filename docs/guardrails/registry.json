@@ -819,6 +819,18 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "ci-pr"
+    },
+    {
+      "id": "upgrade-schema",
+      "description": "Upgrade-ledger schema drift (hds#447): `node scripts/upgrade/schema.mjs --check` fails when upgrade/schema.json is not byte-equal to the JSON Schema generated from the zod source in scripts/upgrade/schema.mjs, the shape the ledger, its compiler and the upgrade command share. Runs in pretest; scripts/__tests__/upgrade-schema.test.mjs proves it fails on a hand edit.",
+      "severity": "error",
+      "gateScript": "scripts/upgrade/schema.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree",
+      "supportsJson": true
     }
   ]
 }
