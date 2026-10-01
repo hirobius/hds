@@ -241,6 +241,32 @@ describe('findUnrewritable', () => {
     expect(findUnrewritable(transformSource(src).source)).toHaveLength(1);
   });
 
+  // hds#389 R1a review: a dynamic import or require of the root hides which
+  // names it uses, so the codemod lists it for a manual edit.
+  it('flags a dynamic import() or require() of the root that uses an Hds* name', () => {
+    expect(
+      findUnrewritable(`const T = await import('${ROOT}').then((m) => m.HdsToggle);\n`),
+    ).toEqual([`import('${ROOT}') (uses HdsToggle)`]);
+    expect(findUnrewritable(`const { HdsRadio } = require("${ROOT}");\n`)).toEqual([
+      `require('${ROOT}') (uses HdsRadio)`,
+    ]);
+  });
+
+  it('does not flag a dynamic import that uses no Hds* name, or one only spelled in text', () => {
+    expect(findUnrewritable(`const { Button } = await import('${ROOT}');\n`)).toEqual([]);
+    expect(
+      findUnrewritable(`// require('${ROOT}').HdsRadio\nconst s = "import('${ROOT}') HdsRadio";\n`),
+    ).toEqual([]);
+    expect(
+      findUnrewritable(`const P = import('${ROOT}/patterns').then((m) => m.HdsRadio);\n`),
+    ).toEqual([]);
+  });
+
+  it('accepts a namespace import whose Hds* name is left only in text', () => {
+    const src = `import * as HDS from '${ROOT}';\n// was HDS.HdsSlider\n<HDS.Slider data-x="HdsSlider" />;\n`;
+    expect(findUnrewritable(src)).toEqual([]);
+  });
+
   it('accepts a namespace import once its member accesses are rewritten', () => {
     const src = transformSource(`import * as HDS from '${ROOT}';\n<HDS.HdsSlider />;\n`).source;
     expect(findUnrewritable(src)).toEqual([]);
@@ -309,6 +335,18 @@ describe('CLI', () => {
     expect(readFileSync(join(dir, 'clean/node_modules/x/index.js'), 'utf8')).toContain(
       'HdsCheckbox',
     );
+  });
+
+  it('--check exits 1 and names a dynamic import of the root that uses an Hds* name', () => {
+    writeFileSync(
+      join(dir, 'clean/lazy.tsx'),
+      `export const Lazy = () => import('${ROOT}').then((m) => m.HdsToggle);\n`,
+    );
+    const r = spawnSync('node', [CODEMOD, '--root', join(dir, 'clean'), '--check'], {
+      encoding: 'utf8',
+    });
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/lazy\.tsx: import\('@hirobius\/design-system'\) \(uses HdsToggle\)/);
   });
 
   it('--check exits 1 for a star re-export of the root it cannot follow', () => {

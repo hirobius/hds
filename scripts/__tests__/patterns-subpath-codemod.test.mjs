@@ -173,6 +173,22 @@ describe('findUnrewritable', () => {
     expect(findUnrewritable(`export * from '${ROOT}';\n`)).toHaveLength(1);
     expect(findUnrewritable(`import HDS, * as All from '${ROOT}';\n`)).toHaveLength(1);
   });
+  // hds#389 R1a review: a dynamic import or require of the root hides which
+  // names it uses, so the codemod lists it for a manual edit.
+  it('flags a dynamic import() or require() of the root that uses a pattern name', () => {
+    expect(
+      findUnrewritable(`const P = await import('${ROOT}').then((m) => m.Page);\n`, NAMES),
+    ).toEqual([`import('${ROOT}') (uses Page)`]);
+    expect(findUnrewritable(`const { TopNav, Button } = require('${ROOT}');\n`, NAMES)).toEqual([
+      `require('${ROOT}') (uses TopNav)`,
+    ]);
+  });
+  it('does not flag a dynamic import of the subpath, or of the root with no pattern name', () => {
+    expect(findUnrewritable(`const P = import('${SUB}').then((m) => m.Page);\n`, NAMES)).toEqual(
+      [],
+    );
+    expect(findUnrewritable(`const { Button } = require('${ROOT}');\n`, NAMES)).toEqual([]);
+  });
   it('ignores the subpath and named imports', () => {
     expect(
       findUnrewritable(`import * as P from '${SUB}';\nimport { A } from '${ROOT}';\n`),
@@ -234,6 +250,13 @@ describe('CLI', () => {
     const r = run('--check', '--root', join(dir, 'clean'));
     expect(r.status).toBe(1);
     expect(r.stderr).toMatch(/ns\.ts/);
+  });
+
+  it('--check exits 1 and names a require() of the root that uses a pattern name', () => {
+    writeFileSync(join(dir, 'clean/cjs.cjs'), `const { Page } = require('${ROOT}');\n`);
+    const r = run('--check', '--root', join(dir, 'clean'));
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/cjs\.cjs: require\('@hirobius\/design-system'\) \(uses Page\)/);
   });
 
   it.each([

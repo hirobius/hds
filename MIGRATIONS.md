@@ -49,8 +49,11 @@ modifiers and multi-line layout are kept, and a pattern name joins an existing
 `/patterns` import instead of adding a second one. Default plus named imports
 (`import HDS, { Page }`), `export { Page } from` re-exports and indented imports
 are handled. `--dry-run` prints each import line before (`-`) and after (`+`).
-Namespace imports (`import * as HDS`, `export *`) hide the names, so the codemod
-cannot rewrite them: `--check` exits 1 and lists them for a manual edit.
+Namespace imports (`import * as HDS`, `export *`) and a dynamic `import()` or
+`require()` of the root whose file names a pattern export
+(`import('@hirobius/design-system').then((m) => m.Page)`, `const { Page } = require(…)`)
+hide the names, so the codemod cannot rewrite them: `--check` exits 1 and lists
+them for a manual edit.
 `node_modules`, `dist` and `.git` are skipped.
 
 Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
@@ -252,7 +255,10 @@ or looks up (`export { HdsCheckbox }`, a `{ HdsCheckbox }` shorthand property, a
 `Checkbox as HdsCheckbox` instead and leaves the uses alone. A re-export
 keeps its own export name (`export { Toggle as HdsToggle }`), and
 `HDS.HdsSlider` on a namespace import becomes `HDS.Slider`. It cannot see
-through `export * from '@hirobius/design-system'`; `--check` lists those.
+through `export * from '@hirobius/design-system'`, or through a dynamic
+`import()` or `require()` of the root that names an alias
+(`.then((m) => m.HdsToggle)`, `const { HdsRadio } = require(…)`); `--check` exits 1
+and lists those for a manual edit.
 
 | Removed from `@hirobius/design-system` | Use instead | Codemod                                                      |
 | -------------------------------------- | ----------- | ------------------------------------------------------------ |

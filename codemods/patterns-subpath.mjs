@@ -17,7 +17,8 @@
  *
  *   --root <dir>  directory to scan (default: current directory)
  *   --check       write nothing; exit 1 when a rewrite is needed or a root namespace
- *                 import (`import * as X`, `export *`) needs a manual look
+ *                 import (`import * as X`, `export *`), or a dynamic `import()` or
+ *                 `require()` of the root that names a pattern export, needs a manual look
  *   --dry-run     write nothing; print each import line before (-) and after (+), exit 0
  *
  * The name list is codemods/patterns-subpath.names.json: what
@@ -27,6 +28,7 @@
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { moduleCalls, scanSource } from './scan.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
 const SUBPATH = `${ROOT_PKG}/patterns`;
@@ -72,9 +74,20 @@ const splitSpecs = (body) =>
     .map((s) => s.trim())
     .filter(Boolean);
 
-/** Namespace imports and star re-exports of the root: names are not visible, so no rewrite. */
-export function findUnrewritable(source) {
-  return [...source.matchAll(namespaceRe)].map((m) => m[0].trim());
+/**
+ * What the codemod cannot rewrite: namespace imports and star re-exports of the
+ * root (the names are not visible), and a dynamic `import()` or `require()` of
+ * the root (codemods/scan.mjs `moduleCalls`) in a file whose code names a
+ * pattern export (`m.Page`, `const { Page } =`). Text does not count.
+ */
+export function findUnrewritable(source, names = loadPatternNames()) {
+  const found = [...source.matchAll(namespaceRe)].map((m) => m[0].trim());
+  const calls = new Set(moduleCalls(source, ROOT_PKG));
+  if (calls.size === 0) return found;
+  const idents = scanSource(source).identifiers();
+  const used = [...names].filter((name) => idents.has(name)).sort();
+  if (used.length > 0) for (const call of calls) found.push(`${call} (uses ${used.join(', ')})`);
+  return found;
 }
 
 /** Renders one import/export statement. */
@@ -186,7 +199,8 @@ export function runCodemod({ root, write = false, names = loadPatternNames() }) 
   for (const file of walk(root)) {
     const src = readFileSync(file, 'utf8');
     if (!src.includes(ROOT_PKG)) continue;
-    for (const stmt of findUnrewritable(src)) manual.push({ file: relative(root, file), stmt });
+    for (const stmt of findUnrewritable(src, names))
+      manual.push({ file: relative(root, file), stmt });
     const r = transformSource(src, names);
     if (!r.changed) continue;
     files.push({ file: relative(root, file), sites: r.sites, moved: r.moved, edits: r.edits });
@@ -214,7 +228,7 @@ function main(argv) {
   const res = runCodemod({ root: args.root, write });
   const summary = `${res.files.length} files, ${res.sites} import sites, ${res.names.length} names (${res.names.join(', ') || 'none'})`;
   const manualLines = res.manual.map(
-    (m) => `  ${m.file}: ${m.stmt} (namespace import: move pattern names to '${SUBPATH}' by hand)`,
+    (m) => `  ${m.file}: ${m.stmt} (move pattern names to '${SUBPATH}' by hand)`,
   );
   if (args.check) {
     if (res.sites > 0 || res.manual.length > 0) {

@@ -34,13 +34,15 @@
  *
  *   --root <dir>  directory to scan (default: current directory)
  *   --check       write nothing; exit 1 when a rewrite is needed or a root star
- *                 re-export (or an Hds* use the codemod cannot see) needs a manual look
+ *                 re-export, a dynamic `import()` or `require()` of the root that names
+ *                 an Hds* alias, or another Hds* use the codemod cannot see needs a
+ *                 manual look
  *   --dry-run     write nothing; print each changed line before (-) and after (+), exit 0
  */
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { relative, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scanSource } from './scan.mjs';
+import { moduleCalls, scanSource } from './scan.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
 const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
@@ -82,7 +84,6 @@ const starExportRe = () =>
   new RegExp(`^[ \\t]*export\\s+\\*(?:\\s*as\\s+${ID})?\\s*from\\s*['"]${esc(ROOT_PKG)}['"]`, 'gm');
 // One specifier inside the braces: `type`? name, then `as alias`?
 const specRe = () => new RegExp(`(\\btype\\s+)?\\b(${ID})(\\s+as\\s+${ID})?`, 'g');
-const word = (name) => new RegExp(`(?<![\\w$])${name}(?![\\w$])`);
 // A use of the binding: not a property of another object (`cfg.HdsToggle`).
 const binding = (name) => new RegExp(`(?<![\\w$.])${name}(?![\\w$])`, 'g');
 
@@ -132,10 +133,7 @@ export function transformSource(source, renames = RENAMES) {
     [...source.matchAll(binding(name))]
       .map((m) => m.index)
       .filter((at) => scan.isCode(at) && !inImport(at));
-  const taken = (name) =>
-    [...source.matchAll(new RegExp(word(name).source, 'g'))].some(
-      (m) => !scan.ok || scan.isCode(m.index),
-    );
+  const taken = (name) => scan.identifiers().has(name);
 
   for (const m of statements) {
     const [stmt, kw, body] = m;
@@ -191,15 +189,22 @@ export function transformSource(source, renames = RENAMES) {
 
 /**
  * Statements the codemod cannot rewrite: a star re-export of the root (its
- * importers are in other files) and, in a file with a namespace import of the
- * root, any Hds* name left that is not a plain member access.
+ * importers are in other files); in a file with a namespace import of the root,
+ * any Hds* identifier left that is not a plain member access; and a dynamic
+ * `import()` or `require()` of the root (codemods/scan.mjs `moduleCalls`) in a
+ * file whose code names an Hds* alias (`m.HdsToggle`, `const { HdsRadio } =`).
+ * Text that spells an Hds* name does not count.
  */
 export function findUnrewritable(source, renames = RENAMES) {
+  const scan = scanSource(source);
+  const used = Object.keys(renames).filter((name) => scan.identifiers().has(name));
   const found = [...source.matchAll(starExportRe())].map((m) => m[0].trim());
   const namespaces = [...source.matchAll(namespaceRe())];
   if (namespaces.length > 0)
-    for (const name of Object.keys(renames))
-      if (word(name).test(source)) found.push(`${namespaces[0][0].trim()} (uses ${name})`);
+    for (const name of used) found.push(`${namespaces[0][0].trim()} (uses ${name})`);
+  if (used.length > 0)
+    for (const call of new Set(moduleCalls(source, ROOT_PKG, scan)))
+      found.push(`${call} (uses ${used.join(', ')})`);
   return found;
 }
 

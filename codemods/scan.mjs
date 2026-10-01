@@ -38,7 +38,8 @@ class ScanError extends Error {}
 /**
  * @param {string} src
  * @returns {{ ok: boolean, isCode: (at: number) => boolean,
- *   strings: { start: number, end: number, value: string }[] }}
+ *   strings: { start: number, end: number, value: string }[],
+ *   identifiers: () => Set<string> }}
  *   `isCode(at)`: the identifier starting at `at` is code (a JSX tag name
  *   counts; a JSX attribute name does not). `strings`: every quoted string and
  *   every template literal without `${}`, `start` at the opening quote and
@@ -296,5 +297,32 @@ export function scanSource(src) {
     if (!(e instanceof ScanError)) throw e;
     ok = false;
   }
-  return { ok, isCode: (at) => ok && code[at] === 1, strings: ok ? strings : [] };
+  let idents;
+  /** Every identifier the code spells, property names included; every word when the scan gave up. */
+  const identifiers = () => {
+    idents ??= new Set(
+      [...src.matchAll(/[A-Za-z_$\u0080-\uffff][\w$\u0080-\uffff]*/g)]
+        .filter((m) => !ok || (code[m.index] === 1 && (m.index === 0 || code[m.index - 1] !== 1)))
+        .map((m) => m[0]),
+    );
+    return idents;
+  };
+  return { ok, isCode: (at) => ok && code[at] === 1, strings: ok ? strings : [], identifiers };
+}
+
+// `import('pkg')`, `require('pkg')` and the test-runner forms that load a module by name.
+const MODULE_CALL =
+  /(?<![\w$])(import|require|requireActual|importActual|mock|doMock)\s*\(\s*(['"`])([^'"`\n]+)\2/g;
+
+/**
+ * Calls that load `specifier` by name, where a codemod cannot see which exports
+ * the code reads: `import('pkg')`, `require('pkg')`, `jest.requireActual`,
+ * `vi.importActual`, `vi.mock`, `jest.mock` and `doMock`. A call spelled in a
+ * string or comment does not count, unless the scan gave up.
+ * @returns {string[]} each call as `import('pkg')`
+ */
+export function moduleCalls(source, specifier, scan = scanSource(source)) {
+  return [...source.matchAll(MODULE_CALL)]
+    .filter((m) => m[3] === specifier && (!scan.ok || scan.isCode(m.index)))
+    .map((m) => `${m[1]}('${specifier}')`);
 }
