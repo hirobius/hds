@@ -2,7 +2,7 @@
 '@hirobius/design-system': minor
 ---
 
-**BREAKING (0.x minor): 32 components with no survivor are removed, and the root `*Variants` helpers are private (hds#394 wave 4a, hds#389 decision update).** No consumer imports any of them (ops, the one product app, has 0 import sites, and it pins `^0.19`, which never resolves to 0.20). Every removed name has a row in MIGRATIONS.md under "0.20.0 removals", with its replacement where one exists.
+**BREAKING (0.x minor): 32 components with no survivor are removed, and the root `*Variants` helpers are private (hds#394 wave 4a, hds#389 decision update).** No consumer imports any of them (ops, the one product app, has 0 import sites, and it pins `^0.16`, which never resolves to 0.20). Every removed name has a row in MIGRATIONS.md under "0.20.0 removals", with its replacement where one exists.
 
 - **Removed from the root:** `CaseStudyLayout`, `HdsSystemDocLayout`, `HdsDocsShell`, `ErrorBoundary`, `HistoryCard`, `NavGroup`, `Tokenizer`, `StepperField`, `HeadingStack`, `TextLockup`, `DateInput`, `DateRangeInput`, `DateTimeInput`, `ContextMenu`, `HoverCard` and `ButtonGroup`, with their props types and helpers. `HeadingStack` and `TextLockup` become `Stack` + `Text` (recipe in docs/rules/REACT_COMPONENTS.md); `StepperField` becomes `Input type="number"`.
 - **Removed from `/patterns`:** `ActivityFeed`, `AppShell`, `Calendar`, `Carousel`, `CommandPalette`, `DocLinkCard`, `FileInput`, `Lightbox`, `NavItem`, `OverflowList`, `SideNav`, `StackedCardRail`, `Stepper`, `Toolbar`, `TopNav` and `TreeList`, with their props types, parts and `*Variants`. The date pickers have no replacement (ADR-034 supersedes ADR-020); use a native `<input type="date">`.

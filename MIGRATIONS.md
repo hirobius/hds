@@ -26,12 +26,16 @@ Token renames live in [TOKEN_MIGRATION.md](TOKEN_MIGRATION.md).
   exported from `@hirobius/design-system/patterns`.
 - **Removed from the root in:** 0.20.0 (hds#389 R1). The root no longer
   exports these 21 components or anything else from their modules (props types,
-  parts, hooks, `*Variants`); `/patterns` exports all of it. See
-  [0.20.0 removals](#0200-removals-2026-10-01).
+  parts, hooks, `*Variants`). `/patterns` keeps six of them with every name:
+  AssetImg, CodeBlock, ErrorPattern, Form, Page and Reveal. The other 15 are
+  removed outright in the same release, from `/patterns` too (hds#394 wave 4a).
+  See [0.20.0 removals](#0200-removals-2026-10-01).
 - **Codemod:** `codemods/patterns-subpath.mjs`, also installed as the
   `hds-patterns-subpath` binary. The names it moves are everything
   `/patterns` exports and the root does not (`pnpm codemod:names`), never
-  listed by hand.
+  listed by hand. A name of the 15 removed modules has nowhere to move: the
+  codemod reports its import as removed in 0.20.0 for a manual edit, and
+  `--check` exits 1 (the list is `codemods/removed-0.20.json`).
 
 ```bash
 # Preview what would change, writes nothing
@@ -44,7 +48,7 @@ npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root . --check
 npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .
 ```
 
-Other named imports stay on the root. Aliases (`SideNav as Nav`), `type`
+Other named imports stay on the root. Aliases (`Page as Screen`), `type`
 modifiers and multi-line layout are kept, and a pattern name joins an existing
 `/patterns` import instead of adding a second one. Default plus named imports
 (`import HDS, { Page }`), `export { Page } from` re-exports and indented imports
