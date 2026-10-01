@@ -11,3 +11,4 @@
 - `Cover`, `Frame`, `Bleed` and `AspectRatio` become a `Box` with `style` (`aspectRatio`, `marginInline`, `marginBlock: 'auto'` and so on). Use `style`, not `sx`: `sx` applies on the client only.
 - `StatusDot` stays: ops passes it `style`, which Badge `dot` does not take.
 - `hds-patterns-subpath --check` reports a named import of any of the 13 for a manual edit and names its survivor ("removed in 0.20.0, use Button iconOnly …"), from the new `replaced` map in `codemods/removed-0.20.json`.
+- `@radix-ui/react-aspect-ratio` and `@radix-ui/react-toggle` leave `dependencies`: only the removed `AspectRatio` and `ToggleButton` imported them (`@radix-ui/react-toggle-group` stays and brings its own copy of the toggle primitive).
