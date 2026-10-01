@@ -113,3 +113,47 @@ export const SizeVariants: Story = {
     </div>
   ),
 };
+
+export const DateAndTime: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Native date, time and datetime-local pickers in the Input chrome (hds#393). The platform picker owns the value UI, so these types show no clear button.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '360px' }}>
+      <Input type="date" label="Start date" defaultValue="2026-10-01" />
+      <Input type="time" label="Start time" defaultValue="09:30" />
+      <Input type="datetime-local" label="Starts at" defaultValue="2026-10-01T09:30" />
+    </div>
+  ),
+};
+
+export const PrefixAndSuffix: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'In-flow `prefix` and `suffix` slots sit inside the field frame beside the value (hds#393). They are not part of the accessible name, so the label carries anything essential.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '360px' }}>
+      <Input label="Website" prefix="https://" placeholder="example.com" />
+      <Input label="Price in US dollars" prefix="$" suffix="USD" placeholder="0.00" />
+      <Input
+        label="Weight in kilograms"
+        type="number"
+        suffix="kg"
+        defaultValue="12"
+        helperText="Up to 30 kg per parcel."
+      />
+      <Input size="sm" label="Small" prefix="@" placeholder="handle" />
+      <Input size="lg" label="Large" prefix="https://" suffix=".com" placeholder="example" />
+    </div>
+  ),
+};
