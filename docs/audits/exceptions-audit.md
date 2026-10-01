@@ -39,7 +39,7 @@
 | `src/app/components/code-block.tsx` | 104 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- section-stack spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 266 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/code-block.tsx` | 270 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- content-secondary token has no matching Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/combobox.tsx` | 170 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus -- combobox search field is the expected focus target on open` | justified |
+| `src/app/components/combobox.tsx` | 174 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus -- combobox search field is the expected focus target on open` | justified |
 | `src/app/components/command-palette.tsx` | 199 | `eslint-disable-next-line` | `jsx-a11y/no-autofocus` | justified |
 | `src/app/components/command-palette.tsx` | 220 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- dialog results scroll cap at 60% viewport height` | justified |
 | `src/app/components/disclosure.tsx` | 31 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
@@ -52,7 +52,7 @@
 | `src/app/components/heading-stack.tsx` | 30 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic space/typography tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/heading-stack.tsx` | 43 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic typography composite tokens (font-size/font-weight/line-height/letter-spacing) have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/history-card.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
-| `src/app/components/inline-code.tsx` | 23 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- mono typography composite + subgrid/badge tokens have no named Tailwind utility; var()-based so still token-driven` | justified |
+| `src/app/components/inline-code.tsx` | 24 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- mono typography composite + subgrid/badge tokens have no named Tailwind utility; var()-based so still token-driven` | justified |
 | `src/app/components/nav-group.tsx` | 33 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- --semantic-color-content-secondary has no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/nav-group.tsx` | 90 | `eslint-disable-next-line` | `react-hooks/set-state-in-effect` | justified |
 | `src/app/components/nav-item.tsx` | 36 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- --primitive-size-interactive-min a11y touch target + --semantic-color-* state tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
