@@ -84,6 +84,9 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
     const [activeIndex, setActiveIndex] = React.useState(0);
     const baseId = React.useId();
     const listId = `${baseId}-list`;
+    // Names the open popover and the listbox inside it (hds#399): the field
+    // label, or the placeholder when the field has none.
+    const popupName = ariaLabel ?? placeholder;
 
     const selected = options.find((o) => o.value === value) ?? null;
     const filtered = React.useMemo(() => {
@@ -160,6 +163,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
         </Popover.Anchor>
 
         <Popover.Content
+          aria-label={popupName}
           align="start"
           className="p-0"
           style={{ width: 'var(--radix-popover-trigger-width)' }}
@@ -189,7 +193,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
           <ul
             id={listId}
             role="listbox"
-            aria-label={ariaLabel ?? placeholder}
+            aria-label={popupName}
             className="max-h-60 overflow-y-auto p-1"
           >
             {filtered.length === 0 ? (
