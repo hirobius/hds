@@ -49,11 +49,14 @@ modifiers and multi-line layout are kept, and a pattern name joins an existing
 `/patterns` import instead of adding a second one. Default plus named imports
 (`import HDS, { Page }`), `export { Page } from` re-exports and indented imports
 are handled. `--dry-run` prints each import line before (`-`) and after (`+`).
-Namespace imports (`import * as HDS`, `export *`) and a dynamic `import()` or
-`require()` of the root whose file names a pattern export
-(`import('@hirobius/design-system').then((m) => m.Page)`, `const { Page } = require(…)`)
-hide the names, so the codemod cannot rewrite them: `--check` exits 1 and lists
-them for a manual edit.
+Some statements hide the names, so the codemod cannot rewrite them; `--check`
+exits 1 and lists them for a manual edit: `export * from '@hirobius/design-system'`,
+and a namespace import (`import * as HDS`) or a dynamic `import()`, `require()`,
+`vi.mock`, `jest.mock` (and the other test-runner loaders) of the root in a file
+that reads a pattern name off something: `HDS.Page`, `m['Page']`,
+`import('@hirobius/design-system').then((m) => m.Page)`,
+`const { Page } = require(…)`. A bare `Page`, such as the `/patterns` import the
+codemod wrote, does not count, so a migrated file passes `--check`.
 `node_modules`, `dist` and `.git` are skipped.
 
 Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
@@ -245,20 +248,19 @@ Every name they exported is unchanged on `@hirobius/design-system/patterns`.
 
 The six `Hds`-prefixed spellings (hds#315) are gone; each component is exported
 under its bare name only. The `hds-prefix` codemod (`codemods/hds-prefix.mjs`)
-rewrites the import and renames the references to it in the same file: JSX tags,
-values, `typeof`. Text keeps the old spelling: strings such as
-`data-testid="HdsCheckbox-row"`, template text, comments and JSX text are not
-changed, so selectors in other files still match. Where the bare name is
-already taken in that file, or where renaming would change what the file exports
-or looks up (`export { HdsCheckbox }`, a `{ HdsCheckbox }` shorthand property, an
-`HdsCheckbox:` key, a method, a whole string `'HdsCheckbox'`), it imports
-`Checkbox as HdsCheckbox` instead and leaves the uses alone. A re-export
-keeps its own export name (`export { Toggle as HdsToggle }`), and
-`HDS.HdsSlider` on a namespace import becomes `HDS.Slider`. It cannot see
-through `export * from '@hirobius/design-system'`, or through a dynamic
-`import()` or `require()` of the root that names an alias
-(`.then((m) => m.HdsToggle)`, `const { HdsRadio } = require(…)`); `--check` exits 1
-and lists those for a manual edit.
+rewrites the import specifier and nothing else: `import { HdsCheckbox }` becomes
+`import { Checkbox as HdsCheckbox }`, so the file keeps its local name and every
+reference (JSX tags, values, `typeof`, spreads, string keys) still resolves to
+the same component. An existing alias stays (`HdsSelect as Pick` becomes
+`Select as Pick`), `type` modifiers, comments and layout are kept, and a
+re-export keeps its own export name (`export { Toggle as HdsToggle }`). Only
+imports whose source is exactly `@hirobius/design-system` change. Renaming the
+local binding to `Checkbox` afterwards is optional and a manual edit. Running it
+twice changes nothing. It cannot see through `export * from '@hirobius/design-system'`,
+or through a namespace import or a dynamic `import()`, `require()`, `vi.mock` or
+`jest.mock` of the root in a file that reads an alias off something
+(`HDS.HdsSlider`, `m['HdsToggle']`, `const { HdsRadio } = require(…)`);
+`--check` exits 1 and lists those for a manual edit.
 
 | Removed from `@hirobius/design-system` | Use instead | Codemod                                                      |
 | -------------------------------------- | ----------- | ------------------------------------------------------------ |
@@ -270,9 +272,9 @@ and lists those for a manual edit.
 | `HdsTooltip`                           | `Tooltip`   | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
 
 Ops imports `HdsCheckbox` in one file. A read-only dry run on 2026-10-01 (ops
-main 76ef65e) rewrites the import and one JSX tag in
-`src/app/pages/ops/leads/LeadSweepPanel.tsx` to `Checkbox`; no other `Hds*`
-alias is imported.
+main 76ef65e) rewrites that import in
+`src/app/pages/ops/leads/LeadSweepPanel.tsx` to `Checkbox as HdsCheckbox` and
+leaves its JSX tag as written; no other `Hds*` alias is imported.
 
 ### Docs and lab components
 
