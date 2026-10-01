@@ -18,8 +18,8 @@ import { DestructiveSection } from '../src/app/components/destructive-section';
 
 afterEach(cleanup);
 
-/** The component the patterns' wrapping rows render. Cluster before hds#392. */
-const WRAPPING_ROW = 'Cluster';
+/** The component the patterns' wrapping rows render: Stack since hds#392, Cluster before. */
+const WRAPPING_ROW = 'Stack';
 
 const GAP = {
   tight: 'var(--semantic-space-scale-sm)',

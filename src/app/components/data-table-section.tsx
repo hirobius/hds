@@ -5,7 +5,6 @@
  */
 
 import * as React from 'react';
-import { Cluster } from './cluster';
 import { EmptyState } from './empty-state';
 import { Stack } from './stack';
 import { Table, type TableColumn, type TableRow } from './table';
@@ -94,9 +93,9 @@ export const DataTableSection = /* @__PURE__ */ React.forwardRef<
               slot: 'action' as const,
               align: 'right' as const,
               content: (
-                <Cluster gap="tight" align="center" justify="end">
+                <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
                   {row.actions}
-                </Cluster>
+                </Stack>
               ),
             },
           ]
@@ -109,18 +108,18 @@ export const DataTableSection = /* @__PURE__ */ React.forwardRef<
   return (
     <section ref={ref} data-hds-component="DataTableSection" aria-labelledby={headingId} {...props}>
       <Stack gap="tight">
-        <Cluster gap="normal" align="center" justify="space-between">
+        <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
           <Text id={headingId} as={`h${level}`} variant="heading3">
             {title}
           </Text>
           {toolbar ? (
             <div data-slot="toolbar" className="ml-auto">
-              <Cluster gap="tight" align="center" justify="end">
+              <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
                 {toolbar}
-              </Cluster>
+              </Stack>
             </div>
           ) : null}
-        </Cluster>
+        </Stack>
         {rows.length === 0 ? (
           <EmptyState title={emptyTitle} description={emptyDescription} />
         ) : (

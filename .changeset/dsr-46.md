@@ -2,4 +2,7 @@
 '@hirobius/design-system': patch
 ---
 
-Pagination and InlineCode no longer render IconButton inside (hds#392). Pagination's Previous and Next controls and InlineCode's copy button are now `Button iconOnly` with an `aria-label` and a 16px `Icon` (`size="small"`), so the rendered markup is byte-identical: same element, classes, attributes and accessible names ("Previous page", "Next page", "Copy", "Copied"). This lets IconButton be deprecated (#389) without warning every Pagination or InlineCode user about a component they never used.
+Kept components stop rendering IconButton and Cluster inside (hds#392), so both can be deprecated (#389) without warning consumers about components they never used.
+
+- **Pagination and InlineCode:** Previous, Next and the copy button are now `Button iconOnly` with an `aria-label` and a 16px `Icon` (`size="small"`). The rendered markup is byte-identical: same element, classes, attributes and accessible names ("Previous page", "Next page", "Copy", "Copied").
+- **PageHeader, FormActions, DataTableSection and DestructiveSection:** their wrapping rows are now `Stack direction="row" wrap="wrap"` with `align` and `justify` passed explicitly. Layout is unchanged (direction, wrap, gap, alignment and distribution), but the row elements inside these 4 patterns now carry `data-hds-component="Stack"` instead of `data-hds-component="Cluster"`, and their inline style adds `flex-direction: row`, the initial value. Update any selector or test that targets `[data-hds-component="Cluster"]` inside one of these patterns.
