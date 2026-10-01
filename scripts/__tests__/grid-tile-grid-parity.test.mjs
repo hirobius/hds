@@ -4,8 +4,9 @@
  * fold into it (0.20.0 removed TileGrid, hds#395). `<Grid layout="auto-fill" minItemWidth="220px" gap="medium">`
  * must compute the same tracks and the same 12px gap as
  * `<TileGrid minTileWidth="220px">` (gap 'sm', its default), under every
- * tenant and density, at every viewport width the spacing lock uses, and in a
- * container narrower than one tile.
+ * tenant and density, at every viewport width the spacing lock uses, in a
+ * container narrower than one tile, and in a 560px one, where 260px and 280px
+ * tiles give different track counts (so a wrong default width fails here too).
  *
  * hds#395 (B5): the same proof for what codemods/tile-grid.mjs writes. Each
  * TileGrid tag ops origin/main renders (76ef65e: ClientDashboardPage.tsx 6,
@@ -108,8 +109,12 @@ const TENANTS = ['base', 'accent-lilac', 'brutalist-demo', 'concrete-creations']
 const DENSITIES = ['comfortable', 'compact'];
 /** The spacing lock's widths; theme.css retunes spacing at 639/640px. */
 const WIDTHS = [1280, 640, 639, 400];
-/** A full-width container, and one narrower than a 220px tile. */
-const CONTAINERS = ['100%', '180px'];
+/**
+ * A full-width container, one narrower than a 220px tile, and one that fits
+ * two 260px tiles but one 280px tile (2 x 260 + 12 <= 560 < 2 x 280 + 12), so a
+ * wrong default width changes the track count.
+ */
+const CONTAINERS = ['100%', '180px', '560px'];
 
 const PAGE_CSS = [
   read('src/styles/tokens.generated.css'),
@@ -208,6 +213,14 @@ describe.skipIf(!hasBrowser)(
       expect([...gaps]).toEqual(['12px']);
       const tileGaps = new Set(rows.flatMap((r) => [r.tileGrid.rowGap, r.tileGrid.columnGap]));
       expect([...tileGaps]).toEqual(['12px']);
+    });
+
+    it("fits two 260px tiles where 280px would fit one: TileGrid's default width is kept", () => {
+      const bare = rows.filter(
+        (r) => r.cell.startsWith(`site${SITES.indexOf('')}|`) && r.cell.endsWith('|560px'),
+      );
+      expect(bare.length).toBeGreaterThan(0);
+      for (const r of bare) expect(r.grid.tracks.split(' ')).toHaveLength(2);
     });
 
     it('collapses to one full-width track in a container narrower than a tile', () => {
