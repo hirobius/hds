@@ -7,7 +7,13 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from 'nod
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { countConsumerUsage, renderInUseBlock, IN_USE_BLOCK } from '../count-consumer-usage.mjs';
+import {
+  countConsumerUsage,
+  measureConsumer,
+  parseRootAliases,
+  renderInUseBlock,
+  IN_USE_BLOCK,
+} from '../count-consumer-usage.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const COMPONENTS = new Set(['Button', 'Page', 'Badge']);
@@ -35,6 +41,79 @@ describe('countConsumerUsage', () => {
         `import { Button } from '@hirobius/design-system';\n`,
       );
       expect(countConsumerUsage(dir, COMPONENTS)).toEqual({ files: 2, components: 3 });
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('parseRootAliases (hds#390)', () => {
+  it('maps each `export { X as Y }` alias in the barrel to its target', () => {
+    const index = [
+      "export * from './app/components/checkbox';",
+      '/** @deprecated Use `Checkbox`. */',
+      "export { Checkbox as HdsCheckbox } from './app/components/checkbox';",
+      "export { Tooltip as HdsTooltip } from './app/components/hds-tooltip';",
+      "export { default as hds } from './app/design-system/tokens';",
+      "export { cn } from './lib/utils';",
+    ].join('\n');
+    expect(Object.fromEntries(parseRootAliases(index))).toEqual({
+      HdsCheckbox: 'Checkbox',
+      HdsTooltip: 'Tooltip',
+    });
+  });
+
+  it('reads the real barrel, where HdsCheckbox is an alias of Checkbox', () => {
+    const aliases = parseRootAliases(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
+    expect(aliases.get('HdsCheckbox')).toBe('Checkbox');
+  });
+});
+
+describe('measureConsumer (hds#390)', () => {
+  function fixture() {
+    const dir = mkdtempSync(join(tmpdir(), 'hds-consumer-'));
+    mkdirSync(join(dir, 'src/pages'), { recursive: true });
+    mkdirSync(join(dir, 'scripts'));
+    mkdirSync(join(dir, 'fixtures'));
+    writeFileSync(
+      join(dir, 'src/pages/a.tsx'),
+      `import { Button, HdsCheckbox } from '@hirobius/design-system';\n`,
+    );
+    writeFileSync(
+      join(dir, 'src/pages/b.tsx'),
+      `import {\n  Page,\n  Badge,\n} from '@hirobius/design-system/patterns';\n`,
+    );
+    // A clone prompt: the import is text inside a template literal.
+    writeFileSync(
+      join(dir, 'scripts/page-clone.mjs'),
+      "const prompt = `\nimport { Stack, Card } from '@hirobius/design-system';\n`;\n",
+    );
+    writeFileSync(
+      join(dir, 'fixtures/x.tsx'),
+      `import { Badge, Stack } from '@hirobius/design-system';\n`,
+    );
+    return dir;
+  }
+
+  it('counts src/ only, resolves barrel aliases, and buckets the clone prompts', () => {
+    const dir = fixture();
+    try {
+      const names = new Set([
+        'Button',
+        'Checkbox',
+        'HdsCheckbox',
+        'Page',
+        'Badge',
+        'Stack',
+        'Card',
+      ]);
+      const out = measureConsumer(dir, names, new Map([['HdsCheckbox', 'Checkbox']]));
+      expect(out).toEqual({
+        files: 2,
+        components: 4,
+        names: ['Badge', 'Button', 'Checkbox', 'Page'],
+        promptContracts: { files: ['scripts/page-clone.mjs'], components: ['Card', 'Stack'] },
+      });
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
