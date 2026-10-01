@@ -1,0 +1,69 @@
+{
+  "$comment": "hds#417 size assert: the 2026-10-01 push against the committed 150cbe3 snapshot (pnpm figma:push --plan: updated 10 · created 2 · deleted 0, all 10 updates descriptions). Created ids are placeholders in Figma's format; everything else is the model's.",
+  "takenAt": "2026-10-01T12:00:00.000Z",
+  "lastPush": {
+    "modelHash": "e553cd05",
+    "pushedAt": "2026-10-01T11:59:30.000Z",
+    "scope": null
+  },
+  "creates": [
+    {
+      "collection": "VariableCollectionId:1:3",
+      "record": {
+        "id": "VariableID:2104:1",
+        "name": "color/state/pressed/overlay",
+        "path": "semantic.color.state.pressed.overlay",
+        "resolvedType": "COLOR",
+        "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
+        "scopes": ["ALL_FILLS", "STROKE_COLOR"],
+        "hiddenFromPublishing": false,
+        "codeSyntax": {
+          "WEB": "var(--semantic-color-state-pressed-overlay)"
+        },
+        "valuesByMode": {
+          "Light": {
+            "alias": "VariableID:3:15",
+            "to": "Hirobius/Primitives: color/neutral/black"
+          },
+          "Dark": {
+            "alias": "VariableID:3:14",
+            "to": "Hirobius/Primitives: color/neutral/white"
+          }
+        }
+      }
+    },
+    {
+      "collection": "VariableCollectionId:2018:712",
+      "record": {
+        "id": "VariableID:2104:2",
+        "name": "pressed-overlay",
+        "path": "role.pressed-overlay",
+        "resolvedType": "COLOR",
+        "description": "Pressed-state overlay colour role. Apply alpha in the class, e.g. inset-shadow-pressed-overlay/5.",
+        "scopes": ["ALL_FILLS", "STROKE_COLOR"],
+        "hiddenFromPublishing": false,
+        "codeSyntax": {
+          "WEB": "var(--role-pressed-overlay)"
+        },
+        "valuesByMode": {
+          "Default": {
+            "alias": "VariableID:2104:1",
+            "to": "Hirobius/Semantic: color/state/pressed/overlay"
+          }
+        }
+      }
+    }
+  ],
+  "descriptions": {
+    "VariableID:2061:875": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA (2.5.8), not the 44px AAA floor (2.5.5).",
+    "VariableID:2061:876": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room.",
+    "VariableID:2061:880": "24px. Default of the overridable roles surface.padding and region.gutter. The deprecated layout.normal has the same value.",
+    "VariableID:2061:883": "24px (scale.md) inset for cards, forms and panels. Tenants override it per brand and density. Replaces component.padding. Varies by brand and density: its value comes from Hirobius/Density.",
+    "VariableID:2061:884": "24px (scale.md) column and region gutters; theme.css sets scale.lg (32px), and scale.sm (16px) below 640px. Replaces layout.gutter.",
+    "VariableID:10:34": "24px inset for cards, forms and panels. DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
+    "VariableID:10:39": "48px break between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
+    "VariableID:2061:885": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
+    "VariableID:2061:886": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242).",
+    "VariableID:2061:893": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242)."
+  }
+}

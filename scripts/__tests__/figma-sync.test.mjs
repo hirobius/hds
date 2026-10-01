@@ -15,7 +15,6 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import vm from 'vm';
 import { parse } from 'acorn';
 import { hdsChecksum } from '../lib/figma-runtime.mjs';
 import {
@@ -26,6 +25,7 @@ import {
 } from '../lib/figma-scripts.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
+import { runSyncPlugin, serve } from './helpers/sync-plugin.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const model = fixtureModel();
@@ -45,88 +45,9 @@ const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 
 // ── Harness ──────────────────────────────────────────────────────────────────
 const copy = (value) => JSON.parse(JSON.stringify(value));
-const scriptOf = (html) => html.match(/<script>([\s\S]*)<\/script>/)[1];
-
-function fakeDocument() {
-  const elements = new Map();
-  const element = (id) => {
-    if (!elements.has(id)) {
-      elements.set(id, {
-        id,
-        textContent: '',
-        value: '',
-        className: '',
-        hidden: false,
-        onclick: null,
-        focus() {},
-        select() {},
-        click() {},
-      });
-    }
-    return elements.get(id);
-  };
-  return { getElementById: element, createElement: () => element('created'), execCommand() {} };
-}
-
-/** A fetch that answers with `body` (an object is sent as JSON). */
-const serve =
-  (body, status = 200) =>
-  async () => ({
-    status,
-    text: async () => (typeof body === 'string' ? body : JSON.stringify(body)),
-  });
-
-/**
- * Runs one menu command of a generated Sync plugin against `figma` and returns
- * the result it shows, plus every request its window made.
- */
-async function runPlugin(files, command, figma, options = {}) {
-  const { fetch = serve(BUNDLE), typedKey, codeSetTimeout = setTimeout } = options;
-  const results = [];
-  const fetches = [];
-  const doc = fakeDocument();
-  const ui = {
-    document: doc,
-    AbortController,
-    // The window's own fetch timeout must not keep the test process alive.
-    setTimeout: (fn, ms) => setTimeout(fn, ms).unref(),
-    clearTimeout,
-    fetch: (url, init) => {
-      fetches.push({ url, cache: init && init.cache });
-      return fetch(url, init);
-    },
-    parent: {
-      postMessage: (message) =>
-        setTimeout(() => figma.ui.onmessage && figma.ui.onmessage(message.pluginMessage), 0),
-    },
-  };
-  vm.createContext(ui);
-  figma.command = command;
-  figma.closePlugin = () => {};
-  figma.showUI = (html) => vm.runInContext(scriptOf(html), ui);
-  figma.ui = {
-    onmessage: null,
-    postMessage(message) {
-      if (message && message.type === 'result') results.push(copy(message));
-      setTimeout(() => {
-        if (ui.onmessage) ui.onmessage({ data: { pluginMessage: message } });
-        if (message && message.type === 'mark-form' && typedKey !== undefined) {
-          doc.getElementById('key').value = typedKey;
-          doc.getElementById('markGo').onclick();
-        }
-      }, 0);
-    },
-  };
-  vm.runInNewContext(files['code.js'], {
-    figma,
-    __html__: files['ui.html'],
-    setTimeout: codeSetTimeout,
-    clearTimeout,
-  });
-  for (let i = 0; i < 2000 && results.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
-  expect(results, `the ${command} command posted no result`).toHaveLength(1);
-  return { ...results[0], fetches };
-}
+/** Runs one menu command of a Sync plugin (helpers/sync-plugin.mjs); the window serves BUNDLE unless told otherwise. */
+const runPlugin = (files, command, figma, options = {}) =>
+  runSyncPlugin(files, command, figma, { fetch: serve(BUNDLE), ...options });
 
 /** An empty in-memory file named like staging, with the given key (null: Figma gives none). */
 const stagingFile = (key = LINKS.stagingFileKey, name = LINKS.stagingFileName) => {
@@ -242,6 +163,11 @@ describe('Sync in the staging file', () => {
       'line',
       'counts',
       'post',
+      'lastPush',
+      'base',
+      'format',
+      'pages',
+      'sum',
     ]);
     expect(receipt).toMatchObject({
       v: 1,

@@ -12,6 +12,10 @@
  *     its files change only when its code does, never with the tokens.
  *   - the promote plugin: the development plugin with the model baked in
  *     (buildDevPlugin), renamed, for library promotion and deliberate prunes.
+ *     Its Push and Snapshot clear the Sync receipt (hds#417).
+ *   - receipt.js (buildUseFigmaReceiptScript, hds#417): a read-only use_figma
+ *     script that returns the Sync receipt's head, one page and a live
+ *     fingerprint of staging, for `pnpm figma:snapshot --from-receipt`.
  *   - `use_figma` scripts for the remote Figma MCP server, one per collection plus
  *     one for styles, carrying only the out-of-scope variables they alias. An
  *     agent retypes each script into the `code` parameter, so the script checks
@@ -55,6 +59,11 @@ export function runtimeSource() {
  */
 export function syncRuntimeSource() {
   return scriptBody('./figma-sync-runtime.mjs');
+}
+
+/** The snapshot delta codec (figma-snapshot-delta.mjs) as a script body, for the Sync plugin's code.js. */
+export function deltaRuntimeSource() {
+  return scriptBody('./figma-snapshot-delta.mjs');
 }
 
 /** A module in this folder as a plain script: no comments, no imports, no `export`. */
@@ -302,8 +311,11 @@ const PLUGIN_UI = `<!doctype html>
 /**
  * A local development plugin (Plugins → Development → Import plugin from
  * manifest) with the model baked in. Its prune command exists only when
- * generated with prune. `pnpm figma:push` writes it only as the promote plugin
- * (buildPromotePlugin), whose id does not collide with the Sync plugin's.
+ * generated with prune. Push (before it writes) and Take snapshot clear the
+ * Sync receipt (`syncReceipt` and its pages, hds#417), so a receipt never
+ * outlives a write it does not describe; a file with none gets no write.
+ * `pnpm figma:push` writes it only as the promote plugin (buildPromotePlugin),
+ * whose id does not collide with the Sync plugin's.
  *
  * @returns {Record<string, string>} file name → contents
  */
@@ -340,14 +352,21 @@ export function buildDevPlugin(model, { prune = false, renames = {} } = {}) {
 figma.ui.onmessage = (message) => {
   if (message === 'close') figma.closePlugin();
 };
+function hdsClearSyncReceipt() {
+  const keys = ['syncReceipt'];
+  for (let i = 0; i < ${SYNC_MAX_PAGES}; i++) keys.push('syncSnapshot.' + i);
+  keys.forEach((key) => hdsGetKey(figma.root, key) && hdsSetKey(figma.root, key, ''));
+}
 (async () => {
   try {
     if (figma.command === 'snapshot') {
       const result = await hdsRunSnapshot(figma);
+      hdsClearSyncReceipt();
       figma.ui.postMessage({ ok: true, title: 'Snapshot — download it, then run pnpm figma:snapshot --ingest <file>', fileName: 'figma-snapshot.json', result });
       return;
     }
     const dryRun = figma.command !== 'push';
+    if (!dryRun) hdsClearSyncReceipt();
     const result = await hdsRunPush(figma, PAYLOAD, CHECKSUM, { dryRun });
     const warned = result.warnings.length ? ' · ' + result.warnings.length + ' warning(s): read them below' : '';
     figma.ui.postMessage({ ok: true, title: (dryRun ? 'Plan (nothing written): ' : 'Pushed: ') + result.line + warned, fileName: dryRun ? 'figma-push-plan.json' : 'figma-push-report.json', result });
@@ -386,6 +405,12 @@ export function buildPromotePlugin(model, options = {}) {
 export const SYNC_BUNDLE_PATH = 'figma/sync-bundle.json';
 export const SYNC_BUNDLE_SCHEMA_VERSION = 1;
 const SYNC_FETCH_TIMEOUT_MS = 45000;
+/** Receipt pages (hds#417): raw JSON up to SYNC_RAW_CHARS, else gzip + base64; pages of SYNC_PAGE_CHARS. */
+const SYNC_RAW_CHARS = 12000;
+const SYNC_PAGE_CHARS = 15000;
+/** The most receipt pages Sync writes, and the most the promote plugin clears. */
+const SYNC_MAX_PAGES = 64;
+const SYNC_GZIP_TIMEOUT_MS = 20000;
 /** code.js's PLUGIN_BUILD line holds this while the build is computed, so the build can cover code.js itself. */
 const PLUGIN_BUILD_PLACEHOLDER = '--------';
 const PLUGIN_BUILD_LINE = /^const PLUGIN_BUILD = '[^'\n]*';$/m;
@@ -436,6 +461,10 @@ export function syncConfigFromLinks(links = {}) {
     stagingFileName: links.stagingFileName,
     libraryFileName: links.libraryFileName,
     fetchTimeoutMs: SYNC_FETCH_TIMEOUT_MS,
+    rawChars: SYNC_RAW_CHARS,
+    pageChars: SYNC_PAGE_CHARS,
+    maxPages: SYNC_MAX_PAGES,
+    gzipTimeoutMs: SYNC_GZIP_TIMEOUT_MS,
   };
 }
 
@@ -501,9 +530,27 @@ const SYNC_UI = `<!doctype html>
       if (timer) clearTimeout(timer);
     }
   }
+  // The receipt pages (hds#417): gzip at CompressionStream's default level, then base64.
+  async function gzipBase64(text) {
+    if (typeof CompressionStream !== 'function') throw new Error('this window has no CompressionStream');
+    const stream = new Blob([text]).stream().pipeThrough(new CompressionStream('gzip'));
+    const bytes = new Uint8Array(await new Response(stream).arrayBuffer());
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += 8192) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+    }
+    return btoa(binary);
+  }
   onmessage = (event) => {
     const msg = event.data.pluginMessage;
     if (!msg) return;
+    if (msg.type === 'gzip') {
+      gzipBase64(msg.text).then(
+        (text) => send({ type: 'gzipped', text: text }),
+        (error) => send({ type: 'gzipped', error: String((error && error.message) || error) }),
+      );
+      return;
+    }
     if (msg.type === 'fetch') {
       byId('title').textContent = 'Fetching ' + msg.url + '…';
       fetchBundle(msg.url);
@@ -590,9 +637,11 @@ export function buildSyncPlugin(links) {
       '',
       runtimeSource(),
       '',
+      deltaRuntimeSource(),
+      '',
       syncRuntimeSource(),
       '',
-      'hdsSyncMain(figma, SYNC, PLUGIN_BUILD, __html__);',
+      'hdsSyncMain(figma, SYNC, PLUGIN_BUILD, __html__, snapshotDelta);',
       '',
     ].join('\n');
   const build = syncPluginBuild({
@@ -633,4 +682,49 @@ export function buildSyncBundle(model, { renames = {}, commit, base = null, plug
     ),
     base,
   };
+}
+
+// ── Receipt collector (hds#417) ──────────────────────────────────────────────
+/**
+ * figma/push/use-figma/receipt.js: what an agent runs through use_figma to
+ * collect a Sync. Its first statement refuses, before it reads anything else,
+ * unless figma.fileKey is the staging key baked from figma/links.json (and is
+ * not the library key). Then it reads only: the `syncReceipt` head, page PAGE
+ * (an agent sets 0, then 1 … up to the head's pages - 1), and a cheap live
+ * fingerprint of the file (root lastPush; collection, mode, variable and
+ * style counts) that `--from-receipt` checks the receipt against. At most
+ * 1,500 characters.
+ *
+ * @param {object} links  figma/links.json
+ */
+export function buildUseFigmaReceiptScript(links) {
+  const sync = syncConfigFromLinks(links);
+  return [
+    `if (figma.fileKey !== '${sync.stagingFileKey}' || figma.fileKey === '${sync.libraryFileKey}') {`,
+    `  throw new Error('Refused: this is not the HDS staging file (${sync.stagingFileKey}). receipt.js reads staging only. Nothing was read.');`,
+    '}',
+    header([
+      'HDS sync receipt collector (hds#417). Generated by `pnpm figma:push`; reads only.',
+      'Run it as generated (PAGE 0); when the head says pages > 1, again with PAGE 1, 2 …',
+      'Save each result, then: pnpm figma:snapshot --from-receipt <files...>',
+    ]),
+    'const PAGE = 0;',
+    "const get = (key) => figma.root.getSharedPluginData('hirobius', key);",
+    'const collections = await figma.variables.getLocalVariableCollectionsAsync();',
+    'return {',
+    '  file: figma.fileKey,',
+    '  page: PAGE,',
+    "  head: get('syncReceipt'),",
+    "  text: get('syncSnapshot.' + PAGE),",
+    '  live: {',
+    "    lastPush: get('lastPush'),",
+    '    collections: collections.length,',
+    '    modes: collections.reduce((n, c) => n + c.modes.length, 0),',
+    '    variables: (await figma.variables.getLocalVariablesAsync()).length,',
+    '    textStyles: (await figma.getLocalTextStylesAsync()).length,',
+    '    effectStyles: (await figma.getLocalEffectStylesAsync()).length,',
+    '  },',
+    '};',
+    '',
+  ].join('\n');
 }

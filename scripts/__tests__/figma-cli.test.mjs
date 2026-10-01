@@ -32,7 +32,7 @@ import {
   writePushArtifacts,
   writeSyncBundle,
 } from '../figma-push.mjs';
-import { ingestSnapshot } from '../figma-snapshot.mjs';
+import { ingestSnapshot, snapshotSteps } from '../figma-snapshot.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
 import { formatNativeImportSteps, writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
@@ -82,7 +82,7 @@ const takeSnapshot = async (root, edit = async () => {}, builder = (model) => mo
 };
 
 describe('pnpm figma:push', () => {
-  it('writes the Sync plugin, the promote plugin, one use_figma script per chunk, and the snapshot script', () => {
+  it('writes the Sync plugin, the promote plugin, one use_figma script per chunk, and the snapshot and receipt scripts', () => {
     const root = tempRoot();
     const outDir = join(root, 'figma', 'push');
     const result = writePushArtifacts({ root, outDir });
@@ -105,6 +105,7 @@ describe('pnpm figma:push', () => {
       '03-component.js',
       '04-role.js',
       '05-styles.js',
+      'receipt.js',
       'snapshot.js',
     ]);
     expect(result.prune).toBe(false);
@@ -293,6 +294,20 @@ describe('pnpm figma:push --bundle', () => {
     );
     expect(steps.findIndex((s) => s.includes('build-storybook'))).toBeLessThan(steps.length - 1);
     expect(buildCommand).not.toMatch(/\|\||;|&\s*$/);
+  });
+});
+
+describe('pnpm figma:snapshot with no arguments', () => {
+  it('points to the agent receipt path first and keeps Download JSON as the fallback', () => {
+    const text = snapshotSteps('figma/push').join('\n');
+    const agent = text.indexOf('"Agent: collect a sync"');
+    const download = text.indexOf('Download JSON');
+    expect(agent, text).toBeGreaterThan(-1);
+    expect(download, text).toBeGreaterThan(agent);
+    expect(text.slice(0, download)).toMatch(
+      /figma\/push\/use-figma\/receipt\.js.*--from-receipt.*Fallback/s,
+    );
+    expect(text).toMatch(/pnpm figma:snapshot --ingest <file>/);
   });
 });
 
