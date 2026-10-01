@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest';
 import {
   compactContract,
   mergeSlots,
+  parseDeprecation,
   parseJsdocContract,
   stripJsdocTags,
 } from '../lib/jsdoc-contract.mjs';
@@ -178,5 +179,46 @@ describe('mergeSlots', () => {
 
   it('returns undefined when there is nothing to keep', () => {
     expect(mergeSlots(undefined, [])).toBeUndefined();
+  });
+});
+
+describe('parseDeprecation (hds#390)', () => {
+  it('is null for a block with no @deprecated tag, even if it has @removeIn or @useInstead', () => {
+    expect(
+      parseDeprecation(block('Card.', '@useInstead Stat a KPI', '@removeIn 1.0.0')),
+    ).toBeNull();
+    expect(parseDeprecation('')).toBeNull();
+  });
+
+  it('reads the notice, the removal version and the replacement', () => {
+    const out = parseDeprecation(
+      block(
+        'Cluster.',
+        '@deprecated Use Stack with wrap; the gap map is the same.',
+        '@removeIn 1.0.0',
+        '@useInstead Stack wrapping rows',
+      ),
+    );
+    expect(out).toEqual({
+      deprecated: 'Use Stack with wrap; the gap map is the same.',
+      removeIn: '1.0.0',
+      useInstead: 'Stack',
+    });
+  });
+
+  it('joins a notice wrapped over several lines and leaves out absent fields', () => {
+    const out = parseDeprecation(block('@deprecated Sketch is a docs/lab', 'internal.'));
+    expect(out).toEqual({ deprecated: 'Sketch is a docs/lab internal.' });
+  });
+
+  it('gives a bare @deprecated tag a notice, so the field is never empty', () => {
+    expect(parseDeprecation(block('@deprecated', '@removeIn 2.0.0'))).toEqual({
+      deprecated: 'Deprecated.',
+      removeIn: '2.0.0',
+    });
+  });
+
+  it('ignores an @deprecated word inside prose', () => {
+    expect(parseDeprecation(block('variant="diagram" is a @deprecated alias.'))).toBeNull();
   });
 });

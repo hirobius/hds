@@ -7,10 +7,10 @@
  *
  * Why this exists (12n-api-extractor-wired)
  * ──────────────────────────────────────────
- * The package ships React primitives, patterns, and templates plus four
- * subpath modules (`tokens.css`, `tokens`, `cn`, `manifest`). Today nothing
- * catches a removed export or renamed symbol on the way to a PR — and
- * Concrete Creations (the first external consumer) is days away.
+ * The package ships React primitives, patterns, and templates plus subpath
+ * modules (`tokens`, `cn`, `manifest`, `patterns`, `contexts`…). Before this
+ * guard nothing caught a removed export or renamed symbol on the way to a
+ * PR — and Concrete Creations (the first external consumer) was days away.
  *
  * The full @microsoft/api-extractor toolchain is ideal but assumes a
  * `dist/types/index.d.ts` rollup, which this project does not currently
@@ -18,13 +18,18 @@
  * Adding a `.d.ts` emit step is a separate unit. In the meantime this
  * script gives CI exactly the breaking-change signal api-extractor would:
  *
- *   1. Walk every `export * from './foo'` re-export in `src/index.ts`
- *      (the `vite.config.lib.ts` main barrel) plus the additional named /
- *      default re-exports declared inline.
+ *   1. Walk every JavaScript entry in `package.json#exports` (hds#390; it
+ *      used to be `src/index.ts` plus a hand-kept list of three subpaths,
+ *      so `/patterns`, `/contexts` and five more entries were unguarded).
+ *      For the root entry, each `export * from './foo'` re-export in
+ *      `src/index.ts` is its own module and the named / default re-exports
+ *      declared inline are `(barrel)`; every other entry is one
+ *      `@subpath/<name>` module holding everything it exports.
  *   2. Use the TypeScript compiler API to extract the *named* top-level
  *      symbols from each source file (functions, classes, const/let/var
  *      identifiers, interfaces, types, enums, type aliases, default exports,
- *      and named re-exports). The set is sorted and stable per-module.
+ *      and named re-exports), following `export * from './x'` into the
+ *      re-exported module. The set is sorted and stable per-module.
  *   3. Emit a structured baseline at `docs/api/api-baseline.json`.
  *   4. Diff the live surface against the baseline:
  *        - **Removed symbol** → exit 1 (breaking change).
@@ -53,7 +58,9 @@
  *
  * Wiring verdict (12g-5, corrected by hds#270): WIRE, but indirectly — see
  * above. Breaking-change guard for external consumer (Concrete Creations).
- * Not pre-commit (uses TS compiler API, adds ~2s; appropriate for check:full).
+ * Not pre-commit (uses TS compiler API, adds ~2s). Since hds#390 it also runs
+ * in `pretest` (`audit-component-integrity.mjs --api`), so CI fails a removed
+ * export instead of only `check:full` and `check:release`.
  * Run `pnpm api:update` after any intentional API change, then commit the
  * updated docs/api/api-baseline.json.
  */
@@ -72,9 +79,9 @@ const BASELINE_DIR = join(ROOT, 'docs', 'api');
 const BASELINE_PATH = join(BASELINE_DIR, 'api-baseline.json');
 
 /** The package version this API surface was taken from, or 'unknown'. */
-function readPackageVersion() {
+function readPackageVersion(root = ROOT) {
   try {
-    return JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).version ?? 'unknown';
+    return JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version ?? 'unknown';
   } catch {
     return 'unknown';
   }
@@ -136,10 +143,14 @@ function resolveRelativeImport(fromFile, specifier) {
 // ── extractors ──────────────────────────────────────────────────────────────
 
 /**
- * Collect the named, top-level export symbols of a single source file.
- * Returns an alphabetically-sorted, deduped string list.
+ * Collect the named, top-level export symbols of a single source file,
+ * following `export * from './x'` into the modules it re-exports (hds#390:
+ * the /contexts entry is nothing but `export *` lines, so it recorded no
+ * symbols). Returns an alphabetically-sorted, deduped string list.
  */
-function collectModuleSymbols(absolutePath) {
+function collectModuleSymbols(absolutePath, seen = new Set()) {
+  if (seen.has(absolutePath)) return [];
+  seen.add(absolutePath);
   const sourceFile = parse(absolutePath);
   const symbols = new Set();
 
@@ -200,13 +211,32 @@ function collectModuleSymbols(absolutePath) {
 
     // export { Foo, Bar as Baz };
     // export { Foo } from './x';   (re-export)
+    // export * as ns from './x';
     if (ts.isExportDeclaration(statement) && statement.exportClause) {
       if (ts.isNamedExports(statement.exportClause)) {
         for (const element of statement.exportClause.elements) {
           symbols.add(element.name.text);
         }
+      } else if (ts.isNamespaceExport(statement.exportClause)) {
+        symbols.add(statement.exportClause.name.text);
       }
       continue;
+    }
+
+    // export * from './x';  (followed)   export * from 'pkg';  (recorded as such)
+    if (ts.isExportDeclaration(statement) && statement.moduleSpecifier) {
+      const specifier = statement.moduleSpecifier.text;
+      if (!specifier.startsWith('.')) {
+        symbols.add(`* from ${specifier}`);
+        continue;
+      }
+      const target = resolveRelativeImport(absolutePath, specifier);
+      if (!target) {
+        throw new Error(
+          `[check-public-api] Could not resolve "export * from '${specifier}'" in ${relative(ROOT, absolutePath)}`,
+        );
+      }
+      for (const symbol of collectModuleSymbols(target, seen)) symbols.add(symbol);
     }
   }
 
@@ -218,8 +248,8 @@ function collectModuleSymbols(absolutePath) {
  * module. Returns an ordered list of `{ specifier, modulePath }` pairs plus
  * any symbols re-exported inline by the barrel itself.
  */
-function collectBarrelMap() {
-  const sourceFile = parse(ENTRY);
+function collectBarrelMap(entry = ENTRY) {
+  const sourceFile = parse(entry);
   const reexports = [];
   const inlineBarrelSymbols = new Set();
 
@@ -232,10 +262,10 @@ function collectBarrelMap() {
     if (moduleSpecifier && ts.isStringLiteral(moduleSpecifier)) {
       const specifier = moduleSpecifier.text;
       if (!specifier.startsWith('.')) continue; // skip package re-exports
-      const modulePath = resolveRelativeImport(ENTRY, specifier);
+      const modulePath = resolveRelativeImport(entry, specifier);
       if (!modulePath) {
         throw new Error(
-          `[check-public-api] Could not resolve barrel re-export "${specifier}" from ${relative(ROOT, ENTRY)}`,
+          `[check-public-api] Could not resolve barrel re-export "${specifier}" from ${relative(ROOT, entry)}`,
         );
       }
 
@@ -275,47 +305,85 @@ function collectBarrelMap() {
 }
 
 /**
- * Build the live API surface — a map from human-readable module key
- * (e.g. `./app/components/button`) to its sorted symbol list, plus the
- * subpath modules declared in package.json#exports that are surfaced
- * separately by `vite.config.lib.ts`.
+ * The JavaScript entry points of package.json#exports, each mapped from its
+ * `types` path (`./dist/types/<path>.d.ts`, emitted by build:types from
+ * source) back to the source file. Stylesheets and `./package.json` are
+ * strings, not condition objects, and are skipped.
+ *
+ * @param {string} root package root
+ * @returns {Array<{ key: string, file: string }>}
  */
-function collectPublicApi() {
+function readJsExportEntries(root) {
+  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+  const entries = [];
+  for (const [key, value] of Object.entries(pkg.exports ?? {})) {
+    if (!value || typeof value !== 'object') continue;
+    const types = value.types;
+    if (typeof types !== 'string' || !/^\.\/dist\/types\/.+\.d\.ts$/.test(types)) {
+      throw new Error(
+        `[check-public-api] package.json#exports["${key}"].types must be ./dist/types/<source path>.d.ts, got ${JSON.stringify(types)}`,
+      );
+    }
+    const stem = types.replace(/^\.\/dist\/types\//, '').replace(/\.d\.ts$/, '');
+    const file = ['.ts', '.tsx'].map((ext) => join(root, stem + ext)).find((f) => existsSync(f));
+    if (!file) {
+      throw new Error(
+        `[check-public-api] package.json#exports["${key}"]: no source file ${stem}.ts or ${stem}.tsx`,
+      );
+    }
+    entries.push({ key, file });
+  }
+  return entries;
+}
+
+/**
+ * Build the live API surface for every JS entry in package.json#exports.
+ *
+ * The root entry (".") keeps its per-module shape: `(barrel)` holds what
+ * src/index.ts declares or re-exports by name, and each `export * from './x'`
+ * target is its own module key, so a removed root re-export reads as a
+ * removed module. Every other entry is one `@subpath/<name>` key listing all
+ * the symbols it exports, `export *` followed (hds#390: `/patterns` and
+ * `/contexts` were not in the baseline, and six `/patterns` modules are not
+ * root re-exports, so nothing guarded them). A symbol that leaves a subpath is
+ * a breaking change even when the root still exports it.
+ *
+ * @param {string} [root] package root (tests pass a fixture)
+ */
+export function collectPublicApi(root = ROOT) {
   // `generatedAt` was the literal string 'baseline'. It is not part of the
   // diff, so it cost nothing to be wrong — and it was: the committed baseline
   // described the pre-0.13.0 surface, 81 commits and two and a half months
   // behind main, with nothing in the file to say so. Recording the version the
   // surface was taken from answers the question a baseline is actually asked:
   // which release is this the API of?
+  const entries = readJsExportEntries(root);
   const surface = {
     entry: 'src/index.ts',
-    version: readPackageVersion(),
+    entries: Object.fromEntries(
+      entries.map(({ key, file }) => [key, relative(root, file).replace(/\\/g, '/')]),
+    ),
+    version: readPackageVersion(root),
     generatedAt: new Date().toISOString().slice(0, 10),
     modules: {},
   };
 
-  const { reexports, inlineBarrelSymbols } = collectBarrelMap();
-
-  if (inlineBarrelSymbols.length > 0) {
-    surface.modules['(barrel)'] = inlineBarrelSymbols;
+  for (const { key, file } of entries) {
+    if (key !== '.') continue;
+    const { reexports, inlineBarrelSymbols } = collectBarrelMap(file);
+    if (inlineBarrelSymbols.length > 0) {
+      surface.modules['(barrel)'] = inlineBarrelSymbols;
+    }
+    for (const { specifier, modulePath } of reexports) {
+      surface.modules[specifier] = collectModuleSymbols(modulePath);
+    }
   }
 
-  for (const { specifier, modulePath } of reexports) {
-    const symbols = collectModuleSymbols(modulePath);
-    surface.modules[specifier] = symbols;
-  }
-
-  // Subpath modules wired via vite.config.lib.ts → package.json#exports.
-  // Drift in these has the same blast radius as the main barrel.
-  const subpathEntries = [
-    { key: '@subpath/cn', file: join(SRC_DIR, 'lib', 'utils.ts') },
-    { key: '@subpath/tokens', file: join(SRC_DIR, 'app', 'design-system', 'tokens.ts') },
-    { key: '@subpath/manifest', file: join(SRC_DIR, 'lib', 'manifest-entry.ts') },
-  ];
-
-  for (const { key, file } of subpathEntries) {
-    if (!existsSync(file)) continue;
-    surface.modules[key] = collectModuleSymbols(file);
+  // Subpath entries, after the root modules so the root keys keep their
+  // place in the baseline file.
+  for (const { key, file } of entries) {
+    if (key === '.') continue;
+    surface.modules[`@subpath/${key.replace(/^\.\//, '')}`] = collectModuleSymbols(file);
   }
 
   return surface;

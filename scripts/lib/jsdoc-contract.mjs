@@ -102,6 +102,31 @@ export function parseJsdocContract(block) {
 }
 
 /**
+ * The deprecation a JSDoc block declares (hds#390), or null when it has no
+ * `@deprecated` tag. `@removeIn` and `@useInstead` count only in a block that
+ * is deprecated: there `@useInstead` names the replacement, and elsewhere it
+ * stays an ordinary contract alternative.
+ *
+ *   @deprecated <notice>      required; a bare tag reads as "Deprecated."
+ *   @removeIn <semver>        the release that removes it
+ *   @useInstead <Component>   the replacement (the first one, if repeated)
+ *
+ * @param {string} block a JSDoc block, or ''
+ * @returns {{ deprecated: string, removeIn?: string, useInstead?: string } | null}
+ */
+export function parseDeprecation(block) {
+  const tags = splitBlock(block).tags;
+  const notice = tags.find((tag) => tag.name === 'deprecated');
+  if (!notice) return null;
+  const out = { deprecated: notice.body || 'Deprecated.' };
+  const removeIn = tags.find((tag) => tag.name === 'removeIn' && tag.body)?.body.split(' ')[0];
+  if (removeIn) out.removeIn = removeIn;
+  const useInstead = tags.find((tag) => tag.name === 'useInstead' && tag.body)?.body.split(' ')[0];
+  if (useInstead) out.useInstead = useInstead;
+  return out;
+}
+
+/**
  * The parsed contract with every empty field (and null) dropped, ready to spread onto a
  * generated spec: `{ ...compactContract(c) }` adds nothing for an untagged
  * component.

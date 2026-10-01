@@ -208,12 +208,16 @@ manifest.componentSpecs = remappedSpecs;
 manifest.inventory = manifest.inventory ?? {};
 
 for (const entry of activeDiscoveredComponents) {
-  // Contract fields are rebuilt from the tags on every run: drop last run's so
-  // a removed tag removes its field. `slots` is hand-kept, merged below.
+  // Contract and deprecation fields are rebuilt from the tags on every run:
+  // drop last run's so a removed tag removes its field. `slots` is hand-kept,
+  // merged below.
   const {
     usage: _u,
     keyboard: _k,
     aiRules: _a,
+    deprecated: _d,
+    removeIn: _r,
+    useInstead: _i,
     ...current
   } = manifest.componentSpecs[entry.name] ?? {};
   const contract = compactContract(entry);
@@ -250,6 +254,9 @@ for (const entry of activeDiscoveredComponents) {
     ...(contract.usage ? { usage: contract.usage } : {}),
     ...(contract.keyboard ? { keyboard: contract.keyboard } : {}),
     ...(contract.aiRules ? { aiRules: contract.aiRules } : {}),
+    // hds#390: `deprecated` (the notice), `removeIn`, `useInstead`, from the
+    // @deprecated block. Consumer surfaces (SKILL.md, llms) skip these specs.
+    ...(entry.deprecation ?? {}),
     ...(slots ? { slots } : {}),
     // The component's `@figma` JSDoc tag is the only source: removing the tag
     // unmaps the component (and its Code Connect template) on the next regen.
