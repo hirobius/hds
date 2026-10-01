@@ -1095,7 +1095,9 @@ export function buildManifest(allTokens, raw) {
     // hds#342: forwarded verbatim from generate-manifest (build-tokens runs after it).
     ...(SYSTEM_MANIFEST.iconSet ? { iconSet: SYSTEM_MANIFEST.iconSet } : {}),
     phases: SYSTEM_MANIFEST.phases ?? [],
-    health: SYSTEM_MANIFEST.health ?? null,
+    // No `health` (hds#431): it was a frozen 2026-06-18 snapshot no script
+    // wrote, forwarded unchanged into ./manifest. Dropping the key here also
+    // drops it from public/hds-manifest.json on the next run.
     inventory: SYSTEM_MANIFEST.inventory ?? {},
     agentEntrypoint: 'llms.txt',
     breakingChangePolicy:
