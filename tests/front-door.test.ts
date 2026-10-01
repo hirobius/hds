@@ -119,6 +119,7 @@ describe('README honesty', () => {
     expect(read('.github/workflows/ci.yml')).toContain('node scripts/check-storybook-axe.mjs');
     const allowlist = JSON.parse(read('scripts/axe-allowlist.json')) as unknown[];
     if (/empty allowlist/i.test(storybook)) expect(allowlist).toEqual([]);
+    if (/allowlist has one entry/i.test(storybook)) expect(allowlist).toHaveLength(1);
   });
 
   it('points only at files that exist', () => {

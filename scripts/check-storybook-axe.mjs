@@ -209,8 +209,9 @@ async function scanOne(page, story, theme) {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     });
     const t1 = Date.now();
-    // Scope is #storybook-root only: Radix portals in document.body (dialog, popover,
-    // menu, tooltip) are closed by default in every story, so nothing is skipped today.
+    // Scope is #storybook-root only. HDS overlays portal into the story's theme scope
+    // inside it (hds#335), so an overlay a play function opened is scanned too: the
+    // Select and Combobox `Open` stories (hds#407).
     const r = await page.evaluate(
       (tags) =>
         window.__gateAxe.run('#storybook-root', {

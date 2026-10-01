@@ -1,0 +1,5 @@
+---
+'@hirobius/design-system': patch
+---
+
+Combobox and Select accessibility fixes (hds#407, hds#408). Combobox options now sit in `<li role="none">`, so the open listbox owns its options directly: axe no longer reports `aria-required-children`, `aria-required-parent` and `listitem` on it, and a screen reader reads each option with its real position and set size ("position 2, set size 8", not "position 1, set size 1"). The no-results message now sits beside the listbox, not inside it, with the same spacing. Select and Combobox accept `id`, `aria-describedby` and `aria-invalid` and forward them to the trigger, so a `FormField` label, helper text and error now reach the control (`getByLabelText` finds it). A Select with `showLabel={false}` names its trigger by the label and the value ("Fruit: Apple"), as it already did with the label shown, not by the value alone. Combobox with `aria-label=""` names its popover and listbox by the placeholder, as it already did with no `aria-label`. New `Open` stories for both open the overlay in a play function, so the Storybook axe gate now scans the open state in light and dark.

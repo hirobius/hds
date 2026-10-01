@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "storyId": "primitives-select--open",
+    "ruleId": "aria-hidden-focus",
+    "reason": "Radix Select behaviour, not HDS: while open, hideOthers sets aria-hidden on the story wrapper that still holds the trigger. Focus is trapped in the open listbox, so the trigger cannot take focus; axe cannot see the trap. Noted out of scope in #407.",
+    "addedOn": "2026-10-01"
+  }
+]

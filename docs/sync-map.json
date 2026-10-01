@@ -1695,10 +1695,11 @@
         "primitives-combobox--default",
         "primitives-combobox--disabled-trigger",
         "primitives-combobox--few-options",
+        "primitives-combobox--open",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
       ],
-      "storyCount": 5,
+      "storyCount": 6,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
       "figmaVia": "manifest",
       "expectFigma": true,
@@ -2556,8 +2557,12 @@
       "class": "library",
       "filePath": "src/app/components/select.tsx",
       "storyFiles": ["src/stories/select.stories.tsx"],
-      "storyIds": ["primitives-select--default", "primitives-select--no-label"],
-      "storyCount": 2,
+      "storyIds": [
+        "primitives-select--default",
+        "primitives-select--no-label",
+        "primitives-select--open"
+      ],
+      "storyCount": 3,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49",
       "figmaVia": "manifest",
       "expectFigma": true,
