@@ -156,7 +156,7 @@
     },
     {
       "id": "check-contract-coverage",
-      "description": "Lists core components (scripts/lib/core-components.mjs, the 42 core rows of hds#254) whose manifest spec has no usage.when of 20+ characters, so an agent has no machine-readable answer to which one when. --report (default) always exits 0, --enforce exits 1 on any miss. Runs at pre-commit with --enforce since hds#340 authored the remaining tags (plumbing: hds#339).",
+      "description": "Lists core components (scripts/lib/core-components.mjs: the core rows of hds#254, less the three 0.20.0 removed) whose manifest spec has no usage.when of 20+ characters, so an agent has no machine-readable answer to which one when. --report (default) always exits 0, --enforce exits 1 on any miss. Runs at pre-commit with --enforce since hds#340 authored the remaining tags (plumbing: hds#339).",
       "severity": "error",
       "gateScript": "scripts/check-contract-coverage.mjs",
       "owner": "Adrian",

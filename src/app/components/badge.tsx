@@ -111,6 +111,3 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
     </Tag>
   );
 });
-
-/** @internal — CVA variant helper; compose via Badge props instead. */
-export { badgeVariants };

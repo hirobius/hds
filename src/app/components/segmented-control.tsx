@@ -498,14 +498,3 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
     );
   },
 );
-
-/** @internal — CVA variant helpers; compose via SegmentedControl props instead. */
-export {
-  segmentedControlWrapperVariants,
-  segmentedControlRailVariants,
-  segmentedControlItemVariants,
-  segmentedControlIndicatorVariants,
-  segmentedControlDescriptionVariants,
-  segmentedControlFocusRingVariants,
-  segmentedControlLabelVariants,
-};

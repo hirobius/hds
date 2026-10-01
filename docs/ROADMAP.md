@@ -78,11 +78,12 @@ with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
 
 ### P4 🟡 Curate the public API
 
-- 🟡 Stop exporting doc-infra from the barrel (`src/index.ts`). `SpecimenBlock`
+- ✅ Stop exporting doc-infra from the barrel (`src/index.ts`). `SpecimenBlock`
   and `ComponentDocPage` left in 0.5.0.
   0.20.0 deleted `FoundationSwatch` and `ComponentInstanceMatrix` (hds#389 R1).
-  `DocLinkCard` is exported from `/patterns` only since 0.20.0. Still on the
-  root: `HdsSystemDocLayout`.
+  0.20.0 also deleted `DocLinkCard`, `HdsSystemDocLayout` and `HdsDocsShell`,
+  and `CaseStudyLayout` went in 0.20.0 too (hds#394). No doc-infra is left on
+  the root.
 - Remove stray `"use client"` directives (`surface.tsx`, `badge.tsx`) — no-ops in
   Vite/React-Router; decide RSC posture explicitly before re-adding.
 

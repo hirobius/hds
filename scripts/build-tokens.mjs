@@ -974,60 +974,6 @@ export function buildManifest(allTokens, raw) {
       componentProperties: [],
       states: ['default'],
     },
-    HeadingStack: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.HeadingStack ?? {}),
-      variantAxes: [],
-      componentProperties: [
-        {
-          name: 'Heading',
-          type: 'TEXT',
-          defaultValue: 'Heading',
-          sourceProp: 'heading',
-          boundTo: 'characters',
-          targetSelector: 'Heading',
-        },
-        {
-          name: 'Subheading',
-          type: 'TEXT',
-          defaultValue: 'Supporting subheading',
-          sourceProp: 'subheading',
-          boundTo: 'characters',
-          targetSelector: 'Subheading',
-        },
-      ],
-      states: ['default'],
-    },
-    TextLockup: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.TextLockup ?? {}),
-      variantAxes: ['size'],
-      componentProperties: [
-        {
-          name: 'Eyebrow',
-          type: 'TEXT',
-          defaultValue: 'EYEBROW',
-          sourceProp: 'eyebrow',
-          boundTo: 'characters',
-          targetSelector: 'Eyebrow',
-        },
-        {
-          name: 'Title',
-          type: 'TEXT',
-          defaultValue: 'Title text',
-          sourceProp: 'title',
-          boundTo: 'characters',
-          targetSelector: 'Title',
-        },
-        {
-          name: 'Description',
-          type: 'TEXT',
-          defaultValue: 'Description',
-          sourceProp: 'description',
-          boundTo: 'characters',
-          targetSelector: 'Description',
-        },
-      ],
-      states: ['default'],
-    },
   };
 
   const formatToken = (t) => {
@@ -1144,7 +1090,6 @@ export function buildManifest(allTokens, raw) {
       'InlineCode',
       'InlineLink',
       'CodeBlock',
-      'DocLinkCard',
     ],
     typographyRamp: SYSTEM_MANIFEST.typographyRamp ?? null,
     patternInventory: SYSTEM_MANIFEST.patternInventory ?? [],

@@ -9,9 +9,9 @@
  * a fresh `buildNavModel()` run) was removed with the docs SPA teardown (#51):
  * `scripts/generate-nav-model.mjs` walks `src/app/pages/hds/**`, which no
  * longer exists now that Storybook is the docs surface. `nav-model.json`
- * itself is retained as a frozen data artifact — it still feeds the
- * library-exported `CommandPalette` search corpus via `hds-search.ts` — and
- * regenerating/pruning it is deferred to the guardrail-script follow-up PR.
+ * itself is retained as a frozen data artifact. It used to feed the
+ * `CommandPalette` search corpus via `hds-search.ts`; both were removed in
+ * 0.20.0 (hds#394), and pruning the model is deferred to a follow-up.
  */
 import { describe, it, expect } from 'vitest';
 import { navModel } from './nav-model';

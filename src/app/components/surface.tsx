@@ -127,6 +127,3 @@ export const Surface = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SurfaceP
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Surface props instead. */
-export { surfaceVariants };

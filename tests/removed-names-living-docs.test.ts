@@ -15,7 +15,7 @@ import { resolve } from 'node:path';
 const ROOT = resolve(__dirname, '..');
 const LIVING = ['docs/ROADMAP.md', 'docs/CONSUMER_READINESS_BACKLOG.md'];
 
-/** Names 0.20.0 removed outright (the 79 /patterns names still exist there). */
+/** Names 0.20.0 removed outright (the /patterns names that moved still exist there). */
 const REMOVED = [
   'HdsCheckbox',
   'HdsRadio',
@@ -37,9 +37,17 @@ const REMOVED = [
   'tokenShellVariants',
 ];
 
-// `Sketch` and `Token` are ordinary words too, so only their code spans count.
+// Plus every name codemods/removed-0.20.json lists (no replacement: hds#389 R1's
+// docs/lab components, hds#394 wave 4a and the root *Variants helpers).
+const { modules } = JSON.parse(
+  readFileSync(resolve(ROOT, 'codemods/removed-0.20.json'), 'utf8'),
+) as { modules: Record<string, string[]> };
+REMOVED.push(...Object.values(modules).flat());
+
+// One capitalised word (`Sketch`, `Token`, `Calendar`, `Step`) is ordinary prose
+// too, so only its code spans count.
 const mention = (name: string) =>
-  name === 'Sketch' || name === 'Token'
+  /^[A-Z][a-z]+$/.test(name)
     ? new RegExp('`' + name + '`')
     : new RegExp(`(?<![\\w$])${name}(?![\\w$])`);
 

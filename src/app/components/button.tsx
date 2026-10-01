@@ -261,6 +261,3 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Button props instead. */
-export { buttonVariants };

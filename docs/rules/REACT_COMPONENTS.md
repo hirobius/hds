@@ -78,14 +78,12 @@ Every item below is a build error. If an AI agent or human produces any of these
 
 ### Typography
 
-- **NEVER manually stack headings + subheadings using `<Stack>`** — ALWAYS use:
-  - `<TextLockup title="..." description="..." size="section|metric|detail" />` for doc surfaces and displays (preset sizes with automatic secondary color)
-  - `<HeadingStack level="heading1|heading2|heading3" heading="..." subheading="..." />` for semantic heading pairs (enforced secondary color, automatic gaps)
+- **Heading + supporting line = `Stack` + `Text`** — the two lockup components that wrapped this pair were removed in 0.20.0 (hds#394). Compose it from the primitives, never from raw tags or ad hoc margins:
+  - `<Stack gap="gap"><Text variant="heading2" as="h2">Title</Text><Text variant="body" className="text-muted-foreground">Supporting line</Text></Stack>`
+  - pick the heading level with `variant="heading1|heading2|heading3"` (and the matching `as`); the supporting line is always `text-muted-foreground`, and the gap comes from `Stack`, never a margin.
 - **No deprecated typography tokens** — `label`, `labelTechnical`, `micro`, `monoXs`, `monoSm`, `body2`, `displayXl`, `display2`, and `title` are all removed. Update any reference found during review.
 - **No hardcoded pixels in layout props** — do not pass raw values like `gap="12px"`, `style={{ padding: '10px' }}`, or `mt={15}`. Use semantic gap keys: `gap="tight"` (16px), `gap="normal"` (24px), `gap="gap"` (8px component rhythm), or primitive space keys like `gap="px24"`. Do NOT pass raw pixel strings like `"12px"` or `"16px"` as gap values.
 - **No tight line-heights** — all `body`, `ui`, and `caption` text must have line-height 1.5.
-- **DocLayout reading width** — All `DocLayout` content slots, including technical foundation pages, must default to `maxWidth="content"` to maintain optimal reading line lengths and a cohesive center column. Only break out to `maxWidth="max"` for full-bleed data tables or massive galleries.
-- **Sidebar symmetry** — All documentation sidebars (`navSlot` and `tocSlot`) must use `variant="ui"` typography for standard link text to ensure bilateral visual symmetry.
 
 For component recipes, visual hierarchy, text alignment, and responsiveness patterns see **HDS V2 Guardrails** in `public/llms.txt`.
 
@@ -216,7 +214,7 @@ A block that carries `@deprecated <notice>` also gives the spec `deprecated` (th
  */
 ```
 
-`node scripts/check-contract-coverage.mjs` lists the 42 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
+`node scripts/check-contract-coverage.mjs` lists the 39 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
 
 ## Component Inventory & Fallbacks
 

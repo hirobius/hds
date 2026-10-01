@@ -161,7 +161,7 @@ export function generateLlmsTxt({ write = true } = {}) {
   ]);
   const iconCollisions = iconNames.filter((n) => hdsNames.has(n));
   const collisionNote = iconCollisions.length
-    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} share names with HDS components; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
+    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} ${iconCollisions.length === 1 ? 'shares a name with an HDS component' : 'share names with HDS components'}; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
     : '';
   const lucideVersion = String(pkg.dependencies?.['lucide-react'] ?? '').replace(/^[^\d]*/, '');
   const iconSection = iconNames.length
@@ -287,7 +287,7 @@ When building any card component or card-like surface, ALL of the following rule
 
 Cards default to \`elevation.flat\`. Popovers/tooltips/dropdowns use \`elevation.floating\`. Dialogs/sheets use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
-Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest \`data-hds\` scope, so they inherit its theme (for example \`<div data-hds data-theme="dark">\`); pass \`container\` on the Content part to override.
+Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest \`data-hds\` scope, so they inherit its theme (for example \`<div data-hds data-theme="dark">\`); pass \`container\` on the Content part to override.
 
 ## Slices And Full Bundle
 

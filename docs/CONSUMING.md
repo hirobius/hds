@@ -101,7 +101,7 @@ Without `data-hds`, components still get their own token-driven styling, but the
 global type baseline and resets won't apply (text falls back to the host font).
 Put `data-hds` as high as makes sense — on `<html>`/`<body>` for an
 HDS-first app, or on a wrapper for a section. Overlays (Dialog, AlertDialog,
-Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) inherit the nearest
+Menu, Popover, Select, Tooltip) inherit the nearest
 `data-hds` scope, so a `<div data-hds data-theme="dark">` themes them too; pass
 `container` on the Content part to portal elsewhere. If the scope element
 creates a containing block or stacking context (`transform`, `filter`, `z-index`,
@@ -226,7 +226,7 @@ export function Example() {
 | `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                         |
 | `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                  |
 | `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14) |
-| `@hirobius/design-system/patterns`      | The `pattern`-tier components (`Page`, `Form`, `FormField`, shells, feeds, pickers); root copies removed in 0.20.0            |
+| `@hirobius/design-system/patterns`      | The `pattern`-tier components (`Page`, `PageHeader`, `Form`, `FormField`, `CodeBlock`); root copies removed in 0.20.0         |
 | `@hirobius/design-system/icons`         | Curated Lucide icon set for `IconButton` / `Icon` (see §15)                                                                   |
 
 ### Semantic feedback / status tokens
@@ -758,5 +758,7 @@ menus, close, edit) use `IconButton`; do not hand-roll a button with a glyph. Fo
 an icon outside the set, install `lucide-react@0.487.0` so the `LucideIcon` type
 stays identical.
 
-`Calendar` and `Menu` share names with HDS components; alias them:
-`import { Calendar as CalendarIcon, Menu as MenuIcon } from '@hirobius/design-system/icons'`.
+`Menu` shares its name with the HDS `Menu` component; alias it:
+`import { Menu as MenuIcon } from '@hirobius/design-system/icons'`. (`Calendar`
+collided too until the HDS `Calendar` was removed in 0.20.0, hds#394; it imports
+under its own name now.)

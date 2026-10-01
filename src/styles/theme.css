@@ -306,12 +306,6 @@
   /* Ecommerce — dark overrides resolved from :root semantic token bridges */
 }
 
-.hds-stepper-input::-webkit-outer-spin-button,
-.hds-stepper-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 .hds-slider-input {
   appearance: none;
   -webkit-appearance: none;
@@ -380,29 +374,8 @@
   background: var(--semantic-color-surface-raised);
 }
 
-/* --- Page enter animation ---------------------------------------------------
- * Replaces <motion.div initial={{ opacity: 0, y: 2 }} ...> page wrappers.
- * Same values: 300ms, cubic-bezier(0.42, 0, 0.58, 1) (easing.standard), y 2px.
- * Respects prefers-reduced-motion via the existing @media block at the bottom. */
-@keyframes hds-page-enter {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.hds-page-enter {
-  animation: hds-page-enter var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing) both;
-}
-
 /* --- Audit overlay --------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .hds-page-enter {
-    animation: none;
-  }
   :root {
     --primitive-duration-instant: 0s;
     --primitive-duration-short: 0s;
@@ -522,48 +495,6 @@ input[data-search-input='true'] {
 }
 .hds-bg-hover-neutral:hover {
   background: var(--semantic-color-surface-raised);
-}
-
-.hds-doc-section-header .hds-doc-section-copy-icon {
-  opacity: 0;
-  transition: opacity var(--hds-motion-productive-duration);
-}
-.hds-doc-section-header:hover .hds-doc-section-copy-icon,
-.hds-doc-section-header:focus-within .hds-doc-section-copy-icon {
-  opacity: 0.82;
-}
-.hds-doc-section-header .hds-doc-section-copy-icon[data-copied='true'] {
-  opacity: 1;
-}
-
-.hds-doc-link-card {
-  background: transparent;
-  border: none;
-  border-radius: calc(var(--role-radius) + 4px);
-  color: var(--semantic-color-content-primary);
-  transition:
-    background-color var(--hds-motion-productive-duration),
-    opacity var(--hds-motion-productive-duration),
-    filter var(--hds-motion-productive-duration);
-  box-sizing: border-box;
-}
-.hds-doc-link-card:hover,
-.hds-doc-link-card:focus-visible {
-  background: var(--semantic-color-surface-raised);
-}
-.hds-doc-link-card[data-accent='true'] {
-  background: color-mix(in srgb, transparent 80%, var(--semantic-color-surface-accentSubtle) 20%);
-}
-.hds-doc-link-card[data-disabled='true'] {
-  background: transparent;
-  opacity: 0.45;
-  filter: grayscale(100%);
-  pointer-events: none;
-  cursor: default;
-}
-.hds-doc-link-card[data-disabled='true']:hover,
-.hds-doc-link-card[data-disabled='true']:focus-visible {
-  background: transparent;
 }
 
 /* --- Focus ring utility ------------------------------------------------------- */

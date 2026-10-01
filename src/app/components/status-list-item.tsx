@@ -78,6 +78,3 @@ export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, S
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via StatusListItem props instead. */
-export { statusListItemDotVariants };
