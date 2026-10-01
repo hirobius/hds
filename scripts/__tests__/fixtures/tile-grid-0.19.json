@@ -1,0 +1,10 @@
+{
+  "$comment": "TileGrid's root style per tag, as @hirobius/design-system 0.19.1 rendered it (src/app/components/tile-grid.tsx at a4dfa2e, removed in 0.20.0 by hds#395). Keyed by the tag's attributes: each TileGrid tag ops origin/main 76ef65e renders, and its bare defaults (\"\"). scripts/__tests__/grid-tile-grid-parity.test.mjs compares the Grid that codemods/tile-grid.mjs writes for each tag with it, in Chromium.",
+  "style": {
+    "minTileWidth=\"280px\"": "display:grid;grid-template-columns:repeat(auto-fill, minmax(min(280px, 100%), 1fr));gap:12px",
+    "minTileWidth=\"220px\"": "display:grid;grid-template-columns:repeat(auto-fill, minmax(min(220px, 100%), 1fr));gap:12px",
+    "minTileWidth=\"260px\"": "display:grid;grid-template-columns:repeat(auto-fill, minmax(min(260px, 100%), 1fr));gap:12px",
+    "minTileWidth=\"260px\" gap=\"sm\"": "display:grid;grid-template-columns:repeat(auto-fill, minmax(min(260px, 100%), 1fr));gap:12px",
+    "": "display:grid;grid-template-columns:repeat(auto-fill, minmax(min(260px, 100%), 1fr));gap:12px"
+  }
+}

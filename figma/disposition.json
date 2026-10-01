@@ -9,11 +9,11 @@
   "generatedAt": "2026-10-01",
   "overrides": {},
   "summary": {
-    "total": 99,
+    "total": 98,
     "byClass": {
       "library": 57,
       "slot": 19,
-      "layout": 10,
+      "layout": 9,
       "internal": 13
     },
     "libraryLinked": 43,
@@ -764,14 +764,6 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14"
-    },
-    {
-      "name": "TileGrid",
-      "class": "layout",
-      "parent": null,
-      "category": "Layout",
-      "tier": "primitive",
-      "figmaUrl": null
     },
     {
       "name": "Timestamp",

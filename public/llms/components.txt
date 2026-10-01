@@ -577,12 +577,6 @@ Headline metric — large value, uppercase caption label, optional sub-line.
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - value: ReactNode
 
-### StatusDot
-A small solid dot conveying a semantic status via `tone`.
-  - label: string
-  - size: "sm" | "md" | "lg" | null
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
-
 ### StatusListItem
 Status dot + title row with optional muted notes and trailing slot (e.g. badge).
   - notes: ReactNode[]
@@ -680,11 +674,6 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - label: string
   - resize: TextareaResize = vertical
   - textareaClassName: string
-
-### TileGrid
-Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.
-  - gap: "sm" | "md" | "xs" = sm
-  - minTileWidth: string = 260px
 
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.

@@ -49,7 +49,7 @@ describe('createCodeModel — real components', { timeout: 60_000 }, () => {
       files: [
         'src/app/components/button.tsx',
         'src/app/components/dialog.tsx',
-        'src/app/components/tile-grid.tsx',
+        'src/app/components/grid.tsx',
         'src/app/components/checkbox.tsx',
         'src/app/components/alert.tsx',
         'src/app/components/input.tsx',
@@ -83,19 +83,22 @@ describe('createCodeModel — real components', { timeout: 60_000 }, () => {
   });
 
   it('does not invent props', () => {
-    const tileGrid = model.component('src/app/components/tile-grid.tsx', 'TileGrid');
-    expect(tileGrid.props).toHaveProperty('minTileWidth');
-    expect(tileGrid.props).not.toHaveProperty('minWidth');
+    // Grid stands in for TileGrid, which 0.20.0 removed (hds#395): it has
+    // TileGrid's minimum width under another name, and not TileGrid's.
+    const grid = model.component('src/app/components/grid.tsx', 'Grid');
+    expect(grid.props).toHaveProperty('minItemWidth');
+    expect(grid.props).not.toHaveProperty('minTileWidth');
   });
 
   it('reads the @figma node URL from the component JSDoc (null when there is none)', () => {
     expect(model.component('src/app/components/alert.tsx', 'Alert').figmaUrl).toMatch(
       /^https:\/\/www\.figma\.com\/design\/.+node-id=/,
     );
-    // tile-grid carries no @figma tag at all — the null case (heading-stack was
-    // it until 0.20.0 removed HeadingStack, hds#394). Button used to stand in
-    // for it, until the 2026-09-20 library walk gave Button a real node.
-    expect(model.component('src/app/components/tile-grid.tsx', 'TileGrid').figmaUrl).toBeNull();
+    // grid carries no @figma tag at all — the null case (tile-grid was it until
+    // 0.20.0 removed TileGrid, hds#395, and heading-stack before it, hds#394).
+    // Button used to stand in for it, until the 2026-09-20 library walk gave
+    // Button a real node.
+    expect(model.component('src/app/components/grid.tsx', 'Grid').figmaUrl).toBeNull();
   });
 
   it('ignores @figma tags whose value is not a URL', () => {

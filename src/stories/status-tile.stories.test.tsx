@@ -37,7 +37,7 @@ describe('status-tile stories, theme-safe trailing status (hds#349)', () => {
     expect(source).not.toMatch(/color:\s*'(white|black)'/);
   });
 
-  it.each(['WithTrailingBadge', 'Warning', 'Danger', 'TileGrid'] as const)(
+  it.each(['WithTrailingBadge', 'Warning', 'Danger', 'InGrid'] as const)(
     '%s renders every trailing status as an HDS Badge on the feedback pair',
     (name) => {
       const { container } = mount(stories[name] as Story);
