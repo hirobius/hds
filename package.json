@@ -310,6 +310,7 @@
     "watch:metrics": "nodemon --watch src/app/components --watch src/app/pages --watch src/app/design-system --watch src/app/styles -e tsx,ts,css --exec \"node scripts/audit-tokens.mjs --full && node scripts/generate-manifest.mjs\"",
     "consumer:usage": "node scripts/count-consumer-usage.mjs",
     "upgrade:consumers": "node scripts/upgrade/consumers.mjs",
+    "upgrade:note": "node scripts/upgrade/note.mjs",
     "codemod:names": "node scripts/build-codemod-pattern-names.mjs"
   },
   "dependencies": {

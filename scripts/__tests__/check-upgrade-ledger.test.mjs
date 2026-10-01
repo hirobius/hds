@@ -3,92 +3,33 @@
  * release has an upgrade step, every changeset carries its upgrade note, and
  * the version bump fits what changed.
  *
- * Each case is a throwaway repo laid out like this one: a package.json whose
- * exports point at dist/types, the source those types come from, and the
- * release snapshot of that source at docs/api/releases/0.20.0.json. A case
- * then changes the tree the way a pull request would and runs the gate on it.
+ * Each case is a throwaway repo at its 0.20.0 release (helpers/upgrade-repo.mjs)
+ * that a case changes the way a pull request would, then runs the gate on.
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
 import { collectPublicApi } from '../lib/check-public-api.mjs';
 import { formatJson } from '../upgrade/format.mjs';
 import { snapshotFromSource } from '../upgrade/snapshot.mjs';
+import {
+  PACKAGE,
+  changeset,
+  cleanUpRepos,
+  editPkg,
+  note,
+  readPkg,
+  releasedRepo,
+  removeCallout,
+  write,
+} from './helpers/upgrade-repo.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CLI = join(REPO, 'scripts/check-upgrade-ledger.mjs');
-const PACKAGE = '@hirobius/design-system';
 
-const temps = [];
-afterEach(() => {
-  while (temps.length) rmSync(temps.pop(), { recursive: true, force: true });
-});
-
-function write(root, rel, text) {
-  mkdirSync(dirname(join(root, rel)), { recursive: true });
-  writeFileSync(join(root, rel), text);
-}
-
-const readPkg = (root) => JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
-const editPkg = (root, change) => {
-  const pkg = readPkg(root);
-  change(pkg);
-  write(root, 'package.json', JSON.stringify(pkg, null, 2));
-};
-
-/** A repo at its 0.20.0 release: the source, and the snapshot of it. */
-function releasedRepo() {
-  const root = mkdtempSync(join(tmpdir(), 'hds-upgrade-gate-'));
-  temps.push(root);
-  write(
-    root,
-    'package.json',
-    JSON.stringify(
-      {
-        name: PACKAGE,
-        version: '0.20.0',
-        exports: {
-          '.': { types: './dist/types/src/index.d.ts', import: './dist/hirobius-ui.js' },
-          './patterns': { types: './dist/types/src/patterns.d.ts', import: './dist/patterns.js' },
-          './styles.css': './dist/styles.css',
-          './package.json': './package.json',
-        },
-        files: ['dist'],
-        bin: { 'hds-tile-grid': 'codemods/tile-grid.mjs' },
-        dependencies: { clsx: '^2.1.1', 'date-fns': '^4.1.0' },
-        peerDependencies: { react: '^18.3.0 || ^19.0.0', zod: '^3.23.0 || ^4.0.0' },
-        peerDependenciesMeta: { zod: { optional: true } },
-        engines: { node: '>=20', pnpm: '>=8' },
-        scripts: { test: 'vitest run' },
-        devDependencies: { vitest: '^4.0.0' },
-      },
-      null,
-      2,
-    ),
-  );
-  write(root, 'src/index.ts', "export * from './button';\nexport * from './callout';\n");
-  write(root, 'src/button.tsx', 'export function Button() { return <button />; }\n');
-  write(root, 'src/callout.tsx', 'export function Callout() { return null; }\n');
-  write(root, 'src/patterns.ts', 'export function Page() { return null; }\n');
-  write(root, '.changeset/README.md', '# Changesets\n');
-  write(root, '.changeset/config.json', '{}\n');
-  write(root, 'docs/api/releases/0.20.0.json', formatJson(snapshotFromSource(root)));
-  return root;
-}
-
-const removeCallout = (root) => write(root, 'src/index.ts', "export * from './button';\n");
-
-function changeset(root, name, bump, pkg = PACKAGE) {
-  write(root, `.changeset/${name}.md`, `---\n'${pkg}': ${bump}\n---\n\nSomething changed.\n`);
-}
-
-function note(root, name, body) {
-  write(root, `upgrade/pending/${name}.json`, formatJson(body));
-}
+afterEach(cleanUpRepos);
 
 const calloutRemoved = {
   impact: 'breaking',

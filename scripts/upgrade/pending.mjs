@@ -33,8 +33,16 @@ export const ALLOW_1_0 = 'upgrade/ALLOW_1_0';
 const BUMPS = new Set(['patch', 'minor', 'major']);
 const SEMVER_FILE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?\.json$/;
 
-const issuesOf = (error) =>
-  error.issues.map((issue) => `${issue.path.join('.') || '(root)'}: ${issue.message}`);
+/** Schema issues as `<path>[, <path>...]: <message>`, one line per distinct message. */
+function issuesOf(error) {
+  const byMessage = new Map();
+  for (const issue of error.issues) {
+    const paths = byMessage.get(issue.message) ?? [];
+    paths.push(issue.path.join('.') || '(root)');
+    byMessage.set(issue.message, paths);
+  }
+  return [...byMessage].map(([message, paths]) => `${paths.join(', ')}: ${message}`);
+}
 
 /**
  * One changeset's bump for this package: `none` when its front matter does
