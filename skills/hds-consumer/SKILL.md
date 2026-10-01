@@ -9,7 +9,7 @@ description: "Use when building or editing UI in an app that consumes @hirobius/
 
 ## Install and import
 
-Install `@hirobius/design-system`, import components from the root barrel (`import { Button } from '@hirobius/design-system'`), and load one stylesheet once at the app root.
+Install `@hirobius/design-system`, import core components from the root barrel (`import { Button } from '@hirobius/design-system'`) and the pattern-tier components from `@hirobius/design-system/patterns` (`import { Page } from '@hirobius/design-system/patterns'`), and load one stylesheet once at the app root.
 
 Subpath exports:
 
@@ -158,9 +158,67 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `VisuallyHidden` — Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.
 
+## Patterns: import from `@hirobius/design-system/patterns`
+
+The pattern-tier components (screen shells, page sections, feeds, rails, pickers) are not in the root barrel: import them from the subpath, for example `import { Page } from '@hirobius/design-system/patterns'`.
+
+### Actions
+
+- `DestructiveSection` — Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`.
+- `FormActions` — Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most.
+- `Toolbar` — Toolbar root.
+
+### Display
+
+- `ActivityFeed` — ActivityFeed — chronological system event log.
+- `AssetImg` — AssetImg - responsive asset frame with fallback placeholder handling.
+- `Carousel` — Renders children as a snap-scrolling track with Prev/Next scroll buttons.
+- `CodeBlock` — CodeBlock - code display with copy button and optional collapsible toggle.
+- `DataTableSection` — Section heading and toolbar over a `Table`.
+- `MetricTile` — One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height.
+- `MetricTiles` — A row of `MetricTile`s.
+- `StackedCardRail` — StackedCardRail — horizontally-scrolling stacked card carousel.
+
+### Feedback
+
+- `ErrorPattern` — ErrorPattern - governed recovery surface for routed application errors.
+
+### Inputs
+
+- `Calendar` — Renders an accessible month grid; compose it inside a Popover for the date inputs.
+- `FileInput` — A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
+- `Form` — Styled `<form>` with consistent vertical field rhythm.
+- `FormField` — Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement.
+- `FormFieldShell` — Presentational label + control slot + helper/error markup.
+
+### Layout
+
+- `AppShell` — Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.
+- `OverflowList` — Renders up to `max` children followed by a `+N` overflow chip (or custom node).
+- `Page` — Page — standard page shell.
+- `PageHeader` — Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot.
+
+### Motion
+
+- `Reveal` — Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.
+
+### Navigation
+
+- `DocLinkCard` — DocLinkCard - navigation card for editorial and documentation cross-links.
+- `NavItem` — NavItem - navigation row primitive for sidebars, table of contents, and list navigation.
+- `SideNav` — SideNav - sidebar navigation row primitive.
+- `Stepper` — Step indicator for multi-step flows.
+- `TopNav` — Top navigation bar with brand, nav, and trailing action slots.
+- `TreeList` — Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
+
+### Overlays
+
+- `CommandPalette` — Mountable trigger + dialog.
+- `Lightbox` — Lightbox — full-bleed image viewer built on Radix Dialog.
+
 ## How to lay out a screen
 
-1. `Page` (or `Container`/`Center` for a full-bleed, non-page surface) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.
+1. `Page` (from `@hirobius/design-system/patterns`; or `Container`/`Center` for a full-bleed, non-page surface) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.
 2. `Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.
 3. Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
@@ -187,7 +245,7 @@ Never:
 
 Finish every task with the last step below.
 
-1. Compose the screen from the allow-list using the layout recipe.
+1. Compose the screen from the allow-list and the `@hirobius/design-system/patterns` list, using the layout recipe.
 2. Style with tokens only.
 3. Add the lint plugin: `pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"`.
 4. Enable `@hirobius/eslint-plugin-hds` with its `recommended` config, run ESLint, and fix every error before reporting done.
