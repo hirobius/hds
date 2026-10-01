@@ -212,7 +212,13 @@ interface DialogComponent extends React.FC<DialogProps> {
  * @useInstead Alert a message that needs no reply
  * @useInstead ToastProvider a brief confirmation
  * @slot trigger The element that opens the dialog (Dialog.Trigger).
+ * @slot overlay The scrim that dims the page behind the dialog (Dialog.Overlay).
  * @slot surface The modal surface (Dialog.Content).
+ * @slot header Groups the title and description (Dialog.Header).
+ * @slot title The heading that names the dialog (Dialog.Title).
+ * @slot description Supporting text announced with the title (Dialog.Description).
+ * @slot footer The row of actions (Dialog.Footer).
+ * @slot close The button that closes the dialog (Dialog.Close, or the X built into Dialog.Content).
  * @keyboard Enter/Space Opens the dialog from the trigger and moves focus inside it.
  * @keyboard Escape Closes the dialog and returns focus to the trigger.
  * @keyboard Tab Cycles focus inside the open dialog.
