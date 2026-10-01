@@ -1,0 +1,5065 @@
+{
+  "version": "0.20.0",
+  "date": "2026-10-01",
+  "bump": "minor",
+  "summary": "Pattern components move to /patterns; deprecated, lab and folded components, Hds* aliases and 7 runtime deps are removed.",
+  "backfilled": true,
+  "steps": [
+    {
+      "id": "0.20.0/removed/ActivityEvent",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ActivityEvent is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ActivityEvent"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "ActivityEvent"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ActivityEvent",
+        "removed:./patterns:ActivityEvent"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ActivityFeed",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ActivityFeed is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ActivityFeed"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "ActivityFeed"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ActivityFeed",
+        "removed:./patterns:ActivityFeed"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ActivityFeedProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ActivityFeedProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ActivityFeedProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "ActivityFeedProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ActivityFeedProps",
+        "removed:./patterns:ActivityFeedProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ActivityStatus",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ActivityStatus is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ActivityStatus"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "ActivityStatus"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ActivityStatus",
+        "removed:./patterns:ActivityStatus"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ActivityTone",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ActivityTone is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ActivityTone"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "ActivityTone"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ActivityTone",
+        "removed:./patterns:ActivityTone"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/AppShell",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "AppShell is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AppShell"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "AppShell"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:AppShell",
+        "removed:./patterns:AppShell"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/AppShellProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "AppShellProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AppShellProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "AppShellProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:AppShellProps",
+        "removed:./patterns:AppShellProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ButtonGroup",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ButtonGroup is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ButtonGroup"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ButtonGroup"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ButtonGroupProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ButtonGroupProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ButtonGroupProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ButtonGroupProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Calendar",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Calendar is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Calendar"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Calendar"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Calendar",
+        "removed:./patterns:Calendar"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CalendarProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CalendarProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CalendarProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "CalendarProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CalendarProps",
+        "removed:./patterns:CalendarProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Carousel",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Carousel is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Carousel"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Carousel"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Carousel",
+        "removed:./patterns:Carousel"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CarouselProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CarouselProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CarouselProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "CarouselProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CarouselProps",
+        "removed:./patterns:CarouselProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CaseStudyLayout",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CaseStudyLayout is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CaseStudyLayout"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CaseStudyLayout"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CaseStudyLayoutProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CaseStudyLayoutProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CaseStudyLayoutProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CaseStudyLayoutProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CinematicLink",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CinematicLink is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CinematicLink"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CinematicLink"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CinematicLinkProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CinematicLinkProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CinematicLinkProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CinematicLinkProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CommandPalette",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CommandPalette is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CommandPalette"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "CommandPalette"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CommandPalette",
+        "removed:./patterns:CommandPalette"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/CommandPaletteProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "CommandPaletteProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CommandPaletteProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "CommandPaletteProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CommandPaletteProps",
+        "removed:./patterns:CommandPaletteProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ComponentInstanceMatrix",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ComponentInstanceMatrix is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ComponentInstanceMatrix"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ComponentInstanceMatrix"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ContextMenu",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ContextMenu is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ContextMenu"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ContextMenu"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DateInput",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DateInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DateInput"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DateInput"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DateInputProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DateInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DateInputProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DateInputProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DateRangeInput",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DateRangeInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DateRangeInput"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DateRangeInput"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DateRangeInputProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DateRangeInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DateRangeInputProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DateRangeInputProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DateTimeInput",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DateTimeInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DateTimeInput"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DateTimeInput"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DateTimeInputProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DateTimeInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DateTimeInputProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DateTimeInputProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DocLinkCard",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DocLinkCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DocLinkCard"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "DocLinkCard"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DocLinkCard",
+        "removed:./patterns:DocLinkCard"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/DocLinkCardProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "DocLinkCardProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DocLinkCardProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "DocLinkCardProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:DocLinkCardProps",
+        "removed:./patterns:DocLinkCardProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ErrorBoundary",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ErrorBoundary is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ErrorBoundary"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ErrorBoundary"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ErrorBoundaryProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ErrorBoundaryProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ErrorBoundaryProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ErrorBoundaryProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/FileInput",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "FileInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FileInput"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "FileInput"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:FileInput",
+        "removed:./patterns:FileInput"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/FileInputProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "FileInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FileInputProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "FileInputProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:FileInputProps",
+        "removed:./patterns:FileInputProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/FoundationSwatch",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "FoundationSwatch is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FoundationSwatch"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:FoundationSwatch"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/FoundationSwatchProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "FoundationSwatchProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FoundationSwatchProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:FoundationSwatchProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HdsDocsShell",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HdsDocsShell is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsDocsShell"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsDocsShell"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HdsDocsShellProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HdsDocsShellProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsDocsShellProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsDocsShellProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HdsSystemDocLayout",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HdsSystemDocLayout is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsSystemDocLayout"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsSystemDocLayout"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HeadingStack",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HeadingStack is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HeadingStack"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HeadingStack"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HeadingStackProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HeadingStackProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HeadingStackProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HeadingStackProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HistoryCard",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HistoryCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HistoryCard"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HistoryCard"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HistoryCardCommit",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HistoryCardCommit is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HistoryCardCommit"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HistoryCardCommit"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HistoryCardProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HistoryCardProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HistoryCardProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HistoryCardProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/HoverCard",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "HoverCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HoverCard"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HoverCard"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Lightbox",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Lightbox is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Lightbox"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Lightbox"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Lightbox",
+        "removed:./patterns:Lightbox"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/LightboxProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "LightboxProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "LightboxProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "LightboxProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:LightboxProps",
+        "removed:./patterns:LightboxProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/NavGroup",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "NavGroup is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "NavGroup"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:NavGroup"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/NavGroupProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "NavGroupProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "NavGroupProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:NavGroupProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/NavItem",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "NavItem is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "NavItem"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "NavItem"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:NavItem",
+        "removed:./patterns:NavItem"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/NavProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "NavProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "NavProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "NavProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:NavProps",
+        "removed:./patterns:NavProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/OverflowList",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "OverflowList is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "OverflowList"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "OverflowList"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:OverflowList",
+        "removed:./patterns:OverflowList"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/OverflowListProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "OverflowListProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "OverflowListProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "OverflowListProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:OverflowListProps",
+        "removed:./patterns:OverflowListProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/SideNav",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "SideNav is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SideNav"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "SideNav"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:SideNav",
+        "removed:./patterns:SideNav"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/SideNavLevel",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "SideNavLevel is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SideNavLevel"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "SideNavLevel"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:SideNavLevel",
+        "removed:./patterns:SideNavLevel"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/SideNavProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "SideNavProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SideNavProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "SideNavProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:SideNavProps",
+        "removed:./patterns:SideNavProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Sketch",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Sketch is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Sketch"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Sketch"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/SketchProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "SketchProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SketchProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:SketchProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/StackedCardRail",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "StackedCardRail is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "StackedCardRail"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:./patterns:StackedCardRail"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/StackedCardRailCard",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "StackedCardRailCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "StackedCardRailCard"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:./patterns:StackedCardRailCard"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/StackedCardRailProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "StackedCardRailProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "StackedCardRailProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:./patterns:StackedCardRailProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Step",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Step is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Step"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Step"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Step",
+        "removed:./patterns:Step"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Stepper",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Stepper is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Stepper"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Stepper"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Stepper",
+        "removed:./patterns:Stepper"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/StepperField",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "StepperField is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StepperField"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:StepperField"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/StepperFieldProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "StepperFieldProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StepperFieldProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:StepperFieldProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/StepperProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "StepperProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StepperProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "StepperProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:StepperProps",
+        "removed:./patterns:StepperProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TextLockup",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TextLockup is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TextLockup"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TextLockup"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TextLockupProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TextLockupProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TextLockupProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TextLockupProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Token",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Token is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Token"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Token"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TokenProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TokenProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TokenProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TokenProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Tokenizer",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Tokenizer is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Tokenizer"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Tokenizer"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TokenizerProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TokenizerProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TokenizerProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TokenizerProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/Toolbar",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Toolbar is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Toolbar"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Toolbar"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Toolbar",
+        "removed:./patterns:Toolbar"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/ToolbarComponent",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "ToolbarComponent is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ToolbarComponent"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "ToolbarComponent"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ToolbarComponent",
+        "removed:./patterns:ToolbarComponent"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TopNav",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TopNav is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TopNav"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "TopNav"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TopNav",
+        "removed:./patterns:TopNav"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TopNavProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TopNavProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TopNavProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "TopNavProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TopNavProps",
+        "removed:./patterns:TopNavProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TreeList",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TreeList is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TreeList"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "TreeList"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TreeList",
+        "removed:./patterns:TreeList"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TreeListProps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TreeListProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TreeListProps"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "TreeListProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TreeListProps",
+        "removed:./patterns:TreeListProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/TreeNode",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "TreeNode is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TreeNode"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "TreeNode"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TreeNode",
+        "removed:./patterns:TreeNode"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/activityAvatarVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "activityAvatarVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "activityAvatarVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "activityAvatarVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:activityAvatarVariants",
+        "removed:./patterns:activityAvatarVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/activityToneVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "activityToneVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "activityToneVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "activityToneVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:activityToneVariants",
+        "removed:./patterns:activityToneVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/appShellVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "appShellVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "appShellVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "appShellVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:appShellVariants",
+        "removed:./patterns:appShellVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/badgeVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "badgeVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "badgeVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:badgeVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/blockquoteVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "blockquoteVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "blockquoteVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:blockquoteVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/buttonGroupVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "buttonGroupVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "buttonGroupVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:buttonGroupVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/buttonVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "buttonVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "buttonVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:buttonVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/cardVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "cardVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "cardVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:cardVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/carouselControlVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "carouselControlVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "carouselControlVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "carouselControlVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:carouselControlVariants",
+        "removed:./patterns:carouselControlVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/circularProgressVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "circularProgressVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "circularProgressVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:circularProgressVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/cmdkDescriptionVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "cmdkDescriptionVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "cmdkDescriptionVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "cmdkDescriptionVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:cmdkDescriptionVariants",
+        "removed:./patterns:cmdkDescriptionVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/cmdkKindBadgeVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "cmdkKindBadgeVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "cmdkKindBadgeVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "cmdkKindBadgeVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:cmdkKindBadgeVariants",
+        "removed:./patterns:cmdkKindBadgeVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/cmdkRowVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "cmdkRowVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "cmdkRowVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "cmdkRowVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:cmdkRowVariants",
+        "removed:./patterns:cmdkRowVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/crumbLabelVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "crumbLabelVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "crumbLabelVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:crumbLabelVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/defaultActivityEvents",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "defaultActivityEvents is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "defaultActivityEvents"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "defaultActivityEvents"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:defaultActivityEvents",
+        "removed:./patterns:defaultActivityEvents"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/disclosureTriggerVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "disclosureTriggerVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "disclosureTriggerVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:disclosureTriggerVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/docLinkCardVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "docLinkCardVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "docLinkCardVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "docLinkCardVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:docLinkCardVariants",
+        "removed:./patterns:docLinkCardVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/fieldValueVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "fieldValueVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "fieldValueVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:fieldValueVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/fileInputVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "fileInputVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "fileInputVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "fileInputVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:fileInputVariants",
+        "removed:./patterns:fileInputVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/hdsTimeInputVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "hdsTimeInputVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "hdsTimeInputVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:hdsTimeInputVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/hdsToggleButtonVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "hdsToggleButtonVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "hdsToggleButtonVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:hdsToggleButtonVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/headingStackLevelVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "headingStackLevelVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "headingStackLevelVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:headingStackLevelVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/headingStackVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "headingStackVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "headingStackVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:headingStackVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/inlineCodeVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "inlineCodeVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "inlineCodeVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:inlineCodeVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/inputVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "inputVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "inputVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:inputVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/kbdVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "kbdVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "kbdVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:kbdVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/metadataListVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "metadataListVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "metadataListVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:metadataListVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/navGroupLabelVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "navGroupLabelVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "navGroupLabelVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:navGroupLabelVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/navIndicatorVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "navIndicatorVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "navIndicatorVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "navIndicatorVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:navIndicatorVariants",
+        "removed:./patterns:navIndicatorVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/navItemVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "navItemVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "navItemVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "navItemVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:navItemVariants",
+        "removed:./patterns:navItemVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/overflowBubbleVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "overflowBubbleVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "overflowBubbleVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:overflowBubbleVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/progressTrackVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "progressTrackVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "progressTrackVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:progressTrackVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/segmentedControlDescriptionVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "segmentedControlDescriptionVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "segmentedControlDescriptionVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:segmentedControlDescriptionVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/segmentedControlFocusRingVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "segmentedControlFocusRingVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "segmentedControlFocusRingVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:segmentedControlFocusRingVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/segmentedControlIndicatorVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "segmentedControlIndicatorVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "segmentedControlIndicatorVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:segmentedControlIndicatorVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/segmentedControlItemVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "segmentedControlItemVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "segmentedControlItemVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:segmentedControlItemVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/segmentedControlLabelVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "segmentedControlLabelVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "segmentedControlLabelVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:segmentedControlLabelVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/segmentedControlRailVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "segmentedControlRailVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "segmentedControlRailVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:segmentedControlRailVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/segmentedControlWrapperVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "segmentedControlWrapperVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "segmentedControlWrapperVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:segmentedControlWrapperVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/selectableCardVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "selectableCardVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "selectableCardVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:selectableCardVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/sideNavVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "sideNavVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "sideNavVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "sideNavVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:sideNavVariants",
+        "removed:./patterns:sideNavVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/skeletonVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "skeletonVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "skeletonVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:skeletonVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/spinnerVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "spinnerVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "spinnerVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:spinnerVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/statVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "statVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "statVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:statVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/statusDotVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "statusDotVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "statusDotVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:statusDotVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/statusListItemDotVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "statusListItemDotVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "statusListItemDotVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:statusListItemDotVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/stepMarkerVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "stepMarkerVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "stepMarkerVariants"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "stepMarkerVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:stepMarkerVariants",
+        "removed:./patterns:stepMarkerVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/surfaceVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "surfaceVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "surfaceVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:surfaceVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tableDataCellVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tableDataCellVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tableDataCellVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tableDataCellVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tableHeaderCellVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tableHeaderCellVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tableHeaderCellVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tableHeaderCellVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tableSortButtonVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tableSortButtonVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tableSortButtonVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tableSortButtonVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tagButtonVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tagButtonVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tagButtonVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tagButtonVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tagPillVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tagPillVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tagPillVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tagPillVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/textVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "textVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "textVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:textVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/textareaVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "textareaVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "textareaVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:textareaVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/toastIconVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "toastIconVariants is no longer exported, so style its component through the component's props instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "toastIconVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:toastIconVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tokenLabelVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tokenLabelVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tokenLabelVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tokenLabelVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tokenNodeInlineVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tokenNodeInlineVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tokenNodeInlineVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tokenNodeInlineVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/removed/tokenShellVariants",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tokenShellVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tokenShellVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tokenShellVariants"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/moved/AssetImg",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "AssetImg is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AssetImg"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:AssetImg"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/AssetImgProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "AssetImgProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AssetImgProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:AssetImgProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/CodeBlock",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "CodeBlock is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CodeBlock"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:CodeBlock"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/CodeBlockProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "CodeBlockProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CodeBlockProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:CodeBlockProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/ErrorPattern",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "ErrorPattern is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ErrorPattern"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:ErrorPattern"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/ErrorPatternProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "ErrorPatternProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ErrorPatternProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:ErrorPatternProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/FieldWiring",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "FieldWiring is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FieldWiring"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:FieldWiring"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/FieldWiringInput",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "FieldWiringInput is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FieldWiringInput"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:FieldWiringInput"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/Form",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "Form is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Form"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:Form"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/FormField",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "FormField is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FormField"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:FormField"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/FormFieldProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "FormFieldProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FormFieldProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:FormFieldProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/FormFieldShell",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "FormFieldShell is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FormFieldShell"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:FormFieldShell"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/FormFieldShellProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "FormFieldShellProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FormFieldShellProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:FormFieldShellProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/FormProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "FormProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FormProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:FormProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/Page",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "Page is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Page"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:Page"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/PageProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "PageProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "PageProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:PageProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/Reveal",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "Reveal is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Reveal"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:Reveal"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/RevealAnimation",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "RevealAnimation is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "RevealAnimation"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:RevealAnimation"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/RevealProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "RevealProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "RevealProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:RevealProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/StatusTile",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "StatusTile is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StatusTile"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:StatusTile"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/StatusTileProps",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "StatusTileProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StatusTileProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:StatusTileProps"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/StatusTileTone",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "StatusTileTone is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StatusTileTone"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:StatusTileTone"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/blockCodeTextVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "blockCodeTextVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "blockCodeTextVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:blockCodeTextVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/blockContainerVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "blockContainerVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "blockContainerVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:blockContainerVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/blockHeaderVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "blockHeaderVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "blockHeaderVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:blockHeaderVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/chevronVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "chevronVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "chevronVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:chevronVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/collapsibleToggleVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "collapsibleToggleVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "collapsibleToggleVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:collapsibleToggleVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/copyButtonVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "copyButtonVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "copyButtonVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:copyButtonVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/inlineCodeTextVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "inlineCodeTextVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "inlineCodeTextVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:inlineCodeTextVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/inlineWrapperVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "inlineWrapperVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "inlineWrapperVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:inlineWrapperVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/prePanelVariants",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "prePanelVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "prePanelVariants"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:prePanelVariants"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/moved/useFieldWiring",
+      "kind": "moved",
+      "impact": "breaking",
+      "plain": "useFieldWiring is no longer exported from the package root; import it from @hirobius/design-system/patterns instead.",
+      "auto": {
+        "codemod": "hds-patterns-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "useFieldWiring"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "moved:.:useFieldWiring"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/renamed/HdsCheckbox",
+      "kind": "renamed",
+      "impact": "breaking",
+      "plain": "HdsCheckbox is removed from the package root; use Checkbox, the same component under its bare name.",
+      "auto": {
+        "codemod": "hds-prefix",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsCheckbox"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsCheckbox"
+      ],
+      "source": "codemods/hds-prefix.mjs"
+    },
+    {
+      "id": "0.20.0/renamed/HdsRadio",
+      "kind": "renamed",
+      "impact": "breaking",
+      "plain": "HdsRadio is removed from the package root; use Radio, the same component under its bare name.",
+      "auto": {
+        "codemod": "hds-prefix",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsRadio"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsRadio"
+      ],
+      "source": "codemods/hds-prefix.mjs"
+    },
+    {
+      "id": "0.20.0/renamed/HdsSelect",
+      "kind": "renamed",
+      "impact": "breaking",
+      "plain": "HdsSelect is removed from the package root; use Select, the same component under its bare name.",
+      "auto": {
+        "codemod": "hds-prefix",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsSelect"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsSelect"
+      ],
+      "source": "codemods/hds-prefix.mjs"
+    },
+    {
+      "id": "0.20.0/renamed/HdsSlider",
+      "kind": "renamed",
+      "impact": "breaking",
+      "plain": "HdsSlider is removed from the package root; use Slider, the same component under its bare name.",
+      "auto": {
+        "codemod": "hds-prefix",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsSlider"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsSlider"
+      ],
+      "source": "codemods/hds-prefix.mjs"
+    },
+    {
+      "id": "0.20.0/renamed/HdsToggle",
+      "kind": "renamed",
+      "impact": "breaking",
+      "plain": "HdsToggle is removed from the package root; use Toggle, the same component under its bare name.",
+      "auto": {
+        "codemod": "hds-prefix",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsToggle"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsToggle"
+      ],
+      "source": "codemods/hds-prefix.mjs"
+    },
+    {
+      "id": "0.20.0/renamed/HdsTooltip",
+      "kind": "renamed",
+      "impact": "breaking",
+      "plain": "HdsTooltip is removed from the package root; use Tooltip, the same component under its bare name.",
+      "auto": {
+        "codemod": "hds-prefix",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsTooltip"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:HdsTooltip"
+      ],
+      "source": "codemods/hds-prefix.mjs"
+    },
+    {
+      "id": "0.20.0/folded/AspectRatio",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "AspectRatio is removed; use Box style={{ aspectRatio: '16 / 9' }} instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AspectRatio"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:AspectRatio"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/AspectRatioProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "AspectRatioProps is removed; use BoxProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AspectRatioProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:AspectRatioProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/Bleed",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "Bleed is removed; use Box style={{ marginInline: 'calc(-1 * var(--semantic-space-scale-md))' }} instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Bleed"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Bleed"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/BleedProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "BleedProps is removed; use BoxProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "BleedProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:BleedProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/Center",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "Center is removed; use Container maxWidth=\"content\", with a Box style={{ paddingInline }} inside for the gutter instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Center"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Center"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/CenterProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "CenterProps is removed; use ContainerProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CenterProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CenterProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/CircularProgress",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "CircularProgress is removed; use Progress variant=\"circular\" instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CircularProgress"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CircularProgress"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/CircularProgressProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "CircularProgressProps is removed; use ProgressProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CircularProgressProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CircularProgressProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/Cluster",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "Cluster is removed; use Stack direction=\"row\" wrap=\"wrap\" align=\"center\" instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Cluster"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Cluster"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/ClusterProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "ClusterProps is removed; use StackProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ClusterProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ClusterProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/Cover",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "Cover is removed; use Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }} around a Box style={{ marginBlock: 'auto' }} instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Cover"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Cover"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/CoverProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "CoverProps is removed; use BoxProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CoverProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:CoverProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/Frame",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "Frame is removed; use Box style={{ aspectRatio: '16 / 9', overflow: 'hidden', borderRadius: hds.borderRadius.md }} instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Frame"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:Frame"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/FrameProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "FrameProps is removed; use BoxProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FrameProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:FrameProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/IconButton",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "IconButton is removed; use Button iconOnly label=\"…\" iconLeft={<Icon icon={…} />} instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "IconButton"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:IconButton"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/IconButtonProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "IconButtonProps is removed; use ButtonProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "IconButtonProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:IconButtonProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/InputGroup",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "InputGroup is removed; use Input prefix / suffix instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "InputGroup"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:InputGroup"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/InputGroupProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "InputGroupProps is removed; use InputProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "InputGroupProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:InputGroupProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/MultiSelector",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "MultiSelector is removed; use Combobox multiple instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "MultiSelector"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:MultiSelector"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/MultiSelectorOption",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "MultiSelectorOption is removed; use ComboboxOption instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "MultiSelectorOption"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:MultiSelectorOption"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/MultiSelectorProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "MultiSelectorProps is removed; use ComboboxMultipleProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "MultiSelectorProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:MultiSelectorProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/NotFoundPattern",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "NotFoundPattern is removed; use ErrorPattern displayText=\"404\" message=\"Page not found\" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it) instead.",
+      "auto": {
+        "codemod": "hds-not-found-pattern",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "NotFoundPattern"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:NotFoundPattern"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/SelectableCard",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "SelectableCard is removed; use Card selectable selected onSelectedChange instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SelectableCard"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:SelectableCard"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/SelectableCardProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "SelectableCardProps is removed; use CardProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SelectableCardProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:SelectableCardProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/TileGrid",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "TileGrid is removed; use Grid layout=\"auto-fill\" minItemWidth=\"…\" gap=\"medium\" (hds-tile-grid rewrites it) instead.",
+      "auto": {
+        "codemod": "hds-tile-grid",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TileGrid"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TileGrid"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/TileGridProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "TileGridProps is removed; use GridProps (minTileWidth is minItemWidth, gap 'sm' is 'medium') instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TileGridProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TileGridProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/TimeInput",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "TimeInput is removed; use Input type=\"time\" instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TimeInput"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TimeInput"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/TimeInputProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "TimeInputProps is removed; use InputProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TimeInputProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:TimeInputProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/ToggleButton",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "ToggleButton is removed; use Button pressed onPressedChange (variant=\"ghost\" is variant=\"tertiary\") instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ToggleButton"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ToggleButton"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/folded/ToggleButtonProps",
+      "kind": "folded",
+      "impact": "breaking",
+      "plain": "ToggleButtonProps is removed; use ButtonProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ToggleButtonProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:ToggleButtonProps"
+      ],
+      "source": "codemods/removed-0.20.json"
+    },
+    {
+      "id": "0.20.0/deprecated/Box-sx-layout-names",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.",
+      "detect": {
+        "jsx": [
+          "Box"
+        ],
+        "regex": [
+          "\\bsx=\\{\\{[^}]*['\"](?:tight|normal|inset|spacious)['\"]"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:8"
+    },
+    {
+      "id": "0.20.0/deprecated/StatusDot",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "StatusDot still works but is removed in 0.21.0; use Badge dot with the same tone, size and label, and move any style prop to a wrapper or a className first.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StatusDot"
+            ]
+          }
+        ],
+        "jsx": [
+          "StatusDot"
+        ]
+      },
+      "removeIn": "0.21.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:68"
+    },
+    {
+      "id": "0.20.0/deprecated/StatusDotProps",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "StatusDotProps is removed in 0.21.0; use BadgeProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StatusDotProps"
+            ]
+          }
+        ]
+      },
+      "removeIn": "0.21.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:68"
+    },
+    {
+      "id": "0.20.0/deprecated/hds.density",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs.",
+      "detect": {
+        "regex": [
+          "\\bhds\\.density\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:12"
+    },
+    {
+      "id": "0.20.0/look/AssetImg-expand-label",
+      "kind": "look",
+      "impact": "look",
+      "plain": "AssetImg's expand label now uses the on-accent text color, so it stays readable in dark mode.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AssetImg"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "AssetImg"
+            ]
+          }
+        ],
+        "jsx": [
+          "AssetImg"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:88"
+    },
+    {
+      "id": "0.20.0/look/Box-sx-scale-names",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Box sx spacing given as a t-shirt name such as 'md' now applies that spacing, where before it applied none.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Box"
+            ]
+          }
+        ],
+        "jsx": [
+          "Box"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:8"
+    },
+    {
+      "id": "0.20.0/look/Button-pressed",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A pressed Button now tints only its fill with a 5% overlay, white in dark mode, instead of dimming the whole control, and the press no longer animates.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Button"
+            ]
+          }
+        ],
+        "jsx": [
+          "Button"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.20.0/look/Input-padding",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Input keeps its inner padding beside icons, the clear button and the spinner, so long text no longer runs under them.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Input"
+            ]
+          }
+        ],
+        "jsx": [
+          "Input"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:97"
+    },
+    {
+      "id": "0.20.0/look/Input-prefix-slot",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A string passed to Input's prefix prop now shows as text inside the field, where before it went to the input element as an attribute.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Input"
+            ]
+          }
+        ],
+        "regex": [
+          "<Input\\b[^>]*\\sprefix="
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.20.0/look/Table-sort-hover",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A sortable Table header now fades its label to the muted color on hover.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Table"
+            ]
+          }
+        ],
+        "jsx": [
+          "Table"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:94"
+    },
+    {
+      "id": "0.20.0/look/Tooltip-shadow",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Tooltip now casts the floating shadow that popovers and menus use instead of the dialog shadow.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Tooltip"
+            ]
+          }
+        ],
+        "jsx": [
+          "Tooltip"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:46"
+    },
+    {
+      "id": "0.20.0/behavior/Button-iconOnly-label",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "An icon-only Button now takes its accessible name from label, unless it has an aria-label.",
+      "detect": {
+        "jsx": [
+          "Button"
+        ],
+        "regex": [
+          "\\biconOnly\\b"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:38"
+    },
+    {
+      "id": "0.20.0/behavior/Card-selectable-keys",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Card selectable, which replaces SelectableCard, toggles on click or Space only, so code or tests that press Enter to toggle it must press Space instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SelectableCard"
+            ]
+          }
+        ],
+        "jsx": [
+          "SelectableCard"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:41"
+    },
+    {
+      "id": "0.20.0/behavior/Select-Combobox-accessible-names",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Combobox options now report their real position, and a Select with showLabel={false} is named by its label and value, so tests that find them by role and name may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Select",
+              "Combobox"
+            ]
+          }
+        ],
+        "jsx": [
+          "Select",
+          "Combobox"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:90"
+    },
+    {
+      "id": "0.20.0/behavior/Select-Combobox-overlay-names",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The open Select list and the Combobox popup now carry an accessible name, so tests that find them by role and name may need the new name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Select",
+              "Combobox"
+            ]
+          }
+        ],
+        "jsx": [
+          "Select",
+          "Combobox"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:75"
+    },
+    {
+      "id": "0.20.0/behavior/manifest-health",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The manifest no longer has a health field, so manifest.health is now undefined.",
+      "detect": {
+        "regex": [
+          "(?:design-system/manifest|hds-manifest\\.json)[\\s\\S]*\\.health\\b"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:101"
+    },
+    {
+      "id": "0.20.0/behavior/pattern-rows-Stack",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The rows inside PageHeader, FormActions, DataTableSection and DestructiveSection now carry data-hds-component=\"Stack\" instead of \"Cluster\", so selectors and tests that look for Cluster there must change.",
+      "detect": {
+        "regex": [
+          "hds-component=\\W{0,2}Cluster"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:87"
+    },
+    {
+      "id": "0.20.0/dependency/@radix-ui/react-aspect-ratio",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "HDS no longer installs @radix-ui/react-aspect-ratio, so add it to your own dependencies if your code imports it.",
+      "detect": {
+        "bareImports": [
+          "@radix-ui/react-aspect-ratio"
+        ]
+      },
+      "range": "^1.1.11",
+      "facts": [
+        "dependency-removed:@radix-ui/react-aspect-ratio"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/dependency/@radix-ui/react-context-menu",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "HDS no longer installs @radix-ui/react-context-menu, so add it to your own dependencies if your code imports it.",
+      "detect": {
+        "bareImports": [
+          "@radix-ui/react-context-menu"
+        ]
+      },
+      "range": "^2.3.2",
+      "facts": [
+        "dependency-removed:@radix-ui/react-context-menu"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/dependency/@radix-ui/react-hover-card",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "HDS no longer installs @radix-ui/react-hover-card, so add it to your own dependencies if your code imports it.",
+      "detect": {
+        "bareImports": [
+          "@radix-ui/react-hover-card"
+        ]
+      },
+      "range": "^1.1.18",
+      "facts": [
+        "dependency-removed:@radix-ui/react-hover-card"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/dependency/@radix-ui/react-toggle",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "HDS no longer installs @radix-ui/react-toggle, so add it to your own dependencies if your code imports it.",
+      "detect": {
+        "bareImports": [
+          "@radix-ui/react-toggle"
+        ]
+      },
+      "range": "^1.1.13",
+      "facts": [
+        "dependency-removed:@radix-ui/react-toggle"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/dependency/@radix-ui/react-toolbar",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "HDS no longer installs @radix-ui/react-toolbar, so add it to your own dependencies if your code imports it.",
+      "detect": {
+        "bareImports": [
+          "@radix-ui/react-toolbar"
+        ]
+      },
+      "range": "^1.1.14",
+      "facts": [
+        "dependency-removed:@radix-ui/react-toolbar"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/dependency/date-fns",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "HDS no longer installs date-fns, so add it to your own dependencies if your code imports it.",
+      "detect": {
+        "bareImports": [
+          "date-fns"
+        ]
+      },
+      "range": "^4.4.0",
+      "facts": [
+        "dependency-removed:date-fns"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    },
+    {
+      "id": "0.20.0/dependency/react-day-picker",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "HDS no longer installs react-day-picker, so add it to your own dependencies if your code imports it.",
+      "detect": {
+        "bareImports": [
+          "react-day-picker"
+        ]
+      },
+      "range": "^10.0.1",
+      "facts": [
+        "dependency-removed:react-day-picker"
+      ],
+      "source": "snapshot diff 0.19.1..0.20.0"
+    }
+  ]
+}

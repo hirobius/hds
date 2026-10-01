@@ -106,7 +106,9 @@ function parse(absolutePath) {
     text,
     ts.ScriptTarget.ES2022,
     /* setParentNodes */ true,
-    ts.ScriptKind.TSX,
+    // A built `.d.ts` (scripts/upgrade/snapshot.mjs reads the published
+    // dist/types) is plain TypeScript; source files may hold JSX.
+    absolutePath.endsWith('.d.ts') ? ts.ScriptKind.TS : ts.ScriptKind.TSX,
   );
 }
 
@@ -133,6 +135,10 @@ function resolveRelativeImport(fromFile, specifier) {
     `${specifier}.json`,
     join(specifier, 'index.tsx'),
     join(specifier, 'index.ts'),
+    // Built declarations (hds#447: the release snapshot reads the published
+    // dist/types): `./x.js` after add-dts-extensions.mjs, `./x` before it.
+    `${specifier.replace(/\.js$/, '')}.d.ts`,
+    join(specifier, 'index.d.ts'),
   ];
   for (const candidate of candidates) {
     const absolute = resolve(fromDir, candidate);
@@ -148,20 +154,34 @@ function resolveRelativeImport(fromFile, specifier) {
  * following `export * from './x'` into the modules it re-exports (hds#390:
  * the /contexts entry is nothing but `export *` lines, so it recorded no
  * symbols). Returns an alphabetically-sorted, deduped string list.
+ *
+ * With an `origins` map, each returned symbol is also mapped to the file that
+ * declares it or re-exports it by name, following `export *` to that file. The
+ * release snapshot (hds#447) uses it to tell a name that moved between entries
+ * from an unrelated export of the same name.
+ *
+ * @param {string} absolutePath
+ * @param {Set<string>} [seen]
+ * @param {Map<string, string> | null} [origins]
  */
-export function collectModuleSymbols(absolutePath, seen = new Set()) {
+export function collectModuleSymbols(absolutePath, seen = new Set(), origins = null) {
   if (seen.has(absolutePath)) return [];
   seen.add(absolutePath);
   const sourceFile = parse(absolutePath);
-  const symbols = new Set();
+  const declared = new Set();
+  // A name declared (or re-exported by name) here: this file is its origin.
+  const record = (name) => {
+    declared.add(name);
+    if (origins && !origins.has(name)) origins.set(name, absolutePath);
+  };
 
   for (const statement of sourceFile.statements) {
     // export function foo() {}
     if (ts.isFunctionDeclaration(statement) && statement.name && isExported(statement)) {
       if (isDefaultExported(statement)) {
-        symbols.add('default');
+        record('default');
       } else {
-        symbols.add(statement.name.text);
+        record(statement.name.text);
       }
       continue;
     }
@@ -169,9 +189,9 @@ export function collectModuleSymbols(absolutePath, seen = new Set()) {
     // export class Foo {}
     if (ts.isClassDeclaration(statement) && statement.name && isExported(statement)) {
       if (isDefaultExported(statement)) {
-        symbols.add('default');
+        record('default');
       } else {
-        symbols.add(statement.name.text);
+        record(statement.name.text);
       }
       continue;
     }
@@ -180,7 +200,7 @@ export function collectModuleSymbols(absolutePath, seen = new Set()) {
     if (ts.isVariableStatement(statement) && isExported(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (ts.isIdentifier(declaration.name)) {
-          symbols.add(declaration.name.text);
+          record(declaration.name.text);
         }
       }
       continue;
@@ -188,25 +208,25 @@ export function collectModuleSymbols(absolutePath, seen = new Set()) {
 
     // export interface Foo {}
     if (ts.isInterfaceDeclaration(statement) && isExported(statement)) {
-      symbols.add(statement.name.text);
+      record(statement.name.text);
       continue;
     }
 
     // export type Foo = …;
     if (ts.isTypeAliasDeclaration(statement) && isExported(statement)) {
-      symbols.add(statement.name.text);
+      record(statement.name.text);
       continue;
     }
 
     // export enum Foo {}
     if (ts.isEnumDeclaration(statement) && isExported(statement)) {
-      symbols.add(statement.name.text);
+      record(statement.name.text);
       continue;
     }
 
     // export default <expression>; (e.g. `export default ApiReference;`)
     if (ts.isExportAssignment(statement) && !statement.isExportEquals) {
-      symbols.add('default');
+      record('default');
       continue;
     }
 
@@ -216,10 +236,10 @@ export function collectModuleSymbols(absolutePath, seen = new Set()) {
     if (ts.isExportDeclaration(statement) && statement.exportClause) {
       if (ts.isNamedExports(statement.exportClause)) {
         for (const element of statement.exportClause.elements) {
-          symbols.add(element.name.text);
+          record(element.name.text);
         }
       } else if (ts.isNamespaceExport(statement.exportClause)) {
-        symbols.add(statement.exportClause.name.text);
+        record(statement.exportClause.name.text);
       }
       continue;
     }
@@ -228,7 +248,7 @@ export function collectModuleSymbols(absolutePath, seen = new Set()) {
     if (ts.isExportDeclaration(statement) && statement.moduleSpecifier) {
       const specifier = statement.moduleSpecifier.text;
       if (!specifier.startsWith('.')) {
-        symbols.add(`* from ${specifier}`);
+        record(`* from ${specifier}`);
         continue;
       }
       const target = resolveRelativeImport(absolutePath, specifier);
@@ -237,11 +257,18 @@ export function collectModuleSymbols(absolutePath, seen = new Set()) {
           `[check-public-api] Could not resolve "export * from '${specifier}'" in ${relative(ROOT, absolutePath)}`,
         );
       }
-      for (const symbol of collectModuleSymbols(target, seen)) symbols.add(symbol);
+      // `export *` re-exports every name except `default` (ECMAScript), so a
+      // re-exported module's default is not part of this module's surface.
+      const reached = origins ? new Map() : null;
+      for (const symbol of collectModuleSymbols(target, seen, reached)) {
+        if (symbol === 'default') continue;
+        declared.add(symbol);
+        if (origins && !origins.has(symbol)) origins.set(symbol, reached.get(symbol));
+      }
     }
   }
 
-  return Array.from(symbols).sort();
+  return Array.from(declared).sort();
 }
 
 /**

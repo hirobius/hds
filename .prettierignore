@@ -42,6 +42,12 @@ scripts/__tests__/fixtures/figma-model/model.golden.json
 # checksum; let the writer own the layout so a re-ingest diffs only real changes.
 figma/snapshot.json
 fixtures/check-figma-drift/**/snapshot.json
+# Upgrade ledger (hds#447): release snapshots, release ledgers and the JSON
+# Schema generated from scripts/upgrade/schema.mjs. Their writers own the layout
+# and each --check compares bytes, so Prettier must not reflow them.
+docs/api/releases/
+upgrade/releases/
+upgrade/schema.json
 
 # Lock + node
 pnpm-lock.yaml
