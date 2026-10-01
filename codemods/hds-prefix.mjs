@@ -6,13 +6,19 @@
  * `import { HdsCheckbox } from '@hirobius/design-system'` to
  * `import { Checkbox } from '@hirobius/design-system'` and renames the uses in
  * the same file, for HdsCheckbox, HdsRadio, HdsSelect, HdsSlider, HdsToggle and
- * HdsTooltip. Each is the same component under its bare name, so the rewrite
- * changes no behaviour.
+ * HdsTooltip. Each is the same component under its bare name. The rewrite keeps
+ * every name the file exports, every object key and every whole-string value;
+ * only the binding and text that mentions it change.
  *
  *   - `import { HdsCheckbox }`: imports `Checkbox` and renames every
- *     `HdsCheckbox` identifier in the file (JSX tags, `typeof`, comments and
- *     strings included). When `Checkbox` is already a word in the file, it
- *     imports `Checkbox as HdsCheckbox` instead and leaves the uses alone.
+ *     `HdsCheckbox` identifier in the file (JSX tags, `typeof`, member access on
+ *     the binding), plus mentions in comments and inside longer strings.
+ *   - It imports `Checkbox as HdsCheckbox` instead, and leaves the uses alone,
+ *     when renaming would change behaviour or collide: the name is an export
+ *     name (`export { HdsCheckbox }`), a shorthand property or destructured key
+ *     (`{ HdsCheckbox }`, which also covers a JSX `{HdsCheckbox}` expression), an
+ *     object or type key (`HdsCheckbox:`), or a whole string (`'HdsCheckbox'`);
+ *     or `Checkbox` is already a word in the file.
  *   - `import { HdsSelect as Pick }`: becomes `Select as Pick`.
  *   - `export { HdsToggle } from '…'`: becomes `Toggle as HdsToggle`, so the
  *     file's own export name does not change.
@@ -76,6 +82,28 @@ const word = (name) => new RegExp(`(?<![\\w$])${name}(?![\\w$])`);
 const binding = (name) => new RegExp(`(?<![\\w$.])${name}(?![\\w$])`, 'g');
 
 /**
+ * True when renaming `name` outside the given import spans would change what the
+ * file exports or looks up: an export-list entry or shorthand property
+ * (`{ name }`, `{ a, name = x }`), an object or type key (`name:`, `name?:`), or a
+ * whole string (`'name'`). A ternary branch (`c ? name : x`) also matches; the
+ * alias that follows is merely conservative there.
+ */
+function usedAsName(source, name, spans) {
+  for (const m of source.matchAll(binding(name))) {
+    const at = m.index;
+    if (spans.some(([a, b]) => at >= a && at < b)) continue;
+    const prev = source.slice(0, at).trimEnd().slice(-1);
+    const rest = source.slice(at + name.length);
+    const next = rest.trimStart();
+    if ((prev === '{' || prev === ',') && /^(?:[,}]|=(?![=>]))/.test(next)) return true;
+    if (/^\??\s*:(?!:)/.test(next)) return true;
+    const quote = source[at - 1];
+    if ((quote === "'" || quote === '"' || quote === '`') && rest[0] === quote) return true;
+  }
+  return false;
+}
+
+/**
  * Pure transform of one file's source.
  * @param {string} source
  * @param {Record<string, string>} [renames]
@@ -86,6 +114,7 @@ export function transformSource(source, renames = RENAMES) {
   const renamed = new Set();
   const renameLocal = new Set();
   const spans = [];
+  const importSpans = [...source.matchAll(namedRe())].map((m) => [m.index, m.index + m[0].length]);
 
   for (const m of source.matchAll(namedRe())) {
     const [stmt, kw, body] = m;
@@ -98,7 +127,8 @@ export function transformSource(source, renames = RENAMES) {
       if (asPart) return `${typeKw}${bare}${asPart}`;
       // A re-export keeps the name it gives its own importers.
       if (kw === 'export') return `${typeKw}${bare} as ${name}`;
-      if (word(bare).test(source)) return `${typeKw}${bare} as ${name}`;
+      if (word(bare).test(source) || usedAsName(source, name, importSpans))
+        return `${typeKw}${bare} as ${name}`;
       renameLocal.add(name);
       return `${typeKw}${bare}`;
     });

@@ -88,6 +88,59 @@ describe('transformSource', () => {
     );
   });
 
+  // Renaming the binding would change what the file exports or looks up in these
+  // positions, so the codemod keeps the old local name as an alias instead.
+  it("keeps the file's own export name for a local `export { HdsCheckbox }`", () => {
+    const src = `import { HdsCheckbox } from '${ROOT}';\nexport { HdsCheckbox };\n`;
+    expect(transformSource(src).source).toBe(
+      `import { Checkbox as HdsCheckbox } from '${ROOT}';\nexport { HdsCheckbox };\n`,
+    );
+    const list = `import { HdsRadio } from '${ROOT}';\nconst a = 1;\nexport { a, HdsRadio };\n`;
+    expect(transformSource(list).source).toBe(
+      `import { Radio as HdsRadio } from '${ROOT}';\nconst a = 1;\nexport { a, HdsRadio };\n`,
+    );
+  });
+
+  it('renames a local export that already gives its own export name', () => {
+    const src = `import { HdsCheckbox } from '${ROOT}';\nexport { HdsCheckbox as Box };\n`;
+    expect(transformSource(src).source).toBe(
+      `import { Checkbox } from '${ROOT}';\nexport { Checkbox as Box };\n`,
+    );
+  });
+
+  it('keeps the name when it is an object shorthand property, so `map.HdsCheckbox` still resolves', () => {
+    const src = `import { HdsCheckbox } from '${ROOT}';\nconst map = { HdsCheckbox };\nmap.HdsCheckbox;\n`;
+    expect(transformSource(src).source).toBe(
+      `import { Checkbox as HdsCheckbox } from '${ROOT}';\nconst map = { HdsCheckbox };\nmap.HdsCheckbox;\n`,
+    );
+  });
+
+  it('keeps the name when it is an object or type key', () => {
+    for (const body of [
+      'const m = { HdsSlider: HdsSlider };',
+      'type T = { HdsSlider?: typeof HdsSlider };',
+    ]) {
+      const src = `import { HdsSlider } from '${ROOT}';\n${body}\n`;
+      expect(transformSource(src).source).toBe(
+        `import { Slider as HdsSlider } from '${ROOT}';\n${body}\n`,
+      );
+    }
+  });
+
+  it('keeps the name when the file compares or looks it up as a whole string', () => {
+    const src = `import { HdsToggle } from '${ROOT}';\nconst ok = kind === 'HdsToggle' && reg["HdsToggle"];\n<HdsToggle />;\n`;
+    expect(transformSource(src).source).toBe(
+      `import { Toggle as HdsToggle } from '${ROOT}';\nconst ok = kind === 'HdsToggle' && reg["HdsToggle"];\n<HdsToggle />;\n`,
+    );
+  });
+
+  it('still renames ordinary uses: JSX tags, values in arrays and calls, member access on the binding', () => {
+    const src = `import { HdsTooltip } from '${ROOT}';\nconst t = [HdsTooltip];\nwrap(HdsTooltip, x);\nHdsTooltip.displayName;\n<HdsTooltip />;\n`;
+    expect(transformSource(src).source).toBe(
+      `import { Tooltip } from '${ROOT}';\nconst t = [Tooltip];\nwrap(Tooltip, x);\nTooltip.displayName;\n<Tooltip />;\n`,
+    );
+  });
+
   it('reports each changed line before and after for --dry-run', () => {
     const out = transformSource(`import { HdsCheckbox } from '${ROOT}';\n\n<HdsCheckbox />;\n`);
     expect(out.edits).toEqual([
