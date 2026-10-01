@@ -71,7 +71,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Badge` — Compact metadata/status chip.
 - `Callout` — Tone-driven side-rule callout for status, quotes, hypotheses.
 - `CircularProgress` — A circular progress ring; pass `value`/`max` or set `indeterminate`.
-- `Progress` — Linear progress.
+- `Progress` — Linear bar or circular ring.
 - `Skeleton` — Decorative loading placeholder.
 - `Spinner` — Indeterminate spinner.
 - `StatusDot` — A small solid dot conveying a semantic status via `tone`.
@@ -80,7 +80,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Inputs
 
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
-- `Combobox` — Combobox — searchable single-select (Popover + filtered listbox).
+- `Combobox` — Combobox — searchable single- or multi-select (Popover + filtered listbox).
 - `DateInput` — Text field + calendar popover for picking a single date.
 - `DateRangeInput` — DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget.
 - `DateTimeInput` — Text date field + calendar popover, paired with a native time field, producing one Date.

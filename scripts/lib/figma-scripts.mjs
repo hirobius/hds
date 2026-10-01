@@ -66,6 +66,11 @@ export function deltaRuntimeSource() {
   return scriptBody('./figma-snapshot-delta.mjs');
 }
 
+/** delta.js's own in-Figma code (figma-agent-runtime.mjs, hds#418) as a script body. */
+export function agentRuntimeSource() {
+  return scriptBody('./figma-agent-runtime.mjs');
+}
+
 /** A module in this folder as a plain script: no comments, no imports, no `export`. */
 function scriptBody(fileName) {
   const source = readFileSync(new URL(fileName, import.meta.url), 'utf8');

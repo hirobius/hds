@@ -138,11 +138,20 @@ export const LAYOUT_GAP_NAMES = {
 
 /**
  * Cluster, Grid, Sidebar, Cover and Switcher `gap`, Bleed `amount` and
- * Center `gutter`: the four layout-gap names and nothing else. Closed, so an
- * untyped value sets no style, as it did before hds#404
- * (scripts/__tests__/spacing-computed-lock.test.mjs).
+ * Center `gutter`: the four layout-gap names, plus `medium` (hds#393), and
+ * nothing else. Closed, so an untyped value sets no style, as it did before
+ * hds#404 (scripts/__tests__/spacing-computed-lock.test.mjs).
+ *
+ * `medium` is TileGrid's 12px default gap, `semantic.space.component.medium`,
+ * the step Stack's `medium` reads. Unlike the four names it is fixed: compact
+ * density does not remap it, as it does not remap TileGrid's 12px. Only
+ * Grid's `gap` type takes it so far. It stays out of LAYOUT_GAP_NAMES, so
+ * Card and Stack, which spread those names, do not change.
  */
-export const LAYOUT_GAP = { names: LAYOUT_GAP_NAMES, closed: true } satisfies SpacingVocabulary;
+export const LAYOUT_GAP = {
+  names: { ...LAYOUT_GAP_NAMES, medium: 'var(--semantic-space-component-medium)' },
+  closed: true,
+} satisfies SpacingVocabulary;
 
 /**
  * Box `sx`: the t-shirt scale, plus the deprecated 'tight' | 'normal' |

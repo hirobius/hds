@@ -9,12 +9,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Tooltip } from '../app/components/hds-tooltip';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/HDS Tooltip',
   component: Tooltip,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Tooltip'),
     layout: 'centered',
     docs: {
       description: {
