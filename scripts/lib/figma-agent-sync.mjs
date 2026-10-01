@@ -18,14 +18,14 @@
  * Its first statement refuses any file but staging. See hdsAgentRun for what
  * it checks and does in Figma.
  *
- * It refuses to build, naming the route: a plan that moves variables between
- * collections, has conflicts, or makes a delta.js over 45,000 characters
- * (use_figma takes 50,000), or that writes a text or effect style
- * description holding " ' < > & (use_figma's read of one is not measured),
- * goes to Sync; --prune, and any variable, mode or
- * style staging holds that the model does not (an extra: a token deleted
- * from hirobius.tokens.json), go to the promote plugin, because delta.js
- * and Sync never delete. delta.js checks the extras again in staging.
+ * It refuses to build, naming the route. To Sync: a plan that moves
+ * variables between collections, has conflicts, writes a text or effect
+ * style description holding " ' < > & (use_figma's read of one is not
+ * measured), or makes a delta.js over 45,000 characters (use_figma takes
+ * 50,000). To the promote plugin, because delta.js and Sync never delete:
+ * --prune, and any variable, mode or style staging holds that the model
+ * does not (an extra, such as a token deleted from hirobius.tokens.json).
+ * delta.js counts the extras again in staging.
  */
 
 import {
