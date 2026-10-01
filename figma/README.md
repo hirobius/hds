@@ -359,8 +359,11 @@ as the source, and `hdsVerifyRuntime` checks the copy as it runs.
   or writes anything: one over its payload, and one over the source of every
   runtime function (`Function.prototype.toString`). A script whose data or code
   changed on the way stops there; only its last two call lines are not covered.
-  If Figma's sandbox ever hides function source, the scripts refuse and name the
-  development plugin, which Figma loads from disk. With the tokens as of
+  If Figma's sandbox ever hides function source, the scripts refuse and name a
+  plugin Figma loads from disk: a `--prune` script names the promote plugin
+  (`figma/push/promote/manifest.json`), the only one that deletes; any other
+  script, and `delta.js`, names the Sync plugin (`figma/push/plugin/manifest.json`).
+  With the tokens as of
   2026-10-01 each script is 47–110 KB of code for the agent to pass through (a
   `--prune` build carries every variable's identity, so moved tokens are
   recognised, and reaches 97–130 KB), so a plugin is the easier path for a full

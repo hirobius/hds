@@ -47,13 +47,19 @@ export function hdsChecksum(text) {
  * (an agent retypes the whole script into the `code` parameter). `functions`
  * is every top-level runtime function and `checksum` is hdsChecksum of their
  * source text joined by newlines, as `pnpm figma:push` generated it. Carriage
- * returns are ignored, so a CRLF transport still passes.
+ * returns are ignored, so a CRLF transport still passes. `prune` says whether
+ * the script deletes: where Figma hides function source, the refusal names
+ * the plugin that does the same job, the promote plugin for a prune (the Sync
+ * plugin never deletes) and the Sync plugin otherwise (hds#415).
  */
-export function hdsVerifyRuntime(functions, checksum) {
+export function hdsVerifyRuntime(functions, checksum, prune) {
   const texts = functions.map((fn) => String(fn).replace(/\r/g, ''));
   if (texts.some((text) => /\{\s*\[native code\]\s*\}\s*$/.test(text))) {
+    const plugin = prune
+      ? 'the promote plugin "HDS tokens promote (baked)" (figma/push/promote/manifest.json)'
+      : 'the Sync plugin "HDS tokens sync" (figma/push/plugin/manifest.json)';
     throw new Error(
-      'This Figma runtime does not expose function source, so the script cannot read its own code to check it. Nothing was read or written. Use the development plugin (figma/push/plugin), which Figma loads from disk.',
+      `This Figma runtime does not expose function source, so the script cannot read its own code to check it. Nothing was read or written. Use ${plugin}, which Figma loads from disk.`,
     );
   }
   if (hdsChecksum(texts.join('\n')) !== checksum) {

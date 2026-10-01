@@ -520,6 +520,17 @@ describe('delta.js refuses, writing nothing', () => {
     await refuses(s, /runtime code does not match its checksum/, tampered);
   });
 
+  it('a sandbox that hides function source: names the Sync plugin, since delta.js never prunes (hds#415)', async () => {
+    const s = await pending();
+    const hidden =
+      "Function.prototype.toString = function () { return 'function () { [native code] }'; };\n";
+    await refuses(
+      s,
+      /^This Figma runtime does not expose function source, so the script cannot read its own code to check it\. Nothing was read or written\. Use the Sync plugin "HDS tokens sync" \(figma\/push\/plugin\/manifest\.json\), which Figma loads from disk\.$/,
+      hidden + s.built.text,
+    );
+  });
+
   it('a pin mismatch: staging changed after figma/snapshot.json was committed', async () => {
     const s = await pending();
     const [variable] = await s.figma.variables.getLocalVariablesAsync();
