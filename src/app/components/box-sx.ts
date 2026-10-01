@@ -1,14 +1,19 @@
 /**
  * box-sx.ts — pure resolver + CSS injector for Box's `sx` prop.
  *
- * Deliberately dependency-free (no React import) so the resolver is unit
- * testable in isolation from the component tree. `box.tsx` is the only
- * consumer; it re-exports the types below as part of the public `Box` API.
+ * Deliberately React-free (its one import is the dev-only `warnOnce`) so the
+ * resolver is unit testable in isolation from the component tree. Two
+ * consumers: `box.tsx` re-exports the types below as part of the public `Box`
+ * API, and `stack.tsx` resolves its `gap` through `resolveSpacingValue`, the
+ * one spacing resolver (hds#206).
  *
  * @internal — the resolver internals (`resolveSx`, `sxClassName`, `injectSx`)
- * are exported for testing but the supported public surface is `Box` + the
+ * are exported for testing, and `resolveSpacingValue`, `SpacingVocabulary`
+ * and `SPACE_SCALE` for Stack. The supported public surface is `Box` + the
  * `Sx*` types, both re-exported from `box.tsx`.
  */
+
+import { warnOnce } from '../../lib/deprecation';
 
 // ── Breakpoints ──────────────────────────────────────────────────────────────
 // Mirrors `hds.breakpoints` in `src/app/design-system/tokens.ts` (itself
@@ -71,7 +76,61 @@ const UNITLESS = new Set([
 // 4px unit rather than a raw px literal.
 const EXISTING_SPACE_SCALE = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 16, 20, 24, 32]);
 
-const SEMANTIC_SPACE_STEPS = new Set(['tight', 'normal', 'inset', 'spacious']);
+// hds#206 item 4: Box `sx` and Stack `gap` resolve spacing through
+// `resolveSpacingValue` below. Each passes its own vocabulary: the names it
+// accepts and what a number means. The vocabularies are frozen at what each
+// rendered before hds#206, so no consumer's spacing moves before the 1.0
+// alias removal (scripts/__tests__/spacing-computed-lock.test.mjs).
+
+/** The canonical t-shirt scale, `semantic.space.scale.{xs,sm,md,lg,xl}` (hds#206). */
+export const SPACE_SCALE = {
+  xs: 'var(--semantic-space-scale-xs)',
+  sm: 'var(--semantic-space-scale-sm)',
+  md: 'var(--semantic-space-scale-md)',
+  lg: 'var(--semantic-space-scale-lg)',
+  xl: 'var(--semantic-space-scale-xl)',
+} as const;
+
+/**
+ * The names a spacing prop accepts, and what a number means there:
+ * `'units'` is a count of 4px units (Box `sx`), `'raw'` returns the number
+ * as-is for React's inline style to read as px (Stack `gap`).
+ */
+export interface SpacingVocabulary {
+  readonly names: Readonly<Record<string, string>>;
+  readonly numbers: 'units' | 'raw';
+}
+
+/**
+ * Box `sx`: the t-shirt scale, plus the deprecated 'tight' | 'normal' |
+ * 'inset' | 'spacious' at the vars they read before hds#206. Those are
+ * `semantic.space.layout.*`, fixed pixels that compact density does not
+ * remap, unlike the scale steps (and unlike Stack's same four names), so
+ * they keep their layout var until they are removed in 1.0. The internal
+ * spacing codemod skips this file, so it cannot rewrite them to scale steps
+ * and change compact pixels. Each warns once in dev (ADR-014 step 1).
+ */
+const BOX_SX_SPACING: SpacingVocabulary = {
+  names: {
+    ...SPACE_SCALE,
+    tight: 'var(--semantic-space-layout-tight)',
+    normal: 'var(--semantic-space-layout-normal)',
+    inset: 'var(--semantic-space-layout-inset)',
+    spacious: 'var(--semantic-space-layout-spacious)',
+  },
+  numbers: 'units',
+};
+
+const own = (table: Readonly<Record<string, string>>, key: string): string | undefined =>
+  Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
+
+/** Box sx's deprecated names and the step replacing each (MIGRATIONS.md, hds#206). */
+const BOX_SX_DEPRECATED: Readonly<Record<string, string>> = {
+  tight: 'sm',
+  normal: 'md',
+  inset: 'lg',
+  spacious: 'xl',
+};
 
 const SPACING_PROP_MAP: Record<string, string[]> = {
   m: ['margin'],
@@ -93,8 +152,17 @@ const SPACING_PROP_MAP: Record<string, string[]> = {
   columnGap: ['column-gap'],
 };
 
-function resolveSpacingValue(value: SxValue): string {
+/**
+ * The one spacing resolver for Box `sx` and Stack `gap`. A name is looked up
+ * in the caller's vocabulary (own keys only, so 'constructor' is not a name);
+ * anything else ('auto', '1rem', a `var()`) passes through.
+ */
+export function resolveSpacingValue(
+  value: SxValue,
+  vocabulary: SpacingVocabulary,
+): string | number {
   if (typeof value === 'number') {
+    if (vocabulary.numbers === 'raw') return value;
     // This IS the primitive-tier bridge for Box's numeric spacing shorthand
     // (`p`, `m`, `gap`, ...) — same pipeline role as the allowlisted
     // src/app/design-system/tokens.ts, just resolving a scale index to a
@@ -104,11 +172,7 @@ function resolveSpacingValue(value: SxValue): string {
       ? `var(--primitive-space-${value})` // tier-ok: primitive-tier bridge, hds#186
       : `calc(var(--primitive-space-1) * ${value})`; // tier-ok: primitive-tier bridge, hds#186
   }
-  if (SEMANTIC_SPACE_STEPS.has(value)) {
-    return `var(--semantic-space-layout-${value})`;
-  }
-  // Raw string (e.g. 'auto', '1rem', 'calc(50% - 8px)') — pass through.
-  return value;
+  return own(vocabulary.names, value) ?? value;
 }
 
 // ── Token colors ──────────────────────────────────────────────────────────────
@@ -154,7 +218,14 @@ function camelToKebab(prop: string): string {
 function buildDeclarations(key: string, value: SxValue): string[] {
   const spacingProps = SPACING_PROP_MAP[key];
   if (spacingProps) {
-    const resolved = resolveSpacingValue(value);
+    const step = typeof value === 'string' ? own(BOX_SX_DEPRECATED, value) : undefined;
+    if (step) {
+      warnOnce(
+        `box-sx-spacing-${value}`,
+        `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}': same pixels at the default density, tighter under compact (MIGRATIONS.md).`,
+      );
+    }
+    const resolved = resolveSpacingValue(value, BOX_SX_SPACING);
     return spacingProps.map((prop) => `${prop}:${resolved}`);
   }
 
@@ -182,14 +253,14 @@ function isResponsiveObject(value: unknown): value is Partial<Record<Breakpoint,
  * Resolves an `SxObject` into an ordered array of standalone, top-level CSS
  * rule strings ready for individual `CSSStyleSheet.insertRule()` calls.
  *
- * Pure — no DOM access. Order: base (non-responsive) rules for every selector
- * encountered (outer class first, then each `&`-selector in declaration
- * order), followed by `@media (min-width: …)` blocks in ascending breakpoint
- * order. Each media block is ONE rule string containing its inner selector
- * rules concatenated as plain text — that concatenation is safe (and
- * required) because a single `insertRule()` call for an `@media {...}` block
- * is one rule; only top-level rule concatenation breaks `insertRule()` (see
- * `injectSx` below).
+ * Pure apart from a dev-only deprecation warning; no DOM access. Order: base
+ * (non-responsive) rules for every selector encountered (outer class first,
+ * then each `&`-selector in declaration order), followed by
+ * `@media (min-width: …)` blocks in ascending breakpoint order. Each media
+ * block is ONE rule string containing its inner selector rules concatenated
+ * as plain text — that concatenation is safe (and required) because a single
+ * `insertRule()` call for an `@media {...}` block is one rule; only top-level
+ * rule concatenation breaks `insertRule()` (see `injectSx` below).
  */
 export function resolveSx(sx: SxObject, className: string): string[] {
   const baseBuckets = new Map<string, string[]>();

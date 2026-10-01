@@ -52,3 +52,68 @@ Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
 Ops (`hirobius/ops`) pins `^0.16.0`. A read-only dry run on 2026-09-29 found 11
 import sites in 11 files, all four names being `Page`, `ErrorPattern`,
 `AssetImg` and `CodeBlock`. The rewrite is tracked as an issue on the Ops repo.
+
+## Spacing names move to the t-shirt scale
+
+- **Deprecated in:** 0.17 (hds#206). Spacing is one scale,
+  `semantic.space.scale.{xs,sm,md,lg,xl}` (8/16/24/32/48px). The old names
+  keep computing exactly what they did, at both densities, and carry
+  `$deprecated` in `hirobius.tokens.json`.
+- **Removed in:** not before 1.0, because removal happens in a major (step 4).
+  No window is set yet: steps 2 and 3 come first.
+- **Warning:** in a development build, Box `sx`'s `'tight'` to `'spacious'`
+  each log one `[HDS deprecation]` console warning naming the step to use.
+  Production builds stay silent. The token paths cannot warn at runtime.
+- **Codemod:** `scripts/codemod-spacing-vocabulary.mjs` rewrites the token
+  references below, but only inside HDS's own `src/`. A consumer codemod in
+  `codemods/` with `--root`, `--check` and `--dry-run` does not exist yet.
+
+| Old                                                  | New                                |
+| ---------------------------------------------------- | ---------------------------------- |
+| `semantic.space.component.gap`                       | `semantic.space.scale.xs`          |
+| `semantic.space.layout.tight`                        | `semantic.space.scale.sm`          |
+| `semantic.space.layout.normal`                       | `semantic.space.scale.md`          |
+| `semantic.space.layout.inset`                        | `semantic.space.scale.lg`          |
+| `semantic.space.layout.spacious`                     | `semantic.space.scale.xl`          |
+| `semantic.space.component.padding`                   | `semantic.space.surface.padding`   |
+| `semantic.space.layout.gutter`                       | `semantic.space.region.gutter`     |
+| Box `sx` `'tight'` `'normal'` `'inset'` `'spacious'` | `'sm'` `'md'` `'lg'` `'xl'`        |
+| Box `sx` integer `2` `4` `6` `8` `12` (4px units)    | `'xs'` `'sm'` `'md'` `'lg'` `'xl'` |
+
+The CSS variables follow the paths (`--semantic-space-layout-tight` becomes
+`--semantic-space-scale-sm`). `surface.padding` and `region.gutter` are not
+scale steps: tenants and `theme.css` override them at runtime, always with a
+scale step.
+
+Compact density: each swap in the table is pixel-identical at the default
+density, but not under `data-density="compact"`. `component.gap`,
+`layout.tight|normal|inset|spacious`, Box `sx`'s `'tight'` to `'spacious'` and
+Box `sx` integers are fixed pixels. The `scale.*` steps that replace them
+tighten one step under compact (8, 16, 24, 32, 48px become 6, 12, 20, 24,
+40px). Moving to the scale therefore tightens compact screens, the way Stack's
+gaps already do. To keep the old compact pixels exactly, use the fixed step
+instead: `hds.space.px8|px16|px24|px32|px48`, or
+`--primitive-space-2|4|6|8|12`.
+
+Stack's `gap` keeps its old names for now, because its `'xs'` is the 2px
+subgrid step, not `scale.xs`. Its `'tight'` to `'spacious'` read the scale
+steps, so unlike Box `sx`'s same four names they tighten under compact. That
+difference stays until both sets of names are removed. Stack's numbers (raw px)
+and anything else untyped callers pass render what they did before.
+
+Upgrade first: Box `sx` takes `'xs'` to `'xl'` only from the first release after
+0.19.1. On 0.19.1 and earlier the string passes through, so `p: 'sm'` becomes
+`padding: sm`, which is invalid CSS and renders no padding.
+
+`hds.density.*` (the `hds` token bridge) is deprecated from that release too,
+with the same removal window (`@removeIn 1.0.0`). Its names sit one step off the
+scale, and each replacement computes the same pixels at both densities:
+
+| Old                                         | New                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------ |
+| `hds.density.sm` (`var(--hds-space-sm)`)    | `hds.semantic.space.scale.xs`                                      |
+| `hds.density.md` (`var(--hds-space-md)`)    | `hds.semantic.space.scale.sm`                                      |
+| `hds.density.lg` (`var(--hds-space-lg)`)    | `hds.semantic.space.scale.md`                                      |
+| `hds.density.xl` (`var(--hds-space-xl)`)    | `hds.semantic.space.scale.lg`                                      |
+| `hds.density.xl2` (`var(--hds-space-2xl)`)  | `hds.semantic.space.scale.xl`                                      |
+| `hds.density.xs`, `hds.density.xl3`, `.xl4` | no scale step; `hds.space.px4`, `px64`, `px80` (not density-aware) |
