@@ -3811,6 +3811,7 @@
         "src/app/components/table.tsx",
         "src/app/components/tokenTableUtils.ts",
         "src/app/components/tokenUtils.ts",
+        "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/context/hds-theme.tsx",
         "src/app/data/hdsEditorial.tsx",
@@ -6037,6 +6038,7 @@
         "src/app/components/asset-img.test.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/index.ts",
@@ -13230,6 +13232,7 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/hds-tooltip.tsx",
+        "src/app/components/tooltip.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx"
       ],
