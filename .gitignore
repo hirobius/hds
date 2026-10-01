@@ -183,3 +183,7 @@ reports/
 
 # Agent-built consistency runs (eval/consistency/README.md); force-add only a run that backs a ledger entry
 eval/consistency/runs/
+
+# Full HDS consumer list from `pnpm upgrade:consumers --out` (hds#453). It names
+# private repos, and this repo is public: never commit it.
+.upgrade-consumers.json
