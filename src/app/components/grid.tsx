@@ -7,13 +7,14 @@
  * @useInstead Stack a single row or column
  * @useInstead Box one-off layout that no named primitive covers
  * @ai-intent Solves multi-column layout and repeatable alignment with token-governed gaps, responsive column collapse, and a first-class subgrid escape hatch for nested structure.
- * @ai-rules Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient.
+ * @ai-rules Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, auto-fill, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient.
  *
  * Enforces semantic gap and column values. No arbitrary CSS grid.
  * - layout='fixed':   responsive base (collapses via CSS at tablet/mobile).
  *                     `columns` sets desktop count (default 12). Tablet/mobile
  *                     clamp to min(8, cols) and min(4, cols) respectively.
  * - layout='auto-fit': responsive card wrapping via auto-fit.
+ * - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe).
  * - subgrid=true:     sets gridTemplateColumns:'subgrid' for nested alignment.
  *
  * Usage (default responsive 12-col):
@@ -35,17 +36,20 @@ import React, { useEffect, useState, type ReactNode, type CSSProperties } from '
 import hds from '../design-system/tokens';
 import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
-type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
-type GridLayout = 'fixed' | 'auto-fit';
+type SemanticGap = 'medium' | 'tight' | 'normal' | 'inset' | 'spacious';
+type GridLayout = 'fixed' | 'auto-fit' | 'auto-fill';
 
-export interface GridProps {
+/** Grid's own props, plus any HTML attribute (role, aria-*, id) for its root element. */
+export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Grid content. */
   children: ReactNode;
-  /** Grid layout mode: 'fixed' (responsive) or 'auto-fit' (card wrapping). Defaults to 'fixed'. */
+  /** Grid layout mode: 'fixed' (responsive), 'auto-fit' (card wrapping) or 'auto-fill' (tile wrapping that keeps empty tracks). Defaults to 'fixed'. */
   layout?: GridLayout;
+  /** Minimum item width before 'auto-fit' or 'auto-fill' wraps, capped at the container width. Defaults to 280px. */
+  minItemWidth?: string;
   /** Desktop column count for layout='fixed'. Tablet clamps to min(8,n), mobile to min(4,n). Defaults to 12. */
   columns?: number;
-  /** Gap between grid items: semantic only. Defaults to 'inset' (32px). */
+  /** Gap between grid items: semantic only. 'medium' is a fixed 12px. Defaults to 'inset' (32px). */
   gap?: SemanticGap;
   /** If true, sets gridTemplateColumns:'subgrid' for nested grid alignment. */
   subgrid?: boolean;
@@ -89,6 +93,9 @@ const GridItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridItemProps>
   );
 });
 
+/** The item width 'auto-fit' and 'auto-fill' wrap at when `minItemWidth` is not set. */
+const DEFAULT_MIN_ITEM_WIDTH = '280px';
+
 function getResponsiveColumns(width: number, columns: number) {
   if (width <= hds.breakpoints.sm) {
     return Math.min(4, columns);
@@ -105,12 +112,14 @@ const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(fu
   {
     children,
     layout = 'fixed',
+    minItemWidth,
     columns = 12,
     gap = 'inset',
     subgrid = false,
     style,
     className,
     as: Tag = 'div',
+    ...rest
   },
   ref,
 ) {
@@ -136,8 +145,12 @@ const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(fu
 
   if (subgrid) {
     gridTemplateColumns = 'subgrid';
-  } else if (layout === 'auto-fit') {
-    gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+  } else if (layout === 'auto-fit' && minItemWidth === undefined) {
+    // The track auto-fit has always rendered, kept byte for byte (hds#393).
+    gridTemplateColumns = `repeat(auto-fit, minmax(${DEFAULT_MIN_ITEM_WIDTH}, 1fr))`;
+  } else if (layout === 'auto-fit' || layout === 'auto-fill') {
+    // min() caps the track at the container, so a narrow container gets one full-width column.
+    gridTemplateColumns = `repeat(${layout}, minmax(min(${minItemWidth ?? DEFAULT_MIN_ITEM_WIDTH}, 100%), 1fr))`;
   } else {
     gridTemplateColumns = `repeat(${currentColumns}, minmax(0, 1fr))`;
   }
@@ -155,6 +168,7 @@ const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(fu
 
   return (
     <Tag
+      {...rest}
       ref={ref}
       className={className}
       style={gridStyle}

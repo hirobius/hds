@@ -20,6 +20,12 @@
  *
  * Every write is appended to `figma.writes` so tests can assert ordering and
  * that a second push writes nothing.
+ *
+ * `figma.useFigma()` makes the file read the way the Figma MCP server's
+ * use_figma sandbox reads it (measured live on staging, 2026-10-01, hds#418):
+ * a variable's `description` getter returns HTML-escaped text (" &quot;,
+ * ' &#39;, < &lt;, > &gt;, & &amp;) while a write stores the raw string as
+ * given, and `figma.root.name` is "Document" instead of the file name.
  */
 
 const ALNUM_NAMESPACE = /^[A-Za-z0-9_.]{3,}$/;
@@ -51,6 +57,14 @@ const DETACHED_BY_WRITE = {
 
 const clone = (value) => (value === undefined ? undefined : JSON.parse(JSON.stringify(value)));
 const fontKey = (font) => `${font.family}|${font.style}`;
+/** What use_figma's variable.description getter returns for a stored description. */
+const htmlEscaped = (text) =>
+  String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 
 function pluginData({ supported = true, owner, log }) {
   const shared = new Map();
@@ -87,7 +101,15 @@ export function createFakeFigma({
   variablePluginData = true,
 } = {}) {
   let nextId = 1;
-  const id = (prefix) => `${prefix}:1:${nextId++}`;
+  let useFigmaReads = false;
+  const used = new Set();
+  /** A new id, or `given` (seededFakeFigma); never one already in use. */
+  const id = (prefix, given) => {
+    let next = given;
+    while (!next || used.has(next)) next = `${prefix}:1:${nextId++}`;
+    used.add(next);
+    return next;
+  };
   const writes = [];
   const log = (entry) => writes.push(entry);
   const collections = new Map();
@@ -151,9 +173,9 @@ export function createFakeFigma({
 
   const DEFAULTS = { COLOR: { r: 0, g: 0, b: 0, a: 1 }, FLOAT: 0, STRING: '', BOOLEAN: false };
 
-  function makeVariable(name, collection, resolvedType) {
+  function makeVariable(name, collection, resolvedType, givenId) {
     assertUniqueName(collection.id, name, null);
-    const variableId = id('VariableID');
+    const variableId = id('VariableID', givenId);
     let currentName = name;
     let scopes = ['ALL_SCOPES'];
     const values = new Map(collection.modes.map((m) => [m.modeId, clone(DEFAULTS[resolvedType])]));
@@ -209,8 +231,13 @@ export function createFakeFigma({
       ...pluginData({ supported: variablePluginData, owner: 'variable', log }),
     };
     // description / hiddenFromPublishing writes are logged through a proxy so
-    // tests see them; reads stay plain.
+    // tests see them; reads stay plain, except a description read as use_figma
+    // reads it (figma.useFigma()).
     const proxy = new Proxy(variable, {
+      get(target, prop, receiver) {
+        if (prop === 'description' && useFigmaReads) return htmlEscaped(target.description);
+        return Reflect.get(target, prop, receiver);
+      },
       set(target, prop, value) {
         if (prop === 'description' || prop === 'hiddenFromPublishing') {
           log(`variable.${prop}:${target.name}`);
@@ -222,10 +249,10 @@ export function createFakeFigma({
     return proxy;
   }
 
-  function makeCollection(name) {
+  function makeCollection(name, givenId) {
     const modes = [{ modeId: id('Mode'), name: 'Mode 1' }];
     const collection = {
-      id: id('VariableCollectionId'),
+      id: id('VariableCollectionId', givenId),
       name,
       remote: false,
       isExtension: false,
@@ -303,7 +330,7 @@ export function createFakeFigma({
     }
   };
 
-  function makeTextStyle() {
+  function makeTextStyle(givenId) {
     let fontName = { family: 'Inter', style: 'Regular' };
     const state = {
       fontSize: 12,
@@ -315,7 +342,7 @@ export function createFakeFigma({
     const detach = (property) =>
       DETACHED_BY_WRITE[property].forEach((field) => delete bound[field]);
     const style = {
-      id: id('S'),
+      id: id('S', givenId),
       type: 'TEXT',
       name: '',
       description: '',
@@ -372,10 +399,10 @@ export function createFakeFigma({
     return proxy;
   }
 
-  function makeEffectStyle() {
+  function makeEffectStyle(givenId) {
     let effects = [];
     const style = {
-      id: id('S'),
+      id: id('S', givenId),
       type: 'EFFECT',
       name: '',
       description: '',
@@ -418,8 +445,79 @@ export function createFakeFigma({
     setModeLimit(limit) {
       modeLimit = limit;
     },
+    /**
+     * Test control, not Plugin API: make this empty file hold exactly what
+     * `snapshot` (an hdsReadState snapshot) records, ids included, then forget
+     * the writes that took. See seededFakeFigma.
+     */
+    seed(snapshot) {
+      const key = (node, field, value) =>
+        value && node.setSharedPluginData('hirobius', field, value);
+      const byId = new Map();
+      for (const c of snapshot.collections) {
+        if (c.defaultMode !== c.modes[0]) {
+          throw new Error(`seed: ${c.name} defaults to ${c.defaultMode}, not its first mode`);
+        }
+        const collection = makeCollection(c.name, c.id);
+        collection.hiddenFromPublishing = c.hiddenFromPublishing;
+        collection.renameMode(collection.defaultModeId, c.modes[0]);
+        c.modes.slice(1).forEach((mode) => collection.addMode(mode));
+        key(collection, 'collection', c.key);
+        for (const v of c.variables) {
+          const variable = makeVariable(v.name, collection, v.resolvedType, v.id);
+          variable.description = v.description;
+          variable.hiddenFromPublishing = v.hiddenFromPublishing;
+          variable.scopes = v.scopes;
+          Object.entries(v.codeSyntax).forEach(([platform, text]) =>
+            variable.setVariableCodeSyntax(platform, text),
+          );
+          key(variable, 'path', v.path);
+          byId.set(v.id, { variable, collection, values: v.valuesByMode });
+        }
+      }
+      for (const { variable, collection, values } of byId.values()) {
+        for (const mode of collection.modes) {
+          const entry = values[mode.name];
+          if (entry === null) variable._values.delete(mode.modeId);
+          else if ('alias' in entry) {
+            variable.setValueForMode(mode.modeId, { type: 'VARIABLE_ALIAS', id: entry.alias });
+          } else variable.setValueForMode(mode.modeId, entry.value);
+        }
+      }
+      for (const s of snapshot.textStyles) {
+        const style = makeTextStyle(s.id);
+        const font = { family: s.fontFamily, style: s.fontStyle };
+        if (!available.has(fontKey(font))) throw new Error(`seed: no font ${fontKey(font)}`);
+        loadedFonts.add(fontKey(font));
+        Object.assign(style, { name: s.name, description: s.description, fontName: font });
+        ['fontSize', 'lineHeight', 'letterSpacing', 'textCase'].forEach(
+          (field) => (style[field] = s[field]),
+        );
+        Object.entries(s.boundVariables).forEach(([field, variableId]) =>
+          style.setBoundVariable(field, byId.get(variableId).variable),
+        );
+        key(style, 'path', s.path);
+      }
+      for (const s of snapshot.effectStyles) {
+        const style = makeEffectStyle(s.id);
+        Object.assign(style, { name: s.name, description: s.description, effects: s.effects });
+        key(style, 'path', s.path);
+      }
+      if (snapshot.lastPush) key(figma.root, 'lastPush', JSON.stringify(snapshot.lastPush));
+      writes.length = 0;
+      return figma;
+    },
+    /** Test control, not Plugin API: read from now on as use_figma does (see the file header). */
+    useFigma(on = true) {
+      useFigmaReads = on;
+    },
     fileKey: undefined,
-    root: { name: fileName, ...pluginData({ owner: 'root', log }) },
+    root: {
+      get name() {
+        return useFigmaReads ? 'Document' : fileName;
+      },
+      ...pluginData({ owner: 'root', log }),
+    },
     notify() {
       throw new Error('not implemented');
     },
@@ -457,4 +555,29 @@ export function createFakeFigma({
     },
   };
   return figma;
+}
+
+/**
+ * An in-memory file holding exactly what `snapshot` records (a committed
+ * figma/snapshot.json's `snapshot`), ids included, named as it records, with
+ * every font its text styles use (plus Inter Regular, a new style's default),
+ * and no writes logged yet.
+ */
+export function seededFakeFigma(snapshot, options = {}) {
+  return createFakeFigma({
+    fileName: snapshot.file.name,
+    fonts: textStyleFonts(snapshot.textStyles),
+    ...options,
+  }).seed(snapshot);
+}
+
+/** The fonts these text styles (model or snapshot records) use, plus Inter Regular, a new text style's default. */
+export function textStyleFonts(styles) {
+  const fonts = [{ family: 'Inter', style: 'Regular' }];
+  styles.forEach((s) => {
+    if (!fonts.some((f) => f.family === s.fontFamily && f.style === s.fontStyle)) {
+      fonts.push({ family: s.fontFamily, style: s.fontStyle });
+    }
+  });
+  return fonts;
 }

@@ -2,6 +2,7 @@
  * Tooltip — accessible hover/focus tooltip on Radix (Overlays).
  * @category Overlays
  * @tier primitive
+ * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix Tooltip (@radix-ui/react-tooltip) themed with role tokens. Provides
@@ -21,7 +22,9 @@
  * content text (semantic.color.content.inverse) — these are a designed pair, so
  * the bubble reads correctly in BOTH themes (dark bubble/light text in light
  * mode, light bubble/dark text in dark mode). Radius 4 (primitive.radius.4),
- * shadow-overlay, and a matching arrow. Text reuses the caption type composite.
+ * shadow-floating (semantic.elevation.floating, the popover and dropdown
+ * shadow; shadow-overlay is for dialogs), and a matching arrow. Text reuses the
+ * caption type composite.
  */
 
 import * as React from 'react';
@@ -56,7 +59,7 @@ const HdsTooltipContent = /* @__PURE__ */ React.forwardRef<
         sideOffset={sideOffset}
         collisionPadding={8}
         className={cn(
-          'z-50 max-w-xs select-none px-2 py-1 shadow-overlay',
+          'z-50 max-w-xs select-none px-2 py-1 shadow-floating',
           'bg-[var(--semantic-color-surface-inverse)] rounded-[var(--primitive-radius-4)]', // tier-ok: 4px primitive radius, no semantic 4px token
           className,
         )}
@@ -111,6 +114,13 @@ interface HdsTooltipComponent extends React.FC<
  * Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is
  * self-contained — no app-level provider required. Controlled via
  * `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+ * @usage Name an icon-only control, or add a short hint that appears on hover and keyboard focus.
+ * @whenNot Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).
+ * @useInstead Popover interactive or longer content that opens on click
+ * @useInstead Text a hint that must stay visible
+ * @keyboard Focus Opens the tooltip when the trigger receives keyboard focus.
+ * @keyboard Escape Closes the tooltip and keeps focus on the trigger.
+ * @keyboard Tab Moves on to the next control and closes the tooltip.
  * @public
  */
 const Tooltip: HdsTooltipComponent = /* @__PURE__ */ Object.assign(TooltipRoot, {

@@ -8,7 +8,7 @@ Where each component lives in Figma, Storybook and source.
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](../figma/README.md).
 
-**40 of 111** components link a Figma node.
+**41 of 112** components link a Figma node.
 
 | Component          | Figma node                                                                                         | Story                                                                         | Source                                                               |
 | ------------------ | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -52,5 +52,6 @@ Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, w
 | `Textarea`         | [85:14](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14)   | [textarea.stories.tsx](../src/stories/textarea.stories.tsx)                   | [textarea.tsx](../src/app/components/textarea.tsx)                   |
 | `ToastProvider`    | [93:367](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367) | [toast.stories.tsx](../src/stories/toast.stories.tsx)                         | [toast.tsx](../src/app/components/toast.tsx)                         |
 | `Toggle`           | [37:19](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19)   | [toggle.stories.tsx](../src/stories/toggle.stories.tsx)                       | [toggle.tsx](../src/app/components/toggle.tsx)                       |
+| `Tooltip`          | [93:15](https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15)   | [hds-tooltip.stories.tsx](../src/stories/hds-tooltip.stories.tsx)             | [hds-tooltip.tsx](../src/app/components/hds-tooltip.tsx)             |
 
 <!-- design-links:end -->

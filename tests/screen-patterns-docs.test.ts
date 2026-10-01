@@ -81,6 +81,16 @@ describe('DESIGN.md screen rules', () => {
     }
   });
 
+  // hds#393 (prune B3): the survivors that replace SelectableCard, TileGrid and
+  // StatusDot are named where an agent picks a tile, so it never reaches for
+  // the removed component.
+  it('names the selectable Card, the auto-fill Grid and the dot Badge beside the table', () => {
+    const cardRow = design.split('\n').find((l) => l.startsWith('| `Card`'));
+    expect(cardRow, 'no table row led by `Card`').toContain('`selectable`');
+    expect(design).toContain('`Grid` with `layout="auto-fill"` and `minItemWidth`');
+    expect(design).toContain('`Badge` with `dot`');
+  });
+
   it('does not contradict itself on the container radius or the action radius', () => {
     expect(design).not.toMatch(/never 12\/16\/20/);
     expect(design).not.toMatch(/4px action radius/);

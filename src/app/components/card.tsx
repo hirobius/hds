@@ -130,6 +130,24 @@ const cardVariants = /* @__PURE__ */ cva(
   },
 );
 
+// `selectable` (hds#393): selection is a 2px inset ring, not a fill or border
+// change (cards are never tinted, and the border belongs to tone/variant), so
+// it composes with every tone and variant. Inset keeps it off hds-focus's
+// outline, which sits 2px outside the edge: selected, focused and both all look
+// different. No transition: the ring snaps, so reduced motion needs no override.
+const SELECTABLE_CARD =
+  'cursor-pointer hds-focus data-[selected=true]:ring-2 data-[selected=true]:ring-inset data-[selected=true]:ring-ring';
+
+// A click on a control inside a selectable card belongs to that control, the
+// same rule as Space typed into a nested field.
+const NESTED_CONTROL =
+  'a[href],button,input,select,textarea,label,summary,[contenteditable="true"],[tabindex],[role="button"],[role="link"],[role="checkbox"],[role="switch"],[role="option"],[role="menuitem"],[role="tab"]';
+
+function fromNestedControl(event: React.SyntheticEvent<HTMLElement>): boolean {
+  const control = (event.target as Element).closest?.(NESTED_CONTROL);
+  return !!control && control !== event.currentTarget && event.currentTarget.contains(control);
+}
+
 /** @public */
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Render-as element for the root wrapper. */
@@ -153,6 +171,12 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
    *  legibility. Default false — repeated cards in grids should stay
    *  borderless and rely on whitespace, rails, or section dividers. */
   bordered?: boolean;
+  /** Make the card one checkbox-like option (role="checkbox"): click or Space toggles it, Enter does not. A click on a control inside it is left to that control. */
+  selectable?: boolean;
+  /** Whether a selectable card is selected. Controlled: pair with onSelectedChange. */
+  selected?: boolean;
+  /** Called with the next selected state when a selectable card is toggled. */
+  onSelectedChange?: (selected: boolean) => void;
 }
 
 interface CardComponent extends React.ForwardRefExoticComponent<
@@ -178,6 +202,9 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
     variant = 'default',
     tone = 'neutral',
     bordered = false,
+    selectable = false,
+    selected = false,
+    onSelectedChange,
     children,
     ...rest
   },
@@ -187,6 +214,28 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
   const resolvedPadding = noPadding ? 'none' : padding;
   const paddingValue = resolvePaddingValue(resolvedPadding);
   const gapValue = resolvedPadding === 'none' ? '0' : resolveSpacingValue(gap, CARD_GAP);
+  // Controlled only, like the other selection controls: the card reports the
+  // next state and the page decides it.
+  const selectableProps = selectable
+    ? {
+        role: 'checkbox',
+        'aria-checked': selected,
+        tabIndex: 0,
+        'data-selected': selected ? 'true' : 'false',
+        onClick: (event: React.MouseEvent<HTMLDivElement>) => {
+          rest.onClick?.(event);
+          if (!event.defaultPrevented && !fromNestedControl(event)) onSelectedChange?.(!selected);
+        },
+        onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
+          rest.onKeyDown?.(event);
+          // Only the card's own Space: not one typed into something inside it.
+          if (event.defaultPrevented || event.key !== ' ' || event.target !== event.currentTarget)
+            return;
+          event.preventDefault(); // Space would scroll the page
+          onSelectedChange?.(!selected);
+        },
+      }
+    : {};
 
   return (
     <Comp
@@ -195,7 +244,11 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       data-variant={variant}
       data-tone={tone}
       data-bordered={bordered ? 'true' : 'false'}
-      className={cn(cardVariants({ variant, tone, bordered, className }))}
+      className={cn(
+        cardVariants({ variant, tone, bordered }),
+        selectable && SELECTABLE_CARD,
+        className,
+      )}
       // inline-ok: token-driven padding/gap legacy contract (not a variant-contract axis)
       style={{
         padding: paddingValue,
@@ -203,6 +256,7 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
         ...style,
       }}
       {...rest}
+      {...selectableProps}
     >
       {children}
     </Comp>
@@ -453,7 +507,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
  * Tagged per-export, not on the file block: this module exports eight
  * components and a file-level @figma would hand all eight this one node.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11
- * @usage Group related content on a raised surface with header, body, footer and metric slots.
+ * @usage Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy
  * @useInstead Card.Metric a single headline figure

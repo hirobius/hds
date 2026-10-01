@@ -75,6 +75,9 @@ Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 ### Badge
 Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
+  - dot: boolean = false
+  - label: string
+  - size: "sm" | "md" | "lg"
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
 
 ### Bleed
@@ -105,12 +108,15 @@ Breadcrumb trail. Links route through the HDS router seam (plain anchors with no
 ### Button
 Triggers an action when activated.
   - asChild: boolean = false
+  - defaultPressed: boolean
   - disabled: boolean
   - iconLeft: ReactNode
   - iconOnly: boolean = false
   - iconRight: ReactNode
   - label: string
   - loading: boolean = false
+  - onPressedChange: ((pressed: boolean) => void)
+  - pressed: boolean
   - size: "sm" | "md" | "lg" | null
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - variant: "primary" | "secondary" | "tertiary" | null
@@ -126,7 +132,10 @@ Tagged per-export, not on the file block: this module exports eight components a
   - bordered: boolean = false
   - gap: GapOption = tight
   - noPadding: boolean = false
+  - onSelectedChange: ((selected: boolean) => void)
   - padding: PaddingOption = component
+  - selectable: boolean = false
+  - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
   - variant: 'default' | 'accent' = default
 
@@ -207,7 +216,7 @@ CodeBlock - code display with copy button and optional collapsible toggle.
   - variant: "inline" | "block" = block
 
 ### Combobox
-Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; openi…
+Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current select…
   - aria-describedby: string
   - aria-invalid: boolean
   - aria-label: string
@@ -215,11 +224,12 @@ Combobox — searchable single-select (Popover + filtered listbox). A select-wit
   - disabled: boolean = false
   - emptyMessage: string = No results
   - id: string
-  - onChange: (value: string) => void
+  - multiple: boolean
+  - onChange: ((value: string) => void) | ((value: string[]) => void)
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
-  - value: string | null
+  - value: string | readonly string[] | null
 
 ### Container
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
@@ -396,10 +406,16 @@ Grid — responsive grid composition primitive. Enforces semantic gap and column
   - children: ReactNode
   - className: string
   - columns: number = 12
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = inset
-  - layout: 'fixed' | 'auto-fit' = fixed
+  - gap: 'medium' | 'tight' | 'normal' | 'inset' | 'spacious' = inset
+  - layout: 'fixed' | 'auto-fit' | 'auto-fill' = fixed
+  - minItemWidth: string
   - style: CSSProperties
   - subgrid: boolean = false
+
+### HdsRouterProvider
+Provide a router adapter to all HDS components below. Wrap your app root once.
+  - adapter: HdsRouterAdapter
+  - children: ReactNode
 
 ### HdsThemeProvider
 Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.
@@ -427,6 +443,7 @@ Icon — semantic icon wrapper for Lucide icons.
 IconButton ” icon-only action trigger built on the shared Button primitive.
   - aria-label: string
   - asChild: boolean
+  - defaultPressed: boolean
   - disabled: boolean
   - icon: LucideIcon
   - iconColor: string
@@ -435,6 +452,8 @@ IconButton ” icon-only action trigger built on the shared Button primitive.
   - iconSize: IconSize
   - label: string
   - loading: boolean
+  - onPressedChange: ((pressed: boolean) => void)
+  - pressed: boolean
   - size: "sm" | "md" | "lg"
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - variant: "primary" | "secondary" | "tertiary" | null
@@ -464,10 +483,12 @@ Input — text field primitive with label, helper, and error slots.
   - label: string
   - leadingVisual: ReactNode
   - loading: boolean = false
+  - prefix: ReactNode
   - size: InputSize = md
+  - suffix: ReactNode
   - textStyle: "body" | "mono" = body
   - trailingVisual: ReactNode
-  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' = text
+  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' | 'date' | … = text
 
 ### InputGroup
 A single-line input with optional `leading`/`trailing` adornments.
@@ -557,10 +578,13 @@ Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
   - open: boolean
 
 ### Progress
-Linear progress. Determinate when `value` is a number, else indeterminate.
+Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.
   - label: string = Progress
+  - max: number = 100
   - size: "sm" | "md" | "lg" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
   - value: number | null = null
+  - variant: "linear" | "circular" = linear
 
 ### Radio
 Radio — radio button with animated selection indicator.
@@ -621,7 +645,7 @@ Sidebar — fixed-width rail beside fluid content, no media query. Every Layout 
 ### Skeleton
 Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.
   - height: string | number
-  - variant: "text" | "rectangular" | "circular" | null = rectangular
+  - variant: "text" | "circular" | "rectangular" | null = rectangular
   - width: string | number
 
 ### Slider

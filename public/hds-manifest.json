@@ -89,6 +89,7 @@
     "FormFieldShell",
     "Frame",
     "Grid",
+    "HdsRouterProvider",
     "HdsThemeProvider",
     "Icon",
     "IconButton",
@@ -1295,7 +1296,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/grid.tsx",
-      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
+      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -1308,6 +1309,7 @@
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
+        "src/app/components/grid.test.tsx",
         "src/app/components/metric-tiles.test.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/segmented-control.test.tsx",
@@ -1342,6 +1344,7 @@
         "gap": {
           "type": "enum",
           "values": [
+            "medium",
             "tight",
             "normal",
             "inset",
@@ -1353,9 +1356,14 @@
           "type": "enum",
           "values": [
             "fixed",
-            "auto-fit"
+            "auto-fit",
+            "auto-fill"
           ],
           "default": "fixed"
+        },
+        "minItemWidth": {
+          "type": "string",
+          "optional": true
         },
         "style": {
           "type": "CSSProperties",
@@ -1376,6 +1384,7 @@
         "gap": {
           "type": "enum",
           "values": [
+            "medium",
             "tight",
             "normal",
             "inset",
@@ -1386,8 +1395,12 @@
           "type": "enum",
           "values": [
             "fixed",
-            "auto-fit"
+            "auto-fit",
+            "auto-fill"
           ]
+        },
+        "minItemWidth": {
+          "type": "string"
         },
         "subgrid": {
           "type": "boolean"
@@ -1425,6 +1438,7 @@
       ],
       "storyIds": [
         "primitives-grid--aside-layout",
+        "primitives-grid--auto-fill",
         "primitives-grid--auto-fit",
         "primitives-grid--three-column",
         "primitives-grid--two-column"
@@ -1443,7 +1457,7 @@
           }
         ]
       },
-      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
+      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, auto-fill, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
     },
     "Icon": {
       "category": "Display",
@@ -1655,6 +1669,10 @@
           "type": "boolean",
           "optional": true
         },
+        "defaultPressed": {
+          "type": "boolean",
+          "optional": true
+        },
         "disabled": {
           "type": "boolean",
           "optional": true
@@ -1683,6 +1701,14 @@
           "optional": true
         },
         "loading": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onPressedChange": {
+          "type": "(pressed: boolean) => void",
+          "optional": true
+        },
+        "pressed": {
           "type": "boolean",
           "optional": true
         },
@@ -1726,6 +1752,9 @@
         "asChild": {
           "type": "boolean"
         },
+        "defaultPressed": {
+          "type": "boolean"
+        },
         "disabled": {
           "type": "boolean"
         },
@@ -1736,6 +1765,9 @@
           "type": "string"
         },
         "loading": {
+          "type": "boolean"
+        },
+        "pressed": {
           "type": "boolean"
         },
         "size": {
@@ -2000,6 +2032,7 @@
       "consumers": [
         "src/app/components/field.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/input.test.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
@@ -2058,9 +2091,17 @@
           "type": "boolean",
           "default": false
         },
+        "prefix": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "size": {
           "type": "InputSize",
           "default": "md"
+        },
+        "suffix": {
+          "type": "ReactNode",
+          "optional": true
         },
         "textStyle": {
           "type": "enum",
@@ -2083,7 +2124,10 @@
             "search",
             "tel",
             "url",
-            "number"
+            "number",
+            "date",
+            "time",
+            "datetime-local"
           ],
           "default": "text"
         }
@@ -2155,7 +2199,10 @@
             "search",
             "tel",
             "url",
-            "number"
+            "number",
+            "date",
+            "time",
+            "datetime-local"
           ]
         }
       },
@@ -2233,16 +2280,18 @@
         "src/stories/input.stories.tsx"
       ],
       "storyIds": [
+        "primitives-input--date-and-time",
         "primitives-input--default",
         "primitives-input--disabled",
         "primitives-input--loading",
         "primitives-input--mono",
+        "primitives-input--prefix-and-suffix",
         "primitives-input--size-variants",
         "primitives-input--with-error",
         "primitives-input--with-helper"
       ],
       "usage": {
-        "when": "Collect a single line of text, a number, an email or a password, with label, helper and error slots.",
+        "when": "Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots.",
         "whenNot": "Multi-line text, or choosing from a fixed list of options.",
         "useInstead": [
           {
@@ -3071,9 +3120,21 @@
           "type": "boolean",
           "default": false
         },
+        "onSelectedChange": {
+          "type": "(selected: boolean) => void",
+          "optional": true
+        },
         "padding": {
           "type": "PaddingOption",
           "default": "component"
+        },
+        "selectable": {
+          "type": "boolean",
+          "default": false
+        },
+        "selected": {
+          "type": "boolean",
+          "default": false
         },
         "tone": {
           "type": "enum",
@@ -3192,6 +3253,12 @@
         "noPadding": {
           "type": "boolean"
         },
+        "selectable": {
+          "type": "boolean"
+        },
+        "selected": {
+          "type": "boolean"
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -3223,10 +3290,11 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ],
       "usage": {
-        "when": "Group related content on a raised surface with header, body, footer and metric slots.",
+        "when": "Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.",
         "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
         "useInstead": [
           {
@@ -3699,6 +3767,10 @@
           "type": "boolean",
           "default": false
         },
+        "defaultPressed": {
+          "type": "boolean",
+          "optional": true
+        },
         "disabled": {
           "type": "boolean",
           "optional": true
@@ -3722,6 +3794,14 @@
         "loading": {
           "type": "boolean",
           "default": false
+        },
+        "onPressedChange": {
+          "type": "(pressed: boolean) => void",
+          "optional": true
+        },
+        "pressed": {
+          "type": "boolean",
+          "optional": true
         },
         "size": {
           "type": "enum",
@@ -3795,6 +3875,9 @@
         "asChild": {
           "type": "boolean"
         },
+        "defaultPressed": {
+          "type": "boolean"
+        },
         "disabled": {
           "type": "boolean"
         },
@@ -3805,6 +3888,9 @@
           "type": "string"
         },
         "loading": {
+          "type": "boolean"
+        },
+        "pressed": {
           "type": "boolean"
         },
         "size": {
@@ -3840,16 +3926,18 @@
       "storyIds": [
         "primitives-button--all-variants-row",
         "primitives-button--disabled",
+        "primitives-button--icon-only",
         "primitives-button--large",
         "primitives-button--loading",
         "primitives-button--medium",
+        "primitives-button--pressed",
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
         "primitives-button--tertiary"
       ],
       "usage": {
-        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.",
+        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
         "useInstead": [
           {
@@ -4488,6 +4576,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.ts",
+        "src/app/components/grid.test.tsx",
+        "src/app/components/grid.tsx",
+        "src/stories/grid.stories.tsx",
         "src/stories/status-tile.stories.test.tsx",
         "src/stories/status-tile.stories.tsx",
         "src/stories/tile-grid.stories.tsx"
@@ -4550,6 +4642,23 @@
           "type": "ElementType<any, keyof IntrinsicElements>",
           "default": "span"
         },
+        "dot": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -4565,6 +4674,20 @@
       },
       "allowedChildren": [],
       "propConstraints": {
+        "dot": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -4596,6 +4719,7 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/badge.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/tag.tsx",
@@ -4622,13 +4746,14 @@
       "storyIds": [
         "primitives-badge--all-tones",
         "primitives-badge--danger",
+        "primitives-badge--dot",
         "primitives-badge--info",
         "primitives-badge--neutral",
         "primitives-badge--success",
         "primitives-badge--warning"
       ],
       "usage": {
-        "when": "Label a status, state or count with a compact neutral or semantic chip.",
+        "when": "Label a status, state or count with a compact neutral or semantic chip, or a dot.",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
         "useInstead": [
           {
@@ -5533,7 +5658,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/progress.tsx",
-      "description": "Linear progress. Determinate when `value` is a number, else indeterminate.",
+      "description": "Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
@@ -5562,6 +5687,10 @@
           "type": "string",
           "default": "Progress"
         },
+        "max": {
+          "type": "number",
+          "default": 100
+        },
         "size": {
           "type": "enum",
           "values": [
@@ -5571,9 +5700,28 @@
           ],
           "optional": true
         },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info",
+            "neutral"
+          ],
+          "default": "neutral"
+        },
         "value": {
           "type": "number",
           "default": "null"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "linear",
+            "circular"
+          ],
+          "default": "linear"
         }
       },
       "allowedChildren": [
@@ -5587,12 +5735,13 @@
       ],
       "storyIds": [
         "primitives-progress--all-sizes",
+        "primitives-progress--circular",
         "primitives-progress--complete",
         "primitives-progress--default",
         "primitives-progress--indeterminate"
       ],
       "usage": {
-        "when": "Show how far a task has got, as a bar that is determinate or indeterminate.",
+        "when": "Show how far a task has got, as a bar or ring that is determinate or indeterminate.",
         "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
         "useInstead": [
           {
@@ -5643,8 +5792,8 @@
           "type": "enum",
           "values": [
             "text",
-            "rectangular",
-            "circular"
+            "circular",
+            "rectangular"
           ],
           "default": "rectangular"
         },
@@ -5972,7 +6121,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/combobox.tsx",
-      "description": "Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
+      "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
@@ -6024,8 +6173,12 @@
           "type": "string",
           "optional": true
         },
+        "multiple": {
+          "type": "boolean",
+          "optional": true
+        },
         "onChange": {
-          "type": "(value: string) => void"
+          "type": "((value: string) => void) | ((value: string[]) => void)"
         },
         "options": {
           "type": "ComboboxOption[]"
@@ -6039,7 +6192,7 @@
           "default": "Search…"
         },
         "value": {
-          "type": "string"
+          "type": "string | readonly string[]"
         }
       },
       "allowedChildren": [
@@ -6055,12 +6208,14 @@
         "primitives-combobox--default",
         "primitives-combobox--disabled-trigger",
         "primitives-combobox--few-options",
+        "primitives-combobox--multiple",
         "primitives-combobox--open",
+        "primitives-combobox--open-multiple",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
       ],
       "usage": {
-        "when": "Pick one value from a long list of options, with a search field that filters as you type.",
+        "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
         "whenNot": "A short list that needs no search, or an action list.",
         "useInstead": [
           {
@@ -6088,7 +6243,7 @@
         },
         {
           "keys": "Enter",
-          "effect": "Commits the active option and closes the list."
+          "effect": "Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open."
         },
         {
           "keys": "Escape",
@@ -6304,6 +6459,7 @@
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/context/hds-portal.tsx",
+        "src/app/context/RouterContext.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -7296,7 +7452,8 @@
         "src/app/components/switcher.tsx",
         "src/app/components/toggle.tsx",
         "src/stories/box.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
+        "src/stories/patterns-layout.stories.tsx",
+        "src/stories/story-ssr.spec.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8176,6 +8333,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -8221,6 +8379,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -8266,6 +8425,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -8316,6 +8476,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -8383,6 +8544,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ],
       "usage": {
@@ -8455,6 +8617,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -8500,6 +8663,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -8954,7 +9118,7 @@
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
       "figmaId": null,
       "tier": "primitive",
       "preview": {
@@ -8965,6 +9129,7 @@
         "src/app/components/asset-img.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/hds-tooltip.test.tsx",
+        "src/app/components/popover.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/hds-tooltip.stories.tsx"
@@ -8972,7 +9137,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
       "props": {
         "children": {
           "type": "React.ReactNode",
@@ -9011,6 +9176,34 @@
       "storyIds": [
         "primitives-hds-tooltip--default",
         "primitives-hds-tooltip--placement"
+      ],
+      "usage": {
+        "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
+        "whenNot": "Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).",
+        "useInstead": [
+          {
+            "component": "Popover",
+            "reason": "interactive or longer content that opens on click"
+          },
+          {
+            "component": "Text",
+            "reason": "a hint that must stay visible"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Focus",
+          "effect": "Opens the tooltip when the trigger receives keyboard focus."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the tooltip and keeps focus on the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Moves on to the next control and closes the tooltip."
+        }
       ]
     },
     "Menu": {
@@ -9034,6 +9227,7 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
@@ -9155,6 +9349,7 @@
       "consumers": [
         "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
@@ -9205,6 +9400,38 @@
         "primitives-popover--default",
         "primitives-popover--info-tip",
         "primitives-popover--with-dismiss"
+      ],
+      "usage": {
+        "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
+        "whenNot": "A short label on hover or focus, a list of actions, or a decision that must block the page.",
+        "useInstead": [
+          {
+            "component": "Tooltip",
+            "reason": "a short label shown on hover or focus"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions"
+          },
+          {
+            "component": "Dialog",
+            "reason": "a decision that blocks the page"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space",
+          "effect": "Opens the popover from the trigger and moves focus inside it."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the popover and returns focus to the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Cycles focus inside the open popover; the page behind stays reachable."
+        }
       ]
     },
     "Checkbox": {
@@ -9651,6 +9878,49 @@
         "patterns-destructivesection--phone",
         "patterns-destructivesection--separate-button-label"
       ]
+    },
+    "HdsRouterProvider": {
+      "category": "Theming",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/context/RouterContext.tsx",
+      "description": "Provide a router adapter to all HDS components below. Wrap your app root once.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsRouterProvider",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/index.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "adapter": {
+          "type": "HdsRouterAdapter"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": [],
+      "usage": {
+        "when": "Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors."
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",
