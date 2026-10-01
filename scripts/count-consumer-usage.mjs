@@ -167,9 +167,13 @@ export function renderInUseBlock(s) {
       ...shots,
     ].join('\n');
   }
+  const role =
+    s.consumers.productApps === 1
+      ? 'the only product app that uses components'
+      : `one of ${s.consumers.productApps} product apps that use components`;
   return [
     '',
-    `The Ops dashboard (\`hirobius/ops\`) is one of ${s.consumers.productApps} product apps that use components: ${measured}`,
+    `The Ops dashboard (\`hirobius/ops\`) is ${role}: ${measured}`,
     '',
     ...alignTable([
       ['Consumer kind', 'Count', 'How it uses HDS'],

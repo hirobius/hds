@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-09-29",
+  "generatedAt": "2026-10-01",
   "overrides": {
     "Frame": {
       "class": "library",
@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 140,
+    "total": 146,
     "byClass": {
-      "library": 88,
-      "slot": 18,
-      "layout": 15,
-      "internal": 19
+      "library": 93,
+      "slot": 19,
+      "layout": 16,
+      "internal": 18
     },
     "libraryLinked": 47,
-    "libraryMissing": 41,
+    "libraryMissing": 46,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -347,6 +347,14 @@
       "figmaUrl": null
     },
     {
+      "name": "DataTableSection",
+      "class": "library",
+      "parent": null,
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
       "name": "DateInput",
       "class": "library",
       "parent": null,
@@ -367,6 +375,14 @@
       "class": "library",
       "parent": null,
       "category": "Inputs",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "DestructiveSection",
+      "class": "library",
+      "parent": null,
+      "category": "Actions",
       "tier": "pattern",
       "figmaUrl": null
     },
@@ -513,6 +529,14 @@
       "category": "Inputs",
       "tier": "pattern",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94"
+    },
+    {
+      "name": "FormActions",
+      "class": "library",
+      "parent": null,
+      "category": "Actions",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "FormField",
@@ -741,6 +765,22 @@
       "figmaUrl": null
     },
     {
+      "name": "MetricTile",
+      "class": "library",
+      "parent": null,
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "MetricTiles",
+      "class": "slot",
+      "parent": "MetricTile",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
       "name": "MultiSelector",
       "class": "library",
       "parent": null,
@@ -780,6 +820,14 @@
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "PageHeader",
+      "class": "layout",
+      "parent": null,
+      "category": "Layout",
+      "tier": "pattern",
       "figmaUrl": null
     },
     {
@@ -1130,9 +1178,9 @@
     },
     {
       "name": "Tooltip",
-      "class": "internal",
+      "class": "library",
       "parent": null,
-      "category": "Internal",
+      "category": "Overlays",
       "tier": "primitive",
       "figmaUrl": null
     },

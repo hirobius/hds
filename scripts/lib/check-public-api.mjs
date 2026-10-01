@@ -70,6 +70,7 @@ import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
 import { formatGenerated } from './write-generated.mjs';
+import { readJsExportEntries } from './package-entries.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..'); // scripts/lib → scripts → project root
@@ -302,38 +303,6 @@ function collectBarrelMap(entry = ENTRY) {
     reexports,
     inlineBarrelSymbols: Array.from(inlineBarrelSymbols).sort(),
   };
-}
-
-/**
- * The JavaScript entry points of package.json#exports, each mapped from its
- * `types` path (`./dist/types/<path>.d.ts`, emitted by build:types from
- * source) back to the source file. Stylesheets and `./package.json` are
- * strings, not condition objects, and are skipped.
- *
- * @param {string} root package root
- * @returns {Array<{ key: string, file: string }>}
- */
-function readJsExportEntries(root) {
-  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
-  const entries = [];
-  for (const [key, value] of Object.entries(pkg.exports ?? {})) {
-    if (!value || typeof value !== 'object') continue;
-    const types = value.types;
-    if (typeof types !== 'string' || !/^\.\/dist\/types\/.+\.d\.ts$/.test(types)) {
-      throw new Error(
-        `[check-public-api] package.json#exports["${key}"].types must be ./dist/types/<source path>.d.ts, got ${JSON.stringify(types)}`,
-      );
-    }
-    const stem = types.replace(/^\.\/dist\/types\//, '').replace(/\.d\.ts$/, '');
-    const file = ['.ts', '.tsx'].map((ext) => join(root, stem + ext)).find((f) => existsSync(f));
-    if (!file) {
-      throw new Error(
-        `[check-public-api] package.json#exports["${key}"]: no source file ${stem}.ts or ${stem}.tsx`,
-      );
-    }
-    entries.push({ key, file });
-  }
-  return entries;
 }
 
 /**

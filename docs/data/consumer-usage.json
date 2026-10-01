@@ -3,11 +3,11 @@
   "files": 33,
   "components": 25,
   "consumers": {
-    "productApps": 2,
+    "productApps": 1,
     "tokenLevelSites": 4
   },
   "commit": "76ef65e40b622a8d6d5fa5800e6ab42acbece6bf",
-  "consumersConfirmed": false,
+  "consumersConfirmed": true,
   "names": [
     "AssetImg",
     "Badge",

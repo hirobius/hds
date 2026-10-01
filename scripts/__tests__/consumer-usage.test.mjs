@@ -138,11 +138,13 @@ describe('README "In use" section', () => {
     expect(snapshot.commit).toMatch(/^[0-9a-f]{40}$/);
   });
 
-  it('does not publish the unconfirmed product-app / token-site split', () => {
-    expect(snapshot.consumersConfirmed).toBe(false);
-    expect(readme).not.toMatch(/Token-level sites/);
-    expect(readme).toMatch(/not yet confirmed/);
+  it('publishes the confirmed split: Ops is the only product app (hds#389, 2026-10-01)', () => {
+    expect(snapshot.consumersConfirmed).toBe(true);
+    expect(snapshot.consumers.productApps).toBe(1);
     expect(readme).toMatch(/^## In use$/m);
+    expect(readme).toMatch(/is the only product app that uses components/);
+    expect(readme).toMatch(/\| Product apps\s+\| 1 /);
+    expect(readme).not.toMatch(/not yet confirmed/);
   });
 });
 
@@ -170,5 +172,16 @@ describe('renderInUseBlock consumer split', () => {
     expect(out).toMatch(/\| Product apps\s+\| 2 /);
     expect(out).toMatch(/\| Token-level sites\s+\| 4 /);
     expect(out).not.toMatch(/component-level consumer:/);
+  });
+
+  it('says "the only product app" when Ops is the only one, not "one of 1"', () => {
+    const out = renderInUseBlock({
+      ...base,
+      consumers: { productApps: 1, tokenLevelSites: 4 },
+      consumersConfirmed: true,
+    });
+    expect(out).toMatch(/is the only product app that uses components/);
+    expect(out).not.toMatch(/one of 1/);
+    expect(out).toMatch(/\| Product apps\s+\| 1 /);
   });
 });
