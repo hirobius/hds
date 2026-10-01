@@ -27,9 +27,18 @@
  *     src/app/components for raw layout values. Introduced with #98.
  *
  * What it catches:
- *   style={{ marginBottom: '12px' }}   → should be Box sx={{ mb: 'normal' }}
- *   style={{ gap: 24 }}                → should be Stack gap="normal" or sx
+ *   style={{ marginBottom: '16px' }}   → should be Box sx={{ mb: 'sm' }}
+ *   style={{ marginBottom: '12px' }}   → should be Box sx={{ mb: hds.space.px12 }}
+ *                                        (no step of the t-shirt scale renders
+ *                                        12px; the fixed step does, at both densities)
+ *   style={{ gap: 24 }}                → should be Box sx={{ gap: 'md' }} or Stack gap="normal"
  *   style={{ top: 8, left: 8 }}        → should be Box sx={{ top: ..., left: ... }}
+ *
+ *   Box sx spacing shorthands (m/mt/mb/p/pt/pb/gap...) take the t-shirt scale,
+ *   'xs' 'sm' 'md' 'lg' 'xl' (8/16/24/32/48px at the default density, hds#206);
+ *   its 'tight' | 'normal' | 'inset' | 'spacious' are deprecated. A long-hand
+ *   key such as `marginBottom` passes its value through as plain CSS, so a
+ *   step name there resolves to nothing: the fix line names the shorthand.
  *
  * What it ignores:
  *   Values already using hds.*, var(--…), or any non-literal expression
@@ -172,6 +181,32 @@ function isTokenValue(fullLine) {
   return fullLine.includes('hds.') || fullLine.includes('var(--');
 }
 
+// The Box sx shorthand that resolves a t-shirt step for each long-hand prop
+// (box-sx.ts SPACING_PROP_MAP). The logical (Block/Inline) props have none.
+const SX_SHORTHAND = {
+  margin: 'm',
+  marginTop: 'mt',
+  marginRight: 'mr',
+  marginBottom: 'mb',
+  marginLeft: 'ml',
+  padding: 'p',
+  paddingTop: 'pt',
+  paddingRight: 'pr',
+  paddingBottom: 'pb',
+  paddingLeft: 'pl',
+  gap: 'gap',
+  rowGap: 'rowGap',
+  columnGap: 'columnGap',
+};
+
+/** What to write instead, in Box sx form. */
+function sxFix(prop) {
+  const shorthand = SX_SHORTHAND[prop];
+  return shorthand
+    ? `Box sx={{ ${shorthand}: 'xs' | 'sm' | 'md' | 'lg' | 'xl' }} (the t-shirt scale)`
+    : `Box sx={{ ${prop}: <token key> }}`;
+}
+
 function isSuppressed(lines, lineIdx) {
   const same = lines[lineIdx] || '';
   const prev = lineIdx > 0 ? lines[lineIdx - 1] : '';
@@ -261,7 +296,7 @@ if (uniqueViolations.length === 0) {
     console.log(`  ${v.file}:${v.line}  [${v.prop}: ${v.val}]`);
     console.log(`    ${v.raw}`);
     console.log(
-      `    Fix: use Box sx={{ ${v.prop}: <token key> }} or a named layout primitive ` +
+      `    Fix: use ${sxFix(v.prop)} or a named layout primitive ` +
         `(Stack/Grid/Container), or add // layout-ok: <reason>\n`,
     );
   });
