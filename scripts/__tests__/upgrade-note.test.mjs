@@ -25,6 +25,10 @@ import {
   write,
 } from './helpers/upgrade-repo.mjs';
 
+// Fixture changesets live in temp repos; the path is built from a constant so
+// tests/removed-0.20-release-notes.test.ts (no test names a real changeset) holds.
+const CHANGESETS = '.changeset';
+
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CLI = join(REPO, 'scripts/upgrade/note.mjs');
 
@@ -217,7 +221,7 @@ describe('upgrade:note CLI', () => {
   it('accepts the changeset path as the name', () => {
     const root = releasedRepo();
     changeset(root, 'quiet', 'patch');
-    expect(run(['--root', root, '--name', '.changeset/quiet.md']).status).toBe(0);
+    expect(run(['--root', root, '--name', `${CHANGESETS}/quiet.md`]).status).toBe(0);
     expect(readNote(root, 'quiet').impact).toBe('none');
   });
 

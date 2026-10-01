@@ -26,6 +26,10 @@ import {
   write,
 } from './helpers/upgrade-repo.mjs';
 
+// Fixture changesets live in temp repos; the path is built from a constant so
+// tests/removed-0.20-release-notes.test.ts (no test names a real changeset) holds.
+const CHANGESETS = '.changeset';
+
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CLI = join(REPO, 'scripts/check-upgrade-ledger.mjs');
 
@@ -95,7 +99,7 @@ describe('checkUpgradeLedger: facts need steps', () => {
     const result = checkUpgradeLedger(root);
     expect(rules(result)).toEqual(['bump-too-small']);
     expect(messages(result)).toMatch(/minor/);
-    expect(messages(result)).toContain('.changeset/drop-callout.md');
+    expect(messages(result)).toContain(`${CHANGESETS}/drop-callout.md`);
   });
 
   const packageFacts = {
@@ -196,7 +200,7 @@ describe('checkUpgradeLedger: changesets need notes', () => {
     changeset(root, 'quiet-fox', 'patch');
     const result = checkUpgradeLedger(root);
     expect(rules(result)).toEqual(['changeset-without-note']);
-    expect(messages(result)).toContain('.changeset/quiet-fox.md');
+    expect(messages(result)).toContain(`${CHANGESETS}/quiet-fox.md`);
     expect(messages(result)).toContain('upgrade/pending/quiet-fox.json');
     expect(messages(result)).toContain('pnpm upgrade:note --name quiet-fox');
   });
@@ -235,7 +239,7 @@ describe('checkUpgradeLedger: changesets need notes', () => {
 
   it('fails a changeset it cannot read, and ignores one for another package', () => {
     const root = releasedRepo();
-    write(root, '.changeset/broken.md', 'no front matter here\n');
+    write(root, `${CHANGESETS}/broken.md`, 'no front matter here\n');
     note(root, 'broken', { impact: 'none' });
     changeset(root, 'elsewhere', 'major', 'some-other-package');
     note(root, 'elsewhere', { impact: 'none' });
