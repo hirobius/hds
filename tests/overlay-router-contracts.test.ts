@@ -1,7 +1,7 @@
 // @vitest-environment node
 /**
- * hds#393 (prune B3 steps 5 and 6): Popover, Tooltip and HdsRouterProvider join
- * the core set once the prune lands (hds#389 D3), so each must carry the
+ * hds#393 (prune B3 steps 5 and 6): Popover, Tooltip and HdsRouterProvider are
+ * in the core set (step 7, scripts/lib/core-components.mjs), so each must carry the
  * contract an agent reads to pick it. These tests read the committed
  * public/hds-manifest.json, which `pnpm manifest:generate` builds from the
  * components' JSDoc, so they fail when a tag is missing or the regen is stale.
