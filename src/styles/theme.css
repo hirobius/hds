@@ -17,7 +17,7 @@
  *   - Responsive clamp() typography overrides (display, h1, h2, h3)
  *   - Mobile breakpoint overrides (max-width: 639px)
  *   - Component utility classes (.hds-focus, .hds-tag-btn/.hds-tag-pill,
- *     .hds-skeleton, .hds-dropdown-*, .hds-sketchbook-*, etc.)
+ *     .hds-skeleton, .hds-link, etc.)
  *   - @layer base body/heading resets + cursor + focus-ring policy
  *   - @keyframes animations (skeleton shimmer, page-enter)
  *   - [data-density="compact"] overrides
@@ -45,6 +45,13 @@
 
 @import 'tailwindcss';
 @config "../../tailwind.config.ts";
+
+/* Published utility surface kept after hds#391. Tailwind only emits the
+   utilities it finds in scanned files, and these 16 lived only in the deleted
+   docs-tooling, animated-label and editorial files. Consumers that use
+   ./tokens.css as their only compiled Tailwind (ops: pt-1) still rely on them,
+   so they stay emitted until 1.0 drops them in a minor with a migration note. */
+@source inline("pt-1 pb-8 p-16 max-w-2xl h-3.5 w-3.5 sm:text-4xl sm:inline-block group-hover:opacity-100 text-muted-foreground/70 transition-[transform,opacity] data-[highlighted]:text-foreground data-[state=checked]:text-foreground bg-[color:var(--semantic-color-feedback-bg-warning)] border-[color:var(--semantic-color-feedback-warning)]/40 text-[color:var(--semantic-color-feedback-warning)]");
 
 @import './tokens.generated.css';
 @import './tenants.css';
@@ -136,7 +143,6 @@
   --semantic-layout-panel-gap-mobile: clamp(1.5rem, 4vw, 2.5rem);
   --hds-breakpoint-sm: var(--primitive-breakpoint-sm);
   --hds-doc-toc-padding: 212px; /* HDS doc TOC rail (180px) + content padding (32px) */
-  --hds-local-sketchbookCanvas-maxWidth-stage: 1200px;
 
   /* -- Z-index scale ---------------------------------------------------------- */
   --hds-z-base: 0;
@@ -392,126 +398,6 @@
   animation: hds-page-enter var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing) both;
 }
 
-.hds-sketchbook-shell__stage-frame {
-  position: relative;
-  flex: 1 1 auto;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-}
-
-.hds-sketchbook-shell__stage-frame > * {
-  flex: 1 1 auto;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-}
-
-.hds-sketchbook-canvas-shell {
-  position: relative;
-  flex: 1 1 auto;
-  width: 100%;
-  /* spacing-ok: sketch canvas fallback height — no space token maps to canvas viewport sizing; 80vh responsive override below */
-  height: 600px;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-@media (min-width: 640px) {
-  .hds-sketchbook-canvas-shell {
-    height: 80vh;
-  }
-}
-
-.hds-sketchbook-canvas-stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  max-width: var(--hds-local-sketchbookCanvas-maxWidth-stage);
-  border: 1px solid var(--semantic-color-border-default);
-  border-radius: calc(var(--role-radius) + 4px);
-  overflow: hidden;
-}
-
-.hds-sketchbook-canvas-fill {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-}
-
-.hds-sketchbook-canvas-fill > * {
-  flex: 1 1 auto;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-}
-
-.hds-sketchbook-canvas-overlay {
-  position: absolute;
-  top: var(--semantic-space-scale-xs);
-  right: var(--semantic-space-scale-xs);
-  z-index: var(--hds-z-dropdown);
-  pointer-events: none;
-}
-
-.hds-sketchbook-canvas-overlay__content {
-  pointer-events: auto;
-}
-
-.hds-visuals-bento-grid {
-  --hds-local-visualsBento-rowUnit: calc(var(--semantic-space-section-stack) * 2);
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-auto-rows: minmax(var(--hds-local-visualsBento-rowUnit), auto);
-  gap: var(--semantic-space-layout-gap);
-}
-
-.hds-visuals-bento-item {
-  --hds-local-visualsBento-colSpan: 1;
-  --hds-local-visualsBento-rowSpan: 1;
-  min-width: 0;
-  min-height: var(--hds-local-visualsBento-rowUnit);
-}
-
-.hds-visuals-bento-card {
-  height: 100%;
-  isolation: isolate;
-}
-
-.hds-visuals-bento-card [data-tone] {
-  height: 100%;
-}
-
-@media (min-width: 768px) {
-  .hds-visuals-bento-grid {
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-flow: dense;
-  }
-
-  .hds-visuals-bento-item {
-    grid-column: span var(--hds-local-visualsBento-colSpan);
-    grid-row: span var(--hds-local-visualsBento-rowSpan);
-    min-height: calc(
-      (var(--hds-local-visualsBento-rowSpan) * var(--hds-local-visualsBento-rowUnit)) +
-        ((var(--hds-local-visualsBento-rowSpan) - 1) * var(--semantic-space-layout-gap))
-    );
-  }
-}
-
 /* --- Audit overlay --------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .hds-page-enter {
@@ -550,48 +436,6 @@
 .hds-link:hover {
   color: var(--semantic-accent-contentHover);
   text-decoration-color: var(--semantic-accent-contentHover);
-}
-
-/* Token chip — linkable token pills. Base state set here (not inline) so
- * :hover can override. Dark hover uses accent-200 (#b8bfff, 10.86:1 on blue-900). */
-.hds-token-chip {
-  background: var(--semantic-color-surface-page);
-  color: var(--semantic-color-content-primary);
-  border: var(--hds-borderWidth-default) solid var(--semantic-color-border-default);
-  border-radius: var(--semantic-radius-action);
-  padding: var(--hds-space-px2) var(--hds-space-px6);
-  transition:
-    background var(--hds-motion-productive-duration),
-    border-color var(--hds-motion-productive-duration),
-    color var(--hds-motion-productive-duration),
-    transform var(--hds-motion-productive-duration);
-}
-.hds-token-chip:hover {
-  background: var(--semantic-color-surface-hover);
-  color: var(--semantic-accent-content);
-}
-[data-theme='dark'] .hds-token-chip:hover {
-  color: var(--semantic-accent-hover);
-}
-.hds-token-chip:active {
-  background: var(--semantic-color-surface-pressed);
-  border-color: var(--semantic-color-border-accent);
-  color: var(--semantic-color-content-primary);
-  transform: translateY(1px);
-}
-
-/* Nav indicator bar — vertical 2px bar on the leading edge of nav items.
- * All color state lives here; the element carries no inline background.
- * Idle → hover brightens; active → brand color. */
-.hds-nav-indicator {
-  background: var(--semantic-color-border-default);
-  transition: background var(--hds-motion-productive-duration);
-}
-.hds-text-hover:hover .hds-nav-indicator:not([data-active='true']) {
-  background: var(--semantic-color-border-strong);
-}
-.hds-nav-indicator[data-active='true'] {
-  background: var(--semantic-color-border-accent);
 }
 
 /* Text-secondary ? text-primary on hover. Use on nav items, prev/next arrows,
@@ -692,22 +536,6 @@ input[data-search-input='true'] {
   opacity: 1;
 }
 
-.portfolio-impact-card {
-  background: var(--semantic-color-surface-page);
-  border: var(--hds-borderWidth-default) solid var(--semantic-color-border-default);
-  border-radius: var(--semantic-radius-action);
-  color: var(--semantic-color-content-primary);
-  transition:
-    background-color var(--hds-motion-productive-duration),
-    border-color var(--hds-motion-productive-duration);
-  box-sizing: border-box;
-}
-.portfolio-impact-card:hover,
-.portfolio-impact-card:focus-visible {
-  background: var(--semantic-color-surface-raised);
-  border-color: var(--semantic-color-border-accent);
-}
-
 .hds-doc-link-card {
   background: transparent;
   border: none;
@@ -736,97 +564,6 @@ input[data-search-input='true'] {
 .hds-doc-link-card[data-disabled='true']:hover,
 .hds-doc-link-card[data-disabled='true']:focus-visible {
   background: transparent;
-}
-
-.hds-soft-nav-card {
-  background: transparent;
-  border: none;
-  border-radius: calc(var(--role-radius) + 4px);
-  box-sizing: border-box;
-  transition:
-    background-color var(--hds-motion-productive-duration),
-    color var(--hds-motion-productive-duration);
-}
-.hds-soft-nav-card:hover,
-.hds-soft-nav-card:focus-visible {
-  background: var(--semantic-color-surface-raised);
-}
-
-.hds-mobius-acrylic {
-  background: var(--semantic-color-surface-page);
-}
-
-.hds-mobius-acrylic:hover,
-.hds-mobius-acrylic:focus-visible {
-  background: var(--semantic-color-surface-raised) !important;
-}
-
-.hds-sidebar-utility-button {
-  color: var(--semantic-color-content-primary);
-  transition:
-    background-color var(--hds-motion-productive),
-    color var(--hds-motion-productive);
-}
-.hds-sidebar-utility-button:hover {
-  color: var(--semantic-accent-content);
-}
-.hds-sidebar-utility-button[data-variant='tertiary']:hover {
-  background: var(--semantic-color-surface-hover);
-}
-.hds-sidebar-utility-button[data-variant='secondary'] {
-  background: var(--semantic-color-surface-overlay);
-}
-.hds-sidebar-utility-button[data-variant='secondary']:hover {
-  background: var(--semantic-color-surface-raised);
-}
-
-.hds-dropdown-item {
-  background: var(--semantic-color-surface-page);
-  transition: background var(--hds-motion-productive-duration);
-}
-.hds-dropdown-item:hover {
-  background: var(--semantic-color-surface-hover);
-}
-.hds-dropdown-label {
-  color: var(--semantic-color-content-secondary);
-  transition: color var(--hds-motion-productive-duration);
-}
-.hds-dropdown-item:hover .hds-dropdown-label,
-.hds-dropdown-item[data-active='true'] .hds-dropdown-label {
-  color: var(--semantic-color-content-primary);
-}
-.hds-dropdown-item[data-active='true'] .hds-dropdown-label {
-  color: var(--semantic-accent-rest);
-}
-.hds-dropdown-indicator {
-  transform: scaleY(0);
-  opacity: 0;
-  transition:
-    transform var(--hds-motion-productive-duration) var(--hds-motion-expressive-easing),
-    opacity var(--hds-motion-productive-duration) var(--hds-motion-expressive-easing),
-    background-color var(--hds-motion-productive-duration);
-}
-.hds-dropdown-item:hover .hds-dropdown-indicator,
-.hds-dropdown-item[data-active='true'] .hds-dropdown-indicator {
-  transform: scaleY(1);
-}
-.hds-dropdown-item:hover .hds-dropdown-indicator {
-  opacity: 0.4;
-}
-.hds-dropdown-item[data-active='true'] .hds-dropdown-indicator {
-  opacity: 1;
-  background-color: var(--semantic-accent-rest);
-}
-
-.hds-desktop-nav-button {
-  color: var(--semantic-color-content-secondary);
-  transition: color var(--hds-motion-productive-duration);
-}
-.hds-desktop-nav-button:hover {
-  color: var(--semantic-color-content-primary);
-}
-.hds-desktop-nav-button[data-active='true'] {
-  color: var(--semantic-accent-rest);
 }
 
 /* --- Focus ring utility ------------------------------------------------------- */

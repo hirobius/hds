@@ -11,8 +11,7 @@ const config: KnipConfig = {
     // that knip's project graph cannot reach via the React app alone.
     'validators/**/*.mjs!',
     // Vitest + Playwright test files — entries so knip picks up
-    // test-only imports (e.g. createMobiusStore + PRESETS in
-    // tests/mobiusStore.test.ts, helpers/* in tests/*.spec.ts).
+    // test-only imports (e.g. helpers/* in tests/*.spec.ts).
     'tests/**/*.{test,spec}.{ts,tsx}!',
     // Storybook stories — entries to a separate harness; knip can't trace
     // them via routes.tsx but they are real consumers of HDS components.
@@ -62,7 +61,7 @@ const config: KnipConfig = {
     // treats the first token "The" as a binary. Ignore.
     'The',
   ],
-  // Forward-looking exports (multi-tenant context, mobius constants, etc.)
+  // Forward-looking exports (multi-tenant context, etc.)
   // and phantom devDeps for in-flight surfaces are intentional. Surface as
   // warnings so knip doesn't fail the pretest gate; real cleanup is tracked
   // separately and these stay visible in the warning list.

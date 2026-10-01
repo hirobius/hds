@@ -8,8 +8,7 @@
  *      falls back to window.location. Drop-in for apps with no router
  *      (e.g. job-hunt, a plain Vite/React app).
  *   2. react-router consumers — wrap the app once in <HdsRouterProvider> with an
- *      adapter that bridges useNavigate()/useLocation()/<Link>. The docs site
- *      does this internally via ReactRouterBridge (NOT exported).
+ *      adapter that bridges useNavigate()/useLocation()/<Link>.
  *   3. Next.js / other routers — same seam: provide an adapter mapping to that
  *      router's navigation + Link.
  *

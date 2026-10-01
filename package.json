@@ -27,11 +27,6 @@
   },
   "type": "module",
   "packageManager": "pnpm@10.33.0",
-  "typeCoverage": {
-    "ignoreFiles": [
-      "src/app/components/mobius-distortion.ts"
-    ]
-  },
   "module": "./dist/hirobius-ui.js",
   "types": "./dist/types/src/index.d.ts",
   "sideEffects": [
@@ -356,7 +351,6 @@
     "@testing-library/user-event": "^14.6.7",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "@types/three": "^0.183.1",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.1",
     "@vitejs/plugin-react": "4.7.0",
@@ -376,7 +370,6 @@
     "eslint-plugin-tailwindcss": "^3.18.3",
     "express": "^5.2.1",
     "fast-check": "^4.7.0",
-    "fuse.js": "^7.1.0",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
     "jscodeshift": "^17.3.0",
@@ -400,15 +393,13 @@
     "storybook": "^8.6.18",
     "style-dictionary": "^5.4.0",
     "tailwindcss": "^4.2.4",
-    "three": "^0.183.2",
     "type-coverage": "^2.29.7",
     "typescript": "^6.0.2",
     "vite": "6.4.2",
     "vite-bundle-visualizer": "^1.2.1",
     "vitest": "^4.1.0",
     "yaml": "^2.8.1",
-    "zod": "^4.4.3",
-    "zustand": "^5.0.12"
+    "zod": "^4.4.3"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css,scss,html,yaml,yml}": "prettier --write"

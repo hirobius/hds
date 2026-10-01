@@ -188,11 +188,7 @@ export default [
   // current codebase audit (2026-05-01); add new ones here rather than
   // adding per-file disables.
   {
-    files: [
-      'src/app/pages/sketches/**/*.{js,jsx,ts,tsx}',
-      'src/app/components/mobius-*.{ts,tsx}',
-      'src/app/components/card-viz*.{ts,tsx}',
-    ],
+    files: ['src/app/pages/sketches/**/*.{js,jsx,ts,tsx}', 'src/app/components/card-viz*.{ts,tsx}'],
     rules: {
       'react/no-unknown-property': [
         'error',

@@ -49,8 +49,8 @@
  *
  * Re-baselined 2026-09-24 (hds#279): the alternative rejected above was taken.
  * `observedTokens` no longer ships in src/app/data/component-api.json at all —
- * grep confirmed `buildObservedTokenRows` (tokenTableUtils.ts, the one function
- * that reads observedTokens rows) has ZERO importers anywhere in src/, so there
+ * grep confirmed `buildObservedTokenRows` (module since deleted, hds#391; the one
+ * function that reads observedTokens rows) had ZERO importers anywhere in src/, so there
  * was no "runtime-only token rows" behaviour to preserve in the first place;
  * the concern above turned out to be unfounded once checked. The three actual
  * importers of component-api.json (api-reference.tsx, component-instance-matrix.tsx,
