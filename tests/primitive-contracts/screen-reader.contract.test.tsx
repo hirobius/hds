@@ -19,7 +19,7 @@
  */
 import { useState } from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { virtual } from '@guidepup/virtual-screen-reader';
 import { Table, type TableColumn, type TableRow } from '@/app/components/table';
 import { Alert } from '@/app/components/alert';
@@ -218,9 +218,15 @@ describe('Alert screen-reader contract', () => {
     await press(screen.getByRole('button', { name: 'Save' }), '{Enter}');
     await screen.findByRole('alert');
 
-    const log = await virtual.spokenPhraseLog();
-    expect(log).toContain('button, Save');
-    // role="alert" is an assertive live region; the reader joins title and body.
-    expect(log).toContain('assertive: SavedYour changes were saved.');
+    expect(await virtual.spokenPhraseLog()).toContain('button, Save');
+    // The virtual reader announces mutations inside a live region, not the
+    // insertion of the role="alert" node itself (it walks up from the mutation
+    // target, here the alert's non-live parent). What it announces are the
+    // Alert's entrance-animation style writes on the role="alert" node, which
+    // land a frame or more after the insert, so wait for them. The reader joins
+    // title and body.
+    await waitFor(async () =>
+      expect(await virtual.spokenPhraseLog()).toContain('assertive: SavedYour changes were saved.'),
+    );
   });
 });
