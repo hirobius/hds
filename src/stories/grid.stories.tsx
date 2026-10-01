@@ -22,18 +22,19 @@ const meta = {
     docs: {
       description: {
         component:
-          "Responsive grid composition primitive. layout='fixed': responsive 12-column base with tablet/mobile collapse. layout='auto-fit': responsive card wrapping. Use for two-dimensional layouts; use Stack for one-dimensional flow.",
+          "Responsive grid composition primitive. layout='fixed': responsive 12-column base with tablet/mobile collapse. layout='auto-fit': responsive card wrapping. layout='auto-fill': tile wrapping at minItemWidth. Use for two-dimensional layouts; use Stack for one-dimensional flow.",
       },
     },
   },
   argTypes: {
     layout: {
       control: { type: 'radio' },
-      options: ['fixed', 'auto-fit'],
+      options: ['fixed', 'auto-fit', 'auto-fill'],
     },
+    minItemWidth: { control: { type: 'text' } },
     gap: {
       control: { type: 'select' },
-      options: ['tight', 'normal', 'inset', 'spacious'],
+      options: ['medium', 'tight', 'normal', 'inset', 'spacious'],
     },
     columns: { control: { type: 'number', min: 1, max: 12 } },
   },
@@ -90,6 +91,27 @@ export const AutoFit: Story = {
       <GridCard label="Card C" />
       <GridCard label="Card D" />
       <GridCard label="Card E" />
+    </Grid>
+  ),
+};
+
+export const AutoFill: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "TileGrid's recipe: tiles wrap at minItemWidth (capped at the container) on the fixed 12px 'medium' gap.",
+      },
+    },
+  },
+  args: { layout: 'auto-fill', minItemWidth: '220px', gap: 'medium' },
+  render: (args) => (
+    <Grid {...args}>
+      <GridCard label="Tile A" />
+      <GridCard label="Tile B" />
+      <GridCard label="Tile C" />
+      <GridCard label="Tile D" />
+      <GridCard label="Tile E" />
     </Grid>
   ),
 };

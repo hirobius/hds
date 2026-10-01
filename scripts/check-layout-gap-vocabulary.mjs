@@ -46,7 +46,7 @@
  * (`'var(--semantic-space-scale-' + step + ')'`), and an `if` chain. Those
  * reach a map without a pairing the gate can see; review catches them.
  *
- * Fix: import `LAYOUT_GAP` (the four names and nothing else) or
+ * Fix: import `LAYOUT_GAP` (the four names plus the fixed `medium`) or
  * `LAYOUT_GAP_NAMES` (to spread into a wider vocabulary, as Card and Stack
  * do) from src/app/components/box-sx.ts and resolve through
  * `resolveSpacingValue`.
@@ -318,7 +318,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     console.error(`    ${v.raw}`);
   }
   console.error(
-    `\nFix: import LAYOUT_GAP (the four names, nothing else) or LAYOUT_GAP_NAMES (to spread into`,
+    `\nFix: import LAYOUT_GAP (the four names plus medium) or LAYOUT_GAP_NAMES (to spread into`,
   );
   console.error(`  a wider vocabulary) from ${CANONICAL} and resolve through resolveSpacingValue,`);
   console.error('  or suppress with // layout-gap-ok: <reason>\n');

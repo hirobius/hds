@@ -609,6 +609,7 @@
     "primitives-input--date-and-time",
     "primitives-input--prefix-and-suffix",
     "primitives-combobox--multiple",
-    "primitives-combobox--open-multiple"
+    "primitives-combobox--open-multiple",
+    "primitives-grid--auto-fill"
   ]
 }
