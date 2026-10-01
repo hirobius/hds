@@ -226,6 +226,95 @@ describe('findViolationsInText: conditional and logical sx expressions (hds#206 
   });
 });
 
+describe('findViolationsInText: a name resolves to the declaration in scope (hds#206 review)', () => {
+  const found = (text) =>
+    findViolationsInText(text, 'fake.tsx').map(({ line, key, value }) => ({ line, key, value }));
+
+  it('follows the declaration in the enclosing function, not a later one with the same name', () => {
+    const text = [
+      'function inner() {',
+      '  const s2 = { p: 6 };',
+      '  return <Box sx={s2} />;',
+      '}',
+      'function other() {',
+      "  const s2 = { color: 'x' };",
+      '  return <Box sx={s2} />;',
+      '}',
+    ].join('\n');
+    expect(found(text)).toEqual([{ line: 2, key: 'p', value: '6' }]);
+  });
+
+  it('does not flag an outer object an inner declaration shadows', () => {
+    const text = [
+      'function a() {',
+      "  const s = { p: 'md' };",
+      '  return <Box sx={s} />;',
+      '}',
+      'const s = { p: 4 };',
+      'export const unused = s;',
+    ].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+
+  it('follows an outer object into a function that does not redeclare it', () => {
+    const text = [
+      'const s = { p: 4 };',
+      'function a() {',
+      "  const t = { p: 'md' };",
+      '  return <Box sx={s} />;',
+      '}',
+    ].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'p', value: '4' }]);
+  });
+
+  it('does not follow an outer object a parameter shadows', () => {
+    const text = [
+      'const s = { p: 4 };',
+      'const t = { m: 2 };',
+      'function a(s: SxObject) { return <Box sx={s} />; }',
+      'const b = ({ t }: { t: SxObject }) => <Box sx={t} />;',
+    ].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+
+  it('follows a block-scoped declaration, a member of it and a spread in it', () => {
+    const text = [
+      "const base = { gap: 'sm' };",
+      'function a(dense: boolean) {',
+      '  const base = { mx: 1 };',
+      '  if (dense) {',
+      '    const styles = { row: { ...base, py: 2 } };',
+      '    return <Box sx={styles.row} />;',
+      '  }',
+      '  return null;',
+      '}',
+    ].join('\n');
+    expect(found(text)).toEqual([
+      { line: 3, key: 'mx', value: '1' },
+      { line: 5, key: 'py', value: '2' },
+    ]);
+  });
+});
+
+describe('the gate documents what it does not follow', () => {
+  const header = readFileSync(join(ROOT, 'scripts/check-spacing-vocabulary.mjs'), 'utf8').split(
+    '*/',
+  )[1];
+  const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
+  const entry = registry.gates.find((g) => g.id === 'check-spacing-vocabulary');
+
+  it('names an sx array as a limit, with the type that rejects it, in the header and the registry', () => {
+    expect(header).toMatch(/sx=\{\[/);
+    expect(header).toMatch(/SxObject/);
+    expect(entry.description).toMatch(/array/);
+  });
+
+  it('says a name resolves by scope in the header and the registry', () => {
+    expect(header).toMatch(/scope/);
+    expect(entry.description).toMatch(/scope/);
+  });
+});
+
 describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', () => {
   it('is error severity and fires at pre-commit in the registry', () => {
     const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
@@ -263,8 +352,23 @@ describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', ()
       'sx.gap:',
       'sx.m:',
       'sx.p:',
+      'sx.p:',
     ]);
     expect(new Set(violations.map((v) => v.severity))).toEqual(new Set(['error']));
+  });
+
+  it('exits 0 on the passing fixture, where an inner same-name object shadows an integer one', () => {
+    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs', '--json'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: 'fixtures/check-spacing-vocabulary/passing.example.tsx',
+      },
+    });
+    expect(JSON.parse(run.stdout).violations).toEqual([]);
+    expect(run.status).toBe(0);
   });
 
   it('finds nothing in src/ (pnpm test runs this in CI, where the hook does not)', () => {

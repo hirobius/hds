@@ -28,3 +28,14 @@ export function ViolatingConditionalSpacing({ dense }: { dense: boolean }) {
     </Box>
   );
 }
+
+// violating: a hoisted object in one function, and a same-name one declared
+// after it in another (the name resolves by scope, not to the last declaration)
+export function ViolatingScopedSpacing() {
+  const scoped = { p: 6 };
+  return <Box sx={scoped}>Integer on a function-scoped sx object</Box>;
+}
+export function NamedLaterSpacing() {
+  const scoped = { bgcolor: 'surface.raised' };
+  return <Box sx={scoped}>Same name, no spacing</Box>;
+}

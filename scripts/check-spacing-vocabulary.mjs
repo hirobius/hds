@@ -27,13 +27,21 @@
  *   - an object declared in the same file and passed by name
  *     (`const style = { p: 4 }; sx={style}`), by member (`sx={styles.row}`,
  *     which scans all of `styles`) or spread (`sx={{ ...base }}`), following
- *     `as`, `satisfies` and parentheses.
+ *     `as`, `satisfies` and parentheses. A name resolves by lexical scope:
+ *     the nearest enclosing block, function, module or file that declares it
+ *     wins, so a same-name declaration in another function does not hide it,
+ *     and a parameter or `for`/`catch` binding of that name shadows an outer
+ *     object.
  *
  * What it does not follow (a known limit, also in the registry entry): an
  * object imported from another file, returned from a function, built at
  * runtime (`Object.assign`, a computed key), or a spacing key given as a
  * shorthand property (`{ p }`). Those reach sx without a literal the gate can
- * see; review catches them.
+ * see; review catches them. Nor does it read an array (`sx={[{ p: 2 }]}`):
+ * Box's `sx` is an `SxObject`, which rejects an array, so `pnpm typecheck`
+ * fails first, and the resolver would not merge one. Only a declaration's
+ * initializer is read, so a `let` reassigned later and a `var` used outside
+ * the block that declares it are not followed either.
  *
  * What it ignores:
  *   - String values (`p: 'md'`, `gap: 'var(--...)'`) — already named.
@@ -147,10 +155,69 @@ function possibleResults(node) {
   return null;
 }
 
+/** Whether a binding name (`s`, `{ s }`, `[s]`, `{ a: s = 1 }`) binds `name`. */
+function bindsName(binding, name) {
+  if (ts.isIdentifier(binding)) return binding.text === name;
+  if (ts.isObjectBindingPattern(binding) || ts.isArrayBindingPattern(binding)) {
+    return binding.elements.some((el) => ts.isBindingElement(el) && bindsName(el.name, name));
+  }
+  return false;
+}
+
+/** The variable declaration for `name` among a scope's own statements, if any. */
+function declarationIn(statements, name) {
+  for (const statement of statements) {
+    if (!ts.isVariableStatement(statement)) continue;
+    const found = statement.declarationList.declarations.find((d) => bindsName(d.name, name));
+    if (found) return found;
+  }
+  return null;
+}
+
+/**
+ * The object literal an identifier names, looked up by lexical scope: from
+ * the identifier outwards, the first block, function body, module or file
+ * that declares the name wins, and a parameter, a `for` or `catch` binding,
+ * or a declaration that is not a plain `name = { ... }` shadows any outer
+ * object. Null when the name does not resolve to an object literal in this
+ * file.
+ */
+function resolveObjectDeclaration(identifier) {
+  const name = identifier.text;
+  for (let node = identifier.parent; node; node = node.parent) {
+    let declaration = null;
+    if (
+      ts.isSourceFile(node) ||
+      ts.isBlock(node) ||
+      ts.isModuleBlock(node) ||
+      ts.isCaseClause(node) ||
+      ts.isDefaultClause(node)
+    ) {
+      declaration = declarationIn(node.statements, name);
+    } else if (
+      (ts.isForStatement(node) || ts.isForInStatement(node) || ts.isForOfStatement(node)) &&
+      node.initializer &&
+      ts.isVariableDeclarationList(node.initializer)
+    ) {
+      declaration = node.initializer.declarations.find((d) => bindsName(d.name, name)) ?? null;
+    } else if (ts.isCatchClause(node) && node.variableDeclaration) {
+      if (bindsName(node.variableDeclaration.name, name)) return null;
+    } else if (ts.isFunctionLike(node) && node.parameters.some((p) => bindsName(p.name, name))) {
+      return null;
+    }
+    if (declaration) {
+      if (!ts.isIdentifier(declaration.name) || !declaration.initializer) return null;
+      const init = unwrap(declaration.initializer);
+      return init && ts.isObjectLiteralExpression(init) ? init : null;
+    }
+  }
+  return null;
+}
+
 /**
  * Scans a single file's text for banned raw-integer spacing values in Box
  * `sx` objects: inline (`sx={{ ... }}`, any spacing), or a same-file object
- * passed by name, member or spread.
+ * passed by name, member or spread, resolved by scope.
  *
  * @param {string} text
  * @param {string} rel - repo-relative path used in reported violations
@@ -161,17 +228,6 @@ export function findViolationsInText(text, rel) {
   const lines = text.split('\n');
   const kind = rel.endsWith('.ts') ? ts.ScriptKind.TS : ts.ScriptKind.TSX;
   const source = ts.createSourceFile(rel, text, ts.ScriptTarget.Latest, true, kind);
-
-  // Same-file `const|let|var name = <object literal>` declarations, by name.
-  const declarations = new Map();
-  const collectDeclarations = (node) => {
-    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
-      const init = unwrap(node.initializer);
-      if (init && ts.isObjectLiteralExpression(init)) declarations.set(node.name.text, init);
-    }
-    ts.forEachChild(node, collectDeclarations);
-  };
-  collectDeclarations(source);
 
   const violations = [];
   const scanned = new Set();
@@ -242,7 +298,10 @@ export function findViolationsInText(text, rel) {
       return;
     }
     if (ts.isObjectLiteralExpression(n)) return scanSxObject(n);
-    if (ts.isIdentifier(n) && declarations.has(n.text)) scanSxObject(declarations.get(n.text));
+    if (ts.isIdentifier(n)) {
+      const declared = resolveObjectDeclaration(n);
+      if (declared) scanSxObject(declared);
+    }
   };
 
   const visit = (node) => {
