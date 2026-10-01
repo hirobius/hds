@@ -1,7 +1,7 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * hds#393 step 1: Grid can render what TileGrid renders, so TileGrid can
- * fold into it. `<Grid layout="auto-fill" minItemWidth="220px" gap="medium">`
+ * hds#393 step 1: Grid can render what TileGrid rendered, so TileGrid could
+ * fold into it (0.20.0 removed TileGrid, hds#395). `<Grid layout="auto-fill" minItemWidth="220px" gap="medium">`
  * must compute the same tracks and the same 12px gap as
  * `<TileGrid minTileWidth="220px">` (gap 'sm', its default), under every
  * tenant and density, at every viewport width the spacing lock uses, and in a
@@ -11,8 +11,8 @@
  * TileGrid tag ops origin/main renders (76ef65e: ClientDashboardPage.tsx 6,
  * agentic-os/SurfacesRail.tsx 1) and TileGrid's bare defaults go through the
  * codemod, and the Grid it writes is compared with TileGrid's rendered style.
- * fixtures/tile-grid-0.19.json pins that style per tag, so the proof outlives
- * TileGrid; the first block checks the pin against TileGrid while it exists.
+ * fixtures/tile-grid-0.19.json pins that style per tag: it was checked against
+ * the live TileGrid up to the commit that removed it, and stands in for it since.
  *
  * This is a test of its own, not probes in spacing-computed-lock.test.mjs:
  * that lock pins every probe to a fixture captured from 8e53a8a, where
@@ -32,7 +32,6 @@ import { chromium } from 'playwright';
 import { chromiumPath } from '../lib/storybook-host.mjs';
 import { transformSource } from '../../codemods/tile-grid.mjs';
 import { Grid } from '../../src/app/components/grid.tsx';
-import { TileGrid } from '../../src/app/components/tile-grid.tsx';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -64,8 +63,6 @@ function rewritten(attrs) {
   return attrsOf(/<Grid\b([^>]*)>/.exec(out.source)[1]);
 }
 
-const tileGrid = (props = { minTileWidth: '220px' }) =>
-  renderToStaticMarkup(React.createElement(TileGrid, props, tiles()));
 const grid = (props = { layout: 'auto-fill', minItemWidth: '220px', gap: 'medium' }) =>
   renderToStaticMarkup(React.createElement(Grid, props, tiles()));
 /** TileGrid as it rendered, rebuilt from its pinned root style. */
@@ -79,15 +76,19 @@ const template = (style) => /grid-template-columns:([^;]*)/.exec(style)?.[1];
 describe("Grid renders TileGrid's recipe (hds#393)", () => {
   it('emits the same track template as TileGrid', () => {
     expect(template(rootStyle(grid()))).toBe('repeat(auto-fill, minmax(min(220px, 100%), 1fr))');
-    expect(template(rootStyle(grid()))).toBe(template(rootStyle(tileGrid())));
+    expect(template(rootStyle(grid()))).toBe(template(PINNED['minTileWidth="220px"']));
   });
 });
 
 describe('the pinned TileGrid styles (hds#395)', () => {
-  it('hold one entry per ops site and are what TileGrid renders for it', () => {
+  it("hold one entry per ops site, each TileGrid's recipe: its width (260px by default) on a 12px gap", () => {
     expect(Object.keys(PINNED).sort()).toEqual([...SITES].sort());
-    for (const attrs of SITES)
-      expect(rootStyle(tileGrid(attrsOf(attrs))), attrs).toBe(PINNED[attrs]);
+    for (const attrs of SITES) {
+      const width = attrsOf(attrs).minTileWidth ?? '260px';
+      expect(PINNED[attrs], attrs).toBe(
+        `display:grid;grid-template-columns:repeat(auto-fill, minmax(min(${width}, 100%), 1fr));gap:12px`,
+      );
+    }
   });
 });
 
@@ -118,7 +119,7 @@ const PAGE_CSS = [
 
 /** One pair per probe: TileGrid's markup and the Grid that replaces it. */
 const PROBES = [
-  { id: 'b3', tileGrid: tileGrid(), grid: grid() },
+  { id: 'b3', tileGrid: pinnedTileGrid('minTileWidth="220px"'), grid: grid() },
   ...SITES.map((attrs, i) => ({
     id: `site${i}`,
     tileGrid: pinnedTileGrid(attrs),

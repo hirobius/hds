@@ -4,10 +4,10 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 65 | 65 | 0 |
+| eslint-disable | 72 | 63 | 9 |
 | @ts-ignore/@ts-expect-error | 6 | 6 | 0 |
 | custom-sentinels (*-ok / hds-bypass) | 19 | 19 | 0 |
-| **Total** | **90** | **90** | **0** |
+| **Total** | **97** | **88** | **9** |
 
 ## eslint-disable
 
@@ -67,7 +67,6 @@
 | `src/app/components/tag.tsx` | 29 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- 44px min interactive hit target has no semantic Tailwind size utility; var()-based so still token-driven` | justified |
 | `src/app/components/tag.tsx` | 38 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- component-tag-* sizing/radius tokens have no Tailwind-theme utility; var()-based so still token-driven` | justified |
 | `src/app/components/text.tsx` | 36 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- semantic typography composite tokens (font-family/size/weight/letter-spacing/line-height/max-width/text-transform) have no Tailwind-theme utility; var()-based so still token-driven` | justified |
-| `src/app/components/tile-grid.tsx` | 38 | `eslint-disable-next-line` | `no-restricted-syntax -- TileGrid IS the grid primitive; auto-fill template is its raison d'être` | justified |
 | `src/app/components/toggle.tsx` | 51 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/toggle.tsx` | 102 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven size/radius/border/padding; var()-based, no Tailwind-theme utility exists` | justified |
 | `src/app/components/toggle.tsx` | 149 | `eslint-disable-next-line` | `tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists` | justified |
@@ -76,8 +75,16 @@
 | `src/stories/patterns-scroll.stories.tsx` | 11 | `eslint-disable*` | `no-restricted-syntax -- story fixtures use raw grid/flex to showcase the primitives` | justified |
 | `src/stories/pin.stories.tsx` | 6 | `eslint-disable*` | `no-restricted-syntax -- story fixtures use raw grid to showcase the primitive` | justified |
 | `src/stories/reveal.stories.tsx` | 7 | `eslint-disable*` | `no-restricted-syntax -- story fixtures use raw grid/flex to showcase the primitive` | justified |
-| `src/stories/status-tile.stories.tsx` | 80 | `eslint-disable-next-line` | `no-restricted-syntax -- story demo: a raw 2-col grid is the dashboard layout being shown` | justified |
 | `src/stories/surface.stories.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
+| `scripts/__tests__/hds-prefix-codemod.test.mjs` | 454 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/hds-prefix-codemod.test.mjs` | 471 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 311 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 312 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 363 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 365 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 490 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 502 | `eslint-disable*` | (none) | untriaged |
+| `scripts/__tests__/patterns-subpath-removed.test.mjs` | 152 | `eslint-disable*` | (none) | untriaged |
 
 ## @ts-ignore/@ts-expect-error
 
@@ -116,8 +123,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 90
-- **Justified (reason >= 10 chars):** 90
-- **Untriaged (reason < 10 chars or missing):** 0
+- **Total suppressions:** 97
+- **Justified (reason >= 10 chars):** 88
+- **Untriaged (reason < 10 chars or missing):** 9
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.

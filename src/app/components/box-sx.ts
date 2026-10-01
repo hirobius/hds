@@ -142,9 +142,10 @@ export const LAYOUT_GAP_NAMES = {
  * `medium` (hds#393), and nothing else. Closed, so an untyped value sets no style, as it did before
  * hds#404 (scripts/__tests__/spacing-computed-lock.test.mjs).
  *
- * `medium` is TileGrid's 12px default gap, `semantic.space.component.medium`,
- * the step Stack's `medium` reads. Unlike the four names it is fixed: compact
- * density does not remap it, as it does not remap TileGrid's 12px. Only
+ * `medium` is the 12px default gap of TileGrid (removed in 0.20.0, hds#395),
+ * `semantic.space.component.medium`, the step Stack's `medium` reads. Unlike
+ * the four names it is fixed: compact density does not remap it, as it did not
+ * remap TileGrid's 12px. Only
  * Grid's `gap` type takes it so far. It stays out of LAYOUT_GAP_NAMES, so
  * Card and Stack, which spread those names, do not change.
  */

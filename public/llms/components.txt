@@ -681,11 +681,6 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - resize: TextareaResize = vertical
   - textareaClassName: string
 
-### TileGrid
-Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.
-  - gap: "sm" | "md" | "xs" = sm
-  - minTileWidth: string = 260px
-
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.
   - date: string | number | Date

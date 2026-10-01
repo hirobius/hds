@@ -112,3 +112,23 @@ describe('hds#394 wave 4b in codemods/removed-0.20.json', () => {
     ]);
   });
 });
+
+describe('hds#395 B5 in codemods/removed-0.20.json', () => {
+  it('replaces NotFoundPattern and TileGrid with the survivor their codemod writes', () => {
+    const map = loadReplacements();
+    expect(map.get('NotFoundPattern')).toContain(
+      'ErrorPattern displayText="404" message="Page not found"',
+    );
+    expect(map.get('NotFoundPattern')).toContain('hds-not-found-pattern');
+    expect(map.get('TileGrid')).toContain('Grid layout="auto-fill" minItemWidth');
+    expect(map.get('TileGrid')).toContain('gap="medium"');
+    expect(map.get('TileGrid')).toContain('hds-tile-grid');
+    expect(map.get('TileGridProps')).toContain('GridProps');
+  });
+
+  it('does not list StatusTile, which moves to /patterns instead of going', () => {
+    const removed = loadRemovedNames();
+    for (const n of ['StatusTile', 'StatusTileProps', 'StatusTileTone'])
+      expect(removed.has(n), n).toBe(false);
+  });
+});

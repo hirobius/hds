@@ -1,5 +1,5 @@
 {
-  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; scripts/__tests__/patterns-subpath-removed.test.mjs fails if any listed name is exported from the root or /patterns again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row. `replaced` holds the names removed with a survivor (hds#394 wave 4b), by module, each with the survivor the codemod's report names (\"use <survivor>\") instead of \"no replacement\".",
+  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; scripts/__tests__/patterns-subpath-removed.test.mjs fails if any listed name is exported from the root or /patterns again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row. `replaced` holds the names removed with a survivor (hds#394 wave 4b, and hds#395 B5 where a codemod of its own rewrites ops' sites), by module, each with the survivor the codemod's report names (\"use <survivor>\") instead of \"no replacement\".",
   "release": "0.20.0",
   "modules": {
     "src/app/components/activity-feed.tsx": [
@@ -171,9 +171,16 @@
       "MultiSelectorOption": "ComboboxOption",
       "MultiSelectorProps": "ComboboxMultipleProps"
     },
+    "src/app/components/not-found-pattern.tsx": {
+      "NotFoundPattern": "ErrorPattern displayText=\"404\" message=\"Page not found\" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it)"
+    },
     "src/app/components/selectable-card.tsx": {
       "SelectableCard": "Card selectable selected onSelectedChange",
       "SelectableCardProps": "CardProps"
+    },
+    "src/app/components/tile-grid.tsx": {
+      "TileGrid": "Grid layout=\"auto-fill\" minItemWidth=\"…\" gap=\"medium\" (hds-tile-grid rewrites it)",
+      "TileGridProps": "GridProps (minTileWidth is minItemWidth, gap 'sm' is 'medium')"
     },
     "src/app/components/time-input.tsx": {
       "TimeInput": "Input type=\"time\"",

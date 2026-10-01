@@ -77,7 +77,9 @@ Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
 Ops (`hirobius/ops`) pins `^0.16.0`. A read-only dry run on 2026-09-29 found 11
 import sites in 11 files, all four names being `Page`, `ErrorPattern`,
 `AssetImg` and `CodeBlock`. The rewrite is tracked as an issue on the Ops repo.
-A second dry run on 2026-10-01 (ops main 76ef65e) found the same 11 sites.
+A second dry run on 2026-10-01 (ops main 76ef65e) found the same 11 sites;
+with StatusTile on `/patterns` (hds#395) it moves 12, the extra one in
+`ClientDashboardPage.tsx`.
 
 ## Spacing names move to the t-shirt scale
 
@@ -154,9 +156,11 @@ without a deprecation release, 32 components no consumer imports (87 names,
 from the root and `/patterns`) and makes the 38 remaining root `*Variants` cva
 helpers private (hds#389's 2026-10-01 decision update). Wave 4b removes 13
 components that fold into a survivor hds#393 shipped (27 root names; StatusDot
-stays for now). Nothing else left the public API. Ops,
-the one consumer that imports components, pins a caret range below 0.20, so
-nothing breaks until it upgrades; run the codemods first.
+stays for now). hds#395 (B5) removes the two that ops renders, NotFoundPattern
+and TileGrid (3 root names), each with a codemod of its own, and moves
+StatusTile from the root to `/patterns` (3 names). Nothing else left the public
+API. Ops, the one consumer that imports components, pins a caret range below
+0.20, so nothing breaks until it upgrades; run the codemods first.
 
 ```bash
 # Preview, then rewrite in place. `-p` runs the bins from the 0.20 package
@@ -164,9 +168,17 @@ nothing breaks until it upgrades; run the codemods first.
 # its own in the registry. Works before or after you upgrade.
 npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root . --dry-run
 npx -p @hirobius/design-system@^0.20.0 hds-prefix --root . --dry-run
+npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern --root . --dry-run
+npx -p @hirobius/design-system@^0.20.0 hds-tile-grid --root . --dry-run
 npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .
 npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .
+npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern --root .
+npx -p @hirobius/design-system@^0.20.0 hds-tile-grid --root .
 ```
+
+The four run in any order and reach the same files. Each one's `--check`
+exits 0 once nothing is left for it, and `hds-patterns-subpath --check` also
+stays at 1 while a NotFoundPattern or TileGrid import remains.
 
 After upgrading, the installed copies run without a download:
 `pnpm exec hds-prefix --root .`, or
@@ -426,6 +438,65 @@ codemod can rewrite that import mechanically.
 | `TimeInputProps`        | `InputProps`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` names the survivor |
 | `ToggleButton`          | `<Button pressed={…} onPressedChange={…}>`. `pressed`, `defaultPressed`, `onPressedChange`, `size`, `disabled` and `aria-label` are the same, as is `variant="secondary"`; `variant="ghost"` becomes `variant="tertiary"`. `data-state="on"` becomes `data-pressed="true"`.                                                                                                                                                                                                                                   | none: no consumer imports it; `hds-patterns-subpath --check` names the survivor |
 | `ToggleButtonProps`     | `ButtonProps`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` names the survivor |
+
+### Components ops renders, each with a codemod (hds#395 B5)
+
+Ops imports three names in hds#389's prune set: NotFoundPattern, TileGrid and
+StatusTile. Under the decision update a name ops imports goes in 0.20.0 once a
+codemod rewrites every ops site, so each has one:
+
+- **NotFoundPattern** took no props and rendered
+  `<ErrorPattern displayText="404" message="Page not found" />`. The
+  `hds-not-found-pattern` codemod (`codemods/not-found-pattern.mjs`) writes that
+  element in its place and imports ErrorPattern from `/patterns`. It joins an
+  existing `/patterns` import, reuses an ErrorPattern the file already
+  imports, and keeps an alias as the file's name (`NotFoundPattern as Missing`
+  becomes `ErrorPattern as Missing`). Attributes the tag already has (`key`)
+  stay. A spread, or a `displayText` or `message` NotFoundPattern ignored, is
+  left for a manual edit.
+- **TileGrid** folds into `Grid`, which renders its recipe since hds#393:
+  `<TileGrid minTileWidth="280px">` becomes
+  `<Grid layout="auto-fill" minItemWidth="280px" gap="medium">`. TileGrid's
+  `gap="sm"` (12px, its default) is Grid's fixed 12px `medium` step, and
+  TileGrid's 260px default width is written out because Grid defaults to
+  280px. An expression width keeps that fallback: `minTileWidth={w}` becomes
+  `minItemWidth={w ?? '260px'}`. The `hds-tile-grid` codemod
+  (`codemods/tile-grid.mjs`) makes the rewrite, and the rendered tracks and
+  gap are the same as TileGrid's under every tenant and density
+  (`scripts/__tests__/grid-tile-grid-parity.test.mjs`, in Chromium, for each
+  ops tag). It leaves for a manual edit `gap="xs"` and `gap="md"`: TileGrid
+  fixed them at 8px and 16px, and Grid's nearest steps, `tight` and `normal`,
+  tighten to 6px and 12px under compact density. It does the same for a gap
+  or spread it cannot read, a self-closing tag (Grid needs children) and an
+  import of `TileGridProps`.
+- **StatusTile** is not removed. It leaves the root for `/patterns`
+  (hds#389 D5), with `StatusTileProps` and `StatusTileTone`, and
+  `hds-patterns-subpath` moves the import like any other `/patterns` name.
+
+Both new codemods keep comments and layout, change only imports whose source
+is exactly `@hirobius/design-system`, and change nothing on a second run. A
+file with any use they cannot rewrite (`typeof TileGrid`, a value use, a
+re-export, a namespace or dynamic import that reads the name, or a file they
+cannot read to its end) is left as written, and `--check` exits 1 and lists
+it. Their stories, manifest specs and Figma disposition rows go with them.
+
+| Removed from `@hirobius/design-system` | Use instead                                                                                                                              | Codemod                                                                     |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `NotFoundPattern`                      | `<ErrorPattern displayText="404" message="Page not found" />` from `@hirobius/design-system/patterns`                                    | `npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern --root .`     |
+| `TileGrid`                             | `<Grid layout="auto-fill" minItemWidth="…" gap="medium">` (`minTileWidth` is `minItemWidth`, 260px when unset; `gap="sm"` is `"medium"`) | `npx -p @hirobius/design-system@^0.20.0 hds-tile-grid --root .`             |
+| `TileGridProps`                        | `GridProps`                                                                                                                              | none: the codemod lists an import of it for a manual edit; ops imports none |
+| `StatusTile`                           | `StatusTile` from `@hirobius/design-system/patterns`                                                                                     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`      |
+| `StatusTileProps`                      | `StatusTileProps` from `@hirobius/design-system/patterns`                                                                                | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`      |
+| `StatusTileTone`                       | `StatusTileTone` from `@hirobius/design-system/patterns`                                                                                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`      |
+
+A read-only dry run on 2026-10-01 (ops main 76ef65e) rewrites:
+`hds-not-found-pattern` 1 file, 1 site (`src/app/pages/NotFoundPage.tsx`);
+`hds-tile-grid` 2 files, 7 sites (`src/app/pages/ops/ClientDashboardPage.tsx`
+6, `src/app/pages/ops/agentic-os/SurfacesRail.tsx` 1). `hds-patterns-subpath`
+now moves 12 import sites in the same 11 files: `ClientDashboardPage.tsx`
+imports StatusTile in a second statement, next to the one that imports Page.
+With `hds-prefix` that is 14 ops files, and each codemod's `--check` exits 0
+after the run.
 
 ### Root `*Variants` helpers become private (hds#394)
 

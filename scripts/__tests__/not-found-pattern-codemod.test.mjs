@@ -164,18 +164,24 @@ describe('transformSource', () => {
   });
 });
 
-describe('the rewrite renders what NotFoundPattern rendered', () => {
-  it('ErrorPattern with displayText="404" and message="Page not found"', async () => {
+// NotFoundPattern was `() => <ErrorPattern displayText="404" message="Page not found" />`;
+// the commit that added this codemod compared the two renders while it existed.
+describe('the rewrite renders the 404 recovery surface NotFoundPattern rendered', () => {
+  it('ErrorPattern with the props the codemod writes', async () => {
     const React = await import('react');
     const { renderToStaticMarkup } = await import('react-dom/server');
     const { ErrorPattern } = await import('../../src/app/components/error-pattern.tsx');
-    const { NotFoundPattern } = await import('../../src/app/components/not-found-pattern.tsx');
-    const rewritten = renderToStaticMarkup(
-      React.createElement(ErrorPattern, { displayText: '404', message: 'Page not found' }),
+    const out = transformSource(
+      `import { NotFoundPattern } from '${ROOT}';\n<NotFoundPattern />;\n`,
     );
-    expect(rewritten).toContain('404');
-    expect(rewritten).toContain('Page not found');
-    expect(rewritten).toBe(renderToStaticMarkup(React.createElement(NotFoundPattern)));
+    const props = Object.fromEntries(
+      [...out.source.matchAll(/(\w+)="([^"]*)"/g)].map((m) => [m[1], m[2]]),
+    );
+    expect(props).toEqual({ displayText: '404', message: 'Page not found' });
+    const html = renderToStaticMarkup(React.createElement(ErrorPattern, props));
+    expect(html).toMatch(/<h1[^>]*>404<\/h1>/);
+    expect(html).toMatch(/<p[^>]*>Page not found<\/p>/);
+    expect(html).toContain('>Back</button>');
   });
 });
 

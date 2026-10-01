@@ -122,7 +122,6 @@
     "Tag",
     "Text",
     "Textarea",
-    "TileGrid",
     "Timestamp",
     "ToastProvider",
     "Toggle",
@@ -1194,9 +1193,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/not-found-pattern.tsx",
-        "src/stories/error-pattern.stories.tsx",
-        "src/stories/not-found-pattern.stories.tsx"
+        "src/index.ts",
+        "src/stories/error-pattern.stories.tsx"
       ],
       "tokenMapping": {
         "Headline typography": "semantic.typography.display",
@@ -1282,7 +1280,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/grid.tsx",
-      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
+      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe; 0.20.0 removed TileGrid). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -1302,12 +1300,13 @@
         "src/app/components/stack.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
+        "src/index.ts",
         "src/stories/box.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
-        "src/stories/surface.stories.tsx",
-        "src/stories/tile-grid.stories.tsx"
+        "src/stories/status-tile.stories.tsx",
+        "src/stories/surface.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -3981,7 +3980,6 @@
       },
       "consumers": [
         "src/app/components/container.tsx",
-        "src/app/components/not-found-pattern.tsx",
         "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
@@ -3990,7 +3988,6 @@
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
         "src/stories/error-pattern.stories.tsx",
-        "src/stories/not-found-pattern.stories.tsx",
         "src/stories/page.stories.tsx",
         "src/stories/pagination.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
@@ -4250,6 +4247,8 @@
       "consumers": [
         "src/app/components/metric-tiles.tsx",
         "src/app/components/stat.tsx",
+        "src/index.ts",
+        "src/patterns.ts",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/status-list-item.stories.tsx",
         "src/stories/status-tile.stories.test.tsx",
@@ -4294,7 +4293,7 @@
       "storyIds": [
         "primitives-status-tile--danger",
         "primitives-status-tile--default",
-        "primitives-status-tile--tile-grid",
+        "primitives-status-tile--in-grid",
         "primitives-status-tile--warning",
         "primitives-status-tile--with-trailing-badge"
       ],
@@ -4312,66 +4311,6 @@
           }
         ]
       }
-    },
-    "TileGrid": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/tile-grid.tsx",
-      "description": "Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "TileGrid",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/box-sx.ts",
-        "src/app/components/grid.test.tsx",
-        "src/app/components/grid.tsx",
-        "src/stories/grid.stories.tsx",
-        "src/stories/status-tile.stories.test.tsx",
-        "src/stories/status-tile.stories.tsx",
-        "src/stories/tile-grid.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "gap": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "xs"
-          ],
-          "default": "sm"
-        },
-        "minTileWidth": {
-          "type": "string",
-          "default": "260px"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/tile-grid.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-tile-grid--default",
-        "primitives-tile-grid--gap-md",
-        "primitives-tile-grid--gap-xs",
-        "primitives-tile-grid--narrow-tiles",
-        "primitives-tile-grid--wide-tiles"
-      ]
     },
     "Badge": {
       "variantAxes": [
@@ -9291,37 +9230,6 @@
       "preview": {},
       "tokenMapping": {},
       "tier": "utility"
-    },
-    "NotFoundPattern": {
-      "category": "Feedback",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/not-found-pattern.tsx",
-      "description": "NotFoundPattern - governed not-found recovery pattern for unroutable pages.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "NotFoundPattern",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/stories/error-pattern.stories.tsx",
-        "src/stories/not-found-pattern.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "utility",
-      "docExempt": true,
-      "figmaLink": null
     },
     "ExpandTooltip": {
       "category": "Internal",

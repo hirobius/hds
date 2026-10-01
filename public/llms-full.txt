@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-01T13:20:49.686Z
+Generated: 2026-10-01T14:58:02.398Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -1152,11 +1152,6 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - label: string
   - resize: TextareaResize = vertical
   - textareaClassName: string
-
-### TileGrid
-Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.
-  - gap: "sm" | "md" | "xs" = sm
-  - minTileWidth: string = 260px
 
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.

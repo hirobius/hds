@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-01T13:23:42.086Z",
+  "generated": "2026-10-01T15:06:50.240Z",
   "byToken": {
     "--semantic-space-scale-xs": [
       "src/app/components/alert.tsx",
@@ -150,7 +150,6 @@
       "src/stories/dialog.stories.tsx",
       "src/stories/patterns-scroll.stories.tsx",
       "src/stories/reveal.stories.tsx",
-      "src/stories/tile-grid.stories.tsx",
       "src/stories/type-specimen.stories.tsx",
       "src/styles/static.css",
       "src/styles/theme.css",
@@ -389,7 +388,6 @@
       "src/stories/sidebar.stories.tsx",
       "src/stories/stack.stories.tsx",
       "src/stories/switcher.stories.tsx",
-      "src/stories/tile-grid.stories.tsx",
       "src/styles/__tests__/interactive-surface-tokens.test.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
@@ -3949,7 +3947,6 @@
     "--horizontal": ["src/stories/static-primitives.stories.tsx", "src/styles/static.css"],
     "--strong": ["src/stories/static-primitives.stories.tsx", "src/styles/static.css"],
     "--active": ["src/stories/static-primitives.stories.tsx", "src/styles/static.css"],
-    "--font-mono": ["src/stories/tile-grid.stories.tsx"],
     "hds.fontSize": ["src/stories/type-specimen.stories.tsx"],
     "hds.space.px8": ["src/stories/type-specimen.stories.tsx"],
     "hds.typeStyles.monoSm": ["src/stories/type-specimen.stories.tsx"],
@@ -6056,11 +6053,6 @@
       "--semantic-color-content-secondary"
     ],
     "src/stories/table.stories.tsx": ["--semantic-space-scale-md"],
-    "src/stories/tile-grid.stories.tsx": [
-      "--font-mono",
-      "--semantic-color-content-primary",
-      "--semantic-color-surface-raised"
-    ],
     "src/stories/type-specimen.stories.tsx": [
       "--primitive-typography-lineHeight-none",
       "hds.fontSize",
@@ -7744,7 +7736,6 @@
     "--current-cols",
     "--danger",
     "--define",
-    "--font-mono",
     "--hds-border",
     "--hds-fill",
     "--hds-font-size-xs",

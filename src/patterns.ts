@@ -18,6 +18,10 @@
  * DocLinkCard, FileInput, Lightbox, NavItem, OverflowList, SideNav,
  * StackedCardRail, Stepper, Toolbar, TopNav and TreeList. The codemod reports
  * an import of any of them for a manual edit (codemods/removed-0.20.json).
+ *
+ * StatusTile joined this entry in the same release (hds#389 D5, hds#395): the
+ * root stopped exporting it, and hds-patterns-subpath moves a root import of
+ * StatusTile, StatusTileProps or StatusTileTone here.
  */
 export * from './app/components/form';
 export * from './app/components/page';
@@ -30,3 +34,4 @@ export * from './app/components/metric-tiles';
 export * from './app/components/form-actions';
 export * from './app/components/destructive-section';
 export * from './app/components/data-table-section';
+export * from './app/components/status-tile';
