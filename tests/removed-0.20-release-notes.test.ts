@@ -15,6 +15,10 @@
  *
  * fixtures/swiss-canon keeps no fixture that renders a removed component, and
  * .token-path-baseline.txt names no deleted file.
+ *
+ * Every assertion holds after `pnpm changeset:version` deletes the changesets
+ * (the "Version Packages" PR runs this suite), and no test names a changeset
+ * file (hds#394 R1b review).
  */
 
 import { describe, it, expect } from 'vitest';
@@ -23,6 +27,15 @@ import { resolve } from 'node:path';
 
 const ROOT = resolve(__dirname, '..');
 const read = (rel: string) => readFileSync(resolve(ROOT, rel), 'utf8');
+
+/**
+ * The .changeset/*.md files pending release. `pnpm changeset:version` deletes
+ * them all (README.md stays), so a test lists the directory, never a name.
+ */
+const pendingChangesets = () =>
+  readdirSync(resolve(ROOT, '.changeset'))
+    .filter((f) => f.endsWith('.md') && f !== 'README.md')
+    .map((f) => `.changeset/${f}`);
 
 const REMOVED = new Set(
   Object.values(
@@ -53,9 +66,9 @@ describe('ADR numbering', () => {
     const picker = /date pickers?|date-range picker|date-and-time picker|calendar picker/i;
     const cites = [
       'MIGRATIONS.md',
-      '.changeset/dsr-56.md',
       'src/index.ts',
       'docs/adr/020-date-time-component-library.md',
+      ...pendingChangesets(),
     ].flatMap((file) =>
       read(file)
         .split('\n')
@@ -68,24 +81,22 @@ describe('ADR numbering', () => {
             : [],
         ),
     );
-    expect(cites.length).toBeGreaterThanOrEqual(8);
+    // MIGRATIONS.md, src/index.ts and ADR-020 alone; the changesets add theirs
+    // until `changeset version` deletes them.
+    expect(cites.length).toBeGreaterThanOrEqual(7);
     expect(cites.filter((c) => !c.endsWith('ADR-034'))).toEqual([]);
   });
 });
 
 describe('release notes', () => {
   it('the changesets and MIGRATIONS.md cite one version for the range ops pins', () => {
-    const files = [
-      'MIGRATIONS.md',
-      ...readdirSync(resolve(ROOT, '.changeset'))
-        .filter((f) => f.endsWith('.md') && f !== 'README.md')
-        .map((f) => `.changeset/${f}`),
-    ];
-    const pins = files.flatMap((file) =>
+    const pins = ['MIGRATIONS.md', ...pendingChangesets()].flatMap((file) =>
       [...read(file).matchAll(/pins `\^(\d+\.\d+)(?:\.\d+)?`/g)].map((m) => `${file}: ^${m[1]}`),
     );
-    expect(pins.length).toBeGreaterThanOrEqual(3);
-    expect(new Set(pins.map((p) => p.split(': ')[1]))).toEqual(new Set(['^0.16']));
+    // MIGRATIONS.md keeps its pin after `changeset version` deletes the changesets.
+    expect(pins.length).toBeGreaterThanOrEqual(1);
+    // One value, whichever it is: an ops pin bump updates the docs, not this test.
+    expect(new Set(pins.map((p) => p.split(': ')[1])).size, pins.join('\n')).toBe(1);
   });
 
   it("MIGRATIONS.md's /patterns section says which modules survive and uses no removed name as a live example", () => {
@@ -108,6 +119,27 @@ describe('release notes', () => {
           .map((name) => `${name}: ${line.trim()}`),
       );
     expect(stale).toEqual([]);
+  });
+});
+
+describe('after `changeset version`', () => {
+  // `pnpm changeset:version` deletes every .changeset/*.md except README.md, and
+  // ci.yml runs `pnpm test` on the "Version Packages" PR it opens (release.yml,
+  // RELEASE_PAT). A test that reads a changeset by name fails that PR with ENOENT;
+  // list the directory instead (pendingChangesets above).
+  it('no test file reads a .changeset/*.md by name', () => {
+    const named = /['"`]\.changeset\/(?!README\.md)[\w.-]+\.md['"`]/;
+    const testFiles = ['tests', 'scripts', 'src', 'codemods'].flatMap((dir) =>
+      readdirSync(resolve(ROOT, dir), { recursive: true, encoding: 'utf8' })
+        .filter((f) => /\.test\.(ts|tsx|mjs|js)$/.test(f))
+        .map((f) => `${dir}/${f}`),
+    );
+    const offenders = testFiles.flatMap((file) =>
+      read(file)
+        .split('\n')
+        .flatMap((line, i) => (named.test(line) ? [`${file}:${i + 1}: ${line.trim()}`] : [])),
+    );
+    expect(offenders).toEqual([]);
   });
 });
 
