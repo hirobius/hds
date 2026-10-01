@@ -24,7 +24,7 @@
 // Side-effect import: design system base styles (tokens + theme + utilities)
 import './styles/index.css';
 
-// ── primitives (29) ──
+// ── primitives (38) ──
 export * from './app/components/alert';
 export * from './app/components/avatar';
 export * from './app/components/badge';
@@ -82,8 +82,6 @@ export * from './app/components/alert-dialog';
 export * from './app/components/hover-card';
 export * from './app/components/context-menu';
 
-// ── Astryx-gap coverage — promoted internals (0.12.0) ──
-
 // ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
 export * from './app/components/metadata-list';
 export * from './app/components/selectable-card';
@@ -115,7 +113,7 @@ export * from './app/components/tabs';
 export * from './app/components/tile-grid';
 export * from './app/components/status-tile';
 
-// ── patterns (8) ──
+// ── patterns (9) ──
 export * from './app/components/breadcrumb';
 export * from './app/components/combobox';
 export * from './app/components/disclosure';

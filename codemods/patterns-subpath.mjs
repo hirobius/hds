@@ -5,8 +5,11 @@
  * Rewrites `import { Page } from '@hirobius/design-system'` to
  * `import { Page } from '@hirobius/design-system/patterns'` for every name the
  * root stopped exporting in 0.20.0 (hds#389 R1): the 21 pattern components and
- * their props types, parts, hooks and `*Variants`. Other named imports stay on
- * the root. Aliases, `type` modifiers and multi-line layout
+ * their props types, parts, hooks and `*Variants`. The list also holds the six
+ * modules that were only ever on `/patterns` (StackedCardRail, PageHeader,
+ * MetricTiles, FormActions, DestructiveSection, DataTableSection); no root import
+ * of those ever resolved, so including them changes nothing. Other named imports
+ * stay on the root. Aliases, `type` modifiers and multi-line layout
  * are preserved; an existing `/patterns` import of the same kind is extended
  * instead of duplicated.
  *

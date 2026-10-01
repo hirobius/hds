@@ -572,7 +572,7 @@
         ]
       },
       {
-        "name": "HdsSelect",
+        "name": "Select",
         "description": "Animated dropdown selector with accessible keyboard navigation.",
         "variants": [
           "default",
@@ -581,7 +581,7 @@
         ]
       },
       {
-        "name": "HdsRadio",
+        "name": "Radio",
         "description": "Single-choice radio control with five interactive states.",
         "variants": [
           "rest",
@@ -592,7 +592,7 @@
         ]
       },
       {
-        "name": "HdsSlider",
+        "name": "Slider",
         "description": "Range slider bound to the HDS scale, with a value readout.",
         "variants": [
           "default"
@@ -647,7 +647,7 @@
     "category": "components",
     "navSection": "Components",
     "navOrder": 3,
-    "summary": "Components for presenting information without triggering actions. Display covers icons, content surfaces, technical notation, and token references.",
+    "summary": "Components for presenting information without triggering actions. Display covers icons, content surfaces and technical notation.",
     "components": [
       {
         "name": "Icon",
@@ -659,21 +659,12 @@
         "description": "Bordered content surface with token-backed padding, gap, and radius for static information panels."
       },
       {
-        "name": "Token",
-        "description": "Inline token chip in monospace. Dot-notation paths (primitive.*, semantic.*, component.*) are deep-linkable â€” clicking navigates to the Interactive Token Explorer with the token pre-selected.",
-        "token": "semantic.color.surface.raised"
-      },
-      {
         "name": "InlineCode",
         "description": "Inline monospace code fragment for file paths, prop names, and code references. Non-linkable."
       },
       {
         "name": "CodeBlock",
         "description": "Code display with filename, optional language label, and copy-to-clipboard support."
-      },
-      {
-        "name": "Token node",
-        "description": "Visual token reference variant used in diagrams and explorer lists, with optional deep-link access."
       },
       {
         "name": "AssetImg",
