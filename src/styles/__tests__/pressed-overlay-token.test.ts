@@ -1,7 +1,8 @@
 /**
  * Contract test: the pressed-state overlay token (hds#322).
  *
- * Button (and IconButton, which composes it) expressed pressed as
+ * Button (and IconButton, which composed it until 0.20.0 removed it for
+ * Button iconOnly, hds#394) expressed pressed as
  * `active:brightness-95 dark:active:brightness-110`, a filter with no token
  * behind it, so Figma's Pressed variants carried a hard-coded 5% black fill —
  * the only unbound colour on those sets. The overlay is now
@@ -19,15 +20,10 @@ import { describe, it, expect, beforeAll } from 'vitest';
 
 let tokensCss: string;
 let buttonSource: string;
-let iconButtonSource: string;
 
 beforeAll(() => {
   tokensCss = readFileSync(resolve(__dirname, '../tokens.css'), 'utf8');
   buttonSource = readFileSync(resolve(__dirname, '../../app/components/button.tsx'), 'utf8');
-  iconButtonSource = readFileSync(
-    resolve(__dirname, '../../app/components/icon-button.tsx'),
-    'utf8',
-  );
 });
 
 /** Body of the first top-level block whose selector list is exactly `selector`. */
@@ -82,10 +78,5 @@ describe('Button pressed state', () => {
   it('reads the token instead of a brightness filter', () => {
     expect(buttonSource).not.toMatch(/active:brightness-/);
     expect(buttonSource).toMatch(/active:inset-shadow-pressed-overlay\/\d+/);
-  });
-
-  it('IconButton composes Button and carries no brightness filter of its own', () => {
-    expect(iconButtonSource).not.toMatch(/brightness-/);
-    expect(iconButtonSource).toMatch(/from '\.\/button'/);
   });
 });

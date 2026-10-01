@@ -42,6 +42,14 @@ const REMOVED = new Set(
     JSON.parse(read('codemods/removed-0.20.json')).modules as Record<string, string[]>,
   ).flat(),
 );
+// And the names removed with a survivor (`replaced`, hds#394 wave 4b).
+for (const names of Object.values(
+  (JSON.parse(read('codemods/removed-0.20.json')).replaced ?? {}) as Record<
+    string,
+    Record<string, string>
+  >,
+))
+  Object.keys(names).forEach((n) => REMOVED.add(n));
 
 describe('ADR numbering', () => {
   it('every docs/adr file has a unique number and an H1 that carries it', () => {

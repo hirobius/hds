@@ -10,7 +10,6 @@ const componentApiPath = path.join(repoRoot, 'src', 'app', 'data', 'component-ap
 
 const targets = new Set([
   'Button',
-  'IconButton',
   'Alert',
   'Callout',
   'Stack',
@@ -55,10 +54,6 @@ const a11yDefaults = {
   // ── Actions ──────────────────────────────────────────────────────────────────
   Button: [
     { rule: 'Must have accessible name via label prop or aria-label', required: true },
-    { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
-  ],
-  IconButton: [
-    { rule: 'Must have aria-label (icon-only buttons have no visible text)', required: true },
     { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
   ],
   // ── Inputs ───────────────────────────────────────────────────────────────────

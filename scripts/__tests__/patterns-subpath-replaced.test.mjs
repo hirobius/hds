@@ -74,3 +74,41 @@ describe('codemods/removed-0.20.json `replaced`', () => {
     }
   });
 });
+
+describe('hds#394 wave 4b in codemods/removed-0.20.json', () => {
+  const SURVIVOR = {
+    IconButton: 'Button iconOnly',
+    ToggleButton: 'Button pressed',
+    InputGroup: 'Input prefix',
+    TimeInput: 'Input type="time"',
+    CircularProgress: 'Progress variant="circular"',
+    SelectableCard: 'Card selectable',
+    MultiSelector: 'Combobox multiple',
+    Cluster: 'Stack direction="row" wrap="wrap"',
+    Center: 'Container',
+    Cover: 'Box',
+    Frame: 'Box',
+    Bleed: 'Box',
+    AspectRatio: 'Box',
+  };
+
+  it('replaces each folded component with its survivor, props types too', () => {
+    const map = loadReplacements();
+    for (const [name, survivor] of Object.entries(SURVIVOR)) {
+      expect(map.get(name), name).toContain(survivor);
+      expect(map.get(`${name}Props`), `${name}Props`).toBeTruthy();
+    }
+    expect(map.get('MultiSelectorOption')).toContain('ComboboxOption');
+  });
+
+  it('keeps StatusDot, which ops imports and Badge dot cannot take whole (style)', () => {
+    expect(loadRemovedNames().has('StatusDot')).toBe(false);
+  });
+
+  it('--check reports an ops-style import of a folded name with its survivor', () => {
+    const src = `import { Stack, IconButton } from '${ROOT}';\n`;
+    expect(findRemoved(src)).toEqual([
+      `IconButton from '${ROOT}' (removed in 0.20.0, use ${loadReplacements().get('IconButton')})`,
+    ]);
+  });
+});

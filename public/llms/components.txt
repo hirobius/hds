@@ -33,11 +33,6 @@ AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled 
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
-### AspectRatio
-Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.
-  - asChild: boolean
-  - ratio: number = 1
-
 ### AssetImg
 AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.
   - alt: string
@@ -79,15 +74,6 @@ Compact metadata/status chip. Tone is the only styling input.
   - label: string
   - size: "sm" | "md" | "lg"
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
-
-### Bleed
-Bleed — controlled negative-margin full-bleed within a padded container. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inve…
-  - amount: 'tight' | 'normal' | 'inset' | 'spacious' = normal
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - axis: 'x' | 'y' | 'both' = x
-  - children: ReactNode
-  - className: string
-  - style: CSSProperties
 
 ### Blockquote
 A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
@@ -169,40 +155,12 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
-### Center
-Center — max-width column, auto-centered horizontally. Every Layout reference: https://every-layout.dev/layouts/center/
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - children: ReactNode
-  - className: string
-  - gutter: 'tight' | 'normal' | 'inset' | 'spacious'
-  - maxWidth: 'content' | 'max' = content
-  - style: CSSProperties
-
 ### Checkbox
 Checkbox — custom-drawn checkbox with check / indeterminate glyph.
   - checked: boolean
   - indeterminate: boolean = false
   - label: string
   - onChange: (v: boolean) => void
-
-### CircularProgress
-A circular progress ring; pass `value`/`max` or set `indeterminate`.
-  - indeterminate: boolean = false
-  - label: string
-  - max: number = 100
-  - size: "sm" | "md" | "lg" = md
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
-  - value: number = 0
-
-### Cluster
-Cluster — wrapping horizontal group with even gaps. Every Layout reference: https://every-layout.dev/layouts/cluster/
-  - align: 'start' | 'center' | 'end' | 'stretch' = center
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - children: ReactNode
-  - className: string
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = tight
-  - justify: 'start' | 'center' | 'end' | 'space-between' = start
-  - style: CSSProperties
 
 ### CodeBlock
 CodeBlock - code display with copy button and optional collapsible toggle.
@@ -237,18 +195,6 @@ Container — semantic width-constrained layout. Centers content horizontally an
   - className: string
   - maxWidth: 'content' | 'max' = max
   - padding: string = var(--semantic-space-surface-padding)
-  - style: CSSProperties
-
-### Cover
-Cover — vertical shell with an auto-centered main region. Every Layout reference: https://every-layout.dev/layouts/cover/
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - centerSlot: ReactNode
-  - children: ReactNode
-  - className: string
-  - footer: ReactNode
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = normal
-  - header: ReactNode
-  - minHeight: string = 100svh
   - style: CSSProperties
 
 ### DataTableSection
@@ -391,15 +337,6 @@ Presentational label + control slot + helper/error markup. Renders `children` ve
   - label: string
   - required: boolean = false
 
-### Frame
-Frame — aspect-ratio-locked, token-clipped media box. Every Layout reference: https://every-layout.dev/layouts/frame/
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - children: ReactNode
-  - className: string
-  - radius: 'none' | 'sm' | 'md' | 'full' = md
-  - ratio: number = 16 / 9
-  - style: CSSProperties
-
 ### Grid
 Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via …
   - as: ElementType<any, keyof IntrinsicElements> = div
@@ -439,25 +376,6 @@ Icon — semantic icon wrapper for Lucide icons.
   - style: CSSProperties
   - weight: "fill" | "bold" | "light" | "thin" | "regular" | "duotone"
 
-### IconButton
-IconButton ” icon-only action trigger built on the shared Button primitive.
-  - aria-label: string
-  - asChild: boolean
-  - defaultPressed: boolean
-  - disabled: boolean
-  - icon: LucideIcon
-  - iconColor: string
-  - iconLeft: ReactNode
-  - iconRight: ReactNode
-  - iconSize: IconSize
-  - label: string
-  - loading: boolean
-  - onPressedChange: ((pressed: boolean) => void)
-  - pressed: boolean
-  - size: "sm" | "md" | "lg"
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
-  - variant: "primary" | "secondary" | "tertiary" | null
-
 ### InlineCode
 InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
   - children: ReactNode
@@ -490,13 +408,6 @@ Input — text field primitive with label, helper, and error slots.
   - trailingVisual: ReactNode
   - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' | 'date' | … = text
 
-### InputGroup
-A single-line input with optional `leading`/`trailing` adornments.
-  - className: string
-  - leading: ReactNode
-  - size: "sm" | "md" | "lg" | null
-  - trailing: ReactNode
-
 ### Kbd
 Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
   - size: "sm" | "md" | "lg" | null
@@ -527,15 +438,6 @@ One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised 
 ### MetricTiles
 A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of hea…
   - children: ReactNode
-
-### MultiSelector
-MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one over…
-  - className: string
-  - disabled: boolean = false
-  - onChange: (next: string[]) => void
-  - options: MultiSelectorOption[]
-  - placeholder: string = Select…
-  - value: string[]
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
@@ -624,12 +526,6 @@ Select — dropdown selector built on Radix Select (ADR-001 Radix convention). R
   - options: { value: string; label: string; }[]
   - showLabel: boolean = true
   - value: string
-
-### SelectableCard
-A card-shaped single checkbox — click or activate to toggle selection.
-  - disabled: boolean
-  - onSelectedChange: ((selected: boolean) => void)
-  - selected: boolean = false
 
 ### Sidebar
 Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/
@@ -790,10 +686,6 @@ Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-l
   - gap: "sm" | "md" | "xs" = sm
   - minTileWidth: string = 260px
 
-### TimeInput
-A native time field skinned with HDS input chrome. Value is a `HH:mm` string.
-  - size: "sm" | "md" | "lg" | null
-
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.
   - date: string | number | Date
@@ -812,15 +704,6 @@ Toggle — boolean on/off toggle with animated thumb.
   - checked: boolean
   - label: string
   - onChange: (v: boolean) => void
-
-### ToggleButton
-A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
-  - asChild: boolean
-  - defaultPressed: boolean
-  - onPressedChange: ((pressed: boolean) => void)
-  - pressed: boolean
-  - size: "sm" | "md" | "lg" | null
-  - variant: "secondary" | "ghost" | null
 
 ### Tooltip
 Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …

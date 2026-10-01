@@ -17,13 +17,9 @@ import {
   type SxObject,
 } from './box-sx';
 import { Stack } from './stack';
-import { Cluster } from './cluster';
 import { Grid } from './grid';
 import { Sidebar, type SidebarProps } from './sidebar';
-import { Cover } from './cover';
 import { Switcher } from './switcher';
-import { Bleed } from './bleed';
-import { Center } from './center';
 import { Card } from './card';
 
 afterEach(() => {
@@ -157,17 +153,8 @@ describe('LAYOUT_GAP — the one layout-gap vocabulary (hds#404)', () => {
     }
   });
 
-  const LAYOUT_FILES = [
-    'cluster',
-    'grid',
-    'sidebar',
-    'cover',
-    'switcher',
-    'bleed',
-    'center',
-    'card',
-    'stack',
-  ];
+  // Cluster, Cover, Bleed and Center resolved through it too until 0.20.0 removed them (hds#394).
+  const LAYOUT_FILES = ['grid', 'sidebar', 'switcher', 'card', 'stack'];
 
   it.each(LAYOUT_FILES)('%s.tsx has no gap map of its own: it resolves through box-sx', (name) => {
     const source = readFileSync(join(__dirname, `${name}.tsx`), 'utf8');
@@ -182,13 +169,9 @@ describe('LAYOUT_GAP — the one layout-gap vocabulary (hds#404)', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const two = [createElement('i', { key: 'a' }), createElement('i', { key: 'b' })];
     for (const gap of Object.keys(LAYOUT_GAP_NAMES) as (keyof typeof LAYOUT_GAP_NAMES)[]) {
-      renderToStaticMarkup(createElement(Cluster, { gap }, 'x'));
       renderToStaticMarkup(createElement(Grid, { gap }, 'x'));
       renderToStaticMarkup(createElement(Sidebar, { gap } as SidebarProps, ...two));
-      renderToStaticMarkup(createElement(Cover, { gap }, 'x'));
       renderToStaticMarkup(createElement(Switcher, { gap }, 'x'));
-      renderToStaticMarkup(createElement(Bleed, { amount: gap }, 'x'));
-      renderToStaticMarkup(createElement(Center, { gutter: gap }, 'x'));
       renderToStaticMarkup(createElement(Card, { gap }, 'x'));
     }
     expect(warn).not.toHaveBeenCalled();

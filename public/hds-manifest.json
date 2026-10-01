@@ -40,12 +40,10 @@
   "componentInventory": [
     "Alert",
     "AlertDialog",
-    "AspectRatio",
     "AssetImg",
     "Avatar",
     "AvatarGroup",
     "Badge",
-    "Bleed",
     "Blockquote",
     "Box",
     "Breadcrumb",
@@ -59,14 +57,10 @@
     "CardMetric",
     "CardProgress",
     "CardTitle",
-    "Center",
     "Checkbox",
-    "CircularProgress",
-    "Cluster",
     "CodeBlock",
     "Combobox",
     "Container",
-    "Cover",
     "DataTableSection",
     "DestructiveSection",
     "Dialog",
@@ -87,22 +81,18 @@
     "FormActions",
     "FormField",
     "FormFieldShell",
-    "Frame",
     "Grid",
     "HdsRouterProvider",
     "HdsThemeProvider",
     "Icon",
-    "IconButton",
     "InlineCode",
     "InlineLink",
     "Input",
-    "InputGroup",
     "Kbd",
     "Menu",
     "MetadataList",
     "MetricTile",
     "MetricTiles",
-    "MultiSelector",
     "Page",
     "PageHeader",
     "Pagination",
@@ -113,7 +103,6 @@
     "Reveal",
     "SegmentedControl",
     "Select",
-    "SelectableCard",
     "Sidebar",
     "Skeleton",
     "Slider",
@@ -134,11 +123,9 @@
     "Text",
     "Textarea",
     "TileGrid",
-    "TimeInput",
     "Timestamp",
     "ToastProvider",
     "Toggle",
-    "ToggleButton",
     "Tooltip",
     "VisuallyHidden"
   ],
@@ -868,12 +855,11 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/bleed.tsx",
         "src/app/components/box.tsx",
-        "src/app/components/center.tsx",
         "src/app/components/page.tsx",
         "src/app/components/switcher.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
+        "src/index.ts",
         "src/stories/box.stories.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/page.stories.tsx",
@@ -942,7 +928,7 @@
           }
         ]
       },
-      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. Use Center instead when you also need a horizontal gutter, which Container does not support."
+      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. For a horizontal gutter, which Container does not support, put a Box with `style={{ paddingInline }}` inside it."
     },
     "Disclosure": {
       "category": "Layout",
@@ -1307,7 +1293,6 @@
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
-        "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
         "src/app/components/grid.test.tsx",
         "src/app/components/metric-tiles.test.tsx",
@@ -1476,23 +1461,24 @@
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
         "src/app/components/breadcrumb.tsx",
+        "src/app/components/button.test.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/disclosure.tsx",
-        "src/app/components/icon-button.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
-        "src/app/components/multi-selector.tsx",
         "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/toast.tsx",
-        "src/stories/icon-button.stories.tsx",
-        "src/stories/icon.stories.tsx"
+        "src/stories/data-table-section.stories.tsx",
+        "src/stories/icon.stories.tsx",
+        "src/stories/patterns-client-detail.stories.tsx"
       ],
       "tokenMapping": {
         "Small icon size": "primitive.typography.size.base",
@@ -1624,229 +1610,6 @@
           {
             "component": "Avatar",
             "reason": "a picture of a person or entity"
-          }
-        ]
-      }
-    },
-    "IconButton": {
-      "category": "Actions",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/icon-button.tsx",
-      "description": "IconButton ” icon-only action trigger built on the shared Button primitive.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39",
-      "figmaId": null,
-      "preview": {
-        "exportName": "IconButton",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/button.test.tsx",
-        "src/app/components/data-table-section.tsx",
-        "src/app/components/hds-tooltip.tsx",
-        "src/stories/data-table-section.stories.tsx",
-        "src/stories/icon-button.stories.tsx",
-        "src/stories/lib/usage-description.test.ts",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/styles/__tests__/pressed-overlay-token.test.ts"
-      ],
-      "tokenMapping": {
-        "Fill": "semantic.accent.rest",
-        "Fill hover": "semantic.accent.hover",
-        "Fill pressed": "semantic.accent.pressed",
-        "Label": "semantic.color.content.onAccent",
-        "Corner radius": "semantic.radius.action",
-        "Horizontal padding": "primitive.space.4",
-        "Vertical padding": "primitive.space.2"
-      },
-      "props": {
-        "aria-label": {
-          "type": "string",
-          "optional": true
-        },
-        "asChild": {
-          "type": "boolean",
-          "optional": true
-        },
-        "defaultPressed": {
-          "type": "boolean",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "optional": true
-        },
-        "icon": {
-          "type": "LucideIcon"
-        },
-        "iconColor": {
-          "type": "string",
-          "optional": true
-        },
-        "iconLeft": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "iconRight": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "iconSize": {
-          "type": "IconSize",
-          "optional": true
-        },
-        "label": {
-          "type": "string",
-          "optional": true
-        },
-        "loading": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onPressedChange": {
-          "type": "(pressed: boolean) => void",
-          "optional": true
-        },
-        "pressed": {
-          "type": "boolean",
-          "optional": true
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "optional": true
-        },
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "neutral"
-          ],
-          "optional": true
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "primary",
-            "secondary",
-            "tertiary"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "aria-label": {
-          "type": "string"
-        },
-        "asChild": {
-          "type": "boolean"
-        },
-        "defaultPressed": {
-          "type": "boolean"
-        },
-        "disabled": {
-          "type": "boolean"
-        },
-        "iconColor": {
-          "type": "string"
-        },
-        "label": {
-          "type": "string"
-        },
-        "loading": {
-          "type": "boolean"
-        },
-        "pressed": {
-          "type": "boolean"
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ]
-        },
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "neutral"
-          ]
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "primary",
-            "secondary",
-            "tertiary"
-          ]
-        }
-      },
-      "requiredProps": [],
-      "a11yRules": [
-        {
-          "rule": "Must have aria-label (icon-only buttons have no visible text)",
-          "required": true
-        },
-        {
-          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
-          "required": true
-        }
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "pattern",
-      "docExempt": false,
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {
-            "fill": "semantic.color.surface.action"
-          }
-        },
-        {
-          "name": "icon",
-          "figmaSlotName": "Icon",
-          "tokenBinding": {
-            "fill": "semantic.color.content.primary"
-          }
-        }
-      ],
-      "sourcePath": "src/app/components/IconButton.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=40-39",
-      "storyFiles": [
-        "src/stories/icon-button.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-icon-button--default",
-        "primitives-icon-button--disabled",
-        "primitives-icon-button--primary",
-        "primitives-icon-button--size-gallery",
-        "primitives-icon-button--tertiary"
-      ],
-      "usage": {
-        "when": "Trigger an action from a compact icon-only control, always with an accessible label.",
-        "whenNot": "A control that needs a visible text label.",
-        "useInstead": [
-          {
-            "component": "Button",
-            "reason": "a control with a text label, or Button iconOnly (hds#254 folds IconButton into it)"
           }
         ]
       }
@@ -2036,14 +1799,12 @@
         "src/app/components/segmented-control.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
-        "src/app/components/time-input.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/index.ts",
         "src/stories/combobox.stories.tsx",
-        "src/stories/input-group.stories.tsx",
         "src/stories/input.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
-        "src/stories/textarea.stories.tsx",
-        "src/stories/time-input.stories.tsx"
+        "src/stories/textarea.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "role.background",
@@ -2478,9 +2239,7 @@
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
-        "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
-        "src/app/components/cover.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/disclosure.tsx",
@@ -2493,8 +2252,10 @@
         "src/app/components/page.tsx",
         "src/app/components/stack.test.tsx",
         "src/app/components/surface.tsx",
+        "src/app/components/switcher.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
+        "src/index.ts",
         "src/stories/box.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
@@ -2797,14 +2558,9 @@
       },
       "consumers": [
         "src/app/components/badge.tsx",
-        "src/app/components/bleed.tsx",
         "src/app/components/box.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/center.tsx",
-        "src/app/components/cluster.tsx",
-        "src/app/components/cover.tsx",
-        "src/app/components/frame.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
         "src/app/components/reveal.tsx",
@@ -3090,10 +2846,10 @@
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
+        "src/index.ts",
         "src/stories/card.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/metric-tiles.stories.tsx",
-        "src/stories/selectable-card.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
       ],
       "tokenMapping": {
@@ -3689,13 +3445,12 @@
         "src/app/components/error-pattern.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/form.tsx",
-        "src/app/components/icon-button.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/icon.tsx",
         "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
-        "src/app/components/multi-selector.tsx",
         "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
@@ -3704,6 +3459,7 @@
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/form/index.ts",
+        "src/index.ts",
         "src/mui/index.ts",
         "src/stories/alert-dialog.stories.tsx",
         "src/stories/button.stories.tsx",
@@ -3714,7 +3470,6 @@
         "src/stories/form-actions.stories.tsx",
         "src/stories/form.stories.tsx",
         "src/stories/hds-tooltip.stories.tsx",
-        "src/stories/icon-button.stories.tsx",
         "src/stories/inline-code.stories.tsx",
         "src/stories/lib/usage-description.test.ts",
         "src/stories/menu.stories.tsx",
@@ -3724,7 +3479,6 @@
         "src/stories/popover.stories.tsx",
         "src/stories/table.stories.tsx",
         "src/stories/toast.stories.tsx",
-        "src/stories/toggle-button.stories.tsx",
         "src/styles/__tests__/pressed-overlay-token.test.ts"
       ],
       "tokenMapping": {},
@@ -5292,8 +5046,6 @@
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/menu.tsx",
-        "src/app/components/multi-selector.test.tsx",
-        "src/app/components/multi-selector.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.test.tsx",
@@ -5501,11 +5253,9 @@
       "consumers": [
         "src/app/components/checkbox.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle-button.tsx",
         "src/app/components/toggle.test.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/stories/toggle-button.stories.tsx",
         "src/stories/toggle.stories.tsx"
       ],
       "tokenMapping": {
@@ -5674,8 +5424,8 @@
         "src/app/components/progress.test.tsx",
         "src/app/components/skeleton.tsx",
         "src/app/components/spinner.tsx",
+        "src/index.ts",
         "src/stories/card.stories.tsx",
-        "src/stories/circular-progress.stories.tsx",
         "src/stories/progress.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
@@ -6134,8 +5884,8 @@
         "src/app/components/combobox.test.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
-        "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
+        "src/index.ts",
         "src/stories/combobox.stories.tsx",
         "src/stories/lib/open-listbox.test.tsx",
         "src/stories/lib/open-listbox.ts",
@@ -6638,66 +6388,6 @@
         "primitives-blockquote--with-attribution"
       ]
     },
-    "InputGroup": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/input-group.tsx",
-      "description": "A single-line input with optional `leading`/`trailing` adornments.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "InputGroup",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/input-group.test.tsx",
-        "src/stories/input-group.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "leading": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "optional": true
-        },
-        "trailing": {
-          "type": "ReactNode",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/input-group.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-input-group--default",
-        "primitives-input-group--with-adornments"
-      ]
-    },
     "Kbd": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -6935,83 +6625,6 @@
         ]
       }
     },
-    "CircularProgress": {
-      "category": "Feedback",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/circular-progress.tsx",
-      "description": "A circular progress ring; pass `value`/`max` or set `indeterminate`.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "CircularProgress",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/circular-progress.test.tsx",
-        "src/stories/circular-progress.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "indeterminate": {
-          "type": "boolean",
-          "default": false
-        },
-        "label": {
-          "type": "string",
-          "optional": true
-        },
-        "max": {
-          "type": "number",
-          "default": 100
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "default": "md"
-        },
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "neutral"
-          ],
-          "optional": true
-        },
-        "value": {
-          "type": "number",
-          "default": 0
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/circular-progress.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-circular-progress--default",
-        "primitives-circular-progress--indeterminate",
-        "primitives-circular-progress--sizes",
-        "primitives-circular-progress--tones"
-      ]
-    },
     "MetadataList": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -7075,59 +6688,6 @@
         "patterns-metadata-list--horizontal"
       ]
     },
-    "SelectableCard": {
-      "category": "Actions",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/selectable-card.tsx",
-      "description": "A card-shaped single checkbox — click or activate to toggle selection.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "SelectableCard",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/selectable-card.test.tsx",
-        "src/stories/selectable-card.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "disabled": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onSelectedChange": {
-          "type": "(selected: boolean) => void",
-          "optional": true
-        },
-        "selected": {
-          "type": "boolean",
-          "default": false
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/selectable-card.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-selectable-card--default",
-        "patterns-selectable-card--disabled",
-        "patterns-selectable-card--plan-picker",
-        "patterns-selectable-card--selected"
-      ]
-    },
     "AlertDialog": {
       "category": "Overlays",
       "categorySource": "jsdoc",
@@ -7188,237 +6748,6 @@
         "primitives-alert-dialog--default"
       ]
     },
-    "AspectRatio": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/aspect-ratio.tsx",
-      "description": "Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "AspectRatio",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/aspect-ratio.test.tsx",
-        "src/app/components/frame.tsx",
-        "src/stories/aspect-ratio.stories.tsx",
-        "src/stories/frame.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "asChild": {
-          "type": "boolean",
-          "optional": true
-        },
-        "ratio": {
-          "type": "number",
-          "default": 1
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/aspect-ratio.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-aspect-ratio--square",
-        "primitives-aspect-ratio--widescreen"
-      ]
-    },
-    "MultiSelector": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/multi-selector.tsx",
-      "description": "MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new dependency — built entirely on the HDS Popover. The trigger reads like a secondary Button, showing a placeholder or a `${n} selected` count; the content is a token-skinned list where each row is a checkbox toggling membership in `value`. <MultiSelector options={[{ value: 'a', label: 'Apple' }, { value: 'b', label: 'Banana' }]} value={fruits} onChange={setFruits} />",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "MultiSelector",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/multi-selector.test.tsx",
-        "src/stories/multi-selector.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "onChange": {
-          "type": "(next: string[]) => void"
-        },
-        "options": {
-          "type": "MultiSelectorOption[]"
-        },
-        "placeholder": {
-          "type": "string",
-          "default": "Select…"
-        },
-        "value": {
-          "type": "string[]"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/multi-selector.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-multi-selector--default",
-        "patterns-multi-selector--disabled-trigger",
-        "patterns-multi-selector--pre-selected"
-      ]
-    },
-    "TimeInput": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/time-input.tsx",
-      "description": "A native time field skinned with HDS input chrome. Value is a `HH:mm` string.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "TimeInput",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/time-input.test.tsx",
-        "src/stories/time-input.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/time-input.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-time-input--default",
-        "primitives-time-input--sizes"
-      ]
-    },
-    "ToggleButton": {
-      "category": "Actions",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/toggle-button.tsx",
-      "description": "A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "ToggleButton",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/toggle-button.test.tsx",
-        "src/stories/toggle-button.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "asChild": {
-          "type": "boolean",
-          "optional": true
-        },
-        "defaultPressed": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onPressedChange": {
-          "type": "(pressed: boolean) => void",
-          "optional": true
-        },
-        "pressed": {
-          "type": "boolean",
-          "optional": true
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "optional": true
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "secondary",
-            "ghost"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/toggle-button.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-toggle-button--default",
-        "primitives-toggle-button--pressed",
-        "primitives-toggle-button--variants"
-      ]
-    },
     "Box": {
       "category": "Layout",
       "categorySource": "jsdoc",
@@ -7436,21 +6765,17 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/bleed.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.test.tsx",
-        "src/app/components/center.tsx",
-        "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
-        "src/app/components/cover.tsx",
-        "src/app/components/frame.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.test.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/toggle.tsx",
+        "src/index.ts",
         "src/stories/box.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/story-ssr.spec.tsx"
@@ -7508,407 +6833,6 @@
         ]
       },
       "aiRules": "Reach for Stack/Grid/Container/the every-layout primitives first. Use Box `sx` ONLY for genuinely one-off layout. sx colors/spacing MUST use token keys, not raw hex/px. Prefer named layout primitives over ad-hoc flex."
-    },
-    "Bleed": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/bleed.tsx",
-      "description": "Bleed — controlled negative-margin full-bleed within a padded container. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inverse of a padded Center/Container — HDS names it separately since \"every-layout\" itself does not ship a dedicated Bleed recipe).",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "Bleed",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/bleed.test.tsx",
-        "src/app/components/box-sx.test.ts",
-        "src/app/components/box-sx.ts",
-        "src/stories/bleed.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "amount": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ],
-          "default": "normal"
-        },
-        "as": {
-          "type": "ElementType<any, keyof IntrinsicElements>",
-          "default": "div"
-        },
-        "axis": {
-          "type": "enum",
-          "values": [
-            "x",
-            "y",
-            "both"
-          ],
-          "default": "x"
-        },
-        "children": {
-          "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/bleed.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-bleed--bleed-both",
-        "primitives-bleed--bleed-x"
-      ],
-      "aiRules": "Reach for this named layout intent before Box/sx. amount MUST use a semantic space step, never raw px, and MUST match the ancestor padding it is meant to cancel out. Do NOT use Bleed to fake extra spacing — its only job is canceling a specific known padding value on a specific axis."
-    },
-    "Center": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/center.tsx",
-      "description": "Center — max-width column, auto-centered horizontally. Every Layout reference: https://every-layout.dev/layouts/center/",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "Center",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/bleed.tsx",
-        "src/app/components/box-sx.test.ts",
-        "src/app/components/box-sx.ts",
-        "src/app/components/center.test.tsx",
-        "src/app/components/container.tsx",
-        "src/stories/center.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "as": {
-          "type": "ElementType<any, keyof IntrinsicElements>",
-          "default": "div"
-        },
-        "children": {
-          "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "gutter": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ],
-          "optional": true
-        },
-        "maxWidth": {
-          "type": "enum",
-          "values": [
-            "content",
-            "max"
-          ],
-          "default": "content"
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/center.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-center--content-width",
-        "primitives-center--max-width",
-        "primitives-center--with-gutter"
-      ],
-      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. gutter, when set, MUST use a semantic space step, never raw px. Do NOT use Center for full-bleed page shells — use Container. Do NOT use Center when you need the deprecated Container padding prop — gutter replaces it."
-    },
-    "Cluster": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/cluster.tsx",
-      "description": "Cluster — wrapping horizontal group with even gaps. Every Layout reference: https://every-layout.dev/layouts/cluster/",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "Cluster",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/box-sx.test.ts",
-        "src/app/components/box-sx.ts",
-        "src/app/components/cluster.test.tsx",
-        "src/app/components/switcher.tsx",
-        "src/stories/cluster.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "align": {
-          "type": "enum",
-          "values": [
-            "start",
-            "center",
-            "end",
-            "stretch"
-          ],
-          "default": "center"
-        },
-        "as": {
-          "type": "ElementType<any, keyof IntrinsicElements>",
-          "default": "div"
-        },
-        "children": {
-          "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ],
-          "default": "tight"
-        },
-        "justify": {
-          "type": "enum",
-          "values": [
-            "start",
-            "center",
-            "end",
-            "space-between"
-          ],
-          "default": "start"
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/cluster.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-cluster--default",
-        "primitives-cluster--space-between",
-        "primitives-cluster--spacious-gap"
-      ],
-      "aiRules": "Reach for this named layout intent before Box/sx. Use Cluster for horizontal groups that should wrap as a unit. Spacing MUST use semantic steps, never raw px. Do NOT use Cluster for a strict single-line row — use Stack with `direction=\"row\"` when wrapping is never desired. Do NOT use Cluster for two-dimensional grid layouts — use Grid."
-    },
-    "Cover": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/cover.tsx",
-      "description": "Cover — vertical shell with an auto-centered main region. Every Layout reference: https://every-layout.dev/layouts/cover/",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "Cover",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/box-sx.test.ts",
-        "src/app/components/box-sx.ts",
-        "src/app/components/cover.test.tsx",
-        "src/stories/cover.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "as": {
-          "type": "ElementType<any, keyof IntrinsicElements>",
-          "default": "div"
-        },
-        "centerSlot": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "children": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "footer": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ],
-          "default": "normal"
-        },
-        "header": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "minHeight": {
-          "type": "string",
-          "default": "100svh"
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/cover.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-cover--header-main-footer",
-        "primitives-cover--header-only",
-        "primitives-cover--main-only"
-      ],
-      "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. minHeight is a CSS length dimension (not spacing) — defaults to '100svh' (small viewport height, safe against mobile browser chrome). Pass minHeight=\"100vh\" explicitly if you need the classic viewport unit for a target that predates svh support. Do NOT use Cover for ordinary page content flow — use Stack."
-    },
-    "Frame": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/frame.tsx",
-      "description": "Frame — aspect-ratio-locked, token-clipped media box. Every Layout reference: https://every-layout.dev/layouts/frame/",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "Frame",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/frame.test.tsx",
-        "src/stories/frame.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "as": {
-          "type": "ElementType<any, keyof IntrinsicElements>",
-          "default": "div"
-        },
-        "children": {
-          "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "radius": {
-          "type": "enum",
-          "values": [
-            "none",
-            "sm",
-            "md",
-            "full"
-          ],
-          "default": "md"
-        },
-        "ratio": {
-          "type": "number",
-          "default": "16 / 9"
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/frame.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-frame--no-radius",
-        "primitives-frame--square",
-        "primitives-frame--widescreen"
-      ],
-      "aiRules": "Reach for this named layout intent before Box/sx when framing media (image, video, embed, map tile). radius MUST use a semantic borderRadius token, never a raw px value. Do NOT reach for bare `AspectRatio` in product code just to add a border-radius by hand — use Frame. Do NOT use Frame for non-media layout — it exists purely as a media clipping frame."
     },
     "Sidebar": {
       "category": "Layout",
@@ -8072,7 +6996,7 @@
         "primitives-switcher--limit-forces-stacked",
         "primitives-switcher--narrow-container-stacks"
       ],
-      "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Cluster."
+      "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Stack with `direction=\"row\"` and `wrap=\"wrap\"`."
     },
     "Pin": {
       "category": "Layout",
@@ -9226,7 +8150,6 @@
         "src/app/components/combobox.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/menu.test.tsx",
-        "src/app/components/multi-selector.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
@@ -9351,14 +8274,11 @@
         "src/app/components/combobox.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/menu.tsx",
-        "src/app/components/multi-selector.test.tsx",
-        "src/app/components/multi-selector.tsx",
         "src/app/components/popover.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
-        "src/stories/multi-selector.stories.tsx",
         "src/stories/popover.stories.tsx"
       ],
       "tokenMapping": {},

@@ -1,7 +1,7 @@
 /**
  * Golden-path layout recipes — canonical full-screen compositions built
- * purely from HDS layout primitives (Page/Container/Center, Stack/Grid, the
- * every-layout primitives, and Surface). No raw hex/px — every spacing and
+ * purely from HDS layout primitives (Page/Container, Stack/Grid, Sidebar, Box
+ * with `style` for a one-off, and Surface). No raw hex/px — every spacing and
  * color value resolves to an HDS token. See `public/llms.txt` → "How To Lay
  * Out A Screen" for the recipe these stories demonstrate, and the `@ai-rules`
  * docstring on each primitive (`src/app/components/*.tsx`) for the rule an
@@ -10,12 +10,11 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Page } from '../app/components/page';
-import { Center } from '../app/components/center';
+import { Container } from '../app/components/container';
+import { Box } from '../app/components/box';
 import { Stack } from '../app/components/stack';
 import { Grid } from '../app/components/grid';
-import { Cluster } from '../app/components/cluster';
 import { Sidebar } from '../app/components/sidebar';
-import { Cover } from '../app/components/cover';
 import { Surface } from '../app/components/surface';
 import { Text } from '../app/components/text';
 import { Button } from '../app/components/button';
@@ -23,6 +22,7 @@ import { Badge } from '../app/components/badge';
 import { Field } from '../app/components/field';
 import { Input } from '../app/components/input';
 import { EmptyState } from '../app/components/empty-state';
+import hds from '../app/design-system/tokens';
 
 const meta = {
   title: 'Patterns/Layout',
@@ -33,7 +33,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Canonical full-screen layout recipes assembled entirely from HDS layout primitives — the shape an agent should reach for before inventing bespoke flex/grid math. Each story is Page/Container/Center for width constraint, Stack/Grid for structure, and the every-layout primitives (Cluster, Sidebar, Cover, …) for common intents. Token-only: no raw hex/px anywhere in these recipes.',
+          'Canonical full-screen layout recipes assembled entirely from HDS layout primitives — the shape an agent should reach for before inventing bespoke flex/grid math. Each story is Page/Container for width constraint, Stack/Grid for structure (a wrapping row is Stack direction="row" wrap="wrap"), and Sidebar for a rail beside fluid content. Token-only: no raw hex/px anywhere in these recipes.',
       },
     },
   },
@@ -44,8 +44,8 @@ type Story = StoryObj<typeof meta>;
 
 // ── Form screen ────────────────────────────────────────────────────────────
 // Skeleton: Page (content width) > Stack (section rhythm) > Surface (the
-// form's padded card) > Stack (field rhythm) > Cluster (action row, right-
-// aligned). No FormField wrapping — HDS Input self-wires its own label,
+// form's padded card) > Stack (field rhythm) > Stack row (action row,
+// right-aligned). No FormField wrapping — HDS Input self-wires its own label,
 // helperText, and error via props (see form.tsx's file-level docstring).
 
 function FormScreenDemo() {
@@ -64,12 +64,12 @@ function FormScreenDemo() {
             <Input label="Project name" placeholder="Hirobius Design System" />
             <Input label="Slug" helperText="Used in the generated URL." placeholder="hds" />
             <Input label="Contact email" type="email" placeholder="adrian@hirobius.com" />
-            <Cluster gap="tight" justify="end">
+            <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
               <Button variant="secondary">Cancel</Button>
               <Button variant="primary" type="submit">
                 Create project
               </Button>
-            </Cluster>
+            </Stack>
           </Stack>
         </Surface>
       </Stack>
@@ -82,7 +82,7 @@ export const FormScreen: Story = {
     docs: {
       description: {
         story:
-          'Page > Stack (section rhythm) > Surface (form card) > Stack (field rhythm) > Cluster (right-aligned actions). Fields are HDS Input — no FormField wrapper, since Input self-wires label/helper/error.',
+          'Page > Stack (section rhythm) > Surface (form card) > Stack (field rhythm) > Stack row (right-aligned actions). Fields are HDS Input — no FormField wrapper, since Input self-wires label/helper/error.',
       },
     },
   },
@@ -90,7 +90,7 @@ export const FormScreen: Story = {
 };
 
 // ── Dashboard grid ─────────────────────────────────────────────────────────
-// Skeleton: Page (max width) > Stack (section rhythm) > Cluster (header row)
+// Skeleton: Page (max width) > Stack (section rhythm) > Stack row (header row)
 // + Grid (12-col KPI row + a full-width panel) > Surface tiles.
 
 function KpiTile({ label, value, delta }: { label: string; value: string; delta: string }) {
@@ -98,10 +98,10 @@ function KpiTile({ label, value, delta }: { label: string; value: string; delta:
     <Surface padding="component">
       <Stack direction="column" gap="gap">
         <Text variant="caption">{label}</Text>
-        <Cluster gap="tight" justify="space-between" align="end">
+        <Stack direction="row" wrap="wrap" gap="tight" justify="space-between" align="end">
           <Text variant="heading2">{value}</Text>
           <Badge tone="success">{delta}</Badge>
-        </Cluster>
+        </Stack>
       </Stack>
     </Surface>
   );
@@ -109,10 +109,10 @@ function KpiTile({ label, value, delta }: { label: string; value: string; delta:
 
 function ActivityRow({ label, tone }: { label: string; tone: 'success' | 'info' | 'warning' }) {
   return (
-    <Cluster gap="normal" justify="space-between">
+    <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
       <Text variant="body">{label}</Text>
       <Badge tone={tone}>{tone}</Badge>
-    </Cluster>
+    </Stack>
   );
 }
 
@@ -120,13 +120,13 @@ function DashboardGridDemo() {
   return (
     <Page maxWidth="max">
       <Stack direction="column" gap="spacious">
-        <Cluster gap="normal" justify="space-between">
+        <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
           <Text variant="heading2">Fleet dashboard</Text>
-          <Cluster gap="tight">
+          <Stack direction="row" wrap="wrap" gap="tight" align="center">
             <Button variant="secondary">Filter</Button>
             <Button variant="primary">New project</Button>
-          </Cluster>
-        </Cluster>
+          </Stack>
+        </Stack>
 
         <Grid layout="fixed" columns={12} gap="inset">
           <Grid.Item colSpan={4}>
@@ -161,7 +161,7 @@ export const DashboardGrid: Story = {
     docs: {
       description: {
         story:
-          'Page > Stack (section rhythm) > Cluster (header row) + Grid (12-col: three KPI tiles at colSpan 4, one full-width panel at colSpan 12). Every tile is a Surface; metric rows use Cluster to align label and trend Badge.',
+          'Page > Stack (section rhythm) > Stack row (header row) + Grid (12-col: three KPI tiles at colSpan 4, one full-width panel at colSpan 12). Every tile is a Surface; metric rows use a wrapping Stack row to align label and trend Badge.',
       },
     },
   },
@@ -213,22 +213,27 @@ export const DetailPage: Story = {
 };
 
 // ── Empty state ────────────────────────────────────────────────────────────
-// Skeleton: Cover (full-height shell, centered main region) > Center
+// Skeleton: Stack column with a min-height (full-height shell) > Box with
+// auto block margins (centered main region) > Container + Box gutter
 // (constrained message column) > Stack (title/description/action rhythm).
 
 function EmptyStateScreenDemo() {
   return (
-    <Cover minHeight="480px" gap="normal">
-      <Center maxWidth="content" gutter="normal">
-        <Stack direction="column" gap="normal" align="center">
-          <EmptyState
-            title="No projects yet"
-            description="Scaffold your first client site to see it listed here."
-          />
-          <Button variant="primary">Create project</Button>
-        </Stack>
-      </Center>
-    </Cover>
+    <Stack direction="column" gap="normal" style={{ minHeight: '480px' }}>
+      <Box style={{ marginBlock: 'auto', width: '100%' }}>
+        <Container maxWidth="content">
+          <Box style={{ paddingInline: hds.semantic.space.scale.md }}>
+            <Stack direction="column" gap="normal" align="center">
+              <EmptyState
+                title="No projects yet"
+                description="Scaffold your first client site to see it listed here."
+              />
+              <Button variant="primary">Create project</Button>
+            </Stack>
+          </Box>
+        </Container>
+      </Box>
+    </Stack>
   );
 }
 
@@ -237,7 +242,7 @@ export const EmptyStateScreen: Story = {
     docs: {
       description: {
         story:
-          "Cover (full-height shell, auto-centered main region) > Center (constrained message column) > Stack (title/description/action rhythm around EmptyState). minHeight is a CSS length dimension, not a spacing token — 480px keeps the demo readable inside the Storybook canvas; product code defaults to Cover's 100svh.",
+          'Stack column with a min-height (full-height shell) > Box with auto block margins (auto-centered main region) > Container + Box gutter (constrained message column) > Stack (title/description/action rhythm around EmptyState). minHeight is a CSS length dimension, not a spacing token: 480px keeps the demo readable inside the Storybook canvas; a full-screen shell uses 100svh.',
       },
     },
   },

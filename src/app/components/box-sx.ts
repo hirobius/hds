@@ -5,9 +5,9 @@
  * resolver is unit testable in isolation from the component tree. Its
  * consumers: `box.tsx` re-exports the types below as part of the public `Box`
  * API; `stack.tsx` resolves its `gap` through `resolveSpacingValue`, the one
- * spacing resolver (hds#206); and the layout components (Cluster, Grid,
- * Sidebar, Cover, Switcher, Bleed, Center, Card) resolve theirs through it
- * against `LAYOUT_GAP`, the one copy of the layout-gap names (hds#404).
+ * spacing resolver (hds#206); and the layout components (Grid, Sidebar,
+ * Switcher, Card) resolve theirs through it against `LAYOUT_GAP`, the one copy
+ * of the layout-gap names (hds#404).
  *
  * @internal — the resolver internals (`resolveSx`, `sxClassName`, `injectSx`)
  * are exported for testing, and `resolveSpacingValue`, `SpacingVocabulary`,
@@ -137,9 +137,9 @@ export const LAYOUT_GAP_NAMES = {
 } as const;
 
 /**
- * Cluster, Grid, Sidebar, Cover and Switcher `gap`, Bleed `amount` and
- * Center `gutter`: the four layout-gap names, plus `medium` (hds#393), and
- * nothing else. Closed, so an untyped value sets no style, as it did before
+ * Grid, Sidebar and Switcher `gap` (Cluster, Cover, Bleed and Center, which
+ * read it too, went in 0.20.0, hds#394): the four layout-gap names, plus
+ * `medium` (hds#393), and nothing else. Closed, so an untyped value sets no style, as it did before
  * hds#404 (scripts/__tests__/spacing-computed-lock.test.mjs).
  *
  * `medium` is TileGrid's 12px default gap, `semantic.space.component.medium`,

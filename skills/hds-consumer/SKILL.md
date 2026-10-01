@@ -35,9 +35,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Actions
 
 - `Button` — Triggers an action when activated.
-- `IconButton` — IconButton ” icon-only action trigger built on the shared Button primitive.
-- `SelectableCard` — A card-shaped single checkbox — click or activate to toggle selection.
-- `ToggleButton` — A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
 
 ### Display
 
@@ -68,7 +65,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Alert` — Alert - compact feedback surface with contextual severity.
 - `Badge` — Compact metadata/status chip.
 - `Callout` — Tone-driven side-rule callout for status, quotes, hypotheses.
-- `CircularProgress` — A circular progress ring; pass `value`/`max` or set `indeterminate`.
 - `Progress` — Linear bar or circular ring.
 - `Skeleton` — Decorative loading placeholder.
 - `Spinner` — Indeterminate spinner.
@@ -80,29 +76,20 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
 - `Combobox` — Combobox — searchable single- or multi-select (Popover + filtered listbox).
 - `Input` — Input — text field primitive with label, helper, and error slots.
-- `InputGroup` — A single-line input with optional `leading`/`trailing` adornments.
-- `MultiSelector` — MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget.
 - `Radio` — Radio — radio button with animated selection indicator.
 - `SegmentedControl` — SegmentedControl " segmented selection input for compact mutually-exclusive choices.
 - `Select` — Select — dropdown selector built on Radix Select (ADR-001 Radix convention).
 - `Slider` — Slider — range slider with label and value display.
 - `Tag` — Tag — interactive filter and category chip.
 - `Textarea` — Textarea — multi-line text field primitive with label, helper, and error slots.
-- `TimeInput` — A native time field skinned with HDS input chrome.
 - `Toggle` — Toggle — boolean on/off toggle with animated thumb.
 
 ### Layout
 
-- `AspectRatio` — Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.
-- `Bleed` — Bleed — controlled negative-margin full-bleed within a padded container.
 - `Box` — Box — polymorphic layout primitive with a token-first `sx` engine.
-- `Center` — Center — max-width column, auto-centered horizontally.
-- `Cluster` — Cluster — wrapping horizontal group with even gaps.
 - `Container` — Container — semantic width-constrained layout.
-- `Cover` — Cover — vertical shell with an auto-centered main region.
 - `Disclosure` — Disclosure - compact disclosure surface for optional explanatory content.
 - `Divider` — Divider — semantic separator between content regions.
-- `Frame` — Frame — aspect-ratio-locked, token-clipped media box.
 - `Grid` — Grid — responsive grid composition primitive.
 - `Pin` — Pin — sticky-pin an element within its scroll region.
 - `Sidebar` — Sidebar — fixed-width rail beside fluid content, no media query.
@@ -185,16 +172,16 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ## How to lay out a screen
 
-1. `Page` (from `@hirobius/design-system/patterns`; or `Container`/`Center` for a full-bleed, non-page surface) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.
+1. `Page` (from `@hirobius/design-system/patterns`; or `Container` for a full-bleed, non-page surface, with a `Box` inside it for a horizontal gutter) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.
 2. `Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.
-3. Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).
+3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
 5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile`, and between `Card` and `Surface`, with the "Which one, when" table in `DESIGN.md`.
 6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
 
 Never:
 
-- No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Cluster/Switcher/Sidebar/Cover) owns rhythm, not margin on the child.
+- No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Switcher/Sidebar) owns rhythm, not margin on the child.
 - No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.
 - No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.
 

@@ -2,7 +2,7 @@
  * @hirobius/design-system/icons
  *
  * A curated subset of Lucide (canonical 0.487.0 names) so a consumer can get
- * an `icon` for IconButton / Icon with nothing extra to install. Bare
+ * an `icon` for Icon (and Button iconOnly through it) with nothing extra to install. Bare
  * re-export from 'lucide-react' (external in the lib build, so it tree-shakes).
  * Legacy aliases (MoreHorizontal, MoreVertical, AlertTriangle, Home, Filter)
  * are intentionally not exported; use Ellipsis, EllipsisVertical,

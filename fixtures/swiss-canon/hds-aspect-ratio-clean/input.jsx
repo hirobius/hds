@@ -1,1 +1,0 @@
-<AspectRatio ratio={1} />;

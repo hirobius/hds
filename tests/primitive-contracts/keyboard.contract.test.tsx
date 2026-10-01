@@ -1,8 +1,9 @@
 /**
  * Contract test: keyboard behaviour of the overlay and listbox primitives.
  *
- * Table-driven over Dialog, AlertDialog, Popover, Menu, Select, Tooltip,
- * Combobox and MultiSelector. Every case drives the component
+ * Table-driven over Dialog, AlertDialog, Popover, Menu, Select, Tooltip and
+ * Combobox (MultiSelector went in 0.20.0 for Combobox multiple, whose keyboard
+ * contract is in combobox.contract.test.tsx). Every case drives the component
  * with a real keyboard (user-event) rather than synthetic click events, so a
  * wrapper that breaks the underlying Radix contract fails here.
  *
@@ -12,18 +13,16 @@
  *
  * jsdom polyfills live in tests/setup/jsdom-polyfills.ts.
  *
- * @primitive Dialog AlertDialog Popover Menu Select Tooltip Combobox MultiSelector
+ * @primitive Dialog AlertDialog Popover Menu Select Tooltip Combobox
  */
-import { useState, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { describe, it, test, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { AlertDialog } from '@/app/components/alert-dialog';
 import { Popover } from '@/app/components/popover';
 import { Tooltip } from '@/app/components/hds-tooltip';
-import { MultiSelector } from '@/app/components/multi-selector';
 import {
   user,
-  FRUIT,
   DialogFixture,
   MenuFixture,
   SelectFixture,
@@ -67,11 +66,6 @@ function PopoverFixture() {
       <button type="button">After</button>
     </>
   );
-}
-
-function MultiSelectorFixture() {
-  const [value, setValue] = useState<string[]>([]);
-  return <MultiSelector options={FRUIT} value={value} onChange={setValue} />;
 }
 
 // ── Table ───────────────────────────────────────────────────────────────────
@@ -136,14 +130,6 @@ const OVERLAYS: Spec[] = [
     ui: () => <ComboboxFixture />,
     trigger: () => screen.getByRole('combobox', { name: 'Fruit' }),
     surface: () => q('listbox'),
-    openKeys: ['{Enter}', ' '],
-    aria: true,
-  },
-  {
-    name: 'MultiSelector',
-    ui: () => <MultiSelectorFixture />,
-    trigger: () => screen.getByRole('button', { name: /Select/ }),
-    surface: () => q('dialog'),
     openKeys: ['{Enter}', ' '],
     aria: true,
   },
@@ -254,21 +240,21 @@ describe('Tab behaviour', () => {
   // Radix Popover content runs a looping FocusScope: Tab cycles inside the open
   // content (it never walks the page behind it), but the popover is non-modal, so
   // the page stays reachable (no aria-hidden, no pointer-events lock).
-  it.each([
-    ['Popover', OVERLAYS[2]],
-    ['MultiSelector', OVERLAYS[6]],
-  ] as const)('%s loops Tab inside the content and leaves the page non-modal', async (_n, spec) => {
-    const { u, trigger } = await openWithKeyboard(spec);
-    const surface = spec.surface() as HTMLElement;
-    expect(surface.contains(document.activeElement)).toBe(true);
-    const presses = focusables(surface).length + 2;
-    for (let i = 0; i < presses; i++) {
-      await u.tab();
+  it.each([['Popover', OVERLAYS[2]]] as const)(
+    '%s loops Tab inside the content and leaves the page non-modal',
+    async (_n, spec) => {
+      const { u, trigger } = await openWithKeyboard(spec);
+      const surface = spec.surface() as HTMLElement;
       expect(surface.contains(document.activeElement)).toBe(true);
-    }
-    expect(trigger.closest('[aria-hidden="true"]')).toBeNull();
-    expect(document.body.style.pointerEvents).not.toBe('none');
-  });
+      const presses = focusables(surface).length + 2;
+      for (let i = 0; i < presses; i++) {
+        await u.tab();
+        expect(surface.contains(document.activeElement)).toBe(true);
+      }
+      expect(trigger.closest('[aria-hidden="true"]')).toBeNull();
+      expect(document.body.style.pointerEvents).not.toBe('none');
+    },
+  );
 
   it('Menu keeps Tab from leaving to the page while open', async () => {
     const spec = OVERLAYS[3];
@@ -420,19 +406,6 @@ describe('Combobox arrow keys', () => {
     await u.keyboard('{Enter}');
     await waitFor(() => expect(OVERLAYS[5].surface()).toBeNull());
     expect(trigger.textContent).toContain('Banana');
-  });
-});
-
-describe('MultiSelector keyboard selection', () => {
-  it('Tab reaches the options and Space toggles a checkbox', async () => {
-    const { u, trigger } = await openWithKeyboard(OVERLAYS[6]);
-    const boxes = screen.getAllByRole('checkbox');
-    await waitFor(() => expect(boxes).toContain(document.activeElement));
-    await u.keyboard(' ');
-    expect(boxes.filter((b) => (b as HTMLInputElement).checked)).toHaveLength(1);
-    expect(trigger.textContent).toContain('1 selected');
-    // Selecting keeps the popover open for further picks.
-    expect(OVERLAYS[6].surface()).not.toBeNull();
   });
 });
 
