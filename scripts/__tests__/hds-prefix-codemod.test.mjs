@@ -141,6 +141,82 @@ describe('transformSource', () => {
     );
   });
 
+  // hds#389 R1a review: a rename inside a longer string broke selectors that other
+  // files (tests, CSS) still spell the old way. Only references to the binding change.
+  it('leaves text that mentions an Hds* name alone: strings, template text, comments, JSX text', () => {
+    const src = [
+      `import { HdsCheckbox } from '${ROOT}';`,
+      `// HdsCheckbox row, see the HdsCheckbox story`,
+      `const ROW = 'HdsCheckbox-row';`,
+      `const label = \`HdsCheckbox \${HdsCheckbox.displayName}\`;`,
+      `export const A = () => (`,
+      `  <label>`,
+      `    HdsCheckbox demo`,
+      `    <HdsCheckbox data-testid="HdsCheckbox-row" aria-label={label} />`,
+      `  </label>`,
+      `);`,
+      '',
+    ].join('\n');
+    const out = transformSource(src);
+    expect(out.source).toBe(
+      [
+        `import { Checkbox } from '${ROOT}';`,
+        `// HdsCheckbox row, see the HdsCheckbox story`,
+        `const ROW = 'HdsCheckbox-row';`,
+        `const label = \`HdsCheckbox \${Checkbox.displayName}\`;`,
+        `export const A = () => (`,
+        `  <label>`,
+        `    HdsCheckbox demo`,
+        `    <Checkbox data-testid="HdsCheckbox-row" aria-label={label} />`,
+        `  </label>`,
+        `);`,
+        '',
+      ].join('\n'),
+    );
+  });
+
+  it('does not rename inside a string that spells a namespace member', () => {
+    const src = `import * as HDS from '${ROOT}';\nconst sel = '[data-c="HDS.HdsSlider"]';\n<HDS.HdsSlider />;\n`;
+    expect(transformSource(src).source).toBe(
+      `import * as HDS from '${ROOT}';\nconst sel = '[data-c="HDS.HdsSlider"]';\n<HDS.Slider />;\n`,
+    );
+  });
+
+  it('treats an import statement inside a template string as text', () => {
+    const src = `const doc = \`\nimport { HdsToggle } from '${ROOT}';\n\`;\n`;
+    expect(transformSource(src).changed).toBe(false);
+  });
+
+  it('keeps the name when it names a method, so `api.HdsCheckbox()` still resolves', () => {
+    const src = `import { HdsCheckbox } from '${ROOT}';\nconst api = { HdsCheckbox() { return 1; } };\n<HdsCheckbox />;\n`;
+    expect(transformSource(src).source).toBe(
+      `import { Checkbox as HdsCheckbox } from '${ROOT}';\nconst api = { HdsCheckbox() { return 1; } };\n<HdsCheckbox />;\n`,
+    );
+  });
+
+  it('reads regex literals, division and TypeScript `<T>` / `<T,>` as code, not strings or JSX', () => {
+    const src = [
+      `import { HdsCheckbox } from '${ROOT}';`,
+      `const re = /'"\`/g;`,
+      `const half = total / 2 / 'HdsCheckbox-row'.length;`,
+      `const id = <T,>(x: T) => x;`,
+      `const n = <number>(<unknown>'HdsCheckbox-row');`,
+      `export const A = () => <HdsCheckbox data-testid="HdsCheckbox-row" />;`,
+      '',
+    ].join('\n');
+    const out = transformSource(src).source.split('\n');
+    expect(out[0]).toBe(`import { Checkbox } from '${ROOT}';`);
+    expect(out.slice(1, 5)).toEqual(src.split('\n').slice(1, 5));
+    expect(out[5]).toBe(`export const A = () => <Checkbox data-testid="HdsCheckbox-row" />;`);
+  });
+
+  it('when it cannot tell code from text, imports the alias and changes no use', () => {
+    const src = `import { HdsCheckbox } from '${ROOT}';\nconst s = 'unterminated;\n<HdsCheckbox />;\n`;
+    expect(transformSource(src).source).toBe(
+      `import { Checkbox as HdsCheckbox } from '${ROOT}';\nconst s = 'unterminated;\n<HdsCheckbox />;\n`,
+    );
+  });
+
   it('reports each changed line before and after for --dry-run', () => {
     const out = transformSource(`import { HdsCheckbox } from '${ROOT}';\n\n<HdsCheckbox />;\n`);
     expect(out.edits).toEqual([
@@ -168,6 +244,17 @@ describe('findUnrewritable', () => {
   it('accepts a namespace import once its member accesses are rewritten', () => {
     const src = transformSource(`import * as HDS from '${ROOT}';\n<HDS.HdsSlider />;\n`).source;
     expect(findUnrewritable(src)).toEqual([]);
+  });
+});
+
+describe('package', () => {
+  it('ships every codemods/ module a codemod bin imports', () => {
+    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
+    for (const bin of Object.values(pkg.bin)) {
+      const src = readFileSync(join(REPO, bin), 'utf8');
+      for (const [, rel] of src.matchAll(/^import .* from '\.\/([^']+)';$/gm))
+        expect(pkg.files, `${bin} imports ./${rel}`).toContain(`codemods/${rel}`);
+    }
   });
 });
 

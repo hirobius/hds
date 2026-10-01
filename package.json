@@ -109,7 +109,8 @@
     "src/app/data/component-api.json",
     "codemods/patterns-subpath.mjs",
     "codemods/patterns-subpath.names.json",
-    "codemods/hds-prefix.mjs"
+    "codemods/hds-prefix.mjs",
+    "codemods/scan.mjs"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

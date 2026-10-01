@@ -242,10 +242,13 @@ Every name they exported is unchanged on `@hirobius/design-system/patterns`.
 
 The six `Hds`-prefixed spellings (hds#315) are gone; each component is exported
 under its bare name only. The `hds-prefix` codemod (`codemods/hds-prefix.mjs`)
-rewrites the import and renames the uses in the same file. Where the bare name is
+rewrites the import and renames the references to it in the same file: JSX tags,
+values, `typeof`. Text keeps the old spelling: strings such as
+`data-testid="HdsCheckbox-row"`, template text, comments and JSX text are not
+changed, so selectors in other files still match. Where the bare name is
 already taken in that file, or where renaming would change what the file exports
 or looks up (`export { HdsCheckbox }`, a `{ HdsCheckbox }` shorthand property, an
-`HdsCheckbox:` key, a whole string `'HdsCheckbox'`), it imports
+`HdsCheckbox:` key, a method, a whole string `'HdsCheckbox'`), it imports
 `Checkbox as HdsCheckbox` instead and leaves the uses alone. A re-export
 keeps its own export name (`export { Toggle as HdsToggle }`), and
 `HDS.HdsSlider` on a namespace import becomes `HDS.Slider`. It cannot see

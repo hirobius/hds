@@ -6,19 +6,23 @@
  * `import { HdsCheckbox } from '@hirobius/design-system'` to
  * `import { Checkbox } from '@hirobius/design-system'` and renames the uses in
  * the same file, for HdsCheckbox, HdsRadio, HdsSelect, HdsSlider, HdsToggle and
- * HdsTooltip. Each is the same component under its bare name. The rewrite keeps
- * every name the file exports, every object key and every whole-string value;
- * only the binding and text that mentions it change.
+ * HdsTooltip. Each is the same component under its bare name. Only code
+ * changes; text that spells an `Hds*` name keeps it (codemods/scan.mjs tells the
+ * two apart), and the rewrite keeps every name the file exports and every
+ * object key.
  *
- *   - `import { HdsCheckbox }`: imports `Checkbox` and renames every
- *     `HdsCheckbox` identifier in the file (JSX tags, `typeof`, member access on
- *     the binding), plus mentions in comments and inside longer strings.
+ *   - `import { HdsCheckbox }`: imports `Checkbox` and renames every reference
+ *     to the binding (JSX tags, values, `typeof`, member access on the binding,
+ *     `${HdsCheckbox}` in a template). Strings (`data-testid="HdsCheckbox-row"`),
+ *     template text, comments, JSX text and JSX attribute names stay as written,
+ *     so selectors in other files still match.
  *   - It imports `Checkbox as HdsCheckbox` instead, and leaves the uses alone,
  *     when renaming would change behaviour or collide: the name is an export
  *     name (`export { HdsCheckbox }`), a shorthand property or destructured key
  *     (`{ HdsCheckbox }`, which also covers a JSX `{HdsCheckbox}` expression), an
- *     object or type key (`HdsCheckbox:`), or a whole string (`'HdsCheckbox'`);
- *     or `Checkbox` is already a word in the file.
+ *     object or type key (`HdsCheckbox:`), a method (`{ HdsCheckbox() {} }`), or a
+ *     whole string (`'HdsCheckbox'`); `Checkbox` is already an identifier in the
+ *     file; or the file does not scan, so code and text cannot be told apart.
  *   - `import { HdsSelect as Pick }`: becomes `Select as Pick`.
  *   - `export { HdsToggle } from '…'`: becomes `Toggle as HdsToggle`, so the
  *     file's own export name does not change.
@@ -36,6 +40,7 @@
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { relative, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { scanSource } from './scan.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
 const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
@@ -82,41 +87,57 @@ const word = (name) => new RegExp(`(?<![\\w$])${name}(?![\\w$])`);
 const binding = (name) => new RegExp(`(?<![\\w$.])${name}(?![\\w$])`, 'g');
 
 /**
- * True when renaming `name` outside the given import spans would change what the
- * file exports or looks up: an export-list entry or shorthand property
- * (`{ name }`, `{ a, name = x }`), an object or type key (`name:`, `name?:`), or a
- * whole string (`'name'`). A ternary branch (`c ? name : x`) also matches; the
- * alias that follows is merely conservative there.
+ * True when renaming the code references of `name` would change what the file
+ * exports or looks up: an export-list entry or shorthand property (`{ name }`,
+ * `{ a, name = x }`), an object or type key (`name:`, `name?:`), a method
+ * (`{ name() {} }`), or a whole string elsewhere in the file (`'name'`). A
+ * ternary branch (`c ? name : x`) also matches; the alias that follows is
+ * merely conservative there.
  */
-function usedAsName(source, name, spans) {
-  for (const m of source.matchAll(binding(name))) {
-    const at = m.index;
-    if (spans.some(([a, b]) => at >= a && at < b)) continue;
+function usedAsName(source, name, refs, scan) {
+  if (scan.strings.some((s) => s.value === name)) return true;
+  for (const at of refs) {
     const prev = source.slice(0, at).trimEnd().slice(-1);
-    const rest = source.slice(at + name.length);
-    const next = rest.trimStart();
-    if ((prev === '{' || prev === ',') && /^(?:[,}]|=(?![=>]))/.test(next)) return true;
+    const next = source.slice(at + name.length).trimStart();
+    if ((prev === '{' || prev === ',') && /^(?:[,}(]|=(?![=>]))/.test(next)) return true;
     if (/^\??\s*:(?!:)/.test(next)) return true;
-    const quote = source[at - 1];
-    if ((quote === "'" || quote === '"' || quote === '`') && rest[0] === quote) return true;
   }
   return false;
 }
 
 /**
- * Pure transform of one file's source.
+ * Pure transform of one file's source. Only code changes: an import or export
+ * specifier, and identifiers bound to the imported alias (JSX tags, values,
+ * `typeof`, member access on the binding). Strings, template text, comments, JSX
+ * text and JSX attribute names keep every `Hds*` they spell. When the file does
+ * not scan (codemods/scan.mjs), it imports `Checkbox as HdsCheckbox` and changes
+ * no use.
  * @param {string} source
  * @param {Record<string, string>} [renames]
  * @returns {{ source: string, changed: boolean, sites: number, renamed: string[],
  *   edits: { line: number, before: string, after: string }[] }}
  */
 export function transformSource(source, renames = RENAMES) {
+  const scan = scanSource(source);
   const renamed = new Set();
   const renameLocal = new Set();
-  const spans = [];
-  const importSpans = [...source.matchAll(namedRe())].map((m) => [m.index, m.index + m[0].length]);
+  const changes = [];
+  let sites = 0;
+  // A statement inside a string or comment is text, unless the scan gave up.
+  const statements = [...source.matchAll(namedRe())].filter(
+    (m) => !scan.ok || scan.isCode(m.index + m[0].indexOf(m[1])),
+  );
+  const inImport = (at) => statements.some((m) => at >= m.index && at < m.index + m[0].length);
+  const refs = (name) =>
+    [...source.matchAll(binding(name))]
+      .map((m) => m.index)
+      .filter((at) => scan.isCode(at) && !inImport(at));
+  const taken = (name) =>
+    [...source.matchAll(new RegExp(word(name).source, 'g'))].some(
+      (m) => !scan.ok || scan.isCode(m.index),
+    );
 
-  for (const m of source.matchAll(namedRe())) {
+  for (const m of statements) {
     const [stmt, kw, body] = m;
     let touched = false;
     const next = body.replace(specRe(), (spec, typeKw = '', name, asPart) => {
@@ -127,43 +148,36 @@ export function transformSource(source, renames = RENAMES) {
       if (asPart) return `${typeKw}${bare}${asPart}`;
       // A re-export keeps the name it gives its own importers.
       if (kw === 'export') return `${typeKw}${bare} as ${name}`;
-      if (word(bare).test(source) || usedAsName(source, name, importSpans))
+      if (!scan.ok || taken(bare) || usedAsName(source, name, refs(name), scan))
         return `${typeKw}${bare} as ${name}`;
       renameLocal.add(name);
       return `${typeKw}${bare}`;
     });
     if (!touched) continue;
-    const start = m.index;
-    const bodyAt = stmt.indexOf(`{${body}}`) + 1;
-    spans.push({
-      start,
-      end: start + stmt.length,
-      text: stmt.slice(0, bodyAt) + next + stmt.slice(bodyAt + body.length),
-    });
+    sites++;
+    const bodyAt = m.index + stmt.indexOf(`{${body}}`) + 1;
+    changes.push({ start: bodyAt, end: bodyAt + body.length, text: next });
   }
 
-  const namespaces = [...source.matchAll(namespaceRe())].map((m) => m[1]);
-  const rewriteUses = (text) => {
-    let out = text;
-    for (const name of renameLocal) out = out.replace(binding(name), renames[name]);
-    for (const ns of namespaces)
+  for (const name of renameLocal)
+    for (const at of refs(name))
+      changes.push({ start: at, end: at + name.length, text: renames[name] });
+
+  if (scan.ok)
+    for (const ns of [...source.matchAll(namespaceRe())].map((m) => m[1]))
       for (const [name, bare] of Object.entries(renames)) {
         const member = new RegExp(`(?<![\\w$.])(${esc(ns)}\\s*\\.\\s*)${name}(?![\\w$])`, 'g');
-        out = out.replace(member, (_, head) => {
+        for (const mm of source.matchAll(member)) {
+          const at = mm.index + mm[1].length;
+          if (!scan.isCode(mm.index) || !scan.isCode(at)) continue;
           renamed.add(name);
-          return `${head}${bare}`;
-        });
+          changes.push({ start: at, end: at + name.length, text: bare });
+        }
       }
-    return out;
-  };
 
-  let out = '';
-  let at = 0;
-  for (const s of spans.sort((a, b) => a.start - b.start)) {
-    out += rewriteUses(source.slice(at, s.start)) + s.text;
-    at = s.end;
-  }
-  out += rewriteUses(source.slice(at));
+  let out = source;
+  for (const r of changes.sort((a, b) => b.start - a.start))
+    out = out.slice(0, r.start) + r.text + out.slice(r.end);
 
   if (out === source) return { source, changed: false, sites: 0, renamed: [], edits: [] };
   const before = source.split('\n');
@@ -172,7 +186,7 @@ export function transformSource(source, renames = RENAMES) {
   before.forEach((line, i) => {
     if (line !== after[i]) edits.push({ line: i + 1, before: line, after: after[i] });
   });
-  return { source: out, changed: true, sites: spans.length, renamed: [...renamed].sort(), edits };
+  return { source: out, changed: true, sites, renamed: [...renamed].sort(), edits };
 }
 
 /**
