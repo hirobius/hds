@@ -336,9 +336,11 @@ export function hdsSyncReadPages(figma, count) {
  * Whether the receipt already on figma.root still describes this file
  * exactly: same commit, model, plugin build, push and base, a state that,
  * read at that receipt's takenAt, has its post checksum, and its pages
- * intact. Then a Sync that changed nothing writes nothing.
+ * intact. Then a Sync that changed nothing writes nothing. A head naming more
+ * than `sync.maxPages` pages never holds, and none of them is read: a
+ * malformed count cannot keep Sync reading.
  */
-export function hdsSyncReceiptHolds(figma, receipt, snapshot) {
+export function hdsSyncReceiptHolds(figma, receipt, snapshot, sync) {
   let previous = null;
   try {
     previous = JSON.parse(hdsGetKey(figma.root, 'syncReceipt') || 'null');
@@ -354,6 +356,7 @@ export function hdsSyncReceiptHolds(figma, receipt, snapshot) {
     typeof previous.takenAt === 'string' &&
     hdsChecksum(JSON.stringify(Object.assign({}, snapshot, { takenAt: previous.takenAt }))) ===
       previous.post &&
+    previous.pages <= sync.maxPages &&
     hdsChecksum(hdsSyncReadPages(figma, previous.pages)) === previous.sum
   );
 }
@@ -398,12 +401,14 @@ export function hdsSyncWriteReceipt(figma, receipt, pages, sync) {
  * that text goes raw; above, the window gzips and base64-encodes it
  * (CompressionStream, default level) and the smaller wins. A window without
  * CompressionStream, or one that does not answer, leaves it raw. Either way
- * it is cut into pages of `sync.pageChars`.
+ * it is cut into pages of at most `sync.pageChars`, never between the two
+ * halves of a surrogate pair (raw JSON keeps an emoji as one), so every page
+ * is well-formed text on its own.
  */
 export async function hdsSyncStamp(figma, bundle, report, snap, pluginBuild, sync, deltaOf) {
   const base = hdsSyncBase(bundle);
   const receipt = hdsSyncReceipt(bundle, report, snap, pluginBuild, base);
-  if (hdsSyncReceiptHolds(figma, receipt, snap.snapshot)) return null;
+  if (hdsSyncReceiptHolds(figma, receipt, snap.snapshot, sync)) return null;
   const body = JSON.stringify(
     base ? deltaOf(base.snapshot, snap.snapshot) : { full: snap.snapshot },
   );
@@ -426,8 +431,10 @@ export async function hdsSyncStamp(figma, bundle, report, snap, pluginBuild, syn
     }
   }
   const pages = [];
-  for (let at = 0; at < text.length; at += sync.pageChars) {
-    pages.push(text.slice(at, at + sync.pageChars));
+  for (let at = 0, end = 0; at < text.length; at = end) {
+    end = at + sync.pageChars;
+    if (end < text.length && end - 1 > at && /[\uD800-\uDBFF]/.test(text[end - 1])) end -= 1;
+    pages.push(text.slice(at, end));
   }
   receipt.pages = pages.length;
   receipt.sum = hdsChecksum(text);

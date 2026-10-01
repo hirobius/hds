@@ -31,6 +31,7 @@ import { parse } from 'acorn';
 import { hdsChecksum, hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { applySnapshotDelta } from '../lib/figma-snapshot-delta.mjs';
+import { hdsSyncStamp } from '../lib/figma-sync-runtime.mjs';
 import { serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { planAgainstSnapshot, writePushArtifacts, writeSyncBundle } from '../figma-push.mjs';
 import { ingestReceipt } from '../figma-snapshot.mjs';
@@ -263,6 +264,62 @@ describe('Sync writes the snapshot into the file as receipt pages', () => {
     expect(again.notes.join('\n')).toMatch(/Receipt not written.*Download JSON/s);
     expect(rootData(s.figma, 'syncReceipt')).toBe('');
   });
+
+  it('a head naming more pages than the 64 it may have is not trusted: Sync reads no page past 63 and rewrites it', async () => {
+    const s = await synced();
+    const head = s.head();
+    // A malformed head (hand-edited, or written by something else) must not keep Sync reading.
+    setRootData(s.figma, 'syncReceipt', JSON.stringify({ ...head, pages: 100000 }));
+    const read = [];
+    const get = s.figma.root.getSharedPluginData;
+    s.figma.root.getSharedPluginData = (namespace, key) => {
+      if (key.startsWith('syncSnapshot.')) read.push(Number(key.slice('syncSnapshot.'.length)));
+      return get(namespace, key);
+    };
+    const again = await runSyncPlugin(s.plugin, 'sync', s.figma, { fetch: serve(s.bundle) });
+    expect(again.ok, again.error).toBe(true);
+    expect(read.filter((page) => page >= 64)).toEqual([]);
+    expect(again.notes.join('\n')).toMatch(/Receipt written/);
+    expect(s.head()).toMatchObject({ pages: 1, base: head.base });
+  });
+
+  it('never cuts a character in two: each page ends on a code-point boundary and the pages join back', async () => {
+    // Raw text full of astral characters (an emoji in a description), cut into
+    // tiny pages so every offset lands on a pair at some page size.
+    const snapshot = {
+      takenAt: '2026-10-01T00:00:00.000Z',
+      lastPush: null,
+      collections: [],
+      textStyles: [],
+      effectStyles: [{ id: 'S:1,', name: 'elevation/🎨', description: 'x🎨y🎨🎨z😀' }],
+    };
+    const snap = { snapshot, checksum: hdsChecksum(JSON.stringify(snapshot)) };
+    const body = JSON.stringify({ full: snapshot });
+    const pairAt = (text, i) => /[\uD800-\uDBFF]/.test(text[i]);
+    for (let pageChars = 2; pageChars <= 24; pageChars++) {
+      const figma = stagingFile();
+      const sync = { rawChars: Infinity, pageChars, maxPages: 10000, gzipTimeoutMs: 1 };
+      const head = await hdsSyncStamp(
+        figma,
+        { commit: COMMIT, modelHash: 'abcdef12', base: null },
+        { line: NOTHING_LINE },
+        snap,
+        'build123',
+        sync,
+        () => {
+          throw new Error('no base, so no delta');
+        },
+      );
+      const pages = Array.from({ length: head.pages }, (_, i) =>
+        rootData(figma, `syncSnapshot.${i}`),
+      );
+      expect(pages.join(''), `pages of ${pageChars}`).toBe(body);
+      for (const page of pages) {
+        expect(page.length, `pages of ${pageChars}`).toBeLessThanOrEqual(pageChars);
+        expect(pairAt(page, page.length - 1), `pages of ${pageChars}: ${page}`).toBe(false);
+      }
+    }
+  });
 });
 
 // ── receipt.js ───────────────────────────────────────────────────────────────
@@ -441,16 +498,23 @@ describe('the promote plugin clears the Sync receipt', () => {
     for (let i = 0; i < 400 && posted.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
     return JSON.parse(JSON.stringify(posted[0]));
   };
-  const receiptKeys = (figma) =>
-    ['syncReceipt', 'syncSnapshot.0', 'syncSnapshot.1'].filter((key) => rootData(figma, key));
+  /** The receipt's keys that hold anything: the head and pages 0 … pages - 1. */
+  const receiptKeys = (figma, pages) =>
+    ['syncReceipt', ...Array.from({ length: pages }, (_, i) => `syncSnapshot.${i}`)].filter((key) =>
+      rootData(figma, key),
+    );
 
   for (const command of ['push', 'snapshot']) {
     it(`${command} clears syncReceipt and every page`, async () => {
       const s = await synced({ base: 'empty', compression: false });
-      expect(receiptKeys(s.figma)).toEqual(['syncReceipt', 'syncSnapshot.0', 'syncSnapshot.1']);
+      const { pages } = s.head();
+      expect(pages).toBeGreaterThan(1);
+      expect(receiptKeys(s.figma, pages)).toHaveLength(1 + pages);
+      // A page an earlier, longer receipt left behind, at the last index Sync may write.
+      setRootData(s.figma, 'syncSnapshot.63', 'left over');
       const result = await runPromote(s.promote, command, s.figma);
       expect(result.ok, result.error).toBe(true);
-      expect(receiptKeys(s.figma)).toEqual([]);
+      expect(receiptKeys(s.figma, 64)).toEqual([]);
     });
   }
 
