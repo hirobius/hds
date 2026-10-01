@@ -912,10 +912,10 @@
       ],
       "tokenMapping": {},
       "props": {
-        "href": {
+        "children": {
           "type": "string"
         },
-        "children": {
+        "href": {
           "type": "string"
         }
       },
@@ -939,7 +939,9 @@
         "primitives-cinematic-link--external-href",
         "primitives-cinematic-link--long-label",
         "primitives-cinematic-link--short-label"
-      ]
+      ],
+      "deprecated": "CinematicLink is an HDS docs/lab internal (editorial link treatment for portfolio/case-study specimen surfaces), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "CodeBlock": {
       "category": "Display",
@@ -974,6 +976,14 @@
         "code": {
           "type": "string"
         },
+        "collapsible": {
+          "type": "boolean",
+          "default": false
+        },
+        "defaultExpanded": {
+          "type": "boolean",
+          "default": false
+        },
         "filename": {
           "type": "string",
           "optional": true
@@ -989,8 +999,8 @@
         "variant": {
           "type": "enum",
           "values": [
-            "block",
-            "inline"
+            "inline",
+            "block"
           ],
           "default": "block"
         }
@@ -1064,7 +1074,7 @@
         },
         "padding": {
           "type": "string",
-          "default": "var(--semantic-space-component-padding)"
+          "default": "var(--semantic-space-surface-padding)"
         },
         "style": {
           "type": "CSSProperties",
@@ -1378,11 +1388,103 @@
         "accent": "semantic.color.content.accent"
       },
       "filePath": "src/app/components/doc-link-card.tsx",
-      "props": {},
+      "props": {
+        "accent": {
+          "type": "boolean",
+          "default": false
+        },
+        "affordance": {
+          "type": "enum",
+          "values": [
+            "up-right",
+            "right",
+            "left"
+          ],
+          "default": "up-right"
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "href": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "LucideIcon"
+        },
+        "meta": {
+          "type": "string",
+          "optional": true
+        },
+        "metaStyle": {
+          "type": "enum",
+          "values": [
+            "caption",
+            "ui"
+          ],
+          "default": "caption"
+        },
+        "title": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "feature",
+            "pager"
+          ],
+          "default": "feature"
+        }
+      },
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "accent": {
+          "type": "boolean"
+        },
+        "affordance": {
+          "type": "enum",
+          "values": [
+            "up-right",
+            "right",
+            "left"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "href": {
+          "type": "string"
+        },
+        "meta": {
+          "type": "string"
+        },
+        "metaStyle": {
+          "type": "enum",
+          "values": [
+            "caption",
+            "ui"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "feature",
+            "pager"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -1647,7 +1749,9 @@
         "primitives-foundation-swatch--feedback-palette",
         "primitives-foundation-swatch--with-details",
         "primitives-foundation-swatch--with-specimen"
-      ]
+      ],
+      "deprecated": "FoundationSwatch is an HDS docs/lab internal (foundation specimen preview for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "Grid": {
       "category": "Layout",
@@ -1685,13 +1789,16 @@
       ],
       "tokenMapping": {},
       "props": {
-        "layout": {
-          "type": "enum",
-          "values": [
-            "fixed",
-            "auto-fit"
-          ],
-          "default": "fixed"
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
         },
         "columns": {
           "type": "number",
@@ -1707,32 +1814,29 @@
           ],
           "default": "inset"
         },
+        "layout": {
+          "type": "enum",
+          "values": [
+            "fixed",
+            "auto-fit"
+          ],
+          "default": "fixed"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
         "subgrid": {
           "type": "boolean",
           "default": false
-        },
-        "children": {
-          "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "as": {
-          "type": "React.ElementType",
-          "optional": true
         }
       },
       "allowedChildren": [
         "*"
       ],
       "propConstraints": {
-        "layout": {
-          "type": "enum",
-          "values": [
-            "fixed",
-            "auto-fit"
-          ]
+        "className": {
+          "type": "string"
         },
         "gap": {
           "type": "enum",
@@ -1741,6 +1845,13 @@
             "normal",
             "inset",
             "spacious"
+          ]
+        },
+        "layout": {
+          "type": "enum",
+          "values": [
+            "fixed",
+            "auto-fit"
           ]
         },
         "subgrid": {
@@ -1827,9 +1938,11 @@
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
@@ -1863,7 +1976,7 @@
           "default": "currentColor"
         },
         "icon": {
-          "type": "Icon"
+          "type": "LucideIcon"
         },
         "size": {
           "type": "IconSize",
@@ -1876,10 +1989,10 @@
         "weight": {
           "type": "enum",
           "values": [
-            "thin",
-            "light",
-            "bold",
             "fill",
+            "bold",
+            "light",
+            "thin",
             "regular",
             "duotone"
           ],
@@ -1900,10 +2013,10 @@
         "weight": {
           "type": "enum",
           "values": [
-            "thin",
-            "light",
-            "bold",
             "fill",
+            "bold",
+            "light",
+            "thin",
             "regular",
             "duotone"
           ]
@@ -1991,8 +2104,6 @@
         "src/app/components/button.test.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/inline-code.tsx",
-        "src/app/components/pagination.tsx",
         "src/app/components/stepper-field.tsx",
         "src/stories/data-table-section.stories.tsx",
         "src/stories/icon-button.stories.tsx",
@@ -2018,8 +2129,12 @@
           "type": "boolean",
           "optional": true
         },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
         "icon": {
-          "type": "Icon"
+          "type": "LucideIcon"
         },
         "iconColor": {
           "type": "string",
@@ -2037,10 +2152,6 @@
           "type": "IconSize",
           "optional": true
         },
-        "isDark": {
-          "type": "boolean",
-          "optional": true
-        },
         "label": {
           "type": "string",
           "optional": true
@@ -2056,7 +2167,18 @@
             "md",
             "lg"
           ],
-          "default": "md"
+          "optional": true
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "optional": true
         },
         "variant": {
           "type": "enum",
@@ -2065,13 +2187,58 @@
             "secondary",
             "tertiary"
           ],
-          "default": "secondary"
+          "optional": true
         }
       },
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "aria-label": {
+          "type": "string"
+        },
+        "asChild": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "iconColor": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "loading": {
+          "type": "boolean"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ]
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary",
+            "tertiary"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -2140,6 +2307,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/inline-code.test.tsx",
         "src/app/components/metadata-list.tsx",
         "src/stories/inline-code.stories.tsx",
         "src/stories/metadata-list.stories.tsx"
@@ -2153,13 +2321,24 @@
         "Vertical padding": "primitive.space.px2"
       },
       "props": {
+        "children": {
+          "type": "ReactNode"
+        },
         "compact": {
           "type": "boolean",
-          "default": false
+          "optional": true
         },
         "copyable": {
           "type": "boolean",
           "default": false
+        },
+        "density": {
+          "type": "enum",
+          "values": [
+            "comfortable",
+            "compact"
+          ],
+          "optional": true
         },
         "style": {
           "type": "CSSProperties",
@@ -2232,7 +2411,14 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "externalIcon": {
+          "type": "boolean"
+        },
+        "href": {
+          "type": "string"
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -2317,6 +2503,58 @@
       "sourcePath": "src/app/components/Input.tsx",
       "sourceExport": "Input",
       "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "error": {
+          "type": "boolean",
+          "optional": true
+        },
+        "errorMessage": {
+          "type": "string",
+          "optional": true
+        },
+        "helperText": {
+          "type": "string",
+          "optional": true
+        },
+        "inputClassName": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "leadingVisual": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "loading": {
+          "type": "boolean",
+          "default": false
+        },
+        "size": {
+          "type": "InputSize",
+          "default": "md"
+        },
+        "textStyle": {
+          "type": "enum",
+          "values": [
+            "body",
+            "mono"
+          ],
+          "default": "body"
+        },
+        "trailingVisual": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "type": {
           "type": "enum",
           "values": [
@@ -2329,51 +2567,6 @@
             "number"
           ],
           "default": "text"
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "default": "md"
-        },
-        "textStyle": {
-          "type": "enum",
-          "values": [
-            "body",
-            "mono"
-          ],
-          "default": "body"
-        },
-        "label": {
-          "type": "string",
-          "optional": true
-        },
-        "placeholder": {
-          "type": "string",
-          "optional": true
-        },
-        "helperText": {
-          "type": "string",
-          "optional": true
-        },
-        "error": {
-          "type": "boolean",
-          "default": false
-        },
-        "errorMessage": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "loading": {
-          "type": "boolean",
-          "default": false
         }
       },
       "tokens": {
@@ -2403,6 +2596,37 @@
       ],
       "allowedChildren": [],
       "propConstraints": {
+        "className": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "boolean"
+        },
+        "errorMessage": {
+          "type": "string"
+        },
+        "helperText": {
+          "type": "string"
+        },
+        "inputClassName": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "loading": {
+          "type": "boolean"
+        },
+        "textStyle": {
+          "type": "enum",
+          "values": [
+            "body",
+            "mono"
+          ]
+        },
         "type": {
           "type": "enum",
           "values": [
@@ -2414,42 +2638,6 @@
             "url",
             "number"
           ]
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ]
-        },
-        "textStyle": {
-          "type": "enum",
-          "values": [
-            "body",
-            "mono"
-          ]
-        },
-        "label": {
-          "type": "string"
-        },
-        "placeholder": {
-          "type": "string"
-        },
-        "helperText": {
-          "type": "string"
-        },
-        "error": {
-          "type": "boolean"
-        },
-        "errorMessage": {
-          "type": "string"
-        },
-        "disabled": {
-          "type": "boolean"
-        },
-        "loading": {
-          "type": "boolean"
         }
       },
       "requiredProps": [],
@@ -2572,6 +2760,10 @@
       ],
       "tokenMapping": {},
       "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "className": {
           "type": "string",
           "optional": true
@@ -2620,7 +2812,24 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "className": {
+          "type": "string"
+        },
+        "collapsible": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "side",
+            "toc"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -2715,18 +2924,24 @@
           "optional": true
         },
         "variant": {
-          "type": "enum",
-          "values": [
-            "side",
-            "toc"
-          ],
+          "type": "NavVariant",
           "default": "side"
         }
       },
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "active": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -2788,7 +3003,7 @@
         "Rail inner padding": "primitive.space.2"
       },
       "props": {
-        "ariaLabel": {
+        "aria-label": {
           "type": "string",
           "optional": true
         },
@@ -2817,10 +3032,10 @@
         "size": {
           "type": "enum",
           "values": [
-            "default",
-            "compact"
+            "sm",
+            "md"
           ],
-          "default": "default"
+          "default": "md"
         },
         "value": {
           "type": "string"
@@ -2837,7 +3052,34 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "aria-label": {
+          "type": "string"
+        },
+        "fullWidth": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md"
+          ]
+        },
+        "value": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -2902,15 +3144,15 @@
       ],
       "tokenMapping": {},
       "props": {
+        "children": {
+          "type": "ReactNode"
+        },
         "controls": {
           "type": "ReactNode",
           "optional": true
         },
         "title": {
           "type": "string"
-        },
-        "children": {
-          "type": "ReactNode"
         }
       },
       "allowedChildren": [
@@ -2960,7 +3202,9 @@
         "layout-sketch--default",
         "layout-sketch--narrow-canvas",
         "layout-sketch--with-controls"
-      ]
+      ],
+      "deprecated": "Sketch is an HDS docs/lab internal (shell for generative canvas/WebGL specimen pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "Stack": {
       "category": "Layout",
@@ -2985,10 +3229,13 @@
         "src/app/components/container.tsx",
         "src/app/components/cover.tsx",
         "src/app/components/data-table-section.tsx",
+        "src/app/components/destructive-section.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/divider.tsx",
         "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
+        "src/app/components/form-actions.test.tsx",
+        "src/app/components/form-actions.tsx",
         "src/app/components/foundation-swatch.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/heading-stack.tsx",
@@ -3018,29 +3265,6 @@
         "Wide gap": "primitive.space.6"
       },
       "props": {
-        "direction": {
-          "type": "enum",
-          "values": [
-            "column",
-            "row"
-          ],
-          "default": "column"
-        },
-        "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious",
-            "gap",
-            "medium",
-            "hairline",
-            "xs",
-            "stack"
-          ],
-          "default": "tight"
-        },
         "align": {
           "type": "enum",
           "values": [
@@ -3051,19 +3275,9 @@
           ],
           "optional": true
         },
-        "justify": {
-          "type": "enum",
-          "values": [
-            "start",
-            "center",
-            "end",
-            "space-between"
-          ],
-          "optional": true
-        },
-        "wrap": {
-          "type": "boolean",
-          "default": false
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
         },
         "children": {
           "type": "ReactNode"
@@ -3072,8 +3286,34 @@
           "type": "string",
           "optional": true
         },
-        "as": {
-          "type": "React.ElementType",
+        "direction": {
+          "type": "enum",
+          "values": [
+            "row",
+            "column"
+          ],
+          "default": "column"
+        },
+        "gap": {
+          "type": "GapOption",
+          "default": "tight"
+        },
+        "justify": {
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "space-between"
+          ],
+          "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "wrap": {
+          "type": "FlexWrap",
           "optional": true
         }
       },
@@ -3081,27 +3321,6 @@
         "*"
       ],
       "propConstraints": {
-        "direction": {
-          "type": "enum",
-          "values": [
-            "column",
-            "row"
-          ]
-        },
-        "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious",
-            "gap",
-            "medium",
-            "hairline",
-            "xs",
-            "stack"
-          ]
-        },
         "align": {
           "type": "enum",
           "values": [
@@ -3109,6 +3328,16 @@
             "center",
             "end",
             "stretch"
+          ]
+        },
+        "className": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "enum",
+          "values": [
+            "row",
+            "column"
           ]
         },
         "justify": {
@@ -3119,9 +3348,6 @@
             "end",
             "space-between"
           ]
-        },
-        "wrap": {
-          "type": "boolean"
         }
       },
       "requiredProps": [],
@@ -3229,7 +3455,11 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "label": {
+          "type": "string"
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -3323,7 +3553,7 @@
             "compact",
             "comfortable"
           ],
-          "default": "comfortable"
+          "optional": true
         },
         "description": {
           "type": "ReactNode",
@@ -3332,6 +3562,10 @@
         "flush": {
           "type": "boolean",
           "default": false
+        },
+        "labelledBy": {
+          "type": "string",
+          "optional": true
         },
         "minWidth": {
           "type": "string | number",
@@ -3348,7 +3582,24 @@
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "density": {
+          "type": "enum",
+          "values": [
+            "compact",
+            "comfortable"
+          ]
+        },
+        "flush": {
+          "type": "boolean"
+        },
+        "labelledBy": {
+          "type": "string"
+        },
+        "stickyHeader": {
+          "type": "boolean"
+        }
+      },
       "requiredProps": [],
       "a11yRules": [
         {
@@ -3454,39 +3705,14 @@
           "type": "boolean",
           "default": false
         },
-        "ariaLabel": {
-          "type": "string",
-          "optional": true
-        },
         "children": {
           "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "onClick": {
-          "type": "() => void",
-          "optional": true
-        },
-        "title": {
-          "type": "string",
-          "optional": true
         }
       },
       "allowedChildren": [],
       "propConstraints": {
         "active": {
           "type": "boolean"
-        },
-        "ariaLabel": {
-          "type": "string"
-        },
-        "className": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
         }
       },
       "requiredProps": [
@@ -3623,7 +3849,7 @@
         "accentColor": {
           "type": "string"
         },
-        "ariaLabel": {
+        "aria-label": {
           "type": "string",
           "optional": true
         },
@@ -3655,7 +3881,7 @@
           "optional": true
         },
         "nodeRef": {
-          "type": "(el: HTMLElement) => void",
+          "type": "(el: HTMLElement | null) => void",
           "optional": true
         },
         "nowrap": {
@@ -3732,7 +3958,9 @@
         "primitives-token--explicit-swatch",
         "primitives-token--selected",
         "primitives-token--source-node"
-      ]
+      ],
+      "deprecated": "Token is an HDS docs/lab internal (reflective token specimen for the token/foundation doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "Surface": {
       "category": "Layout",
@@ -3767,6 +3995,7 @@
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
         "src/app/components/tokenUtils.ts",
+        "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/context/hds-theme.tsx",
         "src/app/layouts/CaseStudyLayout.tsx",
@@ -3780,20 +4009,25 @@
       ],
       "tokenMapping": {},
       "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "div"
+        },
         "children": {
-          "type": "ReactNode"
+          "type": "ReactNode",
+          "optional": true
         },
         "className": {
           "type": "string",
           "optional": true
         },
+        "overflow": {
+          "type": "Overflow",
+          "optional": true
+        },
         "padding": {
-          "type": "enum",
-          "values": [
-            "px16",
-            "px24"
-          ],
-          "default": "px16"
+          "type": "PaddingOption",
+          "default": "component"
         },
         "shadow": {
           "type": "boolean",
@@ -3802,12 +4036,34 @@
         "style": {
           "type": "CSSProperties",
           "optional": true
+        },
+        "theme": {
+          "type": "enum",
+          "values": [
+            "light",
+            "dark"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {},
+      "propConstraints": {
+        "className": {
+          "type": "string"
+        },
+        "shadow": {
+          "type": "boolean"
+        },
+        "theme": {
+          "type": "enum",
+          "values": [
+            "light",
+            "dark"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [],
       "variantAxes": [],
@@ -3891,41 +4147,24 @@
       "sourceExport": "Card",
       "props": {
         "as": {
-          "type": "string",
+          "type": "ElementType<any, keyof IntrinsicElements>",
           "optional": true
         },
-        "padding": {
-          "type": "enum",
-          "values": [
-            "component",
-            "item",
-            "none",
-            "px24",
-            "px16"
-          ],
-          "default": "component"
+        "bordered": {
+          "type": "boolean",
+          "default": false
         },
         "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ],
+          "type": "GapOption",
           "default": "tight"
         },
         "noPadding": {
           "type": "boolean",
           "default": false
         },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "default",
-            "accent"
-          ],
-          "default": "default"
+        "padding": {
+          "type": "PaddingOption",
+          "default": "component"
         },
         "tone": {
           "type": "enum",
@@ -3938,16 +4177,13 @@
           ],
           "default": "neutral"
         },
-        "bordered": {
-          "type": "boolean",
-          "default": false
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "children": {
-          "type": "ReactNode"
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "accent"
+          ],
+          "default": "default"
         }
       },
       "tokens": {
@@ -4041,37 +4277,11 @@
       ],
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
       "propConstraints": {
-        "as": {
-          "type": "string"
-        },
-        "padding": {
-          "type": "enum",
-          "values": [
-            "component",
-            "item",
-            "none",
-            "px24",
-            "px16"
-          ]
-        },
-        "gap": {
-          "type": "enum",
-          "values": [
-            "tight",
-            "normal",
-            "inset",
-            "spacious"
-          ]
+        "bordered": {
+          "type": "boolean"
         },
         "noPadding": {
           "type": "boolean"
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "default",
-            "accent"
-          ]
         },
         "tone": {
           "type": "enum",
@@ -4083,11 +4293,12 @@
             "info"
           ]
         },
-        "bordered": {
-          "type": "boolean"
-        },
-        "className": {
-          "type": "string"
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "accent"
+          ]
         }
       },
       "storyFiles": [
@@ -4137,7 +4348,43 @@
         "src/stories/component-instance-matrix.stories.tsx"
       ],
       "tokenMapping": {},
-      "props": {},
+      "props": {
+        "componentName": {
+          "type": "string"
+        },
+        "dimensionX": {
+          "type": "string"
+        },
+        "dimensionY": {
+          "type": "string"
+        },
+        "freezeRowState": {
+          "type": "boolean",
+          "default": false
+        },
+        "isMobile": {
+          "type": "boolean"
+        },
+        "renderInstance": {
+          "type": "(rowKey: string, columnKey: string) => ReactNode"
+        },
+        "rowLabelTone": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary"
+          ],
+          "default": "primary"
+        },
+        "rowLabelWidth": {
+          "type": "number",
+          "default": 120
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -4157,7 +4404,9 @@
         "primitives-component-instance-matrix--default",
         "primitives-component-instance-matrix--frozen-row-state",
         "primitives-component-instance-matrix--mobile-layout"
-      ]
+      ],
+      "deprecated": "ComponentInstanceMatrix is an HDS docs/lab internal (specimen matrix helper for the component doc pages), not a consumer-facing HDS surface. It will be retiered to `utility` (dropped from the published barrel) at the named major.",
+      "removeIn": "1.0.0"
     },
     "ActivityFeed": {
       "category": "Display",
@@ -4180,7 +4429,8 @@
       "tokenMapping": {},
       "props": {
         "events": {
-          "type": "ActivityEvent[]"
+          "type": "ActivityEvent[]",
+          "default": "[ { id: 'evt-001', title: 'File Uploaded', description: 'firmware-v2.4.1.bin was uploaded to the staging environment by adrianm. File size 4.2 MB. Integrity check passed.', timestamp: '2026-04-22 · 08:14', category: 'Storage', icon: <Icon icon={UploadSimple} size=\"medium\" />, tone: 'neutral', }, { id: 'evt-002', title: 'Policy Updated', description: 'Access control policy \"eng-prod-write\" was modified. Three permission groups were added; two removed. Change authored by sys-admin.', timestamp: '2026-04-22 · 07:52', category: 'Security', icon: <Icon icon={ShieldCheck} size=\"medium\" />, tone: 'info', action: { label: 'View Details' }, }, { id: 'evt-003', title: 'Deployment Failed', description: 'Release candidate rc-1.9.0 failed to deploy to production. Build step \"lint:tokens\" exited with code 1. Rollback triggered automatically.', timestamp: '2026-04-22 · 06:30', category: 'CI/CD', icon: <Icon icon={XCircle} size=\"medium\" />, tone: 'danger', action: { label: 'View Details' }, }, { id: 'evt-004', title: 'Service Deployed', description: 'API gateway v3.1.2 successfully promoted to production. Zero-downtime rollout completed across all three availability zones.', timestamp: '2026-04-21 · 23:05', category: 'CI/CD', icon: <Icon icon={Rocket} size=\"medium\" />, tone: 'success', }, { id: 'evt-005', title: 'Access Revoked', description: 'SSH access for contractor account \"contractor-j.reed\" was revoked following project completion. Token invalidated and session terminated.', timestamp: '2026-04-21 · 18:41', category: 'Security', icon: <Icon icon={Lock} size=\"medium\" />, tone: 'warning', }, ]"
         }
       },
       "allowedChildren": [
@@ -4264,34 +4514,73 @@
       ],
       "tokenMapping": {},
       "props": {
+        "as": {
+          "type": "ElementType",
+          "default": "div"
+        },
+        "gap": {
+          "type": "HdsHeadingGap",
+          "default": "px8"
+        },
         "heading": {
           "type": "string"
         },
-        "subheading": {
-          "type": "string"
+        "headingAs": {
+          "type": "enum",
+          "values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ],
+          "optional": true
         },
         "level": {
           "type": "HdsHeadingLevel"
         },
-        "gap": {
-          "type": "HdsHeadingGap",
-          "optional": true
-        },
-        "as": {
-          "type": "ElementType",
-          "optional": true
-        },
-        "headingAs": {
-          "type": "HdsHeadingTag",
-          "optional": true
+        "subheading": {
+          "type": "string"
         },
         "subheadingAs": {
-          "type": "HdsSupportingTag",
-          "optional": true
+          "type": "enum",
+          "values": [
+            "p",
+            "div",
+            "span"
+          ],
+          "default": "p"
         }
       },
       "allowedChildren": [],
-      "propConstraints": {},
+      "propConstraints": {
+        "heading": {
+          "type": "string"
+        },
+        "headingAs": {
+          "type": "enum",
+          "values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ]
+        },
+        "subheading": {
+          "type": "string"
+        },
+        "subheadingAs": {
+          "type": "enum",
+          "values": [
+            "p",
+            "div",
+            "span"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [],
       "variantAxes": [],
@@ -4450,34 +4739,29 @@
       "description": "Text — polymorphic typography primitive spanning the full HDS type ramp.",
       "hidden": false,
       "props": {
-        "typography": {
-          "type": "string",
-          "optional": true
-        },
-        "fill": {
-          "type": "string",
-          "optional": true
-        },
-        "text": {
-          "type": "string",
-          "optional": true
+        "as": {
+          "type": "\"symbol\" | \"object\" | \"map\" | \"filter\" | \"title\" | \"a\" | \"button\" | \"div\" | \"form\" | \"h2\" | \"h3\" | \"img\" | \"input\" | \"label\" | \"li\" | \"nav\" | \"ol\" | \"p\" | \"select\" | \"span\" | \"svg\" | ... 159 more ...",
+          "default": "defaultTagMap[variant]"
         },
         "children": {
-          "type": "ReactNode",
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
           "optional": true
+        },
+        "style": {
+          "type": "CSSProperties",
+          "optional": true
+        },
+        "variant": {
+          "type": "TextVariant"
         }
       },
       "allowedChildren": [
         "*"
       ],
-      "propConstraints": {
-        "typography": {
-          "type": "string"
-        },
-        "fill": {
-          "type": "string"
-        }
-      },
+      "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
       "categorySource": "jsdoc",
@@ -4632,8 +4916,8 @@
       "sourcePath": "src/app/components/Dialog.tsx",
       "sourceExport": "Dialog",
       "props": {
-        "open": {
-          "type": "boolean",
+        "children": {
+          "type": "ReactNode",
           "optional": true
         },
         "defaultOpen": {
@@ -4642,10 +4926,15 @@
         },
         "modal": {
           "type": "boolean",
-          "default": true
+          "optional": true
         },
-        "children": {
-          "type": "ReactNode"
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
         }
       },
       "tokens": {
@@ -4759,13 +5048,13 @@
       ],
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-27",
       "propConstraints": {
-        "open": {
-          "type": "boolean"
-        },
         "defaultOpen": {
           "type": "boolean"
         },
         "modal": {
+          "type": "boolean"
+        },
+        "open": {
           "type": "boolean"
         }
       },
@@ -4842,8 +5131,7 @@
       "componentProperties": [],
       "props": {
         "cards": {
-          "type": "StackedCardRailCard[]",
-          "optional": false
+          "type": "StackedCardRailCard[]"
         }
       },
       "allowedChildren": [],
@@ -4896,9 +5184,12 @@
         "src/app/components/icon-button.tsx",
         "src/app/components/icon.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-code.test.tsx",
+        "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
@@ -4973,14 +5264,42 @@
       "sourcePath": "src/app/components/button.tsx",
       "sourceExport": "Button",
       "props": {
-        "variant": {
+        "asChild": {
+          "type": "boolean",
+          "default": false
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "iconLeft": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "iconOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "iconRight": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "loading": {
+          "type": "boolean",
+          "default": false
+        },
+        "size": {
           "type": "enum",
           "values": [
-            "primary",
-            "secondary",
-            "tertiary"
+            "sm",
+            "md",
+            "lg"
           ],
-          "default": "secondary"
+          "optional": true
         },
         "tone": {
           "type": "enum",
@@ -4991,40 +5310,16 @@
             "warning",
             "info"
           ],
-          "default": "neutral"
+          "optional": true
         },
-        "size": {
+        "variant": {
           "type": "enum",
           "values": [
-            "sm",
-            "md",
-            "lg"
+            "primary",
+            "secondary",
+            "tertiary"
           ],
-          "default": "md"
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "loading": {
-          "type": "boolean",
-          "default": false
-        },
-        "label": {
-          "type": "string",
           "optional": true
-        },
-        "iconLeft": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "iconRight": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "iconOnly": {
-          "type": "boolean",
-          "default": false
         }
       },
       "tokens": {
@@ -5066,12 +5361,27 @@
         }
       ],
       "propConstraints": {
-        "variant": {
+        "asChild": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "iconOnly": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "loading": {
+          "type": "boolean"
+        },
+        "size": {
           "type": "enum",
           "values": [
-            "primary",
-            "secondary",
-            "tertiary"
+            "sm",
+            "md",
+            "lg"
           ]
         },
         "tone": {
@@ -5084,25 +5394,13 @@
             "info"
           ]
         },
-        "size": {
+        "variant": {
           "type": "enum",
           "values": [
-            "sm",
-            "md",
-            "lg"
+            "primary",
+            "secondary",
+            "tertiary"
           ]
-        },
-        "disabled": {
-          "type": "boolean"
-        },
-        "loading": {
-          "type": "boolean"
-        },
-        "label": {
-          "type": "string"
-        },
-        "iconOnly": {
-          "type": "boolean"
         }
       },
       "storyFiles": [
@@ -5308,22 +5606,27 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
         "label": {
           "type": "string"
         },
         "mono": {
           "type": "boolean",
-          "default": false
+          "optional": true
         },
         "tone": {
           "type": "enum",
           "values": [
+            "neutral",
+            "danger",
             "success",
             "warning",
-            "danger",
-            "default"
+            "info"
           ],
-          "default": "default"
+          "optional": true
         },
         "value": {
           "type": "ReactNode",
@@ -5343,10 +5646,11 @@
         "tone": {
           "type": "enum",
           "values": [
+            "neutral",
+            "danger",
             "success",
             "warning",
-            "danger",
-            "default"
+            "info"
           ]
         }
       },
@@ -5407,6 +5711,7 @@
       "consumers": [
         "src/app/components/container.tsx",
         "src/app/components/not-found-pattern.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/surface.tsx",
@@ -5426,6 +5731,9 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "children": {
+          "type": "ReactNode"
+        },
         "className": {
           "type": "string",
           "optional": true
@@ -5508,12 +5816,13 @@
         "tone": {
           "type": "enum",
           "values": [
+            "neutral",
+            "danger",
             "success",
             "warning",
-            "danger",
-            "default"
+            "info"
           ],
-          "default": "default"
+          "optional": true
         },
         "value": {
           "type": "ReactNode"
@@ -5527,10 +5836,11 @@
         "tone": {
           "type": "enum",
           "values": [
+            "neutral",
+            "danger",
             "success",
             "warning",
-            "danger",
-            "default"
+            "info"
           ]
         }
       },
@@ -5605,13 +5915,13 @@
         "tone": {
           "type": "enum",
           "values": [
-            "info",
+            "neutral",
+            "danger",
             "success",
             "warning",
-            "danger",
-            "neutral"
+            "info"
           ],
-          "default": "neutral"
+          "optional": true
         },
         "trailing": {
           "type": "ReactNode",
@@ -5623,11 +5933,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "info",
+            "neutral",
+            "danger",
             "success",
             "warning",
-            "danger",
-            "neutral"
+            "info"
           ]
         }
       },
@@ -5808,9 +6118,38 @@
         "default"
       ],
       "filePath": "src/app/components/badge.tsx",
-      "props": {},
+      "props": {
+        "as": {
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "default": "span"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info",
+            "inProgress"
+          ],
+          "optional": true
+        }
+      },
       "allowedChildren": [],
-      "propConstraints": {},
+      "propConstraints": {
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info",
+            "inProgress"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [],
       "description": "Compact metadata/status chip. Tone is the only styling input.",
@@ -5912,9 +6251,120 @@
         "default"
       ],
       "filePath": "src/app/components/text-lockup.tsx",
-      "props": {},
+      "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "left",
+            "center"
+          ],
+          "default": "left"
+        },
+        "as": {
+          "type": "ElementType",
+          "default": "div"
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "descriptionAs": {
+          "type": "enum",
+          "values": [
+            "div",
+            "p",
+            "span"
+          ],
+          "default": "div"
+        },
+        "eyebrow": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "hero",
+            "heroXl",
+            "section",
+            "metric",
+            "detail",
+            "numbered"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "titleAs": {
+          "type": "enum",
+          "values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "p",
+            "span"
+          ],
+          "optional": true
+        }
+      },
       "allowedChildren": [],
-      "propConstraints": {},
+      "propConstraints": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "left",
+            "center"
+          ]
+        },
+        "descriptionAs": {
+          "type": "enum",
+          "values": [
+            "div",
+            "p",
+            "span"
+          ]
+        },
+        "eyebrow": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "hero",
+            "heroXl",
+            "section",
+            "metric",
+            "detail",
+            "numbered"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "titleAs": {
+          "type": "enum",
+          "values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "p",
+            "span"
+          ]
+        }
+      },
       "requiredProps": [],
       "a11yRules": [],
       "description": "TextLockup - governed title-and-description pairing primitive.",
@@ -5968,6 +6418,7 @@
         "src/app/components/asset-img.test.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/index.ts",
         "src/stories/asset-img.stories.tsx"
@@ -6151,8 +6602,40 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "activationMode": {
+          "type": "enum",
+          "values": [
+            "automatic",
+            "manual"
+          ],
+          "optional": true
+        },
         "asChild": {
           "type": "boolean",
+          "optional": true
+        },
+        "defaultValue": {
+          "type": "string",
+          "optional": true
+        },
+        "dir": {
+          "type": "\"ltr\" | \"rtl\"",
+          "optional": true
+        },
+        "onValueChange": {
+          "type": "(value: string) => void",
+          "optional": true
+        },
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "optional": true
+        },
+        "value": {
+          "type": "string",
           "optional": true
         }
       },
@@ -6213,6 +6696,13 @@
         "asChild": {
           "type": "boolean",
           "optional": true
+        },
+        "forceMount": {
+          "type": "true",
+          "optional": true
+        },
+        "value": {
+          "type": "string"
         }
       },
       "allowedChildren": [
@@ -6256,6 +6746,10 @@
       "componentProperties": [],
       "props": {
         "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "loop": {
           "type": "boolean",
           "optional": true
         }
@@ -6303,6 +6797,9 @@
         "asChild": {
           "type": "boolean",
           "optional": true
+        },
+        "value": {
+          "type": "string"
         }
       },
       "allowedChildren": [
@@ -6452,6 +6949,10 @@
         "radius": "semantic.radius.action"
       },
       "props": {
+        "container": {
+          "type": "HTMLElement",
+          "optional": true
+        },
         "label": {
           "type": "string"
         },
@@ -6644,16 +7145,14 @@
         "rowPadding": "primitive.space.3"
       },
       "props": {
+        "checked": {
+          "type": "boolean"
+        },
         "label": {
           "type": "string"
         },
-        "checked": {
-          "type": "boolean",
-          "default": false
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
+        "onChange": {
+          "type": "(v: boolean) => void"
         }
       },
       "allowedChildren": [
@@ -7092,6 +7591,7 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.test.tsx",
         "src/stories/pagination.stories.tsx"
       ],
@@ -7170,6 +7670,10 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
         "duration": {
           "type": "number",
           "default": 5000
@@ -7548,6 +8052,9 @@
           "type": "string",
           "optional": true
         },
+        "children": {
+          "type": "React.ReactNode"
+        },
         "className": {
           "type": "string",
           "optional": true
@@ -7632,8 +8139,13 @@
           "optional": true
         },
         "size": {
-          "type": "AvatarGroupSize",
-          "default": "md"
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -7925,11 +8437,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "success",
+            "neutral",
             "danger",
+            "success",
             "warning",
             "info",
-            "neutral",
             "inProgress"
           ],
           "optional": true
@@ -8107,6 +8619,17 @@
           ],
           "default": "md"
         },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "optional": true
+        },
         "value": {
           "type": "number",
           "default": 0
@@ -8144,7 +8667,43 @@
         "src/stories/side-nav.stories.tsx"
       ],
       "tokenMapping": {},
-      "props": {},
+      "props": {
+        "active": {
+          "type": "boolean",
+          "default": false
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "href": {
+          "type": "string",
+          "optional": true
+        },
+        "indent": {
+          "type": "boolean",
+          "default": 0
+        },
+        "label": {
+          "type": "string"
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "root",
+            "nested"
+          ],
+          "default": "nested"
+        },
+        "onNavigate": {
+          "type": "(event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void",
+          "optional": true
+        },
+        "titleLabel": {
+          "type": "boolean",
+          "default": false
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -8414,6 +8973,10 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "footer": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "items": {
           "type": "MetadataListItem[]"
         },
@@ -8424,6 +8987,14 @@
             "vertical"
           ],
           "default": "vertical"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "plain",
+            "divided"
+          ],
+          "default": "plain"
         }
       },
       "allowedChildren": [
@@ -8795,6 +9366,22 @@
         "asChild": {
           "type": "boolean",
           "optional": true
+        },
+        "dir": {
+          "type": "\"ltr\" | \"rtl\"",
+          "optional": true
+        },
+        "loop": {
+          "type": "boolean",
+          "optional": true
+        },
+        "orientation": {
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -8890,7 +9477,24 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "props": {},
+      "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -9024,7 +9628,28 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "props": {},
+      "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
+        "dir": {
+          "type": "\"ltr\" | \"rtl\"",
+          "optional": true
+        },
+        "modal": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -9314,7 +9939,32 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "props": {},
+      "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
+        "closeDelay": {
+          "type": "number",
+          "optional": true
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        },
+        "openDelay": {
+          "type": "number",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -9504,6 +10154,18 @@
       "componentProperties": [],
       "props": {
         "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "defaultPressed": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onPressedChange": {
+          "type": "(pressed: boolean) => void",
+          "optional": true
+        },
+        "pressed": {
           "type": "boolean",
           "optional": true
         },
@@ -9799,11 +10461,6 @@
       },
       "consumers": [
         "src/app/components/cluster.test.tsx",
-        "src/app/components/data-table-section.tsx",
-        "src/app/components/destructive-section.tsx",
-        "src/app/components/form-actions.test.tsx",
-        "src/app/components/form-actions.tsx",
-        "src/app/components/page-header.tsx",
         "src/app/components/switcher.tsx",
         "src/stories/cluster.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
@@ -10851,9 +11508,41 @@
           "type": "boolean",
           "optional": true
         },
+        "container": {
+          "type": "HTMLElement",
+          "optional": true
+        },
+        "forceMount": {
+          "type": "true",
+          "optional": true
+        },
         "hideClose": {
           "type": "boolean",
           "default": false
+        },
+        "onCloseAutoFocus": {
+          "type": "(event: Event) => void",
+          "optional": true
+        },
+        "onEscapeKeyDown": {
+          "type": "(event: KeyboardEvent) => void",
+          "optional": true
+        },
+        "onFocusOutside": {
+          "type": "(event: CustomEvent<{ originalEvent: FocusEvent; }>) => void",
+          "optional": true
+        },
+        "onInteractOutside": {
+          "type": "(event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void",
+          "optional": true
+        },
+        "onOpenAutoFocus": {
+          "type": "(event: Event) => void",
+          "optional": true
+        },
+        "onPointerDownOutside": {
+          "type": "(event: CustomEvent<{ originalEvent: PointerEvent; }>) => void",
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -11024,6 +11713,10 @@
         "asChild": {
           "type": "boolean",
           "optional": true
+        },
+        "forceMount": {
+          "type": "true",
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -11065,7 +11758,20 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "props": {},
+      "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
+        "container": {
+          "type": "Element | DocumentFragment",
+          "optional": true
+        },
+        "forceMount": {
+          "type": "true",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -11174,10 +11880,10 @@
       ]
     },
     "Tooltip": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
+      "category": "Overlays",
+      "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": true,
+      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
@@ -11201,7 +11907,32 @@
       "variantAxes": [],
       "componentProperties": [],
       "figmaLink": null,
-      "props": {},
+      "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "delayDuration": {
+          "type": "number",
+          "optional": true
+        },
+        "disableHoverableContent": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -11250,7 +11981,32 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "props": {},
+      "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "dir": {
+          "type": "\"ltr\" | \"rtl\"",
+          "optional": true
+        },
+        "modal": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -11363,7 +12119,28 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "props": {},
+      "props": {
+        "children": {
+          "type": "React.ReactNode",
+          "optional": true
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "modal": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
       "allowedChildren": [
         "*"
       ],
@@ -12484,6 +13261,7 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/hds-tooltip.tsx",
+        "src/app/components/tooltip.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx"
       ],
