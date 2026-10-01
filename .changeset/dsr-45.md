@@ -1,0 +1,11 @@
+---
+'@hirobius/design-system': patch
+---
+
+Deletes internal code that nothing imports (hds#391, under hds#133 option A). No public export changes: the API report still lists 401 symbols.
+
+- **Source:** `src/docs-tooling/` (20 files), `animated-label.tsx`, the Möbius shader, curve and store (`mobius-distortion.ts`, `shaders/mobius.glsl.ts`, `mobius-constants.ts`, `stores/mobiusStore.ts`, `stores/mobiusCurve.ts`), `tokenTableUtils.ts`, `components/types.ts`, `context/ReactRouterBridge.tsx`, `data/hdsEditorial.tsx`, `data/tenants.ts`, `data/tokenAuditReportTypes.ts` and `hooks/useHdsManifest.ts`.
+- **`hds-manifest.json`:** 24 `utilities` entries are removed: `AnimatedLabel`, `ApiReference`, `ComponentPreview`, `ControlsPanel`, `ControlsSection`, `DemoBlock`, `DocPageHeader`, `DocPageSpec`, `HdsLegacyTokenGovernancePanel`, `HdsMobileTopBar`, `HdsSidebarUtilityButton`, `LegacyTokenList`, `PageFooter`, `PreviewFrame`, `SketchButton`, `SketchCheckbox`, `SketchPanelToggle`, `SketchRange`, `SketchTextarea`, `ThemeToggle`, `TokenCollectionList`, `TokenDisplayToggle`, `TokenList` and `VariantStrip`. 13 utilities remain, and `componentSpecs` is unchanged at 146.
+- **`./styles.css` and `./tokens.css`:** no HDS component used these selectors, so they are removed: `.hds-sketchbook-shell__stage-frame`, `.hds-sketchbook-canvas-shell`, `.hds-sketchbook-canvas-stage`, `.hds-sketchbook-canvas-fill`, `.hds-sketchbook-canvas-overlay`, `.hds-sketchbook-canvas-overlay__content`, `.hds-visuals-bento-grid`, `.hds-visuals-bento-item`, `.hds-visuals-bento-card`, `.hds-token-chip`, `.hds-nav-indicator`, `.portfolio-impact-card`, `.hds-soft-nav-card`, `.hds-mobius-acrylic`, `.hds-sidebar-utility-button`, `.hds-dropdown-item`, `.hds-dropdown-label`, `.hds-dropdown-indicator` and `.hds-desktop-nav-button`, with their state variants. The `:root` custom property `--hds-local-sketchbookCanvas-maxWidth-stage` is also removed. `.hds-mobius-acrylic:hover` was the last `!important` rule in `./styles.css`, which now has none.
+
+The interaction-surface contract test (#127) now checks `.hds-bg-hover:hover`, which reads `--semantic-color-surface-hover`. It used to check the deleted `.hds-dropdown-item:hover`.

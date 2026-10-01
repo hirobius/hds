@@ -28,7 +28,6 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['Badge', 'Badge'],
   ['Card', 'Card'],
   ['CodeBlock', 'CodeBlock'],
-  ['ControlsPanel', 'ControlsPanel'],
   ['Divider', 'Divider'],
   // HdsTooltip -> Tooltip (hds#315): the public Radix tooltip took the bare name;
   // the internal image-expand pill is ExpandTooltip (@internal, not exported).
@@ -68,9 +67,7 @@ function uniqueSorted(values) {
 
 function getPreviewSizing(componentName) {
   switch (componentName) {
-    case 'AnimatedLabel':
     case 'TextLockup':
-    case 'HdsSidebarUtilityButton':
       return 'compact';
     case 'HdsComponentDoc':
     case 'FoundationSwatch':
