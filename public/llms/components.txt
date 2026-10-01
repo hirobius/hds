@@ -477,8 +477,9 @@ Grid — responsive grid composition primitive. Enforces semantic gap and column
   - children: ReactNode
   - className: string
   - columns: number = 12
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = inset
-  - layout: 'fixed' | 'auto-fit' = fixed
+  - gap: 'medium' | 'tight' | 'normal' | 'inset' | 'spacious' = inset
+  - layout: 'fixed' | 'auto-fit' | 'auto-fill' = fixed
+  - minItemWidth: string
   - style: CSSProperties
   - subgrid: boolean = false
 
