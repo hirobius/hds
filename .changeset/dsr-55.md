@@ -1,0 +1,8 @@
+---
+'@hirobius/design-system': minor
+---
+
+**BREAKING (0.x minor): already-deprecated public API is removed (hds#389 R1).** Before 1.0, a deprecated name may now be removed in a minor; ADR-014 and MIGRATIONS.md's "The cycle" record the rule, and 1.0 stays parked (#396). Every removed name, its replacement and its codemod is listed in MIGRATIONS.md under "0.20.0 removals". A consumer on a caret range below 0.20 (ops pins `^0.16`) is not affected until it upgrades; run the codemods first.
+
+- **The 21 root re-exports of `/patterns` components are gone** (hds#254): ActivityFeed, AppShell, AssetImg, Calendar, Carousel, CodeBlock, CommandPalette, DocLinkCard, ErrorPattern, FileInput, Form, Lightbox, NavItem, OverflowList, Page, Reveal, SideNav, Stepper, Toolbar, TopNav and TreeList, plus everything else their modules exported from the root (props types, parts such as `FormField` and `Step`, `useFieldWiring`, `*Variants`): 79 names in all. Import them from `@hirobius/design-system/patterns`, which exports every one of them unchanged. `npx hds-patterns-subpath --root .` moves the imports; its name list is now whatever `/patterns` exports and the root does not, so it moves the props types and parts too.
+- **The six `Hds*` aliases are gone** (hds#315): HdsCheckbox, HdsRadio, HdsSelect, HdsSlider, HdsToggle and HdsTooltip. Use `Checkbox`, `Radio`, `Select`, `Slider`, `Toggle` and `Tooltip`. The new `hds-prefix` codemod (`npx hds-prefix --root .`, `codemods/hds-prefix.mjs`, with `--check` and `--dry-run`) rewrites the imports and renames the uses in each file.

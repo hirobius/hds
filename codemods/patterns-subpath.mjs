@@ -3,9 +3,10 @@
  * patterns-subpath codemod (hds#316, follows hds#254)
  *
  * Rewrites `import { Page } from '@hirobius/design-system'` to
- * `import { Page } from '@hirobius/design-system/patterns'` for every
- * pattern-tier component whose root re-export is deprecated. Other named
- * imports stay on the root. Aliases, `type` modifiers and multi-line layout
+ * `import { Page } from '@hirobius/design-system/patterns'` for every name the
+ * root stopped exporting in 0.20.0 (hds#389 R1): the 21 pattern components and
+ * their props types, parts, hooks and `*Variants`. Other named imports stay on
+ * the root. Aliases, `type` modifiers and multi-line layout
  * are preserved; an existing `/patterns` import of the same kind is extended
  * instead of duplicated.
  *
@@ -16,8 +17,9 @@
  *                 import (`import * as X`, `export *`) needs a manual look
  *   --dry-run     write nothing; print each import line before (-) and after (+), exit 0
  *
- * The name list is codemods/patterns-subpath.names.json, generated from
- * src/index.ts by `pnpm codemod:names`.
+ * The name list is codemods/patterns-subpath.names.json: what
+ * `@hirobius/design-system/patterns` exports and the root does not, generated
+ * by `pnpm codemod:names` (scripts/build-codemod-pattern-names.mjs).
  */
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';

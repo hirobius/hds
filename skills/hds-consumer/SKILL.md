@@ -39,12 +39,9 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `IconButton` — IconButton ” icon-only action trigger built on the shared Button primitive.
 - `SelectableCard` — A card-shaped single checkbox — click or activate to toggle selection.
 - `ToggleButton` — A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
-- `Toolbar` — Toolbar root.
 
 ### Display
 
-- `ActivityFeed` — ActivityFeed — chronological system event log.
-- `AssetImg` — AssetImg - responsive asset frame with fallback placeholder handling.
 - `Avatar` — Circular avatar.
 - `AvatarGroup` — Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 - `Card` — Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.
@@ -55,8 +52,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `CardMetric` — Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
-- `Carousel` — Renders children as a snap-scrolling track with Prev/Next scroll buttons.
-- `CodeBlock` — CodeBlock - code display with copy button and optional collapsible toggle.
 - `EmptyState` — EmptyState — consistent no-data placeholder for lists, grids, and sections.
 - `Field` — Caption label paired with a value — used in metadata grids and read-only forms.
 - `Icon` — Icon — semantic icon wrapper for Lucide icons.
@@ -84,16 +79,11 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 ### Inputs
 
-- `Calendar` — Renders an accessible month grid; compose it inside a Popover for the date inputs.
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
 - `Combobox` — Combobox — searchable single-select (Popover + filtered listbox).
 - `DateInput` — Text field + calendar popover for picking a single date.
 - `DateRangeInput` — DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget.
 - `DateTimeInput` — Text date field + calendar popover, paired with a native time field, producing one Date.
-- `FileInput` — A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
-- `Form` — Styled `<form>` with consistent vertical field rhythm.
-- `FormField` — Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement.
-- `FormFieldShell` — Presentational label + control slot + helper/error markup.
 - `Input` — Input — text field primitive with label, helper, and error slots.
 - `InputGroup` — A single-line input with optional `leading`/`trailing` adornments.
 - `MultiSelector` — MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget.
@@ -121,8 +111,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Divider` — Divider — semantic separator between content regions.
 - `Frame` — Frame — aspect-ratio-locked, token-clipped media box.
 - `Grid` — Grid — responsive grid composition primitive.
-- `OverflowList` — Renders up to `max` children followed by a `+N` overflow chip (or custom node).
-- `Page` — Page — standard page shell.
 - `Pin` — Pin — sticky-pin an element within its scroll region.
 - `Sidebar` — Sidebar — fixed-width rail beside fluid content, no media query.
 - `Stack` — Stack — one-dimensional layout primitive.
@@ -130,31 +118,20 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Switcher` — Switcher — flips a row to a column below a width threshold, no media query.
 - `TileGrid` — Auto-fill responsive grid for status/micro tiles.
 
-### Motion
-
-- `Reveal` — Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.
-
 ### Navigation
 
 - `Breadcrumb` — Breadcrumb trail.
-- `DocLinkCard` — DocLinkCard - navigation card for editorial and documentation cross-links.
 - `InlineLink` — InlineLink ” inline navigation and external-link primitive for body copy.
 - `NavGroup` — NavGroup - labeled navigation group for stacks of nav items.
-- `NavItem` — NavItem - navigation row primitive for sidebars, table of contents, and list navigation.
 - `Pagination` — Paged navigation with first/last anchors, sibling pages, and ellipses.
-- `SideNav` — SideNav - sidebar navigation row primitive.
-- `Stepper` — Step indicator for multi-step flows.
 - `Tabs` — The tab set itself.
 - `TabsContent` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
 - `TabsList` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
 - `TabsTrigger` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
-- `TopNav` — Top navigation bar with brand, nav, and trailing action slots.
-- `TreeList` — Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
 
 ### Overlays
 
 - `AlertDialog` — AlertDialog root + parts.
-- `CommandPalette` — Mountable trigger + dialog.
 - `ContextMenu` — ContextMenu root + parts.
 - `Dialog` — Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.
 - `DialogClose` — Dialog — modal dialog (shadcn baseline, compound parts).
@@ -167,7 +144,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `DialogTitle` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `DialogTrigger` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `HoverCard` — HoverCard root + parts.
-- `Lightbox` — Lightbox — full-bleed image viewer built on Radix Dialog.
 - `Menu` — Menu root + parts.
 - `Popover` — Popover root + parts.
 - `Tooltip` — Tooltip root.

@@ -141,9 +141,8 @@ export default defineConfig({
         // useScrollProgress). `lenis` is an OPTIONAL peer, externalized below, so
         // this never lands in the main barrel. See ADR-021 / #116.
         scroll: path.resolve(__dirname, 'src/scroll/index.ts'),
-        // Subpath: the 22 pattern-tier components (hds#254). Still re-exported
-        // from the main barrel too (deprecated, root re-export kept for one
-        // minor) — this entry is the forward-looking import path.
+        // Subpath: the pattern-tier components (hds#254). The only entry that
+        // exports them since 0.20.0 removed their root re-exports (hds#389).
         patterns: path.resolve(__dirname, 'src/patterns.ts'),
         // Subpath: curated Lucide icon re-export for IconButton (hds#342).
         // lucide-react stays external below; consumers tree-shake the bare import.

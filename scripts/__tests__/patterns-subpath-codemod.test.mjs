@@ -21,7 +21,8 @@ import {
   findUnrewritable,
   loadPatternNames,
 } from '../../codemods/patterns-subpath.mjs';
-import { extractRootPatternNames } from '../build-codemod-pattern-names.mjs';
+import { derivePatternNames } from '../build-codemod-pattern-names.mjs';
+import { collectModuleSymbols, collectPublicApi } from '../lib/check-public-api.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CODEMOD = join(REPO, 'codemods/patterns-subpath.mjs');
@@ -30,13 +31,65 @@ const NAMES = new Set(['Page', 'TopNav', 'AppShell', 'SideNav', 'Toolbar', 'Reve
 const ROOT = '@hirobius/design-system';
 const SUB = '@hirobius/design-system/patterns';
 
+/**
+ * The 21 pattern modules the package root re-exported until 0.20.0 (hds#254,
+ * hds#389 R1). Pinned here because src/index.ts no longer names them.
+ */
+const ROOT_REMOVED_MODULES = [
+  'activity-feed',
+  'app-shell',
+  'asset-img',
+  'calendar',
+  'carousel',
+  'code-block',
+  'command-palette',
+  'doc-link-card',
+  'error-pattern',
+  'file-input',
+  'form',
+  'image-lightbox',
+  'nav-item',
+  'overflow-list',
+  'page',
+  'reveal',
+  'side-nav',
+  'stepper',
+  'toolbar',
+  'top-nav',
+  'tree-list',
+];
+
 describe('pattern name list', () => {
-  it('is generated from the deprecated root aliases in src/index.ts, not hand-kept', () => {
-    const fromSource = extractRootPatternNames(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
-    expect([...loadPatternNames()].sort()).toEqual([...fromSource].sort());
-    expect(fromSource).toContain('Page');
-    expect(fromSource).not.toContain('Button');
-    expect(fromSource.length).toBe(21);
+  const surface = collectPublicApi(REPO);
+  const rootNames = new Set(
+    Object.entries(surface.modules)
+      .filter(([key]) => !key.startsWith('@subpath/'))
+      .flatMap(([, names]) => names),
+  );
+  const listed = loadPatternNames();
+
+  it('is derived from /patterns minus the root (pnpm codemod:names), not hand-kept', () => {
+    expect([...listed].sort()).toEqual(derivePatternNames(surface));
+    expect(listed.has('Page')).toBe(true);
+    expect(listed.has('Button')).toBe(false);
+  });
+
+  it('holds every name the root exported from the 21 removed modules, types and parts included', () => {
+    const exported = ROOT_REMOVED_MODULES.flatMap((m) =>
+      collectModuleSymbols(join(REPO, `src/app/components/${m}.tsx`)),
+    );
+    expect(exported.length).toBeGreaterThanOrEqual(79);
+    for (const name of exported) {
+      expect(listed.has(name), `${name} is missing from the codemod list`).toBe(true);
+    }
+  });
+
+  it('is a pure path change: /patterns exports every listed name and the root none of them', () => {
+    const patterns = new Set(surface.modules['@subpath/patterns']);
+    for (const name of listed) {
+      expect(patterns.has(name), `${name} is not exported from /patterns`).toBe(true);
+      expect(rootNames.has(name), `${name} is still exported from the root`).toBe(false);
+    }
   });
 });
 

@@ -957,7 +957,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/index.ts",
         "src/stories/code-block.stories.tsx"
       ],
       "tokenMapping": {
@@ -1507,7 +1506,6 @@
       "figmaLink": null,
       "consumers": [
         "src/app/components/doc-link-card.test.tsx",
-        "src/index.ts",
         "src/stories/doc-link-card.stories.tsx"
       ],
       "variantAxes": [],
@@ -1538,7 +1536,6 @@
       },
       "consumers": [
         "src/app/components/not-found-pattern.tsx",
-        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx"
       ],
@@ -2898,7 +2895,6 @@
         "src/app/data/hds-nav-data.ts",
         "src/app/hooks/useInteractionState.ts",
         "src/app/layouts/HdsDocsShell.tsx",
-        "src/index.ts",
         "src/stories/nav-group.stories.tsx",
         "src/stories/nav-item.stories.tsx"
       ],
@@ -4423,7 +4419,6 @@
       },
       "consumers": [
         "src/app/components/activity-feed.test.tsx",
-        "src/index.ts",
         "src/stories/activity-feed.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5123,7 +5118,6 @@
       },
       "consumers": [
         "src/app/components/stacked-card-rail.test.tsx",
-        "src/index.ts",
         "src/stories/stacked-card-rail.stories.tsx"
       ],
       "tokenMapping": {},
@@ -5718,7 +5712,6 @@
         "src/app/components/toast.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
-        "src/index.ts",
         "src/stories/error-pattern.stories.tsx",
         "src/stories/heading-stack.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx",
@@ -6420,7 +6413,6 @@
         "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/index.ts",
         "src/stories/asset-img.stories.tsx"
       ],
       "tokenMapping": {},
@@ -6838,7 +6830,6 @@
         "src/app/components/toggle.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/index.ts",
         "src/stories/menu.stories.tsx",
         "src/stories/radio.stories.tsx"
       ],
@@ -6935,7 +6926,6 @@
         "src/app/components/select.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/index.ts",
         "src/stories/checkbox.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/select.stories.tsx"
@@ -7047,7 +7037,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/index.ts",
         "src/stories/slider.stories.tsx"
       ],
       "tokenMapping": {
@@ -7128,7 +7117,6 @@
         "src/app/components/toggle.test.tsx",
         "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts",
-        "src/index.ts",
         "src/stories/toggle-button.stories.tsx",
         "src/stories/toggle.stories.tsx"
       ],
@@ -7857,7 +7845,6 @@
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts",
-        "src/index.ts",
         "src/stories/form-actions.stories.tsx",
         "src/stories/form.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
@@ -8663,7 +8650,6 @@
       "consumers": [
         "src/app/components/side-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
-        "src/index.ts",
         "src/stories/side-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8748,7 +8734,6 @@
       "consumers": [
         "src/app/data/nav-model.test.ts",
         "src/app/lib/hds-search.ts",
-        "src/index.ts",
         "src/stories/command-palette.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8793,7 +8778,6 @@
         "src/app/components/image-lightbox.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/index.ts",
         "src/stories/asset-img.stories.tsx",
         "src/stories/image-lightbox.stories.tsx"
       ],
@@ -8866,7 +8850,6 @@
       },
       "consumers": [
         "src/app/components/app-shell.test.tsx",
-        "src/index.ts",
         "src/stories/app-shell.stories.tsx"
       ],
       "tokenMapping": {},
@@ -8906,7 +8889,6 @@
       },
       "consumers": [
         "src/app/components/file-input.test.tsx",
-        "src/index.ts",
         "src/stories/file-input.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9030,7 +9012,6 @@
       },
       "consumers": [
         "src/app/components/overflow-list.test.tsx",
-        "src/index.ts",
         "src/stories/overflow-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9193,7 +9174,6 @@
       "consumers": [
         "src/app/components/top-nav.test.tsx",
         "src/app/layouts/HdsDocsShell.tsx",
-        "src/index.ts",
         "src/stories/top-nav.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9249,7 +9229,6 @@
       },
       "consumers": [
         "src/app/components/carousel.test.tsx",
-        "src/index.ts",
         "src/stories/carousel.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9300,7 +9279,6 @@
       },
       "consumers": [
         "src/app/components/stepper.test.tsx",
-        "src/index.ts",
         "src/stories/stepper-field.stories.tsx",
         "src/stories/stepper.stories.tsx"
       ],
@@ -9356,7 +9334,6 @@
       "consumers": [
         "src/app/components/data-table-section.tsx",
         "src/app/components/toolbar.test.tsx",
-        "src/index.ts",
         "src/stories/toolbar.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9415,7 +9392,6 @@
       },
       "consumers": [
         "src/app/components/tree-list.test.tsx",
-        "src/index.ts",
         "src/stories/tree-list.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9579,7 +9555,6 @@
         "src/app/components/date-input.tsx",
         "src/app/components/date-range-input.tsx",
         "src/app/components/date-time-input.tsx",
-        "src/index.ts",
         "src/stories/calendar.stories.tsx",
         "src/stories/date-input.stories.tsx",
         "src/stories/date-range-input.stories.tsx",
@@ -10929,7 +10904,6 @@
       "consumers": [
         "src/app/components/pin.tsx",
         "src/app/components/reveal.test.tsx",
-        "src/index.ts",
         "src/stories/patterns-scroll.stories.tsx",
         "src/stories/reveal.stories.tsx"
       ],
@@ -11900,7 +11874,6 @@
         "src/app/components/hover-card.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/index.ts",
         "src/stories/hds-tooltip.stories.tsx"
       ],
       "tokenMapping": {},
@@ -12243,7 +12216,6 @@
         "src/app/components/checkbox.test.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.tsx",
-        "src/index.ts",
         "src/stories/checkbox.stories.tsx"
       ],
       "tokenMapping": {},

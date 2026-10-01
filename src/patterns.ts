@@ -7,11 +7,10 @@
  * toward. Split into their own subpath so a consumer that only needs
  * primitives doesn't pull in this tier's weight.
  *
- * Every one of these is STILL re-exported from the package root today —
- * hds#254 keeps the root re-export for one minor with a `@deprecated` /
- * `@removeIn` notice on each component (see the JSDoc in each module under
- * `src/app/components/`). Prefer importing from here; the root re-export is
- * scheduled for removal at the next major once ops has a codemod (hds#124).
+ * This is the only entry that exports them. Until 0.20.0 the package root
+ * also re-exported 21 of these modules behind `@deprecated` aliases (hds#254);
+ * hds#389 R1 removed those root re-exports, and `npx hds-patterns-subpath`
+ * (codemods/patterns-subpath.mjs) moves consumer imports here.
  */
 export * from './app/components/calendar';
 export * from './app/components/file-input';
