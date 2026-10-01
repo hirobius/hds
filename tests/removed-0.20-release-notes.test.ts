@@ -120,6 +120,21 @@ describe('release notes', () => {
       );
     expect(stale).toEqual([]);
   });
+
+  it('every count of the /patterns modules removed outright is 21 minus the six survivors', () => {
+    // R1 moved 21 pattern modules off the root; AssetImg, CodeBlock, ErrorPattern,
+    // Form, Page and Reveal survive on /patterns (pinned above), so 15 go.
+    const survivors = ['AssetImg', 'CodeBlock', 'ErrorPattern', 'Form', 'Page', 'Reveal'];
+    const counts = ['MIGRATIONS.md', ...pendingChangesets()].flatMap((file) =>
+      [
+        ...read(file).matchAll(
+          /(\d+)(?: modules this release then removes| are\s+removed outright| removed modules)/g,
+        ),
+      ].map((m) => `${file}: ${m[1]}`),
+    );
+    expect(counts.length).toBeGreaterThanOrEqual(2);
+    expect(counts.filter((c) => !c.endsWith(`: ${21 - survivors.length}`))).toEqual([]);
+  });
 });
 
 describe('after `changeset version`', () => {

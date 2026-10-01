@@ -34,8 +34,10 @@ Token renames live in [TOKEN_MIGRATION.md](TOKEN_MIGRATION.md).
   `hds-patterns-subpath` binary. The names it moves are everything
   `/patterns` exports and the root does not (`pnpm codemod:names`), never
   listed by hand. A name of the 15 removed modules has nowhere to move: the
-  codemod reports its import as removed in 0.20.0 for a manual edit, and
-  `--check` exits 1 (the list is `codemods/removed-0.20.json`).
+  codemod reports a named import or re-export of it as removed in 0.20.0 for
+  a manual edit, and `--check` exits 1 (the list is
+  `codemods/removed-0.20.json`). A removed name read through a namespace
+  import or a dynamic `import()` is left to the type checker.
 
 ```bash
 # Preview what would change, writes nothing
@@ -262,9 +264,11 @@ Thirty-two components fail hds#389's survival rule and have no replacement in
 HDS (ADR-034 covers the date pickers). None is imported by a consumer: ops
 origin/main (76ef65e) has 0 import sites for any of them, folio and concrete
 import only `variables.css`, and site-engine has no HDS dependency. So there is
-no codemod to run. `hds-patterns-subpath --check` reports an import of any of
-these names from the root or from `/patterns` as "removed in 0.20.0, no
-replacement" for a manual edit (the list is `codemods/removed-0.20.json`).
+no codemod to run. `hds-patterns-subpath --check` reports a named import or
+re-export of any of these names from the root or from `/patterns` as "removed
+in 0.20.0, no replacement" for a manual edit (the list is
+`codemods/removed-0.20.json`). It reads named imports only: a removed name read
+through a namespace import or a dynamic `import()` is left to the type checker.
 Their stories, manifest specs, Figma disposition rows, Code Connect exemptions
 and staging-promotion entries go with them. ButtonGroup, ContextMenu and
 HoverCard also leave the curated core set, which is 39 components now.
