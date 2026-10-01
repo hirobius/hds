@@ -1,15 +1,15 @@
 {
-  "checksum": "242fe0c9",
+  "checksum": "3029d7ea",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-01T05:00:00.000Z",
+    "takenAt": "2026-10-01T09:10:52.626Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": null
     },
     "lastPush": {
-      "modelHash": "57833d6c",
-      "pushedAt": "2026-09-30T21:35:19.678Z",
+      "modelHash": "0a5ebbff",
+      "pushedAt": "2026-10-01T09:10:52.592Z",
       "scope": null
     },
     "collections": [
@@ -1682,6 +1682,23 @@
             }
           },
           {
+            "id": "VariableID:2071:2",
+            "name": "size/120",
+            "path": "primitive.size.120",
+            "resolvedType": "FLOAT",
+            "description": "120px size step. Backs semantic.size.tile.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-120)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 120
+              }
+            }
+          },
+          {
             "id": "VariableID:7:28",
             "name": "size/16",
             "path": "primitive.size.16",
@@ -1873,7 +1890,7 @@
             "name": "size/interactive/minCompact",
             "path": "primitive.size.interactive.minCompact",
             "resolvedType": "FLOAT",
-            "description": "WCAG 2.2 AA (2.5.8) minimum target size for a compact inline control, such as a tokenizer chip's remove button, where the 44px AAA floor (2.5.5) does not apply.",
+            "description": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA (2.5.8), not the 44px AAA floor (2.5.5).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1907,7 +1924,7 @@
             "name": "size/width/280",
             "path": "primitive.size.width.280",
             "resolvedType": "FLOAT",
-            "description": "Docs-shell rail width (hds#280). Our own number, not HeroUI's 268px — wide enough for the longest top-level nav label at the default type ramp with room to spare.",
+            "description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3556,6 +3573,31 @@
             }
           },
           {
+            "id": "VariableID:2071:3",
+            "name": "color/state/pressed/overlay",
+            "path": "semantic.color.state.pressed.overlay",
+            "resolvedType": "COLOR",
+            "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-state-pressed-overlay)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
+              },
+              "Dark": {
+                "alias": "VariableID:3:14",
+                "to": "Hirobius/Primitives: color/neutral/white"
+              }
+            }
+          },
+          {
             "id": "VariableID:10:6",
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
@@ -4196,7 +4238,7 @@
             "name": "radius/control",
             "path": "semantic.radius.control",
             "resolvedType": "FLOAT",
-            "description": "Corner radius for small interactive control glyphs (e.g. checkbox glyph box) that are not fully round and not the standard action radius. Real design-scale value, distinct from semantic.radius.action (hds#242).",
+            "description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242).",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -4250,7 +4292,7 @@
             "name": "size/avatar",
             "path": "semantic.size.avatar",
             "resolvedType": "FLOAT",
-            "description": "Avatar diagonal (width/height) for activity-feed and similar identity glyphs. Coincides in pixels with row.compact today; kept as a separate role per hds#242 so either can change independently.",
+            "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -4462,6 +4504,30 @@
             }
           },
           {
+            "id": "VariableID:2071:4",
+            "name": "size/tile",
+            "path": "semantic.size.tile",
+            "resolvedType": "FLOAT",
+            "description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403).",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-size-tile)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2071:2",
+                "to": "Hirobius/Primitives: size/120"
+              },
+              "Dark": {
+                "alias": "VariableID:2071:2",
+                "to": "Hirobius/Primitives: size/120"
+              }
+            }
+          },
+          {
             "id": "VariableID:10:32",
             "name": "space/component/gap",
             "path": "semantic.space.component.gap",
@@ -4514,7 +4580,7 @@
             "name": "space/component/padding",
             "path": "semantic.space.component.padding",
             "resolvedType": "FLOAT",
-            "description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.surface.padding (tenant/density-overridable); kept live, no removal yet.",
+            "description": "24px inset for cards, forms and panels. DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
             "scopes": [
               "GAP"
             ],
@@ -4610,7 +4676,7 @@
             "name": "space/layout/spacious",
             "path": "semantic.space.layout.spacious",
             "resolvedType": "FLOAT",
-            "description": "48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
+            "description": "48px break between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
             "scopes": [
               "GAP"
             ],
@@ -4658,7 +4724,7 @@
             "name": "space/region/gutter",
             "path": "semantic.space.region.gutter",
             "resolvedType": "FLOAT",
-            "description": "24px (scale.md) column and region gutters. theme.css sets it responsively to scale.lg (32px) and, below 640px, scale.sm (16px). Replaces the deprecated semantic.space.layout.gutter.",
+            "description": "24px (scale.md) column and region gutters; theme.css sets scale.lg (32px), and scale.sm (16px) below 640px. Replaces layout.gutter.",
             "scopes": [
               "GAP"
             ],
@@ -4706,7 +4772,7 @@
             "name": "space/scale/md",
             "path": "semantic.space.scale.md",
             "resolvedType": "FLOAT",
-            "description": "24px — same value as layout.normal (deprecated alias). Default of the overridable roles surface.padding and region.gutter, which replace the deprecated component.padding / layout.gutter.",
+            "description": "24px. Default of the overridable roles surface.padding and region.gutter. The deprecated layout.normal has the same value.",
             "scopes": [
               "GAP"
             ],
@@ -4946,7 +5012,7 @@
             "name": "space/sidebar/railWidth",
             "path": "semantic.space.sidebar.railWidth",
             "resolvedType": "FLOAT",
-            "description": "Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell).",
+            "description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -5066,7 +5132,7 @@
             "name": "space/surface/padding",
             "path": "semantic.space.surface.padding",
             "resolvedType": "FLOAT",
-            "description": "24px (scale.md) default inset for cards, forms, panels, and grouped surfaces. Tenants override it with another scale step (tenants/*/tokens.json, incl. a Compact density mode). Replaces the deprecated semantic.space.component.padding. Varies by brand and density: its value comes from Hirobius/Density.",
+            "description": "24px (scale.md) inset for cards, forms and panels. Tenants override it per brand and density. Replaces component.padding. Varies by brand and density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -7997,6 +8063,27 @@
               "Default": {
                 "alias": "VariableID:10:8",
                 "to": "Hirobius/Semantic: color/content/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2071:5",
+            "name": "pressed-overlay",
+            "path": "role.pressed-overlay",
+            "resolvedType": "COLOR",
+            "description": "Pressed-state overlay colour role. Apply alpha in the class, e.g. inset-shadow-pressed-overlay/5.",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--role-pressed-overlay)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2071:3",
+                "to": "Hirobius/Semantic: color/state/pressed/overlay"
               }
             }
           },
