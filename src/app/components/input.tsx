@@ -141,10 +141,16 @@ const TYPES_WITHOUT_CLEAR: ReadonlySet<InputFieldType> = new Set<InputFieldType>
 ]);
 
 // ── Per-size adornment + padding (full literal class names for Tailwind JIT) ──
+// Each side of the field takes exactly one pl-*/pr-* class, never a px-*
+// shorthand: tailwind-merge drops a per-side class that precedes px-*
+// (twMerge('pl-2', 'px-3') is 'px-3'), and the unlayered px-* rules in
+// styles/utilities.css beat a layered pr-*, so a mix would let the text jump
+// sideways when the clear button appears.
 
 const ADORNMENT_BY_SIZE = {
   sm: {
-    restPad: 'px-2',
+    restPadL: 'pl-2',
+    restPadR: 'pr-2',
     leadPad: 'pl-7',
     trailPad: 'pr-7',
     inset: 'inset-y-0 px-2',
@@ -156,7 +162,8 @@ const ADORNMENT_BY_SIZE = {
     suffixGap: 'pr-1.5',
   },
   md: {
-    restPad: 'px-3',
+    restPadL: 'pl-3',
+    restPadR: 'pr-3',
     leadPad: 'pl-9',
     trailPad: 'pr-9',
     inset: 'inset-y-0 px-2.5',
@@ -168,7 +175,8 @@ const ADORNMENT_BY_SIZE = {
     suffixGap: 'pr-2',
   },
   lg: {
-    restPad: 'px-4',
+    restPadL: 'pl-4',
+    restPadR: 'pr-4',
     leadPad: 'pl-11',
     trailPad: 'pr-11',
     inset: 'inset-y-0 px-3',
@@ -180,6 +188,12 @@ const ADORNMENT_BY_SIZE = {
     suffixGap: 'pr-2.5',
   },
 } as const;
+
+// A slot is set when it renders something: `0` renders "0", while null,
+// undefined, booleans and '' render nothing.
+function isSlotSet(node: React.ReactNode): boolean {
+  return node != null && typeof node !== 'boolean' && node !== '';
+}
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
@@ -245,8 +259,8 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   const padCfg = ADORNMENT_BY_SIZE[size];
   const hasLeading = Boolean(leadingVisual);
   const hasTrailing = Boolean(trailingVisual);
-  const hasPrefix = Boolean(prefix);
-  const hasSuffix = Boolean(suffix);
+  const hasPrefix = isSlotSet(prefix);
+  const hasSuffix = isSlotSet(suffix);
   const inShell = hasPrefix || hasSuffix;
   const showClearButton =
     !TYPES_WITHOUT_CLEAR.has(type) && currentValue.length > 0 && !isDisabled && !isLoading;
@@ -287,8 +301,12 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
             ? 'filled'
             : 'default';
 
-  const padLeft = hasLeading ? padCfg.leadPad : hasPrefix ? padCfg.prefixGap : padCfg.restPad;
-  const padRight = trailingActive ? padCfg.trailPad : hasSuffix ? padCfg.suffixGap : padCfg.restPad;
+  const padLeft = hasLeading ? padCfg.leadPad : hasPrefix ? padCfg.prefixGap : padCfg.restPadL;
+  const padRight = trailingActive
+    ? padCfg.trailPad
+    : hasSuffix
+      ? padCfg.suffixGap
+      : padCfg.restPadR;
   const slotClass = cn(
     'flex shrink-0 items-center whitespace-nowrap text-muted-foreground',
     padCfg.iconWrap,
