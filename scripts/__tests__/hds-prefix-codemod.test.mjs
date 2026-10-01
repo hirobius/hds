@@ -149,6 +149,13 @@ describe('transformSource', () => {
     );
   });
 
+  // hds#434: `^[ \t]*import` did not match after a byte order mark.
+  it('rewrites the first import of a file that starts with a byte order mark', () => {
+    expect(transformSource(`﻿import { HdsCheckbox } from '${ROOT}';\n`).source).toBe(
+      `﻿import { Checkbox as HdsCheckbox } from '${ROOT}';\n`,
+    );
+  });
+
   it('does not rewrite member access on a namespace import (findUnrewritable lists it)', () => {
     const src = `import * as HDS from '${ROOT}';\n<HDS.HdsSlider />;\n`;
     expect(transformSource(src).changed).toBe(false);
@@ -435,6 +442,55 @@ describe('CLI', () => {
     const check = runIn(probes, '--check');
     expect(check.stderr).toBe('');
     expect(check.status).toBe(0);
+  });
+
+  // hds#434 Done: --check exits 1 on the repro, and 0 after a real run.
+  it('the hds#434 repro and every same-line form: --check exits 1, a real run renames all, then --check exits 0', () => {
+    const root = join(dir, 'repro');
+    mkdirSync(root);
+    const files = {
+      'group.tsx': `import {\n  // layout\n  Stack,\n  HdsCheckbox,\n  // forms\n  HdsToggle,\n} from '${ROOT}';\n`,
+      'comments.tsx': `import { Button, HdsRadio /* c */, /* a, b */ HdsSlider } from '${ROOT}';\n`,
+      'eslint.tsx': `/* eslint-disable */ import { HdsSelect } from '${ROOT}';\n`,
+      'same-line.tsx': `import { useState } from 'react'; import { HdsTooltip } from '${ROOT}';\n`,
+      'bom.tsx': `﻿import { HdsCheckbox } from '${ROOT}';\n`,
+    };
+    for (const [name, body] of Object.entries(files)) writeFileSync(join(root, name), body);
+    expect(runIn(root, '--check').status).toBe(1);
+    expect(runIn(root).status).toBe(0);
+    const out = (name) => readFileSync(join(root, name), 'utf8');
+    expect(out('group.tsx')).toBe(
+      files['group.tsx']
+        .replace('  HdsCheckbox,', '  Checkbox as HdsCheckbox,')
+        .replace('  HdsToggle,', '  Toggle as HdsToggle,'),
+    );
+    expect(out('comments.tsx')).toBe(
+      `import { Button, Radio as HdsRadio /* c */, /* a, b */ Slider as HdsSlider } from '${ROOT}';\n`,
+    );
+    expect(out('eslint.tsx')).toBe(
+      `/* eslint-disable */ import { Select as HdsSelect } from '${ROOT}';\n`,
+    );
+    expect(out('same-line.tsx')).toBe(
+      `import { useState } from 'react'; import { Tooltip as HdsTooltip } from '${ROOT}';\n`,
+    );
+    expect(out('bom.tsx')).toBe(`﻿import { Checkbox as HdsCheckbox } from '${ROOT}';\n`);
+    const check = runIn(root, '--check');
+    expect(check.stderr).toBe('');
+    expect(check.status).toBe(0);
+  });
+
+  // hds#434: a file the detector cannot read to its end used to pass silently.
+  it('--check exits 1 and names a file it cannot read to the end', () => {
+    const root = join(dir, 'unreadable');
+    mkdirSync(root);
+    writeFileSync(
+      join(root, 'a.tsx'),
+      `import { Checkbox } from '${ROOT}';\nexport const A = () => <p>Wrap it in a \` mark</p>;\n`,
+    );
+    const r = runIn(root, '--check');
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/a\.tsx: unreadable from line 2: a template literal never closes/);
+    expect(r.stderr).not.toMatch(/by hand/);
   });
 
   it('--check exits 1 and names a dynamic import of the root that reads an Hds* name', () => {
