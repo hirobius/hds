@@ -118,6 +118,19 @@ describe('buildConsumerSkill (in-memory)', () => {
     expect(out).toContain('`Beta`');
   });
 
+  it('excludes deprecated specs, which stay importable but are no longer advertised (hds#390)', () => {
+    const manifest = fixtureManifest();
+    manifest.componentSpecs.Zed.deprecated = 'Zed is a docs/lab internal.';
+    manifest.componentSpecs.Zed.removeIn = '1.0.0';
+    const out = buildConsumerSkill({
+      manifest,
+      indexSource: fixtureIndex,
+      packageExports: fixtureExports,
+    });
+    expect(out).not.toContain('`Zed`');
+    expect(out).toContain('`Alpha`');
+  });
+
   it('groups by category, sorted, one first-sentence line each', () => {
     const out = build();
     expect(out).toContain('- `Zed` — Zed does zed things.');
@@ -187,19 +200,24 @@ describe('committed skills/hds-consumer/SKILL.md', () => {
     expect(read(SKILL_PATH)).toBe(expected());
   });
 
-  it('allow-list is non-hidden inventory intersected with barrel modules', () => {
+  it('allow-list is non-hidden, non-deprecated inventory intersected with barrel modules', () => {
     const index = read('src/index.ts');
     const modules = new Set(
       [...index.matchAll(/^export \* from '\.\/(app\/components\/[^']+)'/gm)].map((m) => m[1]),
     );
     const want = manifest.componentInventory.filter((n) => {
       const s = manifest.componentSpecs[n];
-      return s && !s.hidden && modules.has(s.filePath.replace(/^src\//, '').replace(/\.tsx?$/, ''));
+      return (
+        s &&
+        !s.hidden &&
+        !s.deprecated &&
+        modules.has(s.filePath.replace(/^src\//, '').replace(/\.tsx?$/, ''))
+      );
     });
     const listed = [...read(SKILL_PATH).matchAll(/^- `([A-Za-z0-9]+)` — /gm)].map((m) => m[1]);
     expect([...listed].sort()).toEqual([...want].sort());
     expect(listed).not.toContain('StackedCardRail');
-    expect(listed).not.toContain('Tooltip');
+    expect(listed).toContain('Tooltip');
   });
 
   it('lint install line appears verbatim in docs/CONSUMING.md', () => {

@@ -29,7 +29,7 @@ Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds
 
 <!-- auto:start:consumer-usage -->
 
-The Ops dashboard (`hirobius/ops`) is the only verified component-level consumer: **35** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main` (measured at commit `01fce2f`).
+The Ops dashboard (`hirobius/ops`) is the only verified component-level consumer: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main` (measured at commit `76ef65e`).
 
 Other consumers: the split into product apps and token-level sites is not yet confirmed, so it is not stated here.
 
@@ -39,7 +39,7 @@ Other consumers: the split into product apps and token-level sites is not yet co
 
 <!-- auto:end:consumer-usage -->
 
-The numbers come from `pnpm consumer:usage --root <ops checkout>`, which measures that checkout and records its commit in `docs/data/consumer-usage.json`; without a root it reuses the committed snapshot. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file and stays out of this section until `consumersConfirmed` there is set to true.
+The numbers come from `pnpm consumer:usage --root <ops checkout>`, which measures that checkout's `src/` and records its commit in `docs/data/consumer-usage.json` (pass `--commit <sha>` when the root is a `git archive` export); without a root it reuses the committed snapshot. A deprecated alias counts as the component it points to (`HdsCheckbox` as `Checkbox`). The components that Ops's page- and video-clone prompts tell generated code to import are listed there as `promptContracts` and are not counted here. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file and stays out of this section until `consumersConfirmed` there is set to true.
 
 ## Using the published package
 

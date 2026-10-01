@@ -194,6 +194,19 @@ A tag body runs until the next `@tag`, a blank line, or the end of the block; co
  */
 ```
 
+### Deprecation tags
+
+A block that carries `@deprecated <notice>` also gives the spec `deprecated` (the notice), `removeIn` (from `@removeIn <semver>` in the same block) and `useInstead` (the first `@useInstead <Component>` in the same block: the replacement). The export's own block wins over the file-level block, and a `@deprecated` on a prop inside a props interface does not deprecate the component. A deprecated spec stays in the manifest, but `skills/hds-consumer/SKILL.md`, the "Which one when" section and the props digest in `public/llms*.txt` leave it out (hds#390). Name a replacement that exists, or say in the notice that there is none.
+
+```tsx
+/**
+ * Cluster — wrapping row.
+ * @deprecated Use Stack direction="row" wrap="wrap"; the gap map is the same.
+ * @removeIn 1.0.0
+ * @useInstead Stack
+ */
+```
+
 `node scripts/check-contract-coverage.mjs` lists the 42 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
 
 ## Component Inventory & Fallbacks

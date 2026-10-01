@@ -41,10 +41,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `ToggleButton` — A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
 - `Toolbar` — Toolbar root.
 
-### Branding
-
-- `CinematicLink` — CinematicLink - cinematic editorial link treatment for portfolio surfaces.
-
 ### Display
 
 - `ActivityFeed` — ActivityFeed — chronological system event log.
@@ -73,7 +69,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `TextLockup` — TextLockup - governed title-and-description pairing primitive.
 - `Timestamp` — Presents a date/time with a machine-readable `dateTime` for accessibility.
-- `Token` — Token - reflective token specimen for unified node-based token views.
 
 ### Feedback
 
@@ -130,7 +125,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Page` — Page — standard page shell.
 - `Pin` — Pin — sticky-pin an element within its scroll region.
 - `Sidebar` — Sidebar — fixed-width rail beside fluid content, no media query.
-- `Sketch` — Sketch — shared shell for generative canvases and WebGL sketches.
 - `Stack` — Stack — one-dimensional layout primitive.
 - `Surface` — Surface — governed inset surface primitive.
 - `Switcher` — Switcher — flips a row to a column below a width threshold, no media query.
@@ -176,17 +170,13 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Lightbox` — Lightbox — full-bleed image viewer built on Radix Dialog.
 - `Menu` — Menu root + parts.
 - `Popover` — Popover root + parts.
+- `Tooltip` — Tooltip root.
 
 ### Typography
 
 - `Blockquote` — A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
 - `HeadingStack` — HeadingStack — enforced vertical rhythm for heading + subheading pairs.
 - `Text` — Text — polymorphic typography primitive spanning the full HDS type ramp.
-
-### Utilities
-
-- `ComponentInstanceMatrix` — ComponentInstanceMatrix — responsive specimen matrix for variant and state parity.
-- `FoundationSwatch` — FoundationSwatch - governed foundation specimen for color and semantic role previews.
 
 ### Utility
 

@@ -15,7 +15,7 @@ structured workflow for releasing packages.
 
 **Releasing (on the main branch):**
 
-1. Run `pnpm changeset:version` to consume `.changeset/*.md` files and bump `package.json` + `CHANGELOG.md`
+1. Run `pnpm changeset:version` to consume `.changeset/*.md` files and bump `package.json` + `CHANGELOG.md`. It then runs `pnpm api:update`'s command, so `docs/api/api-baseline.json` records the new version and the released surface (`scripts/__tests__/check-public-api.test.mjs` checks that the two versions match).
 2. Commit the version bump + updated changelog
 3. Tag the release: `git tag v<version>`
 

@@ -95,10 +95,15 @@ const clip = (v, n) => {
   return one.length > n ? `${one.slice(0, n - 1)}…` : one;
 };
 
-/** Compact per-component digest: no examples, defaults clipped. */
-function buildPropsDigest(api) {
+/**
+ * Compact per-component digest: no examples, defaults clipped. A component
+ * whose manifest spec is deprecated is left out (hds#390): it stays importable
+ * until its removeIn release, but agents are not pointed at it.
+ */
+function buildPropsDigest(api, specs = {}) {
   const comps = api.components ?? {};
   return Object.keys(comps)
+    .filter((name) => !specs[name]?.deprecated)
     .sort()
     .map((name) => {
       const c = comps[name];
@@ -342,7 +347,7 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
       })
       .join('\n\n');
 
-  const digest = buildPropsDigest(componentApi);
+  const digest = buildPropsDigest(componentApi, manifest.componentSpecs ?? {});
   const digestSection = `## Component Props Digest\n\nCompact: name, first line of description, then prop: type = default. Full detail in \`src/app/data/component-api.json\`.\n\n${digest}`;
 
   const designMd = readFileSync(join(ROOT, 'DESIGN.md'), 'utf8').trim();

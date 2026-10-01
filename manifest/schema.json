@@ -93,6 +93,19 @@
         }
       }
     },
+    "deprecated": {
+      "type": "string",
+      "description": "Deprecation notice parsed from the @deprecated JSDoc tag of the component (or, failing that, of its module), hds#390. Present only on deprecated specs; consumer surfaces (skills/hds-consumer/SKILL.md, llms.txt) leave these specs out. Optional/additive."
+    },
+    "removeIn": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "The release that removes a deprecated component, parsed from the @removeIn JSDoc tag in the same block as @deprecated (hds#390). Only on deprecated specs."
+    },
+    "useInstead": {
+      "type": "string",
+      "description": "The replacement for a deprecated component, parsed from the first @useInstead JSDoc tag in the same block as @deprecated (hds#390). Only on deprecated specs; absent when no replacement is named. Distinct from usage.useInstead, which lists alternatives for a live component."
+    },
     "keyboard": {
       "type": "array",
       "description": "Keyboard contract parsed from the repeatable @keyboard JSDoc tag: one entry per key (or key chord) and the effect it has.",
