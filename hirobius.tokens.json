@@ -847,7 +847,7 @@
             "value": 24,
             "unit": "px"
           },
-          "$description": "WCAG 2.2 AA (2.5.8) minimum target size for a compact inline control, such as a tokenizer chip's remove button, where the 44px AAA floor (2.5.5) does not apply."
+          "$description": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA (2.5.8), not the 44px AAA floor (2.5.5)."
         }
       },
       "width": {
@@ -886,7 +886,7 @@
             "value": 280,
             "unit": "px"
           },
-          "$description": "Docs-shell rail width (hds#280). Our own number, not HeroUI's 268px — wide enough for the longest top-level nav label at the default type ramp with room to spare."
+          "$description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
         }
       }
     },
@@ -981,7 +981,7 @@
       "distance": {
         "$type": "dimension",
         "$value": "{primitive.space.6}",
-        "$description": "Travel distance for a scroll-reveal translateY offset. Coincides in value with semantic.space.scale.md today, but names a motion travel distance rather than a spacing tier (hds#242)."
+        "$description": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242)."
       }
     },
     "color": {
@@ -1478,7 +1478,7 @@
       "$type": "dimension",
       "$description": "Semantic spacing tiers: subgrid, component, layout, section, scale.",
       "scale": {
-        "$description": "hds#206 — the canonical spacing vocabulary. One monotonic, single-family t-shirt scale (xs < sm < md < lg < xl) for the `p`/`m`/`gap` family of props on Box/Stack. Supersedes the four un-ordered gap families below (subgrid/component/layout/section) and the 24px alias triplet (layout.normal / layout.gutter / component.padding) for NEW usage; those remain live, deprecated aliases until the consumer codemod (hds#206 remaining work) migrates callers and removes them — not a breaking change yet.",
+        "$description": "hds#206: the canonical spacing vocabulary, one monotonic t-shirt scale (xs to xl) for padding, margin and gap. Supersedes deprecated names.",
         "xs": {
           "$value": "{primitive.space.2}",
           "$description": "8px — smallest step. Same value as component.gap (deprecated alias)."
@@ -1489,7 +1489,7 @@
         },
         "md": {
           "$value": "{primitive.space.6}",
-          "$description": "24px — same value as layout.normal (deprecated alias). Default of the overridable roles surface.padding and region.gutter, which replace the deprecated component.padding / layout.gutter."
+          "$description": "24px. Default of the overridable roles surface.padding and region.gutter. The deprecated layout.normal has the same value."
         },
         "lg": {
           "$value": "{primitive.space.8}",
@@ -1501,17 +1501,17 @@
         }
       },
       "surface": {
-        "$description": "hds#206 — the overridable surface inset. A named role on the t-shirt scale rather than a scale step, because tenants (per brand and density) override it at runtime; its value is always a scale step.",
+        "$description": "hds#206 surface inset role. Tenants override it per brand and density, always with a scale step.",
         "padding": {
           "$value": "{semantic.space.scale.md}",
-          "$description": "24px (scale.md) default inset for cards, forms, panels, and grouped surfaces. Tenants override it with another scale step (tenants/*/tokens.json, incl. a Compact density mode). Replaces the deprecated semantic.space.component.padding."
+          "$description": "24px (scale.md) inset for cards, forms and panels. Tenants override it per brand and density. Replaces component.padding."
         }
       },
       "region": {
-        "$description": "hds#206 — the overridable region gutter. A named role on the t-shirt scale rather than a scale step, because theme.css retunes it per viewport; its value is always a scale step.",
+        "$description": "hds#206 region gutter role. theme.css retunes it per viewport, always with a scale step.",
         "gutter": {
           "$value": "{semantic.space.scale.md}",
-          "$description": "24px (scale.md) column and region gutters. theme.css sets it responsively to scale.lg (32px) and, below 640px, scale.sm (16px). Replaces the deprecated semantic.space.layout.gutter."
+          "$description": "24px (scale.md) column and region gutters; theme.css sets scale.lg (32px), and scale.sm (16px) below 640px. Replaces layout.gutter."
         }
       },
       "subgrid": {
@@ -1540,7 +1540,7 @@
         },
         "padding": {
           "$value": "{semantic.space.surface.padding}",
-          "$description": "24px default inset for cards, forms, panels, and grouped surfaces. DEPRECATED alias (hds#206) — use semantic.space.surface.padding (tenant/density-overridable); kept live, no removal yet.",
+          "$description": "24px inset for cards, forms and panels. DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
           "$deprecated": "hds#206 — use semantic.space.surface.padding"
         }
       },
@@ -1567,7 +1567,7 @@
         },
         "spacious": {
           "$value": "{primitive.space.12}",
-          "$description": "48px section break and whitespace separator between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
+          "$description": "48px break between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
           "$deprecated": "hds#206 — use semantic.space.scale.xl"
         }
       },
@@ -1605,7 +1605,7 @@
         "railWidth": {
           "$type": "dimension",
           "$value": "{primitive.size.width.280}",
-          "$description": "Docs-shell left nav rail and right TOC rail width (hds#280). Both rails share one width token; default 0 below their breakpoint (see HdsDocsShell)."
+          "$description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell)."
         }
       }
     },
@@ -1931,7 +1931,7 @@
       "control": {
         "$type": "dimension",
         "$value": "{primitive.radius.4}",
-        "$description": "Corner radius for small interactive control glyphs (e.g. checkbox glyph box) that are not fully round and not the standard action radius. Real design-scale value, distinct from semantic.radius.action (hds#242)."
+        "$description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242)."
       }
     },
     "borderWidth": {
@@ -1998,7 +1998,7 @@
     },
     "size": {
       "$type": "dimension",
-      "$description": "Semantic sizing roles for control glyphs, avatars, and table rows. Distinct roles may share a primitive value today by coincidence; keep them separate so one can change without dragging the other (hds#242).",
+      "$description": "Sizing roles for control glyphs, avatars and table rows. Roles sharing a value stay separate so each can change (hds#242).",
       "control": {
         "$description": "Interactive control glyph/element sizing (checkbox glyph box, radio dot, slider track/fill, code-block copy-button-matched footprint).",
         "sm": {
@@ -2031,7 +2031,7 @@
       },
       "avatar": {
         "$value": "{primitive.size.40}",
-        "$description": "Avatar diagonal (width/height) for activity-feed and similar identity glyphs. Coincides in pixels with row.compact today; kept as a separate role per hds#242 so either can change independently."
+        "$description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242)."
       },
       "row": {
         "$description": "Table row minimum height by density.",

@@ -31,7 +31,7 @@ export const TokenColors: Story = {
   render: () => (
     <Box
       sx={{
-        p: 6,
+        p: 'md',
         bgcolor: 'surface.raised',
         color: 'content.primary',
         borderColor: 'border.subtle',
@@ -46,18 +46,18 @@ export const TokenColors: Story = {
 
 export const SpacingShorthands: Story = {
   render: () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <Box sx={{ p: 2, bgcolor: 'surface.raised' }}>
-        {/* tier-ok: story caption documents resolveSx's literal output for viewers, not a live styling call, hds#186 */}
-        p: 2 → var(--primitive-space-2)
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 'sm' }}>
+      <Box sx={{ p: 'xs', bgcolor: 'surface.raised' }}>
+        p: &apos;xs&apos; → var(--semantic-space-scale-xs)
       </Box>
-      <Box sx={{ p: 'inset', bgcolor: 'surface.raised' }}>
-        p: &apos;inset&apos; → --semantic-space-layout-inset
+      <Box sx={{ p: 'lg', bgcolor: 'surface.raised' }}>
+        p: &apos;lg&apos; → var(--semantic-space-scale-lg)
       </Box>
-      <Box sx={{ px: 6, py: 2, bgcolor: 'surface.raised' }}>px: 6, py: 2 (axis shorthand)</Box>
-      <Box sx={{ mt: 9, bgcolor: 'surface.raised', p: 2 }}>
-        {/* tier-ok: story caption documents resolveSx's literal output for viewers, not a live styling call, hds#186 */}
-        mt: 9 (off-scale) → calc(var(--primitive-space-1) * 9)
+      <Box sx={{ px: 'md', py: 'xs', bgcolor: 'surface.raised' }}>
+        px: &apos;md&apos;, py: &apos;xs&apos; (axis shorthand)
+      </Box>
+      <Box sx={{ mt: 'xl', bgcolor: 'surface.raised', p: 'xs' }}>
+        mt: &apos;xl&apos; → var(--semantic-space-scale-xl)
       </Box>
     </Box>
   ),
@@ -67,7 +67,7 @@ export const ResponsiveValues: Story = {
   render: () => (
     <Box
       sx={{
-        p: 2,
+        p: 'xs',
         bgcolor: 'feedback.info',
         color: 'content.inverse',
         width: { xs: 120, sm: 200, md: 320 },
@@ -82,7 +82,7 @@ export const AmpersandSelectors: Story = {
   render: () => (
     <Box
       sx={{
-        p: 6,
+        p: 'md',
         bgcolor: 'surface.raised',
         color: 'content.primary',
         '&:hover': { bgcolor: 'accent.subtle', color: 'accent.content' },
@@ -98,7 +98,7 @@ export const AmpersandWithResponsive: Story = {
   render: () => (
     <Box
       sx={{
-        p: 4,
+        p: 'sm',
         bgcolor: 'surface.raised',
         color: 'content.primary',
         '&:hover': { color: 'accent.content' },
@@ -112,7 +112,7 @@ export const AmpersandWithResponsive: Story = {
 
 export const PolymorphicAs: Story = {
   render: () => (
-    <Box as="section" sx={{ p: 6, bgcolor: 'surface.raised' }}>
+    <Box as="section" sx={{ p: 'md', bgcolor: 'surface.raised' }}>
       <Box as="h2" sx={{ color: 'content.primary' }}>
         Rendered as &lt;section&gt; / &lt;h2&gt;
       </Box>

@@ -89,14 +89,36 @@ export default [
 
 ### `hds/no-raw-px-spacing`
 
+The fix the message offers is the t-shirt scale token,
+`hds.semantic.space.scale.*` (`var(--semantic-space-scale-*)`). When `Box`'s
+`sx` has a shorthand for the same CSS property, it also offers that shorthand
+with a step: `margin`/`padding` and their `Top`/`Right`/`Bottom`/`Left` forms
+map to `m`/`p` and `mt`, `mb`, `pt`, ..., and `gap`, `rowGap`, `columnGap` keep
+their names. Write `sx={{ mb: 'md' }}`: `sx` resolves step names on its
+shorthand keys only, so a long-hand key with a step passes it through as
+invalid CSS and renders no spacing. Logical props (`paddingInline`,
+`marginBlockStart`, ...) have no `sx` shorthand (`px`/`py`/`mx`/`my` set
+physical sides), so for them the message offers the token only.
+
+The shorthand-with-step advice needs a `@hirobius/design-system` release newer
+than 0.19.1. On 0.19.1 and earlier `sx` passes the step through as invalid CSS
+and renders no spacing ([MIGRATIONS.md](../../MIGRATIONS.md), "Upgrade first"),
+so use the token there.
+
 ```tsx
 // ❌ error
 <div style={{ marginBottom: '12px' }} />
 <div style={{ gap: 24 }} />
+<div style={{ paddingInline: '8px' }} />
 
-// ✅ ok — token reference, or zero (a reset has no scale to violate)
+// ✅ ok — a scale token, another token reference, or zero (a reset has no scale to violate)
+<div style={{ marginBottom: hds.semantic.space.scale.sm }} />
+<div style={{ paddingInline: 'var(--semantic-space-scale-xs)' }} />
 <div style={{ marginBottom: hds.space.px16 }} />
 <div style={{ margin: 0 }} />
+
+// ✅ ok — the sx shorthand with a t-shirt step
+<Box sx={{ mb: 'sm', gap: 'md' }} />
 ```
 
 ### `hds/prefer-hds-layout-primitive`
@@ -115,18 +137,30 @@ one-off nested alignment; this nudges rather than blocks.
 ### `hds/sx-token-first`
 
 `Box`'s `sx` prop (`src/app/components/box.tsx`) is the sanctioned escape
-hatch specifically because it forces spacing/color through HDS tokens: bare
-numbers are a _feature_ there (they resolve off the 4px space scale), so
-this rule does **not** flag numeric literals — only values that prove the
-author reached past the token system.
+hatch specifically because it forces spacing/color through HDS tokens.
+The spacing props (`p`, `m`, `gap` and their `t`/`r`/`b`/`l`/`x`/`y`,
+`rowGap`, `columnGap` forms) take the t-shirt scale by name:
+`'xs' | 'sm' | 'md' | 'lg' | 'xl'` (hds#206). That is 8/16/24/32/48px at
+comfortable density; `data-density="compact"` tightens each step. This rule
+flags only values that prove the author reached past the token system. A px
+string on a spacing prop is pointed at a step; on any other key
+(`width`, `top`, `padding`), where a step name is not valid CSS, it is pointed
+at a token: an `hds.space.*` value or a `var(--...)`. The rule does **not**
+flag bare numbers, which still resolve off the 4px scale, but a number reads
+as pixels when it is not (`p: 4` is 16px), so use the names.
 
 ```tsx
-// ❌ error
+// ❌ error — use a color token key ('content.primary', 'accent')
 <Box sx={{ color: '#fff' }} />
+
+// ❌ error — use a t-shirt step
 <Box sx={{ m: '16px' }} />
 
-// ✅ ok — bare numbers resolve off the scale; strings are token keys/vars
-<Box sx={{ m: 2, gap: 4 }} />
+// ❌ error — use a token (hds.space.*, var(--...))
+<Box sx={{ width: '200px' }} />
+
+// ✅ ok — spacing by t-shirt step; other strings are token keys/vars
+<Box sx={{ m: 'sm', gap: 'md' }} />
 <Box sx={{ color: 'content.primary', top: 'var(--primitive-space-2)' }} />
 ```
 

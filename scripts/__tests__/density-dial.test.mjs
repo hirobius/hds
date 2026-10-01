@@ -125,3 +125,60 @@ describe('compact scope re-declares the aliases so nested scopes resolve against
     );
   });
 });
+
+/*
+ * hds#206: `hds.density.*` in tokens.ts is a second t-shirt vocabulary with
+ * different pixels (its sm is 8px, scale.sm is 16px). It reads the legacy
+ * --hds-space-* bridge. It is deprecated (MIGRATIONS step 1) with a scale step
+ * named for each key that has one, and each named step must compute the same
+ * pixels as the key it replaces, at both densities.
+ */
+describe('hds.density is deprecated in favour of semantic.space.scale (hds#206)', () => {
+  const tokensTs = read('src/app/design-system/tokens.ts');
+  const doc = /\/\*\*((?:(?!\*\/)[\s\S])*)\*\/\s*density:\s*\{/.exec(tokensTs)?.[1] ?? '';
+  /** density key -> the scale step with the same pixels. */
+  const TWIN = { sm: 'xs', md: 'sm', lg: 'md', xl: 'lg', xl2: 'xl' };
+  /** density key -> its --hds-space-* suffix. */
+  const HDS = {
+    xs: 'xs',
+    sm: 'sm',
+    md: 'md',
+    lg: 'lg',
+    xl: 'xl',
+    xl2: '2xl',
+    xl3: '3xl',
+    xl4: '4xl',
+  };
+
+  const comfortableBody = rules(theme)
+    .filter((r) => !r.media && !/data-density|data-brand|data-tenant/.test(r.selector))
+    .map((r) => r.body)
+    .join('\n');
+  const compactBody = compactRules.map((r) => r.body).join('\n');
+  const pxOf = (body, cssVar) => px(generated, declOf(body, cssVar));
+
+  it('carries @deprecated and @removeIn on the density group', () => {
+    expect(doc).toMatch(/@deprecated[^@]*semantic\.space\.scale/);
+    expect(doc).toMatch(/@removeIn\s+1\.0\.0/);
+  });
+
+  it('names the scale step for each key that has one, and says which keys have none', () => {
+    for (const [key, step] of Object.entries(TWIN)) {
+      expect(doc).toContain(`\`density.${key}\` → \`scale.${step}\``);
+    }
+    for (const key of Object.keys(HDS).filter((k) => !(k in TWIN))) {
+      expect(doc).toContain(`\`density.${key}\``);
+    }
+  });
+
+  it.each(Object.entries(TWIN))(
+    'density.%s computes the same pixels as scale.%s, comfortable and compact',
+    (key, step) => {
+      const hdsVar = `--hds-space-${HDS[key]}`;
+      expect(pxOf(comfortableBody, hdsVar)).not.toBeNull();
+      expect(pxOf(comfortableBody, hdsVar)).toBe(comfortableScale(step));
+      expect(pxOf(compactBody, hdsVar)).not.toBeNull();
+      expect(pxOf(compactBody, hdsVar)).toBe(pxOf(compactBody, `--semantic-space-scale-${step}`));
+    },
+  );
+});

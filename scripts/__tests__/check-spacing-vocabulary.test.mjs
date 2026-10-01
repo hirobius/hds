@@ -2,11 +2,18 @@
 /**
  * Unit tests for scripts/check-spacing-vocabulary.mjs (hds#206).
  *
- * All tests operate purely in memory — no filesystem reads or writes.
+ * The findViolationsInText tests run in memory. The last block reads the
+ * registry and the pre-commit hook, and runs the gate on its fixture.
  */
 
 import { describe, it, expect } from 'vitest';
+import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { findViolationsInText, SPACING_KEYS } from '../check-spacing-vocabulary.mjs';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 describe('SPACING_KEYS', () => {
   it('covers the full box-sx.ts spacing shorthand set', () => {
@@ -70,5 +77,324 @@ describe('findViolationsInText', () => {
       '<Box sx={{ p: 2 }} />',
     ].join('\n');
     expect(findViolationsInText(text, 'fake.tsx')).toHaveLength(0);
+  });
+});
+
+describe('findViolationsInText: forms a line scan misses (hds#206 fix round)', () => {
+  const found = (text) =>
+    findViolationsInText(text, 'fake.tsx').map(({ line, key, value }) => ({ line, key, value }));
+
+  it('flags integers inside a responsive map on a spacing key', () => {
+    expect(found(`<Box sx={{ p: { base: 2, md: 4 } }} />`)).toEqual([
+      { line: 1, key: 'p', value: '2' },
+      { line: 1, key: 'p', value: '4' },
+    ]);
+  });
+
+  it('flags only the integer in a mixed responsive map, across lines', () => {
+    const text = ['<Box', '  sx={{', "    gap: { xs: 'sm',", '      md: 6 },', '  }}', '/>'].join(
+      '\n',
+    );
+    expect(found(text)).toEqual([{ line: 4, key: 'gap', value: '6' }]);
+  });
+
+  it('does not flag integers in a responsive map on a non-spacing key', () => {
+    expect(found(`<Box sx={{ width: { xs: 120, md: 320 }, p: 'md' }} />`)).toEqual([]);
+  });
+
+  it('flags a spacing integer inside a nested &-selector block', () => {
+    expect(found(`<Box sx={{ '&:hover': { p: 4 } }} />`)).toEqual([
+      { line: 1, key: 'p', value: '4' },
+    ]);
+  });
+
+  it('flags whitespace variants of the sx attribute', () => {
+    expect(found(`<Box sx={ { p: 4 } } />`)).toEqual([{ line: 1, key: 'p', value: '4' }]);
+    expect(found(`<Box sx = {{ mt: 2 }} />`)).toEqual([{ line: 1, key: 'mt', value: '2' }]);
+    expect(found(['<Box sx={', '  { px: 3 }', '} />'].join('\n'))).toEqual([
+      { line: 2, key: 'px', value: '3' },
+    ]);
+  });
+
+  it('flags a negative integer', () => {
+    expect(found(`<Box sx={{ mt: -2 }} />`)).toEqual([{ line: 1, key: 'mt', value: '-2' }]);
+  });
+
+  it('is not fooled by braces inside strings', () => {
+    expect(found(`<Box sx={{ content: '"}}"', p: 4 }} />`)).toEqual([
+      { line: 1, key: 'p', value: '4' },
+    ]);
+  });
+
+  it('does not scan text after the sx object closes', () => {
+    expect(found(`<Box sx={{ p: 'md' }}>px: 6, py: 2 (axis shorthand)</Box>`)).toEqual([]);
+  });
+
+  it('follows a same-file const passed by name', () => {
+    const text = ['const style = { p: 4 };', '<Box sx={style} />'].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'p', value: '4' }]);
+  });
+
+  it('follows a typed or as-const hoisted object, and a member of it', () => {
+    const text = [
+      'const card: SxObject = { gap: 2 };',
+      'const styles = { row: { mx: 3 } } as const;',
+      '<Box sx={card} />;',
+      '<Box sx={styles.row} />;',
+    ].join('\n');
+    expect(found(text)).toEqual([
+      { line: 1, key: 'gap', value: '2' },
+      { line: 2, key: 'mx', value: '3' },
+    ]);
+  });
+
+  it('follows a same-file const spread into an sx object', () => {
+    const text = ['const base = { m: 2 };', "<Box sx={{ ...base, p: 'md' }} />"].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'm', value: '2' }]);
+  });
+
+  it('reports a hoisted object once however often it is used', () => {
+    const text = ['const style = { p: 4 };', '<Box sx={style} />;', '<Box sx={style} />;'].join(
+      '\n',
+    );
+    expect(found(text)).toHaveLength(1);
+  });
+
+  it('ignores a hoisted object that never reaches sx', () => {
+    const text = ['const style = { padding: 4, p: 4 };', '<div style={style} />'].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+
+  it('honors // spacing-vocab-ok on the line before a hoisted integer', () => {
+    const text = [
+      'const style = {',
+      '  // spacing-vocab-ok: intentional legacy exception',
+      '  p: 4,',
+      '};',
+      '<Box sx={style} />',
+    ].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+});
+
+describe('findViolationsInText: conditional and logical sx expressions (hds#206 review)', () => {
+  const found = (text) =>
+    findViolationsInText(text, 'fake.tsx').map(({ line, key, value }) => ({ line, key, value }));
+
+  it('follows both branches of a conditional sx expression', () => {
+    expect(found(`<Box sx={dense ? { p: 3 } : { p: 'md' }} />`)).toEqual([
+      { line: 1, key: 'p', value: '3' },
+    ]);
+    expect(found(`<Box sx={dense ? { p: 'sm' } : { m: 5 }} />`)).toEqual([
+      { line: 1, key: 'm', value: '5' },
+    ]);
+  });
+
+  it('follows the object on the right of && inside a spread', () => {
+    expect(found(`<Box sx={{ ...(dense && { m: 5 }), p: 'md' }} />`)).toEqual([
+      { line: 1, key: 'm', value: '5' },
+    ]);
+  });
+
+  it('follows both operands of || and ??', () => {
+    expect(found(`<Box sx={custom ?? { gap: 2 }} />`)).toEqual([
+      { line: 1, key: 'gap', value: '2' },
+    ]);
+    const text = ['const base = { py: 4 };', '<Box sx={base || { px: 1 }} />'].join('\n');
+    expect(found(text)).toEqual([
+      { line: 1, key: 'py', value: '4' },
+      { line: 2, key: 'px', value: '1' },
+    ]);
+  });
+
+  it('follows a same-file const named in a conditional branch', () => {
+    const text = ['const tight = { p: 2 };', "<Box sx={dense ? tight : { p: 'md' }} />"].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'p', value: '2' }]);
+  });
+
+  it('follows && , || and ?? on a spacing value', () => {
+    expect(found(`<Box sx={{ p: size ?? 4, m: dense && 2, gap: g || 3 }} />`)).toEqual([
+      { line: 1, key: 'p', value: '4' },
+      { line: 1, key: 'm', value: '2' },
+      { line: 1, key: 'gap', value: '3' },
+    ]);
+  });
+
+  it('does not flag a conditional or logical sx expression built from names', () => {
+    expect(found(`<Box sx={dense ? { p: 'sm' } : { p: 'md' }} />`)).toEqual([]);
+    expect(found(`<Box sx={{ ...(dense && { m: 'xs' }), p: size ?? 'md' }} />`)).toEqual([]);
+  });
+});
+
+describe('findViolationsInText: a name resolves to the declaration in scope (hds#206 review)', () => {
+  const found = (text) =>
+    findViolationsInText(text, 'fake.tsx').map(({ line, key, value }) => ({ line, key, value }));
+
+  it('follows the declaration in the enclosing function, not a later one with the same name', () => {
+    const text = [
+      'function inner() {',
+      '  const s2 = { p: 6 };',
+      '  return <Box sx={s2} />;',
+      '}',
+      'function other() {',
+      "  const s2 = { color: 'x' };",
+      '  return <Box sx={s2} />;',
+      '}',
+    ].join('\n');
+    expect(found(text)).toEqual([{ line: 2, key: 'p', value: '6' }]);
+  });
+
+  it('does not flag an outer object an inner declaration shadows', () => {
+    const text = [
+      'function a() {',
+      "  const s = { p: 'md' };",
+      '  return <Box sx={s} />;',
+      '}',
+      'const s = { p: 4 };',
+      'export const unused = s;',
+    ].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+
+  it('follows an outer object into a function that does not redeclare it', () => {
+    const text = [
+      'const s = { p: 4 };',
+      'function a() {',
+      "  const t = { p: 'md' };",
+      '  return <Box sx={s} />;',
+      '}',
+    ].join('\n');
+    expect(found(text)).toEqual([{ line: 1, key: 'p', value: '4' }]);
+  });
+
+  it('does not follow an outer object a parameter shadows', () => {
+    const text = [
+      'const s = { p: 4 };',
+      'const t = { m: 2 };',
+      'function a(s: SxObject) { return <Box sx={s} />; }',
+      'const b = ({ t }: { t: SxObject }) => <Box sx={t} />;',
+    ].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+
+  it('follows a block-scoped declaration, a member of it and a spread in it', () => {
+    const text = [
+      "const base = { gap: 'sm' };",
+      'function a(dense: boolean) {',
+      '  const base = { mx: 1 };',
+      '  if (dense) {',
+      '    const styles = { row: { ...base, py: 2 } };',
+      '    return <Box sx={styles.row} />;',
+      '  }',
+      '  return null;',
+      '}',
+    ].join('\n');
+    expect(found(text)).toEqual([
+      { line: 3, key: 'mx', value: '1' },
+      { line: 5, key: 'py', value: '2' },
+    ]);
+  });
+});
+
+describe('the gate documents what it does not follow', () => {
+  const header = readFileSync(join(ROOT, 'scripts/check-spacing-vocabulary.mjs'), 'utf8').split(
+    '*/',
+  )[1];
+  const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
+  const entry = registry.gates.find((g) => g.id === 'check-spacing-vocabulary');
+
+  it('names an sx array as a limit, with the type that rejects it, in the header and the registry', () => {
+    expect(header).toMatch(/sx=\{\[/);
+    expect(header).toMatch(/SxObject/);
+    expect(entry.description).toMatch(/array/);
+  });
+
+  it('says a name resolves by scope in the header and the registry', () => {
+    expect(header).toMatch(/scope/);
+    expect(entry.description).toMatch(/scope/);
+  });
+});
+
+describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', () => {
+  it('is error severity and fires at pre-commit in the registry', () => {
+    const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
+    const entry = registry.gates.find((g) => g.id === 'check-spacing-vocabulary');
+    expect(entry).toMatchObject({
+      severity: 'error',
+      firingChannel: 'pre-commit',
+      firingChannels: ['pre-commit'],
+    });
+  });
+
+  it('runs in .husky/pre-commit', () => {
+    const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
+    expect(hook).toMatch(/^node scripts\/check-spacing-vocabulary\.mjs$/m);
+  });
+
+  it('reports its findings as errors and exits 1 on the violating fixture', () => {
+    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs', '--json'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: 'fixtures/check-spacing-vocabulary/violating.example.tsx',
+      },
+    });
+    expect(run.status).toBe(1);
+    const { violations } = JSON.parse(run.stdout);
+    expect(violations.map((v) => v.message.split(' ')[0])).toEqual([
+      'sx.p:',
+      'sx.gap:',
+      'sx.mt:',
+      'sx.p:',
+      'sx.p:',
+      'sx.gap:',
+      'sx.m:',
+      'sx.p:',
+      'sx.p:',
+    ]);
+    expect(new Set(violations.map((v) => v.severity))).toEqual(new Set(['error']));
+  });
+
+  it('exits 0 on the passing fixture, where an inner same-name object shadows an integer one', () => {
+    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs', '--json'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: 'fixtures/check-spacing-vocabulary/passing.example.tsx',
+      },
+    });
+    expect(JSON.parse(run.stdout).violations).toEqual([]);
+    expect(run.status).toBe(0);
+  });
+
+  it('finds nothing in src/ (pnpm test runs this in CI, where the hook does not)', () => {
+    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+    expect(run.stderr).toBe('');
+    expect(run.status).toBe(0);
+  });
+});
+
+describe('its exemption marker (hds#206)', () => {
+  it('is one check-exemptions knows, so pnpm check does not reject it', () => {
+    // check:full runs check-exemptions over src/ and scripts/, and an unknown
+    // `*-ok:` marker fails it. This gate documents `spacing-vocab-ok`.
+    const run = spawnSync(process.execPath, ['scripts/check-exemptions.mjs'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: 'scripts/check-spacing-vocabulary.mjs',
+      },
+    });
+    expect(run.stderr).not.toMatch(/unknown exemption marker "spacing-vocab-ok"/);
+    expect(run.status).toBe(0);
   });
 });

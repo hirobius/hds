@@ -8,12 +8,17 @@
  * semantic.space.region.gutter. Their overrides are expressed as steps on
  * the t-shirt scale, and the old names stay as $deprecated aliases so
  * consumers that have not run the codemod keep the same computed values.
+ *
+ * The last block renders the real stylesheets in Chromium and locks the
+ * computed pixels for every tenant x density x breakpoint (hds#206 finish).
  */
 
-import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { chromium } from 'playwright';
+import { chromiumPath } from '../lib/storybook-host.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -71,4 +76,110 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
     );
     expect(css).toContain('--semantic-space-layout-gutter: var(--semantic-space-region-gutter);');
   });
+});
+
+/*
+ * The computed pixels, not just the CSS text. Every tenant x density x breakpoint,
+ * with the attributes on <html> and on a nested element (a var() resolves where it
+ * is declared, so the two can differ). The deprecated name must compute to the same
+ * pixels as its replacement in every cell, and both must keep today's values.
+ */
+// The pinned container browser if there is one (scripts/lib/storybook-host.mjs),
+// else Playwright's own download, so the lock also runs on a developer machine
+// with `playwright install`. A path that does not exist is not a browser: skip.
+const CHROMIUM = chromiumPath() ?? chromium.executablePath();
+const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
+
+/** Today's surface.padding in px per tenant, [comfortable, compact]. */
+const SURFACE_PX = {
+  base: [24, 20],
+  'accent-lilac': [24, 20],
+  'brutalist-demo': [16, 6],
+  'concrete-creations': [24, 20],
+};
+/** Today's region.gutter in px per viewport width, [comfortable, compact]. Same for every tenant. */
+const GUTTER_PX = { 1280: [32, 24], 640: [32, 24], 639: [16, 12], 400: [16, 12] };
+
+// theme.css pulls in Tailwind first; the browser skips what it cannot parse, and the
+// custom properties this reads are plain CSS.
+const PAGE_CSS = [
+  read('src/styles/tokens.generated.css'),
+  read('src/styles/tenants.css'),
+  read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
+].join('\n');
+
+const PROBE =
+  'display:block;padding-top:var(--semantic-space-surface-padding);' +
+  'padding-right:var(--semantic-space-component-padding);' +
+  'padding-bottom:var(--semantic-space-region-gutter);' +
+  'padding-left:var(--semantic-space-layout-gutter)';
+
+describe('every tenant has a row in the computed-value table', () => {
+  it('matches the tenants/ directory', () => {
+    const tenants = readdirSync(join(ROOT, 'tenants'), { withFileTypes: true })
+      .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
+      .map((d) => d.name)
+      .sort();
+    expect(
+      Object.keys(SURFACE_PX)
+        .filter((t) => t !== 'base')
+        .sort(),
+    ).toEqual(tenants);
+  });
+});
+
+describe.skipIf(!hasBrowser)('computed spacing, every tenant x density x breakpoint', () => {
+  let browser;
+  let page;
+  // Launching Chromium takes longer than vitest's 10s hook default when other
+  // browser suites (spacing-computed-lock) start at the same moment on a busy
+  // machine, so give the launch the same headroom the computed lock has.
+  beforeAll(async () => {
+    browser = await chromium.launch({ executablePath: CHROMIUM });
+    page = await browser.newPage();
+  }, 120_000);
+  afterAll(async () => {
+    await browser?.close();
+  });
+
+  const cells = [];
+  for (const tenant of Object.keys(SURFACE_PX)) {
+    for (const [density, d] of [
+      ['comfortable', 0],
+      ['compact', 1],
+    ]) {
+      for (const scope of ['html', 'nested']) cells.push({ tenant, density, d, scope });
+    }
+  }
+
+  it.each(cells)(
+    '$tenant, $density, attributes on $scope',
+    async ({ tenant, density, d, scope }) => {
+      const attrs = [
+        tenant === 'base' ? '' : `data-brand="${tenant}"`,
+        density === 'compact' ? 'data-density="compact"' : '',
+      ].join(' ');
+      const body = scope === 'html' ? '<i id="p"></i>' : `<div ${attrs}><i id="p"></i></div>`;
+      await page.setContent(
+        `<html ${scope === 'html' ? attrs : ''}><head><style>${PAGE_CSS}</style></head><body>${body}</body></html>`,
+      );
+
+      for (const width of Object.keys(GUTTER_PX).map(Number)) {
+        await page.setViewportSize({ width, height: 600 });
+        const [surface, padding, region, gutter] = await page.evaluate((probe) => {
+          const el = document.getElementById('p');
+          el.style.cssText = probe;
+          const s = getComputedStyle(el);
+          return [s.paddingTop, s.paddingRight, s.paddingBottom, s.paddingLeft].map(parseFloat);
+        }, PROBE);
+        const where = `${width}px`;
+        expect({ where, surface, region }).toEqual({
+          where,
+          surface: SURFACE_PX[tenant][d],
+          region: GUTTER_PX[width][d],
+        });
+        expect({ where, padding, gutter }).toEqual({ where, padding: surface, gutter: region });
+      }
+    },
+  );
 });

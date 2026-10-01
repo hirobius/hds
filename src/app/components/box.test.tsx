@@ -29,7 +29,7 @@ describe('Box', () => {
 
   it('merges the generated sx class with a caller-provided className', () => {
     render(
-      <Box sx={{ p: 2 }} className="hds-caller-class" data-testid="box">
+      <Box sx={{ p: 'xs' }} className="hds-caller-class" data-testid="box">
         content
       </Box>,
     );

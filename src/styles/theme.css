@@ -1048,7 +1048,8 @@ input[data-search-input='true'] {
 [data-density='compact'] {
   /* The real dial: components read --semantic-space-scale-*, so compact remaps it one
    * primitive step down (8/16/24/32/48px -> 6/12/20/24/40px). The --hds-space-* set
-   * below is a legacy bridge that no component reads. */
+   * below is a legacy bridge that no component reads; only the deprecated hds.density.*
+   * does (hds#206: use semantic.space.scale.*). */
   --semantic-space-scale-xs: var(--primitive-space-px6);
   --semantic-space-scale-sm: var(--primitive-space-3);
   --semantic-space-scale-md: var(--primitive-space-5);

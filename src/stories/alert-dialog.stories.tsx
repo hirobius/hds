@@ -56,7 +56,7 @@ export const DarkScope: Story = {
       data-hds
       data-theme="dark"
       style={{
-        padding: 'var(--semantic-space-layout-spacious)',
+        padding: 'var(--semantic-space-scale-xl)',
         background: 'var(--semantic-color-surface-page)',
         color: 'var(--semantic-color-content-primary)',
       }}
