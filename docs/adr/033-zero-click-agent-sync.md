@@ -71,13 +71,13 @@ It copies them without indentation (about 5,500 characters), blank lines, or the
 
 ## Rationale
 
-- **Smallest faithful data.** A patch slice of today's plan (10 descriptions, 2 creates) is 4,200 characters. The whole touched records would be 9,000, and the plan plus a model for the re-plan about 15,000. Planning in staging also means the re-plan runs the same `hdsPlan` on the same slice.
+- **Smallest faithful data.** A patch slice of today's plan (10 descriptions, 4 creates) is 4,902 characters. For the earlier 10-description, 2-create plan the slice was 4,200, where the whole touched records would have been 9,000, and the plan plus a model for the re-plan about 15,000. Planning in staging also means the re-plan runs the same `hdsPlan` on the same slice.
 - **Fail closed at every step.** Each refusal before the apply writes nothing, and each has a vm test on `scripts/__tests__/helpers/fake-figma.mjs` that asserts zero writes. Mutating any guard turns its test red: the pin, `PLAN_CHECKSUM`, the extras count, the removals assertion, `planSum`, the style-description refusal, the font preflight and the re-plan.
-- **Measured, not estimated.** Today's plan builds to 43,049 characters. On a file seeded from the committed snapshot it makes 26 writes and returns 3,890 characters inline. The 19-variable Primitives `space/*` rename builds to about 42,400 and returns about 9,400.
+- **Measured, not estimated** (2026-10-01, main as of `5aa171f`, snapshot `242fe0c9`). Today's plan, `updated 10 · created 4 · deleted 0`, builds to 44,062 characters. On a file seeded from the committed snapshot it makes 40 writes and returns 4,640 characters inline. The 19-variable Primitives `space/*` rename builds to 42,827, makes 60 writes and returns 9,411.
 
 ## Consequences
 
 - A small token change reaches staging and `figma/snapshot.json` with no step by Adrian. That takes one `use_figma` call, plus 1–2 `receipt.js` reads when the receipt needs more than one page, all logged in `figma/MCP-LEDGER.md`. Adrian gets one phone notification.
-- About 2,000 characters of headroom remain for today's kind of change. Larger changes go to Sync, and say so.
+- 938 characters of headroom remain for today's plan. Each further created variable costs about 300 (234 to 407 measured), so 2–4 more fit. Larger changes go to Sync, and say so.
 - Something else may write to staging after the committed snapshot: a Sync whose receipt nobody collected, or a hand edit. The pin then refuses until the snapshot is current again.
-- Unmeasured: whether use_figma escapes a style description on read (§3). Until a live read settles it, a plan that writes a style description holding `" ' < > &` goes to Sync. The first live run settles whether the inline return stays under use_figma's output cap, at about 4 KB today.
+- Unmeasured: whether use_figma escapes a style description on read (§3). Until a live read settles it, a plan that writes a style description holding `" ' < > &` goes to Sync. The first live run settles whether the inline return stays under use_figma's output cap, at about 4.6 KB today.

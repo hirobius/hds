@@ -770,7 +770,11 @@ describe('delta.js for the real model (staging pushed from main, then a change)'
   const real = loadFigmaInputs(REPO).model;
   const collectionOf = (model, key) => model.collections.find((c) => c.key === key);
 
-  /** Today's kind of change (2026-10-01: updated 10 · created 2): ten descriptions, a semantic colour and a role aliasing it. */
+  /**
+   * Today's kind of change (main on 2026-10-01: updated 10 · created 4): ten
+   * descriptions, a semantic colour and a role aliasing it, and a primitive
+   * size step with a semantic size aliasing it.
+   */
   const todayLike = (model) => {
     collectionOf(model, 'semantic')
       .variables.slice(0, 10)
@@ -799,12 +803,35 @@ describe('delta.js for the real model (staging pushed from main, then a change)'
       codeSyntax: { WEB: 'var(--role-agent-sync-overlay)' },
       valuesByMode: { Default: { alias: overlay } },
     });
+    collectionOf(model, 'primitive').variables.push({
+      path: 'primitive.size.agent-sync-136',
+      name: 'size/agent-sync-136',
+      resolvedType: 'FLOAT',
+      description: '136px size step. Backs semantic.size.agent-sync-tile.',
+      scopes: [],
+      hiddenFromPublishing: true,
+      codeSyntax: { WEB: 'var(--primitive-size-agent-sync-136)' },
+      valuesByMode: { Default: { value: 136 } },
+    });
+    collectionOf(model, 'semantic').variables.push({
+      path: 'semantic.size.agent-sync-tile',
+      name: 'size/agent-sync-tile',
+      resolvedType: 'FLOAT',
+      description: 'Minimum height of a metric tile.',
+      scopes: ['WIDTH_HEIGHT'],
+      hiddenFromPublishing: false,
+      codeSyntax: { WEB: 'var(--semantic-size-agent-sync-tile)' },
+      valuesByMode: {
+        Light: { alias: 'primitive.size.agent-sync-136' },
+        Dark: { alias: 'primitive.size.agent-sync-136' },
+      },
+    });
     return model;
   };
 
-  it("a change like today's (10 descriptions + 2 creates) fits in 45,000 chars and lands in one call", async () => {
+  it("a change like today's (10 descriptions + 4 creates) fits in 45,000 chars and lands in one call", async () => {
     const s = await pending({ base: real, edit: todayLike });
-    expect(s.built.line).toBe('updated 10 · created 2 · deleted 0');
+    expect(s.built.line).toBe('updated 10 · created 4 · deleted 0');
     expect(s.built.chars, `delta.js is ${s.built.chars} chars`).toBeLessThanOrEqual(45000);
     const read = await runDelta(s.built.text, s.figma);
     expect(read.page, 'the receipt comes back inline').toBe(0);

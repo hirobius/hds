@@ -292,7 +292,7 @@ Steps:
    **and** `pnpm figma:push --plan` prints `updated 0 · created 0 · deleted 0`.
 6. Open a PR with the snapshot and merge it when CI is green.
 7. Send Adrian one phone notification with the result, for example:
-   `HDS Figma: updated 10 · created 2 · deleted 0 is on staging (commit ef90941); snapshot PR #N merged.`
+   `HDS Figma: updated 10 · created 4 · deleted 0 is on staging (commit 1a2b3c4); snapshot PR #N merged.`
 
 **On any refusal, stop.** Never retry a rate-limit error. Send Adrian one
 notification with the exact reason, word for word. Every refusal says whether
@@ -318,16 +318,19 @@ anything was written:
 Budget: one `use_figma` call, plus 1–2 `receipt.js` reads when the receipt needs
 more than one page, plus the figma-use skill load if it is not loaded yet.
 
-Measured on 2026-10-01 against `figma/snapshot.json` `242fe0c9`, for
-`updated 10 · created 2 · deleted 0`:
+Measured on 2026-10-01 on main as of `5aa171f`, against `figma/snapshot.json`
+`242fe0c9`, for `updated 10 · created 4 · deleted 0`:
 
-- `delta.js` is 43,049 characters: the runtime is about 38,300 and the data
-  4,200.
-- On a test file seeded from that snapshot, it made 26 writes and returned 3,890
-  characters inline, with a 1-page receipt of 2,868 characters.
+- `delta.js` is 44,062 characters, 938 under the limit: the runtime is 38,032,
+  the data (`PLAN`) 4,902, and the guards, `hdsVerifyRuntime` and call about 1,100.
+- Each further created variable costs about 300 characters: 234 for a primitive
+  with a value, 407 for a semantic colour that aliases two primitives. So 2–4
+  more fit; a changed description costs about its length.
+- On a test file seeded from that snapshot, it made 40 writes and returned 4,640
+  characters inline, with a 1-page receipt of 3,538 characters.
 
-The 19-variable Primitives `space/*` rename (hds#206 item 2) builds to about
-42,400 characters and returns about 9,400 inline.
+The 19-variable Primitives `space/*` rename (hds#206 item 2) builds to 42,827
+characters, makes 60 writes and returns 9,411 inline.
 
 The runtime is copied into `delta.js` without indentation, blank lines or the
 line breaks that only wrap an expression, which takes it from about 44,300 to
