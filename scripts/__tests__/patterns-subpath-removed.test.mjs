@@ -175,8 +175,9 @@ describe('CLI', () => {
   });
 
   it('runCodemod checks every file against one removed-name set, passed in like `names`', () => {
-    // One set per run (loaded once by default), not a re-read of removed-0.20.json
-    // per scanned file: an injected set is the one every file is checked against.
+    // runCodemod takes the removed-name set as a parameter, like `names`, and checks
+    // every scanned file against the set it is given. This proves the injection only;
+    // that the default set is read once per run (a default parameter) is not observed.
     for (const f of ['a', 'b', 'c'])
       writeFileSync(join(dir, `src/${f}.tsx`), `import { Button, Toolbar } from '${ROOT}';\n`);
     const res = runCodemod({ root: dir, removed: new Set(['Button']) });
