@@ -67,7 +67,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Progress` — Linear bar or circular ring.
 - `Skeleton` — Decorative loading placeholder.
 - `Spinner` — Indeterminate spinner.
-- `StatusDot` — A small solid dot conveying a semantic status via `tone`.
 - `ToastProvider` — Provider + viewport for the toast system.
 
 ### Inputs

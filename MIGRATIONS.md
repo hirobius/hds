@@ -407,7 +407,8 @@ staging-promotion entries go with them.
 StatusDot is not removed. Badge `dot` takes its `tone`, `size` and `label`, but
 ops passes StatusDot a `style` (`src/app/pages/ops/audit/FleetAuditPage.tsx`),
 and Badge takes no `style` (it is className-only, `check-no-style-prop`), so no
-codemod can rewrite that import mechanically.
+codemod can rewrite that import mechanically. It is deprecated instead, for
+removal in 0.21.0: see [StatusDot is deprecated](#statusdot-is-deprecated-removed-in-0210-hds395).
 
 | Removed                 | Use instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Codemod                                                                         |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -497,6 +498,36 @@ now moves 12 import sites in the same 11 files: `ClientDashboardPage.tsx`
 imports StatusTile in a second statement, next to the one that imports Page.
 With `hds-prefix` that is 14 ops files, and each codemod's `--check` exits 0
 after the run.
+
+### StatusDot is deprecated (removed in 0.21.0, hds#395)
+
+StatusDot stays in 0.20.0 and is deprecated: its JSDoc carries `@deprecated`
+with `@removeIn 0.21.0`, and in a development build it logs one
+`[HDS deprecation]` console warning. Its survivor is `<Badge dot>`: `tone` (all
+six), `size` (`sm`, `md` by default, `lg`) and `label` (a `role="status"` with
+that `aria-label`; decorative without one) are the same, and so is the dot.
+
+| Deprecated       | Use instead                                   | Codemod                                                      |
+| ---------------- | --------------------------------------------- | ------------------------------------------------------------ |
+| `StatusDot`      | `<Badge dot tone={…} size={…} label={…} />`   | none: a `style` has no Badge mapping, so the edit is by hand |
+| `StatusDotProps` | `BadgeProps` (`dot`, `tone`, `size`, `label`) | none                                                         |
+
+There is no codemod because Badge takes no `style` (it is className-only,
+`check-no-style-prop`), and ops passes StatusDot one:
+`<StatusDot tone={stateTone(row.state)} style={s.dot} />` in
+`src/app/pages/ops/audit/FleetAuditPage.tsx`, where `s.dot` is
+`{ marginTop: hds.space.px8 }`. Before 0.21.0 ops first replaces `style={…}`
+with a wrapper or a `className`, then swaps the component:
+
+```tsx
+// A wrapper. display: flex makes it the dot's height, not a line box's.
+<span style={{ display: 'flex', ...s.dot }}>
+  <Badge dot tone={stateTone(row.state)} />
+</span>
+
+// Or a class the app owns.
+<Badge dot tone={stateTone(row.state)} className="fleet-audit-dot" />
+```
 
 ### Root `*Variants` helpers become private (hds#394)
 

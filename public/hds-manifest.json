@@ -4415,6 +4415,8 @@
         "src/app/components/badge.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/page-header.tsx",
+        "src/app/components/status-dot.test.tsx",
+        "src/app/components/status-dot.tsx",
         "src/app/components/tag.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/mui/index.ts",
@@ -6450,7 +6452,18 @@
         "primitives-status-dot--default",
         "primitives-status-dot--tones",
         "primitives-status-dot--with-label-text"
-      ]
+      ],
+      "usage": {
+        "useInstead": [
+          {
+            "component": "Badge",
+            "reason": "with `dot`"
+          }
+        ]
+      },
+      "deprecated": "Use `<Badge dot>`: `tone`, `size` and `label` are the same, and so is the dot. Badge takes no `style`, so move a `style` to a wrapper or a `className` first (MIGRATIONS.md, hds#395). Kept in 0.20.0 because ops passes StatusDot a `style` no codemod can carry over.",
+      "removeIn": "0.21.0",
+      "useInstead": "Badge"
     },
     "Timestamp": {
       "category": "Display",

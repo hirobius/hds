@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-01T14:58:02.398Z
+Generated: 2026-10-01T15:12:20.594Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -1048,12 +1048,6 @@ Headline metric — large value, uppercase caption label, optional sub-line.
   - sub: ReactNode
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - value: ReactNode
-
-### StatusDot
-A small solid dot conveying a semantic status via `tone`.
-  - label: string
-  - size: "sm" | "md" | "lg" | null
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
 
 ### StatusListItem
 Status dot + title row with optional muted notes and trailing slot (e.g. badge).
