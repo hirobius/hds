@@ -172,6 +172,25 @@ describe('leftovers of the removed components', () => {
     expect(offenders).toEqual([]);
   });
 
+  it('src/styles/theme.css styles no hds-* class that no component or story names', () => {
+    // theme.css ships in styles.css. A class whose component is deleted (DocLinkCard's
+    // .hds-doc-link-card, StepperField's .hds-stepper-input, TextLockup's
+    // .hds-doc-section-*) is dead weight for every consumer. A class built in a
+    // template literal counts when a source names its prefix (`hds-card--${tone}`).
+    const sources = readdirSync(resolve(ROOT, 'src'), { recursive: true, encoding: 'utf8' })
+      .filter((f) => /\.(ts|tsx)$/.test(f) && !/\.test\.tsx?$/.test(f))
+      .map((f) => read(`src/${f}`))
+      .join('\n');
+    const named = (cls: string) =>
+      sources.includes(cls) ||
+      [...cls.matchAll(/-/g)].some((m) => sources.includes(`${cls.slice(0, m.index + 1)}\${`));
+    const classes = new Set(
+      [...read('src/styles/theme.css').matchAll(/\.(hds-[\w-]+)/g)].map((m) => m[1]),
+    );
+    expect(classes.size).toBeGreaterThanOrEqual(5);
+    expect([...classes].filter((cls) => !named(cls)).sort()).toEqual([]);
+  });
+
   it('.token-path-baseline.txt names only files that exist', () => {
     const missing = read('.token-path-baseline.txt')
       .split('\n')

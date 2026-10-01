@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-01T10:03:42.076Z",
+  "generated": "2026-10-01T11:26:04.814Z",
   "byToken": {
     "--semantic-space-scale-xs": [
       "src/app/components/alert.tsx",
@@ -678,7 +678,6 @@
       "src/styles/__tests__/interactive-surface-tokens.test.ts",
       "src/styles/static.css",
       "src/styles/tenants.css",
-      "src/styles/theme.css",
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
@@ -3918,7 +3917,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/tenants.css",
-      "src/styles/theme.css",
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
@@ -6489,8 +6487,6 @@
       "--semantic-color-surface-hover",
       "--semantic-color-border-accent",
       "--component-tag-activeHover",
-      "--role-radius",
-      "--semantic-color-surface-accentSubtle",
       "--semantic-typography-body-font-family",
       "--semantic-typography-body-font-size",
       "--semantic-typography-body-font-weight",

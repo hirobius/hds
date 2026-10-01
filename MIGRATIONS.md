@@ -270,7 +270,11 @@ in 0.20.0, no replacement" for a manual edit (the list is
 `codemods/removed-0.20.json`). It reads named imports only: a removed name read
 through a namespace import or a dynamic `import()` is left to the type checker.
 Their stories, manifest specs, Figma disposition rows, Code Connect exemptions
-and staging-promotion entries go with them. ButtonGroup, ContextMenu and
+and staging-promotion entries go with them, and so do the `styles.css` and
+`tokens.css` rules only they used: `.hds-doc-link-card` (DocLinkCard),
+`.hds-stepper-input` (StepperField), `.hds-doc-section-header` and
+`.hds-doc-section-copy-icon` (TextLockup), and `.hds-page-enter` with its
+keyframes (HdsSystemDocLayout). ButtonGroup, ContextMenu and
 HoverCard also leave the curated core set, which is 39 components now.
 
 | Removed                     | From        | Use instead                                                                                                                                     | Codemod                                                                        |
