@@ -9,7 +9,7 @@ export const meta = {
 }
 
 const TRAILERS = `Commit message: "<scope>(<area>): <summary>" body explaining the why, then these two trailer lines exactly:
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Co-Authored-By: <the trailer named in the session attribution reminder>
 Claude-Session: https://claude.ai/code/session_01YaJAxDFfxi1XRSGfV8i6ck
 Never read or write .env* files; never use --no-verify; never push (the orchestrator, or Adrian for ops, pushes); never rewrite commits already on the branch; never run pnpm check:release, deploy commands or bulk pnpm lint:fix; never skip, disable or quarantine a test; never touch Figma. Your final output is data for an orchestrator, not prose: fill the structured output honestly, including gates you could not run and why.`
 

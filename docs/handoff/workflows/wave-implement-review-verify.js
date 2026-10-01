@@ -14,7 +14,7 @@ Rules that are not negotiable: never read or write .env* files; never edit .gith
 Method: /implement + /tdd. Write the failing test first, make it pass, refactor. Keep the diff to what the ticket needs.
 Before committing run, in this order, and fix anything red: pnpm typecheck; pnpm lint; pnpm exec vitest run <the test files you touched or added>; node scripts/check-manifest-drift.mjs (after pnpm manifest:generate if you changed component JSDoc, exports or story attribution); pnpm api:check (if exports changed, run pnpm api:update first and explain); node scripts/check-story-coverage.mjs; node scripts/check-sync-map.mjs --check (use --write and commit the regenerated docs/sync-map.json when attribution legitimately changes). Then commit with git (pre-commit hooks run prettier, typecheck, eslint, verify-tokens, check-contrast, check-sync-map, story-coverage, check-contract-coverage, check-pure-annotations; if a hook fails, fix and re-commit, never bypass). Add a .changeset/*.md (patch) in the same commit when src/ changes; use "skip-changeset" in the commit message when only scripts/ or docs change. Do NOT bump status.json; the orchestrator does that at merge time.
 Commit message: "<scope>(<area>): <summary>" body explaining the why, then these two trailer lines exactly:
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Co-Authored-By: <the trailer named in the session attribution reminder>
 Claude-Session: https://claude.ai/code/session_01YaJAxDFfxi1XRSGfV8i6ck
 Your final output is data for an orchestrator, not prose for a human: fill the structured output honestly, including gates you could not run and why.`
 
