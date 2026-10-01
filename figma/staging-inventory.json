@@ -43,11 +43,6 @@
       "variants": null,
       "node": "2042-71"
     },
-    "CinematicLink": {
-      "kind": "set",
-      "variants": 2,
-      "node": "2040-34"
-    },
     "CircularProgress": {
       "kind": "set",
       "variants": 15,
@@ -172,11 +167,6 @@
       "kind": "set",
       "variants": 12,
       "node": "2028-27"
-    },
-    "Token": {
-      "kind": "set",
-      "variants": 4,
-      "node": "2041-61"
     },
     "Tokenizer": {
       "kind": "set",

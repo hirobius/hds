@@ -71,6 +71,13 @@
  * Storybook-built reference site. `component-api.json` now has two importers:
  * api-reference.tsx and component-instance-matrix.tsx. See docs/adr/029-decisions-carried-over.md.
  *
+ * Note (hds#389 R1, 2026-10-01): both importers named above are gone.
+ * api-reference.tsx moved to src/docs-tooling/ in hds#299 and was deleted with
+ * that tree in hds#391, and component-instance-matrix.tsx was deleted with
+ * ComponentInstanceMatrix in 0.20.0, so nothing under src/ imports
+ * component-api.json now (it still ships as a package file). The importer lists
+ * above are history; no budget changed.
+ *
  * Re-baselined 2026-09-30, manifest entry only: 54.46 kB -> 55.71 kB after
  * hds#334 (Radix passthrough props for 7 overlay parts), hds#342 (the
  * curated icon set) and hds#337 (three screen patterns plus a live

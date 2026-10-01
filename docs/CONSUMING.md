@@ -213,7 +213,7 @@ export function Example() {
 
 | Import                                  | What you get                                                                                                                  |
 | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`)                                                 |
+| `@hirobius/design-system`               | The core components + the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns`             |
 | `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding)                               |
 | `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                   |
 | `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                  |
@@ -226,6 +226,8 @@ export function Example() {
 | `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                         |
 | `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                  |
 | `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14) |
+| `@hirobius/design-system/patterns`      | The `pattern`-tier components (`Page`, `Form`, `FormField`, shells, feeds, pickers); root copies removed in 0.20.0            |
+| `@hirobius/design-system/icons`         | Curated Lucide icon set for `IconButton` / `Icon` (see §15)                                                                   |
 
 ### Semantic feedback / status tokens
 
@@ -287,8 +289,9 @@ import {
 
 ## 8.5 Optional — typed, schema-validated forms (React Hook Form + Zod)
 
-The main barrel is validation-agnostic: `FormField` takes a plain `error`
-string, so you bring your own validation. If you want a batteries-included
+The plain `FormField` (from `@hirobius/design-system/patterns`) is
+validation-agnostic: it takes a plain `error` string, so you bring your own
+validation. If you want a batteries-included
 layer, the `/form` subpath wires [React Hook Form](https://react-hook-form.com)
 to [Zod](https://zod.dev). It's opt-in — `react-hook-form`, `zod`, and
 `@hookform/resolvers` are **optional peer deps**, so they only land in your
@@ -338,7 +341,8 @@ function ApplyForm() {
   validation (no native browser popups racing your schema).
 - `HdsFormField` — a **render-prop**: spread the supplied props onto your
   control. It binds the control to RHF by `name` and shows the field's Zod
-  error through the same label/error/aria markup as the core `FormField`. (It's
+  error through the same label/error/aria markup as the `FormField` in
+  `@hirobius/design-system/patterns`. (It's
   a render-prop, not a cloned child, so RHF's callback ref attaches cleanly.)
 
 **SSR / Astro / Next.js RSC:** this layer is client-only (RHF uses hooks +

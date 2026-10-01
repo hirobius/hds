@@ -9,6 +9,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   countConsumerUsage,
+  consumerAliases,
   measureConsumer,
   parseRootAliases,
   renderInUseBlock,
@@ -63,9 +64,12 @@ describe('parseRootAliases (hds#390)', () => {
     });
   });
 
-  it('reads the real barrel, where HdsCheckbox is an alias of Checkbox', () => {
-    const aliases = parseRootAliases(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
+  it('still resolves HdsCheckbox to Checkbox after 0.20.0 removed the alias from the barrel', () => {
+    const index = readFileSync(join(REPO, 'src/index.ts'), 'utf8');
+    expect(parseRootAliases(index).has('HdsCheckbox')).toBe(false);
+    const aliases = consumerAliases(index);
     expect(aliases.get('HdsCheckbox')).toBe('Checkbox');
+    expect(aliases.get('HdsTooltip')).toBe('Tooltip');
   });
 });
 

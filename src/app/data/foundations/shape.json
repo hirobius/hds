@@ -82,24 +82,17 @@
     {
       "name": "CARD - border-radius and border color",
       "code": "style={{\n  borderRadius: primitive.radius.8,\n  border: `${primitive.borderWidth.xs} solid var(--semantic-color-border-default)`,\n  background: 'var(--semantic-color-surface-raised)',\n}}",
-      "tokensUsed": [
-        "primitive.radius.8",
-        "semantic.color.border.default"
-      ]
+      "tokensUsed": ["primitive.radius.8", "semantic.color.border.default"]
     },
     {
       "name": "BUTTON - global action radius",
       "code": "style={{\n  borderRadius: semantic.radius.action,  // 4px - rounded action corners, brand identity\n  border: 'none',\n  padding: `${primitive.space.2} ${primitive.space.3}`,\n}}",
-      "tokensUsed": [
-        "semantic.radius.action"
-      ]
+      "tokensUsed": ["semantic.radius.action"]
     },
     {
       "name": "BADGE / CHIP - pill radius",
       "code": "style={{\n  borderRadius: primitive.radius.full,  // 9999px\n  padding: `${primitive.space.1} ${primitive.space.2}`,\n}}",
-      "tokensUsed": [
-        "primitive.radius.full"
-      ]
+      "tokensUsed": ["primitive.radius.full"]
     }
   ],
   "mappings": [
@@ -131,7 +124,7 @@
       "token": "semantic.radius.action",
       "css": "--semantic-radius-action",
       "figma": "semantic/radius/action",
-      "component": "HdsButton, Input, HdsSelect, HdsToggle, Token"
+      "component": "Button, Input, Select, Toggle"
     },
     {
       "token": "semantic.color.border.default",

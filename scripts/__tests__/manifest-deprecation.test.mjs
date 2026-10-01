@@ -18,18 +18,19 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
 
 describe('committed manifest', () => {
-  it('marks exactly the five hds#232 docs/lab internals deprecated, removed in 1.0.0', () => {
+  it('has no spec for the five hds#232 docs/lab internals 0.20.0 removed, and none deprecated', () => {
+    for (const gone of [
+      'CinematicLink',
+      'ComponentInstanceMatrix',
+      'FoundationSwatch',
+      'Sketch',
+      'Token',
+    ])
+      expect(manifest.componentSpecs[gone], gone).toBeUndefined();
     const deprecated = Object.entries(manifest.componentSpecs)
       .filter(([, spec]) => spec.deprecated)
-      .map(([name, spec]) => [name, spec.removeIn]);
-    expect(deprecated.sort()).toEqual([
-      ['CinematicLink', '1.0.0'],
-      ['ComponentInstanceMatrix', '1.0.0'],
-      ['FoundationSwatch', '1.0.0'],
-      ['Sketch', '1.0.0'],
-      ['Token', '1.0.0'],
-    ]);
-    expect(manifest.componentSpecs.Token.deprecated).toMatch(/^Token is an HDS docs\/lab internal/);
+      .map(([name]) => name);
+    expect(deprecated).toEqual([]);
   });
 
   it('never carries removeIn or useInstead on a spec that is not deprecated', () => {

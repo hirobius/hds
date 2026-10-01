@@ -18,8 +18,9 @@
  *
  * Scope (hds#390): only `<root>/src` counts as usage; the consumer's scripts,
  * tests outside src/ and fixtures do not ship. Barrel aliases resolve to their
- * target through the `export { X as Y }` lines of src/index.ts, so an import
- * of the deprecated `HdsCheckbox` counts as `Checkbox`. Line-start imports in
+ * target through the `export { X as Y }` lines of src/index.ts and the `Hds*`
+ * aliases 0.20.0 removed (codemods/hds-prefix.mjs), so an import of
+ * `HdsCheckbox` counts as `Checkbox`. Line-start imports in
  * `<root>/scripts` are the code examples in the consumer's generation prompts
  * (ops page-clone.mjs and video-clone.mjs): they are recorded as
  * `promptContracts`, the components generated code is told to import, and are
@@ -35,6 +36,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RENAMES as HDS_PREFIX_RENAMES } from '../codemods/hds-prefix.mjs';
 
 export const IN_USE_BLOCK = 'consumer-usage';
 const SKIP_DIRS = new Set([
@@ -79,6 +81,19 @@ export function parseRootAliases(indexSource) {
     }
   }
   return aliases;
+}
+
+/**
+ * Aliases a consumer may still import: the barrel's own `export { X as Y }`
+ * lines plus the `Hds*` aliases 0.20.0 removed (hds#389), read from the
+ * hds-prefix codemod that rewrites them. A consumer pinned below 0.20 still
+ * imports `HdsCheckbox`, and that is a use of `Checkbox`.
+ *
+ * @param {string} indexSource src/index.ts text
+ * @returns {Map<string, string>}
+ */
+export function consumerAliases(indexSource) {
+  return new Map([...Object.entries(HDS_PREFIX_RENAMES), ...parseRootAliases(indexSource)]);
 }
 
 /** Files under `dir` that import components from the package, and the names they import. */
@@ -213,7 +228,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (root) {
     const git = (...a) => execFileSync('git', ['-C', root, ...a], { encoding: 'utf8' }).trim();
     const manifest = JSON.parse(readFileSync(join(REPO, 'public/hds-manifest.json'), 'utf8'));
-    const aliases = parseRootAliases(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
+    const aliases = consumerAliases(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
     Object.assign(snapshot, {
       ...measureConsumer(root, new Set(Object.keys(manifest.componentSpecs)), aliases),
       scope: 'src',

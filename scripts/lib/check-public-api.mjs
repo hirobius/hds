@@ -149,7 +149,7 @@ function resolveRelativeImport(fromFile, specifier) {
  * the /contexts entry is nothing but `export *` lines, so it recorded no
  * symbols). Returns an alphabetically-sorted, deduped string list.
  */
-function collectModuleSymbols(absolutePath, seen = new Set()) {
+export function collectModuleSymbols(absolutePath, seen = new Set()) {
   if (seen.has(absolutePath)) return [];
   seen.add(absolutePath);
   const sourceFile = parse(absolutePath);

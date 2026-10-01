@@ -109,19 +109,23 @@ describe('readComponentTags — deprecation (hds#390)', () => {
 });
 
 describe('discoverHdsComponents — deprecations (hds#390)', () => {
-  it('finds exactly the five hds#232 docs/lab internals among the components, each removed in 1.0.0', () => {
-    // src/docs-tooling/lab also has deprecated JSDoc (no @removeIn: that tree
-    // is deleted outright, hds#391), so the assertion scopes to components.
-    const deprecated = discoverHdsComponents()
-      .components.filter((c) => c.deprecation && c.filePath.startsWith('src/app/components/'))
+  it('finds no deprecated component once 0.20.0 removed the five hds#232 docs/lab internals', () => {
+    // Deprecated JSDoc on a type or prop (ActivityFeed's ActivityStatus) does
+    // not deprecate a component, so the assertion scopes to components.
+    const { components } = discoverHdsComponents();
+    const deprecated = components
+      .filter((c) => c.deprecation && c.filePath.startsWith('src/app/components/'))
       .map((c) => [c.name, c.deprecation.removeIn]);
-    expect(deprecated.sort()).toEqual([
-      ['CinematicLink', '1.0.0'],
-      ['ComponentInstanceMatrix', '1.0.0'],
-      ['FoundationSwatch', '1.0.0'],
-      ['Sketch', '1.0.0'],
-      ['Token', '1.0.0'],
-    ]);
+    expect(deprecated).toEqual([]);
+    const names = components.map((c) => c.name);
+    for (const gone of [
+      'CinematicLink',
+      'ComponentInstanceMatrix',
+      'FoundationSwatch',
+      'Sketch',
+      'Token',
+    ])
+      expect(names).not.toContain(gone);
   }, 60_000);
 });
 

@@ -3,25 +3,34 @@
  * patterns-subpath codemod (hds#316, follows hds#254)
  *
  * Rewrites `import { Page } from '@hirobius/design-system'` to
- * `import { Page } from '@hirobius/design-system/patterns'` for every
- * pattern-tier component whose root re-export is deprecated. Other named
- * imports stay on the root. Aliases, `type` modifiers and multi-line layout
+ * `import { Page } from '@hirobius/design-system/patterns'` for every name the
+ * root stopped exporting in 0.20.0 (hds#389 R1): the 21 pattern components and
+ * their props types, parts, hooks and `*Variants`. The list also holds the six
+ * modules that were only ever on `/patterns` (StackedCardRail, PageHeader,
+ * MetricTiles, FormActions, DestructiveSection, DataTableSection); no root import
+ * of those ever resolved, so including them changes nothing. Other named imports
+ * stay on the root. Aliases, `type` modifiers and multi-line layout
  * are preserved; an existing `/patterns` import of the same kind is extended
  * instead of duplicated.
  *
  *   node codemods/patterns-subpath.mjs [--root <dir>] [--check] [--dry-run]
  *
  *   --root <dir>  directory to scan (default: current directory)
- *   --check       write nothing; exit 1 when a rewrite is needed or a root namespace
- *                 import (`import * as X`, `export *`) needs a manual look
+ *   --check       write nothing; exit 1 when a rewrite is needed, or when a root
+ *                 star re-export, or a namespace import or dynamic `import()`,
+ *                 `require()` or `vi.mock`/`jest.mock` of the root that reads a
+ *                 pattern name off the module (codemods/unrewritable.mjs), needs
+ *                 a manual look
  *   --dry-run     write nothing; print each import line before (-) and after (+), exit 0
  *
- * The name list is codemods/patterns-subpath.names.json, generated from
- * src/index.ts by `pnpm codemod:names`.
+ * The name list is codemods/patterns-subpath.names.json: what
+ * `@hirobius/design-system/patterns` exports and the root does not, generated
+ * by `pnpm codemod:names` (scripts/build-codemod-pattern-names.mjs).
  */
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { findUnrewritable as findHidden } from './unrewritable.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
 const SUBPATH = `${ROOT_PKG}/patterns`;
@@ -50,12 +59,6 @@ const namedRe = (pkg) =>
     `^([ \\t]*)(import|export)(\\s+type)?\\s*(?:([\\w$]+)\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*(['"])${esc(pkg)}\\6(;?)`,
     'gm',
   );
-// `import * as X`, `import D, * as X`, `export * from`, `export * as X from` on the root
-const namespaceRe = new RegExp(
-  `^[ \\t]*(?:import\\s+(?:[\\w$]+\\s*,\\s*)?\\*\\s*as\\s+[\\w$]+|export\\s+\\*(?:\\s*as\\s+[\\w$]+)?)\\s*from\\s*['"]${esc(ROOT_PKG)}['"]`,
-  'gm',
-);
-
 const specName = (spec) =>
   spec
     .replace(/^type\s+/, '')
@@ -67,9 +70,16 @@ const splitSpecs = (body) =>
     .map((s) => s.trim())
     .filter(Boolean);
 
-/** Namespace imports and star re-exports of the root: names are not visible, so no rewrite. */
-export function findUnrewritable(source) {
-  return [...source.matchAll(namespaceRe)].map((m) => m[0].trim());
+/**
+ * What the codemod cannot rewrite (codemods/unrewritable.mjs): a star re-export
+ * of the root, whose importers are in other files; and a namespace import or a
+ * dynamic `import()`, `require()`, `vi.mock` or `jest.mock` of the root in a file
+ * that reads a pattern name off something (`HDS.Page`, `m['Page']`,
+ * `const { Page } = …`). A bare `Page`, such as the `/patterns` import the
+ * codemod writes or a local type, is not a read.
+ */
+export function findUnrewritable(source, names = loadPatternNames()) {
+  return findHidden(source, ROOT_PKG, names);
 }
 
 /** Renders one import/export statement. */
@@ -181,7 +191,8 @@ export function runCodemod({ root, write = false, names = loadPatternNames() }) 
   for (const file of walk(root)) {
     const src = readFileSync(file, 'utf8');
     if (!src.includes(ROOT_PKG)) continue;
-    for (const stmt of findUnrewritable(src)) manual.push({ file: relative(root, file), stmt });
+    for (const stmt of findUnrewritable(src, names))
+      manual.push({ file: relative(root, file), stmt });
     const r = transformSource(src, names);
     if (!r.changed) continue;
     files.push({ file: relative(root, file), sites: r.sites, moved: r.moved, edits: r.edits });
@@ -209,7 +220,7 @@ function main(argv) {
   const res = runCodemod({ root: args.root, write });
   const summary = `${res.files.length} files, ${res.sites} import sites, ${res.names.length} names (${res.names.join(', ') || 'none'})`;
   const manualLines = res.manual.map(
-    (m) => `  ${m.file}: ${m.stmt} (namespace import: move pattern names to '${SUBPATH}' by hand)`,
+    (m) => `  ${m.file}: ${m.stmt} (move pattern names to '${SUBPATH}' by hand)`,
   );
   if (args.check) {
     if (res.sites > 0 || res.manual.length > 0) {

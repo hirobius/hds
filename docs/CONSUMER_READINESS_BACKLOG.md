@@ -32,9 +32,9 @@ They are listed at the bottom with exact next steps.
 ## P1 — missing components — ✅ COMPLETE
 
 All shipped (#17 / #20 / #21):
-Spinner, Skeleton, Progress, Avatar, Breadcrumb, Pagination, HdsCheckbox,
-HdsToggle/HdsRadio/HdsSlider (exported), Popover, Menu, Toast, Combobox,
-Form/FormField.
+Spinner, Skeleton, Progress, Avatar, Breadcrumb, Pagination, Checkbox,
+Toggle/Radio/Slider (exported), Popover, Menu, Toast, Combobox,
+Form/FormField (exported from `@hirobius/design-system/patterns` only since 0.20.0).
 
 | Optional follow-up                      | Status | Notes                                                                                                                                                                                                             |
 | --------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
