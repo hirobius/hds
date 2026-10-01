@@ -159,6 +159,24 @@ describe('collectPublicApi walks every package.json#exports JS entry (hds#390)',
     }
   });
 
+  // ECMAScript: `export * from './x'` re-exports every name of x except
+  // `default`. Recording x's default on the re-exporting entry listed a name no
+  // consumer can import, so diffing two releases (hds#447) reported a phantom
+  // `default` leaving `/patterns` in 0.20.0 (StackedCardRail had one).
+  it('does not forward a default export through export *', () => {
+    const root = fixture();
+    try {
+      writeFileSync(
+        join(root, 'src/app/components/b-parts.tsx'),
+        'export const BPart = 1;\nexport default BPart;\n',
+      );
+      const surface = collectPublicApi(root);
+      expect(surface.modules['@subpath/patterns']).toEqual(['A', 'AProps', 'B', 'BPart']);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it('covers /patterns and /contexts in the real package, including the /patterns-only modules', () => {
     const surface = collectPublicApi(REPO);
     const patterns = surface.modules['@subpath/patterns'] ?? [];
