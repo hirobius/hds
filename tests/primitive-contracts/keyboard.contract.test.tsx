@@ -17,48 +17,27 @@
 import { useState, type ReactElement } from 'react';
 import { describe, it, test, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Dialog } from '@/app/components/dialog';
 import { AlertDialog } from '@/app/components/alert-dialog';
 import { Popover } from '@/app/components/popover';
-import { Menu } from '@/app/components/menu';
 import { ContextMenu } from '@/app/components/context-menu';
 import { HoverCard } from '@/app/components/hover-card';
-import { Select } from '@/app/components/select';
 import { Tooltip } from '@/app/components/hds-tooltip';
-import { Combobox } from '@/app/components/combobox';
 import { MultiSelector } from '@/app/components/multi-selector';
+import {
+  user,
+  FRUIT,
+  DialogFixture,
+  MenuFixture,
+  SelectFixture,
+  ComboboxFixture,
+} from './overlay-fixtures';
 
 afterEach(cleanup);
-
-const user = () => userEvent.setup({ pointerEventsCheck: 0 });
-
-const FRUIT = [
-  { value: 'apple', label: 'Apple' },
-  { value: 'banana', label: 'Banana' },
-  { value: 'cherry', label: 'Cherry' },
-];
 
 /** Combobox regression: hirobius/hds#311. */
 const COMBOBOX_ISSUE = 'https://github.com/hirobius/hds/issues/311';
 
-// ── Fixtures ────────────────────────────────────────────────────────────────
-
-function DialogFixture() {
-  return (
-    <Dialog>
-      <Dialog.Trigger>Open dialog</Dialog.Trigger>
-      <Dialog.Content>
-        <Dialog.Header>
-          <Dialog.Title>Settings</Dialog.Title>
-          <Dialog.Description>Adjust things.</Dialog.Description>
-        </Dialog.Header>
-        <button type="button">First</button>
-        <button type="button">Second</button>
-      </Dialog.Content>
-    </Dialog>
-  );
-}
+// ── Fixtures (Dialog, Menu, Select, Combobox live in ./overlay-fixtures) ──────
 
 function AlertDialogFixture() {
   return (
@@ -92,19 +71,6 @@ function PopoverFixture() {
   );
 }
 
-function MenuFixture() {
-  return (
-    <Menu>
-      <Menu.Trigger>Actions</Menu.Trigger>
-      <Menu.Content>
-        <Menu.Item>Apple</Menu.Item>
-        <Menu.Item>Banana</Menu.Item>
-        <Menu.Item>Cherry</Menu.Item>
-      </Menu.Content>
-    </Menu>
-  );
-}
-
 function ContextMenuFixture() {
   return (
     <ContextMenu>
@@ -125,16 +91,6 @@ function HoverCardFixture() {
       <HoverCard.Content>Ada Lovelace</HoverCard.Content>
     </HoverCard>
   );
-}
-
-function SelectFixture() {
-  const [value, setValue] = useState('apple');
-  return <Select label="Fruit" options={FRUIT} value={value} onChange={setValue} />;
-}
-
-function ComboboxFixture() {
-  const [value, setValue] = useState<string | null>(null);
-  return <Combobox aria-label="Fruit" options={FRUIT} value={value} onChange={setValue} />;
 }
 
 function MultiSelectorFixture() {
