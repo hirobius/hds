@@ -127,6 +127,46 @@ describe('findRemoved', () => {
     ]);
   });
 
+  // hds#434: findRemoved read raw source, so a comment in the braces or before the
+  // statement, or a second statement on the line, hid a removed name and --check passed.
+  it.each([
+    [
+      'a block comment after it, before its comma',
+      `import { Toolbar /* c */, Button } from '${ROOT}';`,
+    ],
+    [
+      'a block comment after it, with no comma',
+      `import { Button, Toolbar /* c */ } from '${ROOT}';`,
+    ],
+    [
+      'a block comment holding a comma before it',
+      `import { Button, /* a, b */ Toolbar } from '${ROOT}';`,
+    ],
+    ['a // group line before it', `import {\n  Button,\n  // nav\n  Toolbar,\n} from '${ROOT}';`],
+    [
+      'a line comment after it, with no comma',
+      `import {\n  Button,\n  Toolbar // nav\n} from '${ROOT}';`,
+    ],
+    [
+      'a block comment before the statement',
+      `/* eslint-disable */ import { Toolbar } from '${ROOT}';`,
+    ],
+    [
+      'another import before it after ;',
+      `import { A } from 'a'; import { Toolbar } from '${ROOT}';`,
+    ],
+    ['a byte order mark', `﻿import { Toolbar } from '${ROOT}';`],
+  ])('reports a removed name past %s', (_label, src) => {
+    expect(findRemoved(`${src}\n`)).toEqual([
+      `Toolbar from '${ROOT}' (removed in 0.20.0, no replacement)`,
+    ]);
+  });
+
+  it('ignores an import inside a block comment or a template', () => {
+    expect(findRemoved(`/*\nimport { Toolbar } from '${ROOT}';\n*/\n`)).toEqual([]);
+    expect(findRemoved(`const doc = \`\nimport { Toolbar } from '${ROOT}';\n\`;\n`)).toEqual([]);
+  });
+
   it('ignores kept names, other packages, comments and strings', () => {
     const src = [
       `import { Button, Menu } from '${ROOT}';`,

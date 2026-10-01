@@ -63,6 +63,11 @@ that reads a pattern name off something: `HDS.Page`, `m['Page']`,
 `import('@hirobius/design-system').then((m) => m.Page)`,
 `const { Page } = require(…)`. A bare `Page`, such as the `/patterns` import the
 codemod wrote, does not count, so a migrated file passes `--check`.
+Comments in the braces move with their specifier, and an import after `;` or a
+comment on its line is read too (hds#434). A file the codemod cannot read to its
+end is listed as unreadable and keeps `--check` at exit 1: in JSX text, a lone
+backtick or a `/*` (as in `src/*.ts`) opens a template or comment that never
+closes, so write it as ``{'`'}`` or `{'/*'}`.
 `node_modules`, `dist` and `.git` are skipped.
 
 Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
@@ -223,6 +228,7 @@ or through a namespace import or a dynamic `import()`, `require()`, `vi.mock` or
 `jest.mock` of the root in a file that reads an alias off something
 (`HDS.HdsSlider`, `m['HdsToggle']`, `const { HdsRadio } = require(…)`);
 `--check` exits 1 and lists those for a manual edit.
+It also lists a file it cannot read to its end, as `hds-patterns-subpath` does.
 
 | Removed from `@hirobius/design-system` | Use instead | Codemod                                                      |
 | -------------------------------------- | ----------- | ------------------------------------------------------------ |

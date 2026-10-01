@@ -26,8 +26,8 @@
  *   --check       write nothing; exit 1 when a rewrite is needed, or when a root
  *                 star re-export, or a namespace import or dynamic `import()`,
  *                 `require()` or `vi.mock`/`jest.mock` of the root that reads an
- *                 Hds* name off the module (codemods/unrewritable.mjs), needs a
- *                 manual look
+ *                 Hds* name off the module, or a file that cannot be read to its
+ *                 end (codemods/unrewritable.mjs), needs a manual look
  *   --dry-run     write nothing; print each changed line before (-) and after (+), exit 0
  */
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
@@ -183,7 +183,11 @@ function main(argv) {
   const res = runCodemod({ root: args.root, write });
   const names = res.names.map((n) => `${n} -> ${RENAMES[n]}`).join(', ') || 'none';
   const summary = `${res.files.length} files, ${res.sites} import sites, ${res.names.length} names (${names})`;
-  const manualLines = res.manual.map((m) => `  ${m.file}: ${m.stmt} (use the bare names by hand)`);
+  // An unreadable file names its own fix; the rest need the bare names by hand.
+  const manualLines = res.manual.map(
+    (m) =>
+      `  ${m.file}: ${m.stmt}${m.stmt.startsWith('unreadable ') ? '' : ' (use the bare names by hand)'}`,
+  );
   if (args.check) {
     if (res.files.length > 0 || res.manual.length > 0) {
       console.error(`hds-prefix: rewrite needed: ${summary}`);

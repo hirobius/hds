@@ -281,6 +281,99 @@ describe('findUnrewritable', () => {
   });
 });
 
+// hds#434: the transform matched raw source, so a comment in the braces or before
+// the statement, or a second statement on the line, left a pattern name on the
+// root import, and --check passed because a second run saw nothing to move.
+describe('transformSource: comments and same-line statements (hds#434)', () => {
+  it.each([
+    [
+      'a block comment after a specifier, before its comma',
+      `import { Page /* c */, Button } from '${ROOT}';\n`,
+      `import { Button } from '${ROOT}';\nimport { Page /* c */ } from '${SUB}';\n`,
+    ],
+    [
+      'a block comment after the last specifier, with no comma',
+      `import { Button, Page /* c */ } from '${ROOT}';\n`,
+      `import { Button } from '${ROOT}';\nimport { Page /* c */ } from '${SUB}';\n`,
+    ],
+    [
+      'a block comment holding a comma before a specifier',
+      `import { Button, /* a, b */ Page } from '${ROOT}';\n`,
+      `import { Button } from '${ROOT}';\nimport { /* a, b */ Page } from '${SUB}';\n`,
+    ],
+    [
+      'a line comment after the last specifier, with no comma',
+      `import {\n  Button,\n  Page // the shell\n} from '${ROOT}';\n`,
+      `import {\n  Button,\n} from '${ROOT}';\nimport {\n  Page, // the shell\n} from '${SUB}';\n`,
+    ],
+    [
+      'a block comment before the statement on its line',
+      `/* eslint-disable */ import { Page } from '${ROOT}';\n`,
+      `/* eslint-disable */ import { Page } from '${SUB}';\n`,
+    ],
+    [
+      'another import before it on the same line, after ;',
+      `import { A } from 'a'; import { Button, Page } from '${ROOT}';\n`,
+      `import { A } from 'a'; import { Button } from '${ROOT}';\nimport { Page } from '${SUB}';\n`,
+    ],
+    [
+      'a byte order mark before the first import',
+      `﻿import { Page } from '${ROOT}';\n`,
+      `﻿import { Page } from '${SUB}';\n`,
+    ],
+  ])('moves a pattern name past %s', (_label, src, want) => {
+    const out = transformSource(src, NAMES);
+    expect(out.source).toBe(want);
+    expect(out.moved).toEqual(['Page']);
+    expect(transformSource(out.source, NAMES).changed).toBe(false);
+  });
+
+  it('moves every pattern name of the hds#434 repro and keeps the group comments', () => {
+    const src = `import {\n  // layout\n  Stack,\n  Page,\n  // forms\n  Form,\n} from '${ROOT}';\n`;
+    const out = transformSource(src, new Set([...NAMES, 'Form']));
+    expect(out.moved).toEqual(['Page', 'Form']);
+    expect(out.source).toBe(
+      `import {\n  // layout\n  Stack,\n} from '${ROOT}';\nimport {\n  Page,\n  // forms\n  Form,\n} from '${SUB}';\n`,
+    );
+  });
+
+  it('keeps a comment after a comma with the specifier before it, and one before the brace with the root', () => {
+    const src = `import {\n  Stack, // layout\n  Page, /* shell */\n  Button,\n  // more later\n} from '${ROOT}';\n`;
+    expect(transformSource(src, NAMES).source).toBe(
+      `import {\n  Stack, // layout\n  Button,\n  // more later\n} from '${ROOT}';\nimport {\n  Page, /* shell */\n} from '${SUB}';\n`,
+    );
+  });
+
+  it('keeps comments inside a specifier and a type modifier', () => {
+    const src = `import type { Button, Page /* p */ as Screen } from '${ROOT}';\n`;
+    expect(transformSource(src, NAMES).source).toBe(
+      `import type { Button } from '${ROOT}';\nimport type { Page /* p */ as Screen } from '${SUB}';\n`,
+    );
+  });
+
+  it('treats an import inside a block comment or a template as text', () => {
+    for (const src of [
+      `/*\nimport { Page } from '${ROOT}';\n*/\n`,
+      `const doc = \`\nimport { Page } from '${ROOT}';\n\`;\n`,
+    ])
+      expect(transformSource(src, NAMES).changed).toBe(false);
+  });
+
+  it('folds a statement into an existing /patterns import and keeps the comment before it', () => {
+    const src = `/* eslint-disable */ import { Page } from '${ROOT}';\nimport { Reveal } from '${SUB}';\n`;
+    expect(transformSource(src, NAMES).source).toBe(
+      `/* eslint-disable */\nimport { Reveal, Page } from '${SUB}';\n`,
+    );
+  });
+
+  it('merges a commented specifier into a single-line /patterns import on its own line', () => {
+    const src = `import {\n  Button,\n  Page, // shell\n} from '${ROOT}';\nimport { Reveal } from '${SUB}';\n`;
+    expect(transformSource(src, NAMES).source).toBe(
+      `import {\n  Button,\n} from '${ROOT}';\nimport {\n  Reveal,\n  Page, // shell\n} from '${SUB}';\n`,
+    );
+  });
+});
+
 describe('transformSource: idempotence', () => {
   it('a second run changes nothing', () => {
     for (const src of [
@@ -383,6 +476,53 @@ describe('CLI', () => {
     expect(check.status).toBe(0);
     expect(run('--root', root).stdout).toMatch(/rewrote 0 files/);
     expect(readFileSync(file, 'utf8')).toBe(once);
+  });
+
+  // hds#434 Done: --check exits 1 on the repro, and 0 after a real run.
+  it('the hds#434 repro and every same-line form: --check exits 1, a real run moves all, then --check exits 0', () => {
+    const root = join(dir, 'repro');
+    mkdirSync(root);
+    const files = {
+      'group.tsx': `import {\n  // layout\n  Stack,\n  Page,\n  // forms\n  Form,\n} from '${ROOT}';\n`,
+      'eslint.tsx': `/* eslint-disable */ import { Page } from '${ROOT}';\n`,
+      'same-line.tsx': `import { useState } from 'react'; import { Form } from '${ROOT}';\n`,
+      'bom.tsx': `﻿import { Reveal } from '${ROOT}';\n`,
+      'trailing.tsx': `import { Stack, Page /* the shell */ } from '${ROOT}';\n`,
+    };
+    for (const [name, body] of Object.entries(files)) writeFileSync(join(root, name), body);
+    expect(run('--check', '--root', root).status).toBe(1);
+    expect(run('--root', root).status).toBe(0);
+    const out = (name) => readFileSync(join(root, name), 'utf8');
+    expect(out('group.tsx')).toBe(
+      `import {\n  // layout\n  Stack,\n} from '${ROOT}';\nimport {\n  Page,\n  // forms\n  Form,\n} from '${SUB}';\n`,
+    );
+    expect(out('eslint.tsx')).toBe(`/* eslint-disable */ import { Page } from '${SUB}';\n`);
+    expect(out('same-line.tsx')).toBe(
+      `import { useState } from 'react'; import { Form } from '${SUB}';\n`,
+    );
+    expect(out('bom.tsx')).toBe(`﻿import { Reveal } from '${SUB}';\n`);
+    expect(out('trailing.tsx')).toBe(
+      `import { Stack } from '${ROOT}';\nimport { Page /* the shell */ } from '${SUB}';\n`,
+    );
+    const check = run('--check', '--root', root);
+    expect(check.stderr).toBe('');
+    expect(check.status).toBe(0);
+  });
+
+  // hds#434: a file the detector cannot read to its end used to pass silently.
+  it('--check exits 1 and names a file it cannot read to the end, before and after a real run', () => {
+    const root = join(dir, 'unreadable');
+    mkdirSync(root);
+    writeFileSync(
+      join(root, 'a.tsx'),
+      `import { Button } from '${ROOT}';\nexport const A = () => <p>Matches src/*.ts</p>;\n`,
+    );
+    const r = run('--check', '--root', root);
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/a\.tsx: unreadable from line 2: a block comment never closes/);
+    expect(r.stderr).not.toMatch(/by hand/);
+    expect(run('--root', root).status).toBe(0);
+    expect(run('--check', '--root', root).status).toBe(1);
   });
 
   it.each([
