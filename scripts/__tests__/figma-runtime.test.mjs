@@ -19,7 +19,9 @@ import {
   buildUseFigmaPushScript,
   buildUseFigmaSnapshotScript,
   buildDevPlugin,
+  buildPromotePlugin,
   buildPushPayload,
+  buildSyncPlugin,
   PUSH_CHUNKS,
   runtimeSource,
 } from '../lib/figma-scripts.mjs';
@@ -205,6 +207,55 @@ describe('use_figma scripts', () => {
       );
       expect(figma.writes).toEqual([]);
     });
+  });
+});
+
+describe('Sync plugin manifest (figma/push/plugin, hds#411)', () => {
+  const links = JSON.parse(readFileSync(join(HERE, '..', '..', 'figma', 'links.json'), 'utf8'));
+  const manifest = JSON.parse(buildSyncPlugin(links)['manifest.json']);
+
+  it('keeps the id Figma already imported, so no re-import is needed', () => {
+    expect(manifest.id).toBe('hds-tokens-sync-dev');
+    expect(manifest.name).toBe('HDS tokens sync');
+  });
+
+  it('declares Sync, Plan, Check and Mark, and asks Figma for the file key', () => {
+    expect(manifest.menu.filter((m) => m.command)).toEqual([
+      { name: 'Sync', command: 'sync' },
+      { name: 'Plan (dry run)', command: 'plan' },
+      { name: 'Check this file', command: 'check' },
+      { name: 'Mark this file as HDS staging', command: 'mark' },
+    ]);
+    expect(manifest.enablePrivatePluginApi).toBe(true);
+  });
+
+  it('may reach exactly one origin: the Storybook deploy that serves the bundle', () => {
+    expect(manifest.networkAccess.allowedDomains).toEqual([
+      'https://hirobius-design-system.vercel.app',
+    ]);
+    expect(manifest.networkAccess.reasoning).toMatch(/data only/);
+    expect(Object.keys(manifest.networkAccess).sort()).toEqual(['allowedDomains', 'reasoning']);
+  });
+});
+
+describe("promote plugin (figma/push/promote): today's baked plugin, renamed", () => {
+  it('equals buildDevPlugin output except the manifest id and name, with and without prune', () => {
+    for (const options of [{}, { prune: true, renames: { 'a.b': 'a.c' } }]) {
+      const baked = buildDevPlugin(model, options);
+      const promote = buildPromotePlugin(model, options);
+      expect(Object.keys(promote).sort()).toEqual(Object.keys(baked).sort());
+      expect(promote['code.js']).toBe(baked['code.js']);
+      expect(promote['ui.html']).toBe(baked['ui.html']);
+      const { id, name, ...rest } = JSON.parse(promote['manifest.json']);
+      const { id: bakedId, name: bakedName, ...bakedRest } = JSON.parse(baked['manifest.json']);
+      expect({ id, name }).toEqual({
+        id: 'hds-tokens-promote-dev',
+        name: 'HDS tokens promote (baked)',
+      });
+      expect({ id: bakedId, name: bakedName }).not.toEqual({ id, name });
+      expect(rest).toEqual(bakedRest);
+      expect(rest.networkAccess).toEqual({ allowedDomains: ['none'] });
+    }
   });
 });
 

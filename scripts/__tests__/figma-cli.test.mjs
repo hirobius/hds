@@ -26,13 +26,18 @@ import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
-import { planAgainstSnapshot, writePushArtifacts } from '../figma-push.mjs';
+import {
+  planAgainstSnapshot,
+  resolveBundleCommit,
+  writePushArtifacts,
+  writeSyncBundle,
+} from '../figma-push.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
 import { formatNativeImportSteps, writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
-import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
-import { buildPushPayload } from '../lib/figma-scripts.mjs';
+import { hdsChecksum, hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
+import { buildPushPayload, syncPluginBuild } from '../lib/figma-scripts.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { FIXTURE_TOKENS_PATH, newFixtureFile } from './helpers/figma-fixture.mjs';
 
@@ -45,10 +50,23 @@ afterEach(() => {
   dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
   dirs = [];
 });
+/** The figma/links.json fields the Sync plugin bakes in (test keys, the real names and host). */
+const LINKS = {
+  storybookUrl: 'https://hirobius-design-system.vercel.app',
+  libraryFileKey: 'LIBRARYKEY000000000000',
+  stagingFileKey: 'STAGINGKEY000000000000',
+  libraryFileName: 'HDS Tokens & Components',
+  stagingFileName: 'HDS Tokens & Components (Copy)',
+};
+const writeLinks = (root, links) => {
+  mkdirSync(join(root, 'figma'), { recursive: true });
+  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(links, null, 2));
+};
 const tempRoot = () => {
   const root = mkdtempSync(join(tmpdir(), 'hds-figma-'));
   dirs.push(root);
   copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
+  writeLinks(root, LINKS);
   return root;
 };
 /** Pushes the root's model (through `builder`, to emulate another builder) into a new file, edits it, snapshots it. */
@@ -64,16 +82,23 @@ const takeSnapshot = async (root, edit = async () => {}, builder = (model) => mo
 };
 
 describe('pnpm figma:push', () => {
-  it('writes the development plugin, one use_figma script per chunk, and the snapshot script', () => {
+  it('writes the Sync plugin, the promote plugin, one use_figma script per chunk, and the snapshot script', () => {
     const root = tempRoot();
     const outDir = join(root, 'figma', 'push');
     const result = writePushArtifacts({ root, outDir });
 
-    expect(readdirSync(join(outDir, 'plugin')).sort()).toEqual([
-      'code.js',
-      'manifest.json',
-      'ui.html',
-    ]);
+    for (const plugin of ['plugin', 'promote']) {
+      expect(readdirSync(join(outDir, plugin)).sort()).toEqual([
+        'code.js',
+        'manifest.json',
+        'ui.html',
+      ]);
+    }
+    expect(readFileSync(join(outDir, 'plugin', 'code.js'), 'utf8')).not.toContain('const PAYLOAD');
+    expect(readFileSync(join(outDir, 'promote', 'code.js'), 'utf8')).toContain('const PAYLOAD');
+    expect(JSON.parse(readFileSync(join(outDir, 'promote', 'manifest.json'), 'utf8')).id).toBe(
+      'hds-tokens-promote-dev',
+    );
     expect(readdirSync(join(outDir, 'use-figma')).sort()).toEqual([
       '01-primitive.js',
       '02-semantic.js',
@@ -96,9 +121,32 @@ describe('pnpm figma:push', () => {
     );
     const outDir = join(root, 'figma', 'push');
     writePushArtifacts({ root, outDir });
-    expect(readFileSync(join(outDir, 'plugin', 'code.js'), 'utf8')).toContain(
+    expect(readFileSync(join(outDir, 'promote', 'code.js'), 'utf8')).toContain(
       '"renames":{"semantic.typography.caption":"semantic.typography.eyebrow"}',
     );
+    const { bundle } = writeSyncBundle({ root, out: join(root, 'b.json'), commit: 'abcdef1' });
+    expect(bundle.payload.options.renames).toEqual({
+      'semantic.typography.caption': 'semantic.typography.eyebrow',
+    });
+  });
+
+  it('refuses to build when the staging and library keys are equal, or either is null', () => {
+    const cases = [
+      [{ ...LINKS, stagingFileKey: LINKS.libraryFileKey }, /stagingFileKey equals libraryFileKey/],
+      [{ ...LINKS, stagingFileKey: null }, /stagingFileKey/],
+      [{ ...LINKS, libraryFileKey: null }, /libraryFileKey/],
+      [{ ...LINKS, stagingFileName: undefined }, /stagingFileName/],
+    ];
+    for (const [links, message] of cases) {
+      const root = tempRoot();
+      writeLinks(root, links);
+      const outDir = join(root, 'figma', 'push');
+      expect(() => writePushArtifacts({ root, outDir })).toThrow(message);
+      expect(existsSync(outDir)).toBe(false);
+      const out = join(root, 'b.json');
+      expect(() => writeSyncBundle({ root, out, commit: 'abcdef1' })).toThrow(message);
+      expect(existsSync(out)).toBe(false);
+    }
   });
 
   it('refuses to write carriers for a model that fails its invariants', () => {
@@ -140,6 +188,111 @@ describe('pnpm figma:push', () => {
         /^Hirobius\/Semantic defaults to Dark, but the model's first mode is Light/,
       ),
     ]);
+  });
+});
+
+describe('pnpm figma:push --bundle', () => {
+  it('writes a bundle whose checksum and pluginBuild match the generated plugin', async () => {
+    const root = tempRoot();
+    const committed = await takeSnapshot(root);
+    writeFileSync(join(root, 'figma', 'snapshot.json'), committed);
+    const outDir = join(root, 'figma', 'push');
+    const { pluginBuild } = writePushArtifacts({ root, outDir });
+    const out = join(root, 'storybook-static', 'figma', 'sync-bundle.json');
+
+    const { bytes } = writeSyncBundle({ root, out, commit: 'abcdef1234567' });
+
+    const bundle = JSON.parse(readFileSync(out, 'utf8'));
+    expect(bytes).toBe(Buffer.byteLength(readFileSync(out, 'utf8')));
+    const plugin = Object.fromEntries(
+      ['code.js', 'ui.html', 'manifest.json'].map((name) => [
+        name,
+        readFileSync(join(outDir, 'plugin', name), 'utf8'),
+      ]),
+    );
+    expect(Object.keys(bundle)).toEqual([
+      'schemaVersion',
+      'commit',
+      'modelHash',
+      'payload',
+      'checksum',
+      'pluginBuild',
+      'pluginFiles',
+      'base',
+    ]);
+    expect(bundle.checksum).toBe(hdsChecksum(JSON.stringify(bundle.payload)));
+    expect(bundle.pluginBuild).toBe(syncPluginBuild(plugin));
+    expect(bundle.pluginBuild).toBe(pluginBuild);
+    expect(plugin['code.js']).toContain(`const PLUGIN_BUILD = '${bundle.pluginBuild}';`);
+    expect(bundle.pluginFiles['code.js']).toBe(hdsChecksum(plugin['code.js']));
+    expect(bundle.commit).toBe('abcdef1234567');
+    expect(bundle.payload.options).toEqual({
+      prune: false,
+      scope: null,
+      renames: {},
+      dryRun: false,
+    });
+    expect(bundle.base).toEqual(parseSnapshotFile(committed));
+  });
+
+  it('carries base: null while no snapshot is committed', () => {
+    const root = tempRoot();
+    const { bundle } = writeSyncBundle({ root, out: join(root, 'b.json'), commit: 'abcdef1' });
+    expect(bundle.base).toBeNull();
+  });
+
+  it('takes the commit from Vercel, then git, and otherwise fails naming the fix', () => {
+    expect(
+      resolveBundleCommit({ env: { VERCEL_GIT_COMMIT_SHA: 'abcdef1' }, git: () => 'f00' }),
+    ).toBe('abcdef1');
+    expect(resolveBundleCommit({ env: {}, git: () => '1234567abc' })).toBe('1234567abc');
+    expect(() => resolveBundleCommit({ env: {}, git: () => null })).toThrow(
+      /VERCEL_GIT_COMMIT_SHA.*Automatically expose System Environment Variables/s,
+    );
+  });
+
+  const runCli = (args, env = {}) =>
+    spawnSync(process.execPath, [join(REPO, 'scripts', 'figma-push.mjs'), ...args], {
+      cwd: REPO,
+      env: { ...cleanEnv(), ...env },
+      encoding: 'utf8',
+    });
+
+  it('writes the bundle from the real repo with no secret and no network', () => {
+    const root = mkdtempSync(join(tmpdir(), 'hds-figma-bundle-'));
+    dirs.push(root);
+    const out = join(root, 'deep', 'sync-bundle.json');
+    const run = runCli(['--bundle', out], {
+      VERCEL_GIT_COMMIT_SHA: '0123456789abcdef0123456789abcdef01234567',
+    });
+    expect(run.status, run.stdout + run.stderr).toBe(0);
+    const bundle = JSON.parse(readFileSync(out, 'utf8'));
+    expect(bundle.commit).toBe('0123456789abcdef0123456789abcdef01234567');
+    expect(bundle.payload.options.prune).toBe(false);
+    expect(run.stdout).toContain(bundle.pluginBuild);
+  });
+
+  it('fails loudly, with the reason and the fix, so a Vercel build cannot ship without it', () => {
+    const missing = runCli(['--bundle']);
+    expect(missing.status).toBe(1);
+    expect(missing.stderr).toMatch(/--bundle needs an output path/);
+    expect(missing.stderr).toMatch(/build stops here/);
+    const pruning = runCli(['--bundle', join(tmpdir(), 'never.json'), '--prune']);
+    expect(pruning.status).toBe(1);
+    expect(pruning.stderr).toMatch(/never prunes/);
+  });
+
+  it('runs in the Vercel build after Storybook, chained with && so its failure fails the deploy', () => {
+    const { buildCommand, outputDirectory } = JSON.parse(
+      readFileSync(join(REPO, 'vercel.json'), 'utf8'),
+    );
+    expect(outputDirectory).toBe('storybook-static');
+    const steps = buildCommand.split(' && ');
+    expect(steps.at(-1)).toBe(
+      'node scripts/figma-push.mjs --bundle storybook-static/figma/sync-bundle.json',
+    );
+    expect(steps.findIndex((s) => s.includes('build-storybook'))).toBeLessThan(steps.length - 1);
+    expect(buildCommand).not.toMatch(/\|\||;|&\s*$/);
   });
 });
 
