@@ -220,7 +220,7 @@ function parseTags(block, source) {
  *
  * @param {string} source module text
  * @param {string} exportName
- * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null , deprecation: { deprecated: string, removeIn?: string, useInstead?: string } | null }}
+ * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null, deprecation: { deprecated: string, removeIn?: string, useInstead?: string } | null }}
  */
 export function readComponentTags(source, exportName) {
   const fileBlock = findFileJsDocBlock(source);
