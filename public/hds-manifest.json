@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T22:26:53.989Z",
+  "generated": "2026-10-01T04:33:03.030Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -1950,10 +1950,12 @@
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
@@ -14975,6 +14977,13 @@
         "value": "96px"
       },
       {
+        "path": "primitive.size.120",
+        "cssVar": "--primitive-size-120",
+        "type": "dimension",
+        "description": "120px size step. Backs semantic.size.tile.",
+        "value": "120px"
+      },
+      {
         "path": "primitive.size.interactive.min",
         "cssVar": "--primitive-size-interactive-min",
         "type": "dimension",
@@ -16298,6 +16307,14 @@
         "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.tile",
+        "cssVar": "--semantic-size-tile",
+        "type": "dimension",
+        "description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403).",
+        "alias": "{primitive.size.120}",
+        "resolvedValue": "120px"
       },
       {
         "path": "semantic.size.row.compact",
