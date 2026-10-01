@@ -525,6 +525,23 @@ describe('delta.js refuses, writing nothing', () => {
     );
   });
 
+  it('a plan made in staging that is not the one --delta made (a slice patch edited, PLAN_CHECKSUM recomputed, planSum stale)', async () => {
+    const s = await pending();
+    const forgery = forged(s.built.text, (plan) => {
+      const accent = plan.slice
+        .flatMap((c) => c[3])
+        .find((v) => v[0] === 'semantic.color.surface.accent');
+      expect(accent[2].description).toBe("Accent surface, it's new.");
+      accent[2].description = 'Accent surface, forged.';
+      return plan;
+    });
+    await refuses(
+      s,
+      /the plan made in staging is not the one pnpm figma:push --delta made\. Nothing was written\. Ask Adrian to run Sync/,
+      forgery,
+    );
+  });
+
   /** A forged PLAN that asks for prune: under prune, a partial slice deletes everything outside it. */
   const prunes = {
     'a variable': {
