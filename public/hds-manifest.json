@@ -1759,7 +1759,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/grid.tsx",
-      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
+      "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -1773,6 +1773,7 @@
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
         "src/app/components/foundation-swatch.tsx",
+        "src/app/components/grid.test.tsx",
         "src/app/components/image-lightbox.tsx",
         "src/app/components/metric-tiles.test.tsx",
         "src/app/components/metric-tiles.tsx",
@@ -1809,6 +1810,7 @@
         "gap": {
           "type": "enum",
           "values": [
+            "medium",
             "tight",
             "normal",
             "inset",
@@ -1820,9 +1822,14 @@
           "type": "enum",
           "values": [
             "fixed",
-            "auto-fit"
+            "auto-fit",
+            "auto-fill"
           ],
           "default": "fixed"
+        },
+        "minItemWidth": {
+          "type": "string",
+          "optional": true
         },
         "style": {
           "type": "CSSProperties",
@@ -1843,6 +1850,7 @@
         "gap": {
           "type": "enum",
           "values": [
+            "medium",
             "tight",
             "normal",
             "inset",
@@ -1853,8 +1861,12 @@
           "type": "enum",
           "values": [
             "fixed",
-            "auto-fit"
+            "auto-fit",
+            "auto-fill"
           ]
+        },
+        "minItemWidth": {
+          "type": "string"
         },
         "subgrid": {
           "type": "boolean"
@@ -1892,6 +1904,7 @@
       ],
       "storyIds": [
         "primitives-grid--aside-layout",
+        "primitives-grid--auto-fill",
         "primitives-grid--auto-fit",
         "primitives-grid--three-column",
         "primitives-grid--two-column"
@@ -1910,7 +1923,7 @@
           }
         ]
       },
-      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
+      "aiRules": "Use Grid for spatial layout, not for surface styling or content padding. Do NOT apply background, border, or internal padding directly to Grid to mimic a card. Do NOT use arbitrary CSS grid templates when fixed, auto-fit, auto-fill, or subgrid modes already express the layout. Do NOT use Grid for simple one-dimensional stacks where Stack is sufficient."
     },
     "Icon": {
       "category": "Display",
@@ -6067,6 +6080,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.ts",
+        "src/app/components/grid.test.tsx",
+        "src/app/components/grid.tsx",
+        "src/stories/grid.stories.tsx",
         "src/stories/status-tile.stories.test.tsx",
         "src/stories/status-tile.stories.tsx",
         "src/stories/tile-grid.stories.tsx"

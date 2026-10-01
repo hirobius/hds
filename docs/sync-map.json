@@ -2064,11 +2064,12 @@
       "storyFiles": ["src/stories/grid.stories.tsx"],
       "storyIds": [
         "primitives-grid--aside-layout",
+        "primitives-grid--auto-fill",
         "primitives-grid--auto-fit",
         "primitives-grid--three-column",
         "primitives-grid--two-column"
       ],
-      "storyCount": 4,
+      "storyCount": 5,
       "figmaUrl": null,
       "figmaVia": null,
       "expectFigma": false,

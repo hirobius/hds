@@ -605,6 +605,7 @@
     "primitives-alert-dialog--dark-scope",
     "primitives-dialog--dark-scope",
     "primitives-combobox--open",
-    "primitives-select--open"
+    "primitives-select--open",
+    "primitives-grid--auto-fill"
   ]
 }

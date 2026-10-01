@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-01T06:40:41.076Z
+Generated: 2026-10-01T07:20:50.005Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -947,8 +947,9 @@ Grid — responsive grid composition primitive. Enforces semantic gap and column
   - children: ReactNode
   - className: string
   - columns: number = 12
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = inset
-  - layout: 'fixed' | 'auto-fit' = fixed
+  - gap: 'medium' | 'tight' | 'normal' | 'inset' | 'spacious' = inset
+  - layout: 'fixed' | 'auto-fit' | 'auto-fill' = fixed
+  - minItemWidth: string
   - style: CSSProperties
   - subgrid: boolean = false
 
