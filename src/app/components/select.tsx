@@ -18,7 +18,7 @@
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49
  */
 
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 import * as RSelect from '@radix-ui/react-select';
 import { ChevronDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
@@ -58,11 +58,14 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
   ref,
 ) {
   const selected = options.find((o) => o.value === value) ?? options[0];
+  const labelId = useId();
+  const labelShown = showLabel && Boolean(label);
 
   return (
     <div className="flex flex-col">
       {showLabel ? (
         <span
+          id={labelId}
           className="text-secondary"
           style={{ ...hds.typeStyles.caption, marginBottom: hds.semantic.space.scale.xs }}
         >
@@ -73,7 +76,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
       <RSelect.Root value={value} onValueChange={onChange}>
         <RSelect.Trigger
           ref={ref}
-          aria-label={showLabel && label ? `${label}: ${selected.label}` : selected.label}
+          aria-label={labelShown ? `${label}: ${selected.label}` : selected.label}
           className={cn(
             'hds-focus group flex w-full items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm',
             'border-input bg-muted text-foreground transition-colors',
@@ -90,6 +93,12 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           <RSelect.Content
             position="popper"
             sideOffset={4}
+            // Radix gives the listbox no name (hds#398). Point it at the visible
+            // label, as Radix points its other overlays at what names them; with
+            // the label hidden, carry its text; with no label text at all, fall
+            // back to the trigger's own name.
+            aria-labelledby={labelShown ? labelId : undefined}
+            aria-label={labelShown ? undefined : label || selected.label}
             // Radix Popper vars: match trigger width and cap height to the
             // collision-aware available space (replaces the old fixed top:100% panel).
             style={{
