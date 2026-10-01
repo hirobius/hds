@@ -97,15 +97,16 @@ export const REPLACEMENTS = [
 ];
 
 // Files/paths (repo-relative, forward-slash) this codemod never touches:
-// generated build output and generated audit/report snapshots.
+// generated build output and generated audit/report snapshots, and Box sx's
+// resolver and its test.
 const SKIP_FILES = new Set([
-  // box-sx.ts's resolver builds the deprecated var name dynamically
-  // (`` `var(--semantic-space-layout-${value})` ``, box-sx.ts ~L108) rather
-  // than as a literal string, so this codemod correctly can't (and
-  // shouldn't) touch that resolver — it's the one-resolver unification,
-  // hds#206 item #4, out of scope for this slice. Its test pins that
-  // still-deprecated literal output; skip it so the codemod doesn't rewrite
-  // the expectation out from under the (unchanged) code under test.
+  // Box sx's deprecated 'tight' | 'normal' | 'inset' | 'spacious' read the
+  // fixed `var(--semantic-space-layout-*)` vars until their 1.0 removal. The
+  // scale steps this codemod would swap in tighten under compact density, so
+  // the swap would change what Box renders
+  // (scripts/__tests__/spacing-computed-lock.test.mjs). Both files spell the
+  // four vars out so grep and the token usage map see them.
+  'src/app/components/box-sx.ts',
   'src/app/components/box-sx.test.ts',
   'src/app/design-system/generated-token-descriptions.ts',
   'src/app/design-system/generated-token-refs.ts',
@@ -156,6 +157,18 @@ export function applyReplacements(text) {
   return { text: out, count };
 }
 
+/**
+ * Applies the replacements to one file's text, unless the file is on the
+ * skip list.
+ * @param {string} rel - repo-relative, forward-slash path
+ * @param {string} text
+ * @returns {{ text: string, count: number }}
+ */
+export function rewriteFile(rel, text) {
+  if (SKIP_FILES.has(rel)) return { text, count: 0 };
+  return applyReplacements(text);
+}
+
 function main() {
   const checkOnly = process.argv.includes('--check');
   const files = collectFiles(SRC);
@@ -163,10 +176,8 @@ function main() {
   const changed = [];
   for (const file of files) {
     const rel = relative(ROOT, file).replace(/\\/g, '/');
-    if (SKIP_FILES.has(rel)) continue;
-
     const original = readFileSync(file, 'utf-8');
-    const { text, count } = applyReplacements(original);
+    const { text, count } = rewriteFile(rel, original);
     if (count === 0) continue;
 
     changed.push({ file: rel, count });
