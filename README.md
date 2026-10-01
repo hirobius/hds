@@ -12,9 +12,9 @@ pnpm add @hirobius/design-system
 
 <!-- auto:start:front-door-counts -->
 
-- **83** public component modules, exported from `src/index.ts`
+- **70** public component modules, exported from `src/index.ts`
 - **385** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **465** Storybook stories in **116** story files
+- **375** Storybook stories in **86** story files
 
 <!-- auto:end:front-door-counts -->
 
@@ -156,7 +156,7 @@ pnpm build-storybook
 
 HDS is built around three structural rules:
 
-- **Strict semantics** — public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `TextLockup` instead of raw layout divs or ad hoc CSS.
+- **Strict semantics** — public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `Text` instead of raw layout divs or ad hoc CSS.
 - **Polymorphism** — primitives preserve semantic HTML while staying composable through governed APIs such as `forwardRef`, `as`, and layout slots.
 - **12-column grid** — page structure follows a consistent editorial grid: readable center columns, intentional breakout zones, and explicit `gap` ownership rather than one-off spacing math.
 

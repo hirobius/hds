@@ -472,6 +472,3 @@ export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
 });
 
 export { CardHeader, CardTitle, CardDescription, CardBody, CardFooter, CardProgress, CardMetric };
-
-/** @internal — CVA variant helper; compose via Card props instead. */
-export { cardVariants };

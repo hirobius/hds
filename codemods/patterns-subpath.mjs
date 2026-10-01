@@ -24,6 +24,10 @@
  * The name list is codemods/patterns-subpath.names.json: what
  * `@hirobius/design-system/patterns` exports and the root does not, generated
  * by `pnpm codemod:names` (scripts/build-codemod-pattern-names.mjs).
+ *
+ * A name 0.20.0 removed with no replacement (codemods/removed-0.20.json, hds#394)
+ * has nowhere to move: an import of one from the root or `/patterns` is reported
+ * for a manual edit ("removed in 0.20.0, no replacement") and `--check` exits 1.
  */
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -48,6 +52,12 @@ const SKIP_DIRS = new Set([
 export function loadPatternNames() {
   const { names } = JSON.parse(readFileSync(join(HERE, 'patterns-subpath.names.json'), 'utf8'));
   return new Set(names);
+}
+
+/** Names 0.20.0 removed with no replacement (codemods/removed-0.20.json): reported, never moved. */
+export function loadRemovedNames() {
+  const { modules } = JSON.parse(readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'));
+  return new Set(Object.values(modules).flat());
 }
 
 const esc = (pkg) => pkg.replace(/[/@]/g, '\\$&');
@@ -88,6 +98,20 @@ export function findUnrewritable(source, names = loadPatternNames()) {
   const used = [...names].filter((name) => idents.has(name)).sort();
   if (used.length > 0) for (const call of calls) found.push(`${call} (uses ${used.join(', ')})`);
   return found;
+}
+
+/** Each named import or re-export of a removed name from the root or `/patterns`, in source order. */
+export function findRemoved(source, removed = loadRemovedNames()) {
+  const found = [];
+  for (const pkg of [ROOT_PKG, SUBPATH])
+    for (const m of source.matchAll(namedRe(pkg)))
+      for (const name of splitSpecs(m[5]).map(specName))
+        if (removed.has(name))
+          found.push({
+            at: m.index,
+            text: `${name} from '${pkg}' (removed in 0.20.0, no replacement)`,
+          });
+  return found.sort((a, b) => a.at - b.at).map((f) => f.text);
 }
 
 /** Renders one import/export statement. */
@@ -201,6 +225,8 @@ export function runCodemod({ root, write = false, names = loadPatternNames() }) 
     if (!src.includes(ROOT_PKG)) continue;
     for (const stmt of findUnrewritable(src, names))
       manual.push({ file: relative(root, file), stmt });
+    for (const stmt of findRemoved(src))
+      manual.push({ file: relative(root, file), stmt, removed: true });
     const r = transformSource(src, names);
     if (!r.changed) continue;
     files.push({ file: relative(root, file), sites: r.sites, moved: r.moved, edits: r.edits });
@@ -228,7 +254,8 @@ function main(argv) {
   const res = runCodemod({ root: args.root, write });
   const summary = `${res.files.length} files, ${res.sites} import sites, ${res.names.length} names (${res.names.join(', ') || 'none'})`;
   const manualLines = res.manual.map(
-    (m) => `  ${m.file}: ${m.stmt} (move pattern names to '${SUBPATH}' by hand)`,
+    (m) =>
+      `  ${m.file}: ${m.stmt}${m.removed ? '' : ` (move pattern names to '${SUBPATH}' by hand)`}`,
   );
   if (args.check) {
     if (res.sites > 0 || res.manual.length > 0) {

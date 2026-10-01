@@ -1,7 +1,7 @@
 /**
  * DemoStateContext — React context for freezing HDS component demos into a fixed visual state.
  *
- * Replaces the forceHover/forceFocus/forcePressed prop trio on Button and NavItem.
+ * Replaces the forceHover/forceFocus/forcePressed prop trio on Button.
  * Wrap any demo with <FreezeState state="hover"> and every HDS component inside will
  * render that visual state without wiring individual force props.
  *

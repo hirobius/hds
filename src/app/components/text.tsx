@@ -115,6 +115,3 @@ export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function 
     </Tag>
   );
 });
-
-/** @internal — CVA variant helper; compose via Text props instead. */
-export { textVariants };

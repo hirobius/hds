@@ -157,6 +157,3 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via MetadataList props instead. */
-export { metadataListVariants };

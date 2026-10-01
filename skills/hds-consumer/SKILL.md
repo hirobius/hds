@@ -35,7 +35,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Actions
 
 - `Button` — Triggers an action when activated.
-- `ButtonGroup` — Groups Button (or button-like) children into a single attached segment.
 - `IconButton` — IconButton ” icon-only action trigger built on the shared Button primitive.
 - `SelectableCard` — A card-shaped single checkbox — click or activate to toggle selection.
 - `ToggleButton` — A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
@@ -62,7 +61,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `StatusTile` — Block-layout sibling of StatusListItem.
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
-- `TextLockup` — TextLockup - governed title-and-description pairing primitive.
 - `Timestamp` — Presents a date/time with a machine-readable `dateTime` for accessibility.
 
 ### Feedback
@@ -81,9 +79,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
 - `Combobox` — Combobox — searchable single-select (Popover + filtered listbox).
-- `DateInput` — Text field + calendar popover for picking a single date.
-- `DateRangeInput` — DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget.
-- `DateTimeInput` — Text date field + calendar popover, paired with a native time field, producing one Date.
 - `Input` — Input — text field primitive with label, helper, and error slots.
 - `InputGroup` — A single-line input with optional `leading`/`trailing` adornments.
 - `MultiSelector` — MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one overlay pattern with Combobox and Menu rather than a bespoke widget.
@@ -91,12 +86,10 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `SegmentedControl` — SegmentedControl " segmented selection input for compact mutually-exclusive choices.
 - `Select` — Select — dropdown selector built on Radix Select (ADR-001 Radix convention).
 - `Slider` — Slider — range slider with label and value display.
-- `StepperField` — StepperField ” numeric input with decrement/increment controls.
 - `Tag` — Tag — interactive filter and category chip.
 - `Textarea` — Textarea — multi-line text field primitive with label, helper, and error slots.
 - `TimeInput` — A native time field skinned with HDS input chrome.
 - `Toggle` — Toggle — boolean on/off toggle with animated thumb.
-- `Tokenizer` — A bordered field of Tag chips followed by a text input for adding more.
 
 ### Layout
 
@@ -122,7 +115,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Breadcrumb` — Breadcrumb trail.
 - `InlineLink` — InlineLink ” inline navigation and external-link primitive for body copy.
-- `NavGroup` — NavGroup - labeled navigation group for stacks of nav items.
 - `Pagination` — Paged navigation with first/last anchors, sibling pages, and ellipses.
 - `Tabs` — The tab set itself.
 - `TabsContent` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
@@ -132,7 +124,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Overlays
 
 - `AlertDialog` — AlertDialog root + parts.
-- `ContextMenu` — ContextMenu root + parts.
 - `Dialog` — Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.
 - `DialogClose` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `DialogContent` — Dialog — modal dialog (shadcn baseline, compound parts).
@@ -143,7 +134,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `DialogPortal` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `DialogTitle` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `DialogTrigger` — Dialog — modal dialog (shadcn baseline, compound parts).
-- `HoverCard` — HoverCard root + parts.
 - `Menu` — Menu root + parts.
 - `Popover` — Popover root + parts.
 - `Tooltip` — Tooltip root.
@@ -151,7 +141,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Typography
 
 - `Blockquote` — A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
-- `HeadingStack` — HeadingStack — enforced vertical rhythm for heading + subheading pairs.
 - `Text` — Text — polymorphic typography primitive spanning the full HDS type ramp.
 
 ### Utility
@@ -166,18 +155,14 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 - `DestructiveSection` — Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`.
 - `FormActions` — Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most.
-- `Toolbar` — Toolbar root.
 
 ### Display
 
-- `ActivityFeed` — ActivityFeed — chronological system event log.
 - `AssetImg` — AssetImg - responsive asset frame with fallback placeholder handling.
-- `Carousel` — Renders children as a snap-scrolling track with Prev/Next scroll buttons.
 - `CodeBlock` — CodeBlock - code display with copy button and optional collapsible toggle.
 - `DataTableSection` — Section heading and toolbar over a `Table`.
 - `MetricTile` — One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height.
 - `MetricTiles` — A row of `MetricTile`s.
-- `StackedCardRail` — StackedCardRail — horizontally-scrolling stacked card carousel.
 
 ### Feedback
 
@@ -185,36 +170,18 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ### Inputs
 
-- `Calendar` — Renders an accessible month grid; compose it inside a Popover for the date inputs.
-- `FileInput` — A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
 - `Form` — Styled `<form>` with consistent vertical field rhythm.
 - `FormField` — Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement.
 - `FormFieldShell` — Presentational label + control slot + helper/error markup.
 
 ### Layout
 
-- `AppShell` — Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.
-- `OverflowList` — Renders up to `max` children followed by a `+N` overflow chip (or custom node).
 - `Page` — Page — standard page shell.
 - `PageHeader` — Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot.
 
 ### Motion
 
 - `Reveal` — Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.
-
-### Navigation
-
-- `DocLinkCard` — DocLinkCard - navigation card for editorial and documentation cross-links.
-- `NavItem` — NavItem - navigation row primitive for sidebars, table of contents, and list navigation.
-- `SideNav` — SideNav - sidebar navigation row primitive.
-- `Stepper` — Step indicator for multi-step flows.
-- `TopNav` — Top navigation bar with brand, nav, and trailing action slots.
-- `TreeList` — Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
-
-### Overlays
-
-- `CommandPalette` — Mountable trigger + dialog.
-- `Lightbox` — Lightbox — full-bleed image viewer built on Radix Dialog.
 
 ## How to lay out a screen
 

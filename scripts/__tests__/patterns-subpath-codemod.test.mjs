@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import {
   cpSync,
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -75,10 +76,21 @@ describe('pattern name list', () => {
   });
 
   it('holds every name the root exported from the 21 removed modules, types and parts included', () => {
-    const exported = ROOT_REMOVED_MODULES.flatMap((m) =>
-      collectModuleSymbols(join(REPO, `src/app/components/${m}.tsx`)),
+    // 15 of the 21 modules were then deleted in 0.20.0 (hds#394 wave 4a): their
+    // names are in codemods/removed-0.20.json, which the codemod reports instead.
+    const { modules: removedModules } = JSON.parse(
+      readFileSync(join(REPO, 'codemods/removed-0.20.json'), 'utf8'),
     );
-    expect(exported.length).toBeGreaterThanOrEqual(79);
+    const exported = ROOT_REMOVED_MODULES.flatMap((m) => {
+      const file = `src/app/components/${m}.tsx`;
+      if (existsSync(join(REPO, file))) return collectModuleSymbols(join(REPO, file));
+      expect(removedModules[file], `${file} is gone but not in removed-0.20.json`).toBeDefined();
+      return [];
+    });
+    const removed = ROOT_REMOVED_MODULES.flatMap(
+      (m) => removedModules[`src/app/components/${m}.tsx`] ?? [],
+    );
+    expect(exported.length + removed.length).toBeGreaterThanOrEqual(79);
     for (const name of exported) {
       expect(listed.has(name), `${name} is missing from the codemod list`).toBe(true);
     }
@@ -229,7 +241,7 @@ describe('CLI', () => {
   it('a real run rewrites, then --check exits 0; node_modules is never touched', () => {
     expect(run().status).toBe(0);
     expect(readFileSync(join(dir, 'needs-rewrite/src/mixed.tsx'), 'utf8')).toContain(
-      `import { Page, TopNav } from '${SUB}'`,
+      `import { Page, ErrorPattern } from '${SUB}'`,
     );
     expect(run('--check').status).toBe(0);
     expect(readFileSync(join(dir, 'clean/node_modules/x/index.js'), 'utf8')).toContain(

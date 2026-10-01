@@ -44,8 +44,8 @@
  * misapplying the rules (Frame and OverflowList paint, Sketch is lab chrome),
  * leaving 14 `layout` / 88 `library` at hds#235's close (on 2026-10-01 the
  * tool reports 16 `layout` / 93 `library`). Those three are recorded in
- * `overrides` with their reasons (Sketch's went with the component in 0.20.0,
- * hds#389). Trust this tool's current output over any
+ * `overrides` with their reasons (Sketch's and OverflowList's went with their
+ * components in 0.20.0, hds#389 and hds#394). Trust this tool's current output over any
  * count quoted in prose, including this comment.
  *
  * So this output is now the ratified set, not a proposal. Correct an individual

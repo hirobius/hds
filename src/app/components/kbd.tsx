@@ -53,6 +53,3 @@ export const Kbd = /* @__PURE__ */ React.forwardRef<HTMLElement, KbdProps>(funct
     </kbd>
   );
 });
-
-/** @internal — CVA variant helper; compose via Kbd props instead. */
-export { kbdVariants };

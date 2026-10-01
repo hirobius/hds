@@ -80,6 +80,3 @@ export const Tag = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, TagProps>
     </button>
   );
 });
-
-/** @internal — CVA variant helpers; compose via Tag props instead. */
-export { tagButtonVariants, tagPillVariants };

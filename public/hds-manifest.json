@@ -38,7 +38,6 @@
     "accentCount": 1
   },
   "componentInventory": [
-    "ActivityFeed",
     "Alert",
     "AlertDialog",
     "AspectRatio",
@@ -51,8 +50,6 @@
     "Box",
     "Breadcrumb",
     "Button",
-    "ButtonGroup",
-    "Calendar",
     "Callout",
     "Card",
     "CardBody",
@@ -62,21 +59,15 @@
     "CardMetric",
     "CardProgress",
     "CardTitle",
-    "Carousel",
     "Center",
     "Checkbox",
     "CircularProgress",
     "Cluster",
     "CodeBlock",
     "Combobox",
-    "CommandPalette",
     "Container",
-    "ContextMenu",
     "Cover",
     "DataTableSection",
-    "DateInput",
-    "DateRangeInput",
-    "DateTimeInput",
     "DestructiveSection",
     "Dialog",
     "DialogClose",
@@ -90,20 +81,15 @@
     "DialogTrigger",
     "Disclosure",
     "Divider",
-    "DocLinkCard",
     "EmptyState",
     "Field",
-    "FileInput",
     "Form",
     "FormActions",
     "FormField",
     "FormFieldShell",
     "Frame",
     "Grid",
-    "HdsDocsShell",
     "HdsThemeProvider",
-    "HeadingStack",
-    "HoverCard",
     "Icon",
     "IconButton",
     "InlineCode",
@@ -111,15 +97,11 @@
     "Input",
     "InputGroup",
     "Kbd",
-    "Lightbox",
     "Menu",
     "MetadataList",
     "MetricTile",
     "MetricTiles",
     "MultiSelector",
-    "NavGroup",
-    "NavItem",
-    "OverflowList",
     "Page",
     "PageHeader",
     "Pagination",
@@ -132,18 +114,14 @@
     "Select",
     "SelectableCard",
     "Sidebar",
-    "SideNav",
     "Skeleton",
     "Slider",
     "Spinner",
     "Stack",
-    "StackedCardRail",
     "Stat",
     "StatusDot",
     "StatusListItem",
     "StatusTile",
-    "Stepper",
-    "StepperField",
     "Surface",
     "Switcher",
     "Table",
@@ -154,18 +132,13 @@
     "Tag",
     "Text",
     "Textarea",
-    "TextLockup",
     "TileGrid",
     "TimeInput",
     "Timestamp",
     "ToastProvider",
     "Toggle",
     "ToggleButton",
-    "Tokenizer",
-    "Toolbar",
     "Tooltip",
-    "TopNav",
-    "TreeList",
     "VisuallyHidden"
   ],
   "typographyRamp": {
@@ -641,99 +614,6 @@
   "agentEntrypoint": "llms.txt",
   "breakingChangePolicy": "Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.",
   "componentSpecs": {
-    "CaseStudyLayout": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/layouts/CaseStudyLayout.tsx",
-      "description": "CaseStudyLayout — macro-layout skeleton for portfolio case study pages. Invisible structure only. No Surface, no decorative chrome. Slot anatomy: heroSlot → full-width (maxWidth=\"max\") — hero image + headline introSlot → prose-width (maxWidth=\"content\") — narrative, Brief/Problem/Solution metricsSlot → full-width (maxWidth=\"max\") — KPI or summary cards (optional) contentSlot → full-width (maxWidth=\"max\") — chapters, galleries, learnings",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "CaseStudyLayout",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/index.ts"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "contentSlot": {
-          "type": "ReactNode"
-        },
-        "heroSlot": {
-          "type": "ReactNode"
-        },
-        "introSlot": {
-          "type": "ReactNode"
-        },
-        "metricsSlot": {
-          "type": "ReactNode",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "heroSlot": {
-          "type": "ReactNode"
-        },
-        "introSlot": {
-          "type": "ReactNode"
-        },
-        "metricsSlot": {
-          "type": "ReactNode"
-        },
-        "contentSlot": {
-          "type": "ReactNode"
-        }
-      },
-      "requiredProps": [
-        "heroSlot",
-        "introSlot",
-        "contentSlot"
-      ],
-      "a11yRules": [
-        {
-          "rule": "Root element is <main> — only one CaseStudyLayout per page",
-          "required": true
-        }
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {
-            "gap": "semantic.space.layout.gap"
-          }
-        },
-        {
-          "name": "hero",
-          "figmaSlotName": "Hero"
-        },
-        {
-          "name": "intro",
-          "figmaSlotName": "Intro"
-        },
-        {
-          "name": "metrics",
-          "figmaSlotName": "Metrics"
-        },
-        {
-          "name": "content",
-          "figmaSlotName": "Content"
-        }
-      ],
-      "tier": "template",
-      "docExempt": false,
-      "figmaLink": null,
-      "storyFiles": [],
-      "storyIds": []
-    },
     "Alert": {
       "category": "Feedback",
       "categorySource": "jsdoc",
@@ -993,8 +873,6 @@
         "src/app/components/page.tsx",
         "src/app/components/switcher.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/app/layouts/CaseStudyLayout.tsx",
-        "src/app/layouts/DocLayout.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/page.stories.tsx",
@@ -1079,11 +957,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/nav-group.tsx",
         "src/app/components/tabs.tsx",
-        "src/app/layouts/HdsDocsShell.tsx",
-        "src/stories/disclosure.stories.tsx",
-        "src/stories/nav-group.stories.tsx"
+        "src/stories/disclosure.stories.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
@@ -1318,155 +1193,6 @@
         ]
       }
     },
-    "DocLinkCard": {
-      "category": "Navigation",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "description": "DocLinkCard - navigation card for editorial and documentation cross-links.",
-      "figmaUrl": null,
-      "tokenMapping": {
-        "background": "component.card.bg",
-        "border": "component.card.border",
-        "radius": "component.card.radius",
-        "padding": "component.card.padding",
-        "gap": "component.card.gap",
-        "accent": "semantic.color.content.accent"
-      },
-      "filePath": "src/app/components/doc-link-card.tsx",
-      "props": {
-        "accent": {
-          "type": "boolean",
-          "default": false
-        },
-        "affordance": {
-          "type": "enum",
-          "values": [
-            "up-right",
-            "right",
-            "left"
-          ],
-          "default": "up-right"
-        },
-        "description": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "href": {
-          "type": "string"
-        },
-        "icon": {
-          "type": "LucideIcon"
-        },
-        "meta": {
-          "type": "string",
-          "optional": true
-        },
-        "metaStyle": {
-          "type": "enum",
-          "values": [
-            "caption",
-            "ui"
-          ],
-          "default": "caption"
-        },
-        "title": {
-          "type": "string"
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "feature",
-            "pager"
-          ],
-          "default": "feature"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "accent": {
-          "type": "boolean"
-        },
-        "affordance": {
-          "type": "enum",
-          "values": [
-            "up-right",
-            "right",
-            "left"
-          ]
-        },
-        "description": {
-          "type": "string"
-        },
-        "disabled": {
-          "type": "boolean"
-        },
-        "href": {
-          "type": "string"
-        },
-        "meta": {
-          "type": "string"
-        },
-        "metaStyle": {
-          "type": "enum",
-          "values": [
-            "caption",
-            "ui"
-          ]
-        },
-        "title": {
-          "type": "string"
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "feature",
-            "pager"
-          ]
-        }
-      },
-      "requiredProps": [],
-      "a11yRules": [
-        {
-          "rule": "Card link must have descriptive accessible name (not just the URL)",
-          "required": true
-        },
-        {
-          "rule": "Focus ring visible on keyboard navigation",
-          "required": true
-        }
-      ],
-      "preview": {
-        "exportName": "DocLinkCard",
-        "sizing": "panel"
-      },
-      "tier": "primitive",
-      "hidden": false,
-      "docExempt": false,
-      "figmaId": null,
-      "figmaLink": null,
-      "consumers": [
-        "src/app/components/doc-link-card.test.tsx",
-        "src/stories/doc-link-card.stories.tsx"
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "storyFiles": [
-        "src/stories/doc-link-card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-doc-link-card--accent",
-        "primitives-doc-link-card--default",
-        "primitives-doc-link-card--disabled",
-        "primitives-doc-link-card--pager-back",
-        "primitives-doc-link-card--pager-forward"
-      ]
-    },
     "ErrorPattern": {
       "category": "Feedback",
       "categorySource": "jsdoc",
@@ -1582,7 +1308,6 @@
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
-        "src/app/components/image-lightbox.tsx",
         "src/app/components/metric-tiles.test.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/segmented-control.test.tsx",
@@ -1734,20 +1459,14 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/activity-feed.test.tsx",
-        "src/app/components/activity-feed.tsx",
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
-        "src/app/components/context-menu.tsx",
         "src/app/components/disclosure.tsx",
-        "src/app/components/doc-link-card.tsx",
-        "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
-        "src/app/components/image-lightbox.tsx",
         "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
@@ -1757,12 +1476,9 @@
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
-        "src/app/components/text-lockup.tsx",
         "src/app/components/toast.tsx",
-        "src/stories/activity-feed.stories.tsx",
         "src/stories/icon-button.stories.tsx",
-        "src/stories/icon.stories.tsx",
-        "src/stories/nav-group.stories.tsx"
+        "src/stories/icon.stories.tsx"
       ],
       "tokenMapping": {
         "Small icon size": "primitive.typography.size.base",
@@ -1915,7 +1631,6 @@
         "src/app/components/button.test.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/stepper-field.tsx",
         "src/stories/data-table-section.stories.tsx",
         "src/stories/icon-button.stories.tsx",
         "src/stories/lib/usage-description.test.ts",
@@ -1983,11 +1698,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ],
           "optional": true
         },
@@ -2034,11 +1749,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ]
         },
         "variant": {
@@ -2196,8 +1911,6 @@
       },
       "consumers": [
         "src/app/components/button.tsx",
-        "src/app/components/hover-card.tsx",
-        "src/app/components/image-lightbox.tsx",
         "src/app/components/text.tsx",
         "src/stories/inline-link.stories.tsx",
         "src/stories/lib/usage-description.test.ts"
@@ -2289,15 +2002,10 @@
         "src/app/components/form.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/slider.tsx",
-        "src/app/components/stepper-field.tsx",
         "src/app/components/textarea.tsx",
         "src/app/components/time-input.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
-        "src/stories/date-input.stories.tsx",
-        "src/stories/date-range-input.stories.tsx",
-        "src/stories/date-time-input.stories.tsx",
-        "src/stories/file-input.stories.tsx",
         "src/stories/input-group.stories.tsx",
         "src/stories/input.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
@@ -2552,236 +2260,6 @@
         ]
       }
     },
-    "NavGroup": {
-      "category": "Navigation",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/nav-group.tsx",
-      "description": "NavGroup - labeled navigation group for stacks of nav items.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-304",
-      "figmaId": null,
-      "preview": {
-        "exportName": "NavGroup",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/lib/nav-active.ts",
-        "src/stories/nav-group.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "children": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "collapsible": {
-          "type": "boolean",
-          "default": false
-        },
-        "contentStyle": {
-          "type": "CSSProperties",
-          "optional": true
-        },
-        "getExact": {
-          "type": "(item: NavItem) => boolean",
-          "optional": true
-        },
-        "items": {
-          "type": "NavItem[]",
-          "optional": true
-        },
-        "label": {
-          "type": "string",
-          "optional": true
-        },
-        "level": {
-          "type": "NavLevel",
-          "default": "section"
-        },
-        "onNavigate": {
-          "type": "() => void",
-          "optional": true
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "side",
-            "toc"
-          ],
-          "default": "side"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "className": {
-          "type": "string"
-        },
-        "collapsible": {
-          "type": "boolean"
-        },
-        "label": {
-          "type": "string"
-        },
-        "variant": {
-          "type": "enum",
-          "values": [
-            "side",
-            "toc"
-          ]
-        }
-      },
-      "requiredProps": [],
-      "a11yRules": [
-        {
-          "rule": "Navigation group must have accessible label (aria-label on the nav element)",
-          "required": true
-        },
-        {
-          "rule": "Expanded/collapsed state communicated via aria-expanded",
-          "required": true
-        }
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "pattern",
-      "docExempt": false,
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {}
-        },
-        {
-          "name": "label",
-          "figmaSlotName": "Label",
-          "tokenBinding": {
-            "fill": "semantic.color.content.secondary"
-          }
-        },
-        {
-          "name": "items",
-          "figmaSlotName": "Items",
-          "tokenBinding": {
-            "gap": "semantic.space.sidebar.gap"
-          }
-        }
-      ],
-      "sourcePath": "src/app/components/NavGroup.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-304",
-      "storyFiles": [
-        "src/stories/nav-group.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-nav-group--collapsible",
-        "primitives-nav-group--default",
-        "primitives-nav-group--no-label",
-        "primitives-nav-group--toc-variant",
-        "primitives-nav-group--with-disabled-item"
-      ]
-    },
-    "NavItem": {
-      "category": "Navigation",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/nav-item.tsx",
-      "description": "NavItem - navigation row primitive for sidebars, table of contents, and list navigation.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-258",
-      "figmaId": null,
-      "preview": {
-        "exportName": "NavItem",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/nav-group.tsx",
-        "src/app/context/DemoStateContext.tsx",
-        "src/app/data/hds-nav-data.ts",
-        "src/app/hooks/useInteractionState.ts",
-        "src/app/layouts/HdsDocsShell.tsx",
-        "src/stories/nav-group.stories.tsx",
-        "src/stories/nav-item.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "active": {
-          "type": "boolean",
-          "default": false
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "label": {
-          "type": "string"
-        },
-        "level": {
-          "type": "NavLevel",
-          "default": "root"
-        },
-        "onNavigate": {
-          "type": "(event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void",
-          "optional": true
-        },
-        "variant": {
-          "type": "NavVariant",
-          "default": "side"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "active": {
-          "type": "boolean"
-        },
-        "disabled": {
-          "type": "boolean"
-        },
-        "label": {
-          "type": "string"
-        }
-      },
-      "requiredProps": [],
-      "a11yRules": [
-        {
-          "rule": "Active item must be communicated via aria-current=\"page\" or aria-selected",
-          "required": true
-        },
-        {
-          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
-          "required": true
-        }
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "primitive",
-      "docExempt": false,
-      "sourcePath": "src/app/components/NavItem.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-258",
-      "storyFiles": [
-        "src/stories/nav-item.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-nav-item--active",
-        "primitives-nav-item--button-mode",
-        "primitives-nav-item--default",
-        "primitives-nav-item--disabled",
-        "primitives-nav-item--nested-level",
-        "primitives-nav-item--toc-active",
-        "primitives-nav-item--toc-variant"
-      ]
-    },
     "SegmentedControl": {
       "category": "Inputs",
       "categorySource": "jsdoc",
@@ -2796,7 +2274,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/button-group.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/tabs.tsx",
@@ -2949,11 +2426,9 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/activity-feed.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
-        "src/app/components/button-group.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
         "src/app/components/cover.tsx",
@@ -2961,26 +2436,19 @@
         "src/app/components/destructive-section.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/divider.tsx",
-        "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/form-actions.test.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/grid.tsx",
-        "src/app/components/heading-stack.tsx",
-        "src/app/components/image-lightbox.tsx",
-        "src/app/components/nav-group.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/page.tsx",
         "src/app/components/stack.test.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/layouts/CaseStudyLayout.tsx",
-        "src/app/layouts/DocLayout.tsx",
         "src/stories/box.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/grid.stories.tsx",
-        "src/stories/heading-stack.stories.tsx",
         "src/stories/page.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
@@ -3133,111 +2601,6 @@
       },
       "aiRules": "Use Stack for flow spacing and simple flex alignment only. Do NOT use Stack to create card chrome, internal surface padding, or page-width constraints. Do NOT apply arbitrary margins to Stack to fake spacing between children when the gap prop should own that rhythm. Do NOT use Stack for true two-dimensional layouts that require Grid."
     },
-    "StepperField": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/stepper-field.tsx",
-      "description": "StepperField ” numeric input with decrement/increment controls. Classification baseline: Material Design, Chakra UI, and Ant Design treat steppers as numeric input controls rather than page-specific controls. This lives in shared components so sketches and docs consume the same primitive.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-425",
-      "figmaId": null,
-      "preview": {
-        "exportName": "StepperField",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/stepper-field.test.tsx",
-        "src/stories/stepper-field.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "inputStep": {
-          "type": "number",
-          "optional": true
-        },
-        "label": {
-          "type": "string"
-        },
-        "max": {
-          "type": "number"
-        },
-        "min": {
-          "type": "number"
-        },
-        "onChange": {
-          "type": "(value: number) => void"
-        },
-        "precision": {
-          "type": "number",
-          "optional": true
-        },
-        "step": {
-          "type": "number"
-        },
-        "value": {
-          "type": "number"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "label": {
-          "type": "string"
-        }
-      },
-      "requiredProps": [],
-      "a11yRules": [
-        {
-          "rule": "Must have associated label via label prop or aria-labelledby",
-          "required": true
-        },
-        {
-          "rule": "Decrement/increment buttons must have aria-label",
-          "required": true
-        }
-      ],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "pattern",
-      "docExempt": false,
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {
-            "fill": "semantic.color.surface.canvas"
-          }
-        },
-        {
-          "name": "label",
-          "figmaSlotName": "Label",
-          "tokenBinding": {
-            "fill": "semantic.color.content.secondary"
-          }
-        },
-        {
-          "name": "controls",
-          "figmaSlotName": "Controls",
-          "tokenBinding": {
-            "gap": "semantic.space.component.gap"
-          }
-        }
-      ],
-      "sourcePath": "src/app/components/StepperField.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-425",
-      "storyFiles": [
-        "src/stories/stepper-field.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-stepper-field--column-count",
-        "primitives-stepper-field--decimal",
-        "primitives-stepper-field--default",
-        "primitives-stepper-field--dimension-panel",
-        "primitives-stepper-field--font-size"
-      ]
-    },
     "Table": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -3256,8 +2619,6 @@
         "src/app/components/table.test.tsx",
         "src/app/data/manifest-types.ts",
         "src/stories/data-table-section.stories.tsx",
-        "src/stories/nav-group.stories.tsx",
-        "src/stories/nav-item.stories.tsx",
         "src/stories/segmented-control.stories.tsx",
         "src/stories/table.stories.tsx"
       ],
@@ -3394,7 +2755,6 @@
         "src/app/components/center.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/cover.tsx",
-        "src/app/components/file-input.tsx",
         "src/app/components/frame.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
@@ -3404,7 +2764,6 @@
         "src/app/components/surface.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/text.tsx",
-        "src/app/components/tokenizer.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/static-primitives.stories.tsx",
@@ -3545,27 +2904,22 @@
         "src/app/components/disclosure.tsx",
         "src/app/components/divider.tsx",
         "src/app/components/empty-state.tsx",
-        "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
-        "src/app/components/image-lightbox.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/stack.tsx",
-        "src/app/components/stepper-field.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/context/hds-theme.tsx",
-        "src/app/layouts/CaseStudyLayout.tsx",
         "src/stories/card.stories.tsx",
         "src/stories/container.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/page.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
-        "src/stories/surface.stories.tsx",
-        "src/stories/text-lockup.stories.tsx"
+        "src/stories/surface.stories.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -3676,28 +3030,21 @@
         "src/app/components/card-progress.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/destructive-section.tsx",
-        "src/app/components/doc-link-card.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/field.tsx",
         "src/app/components/grid.tsx",
-        "src/app/components/hover-card.test.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
-        "src/app/components/stacked-card-rail.tsx",
         "src/app/components/stat.tsx",
         "src/app/components/status-tile.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/card.stories.tsx",
-        "src/stories/doc-link-card.stories.tsx",
         "src/stories/grid.stories.tsx",
-        "src/stories/history-card.stories.tsx",
-        "src/stories/hover-card.stories.tsx",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/selectable-card.stories.tsx",
-        "src/stories/stacked-card-rail.stories.tsx",
         "src/stories/static-primitives.stories.tsx"
       ],
       "tokenMapping": {
@@ -3893,330 +3240,6 @@
         ]
       }
     },
-    "ActivityFeed": {
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/activity-feed.tsx",
-      "description": "ActivityFeed — chronological system event log. Renders a list of activity events using white space as the sole separator. No dividers, no borders between items. 48px gap (space.12) creates the visual grouping between events; 16px gap inside each item structures the content hierarchy. Typography mapping: title → heading3 (24px/1.25) description → body (16px/1.5) timestamp → technical (12px/1.0 mono) category → ui (14px/1.5)",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "ActivityFeed",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/activity-feed.test.tsx",
-        "src/stories/activity-feed.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "events": {
-          "type": "ActivityEvent[]",
-          "default": "[ { id: 'evt-001', title: 'File Uploaded', description: 'firmware-v2.4.1.bin was uploaded to the staging environment by adrianm. File size 4.2 MB. Integrity check passed.', timestamp: '2026-04-22 · 08:14', category: 'Storage', icon: <Icon icon={UploadSimple} size=\"medium\" />, tone: 'neutral', }, { id: 'evt-002', title: 'Policy Updated', description: 'Access control policy \"eng-prod-write\" was modified. Three permission groups were added; two removed. Change authored by sys-admin.', timestamp: '2026-04-22 · 07:52', category: 'Security', icon: <Icon icon={ShieldCheck} size=\"medium\" />, tone: 'info', action: { label: 'View Details' }, }, { id: 'evt-003', title: 'Deployment Failed', description: 'Release candidate rc-1.9.0 failed to deploy to production. Build step \"lint:tokens\" exited with code 1. Rollback triggered automatically.', timestamp: '2026-04-22 · 06:30', category: 'CI/CD', icon: <Icon icon={XCircle} size=\"medium\" />, tone: 'danger', action: { label: 'View Details' }, }, { id: 'evt-004', title: 'Service Deployed', description: 'API gateway v3.1.2 successfully promoted to production. Zero-downtime rollout completed across all three availability zones.', timestamp: '2026-04-21 · 23:05', category: 'CI/CD', icon: <Icon icon={Rocket} size=\"medium\" />, tone: 'success', }, { id: 'evt-005', title: 'Access Revoked', description: 'SSH access for contractor account \"contractor-j.reed\" was revoked following project completion. Token invalidated and session terminated.', timestamp: '2026-04-21 · 18:41', category: 'Security', icon: <Icon icon={Lock} size=\"medium\" />, tone: 'warning', }, ]"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "tier": "pattern",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {}
-        },
-        {
-          "name": "item",
-          "figmaSlotName": "Item",
-          "tokenBinding": {}
-        },
-        {
-          "name": "avatar",
-          "figmaSlotName": "Avatar",
-          "tokenBinding": {
-            "fill": "semantic.color.surface.raised"
-          }
-        },
-        {
-          "name": "title",
-          "figmaSlotName": "Title",
-          "tokenBinding": {
-            "fill": "semantic.color.content.primary"
-          }
-        },
-        {
-          "name": "description",
-          "figmaSlotName": "Description",
-          "tokenBinding": {
-            "fill": "semantic.color.content.secondary"
-          }
-        },
-        {
-          "name": "timestamp",
-          "figmaSlotName": "Timestamp",
-          "tokenBinding": {
-            "fill": "semantic.color.content.secondary"
-          }
-        }
-      ],
-      "sourcePath": "src/app/components/ActivityFeed.tsx",
-      "figmaLink": null,
-      "storyFiles": [
-        "src/stories/activity-feed.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-activity-feed--all-success",
-        "primitives-activity-feed--default",
-        "primitives-activity-feed--errors-and-warnings",
-        "primitives-activity-feed--single-event"
-      ]
-    },
-    "HeadingStack": {
-      "category": "Typography",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/heading-stack.tsx",
-      "description": "HeadingStack — enforced vertical rhythm for heading + subheading pairs. Automatically handles gap and secondary color, preventing manual stacking. - Heading level: 'heading1' | 'heading2' | 'heading3' - Gap: px4 (tight) | px8 (default) - Subheading color: always var(--semantic-color-content-secondary) GUARDRAIL: Never manually stack headings using Stack. Always use HeadingStack. Usage: <HeadingStack level=\"heading1\" heading=\"Main Title\" subheading=\"Subtitle text\" /> <HeadingStack level=\"heading2\" heading=\"Section\" subheading=\"Description\" gap=\"px4\" />",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "HeadingStack",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/heading-stack.test.tsx",
-        "src/stories/heading-stack.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "as": {
-          "type": "ElementType",
-          "default": "div"
-        },
-        "gap": {
-          "type": "HdsHeadingGap",
-          "default": "px8"
-        },
-        "heading": {
-          "type": "string"
-        },
-        "headingAs": {
-          "type": "enum",
-          "values": [
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6"
-          ],
-          "optional": true
-        },
-        "level": {
-          "type": "HdsHeadingLevel"
-        },
-        "subheading": {
-          "type": "string"
-        },
-        "subheadingAs": {
-          "type": "enum",
-          "values": [
-            "p",
-            "div",
-            "span"
-          ],
-          "default": "p"
-        }
-      },
-      "allowedChildren": [],
-      "propConstraints": {
-        "heading": {
-          "type": "string"
-        },
-        "headingAs": {
-          "type": "enum",
-          "values": [
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6"
-          ]
-        },
-        "subheading": {
-          "type": "string"
-        },
-        "subheadingAs": {
-          "type": "enum",
-          "values": [
-            "p",
-            "div",
-            "span"
-          ]
-        }
-      },
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [
-        {
-          "name": "Heading",
-          "type": "TEXT",
-          "defaultValue": "Heading",
-          "sourceProp": "heading",
-          "boundTo": "characters",
-          "targetSelector": "Heading"
-        },
-        {
-          "name": "Subheading",
-          "type": "TEXT",
-          "defaultValue": "Supporting subheading",
-          "sourceProp": "subheading",
-          "boundTo": "characters",
-          "targetSelector": "Subheading"
-        }
-      ],
-      "states": [
-        "default"
-      ],
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root",
-          "tokenBinding": {
-            "gap": "semantic.space.subgrid.gap"
-          }
-        },
-        {
-          "name": "heading",
-          "figmaSlotName": "Heading",
-          "tokenBinding": {
-            "fill": "semantic.color.content.primary"
-          }
-        },
-        {
-          "name": "subtext",
-          "figmaSlotName": "Subtext",
-          "tokenBinding": {
-            "fill": "semantic.color.content.secondary"
-          }
-        }
-      ],
-      "tier": "primitive",
-      "docExempt": true,
-      "sourcePath": "src/app/components/HeadingStack.tsx",
-      "figmaLink": null,
-      "storyFiles": [
-        "src/stories/heading-stack.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-heading-stack--all-levels",
-        "primitives-heading-stack--default",
-        "primitives-heading-stack--heading-1",
-        "primitives-heading-stack--heading-2",
-        "primitives-heading-stack--heading-3",
-        "primitives-heading-stack--tight-gap"
-      ]
-    },
-    "HdsSystemDocLayout": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/app/layouts/HdsSystemDocLayout.tsx",
-      "description": "HdsSystemDocLayout — single centered content column for documentation pages. Thin wrapper around DocLayout: takes only `contentSlot` and `contentMaxWidth`, with no sidebar or nav region to pass one into. Not the three-column docs shell (left rail + content + right rail) — that is tracked as its own shell component (hds#280).",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "HdsSystemDocLayout",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/layouts/DocLayout.tsx",
-        "src/index.ts"
-      ],
-      "tokenMapping": {
-        "TOC section gap": "semantic.space.sidebar.sectionGap",
-        "TOC label color": "semantic.color.content.secondary"
-      },
-      "props": {
-        "contentSlot": {
-          "type": "ReactNode"
-        },
-        "contentMaxWidth": {
-          "type": "enum",
-          "values": [
-            "content",
-            "max",
-            "narrow"
-          ],
-          "default": "content"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {
-        "contentSlot": {
-          "type": "ReactNode"
-        },
-        "contentMaxWidth": {
-          "type": "enum",
-          "values": [
-            "content",
-            "max",
-            "narrow"
-          ]
-        }
-      },
-      "requiredProps": [
-        "contentSlot"
-      ],
-      "a11yRules": [
-        {
-          "rule": "Content sections must register with HdsTocContext to populate the on-this-page TOC",
-          "required": true
-        }
-      ],
-      "tier": "template",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "slots": [
-        {
-          "name": "root",
-          "figmaSlotName": "Root"
-        },
-        {
-          "name": "nav",
-          "figmaSlotName": "Nav"
-        },
-        {
-          "name": "content",
-          "figmaSlotName": "Content"
-        },
-        {
-          "name": "toc",
-          "figmaSlotName": "Toc",
-          "tokenBinding": {
-            "color": "semantic.color.content.secondary"
-          }
-        }
-      ],
-      "figmaLink": null,
-      "storyFiles": [],
-      "storyIds": []
-    },
     "Text": {
       "category": "Typography",
       "filePath": "src/app/components/text.tsx",
@@ -4224,7 +3247,7 @@
       "hidden": false,
       "props": {
         "as": {
-          "type": "\"symbol\" | \"object\" | \"map\" | \"filter\" | \"title\" | \"a\" | \"button\" | \"div\" | \"form\" | \"h2\" | \"h3\" | \"img\" | \"input\" | \"label\" | \"li\" | \"nav\" | \"ol\" | \"p\" | \"select\" | \"span\" | \"svg\" | ... 159 more ...",
+          "type": "\"symbol\" | \"object\" | \"title\" | \"a\" | \"button\" | \"div\" | \"form\" | \"h2\" | \"h3\" | \"img\" | \"input\" | \"label\" | \"li\" | \"nav\" | \"ol\" | \"p\" | \"select\" | \"span\" | \"svg\" | \"ul\" | \"abbr\" | \"address\" | ... 158 more ...",
           "default": "defaultTagMap[variant]"
         },
         "children": {
@@ -4260,24 +3283,18 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/card.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/components/date-input.tsx",
-        "src/app/components/date-time-input.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
-        "src/app/components/nav-item.tsx",
         "src/app/components/table.tsx",
-        "src/app/components/text-lockup.tsx",
-        "src/app/components/toolbar.test.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
         "src/stories/container.stories.tsx",
         "src/stories/disclosure.stories.tsx",
-        "src/stories/error-boundary.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/inline-code.stories.tsx",
         "src/stories/input.stories.tsx",
@@ -4285,9 +3302,7 @@
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/skeleton.stories.tsx",
         "src/stories/surface.stories.tsx",
-        "src/stories/text-lockup.stories.tsx",
-        "src/stories/text.stories.tsx",
-        "src/stories/toolbar.stories.tsx"
+        "src/stories/text.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4297,12 +3312,9 @@
       "sourcePath": "src/app/components/Text.tsx",
       "figmaLink": null,
       "storyFiles": [
-        "src/stories/error-boundary.stories.tsx",
         "src/stories/text.stories.tsx"
       ],
       "storyIds": [
-        "feedback-error-boundary--default",
-        "feedback-error-boundary--with-min-height",
         "primitives-text--body",
         "primitives-text--caption",
         "primitives-text--display",
@@ -4346,12 +3358,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/alert-dialog.tsx",
-        "src/app/components/command-palette.tsx",
         "src/app/components/dialog.test.tsx",
-        "src/app/components/hover-card.test.tsx",
-        "src/app/components/hover-card.tsx",
-        "src/app/components/image-lightbox.test.tsx",
-        "src/app/components/image-lightbox.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/toast.tsx",
@@ -4555,8 +3562,8 @@
         "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
         "useInstead": [
           {
-            "component": "HoverCard",
-            "reason": "a preview on hover or focus"
+            "component": "Tooltip",
+            "reason": "a short hint on hover or focus"
           },
           {
             "component": "Alert",
@@ -4587,49 +3594,6 @@
         }
       ]
     },
-    "StackedCardRail": {
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/stacked-card-rail.tsx",
-      "description": "StackedCardRail — horizontally-scrolling stacked card carousel. Scroll mechanism: vertical scroll on an absolutely-positioned inner container is mapped to horizontal scroll on a sticky inner strip via a single scroll event listener. Cards use CSS scroll-driven animation (animation-timeline: view(x …)) for the stack/unstack effect where the browser supports it; a plain horizontal rail is the graceful fallback. Browser compat note: - animation-timeline: view() — Chrome 115+, Firefox 110+ (behind flag until v114), Safari 18+ (TP only as of 2025). The @supports guard ensures the stacking animation is only applied when the feature is available; all other browsers get a clean scrollable row. - :has() selector (neighbour shift on hover) — Chrome 105+, FF 121+, Safari 15.4+. Gated with @supports selector(:has(+ *)).",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "StackedCardRail",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/stacked-card-rail.test.tsx",
-        "src/stories/stacked-card-rail.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "cards": {
-          "type": "StackedCardRailCard[]"
-        }
-      },
-      "allowedChildren": [],
-      "propConstraints": {},
-      "requiredProps": [
-        "cards"
-      ],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/stacked-card-rail.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-stacked-card-rail--default",
-        "patterns-stacked-card-rail--sparse",
-        "patterns-stacked-card-rail--with-links"
-      ]
-    },
     "Button": {
       "category": "Actions",
       "categorySource": "jsdoc",
@@ -4647,24 +3611,18 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/activity-feed.tsx",
         "src/app/components/alert-dialog.tsx",
-        "src/app/components/button-group.test.tsx",
-        "src/app/components/button-group.tsx",
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
-        "src/app/components/error-boundary.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/form.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/icon.tsx",
-        "src/app/components/image-lightbox.tsx",
         "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
@@ -4675,14 +3633,11 @@
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/toast.tsx",
-        "src/app/components/toolbar.test.tsx",
-        "src/app/components/toolbar.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/form/index.ts",
         "src/mui/index.ts",
         "src/stories/alert-dialog.stories.tsx",
-        "src/stories/button-group.stories.tsx",
         "src/stories/button.stories.tsx",
         "src/stories/code-block.stories.tsx",
         "src/stories/combobox.stories.tsx",
@@ -4692,21 +3647,16 @@
         "src/stories/form.stories.tsx",
         "src/stories/hds-tooltip.stories.tsx",
         "src/stories/icon-button.stories.tsx",
-        "src/stories/image-lightbox.stories.tsx",
         "src/stories/inline-code.stories.tsx",
         "src/stories/lib/usage-description.test.ts",
         "src/stories/menu.stories.tsx",
-        "src/stories/nav-group.stories.tsx",
         "src/stories/page-header.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/popover.stories.tsx",
         "src/stories/table.stories.tsx",
-        "src/stories/text-lockup.stories.tsx",
         "src/stories/toast.stories.tsx",
         "src/stories/toggle-button.stories.tsx",
-        "src/stories/toolbar.stories.tsx",
-        "src/stories/top-nav.stories.tsx",
         "src/styles/__tests__/pressed-overlay-token.test.ts"
       ],
       "tokenMapping": {},
@@ -4785,11 +3735,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ],
           "optional": true
         },
@@ -4868,11 +3818,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ]
         },
         "variant": {
@@ -5079,8 +4029,7 @@
         "src/app/components/textarea.tsx",
         "src/form/hds-form.tsx",
         "src/stories/field.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/stepper-field.stories.tsx"
+        "src/stories/patterns-layout.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5100,11 +4049,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ],
           "optional": true
         },
@@ -5126,11 +4075,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ]
         }
       },
@@ -5199,7 +4148,6 @@
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
         "src/stories/error-pattern.stories.tsx",
-        "src/stories/heading-stack.stories.tsx",
         "src/stories/not-found-pattern.stories.tsx",
         "src/stories/page.stories.tsx",
         "src/stories/pagination.stories.tsx",
@@ -5295,11 +4243,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ],
           "optional": true
         },
@@ -5315,11 +4263,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ]
         }
       },
@@ -5394,11 +4342,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ],
           "optional": true
         },
@@ -5412,11 +4360,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ]
         }
       },
@@ -5605,11 +4553,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
             "info",
+            "neutral",
             "inProgress"
           ],
           "optional": true
@@ -5620,11 +4568,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
             "info",
+            "neutral",
             "inProgress"
           ]
         }
@@ -5657,7 +4605,6 @@
         "src/stories/code-block.stories.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/data-table-section.stories.tsx",
-        "src/stories/nav-group.stories.tsx",
         "src/stories/page-header.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
@@ -5695,187 +4642,6 @@
         ]
       }
     },
-    "TextLockup": {
-      "variantAxes": [
-        "size"
-      ],
-      "componentProperties": [
-        {
-          "name": "Eyebrow",
-          "type": "TEXT",
-          "defaultValue": "EYEBROW",
-          "sourceProp": "eyebrow",
-          "boundTo": "characters",
-          "targetSelector": "Eyebrow"
-        },
-        {
-          "name": "Title",
-          "type": "TEXT",
-          "defaultValue": "Title text",
-          "sourceProp": "title",
-          "boundTo": "characters",
-          "targetSelector": "Title"
-        },
-        {
-          "name": "Description",
-          "type": "TEXT",
-          "defaultValue": "Description",
-          "sourceProp": "description",
-          "boundTo": "characters",
-          "targetSelector": "Description"
-        }
-      ],
-      "states": [
-        "default"
-      ],
-      "filePath": "src/app/components/text-lockup.tsx",
-      "props": {
-        "align": {
-          "type": "enum",
-          "values": [
-            "left",
-            "center"
-          ],
-          "default": "left"
-        },
-        "as": {
-          "type": "ElementType",
-          "default": "div"
-        },
-        "description": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "descriptionAs": {
-          "type": "enum",
-          "values": [
-            "div",
-            "p",
-            "span"
-          ],
-          "default": "div"
-        },
-        "eyebrow": {
-          "type": "string",
-          "optional": true
-        },
-        "id": {
-          "type": "string",
-          "optional": true
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "hero",
-            "heroXl",
-            "section",
-            "metric",
-            "detail",
-            "numbered"
-          ]
-        },
-        "title": {
-          "type": "string"
-        },
-        "titleAs": {
-          "type": "enum",
-          "values": [
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "p",
-            "span"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [],
-      "propConstraints": {
-        "align": {
-          "type": "enum",
-          "values": [
-            "left",
-            "center"
-          ]
-        },
-        "descriptionAs": {
-          "type": "enum",
-          "values": [
-            "div",
-            "p",
-            "span"
-          ]
-        },
-        "eyebrow": {
-          "type": "string"
-        },
-        "id": {
-          "type": "string"
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "hero",
-            "heroXl",
-            "section",
-            "metric",
-            "detail",
-            "numbered"
-          ]
-        },
-        "title": {
-          "type": "string"
-        },
-        "titleAs": {
-          "type": "enum",
-          "values": [
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "p",
-            "span"
-          ]
-        }
-      },
-      "requiredProps": [],
-      "a11yRules": [],
-      "description": "TextLockup - governed title-and-description pairing primitive.",
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "figmaUrl": null,
-      "figmaId": "text-lockup-pattern",
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "TextLockup",
-        "sizing": "compact"
-      },
-      "consumers": [
-        "src/stories/text-lockup.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "storyFiles": [
-        "src/stories/text-lockup.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-text-lockup--centered",
-        "primitives-text-lockup--detail",
-        "primitives-text-lockup--hero",
-        "primitives-text-lockup--numbered",
-        "primitives-text-lockup--section",
-        "primitives-text-lockup--with-eyebrow"
-      ],
-      "aiRules": "Use TextLockup when content is a semantic title lockup with optional eyebrow and supporting text. Do NOT use TextLockup for arbitrary prose groups, data tables, or freeform mixed layouts. Do NOT restyle the internal type pairing with custom heading stacks when an existing size already fits. Do NOT use TextLockup to replace standalone body text or labels that do not form a title-description unit."
-    },
     "AssetImg": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -5895,7 +4661,6 @@
       "consumers": [
         "src/app/components/asset-img.test.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/image-lightbox.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/stories/asset-img.stories.tsx"
@@ -6399,8 +5164,6 @@
         "src/app/components/checkbox.test.tsx",
         "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
-        "src/app/components/date-range-input.test.tsx",
-        "src/app/components/date-range-input.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/menu.tsx",
@@ -7220,7 +5983,6 @@
       },
       "consumers": [
         "src/app/components/combobox.test.tsx",
-        "src/app/components/date-range-input.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/multi-selector.tsx",
@@ -7720,67 +6482,6 @@
         "primitives-blockquote--with-attribution"
       ]
     },
-    "ButtonGroup": {
-      "category": "Actions",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/button-group.tsx",
-      "description": "Groups Button (or button-like) children into a single attached segment.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "ButtonGroup",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/button-group.test.tsx",
-        "src/stories/button-group.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/button-group.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-button-group--default",
-        "primitives-button-group--vertical"
-      ],
-      "usage": {
-        "when": "Attach related Buttons into one segmented row or column that reads as a single control.",
-        "whenNot": "Buttons that are unrelated, or choosing one of several views.",
-        "useInstead": [
-          {
-            "component": "SegmentedControl",
-            "reason": "choosing one of several views"
-          },
-          {
-            "component": "Stack",
-            "reason": "loosely spaced buttons"
-          }
-        ]
-      }
-    },
     "InputGroup": {
       "category": "Inputs",
       "categorySource": "jsdoc",
@@ -7941,11 +6642,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
             "info",
+            "neutral",
             "inProgress"
           ],
           "optional": true
@@ -8126,11 +6827,11 @@
         "tone": {
           "type": "enum",
           "values": [
-            "neutral",
-            "danger",
             "success",
+            "danger",
             "warning",
-            "info"
+            "info",
+            "neutral"
           ],
           "optional": true
         },
@@ -8153,299 +6854,6 @@
         "primitives-circular-progress--indeterminate",
         "primitives-circular-progress--sizes",
         "primitives-circular-progress--tones"
-      ]
-    },
-    "SideNav": {
-      "category": "Navigation",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "filePath": "src/app/components/side-nav.tsx",
-      "description": "SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child page link. Keeps the same full-width hit area and label type treatment, with indentation handled via inner padding only. No indicator bar (reserved for HdsTocNav). Idle text = content-secondary → primary on hover/active. Accent surface fill on active state.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-332",
-      "figmaId": null,
-      "consumers": [
-        "src/app/components/side-nav.test.tsx",
-        "src/app/layouts/HdsDocsShell.tsx",
-        "src/stories/side-nav.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "active": {
-          "type": "boolean",
-          "default": false
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "href": {
-          "type": "string",
-          "optional": true
-        },
-        "indent": {
-          "type": "boolean",
-          "default": 0
-        },
-        "label": {
-          "type": "string"
-        },
-        "level": {
-          "type": "enum",
-          "values": [
-            "root",
-            "nested"
-          ],
-          "default": "nested"
-        },
-        "onNavigate": {
-          "type": "(event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void",
-          "optional": true
-        },
-        "titleLabel": {
-          "type": "boolean",
-          "default": false
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {
-        "exportName": "SideNav",
-        "sizing": "panel"
-      },
-      "tier": "primitive",
-      "docExempt": false,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-332",
-      "storyFiles": [
-        "src/stories/side-nav.stories.tsx"
-      ],
-      "storyIds": [
-        "navigation-side-nav--disabled",
-        "navigation-side-nav--nested-active",
-        "navigation-side-nav--root",
-        "navigation-side-nav--sidebar-group"
-      ]
-    },
-    "CommandPalette": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/command-palette.tsx",
-      "description": "Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "CommandPalette",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/data/nav-model.test.ts",
-        "src/app/lib/hds-search.ts",
-        "src/stories/command-palette.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "className": {
-          "type": "string",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/command-palette.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-command-palette--default"
-      ]
-    },
-    "Lightbox": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/image-lightbox.tsx",
-      "description": "Lightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a lightbox is a transparent full-screen surface, not a centered card). Radix owns the modal a11y contract the hand-rolled version was missing: focus trap, focus restore on close, Escape, and scroll-lock. Motion is retained via `forceMount` + AnimatePresence + `asChild`: the backdrop fades and the image panel scales/translates in, exactly as before.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "Lightbox",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/image-lightbox.test.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/asset-img.stories.tsx",
-        "src/stories/image-lightbox.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "alt": {
-          "type": "string",
-          "optional": true
-        },
-        "caption": {
-          "type": "string",
-          "optional": true
-        },
-        "captionHref": {
-          "type": "string",
-          "optional": true
-        },
-        "captionLabel": {
-          "type": "string",
-          "optional": true
-        },
-        "naturalHeight": {
-          "type": "number",
-          "optional": true
-        },
-        "naturalWidth": {
-          "type": "number",
-          "optional": true
-        },
-        "onClose": {
-          "type": "() => void"
-        },
-        "open": {
-          "type": "boolean"
-        },
-        "src": {
-          "type": "string"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/image-lightbox.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-image-lightbox--default"
-      ]
-    },
-    "AppShell": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/app-shell.tsx",
-      "description": "Renders a header/sidebar/main application frame, e.g. `<AppShell sidebar={<Nav />}>...</AppShell>`.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "template",
-      "preview": {
-        "exportName": "AppShell",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/app-shell.test.tsx",
-        "src/stories/app-shell.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/app-shell.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-app-shell--default",
-        "patterns-app-shell--no-sidebar",
-        "patterns-app-shell--wide-sidebar"
-      ]
-    },
-    "FileInput": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/file-input.tsx",
-      "description": "A dashed dropzone that opens the native file picker or accepts a drag-and-drop.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "FileInput",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/file-input.test.tsx",
-        "src/stories/file-input.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "accept": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "optional": true
-        },
-        "label": {
-          "type": "ReactNode",
-          "default": "Click to upload or drag and drop"
-        },
-        "multiple": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onFiles": {
-          "type": "(files: File[]) => void",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/file-input.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-file-input--default",
-        "patterns-file-input--disabled",
-        "patterns-file-input--multiple-images"
       ]
     },
     "MetadataList": {
@@ -8511,56 +6919,6 @@
         "patterns-metadata-list--horizontal"
       ]
     },
-    "OverflowList": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/overflow-list.tsx",
-      "description": "Renders up to `max` children followed by a `+N` overflow chip (or custom node).",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "OverflowList",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/overflow-list.test.tsx",
-        "src/stories/overflow-list.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "children": {
-          "type": "ReactNode"
-        },
-        "max": {
-          "type": "number",
-          "optional": true
-        },
-        "renderOverflow": {
-          "type": "(count: number) => ReactNode",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/overflow-list.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-overflow-list--default",
-        "patterns-overflow-list--with-overflow"
-      ]
-    },
     "SelectableCard": {
       "category": "Actions",
       "categorySource": "jsdoc",
@@ -8614,333 +6972,6 @@
         "patterns-selectable-card--selected"
       ]
     },
-    "Tokenizer": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/tokenizer.tsx",
-      "description": "A bordered field of Tag chips followed by a text input for adding more.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "Tokenizer",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/tokenizer.test.tsx",
-        "src/stories/tokenizer.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onChange": {
-          "type": "(next: string[]) => void"
-        },
-        "placeholder": {
-          "type": "string",
-          "optional": true
-        },
-        "value": {
-          "type": "string[]"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/tokenizer.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-tokenizer--default",
-        "patterns-tokenizer--disabled",
-        "patterns-tokenizer--empty"
-      ]
-    },
-    "TopNav": {
-      "category": "Navigation",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/top-nav.tsx",
-      "description": "Top navigation bar with brand, nav, and trailing action slots.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "TopNav",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/top-nav.test.tsx",
-        "src/app/layouts/HdsDocsShell.tsx",
-        "src/stories/top-nav.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "brand": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "children": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "sticky": {
-          "type": "boolean",
-          "optional": true
-        },
-        "trailing": {
-          "type": "ReactNode",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/top-nav.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-top-nav--default",
-        "patterns-top-nav--sticky"
-      ]
-    },
-    "Carousel": {
-      "category": "Display",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/carousel.tsx",
-      "description": "Renders children as a snap-scrolling track with Prev/Next scroll buttons.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "Carousel",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/carousel.test.tsx",
-        "src/stories/carousel.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "ariaLabel": {
-          "type": "string",
-          "default": "Carousel"
-        },
-        "children": {
-          "type": "ReactNode"
-        },
-        "showControls": {
-          "type": "boolean",
-          "default": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/carousel.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-carousel--default",
-        "patterns-carousel--no-controls"
-      ]
-    },
-    "Stepper": {
-      "category": "Navigation",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/stepper.tsx",
-      "description": "Step indicator for multi-step flows. Purely presentational — no navigation.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "Stepper",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/stepper.test.tsx",
-        "src/stories/stepper-field.stories.tsx",
-        "src/stories/stepper.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "activeStep": {
-          "type": "number"
-        },
-        "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ],
-          "default": "horizontal"
-        },
-        "steps": {
-          "type": "Step[]"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/stepper.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-stepper--default",
-        "patterns-stepper--vertical"
-      ]
-    },
-    "Toolbar": {
-      "category": "Actions",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/toolbar.tsx",
-      "description": "Toolbar root. Groups related controls with a single roving tab-stop. Supports the native `orientation` prop (`horizontal` | `vertical`).",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "Toolbar",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/data-table-section.tsx",
-        "src/app/components/toolbar.test.tsx",
-        "src/stories/toolbar.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "asChild": {
-          "type": "boolean",
-          "optional": true
-        },
-        "dir": {
-          "type": "\"ltr\" | \"rtl\"",
-          "optional": true
-        },
-        "loop": {
-          "type": "boolean",
-          "optional": true
-        },
-        "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ],
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/toolbar.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-toolbar--default"
-      ]
-    },
-    "TreeList": {
-      "category": "Navigation",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/tree-list.tsx",
-      "description": "Renders a hierarchical `role=\"tree\"` list; nodes with children get an expand/collapse toggle.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "TreeList",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/tree-list.test.tsx",
-        "src/stories/tree-list.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "defaultExpandedIds": {
-          "type": "string[]",
-          "optional": true
-        },
-        "items": {
-          "type": "TreeNode[]"
-        },
-        "onSelect": {
-          "type": "(id: string) => void",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/tree-list.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-tree-list--default",
-        "patterns-tree-list--with-default-expanded"
-      ]
-    },
     "AlertDialog": {
       "category": "Overlays",
       "categorySource": "jsdoc",
@@ -8960,7 +6991,6 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/destructive-section.tsx",
-        "src/app/components/hover-card.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
@@ -9051,465 +7081,6 @@
         "primitives-aspect-ratio--widescreen"
       ]
     },
-    "Calendar": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/calendar.tsx",
-      "description": "Renders an accessible month grid; compose it inside a Popover for the date inputs.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "Calendar",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/calendar.test.tsx",
-        "src/app/components/date-input.tsx",
-        "src/app/components/date-range-input.tsx",
-        "src/app/components/date-time-input.tsx",
-        "src/stories/calendar.stories.tsx",
-        "src/stories/date-input.stories.tsx",
-        "src/stories/date-range-input.stories.tsx",
-        "src/stories/date-time-input.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/calendar.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-calendar--range",
-        "primitives-calendar--single"
-      ]
-    },
-    "ContextMenu": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/context-menu.tsx",
-      "description": "ContextMenu root + parts. Wrap the right-clickable area in `ContextMenu.Trigger`. Controlled via `onOpenChange`.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "ContextMenu",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/context-menu.test.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/context-menu.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "children": {
-          "type": "React.ReactNode",
-          "optional": true
-        },
-        "dir": {
-          "type": "\"ltr\" | \"rtl\"",
-          "optional": true
-        },
-        "modal": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onOpenChange": {
-          "type": "(open: boolean) => void",
-          "optional": true
-        },
-        "open": {
-          "type": "boolean",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/context-menu.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-context-menu--default"
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The area that opens the menu on right-click (ContextMenu.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The popup holding the items (ContextMenu.Content).",
-          "source": "jsdoc"
-        }
-      ],
-      "usage": {
-        "when": "Offer actions for an item on right-click, or the equivalent keyboard gesture.",
-        "whenNot": "The only way to reach an action, or actions from a visible trigger.",
-        "useInstead": [
-          {
-            "component": "Menu",
-            "reason": "actions from a visible trigger"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "ArrowDown/ArrowUp",
-          "effect": "Moves the highlight and stops at the first and last item."
-        },
-        {
-          "keys": "End",
-          "effect": "Jumps to the last item."
-        },
-        {
-          "keys": "Character",
-          "effect": "Highlights the next item that starts with the typed letter."
-        },
-        {
-          "keys": "Enter",
-          "effect": "Selects the highlighted item and closes the menu."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the menu without leaving focus inside the removed content."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Does not leave the open menu."
-        }
-      ]
-    },
-    "DateInput": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/date-input.tsx",
-      "description": "Text field + calendar popover for picking a single date.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "DateInput",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/date-input.test.tsx",
-        "src/stories/date-input.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "aria-label": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "displayFormat": {
-          "type": "string",
-          "default": "yyyy-MM-dd"
-        },
-        "id": {
-          "type": "string",
-          "optional": true
-        },
-        "onChange": {
-          "type": "(date: Date) => void",
-          "optional": true
-        },
-        "placeholder": {
-          "type": "string",
-          "optional": true
-        },
-        "value": {
-          "type": "Date",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/date-input.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-date-input--default",
-        "patterns-date-input--with-initial-value"
-      ]
-    },
-    "DateRangeInput": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/date-range-input.tsx",
-      "description": "DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget. No new primitive — built entirely on the HDS Popover + Calendar. The trigger reads like a secondary input, showing a placeholder or the formatted `from – to` range; the content is a two-month range calendar. <DateRangeInput value={range} onChange={setRange} />",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "DateRangeInput",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/date-range-input.test.tsx",
-        "src/stories/date-range-input.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "aria-label": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "displayFormat": {
-          "type": "string",
-          "default": "yyyy-MM-dd"
-        },
-        "id": {
-          "type": "string",
-          "optional": true
-        },
-        "numberOfMonths": {
-          "type": "number",
-          "default": 2
-        },
-        "onChange": {
-          "type": "(range: DateRange) => void",
-          "optional": true
-        },
-        "placeholder": {
-          "type": "string",
-          "default": "Select date range"
-        },
-        "value": {
-          "type": "DateRange",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/date-range-input.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-date-range-input--default",
-        "patterns-date-range-input--disabled-trigger",
-        "patterns-date-range-input--pre-selected"
-      ]
-    },
-    "DateTimeInput": {
-      "category": "Inputs",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/components/date-time-input.tsx",
-      "description": "Text date field + calendar popover, paired with a native time field, producing one Date.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "DateTimeInput",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/date-time-input.test.tsx",
-        "src/stories/date-time-input.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "aria-label": {
-          "type": "string",
-          "optional": true
-        },
-        "dateFormat": {
-          "type": "string",
-          "default": "yyyy-MM-dd"
-        },
-        "disabled": {
-          "type": "boolean",
-          "default": false
-        },
-        "id": {
-          "type": "string",
-          "optional": true
-        },
-        "onChange": {
-          "type": "(date: Date) => void",
-          "optional": true
-        },
-        "value": {
-          "type": "Date",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/date-time-input.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-date-time-input--default",
-        "patterns-date-time-input--with-initial-value"
-      ]
-    },
-    "HoverCard": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": true,
-      "filePath": "src/app/components/hover-card.tsx",
-      "description": "HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "HoverCard",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/dialog.tsx",
-        "src/app/components/hover-card.test.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/hover-card.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "children": {
-          "type": "React.ReactNode",
-          "optional": true
-        },
-        "closeDelay": {
-          "type": "number",
-          "optional": true
-        },
-        "defaultOpen": {
-          "type": "boolean",
-          "optional": true
-        },
-        "onOpenChange": {
-          "type": "(open: boolean) => void",
-          "optional": true
-        },
-        "open": {
-          "type": "boolean",
-          "optional": true
-        },
-        "openDelay": {
-          "type": "number",
-          "optional": true
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/hover-card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-hover-card--default"
-      ],
-      "slots": [
-        {
-          "name": "trigger",
-          "description": "The link or element that opens the card (HoverCard.Trigger).",
-          "source": "jsdoc"
-        },
-        {
-          "name": "content",
-          "description": "The preview (HoverCard.Content).",
-          "source": "jsdoc"
-        }
-      ],
-      "usage": {
-        "when": "Preview extra detail about a link or mention when it is hovered or focused, without navigating.",
-        "whenNot": "Content people must reach, or a label for an interactive control.",
-        "useInstead": [
-          {
-            "component": "Dialog",
-            "reason": "content people must act on"
-          },
-          {
-            "component": "Tooltip",
-            "reason": "a short label for a control"
-          }
-        ]
-      },
-      "keyboard": [
-        {
-          "keys": "Focus",
-          "effect": "Opens the card when the trigger receives keyboard focus."
-        },
-        {
-          "keys": "Escape",
-          "effect": "Closes the card and keeps focus on the trigger."
-        },
-        {
-          "keys": "Tab",
-          "effect": "Moves on to the next element and closes the card."
-        }
-      ]
-    },
     "MultiSelector": {
       "category": "Inputs",
       "categorySource": "jsdoc",
@@ -9588,9 +7159,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/date-time-input.tsx",
         "src/app/components/time-input.test.tsx",
-        "src/stories/date-time-input.stories.tsx",
         "src/stories/time-input.stories.tsx"
       ],
       "tokenMapping": {},
@@ -9881,7 +7450,6 @@
         "src/app/components/box-sx.ts",
         "src/app/components/center.test.tsx",
         "src/app/components/container.tsx",
-        "src/stories/button-group.stories.tsx",
         "src/stories/center.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
@@ -10049,7 +7617,6 @@
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/cover.test.tsx",
-        "src/app/components/stacked-card-rail.tsx",
         "src/stories/cover.stories.tsx",
         "src/stories/patterns-layout.stories.tsx"
       ],
@@ -10203,16 +7770,13 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/app-shell.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/sidebar.test.tsx",
         "src/app/data/nav-model.ts",
-        "src/stories/app-shell.stories.tsx",
         "src/stories/grid.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/pin.stories.tsx",
-        "src/stories/side-nav.stories.tsx",
         "src/stories/sidebar.stories.tsx"
       ],
       "tokenMapping": {},
@@ -11399,8 +8963,8 @@
       },
       "consumers": [
         "src/app/components/asset-img.tsx",
+        "src/app/components/dialog.tsx",
         "src/app/components/hds-tooltip.test.tsx",
-        "src/app/components/hover-card.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/hds-tooltip.stories.tsx"
@@ -11467,17 +9031,12 @@
       },
       "consumers": [
         "src/app/components/combobox.tsx",
-        "src/app/components/command-palette.tsx",
-        "src/app/components/context-menu.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/components/date-range-input.tsx",
-        "src/app/components/hover-card.tsx",
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/context-menu.stories.tsx",
         "src/stories/menu.stories.tsx"
       ],
       "tokenMapping": {},
@@ -11594,16 +9153,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/calendar.tsx",
         "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
-        "src/app/components/date-input.test.tsx",
-        "src/app/components/date-input.tsx",
-        "src/app/components/date-range-input.test.tsx",
-        "src/app/components/date-range-input.tsx",
-        "src/app/components/date-time-input.test.tsx",
-        "src/app/components/date-time-input.tsx",
-        "src/app/components/hover-card.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.test.tsx",
         "src/app/components/multi-selector.tsx",
@@ -11612,9 +9163,6 @@
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/stories/combobox.stories.tsx",
-        "src/stories/date-input.stories.tsx",
-        "src/stories/date-range-input.stories.tsx",
-        "src/stories/date-time-input.stories.tsx",
         "src/stories/multi-selector.stories.tsx",
         "src/stories/popover.stories.tsx"
       ],
@@ -11657,72 +9205,6 @@
         "primitives-popover--default",
         "primitives-popover--info-tip",
         "primitives-popover--with-dismiss"
-      ]
-    },
-    "HdsDocsShell": {
-      "category": "Layout",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
-      "filePath": "src/app/layouts/HdsDocsShell.tsx",
-      "description": "HdsDocsShell — three-region docs shell (left nav rail, content, right TOC rail), driven by grid columns that default to 0 and are set per breakpoint. hds#280 slice: this is the SHELL MECHANICS ONLY — the smallest shippable piece of the docs-shell epic. It ships: - A 3-column grid (`leftRail | content | rightRail`), both rail columns defaulting to `0px` and set to `semantic.space.sidebar.railWidth` (hds#280 token, our own 280px — not HeroUI's 268px) per breakpoint via Tailwind's arbitrary-property + responsive-variant syntax, the same technique Fumadocs/HeroUI uses. `md768:` brings in the left rail, `xl1280:` brings in the right rail — matching the three-stage table in hds#280. - Each rail is `position: sticky` and scrolls independently of content and of the other rail, clipped to the viewport minus `topOffset`. - `topOffset` composes (it is one CSS length a caller supplies, e.g. its own sticky header's height token) rather than a hardcoded pixel value — the first stage of the row-cascade pattern hds#280 asks for. A second region (a tabs row, hds#280's PR-comment addendum) would extend this by adding its own height into the same `calc()` chain, not by hardcoding a second offset. Deliberately NOT in this slice (tracked as proposed follow-up issues, not filed — see the PR/commit this ships in): - Below the TOC breakpoint, `rightRail` is omitted from the grid rather than becoming a reachable popover. The DoD explicitly wants a popover, not \"merely hidden\" — that is real, separate UI work (a sticky current-section breadcrumb bar), not shell mechanics. - Left-rail collapsible groups (chevron, active-section pill) and right-rail active-anchor styling (vertical rule, filled pill) are content the caller supplies via `leftRail`/`rightRail` — this shell does not build SideNav/Disclosure/NavItem composition for the caller. - `check-rendered-geometry` verification at every breakpoint in the DoD's table (needs a built Storybook + a live run, not exercised here). - Named CSS `grid-template-areas` (the DoD's literal ask) — this ships a 3-column grid with DOM order instead, which is behaviorally identical for a single linear row of regions and needs no separate stylesheet. Areas earn their keep once a 4th region (a tabs row spanning full width) is added — call out then, not before.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "pattern",
-      "preview": {
-        "exportName": "HdsDocsShell",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/design-system/generated-token-descriptions.ts",
-        "src/app/layouts/HdsDocsShell.test.tsx",
-        "src/index.ts",
-        "src/stories/hds-docs-shell.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "props": {
-        "children": {
-          "type": "ReactNode"
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "leftRail": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "rightRail": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "style": {
-          "type": "CSSProperties",
-          "optional": true
-        },
-        "topOffset": {
-          "type": "string",
-          "default": "0px"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "storyFiles": [
-        "src/stories/hds-docs-shell.stories.tsx"
-      ],
-      "storyIds": [
-        "layout-hdsdocsshell--content-only",
-        "layout-hdsdocsshell--default",
-        "layout-hdsdocsshell--no-right-rail",
-        "layout-hdsdocsshell--with-top-offset"
       ]
     },
     "Checkbox": {
@@ -12070,7 +9552,7 @@
           "default": "Nothing here yet"
         },
         "level": {
-          "type": "2 | 3 | 4 | 5 | 6",
+          "type": "6 | 3 | 4 | 2 | 5",
           "default": 2
         },
         "rows": {
@@ -12144,7 +9626,7 @@
           "type": "ReactNode"
         },
         "level": {
-          "type": "2 | 3 | 4 | 5 | 6",
+          "type": "6 | 3 | 4 | 2 | 5",
           "default": 2
         },
         "onConfirm": {
@@ -12620,74 +10102,6 @@
       "tokenMapping": {},
       "tier": "utility"
     },
-    "HistoryCard": {
-      "category": "Uncategorized",
-      "categorySource": "missing-jsdoc",
-      "governedCategory": false,
-      "hidden": false,
-      "filePath": "src/app/components/history-card.tsx",
-      "description": "HistoryCard — compact commit-history card for repo and systems-log surfaces. Padding on the 8px grid; commit hash uses semantic.typography.mono (mono); secondary metadata via semantic.color.content.tertiary (opacity, never a different hue). No shadow — depth comes from semantic.color.border.default.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "preview": {
-        "exportName": "HistoryCard",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/stories/history-card.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {
-        "commit": {
-          "type": "HistoryCardCommit"
-        },
-        "href": {
-          "type": "string"
-        }
-      },
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "variantAxes": [],
-      "componentProperties": [],
-      "tier": "utility",
-      "docExempt": true,
-      "sourcePath": "src/app/components/HistoryCard.tsx",
-      "figmaLink": null
-    },
-    "ImageLightbox": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/image-lightbox.tsx",
-      "description": "",
-      "figmaUrl": null,
-      "figmaId": null,
-      "consumers": [
-        "src/app/components/image-lightbox.test.tsx"
-      ],
-      "tokenMapping": {},
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "preview": {
-        "exportName": "ImageLightbox",
-        "sizing": "panel"
-      },
-      "tier": "utility",
-      "docExempt": true,
-      "variantAxes": [],
-      "componentProperties": [],
-      "figmaLink": null
-    },
     "NotFoundPattern": {
       "category": "Feedback",
       "categorySource": "internal-jsdoc",
@@ -12717,31 +10131,6 @@
       "componentProperties": [],
       "tier": "utility",
       "docExempt": true,
-      "figmaLink": null
-    },
-    "ErrorBoundary": {
-      "category": "Uncategorized",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "docExempt": true,
-      "filePath": "src/app/components/error-boundary.tsx",
-      "description": "ErrorBoundary — slot-scoped recovery surface for runtime render failures.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "ErrorBoundary",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/layouts/CaseStudyLayout.tsx",
-        "src/app/layouts/DocLayout.tsx",
-        "src/stories/error-boundary.stories.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
       "figmaLink": null
     },
     "ExpandTooltip": {

@@ -76,6 +76,3 @@ export const Progress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Progres
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Progress props instead. */
-export { progressTrackVariants };

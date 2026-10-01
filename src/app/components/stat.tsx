@@ -61,6 +61,3 @@ export const Stat = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatProps>(
     </div>
   );
 });
-
-/** @internal — CVA variant helper; compose via Stat props instead. */
-export { statVariants };

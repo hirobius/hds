@@ -65,7 +65,7 @@ export const ANNOTATION = '/* @__PURE__ */ ';
 /** `/* @__PURE__ *\/` or `/*#__PURE__*\/`, as the last thing before the call. */
 const PURE_BEFORE_CALL = /\/\*\s*[@#]__PURE__\s*\*\/\s*$/;
 
-/** A component name by convention: `Menu`, `HoverCard`, `K`. */
+/** A component name by convention: `Menu`, `Popover`, `K`. */
 const CAPITALISED = /^[A-Z]/;
 
 /**

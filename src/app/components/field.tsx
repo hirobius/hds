@@ -67,6 +67,3 @@ export const Field = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FieldProps
     </div>
   );
 });
-
-/** @internal — CVA variant helper; compose via Field props instead. */
-export { fieldValueVariants };

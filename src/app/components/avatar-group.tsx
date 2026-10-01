@@ -81,6 +81,3 @@ export const AvatarGroup = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Avat
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via AvatarGroup props instead. */
-export { overflowBubbleVariants };

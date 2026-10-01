@@ -67,6 +67,3 @@ export const ToggleButton = /* @__PURE__ */ React.forwardRef<
     />
   );
 });
-
-/** @internal — CVA variant helper; compose via ToggleButton props instead. */
-export { hdsToggleButtonVariants };

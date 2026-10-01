@@ -132,6 +132,3 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Textarea props instead. */
-export { textareaVariants };

@@ -24,9 +24,15 @@ const run = (...args) =>
   });
 
 describe('core component list', () => {
-  it('has the 42 core names of the hds#254 table, without duplicates', () => {
-    expect(CORE_COMPONENTS).toHaveLength(42);
-    expect(new Set(CORE_COMPONENTS).size).toBe(42);
+  it('has the 39 core names: the 42 of the hds#254 table less the three hds#394 removed', () => {
+    expect(CORE_COMPONENTS).toHaveLength(39);
+    expect(new Set(CORE_COMPONENTS).size).toBe(39);
+  });
+
+  it('drops ButtonGroup, ContextMenu and HoverCard, removed in 0.20.0 (hds#394)', () => {
+    for (const gone of ['ButtonGroup', 'ContextMenu', 'HoverCard']) {
+      expect(CORE_COMPONENTS).not.toContain(gone);
+    }
   });
 
   it('applies the hds#315 renames', () => {
@@ -72,10 +78,10 @@ describe('check-contract-coverage CLI', () => {
     expect(findContractGaps(CORE_COMPONENTS, manifest.componentSpecs)).toEqual([]);
   });
 
-  it('--enforce exits 0 and reports 42/42 core components covered', () => {
+  it('--enforce exits 0 and reports 39/39 core components covered', () => {
     const out = run('--enforce');
     expect(out.status).toBe(0);
-    expect(out.stdout).toContain('42/42');
+    expect(out.stdout).toContain('39/39');
   });
 
   it('defaults to --report and exits 0', () => {
@@ -135,7 +141,7 @@ describe('llms.txt "Which one when"', () => {
 });
 
 describe('keyboard contract tags on core overlays', () => {
-  it.each(['Combobox', 'ContextMenu', 'Dialog', 'HoverCard'])('%s declares keyboard', (name) => {
+  it.each(['Combobox', 'Dialog', 'Select'])('%s declares keyboard', (name) => {
     expect(manifest.componentSpecs[name].keyboard?.length).toBeGreaterThan(0);
   });
 });

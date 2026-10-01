@@ -197,6 +197,3 @@ export function ToastProvider({
     </ToastContext.Provider>
   );
 }
-
-/** @internal — CVA variant helper; compose via ToastOptions.tone instead. */
-export { toastIconVariants };

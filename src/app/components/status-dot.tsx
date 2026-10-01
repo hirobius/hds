@@ -61,6 +61,3 @@ export const StatusDot = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, Statu
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via StatusDot props instead. */
-export { statusDotVariants };

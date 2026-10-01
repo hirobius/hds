@@ -94,7 +94,9 @@ describe('./icons subpath', () => {
       ...(manifest.patternInventory ?? []),
     ]);
     const collisions = exportNames.filter((n) => hds.has(n));
-    expect(collisions).toEqual(expect.arrayContaining(['Calendar', 'Menu']));
+    expect(collisions).toEqual(expect.arrayContaining(['Menu']));
+    // The HDS Calendar was removed in 0.20.0 (hds#394), so the icon no longer collides.
+    expect(collisions).not.toContain('Calendar');
     for (const file of ['public/llms.txt', 'docs/CONSUMING.md']) {
       const text = read(file);
       for (const name of collisions) {

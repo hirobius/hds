@@ -73,6 +73,3 @@ export const SelectableCard = /* @__PURE__ */ React.forwardRef<
     />
   );
 });
-
-/** @internal — CVA variant helper; compose via SelectableCard props instead. */
-export { selectableCardVariants };

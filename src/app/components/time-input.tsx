@@ -56,6 +56,3 @@ export const TimeInput = /* @__PURE__ */ React.forwardRef<HTMLInputElement, Time
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via TimeInput props instead. */
-export { hdsTimeInputVariants };

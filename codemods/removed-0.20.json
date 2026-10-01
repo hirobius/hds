@@ -1,0 +1,132 @@
+{
+  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; tests/public-export-names.test.ts and scripts/__tests__/patterns-subpath-removed.test.mjs fail if any listed name is exported again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row.",
+  "release": "0.20.0",
+  "modules": {
+    "src/app/components/activity-feed.tsx": [
+      "activityAvatarVariants",
+      "ActivityEvent",
+      "ActivityFeed",
+      "ActivityFeedProps",
+      "ActivityStatus",
+      "ActivityTone",
+      "activityToneVariants",
+      "defaultActivityEvents"
+    ],
+    "src/app/components/app-shell.tsx": ["AppShell", "AppShellProps", "appShellVariants"],
+    "src/app/components/avatar-group.tsx": ["overflowBubbleVariants"],
+    "src/app/components/badge.tsx": ["badgeVariants"],
+    "src/app/components/blockquote.tsx": ["blockquoteVariants"],
+    "src/app/components/breadcrumb.tsx": ["crumbLabelVariants"],
+    "src/app/components/button-group.tsx": [
+      "ButtonGroup",
+      "ButtonGroupProps",
+      "buttonGroupVariants"
+    ],
+    "src/app/components/button.tsx": ["buttonVariants"],
+    "src/app/components/calendar.tsx": ["Calendar", "CalendarProps"],
+    "src/app/components/card.tsx": ["cardVariants"],
+    "src/app/components/carousel.tsx": ["Carousel", "carouselControlVariants", "CarouselProps"],
+    "src/app/components/cinematic-link.tsx": ["CinematicLink", "CinematicLinkProps"],
+    "src/app/components/circular-progress.tsx": ["circularProgressVariants"],
+    "src/app/components/command-palette.tsx": [
+      "cmdkDescriptionVariants",
+      "cmdkKindBadgeVariants",
+      "cmdkRowVariants",
+      "CommandPalette",
+      "CommandPaletteProps"
+    ],
+    "src/app/components/component-instance-matrix.tsx": ["ComponentInstanceMatrix"],
+    "src/app/components/context-menu.tsx": ["ContextMenu"],
+    "src/app/components/date-input.tsx": ["DateInput", "DateInputProps"],
+    "src/app/components/date-range-input.tsx": ["DateRangeInput", "DateRangeInputProps"],
+    "src/app/components/date-time-input.tsx": ["DateTimeInput", "DateTimeInputProps"],
+    "src/app/components/disclosure.tsx": ["disclosureTriggerVariants"],
+    "src/app/components/doc-link-card.tsx": [
+      "DocLinkCard",
+      "DocLinkCardProps",
+      "docLinkCardVariants"
+    ],
+    "src/app/components/error-boundary.tsx": ["ErrorBoundary", "ErrorBoundaryProps"],
+    "src/app/components/field.tsx": ["fieldValueVariants"],
+    "src/app/components/file-input.tsx": ["FileInput", "FileInputProps", "fileInputVariants"],
+    "src/app/components/foundation-swatch.tsx": ["FoundationSwatch", "FoundationSwatchProps"],
+    "src/app/components/heading-stack.tsx": [
+      "HeadingStack",
+      "headingStackLevelVariants",
+      "HeadingStackProps",
+      "headingStackVariants"
+    ],
+    "src/app/components/history-card.tsx": ["HistoryCard", "HistoryCardCommit", "HistoryCardProps"],
+    "src/app/components/hover-card.tsx": ["HoverCard"],
+    "src/app/components/image-lightbox.tsx": ["Lightbox", "LightboxProps"],
+    "src/app/components/inline-code.tsx": ["inlineCodeVariants"],
+    "src/app/components/input.tsx": ["inputVariants"],
+    "src/app/components/kbd.tsx": ["kbdVariants"],
+    "src/app/components/metadata-list.tsx": ["metadataListVariants"],
+    "src/app/components/nav-group.tsx": ["NavGroup", "navGroupLabelVariants", "NavGroupProps"],
+    "src/app/components/nav-item.tsx": [
+      "navIndicatorVariants",
+      "NavItem",
+      "navItemVariants",
+      "NavProps"
+    ],
+    "src/app/components/overflow-list.tsx": ["OverflowList", "OverflowListProps"],
+    "src/app/components/progress.tsx": ["progressTrackVariants"],
+    "src/app/components/segmented-control.tsx": [
+      "segmentedControlDescriptionVariants",
+      "segmentedControlFocusRingVariants",
+      "segmentedControlIndicatorVariants",
+      "segmentedControlItemVariants",
+      "segmentedControlLabelVariants",
+      "segmentedControlRailVariants",
+      "segmentedControlWrapperVariants"
+    ],
+    "src/app/components/selectable-card.tsx": ["selectableCardVariants"],
+    "src/app/components/side-nav.tsx": [
+      "SideNav",
+      "SideNavLevel",
+      "SideNavProps",
+      "sideNavVariants"
+    ],
+    "src/app/components/skeleton.tsx": ["skeletonVariants"],
+    "src/app/components/sketch.tsx": ["Sketch", "SketchProps"],
+    "src/app/components/spinner.tsx": ["spinnerVariants"],
+    "src/app/components/stacked-card-rail.tsx": [
+      "StackedCardRail",
+      "StackedCardRailCard",
+      "StackedCardRailProps"
+    ],
+    "src/app/components/stat.tsx": ["statVariants"],
+    "src/app/components/status-dot.tsx": ["statusDotVariants"],
+    "src/app/components/status-list-item.tsx": ["statusListItemDotVariants"],
+    "src/app/components/stepper-field.tsx": ["StepperField", "StepperFieldProps"],
+    "src/app/components/stepper.tsx": ["Step", "stepMarkerVariants", "Stepper", "StepperProps"],
+    "src/app/components/surface.tsx": ["surfaceVariants"],
+    "src/app/components/table.tsx": [
+      "tableDataCellVariants",
+      "tableHeaderCellVariants",
+      "tableSortButtonVariants"
+    ],
+    "src/app/components/tag.tsx": ["tagButtonVariants", "tagPillVariants"],
+    "src/app/components/text-lockup.tsx": ["TextLockup", "TextLockupProps"],
+    "src/app/components/text.tsx": ["textVariants"],
+    "src/app/components/textarea.tsx": ["textareaVariants"],
+    "src/app/components/time-input.tsx": ["hdsTimeInputVariants"],
+    "src/app/components/toast.tsx": ["toastIconVariants"],
+    "src/app/components/toggle-button.tsx": ["hdsToggleButtonVariants"],
+    "src/app/components/token.tsx": [
+      "Token",
+      "tokenLabelVariants",
+      "tokenNodeInlineVariants",
+      "TokenProps",
+      "tokenShellVariants"
+    ],
+    "src/app/components/tokenizer.tsx": ["Tokenizer", "TokenizerProps"],
+    "src/app/components/toolbar.tsx": ["Toolbar", "ToolbarComponent"],
+    "src/app/components/top-nav.tsx": ["TopNav", "TopNavProps"],
+    "src/app/components/tree-list.tsx": ["TreeList", "TreeListProps", "TreeNode"],
+    "src/app/layouts/CaseStudyLayout.tsx": ["CaseStudyLayout", "CaseStudyLayoutProps"],
+    "src/app/layouts/HdsDocsShell.tsx": ["HdsDocsShell", "HdsDocsShellProps"],
+    "src/app/layouts/HdsSystemDocLayout.tsx": ["HdsSystemDocLayout"]
+  }
+}
