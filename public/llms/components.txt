@@ -573,10 +573,12 @@ Input — text field primitive with label, helper, and error slots.
   - label: string
   - leadingVisual: ReactNode
   - loading: boolean = false
+  - prefix: ReactNode
   - size: InputSize = md
+  - suffix: ReactNode
   - textStyle: "body" | "mono" = body
   - trailingVisual: ReactNode
-  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' = text
+  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' | 'date' | … = text
 
 ### InputGroup
 A single-line input with optional `leading`/`trailing` adornments.
