@@ -13,9 +13,9 @@
  *   pnpm figma:snapshot --ingest <file>  verify a snapshot's checksum and write
  *                                        figma/snapshot.json
  *
- * Take the snapshot with the development plugin ("Take snapshot", then
- * Download JSON) or by running figma/push/use-figma/snapshot.js through
- * use_figma and saving what it returns.
+ * Take the snapshot with the Sync plugin (Sync, then Download JSON), with the
+ * promote plugin ("Take snapshot", then Download JSON), or by running
+ * figma/push/use-figma/snapshot.js through use_figma and saving what it returns.
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
@@ -51,7 +51,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       console.log(
         [
           'figma:snapshot — take a snapshot of the Figma file, then ingest it:',
-          `  Development plugin: import ${rel}/plugin/manifest.json once, run "Take snapshot", click Download JSON.`,
+          `  Sync plugin (${rel}/plugin): run Sync, then click Download JSON.`,
+          `  Promote plugin: import ${rel}/promote/manifest.json, run "Take snapshot", click Download JSON.`,
           `  use_figma: run ${rel}/use-figma/snapshot.js unmodified and save the returned JSON to a file.`,
           '  Then: pnpm figma:snapshot --ingest <file>   (verifies the checksum, writes figma/snapshot.json)',
           '  Commit figma/snapshot.json, then run pnpm check:figma-drift.',
