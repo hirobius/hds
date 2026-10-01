@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01T19:26:24.000Z",
+  "updatedAt": "2026-10-01T20:00:25Z",
   "phase": "active",
   "headline": "The 0.20.0 prune is nearly done (hds#389 decision update 2026-10-01: remove now in a 0.x minor; 1.0 stays parked, #396). Merged 2026-10-01: B3 survivor APIs (#427 #428 #430 #432 #433), R1a (#435: 97 root names, codemods hds-patterns-subpath and hds-prefix), R1b (#437: 32 wave 4a components, root *Variants private), core set 43 (#438), unused dependencies dropped (#439, #441), codemod hardening (#440), wave 4b (#441: 13 components folded into survivors), and zero-click Figma agent sync (#425). Main entry 96.5 -> about 34 kB gzip. B5 codemods (#395) and the orphan cleanup (#431 parts 2-3) are the last PRs before Version Packages 0.20.0.",
   "next": [
