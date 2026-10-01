@@ -86,7 +86,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Calendar` — Renders an accessible month grid; compose it inside a Popover for the date inputs.
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
-- `Combobox` — Combobox — searchable single-select (Popover + filtered listbox).
+- `Combobox` — Combobox — searchable single- or multi-select (Popover + filtered listbox).
 - `DateInput` — Text field + calendar popover for picking a single date.
 - `DateRangeInput` — DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Combobox and Menu rather than a bespoke widget.
 - `DateTimeInput` — Text date field + calendar popover, paired with a native time field, producing one Date.

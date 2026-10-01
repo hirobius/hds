@@ -14,8 +14,9 @@
  *
  * @primitive Combobox
  */
+import { useState } from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { Combobox, type ComboboxProps } from '@/app/components/combobox';
 import { FormField } from '@/app/components/form';
 import { user, FRUIT } from './overlay-fixtures';
@@ -96,5 +97,98 @@ describe('Combobox in a FormField', () => {
     const trigger = screen.getByLabelText('Fruit');
     expect(trigger.getAttribute('aria-invalid')).toBe('true');
     expect(trigger.getAttribute('aria-describedby')).toBe(screen.getByRole('alert').id);
+  });
+});
+
+// ── multiple (hds#393) ──────────────────────────────────────────────────────
+// Multi-select keeps the listbox semantics: the listbox is aria-multiselectable
+// and every option carries aria-selected. Enter toggles the active option and
+// the list stays open, so several can be picked from the keyboard.
+
+function MultiFixture({ start = [] }: { start?: string[] }) {
+  const [value, setValue] = useState<string[]>(start);
+  return (
+    <>
+      <Combobox multiple aria-label="Fruit" options={FRUIT} value={value} onChange={setValue} />
+      <output data-testid="value">{value.join(',')}</output>
+    </>
+  );
+}
+
+const picked = () => screen.getByTestId('value').textContent;
+const isSelected = (name: string) =>
+  screen.getByRole('option', { name }).getAttribute('aria-selected');
+
+async function openMulti() {
+  await open();
+  const search = await screen.findByRole('combobox', { name: 'Search…' });
+  await waitFor(() => expect(document.activeElement).toBe(search));
+}
+
+describe('Combobox multiple, keyboard', () => {
+  it('Enter toggles the active option on and keeps the list open for the next pick', async () => {
+    render(<MultiFixture />);
+    await openMulti();
+    const u = user();
+
+    await u.keyboard('{Enter}');
+    await u.keyboard('{ArrowDown}{Enter}');
+
+    expect(picked()).toBe('apple,banana');
+    expect(
+      screen.getByRole('listbox', { name: 'Fruit' }).getAttribute('aria-multiselectable'),
+    ).toBe('true');
+    expect(isSelected('Apple')).toBe('true');
+    expect(isSelected('Banana')).toBe('true');
+    expect(isSelected('Cherry')).toBe('false');
+  });
+
+  it('Enter on a selected option deselects it', async () => {
+    render(<MultiFixture start={['apple', 'cherry']} />);
+    await openMulti();
+
+    await user().keyboard('{Enter}');
+
+    expect(picked()).toBe('cherry');
+    expect(isSelected('Apple')).toBe('false');
+  });
+
+  it('Escape closes the list and keeps the selection', async () => {
+    render(<MultiFixture start={['banana']} />);
+    await openMulti();
+
+    await user().keyboard('{Escape}');
+
+    await waitFor(() => expect(screen.queryByRole('listbox')).toBeNull());
+    expect(picked()).toBe('banana');
+    expect(screen.getByRole('combobox', { name: 'Fruit' }).textContent).toContain('1 selected');
+  });
+
+  it('removes a value from its chip with the keyboard and keeps focus on the chips', async () => {
+    render(<MultiFixture start={['apple', 'banana', 'cherry']} />);
+    const u = user();
+    screen.getByRole('button', { name: 'Remove Banana' }).focus();
+
+    await u.keyboard('{Enter}');
+
+    expect(picked()).toBe('apple,cherry');
+    // Focus moves to the chip that took its place, not to the page.
+    await waitFor(() =>
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove Cherry' })),
+    );
+
+    await u.keyboard(' ');
+    expect(picked()).toBe('apple');
+    // The last chip went: focus steps back to the one before it.
+    await waitFor(() =>
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove Apple' })),
+    );
+
+    await u.keyboard('{Enter}');
+    expect(picked()).toBe('');
+    // No chips left: focus returns to the trigger.
+    await waitFor(() =>
+      expect(document.activeElement).toBe(screen.getByRole('combobox', { name: 'Fruit' })),
+    );
   });
 });
