@@ -9,8 +9,10 @@
  *   1. No stub summaries (entries with "TODO:" in their summary field)
  *   2. No page files are missing a registry entry (src/app/pages/hds was
  *      removed with the docs SPA teardown, #51 — hds-registry.json is now a
- *      frozen data artifact, still consumed by hds-nav-data.ts, so this
- *      check degrades to a no-op rather than erroring when the dir is gone)
+ *      frozen data artifact that no module imports, so this check degrades
+ *      to a no-op rather than erroring when the dir is gone). The docs-nav
+ *      model that used to sit beside it (hds-nav-data.ts, nav-model.*) was
+ *      deleted in hds#431; this check never read it.
  *
  * Run: node scripts/check-registry.mjs
  * Or:  pnpm check:registry

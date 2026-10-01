@@ -6854,7 +6854,6 @@
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/sidebar.test.tsx",
-        "src/app/data/nav-model.ts",
         "src/stories/grid.stories.tsx",
         "src/stories/patterns-layout.stories.tsx",
         "src/stories/pin.stories.tsx",
