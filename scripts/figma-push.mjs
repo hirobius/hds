@@ -16,6 +16,9 @@
  *   figma/push/use-figma/snapshot.js
  *   figma/push/use-figma/receipt.js  reads a Sync's receipt from staging, for
  *                                 pnpm figma:snapshot --from-receipt (hds#417)
+ *   figma/push/use-figma/delta.js    with --delta only: the zero-click agent sync
+ *                                 (hds#418), one use_figma call that applies the
+ *                                 change since figma/snapshot.json to staging
  *
  * A push matches by token path (then TOKEN_MIGRATION.md renames, codeSyntax,
  * name), updates before it creates, renames a collection's initial mode, and
@@ -30,6 +33,9 @@
  *                              not own
  *   pnpm figma:push --plan     also print what a push would change against the
  *                              committed figma/snapshot.json
+ *   pnpm figma:push --delta    also write use-figma/delta.js for the change since
+ *                              figma/snapshot.json, or refuse and route it to Sync
+ *                              (figma/README.md "Agent sync (zero clicks)")
  *   node scripts/figma-push.mjs --bundle <out>
  *                              write only the sync bundle the Sync plugin fetches
  *                              (the Vercel build writes it to
@@ -62,6 +68,11 @@ import {
   hdsSummaryLine,
 } from './lib/figma-runtime.mjs';
 import { parseSnapshotFile } from './lib/figma-snapshot.mjs';
+import {
+  DELTA_MAX_CHARS,
+  DELTA_PRUNE_REFUSAL,
+  buildUseFigmaDeltaScript,
+} from './lib/figma-agent-sync.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -159,6 +170,70 @@ export function writeSyncBundle({ root, out, commit }) {
   return { bundle, bytes: Buffer.byteLength(text) };
 }
 
+/**
+ * `pnpm figma:push --delta`: builds delta.js for the change from the
+ * committed figma/snapshot.json to the model
+ * (scripts/lib/figma-agent-sync.mjs), then writes every carrier and it.
+ * Throws, writing no file and leaving no delta.js (not even an earlier one),
+ * when the builder refuses or anything before it fails; writes the carriers
+ * but no delta.js when there is nothing to sync.
+ *
+ * @param {{ root: string, outDir: string, commit: string }} options
+ */
+export function writeDeltaScript({ root, outDir, commit }) {
+  const path = join(outDir, 'use-figma', 'delta.js');
+  rmSync(path, { force: true });
+  const { model, renames } = loadFigmaInputs(root);
+  const snapshotPath = join(root, 'figma', 'snapshot.json');
+  const snapshotFile = existsSync(snapshotPath)
+    ? parseSnapshotFile(readFileSync(snapshotPath, 'utf8'))
+    : null;
+  const built = buildUseFigmaDeltaScript(model, {
+    renames,
+    snapshotFile,
+    links: readLinks(root),
+    commit,
+  });
+  writePushArtifacts({ root, outDir });
+  if (built.text) writeFileSync(path, built.text);
+  return { ...built, path, shown: relative(root, path).replaceAll('\\', '/') };
+}
+
+/**
+ * `pnpm figma:push --delta [--prune]`: what it prints, or throws why it
+ * refused. It removes any earlier delta.js first, so a refusal or failure
+ * leaves none. `resolveCommit` names the commit delta.js is built from.
+ *
+ * @param {{ root?: string, prune?: boolean, resolveCommit?: () => string }} [options]
+ * @returns {string}
+ */
+export function runDeltaCommand({
+  root = ROOT,
+  prune = false,
+  resolveCommit = resolveBundleCommit,
+} = {}) {
+  const outDir = join(root, 'figma', 'push');
+  // First, before any step that can fail: no refusal leaves an earlier delta.js behind.
+  rmSync(join(outDir, 'use-figma', 'delta.js'), { force: true });
+  if (prune) throw new Error(DELTA_PRUNE_REFUSAL);
+  return formatDeltaRun(writeDeltaScript({ root, outDir, commit: resolveCommit() }));
+}
+
+/** What `pnpm figma:push --delta` prints for writeDeltaScript's result. */
+export function formatDeltaRun(result) {
+  if (!result.text) return `figma:push --delta — ${result.nothing}`;
+  return [
+    `figma:push --delta — ${result.shown} (${result.chars.toLocaleString('en-US')} of ${DELTA_MAX_CHARS.toLocaleString('en-US')} chars): ${result.line}`,
+    `  against figma/snapshot.json ${result.base}; model ${result.modelHash}; commit ${result.commit.slice(0, 7)}`,
+    ...result.changes.map((change) => `    ${change}`),
+    ...result.warnings.map((warning) => `    ⚠ ${warning}`),
+    '',
+    `  Next: log the call in figma/MCP-LEDGER.md, then pass delta.js unmodified to one use_figma call on staging ${result.staging}.`,
+    '  Save what it returns and run pnpm figma:snapshot --from-receipt <file> (when it returns only the head, first run',
+    '  use-figma/receipt.js once per page). On a refusal: stop, never retry. Runbook: figma/README.md "Agent sync (zero clicks)".',
+  ].join('\n');
+}
+
 /** What a push would change, judged against a snapshot instead of the live file. */
 export function planAgainstSnapshot({ model, renames, snapshotFile, prune = false }) {
   const plan = hdsPlan(model, snapshotFile.snapshot, { prune, renames });
@@ -232,6 +307,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       console.error(
         '  The Figma Sync plugin fetches this file from the deployed Storybook, so the build stops here instead of deploying without it. Fix the cause above, then redeploy.',
       );
+      process.exit(1);
+    }
+  } else if (args.includes('--delta')) {
+    try {
+      console.log(runDeltaCommand({ prune: args.includes('--prune') }));
+    } catch (error) {
+      console.error(`✗ figma:push --delta — ${error.message}`);
       process.exit(1);
     }
   } else {
