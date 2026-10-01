@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-01T06:40:41.076Z
+Generated: 2026-10-01T07:53:17.577Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -50,7 +50,7 @@ ButtonGroup: Attach related Buttons into one segmented row or column that reads 
 Card: Group related content on a raised surface with header, body, footer and metric slots. Use instead: Surface, Card.Metric
 CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card.
 Checkbox: Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
-Combobox: Pick one value from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+Combobox: Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
 Container: Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 ContextMenu: Offer actions for an item on right-click, or the equivalent keyboard gesture. Use instead: Menu
 Dialog: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
@@ -695,7 +695,7 @@ CodeBlock - code display with copy button and optional collapsible toggle.
   - variant: "inline" | "block" = block
 
 ### Combobox
-Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; openi…
+Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current select…
   - aria-describedby: string
   - aria-invalid: boolean
   - aria-label: string
@@ -703,11 +703,12 @@ Combobox — searchable single-select (Popover + filtered listbox). A select-wit
   - disabled: boolean = false
   - emptyMessage: string = No results
   - id: string
-  - onChange: (value: string) => void
+  - multiple: boolean
+  - onChange: ((value: string) => void) | ((value: string[]) => void)
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
-  - value: string | null
+  - value: string | readonly string[] | null
 
 ### CommandPalette
 Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.

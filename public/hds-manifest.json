@@ -7742,7 +7742,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/combobox.tsx",
-      "description": "Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
+      "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
@@ -7795,8 +7795,12 @@
           "type": "string",
           "optional": true
         },
+        "multiple": {
+          "type": "boolean",
+          "optional": true
+        },
         "onChange": {
-          "type": "(value: string) => void"
+          "type": "((value: string) => void) | ((value: string[]) => void)"
         },
         "options": {
           "type": "ComboboxOption[]"
@@ -7810,7 +7814,7 @@
           "default": "Search…"
         },
         "value": {
-          "type": "string"
+          "type": "string | readonly string[]"
         }
       },
       "allowedChildren": [
@@ -7826,12 +7830,14 @@
         "primitives-combobox--default",
         "primitives-combobox--disabled-trigger",
         "primitives-combobox--few-options",
+        "primitives-combobox--multiple",
         "primitives-combobox--open",
+        "primitives-combobox--open-multiple",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
       ],
       "usage": {
-        "when": "Pick one value from a long list of options, with a search field that filters as you type.",
+        "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
         "whenNot": "A short list that needs no search, or an action list.",
         "useInstead": [
           {
@@ -7859,7 +7865,7 @@
         },
         {
           "keys": "Enter",
-          "effect": "Commits the active option and closes the list."
+          "effect": "Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open."
         },
         {
           "keys": "Escape",
