@@ -2480,6 +2480,7 @@
       "consumers": [
         "src/app/components/field.tsx",
         "src/app/components/form.tsx",
+        "src/app/components/input.test.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/stepper-field.tsx",
@@ -2543,9 +2544,17 @@
           "type": "boolean",
           "default": false
         },
+        "prefix": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "size": {
           "type": "InputSize",
           "default": "md"
+        },
+        "suffix": {
+          "type": "ReactNode",
+          "optional": true
         },
         "textStyle": {
           "type": "enum",
@@ -2568,7 +2577,10 @@
             "search",
             "tel",
             "url",
-            "number"
+            "number",
+            "date",
+            "time",
+            "datetime-local"
           ],
           "default": "text"
         }
@@ -2640,7 +2652,10 @@
             "search",
             "tel",
             "url",
-            "number"
+            "number",
+            "date",
+            "time",
+            "datetime-local"
           ]
         }
       },
@@ -2718,16 +2733,18 @@
         "src/stories/input.stories.tsx"
       ],
       "storyIds": [
+        "primitives-input--date-and-time",
         "primitives-input--default",
         "primitives-input--disabled",
         "primitives-input--loading",
         "primitives-input--mono",
+        "primitives-input--prefix-and-suffix",
         "primitives-input--size-variants",
         "primitives-input--with-error",
         "primitives-input--with-helper"
       ],
       "usage": {
-        "when": "Collect a single line of text, a number, an email or a password, with label, helper and error slots.",
+        "when": "Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots.",
         "whenNot": "Multi-line text, or choosing from a fixed list of options.",
         "useInstead": [
           {

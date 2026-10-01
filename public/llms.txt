@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-09-30T14:27:19.090Z
+Generated: 2026-10-01T07:18:18.391Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -64,7 +64,7 @@ HoverCard: Preview extra detail about a link or mention when it is hovered or fo
 Icon: Draw a Lucide glyph at a size and colour from the design tokens. Use instead: Button, Avatar
 IconButton: Trigger an action from a compact icon-only control, always with an accessible label. Use instead: Button
 InlineLink: Link to a route or external URL from inside body copy. Use instead: Button, Text
-Input: Collect a single line of text, a number, an email or a password, with label, helper and error slots. Use instead: Textarea, Select, Combobox
+Input: Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 Menu: Offer a list of actions from a trigger, closed until opened. Use instead: Select
 Pagination: Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
