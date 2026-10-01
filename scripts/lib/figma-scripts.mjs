@@ -134,15 +134,18 @@ export function reachableRuntime(entries, source = runtimeSource()) {
   return all.filter((fn) => reached.has(fn.name));
 }
 
-/** The runtime a carrier reaches, plus the statement that checks it. */
-function verifiedRuntime(entries) {
+/**
+ * The runtime a carrier reaches, plus the statement that checks it. `prune`
+ * (whether the carrier deletes) picks the plugin a refusal names.
+ */
+function verifiedRuntime(entries, prune) {
   const functions = reachableRuntime(entries);
   const names = functions.map((fn) => fn.name);
   const texts = functions.map((fn) => fn.text.replace(/\r/g, ''));
   return [
     functions.map((fn) => fn.text).join('\n\n'),
     '',
-    `hdsVerifyRuntime([${names.join(', ')}], '${hdsChecksum(texts.join('\n'))}');`,
+    `hdsVerifyRuntime([${names.join(', ')}], '${hdsChecksum(texts.join('\n'))}', ${prune === true});`,
   ].join('\n');
 }
 
@@ -244,7 +247,7 @@ export function buildUseFigmaPushScript(model, options = {}, title = 'full push'
     `const PAYLOAD = ${JSON.stringify(payload)};`,
     `const CHECKSUM = '${checksum}';`,
     '',
-    verifiedRuntime(['hdsRunPush']),
+    verifiedRuntime(['hdsRunPush'], payload.options.prune),
     'return await hdsRunPush(figma, PAYLOAD, CHECKSUM);',
     '',
   ].join('\n');
@@ -257,7 +260,7 @@ export function buildUseFigmaSnapshotScript() {
       'Save the returned JSON to a file, then: pnpm figma:snapshot --ingest <file>',
     ]),
     '',
-    verifiedRuntime(['hdsRunSnapshot']),
+    verifiedRuntime(['hdsRunSnapshot'], false),
     'return await hdsRunSnapshot(figma);',
     '',
   ].join('\n');

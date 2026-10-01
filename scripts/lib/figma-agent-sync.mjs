@@ -109,7 +109,8 @@ function compactRuntime() {
   }
   return [
     texts.join('\n'),
-    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.join('\n'))}');`,
+    // delta.js never prunes, so a refusal names the Sync plugin.
+    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.join('\n'))}', false);`,
   ].join('\n');
 }
 
