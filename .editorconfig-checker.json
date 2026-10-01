@@ -20,7 +20,6 @@
     "public/assets",
     "scripts/poc",
     "src/app/components/ComponentDocPage\\.tsx",
-    "src/docs-tooling/lab/legacy-token-detail\\.tsx",
     "src/app/components/table\\.tsx",
     "src/app/components/tag\\.tsx"
   ],

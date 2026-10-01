@@ -5,8 +5,11 @@
  * `var(--semantic-color-surface-raised)` / `var(--semantic-color-surface-accentSubtle)`
  * across `.hds-*` rules in theme.css, so a tenant could not shift interaction
  * feel by overriding a single dial. Asserts the dedicated
- * `--semantic-color-surface-hover` token is wired into the `.hds-dropdown-item`
- * hover rule instead of a literal surface reference.
+ * `--semantic-color-surface-hover` token is wired into the `.hds-bg-hover`
+ * hover rule instead of a literal surface reference. (The contract used to
+ * ride on `.hds-dropdown-item:hover`; that family had no consumer and was
+ * deleted in hds#391. `.hds-bg-hover-neutral:hover` is not a substitute: it
+ * reads surface-raised by design.)
  *
  * @unit ISSUE-03
  */
@@ -28,8 +31,8 @@ function ruleBody(css: string, selector: string): string {
 }
 
 describe('interactive surface tokens', () => {
-  it('.hds-dropdown-item:hover reads the surface-hover token, not a literal surface alias', () => {
-    const body = ruleBody(themeCss, '.hds-dropdown-item:hover');
+  it('.hds-bg-hover:hover reads the surface-hover token, not a literal surface alias', () => {
+    const body = ruleBody(themeCss, '.hds-bg-hover:hover');
     expect(body).toMatch(/var\(--semantic-color-surface-hover\)/);
     expect(body).not.toMatch(/var\(--semantic-color-surface-(raised|accentSubtle)\)/);
   });

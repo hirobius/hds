@@ -159,8 +159,7 @@ export * from './app/components/toast';
 // NOTE: ComponentDocPage and HdsSpecimenBlock are intentionally NOT part of the
 // published surface — they are docs-shell renderers that pull the entire
 // component preview universe (import.meta.glob over every component + lab module,
-// the 3D mobius-scene chunk, and the token-audit/component-api artifacts) into the
-// library bundle. They remain available to the in-repo doc site via direct import.
+// and the token-audit/component-api artifacts) into the library bundle. They remain available to the in-repo doc site via direct import.
 // InfoPage was removed (dead-portfolio scaffolding, hardcoded the deleted
 // /assets/adrian.webp; 0 DS-consumer use) — see CHANGELOG / changeset.
 export * from './app/layouts/CaseStudyLayout';
