@@ -12,6 +12,9 @@
  * The changesets and MIGRATIONS.md cite one version for ops' pin, and
  * MIGRATIONS.md's `/patterns` section says which pattern modules survive and
  * uses no removed name as a live example.
+ *
+ * fixtures/swiss-canon keeps no fixture that renders a removed component, and
+ * .token-path-baseline.txt names no deleted file.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -105,5 +108,30 @@ describe('release notes', () => {
           .map((name) => `${name}: ${line.trim()}`),
       );
     expect(stale).toEqual([]);
+  });
+});
+
+describe('leftovers of the removed components', () => {
+  it('fixtures/swiss-canon has no fixture that renders a removed component', () => {
+    const dir = resolve(ROOT, 'fixtures/swiss-canon');
+    const offenders = readdirSync(dir)
+      .filter((d) => existsSync(resolve(dir, d, 'input.jsx')))
+      .flatMap((d) =>
+        [...read(`fixtures/swiss-canon/${d}/input.jsx`).matchAll(/<([A-Z][\w.]*)/g)]
+          .map((m) => m[1].split('.')[0])
+          .filter((tag) => REMOVED.has(tag))
+          .map((tag) => `${d}: ${tag}`),
+      );
+    expect(offenders).toEqual([]);
+  });
+
+  it('.token-path-baseline.txt names only files that exist', () => {
+    const missing = read('.token-path-baseline.txt')
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l && !l.startsWith('#'))
+      .map((l) => l.split(':')[0])
+      .filter((file) => !existsSync(resolve(ROOT, file)));
+    expect(missing).toEqual([]);
   });
 });

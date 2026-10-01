@@ -29,6 +29,16 @@ describe('core component list', () => {
     expect(new Set(CORE_COMPONENTS).size).toBe(39);
   });
 
+  it('the guardrail registry entry states no core count other than the list length', () => {
+    const { gates } = JSON.parse(
+      readFileSync(path.join(ROOT, 'docs/guardrails/registry.json'), 'utf8'),
+    );
+    const entry = gates.find((g) => g.id === 'check-contract-coverage');
+    expect(entry).toBeDefined();
+    const counts = [...entry.description.matchAll(/\b(\d+) core\b/g)].map((m) => Number(m[1]));
+    expect(counts.filter((n) => n !== CORE_COMPONENTS.length)).toEqual([]);
+  });
+
   it('drops ButtonGroup, ContextMenu and HoverCard, removed in 0.20.0 (hds#394)', () => {
     for (const gone of ['ButtonGroup', 'ContextMenu', 'HoverCard']) {
       expect(CORE_COMPONENTS).not.toContain(gone);
