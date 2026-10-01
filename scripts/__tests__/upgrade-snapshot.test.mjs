@@ -22,7 +22,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { formatJson } from '../upgrade/format.mjs';
 import { compareVersions } from '../upgrade/schema.mjs';
-import { snapshotFromNpm, snapshotPackage } from '../upgrade/snapshot.mjs';
+import { snapshotFromNpm, snapshotFromSource, snapshotPackage } from '../upgrade/snapshot.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CLI = join(REPO, 'scripts/upgrade/snapshot.mjs');
@@ -38,37 +38,43 @@ function tempDir(prefix) {
   return dir;
 }
 
-/** A built package: package.json plus dist/types, laid out the way build:types emits it. */
-function builtPackage(version = '1.2.3') {
-  const root = tempDir('hds-snap-');
-  const write = (rel, text) => {
+function writer(root) {
+  return (rel, text) => {
     mkdirSync(dirname(join(root, rel)), { recursive: true });
     writeFileSync(join(root, rel), text);
   };
-  write(
-    'package.json',
-    JSON.stringify({
-      name: '@hirobius/design-system',
-      version,
-      engines: { pnpm: '>=8', node: '>=20' },
-      exports: {
-        '.': { types: './dist/types/src/index.d.ts', import: './dist/root.js' },
-        './styles.css': './dist/styles.css',
-        './patterns': { types: './dist/types/src/patterns.d.ts', import: './dist/patterns.js' },
-        './tokens': {
-          types: './dist/types/src/app/design-system/tokens.d.ts',
-          import: './dist/tokens.js',
-        },
-        './package.json': './package.json',
+}
+
+/** The package.json the built fixture and its source twin share. */
+function fixturePackageJson(version) {
+  return JSON.stringify({
+    name: '@hirobius/design-system',
+    version,
+    engines: { pnpm: '>=8', node: '>=20' },
+    exports: {
+      '.': { types: './dist/types/src/index.d.ts', import: './dist/root.js' },
+      './styles.css': './dist/styles.css',
+      './patterns': { types: './dist/types/src/patterns.d.ts', import: './dist/patterns.js' },
+      './tokens': {
+        types: './dist/types/src/app/design-system/tokens.d.ts',
+        import: './dist/tokens.js',
       },
-      files: ['dist', 'codemods/b.mjs', 'codemods/a.mjs'],
-      bin: { 'hds-b': 'codemods/b.mjs', 'hds-a': 'codemods/a.mjs' },
-      dependencies: { zeta: '^1.0.0', alpha: '2.0.0' },
-      peerDependencies: { react: '^18.3.0 || ^19.0.0', lenis: '^1.3.0' },
-      peerDependenciesMeta: { lenis: { optional: true } },
-      devDependencies: { vitest: '^4.0.0' },
-    }),
-  );
+      './package.json': './package.json',
+    },
+    files: ['dist', 'codemods/b.mjs', 'codemods/a.mjs'],
+    bin: { 'hds-b': 'codemods/b.mjs', 'hds-a': 'codemods/a.mjs' },
+    dependencies: { zeta: '^1.0.0', alpha: '2.0.0' },
+    peerDependencies: { react: '^18.3.0 || ^19.0.0', lenis: '^1.3.0' },
+    peerDependenciesMeta: { lenis: { optional: true } },
+    devDependencies: { vitest: '^4.0.0' },
+  });
+}
+
+/** A built package: package.json plus dist/types, laid out the way build:types emits it. */
+function builtPackage(version = '1.2.3') {
+  const root = tempDir('hds-snap-');
+  const write = writer(root);
+  write('package.json', fixturePackageJson(version));
   // The root barrel, as add-dts-extensions.mjs leaves it: `.js` specifiers.
   write(
     'dist/types/src/index.d.ts',
@@ -115,6 +121,66 @@ function builtPackage(version = '1.2.3') {
     ].join('\n'),
   );
   write('dist/types/src/app/design-system/theme.d.ts', 'export declare const ct: number;\n');
+  return root;
+}
+
+/**
+ * The source tree builtPackage() is built from: the same package.json, and the
+ * `.ts`/`.tsx` files tsc would emit those declarations from. pretest never
+ * builds, so the upgrade gate (hds#448) reads this side.
+ */
+function sourcePackage(version = '1.2.3') {
+  const root = tempDir('hds-src-');
+  const write = writer(root);
+  write('package.json', fixturePackageJson(version));
+  // Source specifiers carry no extension.
+  write(
+    'src/index.ts',
+    [
+      "export * from './app/components/button';",
+      "export * from './app/components/callout';",
+      "export { default as hds } from './app/design-system/tokens';",
+      "export const tokens = { a: 'a' };",
+      '',
+    ].join('\n'),
+  );
+  // JSX, and a local name exported in a list.
+  write(
+    'src/app/components/button.tsx',
+    [
+      "import * as React from 'react';",
+      'export interface ButtonProps { pressed?: boolean }',
+      'const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (',
+      '  <button ref={ref} aria-pressed={props.pressed} />',
+      '));',
+      'export { Button };',
+      '',
+    ].join('\n'),
+  );
+  write(
+    'src/app/components/callout.tsx',
+    [
+      "export type CalloutProps = { tone?: 'info' };",
+      'export function Callout(props: CalloutProps) { return props.tone ? null : null; }',
+      'export default Callout;',
+      '',
+    ].join('\n'),
+  );
+  write('src/patterns.ts', "export * from './app/components/page';\n");
+  write(
+    'src/app/components/page.tsx',
+    'export function Page() { return <main />; }\nexport type PageProps = {};\n',
+  );
+  write(
+    'src/app/design-system/tokens.ts',
+    [
+      "const hds = { space: '4px' };",
+      'export default hds;',
+      "export { ct } from './theme';",
+      '',
+    ].join('\n'),
+  );
+  write('src/app/design-system/theme.ts', 'export const ct = 1;\n');
   return root;
 }
 
@@ -166,6 +232,29 @@ describe('snapshotPackage', () => {
   });
 });
 
+describe('snapshotFromSource', () => {
+  it('reads the source tree to the same snapshot the built tree gives, module ids included', () => {
+    expect(snapshotFromSource(sourcePackage())).toEqual(EXPECTED);
+    expect(snapshotFromSource(sourcePackage())).toEqual(snapshotPackage(builtPackage()));
+  });
+
+  it('writes the same bytes as the built snapshot, so either can be committed', () => {
+    expect(formatJson(snapshotFromSource(sourcePackage()))).toBe(formatJson(EXPECTED));
+  });
+
+  it('names the entry whose source file is missing', () => {
+    const dir = sourcePackage();
+    rmSync(join(dir, 'src/patterns.ts'));
+    expect(() => snapshotFromSource(dir)).toThrow(/\.\/patterns.*src\/patterns/);
+  });
+
+  it('sees a removed export at once, with no build', () => {
+    const dir = sourcePackage();
+    writeFileSync(join(dir, 'src/patterns.ts'), 'export {};\n');
+    expect(snapshotFromSource(dir).entries['./patterns']).toEqual({});
+  });
+});
+
 describe('snapshotFromNpm', () => {
   it('packs the version into a temp dir, extracts it, snapshots it and removes the temp dir', () => {
     const src = builtPackage('9.8.7');
@@ -210,6 +299,21 @@ describe('snapshot.mjs CLI', () => {
     const res = run(['--dir', dir, '--check', out]);
     expect(res.status).toBe(1);
     expect(res.stderr).toContain(out);
+  });
+
+  it('--source prints the snapshot of a source tree, and --check compares it', () => {
+    const dir = sourcePackage();
+    const printed = run(['--source', dir]);
+    expect(printed.status).toBe(0);
+    expect(printed.stdout).toBe(formatJson(EXPECTED));
+
+    const out = join(tempDir('hds-snap-out-'), 'snap.json');
+    writeFileSync(out, formatJson(EXPECTED));
+    expect(run(['--source', dir, '--check', out]).status).toBe(0);
+    writeFileSync(join(dir, 'src/patterns.ts'), 'export {};\n');
+    const stale = run(['--source', dir, '--check', out]);
+    expect(stale.status).toBe(1);
+    expect(stale.stderr).toContain('--source');
   });
 
   it('rejects an unknown argument with usage', () => {

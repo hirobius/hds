@@ -25,10 +25,22 @@
  * CSS facts (variables, classes) come later (hds#449). Snapshots of releases
  * are committed at docs/api/releases/<version>.json.
  *
+ * From source (hds#448): pretest never builds, so the upgrade gate
+ * (scripts/check-upgrade-ledger.mjs) reads the working tree instead. Each
+ * exports entry's `types` path (`./dist/types/<stem>.d.ts`) maps back to the
+ * `<stem>.ts(x)` tsc emits it from (scripts/lib/package-entries.mjs, as `pnpm
+ * api:check` does), and a declaring module's id is that file relative to the
+ * repo without its extension: the same id the built file has relative to
+ * dist/types. So a source snapshot and a release snapshot diff with no
+ * normalization: at the 0.20.0 tree the source snapshot equals
+ * docs/api/releases/0.20.0.json in every field. The release compiler (hds#451)
+ * writes the next release's snapshot this way at `changeset version` time.
+ *
  * Usage:
  *   node scripts/upgrade/snapshot.mjs --from-npm <version>   # writes docs/api/releases/<version>.json
  *   node scripts/upgrade/snapshot.mjs --from-npm <version> --check   # exit 1 if that file differs
  *   node scripts/upgrade/snapshot.mjs --dir <package dir>    # prints a built package's snapshot
+ *   node scripts/upgrade/snapshot.mjs --source [<repo>]      # prints the snapshot of a source tree
  *
  *   --out <file>     write here instead of the default
  *   --check [file]   write nothing; exit 1 when the file is not byte-equal
@@ -43,6 +55,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectModuleSymbols } from '../lib/check-public-api.mjs';
+import { readJsExportEntries } from '../lib/package-entries.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
@@ -60,37 +73,21 @@ function binMap(pkg) {
   return sortedObject(pkg.bin);
 }
 
-/**
- * The snapshot of an unpacked package directory (a published tarball's
- * `package/`, or the repo after build:lib).
- * @param {string} dir
- */
-export function snapshotPackage(dir) {
-  const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
-  const exportsMap = typeof pkg.exports === 'string' ? { '.': pkg.exports } : (pkg.exports ?? {});
-  const entries = {};
-  for (const key of Object.keys(exportsMap).sort()) {
-    const value = exportsMap[key];
-    if (!value || typeof value !== 'object') continue; // stylesheets, ./package.json
-    if (typeof value.types !== 'string') {
-      throw new Error(`exports["${key}"] has no types condition, so its names cannot be read`);
-    }
-    const file = join(dir, value.types);
-    if (!existsSync(file)) {
-      throw new Error(`exports["${key}"].types is ${value.types}, which is not in ${dir}`);
-    }
-    const origins = new Map();
-    const names = collectModuleSymbols(file, new Set(), origins);
-    entries[key] = Object.fromEntries(
-      names.map((name) => [name, moduleId(dir, origins.get(name))]),
-    );
-  }
+/** An entry's export names, each with the id of the module that declares it. */
+function entryNames(root, file) {
+  const origins = new Map();
+  const names = collectModuleSymbols(file, new Set(), origins);
+  return Object.fromEntries(names.map((name) => [name, moduleId(root, origins.get(name))]));
+}
+
+/** Everything a snapshot reads from package.json alone. */
+function packageFacts(pkg, exportsMap, entries) {
   const meta = pkg.peerDependenciesMeta ?? {};
   return {
     format: 1,
     name: pkg.name,
     version: pkg.version,
-    entries,
+    entries: sortedObject(entries),
     exportsKeys: Object.keys(exportsMap).sort(),
     dependencies: sortedObject(pkg.dependencies),
     peerDependencies: sortedObject(pkg.peerDependencies, (range, name) => ({
@@ -101,6 +98,48 @@ export function snapshotPackage(dir) {
     bin: binMap(pkg),
     files: [...(pkg.files ?? [])].sort(),
   };
+}
+
+const exportsOf = (pkg) =>
+  typeof pkg.exports === 'string' ? { '.': pkg.exports } : (pkg.exports ?? {});
+
+const readPackageJson = (dir) => JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+
+/**
+ * The snapshot of an unpacked package directory (a published tarball's
+ * `package/`, or the repo after build:lib).
+ * @param {string} dir
+ */
+export function snapshotPackage(dir) {
+  const pkg = readPackageJson(dir);
+  const exportsMap = exportsOf(pkg);
+  const entries = {};
+  for (const key of Object.keys(exportsMap)) {
+    const value = exportsMap[key];
+    if (!value || typeof value !== 'object') continue; // stylesheets, ./package.json
+    if (typeof value.types !== 'string') {
+      throw new Error(`exports["${key}"] has no types condition, so its names cannot be read`);
+    }
+    const file = join(dir, value.types);
+    if (!existsSync(file)) {
+      throw new Error(`exports["${key}"].types is ${value.types}, which is not in ${dir}`);
+    }
+    entries[key] = entryNames(dir, file);
+  }
+  return packageFacts(pkg, exportsMap, entries);
+}
+
+/**
+ * The snapshot of a source tree (this repo, or a test's copy of its layout),
+ * read without building: each exports entry from the source file its `types`
+ * declarations are emitted from. Same shape and module ids as snapshotPackage.
+ * @param {string} root the directory holding package.json and src/
+ */
+export function snapshotFromSource(root) {
+  const pkg = readPackageJson(root);
+  const entries = {};
+  for (const { key, file } of readJsExportEntries(root)) entries[key] = entryNames(root, file);
+  return packageFacts(pkg, exportsOf(pkg), entries);
 }
 
 /** `npm pack <spec>` into `destination`; returns the tarball path. */
@@ -135,12 +174,13 @@ export function snapshotFromNpm(version, { pack = npmPack } = {}) {
 }
 
 const USAGE =
-  'usage: snapshot.mjs (--from-npm <version> | --dir <package dir>) [--out <file> | --check [<file>] | --stdout]';
+  'usage: snapshot.mjs (--from-npm <version> | --dir <package dir> | --source [<repo>]) [--out <file> | --check [<file>] | --stdout]';
 
 function parseArgs(argv) {
   const args = {
     fromNpm: null,
     dir: null,
+    source: null,
     out: null,
     check: false,
     checkFile: null,
@@ -150,14 +190,18 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (arg === '--from-npm') args.fromNpm = argv[++i] ?? null;
     else if (arg === '--dir') args.dir = argv[++i] ? resolve(argv[i]) : null;
-    else if (arg === '--out') args.out = argv[++i] ? resolve(argv[i]) : null;
+    else if (arg === '--source') {
+      args.source = argv[i + 1] && !argv[i + 1].startsWith('--') ? resolve(argv[++i]) : REPO;
+    } else if (arg === '--out') args.out = argv[++i] ? resolve(argv[i]) : null;
     else if (arg === '--stdout') args.stdout = true;
     else if (arg === '--check') {
       args.check = true;
       if (argv[i + 1] && !argv[i + 1].startsWith('--')) args.checkFile = resolve(argv[++i]);
     } else return { error: `unknown argument: ${arg}` };
   }
-  if (Boolean(args.fromNpm) === Boolean(args.dir)) return { error: 'pass --from-npm or --dir' };
+  if ([args.fromNpm, args.dir, args.source].filter(Boolean).length !== 1) {
+    return { error: 'pass one of --from-npm, --dir or --source' };
+  }
   return { args };
 }
 
@@ -167,21 +211,27 @@ function main(argv) {
     console.error(`snapshot.mjs: ${error}\n${USAGE}`);
     return 2;
   }
-  const snapshot = args.fromNpm ? snapshotFromNpm(args.fromNpm) : snapshotPackage(args.dir);
+  const snapshot = args.fromNpm
+    ? snapshotFromNpm(args.fromNpm)
+    : args.source
+      ? snapshotFromSource(args.source)
+      : snapshotPackage(args.dir);
   const text = formatJson(snapshot);
   const fallback = args.fromNpm ? join(RELEASES_DIR, `${args.fromNpm}.json`) : null;
 
   if (args.check) {
     const file = args.checkFile ?? args.out ?? fallback;
     if (!file) {
-      console.error(`snapshot.mjs: --check needs a file with --dir\n${USAGE}`);
+      console.error(`snapshot.mjs: --check needs a file with --dir or --source\n${USAGE}`);
       return 2;
     }
     const committed = existsSync(file) ? readFileSync(file, 'utf8') : null;
     if (committed !== text) {
       const redo = args.fromNpm
         ? `node scripts/upgrade/snapshot.mjs --from-npm ${args.fromNpm}`
-        : `node scripts/upgrade/snapshot.mjs --dir <dir> --out ${file}`;
+        : args.source
+          ? `node scripts/upgrade/snapshot.mjs --source ${args.source} --out ${file}`
+          : `node scripts/upgrade/snapshot.mjs --dir <dir> --out ${file}`;
       console.error(
         `snapshot.mjs: ${file} is not the snapshot of ${snapshot.version}; run ${redo}`,
       );
