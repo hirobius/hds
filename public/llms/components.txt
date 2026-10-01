@@ -224,7 +224,7 @@ CodeBlock - code display with copy button and optional collapsible toggle.
   - variant: "inline" | "block" = block
 
 ### Combobox
-Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; openi…
+Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current select…
   - aria-describedby: string
   - aria-invalid: boolean
   - aria-label: string
@@ -232,11 +232,12 @@ Combobox — searchable single-select (Popover + filtered listbox). A select-wit
   - disabled: boolean = false
   - emptyMessage: string = No results
   - id: string
-  - onChange: (value: string) => void
+  - multiple: boolean
+  - onChange: ((value: string) => void) | ((value: string[]) => void)
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
-  - value: string | null
+  - value: string | readonly string[] | null
 
 ### CommandPalette
 Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.
@@ -573,10 +574,12 @@ Input — text field primitive with label, helper, and error slots.
   - label: string
   - leadingVisual: ReactNode
   - loading: boolean = false
+  - prefix: ReactNode
   - size: InputSize = md
+  - suffix: ReactNode
   - textStyle: "body" | "mono" = body
   - trailingVisual: ReactNode
-  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' = text
+  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' | 'date' | … = text
 
 ### InputGroup
 A single-line input with optional `leading`/`trailing` adornments.
