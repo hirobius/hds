@@ -215,7 +215,12 @@ function* walk(dir) {
 }
 
 /** Scan a directory. Writes only when `write` is true. */
-export function runCodemod({ root, write = false, names = loadPatternNames() }) {
+export function runCodemod({
+  root,
+  write = false,
+  names = loadPatternNames(),
+  removed = loadRemovedNames(),
+}) {
   const files = [];
   const manual = [];
   const moved = new Set();
@@ -225,7 +230,7 @@ export function runCodemod({ root, write = false, names = loadPatternNames() }) 
     if (!src.includes(ROOT_PKG)) continue;
     for (const stmt of findUnrewritable(src, names))
       manual.push({ file: relative(root, file), stmt });
-    for (const stmt of findRemoved(src))
+    for (const stmt of findRemoved(src, removed))
       manual.push({ file: relative(root, file), stmt, removed: true });
     const r = transformSource(src, names);
     if (!r.changed) continue;

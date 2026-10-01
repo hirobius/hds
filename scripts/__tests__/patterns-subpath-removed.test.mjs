@@ -14,7 +14,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { findRemoved, loadRemovedNames } from '../../codemods/patterns-subpath.mjs';
+import { findRemoved, loadRemovedNames, runCodemod } from '../../codemods/patterns-subpath.mjs';
 import { collectPublicApi } from '../lib/check-public-api.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
@@ -172,6 +172,17 @@ describe('CLI', () => {
       /a\.tsx: TopNav from '@hirobius\/design-system' \(removed in 0\.20\.0/,
     );
     expect(run('--check').status).toBe(1);
+  });
+
+  it('runCodemod checks every file against one removed-name set, passed in like `names`', () => {
+    // One set per run (loaded once by default), not a re-read of removed-0.20.json
+    // per scanned file: an injected set is the one every file is checked against.
+    for (const f of ['a', 'b', 'c'])
+      writeFileSync(join(dir, `src/${f}.tsx`), `import { Button, Toolbar } from '${ROOT}';\n`);
+    const res = runCodemod({ root: dir, removed: new Set(['Button']) });
+    expect(res.manual.map((m) => m.stmt)).toEqual(
+      Array(3).fill(`Button from '${ROOT}' (removed in 0.20.0, no replacement)`),
+    );
   });
 
   it('--check exits 0 for a file with no removed and no pattern name', () => {
