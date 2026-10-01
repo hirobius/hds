@@ -4791,6 +4791,11 @@
           "tokenBinding": {
             "fill": "role.muted-foreground"
           }
+        },
+        {
+          "name": "trigger",
+          "description": "The element that opens the dialog (Dialog.Trigger).",
+          "source": "jsdoc"
         }
       ],
       "allowedChildren": [
