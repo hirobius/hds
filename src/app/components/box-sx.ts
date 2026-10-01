@@ -1,17 +1,19 @@
 /**
  * box-sx.ts — pure resolver + CSS injector for Box's `sx` prop.
  *
- * Deliberately dependency-free (no React import) so the resolver is unit
- * testable in isolation from the component tree. Two consumers: `box.tsx`
- * re-exports the types below as part of the public `Box` API, and `stack.tsx`
- * resolves its `gap` through `resolveSpacingValue`, the one spacing resolver
- * (hds#206).
+ * Deliberately React-free (its one import is the dev-only `warnOnce`) so the
+ * resolver is unit testable in isolation from the component tree. Two
+ * consumers: `box.tsx` re-exports the types below as part of the public `Box`
+ * API, and `stack.tsx` resolves its `gap` through `resolveSpacingValue`, the
+ * one spacing resolver (hds#206).
  *
  * @internal — the resolver internals (`resolveSx`, `sxClassName`, `injectSx`)
  * are exported for testing, and `resolveSpacingValue`, `SpacingVocabulary`
  * and `SPACE_SCALE` for Stack. The supported public surface is `Box` + the
  * `Sx*` types, both re-exported from `box.tsx`.
  */
+
+import { warnOnce } from '../../lib/deprecation';
 
 // ── Breakpoints ──────────────────────────────────────────────────────────────
 // Mirrors `hds.breakpoints` in `src/app/design-system/tokens.ts` (itself
@@ -106,7 +108,7 @@ export interface SpacingVocabulary {
  * remap, unlike the scale steps (and unlike Stack's same four names), so
  * they keep their layout var until they are removed in 1.0. The internal
  * spacing codemod skips this file, so it cannot rewrite them to scale steps
- * and change compact pixels.
+ * and change compact pixels. Each warns once in dev (ADR-014 step 1).
  */
 const BOX_SX_SPACING: SpacingVocabulary = {
   names: {
@@ -121,6 +123,14 @@ const BOX_SX_SPACING: SpacingVocabulary = {
 
 const own = (table: Readonly<Record<string, string>>, key: string): string | undefined =>
   Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
+
+/** Box sx's deprecated names and the step replacing each (MIGRATIONS.md, hds#206). */
+const BOX_SX_DEPRECATED: Readonly<Record<string, string>> = {
+  tight: 'sm',
+  normal: 'md',
+  inset: 'lg',
+  spacious: 'xl',
+};
 
 const SPACING_PROP_MAP: Record<string, string[]> = {
   m: ['margin'],
@@ -208,6 +218,13 @@ function camelToKebab(prop: string): string {
 function buildDeclarations(key: string, value: SxValue): string[] {
   const spacingProps = SPACING_PROP_MAP[key];
   if (spacingProps) {
+    const step = typeof value === 'string' ? own(BOX_SX_DEPRECATED, value) : undefined;
+    if (step) {
+      warnOnce(
+        `box-sx-spacing-${value}`,
+        `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}': same pixels at the default density, tighter under compact (MIGRATIONS.md).`,
+      );
+    }
     const resolved = resolveSpacingValue(value, BOX_SX_SPACING);
     return spacingProps.map((prop) => `${prop}:${resolved}`);
   }
@@ -236,14 +253,14 @@ function isResponsiveObject(value: unknown): value is Partial<Record<Breakpoint,
  * Resolves an `SxObject` into an ordered array of standalone, top-level CSS
  * rule strings ready for individual `CSSStyleSheet.insertRule()` calls.
  *
- * Pure — no DOM access. Order: base (non-responsive) rules for every selector
- * encountered (outer class first, then each `&`-selector in declaration
- * order), followed by `@media (min-width: …)` blocks in ascending breakpoint
- * order. Each media block is ONE rule string containing its inner selector
- * rules concatenated as plain text — that concatenation is safe (and
- * required) because a single `insertRule()` call for an `@media {...}` block
- * is one rule; only top-level rule concatenation breaks `insertRule()` (see
- * `injectSx` below).
+ * Pure apart from a dev-only deprecation warning; no DOM access. Order: base
+ * (non-responsive) rules for every selector encountered (outer class first,
+ * then each `&`-selector in declaration order), followed by
+ * `@media (min-width: …)` blocks in ascending breakpoint order. Each media
+ * block is ONE rule string containing its inner selector rules concatenated
+ * as plain text — that concatenation is safe (and required) because a single
+ * `insertRule()` call for an `@media {...}` block is one rule; only top-level
+ * rule concatenation breaks `insertRule()` (see `injectSx` below).
  */
 export function resolveSx(sx: SxObject, className: string): string[] {
   const baseBuckets = new Map<string, string[]>();

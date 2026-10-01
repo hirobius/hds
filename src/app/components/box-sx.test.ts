@@ -1,5 +1,9 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { __resetDeprecationWarnings } from '../../lib/deprecation';
 import { resolveSx, sxClassName, injectSx, __resetBoxSxForTests, type SxObject } from './box-sx';
+import { Stack } from './stack';
 
 afterEach(() => {
   __resetBoxSxForTests();
@@ -77,6 +81,37 @@ describe('resolveSx — spacing shorthands', () => {
     expect(resolveSx({ rowGap: 4 }, 'cls')).toEqual(['.cls{row-gap:var(--primitive-space-4)}']); // tier-ok: pins bridge output, hds#186
     const columnGapInput = { columnGap: 4 }; // spacing-ok: token-scale index, not a raw px value
     expect(resolveSx(columnGapInput, 'cls')).toEqual(['.cls{column-gap:var(--primitive-space-4)}']); // tier-ok: pins bridge output, hds#186
+  });
+});
+
+// ADR-014 step 1: a deprecated name warns once at runtime (dev builds only).
+describe("resolveSx — deprecated 'tight'..'spacious' warn once (hds#206, ADR-014)", () => {
+  beforeEach(() => __resetDeprecationWarnings());
+  afterEach(() => vi.restoreAllMocks());
+
+  it('warns once per name, naming the scale step that replaces it', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    resolveSx({ m: 'tight' }, 'a');
+    resolveSx({ p: { md: 'tight' }, '&:hover': { gap: 'tight' } }, 'b');
+    resolveSx({ gap: 'spacious' }, 'c');
+    expect(warn.mock.calls.map(([message]) => message)).toEqual([
+      expect.stringMatching(/Box sx spacing name 'tight' is deprecated.*1\.0\.0.*'sm'/),
+      expect.stringMatching(/Box sx spacing name 'spacious' is deprecated.*1\.0\.0.*'xl'/),
+    ]);
+  });
+
+  it('does not warn for steps, numbers, vars, or the same word on a non-spacing key', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    resolveSx({ p: 'md', m: 2, gap: 'var(--x)', fontWeight: 'normal', whiteSpace: 'normal' }, 'a');
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  it("does not warn for Stack's own 'tight'..'spacious', which share the resolver", () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    for (const gap of ['tight', 'normal', 'inset', 'spacious'] as const) {
+      renderToStaticMarkup(createElement(Stack, { gap }, 'x'));
+    }
+    expect(warn).not.toHaveBeenCalled();
   });
 });
 

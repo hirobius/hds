@@ -61,6 +61,9 @@ import sites in 11 files, all four names being `Page`, `ErrorPattern`,
   `$deprecated` in `hirobius.tokens.json`.
 - **Removed in:** not before 1.0, because removal happens in a major (step 4).
   No window is set yet: steps 2 and 3 come first.
+- **Warning:** in a development build, Box `sx`'s `'tight'` to `'spacious'`
+  each log one `[HDS deprecation]` console warning naming the step to use.
+  Production builds stay silent. The token paths cannot warn at runtime.
 - **Codemod:** `scripts/codemod-spacing-vocabulary.mjs` rewrites the token
   references below, but only inside HDS's own `src/`. A consumer codemod in
   `codemods/` with `--root`, `--check` and `--dry-run` does not exist yet.
