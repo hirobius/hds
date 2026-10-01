@@ -5,7 +5,9 @@
  * hds#315 renames applied: HdsCheckbox → Checkbox, HdsRadio → Radio,
  * HdsSelect → Select, HdsSlider → Slider, HdsToggle → Toggle. The table has 42
  * rows; ButtonGroup, ContextMenu and HoverCard were removed from the package in
- * 0.20.0 (hds#394), which leaves 39.
+ * 0.20.0 (hds#394), which leaves 39. hds#393 adds Menu, Popover, Tooltip and
+ * HdsRouterProvider, each with a usage contract (and Menu, Popover and Tooltip
+ * a keyboard contract), which makes 43.
  *
  * This is not the manifest `tier` field: 5 core components are `tier: pattern`
  * and most `tier: primitive` components are not core. Read by
@@ -51,4 +53,9 @@ export const CORE_COMPONENTS = [
   'Text',
   'HdsThemeProvider',
   'VisuallyHidden',
+  // hds#393 step 7
+  'Menu',
+  'Popover',
+  'Tooltip',
+  'HdsRouterProvider',
 ];
