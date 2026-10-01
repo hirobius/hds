@@ -98,6 +98,13 @@ describe('codemods/removed-0.20.json', () => {
   });
 });
 
+describe('packaging', () => {
+  it('ships codemods/removed-0.20.json, which the published bin reads at run time', () => {
+    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
+    expect(pkg.files).toContain('codemods/removed-0.20.json');
+  });
+});
+
 describe('findRemoved', () => {
   it('reports a removed name imported from the root or from /patterns', () => {
     const src = [

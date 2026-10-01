@@ -1,5 +1,5 @@
 {
-  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; tests/public-export-names.test.ts and scripts/__tests__/patterns-subpath-removed.test.mjs fail if any listed name is exported again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row.",
+  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; scripts/__tests__/patterns-subpath-removed.test.mjs fails if any listed name is exported from the root or /patterns again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row.",
   "release": "0.20.0",
   "modules": {
     "src/app/components/activity-feed.tsx": [
