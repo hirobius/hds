@@ -1839,9 +1839,11 @@
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text-lockup.tsx",
@@ -2008,8 +2010,6 @@
         "src/app/components/button.test.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/inline-code.tsx",
-        "src/app/components/pagination.tsx",
         "src/app/components/stepper-field.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/docs-tooling/page-footer.tsx",
@@ -2160,6 +2160,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/inline-code.test.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/data/hdsEditorial.tsx",
         "src/stories/inline-code.stories.tsx",
@@ -4950,9 +4951,12 @@
         "src/app/components/icon-button.tsx",
         "src/app/components/icon.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-code.test.tsx",
+        "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
@@ -5466,6 +5470,7 @@
       "consumers": [
         "src/app/components/container.tsx",
         "src/app/components/not-found-pattern.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/surface.tsx",
@@ -7158,6 +7163,7 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.test.tsx",
         "src/stories/pagination.stories.tsx"
       ],
