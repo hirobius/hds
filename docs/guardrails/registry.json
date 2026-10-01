@@ -831,6 +831,18 @@
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
       "supportsJson": true
+    },
+    {
+      "id": "check-upgrade-ledger",
+      "description": "Upgrade-ledger gate (hds#448): compares the working tree, read from source with no build (scripts/upgrade/snapshot.mjs snapshotFromSource), with the newest docs/api/releases/<v>.json at or below package.json's version, and fails when a fact that takes something away (an export removed or moved, an exports key, dependency or bin gone, a narrowed peer, raised engines) has no step in upgrade/pending/*.json; when a .changeset/*.md has no upgrade/pending/<same name>.json stating its impact (and, unless none, a plain line with no TODO left); when a breaking change rides a changeset smaller than minor below 1.0 (major from 1.0), or, on the Version PR, a real bump that small; and when a major changeset or version would cut 1.0 without upgrade/ALLOW_1_0. Every message names pnpm upgrade:note. Runs in pretest, so pre-push, CI and the Ralph gate run it; about 0.9s.",
+      "severity": "error",
+      "gateScript": "scripts/check-upgrade-ledger.mjs",
+      "fixturePath": "fixtures/check-upgrade-ledger",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree",
+      "supportsJson": true
     }
   ]
 }

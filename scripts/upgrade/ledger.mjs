@@ -9,6 +9,7 @@
  * compiler (hds#451) and the backfill (hds#450) build on the same helpers.
  */
 import { FACT_KINDS } from './diff.mjs';
+import { narrows } from './ranges.mjs';
 import { Release, STEP_KINDS, compareVersions } from './schema.mjs';
 
 /** Facts that add something: a ledger may list them, but none needs a step. */
@@ -16,6 +17,55 @@ const ADDITIVE_FACTS = new Set(['added', 'exports-key-added', 'dependency-added'
 
 /** The fact kinds a ledger must account for. */
 export const FACTS_NEEDING_A_STEP = FACT_KINDS.filter((kind) => !ADDITIVE_FACTS.has(kind));
+
+/** Facts that take something away a consumer may use (hds#445 decision 3). */
+const BREAKING_FACTS = new Set([
+  'removed',
+  'moved',
+  'exports-key-removed',
+  'dependency-removed',
+  'bin-removed',
+]);
+
+/**
+ * What a fact does to a consumer that does nothing: breaking when it removes
+ * or moves something public, drops a dependency, narrows a peer (or makes one
+ * required, or adds or drops a required one, which npm and pnpm install for
+ * the consumer) or raises engines; additive when it only adds or widens.
+ * scripts/check-upgrade-ledger.mjs bumps by it; `pnpm upgrade:note` guesses a
+ * step's impact from it.
+ * @param {{ kind: string, from?: any, to?: any }} fact
+ * @returns {'none' | 'additive' | 'breaking'}
+ */
+export function factImpact(fact) {
+  if (ADDITIVE_FACTS.has(fact.kind)) return 'additive';
+  if (BREAKING_FACTS.has(fact.kind)) return 'breaking';
+  const { from, to } = fact;
+  if (fact.kind === 'peer-changed') {
+    if (!from) return to.optional ? 'additive' : 'breaking';
+    if (!to) return from.optional ? 'none' : 'breaking';
+    if (from.optional && !to.optional) return 'breaking';
+    return narrows(from.range, to.range) ? 'breaking' : 'additive';
+  }
+  if (fact.kind === 'engines-changed') {
+    if (!from) return 'breaking';
+    if (!to) return 'additive';
+    return narrows(from, to) ? 'breaking' : 'additive';
+  }
+  throw new Error(`unknown fact kind: ${fact.kind}`);
+}
+
+/** Bumps from smallest to largest; `none` is a changeset that releases nothing. */
+export const BUMP_RANK = { none: 0, patch: 1, minor: 2, major: 3 };
+
+/**
+ * The bump a breaking change needs from `version`: minor below 1.0 (semver
+ * treats 0.x minors as breaking), major from 1.0.
+ * @returns {'minor' | 'major'}
+ */
+export function breakingBump(version) {
+  return Number(version.split('.')[0]) === 0 ? 'minor' : 'major';
+}
 
 /**
  * The semver bump from `previous` to `version`.
