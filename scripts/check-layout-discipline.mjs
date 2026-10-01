@@ -28,9 +28,15 @@
  *
  * What it catches:
  *   style={{ marginBottom: '16px' }}   → should be Box sx={{ mb: 'sm' }}
- *   style={{ marginBottom: '12px' }}   → should be Box sx={{ mb: hds.space.px12 }}
- *                                        (no step of the t-shirt scale renders
- *                                        12px; the fixed step does, at both densities)
+ *   style={{ marginBottom: '12px' }}   → should be Box sx={{ mb: 'var(--semantic-space-component-medium)' }}
+ *                                        (semantic.space.component.medium, the
+ *                                        semantic 12px token product UI reaches for,
+ *                                        docs/rules/MANIFEST_SYNC.md §2),
+ *                                        or Box sx={{ mb: hds.space.px12 }}
+ *                                        (a fixed primitive step, the hds.space.px* family
+ *                                        MIGRATIONS.md points to).
+ *                                        No step of the t-shirt scale renders 12px;
+ *                                        both of these do, at both densities.
  *   style={{ gap: 24 }}                → should be Box sx={{ gap: 'md' }} or Stack gap="normal"
  *   style={{ top: 8, left: 8 }}        → should be Box sx={{ top: ..., left: ... }}
  *

@@ -23,10 +23,26 @@ describe('the header examples', () => {
     for (const sx of recommendations) expect(sx).not.toMatch(/'(tight|normal|inset|spacious)'/);
   });
 
-  it('recommend the fixed step that renders 12px for the 12px example, since no scale step does', () => {
+  it('recommend the semantic 12px token for the 12px example, then the fixed step, since no scale step renders 12px', () => {
+    // MANIFEST_SYNC.md §2: product UI uses semantic tokens; hds.space.px12 is a primitive.
     expect(header).toMatch(
-      /marginBottom: '12px' \}\}\s+→ should be Box sx=\{\{ mb: hds\.space\.px12 \}\}/,
+      /marginBottom: '12px' \}\}\s+→ should be Box sx=\{\{ mb: 'var\(--semantic-space-component-medium\)' \}\}/,
     );
+    expect(header).toMatch(/\bor Box sx=\{\{ mb: hds\.space\.px12 \}\}/);
+  });
+
+  it('name a semantic token that is live and 12px at every density', () => {
+    const tokens = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+    const medium = tokens.semantic.space.component.medium;
+    expect(medium.$deprecated).toBeUndefined();
+    expect(medium.$value).toBe('{primitive.space.3}');
+    expect(tokens.primitive.space['3'].$value).toEqual({ value: 12, unit: 'px' });
+    // No tenant or density block remaps it.
+    for (const css of ['src/styles/tenants.css', 'src/styles/theme.css']) {
+      expect(readFileSync(join(ROOT, css), 'utf8')).not.toContain(
+        '--semantic-space-component-medium:',
+      );
+    }
   });
 
   it('recommend the scale step for a value on the scale', () => {
