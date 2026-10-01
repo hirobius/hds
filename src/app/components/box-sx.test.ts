@@ -1,5 +1,9 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { __resetDeprecationWarnings } from '../../lib/deprecation';
 import { resolveSx, sxClassName, injectSx, __resetBoxSxForTests, type SxObject } from './box-sx';
+import { Stack } from './stack';
 
 afterEach(() => {
   __resetBoxSxForTests();
@@ -24,18 +28,47 @@ describe('resolveSx — spacing shorthands', () => {
     expect(rules).toEqual(['.cls{margin-top:calc(var(--primitive-space-1) * -2)}']); // tier-ok: pins bridge output, hds#186
   });
 
-  it('maps a named semantic step to --semantic-space-layout-<step>', () => {
-    const rules = resolveSx({ m: 'tight' }, 'cls');
-    expect(rules).toEqual(['.cls{margin:var(--semantic-space-layout-tight)}']);
+  it.each(['xs', 'sm', 'md', 'lg', 'xl'])(
+    'maps the t-shirt step %s to --semantic-space-scale-<step> (hds#206)',
+    (step) => {
+      expect(resolveSx({ p: step }, 'cls')).toEqual([
+        `.cls{padding:var(--semantic-space-scale-${step})}`,
+      ]);
+      expect(resolveSx({ gap: step }, 'cls')).toEqual([
+        `.cls{gap:var(--semantic-space-scale-${step})}`,
+      ]);
+    },
+  );
+
+  // Frozen until the 1.0 removal: layout.* is fixed px, and the scale step
+  // would tighten under compact density (spacing-computed-lock.test.mjs).
+  it.each([
+    ['tight', 'var(--semantic-space-layout-tight)'],
+    ['normal', 'var(--semantic-space-layout-normal)'],
+    ['inset', 'var(--semantic-space-layout-inset)'],
+    ['spacious', 'var(--semantic-space-layout-spacious)'],
+  ])('keeps the deprecated step %s on %s, as before hds#206', (name, layoutVar) => {
+    expect(resolveSx({ m: name }, 'cls')).toEqual([`.cls{margin:${layoutVar}}`]);
+  });
+
+  it('takes a t-shirt step inside a responsive map', () => {
+    expect(resolveSx({ p: { xs: 'sm', md: 'lg' } }, 'cls')).toEqual([
+      '@media (min-width:375px){.cls{padding:var(--semantic-space-scale-sm)}}',
+      '@media (min-width:768px){.cls{padding:var(--semantic-space-scale-lg)}}',
+    ]);
   });
 
   it('expands axis shorthands (mx/my/px/py) to two declarations', () => {
     expect(resolveSx({ mx: 2 }, 'cls')).toEqual([
       '.cls{margin-left:var(--primitive-space-2);margin-right:var(--primitive-space-2)}', // tier-ok: pins bridge output, hds#186
     ]);
-    expect(resolveSx({ py: 'normal' }, 'cls')).toEqual([
-      '.cls{padding-top:var(--semantic-space-layout-normal);padding-bottom:var(--semantic-space-layout-normal)}',
+    expect(resolveSx({ py: 'md' }, 'cls')).toEqual([
+      '.cls{padding-top:var(--semantic-space-scale-md);padding-bottom:var(--semantic-space-scale-md)}',
     ]);
+  });
+
+  it('does not resolve an inherited object key as a spacing name', () => {
+    expect(resolveSx({ p: 'constructor' }, 'cls')).toEqual(['.cls{padding:constructor}']);
   });
 
   it('passes a raw string spacing value through unchanged', () => {
@@ -48,6 +81,37 @@ describe('resolveSx — spacing shorthands', () => {
     expect(resolveSx({ rowGap: 4 }, 'cls')).toEqual(['.cls{row-gap:var(--primitive-space-4)}']); // tier-ok: pins bridge output, hds#186
     const columnGapInput = { columnGap: 4 }; // spacing-ok: token-scale index, not a raw px value
     expect(resolveSx(columnGapInput, 'cls')).toEqual(['.cls{column-gap:var(--primitive-space-4)}']); // tier-ok: pins bridge output, hds#186
+  });
+});
+
+// ADR-014 step 1: a deprecated name warns once at runtime (dev builds only).
+describe("resolveSx — deprecated 'tight'..'spacious' warn once (hds#206, ADR-014)", () => {
+  beforeEach(() => __resetDeprecationWarnings());
+  afterEach(() => vi.restoreAllMocks());
+
+  it('warns once per name, naming the scale step that replaces it', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    resolveSx({ m: 'tight' }, 'a');
+    resolveSx({ p: { md: 'tight' }, '&:hover': { gap: 'tight' } }, 'b');
+    resolveSx({ gap: 'spacious' }, 'c');
+    expect(warn.mock.calls.map(([message]) => message)).toEqual([
+      expect.stringMatching(/Box sx spacing name 'tight' is deprecated.*1\.0\.0.*'sm'/),
+      expect.stringMatching(/Box sx spacing name 'spacious' is deprecated.*1\.0\.0.*'xl'/),
+    ]);
+  });
+
+  it('does not warn for steps, numbers, vars, or the same word on a non-spacing key', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    resolveSx({ p: 'md', m: 2, gap: 'var(--x)', fontWeight: 'normal', whiteSpace: 'normal' }, 'a');
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  it("does not warn for Stack's own 'tight'..'spacious', which share the resolver", () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    for (const gap of ['tight', 'normal', 'inset', 'spacious'] as const) {
+      renderToStaticMarkup(createElement(Stack, { gap }, 'x'));
+    }
+    expect(warn).not.toHaveBeenCalled();
   });
 });
 
