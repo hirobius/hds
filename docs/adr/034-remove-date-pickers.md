@@ -31,7 +31,7 @@ amendment), not as deprecations.
    goes in wave 4b (hds#394).
 3. **Dependencies:** nothing under `src/` imports `react-day-picker` or
    `date-fns` after this change. Dropping them from `package.json` needs a
-   lockfile update and is a separate step.
+   lockfile update and is a separate step: hds#429 drops both in 0.20.0.
 
 ## Rationale
 
