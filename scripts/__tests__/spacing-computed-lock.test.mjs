@@ -22,6 +22,18 @@
  *   git archive c506c3b | tar -x -C <dir>; copy this file into <dir>/scripts/__tests__/;
  *   HDS_CAPTURE_SPACING_LOCK=1 pnpm exec vitest run scripts/__tests__/spacing-computed-lock.test.mjs
  *   then copy <dir>/scripts/__tests__/fixtures/spacing-computed-lock/c506c3b.json back.
+ *
+ * hds#404 extends the lock to the eight layout components that kept a private
+ * copy of the 'tight' | 'normal' | 'inset' | 'spacious' map: Cluster, Grid,
+ * Sidebar, Cover and Switcher `gap`, Bleed `amount`, Center `gutter`, and
+ * Card `gap` (which also takes `hds.space` keys) and `padding`. Their fixture
+ * is captured from 8e53a8a, the commit before they moved onto the shared
+ * resolver, and nothing there may move: every probe, typed or not, must emit
+ * and compute what it did on 8e53a8a. Recapture it the same way, only from a
+ * tree of 8e53a8a:
+ *   git archive 8e53a8a | tar -x -C <dir>; copy this file into <dir>/scripts/__tests__/;
+ *   HDS_CAPTURE_LAYOUT_GAP_LOCK=1 pnpm exec vitest run scripts/__tests__/spacing-computed-lock.test.mjs
+ *   then copy <dir>/scripts/__tests__/fixtures/spacing-computed-lock/8e53a8a.json back.
  */
 
 import { describe, it, expect, beforeAll } from 'vitest';
@@ -34,12 +46,22 @@ import { chromium } from 'playwright';
 import { chromiumPath } from '../lib/storybook-host.mjs';
 import { resolveSx } from '../../src/app/components/box-sx.ts';
 import { Stack } from '../../src/app/components/stack.tsx';
+import { Cluster } from '../../src/app/components/cluster.tsx';
+import { Grid } from '../../src/app/components/grid.tsx';
+import { Sidebar } from '../../src/app/components/sidebar.tsx';
+import { Cover } from '../../src/app/components/cover.tsx';
+import { Switcher } from '../../src/app/components/switcher.tsx';
+import { Bleed } from '../../src/app/components/bleed.tsx';
+import { Center } from '../../src/app/components/center.tsx';
+import { Card } from '../../src/app/components/card.tsx';
 import hds from '../../src/app/design-system/tokens.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 const FIXTURE = join(ROOT, 'scripts/__tests__/fixtures/spacing-computed-lock/c506c3b.json');
 const CAPTURE = process.env.HDS_CAPTURE_SPACING_LOCK === '1';
+const LAYOUT_FIXTURE = join(ROOT, 'scripts/__tests__/fixtures/spacing-computed-lock/8e53a8a.json');
+const CAPTURE_LAYOUT = process.env.HDS_CAPTURE_LAYOUT_GAP_LOCK === '1';
 
 // ── What is probed ────────────────────────────────────────────────────────────
 
@@ -106,6 +128,99 @@ function emit(probe, index) {
 
 const emitted = Object.fromEntries(PROBES.map((p, i) => [p.key, emit(p, i)]));
 
+// ── The layout components (hds#404) ───────────────────────────────────────────
+
+/** The four names each of the eight takes. */
+const LAYOUT_NAMES = ['tight', 'normal', 'inset', 'spacious'];
+/** Values their types reject but a JavaScript caller can still pass. */
+const LAYOUT_UNTYPED = [0, 4, 12, 'sm', 'md', 'xl', '1rem', 'gap', 'px16'];
+
+const child = () => React.createElement('i');
+
+/**
+ * Each component, the prop that takes a layout-gap name, and the computed
+ * property that prop drives. `typed` lists the values beyond the four names
+ * that its type accepts.
+ */
+const LAYOUT_COMPONENTS = [
+  { name: 'cluster', Component: Cluster, prop: 'gap', measure: 'rowGap' },
+  { name: 'grid', Component: Grid, prop: 'gap', measure: 'rowGap' },
+  {
+    name: 'sidebar',
+    Component: Sidebar,
+    prop: 'gap',
+    measure: 'rowGap',
+    children: () => [
+      React.createElement('i', { key: 'r' }),
+      React.createElement('i', { key: 'c' }),
+    ],
+  },
+  { name: 'cover', Component: Cover, prop: 'gap', measure: 'rowGap' },
+  { name: 'switcher', Component: Switcher, prop: 'gap', measure: 'rowGap' },
+  { name: 'bleed', Component: Bleed, prop: 'amount', measure: 'marginLeft' },
+  { name: 'center', Component: Center, prop: 'gutter', measure: 'paddingLeft' },
+  {
+    name: 'card',
+    Component: Card,
+    prop: 'gap',
+    measure: 'rowGap',
+    typed: Object.keys(hds.space),
+  },
+];
+
+const valueKey = (v) => (typeof v === 'number' ? `#${v}` : v);
+
+/**
+ * One probe per value, plus each component with the prop left out (its
+ * default). Every probe renders the component and reads its root element.
+ */
+const LAYOUT_PROBES = [];
+for (const { name, Component, prop, measure, typed = [], children = child } of LAYOUT_COMPONENTS) {
+  const untyped = LAYOUT_UNTYPED.filter((v) => !typed.includes(v));
+  LAYOUT_PROBES.push({ key: `${name} ${prop} (default)`, Component, props: {}, measure, children });
+  for (const v of [...LAYOUT_NAMES, ...typed, ...untyped]) {
+    LAYOUT_PROBES.push({
+      key: `${name} ${prop} ${valueKey(v)}`,
+      Component,
+      props: { [prop]: v },
+      measure,
+      children,
+    });
+  }
+}
+// Card's padding feeds its gap: no padding means no gap.
+for (const padding of [undefined, 'component', 'item', 'px16', 'px24', 'none']) {
+  for (const measure of ['paddingTop', 'rowGap']) {
+    LAYOUT_PROBES.push({
+      key: `card padding ${padding ?? '(default)'} ${measure}`,
+      Component: Card,
+      props: { gap: 'spacious', ...(padding && { padding }) },
+      measure,
+      children: child,
+    });
+  }
+}
+for (const measure of ['paddingTop', 'rowGap']) {
+  LAYOUT_PROBES.push({
+    key: `card noPadding ${measure}`,
+    Component: Card,
+    props: { noPadding: true, gap: 'spacious' },
+    measure,
+    children: child,
+  });
+}
+
+const layoutMarkup = (probe) =>
+  renderToStaticMarkup(React.createElement(probe.Component, probe.props, probe.children()));
+
+/** The inline style the component writes on its root element. */
+function emitLayout(probe) {
+  const style = /^<[a-z]+\b[^>]*?\sstyle="([^"]*)"/.exec(layoutMarkup(probe));
+  return style ? style[1] : '(none)';
+}
+
+const layoutEmitted = Object.fromEntries(LAYOUT_PROBES.map((p) => [p.key, emitLayout(p)]));
+
 // ── The cells ─────────────────────────────────────────────────────────────────
 
 const TENANTS = ['base', 'accent-lilac', 'brutalist-demo', 'concrete-creations'];
@@ -146,8 +261,11 @@ function pageHtml(tenant, density, scope, css) {
           React.createElement(Stack, { gap: p.gap }, React.createElement('i')),
         )}</div>`,
   ).join('');
+  const layoutProbes = LAYOUT_PROBES.map((p, i) => `<div id="l${i}">${layoutMarkup(p)}</div>`).join(
+    '',
+  );
   const boxRules = PROBES.map((p) => (p.kind === 'box' ? emitted[p.key] : '')).join('\n');
-  return `<html ${htmlAttrs}><head><style>${css}</style><style>${boxRules}</style></head><body><div ${wrapAttrs}>${probes}</div></body></html>`;
+  return `<html ${htmlAttrs}><head><style>${css}</style><style>${boxRules}</style></head><body><div ${wrapAttrs}>${probes}${layoutProbes}</div></body></html>`;
 }
 
 // theme.css pulls in Tailwind first; the browser skips what it cannot parse, and
@@ -173,33 +291,47 @@ async function measureAll() {
           for (const width of WIDTHS) {
             await page.setViewportSize({ width, height: 600 });
             byCell[cellKey({ tenant, density, scope, width })] = await page.evaluate(
-              (probes) =>
-                probes.map(({ kind, prop }, i) => {
+              ({ probes, layout }) => ({
+                spacing: probes.map(({ kind, prop }, i) => {
                   const host = document.getElementById(`p${i}`);
                   const el = kind === 'box' ? host : host.firstElementChild;
                   const s = getComputedStyle(el);
                   return kind === 'box' && prop === 'p' ? s.paddingTop : s.rowGap;
                 }),
-              PROBES.map(({ kind, prop }) => ({ kind, prop })),
+                layout: layout.map((measure, i) => {
+                  const el = document.getElementById(`l${i}`).firstElementChild;
+                  return getComputedStyle(el)[measure];
+                }),
+              }),
+              {
+                probes: PROBES.map(({ kind, prop }) => ({ kind, prop })),
+                layout: LAYOUT_PROBES.map((p) => p.measure),
+              },
             );
           }
         }
       }
     }
     // Probe-major: one space-separated string per probe, one value per cell.
-    return Object.fromEntries(
-      PROBES.map((p, i) => [p.key, CELLS.map((c) => byCell[cellKey(c)][i]).join(' ')]),
-    );
+    const column = (list, set) =>
+      Object.fromEntries(
+        list.map((p, i) => [p.key, CELLS.map((c) => byCell[cellKey(c)][set][i]).join(' ')]),
+      );
+    return { spacing: column(PROBES, 'spacing'), layout: column(LAYOUT_PROBES, 'layout') };
   } finally {
     await browser.close();
   }
 }
 
+/** One Chromium pass serves both locks. */
+let measured;
+const measureOnce = () => (measured ??= measureAll());
+
 // ── Capture (run only in a tree of c506c3b) ───────────────────────────────────
 
 describe.runIf(CAPTURE)('capture the spacing lock fixture', () => {
   it('writes the fixture', async () => {
-    const computed = await measureAll();
+    const { spacing: computed } = await measureOnce();
     mkdirSync(dirname(FIXTURE), { recursive: true });
     writeFileSync(
       FIXTURE,
@@ -217,9 +349,31 @@ describe.runIf(CAPTURE)('capture the spacing lock fixture', () => {
   }, 120_000);
 });
 
+// ── Capture the layout fixture (run only in a tree of 8e53a8a) ────────────────
+
+describe.runIf(CAPTURE_LAYOUT)('capture the layout-gap lock fixture', () => {
+  it('writes the fixture', async () => {
+    const { layout: computed } = await measureOnce();
+    mkdirSync(dirname(LAYOUT_FIXTURE), { recursive: true });
+    writeFileSync(
+      LAYOUT_FIXTURE,
+      `${JSON.stringify(
+        {
+          capturedFrom: '8e53a8a',
+          cells: CELLS.map(cellKey),
+          emitted: layoutEmitted,
+          computed,
+        },
+        null,
+        2,
+      )}\n`,
+    );
+  }, 120_000);
+});
+
 // ── The lock ──────────────────────────────────────────────────────────────────
 
-describe.skipIf(CAPTURE)('spacing matches c506c3b', () => {
+describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
   const fixture = existsSync(FIXTURE)
     ? JSON.parse(readFileSync(FIXTURE, 'utf8'))
     : { cells: [], emitted: {}, computed: {} };
@@ -248,7 +402,7 @@ describe.skipIf(CAPTURE)('spacing matches c506c3b', () => {
   describe.skipIf(!hasBrowser)('computed, every tenant x density x scope x width', () => {
     let computed;
     beforeAll(async () => {
-      computed = await measureAll();
+      ({ spacing: computed } = await measureOnce());
     }, 120_000);
 
     it.each(PROBES.filter((p) => !ADDED.has(p.key)).map((p) => p.key))(
@@ -274,5 +428,43 @@ describe.skipIf(CAPTURE)('spacing matches c506c3b', () => {
         }
       },
     );
+  });
+});
+
+// ── The layout-gap lock (hds#404) ─────────────────────────────────────────────
+
+describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the eight layout components match 8e53a8a', () => {
+  const fixture = existsSync(LAYOUT_FIXTURE)
+    ? JSON.parse(readFileSync(LAYOUT_FIXTURE, 'utf8'))
+    : { cells: [], emitted: {}, computed: {} };
+
+  it('probes the same values and cells the fixture recorded', () => {
+    expect(existsSync(LAYOUT_FIXTURE)).toBe(true);
+    expect(fixture.capturedFrom).toBe('8e53a8a');
+    expect(Object.keys(fixture.emitted).sort()).toEqual(LAYOUT_PROBES.map((p) => p.key).sort());
+    expect(fixture.cells).toEqual(CELLS.map(cellKey));
+  });
+
+  it.each(LAYOUT_PROBES.map((p) => p.key))(
+    '%s emits the inline style it emitted on 8e53a8a',
+    (key) => {
+      expect(layoutEmitted[key]).toBe(fixture.emitted[key]);
+    },
+  );
+
+  describe.skipIf(!hasBrowser)('computed, every tenant x density x scope x width', () => {
+    let computed;
+    beforeAll(async () => {
+      ({ layout: computed } = await measureOnce());
+    }, 120_000);
+
+    it.each(LAYOUT_PROBES.map((p) => p.key))('%s computes what it computed on 8e53a8a', (key) => {
+      const want = fixture.computed[key].split(' ');
+      const got = computed[key].split(' ');
+      const diffs = fixture.cells
+        .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))
+        .filter(Boolean);
+      expect(diffs).toEqual([]);
+    });
   });
 });

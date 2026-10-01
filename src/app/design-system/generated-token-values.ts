@@ -204,6 +204,7 @@ export const tokenValues = {
       "64": "64px",
       "80": "80px",
       "96": "96px",
+      "120": "120px",
       interactive: {
         min: "44px",
         minCompact: "24px"

@@ -577,6 +577,8 @@
     "primitives-visually-hidden--default",
     "primitives-visually-hidden--docs",
     "primitives-alert-dialog--dark-scope",
-    "primitives-dialog--dark-scope"
+    "primitives-dialog--dark-scope",
+    "primitives-combobox--open",
+    "primitives-select--open"
   ]
 }

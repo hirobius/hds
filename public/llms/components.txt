@@ -225,10 +225,13 @@ CodeBlock - code display with copy button and optional collapsible toggle.
 
 ### Combobox
 Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; openi…
+  - aria-describedby: string
+  - aria-invalid: boolean
   - aria-label: string
   - className: string
   - disabled: boolean = false
   - emptyMessage: string = No results
+  - id: string
   - onChange: (value: string) => void
   - options: ComboboxOption[]
   - placeholder: string = Select…
@@ -737,7 +740,10 @@ SegmentedControl " segmented selection input for compact mutually-exclusive choi
 
 ### Select
 Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead…
+  - aria-describedby: string
+  - aria-invalid: boolean
   - container: HTMLElement | null
+  - id: string
   - label: string
   - onChange: (v: string) => void
   - options: { value: string; label: string; }[]

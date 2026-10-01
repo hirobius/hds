@@ -19,16 +19,10 @@
  */
 
 import React from 'react';
+import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type BleedAxis = 'x' | 'y' | 'both';
-
-const amountMap: Record<LayoutGap, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
 
 export interface BleedProps {
   /** Bleed content. */
@@ -50,7 +44,7 @@ export const Bleed = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BleedProps
   { children, amount = 'normal', axis = 'x', className, style, as: Tag = 'div' },
   ref,
 ) {
-  const negative = `calc(-1 * ${amountMap[amount]})`;
+  const negative = `calc(-1 * ${resolveSpacingValue(amount, LAYOUT_GAP)})`;
 
   return (
     <Tag

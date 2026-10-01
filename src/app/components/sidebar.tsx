@@ -21,16 +21,10 @@
  */
 
 import React from 'react';
+import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type SidebarSide = 'start' | 'end';
 type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
-
-const gapMap: Record<LayoutGap, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
 
 export interface SidebarProps {
   /** Exactly two children: the rail first, the fluid content second (DOM order — `side` only changes visual order). */
@@ -77,7 +71,7 @@ export const Sidebar = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SidebarP
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: gapMap[gap],
+          gap: resolveSpacingValue(gap, LAYOUT_GAP),
           ...style,
         }}
       >

@@ -16,6 +16,7 @@
  */
 
 import React from 'react';
+import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type CenterMaxWidth = 'content' | 'max';
 type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
@@ -23,13 +24,6 @@ type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
 const maxWidthMap: Record<CenterMaxWidth, string> = {
   content: 'var(--semantic-layout-width-content)',
   max: 'var(--semantic-layout-width-max)',
-};
-
-const gutterMap: Record<LayoutGap, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
 };
 
 export interface CenterProps {
@@ -52,6 +46,8 @@ export const Center = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CenterPro
   { children, maxWidth = 'content', gutter, className, style, as: Tag = 'div' },
   ref,
 ) {
+  const gutterValue = gutter ? resolveSpacingValue(gutter, LAYOUT_GAP) : undefined;
+
   return (
     <Tag
       ref={ref}
@@ -62,7 +58,7 @@ export const Center = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CenterPro
         marginLeft: 'auto',
         marginRight: 'auto',
         maxWidth: maxWidthMap[maxWidth],
-        ...(gutter && { paddingLeft: gutterMap[gutter], paddingRight: gutterMap[gutter] }),
+        ...(gutter && { paddingLeft: gutterValue, paddingRight: gutterValue }),
         ...style,
       }}
     >
