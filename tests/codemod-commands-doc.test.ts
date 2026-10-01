@@ -1,6 +1,7 @@
 // @vitest-environment node
 /**
- * The codemod bins (`hds-patterns-subpath`, `hds-prefix`) exist only inside
+ * The codemod bins (`hds-patterns-subpath`, `hds-prefix`, `hds-not-found-pattern`,
+ * `hds-tile-grid`) exist only inside
  * @hirobius/design-system. A bare `npx hds-prefix` in a project that has not
  * installed a version carrying the bin falls through to the npm registry, where
  * those names are unregistered (anyone could publish them). Every documented
@@ -19,6 +20,8 @@ const read = (file: string) => readFileSync(resolve(ROOT, file), 'utf8');
 const FIRST_SHIPPED: Record<string, [number, number]> = {
   'hds-patterns-subpath': [0, 17],
   'hds-prefix': [0, 20],
+  'hds-not-found-pattern': [0, 20],
+  'hds-tile-grid': [0, 20],
 };
 
 const DOCS = [
