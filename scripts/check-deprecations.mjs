@@ -98,8 +98,10 @@ function findViolations(content) {
 
 const isSource = (file) => /\.tsx?$/.test(file) && existsSync(file) && statSync(file).isFile();
 
-/** Top-level .ts/.tsx files of a source directory. */
+/** Top-level .ts/.tsx files of a source directory (none when it does not exist). */
 function topLevelSources(dir) {
+  // src/app/layouts/ has been empty, and so absent, since 0.20.0 (hds#394).
+  if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .map((entry) => join(dir, entry))
     .filter(isSource);
