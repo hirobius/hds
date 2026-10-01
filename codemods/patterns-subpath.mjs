@@ -16,9 +16,11 @@
  *   node codemods/patterns-subpath.mjs [--root <dir>] [--check] [--dry-run]
  *
  *   --root <dir>  directory to scan (default: current directory)
- *   --check       write nothing; exit 1 when a rewrite is needed or a root namespace
- *                 import (`import * as X`, `export *`), or a dynamic `import()` or
- *                 `require()` of the root that names a pattern export, needs a manual look
+ *   --check       write nothing; exit 1 when a rewrite is needed, or when a root
+ *                 star re-export, or a namespace import or dynamic `import()`,
+ *                 `require()` or `vi.mock`/`jest.mock` of the root that reads a
+ *                 pattern name off the module (codemods/unrewritable.mjs), needs
+ *                 a manual look
  *   --dry-run     write nothing; print each import line before (-) and after (+), exit 0
  *
  * The name list is codemods/patterns-subpath.names.json: what
@@ -32,7 +34,7 @@
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { moduleCalls, scanSource } from './scan.mjs';
+import { findUnrewritable as findHidden } from './unrewritable.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
 const SUBPATH = `${ROOT_PKG}/patterns`;
@@ -67,12 +69,6 @@ const namedRe = (pkg) =>
     `^([ \\t]*)(import|export)(\\s+type)?\\s*(?:([\\w$]+)\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*(['"])${esc(pkg)}\\6(;?)`,
     'gm',
   );
-// `import * as X`, `import D, * as X`, `export * from`, `export * as X from` on the root
-const namespaceRe = new RegExp(
-  `^[ \\t]*(?:import\\s+(?:[\\w$]+\\s*,\\s*)?\\*\\s*as\\s+[\\w$]+|export\\s+\\*(?:\\s*as\\s+[\\w$]+)?)\\s*from\\s*['"]${esc(ROOT_PKG)}['"]`,
-  'gm',
-);
-
 const specName = (spec) =>
   spec
     .replace(/^type\s+/, '')
@@ -85,19 +81,15 @@ const splitSpecs = (body) =>
     .filter(Boolean);
 
 /**
- * What the codemod cannot rewrite: namespace imports and star re-exports of the
- * root (the names are not visible), and a dynamic `import()` or `require()` of
- * the root (codemods/scan.mjs `moduleCalls`) in a file whose code names a
- * pattern export (`m.Page`, `const { Page } =`). Text does not count.
+ * What the codemod cannot rewrite (codemods/unrewritable.mjs): a star re-export
+ * of the root, whose importers are in other files; and a namespace import or a
+ * dynamic `import()`, `require()`, `vi.mock` or `jest.mock` of the root in a file
+ * that reads a pattern name off something (`HDS.Page`, `m['Page']`,
+ * `const { Page } = …`). A bare `Page`, such as the `/patterns` import the
+ * codemod writes or a local type, is not a read.
  */
 export function findUnrewritable(source, names = loadPatternNames()) {
-  const found = [...source.matchAll(namespaceRe)].map((m) => m[0].trim());
-  const calls = new Set(moduleCalls(source, ROOT_PKG));
-  if (calls.size === 0) return found;
-  const idents = scanSource(source).identifiers();
-  const used = [...names].filter((name) => idents.has(name)).sort();
-  if (used.length > 0) for (const call of calls) found.push(`${call} (uses ${used.join(', ')})`);
-  return found;
+  return findHidden(source, ROOT_PKG, names);
 }
 
 /** Each named import or re-export of a removed name from the root or `/patterns`, in source order. */

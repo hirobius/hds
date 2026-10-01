@@ -111,7 +111,7 @@
     "codemods/patterns-subpath.names.json",
     "codemods/removed-0.20.json",
     "codemods/hds-prefix.mjs",
-    "codemods/scan.mjs"
+    "codemods/unrewritable.mjs"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
