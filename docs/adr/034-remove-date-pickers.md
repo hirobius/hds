@@ -22,12 +22,13 @@ amendment), not as deprecations.
 
 1. **Removed in 0.20.0:** `Calendar` (`/patterns`), `DateInput`,
    `DateRangeInput` and `DateTimeInput` (root), with their props types. There is
-   no HDS calendar or date picker. A product that needs a date uses the
-   platform's `<input type="date">`; one that needs a custom calendar builds it
-   in the app.
+   no HDS calendar or date picker. A product that needs a date uses
+   `Input type="date"` (or `type="datetime-local"` for a date and time), a
+   token skin over the native input that hds#393 added; one that needs a custom
+   calendar builds it in the app.
 2. **`TimeInput` is not removed here.** It is already a token skin over native
-   `<input type="time">`, and it waits for `Input type="time"` (hds#393) before
-   it goes in wave 4b (hds#394).
+   `<input type="time">`, and `Input type="time"` (hds#393) now replaces it; it
+   goes in wave 4b (hds#394).
 3. **Dependencies:** nothing under `src/` imports `react-day-picker` or
    `date-fns` after this change. Dropping them from `package.json` needs a
    lockfile update and is a separate step.
