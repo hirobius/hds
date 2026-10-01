@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { warnOnce } from '../../lib/deprecation';
 import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -34,7 +35,13 @@ const statusDotVariants = /* @__PURE__ */ cva('inline-block shrink-0 rounded-ful
 
 type StatusDotVariantProps = VariantProps<typeof statusDotVariants>;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use `BadgeProps` with `dot`: `tone`, `size` and `label` are the
+ * same. Badge takes no `style`, so move a `style` to a wrapper or a
+ * `className` first (MIGRATIONS.md, hds#395).
+ * @removeIn 0.21.0
+ */
 export interface StatusDotProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>, StatusDotVariantProps {
   /**
@@ -47,9 +54,22 @@ export interface StatusDotProps
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** A small solid dot conveying a semantic status via `tone`. */
+/**
+ * A small solid dot conveying a semantic status via `tone`.
+ *
+ * @deprecated Use `<Badge dot>`: `tone`, `size` and `label` are the same, and
+ * so is the dot. Badge takes no `style`, so move a `style` to a wrapper or a
+ * `className` first (MIGRATIONS.md, hds#395). Kept in 0.20.0 because ops passes
+ * StatusDot a `style` no codemod can carry over.
+ * @removeIn 0.21.0
+ * @useInstead Badge with `dot`
+ */
 export const StatusDot = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, StatusDotProps>(
   function StatusDot({ className, tone, size, label, ...props }, ref) {
+    warnOnce(
+      'status-dot-deprecated',
+      'StatusDot is deprecated and is removed in 0.21.0. Use <Badge dot> with the same tone, size and label; Badge takes no style, so move a style to a wrapper or a className (MIGRATIONS.md, hds#395).',
+    );
     return (
       <span
         ref={ref}

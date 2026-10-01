@@ -98,6 +98,15 @@ const WAVE_4B = [
   'InputGroup',
 ];
 
+/**
+ * hds#395 (B5): removed in 0.20.0 once a codemod rewrites every ops site.
+ * NotFoundPattern folds into ErrorPattern (`hds-not-found-pattern`) and TileGrid
+ * into Grid (`hds-tile-grid`). StatusTile is not removed: it leaves the root for
+ * `/patterns` (hds#389 D5), and `hds-patterns-subpath` moves its imports.
+ */
+const B5_REMOVED = ['NotFoundPattern', 'TileGrid', 'TileGridProps'];
+const B5_MOVED = ['StatusTile', 'StatusTileProps', 'StatusTileTone'];
+
 function readBarrel(entry = INDEX) {
   const config = ts.readConfigFile(resolve(ROOT, 'tsconfig.json'), ts.sys.readFile);
   const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, ROOT);
@@ -161,6 +170,14 @@ describe('public component export names', () => {
     expect(valueNames, 'StatusDot stays until ops stops passing it style').toContain('StatusDot');
   });
 
+  it('no longer exports NotFoundPattern, TileGrid or StatusTile (hds#395, 0.20.0)', () => {
+    for (const gone of [...B5_REMOVED, ...B5_MOVED]) {
+      expect(names, `${gone} is still exported from the root`).not.toContain(gone);
+    }
+    // Their survivors stay: ErrorPattern on /patterns (below), Grid on the root.
+    expect(valueNames).toContain('Grid');
+  });
+
   it('exports FormField and FormFieldShell from /patterns only, not the root', () => {
     expect(names).not.toContain('FormField');
     expect(names).not.toContain('FormFieldShell');
@@ -185,6 +202,15 @@ describe('/patterns export names', () => {
   it('no longer exports the hds#394 wave 4a pattern components (removed in 0.20.0)', () => {
     for (const gone of WAVE_4A_PATTERNS) {
       expect(names, `${gone} is still exported from /patterns`).not.toContain(gone);
+    }
+  });
+
+  it('exports StatusTile with its types, and ErrorPattern, the NotFoundPattern survivor (hds#395)', () => {
+    for (const kept of [...B5_MOVED, 'ErrorPattern', 'ErrorPatternProps']) {
+      expect(names, `${kept} is missing from /patterns`).toContain(kept);
+    }
+    for (const gone of B5_REMOVED) {
+      expect(names, `${gone} is exported from /patterns`).not.toContain(gone);
     }
   });
 

@@ -8,7 +8,9 @@
  * their props types, parts, hooks and `*Variants`. The list also holds the five
  * modules that were only ever on `/patterns` (PageHeader, MetricTiles,
  * FormActions, DestructiveSection, DataTableSection); no root import of those
- * ever resolved, so including them changes nothing. Names removed outright in
+ * ever resolved, so including them changes nothing. StatusTile (with
+ * StatusTileProps and StatusTileTone) left the root for `/patterns` in the same
+ * release (hds#389 D5, hds#395), so it moves the same way. Names removed outright in
  * 0.20.0 are in removed-0.20.json and are reported, not moved. Other named imports
  * stay on the root. Aliases, `type` modifiers and multi-line layout
  * are preserved; an existing `/patterns` import of the same kind is extended
@@ -36,7 +38,8 @@
  * for a manual edit ("removed in 0.20.0, no replacement") and `--check` exits 1.
  * A removed name that folded into a survivor (`replaced` in that file, hds#394
  * wave 4b) is reported the same way, naming the survivor instead
- * ("removed in 0.20.0, use Button iconOnly").
+ * ("removed in 0.20.0, use Button iconOnly"). NotFoundPattern and TileGrid
+ * (hds#395) have codemods of their own: hds-not-found-pattern and hds-tile-grid.
  */
 import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';

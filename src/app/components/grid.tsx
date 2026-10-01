@@ -14,7 +14,7 @@
  *                     `columns` sets desktop count (default 12). Tablet/mobile
  *                     clamp to min(8, cols) and min(4, cols) respectively.
  * - layout='auto-fit': responsive card wrapping via auto-fit.
- * - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe).
+ * - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe; 0.20.0 removed TileGrid).
  * - subgrid=true:     sets gridTemplateColumns:'subgrid' for nested alignment.
  *
  * Usage (default responsive 12-col):

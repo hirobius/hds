@@ -394,7 +394,10 @@ describe('CLI', () => {
   let dir;
   beforeEach(() => {
     dir = mkdtempSync(join(tmpdir(), 'hds-codemod-'));
-    cpSync(FIXTURES, dir, { recursive: true });
+    // Its own fixtures only: the other codemods' fixtures under codemods/__fixtures__
+    // (hds-prefix, not-found-pattern, tile-grid) import root names on purpose.
+    for (const own of ['needs-rewrite', 'clean'])
+      cpSync(join(FIXTURES, own), join(dir, own), { recursive: true });
     // node_modules is gitignored, so the fixture is built here rather than committed.
     mkdirSync(join(dir, 'clean/node_modules/x'), { recursive: true });
     writeFileSync(join(dir, 'clean/node_modules/x/index.js'), `import { Page } from '${ROOT}';\n`);

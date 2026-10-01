@@ -56,7 +56,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
 - `Stat` — Headline metric — large value, uppercase caption label, optional sub-line.
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
-- `StatusTile` — Block-layout sibling of StatusListItem.
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `Timestamp` — Presents a date/time with a machine-readable `dateTime` for accessibility.
 
@@ -68,7 +67,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Progress` — Linear bar or circular ring.
 - `Skeleton` — Decorative loading placeholder.
 - `Spinner` — Indeterminate spinner.
-- `StatusDot` — A small solid dot conveying a semantic status via `tone`.
 - `ToastProvider` — Provider + viewport for the toast system.
 
 ### Inputs
@@ -96,7 +94,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Stack` — Stack — one-dimensional layout primitive.
 - `Surface` — Surface — governed inset surface primitive.
 - `Switcher` — Switcher — flips a row to a column below a width threshold, no media query.
-- `TileGrid` — Auto-fill responsive grid for status/micro tiles.
 
 ### Navigation
 
@@ -150,6 +147,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 - `DataTableSection` — Section heading and toolbar over a `Table`.
 - `MetricTile` — One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height.
 - `MetricTiles` — A row of `MetricTile`s.
+- `StatusTile` — Block-layout sibling of StatusListItem.
 
 ### Feedback
 

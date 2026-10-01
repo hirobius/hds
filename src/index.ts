@@ -30,6 +30,11 @@
 // Input, CircularProgress into Progress, SelectableCard into Card,
 // MultiSelector into Combobox, Cluster into Stack, Center into Container, and
 // Cover, Frame, Bleed and AspectRatio into Box.
+// And the two ops imports with a codemod of their own (hds#395 B5):
+// NotFoundPattern folds into ErrorPattern on `/patterns`
+// (`npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern`) and TileGrid
+// into Grid layout="auto-fill" (`npx -p @hirobius/design-system@^0.20.0 hds-tile-grid`).
+// StatusTile moved to `/patterns` (hds#389 D5); hds-patterns-subpath moves its imports.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Side-effect import: design system base styles (tokens + theme + utilities)
@@ -97,10 +102,7 @@ export * from './app/components/pin';
 
 // ── app-shell + layout primitives consumed by the ops dashboard ──
 export * from './app/components/empty-state';
-export * from './app/components/not-found-pattern';
 export * from './app/components/tabs';
-export * from './app/components/tile-grid';
-export * from './app/components/status-tile';
 
 // ── patterns (5) ──
 export * from './app/components/breadcrumb';

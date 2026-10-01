@@ -100,7 +100,7 @@ export const AutoFill: Story = {
     docs: {
       description: {
         story:
-          "TileGrid's recipe: tiles wrap at minItemWidth (capped at the container) on the fixed 12px 'medium' gap.",
+          "Tiles wrap at minItemWidth (capped at the container) on the fixed 12px 'medium' gap: what TileGrid rendered until 0.20.0 removed it (hds-tile-grid rewrites it).",
       },
     },
   },
