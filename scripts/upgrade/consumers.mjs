@@ -81,8 +81,12 @@ function missingToken() {
   );
 }
 
-/** 401/403/429 answers: a token to fix or a rate limit to wait out. Never retried. */
-function fatalFor(res, tokenVar, org) {
+/**
+ * 401/403/429 answers: a token to fix or a rate limit to wait out. Never retried.
+ * A plain 403 on one repo's files (`perRepo`) is not fatal: the listing already
+ * proved the token works, so only that repo is lost, not the whole run.
+ */
+function fatalFor(res, tokenVar, org, perRepo) {
   const remaining = res.headers.get('x-ratelimit-remaining');
   const retryAfter = res.headers.get('retry-after');
   if (res.status === 429 || (res.status === 403 && (remaining === '0' || retryAfter))) {
@@ -102,7 +106,7 @@ function fatalFor(res, tokenVar, org) {
       `${tokenVar} was rejected by GitHub (401: expired or revoked). ${TOKEN_FIX}`,
     );
   }
-  if (res.status === 403) {
+  if (res.status === 403 && !perRepo) {
     return new FatalError(
       `${tokenVar} is not allowed to read the ${org} repositories (403). ${TOKEN_FIX}`,
     );
@@ -113,7 +117,7 @@ function fatalFor(res, tokenVar, org) {
 // ── GitHub requests ──────────────────────────────────────────────────────────
 
 function client({ token, tokenVar, org, fetch }) {
-  async function request(url, accept) {
+  async function request(url, accept, perRepo) {
     const res = await fetch(url, {
       headers: {
         Accept: accept,
@@ -122,14 +126,17 @@ function client({ token, tokenVar, org, fetch }) {
         'User-Agent': 'hirobius-hds-upgrade-consumers',
       },
     });
-    const fatal = fatalFor(res, tokenVar, org);
+    const fatal = fatalFor(res, tokenVar, org, perRepo);
     if (fatal) throw fatal;
     return res;
   }
 
-  /** Parsed JSON, or null on 404/409 (missing file, empty repository). */
-  async function getJson(url) {
-    const res = await request(url, JSON_MEDIA);
+  /**
+   * Parsed JSON, or null on 404/409 (missing file, empty repository).
+   * `perRepo` marks a read inside one repository (see fatalFor).
+   */
+  async function getJson(url, { perRepo = false } = {}) {
+    const res = await request(url, JSON_MEDIA, perRepo);
     if (res.status === 404 || res.status === 409) return null;
     if (!res.ok) throw new Error(`GitHub answered ${res.status}`);
     return { body: await res.json(), headers: res.headers };
@@ -139,7 +146,7 @@ function client({ token, tokenVar, org, fetch }) {
   async function getRaw(fullName, filePath, ref) {
     const encoded = filePath.split('/').map(encodeURIComponent).join('/');
     const url = `${API}/repos/${fullName}/contents/${encoded}?ref=${encodeURIComponent(ref)}`;
-    const res = await request(url, RAW);
+    const res = await request(url, RAW, true);
     if (res.status === 404) return null;
     if (!res.ok) throw new Error(`GitHub answered ${res.status} for ${filePath}`);
     return res.text();
@@ -259,6 +266,7 @@ async function scanRepo(gh, repo) {
   const ref = repo.default_branch;
   const listing = await gh.getJson(
     `${API}/repos/${fullName}/contents?ref=${encodeURIComponent(ref)}`,
+    { perRepo: true },
   );
   if (!listing || !Array.isArray(listing.body)) return null;
   const rootFiles = listing.body.filter((e) => e.type === 'file').map((e) => e.name);
@@ -277,6 +285,7 @@ async function scanRepo(gh, repo) {
   if (globs.length) {
     const tree = await gh.getJson(
       `${API}/repos/${fullName}/git/trees/${encodeURIComponent(ref)}?recursive=1`,
+      { perRepo: true },
     );
     const paths = (tree?.body?.tree ?? []).filter((e) => e.type === 'blob').map((e) => e.path);
     if (tree?.body?.truncated) warnings.push('tree truncated: some workspaces may be missing');
@@ -336,11 +345,34 @@ async function scanRepo(gh, repo) {
 
 // ── redaction ────────────────────────────────────────────────────────────────
 
+/** One comparator of a semver range: an optional operator and a version with x/* wildcards. */
+const COMPARATOR =
+  /^(?:[<>]=?|=|\^|~)?v?(?:\d+|[xX*])(?:\.(?:\d+|[xX*])){0,2}(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
+
+/**
+ * A plain registry range or version, which says nothing about where a repo
+ * lives. Anything else (file:, link:, workspace:, git or tarball URLs, tags)
+ * can carry a path or a repo name.
+ */
+function isRegistrySpec(spec) {
+  if (typeof spec !== 'string' || !spec.trim()) return false;
+  return spec.split('||').every((part) =>
+    part
+      .trim()
+      .split(/\s+/)
+      .every((token) => token === '-' || token === '*' || COMPARATOR.test(token)),
+  );
+}
+
+/** A private repo's range or version, kept only when it is a plain registry spec. */
+const safeSpec = (spec) => (spec == null ? spec : isRegistrySpec(spec) ? spec : 'non-registry');
+
 /**
  * The shape that may reach a public surface. Public repos are kept whole;
  * each private one is rebuilt from an allowlist of fields that carry no name
  * or path ("private consumer N", its flags, lockfile kind, versions, and per
- * importer only the field, range and resolved version). Public repos come
+ * importer only the field, range and resolved version; a range or version
+ * that is not a plain registry spec becomes "non-registry"). Public repos come
  * first so a private repo's position says nothing about its name.
  *
  * @param {Awaited<ReturnType<typeof discoverConsumers>>} result
@@ -357,11 +389,11 @@ export function redact(result) {
       frozen: c.frozen,
       skip: [...c.skip],
       lockfile: c.lockfile && { kind: c.lockfile.kind, version: c.lockfile.version },
-      versions: [...c.versions],
+      versions: c.versions.map(safeSpec),
       importers: c.importers.map((imp) => ({
         field: imp.field,
-        range: imp.range,
-        resolved: imp.resolved,
+        range: safeSpec(imp.range),
+        resolved: safeSpec(imp.resolved),
       })),
     }));
   let privateErrors = 0;
@@ -526,7 +558,17 @@ export async function main(argv, io = {}) {
     stderr.write(`${error.message}\n`);
     return 1;
   }
-  if (args.out) writeFileSync(args.out, `${JSON.stringify(result, null, 2)}\n`);
+  if (args.out) {
+    try {
+      writeFileSync(args.out, `${JSON.stringify(result, null, 2)}\n`);
+    } catch (error) {
+      stderr.write(
+        `could not write ${args.out} (${error.code ?? error.message}). ` +
+          'Create the folder first or pick another --out path; nothing was written.\n',
+      );
+      return 2;
+    }
+  }
   const redacted = redact(result);
   stdout.write(args.json ? `${JSON.stringify(redacted, null, 2)}\n` : formatSummary(redacted));
   if (args.out) stdout.write(`Full list (private names included) written to ${args.out}.\n`);

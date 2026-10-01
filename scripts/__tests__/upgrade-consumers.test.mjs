@@ -419,6 +419,27 @@ describe('discoverConsumers — token', () => {
     expect(calls).toBe(1);
   });
 
+  it('keeps going when one repo answers a plain 403 after the listing worked', async () => {
+    // A token without access to one repo (or a proxy refusing it) must not
+    // throw away the consumers already found; only the listing's 403 is fatal.
+    const gh = fakeGitHub({ repos: [OPS, { ...OPS, name: 'example-locked' }, FOLIO] });
+    const fetch = async (url, init) =>
+      String(url).includes('/repos/hirobius/example-locked/')
+        ? new Response('{"message":"Resource not accessible by personal access token"}', {
+            status: 403,
+          })
+        : gh.fetch(url, init);
+    const result = await discoverConsumers({ token: TOKEN, fetch });
+    expect(result.consumers.map((c) => c.repo)).toEqual(['hirobius/folio', 'hirobius/ops']);
+    expect(result.errors).toEqual([
+      {
+        repo: 'hirobius/example-locked',
+        private: false,
+        message: expect.stringMatching(/403/),
+      },
+    ]);
+  });
+
   it('records a repo it could not read and keeps going', async () => {
     const gh = fakeGitHub({ repos: [OPS, { ...OPS, name: 'example-broken' }] });
     const fetch = async (url, init) =>
@@ -509,6 +530,55 @@ describe('redact', () => {
       { repo: 'private repo 1', private: true, message: 'could not be read' },
     ]);
   });
+
+  it('never passes on a private non-registry specifier (file:, link:, git or tarball URL)', () => {
+    // A range or resolved value that is not a plain semver range can carry a
+    // path or a repo name, so a private repo's is replaced, never copied.
+    const full = {
+      org: 'hirobius',
+      scanned: 1,
+      errors: [],
+      consumers: [
+        {
+          repo: 'hirobius/example-private-secret-app',
+          private: true,
+          archived: false,
+          hasIssues: true,
+          frozen: false,
+          skip: [],
+          lockfile: { kind: 'bun', version: '1' },
+          versions: ['0.16.0', 'file:../acme-secret-vendor/hds-0.16.0.tgz'],
+          importers: [
+            {
+              field: 'dependencies',
+              range: 'file:../acme-secret-vendor/hds-0.16.0.tgz',
+              resolved: '0.16.0',
+            },
+            {
+              field: 'dependencies',
+              range: 'github:hirobius/acme-secret-fork#v0.16.0',
+              resolved: null,
+            },
+            { field: 'dependencies', range: 'workspace:*', resolved: 'link:../secret-hds' },
+            {
+              field: 'dependencies',
+              range: '>=0.16.0 <0.21.0 || ~0.20.1',
+              resolved: '0.20.1-beta.2',
+            },
+          ],
+        },
+      ],
+    };
+    const out = redact(full);
+    expect(JSON.stringify(out)).not.toMatch(/secret|acme|file:|github:|link:|workspace:/i);
+    expect(out.consumers[0].versions).toEqual(['0.16.0', 'non-registry']);
+    expect(out.consumers[0].importers).toEqual([
+      { field: 'dependencies', range: 'non-registry', resolved: '0.16.0' },
+      { field: 'dependencies', range: 'non-registry', resolved: null },
+      { field: 'dependencies', range: 'non-registry', resolved: 'non-registry' },
+      { field: 'dependencies', range: '>=0.16.0 <0.21.0 || ~0.20.1', resolved: '0.20.1-beta.2' },
+    ]);
+  });
 });
 
 describe('pnpm upgrade:consumers (main)', () => {
@@ -549,6 +619,15 @@ describe('pnpm upgrade:consumers (main)', () => {
     const parsed = JSON.parse(asJson.out);
     expect(parsed.counts).toMatchObject({ consumers: 2, public: 1, private: 1 });
     expect(asJson.out).not.toMatch(/secret/);
+  });
+
+  it('explains a failed --out write (missing folder) instead of crashing', async () => {
+    const gh = fakeGitHub({ repos: [OPS] });
+    const missing = join(tmpdir(), 'hds-consumers-missing-dir-xyz', 'nested', 'consumers.json');
+    const failed = await run(['--out', missing], { HDS_FLEET_TOKEN: TOKEN }, gh.fetch);
+    expect(failed.code).toBe(2);
+    expect(failed.err).toContain('could not write');
+    expect(failed.err).toContain(missing);
   });
 
   it('writes the full list only with --out, and only where git ignores it', async () => {

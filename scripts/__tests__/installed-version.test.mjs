@@ -68,6 +68,48 @@ describe('readLockfile — pnpm', () => {
   });
 });
 
+describe('readLockfile — pnpm transitive copy', () => {
+  it('lists a second HDS copy that only another package pulls in (packages/snapshots only)', () => {
+    const text = `lockfileVersion: '9.0'
+
+importers:
+
+  .:
+    dependencies:
+      '@hirobius/design-system':
+        specifier: ^0.20.0
+        version: 0.20.0(react@18.3.1)
+      '@hirobius/widgets':
+        specifier: ^1.0.0
+        version: 1.0.0
+
+packages:
+
+  '@hirobius/design-system@0.20.0':
+    resolution: {integrity: sha512-bbb}
+
+  '@hirobius/widgets@1.0.0':
+    resolution: {integrity: sha512-ddd}
+
+snapshots:
+
+  '@hirobius/design-system@0.16.0(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+
+  '@hirobius/widgets@1.0.0':
+    dependencies:
+      '@hirobius/design-system': 0.16.0(react@18.3.1)
+`;
+    expect(readLockfile('pnpm-lock.yaml', text)).toEqual({
+      kind: 'pnpm',
+      version: '9.0',
+      importers: { '.': '0.20.0' },
+      versions: ['0.16.0', '0.20.0'],
+    });
+  });
+});
+
 const PNPM_V6_SINGLE = `lockfileVersion: '6.0'
 
 settings:
