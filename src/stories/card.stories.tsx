@@ -3,6 +3,7 @@
  * @see src/app/components/Card.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Card } from '../app/components/card';
 import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
@@ -241,4 +242,38 @@ export const MetricSlot: Story = {
       </Card>
     </div>
   ),
+};
+
+// ── Selectable (hds#393) ─────────────────────────────────────────────────────
+
+function SelectableCards() {
+  const [selected, setSelected] = useState<Record<string, boolean>>({ Starter: true });
+  return (
+    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+      {['Starter', 'Growth', 'Scale'].map((plan) => (
+        <Card
+          key={plan}
+          selectable
+          selected={!!selected[plan]}
+          onSelectedChange={(next) => setSelected((s) => ({ ...s, [plan]: next }))}
+          bordered
+          style={{ minWidth: 160 }}
+        >
+          <p style={{ margin: 0, fontSize: '13px' }}>{plan}</p>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+export const Selectable: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`selectable` makes the whole card one checkbox-like option (hds#393): role="checkbox" with aria-checked, focusable, toggled by click or Space (Enter does not toggle a checkbox). It is controlled: pass `selected` and update it in `onSelectedChange`. Selection is a 2px ring inside the edge and focus an outline outside it, so a focused card, a selected card and a focused selected card all look different. It composes with any tone or variant.',
+      },
+    },
+  },
+  render: () => <SelectableCards />,
 };
