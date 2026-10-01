@@ -60,12 +60,12 @@ const MARKERS = [
   'vocab-ok',
   'deprecation-ok',
   'style-prop-ok',
-  // Two more markers other gates define and document, missing here the same way
-  // `layout-ok` was: check-spacing-vocabulary.mjs honors `spacing-vocab-ok`, and
-  // src/app/components/__tests__/no-css-var-in-motion-animate.test.ts honors
-  // `motion-animate-var-ok`. Without them this gate failed on those gates' own
-  // docs (hds#372). scripts/__tests__/check-exemptions.test.mjs pins both.
+  // check-spacing-vocabulary.mjs (hds#206) documents and honors this marker;
+  // leaving it out made this gate reject the other gate's own escape hatch.
   'spacing-vocab-ok',
+  // Same gap for src/app/components/__tests__/no-css-var-in-motion-animate.test.ts,
+  // which honors `motion-animate-var-ok` (hds#372).
+  // scripts/__tests__/check-exemptions.test.mjs pins both.
   'motion-animate-var-ok',
 ];
 
