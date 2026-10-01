@@ -33,16 +33,10 @@
 
 import React, { useEffect, useState, type ReactNode, type CSSProperties } from 'react';
 import hds from '../design-system/tokens';
+import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type GridLayout = 'fixed' | 'auto-fit';
-
-const gapMap: Record<SemanticGap, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
 
 export interface GridProps {
   /** Grid content. */
@@ -155,7 +149,7 @@ const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(fu
     ...(isFixedLayout && {
       '--current-cols': String(currentColumns),
     }),
-    gap: gapMap[gap],
+    gap: resolveSpacingValue(gap, LAYOUT_GAP),
     ...style,
   } as CSSProperties;
 

@@ -20,15 +20,9 @@
  */
 
 import React from 'react';
+import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
-
-const gapMap: Record<LayoutGap, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
 
 export interface SwitcherProps {
   /** Switcher content — peer items that flip between row and column as a unit. */
@@ -65,7 +59,7 @@ export const Switcher = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Switche
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: gapMap[gap],
+          gap: resolveSpacingValue(gap, LAYOUT_GAP),
           ...(forceStacked && { flexDirection: 'column' }),
           ...style,
         }}

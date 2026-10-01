@@ -60,3 +60,10 @@ node scripts/check-pure-annotations.mjs
 # network.
 echo "Spacing vocabulary (no raw integers on sx spacing props)…"
 node scripts/check-spacing-vocabulary.mjs
+
+# hds#404: the layout-gap names ('tight'..'spacious') map to the t-shirt scale in
+# one place, box-sx.ts. A second copy drifts from Stack's names unseen. Source
+# only: parses the src/ files that pair one of the names with a scale step using
+# the TypeScript API, no build, no network.
+echo "Layout-gap vocabulary (one name map, in box-sx.ts)…"
+node scripts/check-layout-gap-vocabulary.mjs

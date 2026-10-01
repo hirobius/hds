@@ -15,14 +15,21 @@ afterEach(cleanup);
 
 type Gap = NonNullable<StackProps['gap']>;
 
+/**
+ * A t-shirt scale step as a CSS var, built here rather than read from box-sx:
+ * TODAY is an independent oracle, so it must not share the resolver's map
+ * (hds#404 keeps that map, LAYOUT_GAP_NAMES, in box-sx.ts only).
+ */
+const scaleVar = (step: string) => `var(--semantic-space-scale-${step})`;
+
 /** What every Stack `gap` value rendered before the single resolver. It must not move. */
 const TODAY: Record<string, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
+  tight: scaleVar('sm'),
+  normal: scaleVar('md'),
+  inset: scaleVar('lg'),
+  spacious: scaleVar('xl'),
   stack: 'var(--semantic-space-section-stack)',
-  gap: 'var(--semantic-space-scale-xs)',
+  gap: scaleVar('xs'),
   medium: 'var(--semantic-space-component-medium)',
   hairline: 'var(--semantic-space-subgrid-hairline)',
   // The 2px subgrid step, not scale.xs (8px): see STACK_GAP in stack.tsx.
