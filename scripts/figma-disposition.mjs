@@ -42,9 +42,10 @@
  * specific integer, and the integers have since moved: it was read against
  * 17 `layout` / 86 `library`, then three components were found to be
  * misapplying the rules (Frame and OverflowList paint, Sketch is lab chrome),
- * leaving 14 `layout` / 88 `library`. Those three are recorded in `overrides`
- * with their reasons. Trust this tool's current output over any count quoted
- * in prose, including this comment.
+ * leaving 14 `layout` / 88 `library` at hds#235's close (on 2026-10-01 the
+ * tool reports 16 `layout` / 93 `library`). Those three are recorded in
+ * `overrides` with their reasons. Trust this tool's current output over any
+ * count quoted in prose, including this comment.
  *
  * So this output is now the ratified set, not a proposal. Correct an individual
  * component by adding it to `figma/disposition.json`'s `overrides` with a
