@@ -19,6 +19,9 @@ not in the ledger was not budgeted.
 - Collecting a Sync (`figma/README.md`, "Agent: collect a sync") costs one
   `use_figma` read per receipt page: 1 for a delta, 2 for a full snapshot, plus
   one `get_figma_skill` load when the figma-use skill is not loaded yet.
+- An agent sync (`figma/README.md`, "Agent sync (zero clicks)") costs one
+  `use_figma` write with `delta.js`, plus one `receipt.js` read per page when its
+  receipt needs more than one page, plus the skill load.
 
 ## How to log
 
@@ -48,3 +51,18 @@ calls total, 15 `use_figma` writes.
 errors. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not touched. The push and
 snapshot were left to the dev plugin (ADR-029 §1), so this session made no
 variable writes beyond the carrier test.
+
+## 2026-10-01 · orchestrator session (hds#397, hds#418)
+
+Logged after the calls, from the #397 and #418 issue comments that report
+them, so each time is when the result was reported. Kind counts the
+`use_figma` calls by what they did.
+
+| #    | Time (UTC) | Tool                                   | Kind               | Purpose                                                                                                                                                 | Result                                                                                                                                                                                                                                                                                                                              |
+| ---- | ---------- | -------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1–20 | by 05:15   | `use_figma` ×19 + `get_figma_skill` ×1 | read ×18, write ×2 | Staging: the #397 go/no-go probe, a layer census, rebinding 4 layers, deleting the 3 moved variables, and snapshot reads (PR #419)                      | GO. `hdsVerifyRuntime` passes under use_figma, `figma.fileKey` is staging, and the fonts are present. `CompressionStream` is absent. Variable descriptions read back HTML-escaped and `figma.root.name` is "Document". 4 layers were rebound and 7:19, 14:28 and 15:18 removed. Live checksum with decoded descriptions: `242fe0c9` |
+| 21   | by 06:07   | `use_figma`                            | write              | Staging: the #418 step 6 write round-trip probe. A temporary collection `zz-hds-roundtrip-probe` was created, written, read back and removed            | Writes store raw text and reads escape once (`a"b'c<d>e&f` read back as `a&quot;b&#39;c&lt;d&gt;e&amp;f`). 6 collections before and 6 after                                                                                                                                                                                         |
+| 22   | 09:08      | `use_figma`                            | write              | Staging: the first zero-click agent sync (hds#418). `delta.js` from main 3837fe1, plan `updated 10 · created 4 · deleted 0` against snapshot `242fe0c9` | (logged before the call; result below)                                                                                                                                                                                                                                                                                              |
+
+**Session total: 22 calls, 21 of them `use_figma`, 4 of them writes.** No
+rate-limit errors. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not touched.
