@@ -36,7 +36,7 @@ const SelectPortal = /* @__PURE__ */ withHdsPortal(RSelect.Portal);
  * tabs.tsx / command-palette.tsx; `ref` targets the trigger button.
  */
 export interface SelectProps {
-  /** Select label rendered above the control. */
+  /** Select label rendered above the control. It names the trigger, also when hidden. */
   label: string;
   /** Controls whether the label is rendered. */
   showLabel?: boolean;
@@ -51,10 +51,29 @@ export interface SelectProps {
    * overlay inherits its theme; pass `null` to use `document.body`.
    */
   container?: HTMLElement | null;
+  /**
+   * Id of the trigger, so a `<label for>` names it. `FormField` sets it, with
+   * `aria-describedby` and `aria-invalid`.
+   */
+  id?: string;
+  /** Ids of the elements that describe the trigger (helper text, error). */
+  'aria-describedby'?: string;
+  /** Marks the trigger invalid, for example while the field shows an error. */
+  'aria-invalid'?: boolean;
 }
 
 export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>(function Select(
-  { label, showLabel = true, options, value, onChange, container },
+  {
+    label,
+    showLabel = true,
+    options,
+    value,
+    onChange,
+    container,
+    id,
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
+  },
   ref,
 ) {
   const selected = options.find((o) => o.value === value) ?? options[0];
@@ -76,7 +95,12 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
       <RSelect.Root value={value} onValueChange={onChange}>
         <RSelect.Trigger
           ref={ref}
-          aria-label={labelShown ? `${label}: ${selected.label}` : selected.label}
+          id={id}
+          // The field label and the value, also with the label hidden, so the
+          // closed trigger is read as the field and not only its value (hds#408).
+          aria-label={label ? `${label}: ${selected.label}` : selected.label}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
           className={cn(
             'hds-focus group flex w-full items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm',
             'border-input bg-muted text-foreground transition-colors',

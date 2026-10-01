@@ -7005,6 +7005,8 @@
         "src/index.ts",
         "src/stories/checkbox.stories.tsx",
         "src/stories/combobox.stories.tsx",
+        "src/stories/lib/open-listbox.test.tsx",
+        "src/stories/lib/open-listbox.ts",
         "src/stories/select.stories.tsx"
       ],
       "tokenMapping": {
@@ -7016,8 +7018,20 @@
         "radius": "semantic.radius.action"
       },
       "props": {
+        "aria-describedby": {
+          "type": "string",
+          "optional": true
+        },
+        "aria-invalid": {
+          "type": "boolean",
+          "optional": true
+        },
         "container": {
           "type": "HTMLElement",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
           "optional": true
         },
         "label": {
@@ -7053,7 +7067,8 @@
       ],
       "storyIds": [
         "primitives-select--default",
-        "primitives-select--no-label"
+        "primitives-select--no-label",
+        "primitives-select--open"
       ],
       "usage": {
         "when": "Choose one value from a short list of options in a form field.",
@@ -7807,12 +7822,22 @@
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/stories/combobox.stories.tsx",
+        "src/stories/lib/open-listbox.test.tsx",
+        "src/stories/lib/open-listbox.ts",
         "src/stories/popover.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "aria-describedby": {
+          "type": "string",
+          "optional": true
+        },
+        "aria-invalid": {
+          "type": "boolean",
+          "optional": true
+        },
         "aria-label": {
           "type": "string",
           "optional": true
@@ -7828,6 +7853,10 @@
         "emptyMessage": {
           "type": "string",
           "default": "No results"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
         },
         "onChange": {
           "type": "(value: string) => void"
@@ -7860,6 +7889,7 @@
         "primitives-combobox--default",
         "primitives-combobox--disabled-trigger",
         "primitives-combobox--few-options",
+        "primitives-combobox--open",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
       ],
@@ -7969,7 +7999,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/select.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx",
         "src/stories/form.stories.tsx",
