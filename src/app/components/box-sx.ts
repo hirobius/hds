@@ -2,15 +2,18 @@
  * box-sx.ts — pure resolver + CSS injector for Box's `sx` prop.
  *
  * Deliberately React-free (its one import is the dev-only `warnOnce`) so the
- * resolver is unit testable in isolation from the component tree. Two
+ * resolver is unit testable in isolation from the component tree. Its
  * consumers: `box.tsx` re-exports the types below as part of the public `Box`
- * API, and `stack.tsx` resolves its `gap` through `resolveSpacingValue`, the
- * one spacing resolver (hds#206).
+ * API; `stack.tsx` resolves its `gap` through `resolveSpacingValue`, the one
+ * spacing resolver (hds#206); and the layout components (Cluster, Grid,
+ * Sidebar, Cover, Switcher, Bleed, Center, Card) resolve theirs through it
+ * against `LAYOUT_GAP`, the one copy of the layout-gap names (hds#404).
  *
  * @internal — the resolver internals (`resolveSx`, `sxClassName`, `injectSx`)
- * are exported for testing, and `resolveSpacingValue`, `SpacingVocabulary`
- * and `SPACE_SCALE` for Stack. The supported public surface is `Box` + the
- * `Sx*` types, both re-exported from `box.tsx`.
+ * are exported for testing, and `resolveSpacingValue`, `SpacingVocabulary`,
+ * `SPACE_SCALE`, `LAYOUT_GAP_NAMES` and `LAYOUT_GAP` for the components. The
+ * supported public surface is `Box` + the `Sx*` types, both re-exported from
+ * `box.tsx`.
  */
 
 import { warnOnce } from '../../lib/deprecation';
@@ -92,14 +95,54 @@ export const SPACE_SCALE = {
 } as const;
 
 /**
- * The names a spacing prop accepts, and what a number means there:
- * `'units'` is a count of 4px units (Box `sx`), `'raw'` returns the number
- * as-is for React's inline style to read as px (Stack `gap`).
+ * The names a spacing prop accepts, and what any other value means there.
+ *
+ * An open vocabulary passes any other string through ('auto', '1rem', a
+ * `var()`) and reads a number by `numbers`: `'units'` is a count of 4px
+ * units (Box `sx`), `'raw'` returns the number as-is for React's inline
+ * style to read as px (Stack and Card `gap`).
+ *
+ * A closed vocabulary resolves its own names and nothing else: any other
+ * value, a number included, resolves to `undefined`, so the prop sets no
+ * style. That is what the layout components rendered before hds#404, when
+ * each looked a value up in a private map.
  */
-export interface SpacingVocabulary {
-  readonly names: Readonly<Record<string, string>>;
-  readonly numbers: 'units' | 'raw';
-}
+export type SpacingVocabulary =
+  | { readonly names: Readonly<Record<string, string>>; readonly numbers: 'units' | 'raw' }
+  | { readonly names: Readonly<Record<string, string>>; readonly closed: true };
+
+type OpenSpacingVocabulary = Extract<SpacingVocabulary, { readonly numbers: unknown }>;
+type ClosedSpacingVocabulary = Extract<SpacingVocabulary, { readonly closed: true }>;
+
+/**
+ * The layout-gap names (hds#404): the only copy of the four names the layout
+ * components take for a gap, a gutter or a bleed, with the same values as
+ * Stack's `gap`:
+ *
+ *   tight    → var(--semantic-space-scale-sm)
+ *   normal   → var(--semantic-space-scale-md)
+ *   inset    → var(--semantic-space-scale-lg)
+ *   spacious → var(--semantic-space-scale-xl)
+ *
+ * They read the scale steps, so compact density tightens them. Box `sx`'s
+ * deprecated names of the same spelling read the fixed layout vars instead
+ * (BOX_SX_SPACING below). scripts/check-layout-gap-vocabulary.mjs fails a
+ * second copy anywhere else in src/.
+ */
+export const LAYOUT_GAP_NAMES = {
+  tight: SPACE_SCALE.sm,
+  normal: SPACE_SCALE.md,
+  inset: SPACE_SCALE.lg,
+  spacious: SPACE_SCALE.xl,
+} as const;
+
+/**
+ * Cluster, Grid, Sidebar, Cover and Switcher `gap`, Bleed `amount` and
+ * Center `gutter`: the four layout-gap names and nothing else. Closed, so an
+ * untyped value sets no style, as it did before hds#404
+ * (scripts/__tests__/spacing-computed-lock.test.mjs).
+ */
+export const LAYOUT_GAP = { names: LAYOUT_GAP_NAMES, closed: true } satisfies SpacingVocabulary;
 
 /**
  * Box `sx`: the t-shirt scale, plus the deprecated 'tight' | 'normal' |
@@ -110,7 +153,7 @@ export interface SpacingVocabulary {
  * spacing codemod skips this file, so it cannot rewrite them to scale steps
  * and change compact pixels. Each warns once in dev (ADR-014 step 1).
  */
-const BOX_SX_SPACING: SpacingVocabulary = {
+const BOX_SX_SPACING = {
   names: {
     ...SPACE_SCALE,
     tight: 'var(--semantic-space-layout-tight)',
@@ -119,7 +162,7 @@ const BOX_SX_SPACING: SpacingVocabulary = {
     spacious: 'var(--semantic-space-layout-spacious)',
   },
   numbers: 'units',
-};
+} satisfies SpacingVocabulary;
 
 const own = (table: Readonly<Record<string, string>>, key: string): string | undefined =>
   Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
@@ -153,14 +196,33 @@ const SPACING_PROP_MAP: Record<string, string[]> = {
 };
 
 /**
- * The one spacing resolver for Box `sx` and Stack `gap`. A name is looked up
- * in the caller's vocabulary (own keys only, so 'constructor' is not a name);
- * anything else ('auto', '1rem', a `var()`) passes through.
+ * The one spacing resolver for Box `sx`, Stack `gap` and the layout
+ * components. A name is looked up in the caller's vocabulary (own keys only,
+ * so 'constructor' is not a name). Anything else ('auto', '1rem', a `var()`)
+ * passes through an open vocabulary and resolves to `undefined` in a closed
+ * one. The return type says which: an open vocabulary never yields
+ * `undefined`, so Box cannot emit `margin:undefined`, and a closed one never
+ * yields a number.
  */
 export function resolveSpacingValue(
   value: SxValue,
+  vocabulary: OpenSpacingVocabulary,
+): string | number;
+export function resolveSpacingValue(
+  value: SxValue,
+  vocabulary: ClosedSpacingVocabulary,
+): string | undefined;
+export function resolveSpacingValue(
+  value: SxValue,
   vocabulary: SpacingVocabulary,
-): string | number {
+): string | number | undefined;
+export function resolveSpacingValue(
+  value: SxValue,
+  vocabulary: SpacingVocabulary,
+): string | number | undefined {
+  if ('closed' in vocabulary) {
+    return typeof value === 'string' ? own(vocabulary.names, value) : undefined;
+  }
   if (typeof value === 'number') {
     if (vocabulary.numbers === 'raw') return value;
     // This IS the primitive-tier bridge for Box's numeric spacing shorthand
@@ -225,7 +287,8 @@ function buildDeclarations(key: string, value: SxValue): string[] {
         `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}': same pixels at the default density, tighter under compact (MIGRATIONS.md).`,
       );
     }
-    const resolved = resolveSpacingValue(value, BOX_SX_SPACING);
+    // Typed so a closed vocabulary here, which can resolve to undefined, fails typecheck.
+    const resolved: string | number = resolveSpacingValue(value, BOX_SX_SPACING);
     return spacingProps.map((prop) => `${prop}:${resolved}`);
   }
 

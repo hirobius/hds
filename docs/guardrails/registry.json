@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "65d618e0a506c4aa5647c275bf2d02ef263465c46e45502f753456f936133089",
-  "precommitStructureHashUpdatedAt": "2026-09-30T20:29:59.670Z",
+  "precommitStructureHash": "2c9805dc4a1d03882dd13199746c22e7217f557fabd0841406ca755b3ede5080",
+  "precommitStructureHashUpdatedAt": "2026-10-01T05:03:35.699Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -200,13 +200,13 @@
     },
     {
       "id": "check-deprecations",
-      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc in the component tier must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version).",
+      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc on the public surface (src/app/components, src/app/layouts, src/index.ts, src/patterns.ts and every package.json#exports JS entry with its re-exports) must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version). Runs in pretest since hds#389 D6.",
       "severity": "warn",
       "gateScript": "scripts/check-deprecations.mjs",
       "fixturePath": "fixtures/check-deprecations",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "manual",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -465,10 +465,22 @@
     },
     {
       "id": "check-spacing-vocabulary",
-      "description": "hds#206 -- flags raw integer literals on sx spacing shorthand props (p/m/gap/px/py/mx/my/pt/pr/pb/pl/mt/mr/mb/ml/rowGap/columnGap), the exact px-ambiguous numeric-scale form Adrian's 2026-09-26 decision bans in favor of semantic.space.scale.{xs,sm,md,lg,xl}, which Box sx takes by name. Parses with the TypeScript API, so it also sees responsive maps, &-selector blocks, any spacing of the attribute, both branches of a conditional and the operands of &&, || and ?? (on a spacing value or on the sx object itself), and a same-file object passed by name, member or spread, resolved by lexical scope (the nearest enclosing declaration of the name wins; a parameter of that name shadows an outer object). Known limit: an object imported from another file, returned from a function or built at runtime is not followed, nor an sx array (sx={[...]}), which Box's SxObject type rejects, so typecheck fails first. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test: it shipped as warn and was promoted once src/ had zero findings.",
+      "description": "hds#206 -- flags raw integer literals on sx spacing shorthand props (p/m/gap/px/py/mx/my/pt/pr/pb/pl/mt/mr/mb/ml/rowGap/columnGap), the exact px-ambiguous numeric-scale form Adrian's 2026-09-26 decision bans in favor of semantic.space.scale.{xs,sm,md,lg,xl}, which Box sx takes by name. Parses with the TypeScript API, so it also sees responsive maps, &-selector blocks, any spacing of the attribute, both branches of a conditional and the operands of &&, || and ?? (on a spacing value or on the sx object itself), and a same-file object passed by name, member or spread, resolved by lexical scope (the nearest enclosing declaration of the name wins; a parameter of that name shadows an outer object). Known limit: an object imported from another file, returned from a function or built at runtime is not followed, nor a conditional initializer (const s = x ? { p: 15 } : {}; sx={s}: only an object-literal initializer is read), nor an sx array (sx={[...]}), which Box's SxObject type rejects, so typecheck fails first. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test: it shipped as warn and was promoted once src/ had zero findings.",
       "severity": "error",
       "gateScript": "scripts/check-spacing-vocabulary.mjs",
       "fixturePath": "fixtures/check-spacing-vocabulary",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
+      "id": "check-layout-gap-vocabulary",
+      "description": "hds#404 -- fails a second copy of the layout-gap name map anywhere in src/: one of 'tight', 'normal', 'inset' or 'spacious' paired with a t-shirt scale step, read as a var(--semantic-space-scale-*) string (also inside calc() or a template literal), SPACE_SCALE.<step> or <x>.space.scale.<step>. The one copy is LAYOUT_GAP_NAMES in src/app/components/box-sx.ts; Cluster, Grid, Sidebar, Cover, Switcher, Bleed, Center, Card and Stack each kept their own until hds#404, with nothing keeping the copies in step. Parses with the TypeScript API and finds the pairing as an object property (quoted or not, through as/satisfies/parentheses), a [name, step] entry pair (a Map or Object.fromEntries), a switch case (following fall-through) or a comparison that picks a step. Ignores box-sx.ts, *.test.*/*.spec.* files and __tests__/ (a test pins rendered output; it resolves nothing), the same names on Box sx's fixed --semantic-space-layout-* vars, the words as CSS keywords, and lines marked // layout-gap-ok: <reason>. Known limit: a step reached through another name, a computed key, a var name assembled at runtime and an if chain are not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-layout-gap-vocabulary.mjs",
+      "fixturePath": "fixtures/check-layout-gap-vocabulary",
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",

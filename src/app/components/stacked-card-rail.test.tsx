@@ -20,3 +20,32 @@ describe('StackedCardRail scroll regions a11y', () => {
     }
   });
 });
+
+// The rail injects its CSS as an HTML string (hds#284), annotated
+// `security-ok` on the grounds that the string is module-scope CSS no prop can
+// reach. This pins that ground: if card data ever flows into the injected HTML,
+// the annotation is wrong and this fails.
+describe('StackedCardRail injected <style>', () => {
+  it('injects the same CSS whatever the cards are, so no card data reaches the HTML string', () => {
+    const hostile = [
+      {
+        id: '</style><script>alert(1)</script>',
+        title: '</style><script>alert(1)</script>',
+        category: '<img src=x onerror=alert(1)>',
+        href: 'javascript:alert(1)',
+        coverImage: '"><svg onload=alert(1)>',
+      },
+    ];
+    const styleOf = (rail: React.ReactElement) => {
+      const { container, unmount } = render(rail);
+      const css = container.querySelector('style')?.innerHTML ?? '';
+      unmount();
+      return css;
+    };
+    const benign = styleOf(<StackedCardRail cards={cards} />);
+    const injected = styleOf(<StackedCardRail cards={hostile} />);
+    expect(benign).toContain('.hds-scr-outer');
+    expect(injected).toBe(benign);
+    expect(injected).not.toMatch(/<\/?(?:script|style|img|svg)\b|javascript:|onerror|onload/i);
+  });
+});

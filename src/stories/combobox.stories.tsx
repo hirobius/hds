@@ -4,12 +4,15 @@
  *
  * NOTE: Overlays stay CLOSED on mount. jsdom lacks pointer-capture so the
  * smoke gate cannot handle the open Popover. Stories render the trigger
- * button only; the dropdown opens on click.
+ * button only; the dropdown opens on click. `Open` opens it in its play
+ * function, which the jsdom smoke gates never run, so the Storybook axe gate
+ * scans the open popover and listbox (hds#407).
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Combobox } from '../app/components/combobox';
 import { designParameters } from './design-parameters';
+import { openListbox } from './lib/open-listbox';
 
 const meta = {
   title: 'Primitives/Combobox',
@@ -74,6 +77,19 @@ function DefaultDemo() {
 
 export const Default: Story = {
   render: () => <DefaultDemo />,
+};
+
+// ── Open ─────────────────────────────────────────────────────────────────────
+
+// The play function opens it, so the Storybook axe gate scans the open
+// popover and listbox (hds#407). Docs pages do not run play functions, so it
+// is left off the docs page rather than shown there closed.
+export const Open: Story = {
+  tags: ['!autodocs'],
+  render: () => <DefaultDemo />,
+  play: async ({ canvasElement }) => {
+    await openListbox(canvasElement);
+  },
 };
 
 // ── Pre-selected value ────────────────────────────────────────────────────────

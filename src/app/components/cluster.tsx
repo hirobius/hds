@@ -16,17 +16,11 @@
  */
 
 import React from 'react';
+import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type ClusterAlign = 'start' | 'center' | 'end' | 'stretch';
 type ClusterJustify = 'start' | 'center' | 'end' | 'space-between';
-
-const gapMap: Record<LayoutGap, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
 
 const alignMap: Record<ClusterAlign, React.CSSProperties['alignItems']> = {
   start: 'flex-start',
@@ -82,7 +76,7 @@ export const Cluster = /* @__PURE__ */ React.forwardRef<HTMLDivElement, ClusterP
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: gapMap[gap],
+          gap: resolveSpacingValue(gap, LAYOUT_GAP),
           alignItems: alignMap[align],
           justifyContent: justifyMap[justify],
           ...style,

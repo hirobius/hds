@@ -40,8 +40,11 @@
  * see; review catches them. Nor does it read an array (`sx={[{ p: 2 }]}`):
  * Box's `sx` is an `SxObject`, which rejects an array, so `pnpm typecheck`
  * fails first, and the resolver would not merge one. Only a declaration's
- * initializer is read, so a `let` reassigned later and a `var` used outside
- * the block that declares it are not followed either.
+ * initializer is read, and only when it is an object literal, so a
+ * conditional initializer (`const s = x ? { p: 15 } : {}; sx={s}`), a `let`
+ * reassigned later and a `var` used outside the block that declares it are
+ * not followed either. Put the conditional on the sx attribute instead
+ * (`sx={x ? { p: 'md' } : {}}`), where the gate reads both branches.
  *
  * What it ignores:
  *   - String values (`p: 'md'`, `gap: 'var(--...)'`) — already named.

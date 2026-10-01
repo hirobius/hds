@@ -49,9 +49,11 @@ export function MenuFixture() {
   );
 }
 
-export function SelectFixture() {
+export function SelectFixture({ showLabel }: { showLabel?: boolean } = {}) {
   const [value, setValue] = useState('apple');
-  return <Select label="Fruit" options={FRUIT} value={value} onChange={setValue} />;
+  return (
+    <Select label="Fruit" showLabel={showLabel} options={FRUIT} value={value} onChange={setValue} />
+  );
 }
 
 export function ComboboxFixture() {

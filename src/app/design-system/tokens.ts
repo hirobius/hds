@@ -167,16 +167,25 @@ const hds = {
         xs: 'var(--semantic-space-subgrid-xs)',
       },
       component: {
-        /** @deprecated hds#206 — use `semantic.space.surface.padding`. */
+        /**
+         * @deprecated hds#206 — use `semantic.space.surface.padding`.
+         * @removeIn 1.0.0
+         */
         padding: 'var(--semantic-space-surface-padding)',
-        /** @deprecated hds#206 — use `semantic.space.scale.xs`. */
+        /**
+         * @deprecated hds#206 — use `semantic.space.scale.xs`.
+         * @removeIn 1.0.0
+         */
         gap: 'var(--semantic-space-scale-xs)',
       },
       stack: {
         gap: 'var(--semantic-space-section-stack)',
       },
       layout: {
-        /** @deprecated hds#206 — use `semantic.space.region.gutter`. */
+        /**
+         * @deprecated hds#206 — use `semantic.space.region.gutter`.
+         * @removeIn 1.0.0
+         */
         gutter: 'var(--semantic-space-region-gutter)',
         gap: 'var(--semantic-space-layout-gap)',
         section: 'var(--semantic-layout-section-paddingY)',

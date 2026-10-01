@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-09-30T22:26:53.989Z",
+  "generated": "2026-10-01T04:33:03.030Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -1767,6 +1767,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
         "src/app/components/cluster.tsx",
         "src/app/components/container.tsx",
@@ -1938,10 +1940,12 @@
         "src/app/components/history-card.tsx",
         "src/app/components/icon-button.tsx",
         "src/app/components/image-lightbox.tsx",
+        "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
@@ -4111,6 +4115,8 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/card-progress.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/destructive-section.tsx",
@@ -6938,6 +6944,8 @@
         "src/index.ts",
         "src/stories/checkbox.stories.tsx",
         "src/stories/combobox.stories.tsx",
+        "src/stories/lib/open-listbox.test.tsx",
+        "src/stories/lib/open-listbox.ts",
         "src/stories/select.stories.tsx"
       ],
       "tokenMapping": {
@@ -6949,8 +6957,20 @@
         "radius": "semantic.radius.action"
       },
       "props": {
+        "aria-describedby": {
+          "type": "string",
+          "optional": true
+        },
+        "aria-invalid": {
+          "type": "boolean",
+          "optional": true
+        },
         "container": {
           "type": "HTMLElement",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
           "optional": true
         },
         "label": {
@@ -6986,7 +7006,8 @@
       ],
       "storyIds": [
         "primitives-select--default",
-        "primitives-select--no-label"
+        "primitives-select--no-label",
+        "primitives-select--open"
       ],
       "usage": {
         "when": "Choose one value from a short list of options in a form field.",
@@ -7738,12 +7759,22 @@
         "src/app/components/multi-selector.tsx",
         "src/app/components/select.tsx",
         "src/stories/combobox.stories.tsx",
+        "src/stories/lib/open-listbox.test.tsx",
+        "src/stories/lib/open-listbox.ts",
         "src/stories/popover.stories.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "aria-describedby": {
+          "type": "string",
+          "optional": true
+        },
+        "aria-invalid": {
+          "type": "boolean",
+          "optional": true
+        },
         "aria-label": {
           "type": "string",
           "optional": true
@@ -7759,6 +7790,10 @@
         "emptyMessage": {
           "type": "string",
           "default": "No results"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
         },
         "onChange": {
           "type": "(value: string) => void"
@@ -7791,6 +7826,7 @@
         "primitives-combobox--default",
         "primitives-combobox--disabled-trigger",
         "primitives-combobox--few-options",
+        "primitives-combobox--open",
         "primitives-combobox--pre-selected",
         "primitives-combobox--with-disabled-option"
       ],
@@ -7899,7 +7935,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/select.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx",
         "src/stories/form.stories.tsx",
@@ -10309,6 +10347,8 @@
       },
       "consumers": [
         "src/app/components/bleed.test.tsx",
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/stories/bleed.stories.tsx"
       ],
       "tokenMapping": {},
@@ -10383,6 +10423,8 @@
       },
       "consumers": [
         "src/app/components/bleed.tsx",
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/center.test.tsx",
         "src/app/components/container.tsx",
         "src/stories/button-group.stories.tsx",
@@ -10460,6 +10502,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/cluster.test.tsx",
         "src/app/components/switcher.tsx",
         "src/stories/cluster.stories.tsx",
@@ -10548,6 +10592,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/cover.test.tsx",
         "src/app/components/stacked-card-rail.tsx",
         "src/stories/cover.stories.tsx",
@@ -10704,6 +10750,8 @@
       },
       "consumers": [
         "src/app/components/app-shell.tsx",
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/sidebar.test.tsx",
         "src/app/data/nav-model.ts",
         "src/stories/app-shell.stories.tsx",
@@ -10792,6 +10840,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/box-sx.test.ts",
+        "src/app/components/box-sx.ts",
         "src/app/components/switcher.test.tsx",
         "src/stories/switcher.stories.tsx"
       ],
@@ -14225,6 +14275,13 @@
         "value": "96px"
       },
       {
+        "path": "primitive.size.120",
+        "cssVar": "--primitive-size-120",
+        "type": "dimension",
+        "description": "120px size step. Backs semantic.size.tile.",
+        "value": "120px"
+      },
+      {
         "path": "primitive.size.interactive.min",
         "cssVar": "--primitive-size-interactive-min",
         "type": "dimension",
@@ -15548,6 +15605,14 @@
         "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.tile",
+        "cssVar": "--semantic-size-tile",
+        "type": "dimension",
+        "description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403).",
+        "alias": "{primitive.size.120}",
+        "resolvedValue": "120px"
       },
       {
         "path": "semantic.size.row.compact",

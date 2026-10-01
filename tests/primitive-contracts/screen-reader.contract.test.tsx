@@ -149,6 +149,19 @@ describe('Select screen-reader contract', () => {
     expect(log).toContain('option, Cherry, not selected, position 3, set size 3');
   });
 
+  // With the label hidden, the trigger still carries the field label, not only
+  // the value (hds#408).
+  it('reads the closed trigger with the field label when the label is hidden', async () => {
+    render(<SelectFixture showLabel={false} />);
+    await startReader();
+    await next(2);
+
+    const log = await virtual.spokenPhraseLog();
+    expect(log).toContain(
+      'combobox, Fruit: Apple, has popup listbox, not expanded, no autocomplete',
+    );
+  });
+
   // Radix Select Content names nothing itself: select.tsx labels the listbox
   // with the field label (hds#398).
   it('names the open listbox by the field label', async () => {
@@ -191,6 +204,22 @@ describe('Combobox screen-reader contract', () => {
     );
     expect(log).toContain('listbox, Fruit, orientated vertically');
     expect(log).toContain('combobox, Fruit, has popup listbox, expanded, 1 control');
+  });
+
+  // Each option's <li> is role="none", so the option's parent in the
+  // accessibility tree is the listbox and the reader counts it among its
+  // siblings, not alone in a list item (hds#407).
+  it('reads each open option with its real position and set size', async () => {
+    render(<ComboboxFixture />);
+    await startReader();
+    await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
+    await screen.findByRole('listbox');
+    await next(8);
+
+    const log = await virtual.spokenPhraseLog();
+    expect(log).toContain('option, Apple, not selected, position 1, set size 3');
+    expect(log).toContain('option, Banana, not selected, position 2, set size 3');
+    expect(log).toContain('option, Cherry, not selected, position 3, set size 3');
   });
 
   // The popover is Popover.Content, role="dialog": combobox.tsx names it with
