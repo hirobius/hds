@@ -50,7 +50,6 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['Stack', 'Stack'],
   ['StepperField', 'StepperField'],
   ['Tag', 'Tag'],
-  ['Token', 'Token'],
 ]);
 
 function readJson(path) {
@@ -70,9 +69,7 @@ function getPreviewSizing(componentName) {
     case 'TextLockup':
       return 'compact';
     case 'HdsComponentDoc':
-    case 'FoundationSwatch':
     case 'Table':
-    case 'ComponentInstanceMatrix':
     case 'InfoPage':
       return 'full';
     default:

@@ -15,22 +15,18 @@
     "OverflowList": {
       "class": "library",
       "reason": "Not invisible. It renders its own '+N' pill — `rounded-md bg-muted px-2 h-6 text-sm` — which is a visible, styled affordance a designer needs to see and match, not a layout wrapper."
-    },
-    "Sketch": {
-      "class": "internal",
-      "reason": "A 'shared shell for generative canvases and WebGL sketches' — demo chrome with a title header and a bottom border. Zero consumers outside its own story. It scaffolds lab work rather than shipping to a consumer, so it belongs with the doc tooling, not in a published library."
     }
   },
   "summary": {
-    "total": 146,
+    "total": 141,
     "byClass": {
-      "library": 93,
+      "library": 91,
       "slot": 19,
       "layout": 16,
-      "internal": 18
+      "internal": 15
     },
     "libraryLinked": 47,
-    "libraryMissing": 46,
+    "libraryMissing": 44,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -267,14 +263,6 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29"
     },
     {
-      "name": "CinematicLink",
-      "class": "library",
-      "parent": null,
-      "category": "Branding",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "CircularProgress",
       "class": "library",
       "parent": null,
@@ -311,14 +299,6 @@
       "class": "library",
       "parent": null,
       "category": "Overlays",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "ComponentInstanceMatrix",
-      "class": "internal",
-      "parent": null,
-      "category": "Utilities",
       "tier": "primitive",
       "figmaUrl": null
     },
@@ -551,14 +531,6 @@
       "class": "slot",
       "parent": "Form",
       "category": "Inputs",
-      "tier": "pattern",
-      "figmaUrl": null
-    },
-    {
-      "name": "FoundationSwatch",
-      "class": "internal",
-      "parent": null,
-      "category": "Utilities",
       "tier": "pattern",
       "figmaUrl": null
     },
@@ -927,16 +899,6 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-95"
     },
     {
-      "name": "Sketch",
-      "class": "internal",
-      "parent": null,
-      "category": "Layout",
-      "tier": "pattern",
-      "figmaUrl": null,
-      "overriddenFrom": "layout",
-      "overrideReason": "A 'shared shell for generative canvases and WebGL sketches' — demo chrome with a title header and a bottom border. Zero consumers outside its own story. It scaffolds lab work rather than shipping to a consumer, so it belongs with the doc tooling, not in a published library."
-    },
-    {
       "name": "Slider",
       "class": "library",
       "parent": null,
@@ -1149,14 +1111,6 @@
       "class": "library",
       "parent": null,
       "category": "Actions",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
-      "name": "Token",
-      "class": "library",
-      "parent": null,
-      "category": "Display",
       "tier": "primitive",
       "figmaUrl": null
     },

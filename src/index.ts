@@ -35,8 +35,6 @@ export * from './app/components/field';
 export * from './app/components/stat';
 export * from './app/components/status-list-item';
 export * from './app/components/card';
-export * from './app/components/cinematic-link';
-export * from './app/components/component-instance-matrix';
 export * from './app/components/container';
 export * from './app/components/dialog';
 export * from './app/components/divider';
@@ -65,7 +63,6 @@ export * from './app/components/surface';
 export * from './app/components/table';
 export * from './app/components/tag';
 export * from './app/components/text';
-export * from './app/components/token';
 
 // ── Astryx-gap coverage — Tier 1 native primitives (0.12.0) ──
 export * from './app/components/kbd';
@@ -122,11 +119,9 @@ export * from './app/components/status-tile';
 export * from './app/components/breadcrumb';
 export * from './app/components/combobox';
 export * from './app/components/disclosure';
-export * from './app/components/foundation-swatch';
 export * from './app/components/icon-button';
 export * from './app/components/nav-group';
 export * from './app/components/pagination';
-export * from './app/components/sketch';
 export * from './app/components/stepper-field';
 export * from './app/components/text-lockup';
 export * from './app/components/toast';

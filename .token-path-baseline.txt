@@ -5,7 +5,6 @@
 # baseline time. New violations not in this file fail the gate. Burn
 # down by fixing the reference and removing its line. See unit 12g.
 
-src/app/components/component-instance-matrix.tsx:semantic.space.layout.gap
 src/app/components/history-card.tsx:semantic.space.layout.gap
 src/app/components/image-lightbox.tsx:semantic.space.layout.gap
 src/app/components/segmented-control.tsx:semantic.space.layout.gap

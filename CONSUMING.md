@@ -113,8 +113,11 @@ Releases follow [semver](https://semver.org/) and are tracked in
 pnpm update @hirobius/design-system   # latest within your version range
 ```
 
-For a major (breaking) release, bump the version explicitly and review the
-CHANGELOG entry. Token or export changes are released as majors.
+For a breaking release, bump the version explicitly and review the CHANGELOG
+entry. Before 1.0 a breaking change (a removed export or token) ships in a 0.x
+minor, which a caret range such as `^0.19` never picks up; from 1.0 on it ships
+in a major. Each removal is listed in [MIGRATIONS.md](MIGRATIONS.md) with its
+replacement and, where one applies, a codemod (ADR-014).
 
 ---
 

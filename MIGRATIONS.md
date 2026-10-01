@@ -131,7 +131,9 @@ scale, and each replacement computes the same pixels at both densities:
 ## 0.20.0 removals (2026-10-01)
 
 The first removal batch under step 4 (hds#389 R1). Every name below was
-deprecated in an earlier 0.x release. Nothing else left the public API. Ops,
+deprecated in an earlier 0.x release: 79 root names that moved to `/patterns`,
+six `Hds*` aliases and five docs/lab components (12 names). Nothing else left
+the public API. Ops,
 the one consumer that imports components, pins a caret range below 0.20, so
 nothing breaks until it upgrades; run the codemods first.
 
@@ -253,3 +255,25 @@ Ops imports `HdsCheckbox` in one file. A read-only dry run on 2026-10-01 (ops
 main 76ef65e) rewrites the import and one JSX tag in
 `src/app/pages/ops/leads/LeadSweepPanel.tsx` to `Checkbox`; no other `Hds*`
 alias is imported.
+
+### Docs and lab components
+
+Five components that existed to build the HDS docs and token lab (hds#232,
+deprecated in 0.16) are deleted, source and stories included. No consumer
+imports any of them, so there is no codemod. Their two drawings in the Figma
+staging file were never promoted and leave the promotion list.
+
+| Removed from `@hirobius/design-system` | Use instead                                                                                                  | Codemod                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------- |
+| `CinematicLink`                        | No replacement; the animated editorial link treatment is dropped. A plain link in body copy is `InlineLink`. | none: no consumer imports it |
+| `CinematicLinkProps`                   | No replacement; dropped with `CinematicLink`.                                                                | none: no consumer imports it |
+| `ComponentInstanceMatrix`              | No replacement; the docs-page variant and state specimen matrix is dropped.                                  | none: no consumer imports it |
+| `FoundationSwatch`                     | No replacement; the colour-token specimen swatch is dropped.                                                 | none: no consumer imports it |
+| `FoundationSwatchProps`                | No replacement; dropped with `FoundationSwatch`.                                                             | none: no consumer imports it |
+| `Sketch`                               | No replacement; the generative-canvas page shell is dropped.                                                 | none: no consumer imports it |
+| `SketchProps`                          | No replacement; dropped with `Sketch`.                                                                       | none: no consumer imports it |
+| `Token`                                | No replacement; the token-path node specimen is dropped.                                                     | none: no consumer imports it |
+| `TokenProps`                           | No replacement; dropped with `Token`.                                                                        | none: no consumer imports it |
+| `tokenLabelVariants`                   | No replacement; dropped with `Token`.                                                                        | none: no consumer imports it |
+| `tokenNodeInlineVariants`              | No replacement; dropped with `Token`.                                                                        | none: no consumer imports it |
+| `tokenShellVariants`                   | No replacement; dropped with `Token`.                                                                        | none: no consumer imports it |

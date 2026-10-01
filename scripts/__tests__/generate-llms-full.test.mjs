@@ -39,7 +39,7 @@ describe('llms-full.txt and slices', () => {
     expect(absent).toEqual([]);
   });
 
-  it('leaves the deprecated hds#232 docs/lab internals out of the props digest (hds#390)', () => {
+  it('leaves the hds#232 docs/lab internals, removed in 0.20.0, out of the props digest', () => {
     const components = read('public/llms/components.txt');
     const full = read('public/llms-full.txt');
     for (const name of [

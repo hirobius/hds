@@ -26,14 +26,8 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const read = (rel) => readFileSync(path.join(ROOT, rel), 'utf8');
 
-const HIDDEN_FILES = [
-  'component-instance-matrix',
-  'foundation-swatch',
-  'token',
-  'sketch',
-  'cinematic-link',
-  'history-card',
-].map((n) => `src/stories/${n}.stories.tsx`);
+// The other five hidden internals were deleted in 0.20.0 (hds#389).
+const HIDDEN_FILES = ['history-card'].map((n) => `src/stories/${n}.stories.tsx`);
 
 const files = findStoryFiles(ROOT).map((p) => ({ path: p, source: read(p) }));
 const isHidden = (source) => /^\s*tags:\s*\[[^\]]*['"]!dev['"][^\]]*\]/m.test(source);
@@ -74,14 +68,14 @@ describe('sidebar titles', () => {
 });
 
 describe('hidden internals', () => {
-  it('hides exactly the six internal components', () => {
+  it('hides exactly the internal components', () => {
     const hidden = files.filter(({ source }) => isHidden(source)).map(({ path: p }) => p);
     expect(hidden.sort()).toEqual([...HIDDEN_FILES].sort());
   });
 });
 
 describe('published build', () => {
-  it('leaves the same six internals out of the production stories glob', () => {
+  it('leaves the same internals out of the production stories glob', () => {
     const main = read('.storybook/main.ts');
     const list = /INTERNAL_STORY_FILES\s*=\s*\[([^\]]*)\]/.exec(main)[1];
     const names = [...list.matchAll(/'([^']+)'/g)].map((m) => `src/stories/${m[1]}.stories.tsx`);

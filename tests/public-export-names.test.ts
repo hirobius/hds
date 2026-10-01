@@ -72,6 +72,18 @@ describe('public component export names', () => {
     }
   });
 
+  it('no longer exports the five hds#232 docs/lab components (removed in 0.20.0)', () => {
+    for (const gone of [
+      'CinematicLink',
+      'ComponentInstanceMatrix',
+      'FoundationSwatch',
+      'Sketch',
+      'Token',
+    ]) {
+      expect(names, `${gone} is still exported from the root`).not.toContain(gone);
+    }
+  });
+
   it('has no Hds-prefixed component export outside the allowlist', () => {
     const offenders = valueNames.filter(
       (n) => /^Hds[A-Z]/.test(n) && !HDS_PREFIXED_ALLOWLIST.has(n),
