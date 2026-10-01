@@ -369,6 +369,7 @@ if (ok) {
     [
       "import { Button, hds } from '@hirobius/design-system';",
       "import { IconButton } from '@hirobius/design-system';",
+      "import { Icon } from '@hirobius/design-system';",
       "import { Ellipsis } from '@hirobius/design-system/icons';",
       "import { cn } from '@hirobius/design-system/cn';",
       "import manifest from '@hirobius/design-system/manifest';",
@@ -376,6 +377,9 @@ if (ok) {
       'export const a = <Button className={cn(String(hds ? 1 : 0))}>Hi</Button>;',
       'export const b = Object.keys(manifest).length;',
       'export const c = <IconButton icon={Ellipsis} label="Row actions" />;',
+      // IconButton is slated for deprecation (#389); Button iconOnly + Icon keeps
+      // this LucideIcon-from-dist check alive past 1.0 (hds#392).
+      'export const d = <Button iconOnly aria-label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />;',
       '',
     ].join('\n'),
   );
