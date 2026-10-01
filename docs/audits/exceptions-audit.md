@@ -106,7 +106,7 @@
 
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
-| `src/app/components/box-sx.test.ts` | 268 | `@ts-expect-error` | `— simulate an SSR environment where `document` is undefined.` | justified |
+| `src/app/components/box-sx.test.ts` | 332 | `@ts-expect-error` | `— simulate an SSR environment where `document` is undefined.` | justified |
 | `src/app/components/combobox.test.tsx` | 13 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix/Floating-UI.` | justified |
 | `src/app/components/date-input.test.tsx` | 18 | `@ts-expect-error` | `— minimal jsdom polyfills for Radix Popover.` | justified |
 | `src/app/components/date-input.test.tsx` | 27 | `@ts-expect-error` | `— partial matchMedia stub.` | justified |
@@ -121,7 +121,7 @@
 
 | File | Line | Rule | Reason | Status |
 |------|------|------|--------|--------|
-| `src/app/components/box-sx.test.ts` | 49 | `spacing-ok` | `token-scale index, not a raw px value` | justified |
+| `src/app/components/box-sx.test.ts` | 82 | `spacing-ok` | `token-scale index, not a raw px value` | justified |
 | `src/app/components/card.tsx` | 343 | `hds-bypass` | `INLINE_THIN_BAR — Card.Progress IS the progress bar primitive; height + token-bg is its raison d'être */` | justified |
 | `src/app/components/command-palette.tsx` | 231 | `audit-ok` | `hds-focus is baked into cmdkRowVariants() base class above` | justified |
 | `src/app/components/disclosure.tsx` | 141 | `audit-ok` | `hds-focus applied via triggerClassName variable` | justified |
@@ -154,7 +154,7 @@
 | `scripts/build-token-index.mjs` | 181 | `audit-ok` | `reason` comments in a file's content.` | justified |
 | `scripts/check-focus-states.mjs` | 74 | `audit-ok` | `')) continue;` | justified |
 | `scripts/check-focus-states.mjs` | 108 | `audit-ok` | `')) continue;` | justified |
-| `scripts/check-hardcoded-spacing.mjs` | 27 | `spacing-ok` | `reason  (explicit exemption)` | justified |
+| `scripts/check-hardcoded-spacing.mjs` | 29 | `spacing-ok` | `reason  (explicit exemption)` | justified |
 | `scripts/check-source-canon.mjs` | 103 | `hds-bypass` | `CODE1, CODE2, ... */` | justified |
 | `scripts/check-source-canon.mjs` | 108 | `font-ok` | `...          — file intentionally uses bold/heavy weights` | justified |
 | `scripts/check-source-canon.mjs` | 140 | `hds-bypass` | `CODE1, CODE2 */ using codes from: ${[...ALL_RULE_CODES].join(', ')}\n`,` | justified |

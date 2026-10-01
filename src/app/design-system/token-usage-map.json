@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-01T01:13:03.920Z",
+  "generated": "2026-10-01T03:25:32.750Z",
   "byToken": {
     "--semantic-accent-rest": [
       "src/app/components/activity-feed.tsx",
@@ -395,6 +395,7 @@
     ],
     "--semantic-space-scale-xs": [
       "src/app/components/alert.tsx",
+      "src/app/components/box-sx.ts",
       "src/app/components/checkbox.tsx",
       "src/app/components/code-block.tsx",
       "src/app/components/disclosure.tsx",
@@ -404,7 +405,7 @@
       "src/app/components/heading-stack.tsx",
       "src/app/components/segmented-control.tsx",
       "src/app/components/slider.tsx",
-      "src/app/components/stack.tsx",
+      "src/app/components/stack.test.tsx",
       "src/app/components/table.test.tsx",
       "src/app/components/table.tsx",
       "src/app/components/text-lockup.tsx",
@@ -413,6 +414,7 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
+      "src/stories/box.stories.tsx",
       "src/styles/static.css",
       "src/styles/tenants.css",
       "src/styles/theme.css",
@@ -486,6 +488,7 @@
       "src/app/components/alert.tsx",
       "src/app/components/inline-code.tsx",
       "src/app/components/segmented-control.tsx",
+      "src/app/components/stack.test.tsx",
       "src/app/components/stack.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
@@ -590,7 +593,7 @@
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "hds.space.px4": ["src/app/components/asset-img.tsx"],
+    "hds.space.px4": ["src/app/components/asset-img.tsx", "src/app/design-system/tokens.ts"],
     "--component-badge-height": [
       "src/app/components/badge.tsx",
       "src/app/design-system/generated-token-refs.ts",
@@ -639,6 +642,8 @@
     "--semantic-space-scale-md": [
       "src/app/components/bleed.test.tsx",
       "src/app/components/bleed.tsx",
+      "src/app/components/box-sx.test.ts",
+      "src/app/components/box-sx.ts",
       "src/app/components/card.tsx",
       "src/app/components/center.test.tsx",
       "src/app/components/center.tsx",
@@ -647,7 +652,7 @@
       "src/app/components/cover.tsx",
       "src/app/components/grid.tsx",
       "src/app/components/sidebar.tsx",
-      "src/app/components/stack.tsx",
+      "src/app/components/stack.test.tsx",
       "src/app/components/switcher.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
@@ -661,6 +666,8 @@
     "--semantic-space-scale-lg": [
       "src/app/components/bleed.test.tsx",
       "src/app/components/bleed.tsx",
+      "src/app/components/box-sx.test.ts",
+      "src/app/components/box-sx.ts",
       "src/app/components/card.tsx",
       "src/app/components/center.tsx",
       "src/app/components/cluster.tsx",
@@ -668,13 +675,14 @@
       "src/app/components/grid.tsx",
       "src/app/components/sidebar.test.tsx",
       "src/app/components/sidebar.tsx",
-      "src/app/components/stack.tsx",
+      "src/app/components/stack.test.tsx",
       "src/app/components/switcher.test.tsx",
       "src/app/components/switcher.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
+      "src/stories/box.stories.tsx",
       "src/styles/theme.css",
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
@@ -682,13 +690,15 @@
     "--semantic-space-scale-sm": [
       "src/app/components/bleed.test.tsx",
       "src/app/components/bleed.tsx",
+      "src/app/components/box-sx.test.ts",
+      "src/app/components/box-sx.ts",
       "src/app/components/card.tsx",
       "src/app/components/center.tsx",
       "src/app/components/cluster.tsx",
       "src/app/components/cover.tsx",
       "src/app/components/grid.tsx",
       "src/app/components/sidebar.tsx",
-      "src/app/components/stack.tsx",
+      "src/app/components/stack.test.tsx",
       "src/app/components/switcher.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
@@ -702,6 +712,7 @@
     ],
     "--semantic-space-scale-xl": [
       "src/app/components/bleed.tsx",
+      "src/app/components/box-sx.ts",
       "src/app/components/card.tsx",
       "src/app/components/center.tsx",
       "src/app/components/cluster.test.tsx",
@@ -709,12 +720,15 @@
       "src/app/components/cover.tsx",
       "src/app/components/grid.tsx",
       "src/app/components/sidebar.tsx",
-      "src/app/components/stack.tsx",
+      "src/app/components/stack.test.tsx",
       "src/app/components/switcher.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
+      "src/stories/alert-dialog.stories.tsx",
+      "src/stories/box.stories.tsx",
+      "src/stories/dialog.stories.tsx",
       "src/styles/theme.css",
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
@@ -726,7 +740,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/stories/box.stories.tsx",
       "src/styles/theme.css",
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
@@ -740,13 +753,13 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/stories/box.stories.tsx",
       "src/styles/theme.css",
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-layout-tight": [
       "src/app/components/box-sx.test.ts",
+      "src/app/components/box-sx.ts",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
@@ -755,10 +768,30 @@
     ],
     "--semantic-space-layout-normal": [
       "src/app/components/box-sx.test.ts",
+      "src/app/components/box-sx.ts",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/stories/bleed.stories.tsx",
+      "src/styles/tokens.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--semantic-space-layout-inset": [
+      "src/app/components/box-sx.test.ts",
+      "src/app/components/box-sx.ts",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/stories/bleed.stories.tsx",
+      "src/styles/tokens.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--semantic-space-layout-spacious": [
+      "src/app/components/box-sx.test.ts",
+      "src/app/components/box-sx.ts",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
@@ -772,6 +805,7 @@
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
+    "--x": ["src/app/components/box-sx.test.ts"],
     "--semantic-color-border-subtle": [
       "src/app/components/box-sx.test.ts",
       "src/app/components/metadata-list.tsx",
@@ -906,7 +940,11 @@
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
-    "hds.space": ["src/app/components/card.tsx", "src/app/components/stack.tsx"],
+    "hds.space": [
+      "src/app/components/card.tsx",
+      "src/app/components/stack.test.tsx",
+      "src/app/components/stack.tsx"
+    ],
     "--semantic-color-border-accent": [
       "src/app/components/card.tsx",
       "src/app/components/checkbox.tsx",
@@ -1195,6 +1233,7 @@
     ],
     "--semantic-space-section-stack": [
       "src/app/components/code-block.tsx",
+      "src/app/components/stack.test.tsx",
       "src/app/components/stack.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
@@ -1574,6 +1613,7 @@
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-component-medium": [
+      "src/app/components/stack.test.tsx",
       "src/app/components/stack.tsx",
       "src/app/components/table.tsx",
       "src/app/design-system/generated-token-refs.ts",
@@ -1583,6 +1623,7 @@
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-subgrid-xs": [
+      "src/app/components/stack.test.tsx",
       "src/app/components/stack.tsx",
       "src/app/components/toggle.tsx",
       "src/app/design-system/generated-token-refs.ts",
@@ -3322,24 +3363,6 @@
       "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--semantic-space-layout-inset": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/stories/bleed.stories.tsx",
-      "src/stories/box.stories.tsx",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--semantic-space-layout-spacious": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/stories/alert-dialog.stories.tsx",
-      "src/stories/dialog.stories.tsx",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
     "--semantic-space-section-inset": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
@@ -4176,7 +4199,7 @@
     "hds.color.feedback.error": ["src/app/design-system/theme.ts"],
     "hds.color.feedback.warning": ["src/app/design-system/theme.ts"],
     "hds.color.feedback.info": ["src/app/design-system/theme.ts"],
-    "hds.space.px": ["src/app/design-system/tokens.ts"],
+    "hds.semantic.space.scale.": ["src/app/design-system/tokens.ts"],
     "--hds-space-xs": ["src/app/design-system/tokens.ts", "src/styles/theme.css"],
     "--hds-space-sm": ["src/app/design-system/tokens.ts", "src/styles/theme.css"],
     "--hds-space-md": ["src/app/design-system/tokens.ts", "src/styles/theme.css"],
@@ -4186,7 +4209,6 @@
     "--hds-space-3xl": ["src/app/design-system/tokens.ts", "src/styles/theme.css"],
     "--hds-space-4xl": ["src/app/design-system/tokens.ts", "src/styles/theme.css"],
     "hds.space.px20": ["src/app/design-system/tokens.ts"],
-    "hds.density.": ["src/app/design-system/tokens.ts"],
     "--semantic-layout-page-gutter-x": ["src/app/design-system/tokens.ts", "src/styles/theme.css"],
     "--semantic-layout-page-gutter-x-mobile": [
       "src/app/design-system/tokens.ts",
@@ -4334,6 +4356,7 @@
     "--hds-badge-sale": ["src/styles/theme.css"],
     "--hds-badge-sold-out": ["src/styles/theme.css"],
     "--hds-badge-featured": ["src/styles/theme.css"],
+    "hds.density.": ["src/styles/theme.css"],
     "--hds-border": ["src/styles/utilities.css"],
     "--hds-fill": ["src/styles/utilities.css"],
     "--hds-hover": ["src/styles/utilities.css"]
@@ -4413,7 +4436,13 @@
       "--primitive-space-1",
       "--semantic-space-layout-tight",
       "--semantic-space-layout-normal",
+      "--semantic-space-layout-inset",
+      "--semantic-space-layout-spacious",
+      "--semantic-space-scale-sm",
+      "--semantic-space-scale-lg",
+      "--semantic-space-scale-md",
       "--primitive-space-4",
+      "--x",
       "--semantic-color-content-primary",
       "--semantic-color-surface-raised",
       "--semantic-color-border-subtle",
@@ -4428,6 +4457,15 @@
     "src/app/components/box-sx.ts": [
       "hds.breakpoints",
       "--primitive-space-1",
+      "--semantic-space-scale-xs",
+      "--semantic-space-scale-sm",
+      "--semantic-space-scale-md",
+      "--semantic-space-scale-lg",
+      "--semantic-space-scale-xl",
+      "--semantic-space-layout-tight",
+      "--semantic-space-layout-normal",
+      "--semantic-space-layout-inset",
+      "--semantic-space-layout-spacious",
       "--semantic-accent-rest"
     ],
     "src/app/components/box.test.tsx": ["--semantic-color-content-primary"],
@@ -4859,8 +4897,7 @@
       "--semantic-color-surface-accent",
       "--semantic-zIndex-control"
     ],
-    "src/app/components/stack.tsx": [
-      "hds.space",
+    "src/app/components/stack.test.tsx": [
       "--semantic-space-scale-sm",
       "--semantic-space-scale-md",
       "--semantic-space-scale-lg",
@@ -4869,7 +4906,15 @@
       "--semantic-space-scale-xs",
       "--semantic-space-component-medium",
       "--semantic-space-subgrid-hairline",
-      "--semantic-space-subgrid-xs"
+      "--semantic-space-subgrid-xs",
+      "hds.space"
+    ],
+    "src/app/components/stack.tsx": [
+      "hds.space",
+      "--semantic-space-component-medium",
+      "--semantic-space-subgrid-hairline",
+      "--semantic-space-subgrid-xs",
+      "--semantic-space-section-stack"
     ],
     "src/app/components/stacked-card-rail.tsx": [
       "--card-width",
@@ -6411,7 +6456,8 @@
       "--primitive-size-16",
       "--primitive-size-20",
       "--primitive-size-24",
-      "hds.space.px",
+      "hds.semantic.space.scale.",
+      "hds.space.px4",
       "--hds-space-xs",
       "--hds-space-sm",
       "--hds-space-md",
@@ -6421,7 +6467,6 @@
       "--hds-space-3xl",
       "--hds-space-4xl",
       "hds.space.px20",
-      "hds.density.",
       "--primitive-space-px1",
       "--primitive-space-px2",
       "--primitive-space-1",
@@ -6561,7 +6606,7 @@
     ],
     "src/scroll/smooth-scroll.tsx": ["hds.motion."],
     "src/stories/alert-dialog.stories.tsx": [
-      "--semantic-space-layout-spacious",
+      "--semantic-space-scale-xl",
       "--semantic-color-surface-page",
       "--semantic-color-content-primary"
     ],
@@ -6574,9 +6619,9 @@
       "--semantic-space-layout-inset"
     ],
     "src/stories/box.stories.tsx": [
-      "--primitive-space-2",
-      "--semantic-space-layout-inset",
-      "--primitive-space-1"
+      "--semantic-space-scale-xs",
+      "--semantic-space-scale-lg",
+      "--semantic-space-scale-xl"
     ],
     "src/stories/center.stories.tsx": [
       "--semantic-color-surface-raised",
@@ -6598,7 +6643,7 @@
     ],
     "src/stories/design-parameters.ts": ["--check"],
     "src/stories/dialog.stories.tsx": [
-      "--semantic-space-layout-spacious",
+      "--semantic-space-scale-xl",
       "--semantic-color-surface-page",
       "--semantic-color-content-primary"
     ],
@@ -6845,6 +6890,8 @@
     "src/styles/theme.css": [
       "--hds-font-family",
       "--hds-font-family-mono",
+      "--semantic-color-feedback-bg-warning",
+      "--semantic-color-feedback-warning",
       "--semantic-typography-display-font-size",
       "--semantic-typography-h1-font-size",
       "--semantic-typography-h2-font-size",
@@ -6994,7 +7041,6 @@
       "--hds-feedback-danger",
       "--semantic-color-feedback-error",
       "--hds-feedback-warning",
-      "--semantic-color-feedback-warning",
       "--hds-feedback-info",
       "--semantic-color-feedback-info",
       "--hds-feedback-inProgress",
@@ -7006,7 +7052,6 @@
       "--hds-feedback-danger-bg",
       "--semantic-color-feedback-bg-error",
       "--hds-feedback-warning-bg",
-      "--semantic-color-feedback-bg-warning",
       "--hds-feedback-info-bg",
       "--semantic-color-feedback-bg-info",
       "--hds-feedback-inProgress-bg",
@@ -7062,6 +7107,7 @@
       "--semantic-typography-h3-letter-spacing",
       "--primitive-typography-size-lg",
       "--primitive-typography-lineHeight-normal",
+      "hds.density.",
       "--semantic-space-scale-xs",
       "--primitive-space-px6",
       "--primitive-space-3",
@@ -8409,7 +8455,8 @@
     "--vertical",
     "--visible-count",
     "--warning",
-    "--with-title"
+    "--with-title",
+    "--x"
   ],
   "auditOkComments": [
     {
