@@ -199,7 +199,7 @@ describe('committed skills/hds-consumer/SKILL.md', () => {
     const listed = [...read(SKILL_PATH).matchAll(/^- `([A-Za-z0-9]+)` — /gm)].map((m) => m[1]);
     expect([...listed].sort()).toEqual([...want].sort());
     expect(listed).not.toContain('StackedCardRail');
-    expect(listed).not.toContain('Tooltip');
+    expect(listed).toContain('Tooltip');
   });
 
   it('lint install line appears verbatim in docs/CONSUMING.md', () => {

@@ -176,6 +176,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Lightbox` — Lightbox — full-bleed image viewer built on Radix Dialog.
 - `Menu` — Menu root + parts.
 - `Popover` — Popover root + parts.
+- `Tooltip` — Tooltip root.
 
 ### Typography
 

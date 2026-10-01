@@ -11240,10 +11240,10 @@
       ]
     },
     "Tooltip": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
+      "category": "Overlays",
+      "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": true,
+      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",

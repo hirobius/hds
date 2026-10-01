@@ -67,6 +67,28 @@ describe('readComponentTags', () => {
     const source = `/**\n * @category Actions\n * @figma Variant=Button/Variant\n */\nexport const Button = () => null;\n`;
     expect(readComponentTags(source, 'Button').figmaUrl).toBeNull();
   });
+
+  it('reads a tag only at the start of a JSDoc line, not an @word inside prose (hds#390)', () => {
+    // hds-tooltip.tsx says "the internal `ExpandTooltip` (an @internal
+    // image-expand pill …)" in its description, and that prose hid the public
+    // Tooltip from the manifest, SKILL.md and llms.txt.
+    const prose = `/**\n * Tooltip.\n * @category Overlays\n * Unlike ExpandTooltip (an @internal pill), this one is public.\n */\nexport const Tooltip = () => null;\n`;
+    expect(readComponentTags(prose, 'Tooltip')).toMatchObject({
+      internal: false,
+      category: 'Overlays',
+    });
+    const tagged = `/**\n * Pill.\n * @internal\n */\nexport const ExpandTooltip = () => null;\n`;
+    expect(readComponentTags(tagged, 'ExpandTooltip').internal).toBe(true);
+  });
+});
+
+describe('discoverHdsComponents — Tooltip (hds#390)', () => {
+  it('discovers the exported Tooltip as public', () => {
+    const tooltip = discoverHdsComponents().components.find(
+      (c) => c.name === 'Tooltip' && c.filePath === 'src/app/components/hds-tooltip.tsx',
+    );
+    expect(tooltip).toMatchObject({ hidden: false, category: 'Overlays', tagState: 'doc-exempt' });
+  }, 60_000);
 });
 
 describe('readComponentTags — @screenPattern (hds#337)', () => {

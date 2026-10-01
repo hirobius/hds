@@ -12,8 +12,12 @@ const ROOT = join(__dirname, '..');
 const SRC_DIR = join(ROOT, 'src');
 const COMPONENTS_DIR = join(ROOT, 'src', 'app', 'components');
 const DOC_EXEMPT_PATTERN = /@doc-exempt:\s*(.+)/i;
+// A tag counts only at the start of a JSDoc line (after the `/**` opener or a
+// leading `*`), the way jsdoc-contract.mjs reads the contract tags. Matching
+// `@internal` anywhere let prose hide a public export: hds-tooltip.tsx
+// mentions "an @internal image-expand pill" and hid Tooltip (hds#390).
 const TAG_PATTERN =
-  /@(category|internal|doc-ignore|figma|tier|screenPattern)\b(?:\s+([^\r\n*]+))?/g;
+  /^[ \t]*(?:\/\*\*)?[ \t]*\*?[ \t]*@(category|internal|doc-ignore|figma|tier|screenPattern)\b(?:[ \t]+([^\r\n*]+))?/gm;
 const TIER_VALUES = new Set(['primitive', 'pattern', 'template', 'utility']);
 
 const SKIP_DIRS = new Set(['__tests__', 'figma']);
