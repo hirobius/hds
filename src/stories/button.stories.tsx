@@ -3,7 +3,7 @@
  * @see src/app/components/button.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
-import { Bold, Italic, Pin, X } from 'lucide-react';
+import { Bold, Italic, Star, X } from 'lucide-react';
 import { Button } from '../app/components/button';
 import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
@@ -106,7 +106,7 @@ export const Disabled: Story = {
   },
 };
 
-// ── Icon-only and toggle (hds#393) ─────────────────────────────────────────
+// ── iconOnly and pressed (hds#393) ─────────────────────────────────────────
 
 export const IconOnly: Story = {
   parameters: {
@@ -126,7 +126,7 @@ export const IconOnly: Story = {
   ),
 };
 
-export const Toggle: Story = {
+export const Pressed: Story = {
   parameters: {
     docs: {
       description: {
@@ -139,11 +139,11 @@ export const Toggle: Story = {
     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Button iconOnly label="Bold" iconLeft={<Bold />} defaultPressed />
       <Button iconOnly label="Italic" iconLeft={<Italic />} defaultPressed={false} />
-      <Button variant="tertiary" iconLeft={<Pin />} defaultPressed>
-        Pinned
+      <Button variant="tertiary" iconLeft={<Star />} defaultPressed>
+        Starred
       </Button>
-      <Button variant="tertiary" iconLeft={<Pin />} defaultPressed={false}>
-        Pin
+      <Button variant="tertiary" iconLeft={<Star />} defaultPressed={false}>
+        Star
       </Button>
     </div>
   ),

@@ -80,7 +80,7 @@ export const Dot: Story = {
     docs: {
       description: {
         story:
-          '`dot` renders a solid status dot with no text (hds#393, StatusDot folds into it). `tone` still picks the color and `size` is sm | md | lg. With `label` the dot is a role="status" named by it; without one it is aria-hidden and the text beside it carries the meaning.',
+          '`dot` renders a solid status dot with no text (hds#393). `tone` still picks the color and `size` is sm | md | lg. With `label` the dot is a role="status" named by it; without one it is aria-hidden and the text beside it carries the meaning.',
       },
     },
   },

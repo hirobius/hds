@@ -26,6 +26,22 @@ describe('Progress', () => {
     expect(screen.getByRole('progressbar').getAttribute('aria-valuenow')).toBe('0');
   });
 
+  it('fills the bar to exactly the value on the default scale', () => {
+    // Values that float math (value / 100 * 100) turns into 7.000000000000001:
+    // the default scale renders the value as given, as it did before max.
+    for (const [value, width] of [
+      [7, '7%'],
+      [29, '29%'],
+      [57, '57%'],
+      [33.3, '33.3%'],
+    ] as const) {
+      const { container } = render(<Progress value={value} />);
+      const fill = container.querySelector('[role="progressbar"] > div') as HTMLElement;
+      expect(fill.getAttribute('style')).toBe(`width: ${width};`);
+      cleanup();
+    }
+  });
+
   it('omits aria-valuenow when indeterminate', () => {
     render(<Progress value={null} />);
     const bar = screen.getByRole('progressbar');
@@ -34,7 +50,7 @@ describe('Progress', () => {
   });
 });
 
-// ── hds#393: variant="circular", tone, max (the CircularProgress fold) ───────
+// ── hds#393: variant="circular", tone, max ──────────────────────────────────
 
 describe('Progress max (hds#393)', () => {
   it('reports the value against max and fills the same share of the bar', () => {
@@ -63,6 +79,15 @@ describe('Progress variant="circular" (hds#393)', () => {
     expect(ring.getAttribute('aria-valuenow')).toBe('5');
     expect(ring.getAttribute('data-variant')).toBe('circular');
     expect(container.querySelectorAll('svg circle')).toHaveLength(2);
+  });
+
+  it('is a span, so the ring can sit inline in a paragraph', () => {
+    render(
+      <p>
+        Saving <Progress variant="circular" size="sm" label="Saving" />
+      </p>,
+    );
+    expect(screen.getByRole('progressbar', { name: 'Saving' }).tagName).toBe('SPAN');
   });
 
   it('is indeterminate without a value', () => {

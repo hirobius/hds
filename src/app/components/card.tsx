@@ -130,11 +130,23 @@ const cardVariants = /* @__PURE__ */ cva(
   },
 );
 
-// `selectable` (hds#393, the SelectableCard fold): selection is a 2px ring with
-// an offset, not a fill or border change (cards are never tinted, and the
-// border belongs to tone/variant), so it composes with every tone and variant.
+// `selectable` (hds#393): selection is a 2px inset ring, not a fill or border
+// change (cards are never tinted, and the border belongs to tone/variant), so
+// it composes with every tone and variant. Inset keeps it off hds-focus's
+// outline, which sits 2px outside the edge: selected, focused and both all look
+// different. No transition: the ring snaps, so reduced motion needs no override.
 const SELECTABLE_CARD =
-  'cursor-pointer hds-focus transition-shadow data-[selected=true]:ring-2 data-[selected=true]:ring-ring data-[selected=true]:ring-offset-2 data-[selected=true]:ring-offset-background';
+  'cursor-pointer hds-focus data-[selected=true]:ring-2 data-[selected=true]:ring-inset data-[selected=true]:ring-ring';
+
+// A click on a control inside a selectable card belongs to that control, the
+// same rule as Space typed into a nested field.
+const NESTED_CONTROL =
+  'a[href],button,input,select,textarea,label,summary,[contenteditable="true"],[tabindex],[role="button"],[role="link"],[role="checkbox"],[role="switch"],[role="option"],[role="menuitem"],[role="tab"]';
+
+function fromNestedControl(event: React.SyntheticEvent<HTMLElement>): boolean {
+  const control = (event.target as Element).closest?.(NESTED_CONTROL);
+  return !!control && control !== event.currentTarget && event.currentTarget.contains(control);
+}
 
 /** @public */
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -159,7 +171,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
    *  legibility. Default false — repeated cards in grids should stay
    *  borderless and rely on whitespace, rails, or section dividers. */
   bordered?: boolean;
-  /** Make the card one checkbox-like option (role="checkbox"; click or Space toggles). */
+  /** Make the card one checkbox-like option (role="checkbox"): click or Space toggles it, Enter does not. A click on a control inside it is left to that control. */
   selectable?: boolean;
   /** Whether a selectable card is selected. Controlled: pair with onSelectedChange. */
   selected?: boolean;
@@ -212,7 +224,7 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
         'data-selected': selected ? 'true' : 'false',
         onClick: (event: React.MouseEvent<HTMLDivElement>) => {
           rest.onClick?.(event);
-          if (!event.defaultPrevented) onSelectedChange?.(!selected);
+          if (!event.defaultPrevented && !fromNestedControl(event)) onSelectedChange?.(!selected);
         },
         onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
           rest.onKeyDown?.(event);

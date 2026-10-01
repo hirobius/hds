@@ -36,7 +36,7 @@ const badgeVariants = /* @__PURE__ */ cva(
   },
 );
 
-// `dot` (hds#393, the StatusDot fold): a solid feedback fill on the 8px grid.
+// `dot` (hds#393): a solid feedback fill on the 8px grid.
 // Tone still picks the color, so a dot is not a Tone option; neutral uses the
 // muted content color so the dot never brings in a second hue on its own.
 const badgeDotVariants = /* @__PURE__ */ cva('inline-block shrink-0 rounded-full', {

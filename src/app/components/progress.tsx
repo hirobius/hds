@@ -27,8 +27,13 @@ const progressTrackVariants = /* @__PURE__ */ cva('w-full overflow-hidden rounde
 
 // Tone (hds#393) colors the fill: the bar's background, the ring's stroke via
 // currentColor. `neutral` keeps each shape's existing color: `bg-accent` for
-// the bar, `text-primary` for the ring (CircularProgress's, so the fold looks
-// the same).
+// the bar, `text-primary` for the ring (the color the standalone ring used).
+//
+// `tone` and `variant` are lookups here, not cva axes: a cva contract axis is a
+// VARIANT on the Figma Progress set (88:91; docs/architecture/variant-contract.md
+// "Figma mapping"), and that set has no Tone or Variant yet. When Figma gains
+// them, move these into cva and list them in Progress's variantAxes in
+// scripts/build-tokens.mjs, like the dot-size lookup in badge.tsx.
 const PROGRESS_TONES = {
   neutral: { bar: 'bg-accent', ring: 'text-primary' },
   danger: { bar: 'bg-feedback-danger', ring: 'text-feedback-danger' },
@@ -37,8 +42,8 @@ const PROGRESS_TONES = {
   info: { bar: 'bg-feedback-info', ring: 'text-feedback-info' },
 } as const;
 
-// Ring geometry in SVG units (diameter and stroke width) per size, the
-// CircularProgress ramp: sm 16px, md 24px, lg 32px.
+// Ring geometry in SVG units (diameter and stroke width) per size: sm 16px,
+// md 24px, lg 32px.
 const RING = {
   sm: { box: 16, stroke: 2 },
   md: { box: 24, stroke: 3 },
@@ -86,15 +91,16 @@ export const Progress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Progres
   ) {
     const isIndeterminate = value === null || value === undefined;
     const clamped = isIndeterminate ? max : Math.max(0, Math.min(max, value));
-    const fraction = max > 0 ? clamped / max : 0;
+    // The default scale uses the value as the percent, untouched by float math,
+    // so the bar's width renders as it did before `max` existed.
+    const pct = max === 100 ? clamped : max > 0 ? (clamped * 100) / max : 0;
     const shared = {
-      ref,
       role: 'progressbar',
       'aria-label': label,
       'aria-valuemin': isIndeterminate ? undefined : 0,
       'aria-valuemax': isIndeterminate ? undefined : max,
       // The default 0-100 scale keeps its whole-number aria-valuenow; a custom
-      // max reports the value as given, as CircularProgress did.
+      // max reports the value as given.
       'aria-valuenow': isIndeterminate ? undefined : max === 100 ? Math.round(clamped) : clamped,
       'data-state': isIndeterminate ? 'indeterminate' : 'determinate',
       'data-variant': variant,
@@ -106,9 +112,12 @@ export const Progress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Progres
       const radius = (box - stroke) / 2;
       const circumference = 2 * Math.PI * radius;
       // Indeterminate: a fixed quarter arc that the spin sweeps.
-      const dashOffset = circumference * (isIndeterminate ? 0.75 : 1 - fraction);
+      const dashOffset = circumference * (isIndeterminate ? 0.75 : 1 - pct / 100);
+      // A span, not a div, so the ring can sit inline in phrasing content (a
+      // <p>, a label). The ref then points at that span.
       return (
-        <div
+        <span
+          ref={ref as React.Ref<HTMLSpanElement>}
           {...shared}
           className={cn('inline-flex', PROGRESS_TONES[tone].ring, className)}
           {...props}
@@ -140,19 +149,24 @@ export const Progress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Progres
               transform={`rotate(-90 ${box / 2} ${box / 2})`}
             />
           </svg>
-        </div>
+        </span>
       );
     }
 
     return (
-      <div {...shared} className={cn(progressTrackVariants({ size }), className)} {...props}>
+      <div
+        ref={ref}
+        {...shared}
+        className={cn(progressTrackVariants({ size }), className)}
+        {...props}
+      >
         <div
           className={cn(
             'h-full rounded-full transition-[width] duration-300 ease-out',
             PROGRESS_TONES[tone].bar,
             isIndeterminate && 'animate-pulse motion-reduce:animate-none',
           )}
-          style={{ width: `${fraction * 100}%` }}
+          style={{ width: `${pct}%` }}
         />
       </div>
     );

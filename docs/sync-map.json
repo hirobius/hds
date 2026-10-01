@@ -1622,11 +1622,11 @@
         "primitives-button--large",
         "primitives-button--loading",
         "primitives-button--medium",
+        "primitives-button--pressed",
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
-        "primitives-button--tertiary",
-        "primitives-button--toggle"
+        "primitives-button--tertiary"
       ],
       "storyCount": 11,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138",

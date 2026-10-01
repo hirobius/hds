@@ -102,7 +102,7 @@ export const Circular: Story = {
     docs: {
       description: {
         story:
-          '`variant="circular"` draws a ring (hds#393, CircularProgress folds into it): sm 16px, md 24px, lg 32px. `max` sets the scale (here 5 of 12), `tone` colors the fill, and no `value` spins an indeterminate arc.',
+          '`variant="circular"` draws a ring (hds#393): sm 16px, md 24px, lg 32px. `max` sets the scale (here 5 of 12), `tone` colors the fill, and no `value` spins an indeterminate arc.',
       },
     },
   },

@@ -607,7 +607,7 @@
     "primitives-combobox--open",
     "primitives-select--open",
     "primitives-button--icon-only",
-    "primitives-button--toggle",
+    "primitives-button--pressed",
     "primitives-badge--dot",
     "primitives-progress--circular",
     "primitives-card--selectable"

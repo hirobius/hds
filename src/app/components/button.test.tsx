@@ -193,7 +193,7 @@ describe('Button pressed (hds#393)', () => {
     const { Button } = await load();
     const { getByRole } = render(
       <Button defaultPressed onClick={(e) => e.preventDefault()}>
-        Pin
+        Save
       </Button>,
     );
     fireEvent.click(getByRole('button'));

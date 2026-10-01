@@ -1,5 +1,5 @@
 /**
- * Badge `dot` (hds#393): the survivor StatusDot folds into. A dot is a solid
+ * Badge `dot` (hds#393), the survivor for the standalone status dot. A dot is a solid
  * feedback-colored circle with no text; a `label` makes it a named status,
  * otherwise it is decorative and a sibling carries the meaning.
  */

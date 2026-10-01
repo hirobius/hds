@@ -271,7 +271,7 @@ export const Selectable: Story = {
     docs: {
       description: {
         story:
-          '`selectable` makes the whole card one checkbox-like option (hds#393, SelectableCard folds into it): role="checkbox" with aria-checked, focusable, toggled by click or Space. It is controlled: pass `selected` and update it in `onSelectedChange`. Selection shows as a 2px ring, so it composes with any tone or variant.',
+          '`selectable` makes the whole card one checkbox-like option (hds#393): role="checkbox" with aria-checked, focusable, toggled by click or Space (Enter does not toggle a checkbox). It is controlled: pass `selected` and update it in `onSelectedChange`. Selection is a 2px ring inside the edge and focus an outline outside it, so a focused card, a selected card and a focused selected card all look different. It composes with any tone or variant.',
       },
     },
   },

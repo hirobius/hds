@@ -36,7 +36,7 @@ import { isDevelopment } from '../../lib/env';
  *
  * Toggled on (`pressed`, hds#393) is a different state from that momentary
  * wash: `data-pressed="true"` fills with `role.accent` and its foreground,
- * the on-state ToggleButton had, so it reads as on at rest, not only mid-click.
+ * the on-state a toggle needs, so it reads as on at rest, not only mid-click.
  * Only toggle buttons get these classes, so every other Button renders the
  * same markup as before.
  */
@@ -169,7 +169,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     const isDisabled = disabled || loading;
     const content = children ?? label;
 
-    // Toggle (hds#393): any of the three pressed props makes this a toggle
+    // A toggle (hds#393): any of the three pressed props makes this a toggle
     // button; `pressed` controls it, otherwise it keeps its own state. The
     // state goes out as aria-pressed and data-pressed (data-state is loading's).
     const isToggle =
