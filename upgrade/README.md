@@ -46,10 +46,16 @@ of a release snapshot.
    `facts`. Changes the diff cannot see (how something looks or behaves, a
    deprecation, a rename) come from the CHANGELOG and cite its line.
 
-0.20.0 is the first ledger. `scripts/upgrade/build-ledger-0.20.mjs` builds it
-from the 0.19.1 and 0.20.0 snapshots, `codemods/removed-0.20.json`, the
-`RENAMES` map in `codemods/hds-prefix.mjs` and the CHANGELOG, and a test keeps
-the committed file equal to its output. Next, each changeset carries an
+Releases that shipped before ledgers existed are backfilled.
+`node scripts/upgrade/build-ledger.mjs <version>` builds each one from its two
+snapshots and inputs frozen in `upgrade/sources/<version>/`: `release.json`
+(the release fields, how its removed and moved names are classified, and the
+steps only the CHANGELOG records, each with its line and the text that finds
+it) and any data file it names. For 0.20.0 those are copies of
+`codemods/removed-0.20.json` and the `RENAMES` map in `codemods/hds-prefix.mjs`
+as 0.20.0 published them, so a later edit to the live codemod data can never
+rewrite the shipped ledger. A test keeps every committed ledger equal to the
+build of its sources (`build-ledger.mjs --check`). Next, each changeset carries an
 `upgrade/pending/<name>.json` note (hds#448) and `changeset version` compiles
 the notes into the release's ledger (hds#451). CSS facts, such as removed
 classes and changed variable values, come with hds#449.

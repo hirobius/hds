@@ -5,8 +5,9 @@
  * A ledger (upgrade/releases/<version>.json, shape in ./schema.mjs) is built
  * from the facts between two release snapshots (./diff.mjs), each turned into a
  * step, plus the look and behavior steps that only CHANGELOG prose records.
- * The 0.20.0 generator (./build-ledger-0.20.mjs) is the first user; the release
- * compiler (hds#451) and the backfill (hds#450) build on the same helpers.
+ * The backfill generator (./build-ledger.mjs, hds#450: 0.17.0 to 0.20.0) and
+ * the history check (./history.mjs) use them; the release compiler (hds#451)
+ * builds on the same helpers.
  */
 import { FACT_KINDS } from './diff.mjs';
 import { Release, STEP_KINDS, compareVersions } from './schema.mjs';

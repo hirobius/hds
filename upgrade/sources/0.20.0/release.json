@@ -1,0 +1,307 @@
+{
+  "$comment": "Frozen inputs of the 0.20.0 ledger (hds#447, hds#450), read by scripts/upgrade/build-ledger.mjs. 0.20.0 shipped before ledgers existed, so its record was written after the fact. removed.json and renames.json are codemods/removed-0.20.json and the RENAMES map of codemods/hds-prefix.mjs exactly as the 0.20.0 tarball published them; the live files keep serving the codemods and may change, these copies may not. Each CHANGELOG.md:<line> is numbered as the file read when 0.20.0 shipped (its section starts on line 3), and its needle is the text that finds the line.",
+  "version": "0.20.0",
+  "previous": "0.19.1",
+  "date": "2026-10-01",
+  "summary": "Pattern components move to /patterns; deprecated, lab and folded components, Hds* aliases and 7 runtime deps are removed.",
+  "backfilled": true,
+  "names": {
+    "moved": {
+      "from": ".",
+      "to": "./patterns",
+      "plain": "{name} is no longer exported from the package root; import it from {to} instead.",
+      "auto": "hds-patterns-subpath"
+    },
+    "renamed": {
+      "data": "renames.json",
+      "plain": "{name} is removed from the package root; use {to}, the same component under its bare name.",
+      "auto": "hds-prefix",
+      "source": "codemods/hds-prefix.mjs"
+    },
+    "folded": {
+      "data": "removed.json",
+      "plain": "{name} is removed; use {to} instead.",
+      "auto": {
+        "NotFoundPattern": "hds-not-found-pattern",
+        "TileGrid": "hds-tile-grid"
+      },
+      "source": "codemods/removed-0.20.json"
+    },
+    "removed": {
+      "data": "removed.json",
+      "plain": "{name} is removed with no drop-in replacement, so rewrite or delete the code that imports it.",
+      "privatePlain": "{name} is no longer exported, so style its component through the component's props instead.",
+      "source": "codemods/removed-0.20.json"
+    }
+  },
+  "steps": [
+    {
+      "kind": "look",
+      "subject": "Button-pressed",
+      "impact": "look",
+      "plain": "A pressed Button now tints only its fill with a 5% overlay, white in dark mode, instead of dimming the whole control, and the press no longer animates.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Button"]
+          }
+        ],
+        "jsx": ["Button"]
+      },
+      "needle": "c506c3b:",
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "kind": "look",
+      "subject": "Box-sx-scale-names",
+      "impact": "look",
+      "plain": "Box sx spacing given as a t-shirt name such as 'md' now applies that spacing, where before it applied none.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Box"]
+          }
+        ],
+        "jsx": ["Box"]
+      },
+      "needle": "9f9d143:",
+      "source": "CHANGELOG.md:8"
+    },
+    {
+      "kind": "look",
+      "subject": "Input-prefix-slot",
+      "impact": "look",
+      "plain": "A string passed to Input's prefix prop now shows as text inside the field, where before it went to the input element as an attribute.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Input"]
+          }
+        ],
+        "regex": ["<Input\\b[^>]*\\sprefix="]
+      },
+      "needle": "`Input` takes the native date and time types",
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "kind": "look",
+      "subject": "Tooltip-shadow",
+      "impact": "look",
+      "plain": "Tooltip now casts the floating shadow that popovers and menus use instead of the dialog shadow.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Tooltip"]
+          }
+        ],
+        "jsx": ["Tooltip"]
+      },
+      "needle": "`Tooltip` casts `shadow-floating`",
+      "source": "CHANGELOG.md:46"
+    },
+    {
+      "kind": "look",
+      "subject": "AssetImg-expand-label",
+      "impact": "look",
+      "plain": "AssetImg's expand label now uses the on-accent text color, so it stays readable in dark mode.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["AssetImg"]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["AssetImg"]
+          }
+        ],
+        "jsx": ["AssetImg"]
+      },
+      "needle": "**AssetImg's expand pill",
+      "source": "CHANGELOG.md:88"
+    },
+    {
+      "kind": "look",
+      "subject": "Table-sort-hover",
+      "impact": "look",
+      "plain": "A sortable Table header now fades its label to the muted color on hover.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Table"]
+          }
+        ],
+        "jsx": ["Table"]
+      },
+      "needle": "`Table`'s sortable header button now has hover feedback",
+      "source": "CHANGELOG.md:94"
+    },
+    {
+      "kind": "look",
+      "subject": "Input-padding",
+      "impact": "look",
+      "plain": "Input keeps its inner padding beside icons, the clear button and the spinner, so long text no longer runs under them.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Input"]
+          }
+        ],
+        "jsx": ["Input"]
+      },
+      "needle": "01183dc: `Input` now pads each side",
+      "source": "CHANGELOG.md:97"
+    },
+    {
+      "kind": "behavior",
+      "subject": "Card-selectable-keys",
+      "impact": "behavior",
+      "plain": "Card selectable, which replaces SelectableCard, toggles on click or Space only, so code or tests that press Enter to toggle it must press Space instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["SelectableCard"]
+          }
+        ],
+        "jsx": ["SelectableCard"]
+      },
+      "needle": "**Card.** New `selectable`",
+      "source": "CHANGELOG.md:41"
+    },
+    {
+      "kind": "behavior",
+      "subject": "Button-iconOnly-label",
+      "impact": "behavior",
+      "plain": "An icon-only Button now takes its accessible name from label, unless it has an aria-label.",
+      "detect": {
+        "jsx": ["Button"],
+        "regex": ["\\biconOnly\\b"]
+      },
+      "needle": "**Button.** `iconOnly` now uses",
+      "source": "CHANGELOG.md:38"
+    },
+    {
+      "kind": "behavior",
+      "subject": "Select-Combobox-overlay-names",
+      "impact": "behavior",
+      "plain": "The open Select list and the Combobox popup now carry an accessible name, so tests that find them by role and name may need the new name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Select", "Combobox"]
+          }
+        ],
+        "jsx": ["Select", "Combobox"]
+      },
+      "needle": "c148051:",
+      "source": "CHANGELOG.md:75"
+    },
+    {
+      "kind": "behavior",
+      "subject": "Select-Combobox-accessible-names",
+      "impact": "behavior",
+      "plain": "Combobox options now report their real position, and a Select with showLabel={false} is named by its label and value, so tests that find them by role and name may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Select", "Combobox"]
+          }
+        ],
+        "jsx": ["Select", "Combobox"]
+      },
+      "needle": "cde9ffe:",
+      "source": "CHANGELOG.md:90"
+    },
+    {
+      "kind": "behavior",
+      "subject": "pattern-rows-Stack",
+      "impact": "behavior",
+      "plain": "The rows inside PageHeader, FormActions, DataTableSection and DestructiveSection now carry data-hds-component=\"Stack\" instead of \"Cluster\", so selectors and tests that look for Cluster there must change.",
+      "detect": {
+        "regex": ["hds-component=\\W{0,2}Cluster"]
+      },
+      "needle": "**PageHeader, FormActions, DataTableSection and DestructiveSection:**",
+      "source": "CHANGELOG.md:87"
+    },
+    {
+      "kind": "behavior",
+      "subject": "manifest-health",
+      "impact": "behavior",
+      "plain": "The manifest no longer has a health field, so manifest.health is now undefined.",
+      "detect": {
+        "regex": ["(?:design-system/manifest|hds-manifest\\.json)[\\s\\S]*\\.health\\b"]
+      },
+      "needle": "drops the top-level `health` field",
+      "source": "CHANGELOG.md:101"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "StatusDot",
+      "impact": "none",
+      "removeIn": "0.21.0",
+      "plain": "StatusDot still works but is removed in 0.21.0; use Badge dot with the same tone, size and label, and move any style prop to a wrapper or a className first.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["StatusDot"]
+          }
+        ],
+        "jsx": ["StatusDot"]
+      },
+      "needle": "**`StatusDot` is deprecated for",
+      "source": "CHANGELOG.md:68"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "StatusDotProps",
+      "impact": "none",
+      "removeIn": "0.21.0",
+      "plain": "StatusDotProps is removed in 0.21.0; use BadgeProps instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["StatusDotProps"]
+          }
+        ]
+      },
+      "needle": "**`StatusDot` is deprecated for",
+      "source": "CHANGELOG.md:68"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "hds.density",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs.",
+      "detect": {
+        "regex": ["\\bhds\\.density\\b"]
+      },
+      "needle": "`hds.density.*` is deprecated",
+      "source": "CHANGELOG.md:12"
+    },
+    {
+      "kind": "deprecated",
+      "subject": "Box-sx-layout-names",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.",
+      "detect": {
+        "jsx": ["Box"],
+        "regex": ["\\bsx=\\{\\{[^}]*['\"](?:tight|normal|inset|spacious)['\"]"]
+      },
+      "needle": "Box's deprecated `'tight'`",
+      "source": "CHANGELOG.md:8"
+    }
+  ]
+}
