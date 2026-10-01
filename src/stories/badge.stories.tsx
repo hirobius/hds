@@ -73,3 +73,36 @@ export const AllTones: Story = {
     </div>
   ),
 };
+
+export const Dot: Story = {
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        story:
+          '`dot` renders a solid status dot with no text (hds#393). `tone` still picks the color and `size` is sm | md | lg. With `label` the dot is a role="status" named by it; without one it is aria-hidden and the text beside it carries the meaning.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <Badge dot tone="neutral" label="Idle" />
+        <Badge dot tone="info" label="Syncing" />
+        <Badge dot tone="success" label="Online" />
+        <Badge dot tone="warning" label="Degraded" />
+        <Badge dot tone="danger" label="Offline" />
+        <Badge dot tone="inProgress" label="Deploying" />
+      </div>
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <Badge dot size="sm" tone="success" label="Online, small" />
+        <Badge dot size="md" tone="success" label="Online, medium" />
+        <Badge dot size="lg" tone="success" label="Online, large" />
+      </div>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', fontSize: '14px' }}>
+        <Badge dot tone="success" />
+        <span>Online (the dot is decorative here)</span>
+      </div>
+    </div>
+  ),
+};

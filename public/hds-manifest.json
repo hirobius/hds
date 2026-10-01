@@ -104,6 +104,7 @@
     "Frame",
     "Grid",
     "HdsDocsShell",
+    "HdsRouterProvider",
     "HdsThemeProvider",
     "HeadingStack",
     "HoverCard",
@@ -2146,6 +2147,10 @@
           "type": "boolean",
           "optional": true
         },
+        "defaultPressed": {
+          "type": "boolean",
+          "optional": true
+        },
         "disabled": {
           "type": "boolean",
           "optional": true
@@ -2174,6 +2179,14 @@
           "optional": true
         },
         "loading": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onPressedChange": {
+          "type": "(pressed: boolean) => void",
+          "optional": true
+        },
+        "pressed": {
           "type": "boolean",
           "optional": true
         },
@@ -2217,6 +2230,9 @@
         "asChild": {
           "type": "boolean"
         },
+        "defaultPressed": {
+          "type": "boolean"
+        },
         "disabled": {
           "type": "boolean"
         },
@@ -2227,6 +2243,9 @@
           "type": "string"
         },
         "loading": {
+          "type": "boolean"
+        },
+        "pressed": {
           "type": "boolean"
         },
         "size": {
@@ -4198,9 +4217,21 @@
           "type": "boolean",
           "default": false
         },
+        "onSelectedChange": {
+          "type": "(selected: boolean) => void",
+          "optional": true
+        },
         "padding": {
           "type": "PaddingOption",
           "default": "component"
+        },
+        "selectable": {
+          "type": "boolean",
+          "default": false
+        },
+        "selected": {
+          "type": "boolean",
+          "default": false
         },
         "tone": {
           "type": "enum",
@@ -4319,6 +4350,12 @@
         "noPadding": {
           "type": "boolean"
         },
+        "selectable": {
+          "type": "boolean"
+        },
+        "selected": {
+          "type": "boolean"
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -4350,10 +4387,11 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ],
       "usage": {
-        "when": "Group related content on a raised surface with header, body, footer and metric slots.",
+        "when": "Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.",
         "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
         "useInstead": [
           {
@@ -5304,6 +5342,10 @@
           "type": "boolean",
           "default": false
         },
+        "defaultPressed": {
+          "type": "boolean",
+          "optional": true
+        },
         "disabled": {
           "type": "boolean",
           "optional": true
@@ -5327,6 +5369,14 @@
         "loading": {
           "type": "boolean",
           "default": false
+        },
+        "onPressedChange": {
+          "type": "(pressed: boolean) => void",
+          "optional": true
+        },
+        "pressed": {
+          "type": "boolean",
+          "optional": true
         },
         "size": {
           "type": "enum",
@@ -5400,6 +5450,9 @@
         "asChild": {
           "type": "boolean"
         },
+        "defaultPressed": {
+          "type": "boolean"
+        },
         "disabled": {
           "type": "boolean"
         },
@@ -5410,6 +5463,9 @@
           "type": "string"
         },
         "loading": {
+          "type": "boolean"
+        },
+        "pressed": {
           "type": "boolean"
         },
         "size": {
@@ -5445,16 +5501,18 @@
       "storyIds": [
         "primitives-button--all-variants-row",
         "primitives-button--disabled",
+        "primitives-button--icon-only",
         "primitives-button--large",
         "primitives-button--loading",
         "primitives-button--medium",
+        "primitives-button--pressed",
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
         "primitives-button--tertiary"
       ],
       "usage": {
-        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft.",
+        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
         "useInstead": [
           {
@@ -6163,6 +6221,23 @@
           "type": "ElementType<any, keyof IntrinsicElements>",
           "default": "span"
         },
+        "dot": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -6178,6 +6253,20 @@
       },
       "allowedChildren": [],
       "propConstraints": {
+        "dot": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -6209,6 +6298,7 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/badge.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/tag.tsx",
@@ -6237,13 +6327,14 @@
       "storyIds": [
         "primitives-badge--all-tones",
         "primitives-badge--danger",
+        "primitives-badge--dot",
         "primitives-badge--info",
         "primitives-badge--neutral",
         "primitives-badge--success",
         "primitives-badge--warning"
       ],
       "usage": {
-        "when": "Label a status, state or count with a compact neutral or semantic chip.",
+        "when": "Label a status, state or count with a compact neutral or semantic chip, or a dot.",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
         "useInstead": [
           {
@@ -7337,7 +7428,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/progress.tsx",
-      "description": "Linear progress. Determinate when `value` is a number, else indeterminate.",
+      "description": "Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
@@ -7366,6 +7457,10 @@
           "type": "string",
           "default": "Progress"
         },
+        "max": {
+          "type": "number",
+          "default": 100
+        },
         "size": {
           "type": "enum",
           "values": [
@@ -7375,9 +7470,28 @@
           ],
           "optional": true
         },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "danger",
+            "success",
+            "warning",
+            "info"
+          ],
+          "default": "neutral"
+        },
         "value": {
           "type": "number",
           "default": "null"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "linear",
+            "circular"
+          ],
+          "default": "linear"
         }
       },
       "allowedChildren": [
@@ -7391,12 +7505,13 @@
       ],
       "storyIds": [
         "primitives-progress--all-sizes",
+        "primitives-progress--circular",
         "primitives-progress--complete",
         "primitives-progress--default",
         "primitives-progress--indeterminate"
       ],
       "usage": {
-        "when": "Show how far a task has got, as a bar that is determinate or indeterminate.",
+        "when": "Show how far a task has got, as a bar or ring that is determinate or indeterminate.",
         "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
         "useInstead": [
           {
@@ -7447,8 +7562,8 @@
           "type": "enum",
           "values": [
             "text",
-            "rectangular",
-            "circular"
+            "circular",
+            "rectangular"
           ],
           "default": "rectangular"
         },
@@ -8116,6 +8231,7 @@
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/context/hds-portal.tsx",
+        "src/app/context/RouterContext.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -11199,6 +11315,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11244,6 +11361,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11289,6 +11407,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11339,6 +11458,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11406,6 +11526,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ],
       "usage": {
@@ -11478,6 +11599,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11523,6 +11645,7 @@
         "primitives-card--metric-slot",
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
+        "primitives-card--selectable",
         "primitives-card--variant-accent"
       ]
     },
@@ -11977,7 +12100,7 @@
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
       "figmaId": null,
       "tier": "primitive",
       "preview": {
@@ -11988,6 +12111,7 @@
         "src/app/components/asset-img.tsx",
         "src/app/components/hds-tooltip.test.tsx",
         "src/app/components/hover-card.tsx",
+        "src/app/components/popover.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/index.ts",
@@ -11996,7 +12120,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
       "props": {
         "children": {
           "type": "React.ReactNode",
@@ -12035,6 +12159,34 @@
       "storyIds": [
         "primitives-hds-tooltip--default",
         "primitives-hds-tooltip--placement"
+      ],
+      "usage": {
+        "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
+        "whenNot": "Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).",
+        "useInstead": [
+          {
+            "component": "Popover",
+            "reason": "interactive or longer content that opens on click"
+          },
+          {
+            "component": "Text",
+            "reason": "a hint that must stay visible"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Focus",
+          "effect": "Opens the tooltip when the trigger receives keyboard focus."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the tooltip and keeps focus on the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Moves on to the next control and closes the tooltip."
+        }
       ]
     },
     "Menu": {
@@ -12062,6 +12214,7 @@
         "src/app/components/hover-card.tsx",
         "src/app/components/menu.test.tsx",
         "src/app/components/multi-selector.tsx",
+        "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
@@ -12191,6 +12344,7 @@
         "src/app/components/date-range-input.tsx",
         "src/app/components/date-time-input.test.tsx",
         "src/app/components/date-time-input.tsx",
+        "src/app/components/hds-tooltip.tsx",
         "src/app/components/hover-card.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/multi-selector.test.tsx",
@@ -12245,6 +12399,38 @@
         "primitives-popover--default",
         "primitives-popover--info-tip",
         "primitives-popover--with-dismiss"
+      ],
+      "usage": {
+        "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
+        "whenNot": "A short label on hover or focus, a list of actions, or a decision that must block the page.",
+        "useInstead": [
+          {
+            "component": "Tooltip",
+            "reason": "a short label shown on hover or focus"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions"
+          },
+          {
+            "component": "Dialog",
+            "reason": "a decision that blocks the page"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space",
+          "effect": "Opens the popover from the trigger and moves focus inside it."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the popover and returns focus to the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Cycles focus inside the open popover; the page behind stays reachable."
+        }
       ]
     },
     "HdsDocsShell": {
@@ -12758,6 +12944,49 @@
         "patterns-destructivesection--phone",
         "patterns-destructivesection--separate-button-label"
       ]
+    },
+    "HdsRouterProvider": {
+      "category": "Theming",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/context/RouterContext.tsx",
+      "description": "Provide a router adapter to all HDS components below. Wrap your app root once.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "HdsRouterProvider",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/index.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "adapter": {
+          "type": "HdsRouterAdapter"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "storyFiles": [],
+      "storyIds": [],
+      "usage": {
+        "when": "Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors."
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",

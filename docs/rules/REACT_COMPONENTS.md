@@ -159,6 +159,13 @@ uncontrolled (`defaultValue`) modes to match native `<input>` ergonomics for
 simple text fields. The selection controls do not. Do not add `defaultValue` to
 the selection controls without revisiting this contract.
 
+`Button`'s toggle props are the second deliberate exception (hds#393): a toggle
+Button takes `pressed` with `onPressedChange` (controlled) or `defaultPressed`
+(uncontrolled), the split Radix Toggle offers. A toggle Button is an action
+control with an on/off state (`aria-pressed`), not a selection control, and a
+toolbar toggle often needs no page state. `Card`'s `selectable` / `selected` is
+a selection control and stays controlled-only.
+
 ## Elevation roles
 
 Bind to the role token — never write raw shadow, surface, or border values by hand. The role bundles all three so primitives can't mismatch.
