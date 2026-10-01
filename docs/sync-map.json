@@ -2317,15 +2317,17 @@
       "filePath": "src/app/components/input.tsx",
       "storyFiles": ["src/stories/input.stories.tsx"],
       "storyIds": [
+        "primitives-input--date-and-time",
         "primitives-input--default",
         "primitives-input--disabled",
         "primitives-input--loading",
         "primitives-input--mono",
+        "primitives-input--prefix-and-suffix",
         "primitives-input--size-variants",
         "primitives-input--with-error",
         "primitives-input--with-helper"
       ],
-      "storyCount": 7,
+      "storyCount": 9,
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20",
       "figmaVia": "manifest",
       "expectFigma": true,

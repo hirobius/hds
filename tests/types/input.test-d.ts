@@ -3,8 +3,8 @@
  * Uses pure tsc --noEmit — no external test library needed.
  * @unit 12p-test-type-tests-prop-stability
  */
-import type { ComponentProps } from 'react';
-import type { Input, InputProps, InputSize } from '../../src/app/components/input';
+import { createElement, type ComponentProps } from 'react';
+import { Input, type InputProps, type InputSize } from '../../src/app/components/input';
 
 // ── Shape assertions ──────────────────────────────────────────────────────────
 
@@ -18,6 +18,20 @@ const _textType: InputProps['type'] = 'text';
 const _emailType: InputProps['type'] = 'email';
 const _passwordType: InputProps['type'] = 'password';
 const _searchType: InputProps['type'] = 'search';
+
+// hds#393: the native date and time pickers (TimeInput folds into type="time")
+const _dateType: InputProps['type'] = 'date';
+const _timeType: InputProps['type'] = 'time';
+const _dateTimeType: InputProps['type'] = 'datetime-local';
+
+// `<Input type="time">` compiles (createElement checks props like JSX does)
+const _timeElement = createElement(Input, { type: 'time', label: 'Start time' });
+
+// hds#393: in-flow prefix and suffix slots take text or any node (InputGroup folds in)
+const _prefixElement = createElement(Input, { prefix: 'https://', label: 'Website' });
+const _suffixElement = createElement(Input, { suffix: 'kg', type: 'number', label: 'Weight' });
+const _nodePrefix: InputProps['prefix'] = createElement('span', null, '$');
+const _nodeSuffix: InputProps['suffix'] = createElement('span', null, 'USD');
 
 // Valid textStyle values are assignable
 const _bodyStyle: InputProps['textStyle'] = 'body';
@@ -58,8 +72,10 @@ const _badTextStyle: InputProps['textStyle'] = 'serif';
 // @ts-expect-error — loading must be boolean, not string
 const _loadingStr: InputProps['loading'] = 'true';
 
-void _smSize, _mdSize, _lgSize;
-void _textType, _emailType, _passwordType, _searchType;
-void _bodyStyle, _monoStyle;
-void _validProps, _errorProps, _minimalProps, _fromInferred;
-void _badSize, _badType, _badTextStyle, _loadingStr;
+(void _smSize, _mdSize, _lgSize);
+(void _textType, _emailType, _passwordType, _searchType);
+(void _dateType, _timeType, _dateTimeType, _timeElement);
+(void _prefixElement, _suffixElement, _nodePrefix, _nodeSuffix);
+(void _bodyStyle, _monoStyle);
+(void _validProps, _errorProps, _minimalProps, _fromInferred);
+(void _badSize, _badType, _badTextStyle, _loadingStr);
