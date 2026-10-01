@@ -13,12 +13,13 @@
 // `@hirobius/design-system/patterns`; none of them is re-exported here. Until
 // 0.20.0 the root also re-exported 21 of them behind `@deprecated` aliases
 // (hds#254); hds#389 R1 removed those re-exports in that 0.x minor.
-// `npx hds-patterns-subpath` moves consumer imports to the subpath
-// (MIGRATIONS.md, "0.20.0 removals").
+// `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath` moves consumer
+// imports to the subpath (MIGRATIONS.md, "0.20.0 removals").
 //
 // The same release removed the six `Hds*` aliases (HdsCheckbox, HdsRadio,
 // HdsSelect, HdsSlider, HdsToggle, HdsTooltip; hds#315). Each component is
-// exported under its bare name only; `npx hds-prefix` rewrites consumer code.
+// exported under its bare name only;
+// `npx -p @hirobius/design-system@^0.20.0 hds-prefix` rewrites consumer code.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Side-effect import: design system base styles (tokens + theme + utilities)

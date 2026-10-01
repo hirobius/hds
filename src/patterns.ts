@@ -9,7 +9,8 @@
  *
  * This is the only entry that exports them. Until 0.20.0 the package root
  * also re-exported 21 of these modules behind `@deprecated` aliases (hds#254);
- * hds#389 R1 removed those root re-exports, and `npx hds-patterns-subpath`
+ * hds#389 R1 removed those root re-exports, and
+ * `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath`
  * (codemods/patterns-subpath.mjs) moves consumer imports here.
  */
 export * from './app/components/calendar';
