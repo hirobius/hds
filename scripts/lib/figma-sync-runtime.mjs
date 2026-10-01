@@ -21,6 +21,15 @@
  * here, in code. Order of checks for Sync and Plan: the bundle (reachable,
  * JSON, this plugin's build, its checksum, no prune), then the file (the
  * library is denied before staging is allowed), then the push.
+ *
+ * Receipt (hds#417). After a verified push and its snapshot, Sync writes the
+ * snapshot back into the file as shared plugin data on figma.root: pages
+ * `syncSnapshot.0..n` holding the delta against the bundle's base (the
+ * committed figma/snapshot.json; the full snapshot when there is none), then
+ * the `syncReceipt` head that names them. An agent reads them with
+ * figma/push/use-figma/receipt.js and rebuilds the snapshot with
+ * `pnpm figma:snapshot --from-receipt`. The delta codec (figma-snapshot-delta.mjs)
+ * sits in code.js before this code; hdsSyncMain gets its `snapshotDelta`.
  */
 
 import { hdsChecksum, hdsGetKey, hdsSetKey, hdsRunPush, hdsRunSnapshot } from './figma-runtime.mjs';
@@ -279,8 +288,20 @@ export function hdsSyncReadBundle(fetched, sync, pluginBuild) {
   return bundle;
 }
 
-/** The receipt head (at most 1,024 characters) a verified Sync stamps on figma.root. */
-export function hdsSyncReceipt(bundle, report, snap, pluginBuild) {
+/** The bundle's base (the committed snapshot) when it is intact, else null: the receipt then carries the full snapshot. */
+export function hdsSyncBase(bundle) {
+  const base = bundle.base;
+  const sum = base && base.snapshot ? hdsChecksum(JSON.stringify(base.snapshot)) : null;
+  return sum !== null && sum === base.checksum ? base : null;
+}
+
+/**
+ * The receipt head (at most 1,024 characters) a verified Sync stamps on
+ * figma.root. `post` is the snapshot's checksum and `lastPush` the push it
+ * records; `base` is the checksum the pages are a delta against (null: they
+ * hold the full snapshot). hdsSyncStamp adds `format`, `pages` and `sum`.
+ */
+export function hdsSyncReceipt(bundle, report, snap, pluginBuild, base) {
   const s = snap.snapshot;
   const sum = (list, count) => list.reduce((n, item) => n + count(item), 0);
   return {
@@ -299,42 +320,119 @@ export function hdsSyncReceipt(bundle, report, snap, pluginBuild) {
       effectStyles: s.effectStyles.length,
     },
     post: snap.checksum,
+    lastPush: s.lastPush,
+    base: base ? base.checksum : null,
   };
 }
 
+/** The receipt pages' text, joined in order: `count` pages from syncSnapshot.0. */
+export function hdsSyncReadPages(figma, count) {
+  let text = '';
+  for (let i = 0; i < count; i++) text += hdsGetKey(figma.root, 'syncSnapshot.' + i) || '';
+  return text;
+}
+
 /**
- * Stamps `syncReceipt` on figma.root, unless the receipt already there still
- * describes this file exactly: same commit, model, plugin build and push, and
- * a state that, read at that receipt's takenAt, has its post checksum. So a
- * Sync that changed nothing writes nothing. Returns whether it wrote.
+ * Whether the receipt already on figma.root still describes this file
+ * exactly: same commit, model, plugin build, push and base, a state that,
+ * read at that receipt's takenAt, has its post checksum, and its pages
+ * intact. Then a Sync that changed nothing writes nothing.
  */
-export function hdsSyncWriteReceipt(figma, receipt, snapshot) {
-  const text = JSON.stringify(receipt);
-  if (text.length > 1024) {
-    throw new Error(
-      'The sync receipt is ' +
-        text.length +
-        ' characters, over its 1,024 limit, so it was not written. The push and the snapshot are done. Use Download JSON and hand the file to an agent (pnpm figma:snapshot --ingest).',
-    );
-  }
+export function hdsSyncReceiptHolds(figma, receipt, snapshot) {
   let previous = null;
   try {
     previous = JSON.parse(hdsGetKey(figma.root, 'syncReceipt') || 'null');
   } catch (_error) {
     previous = null;
   }
-  const unchanged =
+  return (
     previous !== null &&
     typeof previous === 'object' &&
-    ['v', 'commit', 'modelHash', 'pluginBuild', 'pushedAt'].every(
+    ['v', 'commit', 'modelHash', 'pluginBuild', 'pushedAt', 'base'].every(
       (field) => previous[field] === receipt[field],
     ) &&
     typeof previous.takenAt === 'string' &&
     hdsChecksum(JSON.stringify(Object.assign({}, snapshot, { takenAt: previous.takenAt }))) ===
-      previous.post;
-  if (unchanged) return false;
-  hdsSetKey(figma.root, 'syncReceipt', text);
-  return true;
+      previous.post &&
+    hdsChecksum(hdsSyncReadPages(figma, previous.pages)) === previous.sum
+  );
+}
+
+/**
+ * Writes the receipt: the old head goes first (so a reader never pairs it
+ * with new pages), then each page, read back to prove Figma kept it whole,
+ * then the pages a longer receipt left, and the head last (so it never names
+ * a page not written yet). Throws, writing nothing, when the head is over
+ * 1,024 characters or the pages over `sync.maxPages`.
+ */
+export function hdsSyncWriteReceipt(figma, receipt, pages, sync) {
+  const text = JSON.stringify(receipt);
+  if (text.length > 1024) {
+    throw new Error('the head is ' + text.length + ' characters, over its 1,024 limit.');
+  }
+  if (pages.length > sync.maxPages) {
+    throw new Error(
+      'it needs ' + pages.length + ' pages, over its limit of ' + sync.maxPages + '.',
+    );
+  }
+  const put = (key, value) => {
+    hdsSetKey(figma.root, key, value);
+    if ((hdsGetKey(figma.root, key) || '') !== value) {
+      throw new Error(
+        'Figma did not keep ' + key + ' (' + value.length + ' characters of shared plugin data).',
+      );
+    }
+  };
+  if (hdsGetKey(figma.root, 'syncReceipt')) put('syncReceipt', '');
+  pages.forEach((page, i) => put('syncSnapshot.' + i, page));
+  for (let i = pages.length; i < sync.maxPages; i++) {
+    if (hdsGetKey(figma.root, 'syncSnapshot.' + i)) put('syncSnapshot.' + i, '');
+  }
+  put('syncReceipt', text);
+}
+
+/**
+ * Stamps the receipt for a verified Sync and returns its head, or null when
+ * the receipt already there still holds. The pages hold `deltaOf(base, post)`
+ * as JSON, or `{ full: post }` with no intact base. Up to `sync.rawChars`
+ * that text goes raw; above, the window gzips and base64-encodes it
+ * (CompressionStream, default level) and the smaller wins. A window without
+ * CompressionStream, or one that does not answer, leaves it raw. Either way
+ * it is cut into pages of `sync.pageChars`.
+ */
+export async function hdsSyncStamp(figma, bundle, report, snap, pluginBuild, sync, deltaOf) {
+  const base = hdsSyncBase(bundle);
+  const receipt = hdsSyncReceipt(bundle, report, snap, pluginBuild, base);
+  if (hdsSyncReceiptHolds(figma, receipt, snap.snapshot)) return null;
+  const body = JSON.stringify(
+    base ? deltaOf(base.snapshot, snap.snapshot) : { full: snap.snapshot },
+  );
+  let text = body;
+  receipt.format = 'json';
+  if (body.length > sync.rawChars) {
+    try {
+      const packed = await hdsSyncAsk(
+        figma,
+        { type: 'gzip', text: body },
+        'gzipped',
+        sync.gzipTimeoutMs,
+      );
+      if (typeof packed.text === 'string' && packed.text.length < body.length) {
+        text = packed.text;
+        receipt.format = 'gzip';
+      }
+    } catch (_error) {
+      text = body;
+    }
+  }
+  const pages = [];
+  for (let at = 0; at < text.length; at += sync.pageChars) {
+    pages.push(text.slice(at, at + sync.pageChars));
+  }
+  receipt.pages = pages.length;
+  receipt.sum = hdsChecksum(text);
+  hdsSyncWriteReceipt(figma, receipt, pages, sync);
+  return receipt;
 }
 
 /** What Check this file reports. Reads only. */
@@ -396,8 +494,11 @@ export function hdsSyncAsk(figma, message, answer, timeoutMs) {
   });
 }
 
-/** The plugin: one menu command, one result in its window. Never throws. */
-export async function hdsSyncMain(figma, sync, pluginBuild, html) {
+/**
+ * The plugin: one menu command, one result in its window. Never throws.
+ * `deltaOf` is the codec's snapshotDelta, which code.js carries.
+ */
+export async function hdsSyncMain(figma, sync, pluginBuild, html, deltaOf) {
   const closeOnly = (reply) => {
     if (reply === 'close') figma.closePlugin();
   };
@@ -484,15 +585,28 @@ export async function hdsSyncMain(figma, sync, pluginBuild, html) {
       return;
     }
     const snap = await hdsRunSnapshot(figma);
-    const receipt = hdsSyncReceipt(bundle, report, snap, pluginBuild);
-    const stamped = hdsSyncWriteReceipt(figma, receipt, snap.snapshot);
+    let receiptNote = 'Receipt unchanged: this file already matched.';
+    try {
+      const stamped = await hdsSyncStamp(figma, bundle, report, snap, pluginBuild, sync, deltaOf);
+      if (stamped) {
+        receiptNote =
+          'Receipt written to this file: syncReceipt and ' +
+          stamped.pages +
+          ' page(s), ' +
+          stamped.format +
+          '. An agent collects it with figma/push/use-figma/receipt.js, so you are done.';
+      }
+    } catch (error) {
+      receiptNote =
+        'Receipt not written: ' +
+        String((error && error.message) || error) +
+        ' The push and the snapshot are done. Use Download JSON and hand the file to an agent (pnpm figma:snapshot --ingest).';
+    }
     show({
       ok: true,
       title: 'Synced ' + at + ': ' + report.line + warned,
       notes: report.changes.concat(report.warnings, [
-        stamped
-          ? 'Receipt written to this file (syncReceipt).'
-          : 'Receipt unchanged: this file already matched.',
+        receiptNote,
         'Download JSON saves the snapshot for pnpm figma:snapshot --ingest.',
       ]),
       fileName: 'figma-snapshot.json',

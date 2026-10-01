@@ -82,7 +82,7 @@ const takeSnapshot = async (root, edit = async () => {}, builder = (model) => mo
 };
 
 describe('pnpm figma:push', () => {
-  it('writes the Sync plugin, the promote plugin, one use_figma script per chunk, and the snapshot script', () => {
+  it('writes the Sync plugin, the promote plugin, one use_figma script per chunk, and the snapshot and receipt scripts', () => {
     const root = tempRoot();
     const outDir = join(root, 'figma', 'push');
     const result = writePushArtifacts({ root, outDir });
@@ -105,6 +105,7 @@ describe('pnpm figma:push', () => {
       '03-component.js',
       '04-role.js',
       '05-styles.js',
+      'receipt.js',
       'snapshot.js',
     ]);
     expect(result.prune).toBe(false);
