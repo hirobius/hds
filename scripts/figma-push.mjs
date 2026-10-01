@@ -199,6 +199,26 @@ export function writeDeltaScript({ root, outDir, commit }) {
   return { ...built, path, shown: relative(root, path).replaceAll('\\', '/') };
 }
 
+/**
+ * `pnpm figma:push --delta [--prune]`: what it prints, or throws why it
+ * refused. It removes any earlier delta.js first, so a refusal or failure
+ * leaves none. `resolveCommit` names the commit delta.js is built from.
+ *
+ * @param {{ root?: string, prune?: boolean, resolveCommit?: () => string }} [options]
+ * @returns {string}
+ */
+export function runDeltaCommand({
+  root = ROOT,
+  prune = false,
+  resolveCommit = resolveBundleCommit,
+} = {}) {
+  const outDir = join(root, 'figma', 'push');
+  // First, before any step that can fail: no refusal leaves an earlier delta.js behind.
+  rmSync(join(outDir, 'use-figma', 'delta.js'), { force: true });
+  if (prune) throw new Error(DELTA_PRUNE_REFUSAL);
+  return formatDeltaRun(writeDeltaScript({ root, outDir, commit: resolveCommit() }));
+}
+
 /** What `pnpm figma:push --delta` prints for writeDeltaScript's result. */
 export function formatDeltaRun(result) {
   if (!result.text) return `figma:push --delta — ${result.nothing}`;
@@ -291,13 +311,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     }
   } else if (args.includes('--delta')) {
     try {
-      const outDir = join(ROOT, 'figma', 'push');
-      if (args.includes('--prune')) {
-        rmSync(join(outDir, 'use-figma', 'delta.js'), { force: true });
-        throw new Error(DELTA_PRUNE_REFUSAL);
-      }
-      const result = writeDeltaScript({ root: ROOT, outDir, commit: resolveBundleCommit() });
-      console.log(formatDeltaRun(result));
+      console.log(runDeltaCommand({ prune: args.includes('--prune') }));
     } catch (error) {
       console.error(`✗ figma:push --delta — ${error.message}`);
       process.exit(1);

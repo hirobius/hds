@@ -47,9 +47,14 @@ import {
   buildUseFigmaReceiptScript,
 } from '../lib/figma-scripts.mjs';
 import { hdsAgentReadState, hdsAgentSlice } from '../lib/figma-agent-runtime.mjs';
-import { buildUseFigmaDeltaScript } from '../lib/figma-agent-sync.mjs';
+import { DELTA_PRUNE_REFUSAL, buildUseFigmaDeltaScript } from '../lib/figma-agent-sync.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
-import { formatDeltaRun, planAgainstSnapshot, writeDeltaScript } from '../figma-push.mjs';
+import {
+  formatDeltaRun,
+  planAgainstSnapshot,
+  runDeltaCommand,
+  writeDeltaScript,
+} from '../figma-push.mjs';
 import { ingestReceipt } from '../figma-snapshot.mjs';
 import { FIXTURE_TOKENS_PATH, fixtureModel } from './helpers/figma-fixture.mjs';
 import { createFakeFigma, seededFakeFigma, textStyleFonts } from './helpers/fake-figma.mjs';
@@ -914,6 +919,25 @@ describe('pnpm figma:push --delta', () => {
       'staging holds 1 item(s) the model does not have (variable role.ring)',
     );
     expect(existsSync(outDir)).toBe(false);
+  });
+
+  it('removes an earlier delta.js before anything that can fail, resolving the commit included', async () => {
+    const { root, outDir } = await rootWithChange(whiteRewritten);
+    const path = join(outDir, 'use-figma', 'delta.js');
+    const noCommit = () => {
+      throw new Error('cannot tell which commit the bundle is built from');
+    };
+    for (const [prune, resolveCommit, refusal] of [
+      [false, noCommit, /cannot tell which commit/],
+      [true, () => COMMIT, DELTA_PRUNE_REFUSAL],
+    ]) {
+      expect(runDeltaCommand({ root, resolveCommit: () => COMMIT })).toMatch(
+        /^figma:push --delta — figma\/push\/use-figma\/delta\.js/,
+      );
+      expect(existsSync(path)).toBe(true);
+      expect(() => runDeltaCommand({ root, prune, resolveCommit })).toThrow(refusal);
+      expect(existsSync(path), `a refusal (prune: ${prune}) left delta.js behind`).toBe(false);
+    }
   });
 
   it('says there is nothing to sync, and writes no delta.js, when staging holds the model', async () => {
