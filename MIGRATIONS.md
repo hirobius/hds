@@ -483,7 +483,10 @@ is exactly `@hirobius/design-system`, and change nothing on a second run. A
 file with any use they cannot rewrite (`typeof TileGrid`, a value use, a
 re-export, a namespace or dynamic import that reads the name, or a file they
 cannot read to its end) is left as written, and `--check` exits 1 and lists
-it. Their stories, manifest specs and Figma disposition rows go with them.
+it. That includes JSX text with the bare name in it
+(`<p>Use a TileGrid here</p>`): the codemods read JSX text as code, so they
+stop rather than guess; reword the text or rewrite the file by hand. Their
+stories, manifest specs and Figma disposition rows go with them.
 
 | Removed from `@hirobius/design-system` | Use instead                                                                                                                              | Codemod                                                                     |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |

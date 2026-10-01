@@ -4,10 +4,10 @@
 
 | Category | Count | Justified | Untriaged |
 |----------|-------|-----------|----------|
-| eslint-disable | 72 | 63 | 9 |
+| eslint-disable | 63 | 63 | 0 |
 | @ts-ignore/@ts-expect-error | 6 | 6 | 0 |
 | custom-sentinels (*-ok / hds-bypass) | 19 | 19 | 0 |
-| **Total** | **97** | **88** | **9** |
+| **Total** | **88** | **88** | **0** |
 
 ## eslint-disable
 
@@ -76,15 +76,6 @@
 | `src/stories/pin.stories.tsx` | 6 | `eslint-disable*` | `no-restricted-syntax -- story fixtures use raw grid to showcase the primitive` | justified |
 | `src/stories/reveal.stories.tsx` | 7 | `eslint-disable*` | `no-restricted-syntax -- story fixtures use raw grid/flex to showcase the primitive` | justified |
 | `src/stories/surface.stories.tsx` | 1 | `eslint-disable*` | `no-restricted-syntax` | justified |
-| `scripts/__tests__/hds-prefix-codemod.test.mjs` | 454 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/hds-prefix-codemod.test.mjs` | 471 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 311 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 312 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 363 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 365 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 490 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/patterns-subpath-codemod.test.mjs` | 502 | `eslint-disable*` | (none) | untriaged |
-| `scripts/__tests__/patterns-subpath-removed.test.mjs` | 152 | `eslint-disable*` | (none) | untriaged |
 
 ## @ts-ignore/@ts-expect-error
 
@@ -123,8 +114,8 @@
 
 ## Summary Stats
 
-- **Total suppressions:** 97
+- **Total suppressions:** 88
 - **Justified (reason >= 10 chars):** 88
-- **Untriaged (reason < 10 chars or missing):** 9
+- **Untriaged (reason < 10 chars or missing):** 0
 
 Scope reduced to inventory-only — resolution of untriaged suppressions deferred to follow-up units.

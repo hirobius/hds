@@ -1,5 +1,5 @@
 {
-  "$comment": "Story and docs ids from a build of the tree before the #308 retitle, plus the ids of stories added since (append them here; the second test below fails on any id not listed). Retitles must keep every id (existing links) except the hidden internals. A story deleted with its component leaves the list (0.20.0, hds#389: CinematicLink, ComponentInstanceMatrix, FoundationSwatch, Sketch, Token).",
+  "$comment": "Story and docs ids from a build of the tree before the #308 retitle, plus the ids of stories added since (append them here; the second test below fails on any id not listed). Retitles must keep every id (existing links) except the hidden internals. A story deleted with its component leaves the list (0.20.0, hds#389: CinematicLink, ComponentInstanceMatrix, FoundationSwatch, Sketch, Token; hds#395: NotFoundPattern, TileGrid), and a story named for a removed component is renamed with it, which changes its id: StatusTile's TileGrid story is InGrid (primitives-status-tile--tile-grid became --in-grid, 0.20.0, hds#395).",
   "ids": [
     "feedback-error-pattern--default",
     "feedback-error-pattern--docs",

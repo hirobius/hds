@@ -212,6 +212,11 @@ describe('transformSource', () => {
     ['a value use', 'createElement(TileGrid, null);', /TileGrid at line 3 is not a JSX tag/],
     ['a typeof', 'type T = typeof TileGrid;', /TileGrid at line 3 is not a JSX tag/],
     ['a member tag', '<TileGrid.Item />;', /TileGrid at line 3 is not a JSX tag/],
+    [
+      'JSX text that names it',
+      '<p>Use a TileGrid here</p>;',
+      /TileGrid at line 3 is not a JSX tag/,
+    ],
   ])('leaves the file as written and reports %s', (_label, body, report) => {
     const src = `import { TileGrid } from '${ROOT}';\n<TileGrid><i /></TileGrid>;\n${body}\n`;
     const out = transformSource(src);
