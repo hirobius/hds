@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import ts from 'typescript';
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -193,6 +194,50 @@ describe('LAYOUT_GAP — the one layout-gap vocabulary (hds#404)', () => {
     expect(warn).not.toHaveBeenCalled();
     vi.restoreAllMocks();
   });
+});
+
+/**
+ * Type-checks `source` as a module beside box-sx.ts, under the repo's
+ * tsconfig, and returns that module's own errors. Test files sit outside
+ * `pnpm typecheck`, so this is how a test pins a signature.
+ */
+function typeErrorsBesideBoxSx(source: string): string[] {
+  const root = join(__dirname, '..', '..', '..');
+  const { config } = ts.readConfigFile(join(root, 'tsconfig.json'), ts.sys.readFile);
+  const { options } = ts.parseJsonConfigFileContent(config, ts.sys, root);
+  const file = join(__dirname, '__resolve-spacing-value-types.ts');
+  const host = ts.createCompilerHost(options);
+  const { getSourceFile, fileExists } = host;
+  host.fileExists = (name) => name === file || fileExists.call(host, name);
+  host.getSourceFile = (name, language, ...rest) =>
+    name === file
+      ? ts.createSourceFile(name, source, language)
+      : getSourceFile.call(host, name, language, ...rest);
+  const program = ts.createProgram([file], options, host);
+  return ts
+    .getPreEmitDiagnostics(program, program.getSourceFile(file))
+    .map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
+}
+
+describe('resolveSpacingValue — its return type follows the vocabulary (hds#404)', () => {
+  it('is never undefined for an open vocabulary and never a number for a closed one', () => {
+    const errors = typeErrorsBesideBoxSx(`
+      import { resolveSpacingValue, LAYOUT_GAP, type SpacingVocabulary } from './box-sx';
+      type Equals<A, B> =
+        (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2 ? true : false;
+      declare const value: string | number;
+      declare const either: SpacingVocabulary;
+      const units = resolveSpacingValue(value, { names: { sm: 'a' }, numbers: 'units' });
+      const raw = resolveSpacingValue(value, { names: {}, numbers: 'raw' });
+      const closed = resolveSpacingValue(value, LAYOUT_GAP);
+      const unknown = resolveSpacingValue(value, either);
+      export const unitsIsStringOrNumber: Equals<typeof units, string | number> = true;
+      export const rawIsStringOrNumber: Equals<typeof raw, string | number> = true;
+      export const closedIsStringOrUndefined: Equals<typeof closed, string | undefined> = true;
+      export const eitherIsAnyOfThem: Equals<typeof unknown, string | number | undefined> = true;
+    `);
+    expect(errors).toEqual([]);
+  }, 60_000);
 });
 
 describe('resolveSx — token colors', () => {

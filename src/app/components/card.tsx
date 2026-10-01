@@ -61,10 +61,10 @@ type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof hds.sp
  * as it was before hds#404: any other string and any number pass through,
  * a number as raw px.
  */
-const CARD_GAP: SpacingVocabulary = {
+const CARD_GAP = {
   names: { ...(hds.space as Record<string, string>), ...LAYOUT_GAP_NAMES },
   numbers: 'raw',
-};
+} satisfies SpacingVocabulary;
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 

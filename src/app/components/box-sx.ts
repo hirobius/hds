@@ -111,6 +111,9 @@ export type SpacingVocabulary =
   | { readonly names: Readonly<Record<string, string>>; readonly numbers: 'units' | 'raw' }
   | { readonly names: Readonly<Record<string, string>>; readonly closed: true };
 
+type OpenSpacingVocabulary = Extract<SpacingVocabulary, { readonly numbers: unknown }>;
+type ClosedSpacingVocabulary = Extract<SpacingVocabulary, { readonly closed: true }>;
+
 /**
  * The layout-gap names (hds#404): the only copy of the four names the layout
  * components take for a gap, a gutter or a bleed, with the same values as
@@ -139,7 +142,7 @@ export const LAYOUT_GAP_NAMES = {
  * untyped value sets no style, as it did before hds#404
  * (scripts/__tests__/spacing-computed-lock.test.mjs).
  */
-export const LAYOUT_GAP: SpacingVocabulary = { names: LAYOUT_GAP_NAMES, closed: true };
+export const LAYOUT_GAP = { names: LAYOUT_GAP_NAMES, closed: true } satisfies SpacingVocabulary;
 
 /**
  * Box `sx`: the t-shirt scale, plus the deprecated 'tight' | 'normal' |
@@ -150,7 +153,7 @@ export const LAYOUT_GAP: SpacingVocabulary = { names: LAYOUT_GAP_NAMES, closed: 
  * spacing codemod skips this file, so it cannot rewrite them to scale steps
  * and change compact pixels. Each warns once in dev (ADR-014 step 1).
  */
-const BOX_SX_SPACING: SpacingVocabulary = {
+const BOX_SX_SPACING = {
   names: {
     ...SPACE_SCALE,
     tight: 'var(--semantic-space-layout-tight)',
@@ -159,7 +162,7 @@ const BOX_SX_SPACING: SpacingVocabulary = {
     spacious: 'var(--semantic-space-layout-spacious)',
   },
   numbers: 'units',
-};
+} satisfies SpacingVocabulary;
 
 const own = (table: Readonly<Record<string, string>>, key: string): string | undefined =>
   Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
@@ -197,8 +200,22 @@ const SPACING_PROP_MAP: Record<string, string[]> = {
  * components. A name is looked up in the caller's vocabulary (own keys only,
  * so 'constructor' is not a name). Anything else ('auto', '1rem', a `var()`)
  * passes through an open vocabulary and resolves to `undefined` in a closed
- * one.
+ * one. The return type says which: an open vocabulary never yields
+ * `undefined`, so Box cannot emit `margin:undefined`, and a closed one never
+ * yields a number.
  */
+export function resolveSpacingValue(
+  value: SxValue,
+  vocabulary: OpenSpacingVocabulary,
+): string | number;
+export function resolveSpacingValue(
+  value: SxValue,
+  vocabulary: ClosedSpacingVocabulary,
+): string | undefined;
+export function resolveSpacingValue(
+  value: SxValue,
+  vocabulary: SpacingVocabulary,
+): string | number | undefined;
 export function resolveSpacingValue(
   value: SxValue,
   vocabulary: SpacingVocabulary,
@@ -270,7 +287,8 @@ function buildDeclarations(key: string, value: SxValue): string[] {
         `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}': same pixels at the default density, tighter under compact (MIGRATIONS.md).`,
       );
     }
-    const resolved = resolveSpacingValue(value, BOX_SX_SPACING);
+    // Typed so a closed vocabulary here, which can resolve to undefined, fails typecheck.
+    const resolved: string | number = resolveSpacingValue(value, BOX_SX_SPACING);
     return spacingProps.map((prop) => `${prop}:${resolved}`);
   }
 

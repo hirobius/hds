@@ -76,7 +76,7 @@ export interface StackProps {
  * t-shirt names until this `xs` goes; 'sm' to 'xl' pass through as before.
  * A number stays raw px, the way React's inline style reads it.
  */
-const STACK_GAP: SpacingVocabulary = {
+const STACK_GAP = {
   names: {
     ...(hds.space as Record<string, string>),
     ...LAYOUT_GAP_NAMES,
@@ -87,7 +87,7 @@ const STACK_GAP: SpacingVocabulary = {
     stack: 'var(--semantic-space-section-stack)',
   },
   numbers: 'raw',
-};
+} satisfies SpacingVocabulary;
 
 /** @public */
 export const Stack = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StackProps>(function Stack(
