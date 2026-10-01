@@ -4,10 +4,10 @@ Authoritative rules for the token architecture, manifest structure, and sync pip
 
 ## 1. Two Separate Source Files — Know Which is Which
 
-| File                       | What it is                                                        | Who writes it                               | Who reads it                                     |
-| -------------------------- | ----------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
-| `hirobius.tokens.json`     | W3C DTCG token graph. The design primitive.                       | Humans (hand-edited; Figma never writes it) | `pnpm tokens` pipeline → CSS vars + TS constants |
-| `public/hds-manifest.json` | System inventory: components, phases, health, and token snapshot. | `scripts/generate-manifest.mjs`             | Agents, docs pages, LLM context                  |
+| File                       | What it is                                                | Who writes it                               | Who reads it                                     |
+| -------------------------- | --------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| `hirobius.tokens.json`     | W3C DTCG token graph. The design primitive.               | Humans (hand-edited; Figma never writes it) | `pnpm tokens` pipeline → CSS vars + TS constants |
+| `public/hds-manifest.json` | System inventory: components, phases, and token snapshot. | `scripts/generate-manifest.mjs`             | Agents, docs pages, LLM context                  |
 
 **NEVER conflate them.** A token lives in `hirobius.tokens.json`. A component spec lives in the manifest. A token _reference_ (the path string like `semantic.color.surface.raised`) may appear in both — in the token file as a node in the graph, in the manifest as a metadata field on a component spec.
 
@@ -58,7 +58,7 @@ Do not run individual scripts out of order. If a single script needs to run in i
 | `componentSpecs`                                 | `generate-manifest.mjs` + hand-filled fields (§6)              | Partial — see §5   |
 | `tokens`                                         | `generate-manifest.mjs` (snapshot from `hirobius.tokens.json`) | ✓                  |
 | `typographyRamp`, `patternInventory`             | `generate-manifest.mjs`                                        | ✓                  |
-| `phases`, `health`                               | `build-roadmap-data.mjs`                                       | ✓                  |
+| `phases`                                         | None: frozen, `build-tokens.mjs` forwards it unchanged         | ✓                  |
 | `agentEntrypoint`, `architecture`, `systemSpecs` | Human-authored, stable                                         | Can edit carefully |
 | `brand`                                          | Human-authored                                                 | Can edit carefully |
 

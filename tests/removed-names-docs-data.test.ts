@@ -62,6 +62,13 @@ describe('docs-site data after the 0.20.0 removals', () => {
     expect(names.filter((n) => REMOVED.has(n))).toEqual([]);
   });
 
+  // hds#431: the sidebar model of the docs shell. The shell went with the docs
+  // SPA (#51) and HdsDocsShell (0.20.0); nothing has read the model since.
+  it('keeps no docs-nav data for the removed docs shell', () => {
+    const navData = readdirSync(DATA).filter((f) => /^(hds-nav-data|nav-model)[.]/.test(f));
+    expect(navData).toEqual([]);
+  });
+
   it('foundations/*.json token rows name no removed component', () => {
     const offenders = readdirSync(resolve(DATA, 'foundations'))
       .filter((f) => f.endsWith('.json'))
