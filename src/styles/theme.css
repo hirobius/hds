@@ -46,6 +46,13 @@
 @import 'tailwindcss';
 @config "../../tailwind.config.ts";
 
+/* Published utility surface kept after hds#391. Tailwind only emits the
+   utilities it finds in scanned files, and these 16 lived only in the deleted
+   docs-tooling, animated-label and editorial files. Consumers that use
+   ./tokens.css as their only compiled Tailwind (ops: pt-1) still rely on them,
+   so they stay emitted until 1.0 drops them in a minor with a migration note. */
+@source inline("pt-1 pb-8 p-16 max-w-2xl h-3.5 w-3.5 sm:text-4xl sm:inline-block group-hover:opacity-100 text-muted-foreground/70 transition-[transform,opacity] data-[highlighted]:text-foreground data-[state=checked]:text-foreground bg-[color:var(--semantic-color-feedback-bg-warning)] border-[color:var(--semantic-color-feedback-warning)]/40 text-[color:var(--semantic-color-feedback-warning)]");
+
 @import './tokens.generated.css';
 @import './tenants.css';
 
