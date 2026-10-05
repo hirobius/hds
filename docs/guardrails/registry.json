@@ -223,6 +223,26 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-docs",
+      "description": "MDX content-model gate (hds#497): every content/docs/**/*.mdx page must match content-model.md: allowed frontmatter keys, generated token markers instead of hand-written values, no invented props, no pages for removed or deprecated components. Rules live in scripts/docs-rules.json. Runs in the Docs guardrails workflow and in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-docs.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "ci-pr"
+    },
+    {
+      "id": "check-docs.selftest",
+      "description": "Self-test for check-docs (hds#497): plants each rule violation in a temp tree and asserts check-docs fails on it, so a rule cannot silently stop firing. Runs in the Docs guardrails workflow and in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-docs.selftest.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "ci-pr"
+    },
+    {
       "id": "check-exemptions",
       "description": "Keeps escape hatches visible and well-formed. Checks that only known exemption markers are used and every exemption marker includes a non-empty reason after the colon.",
       "severity": "warn",
