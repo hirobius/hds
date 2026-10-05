@@ -1,0 +1,34 @@
+---
+title: "Typography"
+description: "Type system defining font families, semantic hierarchy, and type ramps for display, body, and monospace content."
+status: "stable"
+since: "0.1.0"
+---
+
+# Typography
+
+Typography in Hirobius establishes clear structural hierarchy and readability through dedicated font families for headings, body copy, and technical code.
+
+## Principle
+
+Three typefaces fulfill distinct and exclusive roles across the visual surface:
+
+- **Display & Headings**: Satoshi Bold is used exclusively for section headings and titles, giving structure and authority to layouts.
+- **Body & UI**: Satoshi Medium handles body prose, labels, captions, and interactive controls across application surfaces.
+- **Monospace**: Geist Mono is reserved for code snippets, token references, inline technical callouts, and metric readouts.
+
+## Token Reference
+
+{/* generated: tokens */}
+
+## Usage Guidance
+
+- Do use the `Text` component and semantic typography tokens to maintain consistent hierarchy.
+- Do follow the defined type ramp for section headings, body prose, and UI labels.
+- Do reserve monospace typography for code, token names, and technical identifiers.
+
+## Don'ts
+
+- Don't use display type styles for body prose or UI labels.
+- Don't apply custom font sizes or line-height overrides outside the token ramp.
+- Don't mix font weights arbitrarily across UI controls.
