@@ -1,0 +1,34 @@
+---
+title: "Motion"
+description: "Purposeful animation duration tiers and easing tokens for micro-interactions and spatial transitions."
+status: "stable"
+since: "0.1.0"
+---
+
+# Motion
+
+Motion in Hirobius provides physical feedback and spatial clarity without introducing unnecessary visual noise.
+
+## Principle
+
+Animation serves functional and interaction affordances across UI states:
+
+- **Productive Motion**: Fast, direct transitions (150ms) designed for micro-interactions, hover states, and focus changes.
+- **Expressive Motion**: Physics-aware movement (250ms) reserved for significant UI entrances and teaching moments.
+- **Spatial Motion**: Controlled movement (400ms) for elements traveling larger distances across the viewport.
+
+## Token Reference
+
+{/* generated: tokens */}
+
+## Usage Guidance
+
+- Do use productive motion tokens for interactive feedback on hover, focus, and press states.
+- Do respect reduced-motion user preferences and accessibility settings.
+- Do keep transition durations short to keep application flows feeling responsive.
+
+## Don'ts
+
+- Don't apply playful or bouncy springs to routine interactive controls.
+- Don't use expressive or spatial motion for simple state toggles or micro-interactions.
+- Don't hardcode CSS transition durations or cubic-bezier curves outside system tokens.
