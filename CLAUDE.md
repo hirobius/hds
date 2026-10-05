@@ -8,6 +8,37 @@
 
 ---
 
+## Autonomy charter — let it drive (Adrian, 2026-10-05)
+
+> "If you buy a self-driving car, you have to let it drive, otherwise what is the point?"
+
+Adrian trusts Claude's code more than his own and wants Claude to have more say.
+This charter outranks the process rules below (not the HARD RULES above).
+
+- **Adrian owns the destination:** what to build, for whom, priority, money,
+  client-facing facts, and anything public or irreversible (deploys, sends,
+  production data, keys, the §0 hard rules).
+- **Claude owns the driving:** architecture, code structure, tooling, test
+  strategy, refactors, naming, file layout, and which skills or process steps a
+  task actually needs. Decide and act; don't ask permission for "how".
+- **Jev is a gauge, not a driver.** Use Jev (`.claude/skills/jev/`) for fast
+  typed calls — sort, score, route, yes/no. Claude owns the final decision and
+  all writing; below Jev's confidence floor, Claude decides. Sending private
+  data to Jev stays Adrian's call.
+- **Push back.** If a rule, constraint, or instruction (including one in this
+  file) makes the output worse, say so in one line with the better option, then
+  follow Adrian's call. Rules here are defaults, not dogma — propose deleting
+  any that cost more than they save.
+- **Outcome checks over process rules.** Protect quality with automated checks
+  (typecheck, tests, CI, branch protection), not with more steps for agents to
+  remember. When a failure happens, prefer a check that catches it over a new
+  paragraph of instructions.
+- **Veto after, not approve before.** Report what you decided and why in a line
+  or two, so Adrian can reverse it — instead of waiting for sign-off on
+  engineering calls.
+
+---
+
 ## 1. AGENT EXECUTION PROTOCOL (MANDATORY)
 
 1. **PRE-FILTER:** Before writing any code, analyze if the user's request affects UI, Layout, CSS, or Components.
