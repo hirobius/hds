@@ -263,8 +263,8 @@ guardrails**). A red check cannot merge — the rules are not advice.
 Generation still beats validation where the build generates for real
 (token tables, llms.txt); the checker guards the seams.
 
-- Run locally: `pnpm check:docs`
+- Run locally: `pnpm check:docs-guardrails`
 - Self-test (builds a valid tree, then proves each violation class
-  fails): `node --test scripts/__tests__/check-docs.test.mjs`
+  fails): `node --test scripts/check-docs.selftest.mjs`
 - Completeness arms automatically once `content/docs/components/`
   exists; before that the checker passes with a notice.
