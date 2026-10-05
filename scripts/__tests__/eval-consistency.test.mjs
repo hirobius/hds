@@ -869,7 +869,7 @@ describe('status-sync: checkRepo and check-status-claims --check', () => {
       const file = path.join(d, 'eval/consistency/ledger.json');
       const ledger = JSON.parse(readFileSync(file, 'utf8'));
       const next = structuredClone(ledger.entries[1]);
-      next.date = '2026-10-05';
+      next.date = '2099-12-31'; // after any real entry, so the date always drifts
       writeFileSync(file, JSON.stringify({ ...ledger, entries: [...ledger.entries, next] }));
     });
     const r = checkRepo(dir);

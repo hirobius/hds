@@ -147,6 +147,49 @@
       },
       "pass": false,
       "notes": "Harness run over eval/consistency/runs/2026-09-30."
+    },
+    {
+      "date": "2026-10-05",
+      "source": "harness",
+      "packageVersion": "0.20.0",
+      "tarballSha256": "a6f36e207a6ef20f9941033de404e7cb3f2f7533276eb569696ac034d3397c44",
+      "commit": "3f9c5e3e93b0baff9488d22d61694ec27f9880b0",
+      "apps": ["base-haiku", "base-opus", "base-sonnet"],
+      "measured": {
+        "builds": {
+          "passing": 3,
+          "of": 3
+        },
+        "violations": 0,
+        "axe": 0,
+        "jaccardMin": 0.4091,
+        "lightDiffMax": 3.2096
+      },
+      "detail": {
+        "jaccard": [0.4348, 0.4091, 0.9],
+        "lightDiff": [3.0306, 3.2096, 1.2446],
+        "darkDiff": [7.7343, 6.4018, 5.5572]
+      },
+      "thresholds": {
+        "builds": {
+          "min": 3,
+          "of": 3
+        },
+        "violations": {
+          "max": 0
+        },
+        "axe": {
+          "max": 0
+        },
+        "jaccard": {
+          "min": 0.85
+        },
+        "lightDiff": {
+          "max": 1.5
+        }
+      },
+      "pass": false,
+      "notes": "Harness run over eval/consistency/runs/2026-10-05."
     }
   ]
 }
