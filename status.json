@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-05T06:59:25Z",
+  "updatedAt": "2026-10-05T17:27:15Z",
   "phase": "active",
   "headline": "0.20.0 is published (npm latest, provenance; main entry about 34 kB gzip). Now building the universal upgrade path (epic hds#445): one machine-readable record per release (upgrade/releases/<v>.json), one command for every consumer (npx @hirobius/design-system@latest upgrade), a generated upgrade page and an automatic notice per consumer. Landed: the release ledger schema, 0.19.1/0.20.0 snapshots and the 0.20.0 ledger (#447), and consumer discovery with redaction for private repos (#453). The core ships as 0.20.x patches; no 1.0 cut.",
   "next": [
@@ -52,10 +52,10 @@
     "WAVE 2 MERGED + 0.19.0 RELEASED (2026-09-30): #361 eval harness, #359 tarball agent context, #357 contract JSDoc plumbing, #356 portal scope + scrim, #353 consumer SKILL.md, #362 core usage contracts + contract-coverage gate, #358 DestructiveSection/DataTableSection + one container radius, #355 Version Packages. Release run 36732976200 published 0.19.0 with npm provenance (SLSA v1, builder github-hosted, workflow release.yml on refs/heads/main); tag v0.19.0 and the GitHub release exist. Two Button-only budget regressions were fixed at the root (pure annotations on AlertDialog forwardRefs; CommandPalette displayName moved into the declaration so the inlined manifest no longer rides in Button-only bundles, 121.8 -> 56.5 kB); the systemic follow-up is hds#363."
   ],
   "consistency": {
-    "date": "2026-09-30",
+    "date": "2026-10-05",
     "source": "harness",
     "pass": false,
-    "jaccardMin": 0.7368,
-    "lightDiffMax": 1.0268
+    "jaccardMin": 0.4091,
+    "lightDiffMax": 3.2096
   }
 }
