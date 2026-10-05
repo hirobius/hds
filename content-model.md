@@ -16,7 +16,7 @@ component: "Button"
 status: "stable" # "stable" | "deprecated" | "experimental"
 since: "0.1.0"
 related:
-  - "IconButton"
+  - "Callout"
   - "FormActions"
 ---
 ```
@@ -30,7 +30,7 @@ related:
 | `component` | `string` | No | Primary export name from `@hirobius/design-system`. | `"Button"` |
 | `status` | `enum` | **Yes** | System maturity status: `"stable"`, `"deprecated"`, or `"experimental"`. | `"stable"` |
 | `since` | `string` | No | Package version in which the component or feature was introduced. | `"0.1.0"` |
-| `related` | `string[]` | No | Array of related component names or page routes. | `["IconButton", "Form"]` |
+| `related` | `string[]` | No | Array of related component names or page routes. | `["Callout", "FormActions"]` |
 
 ---
 
@@ -61,9 +61,10 @@ To preserve accuracy, zero-debt architecture, and maintainability across automat
   {/* preview: <ComponentName> */}
   ```
 
-### Rule 4: Exclude 32 Removed Components
-- Do not create component pages for the 32 components removed in v0.20.0 (e.g. `AppShell`, `Calendar`, `SideNav`, `TopNav`, `ContextMenu`, etc.).
+### Rule 4: Exclude 32 Removed Components & Deprecated Variants
+- Do not create component pages for the 32 components removed in v0.20.0 (e.g. `AppShell`, `Calendar`, `SideNav`, `TopNav`, `ContextMenu`, etc.) or deprecated primitives like `StatusDot`.
 - Deprecated and removed components are documented exclusively in `guides/deprecation.mdx`.
+- Ground truth for core components is `scripts/lib/core-components.mjs`.
 
 ---
 
