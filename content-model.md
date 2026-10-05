@@ -16,8 +16,8 @@ component: "Button"
 status: "stable" # "stable" | "deprecated" | "experimental"
 since: "0.1.0"
 related:
-  - "Callout"
-  - "FormActions"
+  - "Alert"
+  - "Badge"
 ---
 ```
 
@@ -30,7 +30,7 @@ related:
 | `component` | `string` | No | Primary export name from `@hirobius/design-system`. | `"Button"` |
 | `status` | `enum` | **Yes** | System maturity status: `"stable"`, `"deprecated"`, or `"experimental"`. | `"stable"` |
 | `since` | `string` | No | Package version in which the component or feature was introduced. | `"0.1.0"` |
-| `related` | `string[]` | No | Array of related component names or page routes. | `["Callout", "FormActions"]` |
+| `related` | `string[]` | No | Array of related component names or page routes. | `["Alert", "Badge"]` |
 
 ---
 
@@ -241,3 +241,30 @@ status: "stable"
 - <Recommendation 1>
 - <Recommendation 2>
 ```
+
+---
+
+## 4. Enforcement — Prose Explains, Code Enforces
+
+Every rule in this document names its mechanical check in
+`scripts/check-docs.mjs` (rules file: `scripts/docs-rules.json`). CI runs
+the checker on every PR touching `content/docs/**` (workflow: **Docs
+guardrails**). A red check cannot merge — the rules are not advice.
+
+| Rule | Check (check-docs.mjs) |
+| :--- | :--- |
+| Frontmatter schema (§1) | `frontmatter` — required keys present, `status` in enum, `since` is semver, no unknown keys; `related` entries must be core component names or resolvable /docs routes |
+| Rule 1 — generated token tables | `colors` (no hex/rgb/hsl literals in prose) + `markers` (generated-tokens marker on component and foundation pages) |
+| Rule 2 — never invent props | `markers` (props marker, or the explicit props-TODO marker, on every component page) |
+| Rule 3 — live previews | `markers` (preview marker naming the page's component) |
+| Rule 4 — no removed/deprecated pages | `membership` (page identity and frontmatter `component` must be in `scripts/lib/core-components.mjs`) + `completeness` (every core component has a page; the three providers are accounted for by `guides/providers.mdx`) |
+| Internal navigation | `links` (/docs routes and relative links resolve to real pages) |
+
+Generation still beats validation where the build generates for real
+(token tables, llms.txt); the checker guards the seams.
+
+- Run locally: `pnpm check:docs-guardrails`
+- Self-test (builds a valid tree, then proves each violation class
+  fails): `node --test scripts/check-docs.selftest.mjs`
+- Completeness arms automatically once `content/docs/components/`
+  exists; before that the checker passes with a notice.
