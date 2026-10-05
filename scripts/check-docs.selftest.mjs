@@ -86,11 +86,11 @@ function buildValidTree() {
   // Removed/deprecated names are fine as prose in the deprecation guide.
   writeFileSync(
     join(docs, 'guides', 'deprecation.mdx'),
-    guidePage('Deprecation', 'StatusDot was folded into Badge. AppShell was removed in 0.20.0.')
+    guidePage('Deprecation', 'StatusDot was folded into Badge. AppShell was removed in 0.20.0.'),
   );
   writeFileSync(
     join(docs, 'foundations', 'color.mdx'),
-    `---\ntitle: "Color"\ndescription: "Color foundation."\nstatus: "stable"\nsince: "0.20.0"\n---\n\n# Color\n\n## Token Reference\n\n{/* generated: tokens */}\n`
+    `---\ntitle: "Color"\ndescription: "Color foundation."\nstatus: "stable"\nsince: "0.20.0"\n---\n\n# Color\n\n## Token Reference\n\n{/* generated: tokens */}\n`,
   );
   return rootDir;
 }
@@ -153,6 +153,30 @@ test('a hand-written hex value in prose fails (colors)', () => {
     assert.match(out, /hex color/);
   } finally {
     rmSync(rootDir, { recursive: true, force: true });
+  }
+});
+
+test('issue references like #497 are not hex colors, but short hex still fails (colors)', () => {
+  const rootDir = mutate((docs) => {
+    const file = join(docs, 'components', 'button.mdx');
+    writeFileSync(file, `${componentPage('Button')}\nTracked in #497 and hds#1234.\n`);
+  });
+  try {
+    const { status, out } = run(rootDir);
+    assert.equal(status, 0, out);
+  } finally {
+    rmSync(rootDir, { recursive: true, force: true });
+  }
+  const shortHex = mutate((docs) => {
+    const file = join(docs, 'components', 'button.mdx');
+    writeFileSync(file, `${componentPage('Button')}\nBorder is #fa0 here.\n`);
+  });
+  try {
+    const { status, out } = run(shortHex);
+    assert.equal(status, 1, out);
+    assert.match(out, /hex color/);
+  } finally {
+    rmSync(shortHex, { recursive: true, force: true });
   }
 });
 

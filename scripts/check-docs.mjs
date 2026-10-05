@@ -53,8 +53,7 @@ const core = new Set(CORE_COMPONENTS);
 const providers = new Set(rules.providerComponents);
 
 const errors = [];
-const err = (file, line, check, message) =>
-  errors.push({ file, line, check, message });
+const err = (file, line, check, message) => errors.push({ file, line, check, message });
 
 const slugToName = (slug) =>
   rules.slugExceptions[slug] ??
@@ -147,7 +146,11 @@ const rel = (f) => relative(root, f).split(sep).join('/');
 const routes = new Set(['/docs']);
 for (const f of files) {
   let route =
-    '/docs/' + relative(contentDir, f).split(sep).join('/').replace(/\.mdx?$/, '');
+    '/docs/' +
+    relative(contentDir, f)
+      .split(sep)
+      .join('/')
+      .replace(/\.mdx?$/, '');
   if (route.endsWith('/index')) route = route.slice(0, -'/index'.length);
   routes.add(route);
 }
@@ -155,23 +158,42 @@ for (const f of files) {
 function checkFrontmatter(file, fm) {
   const { data } = fm;
   for (const key of rules.requiredFrontmatterKeys) {
-    if (data[key] === undefined || data[key] === '' || (Array.isArray(data[key]) && data[key].length === 0)) {
+    if (
+      data[key] === undefined ||
+      data[key] === '' ||
+      (Array.isArray(data[key]) && data[key].length === 0)
+    ) {
       err(file, 1, 'frontmatter', `missing required frontmatter key: ${key}`);
     }
   }
   for (const key of Object.keys(data)) {
     if (!rules.allowedFrontmatterKeys.includes(key)) {
-      err(file, 1, 'frontmatter', `unknown frontmatter key: ${key} (allowed: ${rules.allowedFrontmatterKeys.join(', ')})`);
+      err(
+        file,
+        1,
+        'frontmatter',
+        `unknown frontmatter key: ${key} (allowed: ${rules.allowedFrontmatterKeys.join(', ')})`,
+      );
     }
   }
   if (data.status !== undefined && !rules.statusEnum.includes(data.status)) {
-    err(file, 1, 'frontmatter', `status "${data.status}" not in enum: ${rules.statusEnum.join(' | ')}`);
+    err(
+      file,
+      1,
+      'frontmatter',
+      `status "${data.status}" not in enum: ${rules.statusEnum.join(' | ')}`,
+    );
   }
   if (data.since !== undefined && !/^\d+\.\d+\.\d+$/.test(String(data.since))) {
     err(file, 1, 'frontmatter', `since "${data.since}" is not a semver (x.y.z)`);
   }
   if (data.component !== undefined && !core.has(String(data.component))) {
-    err(file, 1, 'membership', `frontmatter component "${data.component}" is not in CORE_COMPONENTS — removed/deprecated names live only in ${rules.deprecationGuide}`);
+    err(
+      file,
+      1,
+      'membership',
+      `frontmatter component "${data.component}" is not in CORE_COMPONENTS — removed/deprecated names live only in ${rules.deprecationGuide}`,
+    );
   }
   if (Array.isArray(data.related)) {
     for (const entry of data.related) {
@@ -181,7 +203,12 @@ function checkFrontmatter(file, fm) {
           err(file, 1, 'links', `related route "${name}" does not resolve to a docs page`);
         }
       } else if (!core.has(name)) {
-        err(file, 1, 'membership', `related "${name}" is not a core component name or a /docs route (stale name?)`);
+        err(
+          file,
+          1,
+          'membership',
+          `related "${name}" is not a core component name or a /docs route (stale name?)`,
+        );
       }
     }
   }
@@ -190,7 +217,8 @@ function checkFrontmatter(file, fm) {
 function checkColors(file, proseLines, lineOffset) {
   const patterns = [
     { re: /#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{8}\b/, label: 'hex color' },
-    { re: /[:\s(=]#[0-9a-fA-F]{3,4}\b/, label: 'hex color' },
+    // Short hex needs a letter: all-digit #497 is an issue reference, not a color.
+    { re: /[:\s(=]#(?=[0-9]*[a-fA-F])[0-9a-fA-F]{3,4}\b/, label: 'hex color' },
     { re: /\brgba?\s*\(/, label: 'rgb() color' },
     { re: /\bhsla?\s*\(/, label: 'hsl() color' },
   ];
@@ -199,7 +227,12 @@ function checkColors(file, proseLines, lineOffset) {
     const scanned = line.replace(/\]\([^)]*\)/g, (m) => ' '.repeat(m.length));
     for (const { re, label } of patterns) {
       if (re.test(scanned)) {
-        err(file, i + lineOffset + 1, 'colors', `hand-written ${label} in prose — token tables are generated (${rules.markers.tokens}); see content-model Rule 1`);
+        err(
+          file,
+          i + lineOffset + 1,
+          'colors',
+          `hand-written ${label} in prose — token tables are generated (${rules.markers.tokens}); see content-model Rule 1`,
+        );
         break;
       }
     }
@@ -220,7 +253,12 @@ function checkLinks(file, prose) {
       }
     } else if (!pathPart.startsWith('/')) {
       const base = resolve(dirname(file), pathPart);
-      const candidates = [`${base}.mdx`, `${base}.md`, join(base, 'index.mdx'), join(base, 'index.md')];
+      const candidates = [
+        `${base}.mdx`,
+        `${base}.md`,
+        join(base, 'index.mdx'),
+        join(base, 'index.md'),
+      ];
       if (!candidates.some((c) => existsSync(c))) {
         err(file, null, 'links', `relative link "${target}" does not resolve to a file`);
       }
@@ -247,26 +285,62 @@ for (const file of files) {
 
   const inDir = (d) => r.startsWith(`${rules.contentRoot}/${d}/`);
   if (inDir('components')) {
-    const slug = r.split('/').pop().replace(/\.mdx?$/, '');
+    const slug = r
+      .split('/')
+      .pop()
+      .replace(/\.mdx?$/, '');
     const name = slugToName(slug);
     seenComponentPages.add(name);
     if (!core.has(name)) {
-      err(r, 1, 'membership', `component page "${slug}" maps to "${name}", which is not in CORE_COMPONENTS — removed/deprecated components are documented only in ${rules.deprecationGuide} (content-model Rule 4)`);
+      err(
+        r,
+        1,
+        'membership',
+        `component page "${slug}" maps to "${name}", which is not in CORE_COMPONENTS — removed/deprecated components are documented only in ${rules.deprecationGuide} (content-model Rule 4)`,
+      );
     } else if (fm && String(fm.data.component ?? '') !== name) {
-      err(r, 1, 'membership', `frontmatter component must be "${name}" on its page (found: ${fm?.data.component ?? 'missing'})`);
+      err(
+        r,
+        1,
+        'membership',
+        `frontmatter component must be "${name}" on its page (found: ${fm?.data.component ?? 'missing'})`,
+      );
     }
     if (!source.includes(`{/* preview: ${name} */}`)) {
-      err(r, null, 'markers', `missing live preview marker {/* preview: ${name} */} (content-model Rule 3)`);
+      err(
+        r,
+        null,
+        'markers',
+        `missing live preview marker {/* preview: ${name} */} (content-model Rule 3)`,
+      );
     }
-    if (!source.includes(`{/* props: ${name} */}`) && !source.includes(rules.markers.propsTodoPrefix)) {
-      err(r, null, 'markers', `missing props marker {/* props: ${name} */} or the explicit ${rules.markers.propsTodoPrefix} … */} (content-model Rule 2 — never invent props)`);
+    if (
+      !source.includes(`{/* props: ${name} */}`) &&
+      !source.includes(rules.markers.propsTodoPrefix)
+    ) {
+      err(
+        r,
+        null,
+        'markers',
+        `missing props marker {/* props: ${name} */} or the explicit ${rules.markers.propsTodoPrefix} … */} (content-model Rule 2 — never invent props)`,
+      );
     }
     if (!source.includes(rules.markers.tokens)) {
-      err(r, null, 'markers', `missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1)`);
+      err(
+        r,
+        null,
+        'markers',
+        `missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1)`,
+      );
     }
   }
   if (inDir('foundations') && !source.includes(rules.markers.tokens)) {
-    err(r, null, 'markers', `foundation page missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1)`);
+    err(
+      r,
+      null,
+      'markers',
+      `foundation page missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1)`,
+    );
   }
 }
 
@@ -274,20 +348,32 @@ if (componentsArmed) {
   const expected = CORE_COMPONENTS.filter((n) => !providers.has(n));
   const missing = expected.filter((n) => !seenComponentPages.has(n));
   for (const name of missing) {
-    err(`${rules.contentRoot}/components/`, null, 'completeness', `core component "${name}" has no page (expected components/${name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}.mdx)`);
+    err(
+      `${rules.contentRoot}/components/`,
+      null,
+      'completeness',
+      `core component "${name}" has no page (expected components/${name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}.mdx)`,
+    );
   }
   const providerGuidePath = join(contentDir, rules.providerGuide);
   if (!existsSync(providerGuidePath)) {
-    err(`${rules.contentRoot}/${rules.providerGuide}`, null, 'completeness', `providers (${[...providers].join(', ')}) must be accounted for by ${rules.providerGuide} — one shared providers guide, not separate pages`);
+    err(
+      `${rules.contentRoot}/${rules.providerGuide}`,
+      null,
+      'completeness',
+      `providers (${[...providers].join(', ')}) must be accounted for by ${rules.providerGuide} — one shared providers guide, not separate pages`,
+    );
   }
 }
 
 if (asJson) {
-  console.log(JSON.stringify({ ok: errors.length === 0, filesChecked: files.length, errors }, null, 2));
+  console.log(
+    JSON.stringify({ ok: errors.length === 0, filesChecked: files.length, errors }, null, 2),
+  );
 } else if (errors.length === 0) {
   console.log(
     `check-docs: OK — ${files.length} MDX file(s) under ${rules.contentRoot}` +
-      (componentsArmed ? '' : ' (components/ not present yet — completeness armed when it lands)')
+      (componentsArmed ? '' : ' (components/ not present yet — completeness armed when it lands)'),
   );
 } else {
   console.error(`check-docs: ${errors.length} violation(s):`);
