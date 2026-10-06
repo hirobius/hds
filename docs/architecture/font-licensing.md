@@ -3,7 +3,7 @@
 **Unit:** 12m-mt-typography-licensing  
 **Decided:** 2026-05-03
 
-All three HDS fonts are cleared for tenant subdomain deployment with no renegotiation required.
+All HDS fonts are cleared for tenant subdomain deployment with no renegotiation required.
 
 ## Clash Display — ITF Free Font License (Fontshare)
 
@@ -32,7 +32,7 @@ All three HDS fonts are cleared for tenant subdomain deployment with no renegoti
 ## Atkinson Hyperlegible — SIL Open Font License 1.1 (Braille Institute) — woff2 retained, not currently @font-face declared
 
 - **Subdomains:** Unrestricted. Same OFL 1.1 terms as IBM Plex Mono.
-- **Attribution:** Include OFL license text only if shipped to runtime. As of 2026-05 the system has migrated to Clash Grotesk + Clash Display + Geist Mono and Atkinson is not loaded.
+- **Attribution:** Include OFL license text only if shipped to runtime. As of 2026-10 the system loads Satoshi + IBM Plex Mono only; Atkinson is not loaded.
 - **Project status:** woff2 files retained in `public/fonts/atkinson-hyperlegible-*.woff2` for optional accessibility fallback, but no `@font-face` rule references them. To re-enable for a specific tenant or accessibility opt-in, add `@font-face` declarations and a custom CSS variable override.
 
 ## Summary for Client Deployments

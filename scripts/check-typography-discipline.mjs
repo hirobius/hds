@@ -60,7 +60,8 @@ const allViolations = [];
 
 if (RUN_ALL || FONTS_ONLY) {
   const FORBIDDEN_PATTERNS = [
-    // fontFamily prop with a quoted raw font name (in style objects)
+    // fontFamily prop with a quoted raw font name (in style objects). Retired
+    // faces (Geist Mono, Clash) stay listed so they cannot creep back in.
     /fontFamily\s*[=:]\s*["'`](?:IBM Plex Mono|ibm-plex-mono|Geist Mono|geist-mono|Clash Display|clash-display|Clash Grotesk|clash-grotesk|monospace|sans-serif|serif|system-ui)["'`]/i,
     // font-family CSS property with raw mono family names (in CSS-in-JS)
     /"font-family"\s*:\s*["'`](?:IBM Plex Mono|Geist Mono|Clash Display|Clash Grotesk)["'`]/i,
