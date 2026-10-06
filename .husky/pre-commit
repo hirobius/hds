@@ -22,7 +22,7 @@ echo "Secrets scan (gitleaks; skips gracefully if absent)…"
 pnpm check:secrets
 
 echo "Prettier (staged files)…"
-pnpm exec lint-staged
+node scripts/run-lint-staged.mjs
 
 echo "Typecheck…"
 pnpm typecheck
