@@ -74,3 +74,6 @@ codemods/__fixtures__/
 # Agent-built consistency runs are recorded inputs to the harness (hds#344);
 # formatting them would change what the ledger entry measured.
 eval/consistency/runs/
+
+# Vendored skills — pinned by sha256 in skills-lock.json; formatting would break the hash
+.claude/skills/

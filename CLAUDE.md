@@ -155,16 +155,18 @@ may skip:
 
 - **Building anything (component, token work, validator, fix) → `/implement` + `/tdd`**
   (test-first, red-green-refactor). No "just write it."
-- **Epic / multi-part / fuzzy task → `/to-tickets`** (dependency-ordered
-  tickets); `/grill-me` first if the _plan_ itself is unclear.
-- **Before opening ANY PR → `/code-review`** (dual-axis: standards + spec).
+- **Epic / spec → `/to-spec` → `/to-tickets` → `/implement-spec`** (ticket
+  graph, parallel worktrees, one integration branch); `/grill-me` first if the
+  _plan_ itself is unclear.
+- **Before opening ANY PR → `/code-review`, then write the body with `/pr`**
+  (Summary visual · Evidence · Merge Danger — the fleet's PR format).
+- **End of a real session → `/retro`** (environment fixes: checks over prose).
 - **A bug → `/diagnosing-bugs`** (reproduce → minimize → hypothesize → fix),
   then `/tdd`.
 - **Design-touching / new module → `/codebase-design`**; periodic design-debt
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
 - **Charting a multi-decision lane → `/wayfinder`.**
-- **Spec before implement-spec → `/to-spec`.**
 
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
