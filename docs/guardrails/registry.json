@@ -537,6 +537,17 @@
       "firingChannels": ["pre-push"]
     },
     {
+      "id": "check-tests-with-code",
+      "description": "TDD gate (ported from ops#502): a branch that changes source (src/ or scripts/ code files, excluding tests and fixtures) must also change a test file, else the push fails. Test globs are read from vitest.config.ts test.include, never duplicated. Diffs HEAD against the merge-base with origin/main; skips with one line when there is none. Escape hatch: a `no-test: <reason>` line in any branch commit message (the reason is echoed). Fixture mode (--fixture-mode + FIXTURE_FILE) replaces git for proof-of-firing.",
+      "severity": "error",
+      "gateScript": "scripts/check-tests-with-code.mjs",
+      "fixturePath": "fixtures/check-tests-with-code",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-push",
+      "firingChannels": ["pre-push"]
+    },
+    {
       "id": "check-story-coverage",
       "description": "Fails when a consumer-facing component has no Storybook story. A storyless component is invisible on the generated reference site AND is never swept by check-rendered-geometry, so it reads as clean when nothing has looked at it. Exemption is not a list kept in the gate: it is the ratified disposition (hds#235), where internal components are out of the consumer-facing surface — seven of them are Compiler primitives defined in a build script rather than React modules. A hand-kept allowlist is what the old componentPreviewRegistry tried: 46 entries, 16 naming components that no longer existed, 109 of 139 missing.",
       "severity": "error",

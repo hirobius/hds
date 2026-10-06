@@ -37,6 +37,32 @@
         ]
       }
     ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__github__create_pull_request|mcp__github__update_pull_request",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/hooks/check-pr-body.mjs\"",
+            "shell": "bash",
+            "timeout": 10,
+            "statusMessage": "Checking PR body shape..."
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); case \"$input\" in *\"gh pr create\"*) printf %s \"$input\" | node \"$CLAUDE_PROJECT_DIR/scripts/hooks/check-pr-body.mjs\";; esac",
+            "shell": "bash",
+            "timeout": 10,
+            "statusMessage": "Checking PR body shape..."
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
