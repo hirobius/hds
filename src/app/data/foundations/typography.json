@@ -31,7 +31,7 @@
     },
     {
       "id": "mono-scope",
-      "rule": "Use Geist Mono for token chips, inline code, file paths, and technical metadata.",
+      "rule": "Use IBM Plex Mono for token chips, inline code, file paths, and technical metadata.",
       "enforceable": false,
       "valid": "<InlineCode>{tokenPath}</InlineCode>",
       "invalid": "<p style={hds.typeStyles.mono}>See our documentation</p>"

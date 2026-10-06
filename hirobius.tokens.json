@@ -489,8 +489,8 @@
           "$description": "Display face: Satoshi Bold (ITF), bound to display/h1/h2/h3 composites."
         },
         "mono": {
-          "$value": ["Geist Mono", "Courier New", "monospace"],
-          "$description": "Monospace face: Geist Mono. Falls back to Courier New, monospace."
+          "$value": ["IBM Plex Mono", "Courier New", "monospace"],
+          "$description": "Monospace face: IBM Plex Mono (replaced Geist Mono 2026-10-06, hds#506). Falls back to Courier New, monospace."
         }
       },
       "size": {
@@ -1803,7 +1803,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px)."
+        "$description": "Monospace for code, token names, shortcuts. IBM Plex Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px)."
       },
       "lineHeight": {
         "none": {

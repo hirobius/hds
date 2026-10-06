@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-01T14:42:41.226Z",
+  "generated": "2026-10-06T01:23:44.764Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -9665,8 +9665,8 @@
         "path": "primitive.typography.family.mono",
         "cssVar": "--primitive-typography-family-mono",
         "type": "fontFamily",
-        "description": "Monospace face: Geist Mono. Falls back to Courier New, monospace.",
-        "value": "\"Geist Mono\", \"Courier New\", monospace"
+        "description": "Monospace face: IBM Plex Mono (replaced Geist Mono 2026-10-06, hds#506). Falls back to Courier New, monospace.",
+        "value": "\"IBM Plex Mono\", \"Courier New\", monospace"
       },
       {
         "path": "primitive.typography.size.xs",
@@ -11011,9 +11011,9 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
+        "description": "Monospace for code, token names, shortcuts. IBM Plex Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
         "composite": {
-          "fontFamily": "\"Geist Mono\", \"Courier New\", monospace",
+          "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "14px",
           "fontWeight": "400",
           "letterSpacing": "0em",

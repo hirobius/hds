@@ -26,7 +26,7 @@
  *
  * 3. typography-overrides (from audit-typography-overrides.mjs):
  *    Enforces single-weight + casing-via-eyebrow policy:
- *    - Satoshi 500 / Satoshi 700 (Bold) / Geist Mono 400 are the only weights.
+ *    - Satoshi 500 / Satoshi 700 (Bold) / IBM Plex Mono 400 are the only weights.
  *    - textTransform overrides must use hds.typeStyles.eyebrow composite.
  *    Escape hatch: add "// eyebrow-ok: <reason>" or "audit-ok: typography" comments.
  *
@@ -61,9 +61,9 @@ const allViolations = [];
 if (RUN_ALL || FONTS_ONLY) {
   const FORBIDDEN_PATTERNS = [
     // fontFamily prop with a quoted raw font name (in style objects)
-    /fontFamily\s*[=:]\s*["'`](?:Geist Mono|geist-mono|Clash Display|clash-display|Clash Grotesk|clash-grotesk|monospace|sans-serif|serif|system-ui)["'`]/i,
+    /fontFamily\s*[=:]\s*["'`](?:IBM Plex Mono|ibm-plex-mono|Geist Mono|geist-mono|Clash Display|clash-display|Clash Grotesk|clash-grotesk|monospace|sans-serif|serif|system-ui)["'`]/i,
     // font-family CSS property with raw mono family names (in CSS-in-JS)
-    /"font-family"\s*:\s*["'`](?:Geist Mono|Clash Display|Clash Grotesk)["'`]/i,
+    /"font-family"\s*:\s*["'`](?:IBM Plex Mono|Geist Mono|Clash Display|Clash Grotesk)["'`]/i,
   ];
 
   const SKIP_FILES_FONTS = new Set([

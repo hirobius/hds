@@ -30,7 +30,7 @@ HDS ships three typefaces — each with a distinct and exclusive role:
 
 - **Display / Heading font**: Satoshi. Bound exclusively to `display`, `h1`, `h2`, and `h3` styles. Never used for body copy or UI labels.
 - **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
-- **Mono font**: Geist Mono. Reserved for tokens, code, technical callouts, and metric readouts.
+- **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
 Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · h1 · h2 · h3) use `700` bold; body, UI, and caption use `500` medium. Declared but unused by any semantic role: `400` regular.
 

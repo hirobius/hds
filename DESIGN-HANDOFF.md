@@ -15,7 +15,7 @@
 | Attribute         | Value                                                        |
 | ----------------- | ------------------------------------------------------------ |
 | Brand accent      | `#111111` (`semantic.accent.rest`)                           |
-| Font              | Satoshi (self-hosted) + Geist Mono (monospace)               |
+| Font              | Satoshi (self-hosted) + IBM Plex Mono (monospace)            |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
 | Action radius     | `8px` (`semantic.radius.action`) for interactive controls    |
@@ -241,7 +241,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `ui`              | 14px       | 500    | 20px        | 0em            | UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).                                                      |
 | `caption`         | 12px       | 500    | 16px        | 0em            | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283). |
 | `eyebrow`         | 12px       | 500    | 16px        | 0.06em         | Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).                                                         |
-| `mono`            | 14px       | 400    | 20px        | 0em            | Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).                               |
+| `mono`            | 14px       | 400    | 20px        | 0em            | Monospace for code, token names, shortcuts. IBM Plex Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).                            |
 | `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                                                                       |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
@@ -551,7 +551,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 <!-- auto:start:agent-constraints -->
 
 - **One accent color:** `#111111` (`semantic.accent.rest`) only — no other hues
-- **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and Geist Mono for code; no other faces
+- **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale
 - **True monochromatic neutrals:** No warm/cool tint in neutral scale
