@@ -50,6 +50,9 @@ Append to progress.txt (terse, grammar optional):
   per issue instead. Note this is necessary but NOT sufficient — a clean
   bare reference has also failed — so the harness verifies the transition
   after the merge regardless (ops#305).
+- Write the rest of the PR body with the `pr` skill (Summary visual ·
+  Evidence · Merge Danger), following .github/PULL_REQUEST_TEMPLATE.md.
+  Evidence = the gate output or the test that went red → green.
 - Comment the issue with a 2-line summary
 - Never merge. Never push to main. A human approves merges
   (`ralph-approved` on the PR, or the issue was pre-tagged `ralph-auto`).
