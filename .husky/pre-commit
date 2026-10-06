@@ -1,6 +1,12 @@
 #!/usr/bin/env sh
 set -e
 
+# Quiet by default: scripts/hook-run.mjs runs each stage below (the echo line
+# names it, the lines under it are its commands), prints one summary line when
+# green and only the failing stage + a log path when red. HOOK_VERBOSE=1 runs
+# this file as-is with full output.
+[ -n "$HOOK_RUN_RAW" ] || exec node scripts/hook-run.mjs "$(basename "$0")"
+
 # ── Lean pre-commit gate set (ADR-018 §5 / #52) ──────────────────────────────
 # Fast, deterministic, environment-agnostic: no network fetches, no browser, no
 # binary downloads. This ends the --no-verify era — every gate here runs in any
