@@ -60,6 +60,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync, spawn } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
 import { matchesScope } from './lib/gate-scope.mjs';
+import { failureExcerpt, formatDuration, openLog } from './lib/hook-output.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REGISTRY_PATH = path.join(ROOT, 'docs/guardrails/registry.json');
@@ -125,6 +126,29 @@ const concurrency = parallelArg ? Math.max(1, parseInt(parallelArg, 10)) : defau
 // captured output is re-emitted to the parent's stdout so the operator still
 // sees progress, and the per-gate record is appended to inventoryRecords.
 // At process exit time the aggregate is written to the inventory path.
+
+// Quiet mode (default for local serial runs): per-gate output is captured to
+// $(git rev-parse --git-dir)/hook-logs/run-gates-<ts>.log; green gates print
+// one line, a red gate prints its excerpt plus the log path. HOOK_VERBOSE=1 or
+// CI=true (CI logs want everything) restore streaming. Exit codes unchanged.
+const QUIET =
+  process.env.HOOK_VERBOSE !== '1' &&
+  process.env.CI !== 'true' &&
+  concurrency <= 1 &&
+  !emitInventoryArg &&
+  !dryRun;
+let quietLog = null;
+if (QUIET) {
+  try {
+    const gitDir = spawnSync('git', ['rev-parse', '--absolute-git-dir'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    }).stdout.trim();
+    if (gitDir) quietLog = openLog(gitDir, 'run-gates');
+  } catch {
+    /* no log */
+  }
+}
 
 const inventoryRecords = [];
 
@@ -312,7 +336,7 @@ function buildArgv(gate) {
 function runGateSync(gate) {
   const args = buildArgv(gate);
   const start = performance.now();
-  const useCapture = !!emitInventoryArg;
+  const useCapture = !!emitInventoryArg || QUIET;
   const result = spawnSync(process.execPath, args, {
     cwd: ROOT,
     stdio: useCapture ? ['ignore', 'pipe', 'pipe'] : 'inherit',
@@ -324,9 +348,21 @@ function runGateSync(gate) {
   const durationMs = Math.round(performance.now() - start);
   if (useCapture) {
     const captured = { stdout: result.stdout ?? '', stderr: result.stderr ?? '' };
-    if (captured.stdout) process.stdout.write(captured.stdout);
-    if (captured.stderr) process.stderr.write(captured.stderr);
-    recordInventory(gate, code, durationMs, captured);
+    if (QUIET) {
+      const all = `${captured.stdout}${captured.stderr}`;
+      if (quietLog) fs.appendFileSync(quietLog, `\n===== ${gate.id} (exit ${code}) =====\n${all}`);
+      if (code === 0) {
+        console.log(`✓ ${gate.id} (${formatDuration(durationMs)})`);
+      } else {
+        console.error(`✗ ${gate.id} (exit ${code})`);
+        console.error(failureExcerpt(all));
+        if (quietLog) console.error(`full log: ${quietLog}  (HOOK_VERBOSE=1 for live output)`);
+      }
+    } else {
+      if (captured.stdout) process.stdout.write(captured.stdout);
+      if (captured.stderr) process.stderr.write(captured.stderr);
+      recordInventory(gate, code, durationMs, captured);
+    }
   }
   return code;
 }
@@ -387,14 +423,14 @@ const label = gateArg
   ? `gate '${gateArg}'`
   : `channel '${channelArg}' (${selectedGates.length} gate(s))`;
 
-console.log(`run-gates: running ${label}`);
+if (!QUIET) console.log(`run-gates: running ${label}`);
 
 const failures = [];
 
 if (concurrency <= 1) {
   // Serial execution — declaration order preserved
   for (const gate of selectedGates) {
-    console.log(`\n── [${gate.id}] ──`);
+    if (!QUIET) console.log(`\n── [${gate.id}] ──`);
     const code = runGateSync(gate);
     if (code !== 0) {
       failures.push({ id: gate.id, code });
@@ -432,7 +468,7 @@ if (concurrency <= 1) {
 writeInventory();
 
 if (failures.length === 0) {
-  console.log(`\n✓ run-gates: all ${selectedGates.length} gate(s) passed`);
+  console.log(`${QUIET ? '' : '\n'}✓ run-gates: all ${selectedGates.length} gate(s) passed`);
   process.exit(0);
 } else {
   console.error(`\n✗ run-gates: ${failures.length} gate(s) failed:`);

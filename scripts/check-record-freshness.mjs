@@ -204,8 +204,8 @@ function main() {
       `✗ check-record-freshness — status.json is stale.\n` +
         `  commit ${statusResult.newest.sha.slice(0, 8)} (${statusResult.newest.date}) touches ` +
         `src/, scripts/ or docs/adr/, but status.json's updatedAt is ${status.updatedAt}.\n` +
-        `  fix: update status.json (updatedAt, phase, headline, next, blocked) to reflect this ` +
-        `push, per CLAUDE.md, then amend/include it in what you push.`,
+        `  fix: run \`pnpm status:touch\` (sets updatedAt to now), update phase/headline/next/blocked ` +
+        `if they changed, then commit status.json with this push.`,
     );
   }
 

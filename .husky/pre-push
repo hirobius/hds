@@ -1,6 +1,12 @@
 #!/usr/bin/env sh
 set -e
 
+# Quiet by default: scripts/hook-run.mjs runs each stage below (the echo line
+# names it, the lines under it are its commands), prints one summary line when
+# green and only the failing stage + a log path when red. HOOK_VERBOSE=1 runs
+# this file as-is with full output.
+[ -n "$HOOK_RUN_RAW" ] || exec node scripts/hook-run.mjs "$(basename "$0")"
+
 # ── Lean pre-push gate set (ADR-018 §5 / #52) ────────────────────────────────
 # Deterministic and environment-agnostic: no live-site fetches (was:
 # visual-ingest → hirobius.io), no browser-dependent steps (was: test:a11y via
@@ -10,14 +16,16 @@ set -e
 # The heavier lean gates that need a full toolchain — Storybook build and
 # size-limit — run in CI (chromatic.yml / quality.yml), not at push time.
 
-echo "Unit + contract tests (pnpm test: pretest gates + vitest)…"
-pnpm test
-
-echo "Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)…"
-pnpm smoke:consumer
-
+# Runs FIRST: it is cheap, and when it is going to fail the slow gates below
+# should not burn minutes first. Fix: `pnpm status:touch`.
 # Replaces "update it at intervals": status.json/CHANGELOG.md going stale is a
 # convention nothing enforced (hds#249). A push is the state change the fleet
 # dashboard shows, so this runs here rather than per-commit.
 echo "Record freshness (status.json + changeset presence)…"
 node scripts/check-record-freshness.mjs
+
+echo "Unit + contract tests (pnpm test: pretest gates + vitest)…"
+pnpm test
+
+echo "Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)…"
+pnpm smoke:consumer
