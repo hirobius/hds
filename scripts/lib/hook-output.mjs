@@ -31,7 +31,8 @@ export function formatDuration(ms) {
 /** Stage label, with a count appended when the output carries a known one. */
 export function stageLabel(name, output) {
   if (name === 'test') {
-    const m = /Tests\s+(?:\d+ failed \| )?(\d+) passed/.exec(output ?? '');
+    const plain = String(output ?? '').replace(/\x1b\[[0-9;]*m/g, '');
+    const m = /Tests\s+(?:\d+ failed \| )?(\d+) passed/.exec(plain);
     if (m) return `test (${m[1]})`;
   }
   return name;

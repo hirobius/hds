@@ -33,6 +33,9 @@ describe('summary helpers', () => {
   });
   it('adds the test count from vitest output', () => {
     expect(stageLabel('test', ' Tests  1920 passed (1920)')).toBe('test (1920)');
+    expect(stageLabel('test', '\x1b[2m      Tests \x1b[22m \x1b[32m4171 passed\x1b[39m')).toBe(
+      'test (4171)',
+    );
     expect(stageLabel('typecheck', '')).toBe('typecheck');
   });
   it('builds one line', () => {
