@@ -66,7 +66,11 @@ const PNPM_BUILTINS = new Set(['install', 'exec', 'add', 'dlx']);
  */
 const FONT_LICENSES = {
   satoshi: { family: 'Satoshi', license: 'ITF Free Font License', spdx: null },
-  'geist-mono': { family: 'Geist Mono', license: 'SIL Open Font License 1.1', spdx: 'OFL-1.1' },
+  'ibm-plex-mono': {
+    family: 'IBM Plex Mono',
+    license: 'SIL Open Font License 1.1',
+    spdx: 'OFL-1.1',
+  },
 };
 
 /** Font family directories (`/fonts/<family>/…`) the library build embeds. */

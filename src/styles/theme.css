@@ -88,7 +88,7 @@
   /* -- Font ------------------------------------------------------------------- */
   --hds-font-family:
     'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --hds-font-family-mono: 'Geist Mono', 'Courier New', monospace;
+  --hds-font-family-mono: 'IBM Plex Mono', 'Courier New', monospace;
   /* -- Type metrics ----------------------------------------------------------- */
   /* The --hds-font-size-xs/sm/base/lg/xl block that was here held a SECOND,
      hand-authored ramp (11/13/16/20/28 as literal px, not var refs) that

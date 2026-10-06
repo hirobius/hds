@@ -136,7 +136,7 @@ export const tokenValues = {
       family: {
         primary: ["Satoshi", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
         display: ["Satoshi", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
-        mono: ["Geist Mono", "Courier New", "monospace"] as const
+        mono: ["IBM Plex Mono", "Courier New", "monospace"] as const
       },
       size: {
         xs: "12px",
