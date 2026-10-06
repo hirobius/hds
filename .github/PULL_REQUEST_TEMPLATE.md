@@ -25,3 +25,5 @@ passed, or the gate output (`pnpm typecheck`, `pnpm test`). -->
 **Blast Radius:** <!-- one word, e.g. none · layout · consumers · data -->
 
 <!-- optional: what could break, and for whom -->
+
+Reviewed: <!-- /code-review result, e.g. standards 0 hard · spec 0 missing -->

@@ -159,7 +159,8 @@ may skip:
   graph, parallel worktrees, one integration branch); `/grill-me` first if the
   _plan_ itself is unclear.
 - **Before opening ANY PR → `/code-review`, then write the body with `/pr`**
-  (Summary visual · Evidence · Merge Danger — the fleet's PR format).
+  (Summary visual · Evidence · Merge Danger — the fleet's PR format), enforced by
+  `scripts/hooks/check-pr-body.mjs` (needs a `Reviewed:` line).
 - **End of a real session → `/retro`** (environment fixes: checks over prose).
 - **A bug → `/diagnosing-bugs`** (reproduce → minimize → hypothesize → fix),
   then `/tdd`.
