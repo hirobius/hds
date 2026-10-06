@@ -21,6 +21,14 @@ fi
 
 cd "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}"
 
-pnpm install
-pnpm manifest:generate
-node scripts/audit-tokens.mjs --full
+# Quiet: full output goes to a log, success prints one line, failure prints the
+# log tail. (component-api.json is also generated on demand by
+# audit-component-integrity, so worktrees and CI self-heal without this hook.)
+LOG="$(mktemp -t hds-session-start.XXXXXX)"
+if { pnpm install && pnpm manifest:generate && node scripts/audit-tokens.mjs --full; } >"$LOG" 2>&1; then
+  echo "✓ session-start: deps + generated artifacts ready"
+else
+  tail -n 40 "$LOG"
+  echo "✗ session-start failed — full log: $LOG"
+  exit 1
+fi
