@@ -24,6 +24,13 @@ set -e
 echo "Record freshness (status.json + changeset presence)…"
 node scripts/check-record-freshness.mjs
 
+# TDD gate (ported from ops#502): a branch that changes src/ or scripts/ code
+# must also change a test file (globs read from vitest.config.ts). Cheap git
+# diff, so it sits before the slow test run. Escape: a "no-test: <reason>"
+# line in a branch commit message.
+echo "TDD gate (source changes ship with a test)…"
+node scripts/check-tests-with-code.mjs
+
 echo "Unit + contract tests (pnpm test: pretest gates + vitest)…"
 pnpm test
 
