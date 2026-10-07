@@ -27,6 +27,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
 import {
+  formatRun,
   planAgainstSnapshot,
   resolveBundleCommit,
   writePushArtifacts,
@@ -111,6 +112,39 @@ describe('pnpm figma:push', () => {
     expect(readFileSync(join(outDir, 'use-figma', '02-semantic.js'), 'utf8')).toContain(
       'return await hdsRunPush(figma, PAYLOAD, CHECKSUM);',
     );
+  });
+
+  it('starts every use_figma script with the statement that refuses any file but the library', () => {
+    const root = tempRoot();
+    const outDir = join(root, 'figma', 'push');
+    writePushArtifacts({ root, outDir });
+    const guard = `if (figma.fileKey !== '${LINKS.libraryFileKey}' || ['${LINKS.retiredFiles[0].fileKey}'].indexOf(figma.fileKey) !== -1) {`;
+    for (const name of readdirSync(join(outDir, 'use-figma'))) {
+      const text = readFileSync(join(outDir, 'use-figma', name), 'utf8');
+      expect(text.split('\n')[0], name).toBe(guard);
+    }
+  });
+
+  it('--prune bakes the prune into the promote plugin only: agents never delete, so no use_figma push script is written', () => {
+    const root = tempRoot();
+    const outDir = join(root, 'figma', 'push');
+    writePushArtifacts({ root, outDir });
+    expect(readdirSync(join(outDir, 'use-figma'))).toContain('02-semantic.js');
+
+    const result = writePushArtifacts({ root, outDir, prune: true });
+    expect(result.prune).toBe(true);
+    const promote = JSON.parse(readFileSync(join(outDir, 'promote', 'manifest.json'), 'utf8'));
+    expect(promote.menu.find((m) => m.command === 'push').name).toBe(
+      'Push and prune extras (deletes)',
+    );
+    // The earlier run's push scripts are gone too: nothing an agent passes to use_figma prunes.
+    expect(readdirSync(join(outDir, 'use-figma')).sort()).toEqual(['receipt.js', 'snapshot.js']);
+    for (const name of ['receipt.js', 'snapshot.js']) {
+      expect(readFileSync(join(outDir, 'use-figma', name), 'utf8')).not.toMatch(/"prune":true/);
+    }
+    const printed = formatRun(result, outDir);
+    expect(printed).toMatch(/Promote plugin.*run by Adrian/);
+    expect(printed).toMatch(/use_figma: no push script with --prune.*agents never delete/);
   });
 
   it('bakes TOKEN_MIGRATION.md renames into the payload', () => {

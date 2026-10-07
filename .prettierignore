@@ -63,7 +63,6 @@ src/lib/vendor/**
 # Ralph loop scaffolding — spec-owned, kept byte-exact as authored
 ralph/
 
-
 # Codemod inputs are deliberately unformatted (hds#316)
 codemods/__fixtures__/
 

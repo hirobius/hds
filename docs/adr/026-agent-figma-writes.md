@@ -140,13 +140,17 @@ to the new library.
 
 Variables and tokens therefore sync straight into the library: the Sync plugin (ADR-032)
 and `delta.js` (ADR-033) target it. Both still never delete. A deliberate prune is still
-the promote plugin (`pnpm figma:push --prune`), and only Adrian runs it.
+the promote plugin (`pnpm figma:push --prune`), and only Adrian runs it. No carrier an
+agent runs prunes: `pnpm figma:push --prune` writes no use_figma push script, the builder
+refuses `prune`, and every use_figma script (the push scripts, `snapshot.js`, `receipt.js`
+and `delta.js`) first refuses any file but the library.
 
 In `figma/links.json`, `libraryFileKey` is `2VgBbVpKiDnu0aftJEVyBQ`, `stagingFileKey` and
 `stagingFileName` are gone (a missing staging key is the normal state, not an error), and
 the old key is listed under `retiredFiles`. `check-figma-retired-keys` rejects a reference
-to a retired key in `src`, `public`, docs data and figma data, and the Sync plugin,
-`receipt.js` and `delta.js` refuse a retired file.
+to a retired key in `src`, `public`, docs data, figma data, `mcp/`, `content/docs` and the
+files the package ships from the repo root, and the Sync plugin and every use_figma script
+refuse a retired file.
 
 ### Why
 
@@ -200,7 +204,10 @@ to a retired key in `src`, `public`, docs data and figma data, and the Sync plug
   library. Node ids were kept, so only the file key changed.
 - `check-figma-staging-urls` became `check-figma-retired-keys`.
 - The Sync plugin needs new files (`pnpm figma:push`) once this lands: the earlier build
-  refuses a file named "HDS Tokens & Components", and the library takes that name.
+  refuses a file named "HDS Tokens & Components", and the library takes that name. Rename
+  the old library "HDS Tokens & Components (old)" before loading them: Figma gives the
+  plugin no file key, so until then only Mark's link check tells the two files apart
+  (ADR-032, amendment).
 - Consumer files must use Swap library: component keys changed with the duplicate, so
   components map by name, and the archived ones do not map. Designs bound to a variable
   only the old file had lose that binding.

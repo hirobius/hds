@@ -161,3 +161,65 @@ describe('steering surfaces agree with the amended rule', () => {
     expect(steering(rel).filter((b) => /read-only to agents/i.test(b))).toEqual([]);
   });
 });
+
+describe('the switch has a safe order, and no carrier lets an agent delete', () => {
+  const readme = () => read('figma/README.md');
+  /** A README section, from its `### ` heading to the next heading of any level. */
+  const section = (heading) => {
+    const text = readme();
+    const start = text.indexOf(`### ${heading}`);
+    if (start === -1) return '';
+    const next = text.slice(start + 4).search(/\n#{2,3} /);
+    return text.slice(start, next === -1 ? undefined : start + 4 + next).replace(/\s+/g, ' ');
+  };
+  /** ADR-032's 2026-10-07 amendment, from its heading to the next `## ` heading or the end. */
+  const adr032 = () => {
+    const text = read('docs/adr/032-figma-sync-plugin-receipt.md');
+    const start = text.indexOf('## Amendment (2026-10-07)');
+    if (start === -1) return '';
+    const next = text.indexOf('\n## ', start + 1);
+    return text.slice(start, next === -1 ? undefined : next).replace(/\s+/g, ' ');
+  };
+  // Until it is renamed, the old library has the library's name, and Figma gives the plugin no key.
+  const precondition =
+    /rename the old (library|file) to "?HDS Tokens & Components \(old\)"? before (you )?load(ing)? the new plugin files/i;
+
+  it('the Sync steps make renaming the old file "(old)" a precondition of the new plugin files', () => {
+    expect(section('Sync: the routine path (one click)')).toMatch(precondition);
+  });
+
+  it('ADR-032 states the same precondition', () => {
+    expect(adr032()).toMatch(precondition);
+  });
+
+  it("Mark asks for this file's link, which tells the library from the old file", () => {
+    for (const body of [section('Sync: the routine path (one click)'), adr032()]) {
+      expect(body).toMatch(/Share > Copy link/);
+      expect(body).toMatch(/paste (this|the) file's (own )?link/i);
+    }
+  });
+
+  it('agents never run a --prune build in any carrier', () => {
+    const promote = section('Promote plugin and use_figma scripts');
+    expect(promote).toMatch(/agents never run a `?--prune`? build in any carrier/i);
+    expect(promote).toMatch(/first statement refuses any file but the library/i);
+    expect(promote).not.toMatch(/a plugin is the easier path for a full push, a prune/i);
+    expect(promote).not.toMatch(/a `--prune` build carries/);
+  });
+
+  it('a moved variable left behind is deleted by Adrian, not by an agent', () => {
+    const moved = blocks(readme()).find((b) =>
+      /Cannot move a variable between collections/.test(b),
+    );
+    expect(moved).toMatch(/Adrian (then )?deletes the old one/);
+  });
+});
+
+describe('the MCP ledger', () => {
+  const ledger = () => read('figma/MCP-LEDGER.md');
+
+  it('keeps each day total on one line, so prettier cannot turn a wrapped sum into a list item', () => {
+    expect(ledger()).not.toMatch(/^\s*- \d+\. /m);
+    expect(ledger()).toMatch(/^.*Calls logged for 2026-10-07: 36 of 200 \(16, 7 and 13\)\.$/m);
+  });
+});

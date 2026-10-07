@@ -322,7 +322,7 @@ describe('planDevResources', () => {
  * descriptions (descriptionMarkdown) and figma.util.normalizeMarkdown exists,
  * as in the Plugin API; without it, nodes have a plain `description` only.
  */
-function fakeFile(nodes, { normalizeMarkdown } = {}) {
+function fakeFile(nodes, { normalizeMarkdown, fileKey = '2VgBbVpKiDnu0aftJEVyBQ' } = {}) {
   const byId = new Map(
     nodes.map((n) => [
       n.id,
@@ -337,6 +337,7 @@ function fakeFile(nodes, { normalizeMarkdown } = {}) {
   );
   const writes = [];
   const figma = {
+    fileKey,
     root: { name: 'HDS Tokens & Components' },
     getNodeByIdAsync: async (id) => {
       const n = byId.get(id);
@@ -539,6 +540,29 @@ describe('buildDescriptionsScript', () => {
       'Alert: node 33:34',
     ]);
     expect([...onlyFrame.writes, ...empty.writes]).toEqual([]);
+  });
+
+  it('its first statement refuses any file but its own, reading nothing but figma.fileKey', async () => {
+    // Node ids survive a duplicate, so only the key tells the library from the
+    // old library (ADR-026, amended 2026-10-07).
+    const script = buildDescriptionsScript(links, FILE_KEY);
+    expect(script.split('\n')[0]).toBe(`if (figma.fileKey !== '${FILE_KEY}') {`);
+    for (const key of ['OLDLIBRARYKEY000000000', null, undefined]) {
+      const file = fakeFile([componentSet()]);
+      file.figma.fileKey = key;
+      const reads = [];
+      const watched = new Proxy(file.figma, {
+        get(target, prop) {
+          reads.push(String(prop));
+          return Reflect.get(target, prop);
+        },
+      });
+      await expect(run(script, watched), String(key)).rejects.toThrow(
+        new RegExp(`not Figma file ${FILE_KEY}.*Nothing was read or written`),
+      );
+      expect(reads, String(key)).toEqual(['fileKey']);
+      expect(file.writes, String(key)).toEqual([]);
+    }
   });
 
   it('carries only the links of its own file, and refuses a payload changed in transit', async () => {

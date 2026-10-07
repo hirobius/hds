@@ -135,6 +135,6 @@ otherwise.
 One write was rolled back by Figma because its return value was over the 20 KB
 limit, then retried and committed, so 2 writes landed. **Session total: 13
 calls, 11 of them `use_figma`.** No rate-limit errors. The old library was only
-read; nothing was deleted or published. Calls logged for 2026-10-07: 36 (16 + 7
+read; nothing was deleted or published.
 
-- 13. of 200.
+Calls logged for 2026-10-07: 36 of 200 (16, 7 and 13).

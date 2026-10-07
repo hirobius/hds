@@ -144,10 +144,12 @@ The descriptions script keeps what people wrote in Figma:
   lists it under `keptLinks`.
 - **Report.** `updated` gives each component's previous description and links.
   Run the `.dry-run.js` first and read it.
-- **Checks.** Before it reads or writes anything, the script checks two
+- **Checks.** Its first statement refuses any file but the one in its name:
+  node ids survive a duplicate, so only the key tells the library from the old
+  library. Then, before it reads or writes anything else, the script checks two
   checksums: one over its payload and one over the source of every function it
   carries. A script retyped with a slip, even in its dry-run guard, stops there.
-  Only its last two call lines are not covered.
+  Only its first statement and its last two call lines are not covered.
 
 `figma/links/` is generated and gitignored.
 
@@ -162,8 +164,16 @@ bakes them in (ADR-032).
 
 ### Sync: the routine path (one click)
 
+**Before the first Sync after the 2026-10-07 switch,** rename the old library to
+"HDS Tokens & Components (old)" before you load the new plugin files. Until
+then it carries the library's name, Figma gives the plugin no file key, and
+only that name keeps Sync and Mark out of it (ADR-032, amendment of
+2026-10-07). The order: rename the old library "HDS Tokens & Components (old)",
+rename the copy "HDS Tokens & Components", load the new plugin files (step 1),
+then Sync (step 2).
+
 1. Once per plugin build: an agent runs `pnpm figma:push` and sends you `figma/push/plugin/`. Overwrite `manifest.json`, `code.js` and `ui.html` in the folder Figma imported "HDS tokens sync" from.
-2. In the library (https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ): Plugins > Development > HDS tokens sync > **Sync**. If it says it got no file key, run **Mark this file as the HDS library** from the same menu, paste `2VgBbVpKiDnu0aftJEVyBQ`, then Sync again.
+2. In the library (https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ): Plugins > Development > HDS tokens sync > **Sync**. If it says it got no file key, copy the file's link (Share > Copy link). When the link holds `2VgBbVpKiDnu0aftJEVyBQ`, run **Mark this file as the HDS library** from the same menu, paste the file's own link, then Sync again. A link with any other key is not the library: do not Mark it.
 3. Tell an agent the Sync is done. It collects the snapshot the Sync wrote into the file ([Agent: collect a sync](#agent-collect-a-sync)), so there is nothing to download. **Download JSON** stays as the fallback when the plugin says the receipt was not written.
 
 The **Sync plugin** (`figma/push/plugin/`, id `hds-tokens-sync-dev`) carries no
@@ -186,10 +196,13 @@ changes, not when tokens do. Commands:
 - **Check this file**: reads only. It reports the file key Figma gives the
   plugin (or none), the library marker, the guard's verdict, `lastPush` and the
   receipt.
-- **Mark this file as the HDS library**: for when Figma gives no file key. It
-  writes the marker only in a file named exactly `HDS Tokens & Components`, and
-  only when you paste the library key. A marker the staging-era plugin wrote
-  (before 2026-10-07) counts when it holds the library key.
+- **Mark this file as the HDS library**: for when Figma gives no file key. Paste
+  this file's link (Share > Copy link), never a bare key: the key in the link is
+  what tells the library from the old library, which has the library's name
+  until it is renamed. Mark writes the marker only in a file named exactly
+  `HDS Tokens & Components` whose link holds the library key, and refuses a
+  retired file by its key, its name or its link. A marker the staging-era
+  plugin wrote (before 2026-10-07) counts when it holds the library key.
 
 Where Sync may write is baked into `code.js` from `figma/links.json`, never
 read from the bundle. A retired file (its key, or a file named
@@ -290,9 +303,10 @@ page (15,000 characters). Otherwise it returns only the head, and `receipt.js`
 collects the pages.
 
 **use_figma reads differently from a plugin** (measured on 2026-10-01 on the
-staging copy that became the library on 2026-10-07). A variable's `description` comes back HTML-escaped (`"` as
-`&quot;`, `'` as `&#39;`, and `<`, `>`, `&` the same way). A write stores the
-text as given, and `figma.root.name` is `"Document"`. So `delta.js` writes the
+staging copy that became the library on 2026-10-07). A variable's
+`description` comes back HTML-escaped (`"` as `&quot;`, `'` as `&#39;`, and
+`<`, `>`, `&` the same way). A write stores the text as given, and
+`figma.root.name` is `"Document"`. So `delta.js` writes the
 model's raw text and decodes every read: `&quot;`, `&#39;`, `&lt;` and `&gt;`
 first, then `&amp;` last. The Sync and promote plugins never carry that decoding.
 Only variable descriptions were measured: until a read of a text or effect
@@ -362,15 +376,21 @@ as the source, and `hdsVerifyRuntime` checks the copy as it runs.
 
 ### Promote plugin and use_figma scripts
 
+Agents never run a `--prune` build in any carrier: a prune deletes, and an
+agent never deletes anything in Figma (ADR-026, amended 2026-10-07).
+`pnpm figma:push --prune` bakes the prune into the promote plugin only and
+writes no use_figma push script, and `buildUseFigmaPushScript` refuses `prune`.
+
 - **HDS tokens promote (baked)** (`figma/push/promote/`, id `hds-tokens-promote-dev`):
   the earlier development plugin with the model baked in, unchanged except its id
   and name, and that its Push and Take snapshot clear the Sync receipt
   (`syncReceipt` and its pages), so no receipt outlives a write it does not
   describe. It is the deliberate prune (`pnpm figma:push --prune`), the one push
-  that deletes, and only Adrian runs it; its name dates from the staging era
-  (before 2026-10-07), when it also promoted staging into the library. Import it in Figma desktop with Plugins → Development →
-  Import plugin from manifest…, and pick `figma/push/promote/manifest.json`
-  from a fresh `pnpm figma:push`, which bakes the current model. Commands:
+  that deletes, and only Adrian runs it. Its name dates from the staging era
+  (before 2026-10-07), when it also promoted staging into the library. Import it
+  in Figma desktop with Plugins → Development → Import plugin from manifest…,
+  and pick `figma/push/promote/manifest.json` from a fresh `pnpm figma:push`,
+  which bakes the current model. Commands:
   - **Plan push (dry run, writes nothing)**: the changes a push would make, and
     anything blocking it.
   - **Push**: applies the plan, re-reads the file, and fails if Figma still
@@ -378,20 +398,19 @@ as the source, and `hdsVerifyRuntime` checks the copy as it runs.
     prune extras (deletes)".
   - **Take snapshot**: see below.
 - **use_figma scripts** (Figma MCP server): `figma/push/use-figma/01-primitive.js`
-  … `05-styles.js`. Run them in order, unmodified. An agent retypes each script
-  into use_figma's `code` parameter, so each checks two checksums before it reads
-  or writes anything: one over its payload, and one over the source of every
-  runtime function (`Function.prototype.toString`). A script whose data or code
-  changed on the way stops there; only its last two call lines are not covered.
-  If Figma's sandbox ever hides function source, the scripts refuse and name a
-  plugin Figma loads from disk: a `--prune` script names the promote plugin
-  (`figma/push/promote/manifest.json`), the only one that deletes; any other
-  script, and `delta.js`, names the Sync plugin (`figma/push/plugin/manifest.json`).
-  With the tokens as of
-  2026-10-01 each script is 47–110 KB of code for the agent to pass through (a
-  `--prune` build carries every variable's identity, so moved tokens are
-  recognised, and reaches 97–130 KB), so a plugin is the easier path for a full
-  push, a prune or a snapshot.
+  … `05-styles.js`, and `snapshot.js`. Each one's first statement refuses any
+  file but the library (`2VgBbVpKiDnu0aftJEVyBQ`, and never a retired key)
+  before it reads anything else, and none prunes. Run the push scripts in order,
+  unmodified. An agent retypes each script into use_figma's `code` parameter, so
+  each checks two checksums before it reads or writes anything: one over its
+  payload, and one over the source of every runtime function
+  (`Function.prototype.toString`). A script whose data or code changed on the
+  way stops there; only its first statement and its last two call lines are not
+  covered. If Figma's sandbox ever hides function source, the scripts and
+  `delta.js` refuse and name the Sync plugin (`figma/push/plugin/manifest.json`),
+  which Figma loads from disk. With the tokens as of 2026-10-01 each push script
+  is 47–110 KB of code for the agent to pass through, so Sync is the easier path
+  for a full push.
 
 What a push does:
 
@@ -404,14 +423,15 @@ What a push does:
   When the model moves a token to another collection (#213 moved themed
   component tokens into `Hirobius/Semantic`), the push creates it in its new
   collection and keeps the old variable, with every binding to it. The plan
-  lists it under moves and warns. Rebind its layers to the new variable, then
-  delete the old one in Figma. Prune never deletes a moved variable, and drift
-  reports it as an extra until it is gone.
+  lists it under moves and warns. Rebind its layers to the new variable; Adrian
+  then deletes the old one in Figma, because an agent never deletes. Prune never
+  deletes a moved variable, and drift reports it as an extra until it is gone.
 - **Updates before it creates.** Renames that collide (a swap, a chain) go through
   temporary names first.
 - **Renames a collection's initial mode** ("Mode 1", or a hand-made "Value") to
   the model's first mode instead of adding a mode next to it.
-- **Deletes nothing** unless the carriers were built with `pnpm figma:push --prune`.
+- **Deletes nothing** unless it is the promote plugin built with
+  `pnpm figma:push --prune`, which only Adrian runs.
   Without prune, variables, styles and modes the model does not own are reported
   as extras, and a name the model needs that an unowned variable holds stops the
   push before anything is written.

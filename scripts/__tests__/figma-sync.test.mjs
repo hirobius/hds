@@ -73,6 +73,11 @@ describe('Sync plugin files', () => {
     expect(Buffer.byteLength(PLUGIN['code.js'])).toBeLessThanOrEqual(60000);
   });
 
+  it('keep 5,000 B of headroom under that cap: code.js carries its code without indentation', () => {
+    expect(PLUGIN['code.js']).not.toMatch(/^[ \t]+\S/m);
+    expect(Buffer.byteLength(PLUGIN['code.js'])).toBeLessThanOrEqual(55000);
+  });
+
   it('never evaluate what they fetch: no eval, Function constructor or dynamic import', () => {
     for (const name of ['code.js', 'ui.html']) {
       expect(PLUGIN[name]).not.toMatch(
@@ -252,10 +257,14 @@ describe('file guard: Sync writes nothing outside the library', () => {
     await refused(figma, /retired/);
   });
 
-  it('a null key with no library marker, naming Mark and the key to paste', async () => {
+  it('a null key with no library marker, naming Mark, the link to paste and the key it must hold', async () => {
+    // Until the old library is renamed "(old)" it has the library's name, so
+    // the refusal must send Adrian to the file's link, never to its name.
     const error = await refused(libraryFile(null), /no file key/);
     expect(error).toContain('Mark this file as the HDS library');
-    expect(error).toContain(LINKS.libraryFileKey);
+    expect(error).toContain('Share > Copy link');
+    expect(error).toContain(`holds ${LINKS.libraryFileKey}`);
+    expect(error).toMatch(/any other key is not the library/i);
   });
 
   it('a marker holding another key, old or new style', async () => {
@@ -296,20 +305,53 @@ describe('Mark this file as the HDS library', () => {
     const result = await runPlugin(PLUGIN, 'mark', figma, { typedKey });
     return { result, writes: figma.writes.slice(start) };
   };
+  /** A file's link as Share > Copy link gives it. */
+  const linkTo = (key, kind = 'design') =>
+    `https://www.figma.com/${kind}/${key}/HDS-Tokens-Components?node-id=0-1&t=AbCdEf-1`;
 
-  it('marks a file named exactly like the library when the pasted key is the library key, then Sync runs', async () => {
+  it("asks for this file's link, not a key", () => {
+    expect(PLUGIN['ui.html']).toContain('placeholder="This file\'s link (Share > Copy link)"');
+    expect(PLUGIN['code.js']).toContain("paste this file's link (Share > Copy link)");
+  });
+
+  it("marks a file named exactly like the library when the pasted link is the library's, then Sync runs", async () => {
     const figma = libraryFile(null);
-    const { result, writes } = await mark(figma, ` ${LINKS.libraryFileKey}\n`);
+    const { result, writes } = await mark(figma, ` ${linkTo(LINKS.libraryFileKey)}\n`);
     expect(result.ok, result.error).toBe(true);
     expect(writes).toEqual(['root.pluginData:libraryFileKey']);
     expect(rootData(figma, 'libraryFileKey')).toBe(LINKS.libraryFileKey);
     expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
   });
 
-  it('refuses a retired file, by key, by name or by the pasted key', async () => {
+  it('reads the key from a /design/ or /file/ link, with or without www', async () => {
+    for (const link of [
+      linkTo(LINKS.libraryFileKey, 'file'),
+      `https://figma.com/design/${LINKS.libraryFileKey}`,
+      `https://www.figma.com/design/${LINKS.libraryFileKey}/HDS?node-id=1-2`,
+    ]) {
+      const { result, writes } = await mark(libraryFile(null), link);
+      expect(result.ok, `${link}: ${result.error}`).toBe(true);
+      expect(writes).toEqual(['root.pluginData:libraryFileKey']);
+    }
+  });
+
+  it('refuses the old library while it still has the library name: its link holds the retired key', async () => {
+    // The old file before Adrian renames it "(old)": no key from Figma, no marker, the library's name.
+    const figma = libraryFile(null);
+    const { result, writes } = await mark(figma, linkTo(RETIRED.fileKey));
+    expect(result.ok).toBe(false);
+    expect(result.error).toMatch(/retired/);
+    expect(writes).toEqual([]);
+    const synced = await runPlugin(PLUGIN, 'sync', figma);
+    expect(synced.ok).toBe(false);
+    expect(figma.writes).toEqual([]);
+  });
+
+  it('refuses a retired file, by key, by name, by the pasted link or by a pasted retired key', async () => {
     for (const [figma, typed] of [
-      [libraryFile(RETIRED.fileKey, LINKS.libraryFileName), LINKS.libraryFileKey],
-      [libraryFile(null, RETIRED.fileName), LINKS.libraryFileKey],
+      [libraryFile(RETIRED.fileKey, LINKS.libraryFileName), linkTo(LINKS.libraryFileKey)],
+      [libraryFile(null, RETIRED.fileName), linkTo(LINKS.libraryFileKey)],
+      [libraryFile(null), linkTo(RETIRED.fileKey, 'file')],
       [libraryFile(null), RETIRED.fileKey],
     ]) {
       const { result, writes } = await mark(figma, typed);
@@ -319,25 +361,34 @@ describe('Mark this file as the HDS library', () => {
     }
   });
 
-  it('refuses a wrong key', async () => {
+  it("refuses a bare key, even the library's: only the file's own link tells it from the old library", async () => {
     const figma = libraryFile(null);
-    const { result, writes } = await mark(figma, 'WRONGKEY00000000000000');
+    const { result, writes } = await mark(figma, LINKS.libraryFileKey);
     expect(result.ok).toBe(false);
-    expect(result.error).toMatch(/not the library file key/);
+    expect(result.error).toMatch(/not a link/);
+    expect(result.error).toContain('Share > Copy link');
+    expect(writes).toEqual([]);
+  });
+
+  it('refuses a link to another file', async () => {
+    const figma = libraryFile(null);
+    const { result, writes } = await mark(figma, linkTo('WRONGKEY00000000000000'));
+    expect(result.ok).toBe(false);
+    expect(result.error).toMatch(/WRONGKEY00000000000000.*not the library/);
     expect(writes).toEqual([]);
   });
 
   it('refuses a file not named exactly like the library', async () => {
     const figma = libraryFile(null, 'Scratch');
-    const { result, writes } = await mark(figma, LINKS.libraryFileKey);
+    const { result, writes } = await mark(figma, linkTo(LINKS.libraryFileKey));
     expect(result.ok).toBe(false);
     expect(result.error).toMatch(/named exactly/);
     expect(writes).toEqual([]);
   });
 
-  it('refuses when Figma names another file key than the one pasted', async () => {
+  it("refuses when Figma names another file key than the pasted link's", async () => {
     const figma = libraryFile('SOMEOTHERFILE000000000');
-    const { result, writes } = await mark(figma, LINKS.libraryFileKey);
+    const { result, writes } = await mark(figma, linkTo(LINKS.libraryFileKey));
     expect(result.ok).toBe(false);
     expect(result.error).toMatch(/SOMEOTHERFILE000000000/);
     expect(writes).toEqual([]);

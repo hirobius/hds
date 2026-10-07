@@ -102,9 +102,19 @@ Sync still carries no model, still never prunes, and the receipt (§4, §6) is u
   (`hirobius/stagingFileKey`) counts when it holds the library key: Mark stamped the copy
   with it before 2026-10-07, under the copy's old name, so no other file can carry it with
   that value and the library's name.
-- **Mark this file as the HDS library** replaces "Mark this file as HDS staging". It writes
-  the marker only in a file named exactly like the library, when the pasted key is the
-  library key, and refuses a retired file by key, by name or by the pasted key.
+- **Mark this file as the HDS library** replaces "Mark this file as HDS staging". Its form
+  asks Adrian to paste the file's own link (Share > Copy link), not a bare key: where Figma gives no key,
+  the key in that link is the one thing that tells the library from the old library, which
+  has the library's name until it is renamed. Mark writes the marker only in a file named
+  exactly like the library whose link holds the library key, and refuses a retired file by
+  its key, its name, its link or a pasted retired key. The no-marker refusal tells Adrian to
+  check the link the same way, and not to Mark a file whose link holds another key.
+- **Precondition: rename the old library to "HDS Tokens & Components (old)" before loading
+  the new plugin files.** Figma gives the plugin no file key (`figma/snapshot.json` records
+  `file.key: null`), so until that rename the name cannot tell the old library from the
+  library, and the no-key path rests on the marker and on Mark's link check alone. The
+  order: rename the old library, rename the copy "HDS Tokens & Components", overwrite the
+  plugin's three files, then Sync.
 - **receipt.js** and `--from-receipt` read and accept the library only, and refuse a retired
   key.
 - **The promote plugin** (§5) keeps its id and name, so Figma needs no re-import. It no
@@ -113,3 +123,6 @@ Sync still carries no model, still never prunes, and the receipt (§4, §6) is u
 - **New plugin files.** The build before this amendment refuses a file named
   "HDS Tokens & Components" by name, so once Adrian renames the copy, Sync needs the files
   `pnpm figma:push` writes from this amendment on.
+- **Size.** `code.js` now carries its code without the indentation that starts each line
+  (the build checks the syntax tree is unchanged): 52,876 B against the 60,000 B budget,
+  down from 59,702 B, so the next change has room.

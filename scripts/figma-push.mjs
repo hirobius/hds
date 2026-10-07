@@ -12,7 +12,8 @@
  *                                 (no model inside; it fetches the sync bundle, ADR-032)
  *   figma/push/promote/           HDS tokens promote (baked): Plan push · Push · Take snapshot,
  *                                 with the model baked in, for a deliberate prune (Adrian runs it)
- *   figma/push/use-figma/NN-*.js  use_figma scripts for the Figma MCP server, run in order
+ *   figma/push/use-figma/NN-*.js  use_figma scripts for the Figma MCP server, run in order;
+ *                                 never written with --prune (an agent never deletes in Figma)
  *   figma/push/use-figma/snapshot.js
  *   figma/push/use-figma/receipt.js  reads a Sync's receipt from the library, for
  *                                 pnpm figma:snapshot --from-receipt (hds#417)
@@ -23,14 +24,16 @@
  * A push matches by token path (then TOKEN_MIGRATION.md renames, codeSyntax,
  * name), updates before it creates, renames a collection's initial mode, and
  * deletes nothing unless built with --prune. It re-reads the file afterwards
- * and fails if Figma still differs from the model. The Sync plugin never
- * prunes, whatever the flags.
+ * and fails if Figma still differs from the model. Only the promote plugin,
+ * which Adrian runs, is ever built with prune: the Sync plugin, delta.js and
+ * every use_figma script never prune, whatever the flags, and each use_figma
+ * script first refuses any file but the library (ADR-026, amended 2026-10-07).
  *
  * Usage:
  *   pnpm figma:push            write the carriers
- *   pnpm figma:push --prune    promote plugin and use_figma scripts that also
- *                              delete variables, styles and modes the model does
- *                              not own
+ *   pnpm figma:push --prune    a promote plugin that also deletes variables,
+ *                              styles and modes the model does not own, for
+ *                              Adrian to run; no use_figma push script is written
  *   pnpm figma:push --plan     also print what a push would change against the
  *                              committed figma/snapshot.json
  *   pnpm figma:push --delta    also write use-figma/delta.js for the change since
@@ -102,13 +105,17 @@ export function writePushArtifacts({ root, outDir, prune = false }) {
       text,
     ]),
   ];
-  for (const chunk of PUSH_CHUNKS) {
-    outputs.push([
-      join('use-figma', `${chunk.id}.js`),
-      buildUseFigmaPushScript(model, { scope: chunk.scope, prune, renames }, chunk.id),
-    ]);
+  // An agent runs the use_figma scripts, and an agent never deletes in Figma:
+  // a prune build bakes the prune into the promote plugin only (Adrian runs it).
+  if (!prune) {
+    for (const chunk of PUSH_CHUNKS) {
+      outputs.push([
+        join('use-figma', `${chunk.id}.js`),
+        buildUseFigmaPushScript(model, { scope: chunk.scope, renames, links }, chunk.id),
+      ]);
+    }
   }
-  outputs.push([join('use-figma', 'snapshot.js'), buildUseFigmaSnapshotScript()]);
+  outputs.push([join('use-figma', 'snapshot.js'), buildUseFigmaSnapshotScript(links)]);
   outputs.push([join('use-figma', 'receipt.js'), buildUseFigmaReceiptScript(links)]);
 
   rmSync(outDir, { recursive: true, force: true });
@@ -245,7 +252,8 @@ export function planAgainstSnapshot({ model, renames, snapshotFile, prune = fals
   };
 }
 
-function formatRun({ model, prune, files, pluginBuild }, outDir) {
+/** What `pnpm figma:push` prints for writePushArtifacts' result. */
+export function formatRun({ model, prune, files, pluginBuild }, outDir) {
   const kb = (bytes) => `${Math.ceil(bytes / 1024)} KB`;
   const rel = relative(ROOT, outDir).replaceAll('\\', '/');
   const sizeOf = (path) => files.find((f) => f.path === path).bytes;
@@ -264,8 +272,14 @@ function formatRun({ model, prune, files, pluginBuild }, outDir) {
     `    Figma desktop → Plugins → Development → Import plugin from manifest… → ${rel}/promote/manifest.json`,
     '    Run "Plan push (dry run, writes nothing)", read the plan, then run the push command.',
     '',
-    '  use_figma (Figma MCP server), in order and unmodified; a script whose payload or runtime code changed stops before it reads or writes:',
-    ...scripts.map((f) => `    ${rel}/${f.path}  (${kb(f.bytes)})`),
+    ...(prune
+      ? [
+          '  use_figma: no push script with --prune, because agents never delete in Figma. The prune is the promote plugin above, and only Adrian runs it.',
+        ]
+      : [
+          '  use_figma (Figma MCP server), in order and unmodified, in the library only; a script whose payload or runtime code changed stops before it reads or writes:',
+          ...scripts.map((f) => `    ${rel}/${f.path}  (${kb(f.bytes)})`),
+        ]),
     '',
     '  Then take a snapshot (pnpm figma:snapshot) and run pnpm check:figma-drift.',
     '',

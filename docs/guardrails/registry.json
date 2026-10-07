@@ -289,7 +289,7 @@
     },
     {
       "id": "check-figma-retired-keys",
-      "description": "Rejects every reference to a retired Figma file (figma/links.json retiredFiles: the old library, retired 2026-10-07 when its duplicate became the one HDS library, ADR-026 amendment) in src (@figma tags, Code Connect templates), public (the manifest figmaUrl Storybook's Design tab reads), docs data (sync-map, DESIGN_LINKS.md) and figma data (disposition, inventory, Code Connect registry). ERROR on any finding, naming file and line; figma/links.json and prose history are not scanned, and a missing scan root or retiredFiles list fails loudly. Also runs in pnpm test through scripts/__tests__/check-figma-retired-keys.test.mjs, whose real-tree case gates the repo.",
+      "description": "Rejects every reference to a retired Figma file (figma/links.json retiredFiles: the old library, retired 2026-10-07 when its duplicate became the one HDS library, ADR-026 amendment) in src (@figma tags, Code Connect templates), public (the manifest figmaUrl Storybook's Design tab reads), docs data (sync-map, DESIGN_LINKS.md, the shipped docs/CONSUMING.md), figma data (disposition, inventory, Code Connect registry), mcp/ and content/docs, and the files the package ships from the repo root (README.md, llms.txt, DESIGN.md, AGENTS.md, CONSUMING.md). ERROR on any finding, naming file and line; figma/links.json and prose history are not scanned, and a missing scan root, shipped root file or retiredFiles list fails loudly. Also runs in pnpm test through scripts/__tests__/check-figma-retired-keys.test.mjs, whose real-tree case gates the repo.",
       "severity": "error",
       "gateScript": "scripts/check-figma-retired-keys.mjs",
       "fixturePath": null,

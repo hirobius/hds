@@ -22,13 +22,17 @@ const LINKS = {
 };
 
 const roots = [];
-/** A repo root with the four scan roots and `files` ({ relative path: contents }). */
+/** The files the package ships from the repo root (package.json `files`, plus README.md, which npm always packs). */
+const ROOT_FILES = ['README.md', 'llms.txt', 'DESIGN.md', 'AGENTS.md', 'CONSUMING.md'];
+
+/** A repo root with the scan roots, the shipped root files and `files` ({ relative path: contents }). */
 function fixture(files = {}, links = LINKS) {
   const root = mkdtempSync(path.join(tmpdir(), 'retired-keys-'));
   roots.push(root);
-  for (const dir of ['figma', 'public', 'docs', 'src/app/components']) {
+  for (const dir of ['figma', 'public', 'docs', 'src/app/components', 'mcp', 'content/docs']) {
     mkdirSync(path.join(root, dir), { recursive: true });
   }
+  for (const rel of ROOT_FILES) writeFileSync(path.join(root, rel), `# ${rel}\n`);
   writeFileSync(path.join(root, 'figma/links.json'), JSON.stringify(links));
   for (const [rel, body] of Object.entries(files)) {
     mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
@@ -86,6 +90,33 @@ describe('scanRetiredKeys', () => {
     ]);
   });
 
+  it('errors on the files that ship from the repo root, mcp/, docs/CONSUMING.md and content/docs', () => {
+    const root = fixture({
+      ...Object.fromEntries(ROOT_FILES.map((rel) => [rel, `See ${url(RETIRED, '31-15')}.\n`])),
+      'mcp/catalog.mjs': `export const FIGMA = '${url(RETIRED, '31-15')}';\n`,
+      'docs/CONSUMING.md': `Figma: ${url(RETIRED, '31-15')}\n`,
+      'content/docs/foundations/color.mdx': `[Figma](${url(RETIRED, '31-15')})\n`,
+    });
+    expect(
+      scanRetiredKeys({ root })
+        .errors.map((e) => e.file)
+        .sort(),
+    ).toEqual(
+      [
+        ...ROOT_FILES,
+        'content/docs/foundations/color.mdx',
+        'docs/CONSUMING.md',
+        'mcp/catalog.mjs',
+      ].sort(),
+    );
+  });
+
+  it('refuses a missing shipped root file rather than reporting a vacuous pass', () => {
+    const root = fixture();
+    rmSync(path.join(root, 'llms.txt'));
+    expect(() => scanRetiredKeys({ root })).toThrow(/llms\.txt/);
+  });
+
   it('a key is a key: a bare retired key with no URL around it is still an error', () => {
     const root = fixture({ 'src/app/data/figma.ts': `export const FILE = '${RETIRED}';\n` });
     expect(scanRetiredKeys({ root }).errors).toHaveLength(1);
@@ -141,7 +172,7 @@ describe('scanRetiredKeys', () => {
 });
 
 describe('the real tree', () => {
-  it('links no retired Figma file from src, public, docs data or figma data', () => {
+  it('links no retired Figma file from src, public, docs data, figma data, mcp, content/docs or the shipped root files', () => {
     expect(scanRetiredKeys({}).errors).toEqual([]);
   });
 });

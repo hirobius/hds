@@ -100,7 +100,8 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   the Sync plugin or `delta.js` (ADR-032, ADR-033). Never delete anything in Figma and never
   publish; Adrian publishes. A component removed from code moves to the "Archive" page as
   `_<Name> (archived <date>)`, one deprecated in code to the "Deprecated" page. A deliberate
-  prune is the promote plugin, and only Adrian runs it. Pro allows 200 MCP calls a day —
+  prune is the promote plugin, and only Adrian runs it; agents never run a `--prune` build.
+  Pro allows 200 MCP calls a day —
   batch them, and never retry a rate-limit error. Code Connect
   v2 templates are generated and gated locally, but publishing needs a Figma
   Organization plan, so no mapping is live and Dev Mode shows no HDS snippets.

@@ -10,9 +10,14 @@
  * ERROR on a retired key anywhere in:
  *   src/**                 @figma JSDoc tags, Code Connect templates, data
  *   public/** (json|txt|md) the manifest (Storybook's Design tab reads its figmaUrl), llms
- *   docs/** (json), docs/DESIGN_LINKS.md
- *                          generated data: sync-map, design links
+ *   docs/** (json), docs/DESIGN_LINKS.md, docs/CONSUMING.md
+ *                          generated data: sync-map, design links; the shipped guide
  *   figma/*.json|txt       disposition, inventory, Code Connect registry
+ *   mcp/**, content/docs/** the MCP server the package ships, the docs site's pages
+ *   README.md llms.txt DESIGN.md AGENTS.md CONSUMING.md
+ *                          what the package ships from the repo root (package.json
+ *                          `files`, plus README.md, which npm always packs); a
+ *                          missing one is an error, like a missing scan root
  *
  * Not scanned: figma/links.json (it records the retired keys), prose history
  * (docs/adr, other docs Markdown and HTML, figma/*.md), and the generated,
@@ -39,14 +44,20 @@ const SCANS = [
   {
     dir: 'docs',
     deep: true,
-    take: (rel) => rel.endsWith('.json') || rel === 'docs/DESIGN_LINKS.md',
+    take: (rel) =>
+      rel.endsWith('.json') || rel === 'docs/DESIGN_LINKS.md' || rel === 'docs/CONSUMING.md',
   },
   {
     dir: 'figma',
     deep: false,
     take: (rel) => /\.(json|txt)$/.test(rel) && rel !== 'figma/links.json',
   },
+  { dir: 'mcp', deep: true, take: () => true },
+  { dir: 'content/docs', deep: true, take: () => true },
 ];
+
+/** The files the package ships from the repo root: package.json `files`, plus README.md, which npm always packs. */
+const ROOT_FILES = ['README.md', 'llms.txt', 'DESIGN.md', 'AGENTS.md', 'CONSUMING.md'];
 
 /** The retired file keys figma/links.json lists, after checking the list is usable. */
 export function retiredKeysFrom(links) {
@@ -93,23 +104,29 @@ export function scanRetiredKeys({ root = DEFAULT_ROOT } = {}) {
     { root, gate: GATE },
   );
 
+  const missing = ROOT_FILES.filter((rel) => !existsSync(path.join(root, rel)));
+  if (missing.length) {
+    throw new Error(
+      `${GATE}: ${missing.length} shipped root file(s) do not exist: ${missing.join(', ')}. ` +
+        'The gate would scan less than it claims and still report success. Restore the file, or drop it from ROOT_FILES with the package.json `files` entry.',
+    );
+  }
+
+  const files = SCANS.flatMap((scan, i) =>
+    walk(dirs[i], scan.dir, scan.deep, []).filter((rel) => scan.take(rel)),
+  ).concat(ROOT_FILES);
   const errors = [];
-  let scanned = 0;
-  SCANS.forEach((scan, i) => {
-    for (const rel of walk(dirs[i], scan.dir, scan.deep, [])) {
-      if (!scan.take(rel)) continue;
-      scanned += 1;
-      if (!keys.length) continue;
-      const text = readFileSync(path.join(root, rel), 'utf8');
-      if (!keys.some((key) => text.includes(key))) continue;
-      text.split('\n').forEach((line, n) => {
-        for (const key of keys) {
-          if (line.includes(key)) errors.push({ file: rel, line: n + 1, key });
-        }
-      });
-    }
-  });
-  return { errors, retiredFileKeys: keys, scanned };
+  for (const rel of files) {
+    if (!keys.length) continue;
+    const text = readFileSync(path.join(root, rel), 'utf8');
+    if (!keys.some((key) => text.includes(key))) continue;
+    text.split('\n').forEach((line, n) => {
+      for (const key of keys) {
+        if (line.includes(key)) errors.push({ file: rel, line: n + 1, key });
+      }
+    });
+  }
+  return { errors, retiredFileKeys: keys, scanned: files.length };
 }
 
 function main() {

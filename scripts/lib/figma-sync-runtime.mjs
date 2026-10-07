@@ -103,11 +103,9 @@ export function hdsSyncFileGuard(figma, sync) {
     return (
       'Figma gave this plugin no file key, and this file is not marked as the HDS library, so the plugin cannot tell the library from another file.' +
       nothing +
-      ' If this is the library "' +
-      sync.libraryFileName +
-      '": Plugins > Development > HDS tokens sync > Mark this file as the HDS library, paste ' +
+      " Check this file's link (Share > Copy link). If it holds " +
       sync.libraryFileKey +
-      ', then run Sync again.'
+      ', this is the library: Plugins > Development > HDS tokens sync > Mark this file as the HDS library, paste the link, then run Sync again. A link with any other key is not the library: do not Mark it.'
     );
   }
   if (name !== sync.libraryFileName) {
@@ -124,22 +122,45 @@ export function hdsSyncFileGuard(figma, sync) {
   return null;
 }
 
-/** Null when Mark may stamp this file as the library with the pasted key, else why not. */
+/** The file key in a Figma file link (Share > Copy link), or null when `value` is not one. */
+export function hdsSyncLinkKey(value) {
+  const match = /^https:\/\/(www\.)?figma\.com\/(design|file)\/([0-9A-Za-z]+)([/?#]|$)/.exec(value);
+  return match ? match[3] : null;
+}
+
+/**
+ * Null when Mark may stamp this file as the library, else why not. `typed` is
+ * this file's link, never a bare key: where Figma gives no key, the link is
+ * the one thing that tells the library from the old library, which has the
+ * library's name until Adrian renames it "(old)".
+ */
 export function hdsSyncMarkGuard(figma, sync, typed) {
   const key = hdsSyncFileKey(figma);
   const name = figma.root.name;
   const value = typeof typed === 'string' ? typed.trim() : '';
+  const linked = hdsSyncLinkKey(value);
   const nothing = ' Nothing was written.';
+  const retired = (k) => k !== null && sync.retiredFileKeys.indexOf(k) !== -1;
   if (
-    (key !== null && sync.retiredFileKeys.indexOf(key) !== -1) ||
-    sync.retiredFileNames.indexOf(name) !== -1 ||
-    sync.retiredFileKeys.indexOf(value) !== -1
+    retired(key) ||
+    retired(linked) ||
+    retired(value) ||
+    sync.retiredFileNames.indexOf(name) !== -1
   ) {
     return (
       'Refused: that is a retired HDS file, the library before 2026-10-07. Only the library ("' +
       sync.libraryFileName +
       '") can be marked as the HDS library.' +
       nothing
+    );
+  }
+  if (linked === null) {
+    return (
+      'Refused: "' +
+      hdsSyncPreview(value) +
+      '" is not a link to a Figma file.' +
+      nothing +
+      " Run Mark again and paste this file's link (Share > Copy link): its key, not its name, tells the library from the old library."
     );
   }
   if (name !== sync.libraryFileName) {
@@ -153,15 +174,15 @@ export function hdsSyncMarkGuard(figma, sync, typed) {
       ' Open the library, then run Mark again.'
     );
   }
-  if (value !== sync.libraryFileKey) {
+  if (linked !== sync.libraryFileKey) {
     return (
-      'Refused: "' +
-      value.slice(0, 40) +
-      '" is not the library file key from figma/links.json.' +
-      nothing +
-      ' Run Mark again and paste ' +
+      'Refused: that link is file ' +
+      linked +
+      ', not the library ' +
       sync.libraryFileKey +
-      ' exactly.'
+      '.' +
+      nothing +
+      ' Open the library, then run Mark again.'
     );
   }
   if (key !== null && key !== sync.libraryFileKey) {
@@ -545,8 +566,7 @@ export async function hdsSyncMain(figma, sync, pluginBuild, html, deltaOf) {
         figma,
         {
           type: 'mark-form',
-          title:
-            'Mark this file as the HDS library: paste the library file key from figma/links.json',
+          title: "Mark this file as the HDS library: paste this file's link (Share > Copy link)",
         },
         'mark',
         0,
