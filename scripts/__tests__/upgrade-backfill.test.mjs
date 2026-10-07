@@ -17,6 +17,22 @@ import { checkReleaseDir } from '../upgrade/schema.mjs';
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const read = (file) => JSON.parse(readFileSync(join(REPO, file), 'utf8'));
 const CHANGELOG = readFileSync(join(REPO, 'CHANGELOG.md'), 'utf8').split('\n');
+// Today's CHANGELOG once a later release ships: `changeset version` writes the
+// new section above every older one, so each older section moves down.
+const AFTER_NEXT_RELEASE = [
+  ...CHANGELOG.slice(0, 2),
+  '## 9.9.9',
+  '',
+  '### Patch Changes',
+  '',
+  '- 0000000: A later release.',
+  '',
+  ...CHANGELOG.slice(2),
+];
+const CHANGELOGS = [
+  ['today', CHANGELOG],
+  ['after a later release', AFTER_NEXT_RELEASE],
+];
 const ROOT = '@hirobius/design-system';
 
 const BACKFILLED = ['0.17.0', '0.18.0', '0.19.0', '0.19.1'];
@@ -24,13 +40,21 @@ const ledger = (version) => read(`upgrade/releases/${version}.json`);
 const byId = (id) => ledger(id.split('/')[0]).steps.find((step) => step.id === id);
 
 /**
- * The 1-based line of today's CHANGELOG.md that a citation names. A citation
- * is numbered as the file read when its release shipped, with the release
- * heading on line 3; later releases only ever prepend sections.
+ * The 1-based line of `changelog` that a citation names. A citation is
+ * numbered as the file read when its release shipped, with the release heading
+ * on line 3; later releases only ever prepend sections.
  */
-function liveLine(version, source) {
-  const heading = CHANGELOG.indexOf(`## ${version}`);
+function liveLine(version, source, changelog = CHANGELOG) {
+  const heading = changelog.indexOf(`## ${version}`);
   return heading + Number(source.split(':')[1]) - 3 + 1;
+}
+
+/** The changeset entry (`- <hash>: ...`) that holds the cited line. */
+function citedEntry(version, source, changelog) {
+  for (let i = liveLine(version, source, changelog) - 1; i >= 0; i--) {
+    if (changelog[i].startsWith('- ')) return changelog[i];
+  }
+  return undefined;
 }
 
 describe('the backfilled ledgers 0.17.0 to 0.19.1', () => {
@@ -82,25 +106,52 @@ describe('the backfilled ledgers 0.17.0 to 0.19.1', () => {
   });
 });
 
+// hds#450 numbers its lines as CHANGELOG.md read at 0.20.0, where the 0.17.0
+// heading is line 134 and the 0.19.0 heading line 110. A ledger numbers them as
+// the file read when its own release shipped, heading on line 3, so the type
+// ramp's 203-209 is 72-78, the Table ARIA fix's 337 is 206, the overlay
+// portals' 114 is 7 and the compact density remap's 115 is 8. Those numbers
+// never move; today's do, each time a release adds its section on top.
+describe('the lines hds#450 names, numbered as the CHANGELOG read at each release', () => {
+  it('cite the type ramp at CHANGELOG.md:72-78 and the Table ARIA fix at :206 for 0.17.0', () => {
+    const ramp = Number(byId('0.17.0/look/type-ramp').source.split(':')[1]);
+    expect(ramp).toBeGreaterThanOrEqual(72);
+    expect(ramp).toBeLessThanOrEqual(78);
+    expect(byId('0.17.0/behavior/Table-aria-structure').source).toBe('CHANGELOG.md:206');
+  });
+
+  it('cite the overlay portals at CHANGELOG.md:7 and the compact density remap at :8 for 0.19.0', () => {
+    expect(byId('0.19.0/behavior/overlay-portals').source).toBe('CHANGELOG.md:7');
+    expect(byId('0.19.0/look/compact-density').source).toBe('CHANGELOG.md:8');
+    expect(byId('0.19.0/look/Table-density-inherit').source).toBe('CHANGELOG.md:8');
+  });
+
+  it.each(CHANGELOGS)('find the entries hds#450 means in the CHANGELOG %s', (_, changelog) => {
+    const entry = (id) => citedEntry(id.split('/')[0], byId(id).source, changelog);
+    expect(entry('0.17.0/look/type-ramp')).toMatch(/^- d41c65e: Standard type ramp/);
+    expect(entry('0.17.0/behavior/Table-aria-structure')).toMatch(
+      /^- d41c65e: Table: fix invalid ARIA structure/,
+    );
+    expect(entry('0.19.0/behavior/overlay-portals')).toMatch(/^- 731c669: Portalled overlays/);
+    expect(entry('0.19.0/look/compact-density')).toMatch(/^- a47459b: `data-density="compact"`/);
+  });
+});
+
 describe('0.17.0', () => {
-  it('records the type ramp as a look step, at the lines hds#450 names (CHANGELOG.md:203-209 today)', () => {
+  it('records the type ramp as a look step', () => {
     const step = byId('0.17.0/look/type-ramp');
     expect(step).toMatchObject({ kind: 'look', impact: 'look', backfilled: true });
-    const line = liveLine('0.17.0', step.source);
-    expect(line).toBeGreaterThanOrEqual(203);
-    expect(line).toBeLessThanOrEqual(209);
     expect(step.plain).toMatch(/16px instead of 17px/);
     expect(step.detect.classes).toContain('text-xs');
     expect(step.detect.cssVars).toContain('--primitive-typography-size-xs');
   });
 
-  it('records the Table ARIA structure as a behavior step (CHANGELOG.md:337 today)', () => {
+  it('records the Table ARIA structure as a behavior step', () => {
     const step = byId('0.17.0/behavior/Table-aria-structure');
     expect(step).toMatchObject({
       impact: 'behavior',
       detect: { imports: [{ from: ROOT, names: ['Table'] }], jsx: ['Table'] },
     });
-    expect(liveLine('0.17.0', step.source)).toBe(337);
     expect(step.plain).toMatch(/columnheader/);
   });
 
@@ -190,10 +241,9 @@ describe('0.17.0', () => {
 });
 
 describe('0.19.0', () => {
-  it('records the overlay portals as a behavior step (CHANGELOG.md:114 today)', () => {
+  it('records the overlay portals as a behavior step', () => {
     const step = byId('0.19.0/behavior/overlay-portals');
     expect(step.impact).toBe('behavior');
-    expect(liveLine('0.19.0', step.source)).toBe(114);
     expect(step.plain).toMatch(/data-hds/);
     const imported = step.detect.imports.flatMap((i) => i.names);
     for (const name of ['Dialog', 'AlertDialog', 'Menu', 'Popover', 'Select', 'Tooltip']) {
@@ -201,18 +251,13 @@ describe('0.19.0', () => {
     }
   });
 
-  it('records the compact density remap as a look step (CHANGELOG.md:115 today)', () => {
+  it('records the compact density remap as a look step', () => {
     const step = byId('0.19.0/look/compact-density');
     expect(step.impact).toBe('look');
-    expect(liveLine('0.19.0', step.source)).toBe(115);
     const [source] = step.detect.regex;
     expect(new RegExp(source).test('<main data-density="compact">')).toBe(true);
     expect(new RegExp(source).test("root.setAttribute('data-density', 'compact')")).toBe(true);
     expect(new RegExp(source).test('<main data-density="comfortable">')).toBe(false);
-  });
-
-  it('records the Table density inheritance from the same entry', () => {
-    expect(liveLine('0.19.0', byId('0.19.0/look/Table-density-inherit').source)).toBe(115);
   });
 });
 

@@ -352,9 +352,6 @@ describe('committed release snapshots (docs/api/releases)', () => {
   // 0.16.0 is the floor (hds#450): ops and folio resolve it, so their upgrade
   // crosses every later release, and each needs its snapshot to be diffed.
   it('holds a snapshot of every release from the 0.16.0 floor, each named for its version and fitting the schema', () => {
-    const versions = readdirSync(join(REPO, 'docs/api/releases'))
-      .map((f) => f.replace(/\.json$/, ''))
-      .sort(compareVersions);
     expect(versions).toEqual(['0.16.0', '0.17.0', '0.18.0', '0.19.0', '0.19.1', '0.20.0']);
     for (const version of versions) {
       const snapshot = read(`docs/api/releases/${version}.json`);
