@@ -21,7 +21,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { formatJson } from '../upgrade/format.mjs';
-import { compareVersions } from '../upgrade/schema.mjs';
+import { Snapshot, compareVersions } from '../upgrade/schema.mjs';
 import { snapshotFromNpm, snapshotFromSource, snapshotPackage } from '../upgrade/snapshot.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
@@ -459,9 +459,34 @@ describe('committed release snapshots (docs/api/releases)', () => {
     expect(unexplainedRemovals(removed, minor, [])).toEqual(removed);
   });
 
-  it('holds the 0.19.1 and 0.20.0 snapshots, each named for its version', () => {
-    for (const version of ['0.19.1', '0.20.0']) {
-      expect(read(`docs/api/releases/${version}.json`).version).toBe(version);
+  // 0.16.0 is the floor (hds#450): ops and folio resolved it when hds#450 was
+  // filed, so an upgrade crosses every later release, each diffed from its snapshot.
+  // Starts with, not equals: each release's version run (hds#451) adds its own.
+  it('holds a snapshot of every release from the 0.16.0 floor, each named for its version and fitting the schema', () => {
+    expect(versions.slice(0, 6)).toEqual([
+      '0.16.0',
+      '0.17.0',
+      '0.18.0',
+      '0.19.0',
+      '0.19.1',
+      '0.20.0',
+    ]);
+    for (const version of versions) {
+      const snapshot = read(`docs/api/releases/${version}.json`);
+      expect(snapshot.version).toBe(version);
+      expect(Snapshot.safeParse(snapshot).error, version).toBeUndefined();
     }
+  });
+
+  it('records the 0.17.0 /patterns, 0.18.0 hds-patterns-subpath and 0.19.0 /icons arrivals', () => {
+    const entries = (v) => Object.keys(read(`docs/api/releases/${v}.json`).entries);
+    expect(entries('0.16.0')).not.toContain('./patterns');
+    expect(entries('0.17.0')).toContain('./patterns');
+    expect(read('docs/api/releases/0.17.0.json').bin).toEqual({});
+    expect(read('docs/api/releases/0.18.0.json').bin).toEqual({
+      'hds-patterns-subpath': 'codemods/patterns-subpath.mjs',
+    });
+    expect(entries('0.18.0')).not.toContain('./icons');
+    expect(entries('0.19.0')).toContain('./icons');
   });
 });

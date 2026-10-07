@@ -1,7 +1,8 @@
 # Upgrade ledger
 
-Every release of `@hirobius/design-system` has one machine-readable record of
-what it changed for a consumer: `upgrade/releases/<version>.json`. The upgrade
+Each release of `@hirobius/design-system` gets one machine-readable record of
+what it changed for a consumer: `upgrade/releases/<version>.json` (0.21.0
+shipped without one; see [The floor](#the-floor)). The upgrade
 command (`npx @hirobius/design-system@latest upgrade`, hds#452) reads it to run
 the codemods and report what is left, and UPGRADING.md and `upgrade/index.json`
 are compiled from it (hds#451).
@@ -48,10 +49,35 @@ of a release snapshot.
    `facts`. Changes the diff cannot see (how something looks or behaves, a
    deprecation, a rename) come from the CHANGELOG and cite its line.
 
-0.20.0 is the first ledger. `scripts/upgrade/build-ledger-0.20.mjs` builds it
-from the 0.19.1 and 0.20.0 snapshots, `codemods/removed-0.20.json`, the
-`RENAMES` map in `codemods/hds-prefix.mjs` and the CHANGELOG, and a test keeps
-the committed file equal to its output.
+Releases that shipped before ledgers existed are backfilled: 0.17.0 to
+0.20.0. `node scripts/upgrade/build-ledger.mjs <version>` builds each one from
+its two snapshots and inputs frozen in `upgrade/sources/<version>/`:
+`release.json` (the release fields, how its removed and moved names are
+classified, and the steps only the CHANGELOG records, each with its line and
+the text that finds it) and any data file it names. For 0.20.0 those are
+copies of `codemods/removed-0.20.json` and the `RENAMES` map in
+`codemods/hds-prefix.mjs` as 0.20.0 published them, so a later edit to the
+live codemod data, or to the CHANGELOG, can never rewrite a shipped ledger. A
+test keeps every committed ledger equal to the build of its sources
+(`build-ledger.mjs --check`), and another that each cited line still holds its
+text.
+
+The 0.16.0 to 0.19.1 diffs hold only additions (`/patterns`, `/icons`, the
+`hds-patterns-subpath` bin, new names), so those ledgers carry the look,
+behavior and deprecation steps from each CHANGELOG section. 0.18.0 and 0.19.1
+have no step: nothing in them asks anything of a consumer. Every tarball from
+0.16.0 on has `dist/types` for each JS entry, so `snapshot.mjs` reads them all
+unchanged; a tarball without one would stop it with the entry named, rather
+than record a guess.
+
+A deprecated step's `removeIn` is what its release announced. When the release
+named no removal, it is the target a later release set, and the `$comment` of
+`upgrade/sources/<version>/release.json` cites it: 0.17.0 kept its seven
+spacing aliases with no removal release, and their 1.0.0 comes from 0.20.0. A
+later release may remove the name sooner: 0.17.0 deprecated the root pattern
+imports and the `Hds*` names for 1.0.0, and 0.20.0 removed them. Coming next (hds#451, #452)
+lists a deprecation only while no later step removes, moves, renames or folds
+the same name.
 
 From 0.21.0 on, each changeset carries an `upgrade/pending/<name>.json` note
 (hds#448; how to write one is in `.changeset/README.md`, and `pnpm
@@ -67,9 +93,22 @@ covers one, and the gate counts it as breaking.
 
 The floor is the oldest version the upgrade command can upgrade from. Below
 it, the command changes nothing and exits 2; follow MIGRATIONS.md by hand up to
-the floor. It is `floor` in `upgrade/index.json` and will be 0.16.0 once the
-0.17.0 to 0.19.1 ledgers are backfilled (hds#450). Today only 0.20.0, from
-0.19.1, has a ledger.
+the floor. It is 0.16.0, the oldest committed snapshot: the 0.17.0 to 0.20.0
+ledgers cover every release after it through 0.20.0, so a consumer still on
+0.16.0 (folio, and ops until its 0.20.0 bump) crosses no change up to 0.20.0
+that a step does not report.
+
+0.21.0 shipped without a ledger or a snapshot; hds#448 adds its ledger next.
+The upgrade command will refuse to report "done" across a release that has no
+ledger, so an upgrade that crosses 0.21.0 is never reported done before that
+ledger lands.
+
+`floor()` in `scripts/upgrade/history.mjs` computes the floor, for `floor` in
+`upgrade/index.json` (hds#451). Its `historyProblems()`, run by a test, fails
+when a snapshot after the floor has no ledger, a ledger names the wrong bump,
+or a fact between two consecutive snapshots (an export removed or moved, a
+dependency, peer, engine, exports key or bin) has no step. It reads only
+committed snapshots, so it cannot see 0.21.0 until that snapshot is committed.
 
 ## Who is a consumer
 
