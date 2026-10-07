@@ -8,6 +8,7 @@
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { spawnSync } from 'node:child_process';
+import { rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
@@ -369,6 +370,80 @@ describe('checkUpgradeLedger: the Version PR checks the real bump', () => {
   });
 });
 
+describe('checkUpgradeLedger: a release published but not yet recorded (until hds#451)', () => {
+  /**
+   * main once the 0.21.0 Version PR merged and published, before anyone
+   * records it: package.json at 0.21.0, its changeset consumed, its note
+   * still in upgrade/pending, and no 0.21.0 snapshot or ledger. Its one change
+   * removed Callout under a breaking note, so it went out as a minor.
+   */
+  function publishedNotRecorded() {
+    const root = releasedRepo();
+    removeCallout(root);
+    note(root, 'drop-callout', calloutRemoved);
+    editPkg(root, (pkg) => (pkg.version = '0.21.0'));
+    return root;
+  }
+
+  it('passes the Version PR it was', () => {
+    const result = checkUpgradeLedger(publishedNotRecorded());
+    expect(result.violations).toEqual([]);
+    expect(result.summary.unrecorded).toBeNull();
+  });
+
+  it('refuses a patch Version PR when a pending note is breaking', () => {
+    const root = publishedNotRecorded();
+    editPkg(root, (pkg) => (pkg.version = '0.20.1'));
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['bump-too-small']);
+    expect(messages(result)).toContain('upgrade/pending/drop-callout.json');
+  });
+
+  // The review's repro: the released breaking note made every later patch PR
+  // fail, and told it to bump by minor.
+  it('passes a patch changeset and its note on top, without asking for a minor', () => {
+    const root = publishedNotRecorded();
+    changeset(root, 'fix-copy', 'patch');
+    note(root, 'fix-copy', { impact: 'none' });
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+
+  it('names the release to record and the notes that belong to it', () => {
+    const root = publishedNotRecorded();
+    changeset(root, 'fix-copy', 'patch');
+    note(root, 'fix-copy', { impact: 'none' });
+    expect(checkUpgradeLedger(root).summary.unrecorded).toEqual({
+      version: '0.21.0',
+      previous: '0.20.0',
+      notes: ['upgrade/pending/drop-callout.json'],
+    });
+  });
+
+  // Only a released note says a fact is the release's: without one the gate
+  // cannot tell, so the removal needs a step and counts as this change's.
+  it('still wants a step for a fact no released note lists', () => {
+    const root = publishedNotRecorded();
+    rmSync(join(root, 'upgrade/pending/drop-callout.json'));
+    changeset(root, 'fix-copy', 'patch');
+    note(root, 'fix-copy', { impact: 'none' });
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['bump-too-small', 'fact-without-step']);
+    expect(messages(result)).toContain('removed:.:Callout');
+  });
+
+  it('still wants a minor for a breaking change of its own, naming only that', () => {
+    const root = publishedNotRecorded();
+    write(root, 'src/index.ts', 'export {};\n');
+    changeset(root, 'drop-button', 'patch');
+    note(root, 'drop-button', stepFor('removed/Button', 'breaking', ['removed:.:Button']));
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['bump-too-small']);
+    expect(messages(result)).toContain('upgrade/pending/drop-button.json');
+    expect(messages(result)).not.toContain('drop-callout');
+    expect(messages(result)).not.toContain('removed:.:Callout');
+  });
+});
+
 describe('checkUpgradeLedger: a release recorded from its tarball', () => {
   /**
    * The repo at a release with a tooling export (./eslint-plugin: hand-written
@@ -477,6 +552,23 @@ describe('check-upgrade-ledger.mjs CLI', () => {
     const failed = run(['--root', root]);
     expect(failed.status).toBe(1);
     expect(failed.stderr).toContain('pnpm upgrade:note');
+  });
+
+  it('says on stderr how to record a published release it finds unrecorded, and still passes', () => {
+    const root = releasedRepo();
+    removeCallout(root);
+    note(root, 'drop-callout', calloutRemoved);
+    editPkg(root, (pkg) => (pkg.version = '0.21.0'));
+    changeset(root, 'fix-copy', 'patch');
+    note(root, 'fix-copy', { impact: 'none' });
+    const res = run(['--root', root]);
+    expect(res.status).toBe(0);
+    expect(res.stderr).toContain('0.21.0 is in package.json but not recorded');
+    expect(res.stderr).toContain('snapshot.mjs --from-npm 0.21.0');
+    expect(res.stderr).toContain(
+      'move upgrade/pending/drop-callout.json to upgrade/sources/0.21.0/notes/',
+    );
+    expect(res.stderr).toContain('upgrade/published.json');
   });
 
   it('--json prints the gate-output shape', () => {

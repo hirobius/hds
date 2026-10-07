@@ -24,7 +24,12 @@
  *      (major from 1.0). On the Version PR (package.json past the snapshot, no
  *      changesets left) the real bump is checked instead, and the ledger of
  *      package.json's version must not record a smaller bump than its breaking
- *      steps need;
+ *      steps need. Once that release is published and changesets are pending
+ *      again, but before anyone records it (snapshot, ledger, notes moved to
+ *      upgrade/sources/<version>/notes; by hand until hds#451), the notes
+ *      whose changesets are gone, and the facts their steps list, are that
+ *      release's: they still cover their facts but do not count toward the
+ *      next bump, and the gate names the release to record;
  *   4. a changeset bumps major below 1.0, or the version crosses 1.0, without
  *      upgrade/ALLOW_1_0 (the 1.0 cut is a decision, #396).
  *
@@ -158,14 +163,38 @@ function noteViolations(state) {
 }
 
 /**
+ * The notes of a release that is published but not yet recorded: package.json
+ * names a version past the newest release snapshot, and changesets are pending
+ * again (not the Version PR). Until the release compiler (hds#451) records a
+ * release, its notes stay in upgrade/pending after `changeset version`
+ * consumed their changesets, so a note whose changeset is gone belongs to the
+ * version package.json already names. Its Version PR checked its bump.
+ */
+function releasedNotes(state, versionPr) {
+  if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return [];
+  const pending = new Set(state.changesets.map((changeset) => changeset.name));
+  return state.notes.filter((note) => !pending.has(note.name));
+}
+
+/**
  * What says the change is breaking: fact ids, note files and step ids. A note
  * that says breaking counts as a whole; otherwise each of its steps that takes
- * something away counts (a removed CSS variable the diff cannot see yet).
+ * something away counts (a removed CSS variable the diff cannot see yet). The
+ * notes of a published but unrecorded release, and the facts their steps list,
+ * are that release's, so they do not count toward the next bump; their steps
+ * still cover their facts (factViolations).
  */
 function breakingEvidence(state, versionPr) {
-  const facts = versionPr ? state.facts : newFacts(state);
+  const released = new Set(releasedNotes(state, versionPr));
+  const releasedFacts = new Set(
+    [...released]
+      .flatMap(noteSteps)
+      .flatMap((step) => (Array.isArray(step.facts) ? step.facts : [])),
+  );
+  const facts = versionPr ? state.facts : newFacts(state).filter((f) => !releasedFacts.has(f.id));
   const evidence = facts.filter((fact) => factImpact(fact) === 'breaking').map((fact) => fact.id);
   for (const note of state.notes) {
+    if (released.has(note)) continue;
     if (noteImpact(note) === 'breaking') evidence.push(note.file);
     else for (const step of noteSteps(note)) if (stepIsBreaking(step)) evidence.push(step.id);
   }
@@ -302,8 +331,31 @@ export function checkUpgradeLedger(root = REPO) {
       facts: state.facts.length,
       changesets: state.changesets.length,
       notes: state.notes.length,
+      unrecorded: unrecorded(state, versionPr),
     },
   };
+}
+
+/**
+ * The published release no snapshot records yet, with the notes that belong
+ * to it, or null. Recording it is a manual step until hds#451.
+ */
+function unrecorded(state, versionPr) {
+  if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return null;
+  return {
+    version: state.version,
+    previous: state.previousVersion,
+    notes: releasedNotes(state, versionPr).map((note) => note.file),
+  };
+}
+
+/** How to record the release `summary.unrecorded` names, in one line. */
+export function recordHint({ version, notes }) {
+  const move =
+    notes.length > 0
+      ? `, move ${list(notes)} to upgrade/sources/${version}/notes/ and cite each in its release.json`
+      : '';
+  return `${version} is in package.json but not recorded: run node scripts/upgrade/snapshot.mjs --from-npm ${version}${move}, run node scripts/upgrade/build-ledger.mjs ${version}, and add ${version} to upgrade/published.json (upgrade/README.md, "Recording a release by hand").`;
 }
 
 function parseRoot(argv) {
@@ -318,6 +370,8 @@ function main(argv) {
   const json = hasJsonFlag(argv);
   const result = checkUpgradeLedger(parseRoot(argv));
   emitResult(result, json);
+  if (result.summary?.unrecorded)
+    console.error(`! check-upgrade-ledger — ${recordHint(result.summary.unrecorded)}`);
   const since = result.previous
     ? `since ${result.previous} (${RELEASES_SNAPSHOTS}/${result.previous}.json)`
     : '';

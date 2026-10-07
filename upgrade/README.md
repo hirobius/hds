@@ -99,6 +99,39 @@ ledger (hds#451). CSS facts, such as removed classes and changed variable
 values, come with hds#449; until then a step of kind `removed` written by hand
 covers one, and the gate counts it as breaking.
 
+## Recording a release by hand
+
+Until the release compiler (hds#451) records each release at `changeset
+version` time, record it by hand once npm has published it, in one follow-up
+PR with `skip-changeset` in its commit message (nothing in it ships):
+
+1. `node scripts/upgrade/snapshot.mjs --from-npm <version>` writes
+   `docs/api/releases/<version>.json`; the same command with `--check` must
+   then pass.
+2. Move each note whose changeset the release consumed (its
+   `.changeset/<name>.md` is gone) from `upgrade/pending/<name>.json` to
+   `upgrade/sources/<version>/notes/<name>.json`, unchanged. A note whose
+   changeset is still pending stays where it is.
+3. Write `upgrade/sources/<version>/release.json`, with
+   `upgrade/sources/0.21.0/release.json` as the model: `version`, `previous`,
+   `date`, `summary`, `backfilled: true`, and under `notes` each moved note's
+   name with the `source` of its changeset's CHANGELOG entry
+   (`CHANGELOG.md:<line>`, numbered as the file read when the release shipped:
+   `changelogSource()` in `scripts/upgrade/ledger.mjs` gives it) and the
+   `needle` text that finds that line.
+4. `node scripts/upgrade/build-ledger.mjs <version>` writes
+   `upgrade/releases/<version>.json`. It stops on a fact no note step lists.
+5. Add the version to `upgrade/published.json`, and move the ranges in this
+   README ("0.17.0 to <version>").
+6. `pnpm test`.
+
+Until that PR lands, `package.json` names a version with no snapshot. Once
+changesets are pending again, the gate treats each note in `upgrade/pending/`
+whose changeset is gone as that release's: its steps still cover their facts,
+but neither it nor those facts count toward the next bump (its Version PR
+already checked them), and the gate prints these steps with the release's
+version and notes filled in.
+
 ## The floor
 
 The floor is the oldest version the upgrade command can upgrade from. Below
@@ -111,8 +144,9 @@ that a step does not report.
 `upgrade/published.json` lists every version npm has published. A test fails
 while a release after the floor has no snapshot or no ledger, so a release
 that ships without them (as 0.21.0 first did) fails the next `pnpm test`. When
-a release publishes, add its version there with its snapshot and its ledger;
-hds#451 will do all three at release time. The upgrade command will refuse to
+a release publishes, add its version there with its snapshot and its ledger
+([Recording a release by hand](#recording-a-release-by-hand)); hds#451 will do
+all three at release time. The upgrade command will refuse to
 report "done" across a release that has no ledger.
 
 `floor()` in `scripts/upgrade/history.mjs` computes the floor, for `floor` in
@@ -120,7 +154,10 @@ report "done" across a release that has no ledger.
 when a snapshot after the floor has no ledger, a ledger names the wrong bump,
 or a fact between two consecutive snapshots (an export removed or moved, a
 dependency, peer, engine, exports key or bin) has no step. It reads only
-committed snapshots; the published list is what catches a missing one.
+committed snapshots; the published list is what catches a missing one. Nothing
+adds a version to that list when npm publishes it yet, so a release nobody
+records stays invisible to the test; until hds#451 adds it at release time, the
+gate's "not recorded" line above is the prompt.
 
 ## Who is a consumer
 
