@@ -810,6 +810,110 @@ describe('compile.mjs --release, right after changeset version', () => {
     expect(refused.stderr).toContain(`${CHANGESETS}/next.md`);
     expect(existsSync(join(pending, 'upgrade/releases/0.21.0.json'))).toBe(false);
   });
+
+  // changesets pre mode keeps the changesets it consumed (pre.json lists
+  // them), so a prerelease looks like a tree with changesets still pending.
+  it('records no prerelease in changesets pre mode: it says so, exits 0 and leaves the notes pending', () => {
+    const root = versionedRepo();
+    const names = ['drop-callout', 'soft-shadow', 'docs'];
+    for (const name of names) {
+      write(root, `${CHANGESETS}/${name}.md`, `---\n'${PKG}': patch\n---\n\n${name}.\n`);
+    }
+    write(
+      root,
+      `${CHANGESETS}/pre.json`,
+      json({ mode: 'pre', tag: 'rc', initialVersions: { [PKG]: '0.20.0' }, changesets: names }),
+    );
+    editPkg(root, (pkg) => (pkg.version = '0.21.0-rc.0'));
+    // compile.mjs still regenerates its outputs, from the 0.20.0 ledger.
+    const ledger = { ...LEDGER_0_12_1, version: '0.20.0', bump: 'minor', summary: 'Fixture.' };
+    write(root, 'upgrade/releases/0.20.0.json', json(ledger));
+    const changelog = read(root, 'CHANGELOG.md').replace('## 0.21.0', '## 0.21.0-rc.0');
+    write(root, 'CHANGELOG.md', changelog);
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    expect(res.stdout).toContain('0.21.0-rc.0 is a prerelease');
+    expect(res.stdout).toContain(`${CHANGESETS}/pre.json`);
+    expect(existsSync(join(root, 'docs/api/releases/0.21.0-rc.0.json'))).toBe(false);
+    expect(existsSync(join(root, 'upgrade/pending/drop-callout.json'))).toBe(true);
+    expect(read(root, 'CHANGELOG.md')).toBe(changelog);
+  });
+
+  it('replaces the Upgrade block, not adds a second one, when a release is recorded again', () => {
+    const root = versionedRepo();
+    const notes = ['drop-callout', 'soft-shadow', 'docs', 'late'];
+    const before = Object.fromEntries(
+      notes.map((n) => [n, read(root, `upgrade/pending/${n}.json`)]),
+    );
+    expect(run(['--release', '--date', '2026-10-08', '--repo', root]).status).toBe(0);
+    const changelog = read(root, 'CHANGELOG.md');
+    // Undo the record, keeping the CHANGELOG with its block, and record again.
+    rmSync(join(root, 'docs/api/releases/0.21.0.json'));
+    rmSync(join(root, 'upgrade/releases/0.21.0.json'));
+    rmSync(join(root, 'upgrade/sources/0.21.0'), { recursive: true });
+    for (const [name, text] of Object.entries(before)) {
+      write(root, `upgrade/pending/${name}.json`, text);
+    }
+    expect(run(['--release', '--date', '2026-10-08', '--repo', root]).status).toBe(0);
+    expect(read(root, 'CHANGELOG.md')).toBe(changelog);
+    expect(read(root, 'CHANGELOG.md').match(/^### Upgrade$/gm)).toHaveLength(1);
+  });
+
+  // The Version PR is regenerated from main on every push (changesets/action),
+  // so the summary's durable source is a file on main, not an edit on the PR.
+  it('takes the summary from upgrade/pending/summary.txt when main has one, then deletes it', () => {
+    const root = versionedRepo();
+    const summary = 'Callout is removed for Alert, and Card has a softer shadow.';
+    write(root, 'upgrade/pending/summary.txt', `${summary}\n`);
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    expect(JSON.parse(read(root, 'upgrade/sources/0.21.0/release.json')).summary).toBe(summary);
+    expect(JSON.parse(read(root, 'upgrade/releases/0.21.0.json')).summary).toBe(summary);
+    expect(JSON.parse(read(root, 'status.json')).release.summary).toBe(summary);
+    expect(existsSync(join(root, 'upgrade/pending/summary.txt'))).toBe(false);
+  });
+
+  it('refuses a summary.txt that is not one line of at most 140 characters, with nothing written', () => {
+    for (const text of ['Two\nlines.\n', `${'x'.repeat(141)}\n`, '\n']) {
+      const root = versionedRepo();
+      write(root, 'upgrade/pending/summary.txt', text);
+      const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+      expect(res.status).toBe(2);
+      expect(res.stderr).toContain('upgrade/pending/summary.txt');
+      expect(existsSync(join(root, 'upgrade/releases/0.21.0.json'))).toBe(false);
+    }
+  });
+});
+
+describe('compile.mjs names the fix when its inputs are broken', () => {
+  it('a ledger that does not fit the schema: rebuild it with build-ledger.mjs', () => {
+    const repo = historyRepo();
+    write(repo, 'upgrade/releases/0.12.0.json', json({ ...LEDGER_0_12, bump: 'huge' }));
+    const res = run(['--check', '--repo', repo]);
+    expect(res.status).toBe(2);
+    expect(res.stderr).toContain('upgrade/releases/0.12.0.json does not fit');
+    expect(res.stderr).toContain('node scripts/upgrade/build-ledger.mjs 0.12.0');
+  });
+
+  it('no ledger at all: record a release first', () => {
+    const repo = historyRepo();
+    rmSync(join(repo, 'upgrade/releases'), { recursive: true });
+    const res = run(['--check', '--repo', repo]);
+    expect(res.status).toBe(2);
+    expect(res.stderr).toContain('upgrade/releases holds no ledger');
+    expect(res.stderr).toContain('Recording a release by hand');
+  });
+
+  it('a status.json that is not JSON: fix it, then rerun compile.mjs', () => {
+    const repo = historyRepo();
+    for (const args of [['--check'], []]) {
+      write(repo, 'status.json', '{ "phase": ');
+      const res = run([...args, '--repo', repo]);
+      expect(res.status).toBe(2);
+      expect(res.stderr).toContain('status.json is not JSON');
+      expect(res.stderr).toContain('then run node scripts/upgrade/compile.mjs');
+    }
+  });
 });
 
 describe('wiring', () => {

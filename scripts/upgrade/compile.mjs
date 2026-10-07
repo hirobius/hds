@@ -76,12 +76,16 @@ function readHistory(repo) {
     if (!result.success) {
       const problems = result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`);
       throw new Error(
-        `upgrade/releases/${version}.json does not fit upgrade/schema.json: ${problems.join('; ')}`,
+        `upgrade/releases/${version}.json does not fit upgrade/schema.json: ${problems.join('; ')}. Rebuild it from upgrade/sources/${version} with node scripts/upgrade/build-ledger.mjs ${version}, then run ${FIX}.`,
       );
     }
     return result.data;
   });
-  if (ledgers.length === 0) throw new Error('upgrade/releases holds no ledger');
+  if (ledgers.length === 0) {
+    throw new Error(
+      `upgrade/releases holds no ledger: record a release first (upgrade/README.md, "Recording a release by hand"), then run ${FIX}.`,
+    );
+  }
   const pkg = readJson(join(repo, 'package.json'));
   const bin = typeof pkg.bin === 'object' && pkg.bin ? pkg.bin : {};
   return {
@@ -455,8 +459,8 @@ export function compileOutputs({ repo = REPO } = {}) {
 /**
  * A release's summary when nothing better is written: what its steps ask of
  * a consumer, counted by list, in one line under the schema's 140 characters.
- * A person can rewrite it in upgrade/sources/<version>/release.json on the
- * Version PR (then rerun build-ledger.mjs <version> and compile.mjs).
+ * To word it yourself, commit upgrade/pending/summary.txt on main before the
+ * Version PR merges (recordRelease reads it).
  */
 export function summarize(ledger) {
   const lists = listsOf(ledger);
@@ -551,7 +555,11 @@ function entryCite(changelog, version, line) {
   return null;
 }
 
-/** The CHANGELOG with `block` at the top of `version`'s section. */
+/**
+ * The CHANGELOG with `block` at the top of `version`'s section. A block
+ * already there (a release recorded again) is replaced, up to the next
+ * heading, so the section never holds two.
+ */
 function withUpgradeBlock(changelog, version, block) {
   const lines = changelog.split('\n');
   const heading = lines.indexOf(`## ${version}`);
@@ -560,10 +568,26 @@ function withUpgradeBlock(changelog, version, block) {
   }
   const at = lines[heading + 1] === '' ? heading + 2 : heading + 1;
   const lead = at === heading + 1 ? [''] : [];
-  return [...lines.slice(0, at), ...lead, ...block, ...lines.slice(at)].join('\n');
+  let rest = at;
+  if (lines[at] === '### Upgrade') {
+    rest = lines.findIndex((line, i) => i > at && /^#{2,3} /.test(line));
+    if (rest === -1) rest = lines.length;
+  }
+  return [...lines.slice(0, at), ...lead, ...block, ...lines.slice(rest)].join('\n');
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
+
+/** True when `changeset pre enter` put the repo in pre mode (.changeset/pre.json). */
+function inPreMode(repo) {
+  const file = join(repo, '.changeset/pre.json');
+  if (!existsSync(file)) return false;
+  try {
+    return readJson(file).mode === 'pre';
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Records the release `changeset version` just cut (hds#451): package.json
@@ -581,19 +605,26 @@ const today = () => new Date().toISOString().slice(0, 10);
  *     before the citations are numbered, so they count its lines;
  *   - the version in upgrade/published.json;
  *
- * and deletes the merged notes from upgrade/pending. Does nothing when the
- * version already has a snapshot or a ledger.
+ * and deletes the merged notes (and upgrade/pending/summary.txt) from
+ * upgrade/pending. The summary is that file's one line when main has one
+ * (the Version PR is regenerated from main on every push, so an edit there
+ * does not last), else counted from the steps (summarize). Does nothing when
+ * the version already has a snapshot or a ledger, or in changesets pre mode:
+ * a prerelease is not recorded, and its notes wait for the release that exits
+ * pre mode.
  *
  * @param {{ repo?: string, date?: string }} [options]
- * @returns {Promise<{ recorded: boolean, version: string, notes: string[], uncited: string[] }>}
+ * @returns {Promise<{ recorded: boolean, prerelease?: boolean, version: string, notes: string[], uncited: string[] }>}
  */
 export async function recordRelease({ repo = REPO, date = today() } = {}) {
   // Lazy: these read TypeScript sources, which --check never needs.
-  const { readChangesets, readPendingNotes } = await import('./pending.mjs');
+  const { readChangesets, readPendingNotes, readReleaseSummary } = await import('./pending.mjs');
   const { snapshotFromSource } = await import('./snapshot.mjs');
 
   const pkg = readJson(join(repo, 'package.json'));
   const { version } = pkg;
+  if (inPreMode(repo))
+    return { recorded: false, prerelease: true, version, notes: [], uncited: [] };
   const snapshotsDir = join(repo, 'docs/api/releases');
   const snapshots = releaseVersions(snapshotsDir);
   const ledgerRel = `upgrade/releases/${version}.json`;
@@ -615,6 +646,10 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
       invalid.map((n) => `${n.file}: ${n.problems.join('; ')}`).join('\n') +
         '\nfix the note (pnpm upgrade:note), then rerun pnpm changeset:version',
     );
+  }
+  const written = readReleaseSummary(repo);
+  if (written?.problem) {
+    throw new Error(`${written.problem}: fix it, then rerun pnpm changeset:version`);
   }
   const notes = Object.fromEntries(pendingNotes.map((n) => [n.name, n.note]));
   const next = snapshotFromSource(repo);
@@ -649,7 +684,7 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
     Object.keys(notes).map((name) => [name, { source: `.changeset/${name}.md` }]),
   );
   const draft = { version, previous, date, summary: '-', backfilled: false, notes: draftCites };
-  const summary = summarize(build(draft));
+  const summary = written?.summary ?? summarize(build(draft));
   const bin = typeof pkg.bin === 'object' && pkg.bin ? pkg.bin : {};
   const block = upgradeBlock(build({ ...draft, summary }), {
     command: Object.hasOwn(bin, ONE_COMMAND_BIN),
@@ -670,7 +705,7 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
     cites[name] = cite ?? draftCites[name];
   }
   const release = {
-    $comment: `Frozen inputs of the ${version} ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when ${version} shipped. To reword the summary, edit it here, then run node scripts/upgrade/build-ledger.mjs ${version} and node scripts/upgrade/compile.mjs.`,
+    $comment: `Frozen inputs of the ${version} ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when ${version} shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.`,
     version,
     previous,
     date,
@@ -700,6 +735,7 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
     }
   }
   for (const n of pendingNotes) rmSync(join(repo, n.file));
+  if (written) rmSync(join(repo, written.file));
   return { recorded: true, version, notes: Object.keys(cites), uncited };
 }
 
@@ -710,9 +746,18 @@ export const OUTPUTS = {
   status: 'status.json',
 };
 
+/** status.json, parsed, or an error that names the fix. */
+function parseStatus(text) {
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    throw new Error(`${OUTPUTS.status} is not JSON (${error.message}); fix it, then run ${FIX}.`);
+  }
+}
+
 /** status.json with `release` set: in place when present, else after `headline`. */
 function withRelease(statusText, release) {
-  const status = JSON.parse(statusText);
+  const status = parseStatus(statusText);
   const out = {};
   if (!Object.hasOwn(status, 'release') && !Object.hasOwn(status, 'headline')) {
     return formatJson({ ...status, release });
@@ -771,7 +816,7 @@ export function checkCompiled({ repo = REPO } = {}) {
     }
   }
   const status = text(OUTPUTS.status);
-  const release = status === null ? undefined : JSON.parse(status).release;
+  const release = status === null ? undefined : parseStatus(status).release;
   if (JSON.stringify(release) !== JSON.stringify(outputs.release)) {
     violations.push(
       stale(
@@ -822,7 +867,11 @@ async function main(argv) {
   }
   if (release) {
     const result = await recordRelease({ repo, ...(date ? { date } : {}) });
-    if (result.recorded) {
+    if (result.prerelease) {
+      console.log(
+        `compile.mjs: ${result.version} is a prerelease (changesets pre mode, .changeset/pre.json), so it is not recorded; its upgrade notes stay in upgrade/pending for the release that exits pre mode.`,
+      );
+    } else if (result.recorded) {
       console.log(
         `compile.mjs: recorded ${result.version} (${result.notes.length} upgrade note(s) merged into upgrade/releases/${result.version}.json)`,
       );

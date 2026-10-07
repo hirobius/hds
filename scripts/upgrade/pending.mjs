@@ -14,7 +14,8 @@
  *   - the pending changesets (.changeset/*.md but README.md), each with the
  *     bump it gives @hirobius/design-system;
  *   - the pending notes, upgrade/pending/<changeset>.json, each validated
- *     against PendingNote (./schema.mjs);
+ *     against PendingNote (./schema.mjs), and upgrade/pending/summary.txt,
+ *     the next release's summary when someone wrote one;
  *   - whether upgrade/ALLOW_1_0 exists.
  *
  * Nothing here touches the network or builds anything.
@@ -29,6 +30,8 @@ import { PACKAGE, snapshotFromSource } from './snapshot.mjs';
 export const RELEASES_SNAPSHOTS = 'docs/api/releases';
 export const PENDING_DIR = 'upgrade/pending';
 export const ALLOW_1_0 = 'upgrade/ALLOW_1_0';
+/** The next release's summary, written on main (hds#451): one line, at most 140 characters. */
+export const SUMMARY_FILE = `${PENDING_DIR}/summary.txt`;
 
 const BUMPS = new Set(['patch', 'minor', 'major']);
 const SEMVER_FILE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?\.json$/;
@@ -108,6 +111,33 @@ export function readPendingNotes(root) {
     });
 }
 
+/**
+ * upgrade/pending/summary.txt, the summary the next release records in place
+ * of the one counted from its steps; null when there is none. `problem` says
+ * why it cannot be the summary (the ledger takes one line of at most 140
+ * characters).
+ * @returns {{ file: string, summary: string, problem: string | null } | null}
+ */
+export function readReleaseSummary(root) {
+  const file = join(root, SUMMARY_FILE);
+  if (!existsSync(file)) return null;
+  const summary = readFileSync(file, 'utf8').replace(/\r?\n$/, '');
+  const why =
+    summary.trim() === ''
+      ? 'is empty'
+      : /[\r\n]/.test(summary)
+        ? 'holds more than one line'
+        : summary.length > 140
+          ? `is ${summary.length} characters long`
+          : null;
+  return {
+    file: SUMMARY_FILE,
+    summary,
+    problem:
+      why && `${SUMMARY_FILE} ${why}, but a release summary is one line of at most 140 characters`,
+  };
+}
+
 /** The steps a note holds, read as far as its JSON allows. */
 export function noteSteps(pending) {
   const steps = pending.note?.steps ?? pending.raw?.steps;
@@ -171,6 +201,7 @@ export function readUpgradeState(root) {
     ledger: readLedger(root, version),
     changesets: readChangesets(root),
     notes: readPendingNotes(root),
+    summary: readReleaseSummary(root),
     allow10: existsSync(join(root, ALLOW_1_0)),
   };
 }

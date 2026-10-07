@@ -196,6 +196,15 @@ function noteViolations(state, versionPr) {
       );
     }
   }
+  if (state.summary?.problem) {
+    out.push(
+      violation(
+        state.summary.file,
+        'summary-invalid',
+        `${state.summary.problem}: shorten it to one line, or delete it to have the summary counted from the steps.`,
+      ),
+    );
+  }
   if (state.ledger?.problems.length > 0) {
     out.push(
       violation(

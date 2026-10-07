@@ -14,7 +14,9 @@ this README.
 
 - **Release:** `version`, `date`, `bump`, a `summary` of 140 characters at
   most, and `backfilled` (true when the record was written after the release
-  shipped).
+  shipped). `date` is the day `pnpm changeset:version` cut the release (its
+  Version PR as last regenerated; the PR publishes when it merges), or, for a
+  backfilled release, the day npm published it.
 - **Steps,** one per change:
   - `id` is `<version>/<kind>/<subject>`, such as `0.20.0/moved/Page`.
   - `kind` says what changed: removed, moved, renamed, folded, deprecated,
@@ -127,15 +129,23 @@ PR) runs `changeset version`, then `node scripts/upgrade/compile.mjs
    before the citations are numbered: the command (the one command once the
    package ships it, the exact install until then), then at most five lines,
    so the GitHub Release leads with it.
-4. It adds the version to `upgrade/published.json`, deletes the merged notes
-   and regenerates UPGRADING.md, `upgrade/index.json` and `status.json`
-   `release`.
+4. It adds the version to `upgrade/published.json` (the Version PR publishes
+   when it merges), deletes the merged notes and regenerates UPGRADING.md,
+   `upgrade/index.json` and `status.json` `release`. A rerun replaces the
+   Upgrade block rather than adding a second one.
 
-The summary is counted from the steps ("1 change to make by hand (1 breaking)
-and 1 that looks different."). To reword it on the Version PR, edit
-`upgrade/sources/<version>/release.json`, then run `node
-scripts/upgrade/build-ledger.mjs <version>` and `node
-scripts/upgrade/compile.mjs`.
+In changesets pre mode (`.changeset/pre.json`) it records nothing: the
+prerelease's notes stay in `upgrade/pending/` for the release that exits pre
+mode.
+
+The release workflow (changesets/action) regenerates the Version PR from main
+on every push to main, so an edit made on the PR itself is lost at the next
+push. Everything the record needs therefore comes from main. The summary is
+counted from the steps ("1 change to make by hand (1 breaking) and 1 that
+looks different.") unless main has `upgrade/pending/summary.txt`: one line of
+at most 140 characters, which becomes the summary and is deleted with the
+notes. The gate checks its length; write it in the PR that readies the
+release.
 
 ## What it compiles to
 

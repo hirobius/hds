@@ -298,6 +298,16 @@ describe('checkUpgradeLedger: notes the release could not record', () => {
     expect(messages(result)).toContain('pnpm upgrade:note');
   });
 
+  it('fails an upgrade/pending/summary.txt that is not one line of at most 140 characters', () => {
+    const root = releasedRepo();
+    write(root, 'upgrade/pending/summary.txt', 'One line.\n');
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+    write(root, 'upgrade/pending/summary.txt', `${'x'.repeat(141)}\n`);
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['summary-invalid']);
+    expect(messages(result)).toContain('upgrade/pending/summary.txt is 141 characters long');
+  });
+
   it('passes a note whose changeset is pending beside it', () => {
     const root = releasedRepo();
     changeset(root, 'quiet', 'patch');
