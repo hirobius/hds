@@ -598,15 +598,15 @@ describe('delta.js refuses, writing nothing', () => {
     const s = await pending({ base: base(trickyModel()) });
     // A build without its refusal, for the model that drops role.retired, bakes
     // the same slice (role.retired is outside it) and expects staging to hold
-    // the snapshot less the full plan's extras: 57 variables, not 58.
+    // the snapshot less the full plan's extras: 58 variables, not 59.
     const dropped = buildPushPayload(describeAndCreate(drop(base(trickyModel())))).payload;
     const state = s.snapshotFile.snapshot;
     const { extras } = hdsPlan(dropped.model, state, { prune: false });
     expect(extras.variables.map((v) => v.path)).toEqual(['role.retired']);
     const forgery = forged(s.built.text, (plan) => {
       // Variables, modes, text styles and effect styles staging holds.
-      expect(plan.held).toEqual([58, 5, 3, 3]);
-      plan.held = [57, 5, 3, 3];
+      expect(plan.held).toEqual([59, 5, 3, 3]);
+      plan.held = [58, 5, 3, 3];
       plan.modelHash = dropped.modelHash;
       return plan;
     });

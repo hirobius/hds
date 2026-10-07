@@ -21,8 +21,8 @@
  *   3. Technical tone on <Badge>.
  *   4. Native DOM elements in pages/layouts with direct HDS equivalents,
  *      unless the file is explicitly marked with // @hds-incubation.
- *   5. Typography usage outside the 9-style ramp:
- *      display, heading1, heading2, heading3, body, ui, caption, technical, badge.
+ *   5. Typography usage outside the 6-role ramp:
+ *      display, title, body, ui, caption, mono.
  *   6. Forbidden component usage such as <Divider> and <HdsTriangle>.
  *   7. Hardcoded color literals in .tsx files.
  *   8. Hardcoded zIndex numbers, borderRadius values, or boxShadow values.
@@ -100,19 +100,15 @@ const LAYOUT_PROPS = [
   'left',
 ];
 
-const ALLOWED_TYPOGRAPHY_TOKENS = new Set([
-  'display',
+const ALLOWED_TYPOGRAPHY_TOKENS = new Set(['display', 'title', 'body', 'ui', 'caption', 'mono']);
+
+const DEPRECATED_TYPOGRAPHY_TOKENS = [
   'heading1',
   'heading2',
   'heading3',
-  'body',
-  'ui',
-  'caption',
   'technical',
   'badge',
-]);
-
-const DEPRECATED_TYPOGRAPHY_TOKENS = [
+  'eyebrow',
   'micro',
   'label',
   'labelDescriptive',
@@ -120,7 +116,6 @@ const DEPRECATED_TYPOGRAPHY_TOKENS = [
   'monoXs',
   'monoSm',
   'body2',
-  'title',
 ];
 const DEPRECATED_TYPOGRAPHY_TOKEN_SET = new Set(DEPRECATED_TYPOGRAPHY_TOKENS);
 const PROP_PATTERN = LAYOUT_PROPS.join('|');
@@ -156,7 +151,10 @@ const OBJECT_NUMERIC_LAYOUT_PROP = new RegExp(
 );
 const FORBIDDEN_COMPONENTS = new Map([
   ['Divider', '<Divider> is forbidden; use layout spacing between sections instead.'],
-  ['HdsTriangle', '<HdsTriangle> is forbidden; the retired geometry playground must not return to the app surface.'],
+  [
+    'HdsTriangle',
+    '<HdsTriangle> is forbidden; the retired geometry playground must not return to the app surface.',
+  ],
 ]);
 const FORBIDDEN_COMPONENT_PATTERN = new RegExp(
   String.raw`<\s*(${[...FORBIDDEN_COMPONENTS.keys()].join('|')})\b`,
@@ -179,7 +177,8 @@ const DEPRECATED_TYPOGRAPHY_PROP = new RegExp(
   String.raw`\b(?:typeStyle|typography|textStyle|variant|metaStyle)\s*=\s*["'](${TYPOGRAPHY_PATTERN})["']`,
   'g',
 );
-const ANY_TYPOGRAPHY_PROP = /\b(?:typeStyle|typography|textStyle|metaStyle)\s*=\s*["']([A-Za-z_$][\w$]*)["']/g;
+const ANY_TYPOGRAPHY_PROP =
+  /\b(?:typeStyle|typography|textStyle|metaStyle)\s*=\s*["']([A-Za-z_$][\w$]*)["']/g;
 const DEPRECATED_TYPOGRAPHY_VAR = new RegExp(
   String.raw`var\(--(?:hds-)?semantic-typography-(${TYPOGRAPHY_PATTERN})(?:-[^)]+)?\)`,
   'g',
@@ -188,10 +187,12 @@ const ANY_TYPOGRAPHY_VAR = /var\(--(?:hds-)?semantic-typography-([A-Za-z0-9_-]+)
 const HARDCODED_COLOR_LITERAL = /(?:#[0-9a-fA-F]{3,8}\b|\brgba?\s*\(\s*\d[^)]*\))/g;
 const HARDCODED_Z_INDEX = /\bzIndex\s*:\s*(-?\d+(?:\.\d+)?)\b/g;
 const STYLE_LITERAL_PROP = /\b(borderRadius|boxShadow)\s*:\s*([^,\n}]+)/g;
-const JSX_STYLE_LITERAL_PROP = /\b(borderRadius|boxShadow)\s*=\s*(?:"([^"]+)"|'([^']+)'|\{\s*["']([^"']+)["']\s*\})/g;
+const JSX_STYLE_LITERAL_PROP =
+  /\b(borderRadius|boxShadow)\s*=\s*(?:"([^"]+)"|'([^']+)'|\{\s*["']([^"']+)["']\s*\})/g;
 const TOKEN_VAR_PATTERN = /var\(--hds-[^)]+\)/;
 const HARD_RADIUS_VALUE = /(?:^|["'`])(?:-?\d+(?:\.\d+)?(?:px|rem|em|%)|9999px|50%)(?:["'`]|$)/;
-const HARD_SHADOW_VALUE = /(?:^|["'`])(?:none|(?:inset\s+)?-?\d+(?:\.\d+)?px\s+-?\d+(?:\.\d+)?px|0\s+-?\d+(?:\.\d+)?px)(?:[^"'`]*)(?:["'`]|$)/;
+const HARD_SHADOW_VALUE =
+  /(?:^|["'`])(?:none|(?:inset\s+)?-?\d+(?:\.\d+)?px\s+-?\d+(?:\.\d+)?px|0\s+-?\d+(?:\.\d+)?px)(?:[^"'`]*)(?:["'`]|$)/;
 
 function collectFiles(dir, files = []) {
   for (const entry of readdirSync(dir)) {
@@ -227,14 +228,25 @@ function lineText(source, lineNumber) {
 }
 
 function shouldIgnore(source, line) {
-  return lineText(source, line).includes('hds-lint-ignore') || lineText(source, line - 1).includes('hds-lint-ignore');
+  return (
+    lineText(source, line).includes('hds-lint-ignore') ||
+    lineText(source, line - 1).includes('hds-lint-ignore')
+  );
 }
 
 function isZero(value) {
   return Number(value) === 0;
 }
 
-function addRegexFindings({ source, file, regex, type, messageForMatch, findings, skipZero = false }) {
+function addRegexFindings({
+  source,
+  file,
+  regex,
+  type,
+  messageForMatch,
+  findings,
+  skipZero = false,
+}) {
   for (const match of source.matchAll(regex)) {
     const value = match[2] ?? match[1];
     if (skipZero && isZero(value)) continue;
@@ -268,7 +280,9 @@ function addLineFinding({ source, file, line, column, type, message, findings })
 
 function isCommentOnlyLine(source, line) {
   const text = lineText(source, line);
-  return text.startsWith('//') || text.startsWith('*') || text.startsWith('/*') || text.startsWith('*/');
+  return (
+    text.startsWith('//') || text.startsWith('*') || text.startsWith('/*') || text.startsWith('*/')
+  );
 }
 
 function scanFile(file) {
@@ -277,7 +291,8 @@ function scanFile(file) {
   const findings = [];
   const warnings = [];
   const isIncubated = source.includes(INCUBATION_TAG);
-  const isComponentInventoryFile = rel.startsWith('components/') || rel.startsWith('src/app/components/');
+  const isComponentInventoryFile =
+    rel.startsWith('components/') || rel.startsWith('src/app/components/');
   const isConsumerLayer =
     rel.startsWith('pages/') ||
     rel.startsWith('layouts/') ||
@@ -378,7 +393,8 @@ function scanFile(file) {
     type: 'forbidden-component',
     findings,
     messageForMatch: ([, componentName]) =>
-      FORBIDDEN_COMPONENTS.get(componentName) ?? `<${componentName}> is forbidden in HDS app surfaces.`,
+      FORBIDDEN_COMPONENTS.get(componentName) ??
+      `<${componentName}> is forbidden in HDS app surfaces.`,
   });
 
   addRegexFindings({
@@ -437,7 +453,8 @@ function scanFile(file) {
     regex: DEPRECATED_TYPOGRAPHY_PROP,
     type: 'deprecated-typography',
     findings,
-    messageForMatch: ([, token]) => `Deprecated typography token prop "${token}" is used; use the 9-style type ramp.`,
+    messageForMatch: ([, token]) =>
+      `Deprecated typography token prop "${token}" is used; use the 9-style type ramp.`,
   });
 
   for (const match of source.matchAll(ANY_TYPOGRAPHY_PROP)) {
@@ -581,7 +598,9 @@ if (findings.length === 0) {
   process.exit(0);
 }
 
-console.error(`\nFAIL hds-lint found ${findings.length} issue(s) across ${files.length} file(s):\n`);
+console.error(
+  `\nFAIL hds-lint found ${findings.length} issue(s) across ${files.length} file(s):\n`,
+);
 
 for (const finding of findings) {
   console.error(`  ${finding.file}:${finding.line}:${finding.column}  [${finding.type}]`);

@@ -393,8 +393,8 @@ describe('StatusDot -> Badge dot: tone, size and label map; style does not', () 
     }
   });
 
-  it('exposes a labelled status role when label is set', () => {
+  it('exposes a labelled image role when label is set', () => {
     render(<Badge dot tone="danger" label="Offline" />);
-    expect(screen.getByRole('status').getAttribute('aria-label')).toBe('Offline');
+    expect(screen.getByRole('img').getAttribute('aria-label')).toBe('Offline');
   });
 });

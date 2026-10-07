@@ -72,9 +72,15 @@ published library is read-only to agents. Adrian promotes staging by hand.
 
 ## Promotion (Adrian, by hand)
 
-Staging node IDs do not survive promotion, so **no `@figma` JSDoc tag is added
-while a component lives only in staging** — every tag in `src/app/components`
-points at the published library. After promoting, take the new library node ID,
-add the `@figma` tag, then run `pnpm manifest:generate`. The manifest's
-`variantAxes` and `figmaUrl` populate from that tag, and `check:figma-mapping`
-then enforces the axes against the real props.
+Staging node IDs do not survive promotion. Since 2026-10-07 a component drawn
+only in staging still gets its `@figma` tag, pointing at the **staging** node
+(`https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/...?node-id=...`), so the
+manifest, Storybook's Design tab and `figma:disposition` see a node. Add the
+tag, run `pnpm manifest:generate` and `pnpm figma:links`, and list the
+component in `figma/staging-inventory.json`
+(`pnpm figma:staging-inventory`). `pnpm check:figma-staging-urls` lists every
+tag still pointing at staging (a warning) and fails if one reaches a Code
+Connect template. After promoting, take the new library node ID
+for each, replace the tag URL, then run `pnpm manifest:generate` again. The
+manifest's `variantAxes` and `figmaUrl` populate from that tag, and
+`check:figma-mapping` then enforces the axes against the real props.

@@ -38,15 +38,15 @@ export const StatusTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Statu
         data-hds-component="StatusTile"
         data-hds-metrics={`tone:${tone}`}
         className={cn(
-          'flex h-full items-start gap-3 rounded-lg bg-[var(--semantic-color-surface-raised)] p-4',
+          'flex items-start gap-3 rounded-lg bg-[var(--semantic-color-surface-raised)] p-4',
           className,
         )}
         {...props}
       >
         <div className="min-w-0 flex-1">
-          <p className="m-0 text-sm text-foreground">{title}</p>
+          <p className="m-0 hds-type-ui text-foreground">{title}</p>
           {notes?.map((note, i) => (
-            <p key={i} className="m-0 mt-1 text-xs text-muted-foreground">
+            <p key={i} className="m-0 mt-1 hds-type-caption text-muted-foreground">
               {note}
             </p>
           ))}

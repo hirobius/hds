@@ -194,7 +194,7 @@ Key facts:
 - Demo tenant overlays listed in `figma/brand-modes.json` become the `Hirobius/Brand` (one mode per demo tenant) and `Hirobius/Density` (Comfortable/Compact) collections; overridden token variables alias them. Client tenants are never listed. Rules: `figma/README.md` (Brand and Density).
 - Typography tokens are composite (W3C DTCG) — the model explodes each into 5 scalar Figma variables (family, size, weight, line-height, letter-spacing) resolved to px at that style's font size, plus a text style bound to them. Do not duplicate this expansion elsewhere.
 - Shadow and elevation tokens become effect styles. Motion, z-index, breakpoints and font-size-relative multipliers are declared not-in-Figma; `scripts/__tests__/figma-model.tokens.test.mjs` fails if a token is neither mapped nor declared.
-- Fluid clamp overrides on `display`, `heading1`, `heading2`, `heading3` are recorded in `$extensions["com.figma.variables"]` in `hirobius.tokens.json`. Figma stores the static desktop-max value; the browser applies the clamp on top. This divergence is intentional and documented.
+- The type ramp is static: display 48px and title 24px carry no fluid `clamp()` override (hds#483). Figma and the browser read the same value.
 
 ## 8. Forbidden Patterns
 

@@ -60,8 +60,8 @@ const PNPM_BUILTINS = new Set(['install', 'exec', 'add', 'dlx']);
 
 // ── 1. Package metadata ───────────────────────────────────────────────────────
 /**
- * License of each font family that scripts/embed-fonts.mjs inlines into
- * dist/tokens.css. `spdx: null` means the license has no SPDX identifier, so
+ * License of each font family that scripts/build-fonts-css.mjs ships in
+ * dist/fonts.css. `spdx: null` means the license has no SPDX identifier, so
  * npm cannot express it in an SPDX `license` field.
  */
 const FONT_LICENSES = {
@@ -69,11 +69,11 @@ const FONT_LICENSES = {
   'geist-mono': { family: 'Geist Mono', license: 'SIL Open Font License 1.1', spdx: 'OFL-1.1' },
 };
 
-/** Font family directories (`/fonts/<family>/…`) the library build embeds. */
+/** Font family directories (`fonts/<family>/…`) the library build ships in fonts.css. */
 function embeddedFontFamilies() {
-  const script = read('scripts/embed-fonts.mjs');
+  const script = read('scripts/build-fonts-css.mjs');
   const list = script.slice(script.indexOf('const FONTS = ['), script.indexOf('];'));
-  return [...new Set([...list.matchAll(/'\/fonts\/([\w-]+)\//g)].map((m) => m[1]))];
+  return [...new Set([...list.matchAll(/'fonts\/([\w-]+)\//g)].map((m) => m[1]))];
 }
 
 describe('package metadata', () => {

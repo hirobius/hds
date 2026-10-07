@@ -17,14 +17,14 @@ function BasicFormDemo() {
       <Form onSubmit={(e) => e.preventDefault()}>
         <FormField label="Full name" required>
           <input
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 hds-type-ui text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="Adrian Milsap"
           />
         </FormField>
         <FormField label="Email" description="We'll never share your email.">
           <input
             type="email"
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 hds-type-ui text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="adrian@hirobius.com"
           />
         </FormField>
@@ -45,7 +45,7 @@ function WithErrorDemo() {
             type="email"
             aria-invalid
             defaultValue="not-an-email"
-            className="flex h-10 w-full rounded-md border border-destructive bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+            className="flex h-10 w-full rounded-md border border-destructive bg-background px-3 hds-type-ui text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
           />
         </FormField>
         <Button type="submit" variant="primary">
@@ -66,14 +66,14 @@ function WithDescriptionDemo() {
           required
         >
           <input
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 hds-type-ui text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="adrianm"
           />
         </FormField>
         <FormField label="Bio" description="Max 160 characters.">
           <textarea
             rows={3}
-            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
+            className="flex w-full rounded-md border border-input bg-background px-3 py-2 hds-type-ui text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
             placeholder="Product designer building design systems at scale…"
           />
         </FormField>
@@ -107,7 +107,7 @@ function ControlledDemo() {
               setName(e.target.value);
               setSubmitted(false);
             }}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 hds-type-ui text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="Hirobius Design System"
           />
         </FormField>
@@ -115,7 +115,7 @@ function ControlledDemo() {
           Create project
         </Button>
         {submitted && name && (
-          <p className="text-sm text-muted-foreground">Project &quot;{name}&quot; created.</p>
+          <p className="hds-type-ui text-muted-foreground">Project &quot;{name}&quot; created.</p>
         )}
       </Form>
     </div>

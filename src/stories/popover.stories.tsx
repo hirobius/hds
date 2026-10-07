@@ -39,7 +39,7 @@ function DefaultDemo() {
         <Button variant="secondary">Open popover</Button>
       </Popover.Trigger>
       <Popover.Content>
-        <p className="text-sm text-muted-foreground">
+        <p className="hds-type-ui text-muted-foreground">
           This is a floating surface. Click outside or press Esc to dismiss.
         </p>
       </Popover.Content>
@@ -61,8 +61,8 @@ function WithDismissDemo() {
       </Popover.Trigger>
       <Popover.Content>
         <div className="flex flex-col gap-3">
-          <p className="text-sm font-medium">Filter by status</p>
-          <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+          <p className="hds-type-ui">Filter by status</p>
+          <div className="flex flex-col gap-1 hds-type-ui text-muted-foreground">
             <label>
               <input type="checkbox" className="mr-2" />
               In progress
@@ -109,7 +109,7 @@ function InfoTipDemo() {
         </Button>
       </Popover.Trigger>
       <Popover.Content>
-        <p className="text-sm text-muted-foreground">
+        <p className="hds-type-ui text-muted-foreground">
           Phase 2 covers pattern-level components (Combobox, Toast, Command Palette) built on top of
           the Phase 1 primitives. Targeting Q3 2026.
         </p>
@@ -138,7 +138,7 @@ function AlignedStartDemo() {
         <Button variant="secondary">Align start</Button>
       </Popover.Trigger>
       <Popover.Content align="start">
-        <p className="text-sm text-muted-foreground">
+        <p className="hds-type-ui text-muted-foreground">
           This popover is left-aligned to its trigger via align=&quot;start&quot;.
         </p>
       </Popover.Content>
