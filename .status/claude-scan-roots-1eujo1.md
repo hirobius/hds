@@ -1,0 +1,1 @@
+Dead scan roots removed (audit-tokens: src/app/pages, src/app/styles; check-focus-states: src/app/pages; check-source-canon: src/app/layouts) and routed through new scripts/lib/scan-roots.mjs, which throws on a missing root. Emptied 9 dead typography override exemptions. Repo-sweep test added. Supersedes #275.
