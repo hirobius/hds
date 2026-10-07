@@ -5,7 +5,8 @@
  *
  * Compiles the consumer-facing agent skill (agentskills SKILL.md) from sources
  * that already exist; it is a projection, never a new source of truth:
- *   - public/hds-manifest.json      componentSpecs (name, description, category)
+ *   - public/hds-manifest.json      componentSpecs (name, description, category, and the
+ *                                   hds#374 `core` flag for the "Core set" section)
  *   - src/index.ts                  which component modules the root barrel re-exports
  *   - src/patterns.ts               which modules `/patterns` exports (its own list:
  *                                   0.20.0 removed them from the root, hds#389)
@@ -28,6 +29,7 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { layoutRecipeSteps, layoutNegativeRules } from './lib/layout-recipe.mjs';
+import { coreByCategory, renderCoreSetByCategory } from './lib/core-set.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -94,6 +96,21 @@ function allowList(manifest, barrelSource) {
   });
 }
 
+/** The "## Core set" section (hds#374), or nothing when no spec carries `core: true`. */
+function coreSetSection(manifest) {
+  const core = coreByCategory(manifest.componentSpecs ?? {});
+  const count = core.reduce((n, group) => n + group.names.length, 0);
+  if (count === 0) return [];
+  return [
+    '## Core set',
+    '',
+    `The ${count} components of the ratified core set (\`core: true\` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or \`${PKG}/patterns\` for composed product surfaces, only when none fits.`,
+    '',
+    ...renderCoreSetByCategory(core),
+    '',
+  ];
+}
+
 function importSection(packageExports) {
   const subpaths = Object.keys(packageExports ?? {}).filter(
     (k) => k !== '.' && k !== './package.json',
@@ -143,6 +160,7 @@ export function buildConsumerSkill({
       '',
       importSection(packageExports),
       '',
+      ...coreSetSection(manifest),
       '## Allow-list: components you may import',
       '',
       `Components you may import from \`${PKG}\`. Providers, hooks and helpers documented in \`docs/CONSUMING.md\` (for example \`HdsThemeProvider\`, \`useHdsTheme\`, \`cn\`) are also public. If a need is not covered, route it upstream instead of hand-rolling it.`,
