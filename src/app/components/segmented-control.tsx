@@ -76,8 +76,9 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
   {
     variants: {
       size: {
-        sm: 'min-h-8',
-        md: 'min-h-12',
+        // Rail = item + 2 x 4px padding + 2px border: 22px -> 32px (Button sm), 30px -> 40px (Button/Input md).
+        sm: 'min-h-[22px] py-0',
+        md: 'min-h-[30px]',
       },
       fullWidth: {
         true: 'w-full min-w-0 flex-1',
@@ -102,9 +103,10 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
       },
     },
     compoundVariants: [
-      // Width / min-width for the non-fullWidth case — compact shrinks to content, md fills the rail.
-      { fullWidth: false, size: 'sm', className: 'w-max min-w-max flex-none' },
-      { fullWidth: false, size: 'md', className: 'w-full flex-none' },
+      // Width for the non-fullWidth case: every segment hugs its content. A
+      // `w-full` segment inside the `w-fit` rail is circular (hds#522): one
+      // segment took the whole rail and the rest scrolled out of view.
+      { fullWidth: false, className: 'w-max min-w-max flex-none' },
 
       // Foreground color — active wins over hover/rest regardless of interaction sub-state.
       {
@@ -244,7 +246,7 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- description text is the semantic caption composite (12px/16px/medium) plus content-* color tokens; no Tailwind-theme utility
 const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.zIndex.10 (the discrete 0/10/100/1000 stacking scale, reached as hds.zIndex.focus) has no semantic alias — same primitive ref the pre-Tailwind inline style used
-  'relative z-[var(--primitive-zIndex-10)] text-xs font-medium text-[var(--semantic-color-content-secondary)]',
+  'relative z-[var(--primitive-zIndex-10)] hds-type-caption text-[var(--semantic-color-content-secondary)]',
   {
     variants: {
       variant: { primary: '', secondary: '' },
@@ -287,10 +289,10 @@ const segmentedControlFocusRingVariants = /* @__PURE__ */ cva(
 // The segment's own label text — color always follows the button's computed
 // `currentColor` (set by segmentedControlItemVariants above), so this only
 // carries the typeStyles.ui composite (14px/20px/medium/60ch, hds#283: was 15px/24px) + stacking.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- zIndex.focus token + 60ch max-width have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (text-sm/leading-5).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- zIndex.focus token + 60ch max-width have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (ui role).
 const segmentedControlLabelVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.zIndex.10, reached as hds.zIndex.focus, has no semantic alias — same primitive ref the pre-Tailwind inline style used
-  'relative z-[var(--primitive-zIndex-10)] max-w-[60ch] text-sm font-medium leading-5 text-current',
+  'relative z-[var(--primitive-zIndex-10)] max-w-[60ch] hds-type-ui text-current',
 );
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -365,8 +367,8 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
         {label && (
           // inline-ok: pb here mirrors the dynamic-padding cases below — token value, not a magic number, kept inline to match the group's spacing rhythm without a one-off arbitrary class
           <span
-            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- 60ch max-width + content-primary color have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (text-sm/leading-5, hds#283: was 15px/24px).
-            className="max-w-[60ch] text-sm font-medium leading-5 text-[var(--semantic-color-content-primary)]"
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- 60ch max-width + content-primary color have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (ui role).
+            className="max-w-[60ch] hds-type-ui text-[var(--semantic-color-content-primary)]"
             style={{ paddingBottom: hds.semantic.space.subgrid.gap }}
           >
             {label}

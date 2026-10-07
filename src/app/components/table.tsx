@@ -52,7 +52,7 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
 
 // Sortable header cells render a real `<button>` filling the cell so the whole
 // header remains one hit target; unstyled at rest beyond layout so the cell's own
-// alignment/typography (tableHeaderCellVariants + typeStyles.technical) keeps
+// alignment/typography (tableHeaderCellVariants + typeStyles.caption) keeps
 // driving pixel parity with the non-sortable render path. On hover the label and
 // glyph ease to the muted foreground over the productive motion token (zeroed
 // under prefers-reduced-motion): a colour change, not a wash, because the button
@@ -162,13 +162,13 @@ type TableDensity = 'compact' | 'comfortable';
 // cva components like Breadcrumb.
 const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   label: hds.typeStyles.ui,
-  value: hds.typeStyles.technical,
+  value: hds.typeStyles.ui,
   description: {
     ...hds.typeStyles.caption,
     color: 'var(--semantic-color-content-secondary)',
   },
-  token: hds.typeStyles.technical,
-  code: hds.typeStyles.technical,
+  token: hds.typeStyles.mono,
+  code: hds.typeStyles.mono,
   custom: hds.typeStyles.ui,
   icon: hds.typeStyles.caption,
   badge: hds.typeStyles.caption,
@@ -184,7 +184,7 @@ export function Table({
   labelledBy,
   minWidth,
   density,
-  flush = false,
+  flush = true,
   stickyHeader = false,
 }: {
   columns: TableColumn[];
@@ -205,6 +205,11 @@ export function Table({
    * default, compact inside `[data-density="compact"]`); pass a value to fix it.
    */
   density?: TableDensity;
+  /**
+   * Drop the scroll region's own inset. On by default: every cell already carries the
+   * surface inset, so a padded region doubled it (48px at the edges, hds#522). Pass
+   * `flush={false}` to restore the extra region padding.
+   */
   flush?: boolean;
   stickyHeader?: boolean;
 }) {
@@ -214,7 +219,7 @@ export function Table({
   const nameId = hasCaption ? captionId : labelledBy;
 
   return (
-    <div>
+    <div className="min-w-0 max-w-full">
       {caption || description ? (
         <div>
           {caption ? (
@@ -280,7 +285,7 @@ export function Table({
                         sticky: Boolean(stickyHeader),
                       }),
                     )}
-                    style={hds.typeStyles.technical}
+                    style={hds.typeStyles.caption}
                   >
                     {column.label}
                   </div>
@@ -307,7 +312,7 @@ export function Table({
                       sticky: Boolean(stickyHeader),
                     }),
                   )}
-                  style={hds.typeStyles.technical}
+                  style={hds.typeStyles.caption}
                 >
                   <button
                     type="button"

@@ -2,14 +2,14 @@
  * build-styles-css — emit dist/styles.css: a RESET-FREE component stylesheet.
  *
  * Derives from the fully-built dist/tokens.css (tokens + component/utility CSS +
- * embedded fonts + HDS's own [data-hds]-scoped base) and removes ONLY Tailwind's
+ * HDS's own [data-hds]-scoped base) and removes ONLY Tailwind's
  * global preflight — the unscoped element reset inside `@layer base` that would
  * otherwise restyle a host app's `*`, `html`, `body`, headings, `button`, `a`,
  * and form controls.
  *
  * What stays: every `@layer` except the preflight rules — the token vars, the
- * `--tw-*` property defaults, the component/utility classes, the embedded
- * @font-face, and HDS's own base rules (which are all `:where([data-hds])`
+ * `--tw-*` property defaults, the component/utility classes, and
+ * HDS's own base rules (which are all `:where([data-hds])`
  * scoped, so they only touch HDS's own subtree, never host elements). The
  * scoped box-model reset added in theme.css means HDS components keep their
  * border-box model without the global preflight.
@@ -18,8 +18,8 @@
  * component and changes ZERO host-element styles. See docs/CONSUMING.md and
  * docs/adr/016-scoped-base-styles.md.
  *
- * Part of `pnpm build:lib` (runs after embed-fonts, so fonts are inlined here
- * too). Idempotent: reads tokens.css, never mutates it.
+ * Part of `pnpm build:lib` (no fonts: they are the opt-in fonts.css, hds#479).
+ * Idempotent: reads tokens.css, never mutates it.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -31,7 +31,7 @@ const OUT = path.join(ROOT, 'dist', 'styles.css');
 
 const banner =
   '/* @hirobius/design-system/styles.css — tokens + components + utilities +\n' +
-  ' * embedded fonts, with NO global reset/preflight. HDS base styles are\n' +
+  ' * no fonts (see fonts.css), with NO global reset/preflight. HDS base styles are\n' +
   ' * scoped to [data-hds]; importing this changes zero host-element styles.\n' +
   ' * For the batteries-included bundle (adds a global reset) use tokens.css. */\n';
 

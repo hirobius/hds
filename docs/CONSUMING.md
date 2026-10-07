@@ -15,7 +15,7 @@ is the canonical consumption guide — point other teams here.
 >
 > 1. **`react-router` is now optional** — components route through an adapter and
 >    fall back to plain anchors when no router is provided (§5).
-> 2. **Fonts are bundled** — `tokens.css` embeds the typefaces; no font files to copy (§3).
+> 2. **Fonts are opt-in** — `import '@hirobius/design-system/fonts.css'` for the brand typefaces; the woff2 ship in the package, nothing to copy (§3).
 > 3. **Base styles are scoped to `[data-hds]`** — add that attribute to your root
 >    or section so HDS doesn't fight a host app's resets/fonts (§4, §6).
 
@@ -43,7 +43,7 @@ HDS ships **three** stylesheets. Pick one by how much you want HDS to own:
 
 ```ts
 // RECOMMENDED for embedding in an existing app (e.g. MUI): tokens + component
-// styles + utilities + embedded fonts, with NO global reset. Styles every HDS
+// styles + utilities, with NO global reset. Styles every HDS
 // component and changes ZERO host-element styles.
 import '@hirobius/design-system/styles.css';
 
@@ -56,17 +56,31 @@ import '@hirobius/design-system/tokens.css';
 import '@hirobius/design-system/variables.css';
 ```
 
-| Stylesheet          | Tokens | Components + utilities | Embedded fonts |     Global reset      |
-| ------------------- | :----: | :--------------------: | :------------: | :-------------------: |
-| **`styles.css`**    |   ✅   |           ✅           |       ✅       |        ❌ none        |
-| **`tokens.css`**    |   ✅   |           ✅           |       ✅       | ⚠️ Tailwind preflight |
-| **`variables.css`** |   ✅   |           ❌           |       ❌       |        ❌ none        |
+| Stylesheet          | Tokens | Components + utilities |     Global reset      |
+| ------------------- | :----: | :--------------------: | :-------------------: |
+| **`styles.css`**    |   ✅   |           ✅           |        ❌ none        |
+| **`tokens.css`**    |   ✅   |           ✅           | ⚠️ Tailwind preflight |
+| **`variables.css`** |   ✅   |           ❌           |        ❌ none        |
 
 All three:
 
 - **Need no Tailwind config** in the consumer — utilities ship compiled.
-- **Need no font files** — the woff2 are inlined (the file is correspondingly
-  larger; woff2 is already compressed so gzip recovers most of it).
+- **Carry no font files.** Fonts are a separate, optional import (below).
+
+### Brand fonts (optional)
+
+```ts
+import '@hirobius/design-system/fonts.css'; // Satoshi 400/500/700 + Geist Mono 400
+```
+
+`fonts.css` declares the four `@font-face` blocks with `font-display: swap`. Its
+URLs are relative (`./fonts/satoshi-400.woff2`), and the woff2 files ship in the
+package, so Vite, Next and webpack resolve and hash them; there is nothing to
+copy. Import it alongside one of the stylesheets above to keep the HDS fonts.
+Skip it to bring your own: `tokens.css` and `styles.css` keep the
+`--hds-font-family*` variables, so text falls back to the family stack
+(`"Satoshi", system-ui, …`) and uses your font if you declare that family
+yourself.
 
 HDS's own base styles (type baseline, resets) are scoped to the `[data-hds]`
 subtree (§4) in **all** bundles, so they never touch host elements. The only
@@ -155,7 +169,7 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
   resets will fight if both target `body`.
 - **Styled path (recommended for MUI/host embedding):** import
   `@hirobius/design-system/styles.css` instead of `tokens.css`. It ships the full
-  component styling (tokens + utilities + fonts) but **no global reset** — HDS's
+  component styling (tokens + utilities) but **no global reset** — HDS's
   own base is scoped to `[data-hds]`, so it styles every HDS component and
   **cannot** restyle your host's `*`, `body`, headings, `button`, `a`, or form
   controls. This is the clean way to run HDS next to `<CssBaseline>`: no reset
@@ -214,7 +228,8 @@ export function Example() {
 | Import                                  | What you get                                                                                                                  |
 | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `@hirobius/design-system`               | The core components + the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns`             |
-| `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding)                               |
+| `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                       |
+| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Satoshi 400/500/700 + Geist Mono 400 (`@font-face`, relative woff2 URLs)                                |
 | `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                   |
 | `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                  |
 | `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                               |

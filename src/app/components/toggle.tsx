@@ -50,7 +50,7 @@ const TOGGLE_THUMB_TRAVEL = TOGGLE_TRACK_WIDTH - TOGGLE_THUMB_SIZE - TOGGLE_TRAC
  * input below, hover/press tint, focus ring, cursor affordance. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
 const toggleRootVariants = /* @__PURE__ */ cva(
-  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] px-[var(--semantic-space-scale-xs)] outline-offset-2 select-none',
+  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] outline-offset-2 select-none hds-touch-row',
   {
     variants: {
       state: {
@@ -179,6 +179,10 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
 
   return (
     <motion.label
+      // motion's whileTap puts tabindex=0 on a non-focusable element, which gave
+      // every control two tab stops (the label, then the input). An explicit
+      // tabindex keeps motion from adding it; the native input is the one stop (hds#522).
+      tabIndex={-1}
       whileTap={isDisabled ? undefined : { scale: 0.99 }}
       transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
       onMouseEnter={handlers.onMouseEnter}
@@ -194,6 +198,8 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
       <input
         ref={ref}
         type="checkbox"
+        // A native checkbox with role="switch" is announced as an on/off switch, not a checkbox (hds#522).
+        role="switch"
         checked={checked}
         disabled={isDisabled}
         onChange={(e) => onChange(e.target.checked)}

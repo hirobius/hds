@@ -55,6 +55,11 @@ export const REQUIRED = [
   `${PLUGIN_DIR}/index.d.mts`,
   `${PLUGIN_DIR}/package.json`,
   ...PLUGIN_RULES,
+  'dist/fonts.css',
+  'dist/fonts/satoshi-400.woff2',
+  'dist/fonts/satoshi-500.woff2',
+  'dist/fonts/satoshi-700.woff2',
+  'dist/fonts/geist-mono-400.woff2',
 ];
 
 /**

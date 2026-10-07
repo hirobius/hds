@@ -12,7 +12,7 @@ import { cn } from '../../lib/utils';
 // Non-interactive — no hover/active/focus states. Tone drives only the value
 // color; label/sub stay muted regardless. Renamed the pre-contract 'default'
 // value to the fixed vocabulary's 'neutral' (#60 — check-prop-vocabulary rule C).
-const statVariants = /* @__PURE__ */ cva('m-0 text-2xl font-medium leading-tight', {
+const statVariants = /* @__PURE__ */ cva('m-0 hds-type-title', {
   variants: {
     tone: {
       neutral: 'text-foreground',
@@ -38,7 +38,7 @@ export interface StatProps
 }
 
 /**
- * Headline metric — large value, uppercase caption label, optional sub-line.
+ * Headline metric — large value, caption label, optional sub-line.
  * @usage Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.
  * @whenNot A row of headline numbers on a screen, a figure inside a Card, or a status with a trailing badge.
  * @useInstead MetricTiles a row of headline numbers (one MetricTile per number)
@@ -53,12 +53,12 @@ export const Stat = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatProps>(
     <div
       ref={ref}
       data-tone={tone ?? 'neutral'}
-      className={cn('flex flex-col gap-0.5', className)}
+      className={cn('flex flex-col gap-1 self-start', className)}
       {...props}
     >
       <p className={statVariants({ tone })}>{value}</p>
-      <p className="m-0 text-xs uppercase tracking-caps text-muted-foreground">{label}</p>
-      {sub && <p className="m-0 text-xs text-muted-foreground">{sub}</p>}
+      <p className="m-0 hds-type-caption text-muted-foreground">{label}</p>
+      {sub && <p className="m-0 hds-type-caption text-muted-foreground">{sub}</p>}
     </div>
   );
 });
