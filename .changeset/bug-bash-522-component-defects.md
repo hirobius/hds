@@ -1,8 +1,10 @@
 ---
-'@hirobius/design-system': patch
+'@hirobius/design-system': minor
 ---
 
 Component defects from the 2026-10-07 bug bash (hds#522).
+
+Behaviour removed or changed, so this is a minor (0.x): `ErrorPattern` no longer fills 100vh unless `fullPage` is passed; `Grid.Item` no longer sets `height: 100%`; `Grid`'s default `align` is now `start` (it was `stretch`), so Cards, Surfaces and StatusTiles in a Grid hug instead of filling the row (pass `align="stretch"` where a row needs equal heights); `Table` is now flush by default (`flush={false}` restores the padding); Surface, Card and StatusTile lost their `h-full`. Alert, Toggle and labelled dot Badge/StatusDot roles also changed (see A11y).
 
 Broken: Progress's neutral fill had the same colour as its track (`bg-accent` and `bg-muted` both map to near-white), so it was invisible; the fill is now the accent surface and `sm` is 6px. SegmentedControl `md` segments were `w-full` in a `w-fit` rail, so one segment filled the rail and the rest scrolled away; they now hug, and the rail is 40px like Button and Input (`sm` 32px). Slider's track was a padded Surface (48px slab, 0px fill, over the label); it is now an 8px bar with a visible fill. Checkbox, Radio and Toggle had two tab stops because motion's `whileTap` put `tabindex=0` on the label; the label is now `tabindex=-1`. Skeleton `rectangular` defaults to 5rem high and its fill is `surface-sunken`, so it shows on a Card. Disclosure `variant="card"` no longer clips its content or leaves empty space when closed. CodeBlock's `<pre>` is padded 16px, not the 80px section stack.
 

@@ -37,6 +37,8 @@ import { MetadataList } from '../src/app/components/metadata-list';
 import { Table } from '../src/app/components/table';
 import { Pagination } from '../src/app/components/pagination';
 import { Divider } from '../src/app/components/divider';
+import { Disclosure } from '../src/app/components/disclosure';
+import { AlertDialog } from '../src/app/components/alert-dialog';
 import { Dialog } from '../src/app/components/dialog';
 
 const css = (p: string) => readFileSync(resolve(process.cwd(), 'src/styles', p), 'utf8');
@@ -397,5 +399,65 @@ describe('Visual polish / API traps', () => {
     expect(screen.getByRole('button', { name: 'Cancel' }).getAttribute('data-variant')).not.toBe(
       'primary',
     );
+  });
+});
+
+describe('Untested fixes, pinned (hds#525 review)', () => {
+  it('Disclosure card hugs its content: the Surface has no h-full and the panel is not clipped by a fixed height', () => {
+    const { container } = render(
+      <Disclosure variant="card" label="Card" defaultOpen>
+        <p>one</p>
+        <p>two</p>
+      </Disclosure>,
+    );
+    const surface = container.querySelector('[data-hds-surface]') as HTMLElement;
+    expect(surface.className).not.toMatch(/\bh-full\b/);
+    expect(surface.className).toMatch(/overflow-hidden/);
+    expect(surface.style.height).toBe('');
+  });
+
+  it('AlertDialog keeps a 16px margin to the viewport edge', () => {
+    render(
+      <AlertDialog open>
+        <AlertDialog.Content>
+          <AlertDialog.Title>t</AlertDialog.Title>
+          <AlertDialog.Description>d</AlertDialog.Description>
+        </AlertDialog.Content>
+      </AlertDialog>,
+    );
+    const content = screen.getByRole('alertdialog');
+    expect(content.className).not.toMatch(/\bw-full\b/);
+    expect(content.className).toContain('100%-2*var(--semantic-space-scale-sm)');
+  });
+
+  it('Dialog caps its height to the viewport and scrolls', () => {
+    render(
+      <Dialog open>
+        <Dialog.Content>
+          <Dialog.Title>t</Dialog.Title>
+          <Dialog.Description>d</Dialog.Description>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    const cls = screen.getByRole('dialog').className;
+    expect(cls).toContain('max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))]');
+    expect(cls).toMatch(/\boverflow-y-auto\b/);
+  });
+
+  it('Combobox returns focus to the trigger after a pick', async () => {
+    const options = [
+      { value: 'us', label: 'United States' },
+      { value: 'ca', label: 'Canada' },
+    ];
+    function Single() {
+      const [v, setV] = useState<string | null>(null);
+      return <Combobox aria-label="Country" options={options} value={v} onChange={setV} />;
+    }
+    const user = userEvent.setup();
+    render(<Single />);
+    const trigger = screen.getByRole('combobox', { name: 'Country' });
+    await user.click(trigger);
+    await user.click(await screen.findByRole('option', { name: 'Canada' }));
+    expect(document.activeElement).toBe(trigger);
   });
 });
