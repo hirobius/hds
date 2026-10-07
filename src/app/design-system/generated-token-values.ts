@@ -154,8 +154,7 @@ export const tokenValues = {
       weight: {
         regular: "400",
         medium: "500",
-        bold: "700",
-        semibold: "600"
+        bold: "700"
       },
       lineHeight: {
         compact: "0.95",

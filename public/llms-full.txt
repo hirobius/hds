@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-07T04:44:29.820Z
+Generated: 2026-10-07T05:01:04.668Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -297,21 +297,21 @@ HDS ships three typefaces — each with a distinct and exclusive role:
 - **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: Geist Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `500` medium, `600` semibold, `700` bold. Heading styles (display · title) use `700` bold / `600` semibold; body, UI, and caption use `400` regular / `500` medium.
+Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
 
 ### Type ramp
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
 | `semantic.typography.display` | 48px | 700 | One per page, hero only |
-| `semantic.typography.title` | 24px | 600 | Section and card headings |
+| `semantic.typography.title` | 24px | 700 | Section and card headings |
 | `semantic.typography.body` | 16px | 400 | Prose |
 | `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 13px | 400 | Code and ids |
-| `semantic.typography.h1` | 24px | 600 | deprecated: use semantic.typography.title |
-| `semantic.typography.h2` | 24px | 600 | deprecated: use semantic.typography.title |
-| `semantic.typography.h3` | 24px | 600 | deprecated: use semantic.typography.title |
+| `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
 | `semantic.typography.eyebrow` | 12px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
@@ -483,7 +483,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (390 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (389 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 

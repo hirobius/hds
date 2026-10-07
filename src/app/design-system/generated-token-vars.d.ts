@@ -118,7 +118,6 @@ declare module 'react' {
     '--primitive-typography-weight-regular'?: string | undefined;
     '--primitive-typography-weight-medium'?: string | undefined;
     '--primitive-typography-weight-bold'?: string | undefined;
-    '--primitive-typography-weight-semibold'?: string | undefined;
     '--primitive-typography-lineHeight-compact'?: string | undefined;
     '--primitive-typography-lineHeight-none'?: string | undefined;
     '--primitive-typography-lineHeight-tight'?: string | undefined;

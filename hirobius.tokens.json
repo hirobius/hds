@@ -583,10 +583,6 @@
         },
         "bold": {
           "$value": 700
-        },
-        "semibold": {
-          "$value": 600,
-          "$description": "Title role weight (hds#485). Satoshi ships 500 and 700 faces only, so 600 renders on the 700 face until a 600 face is added."
         }
       },
       "lineHeight": {
@@ -1711,11 +1707,11 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.semibold}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
-        "$description": "Section and card headings. 24px / 1.25 / 600. Role 2 of 6."
+        "$description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6."
       },
       "body": {
         "$value": {
@@ -1773,7 +1769,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.semibold}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1784,7 +1780,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.semibold}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1795,7 +1791,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.semibold}",
+          "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },

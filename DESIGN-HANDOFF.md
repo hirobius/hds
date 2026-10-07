@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 434 tokens, aliases, and TS refs in one shot.
+Checks all 433 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -234,14 +234,14 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                      |
 | ----------------- | ---------- | ------ | ----------- | -------------- | -------------------------------------------------------------------------------- |
 | `display`         | 48px       | 700    | 1.05        | -0.01em        | One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.                         |
-| `title`           | 24px       | 600    | 1.25        | -0.01em        | Section and card headings. 24px / 1.25 / 600. Role 2 of 6.                       |
+| `title`           | 24px       | 700    | 1.25        | -0.01em        | Section and card headings. 24px / 1.25 / 700. Role 2 of 6.                       |
 | `body`            | 16px       | 400    | 1.6         | 0em            | Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.                              |
 | `ui`              | 14px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.                |
 | `caption`         | 12px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6. |
 | `mono`            | 13px       | 400    | 1.5         | 0em            | Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.                 |
-| `h1`              | 24px       | 600    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
-| `h2`              | 24px       | 600    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
-| `h3`              | 24px       | 600    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `h1`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `h2`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `h3`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
 | `eyebrow`         | 12px       | 500    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                      |
 | `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.               |
 

@@ -16,7 +16,7 @@ Values are the ground truth from `hirobius.tokens.json` → `semantic.typography
 | Role      | Size / line-height | Weight | Use                                         |
 | --------- | ------------------ | ------ | ------------------------------------------- |
 | `display` | 48 / 1.05          | 700    | One per page, hero only                     |
-| `title`   | 24 / 1.25          | 600    | Section and card headings                   |
+| `title`   | 24 / 1.25          | 700    | Section and card headings                   |
 | `body`    | 16 / 1.6           | 400    | Prose                                       |
 | `ui`      | 14 / 1.5           | 500    | Controls, nav, table text, values           |
 | `caption` | 12 / 1.5           | 500    | Metadata, help text, labels (sentence case) |
@@ -28,7 +28,7 @@ Deprecated aliases still resolve, to the role they now point at, and go in 1.0.0
 
 Use `ui` for standard UI text, `caption` for helper text and metadata, and `mono` only for code, token names, keyboard shortcuts, git hashes, hex codes and ids, never for status tags, categories, dates or user names. Casing is never changed inline; labels are sentence case.
 
-Satoshi ships a 500 and a 700 face only, so `body` (400) renders on the 500 face and `title` (600) on the 700 face until 400 and 600 faces are added.
+Satoshi ships a 500 and a 700 face only (no 600, which is why `title` is 700), so `body` (400) renders on the 500 face until a Satoshi Regular (400) face is added.
 
 ## Spacing — 24px Component Padding Standard
 

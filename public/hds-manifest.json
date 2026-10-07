@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-07T04:50:10.779Z",
+  "generated": "2026-10-07T05:00:54.950Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -144,7 +144,7 @@
         "name": "title",
         "size": "24px",
         "lineHeight": "1.25",
-        "weight": 600,
+        "weight": 700,
         "role": "Section and card headings"
       },
       {
@@ -9778,13 +9778,6 @@
         "value": "700"
       },
       {
-        "path": "primitive.typography.weight.semibold",
-        "cssVar": "--primitive-typography-weight-semibold",
-        "type": "fontWeight",
-        "description": "Title role weight (hds#485). Satoshi ships 500 and 700 faces only, so 600 renders on the 700 face until a 600 face is added.",
-        "value": "600"
-      },
-      {
         "path": "primitive.typography.lineHeight.compact",
         "cssVar": "--primitive-typography-lineHeight-compact",
         "type": "number",
@@ -10959,11 +10952,11 @@
         "path": "semantic.typography.title",
         "cssVar": "--semantic-typography-title",
         "type": "typography",
-        "description": "Section and card headings. 24px / 1.25 / 600. Role 2 of 6.",
+        "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "600",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -11031,7 +11024,7 @@
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "600",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -11044,7 +11037,7 @@
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "600",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -11057,7 +11050,7 @@
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "600",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
