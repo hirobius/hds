@@ -100,3 +100,18 @@ pass, 25 more for the second.
 Rows 13–16 were first stamped 05:00–05:12, after the fact; an independent check (2026-10-07) found the calls ran about 04:03–04:04, so those times are corrected and approximate.
 
 **Session total: 16 calls** (first pass 12 of 60, second pass 4 of 25: 4 `use_figma`, 1 draw, 2 temporary-frame screenshot passes, 1 read; the earlier reads included the mistyped-key mistake in #10 and the cropped screenshots in #15). No rate-limit errors. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not touched. No snapshot taken: `pnpm figma:push --delta` reports staging already holds model `0a5ebbff` (nothing to sync), the snapshot records variables and styles only, and drawing changed neither, so `check:figma-drift` stays at 0 drift.
+
+## 2026-10-07 · session `claude/dsr-74-figma-title-sync` (collect a Sync)
+
+Collecting the Sync Adrian ran in staging (plugin build 659efcc3, bundle from
+main 4ae32c7), per `figma/README.md` "Agent: collect a sync". Reads only; cap 6
+calls.
+
+| #   | Time (UTC) | Tool                                   | Kind | Purpose                                                | Result                                                                                                                                                                                                                                                                                                                       |
+| --- | ---------- | -------------------------------------- | ---- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 19:21      | `ReadMcpResource` (figma-use SKILL.md) | read | Mandatory skill load before any `use_figma`            | OK                                                                                                                                                                                                                                                                                                                           |
+| 2   | 19:21      | `use_figma`                            | read | Staging: `receipt.js` as generated (`const PAGE = 0;`) | OK. Head: Sync of 4ae32c7, model `61bd3dbf`, plugin 659efcc3, pushed 19:19:44Z, line `updated 56 · created 7 · deleted 0`, base `3029d7ea`, post `8f24178f`, 1 json page. Live: 6 collections, 9 modes, 389 variables, 10 text styles, 7 effect styles, `lastPush` matches. `--from-receipt` rebuilt `post`; drift 0, plan 0 |
+
+**Session total: 2 calls, 1 of them `use_figma` (read).** No rate-limit errors.
+Nothing was written to Figma. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not
+touched.
