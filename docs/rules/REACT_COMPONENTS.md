@@ -46,8 +46,13 @@ Do not use `technical` for status tags, categories, dates, user names, or genera
 
 ## UI Integrity Constitution
 
-- **The Gap Mandate**: Every `Grid` and `Stack` must declare an explicit `gap`. Never rely on the component default when composing production UI.
-- **The Containment Rule**: Every text-holding surface or card must have internal padding. Use `HdsSurface` padding (`component` or `item`) or another approved inset pattern so text never sits flush against a border.
+- **The layout contract (v1, 2026-10-07)** replaces the old Gap Mandate and Containment Rule. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode today).
+  1. Every component declares `fill` or `hug` on each axis. Leaves hug; Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. Override with the one prop `width="hug|fill"`. Height always hugs; stretching is the parent's job (`align="stretch"`), so no root `h-full`, `height: 100%` or `self-*`.
+  2. Only containers pad (Card, Surface, Alert, Callout, Dialog, Page). Compound parts have zero padding; the container's `gap` spaces them. A padded container directly in a padded container is an error unless the inner one has `padding="none"`.
+  3. One spacing scale, `xs…xl` (plus `none`), for every `gap` and `padding` prop. Padding is `none | sm | md`, default `md`, density-aware. Every gap defaults to `md`, so declaring it is optional.
+  4. No outer margins on any component, and no raw numeric Tailwind spacing (`gap-2`, `p-5`); use `gap-[var(--semantic-space-scale-md)]`.
+  5. Primitives are Stack, Grid, Page (absorbs Container) and Surface; Box and Pin are escape hatches; Sidebar and Switcher fold into Stack and Grid.
+  6. Form controls in a form context have a max width (`40rem`) and siblings share one width.
 - **The Shadow Token Convention**: Any page-specific or one-off layout styling must use the `--hds-local-[Category]-[Property]-[Name]` naming convention so local overrides never pollute `hirobius.tokens.json`. Page-specific shadows must derive from a `semantic.shadow.*` token; never raw rgba.
 - **Accessibility-First**: Semantic parity is required. All new components must pass standard aria-label and color contrast checks; this will be enforced by `axe-playwright`.
 - **Automated Auto-Journaling**: Every autonomous visual fix or self-heal must append a timestamped Dev Note to `docs/CASE_STUDY_JOURNAL.md` describing the layout drift and how it was reconciled.
@@ -58,11 +63,11 @@ The sanctioned escape hatch on every primitive is **`className`** — not inline
 
 - **Non-interactive feedback primitives — `Badge`, `Alert`, `Callout` — are className-only.** Their interfaces `Omit<…HTMLAttributes…, 'style'>`; they expose no `style` prop. They fully own their visual surface through `cva()` variants, and inline `style` would silently override governed tone/background/radius. Enforced by **`check-no-style-prop`** (`// style-prop-ok: <reason>` to exempt).
 - **Converged primitives author zero inline styles.** `button`, `input`, `badge`, `surface`, `callout` carry **no `style={{ … }}` object literal** in their own render — all styling lives in `cva()`. A caller-supplied **passthrough** (`style={callerStyle}`) for layout is allowed on `Surface`/`Card`; a primitive computing its _own_ inline style object is not. Enforced by the `converged-inline-style` rule in **`check-style-discipline`** (append a component to its `CONVERGED_SET` as it converges).
-- **Interactive / layout primitives** (`Button`, `Surface`, `Card`, `Icon`, `Input`, `Box`) keep `style` as an escape hatch for one-off visual treatments (e.g. a glassmorphism nav button) and layout positioning the component doesn't govern (`margin`, `position`, `width`). They must still not use `style` to override a property the component already governs via tokens/cva.
+- **Interactive / layout primitives** (`Button`, `Surface`, `Card`, `Icon`, `Input`, `Box`) keep `style` as an escape hatch for one-off visual treatments (e.g. a glassmorphism nav button) and `position`. Sizing goes through `width="hug|fill"` and spacing through the scale, never `style` `margin` or `width` (layout contract). They must still not use `style` to override a property the component already governs via tokens/cva.
 
 ### Containers
 
-- **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="component"` (24px) for cards, `padding="item"` (16px) for compact items), consistent radius (`rounded-lg`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` on layout primitives accepts HDS token keys (`'normal'`, `'px24'`).
+- **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="md"` for cards, `padding="sm"` for compact items; `component` and `item` are the legacy names for the same two steps), consistent radius (`rounded-lg`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` and `padding` take the `xs…xl` scale names.
 - **No `<Divider>` for layout separation** — use 48px gap (`space.12`) between major sections; whitespace is the separator.
 
 #### Card don'ts (explicit anti-pattern list)
@@ -79,10 +84,10 @@ Every item below is a build error. If an AI agent or human produces any of these
 ### Typography
 
 - **Heading + supporting line = `Stack` + `Text`** — the two lockup components that wrapped this pair were removed in 0.20.0 (hds#394). Compose it from the primitives, never from raw tags or ad hoc margins:
-  - `<Stack gap="gap"><Text variant="heading2" as="h2">Title</Text><Text variant="body" className="text-muted-foreground">Supporting line</Text></Stack>`
+  - `<Stack gap="xs"><Text variant="heading2" as="h2">Title</Text><Text variant="body" className="text-muted-foreground">Supporting line</Text></Stack>`
   - pick the heading level with `variant="heading1|heading2|heading3"` (and the matching `as`); the supporting line is always `text-muted-foreground`, and the gap comes from `Stack`, never a margin.
 - **No deprecated typography tokens** — `label`, `labelTechnical`, `micro`, `monoXs`, `monoSm`, `body2`, `displayXl`, `display2`, and `title` are all removed. Update any reference found during review.
-- **No hardcoded pixels in layout props** — do not pass raw values like `gap="12px"`, `style={{ padding: '10px' }}`, or `mt={15}`. Use semantic gap keys: `gap="tight"` (16px), `gap="normal"` (24px), `gap="gap"` (8px component rhythm), or primitive space keys like `gap="px24"`. Do NOT pass raw pixel strings like `"12px"` or `"16px"` as gap values.
+- **No hardcoded pixels in layout props** — do not pass raw values like `gap="12px"`, `style={{ padding: '10px' }}`, or `mt={15}`. Use the scale names `xs…xl` (8/16/24/32/48px at default density). The layout names (`tight`, `normal`, `inset`, `spacious`), subgrid names (`gap`), and `pxN` keys are legacy aliases being removed. Do NOT pass raw pixel strings like `"12px"` or `"16px"` as gap values.
 - **No tight line-heights** — all `body`, `ui`, and `caption` text must have line-height 1.5.
 
 For component recipes, visual hierarchy, text alignment, and responsiveness patterns see **HDS V2 Guardrails** in `public/llms.txt`.
