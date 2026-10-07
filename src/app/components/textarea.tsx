@@ -6,7 +6,7 @@
  * @usage Collect multi-line free text such as a message, note or description.
  * @whenNot A single line of text, or choosing from a list.
  * @useInstead Input a single line of text
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14
  *
  * Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity:
  * the four states Default / Focus / Error / Disabled map to the focus-ring,

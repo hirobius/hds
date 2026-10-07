@@ -8,7 +8,7 @@
  * @useInstead Textarea multi-line text
  * @useInstead Select a short fixed list
  * @useInstead Combobox a long fixed list that needs search
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20
  */
 
 import * as React from 'react';

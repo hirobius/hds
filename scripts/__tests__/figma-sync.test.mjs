@@ -33,10 +33,14 @@ const model = fixtureModel();
 const LINKS = Object.freeze({
   storybookUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
-  stagingFileKey: 'STAGINGKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
-  stagingFileName: 'HDS Tokens & Components (Copy)',
+  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
+  // HDS Staging, the draft workbench (ADR-026, A4): never a Sync target, and never baked in.
+  stagingFileKey: 'STAGINGKEY000000000000',
+  stagingFileName: 'HDS Staging',
 });
+const RETIRED = LINKS.retiredFiles[0];
+const STAGING = { fileKey: LINKS.stagingFileKey, fileName: LINKS.stagingFileName };
 const BUNDLE_URL = 'https://hirobius-design-system.vercel.app/figma/sync-bundle.json';
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const PLUGIN = buildSyncPlugin(LINKS);
@@ -49,14 +53,14 @@ const copy = (value) => JSON.parse(JSON.stringify(value));
 const runPlugin = (files, command, figma, options = {}) =>
   runSyncPlugin(files, command, figma, { fetch: serve(BUNDLE), ...options });
 
-/** An empty in-memory file named like staging, with the given key (null: Figma gives none). */
-const stagingFile = (key = LINKS.stagingFileKey, name = LINKS.stagingFileName) => {
+/** An empty in-memory file named like the library, with the given key (null: Figma gives none). */
+const libraryFile = (key = LINKS.libraryFileKey, name = LINKS.libraryFileName) => {
   const figma = newFixtureFile({ fileName: name });
   if (key !== null) figma.fileKey = key;
   return figma;
 };
-const markAsStaging = (figma, value = LINKS.stagingFileKey) =>
-  figma.root.setSharedPluginData('hirobius', 'stagingFileKey', value);
+const markAsLibrary = (figma, value = LINKS.libraryFileKey, marker = 'libraryFileKey') =>
+  figma.root.setSharedPluginData('hirobius', marker, value);
 const rootData = (figma, key) => figma.root.getSharedPluginData('hirobius', key);
 /** A bundle edited after the build, with its checksum recomputed so only the edit is tested. */
 const rebundled = (mutate) => {
@@ -71,6 +75,11 @@ describe('Sync plugin files', () => {
   it('carry no payload: code.js has no PAYLOAD and stays under 60,000 bytes', () => {
     expect(PLUGIN['code.js']).not.toContain('const PAYLOAD');
     expect(Buffer.byteLength(PLUGIN['code.js'])).toBeLessThanOrEqual(60000);
+  });
+
+  it('keep 5,000 B of headroom under that cap: code.js carries its code without indentation', () => {
+    expect(PLUGIN['code.js']).not.toMatch(/^[ \t]+\S/m);
+    expect(Buffer.byteLength(PLUGIN['code.js'])).toBeLessThanOrEqual(55000);
   });
 
   it('never evaluate what they fetch: no eval, Function constructor or dynamic import', () => {
@@ -91,6 +100,22 @@ describe('Sync plugin files', () => {
       const changed = { ...PLUGIN, [name]: `${PLUGIN[name]} ` };
       expect(syncPluginBuild(changed), name).not.toBe(build);
     }
+  });
+
+  it('bake the library and the retired files from figma/links.json, never HDS Staging', () => {
+    const baked = JSON.parse(/^const SYNC = Object\.freeze\((.*)\);$/m.exec(PLUGIN['code.js'])[1]);
+    expect(baked).toMatchObject({
+      libraryFileKey: LINKS.libraryFileKey,
+      libraryFileName: LINKS.libraryFileName,
+      retiredFileKeys: [RETIRED.fileKey],
+      retiredFileNames: [RETIRED.fileName],
+    });
+    expect(Object.keys(baked).filter((key) => /staging/i.test(key))).toEqual([]);
+    expect(PLUGIN['code.js']).not.toContain(STAGING.fileKey);
+    // The same build without the workbench: adding it to links.json changes no plugin file.
+    const { stagingFileKey, stagingFileName, ...withoutStaging } = LINKS;
+    expect([stagingFileKey, stagingFileName]).toEqual([STAGING.fileKey, STAGING.fileName]);
+    expect(buildSyncPlugin(withoutStaging)).toEqual(PLUGIN);
   });
 
   it('a bundle carries its payload checksum, never a prune, and the expected plugin files', () => {
@@ -131,10 +156,10 @@ describe('figma-sync-runtime.mjs can be copied into Figma', () => {
   });
 });
 
-// ── Sync in staging ──────────────────────────────────────────────────────────
-describe('Sync in the staging file', () => {
+// ── Sync in the library ──────────────────────────────────────────────────────
+describe('Sync in the library file', () => {
   it('fetches the bundle uncached, pushes, re-plans to 0 · 0 · 0, snapshots and stamps a receipt', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     const synced = await runPlugin(PLUGIN, 'sync', figma);
 
     expect(synced.ok, synced.error).toBe(true);
@@ -183,7 +208,7 @@ describe('Sync in the staging file', () => {
   });
 
   it('a second Sync makes 0 writes', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
     const before = figma.writes.length;
 
@@ -193,8 +218,33 @@ describe('Sync in the staging file', () => {
     expect(figma.writes.slice(before)).toEqual([]);
   });
 
+  it('never deletes: a variable the model does not have stays, and Sync and Plan report deleted 0', async () => {
+    // hdsSyncMain forces prune off whatever the bundle says; with prune on,
+    // this file's extra variable would be removed and the line would read
+    // "deleted 1". Only the promote plugin, run by Adrian, deletes.
+    const figma = libraryFile();
+    expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
+    const semantic = (await figma.variables.getLocalVariableCollectionsAsync()).find(
+      (c) => c.name === 'Hirobius/Semantic',
+    );
+    figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
+    const start = figma.writes.length;
+
+    const plan = await runPlugin(PLUGIN, 'plan', figma);
+    expect(plan.ok, plan.error).toBe(true);
+    expect(plan.result.prune).toBe(false);
+    expect(plan.result.summary.totals.deleted).toBe(0);
+
+    const synced = await runPlugin(PLUGIN, 'sync', figma);
+    expect(synced.ok, synced.error).toBe(true);
+    expect(synced.title).toContain(NOTHING_LINE);
+    expect(figma.writes.slice(start).filter((write) => /remove/i.test(write))).toEqual([]);
+    const names = (await figma.variables.getLocalVariablesAsync()).map((v) => v.name);
+    expect(names).toContain('legacy/unused');
+  });
+
   it('Plan reads the bundle and writes nothing', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     const plan = await runPlugin(PLUGIN, 'plan', figma);
     expect(plan.ok, plan.error).toBe(true);
     expect(plan.result.mode).toBe('dry-run');
@@ -202,16 +252,23 @@ describe('Sync in the staging file', () => {
     expect(figma.writes).toEqual([]);
   });
 
-  it('runs where Figma gives no file key, in a file marked as staging and named exactly like it', async () => {
-    const figma = stagingFile(null);
-    markAsStaging(figma);
+  it('runs where Figma gives no file key, in a file marked as the library and named exactly like it', async () => {
+    const figma = libraryFile(null);
+    markAsLibrary(figma);
+    const synced = await runPlugin(PLUGIN, 'sync', figma);
+    expect(synced.ok, synced.error).toBe(true);
+  });
+
+  it('accepts the staging-era marker when it holds the library key (the copy Mark stamped before 2026-10-07)', async () => {
+    const figma = libraryFile(null);
+    markAsLibrary(figma, LINKS.libraryFileKey, 'stagingFileKey');
     const synced = await runPlugin(PLUGIN, 'sync', figma);
     expect(synced.ok, synced.error).toBe(true);
   });
 });
 
 // ── Which file ───────────────────────────────────────────────────────────────
-describe('file guard: Sync writes nothing outside staging', () => {
+describe('file guard: Sync writes nothing outside the library', () => {
   const refused = async (figma, pattern) => {
     const start = figma.writes.length;
     const result = await runPlugin(PLUGIN, 'sync', figma);
@@ -223,98 +280,183 @@ describe('file guard: Sync writes nothing outside staging', () => {
     return result.error;
   };
 
-  it('the library key', async () => {
-    await refused(stagingFile(LINKS.libraryFileKey), /published library/);
+  it('a retired file key, naming the library to open instead', async () => {
+    const error = await refused(libraryFile(RETIRED.fileKey, 'Anything'), /retired/);
+    expect(error).toContain(LINKS.libraryFileKey);
   });
 
-  it('a null key in a file named like the library', async () => {
-    await refused(stagingFile(null, LINKS.libraryFileName), /library/);
+  it('a null key in a file named like a retired file', async () => {
+    const figma = libraryFile(null, RETIRED.fileName);
+    markAsLibrary(figma);
+    await refused(figma, /retired/);
   });
 
-  it('a null key with no staging marker, naming Mark and the key to paste', async () => {
-    const error = await refused(stagingFile(null), /no file key/);
-    expect(error).toContain('Mark this file as HDS staging');
-    expect(error).toContain(LINKS.stagingFileKey);
+  it('a null key with no library marker, naming Mark, the link to paste and the key it must hold', async () => {
+    // Until the old library is renamed "(old)" it has the library's name, so
+    // the refusal must send Adrian to the file's link, never to its name.
+    const error = await refused(libraryFile(null), /no file key/);
+    expect(error).toContain('Mark this file as the HDS library');
+    expect(error).toContain('Share > Copy link');
+    expect(error).toContain(`holds ${LINKS.libraryFileKey}`);
+    expect(error).toMatch(/any other key is not the library/i);
   });
 
-  it('a marker in a file not named exactly like staging (a duplicate of staging)', async () => {
-    const figma = stagingFile(null, `${LINKS.stagingFileName} (Copy)`);
-    markAsStaging(figma);
-    await refused(figma, /named exactly|not "HDS Tokens & Components \(Copy\)"/);
+  it('a marker holding another key, old or new style', async () => {
+    for (const marker of ['libraryFileKey', 'stagingFileKey']) {
+      const figma = libraryFile(null);
+      markAsLibrary(figma, 'SOMEOTHERFILE000000000', marker);
+      await refused(figma, /not marked as the HDS library/);
+    }
+  });
+
+  it('a marker in a file not named exactly like the library (a duplicate of it)', async () => {
+    const figma = libraryFile(null, `${LINKS.libraryFileName} (Copy)`);
+    markAsLibrary(figma);
+    await refused(figma, /named exactly|not "HDS Tokens & Components"/);
   });
 
   it('any other file key', async () => {
-    await refused(stagingFile('SOMEOTHERFILE000000000'), /SOMEOTHERFILE000000000/);
+    await refused(libraryFile('SOMEOTHERFILE000000000'), /SOMEOTHERFILE000000000/);
+  });
+
+  it('HDS Staging, the draft workbench, by its key: tokens sync to the library only', async () => {
+    const error = await refused(
+      libraryFile(STAGING.fileKey, STAGING.fileName),
+      /not the HDS library/,
+    );
+    expect(error).toContain(STAGING.fileKey);
+    expect(error).toContain(LINKS.libraryFileKey);
+  });
+
+  it('HDS Staging where Figma gives no key: it carries no library marker', async () => {
+    await refused(libraryFile(null, STAGING.fileName), /not marked as the HDS library/);
   });
 
   it('checks the deny list before the allow list', async () => {
-    // The staging key, but the library's name: deny wins.
-    await refused(stagingFile(LINKS.stagingFileKey, LINKS.libraryFileName), /library/);
-    // A valid marker, but the library's name: deny wins.
-    const marked = stagingFile(null, LINKS.libraryFileName);
-    markAsStaging(marked);
-    await refused(marked, /library/);
+    // The library key, but a retired file's name: deny wins.
+    await refused(libraryFile(LINKS.libraryFileKey, RETIRED.fileName), /retired/);
   });
 
   it('Plan is guarded the same way', async () => {
-    const figma = stagingFile(LINKS.libraryFileKey);
+    const figma = libraryFile(RETIRED.fileKey);
     const plan = await runPlugin(PLUGIN, 'plan', figma);
     expect(plan.ok).toBe(false);
-    expect(plan.error).toMatch(/published library/);
+    expect(plan.error).toMatch(/retired/);
     expect(figma.writes).toEqual([]);
   });
 });
 
-describe('Mark this file as HDS staging', () => {
+describe('Mark this file as the HDS library', () => {
   const mark = async (figma, typedKey) => {
     const start = figma.writes.length;
     const result = await runPlugin(PLUGIN, 'mark', figma, { typedKey });
     return { result, writes: figma.writes.slice(start) };
   };
+  /** A file's link as Share > Copy link gives it. */
+  const linkTo = (key, kind = 'design') =>
+    `https://www.figma.com/${kind}/${key}/HDS-Tokens-Components?node-id=0-1&t=AbCdEf-1`;
 
-  it('marks a file named exactly like staging when the pasted key is the staging key, then Sync runs', async () => {
-    const figma = stagingFile(null);
-    const { result, writes } = await mark(figma, ` ${LINKS.stagingFileKey}\n`);
+  it("asks for this file's link, not a key", () => {
+    expect(PLUGIN['ui.html']).toContain('placeholder="This file\'s link (Share > Copy link)"');
+    expect(PLUGIN['code.js']).toContain("paste this file's link (Share > Copy link)");
+  });
+
+  it("marks a file named exactly like the library when the pasted link is the library's, then Sync runs", async () => {
+    const figma = libraryFile(null);
+    const { result, writes } = await mark(figma, ` ${linkTo(LINKS.libraryFileKey)}\n`);
     expect(result.ok, result.error).toBe(true);
-    expect(writes).toEqual(['root.pluginData:stagingFileKey']);
-    expect(rootData(figma, 'stagingFileKey')).toBe(LINKS.stagingFileKey);
+    expect(writes).toEqual(['root.pluginData:libraryFileKey']);
+    expect(rootData(figma, 'libraryFileKey')).toBe(LINKS.libraryFileKey);
     expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
   });
 
-  it('refuses the library, by key or by name, whatever key is pasted', async () => {
+  it('reads the key from a /design/ or /file/ link, with or without www', async () => {
+    for (const link of [
+      linkTo(LINKS.libraryFileKey, 'file'),
+      `https://figma.com/design/${LINKS.libraryFileKey}`,
+      `https://www.figma.com/design/${LINKS.libraryFileKey}/HDS?node-id=1-2`,
+    ]) {
+      const { result, writes } = await mark(libraryFile(null), link);
+      expect(result.ok, `${link}: ${result.error}`).toBe(true);
+      expect(writes).toEqual(['root.pluginData:libraryFileKey']);
+    }
+  });
+
+  it('refuses the old library while it still has the library name: its link holds the retired key', async () => {
+    // The old file before Adrian renames it "(old)": no key from Figma, no marker, the library's name.
+    const figma = libraryFile(null);
+    const { result, writes } = await mark(figma, linkTo(RETIRED.fileKey));
+    expect(result.ok).toBe(false);
+    expect(result.error).toMatch(/retired/);
+    expect(writes).toEqual([]);
+    const synced = await runPlugin(PLUGIN, 'sync', figma);
+    expect(synced.ok).toBe(false);
+    expect(figma.writes).toEqual([]);
+  });
+
+  it('refuses a retired file, by key, by name, by the pasted link or by a pasted retired key', async () => {
     for (const [figma, typed] of [
-      [stagingFile(LINKS.libraryFileKey, LINKS.libraryFileName), LINKS.stagingFileKey],
-      [stagingFile(null, LINKS.libraryFileName), LINKS.stagingFileKey],
-      [stagingFile(LINKS.libraryFileKey), LINKS.stagingFileKey],
-      [stagingFile(null), LINKS.libraryFileKey],
+      [libraryFile(RETIRED.fileKey, LINKS.libraryFileName), linkTo(LINKS.libraryFileKey)],
+      [libraryFile(null, RETIRED.fileName), linkTo(LINKS.libraryFileKey)],
+      [libraryFile(null), linkTo(RETIRED.fileKey, 'file')],
+      [libraryFile(null), RETIRED.fileKey],
     ]) {
       const { result, writes } = await mark(figma, typed);
       expect(result.ok).toBe(false);
-      expect(result.error).toMatch(/library/);
+      expect(result.error).toMatch(/retired/);
       expect(writes).toEqual([]);
     }
   });
 
-  it('refuses a wrong key', async () => {
-    const figma = stagingFile(null);
-    const { result, writes } = await mark(figma, 'WRONGKEY00000000000000');
+  it("refuses a bare key, even the library's: only the file's own link tells it from the old library", async () => {
+    const figma = libraryFile(null);
+    const { result, writes } = await mark(figma, LINKS.libraryFileKey);
     expect(result.ok).toBe(false);
-    expect(result.error).toMatch(/not the staging file key/);
+    expect(result.error).toMatch(/not a link/);
+    expect(result.error).toContain('Share > Copy link');
     expect(writes).toEqual([]);
   });
 
-  it('refuses a file not named exactly like staging', async () => {
-    const figma = stagingFile(null, 'Scratch');
-    const { result, writes } = await mark(figma, LINKS.stagingFileKey);
+  it('refuses HDS Staging, the draft workbench, by its name and by its link', async () => {
+    for (const [figma, pattern] of [
+      [libraryFile(null, STAGING.fileName), /named "HDS Staging"/],
+      [libraryFile(null), new RegExp(`${STAGING.fileKey}, not the library`)],
+    ]) {
+      const { result, writes } = await mark(figma, linkTo(STAGING.fileKey));
+      expect(result.ok).toBe(false);
+      expect(result.error).toMatch(pattern);
+      expect(writes).toEqual([]);
+    }
+  });
+
+  it('refuses a link to another file', async () => {
+    const figma = libraryFile(null);
+    const { result, writes } = await mark(figma, linkTo('WRONGKEY00000000000000'));
+    expect(result.ok).toBe(false);
+    expect(result.error).toMatch(/WRONGKEY00000000000000.*not the library/);
+    expect(writes).toEqual([]);
+  });
+
+  it('refuses a file not named exactly like the library', async () => {
+    const figma = libraryFile(null, 'Scratch');
+    const { result, writes } = await mark(figma, linkTo(LINKS.libraryFileKey));
     expect(result.ok).toBe(false);
     expect(result.error).toMatch(/named exactly/);
+    expect(writes).toEqual([]);
+  });
+
+  it("refuses when Figma names another file key than the pasted link's", async () => {
+    const figma = libraryFile('SOMEOTHERFILE000000000');
+    const { result, writes } = await mark(figma, linkTo(LINKS.libraryFileKey));
+    expect(result.ok).toBe(false);
+    expect(result.error).toMatch(/SOMEOTHERFILE000000000/);
     expect(writes).toEqual([]);
   });
 });
 
 // ── What the bundle may and may not do ───────────────────────────────────────
 describe('bundle handshake', () => {
-  const refusedWith = async (fetch, figma = stagingFile()) => {
+  const refusedWith = async (fetch, figma = libraryFile()) => {
     const start = figma.writes.length;
     const result = await runPlugin(PLUGIN, 'sync', figma, { fetch });
     expect(result.ok).toBe(false);
@@ -328,7 +470,7 @@ describe('bundle handshake', () => {
   };
 
   it('refuses a prune bundle with 0 deletes', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
     const semantic = (await figma.variables.getLocalVariableCollectionsAsync()).find(
       (c) => c.name === 'Hirobius/Semantic',
@@ -352,18 +494,20 @@ describe('bundle handshake', () => {
     expect(await refusedWith(serve(scoped))).toMatch(/whole model/);
   });
 
-  it('a bundle naming another staging file cannot redirect writes', async () => {
+  it('a bundle naming another file cannot redirect writes', async () => {
     const elsewhere = 'ELSEWHEREKEY0000000000';
     const redirecting = {
       ...copy(BUNDLE),
-      stagingFileKey: elsewhere,
-      files: { stagingFileKey: elsewhere, stagingFileName: 'Elsewhere' },
-      sync: { stagingFileKey: elsewhere },
+      libraryFileKey: elsewhere,
+      retiredFiles: [],
+      files: { libraryFileKey: elsewhere, libraryFileName: 'Elsewhere' },
+      sync: { libraryFileKey: elsewhere, retiredFileKeys: [] },
     };
-    expect(await refusedWith(serve(redirecting), stagingFile(elsewhere))).toMatch(elsewhere);
-    const marked = stagingFile(null, 'Elsewhere');
-    markAsStaging(marked, elsewhere);
-    expect(await refusedWith(serve(redirecting), marked)).toMatch(/not marked as HDS staging/);
+    expect(await refusedWith(serve(redirecting), libraryFile(elsewhere))).toMatch(elsewhere);
+    expect(await refusedWith(serve(redirecting), libraryFile(RETIRED.fileKey))).toMatch(/retired/);
+    const marked = libraryFile(null, 'Elsewhere');
+    markAsLibrary(marked, elsewhere);
+    expect(await refusedWith(serve(redirecting), marked)).toMatch(/not marked as the HDS library/);
   });
 
   it('refuses a tampered payload, naming the URL and the fix', async () => {
@@ -416,7 +560,7 @@ describe('bundle handshake', () => {
   });
 
   it('refuses when its window never answers (an out-of-date ui.html), naming the fix', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     const result = await runPlugin(PLUGIN, 'sync', figma, {
       fetch: () => new Promise(() => {}),
       codeSetTimeout: (fn) => setTimeout(fn, 0),
@@ -428,7 +572,7 @@ describe('bundle handshake', () => {
   });
 
   it('refuses a command an out-of-date manifest.json still offers', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     const result = await runPlugin(PLUGIN, 'push', figma);
     expect(result.ok).toBe(false);
     expect(result.error).toMatch(/manifest\.json is out of date/);
@@ -440,7 +584,7 @@ describe('bundle handshake', () => {
 // ── Receipt ──────────────────────────────────────────────────────────────────
 describe('sync receipt', () => {
   it('is written last, after the push re-planned to 0 and stamped lastPush', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
     const receiptAt = figma.writes.indexOf('root.pluginData:syncReceipt');
     expect(receiptAt).toBe(figma.writes.length - 1);
@@ -448,7 +592,7 @@ describe('sync receipt', () => {
   });
 
   it('is never written when the push does not verify to 0', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     // A file where one value does not stick: the re-plan after the push is not 0.
     const create = figma.variables.createVariable;
     figma.variables.createVariable = (name, collection, type) => {
@@ -465,7 +609,7 @@ describe('sync receipt', () => {
   });
 
   it('is written again when the next Sync changes the file', async () => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
     const first = JSON.parse(rootData(figma, 'syncReceipt'));
     (await figma.variables.getLocalVariablesAsync()).find((v) => v.name === 'ring').remove();
@@ -481,11 +625,11 @@ describe('sync receipt', () => {
 
 describe('Check this file', () => {
   it('records whether Figma exposes the file key, and writes nothing', async () => {
-    const hidden = stagingFile(null);
+    const hidden = libraryFile(null);
     const check = await runPlugin(PLUGIN, 'check', hidden);
     expect(check.ok, check.error).toBe(true);
     expect(check.result.file).toEqual({
-      name: LINKS.stagingFileName,
+      name: LINKS.libraryFileName,
       key: null,
       fileKeyExposed: false,
     });
@@ -494,8 +638,8 @@ describe('Check this file', () => {
     expect(check.fetches).toEqual([]);
     expect(hidden.writes).toEqual([]);
 
-    const exposed = await runPlugin(PLUGIN, 'check', stagingFile());
+    const exposed = await runPlugin(PLUGIN, 'check', libraryFile());
     expect(exposed.result.file.fileKeyExposed).toBe(true);
-    expect(exposed.result.verdict).toBe('staging');
+    expect(exposed.result.verdict).toBe('library');
   });
 });

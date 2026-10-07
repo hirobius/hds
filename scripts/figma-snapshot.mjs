@@ -14,7 +14,7 @@
  *                                        figma/snapshot.json
  *   pnpm figma:snapshot --from-receipt <files...>
  *                                        rebuild the snapshot a Sync wrote into
- *                                        staging from receipt.js's results, verify
+ *                                        the library from receipt.js's results, verify
  *                                        it, then ingest it the same way (hds#417)
  *
  * After a Sync, an agent collects the snapshot with figma/push/use-figma/receipt.js
@@ -49,7 +49,7 @@ export function ingestSnapshot({ root, from, text = readFileSync(from, 'utf8') }
 }
 
 /**
- * Rebuilds the snapshot a Sync wrote into staging from receipt.js's saved
+ * Rebuilds the snapshot a Sync wrote into the library from receipt.js's saved
  * results (scripts/lib/figma-receipt.mjs checks file, base, pages, post
  * checksum and freshness), then ingests it exactly as --ingest does. Writes
  * nothing when any check fails.

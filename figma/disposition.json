@@ -27,7 +27,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34"
     },
     {
       "name": "AlertDialog",
@@ -35,7 +35,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24"
     },
     {
       "name": "AssetImg",
@@ -43,7 +43,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-67"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67"
     },
     {
       "name": "Avatar",
@@ -51,7 +51,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18"
     },
     {
       "name": "AvatarGroup",
@@ -59,7 +59,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2030-63"
     },
     {
       "name": "Badge",
@@ -67,7 +67,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15"
     },
     {
       "name": "Blockquote",
@@ -75,7 +75,7 @@
       "parent": null,
       "category": "Typography",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18"
     },
     {
       "name": "Box",
@@ -91,7 +91,7 @@
       "parent": null,
       "category": "Navigation",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-159"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159"
     },
     {
       "name": "Button",
@@ -99,7 +99,7 @@
       "parent": null,
       "category": "Actions",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138"
     },
     {
       "name": "Callout",
@@ -107,7 +107,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-85"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85"
     },
     {
       "name": "Card",
@@ -115,7 +115,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11"
     },
     {
       "name": "CardBody",
@@ -179,7 +179,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29"
     },
     {
       "name": "CodeBlock",
@@ -187,7 +187,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-154"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154"
     },
     {
       "name": "Combobox",
@@ -195,7 +195,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237"
     },
     {
       "name": "Container",
@@ -211,7 +211,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-268"
     },
     {
       "name": "DestructiveSection",
@@ -219,7 +219,7 @@
       "parent": null,
       "category": "Actions",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3"
     },
     {
       "name": "Dialog",
@@ -227,7 +227,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-27"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-27"
     },
     {
       "name": "DialogClose",
@@ -307,7 +307,7 @@
       "parent": null,
       "category": "Layout",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-453"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453"
     },
     {
       "name": "Divider",
@@ -315,7 +315,7 @@
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26"
     },
     {
       "name": "EmptyState",
@@ -323,7 +323,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352"
     },
     {
       "name": "ErrorPattern",
@@ -339,7 +339,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-81"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81"
     },
     {
       "name": "Form",
@@ -347,7 +347,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94"
     },
     {
       "name": "FormActions",
@@ -355,7 +355,7 @@
       "parent": null,
       "category": "Actions",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87"
     },
     {
       "name": "FormField",
@@ -467,7 +467,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2"
     },
     {
       "name": "InlineCode",
@@ -475,7 +475,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155"
     },
     {
       "name": "InlineLink",
@@ -483,7 +483,7 @@
       "parent": null,
       "category": "Navigation",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161"
     },
     {
       "name": "Input",
@@ -491,7 +491,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20"
     },
     {
       "name": "Kbd",
@@ -499,7 +499,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9"
     },
     {
       "name": "Menu",
@@ -507,7 +507,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-59"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59"
     },
     {
       "name": "MetadataList",
@@ -515,7 +515,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47"
     },
     {
       "name": "MetricTile",
@@ -523,7 +523,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-114"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-114"
     },
     {
       "name": "MetricTiles",
@@ -555,7 +555,7 @@
       "parent": null,
       "category": "Navigation",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194"
     },
     {
       "name": "Pin",
@@ -571,7 +571,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-32"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32"
     },
     {
       "name": "Progress",
@@ -579,7 +579,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-91"
     },
     {
       "name": "Radio",
@@ -587,7 +587,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17"
     },
     {
       "name": "Reveal",
@@ -603,7 +603,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334"
     },
     {
       "name": "Select",
@@ -611,7 +611,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49"
     },
     {
       "name": "Sidebar",
@@ -627,7 +627,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-95"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95"
     },
     {
       "name": "Slider",
@@ -635,7 +635,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265"
     },
     {
       "name": "Spinner",
@@ -643,7 +643,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-106"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106"
     },
     {
       "name": "Stack",
@@ -659,7 +659,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-247"
     },
     {
       "name": "StatusListItem",
@@ -667,7 +667,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-350"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350"
     },
     {
       "name": "StatusTile",
@@ -675,7 +675,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-292"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-292"
     },
     {
       "name": "Surface",
@@ -683,7 +683,7 @@
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-27"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27"
     },
     {
       "name": "Switcher",
@@ -699,7 +699,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300"
     },
     {
       "name": "Tabs",
@@ -707,7 +707,7 @@
       "parent": null,
       "category": "Navigation",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-89"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89"
     },
     {
       "name": "TabsContent",
@@ -739,7 +739,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11"
     },
     {
       "name": "Text",
@@ -747,7 +747,7 @@
       "parent": null,
       "category": "Typography",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2022-31"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31"
     },
     {
       "name": "Textarea",
@@ -755,7 +755,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14"
     },
     {
       "name": "Timestamp",
@@ -763,7 +763,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2031-11"
     },
     {
       "name": "ToastProvider",
@@ -771,7 +771,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-367"
     },
     {
       "name": "Toggle",
@@ -779,7 +779,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19"
     },
     {
       "name": "Tooltip",
@@ -787,7 +787,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15"
     },
     {
       "name": "VisuallyHidden",

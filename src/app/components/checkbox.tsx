@@ -6,7 +6,7 @@
  * @whenNot An immediate on/off setting, or a choice of exactly one option from a set.
  * @useInstead Toggle a setting that applies as soon as it flips
  * @useInstead Radio exactly one choice from a set
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29
  */
 
 import { forwardRef, useEffect, useRef } from 'react';
