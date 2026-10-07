@@ -11,13 +11,18 @@
  * Flat-config only (ESLint 9+) — exports a self-referencing `recommended`
  * config array, the standard pattern for ESLint 9/10 plugins.
  */
+import { readFileSync } from 'node:fs';
 import noRawControls from './rules/no-raw-controls.mjs';
 import noRawHex from './rules/no-raw-hex.mjs';
 import noRawPxSpacing from './rules/no-raw-px-spacing.mjs';
 import preferHdsLayoutPrimitive from './rules/prefer-hds-layout-primitive.mjs';
 import sxTokenFirst from './rules/sx-token-first.mjs';
 
-const packageMeta = { name: '@hirobius/eslint-plugin-hds', version: '0.2.0' };
+// One source for name and version: the plugin's own package.json (shipped with it).
+const { name, version } = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8'),
+);
+const packageMeta = { name, version };
 
 /** @type {import('eslint').ESLint.Plugin} */
 const plugin = {

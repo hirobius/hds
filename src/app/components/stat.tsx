@@ -39,8 +39,9 @@ export interface StatProps
 
 /**
  * Headline metric — large value, uppercase caption label, optional sub-line.
- * @usage Show one standalone headline figure with its label and an optional sub-line.
- * @whenNot A figure inside a Card, or a status with a trailing badge.
+ * @usage Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.
+ * @whenNot A row of headline numbers on a screen, a figure inside a Card, or a status with a trailing badge.
+ * @useInstead MetricTiles a row of headline numbers (one MetricTile per number)
  * @useInstead Card.Metric a figure inside a Card (hds#254 folds Stat into the Card slot)
  * @useInstead StatusTile a titled status with notes and a trailing badge
  */

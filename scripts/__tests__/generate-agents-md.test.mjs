@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * The packaged AGENTS.md (scripts/generate-agents-md.mjs) and the guide it
  * projects (mcp/guide.mjs). Seams: buildAgentsMd() for content, the CLI's
@@ -10,7 +11,8 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { REPO_NOTES_MARKER, buildAgentsMd } from '../generate-agents-md.mjs';
 import { CORE_COMPONENTS } from '../lib/core-components.mjs';
-import { HOOKS, INTENTS, NOT_RECOMMENDED, RATIFIED_CORE } from '../../mcp/guide.mjs';
+import { HOOKS, INTENTS, RATIFIED_CORE } from '../../mcp/guide.mjs';
+import { needsMarkdown } from '../lib/guide-markdown.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const readJson = (rel) => JSON.parse(readFileSync(join(ROOT, rel), 'utf8'));
@@ -37,15 +39,35 @@ describe('the consumer guide (mcp/guide.mjs)', () => {
     }
   });
 
-  it('never recommends a component under prune review', () => {
-    for (const intent of INTENTS) {
-      for (const name of intent.use) expect(NOT_RECOMMENDED, intent.id).not.toContain(name);
+  it('keeps its core set equal to the ratified core', () => {
+    expect([...RATIFIED_CORE].sort()).toEqual([...CORE_COMPONENTS].sort());
+  });
+
+  it('gives every need exactly one first answer, and one need per number row', () => {
+    const firsts = INTENTS.map((i) => i.use[0]);
+    const metrics = INTENTS.filter((i) => i.use.includes('MetricTiles'));
+    expect(metrics.map((i) => i.id)).toEqual(['metrics']);
+    for (const name of ['Stat', 'CardMetric', 'StatusTile']) {
+      expect(firsts).not.toContain(name);
+      expect(metrics[0].avoid).toContain(name);
     }
   });
 
-  it('keeps its core set equal to the ratified core minus the prune candidates', () => {
-    const expected = CORE_COMPONENTS.filter((n) => !NOT_RECOMMENDED.includes(n)).sort();
-    expect([...RATIFIED_CORE].sort()).toEqual(expected);
+  it('recommends the kept components for their own purposes', () => {
+    const used = new Set(INTENTS.flatMap((i) => i.use));
+    for (const name of [
+      'Kbd',
+      'Blockquote',
+      'Timestamp',
+      'AvatarGroup',
+      'MetadataList',
+      'DestructiveSection',
+      'Pin',
+      'Switcher',
+      'Sidebar',
+    ]) {
+      expect(used, name).toContain(name);
+    }
   });
 });
 
@@ -78,24 +100,28 @@ describe('buildAgentsMd', () => {
     expect(md).toContain('configs.recommended');
   });
 
-  it('lists the prune candidates only as not recommended', () => {
-    const md = buildAgentsMd(inputs());
-    const pick = section(md, 'Pick by need');
-    for (const line of pick.split('\n').filter((l) => l.startsWith('- '))) {
-      const use = line.split('Not:')[0];
-      for (const name of NOT_RECOMMENDED) expect(use, line).not.toContain(`\`${name}\``);
-    }
-    expect(section(md, 'Rules')).toContain('`CardMetric`');
-  });
-
   it('keeps the repo notes below the marker, untouched', () => {
     const md = buildAgentsMd(inputs());
     expect(md.endsWith(`${REPO_NOTES_MARKER}\n\n## Contributing\n\nRepo-only notes.\n`)).toBe(true);
   });
 
-  it('stays short: under 9 KB above the repo notes', () => {
+  it('stays short: under 11 KB above the repo notes', () => {
     const md = buildAgentsMd({ ...inputs(), repoNotes: '' });
-    expect(Buffer.byteLength(md)).toBeLessThan(9 * 1024);
+    expect(Buffer.byteLength(md)).toBeLessThan(11 * 1024);
+  });
+});
+
+describe('AGENTS.md and llms.txt agree', () => {
+  it('both carry the same pick-by-need list, rendered from mcp/guide.mjs', () => {
+    const needs = needsMarkdown(readJson('src/app/data/component-api.json').components);
+    for (const file of ['AGENTS.md', 'llms.txt', 'public/llms.txt']) {
+      expect(readFileSync(join(ROOT, file), 'utf8'), file).toContain(needs);
+    }
+  });
+
+  it('llms.txt no longer offers a choice between the number components', () => {
+    const llms = readFileSync(join(ROOT, 'public/llms.txt'), 'utf8');
+    expect(llms).not.toMatch(/Pick between `MetricTiles`, `Stat`/);
   });
 });
 

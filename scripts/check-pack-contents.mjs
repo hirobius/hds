@@ -16,8 +16,17 @@
  */
 
 import { spawnSync } from 'node:child_process';
+import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+const PLUGIN_DIR = 'scripts/eslint-plugin-hds';
+/** Every file under the plugin's rules/ (index.mjs imports them; a missing one breaks the import). */
+const PLUGIN_RULES = readdirSync(
+  path.join(path.dirname(fileURLToPath(import.meta.url)), '..', PLUGIN_DIR, 'rules'),
+)
+  .sort()
+  .map((f) => `${PLUGIN_DIR}/rules/${f}`);
 
 export const REQUIRED = [
   'llms.txt',
@@ -42,8 +51,10 @@ export const REQUIRED = [
   'mcp/server.mjs',
   'mcp/guide.mjs',
   'codemods/patterns-subpath.names.json',
-  'scripts/eslint-plugin-hds/index.mjs',
-  'scripts/eslint-plugin-hds/index.d.mts',
+  `${PLUGIN_DIR}/index.mjs`,
+  `${PLUGIN_DIR}/index.d.mts`,
+  `${PLUGIN_DIR}/package.json`,
+  ...PLUGIN_RULES,
 ];
 
 /**
@@ -56,8 +67,8 @@ export const FORBIDDEN = [
   { prefix: 'storybook-static/' },
   {
     prefix: 'scripts/',
-    allow: ['scripts/eslint-plugin-hds/index.mjs', 'scripts/eslint-plugin-hds/index.d.mts'],
-    allowPrefix: ['scripts/eslint-plugin-hds/rules/'],
+    allow: [`${PLUGIN_DIR}/index.mjs`, `${PLUGIN_DIR}/index.d.mts`, `${PLUGIN_DIR}/package.json`],
+    allowPrefix: [`${PLUGIN_DIR}/rules/`],
   },
 ];
 

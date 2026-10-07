@@ -97,10 +97,18 @@ package now ships: `AGENTS.md`, the regenerated `llms.txt`, the `hds` MCP server
 5. Copy each app's `src/` into `runs/<date>/after-<suffix>/src/` exactly as
    delivered, and `git add -f` it with `NOTES.md`.
 6. On a clean tree: `pnpm eval:consistency -- --apps eval/consistency/runs/<date>`
-   (full run). It appends the ledger entry, whose `notes` name only the run
-   directory, so list in `runs/<date>/NOTES.md` anything besides the four
-   after-arm additions that changed in the package since the baseline commit
-   (for example the `AlertDialog` usage contract).
+   (full run). It appends the ledger entry.
+7. `CONDITIONS.md` says anything else that changed in the package between the
+   runs goes in the after entry's notes. The harness writes only
+   `Harness run over <dir>.`, so before committing the new entry, append to its
+   `notes` (the entry is not yet in git, so this is still writing it, not
+   editing a recorded one) every non-tooling change since `6f0be12`. For
+   hds#515 that is the source JSDoc usage-tag edits, which change
+   `component-api.json`, the manifest and `llms.txt`: `AlertDialog` gained a
+   usage contract; `Dialog`, `Stat`, `StatusTile` and `Card.Metric` gained or
+   reworded `@usage` / `@whenNot` / `@useInstead` lines pointing at
+   `AlertDialog` or `MetricTiles`. Copy the same list into
+   `runs/<date>/NOTES.md`.
 
 `DIAGNOSIS-2026-10-05.md` explains why the baseline apps diverged and what each
 after-arm piece is meant to fix.

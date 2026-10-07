@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * Integration test for the `hds-mcp` stdio server (mcp/hds-mcp.mjs).
  *
@@ -7,6 +8,7 @@
  * keeps these tests green.
  */
 import { spawn } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -14,12 +16,14 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const BIN = join(ROOT, 'mcp', 'hds-mcp.mjs');
 
-/** Budget per tool result, the size the server promises (compact, never the manifest). */
+/** Budget per tool call: the whole JSON-RPC response line on the wire, never the manifest. */
 const MAX_RESULT_BYTES = 2048;
 
 function startServer() {
   const child = spawn(process.execPath, [BIN], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
   const pending = new Map();
+  /** Waiters for responses with `id: null` (errors for messages that had no usable id), in order. */
+  const nullWaiters = [];
   let buffer = '';
   let nextId = 1;
   child.stdout.setEncoding('utf8');
@@ -31,6 +35,11 @@ function startServer() {
       buffer = buffer.slice(nl + 1);
       if (!line) continue;
       const msg = JSON.parse(line);
+      Object.defineProperty(msg, 'wireBytes', { value: Buffer.byteLength(line) });
+      if (msg.id === null) {
+        nullWaiters.shift()?.(msg);
+        continue;
+      }
       const waiter = pending.get(msg.id);
       if (waiter) {
         pending.delete(msg.id);
@@ -50,7 +59,22 @@ function startServer() {
     });
   const notify = (method, params) =>
     child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', method, params })}\n`);
-  return { child, request, notify };
+  /** Writes one raw line; resolves with the reply to `id` (null: the next id-null reply). */
+  const raw = (line, id) =>
+    new Promise((resolve, reject) => {
+      const timer = setTimeout(
+        () => reject(new Error(`timeout waiting for reply to ${line}`)),
+        5000,
+      );
+      const done = (msg) => {
+        clearTimeout(timer);
+        resolve(msg);
+      };
+      if (id === null) nullWaiters.push(done);
+      else pending.set(id, done);
+      child.stdin.write(`${line}\n`);
+    });
+  return { child, request, notify, raw };
 }
 
 /** Calls a tool and returns { bytes, data } where data is the parsed JSON text content. */
@@ -58,7 +82,7 @@ async function callTool(server, name, args) {
   const res = await server.request('tools/call', { name, arguments: args });
   expect(res.error).toBeUndefined();
   const text = res.result.content[0].text;
-  return { res, bytes: Buffer.byteLength(text), data: JSON.parse(text) };
+  return { res, bytes: res.wireBytes, data: JSON.parse(text) };
 }
 
 describe('hds-mcp over stdio', () => {
@@ -81,7 +105,10 @@ describe('hds-mcp over stdio', () => {
 
   it('answers initialize with the hds server info and the tools capability', () => {
     const { result } = server.init;
-    expect(result.serverInfo.name).toBe('hds');
+    expect(result.serverInfo).toEqual({
+      name: 'hds',
+      version: JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).version,
+    });
     expect(result.protocolVersion).toBe('2025-06-18');
     expect(result.capabilities.tools).toBeDefined();
     expect(typeof result.instructions).toBe('string');
@@ -186,7 +213,7 @@ describe('hds-mcp over stdio', () => {
     expect(data.more).toBe(data.total - data.results.length);
   });
 
-  it('list_core names the preferred components by import path and omits prune candidates', async () => {
+  it('list_core names the core components by import path, one answer per number', async () => {
     const { bytes, data } = await callTool(server, 'list_core', {});
     expect(bytes).toBeLessThan(MAX_RESULT_BYTES);
     expect(data.patterns).toEqual(
@@ -198,14 +225,81 @@ describe('hds-mcp over stdio', () => {
         'PageHeader',
       ]),
     );
-    expect(data.root).toEqual(expect.arrayContaining(['AlertDialog', 'Badge', 'Button', 'Tabs']));
+    expect(data.root).toEqual(
+      expect.arrayContaining(['AlertDialog', 'Badge', 'Button', 'Kbd', 'Tabs']),
+    );
     expect(data.root).not.toContain('Stat');
     expect(data.root).not.toContain('CardMetric');
     expect(data.hooks).toContain('useToast');
+    expect(data.needs.length + (data.moreNeeds ?? 0)).toBeGreaterThan(15);
+  });
+
+  it('search_components and get_component carry the same steer for a confused component', async () => {
+    const search = await callTool(server, 'search_components', { query: 'Stat' });
+    const hit = search.data.results.find((r) => r.name === 'Stat');
+    const one = await callTool(server, 'get_component', { name: 'Stat' });
+    expect(hit.insteadFor).toEqual([
+      { need: expect.stringMatching(/headline numbers/), use: 'MetricTiles' },
+    ]);
+    expect(one.data.insteadFor).toEqual(hit.insteadFor);
+    expect(hit.core).toBeUndefined();
+    expect(one.data.core).toBeUndefined();
+    const core = await callTool(server, 'get_component', { name: 'MetricTiles' });
+    expect(core.data.core).toBe(true);
   });
 
   it('answers ping and rejects an unknown method with -32601', async () => {
     expect((await server.request('ping', {})).result).toEqual({});
     expect((await server.request('resources/list', {})).error.code).toBe(-32601);
+  });
+
+  describe('malformed messages never stop the server', () => {
+    it('treats params: null as no params', async () => {
+      const init = await server.raw(
+        JSON.stringify({ jsonrpc: '2.0', id: 'n1', method: 'initialize', params: null }),
+        'n1',
+      );
+      expect(init.result.serverInfo.name).toBe('hds');
+      const call = await server.raw(
+        JSON.stringify({ jsonrpc: '2.0', id: 'n2', method: 'tools/call', params: null }),
+        'n2',
+      );
+      expect(call.error.code).toBe(-32602);
+    });
+
+    it('answers a request whose id is null', async () => {
+      const res = await server.raw(
+        JSON.stringify({ jsonrpc: '2.0', id: null, method: 'ping' }),
+        null,
+      );
+      expect(res).toMatchObject({ id: null, result: {} });
+    });
+
+    it('rejects a batch, a non-object and a request without a method with -32600', async () => {
+      for (const line of [
+        '[]',
+        '[{"jsonrpc":"2.0","id":1,"method":"ping"}]',
+        '"hello"',
+        '42',
+        'null',
+      ]) {
+        const res = await server.raw(line, null);
+        expect(res.error.code, line).toBe(-32600);
+      }
+      const noMethod = await server.raw(JSON.stringify({ jsonrpc: '2.0', id: 'm1' }), 'm1');
+      expect(noMethod.error.code).toBe(-32600);
+    });
+
+    it('returns -32700 for unparseable JSON and keeps answering afterwards', async () => {
+      const res = await server.raw('{not json', null);
+      expect(res.error.code).toBe(-32700);
+      expect((await server.request('ping', {})).result).toEqual({});
+      expect(server.child.exitCode).toBeNull();
+    });
+
+    it('turns a tool that throws on bad arguments into an isError result', async () => {
+      const res = await server.request('tools/call', { name: 'search_tokens', arguments: null });
+      expect(res.result.isError).toBe(true);
+    });
   });
 });

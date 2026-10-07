@@ -4,7 +4,8 @@
  * Interface: `loadCatalog(packageRoot)` returns `{ instructions, tools }`, where
  * each tool is `{ name, description, inputSchema, run(args) }` and `run` returns
  * a plain object the server serialises. Every result is kept under RESULT_BUDGET
- * bytes of JSON: an agent asks a narrow question and gets a narrow answer, never
+ * bytes as it travels (the JSON text, escaped again inside the JSON-RPC
+ * response line): an agent asks a narrow question and gets a narrow answer, never
  * the 400 KB manifest.
  *
  * Sources, all inside the installed package:
@@ -15,9 +16,12 @@
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { HOOKS, INTENTS, NOT_RECOMMENDED, coreComponents } from './guide.mjs';
+import { HOOKS, INTENTS, coreComponents } from './guide.mjs';
 
-export const RESULT_BUDGET = 2000;
+export const RESULT_BUDGET = 1900;
+
+/** Bytes a result costs inside a tools/call response: its JSON, escaped as a string. */
+const bytes = (value) => Buffer.byteLength(JSON.stringify(JSON.stringify(value)));
 
 const ROOT_IMPORT = '@hirobius/design-system';
 
@@ -26,8 +30,6 @@ const STOPWORDS = new Set(
 );
 
 const readJson = (root, rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
-
-const bytes = (value) => Buffer.byteLength(JSON.stringify(value));
 
 const words = (text) =>
   String(text ?? '')
@@ -71,7 +73,21 @@ export function loadCatalog(root) {
   const manifest = readJson(root, 'public/hds-manifest.json');
   const patternNames = new Set(readJson(root, 'codemods/patterns-subpath.names.json').names);
 
-  const notRecommended = new Set(NOT_RECOMMENDED);
+  /**
+   * The flags both search_components and get_component put on a component:
+   * `core` when the guide prefers it, `insteadFor` for each need it is the
+   * wrong answer to (the guide names `use` instead).
+   */
+  const steer = (name) => {
+    const insteadFor = INTENTS.filter((i) => i.avoid.includes(name)).map((i) => ({
+      need: i.need,
+      use: i.use[0],
+    }));
+    return {
+      ...(core.has(name) ? { core: true } : {}),
+      ...(insteadFor.length ? { insteadFor } : {}),
+    };
+  };
   const core = new Set(coreComponents());
   const components = Object.keys(api)
     .filter((name) => !api[name].hidden)
@@ -99,7 +115,10 @@ export function loadCatalog(root) {
 
     const matchedIntents = [];
     for (const intent of INTENTS) {
-      const hits = qWords.filter((w) => intent.keywords.includes(w)).length;
+      const hits =
+        q.toLowerCase() === intent.id
+          ? 3
+          : qWords.filter((w) => intent.keywords.includes(w)).length;
       if (!hits) continue;
       matchedIntents.push({ intent, hits });
       intent.use.forEach((name, i) => add(name, 10 * hits + (i === 0 ? 5 : 0)));
@@ -115,7 +134,6 @@ export function loadCatalog(root) {
       add(name, 2 * qWords.filter((w) => text.includes(w)).length);
       if (scores.get(name) > 0) {
         if (core.has(name)) add(name, 1);
-        if (notRecommended.has(name)) add(name, -5);
       }
     }
     const ranked = components
@@ -132,8 +150,7 @@ export function loadCatalog(root) {
       name,
       import: importOf(name),
       summary: firstSentence(api[name].usage?.when || api[name].description, 120),
-      ...(core.has(name) ? { core: true } : {}),
-      ...(notRecommended.has(name) ? { recommended: false } : {}),
+      ...steer(name),
     }));
     return fitList(top, (results) => ({
       results,
@@ -167,10 +184,6 @@ export function loadCatalog(root) {
       need: i.need,
       how: i.how,
     }));
-    const insteadFor = INTENTS.filter((i) => i.avoid.includes(canonical)).map((i) => ({
-      need: i.need,
-      use: i.use[0],
-    }));
     const propLine = (p, withDesc, typeMax) => {
       const type = p.type.length > typeMax ? `${p.type.slice(0, typeMax - 1)}…` : p.type;
       const def = p.default !== undefined ? ` = ${p.default}` : '';
@@ -182,18 +195,12 @@ export function loadCatalog(root) {
       import: importOf(canonical),
       category: entry.category,
       summary: firstSentence(entry.description, 200),
-      ...(notRecommended.has(canonical)
-        ? {
-            recommended: false,
-            note: 'Under review; prefer the component the guide names for this need.',
-          }
-        : {}),
+      ...steer(canonical),
       ...(entry.usage?.when ? { when: entry.usage.when } : {}),
       ...(entry.usage?.whenNot ? { whenNot: entry.usage.whenNot } : {}),
       ...(entry.usage?.useInstead?.length
         ? { useInstead: entry.usage.useInstead.map((u) => `${u.component}: ${u.reason}`) }
         : {}),
-      ...(insteadFor.length ? { insteadFor } : {}),
       ...(spec.compoundMembers?.length
         ? {
             parts: spec.compoundMembers.map(
@@ -283,13 +290,16 @@ export function loadCatalog(root) {
   // ── list_core ───────────────────────────────────────────────────────────
   function listCore() {
     const names = [...core].filter((n) => api[n]);
-    return {
+    // `id → use`: short enough that every need fits; search_components takes the id.
+    const needs = INTENTS.map((i) => `${i.id} → ${i.use.join(', ')}`);
+    // Needs are ordered most common first; what does not fit is one search_components away.
+    return fitList(needs, (shown, dropped) => ({
       root: names.filter((n) => !patternNames.has(n)),
       patterns: names.filter((n) => patternNames.has(n)),
       hooks: Object.keys(HOOKS),
-      needs: INTENTS.map((i) => `${i.need} → ${i.use.join(', ')}`),
-      notRecommended: NOT_RECOMMENDED,
-    };
+      needs: shown,
+      ...(dropped ? { moreNeeds: dropped, forMore: 'search_components with the need' } : {}),
+    }));
   }
 
   const tools = [
@@ -340,7 +350,7 @@ export function loadCatalog(root) {
     {
       name: 'list_core',
       description:
-        'The core components to prefer, split by import path, the hooks, one line per screen need naming the component to use, and the components not to recommend. Call this first.',
+        'The core components to prefer, split by import path, the hooks, and one line per screen need (`id → components`; pass an id to search_components for its usage line). Call this first.',
       inputSchema: { type: 'object', properties: {} },
       run: listCore,
     },

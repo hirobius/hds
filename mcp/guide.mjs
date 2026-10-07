@@ -22,30 +22,13 @@ export const HOOKS = {
 };
 
 /**
- * Components the guide never recommends while their future is under review
- * (prune candidates). They still work; agents should pick the `use` of the
- * matching need instead.
- */
-export const NOT_RECOMMENDED = [
-  'AvatarGroup',
-  'Blockquote',
-  'CardMetric',
-  'CardProgress',
-  'Container',
-  'DestructiveSection',
-  'Kbd',
-  'MetadataList',
-  'Pin',
-  'Sidebar',
-  'StatusDot',
-  'Switcher',
-  'Timestamp',
-];
-
-/**
  * One row per screen need. `use` is the answer (in order of composition),
  * `avoid` the alternatives agents reached for instead, `how` one line of usage.
- * `keywords` feed search_components ranking.
+ * `keywords` feed search_components ranking. A component named in `avoid` is
+ * not wrong in general; it is the wrong answer for that one need, and the
+ * server tells an agent so (`insteadFor`). Every need has one answer: the four
+ * number components are the case that split the baseline, so a row of numbers
+ * is always MetricTiles.
  */
 export const INTENTS = [
   {
@@ -54,7 +37,7 @@ export const INTENTS = [
     keywords: ['page', 'screen', 'shell', 'layout', 'wrapper', 'root'],
     use: ['Page', 'Stack'],
     avoid: ['Container', 'Box', 'a bare Stack as the root'],
-    how: '`<Page><Stack gap="spacious">…one child per section…</Stack></Page>`.',
+    how: '`<Page><Stack gap="spacious">…one child per section…</Stack></Page>`. `Container` is for a full-bleed surface that is not a page.',
   },
   {
     id: 'page-header',
@@ -83,7 +66,7 @@ export const INTENTS = [
     ],
     use: ['MetricTiles', 'MetricTile'],
     avoid: ['Stat', 'StatusTile', 'CardMetric', 'Card with Text'],
-    how: '`<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number.',
+    how: '`<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, `StatusTile` for a state with notes (never a number).',
   },
   {
     id: 'table',
@@ -106,7 +89,7 @@ export const INTENTS = [
     need: 'Status label in a header or table cell',
     keywords: ['status', 'state', 'label', 'chip', 'pill', 'badge'],
     use: ['Badge'],
-    avoid: ['Tag', 'Text', 'StatusDot'],
+    avoid: ['Tag', 'Text', 'StatusDot (deprecated)'],
     how: '`<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.',
   },
   {
@@ -188,8 +171,8 @@ export const INTENTS = [
     need: 'Progress bar or ring',
     keywords: ['progress', 'bar', 'percent', 'loading', 'completion'],
     use: ['Progress'],
-    avoid: ['CardProgress'],
-    how: '`<Progress value={60} label="Upload" />`.',
+    avoid: ['a hand-built bar'],
+    how: '`<Progress value={60} label="Upload" />`; inside an existing `Card`, `CardProgress`.',
   },
   {
     id: 'text',
@@ -207,12 +190,76 @@ export const INTENTS = [
     avoid: ['Text saying "No items"'],
     how: '`DataTableSection` shows its own through `emptyTitle`; use `EmptyState` elsewhere.',
   },
+  {
+    id: 'danger-zone',
+    need: 'The one irreversible action of a screen (delete the client, close the account)',
+    keywords: ['danger', 'irreversible', 'delete', 'account', 'zone', 'destructive'],
+    use: ['DestructiveSection'],
+    avoid: ['a danger Button that acts without a confirm'],
+    how: 'Last on the screen: `<DestructiveSection title="Delete client" description="…" actionLabel="Delete" onConfirm={…} />`; it opens its own AlertDialog. A per-row destructive action uses AlertDialog directly.',
+  },
+  {
+    id: 'metadata',
+    need: 'Read-only details as label and value pairs',
+    keywords: ['metadata', 'details', 'properties', 'key', 'value', 'pairs', 'record'],
+    use: ['MetadataList', 'Field'],
+    avoid: ['a Table with two columns', 'Text pairs in a Stack'],
+    how: '`<MetadataList items={[{ term: "Owner", description: "Ada" }]} />` for a set; `Field` for one pair.',
+  },
+  {
+    id: 'people',
+    need: 'A person, or a group of people',
+    keywords: ['avatar', 'avatars', 'person', 'people', 'user', 'users', 'team', 'members'],
+    use: ['Avatar', 'AvatarGroup'],
+    avoid: ['an image in a rounded Box'],
+    how: '`<Avatar src alt initials />`; several in a row: `<AvatarGroup max={3}>…Avatars…</AvatarGroup>`.',
+  },
+  {
+    id: 'date',
+    need: 'A date or time',
+    keywords: ['date', 'time', 'timestamp', 'when', 'ago', 'due'],
+    use: ['Timestamp'],
+    avoid: ['a formatted string in Text'],
+    how: '`<Timestamp date="2026-10-14" />` renders a `<time dateTime>`; a date in a table cell may stay plain text.',
+  },
+  {
+    id: 'shortcut',
+    need: 'A keyboard key or shortcut hint',
+    keywords: ['keyboard', 'shortcut', 'key', 'kbd', 'hotkey'],
+    use: ['Kbd'],
+    avoid: ['InlineCode', 'Text in a Box'],
+    how: '`<Kbd>⌘K</Kbd>`.',
+  },
+  {
+    id: 'quote',
+    need: 'A quotation with attribution',
+    keywords: ['quote', 'quotation', 'testimonial', 'blockquote', 'citation'],
+    use: ['Blockquote'],
+    avoid: ['Callout for a quote', 'italic Text'],
+    how: '`<Blockquote attribution="Ada Lovelace">…</Blockquote>`.',
+  },
+  {
+    id: 'rail',
+    need: 'A fixed-width side rail beside fluid content, or a row that stacks when narrow',
+    keywords: ['sidebar', 'rail', 'aside', 'responsive', 'switcher', 'stack', 'narrow', 'columns'],
+    use: ['Sidebar', 'Switcher'],
+    avoid: ['a Grid with media queries'],
+    how: '`Sidebar` (`side`, `sideWidth`) for rail + content; `Switcher` (`threshold`) for a row that flips to a column. Neither needs a media query.',
+  },
+  {
+    id: 'sticky',
+    need: 'Keep an element stuck while its region scrolls',
+    keywords: ['sticky', 'pin', 'fixed', 'scroll'],
+    use: ['Pin'],
+    avoid: ['position: sticky in style'],
+    how: '`<Pin top="…">…</Pin>` inside the scrolling region.',
+  },
 ];
 
 /**
- * The ratified core set (scripts/lib/core-components.mjs, hds#254) minus
- * NOT_RECOMMENDED. Copied, not imported, because scripts/ does not ship;
- * scripts/__tests__/generate-agents-md.test.mjs pins the two together.
+ * The ratified core set (scripts/lib/core-components.mjs, hds#254). Copied, not
+ * imported, because scripts/ does not ship; scripts/__tests__/generate-agents-md.test.mjs
+ * pins the two together.
  */
 export const RATIFIED_CORE = [
   'Alert',
@@ -224,6 +271,7 @@ export const RATIFIED_CORE = [
   'Card',
   'Checkbox',
   'Combobox',
+  'Container',
   'Dialog',
   'Disclosure',
   'Divider',
@@ -235,6 +283,7 @@ export const RATIFIED_CORE = [
   'Icon',
   'InlineLink',
   'Input',
+  'Kbd',
   'Menu',
   'Pagination',
   'Popover',
@@ -258,7 +307,7 @@ export const RATIFIED_CORE = [
   'VisuallyHidden',
 ];
 
-/** The components agents should prefer: the ratified core plus every `use` above, hooks excluded. */
+/** The core set agents should prefer: the ratified core plus every `use` above, hooks excluded. */
 export function coreComponents() {
   const names = new Set(RATIFIED_CORE);
   for (const intent of INTENTS) for (const name of intent.use) if (!HOOKS[name]) names.add(name);

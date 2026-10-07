@@ -1,8 +1,10 @@
+// @vitest-environment node
 /**
  * The ESLint plugin as a consumer reaches it: `@hirobius/design-system/eslint-plugin`
  * through the package `exports` map (a self-reference here, the installed tarball in
  * smoke:consumer), linting real JSX with its `recommended` config.
  */
+import { readFileSync } from 'node:fs';
 import { Linter } from 'eslint';
 import { describe, expect, it } from 'vitest';
 import hds from '@hirobius/design-system/eslint-plugin';
@@ -21,6 +23,13 @@ describe('@hirobius/design-system/eslint-plugin', () => {
     expect(Object.keys(hds.configs.recommended[0].rules)).toEqual(
       expect.arrayContaining(['hds/no-raw-hex', 'hds/no-raw-controls']),
     );
+  });
+
+  it("reports the plugin's own package name and version", () => {
+    const meta = JSON.parse(
+      readFileSync(new URL('../eslint-plugin-hds/package.json', import.meta.url), 'utf8'),
+    );
+    expect(hds.meta).toEqual({ name: meta.name, version: meta.version });
   });
 
   it('flags raw hex, raw px and raw controls as errors', () => {

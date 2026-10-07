@@ -460,6 +460,7 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
  * Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
  * @usage Show one headline figure (a KPI, a count, a total) with its label inside a Card.
  * @whenNot A metric outside a Card, or several figures that share one label.
+ * @useInstead MetricTiles a row of headline numbers with no enclosing Card
  */
 const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
   function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {

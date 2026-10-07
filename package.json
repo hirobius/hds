@@ -123,6 +123,7 @@
     "mcp/",
     "scripts/eslint-plugin-hds/index.mjs",
     "scripts/eslint-plugin-hds/index.d.mts",
+    "scripts/eslint-plugin-hds/package.json",
     "scripts/eslint-plugin-hds/rules/"
   ],
   "publishConfig": {
@@ -276,7 +277,7 @@
     "icons:sync": "node scripts/sync-icons.mjs",
     "knip": "knip",
     "lint": "eslint src scripts validators tests mcp --max-warnings=0",
-    "lint:fix": "eslint src scripts validators tests --fix",
+    "lint:fix": "eslint src scripts validators tests mcp --fix",
     "llms:generate": "node scripts/generate-llms-txt.mjs",
     "skill:generate": "node scripts/generate-consumer-skill.mjs",
     "check:consumer-skill": "node scripts/generate-consumer-skill.mjs --check",

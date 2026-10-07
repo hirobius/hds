@@ -23,7 +23,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { HOOKS, INTENTS, NOT_RECOMMENDED, coreComponents } from '../mcp/guide.mjs';
+import { HOOKS, coreComponents } from '../mcp/guide.mjs';
+import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const AGENTS_PATH = 'AGENTS.md';
@@ -39,25 +40,10 @@ const code = (name) => `\`${name}\``;
 export function buildAgentsMd({ componentApi, patternNames, repoNotes }) {
   const api = componentApi.components;
   const fromPatterns = new Set(patternNames);
-  for (const intent of INTENTS) {
-    for (const name of intent.use) {
-      if (!api[name] && !HOOKS[name]) {
-        throw new Error(
-          `mcp/guide.mjs names "${name}" (${intent.id}), which component-api.json lacks`,
-        );
-      }
-    }
-  }
+  const needs = needsMarkdown(api);
   const core = coreComponents().filter((n) => api[n]);
   const rootNames = [...core.filter((n) => !fromPatterns.has(n)), ...Object.keys(HOOKS)].sort();
   const patterns = core.filter((n) => fromPatterns.has(n));
-
-  const needs = INTENTS.map(
-    (i) =>
-      `- **${i.need}** → ${i.use.map(code).join(', ')}. Not: ${i.avoid
-        .map((a) => (/^[A-Z][A-Za-z]+$/.test(a) ? code(a) : a))
-        .join(', ')}.\n  ${i.how}`,
-  );
 
   const body = [
     '# AGENTS.md — @hirobius/design-system',
@@ -81,9 +67,9 @@ export function buildAgentsMd({ componentApi, patternNames, repoNotes }) {
     '',
     '## Pick by need',
     '',
-    'Use the components after the arrow; what follows "Not:" is what agents reached for instead.',
+    NEEDS_INTRO,
     '',
-    ...needs,
+    needs,
     '',
     '## Rules',
     '',
@@ -91,7 +77,6 @@ export function buildAgentsMd({ componentApi, patternNames, repoNotes }) {
     '- No raw `<button>`, `<input>`, `<select>`, `<textarea>` or `<form>`: use `Button`, `Input`, `Select`, `Textarea`, `Form`.',
     '- Every control has an accessible name: fields take `label`, a repeated row action takes an `aria-label` naming its row.',
     '- Section headings come from the pattern that owns the section (`title` props). Do not add a `Text` heading the screen does not ask for.',
-    `- Not recommended while under review (they still work): ${NOT_RECOMMENDED.map(code).join(', ')}.`,
     '',
     '## Finish with the lint plugin',
     '',
