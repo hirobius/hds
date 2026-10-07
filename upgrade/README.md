@@ -23,6 +23,8 @@ are compiled from it (hds#451).
   - `detect` says how to find a use in consumer code: named `imports`, `jsx`
     tags, `cssVars` read, `cssVarWrites`, `classes`, `bareImports` of other
     packages, or a `regex`.
+  - `done`, in the same shape, says the consumer has already made the change:
+    for a step that asks them to add something, such as an import.
   - `removeIn` is the release that removes a deprecated name.
   - `facts` lists the snapshot-diff facts the step accounts for.
   - `source` is a CHANGELOG line (numbered as the file read when the release
@@ -49,10 +51,17 @@ of a release snapshot.
 0.20.0 is the first ledger. `scripts/upgrade/build-ledger-0.20.mjs` builds it
 from the 0.19.1 and 0.20.0 snapshots, `codemods/removed-0.20.json`, the
 `RENAMES` map in `codemods/hds-prefix.mjs` and the CHANGELOG, and a test keeps
-the committed file equal to its output. Next, each changeset carries an
-`upgrade/pending/<name>.json` note (hds#448) and `changeset version` compiles
-the notes into the release's ledger (hds#451). CSS facts, such as removed
-classes and changed variable values, come with hds#449.
+the committed file equal to its output.
+
+From 0.21.0 on, each changeset carries an `upgrade/pending/<name>.json` note
+(hds#448; how to write one is in `.changeset/README.md`, and `pnpm
+upgrade:note` pre-fills it). `scripts/check-upgrade-ledger.mjs` runs in
+`pretest` and fails when a fact since the last release snapshot has no step,
+a changeset has no note, or something breaking ships under less than a minor
+below 1.0. `changeset version` will compile the notes into the release's
+ledger (hds#451). CSS facts, such as removed classes and changed variable
+values, come with hds#449; until then a step of kind `removed` written by hand
+covers one, and the gate counts it as breaking.
 
 ## The floor
 
