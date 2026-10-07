@@ -1086,6 +1086,25 @@ describe('compile.mjs names the fix when its inputs are broken', () => {
       expect(res.stderr).toContain('then run node scripts/upgrade/compile.mjs');
     }
   });
+
+  // --date only dates a release --release records, and a recorded date is
+  // frozen into the ledger, so a date that is no calendar day never gets in.
+  it('--date without --release, or a date that is no calendar day: the usage line, nothing written', () => {
+    const repo = historyRepo();
+    const status = read(repo, 'status.json');
+    for (const args of [
+      ['--date', '2026-10-08'],
+      ['--release', '--date', '2026-13-45'],
+      ['--release', '--date', '2026-02-30'],
+      ['--release', '--date'],
+    ]) {
+      const res = run([...args, '--repo', repo]);
+      expect(res.status, args.join(' ')).toBe(2);
+      expect(res.stderr, args.join(' ')).toContain('usage: compile.mjs');
+      expect(existsSync(join(repo, 'UPGRADING.md')), args.join(' ')).toBe(false);
+      expect(read(repo, 'status.json')).toBe(status);
+    }
+  });
 });
 
 describe('wiring', () => {

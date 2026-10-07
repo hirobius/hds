@@ -945,6 +945,12 @@ export function checkCompiled({ repo = REPO } = {}) {
 const USAGE =
   'usage: compile.mjs [--release [--date YYYY-MM-DD]] | --check [--json]  [--repo <dir>]';
 
+/** True for a YYYY-MM-DD that is a real calendar day (2026-02-30 is not). */
+const isDay = (text) =>
+  /^\d{4}-\d{2}-\d{2}$/.test(text) &&
+  !Number.isNaN(Date.parse(text)) &&
+  new Date(text).toISOString().startsWith(text);
+
 async function main(argv) {
   const json = hasJsonFlag(argv);
   let check = json;
@@ -956,15 +962,25 @@ async function main(argv) {
     if (arg === '--check') check = true;
     else if (arg === '--json') continue;
     else if (arg === '--release') release = true;
-    else if (arg === '--date' && /^\d{4}-\d{2}-\d{2}$/.test(argv[i + 1] ?? '')) date = argv[++i];
+    else if (arg === '--date' && isDay(argv[i + 1] ?? '')) date = argv[++i];
     else if (arg === '--repo' && argv[i + 1]) repo = resolve(argv[++i]);
     else {
-      console.error(`compile.mjs: unknown argument: ${arg}\n${USAGE}`);
+      const what =
+        arg === '--date'
+          ? `--date needs a calendar day, not ${argv[i + 1] ?? 'nothing'}`
+          : `unknown argument: ${arg}`;
+      console.error(`compile.mjs: ${what}\n${USAGE}`);
       return 2;
     }
   }
   if (check && release) {
     console.error(`compile.mjs: --check never writes, so it does not take --release\n${USAGE}`);
+    return 2;
+  }
+  if (date && !release) {
+    console.error(
+      `compile.mjs: --date dates the release --release records, so it needs --release\n${USAGE}`,
+    );
     return 2;
   }
   if (check) {
