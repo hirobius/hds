@@ -6,7 +6,7 @@
  * @whenNot A task with measurable progress, or a region whose layout is known.
  * @useInstead Progress a task with measurable progress
  * @useInstead Skeleton a region whose layout is known
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-106
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106
  */
 
 import * as React from 'react';

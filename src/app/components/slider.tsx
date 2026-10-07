@@ -5,7 +5,7 @@
  * @usage Pick a number within a known range by dragging, when the exact value matters less than the position.
  * @whenNot A precise number the person must type or read exactly.
  * @useInstead Input a precise typed value (type="number")
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265
  */
 
 import { useState, forwardRef } from 'react';

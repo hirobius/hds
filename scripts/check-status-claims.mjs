@@ -13,8 +13,7 @@
  * counts status.json is allowed to assert without re-deriving them itself.
  * Anyone editing status.json's numeric claims should read this file first;
  * `--check` fails when the recorded witness has drifted from live reality,
- * which is the same trust-nothing-recorded pattern as check-sync-map.mjs and
- * figma:staging-inventory --check.
+ * which is the same trust-nothing-recorded pattern as check-sync-map.mjs.
  *
  *   node scripts/check-status-claims.mjs             # print the derived counts
  *   node scripts/check-status-claims.mjs --write      # (re)write the witness file

@@ -1,0 +1,15 @@
+{
+  "impact": "behavior",
+  "plain": "Every figmaUrl in the ./manifest export now names the one HDS Figma library, file 2VgBbVpKiDnu0aftJEVyBQ, with the same node ids, so if you stored a component's Figma link, swap its file key for that one.",
+  "steps": [
+    {
+      "id": "value-changed/manifest-figma-file-key",
+      "kind": "value-changed",
+      "impact": "behavior",
+      "plain": "The figmaUrl of each component in the ./manifest export (public/hds-manifest.json) now points at file 2VgBbVpKiDnu0aftJEVyBQ, \"HDS Tokens & Components\"; node ids are unchanged, so a stored link needs only the new file key.",
+      "detect": {
+        "regex": ["\\bfigmaUrl\\b"]
+      }
+    }
+  ]
+}

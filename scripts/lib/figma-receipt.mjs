@@ -1,6 +1,6 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * Hirobius Design System — rebuilds the snapshot a Sync wrote into staging
+ * Hirobius Design System — rebuilds the snapshot a Sync wrote into the library
  * (hds#417, hds#397 C2), for `pnpm figma:snapshot --from-receipt`.
  *
  * Input: what figma/push/use-figma/receipt.js returned through use_figma, one
@@ -9,14 +9,14 @@
  * a delta against, their format, count and sum, and the post-sync checksum.
  * Every check refuses with the cause and the next step, before anything is
  * written:
- *   1. every read came from the staging file (and not the library);
+ *   1. every read came from the library (and from no retired file);
  *   2. there is a receipt, and every read carries the same head;
  *   3. its base is the committed snapshot (or it carries the full snapshot);
  *   4. every page is there and the pages match the head's sum;
  *   5. the pages decode, and the rebuilt snapshot hashes to `post`;
  *   6. it is not stale: each read's live lastPush and collection, mode,
  *      variable and style counts match the rebuilt snapshot, so nothing
- *      wrote to staging between the Sync and the read.
+ *      wrote to the library between the Sync and the read.
  */
 
 import { gunzipSync } from 'zlib';
@@ -26,7 +26,7 @@ import { applySnapshotDelta } from './figma-snapshot-delta.mjs';
 const COLLECT =
   'run figma/push/use-figma/receipt.js again (const PAGE = 0, then each page) and pass every saved result';
 const ASK_FOR_SYNC =
-  'Ask Adrian to run Sync in staging (Plugins > Development > HDS tokens sync > Sync), then read the receipt again';
+  'Ask Adrian to run Sync in the library (Plugins > Development > HDS tokens sync > Sync), then read the receipt again';
 
 /** The counts a receipt head and receipt.js's live fingerprint carry, for a snapshot. */
 export function receiptCounts(snapshot) {
@@ -52,7 +52,7 @@ const isRead = (read) =>
 function parseHead(text) {
   if (!text) {
     throw new Error(
-      `Staging has no sync receipt: no Sync has written one, or a promote push or snapshot cleared it. ${ASK_FOR_SYNC}.`,
+      `The library has no sync receipt: no Sync has written one, or a promote push or snapshot cleared it. ${ASK_FOR_SYNC}.`,
     );
   }
   let head = null;
@@ -72,7 +72,7 @@ function parseHead(text) {
     typeof head.sum === 'string';
   if (!paged) {
     throw new Error(
-      `The sync receipt in staging has no pages: an older Sync plugin wrote it. Send Adrian new plugin files (pnpm figma:push) to overwrite, then: ${ASK_FOR_SYNC}.`,
+      `The sync receipt in the library has no pages: an older Sync plugin wrote it. Send Adrian new plugin files (pnpm figma:push) to overwrite, then: ${ASK_FOR_SYNC}.`,
     );
   }
   return head;
@@ -82,7 +82,7 @@ function parseHead(text) {
  * The snapshot a Sync's receipt describes, verified, or an Error naming the
  * cause and the fix.
  *
- * @param {{ reads: object[], base: {checksum: string, snapshot: object}|null, sync: {stagingFileKey: string, libraryFileKey: string} }} input
+ * @param {{ reads: object[], base: {checksum: string, snapshot: object}|null, sync: {libraryFileKey: string, retiredFileKeys: string[]} }} input
  * @returns {{ checksum: string, snapshot: object, head: object }}
  */
 export function rebuildFromReceipt({ reads, base, sync }) {
@@ -95,9 +95,9 @@ export function rebuildFromReceipt({ reads, base, sync }) {
         `File ${i + 1} is not a receipt.js result ({ file, page, head, text, live }): save what use_figma returned, unedited.`,
       );
     }
-    if (read.file !== sync.stagingFileKey || read.file === sync.libraryFileKey) {
+    if (read.file !== sync.libraryFileKey || sync.retiredFileKeys.includes(read.file)) {
       throw new Error(
-        `Page ${read.page} was read from ${read.file === null ? 'a file with no key' : `file ${read.file}`}, not the staging file ${sync.stagingFileKey}. Only staging carries a sync receipt an agent may ingest: run receipt.js against staging.`,
+        `Page ${read.page} was read from ${read.file === null ? 'a file with no key' : `file ${read.file}`}, not the HDS library ${sync.libraryFileKey}. Only the library carries a sync receipt an agent may ingest: run receipt.js against the library.`,
       );
     }
   });
@@ -173,7 +173,7 @@ export function rebuildFromReceipt({ reads, base, sync }) {
     }
     if (differs.length) {
       throw new Error(
-        `The receipt is stale: staging changed after the Sync that wrote it (${differs.join('; ')}), so its snapshot no longer describes the file. ${ASK_FOR_SYNC}.`,
+        `The receipt is stale: the library changed after the Sync that wrote it (${differs.join('; ')}), so its snapshot no longer describes the file. ${ASK_FOR_SYNC}.`,
       );
     }
   }

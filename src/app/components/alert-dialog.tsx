@@ -2,7 +2,7 @@
  * AlertDialog — modal confirmation dialog on Radix AlertDialog.
  * @category Overlays
  * @tier primitive
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix AlertDialog (@radix-ui/react-alert-dialog) themed with the overlay role

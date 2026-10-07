@@ -15,7 +15,7 @@
  * @keyboard Enter Commits the highlighted option and returns focus to the trigger.
  * @keyboard Escape Closes the listbox and returns focus to the trigger.
  * @keyboard Tab Does not leave the open listbox.
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49
  */
 
 import { forwardRef, useId } from 'react';

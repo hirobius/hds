@@ -11,10 +11,11 @@
  * holds only `export function` / `export async function` plus imports of the
  * runtime, the codec and the Sync runtime; no module-level constants; ES2020.
  *
- * use_figma reads differently from a plugin (measured live on staging
- * 2026-10-01, hds#397 and hds#418): a variable's `description` getter returns
- * HTML-escaped text (" &quot;, ' &#39;, < &lt;, > &gt;, & &amp;) while a
- * write stores the raw string as given, and `figma.root.name` is "Document".
+ * use_figma reads differently from a plugin (measured live 2026-10-01, on the
+ * staging copy that became the library, hds#397 and hds#418): a variable's
+ * `description` getter returns HTML-escaped text (" &quot;, ' &#39;, < &lt;,
+ * > &gt;, & &amp;) while a write stores the raw string as given, and
+ * `figma.root.name` is "Document".
  * So delta.js writes the model's raw text and decodes every read
  * (hdsAgentReadState). The Sync and promote plugins never carry this file.
  */
@@ -44,7 +45,7 @@ export function hdsAgentDecode(text) {
 /**
  * hdsReadState as a plugin would read the file: every variable description
  * decoded, and `file` set to the committed snapshot's (use_figma names the
- * root "Document" and gives the staging key, where the plugin gave none).
+ * root "Document" and gives the file key, where the plugin gave none).
  */
 export async function hdsAgentReadState(figma, file) {
   const state = await hdsReadState(figma);
@@ -83,8 +84,8 @@ export function hdsAgentVariable(v, path, pathOf) {
  * What `state` holds, counted the way delta.js checks it never leaves an
  * extra behind: variables, modes, and the text and effect styles HDS stamped
  * (a style without a path is never an extra). `pnpm figma:push --delta` bakes
- * the committed snapshot's count less its full plan's extras; staging must
- * hold exactly that.
+ * the committed snapshot's count less its full plan's extras; the library
+ * must hold exactly that.
  */
 export function hdsAgentHeld(state) {
   const sum = (key) => state.collections.reduce((n, c) => n + c[key].length, 0);
@@ -97,7 +98,7 @@ export function hdsAgentHeld(state) {
  * that holds a character use_figma escapes in a variable description
  * (" ' < > &). Whether it escapes a style description on read is not
  * measured yet, so delta.js refuses such a plan before any write
- * (pnpm figma:push --delta first, then staging again), and Sync makes it.
+ * (pnpm figma:push --delta first, then the library again), and Sync makes it.
  */
 export function hdsAgentStyleText(plan) {
   return plan.textStyles
@@ -152,8 +153,8 @@ export function hdsAgentSlice(state, data) {
 }
 
 /**
- * delta.js: refuses unless this is staging and its data is intact, pins
- * staging to the committed snapshot, refuses when staging holds more than
+ * delta.js: refuses unless this is the library and its data is intact, pins
+ * the library to the committed snapshot, refuses when it holds more than
  * the model (it never deletes), plans the slice against it (the plan
  * figma:push --delta made, or refuses), applies it, re-plans to 0, stamps
  * lastPush and the C2 receipt (raw pages: use_figma has no
@@ -163,12 +164,12 @@ export function hdsAgentSlice(state, data) {
  */
 export async function hdsAgentRun(figma, data, checksum) {
   const sync =
-    ' Ask Adrian to run Sync in staging (Plugins > Development > HDS tokens sync > Sync).';
+    ' Ask Adrian to run Sync in the library (Plugins > Development > HDS tokens sync > Sync).';
   const refuse = (why, next) => {
     throw new Error('Refused: ' + why + ' Nothing was written.' + next);
   };
-  if (figma.fileKey !== data.files.staging || figma.fileKey === data.files.library) {
-    refuse('this is not the HDS staging file (' + data.files.staging + ').', '');
+  if (figma.fileKey !== data.files.library || data.files.retired.indexOf(figma.fileKey) !== -1) {
+    refuse('this is not the HDS library (' + data.files.library + ').', '');
   }
   if (hdsChecksum(JSON.stringify(data)) !== checksum) {
     refuse(
@@ -181,7 +182,7 @@ export async function hdsAgentRun(figma, data, checksum) {
   const live = hdsChecksum(JSON.stringify(base));
   if (live !== data.base.checksum) {
     refuse(
-      'staging (' +
+      'the library (' +
         live +
         ') is not the committed figma/snapshot.json (' +
         data.base.checksum +
@@ -196,7 +197,7 @@ export async function hdsAgentRun(figma, data, checksum) {
   const held = hdsAgentHeld(base);
   if (held.join() !== data.held.join()) {
     refuse(
-      'staging holds ' +
+      'the library holds ' +
         held.reduce((n, count, i) => n + count - data.held[i], 0) +
         ' item(s) the model does not have, and delta.js never deletes.',
       prune,
@@ -212,7 +213,7 @@ export async function hdsAgentRun(figma, data, checksum) {
     refuse('the plan deletes, and delta.js never deletes.', prune);
   }
   if (hdsChecksum(JSON.stringify(plan)) !== data.planSum) {
-    refuse('the plan made in staging is not the one pnpm figma:push --delta made.', sync);
+    refuse('the plan made in the library is not the one pnpm figma:push --delta made.', sync);
   }
   const styled = hdsAgentStyleText(plan);
   if (styled.length) {
@@ -238,7 +239,7 @@ export async function hdsAgentRun(figma, data, checksum) {
     .filter((item) => item.action !== 'unchanged').length;
   if (left) {
     throw new Error(
-      'The push ran but staging still differs from the model in ' +
+      'The push ran but the library still differs from the model in ' +
         left +
         ' item(s); lastPush and the receipt were not written.' +
         sync,

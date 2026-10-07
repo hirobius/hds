@@ -1,6 +1,6 @@
 # ADR-032: The Sync Plugin Fetches Its Model; the Promote Plugin Stays Baked
 
-**Status:** Proposed (2026-10-01). Refines ADR-025 §2 ("Push on Pro") and works inside ADR-026 §2 (agents and plugins write to staging, never to the library). hds#411, child C1 of epic hds#397.
+**Status:** Proposed (2026-10-01); amended 2026-10-07: Sync targets the one library, not staging (see [Amendment (2026-10-07)](#amendment-2026-10-07-sync-targets-the-library)). Refines ADR-025 §2 ("Push on Pro") and works inside ADR-026 §2 (agents and plugins write to staging, never to the library), which ADR-026's 2026-10-07 amendment replaced. hds#411, child C1 of epic hds#397.
 
 ## Context
 
@@ -83,3 +83,62 @@ After the verified push and its snapshot, Sync writes the snapshot into the file
 - `figma/links.json` gains `libraryFileName` and `stagingFileName`. Renaming either file in Figma means updating them and rebuilding the plugin.
 - A receipt can go stale when something else writes to staging after a Sync (the promote plugin, an agent drawing session, a hand edit). The promote plugin clears it, and the collector checks `lastPush` and the counts against the live file before it trusts `post` (§6). An edit that changes neither (a description typed by hand) passes that check; the commit gate then compares the snapshot with the model, not with the live file.
 - Unverified, failing closed: whether a Pro development plugin gets `figma.fileKey` with `enablePrivatePluginApi` (the marker path covers "no"), and whether the plugin window's fetch from a `null` origin succeeds under `allowedDomains` (a failed fetch is refused with the URL and the fix). The first live Sync and **Check this file** settle both.
+
+## Amendment (2026-10-07): Sync targets the library
+
+ADR-026's amendment of 2026-10-07 made the staging copy, `2VgBbVpKiDnu0aftJEVyBQ`, the one
+HDS library and dropped the staging duplicate. So §3 changes target, and nothing else in this ADR does:
+Sync still carries no model, still never prunes, and the receipt (§4, §6) is unchanged.
+
+- **What is baked.** `pnpm figma:push` bakes `libraryFileKey`, `libraryFileName` and, from
+  `retiredFiles`, each retired file's key and name. It refuses to build while the library key
+  or name is missing, while `retiredFiles` is missing, or when a retired file has the
+  library's key or name. No staging key is baked: HDS Staging, the draft workbench
+  ADR-026 added later the same day (amendment A4, `stagingFileKey`), is never a Sync
+  target, so Sync refuses it like any file but the library, and the plugin files are the
+  same with or without it in `figma/links.json`. `pnpm figma:push` does refuse a staging
+  key or name that is the library's or a retired file's.
+- **The order of checks.** Deny first: a retired file, by key (`c8MaVgwxOlxm4wr8wnH0Z4`, the
+  old library) or by name (`HDS Tokens & Components (old)`), is refused whatever else is
+  true. Then allow the library key; any other key is refused. Where Figma gives no key, allow
+  only a file marked as the library (shared plugin data `hirobius/libraryFileKey` equal to the
+  library key) **and** named exactly `HDS Tokens & Components`. The staging-era marker
+  (`hirobius/stagingFileKey`) counts when it holds the library key: Mark stamped the copy
+  with it before 2026-10-07, under the copy's old name, so no other file can carry it with
+  that value and the library's name.
+- **Mark this file as the HDS library** replaces "Mark this file as HDS staging". Its form
+  asks Adrian to paste the file's own link (Share > Copy link), not a bare key: where Figma gives no key,
+  the key in that link is the one thing that tells the library from the old library, which
+  had the library's name until Adrian renamed it "(old)" on 2026-10-07. Mark writes the marker only in a file named
+  exactly like the library whose link holds the library key, and refuses a retired file by
+  its key, its name, its link or a pasted retired key. The no-marker refusal tells Adrian to
+  check the link the same way, and not to Mark a file whose link holds another key.
+- **The plugin gets the file key.** The Sync of 2026-10-07 (plugin build 659efcc3, whose
+  manifest sets `enablePrivatePluginApi`) recorded `file.key: "2VgBbVpKiDnu0aftJEVyBQ"` in
+  `figma/snapshot.json` (#538), where every earlier snapshot recorded `null`. That settles
+  the first open question under Consequences: a Pro development plugin gets
+  `figma.fileKey`. With the key, Sync refuses c8MaVgwxOlxm4wr8wnH0Z4 by key, whatever the
+  file is named, and allows the library by key, whatever it is named. The marker and name
+  path above is the fallback for a file where Figma gives no key.
+- **Precondition: rename the old library to "HDS Tokens & Components (old)" before loading
+  the new plugin files.** It is a precaution for the no-key path, not the only safeguard:
+  where Figma gives no key, the old library, until renamed, has the library's name, and
+  only the marker and Mark's link check tell it from the library. The order: rename the old
+  library, rename the copy "HDS Tokens & Components", overwrite the plugin's three files,
+  then Sync.
+- **receipt.js** and `--from-receipt` read and accept the library only, and refuse a retired
+  key.
+- **The promote plugin** (§5) keeps its id and name, so Figma needs no re-import. It no
+  longer promotes anything: it is the deliberate prune (`pnpm figma:push --prune`), and only
+  Adrian runs it. Sync and `delta.js` never delete. It runs in the library only: its code
+  bakes the library and the retired files from `figma/links.json` and applies Sync's file
+  guard before any command, and its manifest asks for the file key, so it refuses HDS
+  Staging (ADR-026, A4), a retired file and any other file.
+- **New plugin files.** The build before this amendment refuses a file named
+  "HDS Tokens & Components" by name, so once Adrian renames the copy, Sync needs the files
+  `pnpm figma:push` writes from this amendment on. Those files work only once the commit
+  that carries them is merged to `main` and the Storybook deploy serves its bundle: until
+  then the bundle names the old build, and the new files say the plugin is out of date.
+- **Size.** `code.js` now carries its code without the indentation that starts each line
+  (the build checks the syntax tree is unchanged): 52,876 B against the 60,000 B budget,
+  down from 59,702 B, so the next change has room.

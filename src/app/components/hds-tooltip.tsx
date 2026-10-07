@@ -2,7 +2,7 @@
  * Tooltip — accessible hover/focus tooltip on Radix (Overlays).
  * @category Overlays
  * @tier primitive
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix Tooltip (@radix-ui/react-tooltip) themed with role tokens. Provides

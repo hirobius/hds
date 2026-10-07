@@ -3,7 +3,7 @@
  * Owner, Updated…). The idiomatic replacement for badge-stickers-on-prose.
  * @category Display
  * @tier pattern
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47
  * @public
  */
 

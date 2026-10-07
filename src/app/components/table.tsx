@@ -6,7 +6,7 @@
  * @whenNot A single record, a short list of links, or content that reflows as cards.
  * @useInstead Field one record as label and value pairs
  * @useInstead Stack a short list of items
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300
  */
 import { useId, type CSSProperties, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';

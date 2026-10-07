@@ -142,7 +142,7 @@ describe('Tooltip Figma link', () => {
   it('points at node 93:15 in the published library', () => {
     expect(specs.Tooltip).toMatchObject({
       figmaUrl:
-        'https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15',
+        'https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15',
     });
   });
 });

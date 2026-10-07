@@ -6,7 +6,7 @@
  * @whenNot Switching between sibling views, or stepping through pages of results.
  * @useInstead Tabs switching between sibling views
  * @useInstead Pagination stepping through pages of results
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-159
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159
  */
 
 import * as React from 'react';

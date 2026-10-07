@@ -1,7 +1,7 @@
 /**
  * @category Display
  * @tier pattern
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-350
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350
  */
 
 import * as React from 'react';

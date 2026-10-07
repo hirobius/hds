@@ -6,7 +6,7 @@
  * @whenNot Spacing alone would do, or the separation needs a container.
  * @useInstead Stack gap-based spacing between siblings
  * @useInstead Surface a bounded region with its own background
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26
  */
 
 import * as React from 'react';

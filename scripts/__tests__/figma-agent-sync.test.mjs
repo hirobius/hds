@@ -3,8 +3,8 @@
 /**
  * Zero-click agent sync (hds#418, hds#397 C3): after a token change merges,
  * an agent runs `pnpm figma:push --delta` and passes the delta.js it writes
- * to one use_figma call on staging. delta.js refuses anything but staging,
- * checks its own data and code, pins staging to the committed
+ * to one use_figma call on the library. delta.js refuses any other file,
+ * checks its own data and code, pins the library to the committed
  * figma/snapshot.json, applies only the changes, re-plans to 0, writes
  * lastPush and the C2 receipt, and returns the receipt for
  * `pnpm figma:snapshot --from-receipt`.
@@ -63,10 +63,13 @@ import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
 const LINKS = Object.freeze({
   storybookUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
-  stagingFileKey: 'STAGINGKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
-  stagingFileName: 'HDS Tokens & Components (Copy)',
+  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
+  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
+  stagingFileKey: 'STAGINGKEY000000000000',
+  stagingFileName: 'HDS Staging',
 });
+const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
 const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
@@ -99,22 +102,22 @@ const trickyModel = () => {
   return model;
 };
 const lineOf = (model, state) => hdsSummaryLine(hdsSummarize(hdsPlan(model, state)));
-/** A staging file the Sync plugin pushed `model` into (it writes and reads raw text). */
-const pushedStaging = async (model) => {
+/** A library file the Sync plugin pushed `model` into (it writes and reads raw text). */
+const pushedLibrary = async (model) => {
   const figma = createFakeFigma({
-    fileName: LINKS.stagingFileName,
+    fileName: LINKS.libraryFileName,
     fonts: textStyleFonts(model.textStyles),
   });
-  figma.fileKey = LINKS.stagingFileKey;
+  figma.fileKey = LINKS.libraryFileKey;
   const { payload, checksum } = buildPushPayload(model);
   await hdsRunPush(figma, payload, checksum);
   return figma;
 };
 
-describe('hdsAgentReadState: staging as use_figma reads it, made comparable with figma/snapshot.json', () => {
+describe('hdsAgentReadState: the library as use_figma reads it, made comparable with figma/snapshot.json', () => {
   it('decodes the HTML-escaped descriptions: the plan reaches 0 · 0 · 0 only with decoding on', async () => {
     const model = trickyModel();
-    const figma = await pushedStaging(model);
+    const figma = await pushedLibrary(model);
     const plugin = await hdsReadState(figma);
     expect(lineOf(model, plugin)).toBe(NOTHING_LINE);
 
@@ -131,7 +134,7 @@ describe('hdsAgentReadState: staging as use_figma reads it, made comparable with
 });
 
 describe('the pin on the committed figma/snapshot.json', () => {
-  it('staging read through use_figma decodes, normalizes and hashes to the committed checksum', async () => {
+  it('the library read through use_figma decodes, normalizes and hashes to the committed checksum', async () => {
     const committed = parseSnapshotFile(readFileSync(join(REPO, 'figma', 'snapshot.json'), 'utf8'));
     const figma = seededFakeFigma(committed.snapshot);
     // The seeded file is the snapshot, ids included, as a plugin reads it.
@@ -197,7 +200,7 @@ const describeAndCreate = (model) => {
 };
 
 /**
- * Deletions: staging (pushed from `base(model)`) holds what `drop` takes out
+ * Deletions: the library (pushed from `base(model)`) holds what `drop` takes out
  * of the next model. Without prune a plan keeps it as an extra, which plain
  * check:figma-drift then reports; `item` is how a refusal names it.
  */
@@ -263,9 +266,9 @@ async function runDelta(text, figma) {
 }
 
 /**
- * Staging after the Sync plugin pushed `base` (then `stage` edited it) and
+ * The library after the Sync plugin pushed `base` (then `stage` edited it) and
  * main committed its snapshot; then main's model became `edit(base)`. Returns delta.js built
- * for that change, and the staging file, reading from now on as use_figma does.
+ * for that change, and the library file, reading from now on as use_figma does.
  */
 async function pending({
   base = trickyModel(),
@@ -275,7 +278,7 @@ async function pending({
   ...options
 } = {}) {
   const root = tempRoot();
-  const figma = await pushedStaging(base);
+  const figma = await pushedLibrary(base);
   await stage(figma);
   writeFileSync(snapshotPath(root), serializeSnapshotFile(await hdsRunSnapshot(figma)));
   const snapshotFile = parseSnapshotFile(readFileSync(snapshotPath(root), 'utf8'));
@@ -308,14 +311,14 @@ const committedPlanLine = (s) =>
     snapshotFile: parseSnapshotFile(readFileSync(snapshotPath(s.root), 'utf8')),
   }).line;
 
-describe('delta.js on staging', () => {
+describe('delta.js on the library', () => {
   it('applies the change, re-plans to 0, stamps lastPush and the receipt, and returns the receipt inline', async () => {
     const s = await pending();
     expect(s.built.line).toBe('updated 2 · created 2 · deleted 0');
     const read = await runDelta(s.built.text, s.figma);
 
     // The receipt, as receipt.js would read page 0 of it, plus the plan line.
-    expect(read).toMatchObject({ file: LINKS.stagingFileKey, page: 0, line: s.built.line });
+    expect(read).toMatchObject({ file: LINKS.libraryFileKey, page: 0, line: s.built.line });
     const head = JSON.parse(read.head);
     expect(head).toMatchObject({
       commit: COMMIT,
@@ -416,7 +419,7 @@ describe('delta.js after the apply', () => {
     const head = JSON.parse(result.head);
     expect(head.pages).toBeGreaterThan(1);
     expect(result).toEqual({
-      file: LINKS.stagingFileKey,
+      file: LINKS.libraryFileKey,
       head: result.head,
       line: s.built.line,
       next: `Run receipt.js with PAGE 0 to ${head.pages - 1}, then pnpm figma:snapshot --from-receipt with every result.`,
@@ -469,7 +472,7 @@ describe('delta.js refuses, writing nothing', () => {
     expect(s.figma.writes.slice(before)).toEqual([]);
   };
 
-  it('is at most 45,000 chars, and its first statement refuses any file but staging', async () => {
+  it('is at most 45,000 chars, and its first statement refuses any file but the library', async () => {
     const { built } = await pending();
     expect(built.chars).toBe(built.text.length);
     expect(built.chars).toBeLessThanOrEqual(45000);
@@ -481,13 +484,14 @@ describe('delta.js refuses, writing nothing', () => {
     });
     const first = built.text.slice(ast.body[0].start, ast.body[0].end);
     expect(ast.body[0].type).toBe('IfStatement');
-    expect(first).toContain(`figma.fileKey !== '${LINKS.stagingFileKey}'`);
-    expect(first).toContain(`figma.fileKey === '${LINKS.libraryFileKey}'`);
+    expect(first).toContain(`figma.fileKey !== '${LINKS.libraryFileKey}'`);
+    expect(first).toContain(`'${RETIRED_KEY}'`);
     expect(first).toMatch(/throw new Error/);
   });
 
   for (const [label, key] of [
-    ['the library key', LINKS.libraryFileKey],
+    ['a retired file key', RETIRED_KEY],
+    ['HDS Staging, the draft workbench (tokens sync to the library only)', LINKS.stagingFileKey],
     ['a null key', null],
     ['no key at all', undefined],
     ['any other file', 'SOMEOTHERFILE000000000'],
@@ -496,12 +500,7 @@ describe('delta.js refuses, writing nothing', () => {
       const s = await pending();
       s.figma.fileKey = key;
       const { proxy, reads } = watched(s.figma);
-      await refuses(
-        s,
-        /not the HDS staging file.*Nothing was read or written/s,
-        s.built.text,
-        proxy,
-      );
+      await refuses(s, /not the HDS library.*Nothing was read or written/s, s.built.text, proxy);
       expect(reads).toEqual(['fileKey']);
     });
   }
@@ -531,17 +530,17 @@ describe('delta.js refuses, writing nothing', () => {
     );
   });
 
-  it('a pin mismatch: staging changed after figma/snapshot.json was committed', async () => {
+  it('a pin mismatch: the library changed after figma/snapshot.json was committed', async () => {
     const s = await pending();
     const [variable] = await s.figma.variables.getLocalVariablesAsync();
     variable.description = 'Typed in Figma after the snapshot.';
     await refuses(
       s,
-      /staging \([0-9a-f]{8}\) is not the committed figma\/snapshot\.json.*If a Sync ran, collect its receipt \(receipt\.js\); otherwise ask Adrian to run Sync/s,
+      /the library \([0-9a-f]{8}\) is not the committed figma\/snapshot\.json.*If a Sync ran, collect its receipt \(receipt\.js\); otherwise ask Adrian to run Sync/s,
     );
   });
 
-  it('a plan made in staging that is not the one --delta made (a slice patch edited, PLAN_CHECKSUM recomputed, planSum stale)', async () => {
+  it('a plan made in the library that is not the one --delta made (a slice patch edited, PLAN_CHECKSUM recomputed, planSum stale)', async () => {
     const s = await pending();
     const forgery = forged(s.built.text, (plan) => {
       const accent = plan.slice
@@ -553,7 +552,7 @@ describe('delta.js refuses, writing nothing', () => {
     });
     await refuses(
       s,
-      /the plan made in staging is not the one pnpm figma:push --delta made\. Nothing was written\. Ask Adrian to run Sync/,
+      /the plan made in the library is not the one pnpm figma:push --delta made\. Nothing was written\. Ask Adrian to run Sync/,
       forgery,
     );
   });
@@ -593,18 +592,18 @@ describe('delta.js refuses, writing nothing', () => {
     });
   }
 
-  it('staging holds a variable the model no longer has (a build that skipped its refusal), even with both checksums right', async () => {
+  it('the library holds a variable the model no longer has (a build that skipped its refusal), even with both checksums right', async () => {
     const { base, drop } = deletions['a variable'];
     const s = await pending({ base: base(trickyModel()) });
     // A build without its refusal, for the model that drops role.retired, bakes
-    // the same slice (role.retired is outside it) and expects staging to hold
+    // the same slice (role.retired is outside it) and expects the library to hold
     // the snapshot less the full plan's extras: 58 variables, not 59.
     const dropped = buildPushPayload(describeAndCreate(drop(base(trickyModel())))).payload;
     const state = s.snapshotFile.snapshot;
     const { extras } = hdsPlan(dropped.model, state, { prune: false });
     expect(extras.variables.map((v) => v.path)).toEqual(['role.retired']);
     const forgery = forged(s.built.text, (plan) => {
-      // Variables, modes, text styles and effect styles staging holds.
+      // Variables, modes, text styles and effect styles the library holds.
       expect(plan.held).toEqual([59, 5, 3, 3]);
       plan.held = [58, 5, 3, 3];
       plan.modelHash = dropped.modelHash;
@@ -612,7 +611,7 @@ describe('delta.js refuses, writing nothing', () => {
     });
     await refuses(
       s,
-      /staging holds 1 item\(s\) the model does not have, and delta\.js never deletes.*Nothing was written/s,
+      /the library holds 1 item\(s\) the model does not have, and delta\.js never deletes.*Nothing was written/s,
       forgery,
     );
     await expect(runDelta(forgery, s.figma)).rejects.toThrow(PROMOTE_ROUTE);
@@ -658,7 +657,8 @@ describe('delta.js refuses, writing nothing', () => {
 
 // ── Refusals at build time: no delta.js, and the route ───────────────────────
 describe('pnpm figma:push --delta refuses to build what Sync must do', () => {
-  const ROUTE = /Route it to Sync: ask Adrian to run Sync in staging.*No delta\.js was written/s;
+  const ROUTE =
+    /Route it to Sync: ask Adrian to run Sync in the library.*No delta\.js was written/s;
 
   it('a plan that moves a variable between collections', async () => {
     await expect(
@@ -754,7 +754,7 @@ describe('pnpm figma:push --delta refuses to build what Sync must do', () => {
     ).toThrow(ROUTE);
   });
 
-  it('nothing to sync: staging already holds the model, so there is no delta.js', async () => {
+  it('nothing to sync: the library already holds the model, so there is no delta.js', async () => {
     const { built } = await pending({ edit: (model) => model });
     expect(built).toMatchObject({ text: null, line: NOTHING_LINE });
     expect(built.nothing).toMatch(/nothing to sync/);
@@ -767,7 +767,7 @@ describe('pnpm figma:push --delta refuses to build a deletion: delta.js never de
       for (const edit of [(model) => describeAndCreate(drop(model)), drop]) {
         const refusal = pending({ base: base(trickyModel()), edit });
         await expect(refusal).rejects.toThrow(
-          `delta.js refused: staging holds 1 item(s) the model does not have (${item}), and delta.js never deletes.`,
+          `delta.js refused: the library holds 1 item(s) the model does not have (${item}), and delta.js never deletes.`,
         );
         await expect(refusal).rejects.toThrow(PROMOTE_ROUTE);
         await expect(refusal).rejects.toThrow(/No delta\.js was written\.$/);
@@ -777,7 +777,7 @@ describe('pnpm figma:push --delta refuses to build a deletion: delta.js never de
 });
 
 // ── The real model ───────────────────────────────────────────────────────────
-describe('delta.js for the real model (staging pushed from main, then a change)', () => {
+describe('delta.js for the real model (the library pushed from main, then a change)', () => {
   const real = loadFigmaInputs(REPO).model;
   const collectionOf = (model, key) => model.collections.find((c) => c.key === key);
 
@@ -900,10 +900,10 @@ describe('delta.js for the real model (staging pushed from main, then a change)'
 
 // ── The command ──────────────────────────────────────────────────────────────
 describe('pnpm figma:push --delta', () => {
-  /** A repo root whose committed snapshot is staging pushed from its tokens, before `edit` changed them. */
+  /** A repo root whose committed snapshot is the library pushed from its tokens, before `edit` changed them. */
   const rootWithChange = async (edit) => {
     const root = tempRoot();
-    const figma = await pushedStaging(fixtureModel());
+    const figma = await pushedLibrary(fixtureModel());
     writeFileSync(snapshotPath(root), serializeSnapshotFile(await hdsRunSnapshot(figma)));
     const tokens = JSON.parse(readFileSync(join(root, 'hirobius.tokens.json'), 'utf8'));
     edit(tokens);
@@ -939,7 +939,7 @@ describe('pnpm figma:push --delta', () => {
     );
     expect(out).toContain('updated 1 · created 0 · deleted 0');
     expect(out).toContain('update variable primitive.color.neutral.white: description');
-    expect(out).toMatch(/use_figma.*staging.*figma\/README\.md "Agent sync \(zero clicks\)"/s);
+    expect(out).toMatch(/use_figma.*the library.*figma\/README\.md "Agent sync \(zero clicks\)"/s);
   });
 
   it('refuses, leaving no delta.js (not even an earlier one), when Sync must do it', async () => {
@@ -954,7 +954,7 @@ describe('pnpm figma:push --delta', () => {
   it('refuses a token deleted from hirobius.tokens.json, writing no file at all', async () => {
     const { root, outDir } = await rootWithChange((tokens) => delete tokens.role.ring);
     expect(() => writeDeltaScript({ root, outDir, commit: COMMIT })).toThrow(
-      'staging holds 1 item(s) the model does not have (variable role.ring)',
+      'the library holds 1 item(s) the model does not have (variable role.ring)',
     );
     expect(existsSync(outDir)).toBe(false);
   });
@@ -978,7 +978,7 @@ describe('pnpm figma:push --delta', () => {
     }
   });
 
-  it('says there is nothing to sync, and writes no delta.js, when staging holds the model', async () => {
+  it('says there is nothing to sync, and writes no delta.js, when the library holds the model', async () => {
     const { root, outDir } = await rootWithChange(() => {});
     const result = writeDeltaScript({ root, outDir, commit: COMMIT });
     expect(result.text).toBeNull();

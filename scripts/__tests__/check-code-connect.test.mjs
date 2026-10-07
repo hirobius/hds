@@ -73,7 +73,7 @@ function docFor(name, entry, code, { template, figmaNode } = {}) {
 }
 
 const NODE_URL =
-  'https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=9-9';
+  'https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=9-9';
 
 function modelWith(badgeCode = BADGE_CODE, extra = {}) {
   return {

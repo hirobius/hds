@@ -27,6 +27,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
 import {
+  formatRun,
   planAgainstSnapshot,
   resolveBundleCommit,
   writePushArtifacts,
@@ -37,7 +38,7 @@ import { runDriftCheck } from '../check-figma-drift.mjs';
 import { formatNativeImportSteps, writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsChecksum, hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
-import { buildPushPayload, syncPluginBuild } from '../lib/figma-scripts.mjs';
+import { buildPushPayload, stagingFrom, syncPluginBuild } from '../lib/figma-scripts.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { FIXTURE_TOKENS_PATH, newFixtureFile } from './helpers/figma-fixture.mjs';
 
@@ -54,10 +55,11 @@ afterEach(() => {
 const LINKS = {
   storybookUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
-  stagingFileKey: 'STAGINGKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
-  stagingFileName: 'HDS Tokens & Components (Copy)',
+  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
 };
+/** HDS Staging, the draft workbench (ADR-026, A4): optional in figma/links.json, and never a target. */
+const STAGING = { stagingFileKey: 'STAGINGKEY000000000000', stagingFileName: 'HDS Staging' };
 const writeLinks = (root, links) => {
   mkdirSync(join(root, 'figma'), { recursive: true });
   writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(links, null, 2));
@@ -99,6 +101,10 @@ describe('pnpm figma:push', () => {
     expect(JSON.parse(readFileSync(join(outDir, 'promote', 'manifest.json'), 'utf8')).id).toBe(
       'hds-tokens-promote-dev',
     );
+    // The promote plugin runs in the library only: it bakes the library and the retired files from links.json.
+    expect(readFileSync(join(outDir, 'promote', 'code.js'), 'utf8')).toContain(
+      `const LIBRARY = Object.freeze({"libraryFileKey":"${LINKS.libraryFileKey}","libraryFileName":"${LINKS.libraryFileName}","retiredFileKeys":["${LINKS.retiredFiles[0].fileKey}"]`,
+    );
     expect(readdirSync(join(outDir, 'use-figma')).sort()).toEqual([
       '01-primitive.js',
       '02-semantic.js',
@@ -112,6 +118,39 @@ describe('pnpm figma:push', () => {
     expect(readFileSync(join(outDir, 'use-figma', '02-semantic.js'), 'utf8')).toContain(
       'return await hdsRunPush(figma, PAYLOAD, CHECKSUM);',
     );
+  });
+
+  it('starts every use_figma script with the statement that refuses any file but the library', () => {
+    const root = tempRoot();
+    const outDir = join(root, 'figma', 'push');
+    writePushArtifacts({ root, outDir });
+    const guard = `if (figma.fileKey !== '${LINKS.libraryFileKey}' || ['${LINKS.retiredFiles[0].fileKey}'].indexOf(figma.fileKey) !== -1) {`;
+    for (const name of readdirSync(join(outDir, 'use-figma'))) {
+      const text = readFileSync(join(outDir, 'use-figma', name), 'utf8');
+      expect(text.split('\n')[0], name).toBe(guard);
+    }
+  });
+
+  it('--prune bakes the prune into the promote plugin only: agents never delete, so no use_figma push script is written', () => {
+    const root = tempRoot();
+    const outDir = join(root, 'figma', 'push');
+    writePushArtifacts({ root, outDir });
+    expect(readdirSync(join(outDir, 'use-figma'))).toContain('02-semantic.js');
+
+    const result = writePushArtifacts({ root, outDir, prune: true });
+    expect(result.prune).toBe(true);
+    const promote = JSON.parse(readFileSync(join(outDir, 'promote', 'manifest.json'), 'utf8'));
+    expect(promote.menu.find((m) => m.command === 'push').name).toBe(
+      'Push and prune extras (deletes)',
+    );
+    // The earlier run's push scripts are gone too: nothing an agent passes to use_figma prunes.
+    expect(readdirSync(join(outDir, 'use-figma')).sort()).toEqual(['receipt.js', 'snapshot.js']);
+    for (const name of ['receipt.js', 'snapshot.js']) {
+      expect(readFileSync(join(outDir, 'use-figma', name), 'utf8')).not.toMatch(/"prune":true/);
+    }
+    const printed = formatRun(result, outDir);
+    expect(printed).toMatch(/Promote plugin.*run by Adrian/);
+    expect(printed).toMatch(/use_figma: no push script with --prune.*agents never delete/);
   });
 
   it('bakes TOKEN_MIGRATION.md renames into the payload', () => {
@@ -131,12 +170,59 @@ describe('pnpm figma:push', () => {
     });
   });
 
-  it('refuses to build when the staging and library keys are equal, or either is null', () => {
+  it('builds the same carriers with or without HDS Staging: it is never a target', () => {
+    const files = (links) => {
+      const root = tempRoot();
+      writeLinks(root, links);
+      const outDir = join(root, 'figma', 'push');
+      writePushArtifacts({ root, outDir });
+      return Object.fromEntries(
+        [
+          'plugin/code.js',
+          'promote/code.js',
+          'use-figma/02-semantic.js',
+          'use-figma/receipt.js',
+        ].map((rel) => [rel, readFileSync(join(outDir, rel), 'utf8')]),
+      );
+    };
+    const withStaging = files({ ...LINKS, ...STAGING });
+    expect(withStaging).toEqual(files(LINKS));
+    for (const text of Object.values(withStaging)) {
+      expect(text).not.toContain(STAGING.stagingFileKey);
+    }
+  });
+
+  it('refuses to build without the library key or name, or when a retired file or HDS Staging is the library', () => {
+    const retired = (file) => ({ ...LINKS, retiredFiles: [{ ...LINKS.retiredFiles[0], ...file }] });
     const cases = [
-      [{ ...LINKS, stagingFileKey: LINKS.libraryFileKey }, /stagingFileKey equals libraryFileKey/],
-      [{ ...LINKS, stagingFileKey: null }, /stagingFileKey/],
       [{ ...LINKS, libraryFileKey: null }, /libraryFileKey/],
-      [{ ...LINKS, stagingFileName: undefined }, /stagingFileName/],
+      [{ ...LINKS, libraryFileName: undefined }, /libraryFileName/],
+      [{ ...LINKS, retiredFiles: undefined }, /retiredFiles/],
+      [
+        retired({ fileKey: LINKS.libraryFileKey }),
+        /retired.*libraryFileKey|libraryFileKey.*retired/,
+      ],
+      [
+        retired({ fileName: LINKS.libraryFileName }),
+        /retired.*libraryFileName|libraryFileName.*retired/,
+      ],
+      [retired({ fileKey: '' }), /retiredFiles\[0\]/],
+      // HDS Staging, the draft workbench, is optional, but never the library or a retired file.
+      [{ ...LINKS, ...STAGING, stagingFileKey: LINKS.libraryFileKey }, /stagingFileKey.*library/],
+      [
+        { ...LINKS, ...STAGING, stagingFileName: LINKS.libraryFileName },
+        /stagingFileName.*library/,
+      ],
+      [
+        { ...LINKS, ...STAGING, stagingFileKey: LINKS.retiredFiles[0].fileKey },
+        /stagingFileKey.*retired/,
+      ],
+      [
+        { ...LINKS, ...STAGING, stagingFileName: LINKS.retiredFiles[0].fileName },
+        /stagingFileName.*retired/,
+      ],
+      [{ ...LINKS, stagingFileKey: STAGING.stagingFileKey }, /stagingFileName/],
+      [{ ...LINKS, stagingFileName: STAGING.stagingFileName }, /stagingFileKey/],
     ];
     for (const [links, message] of cases) {
       const root = tempRoot();
@@ -148,6 +234,43 @@ describe('pnpm figma:push', () => {
       expect(() => writeSyncBundle({ root, out, commit: 'abcdef1' })).toThrow(message);
       expect(existsSync(out)).toBe(false);
     }
+  });
+
+  it('names the HDS Staging field that is wrong: empty, not a string, or missing its pair', () => {
+    const refusal = (staging) => {
+      try {
+        stagingFrom({ ...LINKS, ...staging });
+      } catch (error) {
+        return error.message;
+      }
+      return null;
+    };
+    expect(refusal({})).toBeNull();
+    expect(stagingFrom({ ...LINKS, ...STAGING })).toEqual({
+      fileKey: STAGING.stagingFileKey,
+      fileName: STAGING.stagingFileName,
+    });
+    const cases = [
+      [{ stagingFileKey: '' }, /^figma\/links\.json: stagingFileKey is "", not a file key\./],
+      [{ stagingFileName: '' }, /^figma\/links\.json: stagingFileName is "", not a file name\./],
+      [
+        { ...STAGING, stagingFileKey: 5 },
+        /^figma\/links\.json: stagingFileKey is 5, not a file key\./,
+      ],
+      [
+        { stagingFileKey: 'K' },
+        /^figma\/links\.json sets stagingFileKey but has no stagingFileName/,
+      ],
+      [
+        { stagingFileName: 'N' },
+        /^figma\/links\.json sets stagingFileName but has no stagingFileKey/,
+      ],
+    ];
+    for (const [staging, message] of cases) {
+      expect(refusal(staging), JSON.stringify(staging)).toMatch(message);
+    }
+    // Only an empty key was given: the refusal never claims the name was set.
+    expect(refusal({ stagingFileKey: '' })).not.toMatch(/sets stagingFileName/);
   });
 
   it('refuses to write carriers for a model that fails its invariants', () => {
