@@ -4,11 +4,14 @@
  * and each `done` says when a by-hand step is finished.
  *
  * Before `changeset version` a step lives in upgrade/pending/<changeset>.json
- * with an id such as `removed/StatusDot`; once the compiler (hds#451) merges
- * the notes it lives in upgrade/releases/<version>.json as
- * `<version>/removed/StatusDot`. So this test reads both places, finds a step
+ * with an id such as `removed/StatusDot`; once the notes are built into the
+ * release's ledger (by hand for 0.21.0 from upgrade/sources/0.21.0/notes,
+ * by the compiler from hds#451 on) it lives in upgrade/releases/0.21.0.json
+ * as `0.21.0/removed/StatusDot`. So this test reads both places, finds a step
  * by its id's tail, and names no pending file: it holds on both sides of the
  * release, the way tests/removed-0.20-release-notes.test.ts names no changeset.
+ * Only 0.21.0's ledger is read: older ledgers reuse tails (0.17.0 has its own
+ * look/type-ramp).
  */
 import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -28,7 +31,9 @@ const readJsonDir = (rel) => {
 
 const STEPS = [
   ...readJsonDir('upgrade/pending').flatMap((note) => note.steps ?? []),
-  ...readJsonDir('upgrade/releases').flatMap((release) => release.steps),
+  ...readJsonDir('upgrade/releases')
+    .filter((release) => release.version === '0.21.0')
+    .flatMap((release) => release.steps),
 ];
 
 /** The step whose id is `tail` or ends in `/<tail>`. */

@@ -23,6 +23,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { diffSnapshots } from '../upgrade/diff.mjs';
+import { TOOLING_EXPORTS } from '../lib/package-entries.mjs';
 import { formatJson } from '../upgrade/format.mjs';
 import { Snapshot, compareVersions } from '../upgrade/schema.mjs';
 import { snapshotFromNpm, snapshotFromSource, snapshotPackage } from '../upgrade/snapshot.mjs';
@@ -431,9 +432,15 @@ function baselineEntries(baseline) {
   return entries;
 }
 
+/** Export names per entry, as a release snapshot lists them, without the
+ * tooling entries (./eslint-plugin): the baseline never reads those
+ * (scripts/lib/package-entries.mjs), so it cannot say they were removed; the
+ * upgrade gate's source snapshot covers them instead. */
 function snapshotEntries(snapshot) {
   return Object.fromEntries(
-    Object.entries(snapshot.entries).map(([entry, names]) => [entry, Object.keys(names).sort()]),
+    Object.entries(snapshot.entries)
+      .filter(([entry]) => !TOOLING_EXPORTS.has(entry))
+      .map(([entry, names]) => [entry, Object.keys(names).sort()]),
   );
 }
 

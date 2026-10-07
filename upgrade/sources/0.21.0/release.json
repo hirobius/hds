@@ -1,0 +1,38 @@
+{
+  "$comment": "Frozen inputs of the 0.21.0 ledger (hds#448), read by scripts/upgrade/build-ledger.mjs. 0.21.0 shipped (Version Packages #529) before the release compiler (hds#451) existed, so its ledger was built after the release, but its steps were not written after it: they are the upgrade notes written for its seven changesets on the hds#448 branch, frozen under notes/ (they left upgrade/pending/ when the changesets were consumed). Each note carries over field for field. Each changeset is cited by its entry in CHANGELOG.md, numbered as the file read when 0.21.0 shipped (its section starts on line 3); the needle is the text that finds the line. dsr-42 has no step: it only marks the core set (core: true) in the manifest, component-api.json and llms.txt. The 0.20.0 -> 0.21.0 diff's two removals (StatusDot, StatusDotProps) are remove-status-dot's; its other facts are additions.",
+  "version": "0.21.0",
+  "previous": "0.20.0",
+  "date": "2026-10-07",
+  "summary": "StatusDot is removed, fonts move to an opt-in fonts.css, the type ramp is cut to 5 roles; AGENTS.md, hds-mcp and the ESLint plugin ship.",
+  "backfilled": true,
+  "notes": {
+    "agent-ready-after-arm": {
+      "needle": "def444a: Agent tooling ships in the package",
+      "source": "CHANGELOG.md:7"
+    },
+    "bug-bash-522-component-defects": {
+      "needle": "57ef003: Component defects from the 2026-10-07 bug bash",
+      "source": "CHANGELOG.md:15"
+    },
+    "dsr-38": {
+      "needle": "dd00c68: `Button` and `Card` no longer use the Tailwind important modifier",
+      "source": "CHANGELOG.md:53"
+    },
+    "dsr-42": {
+      "needle": "b9694ea: The ratified core set is published",
+      "source": "CHANGELOG.md:27"
+    },
+    "fonts-opt-in": {
+      "needle": "14eb027: Brand fonts are now an opt-in",
+      "source": "CHANGELOG.md:28"
+    },
+    "remove-status-dot": {
+      "needle": "5d7c98c: **`StatusDot` and `StatusDotProps` are removed",
+      "source": "CHANGELOG.md:40"
+    },
+    "type-ramp-5-roles": {
+      "needle": "14eb027: Type ramp cut to 5 roles",
+      "source": "CHANGELOG.md:41"
+    }
+  }
+}
