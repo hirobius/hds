@@ -82,6 +82,8 @@ function regenerate({ tag, committed = OLD_NODE, extraSpecs = {} }) {
 
   mkdirSync(join(root, 'scripts'), { recursive: true });
   cpSync(join(REPO, 'scripts', 'lib'), join(root, 'scripts', 'lib'), { recursive: true });
+  mkdirSync(join(root, 'mcp'), { recursive: true });
+  cpSync(join(REPO, 'mcp', 'core-set.mjs'), join(root, 'mcp', 'core-set.mjs'));
   for (const file of GENERATOR_FILES) {
     cpSync(join(REPO, 'scripts', file), join(root, 'scripts', file));
   }

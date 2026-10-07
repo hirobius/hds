@@ -41,6 +41,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname, extname, basename, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -258,9 +259,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
   }
   if (!(isFixtureMode && fixtureFile)) {
-    violations.push(
-      ...findTokenViolations(JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf-8'))),
-    );
+    violations.push(...findTokenViolations(readTokenSource(join(ROOT, 'hirobius.tokens.json'))));
   }
 
   if (jsonMode) {
