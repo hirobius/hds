@@ -39,6 +39,12 @@ const ROOT = '@hirobius/design-system';
 const BACKFILLED = ['0.17.0', '0.18.0', '0.19.0', '0.19.1'];
 const ledger = (version) => read(`upgrade/releases/${version}.json`);
 const byId = (id) => ledger(id.split('/')[0]).steps.find((step) => step.id === id);
+/** Whether any of a step's detect regexes finds a use in `text` (any match is a use). */
+const anyRegex = (step, text) =>
+  (step.detect.regex ?? []).some((source) => new RegExp(source).test(text));
+/** The names a step detects as named imports from `from`. */
+const imported = (step, from) =>
+  (step.detect.imports ?? []).filter((i) => i.from === from).flatMap((i) => i.names);
 
 /**
  * The 1-based line of `changelog` that a citation names. A citation is
@@ -308,10 +314,47 @@ describe('0.19.0', () => {
   it('records the compact density remap as a look step', () => {
     const step = byId('0.19.0/look/compact-density');
     expect(step.impact).toBe('look');
-    const [source] = step.detect.regex;
-    expect(new RegExp(source).test('<main data-density="compact">')).toBe(true);
-    expect(new RegExp(source).test("root.setAttribute('data-density', 'compact')")).toBe(true);
-    expect(new RegExp(source).test('<main data-density="comfortable">')).toBe(false);
+    expect(anyRegex(step, '<main data-density="compact">')).toBe(true);
+    expect(anyRegex(step, "root.setAttribute('data-density', 'compact')")).toBe(true);
+    expect(anyRegex(step, '<main data-density="comfortable">')).toBe(false);
+  });
+
+  // At v0.19.0 a consumer turns compact on three documented ways besides the
+  // attribute: <HdsThemeProvider density="compact"> (hds-theme.tsx, root
+  // entry), and setDensity('compact') or toggleDensity() from the /contexts
+  // ThemeProvider, which writes data-density on <html> (ThemeContext.tsx).
+  it('finds compact density turned on through HdsThemeProvider or the /contexts ThemeProvider', () => {
+    const step = byId('0.19.0/look/compact-density');
+    expect(imported(step, ROOT)).toEqual(
+      expect.arrayContaining(['HdsThemeProvider', 'useHdsTheme']),
+    );
+    expect(imported(step, `${ROOT}/contexts`)).toEqual(
+      expect.arrayContaining(['ThemeProvider', 'useTheme']),
+    );
+    expect(anyRegex(step, '<HdsThemeProvider density="compact">')).toBe(true);
+    expect(anyRegex(step, "<HdsThemeProvider density={'compact'}>")).toBe(true);
+    expect(anyRegex(step, "setDensity('compact')")).toBe(true);
+    expect(anyRegex(step, '<button onClick={toggleDensity}>Density</button>')).toBe(true);
+    expect(anyRegex(step, 'const { toggleDensity } = useTheme();')).toBe(true);
+    expect(anyRegex(step, '<HdsThemeProvider density="comfortable">')).toBe(false);
+    expect(step.plain).toMatch(/HdsThemeProvider/);
+  });
+
+  // theme.css at v0.19.0 declares color-scheme: dark on `[data-theme='dark'], .dark`,
+  // and HdsThemeProvider theme="dark" sets the attribute on its data-hds scope.
+  it('finds the dark theme set through HdsThemeProvider, the attribute or the .dark class', () => {
+    const step = byId('0.19.0/look/dark-color-scheme');
+    expect(imported(step, ROOT)).toContain('HdsThemeProvider');
+    expect(imported(step, `${ROOT}/contexts`)).toEqual(
+      expect.arrayContaining(['ThemeProvider', 'useTheme']),
+    );
+    expect(step.detect.classes).toContain('dark');
+    expect(anyRegex(step, '<HdsThemeProvider theme="dark">')).toBe(true);
+    expect(anyRegex(step, '<html data-theme="dark">')).toBe(true);
+    expect(anyRegex(step, "document.documentElement.setAttribute('data-theme', 'dark')")).toBe(
+      true,
+    );
+    expect(anyRegex(step, '<HdsThemeProvider theme="light">')).toBe(false);
   });
 });
 

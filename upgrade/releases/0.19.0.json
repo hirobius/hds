@@ -30,10 +30,27 @@
       "id": "0.19.0/look/compact-density",
       "kind": "look",
       "impact": "look",
-      "plain": "Under data-density=\"compact\" the spacing scale, surface padding and region gutter that components read now tighten, so compact screens render visibly tighter than before.",
+      "plain": "Under compact density (data-density=\"compact\", which HdsThemeProvider density=\"compact\" and ThemeProvider's setDensity also set) the spacing scale, surface padding and region gutter that components read now tighten, so compact screens render visibly tighter than before.",
       "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsThemeProvider",
+              "useHdsTheme"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/contexts",
+            "names": [
+              "ThemeProvider",
+              "useTheme"
+            ]
+          }
+        ],
         "regex": [
-          "data-density\\W{0,4}compact"
+          "[dD]ensity\\W{0,4}compact",
+          "\\b(?:setDensity|toggleDensity)\\b"
         ]
       },
       "backfilled": true,
@@ -80,9 +97,15 @@
       "id": "0.19.0/look/dark-color-scheme",
       "kind": "look",
       "impact": "look",
-      "plain": "The dark theme now declares color-scheme: dark, so native scrollbars and form controls inside it render dark.",
+      "plain": "The dark theme (data-theme=\"dark\" or the dark class, which HdsThemeProvider theme=\"dark\" and ThemeProvider set) now declares color-scheme: dark, so native scrollbars and form controls inside it render dark.",
       "detect": {
         "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsThemeProvider"
+            ]
+          },
           {
             "from": "@hirobius/design-system/contexts",
             "names": [
@@ -91,8 +114,11 @@
             ]
           }
         ],
+        "classes": [
+          "dark"
+        ],
         "regex": [
-          "data-theme\\W{0,4}dark"
+          "[tT]heme\\W{0,4}dark"
         ]
       },
       "backfilled": true,

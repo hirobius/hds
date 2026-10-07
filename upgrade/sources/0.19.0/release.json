@@ -88,15 +88,20 @@
       "kind": "look",
       "subject": "dark-color-scheme",
       "impact": "look",
-      "plain": "The dark theme now declares color-scheme: dark, so native scrollbars and form controls inside it render dark.",
+      "plain": "The dark theme (data-theme=\"dark\" or the dark class, which HdsThemeProvider theme=\"dark\" and ThemeProvider set) now declares color-scheme: dark, so native scrollbars and form controls inside it render dark.",
       "detect": {
         "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["HdsThemeProvider"]
+          },
           {
             "from": "@hirobius/design-system/contexts",
             "names": ["ThemeProvider", "useTheme"]
           }
         ],
-        "regex": ["data-theme\\W{0,4}dark"]
+        "classes": ["dark"],
+        "regex": ["[tT]heme\\W{0,4}dark"]
       },
       "needle": "the dark theme now declares `color-scheme: dark`",
       "source": "CHANGELOG.md:7"
@@ -105,9 +110,19 @@
       "kind": "look",
       "subject": "compact-density",
       "impact": "look",
-      "plain": "Under data-density=\"compact\" the spacing scale, surface padding and region gutter that components read now tighten, so compact screens render visibly tighter than before.",
+      "plain": "Under compact density (data-density=\"compact\", which HdsThemeProvider density=\"compact\" and ThemeProvider's setDensity also set) the spacing scale, surface padding and region gutter that components read now tighten, so compact screens render visibly tighter than before.",
       "detect": {
-        "regex": ["data-density\\W{0,4}compact"]
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["HdsThemeProvider", "useHdsTheme"]
+          },
+          {
+            "from": "@hirobius/design-system/contexts",
+            "names": ["ThemeProvider", "useTheme"]
+          }
+        ],
+        "regex": ["[dD]ensity\\W{0,4}compact", "\\b(?:setDensity|toggleDensity)\\b"]
       },
       "needle": "a47459b:",
       "source": "CHANGELOG.md:8"
