@@ -39,6 +39,16 @@ Hirobius is a clean, systems-first visual language that bridges digital precisio
 <!-- auto:start:spacing -->
 <!-- auto:end:spacing -->
 
+## Layout contract (v1)
+
+Approved 2026-10-07. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
+
+1. **Sizing.** Every component declares `fill` or `hug` on each axis. Leaves hug. Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. One override prop, `width="hug|fill"`, on every component. Height always hugs; stretching is the parent's job (`align="stretch"`). No component sets `h-full`, `height: 100%` or `self-*` on its root.
+2. **Padding.** Only containers pad: Card, Surface, Alert, Callout, Dialog, Page. Compound parts (`Card.Header`, `Body`, `Footer`, `Metric`) have zero padding and the container's `gap` spaces them. Padding is `none | sm | md`, default `md`, density-aware. A padded container directly inside a padded container is an error unless the inner one is `padding="none"`.
+3. **Spacing.** One scale, `xs…xl` (plus `none`), for every `gap` and `padding` prop. Every gap defaults to `md`. No outer margins on any component; space between siblings is the parent's `gap`.
+4. **Primitives.** Stack, Grid, Page (absorbs Container) and Surface compose layouts. Box and Pin are escape hatches. Sidebar and Switcher fold into Stack and Grid.
+5. **Forms.** A form control in a form context has a max width (`40rem` by default) and siblings share one width.
+
 ## Corner-Radius Policy
 
 Shape is one knob. `semantic.radius.action` is the system's single shape value — interactive controls (buttons, inputs, badges, alerts, segmented items) all resolve to it, and Tailwind's `rounded-md` maps to it exactly so the utility and the token cannot disagree. Containers sit one step above at `rounded-lg` (`action + 4px`); `rounded-sm` (`action - 2px`) is for chrome nested inside a control. `full` is reserved for pills and circular forms, and `0px` only for intentional outer canvas or substrate boundaries, never everyday UI controls. Reshaping the whole system means overriding `role.radius` in one tenant overlay — that is how `brutalist-demo` goes square in a single value.

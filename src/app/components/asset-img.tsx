@@ -4,6 +4,7 @@
  * Contexts: default, lightbox, and detail.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-67
  */
 import { useState, CSSProperties } from 'react';
 import type React from 'react';

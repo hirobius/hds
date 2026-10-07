@@ -1,0 +1,155 @@
+/* Fumadocs' own compiled UI styles (layout, nav, search dialog, TOC, prose). */
+@import 'fumadocs-ui/style.css';
+
+/* HDS's compiled Tailwind utility layer — needed so components like <Button>
+   render with their real classes (bg-primary, border-input, etc). */
+@import '@hirobius/design-system/styles.css';
+
+/*
+ * Theme Fumadocs' own chrome with HDS tokens instead of its defaults.
+ * Fumadocs exposes its palette as --color-fd-* custom properties (set in
+ * :root and .dark by fumadocs-ui/style.css); we re-point every one of them
+ * at the matching HDS --semantic-color-* variable so the whole shell —
+ * background, borders, nav, search dialog, code blocks — reads as Hirobius,
+ * not "generic Fumadocs blue". Because HDS's own dark-mode values live under
+ * [data-theme="dark"], RootProvider is configured to write BOTH `class` and
+ * `data-theme` on <html>, so this cascades automatically with no JS.
+ */
+:root,
+.dark {
+  /* Fumadocs reads --font-sans / --font-mono for its base typography. */
+  --font-sans: var(--primitive-typography-family-primary);
+  --font-mono: var(--primitive-typography-family-mono);
+
+  --color-fd-background: var(--semantic-color-surface-page);
+  --color-fd-foreground: var(--semantic-color-content-primary);
+  --color-fd-muted: var(--semantic-color-surface-muted);
+  --color-fd-muted-foreground: var(--semantic-color-content-secondary);
+  --color-fd-popover: var(--semantic-color-surface-overlay);
+  --color-fd-popover-foreground: var(--semantic-color-content-primary);
+  --color-fd-card: var(--semantic-color-surface-raised);
+  --color-fd-card-foreground: var(--semantic-color-content-primary);
+  --color-fd-border: var(--semantic-color-border-default);
+  --color-fd-primary: var(--semantic-color-surface-accent);
+  --color-fd-primary-foreground: var(--semantic-color-content-onAccent);
+  --color-fd-secondary: var(--semantic-color-surface-raised);
+  --color-fd-secondary-foreground: var(--semantic-color-content-primary);
+  --color-fd-accent: var(--semantic-color-surface-hover);
+  --color-fd-accent-foreground: var(--semantic-color-content-primary);
+  --color-fd-ring: var(--semantic-color-border-accent);
+  --color-fd-error: var(--semantic-color-feedback-error);
+  --color-fd-warning: var(--semantic-color-feedback-warning);
+  --color-fd-success: var(--semantic-color-feedback-success);
+  --color-fd-info: var(--semantic-color-feedback-info);
+}
+
+html {
+  font-family: var(--primitive-typography-family-primary);
+}
+
+/*
+ * Fumadocs sizes its sticky top bar via the --fd-header-height custom
+ * property, toggled on by a `:has()` selector keyed to a marker class that
+ * only appears for the *mobile* subnav in this Fumadocs version — so at
+ * desktop widths the header collapses to 0px and its content clips. Forcing
+ * a fixed height here (matching Fumadocs' own `--spacing(14)` mobile value)
+ * fixes it at every breakpoint with no JS.
+ */
+#nd-docs-layout {
+  --fd-header-height: calc(var(--spacing) * 14) !important;
+}
+
+/*
+ * Same container-query shim issue as above: below the `xl` breakpoint the
+ * right-hand "On this page" TOC rail is supposed to collapse to 0 width
+ * (replaced by the mobile popover trigger), but --fd-toc-width sticks at a
+ * few residual px, leaving a clipped, vertically-wrapped sliver of text
+ * pinned to the right edge. Force it closed below xl to match the popover.
+ */
+@media (width < 80rem) {
+  #nd-toc {
+    display: none !important;
+  }
+}
+
+body {
+  background-color: var(--semantic-color-surface-page);
+  color: var(--semantic-color-content-primary);
+}
+
+/* Fumadocs' default nav "brand mark" slot; keep the logo lockup crisp. */
+#nd-nav a[href='/'] {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/*
+ * Code font: IBM Plex Mono (self-hosted via @fontsource, imported in layout.tsx).
+ * The docs app owns this choice; the HDS mono token (Geist Mono) stays the
+ * fallback so a missing font file degrades to the token, not to the browser default.
+ */
+:root,
+.dark {
+  --font-mono: 'IBM Plex Mono', var(--primitive-typography-family-mono);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+}
+
+/* Generated token tables (components/token-table.tsx). */
+.hds-token-table-scroll {
+  overflow-x: auto;
+  margin: 0.75rem 0 1.75rem;
+}
+
+.hds-token-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.hds-token-table th,
+.hds-token-table td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--semantic-color-border-subtle);
+  vertical-align: top;
+}
+
+.hds-token-table th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--semantic-color-content-secondary);
+}
+
+.hds-token-table code {
+  font-size: 0.8em;
+}
+
+.hds-token-table td:first-child code {
+  overflow-wrap: anywhere;
+}
+
+/* Keep short values (hex, px) on one line; composites still wrap at spaces. */
+.hds-token-table td:nth-child(2) {
+  min-width: 9.5rem;
+}
+
+.hds-token-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hds-token-swatch {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--semantic-color-border-default);
+}

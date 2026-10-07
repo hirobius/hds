@@ -5,12 +5,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { MetadataList } from '../app/components/metadata-list';
 import { InlineCode } from '../app/components/inline-code';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Patterns/Metadata List',
   component: MetadataList,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { ...designParameters('MetadataList'), layout: 'padded' },
   argTypes: {
     orientation: { control: { type: 'select' }, options: ['vertical', 'horizontal'] },
     variant: { control: { type: 'select' }, options: ['plain', 'divided'] },

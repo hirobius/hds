@@ -1253,7 +1253,7 @@
       "hidden": false,
       "filePath": "src/app/components/icon.tsx",
       "description": "Icon — semantic icon wrapper for Lucide icons.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2",
       "figmaId": null,
       "preview": {
         "exportName": "Icon",
@@ -1389,7 +1389,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Icon.tsx",
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2",
       "storyFiles": [
         "src/stories/icon.stories.tsx"
       ],
@@ -2902,7 +2902,7 @@
       "a11yRules": [],
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2022-31",
       "figmaId": null,
       "preview": {
         "exportName": "Text",
@@ -2939,7 +2939,7 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/Text.tsx",
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2022-31",
       "storyFiles": [
         "src/stories/text.stories.tsx"
       ],
@@ -4289,9 +4289,9 @@
       "docExempt": false,
       "filePath": "src/app/components/asset-img.tsx",
       "description": "AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-67",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-67",
       "tier": "primitive",
       "preview": {
         "exportName": "AssetImg",
@@ -6051,9 +6051,9 @@
       "docExempt": false,
       "filePath": "src/app/components/avatar-group.tsx",
       "description": "Renders up to `max` overlapping avatars followed by a `+N` overflow chip.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63",
       "tier": "primitive",
       "preview": {
         "exportName": "AvatarGroup",
@@ -6107,9 +6107,9 @@
       "docExempt": false,
       "filePath": "src/app/components/blockquote.tsx",
       "description": "A quoted passage; pass `cite` for the source URL and `attribution` for a byline.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18",
       "tier": "primitive",
       "preview": {
         "exportName": "Blockquote",
@@ -6160,9 +6160,9 @@
       "docExempt": false,
       "filePath": "src/app/components/kbd.tsx",
       "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9",
       "tier": "primitive",
       "preview": {
         "exportName": "Kbd",
@@ -6296,9 +6296,9 @@
       "docExempt": false,
       "filePath": "src/app/components/timestamp.tsx",
       "description": "Presents a date/time with a machine-readable `dateTime` for accessibility.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11",
       "tier": "primitive",
       "preview": {
         "exportName": "Timestamp",
@@ -6408,9 +6408,9 @@
       "docExempt": false,
       "filePath": "src/app/components/metadata-list.tsx",
       "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47",
       "tier": "pattern",
       "preview": {
         "exportName": "MetadataList",
@@ -6471,9 +6471,9 @@
       "docExempt": true,
       "filePath": "src/app/components/alert-dialog.tsx",
       "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24",
       "tier": "primitive",
       "preview": {
         "exportName": "AlertDialog",
@@ -8231,9 +8231,9 @@
       "docExempt": false,
       "filePath": "src/app/components/form-actions.tsx",
       "description": "Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87",
       "tier": "pattern",
       "preview": {
         "exportName": "FormActions",
@@ -8288,9 +8288,9 @@
       "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
       "description": "One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a tile needs no enclosing `Card`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-114",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-114",
       "tier": "pattern",
       "preview": {
         "exportName": "MetricTile",
@@ -8299,6 +8299,7 @@
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
         "src/app/components/stat.tsx",
+        "src/stories/metric-tile.stories.tsx",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx"
       ],
@@ -8335,9 +8336,12 @@
       "requiredProps": [],
       "a11yRules": [],
       "storyFiles": [
+        "src/stories/metric-tile.stories.tsx",
         "src/stories/metric-tiles.stories.tsx"
       ],
       "storyIds": [
+        "patterns-metrictile--danger",
+        "patterns-metrictile--default",
         "patterns-metrictiles--four-tiles",
         "patterns-metrictiles--sub-line-optional",
         "patterns-metrictiles--three-tiles",
@@ -8365,6 +8369,7 @@
         "src/app/components/metric-tiles.test.tsx",
         "src/app/components/stat.tsx",
         "src/app/components/status-tile.tsx",
+        "src/stories/metric-tile.stories.tsx",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx"
       ],
@@ -8383,9 +8388,12 @@
       "requiredProps": [],
       "a11yRules": [],
       "storyFiles": [
+        "src/stories/metric-tile.stories.tsx",
         "src/stories/metric-tiles.stories.tsx"
       ],
       "storyIds": [
+        "patterns-metrictile--danger",
+        "patterns-metrictile--default",
         "patterns-metrictiles--four-tiles",
         "patterns-metrictiles--sub-line-optional",
         "patterns-metrictiles--three-tiles",
@@ -8467,9 +8475,9 @@
       "docExempt": false,
       "filePath": "src/app/components/data-table-section.tsx",
       "description": "Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `minWidth` from the caller, and zero rows shows an `EmptyState`.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268",
       "tier": "pattern",
       "preview": {
         "exportName": "DataTableSection",
@@ -8539,9 +8547,9 @@
       "docExempt": false,
       "filePath": "src/app/components/destructive-section.tsx",
       "description": "Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3",
       "tier": "pattern",
       "preview": {
         "exportName": "DestructiveSection",
