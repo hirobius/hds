@@ -67,9 +67,12 @@ have no step: nothing in them asks anything of a consumer. Every tarball from
 unchanged; a tarball without one would stop it with the entry named, rather
 than record a guess.
 
-A deprecated step's `removeIn` is what its release announced. A later release
-may remove the name sooner: 0.17.0 deprecated the root pattern imports and the
-`Hds*` names for 1.0.0, and 0.20.0 removed them. Coming next (hds#451, #452)
+A deprecated step's `removeIn` is what its release announced. When the release
+named no removal, it is the target a later release set, and the `$comment` of
+`upgrade/sources/<version>/release.json` cites it: 0.17.0 kept its seven
+spacing aliases with no removal release, and their 1.0.0 comes from 0.20.0. A
+later release may remove the name sooner: 0.17.0 deprecated the root pattern
+imports and the `Hds*` names for 1.0.0, and 0.20.0 removed them. Coming next (hds#451, #452)
 lists a deprecation only while no later step removes, moves, renames or folds
 the same name.
 

@@ -172,7 +172,7 @@
       "id": "0.19.0/behavior/overlay-portals",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "Overlays mount in the nearest data-hds element, not document.body, and take its theme, so check CSS or tests that look under body: Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip, Lightbox, AssetImg, and those Combobox, MultiSelector, CommandPalette and date inputs open.",
+      "plain": "Overlays mount in the nearest data-hds element, not document.body, and take its theme, so check CSS or tests that query body: Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip, Lightbox, AssetImg, and the overlays of Combobox, MultiSelector, CommandPalette and date inputs.",
       "detect": {
         "imports": [
           {
