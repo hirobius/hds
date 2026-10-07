@@ -32,8 +32,8 @@ Two Figma files (ADR-026, amended 2026-10-07; both in `figma/links.json`):
 - **HDS Staging** (`C85ZXnwtVc4AteeIOZfXRC`, `stagingFileKey`): a scratch workbench with the
   library enabled and no local variables. An agent drafts a new component there, then
   ingests it by redrawing it in the library and deletes the draft
-  ([below](#new-components-draft-in-staging-ingest-to-the-library)). Sync and `delta.js`
-  never target it.
+  ([below](#new-components-draft-in-staging-ingest-to-the-library)). Sync, `delta.js` and
+  the promote plugin never target it.
 
 The rules:
 
@@ -59,8 +59,8 @@ The rules:
 For a component the library does not have yet (ADR-026, A4). Restyling, fixing or copying
 one it has needs no draft: do that in the library. HDS Staging
 (https://www.figma.com/design/C85ZXnwtVc4AteeIOZfXRC) has the library enabled and no local
-variables, so tokens never go to staging: Sync and `delta.js` refuse it, and staging has no
-local variables to sync. Log every call in `figma/MCP-LEDGER.md` before making it, and load
+variables, so tokens never go to staging: Sync, `delta.js` and the promote plugin refuse
+it, and staging has no local variables to sync. Log every call in `figma/MCP-LEDGER.md` before making it, and load
 the `figma-use` and `figma-generate-library` skills first.
 
 1. **Draft in HDS Staging.** One `use_figma` script whose first statement is
@@ -78,16 +78,17 @@ the `figma-use` and `figma-generate-library` skills first.
    (the library key), following the recipe again and binding to the library's own
    variables and styles by name. Screenshot the target page before, and the component
    after; compare the after shot with the draft's.
-4. **Link it.** Point the component's `@figma` tag at the library node
+4. **Link it, then check the link.** Point the component's `@figma` tag at the library node
    (`https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=<id>`),
    never the draft. Run `pnpm manifest:generate`, `pnpm figma:links` and
-   `pnpm figma:inventory --fetch`.
-5. **Clean up HDS Staging.** Delete the draft: one `use_figma` script, first statement the
-   staging check of step 1, that calls `remove()` on the draft's node ids only. Agents may
-   delete in staging; they never delete in the library. With a Figma token,
-   `pnpm figma:inventory --fetch --file staging` lists the drafts left, writing nothing.
-6. **Check and report.** `pnpm check:figma-retired-keys` passes (no link names HDS
-   Staging). Report the component, its library node ids and the before and after
+   `pnpm figma:inventory --fetch`, then `pnpm check:figma-retired-keys`, which passes only
+   when no link names HDS Staging.
+5. **Clean up HDS Staging.** Only once the link exists and that check passes, delete the
+   draft: one `use_figma` script, first statement the staging check of step 1, that calls
+   `remove()` on the draft's node ids only. Agents may delete in staging; they never delete
+   in the library. With a Figma token, `pnpm figma:inventory --fetch --file staging` lists
+   the drafts left, writing nothing.
+6. **Report.** Report the component, its library node ids and the before and after
    screenshots to Adrian, who publishes.
 
 ## Brand and Density
@@ -207,8 +208,8 @@ The descriptions script keeps what people wrote in Figma:
 breaks an invariant) and writes three carriers of the same push engine
 (`scripts/lib/figma-runtime.mjs`) to `figma/push/`. It also refuses while
 `figma/links.json` lacks the library key or name or the `retiredFiles` list, or
-lists a retired file with the library's key or name, because the Sync plugin
-bakes them in (ADR-032).
+lists a retired file with the library's key or name, because the Sync and promote
+plugins bake them in (ADR-032).
 
 ### Sync: the routine path (one click)
 
@@ -251,8 +252,8 @@ changes, not when tokens do. Commands:
   receipt.
 - **Mark this file as the HDS library**: for when Figma gives no file key. Paste
   this file's link (Share > Copy link), never a bare key: the key in the link is
-  what tells the library from the old library, which has the library's name
-  until it is renamed. Mark writes the marker only in a file named exactly
+  what tells the library from the old library, which had the library's name
+  until Adrian renamed it "HDS Tokens & Components (old)" on 2026-10-07. Mark writes the marker only in a file named exactly
   `HDS Tokens & Components` whose link holds the library key, and refuses a
   retired file by its key, its name or its link. A marker the staging-era
   plugin wrote (before 2026-10-07) counts when it holds the library key.
@@ -430,9 +431,13 @@ as the source, and `hdsVerifyRuntime` checks the copy as it runs.
 ### Promote plugin and use_figma scripts
 
 Agents never run a `--prune` build in any carrier: a prune deletes, and an
-agent never deletes anything in Figma (ADR-026, amended 2026-10-07).
+agent never deletes anything in the library (ADR-026, amended 2026-10-07).
 `pnpm figma:push --prune` bakes the prune into the promote plugin only and
 writes no use_figma push script, and `buildUseFigmaPushScript` refuses `prune`.
+The promote plugin runs in the library only: before any command reads or writes,
+it applies the Sync plugin's file guard, so it refuses HDS Staging (a push there
+would create the local variables staging has none of by design), a retired file
+and any other file, and writes nothing there.
 
 - **HDS tokens promote (baked)** (`figma/push/promote/`, id `hds-tokens-promote-dev`):
   the earlier development plugin with the model baked in, unchanged except its id

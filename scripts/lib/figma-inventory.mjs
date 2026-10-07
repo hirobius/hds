@@ -22,6 +22,7 @@
  */
 
 import { TOKEN_VARS, missingTokenMessage } from './figma-token.mjs';
+import { stagingFrom } from './figma-scripts.mjs';
 
 /** Figma node types that count as a mappable design-system asset. */
 const ASSET_TYPES = new Set(['COMPONENT_SET', 'COMPONENT']);
@@ -82,7 +83,7 @@ export function parseDocument(file, fileKey) {
  *   components the real surface: sets and standalone components that a React
  *              component is expected to correspond to.
  *   archive    components removed from code, waiting for Adrian to delete them
- *              (ADR-026, amended 2026-10-07: agents never delete in Figma; they
+ *              (ADR-026, amended 2026-10-07: agents never delete in the library; they
  *              move a removed component here as "_<Name> (archived <date>)").
  *              Inventoried, never policed: no code component may claim them.
  */
@@ -291,14 +292,17 @@ export function resolveTarget(args, links) {
     throw new Error('--file needs a Figma file key.');
   }
   if (value === 'staging') {
-    if (!links.stagingFileKey) {
+    // stagingFrom refuses a workbench that is the library or a retired file, which this
+    // command would otherwise list as drafts to delete.
+    const staging = stagingFrom(links, ' Nothing was read. Fix figma/links.json (ADR-026, A4).');
+    if (!staging) {
       throw new Error(
         'stagingFileKey is not set in figma/links.json, so there is no HDS Staging workbench to read ' +
           `(ADR-026, A4). Drop --file to read the library (${links.libraryFileKey}).`,
       );
     }
     return {
-      fileKey: links.stagingFileKey,
+      fileKey: staging.fileKey,
       label: 'stagingFileKey (HDS Staging, the draft workbench)',
       isDefault: false,
       workbench: true,

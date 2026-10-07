@@ -343,6 +343,19 @@ describe('resolveTarget', () => {
     );
   });
 
+  it('refuses `--file staging` when stagingFileKey is the library or a retired file, rather than listing it as drafts', () => {
+    // Read as the workbench, the library's components would be listed as drafts to delete.
+    expect(() => resolveTarget(['--file', 'staging'], { ...links, stagingFileKey: 'LIB' })).toThrow(
+      /stagingFileKey is the library's key/,
+    );
+    expect(() => resolveTarget(['--file', 'staging'], { ...links, stagingFileKey: 'OLD' })).toThrow(
+      /stagingFileKey \(OLD\) is a retired file's key/,
+    );
+    expect(() =>
+      resolveTarget(['--file', 'staging'], { ...links, stagingFileName: undefined }),
+    ).toThrow(/sets stagingFileKey but has no stagingFileName/);
+  });
+
   it('a raw `--file <key>` is a plain inspection, not the workbench', () => {
     expect(resolveTarget(['--file', 'qhlYOkWPKs8MfO3x1M5W4f'], links).workbench).toBe(false);
   });

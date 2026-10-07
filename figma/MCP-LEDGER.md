@@ -21,7 +21,7 @@ not in the ledger was not budgeted.
   publishes. Variables and styles come only from code, through Sync or
   `delta.js`. HDS Staging `C85ZXnwtVc4AteeIOZfXRC` is the workbench where an
   agent drafts a new component, then redraws it in the library and deletes the
-  draft; Sync and `delta.js` never target it. The retired library
+  draft; Sync, `delta.js` and the promote plugin never target it. The retired library
   `c8MaVgwxOlxm4wr8wnH0Z4` is never written. A write's row names the file key
   and every node id its script touches, and its before and after
   `get_screenshot` calls get rows of their own.

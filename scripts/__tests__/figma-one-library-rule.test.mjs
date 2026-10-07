@@ -31,13 +31,18 @@
  *      history, so only its preamble is held to this.
  *   4. CLAUDE.md gives each rule one sentence; the README and the recipe give
  *      the exact draft, ingest and cleanup steps.
+ *   5. What agents read in code (a refusal, `pnpm figma:push` output, the
+ *      comments of the scripts they run) says "never delete in the library",
+ *      not the rule before HDS Staging, "never delete in Figma".
  *
  * Reads repo files only. Writes nothing and spawns nothing.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { USE_FIGMA_PRUNE_REFUSAL } from '../lib/figma-scripts.mjs';
+import { formatRun } from '../figma-push.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(path.join(ROOT, rel), 'utf8');
@@ -87,7 +92,8 @@ const STALE = [
   /no staging file/i,
   /staging is dropped/i,
   /there is one Figma file/i,
-  /never delete anything in Figma/i,
+  // "never deletes in Figma" was the rule before HDS Staging: agents now delete drafts there.
+  /never deletes? (anything )?in Figma/i,
   /promotes? (it |staging )?(→|to|into) the library/i,
 ];
 /** Sentences, with code spans and Markdown left intact. */
@@ -277,12 +283,15 @@ describe('the steps: draft in staging, ingest to the library, clean up', () => {
       new RegExp(`figma\\.fileKey[^\\n]*${LIBRARY}|${LIBRARY}[^\\n]*figma\\.fileKey|library key`),
       /@figma/,
       /pnpm manifest:generate/,
-      /delete the draft/i,
+      // The link check passes before the draft is deleted, as in the recipe's cleanup.
       /check:figma-retired-keys/,
+      /delete the draft/i,
     ];
+    // Whitespace folded, so a phrase wrapped over two lines still matches.
+    const flat = body.replace(/\s+/g, ' ');
     let at = 0;
     for (const pattern of order) {
-      const found = body.slice(at).search(pattern);
+      const found = flat.slice(at).search(pattern);
       expect(found, String(pattern)).toBeGreaterThanOrEqual(0);
       at += found;
     }
@@ -299,6 +308,47 @@ describe('the steps: draft in staging, ingest to the library, clean up', () => {
     expect(recipe.replace(/\s+/g, ' ')).toMatch(/cannot copy nodes between files/i);
     expect(recipe).toContain(STAGING);
     expect(recipe).toContain(LIBRARY);
+  });
+});
+
+describe('what agents read in code states the library rule, not the rule before HDS Staging', () => {
+  /** The rule before HDS Staging: agents now delete their own drafts there (A4). */
+  const STALE_RULE = /never deletes? (anything )?in Figma/i;
+  const THIS_FILE = path.relative(ROOT, fileURLToPath(import.meta.url));
+  /** Every Figma script, library and test under scripts/, but this one. */
+  const figmaSources = () =>
+    readdirSync(path.join(ROOT, 'scripts'), { recursive: true })
+      .map((rel) => path.join('scripts', String(rel)))
+      .filter((rel) => /figma[^/\\]*\.mjs$/i.test(rel) && rel !== THIS_FILE);
+
+  it('the use_figma prune refusal says an agent never deletes anything in the library', () => {
+    expect(USE_FIGMA_PRUNE_REFUSAL).not.toMatch(STALE_RULE);
+    expect(USE_FIGMA_PRUNE_REFUSAL).toMatch(/never deletes anything in the library/);
+  });
+
+  it('`pnpm figma:push --prune` says why no use_figma push script was written, in the same words', () => {
+    const run = {
+      model: {},
+      prune: true,
+      files: [{ path: 'plugin/code.js', bytes: 1 }],
+      pluginBuild: '00000000',
+    };
+    const text = formatRun(run, path.join(ROOT, 'figma', 'push'));
+    expect(text).not.toMatch(STALE_RULE);
+    expect(text).toMatch(/agents never delete in the library/);
+  });
+
+  it('no Figma script, library or test under scripts/ says agents never delete in Figma', () => {
+    const files = figmaSources();
+    expect(files.length).toBeGreaterThan(20);
+    // Lines folded, with a comment's leading `*` or `//`, so a phrase wrapped over two lines still matches.
+    const folded = (text) => text.replace(/\s*\n\s*(?:\*(?!\/)|\/\/)?\s*/g, ' ');
+    const stale = files.flatMap((rel) =>
+      [...folded(read(rel)).matchAll(new RegExp(`.{0,40}${STALE_RULE.source}`, 'gi'))].map(
+        ([match]) => `${rel}: ${match.trim()}`,
+      ),
+    );
+    expect(stale).toEqual([]);
   });
 });
 
@@ -347,6 +397,7 @@ describe('the switch has a safe order, and no carrier lets an agent delete', () 
     const promote = section('Promote plugin and use_figma scripts');
     expect(promote).toMatch(/agents never run a `?--prune`? build in any carrier/i);
     expect(promote).toMatch(/first statement refuses any file but the library/i);
+    expect(promote).toMatch(/promote plugin runs in the library only[^.]*refuses HDS Staging/i);
     expect(promote).not.toMatch(/a plugin is the easier path for a full push, a prune/i);
     expect(promote).not.toMatch(/a `--prune` build carries/);
   });

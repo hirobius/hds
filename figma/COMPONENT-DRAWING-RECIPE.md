@@ -12,7 +12,7 @@ answer one question: if an agent can draw one component correctly, are the other
   styles; then ingest it by redrawing it in the library and delete the draft
   ([Ingesting a draft](#ingesting-a-draft-into-the-library),
   [Cleaning up HDS Staging](#cleaning-up-hds-staging)). Agents may delete in HDS Staging.
-  Sync and `delta.js` never target it: it has no local variables.
+  Sync, `delta.js` and the promote plugin never target it: it has no local variables.
 - **Restyling, fixing or copying a component the library has**: work in the library
   (`2VgBbVpKiDnu0aftJEVyBQ`) directly.
 

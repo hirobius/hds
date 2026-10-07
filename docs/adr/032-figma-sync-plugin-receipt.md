@@ -109,7 +109,7 @@ Sync still carries no model, still never prunes, and the receipt (§4, §6) is u
 - **Mark this file as the HDS library** replaces "Mark this file as HDS staging". Its form
   asks Adrian to paste the file's own link (Share > Copy link), not a bare key: where Figma gives no key,
   the key in that link is the one thing that tells the library from the old library, which
-  has the library's name until it is renamed. Mark writes the marker only in a file named
+  had the library's name until Adrian renamed it "(old)" on 2026-10-07. Mark writes the marker only in a file named
   exactly like the library whose link holds the library key, and refuses a retired file by
   its key, its name, its link or a pasted retired key. The no-marker refusal tells Adrian to
   check the link the same way, and not to Mark a file whose link holds another key.
@@ -130,7 +130,10 @@ Sync still carries no model, still never prunes, and the receipt (§4, §6) is u
   key.
 - **The promote plugin** (§5) keeps its id and name, so Figma needs no re-import. It no
   longer promotes anything: it is the deliberate prune (`pnpm figma:push --prune`), and only
-  Adrian runs it. Sync and `delta.js` never delete.
+  Adrian runs it. Sync and `delta.js` never delete. It runs in the library only: its code
+  bakes the library and the retired files from `figma/links.json` and applies Sync's file
+  guard before any command, and its manifest asks for the file key, so it refuses HDS
+  Staging (ADR-026, A4), a retired file and any other file.
 - **New plugin files.** The build before this amendment refuses a file named
   "HDS Tokens & Components" by name, so once Adrian renames the copy, Sync needs the files
   `pnpm figma:push` writes from this amendment on. Those files work only once the commit

@@ -38,7 +38,7 @@ import { runDriftCheck } from '../check-figma-drift.mjs';
 import { formatNativeImportSteps, writeNativeImport } from '../build-figma-native-import.mjs';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsChecksum, hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
-import { buildPushPayload, syncPluginBuild } from '../lib/figma-scripts.mjs';
+import { buildPushPayload, stagingFrom, syncPluginBuild } from '../lib/figma-scripts.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { FIXTURE_TOKENS_PATH, newFixtureFile } from './helpers/figma-fixture.mjs';
 
@@ -100,6 +100,10 @@ describe('pnpm figma:push', () => {
     expect(readFileSync(join(outDir, 'promote', 'code.js'), 'utf8')).toContain('const PAYLOAD');
     expect(JSON.parse(readFileSync(join(outDir, 'promote', 'manifest.json'), 'utf8')).id).toBe(
       'hds-tokens-promote-dev',
+    );
+    // The promote plugin runs in the library only: it bakes the library and the retired files from links.json.
+    expect(readFileSync(join(outDir, 'promote', 'code.js'), 'utf8')).toContain(
+      `const LIBRARY = Object.freeze({"libraryFileKey":"${LINKS.libraryFileKey}","libraryFileName":"${LINKS.libraryFileName}","retiredFileKeys":["${LINKS.retiredFiles[0].fileKey}"]`,
     );
     expect(readdirSync(join(outDir, 'use-figma')).sort()).toEqual([
       '01-primitive.js',
@@ -173,10 +177,12 @@ describe('pnpm figma:push', () => {
       const outDir = join(root, 'figma', 'push');
       writePushArtifacts({ root, outDir });
       return Object.fromEntries(
-        ['plugin/code.js', 'use-figma/02-semantic.js', 'use-figma/receipt.js'].map((rel) => [
-          rel,
-          readFileSync(join(outDir, rel), 'utf8'),
-        ]),
+        [
+          'plugin/code.js',
+          'promote/code.js',
+          'use-figma/02-semantic.js',
+          'use-figma/receipt.js',
+        ].map((rel) => [rel, readFileSync(join(outDir, rel), 'utf8')]),
       );
     };
     const withStaging = files({ ...LINKS, ...STAGING });
@@ -228,6 +234,43 @@ describe('pnpm figma:push', () => {
       expect(() => writeSyncBundle({ root, out, commit: 'abcdef1' })).toThrow(message);
       expect(existsSync(out)).toBe(false);
     }
+  });
+
+  it('names the HDS Staging field that is wrong: empty, not a string, or missing its pair', () => {
+    const refusal = (staging) => {
+      try {
+        stagingFrom({ ...LINKS, ...staging });
+      } catch (error) {
+        return error.message;
+      }
+      return null;
+    };
+    expect(refusal({})).toBeNull();
+    expect(stagingFrom({ ...LINKS, ...STAGING })).toEqual({
+      fileKey: STAGING.stagingFileKey,
+      fileName: STAGING.stagingFileName,
+    });
+    const cases = [
+      [{ stagingFileKey: '' }, /^figma\/links\.json: stagingFileKey is "", not a file key\./],
+      [{ stagingFileName: '' }, /^figma\/links\.json: stagingFileName is "", not a file name\./],
+      [
+        { ...STAGING, stagingFileKey: 5 },
+        /^figma\/links\.json: stagingFileKey is 5, not a file key\./,
+      ],
+      [
+        { stagingFileKey: 'K' },
+        /^figma\/links\.json sets stagingFileKey but has no stagingFileName/,
+      ],
+      [
+        { stagingFileName: 'N' },
+        /^figma\/links\.json sets stagingFileName but has no stagingFileKey/,
+      ],
+    ];
+    for (const [staging, message] of cases) {
+      expect(refusal(staging), JSON.stringify(staging)).toMatch(message);
+    }
+    // Only an empty key was given: the refusal never claims the name was set.
+    expect(refusal({ stagingFileKey: '' })).not.toMatch(/sets stagingFileName/);
   });
 
   it('refuses to write carriers for a model that fails its invariants', () => {

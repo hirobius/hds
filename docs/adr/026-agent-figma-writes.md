@@ -138,20 +138,23 @@ The duplicate model of §2 ends with it: there is no duplicate to promote, and n
 promote. The old library, `c8MaVgwxOlxm4wr8wnH0Z4`, is renamed
 "HDS Tokens & Components (old)" and retired. Adrian did both renames and published the new
 library on 2026-10-07; the old file was never published (Adrian, 2026-10-07), so there is
-nothing to unpublish.
+nothing to unpublish. §2 ("The published library file") and the Consequences above ("real
+published component sets") call it published, as ADR-025 and older notes do; that was
+wrong: it was the library file, never published, so no file ever subscribed to it.
 
 Variables and tokens therefore sync straight into the library: the Sync plugin (ADR-032)
 and `delta.js` (ADR-033) target it. Both still never delete. A deliberate prune is still
 the promote plugin (`pnpm figma:push --prune`), and only Adrian runs it. No carrier an
 agent runs prunes: `pnpm figma:push --prune` writes no use_figma push script, the builder
 refuses `prune`, and every use_figma script (the push scripts, `snapshot.js`, `receipt.js`
-and `delta.js`) first refuses any file but the library.
+and `delta.js`) first refuses any file but the library. The promote plugin, which Adrian
+runs, applies Sync's file guard before any command, so it too runs in the library only.
 
 In `figma/links.json`, `libraryFileKey` is `2VgBbVpKiDnu0aftJEVyBQ` and the old key is
 listed under `retiredFiles`. `check-figma-retired-keys` rejects a reference to a retired key
 in `src`, `public`, docs data, figma data, `mcp/`, `content/docs` and the files the package
-ships from the repo root, and the Sync plugin and every use_figma script refuse a retired
-file.
+ships from the repo root, and the Sync plugin, the promote plugin and every use_figma script
+refuse a retired file.
 
 ### A4. HDS Staging: a workbench for new components
 
@@ -170,10 +173,12 @@ is promoted. It is where an agent drafts a **new** component:
 4. **Clean up:** the agent deletes the draft from HDS Staging.
 
 Agents may delete in HDS Staging: it is a scratch file nobody subscribes to. They never
-delete anything in the library. Sync and `delta.js` never target HDS Staging: tokens and
-variables sync into the library only, and staging has no local variables to sync. No
-carrier bakes its key, so the Sync plugin, `delta.js` and every use_figma script refuse it
-as they refuse any file but the library. `check-figma-retired-keys` also fails on a link
+delete anything in the library. §3 holds there as in the library: demo tenants only, never
+a client's, because HDS Staging is shared with whoever can open it even though it is no
+longer a duplicate of the library. Sync, `delta.js` and the promote plugin never target HDS
+Staging: tokens and variables sync into the library only, and staging has no local
+variables to sync. No carrier bakes its key, so the Sync plugin, the promote plugin,
+`delta.js` and every use_figma script refuse it as they refuse any file but the library. `check-figma-retired-keys` also fails on a link
 from code (an `@figma` tag, a Code Connect template, the manifest, `figma/disposition.json`)
 to HDS Staging, because a shipped component links the library. HDS Staging is optional:
 without `stagingFileKey` there is no workbench, and an agent drafts nothing; `pnpm
@@ -243,9 +248,10 @@ does not have yet, so that a half-drawn one never sits in the library between pu
   "HDS Tokens & Components (old)" before loading the new files still guards the path where
   Figma gives no key, where only the marker and Mark's link check tell the two files apart
   (ADR-032, amendment).
-- A file that used components from the old file must use Swap library: component keys
-  changed with the duplicate, so components map by name, and the archived ones do not map.
-  Designs bound to a variable only the old file had lose that binding.
+- No Swap library step is left: the old file was never published (A3), so no file
+  subscribes to it. Should a file turn up holding instances copied from it, they are swapped
+  to the library's components by name, since component keys changed with the duplicate; the
+  archived ones do not map, and a binding to a variable only the old file had is lost.
 - Pagination `86:194` still nests the archived IconButton for its arrows, so
   `_IconButton (archived 2026-10-07)` must stay until Pagination is redrawn with Button
   (`iconOnly`).
@@ -261,4 +267,6 @@ does not have yet, so that a half-drawn one never sits in the library between pu
   `scripts/__tests__/figma-one-library-rule.test.mjs` fails when one of them drops the
   library rule (never delete in the library, never publish) or the staging rule (draft in HDS
   Staging, ingest by redrawing, Sync and `delta.js` never target it), mentions staging as
-  anything but the workbench or history, or calls the library read-only to agents.
+  anything but the workbench or history, or calls the library read-only to agents. It also
+  fails when a refusal, `pnpm figma:push` output or a Figma script under `scripts/` still
+  says agents never delete "in Figma", the rule before HDS Staging.

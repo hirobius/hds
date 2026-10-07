@@ -11,9 +11,10 @@
  *   figma/push/plugin/            the Sync plugin: Sync · Plan · Check this file · Mark
  *                                 (no model inside; it fetches the sync bundle, ADR-032)
  *   figma/push/promote/           HDS tokens promote (baked): Plan push · Push · Take snapshot,
- *                                 with the model baked in, for a deliberate prune (Adrian runs it)
+ *                                 with the model baked in, for a deliberate prune (Adrian runs it);
+ *                                 like Sync, it runs in the library only, never in HDS Staging
  *   figma/push/use-figma/NN-*.js  use_figma scripts for the Figma MCP server, run in order;
- *                                 never written with --prune (an agent never deletes in Figma)
+ *                                 never written with --prune (an agent never deletes in the library)
  *   figma/push/use-figma/snapshot.js
  *   figma/push/use-figma/receipt.js  reads a Sync's receipt from the library, for
  *                                 pnpm figma:snapshot --from-receipt (hds#417)
@@ -100,12 +101,12 @@ export function writePushArtifacts({ root, outDir, prune = false }) {
   const sync = buildSyncPlugin(links);
   const outputs = [
     ...Object.entries(sync).map(([name, text]) => [join('plugin', name), text]),
-    ...Object.entries(buildPromotePlugin(model, { prune, renames })).map(([name, text]) => [
+    ...Object.entries(buildPromotePlugin(model, { prune, renames, links })).map(([name, text]) => [
       join('promote', name),
       text,
     ]),
   ];
-  // An agent runs the use_figma scripts, and an agent never deletes in Figma:
+  // An agent runs the use_figma scripts, and an agent never deletes in the library:
   // a prune build bakes the prune into the promote plugin only (Adrian runs it).
   if (!prune) {
     for (const chunk of PUSH_CHUNKS) {
@@ -270,11 +271,12 @@ export function formatRun({ model, prune, files, pluginBuild }, outDir) {
     '',
     '  Promote plugin, model baked in (deliberate prunes only, run by Adrian):',
     `    Figma desktop → Plugins → Development → Import plugin from manifest… → ${rel}/promote/manifest.json`,
-    '    Run "Plan push (dry run, writes nothing)", read the plan, then run the push command.',
+    '    In the library only (it refuses HDS Staging and the retired file): run "Plan push (dry run, writes nothing)",',
+    '    read the plan, then run the push command.',
     '',
     ...(prune
       ? [
-          '  use_figma: no push script with --prune, because agents never delete in Figma. The prune is the promote plugin above, and only Adrian runs it.',
+          '  use_figma: no push script with --prune, because agents never delete in the library. The prune is the promote plugin above, and only Adrian runs it.',
         ]
       : [
           '  use_figma (Figma MCP server), in order and unmodified, in the library only; a script whose payload or runtime code changed stops before it reads or writes:',
