@@ -228,6 +228,7 @@ export function Example() {
 | `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14) |
 | `@hirobius/design-system/patterns`      | The `pattern`-tier components (`Page`, `PageHeader`, `Form`, `FormField`, `CodeBlock`); root copies removed in 0.20.0         |
 | `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                            |
+| `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                   |
 
 ### Semantic feedback / status tokens
 
@@ -432,16 +433,15 @@ by `scripts/check-hardcoded-colors.mjs`, `scripts/check-hardcoded-spacing.mjs`,
 and `scripts/check-layout-discipline.mjs` — internal scripts that only run
 here. `@hirobius/eslint-plugin-hds` (`scripts/eslint-plugin-hds/`) ships the
 same discipline as an installable ESLint plugin for consumer apps, flagging
-raw hex/px values in `style`, `className`, and `Box` `sx` props before they
-reach code review.
+raw hex/px values in `style`, `className`, and `Box` `sx` props, and raw HTML
+form controls, before they reach code review.
 
-```bash
-pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"
-```
+It ships inside this package as the `@hirobius/design-system/eslint-plugin`
+subpath, so an app that has the design system installed needs only `eslint`:
 
 ```js
 // eslint.config.mjs
-import hds from '@hirobius/eslint-plugin-hds';
+import hds from '@hirobius/design-system/eslint-plugin';
 
 export default [
   {
@@ -452,12 +452,21 @@ export default [
 ];
 ```
 
-Four rules ship in `recommended`: `no-raw-hex` (error), `no-raw-px-spacing`
-(error), `sx-token-first` (error — raw hex/px inside `Box` `sx`, where token
-keys are mandatory), and `prefer-hds-layout-primitive` (warn — ad-hoc
-`display: flex`/`grid` where Stack/Grid likely fits). Full rule docs, examples,
-and the "why `scripts/eslint-plugin-hds/` and not a top-level workspace
-package" packaging note live in
+Without the package (for example in a repo that only lints), install the same
+plugin from git:
+
+```bash
+pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"
+```
+
+and import it as `@hirobius/eslint-plugin-hds`.
+
+Five rules ship in `recommended`: `no-raw-hex` (error), `no-raw-px-spacing`
+(error), `no-raw-controls` (error — raw `<button>`, `<input>`, `<select>`,
+`<textarea>` or `<form>` where an HDS component exists), `sx-token-first`
+(error — raw hex/px inside `Box` `sx`, where token keys are mandatory), and
+`prefer-hds-layout-primitive` (warn — ad-hoc `display: flex`/`grid` where
+Stack/Grid likely fits). Full rule docs and examples live in
 [`scripts/eslint-plugin-hds/README.md`](../scripts/eslint-plugin-hds/README.md).
 
 ### Agent skill

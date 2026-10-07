@@ -211,6 +211,7 @@ interface DialogComponent extends React.FC<DialogProps> {
  * @useInstead Tooltip a short hint on hover or focus
  * @useInstead Alert a message that needs no reply
  * @useInstead ToastProvider a brief confirmation
+ * @useInstead AlertDialog confirming a destructive or irreversible action
  * @slot trigger The element that opens the dialog (Dialog.Trigger).
  * @slot overlay The scrim that dims the page behind the dialog (Dialog.Overlay).
  * @slot surface The modal surface (Dialog.Content).

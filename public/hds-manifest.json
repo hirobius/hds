@@ -3165,6 +3165,10 @@
           {
             "component": "ToastProvider",
             "reason": "a brief confirmation"
+          },
+          {
+            "component": "AlertDialog",
+            "reason": "confirming a destructive or irreversible action"
           }
         ]
       },
@@ -5522,6 +5526,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert-dialog.tsx",
         "src/app/components/alert.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/toast.test.tsx",
@@ -6429,6 +6434,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/destructive-section.tsx",
+        "src/app/components/dialog.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
@@ -6468,7 +6474,21 @@
       "storyIds": [
         "primitives-alert-dialog--dark-scope",
         "primitives-alert-dialog--default"
-      ]
+      ],
+      "usage": {
+        "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
+        "whenNot": "A modal that collects input or shows content, or a confirmation after the action is done.",
+        "useInstead": [
+          {
+            "component": "Dialog",
+            "reason": "a modal with a form or other content"
+          },
+          {
+            "component": "ToastProvider",
+            "reason": "a brief confirmation after the action"
+          }
+        ]
+      }
     },
     "Box": {
       "category": "Layout",

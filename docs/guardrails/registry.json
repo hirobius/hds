@@ -568,7 +568,7 @@
     },
     {
       "id": "check-pack-contents",
-      "description": "Runs npm pack --dry-run and fails when the tarball lacks the agent context (llms.txt, llms-full.txt and slices, DESIGN.md, CONSUMING.md, component-api.json), the manifest, tokens or dist entry, or contains .env*, repo src/ (other than component-api.json) or storybook-static/. Consumers' agents read node_modules, so a file missing from the pack is a file they never see (#341).",
+      "description": "Runs npm pack --dry-run and fails when the tarball lacks the agent context (llms.txt, llms-full.txt and slices, DESIGN.md, CONSUMING.md, component-api.json, AGENTS.md), the hds-mcp server and the patterns name list it reads, the ESLint plugin entry, the manifest, tokens or dist entry, or contains .env*, repo src/ (other than component-api.json), repo scripts/ (other than the ESLint plugin) or storybook-static/. Consumers' agents read node_modules, so a file missing from the pack is a file they never see (#341).",
       "severity": "error",
       "gateScript": "scripts/check-pack-contents.mjs",
       "fixturePath": null,

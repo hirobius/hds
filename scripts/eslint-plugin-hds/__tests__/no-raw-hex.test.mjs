@@ -1,3 +1,4 @@
+// @vitest-environment node
 import rule from '../rules/no-raw-hex.mjs';
 import { makeRuleTester } from './test-helpers.mjs';
 

@@ -27,6 +27,7 @@ Subpath exports:
 - `@hirobius/design-system/scroll`
 - `@hirobius/design-system/patterns`
 - `@hirobius/design-system/icons`
+- `@hirobius/design-system/eslint-plugin`
 
 ## Allow-list: components you may import
 

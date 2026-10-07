@@ -195,6 +195,12 @@ Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> 
 Generated: ${generated}
 Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json\`, \`hirobius.tokens.json\`
 
+## Agents Using The Package: Start Here
+
+- Read \`AGENTS.md\` (package root, \`node_modules/@hirobius/design-system/AGENTS.md\`) first: which component to use for each screen need, the imports, and the rules.
+- MCP server \`hds\` ships in the package: run \`npx hds-mcp\` (stdio). Tools: \`list_core\`, \`search_components\`, \`get_component\`, \`search_tokens\`; each answer is under 2 KB.
+- Lint before you finish: \`import hds from '@hirobius/design-system/eslint-plugin'\` and spread \`hds.configs.recommended\` into \`eslint.config.mjs\`.
+
 ## System Architecture
 
 - Engine: ${manifest.systemSpecs.engine}

@@ -44,6 +44,41 @@ describe('diffPackContents', () => {
   });
 });
 
+describe('agent tooling in the tarball', () => {
+  it('requires AGENTS.md, the hds-mcp server with its data, and the ESLint plugin entry', () => {
+    expect(REQUIRED).toEqual(
+      expect.arrayContaining([
+        'AGENTS.md',
+        'mcp/hds-mcp.mjs',
+        'mcp/catalog.mjs',
+        'mcp/server.mjs',
+        'mcp/guide.mjs',
+        'codemods/patterns-subpath.names.json',
+        'scripts/eslint-plugin-hds/index.mjs',
+        'scripts/eslint-plugin-hds/index.d.mts',
+      ]),
+    );
+  });
+
+  it("flags the plugin's own tests and package.json, but no other plugin file", () => {
+    const r = diffPackContents(
+      [
+        ...good,
+        'scripts/eslint-plugin-hds/rules/no-raw-hex.mjs',
+        'scripts/eslint-plugin-hds/__tests__/no-raw-hex.test.mjs',
+        'scripts/eslint-plugin-hds/package.json',
+        'scripts/generate-agents-md.mjs',
+      ],
+      { required: REQUIRED, forbidden: FORBIDDEN },
+    );
+    expect(r.forbidden).toEqual([
+      'scripts/eslint-plugin-hds/__tests__/no-raw-hex.test.mjs',
+      'scripts/eslint-plugin-hds/package.json',
+      'scripts/generate-agents-md.mjs',
+    ]);
+  });
+});
+
 describe('real npm pack --dry-run', () => {
   it.skipIf(!existsSync(join(ROOT, 'dist', 'hirobius-ui.js')))(
     'lists every required file and no forbidden one',
