@@ -1,0 +1,19 @@
+{
+  "impact": "look",
+  "plain": "Brand fonts no longer come with tokens.css or styles.css, so add import '@hirobius/design-system/fonts.css' next to that import, or text renders in the system font.",
+  "steps": [
+    {
+      "id": "manual/fonts-css",
+      "kind": "manual",
+      "impact": "look",
+      "plain": "Add import '@hirobius/design-system/fonts.css' next to your tokens.css or styles.css import, or text renders in the system font instead of Satoshi and Geist Mono.",
+      "detect": {
+        "regex": ["@hirobius/design-system/(?:tokens|styles)\\.css['\"]"]
+      },
+      "done": {
+        "regex": ["@hirobius/design-system/fonts\\.css['\"]"]
+      },
+      "facts": ["exports-key-added:./fonts.css"]
+    }
+  ]
+}
