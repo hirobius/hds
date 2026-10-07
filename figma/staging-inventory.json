@@ -1,5 +1,5 @@
 {
-  "$comment": "Components an agent drew into the Figma STAGING file, as DATA rather than a hand-typed table. figma/STAGING-INVENTORY.md is generated from this — do not hand-edit either. Node ids are staging-only and do not survive promotion (figma/COMPONENT-DRAWING-RECIPE.md), which is exactly why they belong in a file a script can re-verify rather than in prose nobody checks.",
+  "$comment": "Components an agent drew into the Figma STAGING file, as DATA rather than a hand-typed table. figma/STAGING-INVENTORY.md is generated from this \u2014 do not hand-edit either. Node ids are staging-only and do not survive promotion (figma/COMPONENT-DRAWING-RECIPE.md), which is exactly why they belong in a file a script can re-verify rather than in prose nobody checks.",
   "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
   "drawnOn": "2026-09-23",
   "components": {
@@ -42,6 +42,24 @@
       "kind": "set",
       "variants": 4,
       "node": "2031-11"
+    },
+    "DataTableSection": {
+      "kind": "set",
+      "variants": 4,
+      "node": "2075-268",
+      "drawn": "2026-10-07"
+    },
+    "FormActions": {
+      "kind": "set",
+      "variants": 8,
+      "node": "2075-87",
+      "drawn": "2026-10-07"
+    },
+    "MetricTile": {
+      "kind": "set",
+      "variants": 5,
+      "node": "2075-114",
+      "drawn": "2026-10-07"
     }
   },
   "drawnEarlier": {

@@ -111,6 +111,7 @@ describe('buildDisposition (real repo)', () => {
     // The whole point: `figma:links --check` measures 139 and reports a
     // 95-component hole. The honest denominator is smaller.
     expect(summary.byClass.library).toBeLessThan(summary.total);
-    expect(summary.byClass.library).toBeGreaterThan(50);
+    // 8 prune candidates are held out by override (2026-10-07), so the floor is 40.
+    expect(summary.byClass.library).toBeGreaterThan(40);
   });
 });

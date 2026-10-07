@@ -3,6 +3,7 @@
  *
  * @category Typography
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2022-31
  * @usage Set any text on the type ramp, with the element chosen by `as`.
  * @whenNot Navigation links, or a keyboard hint.
  * @useInstead InlineLink a link inside body copy

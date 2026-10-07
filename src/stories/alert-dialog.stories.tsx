@@ -5,12 +5,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AlertDialog } from '../app/components/alert-dialog';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Alert Dialog',
   component: AlertDialog,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { ...designParameters('AlertDialog'), layout: 'padded' },
 } satisfies Meta<typeof AlertDialog>;
 
 export default meta;
