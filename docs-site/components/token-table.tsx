@@ -1,12 +1,22 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { buildTokenSections } from '../lib/token-tables';
 
-// Read once per build process. The docs app runs from docs-site/, tokens live at the repo root.
-let cached: unknown;
+// Tokens live at the repo root. Walk up from the working directory so the build
+// works whether Next runs from docs-site/ or from the repo root.
+function findTokensFile(start: string): string {
+  for (let dir = start; ; dir = dirname(dir)) {
+    const file = join(dir, 'hirobius.tokens.json');
+    if (existsSync(file)) return file;
+    if (dirname(dir) === dir) throw new Error(`hirobius.tokens.json not found above ${start}`);
+  }
+}
+
+// Read once per build process.
+let tokensJson: unknown;
 function loadTokens(): unknown {
-  cached ??= JSON.parse(readFileSync(resolve(process.cwd(), '../hirobius.tokens.json'), 'utf8'));
-  return cached;
+  tokensJson ??= JSON.parse(readFileSync(findTokensFile(process.cwd()), 'utf8'));
+  return tokensJson;
 }
 
 /**
