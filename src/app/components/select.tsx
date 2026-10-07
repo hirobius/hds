@@ -20,11 +20,12 @@
 
 import { forwardRef, useId } from 'react';
 import * as RSelect from '@radix-ui/react-select';
-import { ChevronDown, Check } from 'lucide-react';
+import { ChevronsUpDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 const SelectPortal = /* @__PURE__ */ withHdsPortal(RSelect.Portal);
 
@@ -81,12 +82,13 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
   const labelShown = showLabel && Boolean(label);
 
   return (
-    <div className="flex flex-col">
+    <div className={cn('flex flex-col', FORM_CONTROL_WIDTH)}>
       {showLabel ? (
         <span
           id={labelId}
-          className="text-secondary"
-          style={{ ...hds.typeStyles.caption, marginBottom: hds.semantic.space.scale.xs }}
+          // Same label as Input, Textarea and FormField: 14px ui, foreground (hds#522).
+          className="hds-type-ui text-foreground"
+          style={{ marginBottom: hds.semantic.space.scale.xs }}
         >
           {label}
         </span>
@@ -102,14 +104,16 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
           className={cn(
-            'hds-focus group flex w-full items-center justify-between gap-2 rounded-md border px-3 py-2 hds-type-ui',
-            'border-input bg-muted text-foreground transition-colors',
+            // h-10 is the one md control height shared with Input, Combobox and Button;
+            // the trigger had py-2 and rendered 38px (hds#522). bg-background matches Input.
+            'hds-focus group flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 hds-type-ui',
+            'border-input bg-background text-foreground transition-colors',
             'hover:border-ring data-[state=open]:border-ring',
           )}
         >
           <RSelect.Value />
-          <RSelect.Icon className="flex shrink-0 -rotate-90 text-muted-foreground transition-transform group-data-[state=open]:rotate-0">
-            <Icon icon={ChevronDown} size="small" color="currentColor" />
+          <RSelect.Icon className="flex shrink-0 text-muted-foreground">
+            <Icon icon={ChevronsUpDown} size="small" color="currentColor" />
           </RSelect.Icon>
         </RSelect.Trigger>
 

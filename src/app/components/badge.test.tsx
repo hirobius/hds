@@ -10,9 +10,9 @@ import { Badge } from './badge';
 afterEach(cleanup);
 
 describe('Badge dot (hds#393)', () => {
-  it('<Badge dot label="Online"/> is a status named "Online"', () => {
+  it('<Badge dot label="Online"/> is an image named "Online" (not a live region, hds#522)', () => {
     render(<Badge dot label="Online" />);
-    const dot = screen.getByRole('status', { name: 'Online' });
+    const dot = screen.getByRole('img', { name: 'Online' });
     expect(dot.getAttribute('aria-label')).toBe('Online');
     expect(dot.hasAttribute('aria-hidden')).toBe(false);
   });

@@ -24,7 +24,8 @@ const dividerVariants = /* @__PURE__ */ cva('m-0 shrink-0 border-solid', {
   variants: {
     orientation: {
       horizontal: 'w-full self-stretch border-t',
-      vertical: 'h-full border-l',
+      // h-auto + self-stretch, not h-full: a percent height is never stretched by flex and has nothing to resolve against in an auto-height row; the UA hr is height 0, so auto is needed for the stretch to apply (hds#522)
+      vertical: 'h-auto self-stretch border-l',
     },
     variant: {
       default: 'border-[var(--semantic-color-border-default)]',

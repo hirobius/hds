@@ -12,7 +12,7 @@ import { useState, forwardRef } from 'react';
 import { motion } from 'motion/react';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import { Surface } from './surface';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 /** Slider — range slider with label and value display. */
 export interface SliderProps {
@@ -43,7 +43,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
 
   return (
     // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
-    <div className="flex flex-col gap-[var(--semantic-space-scale-xs)]">
+    <div className={`flex flex-col gap-[var(--semantic-space-scale-xs)] ${FORM_CONTROL_WIDTH}`}>
       {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists */}
       <div className="flex justify-between items-baseline gap-[var(--semantic-space-scale-xs)]">
         <label
@@ -70,11 +70,11 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
       </div>
       {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven height; var()-based, no Tailwind-theme utility exists */}
       <motion.div className="relative h-[var(--semantic-size-control-md)] grid items-center">
-        <Surface
+        <div
           aria-hidden="true"
-          padding="component"
+          // A bare track, not a padded Surface: Surface's inset padding made the track a 48px slab with a 0px fill (hds#522).
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven inset/height/color; var()-based, no Tailwind-theme utility exists
-          className="absolute [inset-inline:0] top-1/2 h-[var(--semantic-size-control-sm)] -translate-y-1/2 bg-[var(--semantic-color-border-default)] overflow-hidden"
+          className="absolute [inset-inline:0] top-1/2 h-[var(--semantic-size-control-sm)] -translate-y-1/2 rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-border-default)] overflow-hidden" // tier-ok: radius-full is the "fully round" constant
         >
           <motion.div
             animate={{
@@ -88,7 +88,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
             // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/color; var()-based, no Tailwind-theme utility exists
             className="h-full rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-accent)]" // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186
           />
-        </Surface>
+        </div>
         <input
           ref={ref}
           type="range"

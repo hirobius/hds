@@ -79,7 +79,13 @@ export const InGrid: Story = {
     },
   },
   render: () => (
-    <Grid layout="auto-fill" minItemWidth="260px" gap="medium" style={{ width: '560px' }}>
+    <Grid
+      layout="auto-fill"
+      minItemWidth="260px"
+      gap="medium"
+      align="stretch"
+      style={{ width: '560px' }}
+    >
       <StatusTile
         tone="success"
         title="Design tokens"

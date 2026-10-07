@@ -36,7 +36,7 @@ type SkeletonVariantProps = VariantProps<typeof skeletonVariants>;
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement>, SkeletonVariantProps {
   /** Explicit width (number → px, or any CSS length). */
   width?: number | string;
-  /** Explicit height (number → px, or any CSS length). For `text`, defaults to 1em. */
+  /** Explicit height (number → px, or any CSS length). For `text`, defaults to 1em; for `rectangular`, 5rem. */
   height?: number | string;
 }
 
@@ -48,7 +48,8 @@ export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement>, Ske
  */
 export const Skeleton = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SkeletonProps>(
   function Skeleton({ className, variant = 'rectangular', width, height, style, ...props }, ref) {
-    const resolvedHeight = height ?? (variant === 'text' ? '1em' : undefined);
+    const resolvedHeight =
+      height ?? (variant === 'text' ? '1em' : variant === 'rectangular' ? '5rem' : undefined);
     return (
       <div
         ref={ref}

@@ -46,7 +46,7 @@ export interface StatusDotProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>, StatusDotVariantProps {
   /**
    * Accessible name for the status. When provided the dot is exposed as a
-   * `role="status"` with this label; when omitted the dot is decorative
+   * `role="img"` with this label; when omitted the dot is decorative
    * (`aria-hidden`) and a sibling should carry the meaning.
    */
   label?: string;
@@ -75,7 +75,7 @@ export const StatusDot = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, Statu
         ref={ref}
         data-tone={tone ?? 'neutral'}
         className={cn(statusDotVariants({ tone, size }), className)}
-        {...(label ? { role: 'status', 'aria-label': label } : { 'aria-hidden': true })}
+        {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
         {...props}
       />
     );

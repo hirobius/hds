@@ -36,6 +36,7 @@ import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 import { Popover } from './popover';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 /** @public */
 export interface ComboboxOption {
@@ -172,6 +173,19 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
     // place (or the one before it, or the trigger once none are left) rather
     // than falling to the page.
     const rootRef = React.useRef<HTMLDivElement>(null);
+    // The trigger is a Popover.Anchor, not a Popover.Trigger, so Radix has no
+    // trigger to hand focus back to: Escape (or a pick) dropped it on <body>.
+    // Keep our own ref and return focus there unless the person clicked elsewhere (hds#522).
+    const triggerRef = React.useRef<HTMLButtonElement | null>(null);
+    const interactedOutside = React.useRef(false);
+    const setTriggerRef = React.useCallback(
+      (node: HTMLButtonElement | null) => {
+        triggerRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      },
+      [ref],
+    );
     const refocus = React.useRef<{ index: number; count: number } | null>(null);
     React.useEffect(() => {
       const pending = refocus.current;
@@ -219,7 +233,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       >
         <Popover.Anchor asChild>
           <button
-            ref={ref}
+            ref={setTriggerRef}
             id={id}
             type="button"
             role="combobox"
@@ -232,7 +246,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             disabled={disabled}
             onClick={() => setOpen((o) => !o)}
             className={cn(
-              'hds-focus flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input',
+              'hds-focus flex h-10 items-center justify-between gap-2 rounded-md border border-input',
+              FORM_CONTROL_WIDTH,
               'bg-background px-3 hds-type-ui text-foreground',
               'disabled:cursor-not-allowed disabled:opacity-50',
               className,
@@ -255,6 +270,16 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
           align="start"
           className="p-0"
           style={{ width: 'var(--radix-popover-trigger-width)' }}
+          onInteractOutside={() => {
+            interactedOutside.current = true;
+          }}
+          onCloseAutoFocus={(event) => {
+            if (!interactedOutside.current) {
+              event.preventDefault();
+              triggerRef.current?.focus();
+            }
+            interactedOutside.current = false;
+          }}
         >
           <input
             type="text"
@@ -336,7 +361,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
 
     // Chips sit beside the trigger, not in it: a button cannot hold buttons.
     return (
-      <div ref={rootRef} className="flex w-full flex-col gap-2">
+      <div ref={rootRef} className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH)}>
         {popover}
         {chips.length > 0 ? (
           <ul className="flex flex-wrap gap-1">

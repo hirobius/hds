@@ -442,7 +442,11 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
   it.each(LAYOUT_PROBES.map((p) => p.key))(
     '%s emits the inline style it emitted on 8e53a8a',
     (key) => {
-      expect(layoutEmitted[key]).toBe(fixture.emitted[key]);
+      // hds#522 moved Grid's default align-items from stretch to start (children
+      // hug; `align="stretch"` opts in). That is not spacing, so the lock compares
+      // everything else on the emitted style byte for byte.
+      const withoutAlign = (style) => style?.replace(/align-items:[a-z-]+;/, '');
+      expect(withoutAlign(layoutEmitted[key])).toBe(withoutAlign(fixture.emitted[key]));
     },
   );
 

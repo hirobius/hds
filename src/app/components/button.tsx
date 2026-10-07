@@ -92,7 +92,11 @@ const buttonVariants = /* @__PURE__ */ cva(
   },
 );
 
-const toggleOnClasses = 'data-[pressed=true]:bg-accent data-[pressed=true]:text-accent-foreground';
+// On-state fills with the accent surface (`role.primary`), not `bg-accent`: that
+// role maps to accentSubtle, which is within 1 step of the secondary variant's
+// background, so a pressed toggle looked the same as an unpressed one (hds#522).
+const toggleOnClasses =
+  'data-[pressed=true]:border-transparent data-[pressed=true]:bg-primary data-[pressed=true]:text-primary-foreground data-[pressed=true]:hover:bg-primary/90';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -103,6 +107,8 @@ export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
     Omit<ButtonVariantProps, 'iconOnly'> {
+  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (an outline), so pass `primary` for the main action. */
+  variant?: ButtonVariantProps['variant'];
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */

@@ -98,37 +98,34 @@ export type CardTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 // still `default` and tone is still `neutral`) so it never fights `accent`'s
 // border for the border-color utility group.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven
-const cardVariants = /* @__PURE__ */ cva(
-  'flex h-full flex-col rounded-lg bg-card text-card-foreground',
-  {
-    variants: {
-      variant: {
-        default: 'border border-transparent', // 1px transparent preserves the layout box
-        accent: 'border-2 border-[var(--semantic-color-border-accent)]',
-      },
-      tone: {
-        neutral: '',
-        danger: '!border !border-[var(--semantic-color-feedback-error)]',
-        success: '!border !border-[var(--semantic-color-feedback-success)]',
-        warning: '!border !border-[var(--semantic-color-feedback-warning)]',
-        info: '!border !border-[var(--semantic-color-feedback-info)]',
-      },
-      bordered: {
-        true: '',
-        false: '',
-      },
+const cardVariants = /* @__PURE__ */ cva('flex flex-col rounded-lg bg-card text-card-foreground', {
+  variants: {
+    variant: {
+      default: 'border border-transparent', // 1px transparent preserves the layout box
+      accent: 'border-2 border-[var(--semantic-color-border-accent)]',
     },
-    compoundVariants: [
-      {
-        variant: 'default',
-        tone: 'neutral',
-        bordered: true,
-        className: 'border-[var(--semantic-color-border-default)]',
-      },
-    ],
-    defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
+    tone: {
+      neutral: '',
+      danger: '!border !border-[var(--semantic-color-feedback-error)]',
+      success: '!border !border-[var(--semantic-color-feedback-success)]',
+      warning: '!border !border-[var(--semantic-color-feedback-warning)]',
+      info: '!border !border-[var(--semantic-color-feedback-info)]',
+    },
+    bordered: {
+      true: '',
+      false: '',
+    },
   },
-);
+  compoundVariants: [
+    {
+      variant: 'default',
+      tone: 'neutral',
+      bordered: true,
+      className: 'border-[var(--semantic-color-border-default)]',
+    },
+  ],
+  defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
+});
 
 // `selectable` (hds#393): selection is a 2px inset ring, not a fill or border
 // change (cards are never tinted, and the border belongs to tone/variant), so

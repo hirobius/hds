@@ -68,7 +68,7 @@ const chevronVariants = /* @__PURE__ */ cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + radius-action + border-default/surface-raised tokens + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven
 const copyButtonVariants = /* @__PURE__ */ cva(
-  'flex cursor-pointer items-center gap-[var(--semantic-space-subgrid-gap)]',
+  'hds-touch-target flex cursor-pointer items-center gap-[var(--semantic-space-subgrid-gap)]',
   {
     variants: {
       variant: {
@@ -101,9 +101,10 @@ const blockCodeTextVariants = /* @__PURE__ */ cva(
   `whitespace-pre text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- section-stack spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const prePanelVariants = /* @__PURE__ */ cva(
-  'm-0 overflow-x-auto p-[var(--semantic-space-section-stack)] pr-[calc(var(--semantic-space-section-stack)_+_var(--semantic-size-control-lg))]',
+  // 16px inset (scale-sm), not section-stack (80px): a 2-line snippet was 188px tall (hds#522).
+  'm-0 overflow-x-auto p-[var(--semantic-space-scale-sm)] pr-[calc(var(--semantic-space-scale-sm)_+_var(--semantic-size-control-lg))]',
   {
     variants: {
       panelBackground: {

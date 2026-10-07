@@ -1,6 +1,6 @@
 /**
  * Contract test: Alert
- * Verifies that Alert renders with role="alert" and that the `tone` prop drives
+ * Verifies that Alert renders with role="alert" (danger, warning) or role="status" (info, success) and that the `tone` prop drives
  * the feedback-background utility class (bg-feedback-bg-*) on the container.
  * (Tone is class-based via CVA — not an inline style — so we assert className.)
  *
@@ -17,10 +17,18 @@ describe('Alert contract', () => {
     expect(container.firstChild).not.toBeNull();
   });
 
-  it('has role="alert"', () => {
-    const { container } = render(<Alert>Message</Alert>);
-    const el = container.querySelector('[role="alert"]');
-    expect(el).not.toBeNull();
+  it('urgent tones have role="alert"; info and success have role="status" (hds#522)', () => {
+    for (const tone of ['danger', 'warning'] as const) {
+      const { container, unmount } = render(<Alert tone={tone}>Message</Alert>);
+      expect(container.querySelector('[role="alert"]')).not.toBeNull();
+      unmount();
+    }
+    for (const tone of ['info', 'success'] as const) {
+      const { container, unmount } = render(<Alert tone={tone}>Message</Alert>);
+      expect(container.querySelector('[role="status"]')).not.toBeNull();
+      expect(container.querySelector('[role="alert"]')).toBeNull();
+      unmount();
+    }
   });
 
   it('renders children content', () => {
@@ -30,7 +38,7 @@ describe('Alert contract', () => {
 
   it('tone=success applies the feedback-bg-success class', () => {
     const { container } = render(<Alert tone="success">OK</Alert>);
-    const el = container.querySelector('[role="alert"]') as HTMLElement;
+    const el = container.querySelector('[role="status"]') as HTMLElement;
     expect(el.classList.contains('bg-feedback-bg-success')).toBe(true);
   });
 
@@ -48,7 +56,7 @@ describe('Alert contract', () => {
 
   it('defaults to the feedback-bg-info class', () => {
     const { container } = render(<Alert>Info</Alert>);
-    const el = container.querySelector('[role="alert"]') as HTMLElement;
+    const el = container.querySelector('[role="status"]') as HTMLElement;
     expect(el.classList.contains('bg-feedback-bg-info')).toBe(true);
   });
 

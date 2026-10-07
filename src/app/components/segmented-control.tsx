@@ -76,8 +76,9 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
   {
     variants: {
       size: {
-        sm: 'min-h-8',
-        md: 'min-h-12',
+        // Rail = item + 2 x 4px padding + 2px border: 22px -> 32px (Button sm), 30px -> 40px (Button/Input md).
+        sm: 'min-h-[22px] py-0',
+        md: 'min-h-[30px]',
       },
       fullWidth: {
         true: 'w-full min-w-0 flex-1',
@@ -102,9 +103,10 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
       },
     },
     compoundVariants: [
-      // Width / min-width for the non-fullWidth case — compact shrinks to content, md fills the rail.
-      { fullWidth: false, size: 'sm', className: 'w-max min-w-max flex-none' },
-      { fullWidth: false, size: 'md', className: 'w-full flex-none' },
+      // Width for the non-fullWidth case: every segment hugs its content. A
+      // `w-full` segment inside the `w-fit` rail is circular (hds#522): one
+      // segment took the whole rail and the rest scrolled out of view.
+      { fullWidth: false, className: 'w-max min-w-max flex-none' },
 
       // Foreground color — active wins over hover/rest regardless of interaction sub-state.
       {
