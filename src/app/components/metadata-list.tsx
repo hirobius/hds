@@ -14,11 +14,13 @@ import hds from '../design-system/tokens';
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Orientation is the only styling axis. Vertical stacks each term above its
 // description; horizontal lays each pair out as a two-column grid row.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-sized term column has no Tailwind-theme utility
 const metadataListVariants = /* @__PURE__ */ cva('', {
   variants: {
     orientation: {
       vertical: 'flex flex-col gap-3',
-      horizontal: 'grid grid-cols-2 gap-x-4 gap-y-2',
+      // The term column hugs its longest term; it was half the list (146px at 1280, hds#522).
+      horizontal: 'grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2',
     },
   },
   defaultVariants: { orientation: 'vertical' },

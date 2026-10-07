@@ -12,6 +12,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { isProduction } from '../../lib/env';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Tone is the only styling axis. Neutral is theme-aware via the `dark:` variant
@@ -76,8 +77,20 @@ export interface BadgeProps
   dot?: boolean;
   /** Dot diameter; used only with `dot`. */
   size?: 'sm' | 'md' | 'lg';
-  /** Names the dot: role="status" with this aria-label. Without it the dot is aria-hidden. */
+  /** Names a `dot` badge: role="img" with this aria-label. Without it the dot is aria-hidden. A text badge ignores it: put the text in `children`. */
   label?: string;
+}
+
+// `label` only names a `dot` badge. On a text badge it renders nothing, so
+// `<Badge label="Active" />` was an empty chip with no hint why (hds#522). Warn once
+// in dev (misuse, not a deprecation, so not lib/deprecation's warnOnce prefix).
+let warnedLabelWithoutDot = false;
+function warnLabelWithoutDot() {
+  if (warnedLabelWithoutDot || isProduction()) return;
+  warnedLabelWithoutDot = true;
+  console.warn(
+    '[HDS] Badge `label` only names a `dot` badge and renders no text. Put the text in children: <Badge>Active</Badge>, or add `dot`.',
+  );
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -87,6 +100,10 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
   { className, tone, as: Tag = 'span', dot = false, size, label, children, ...props },
   ref,
 ) {
+  if (label && !dot) {
+    warnLabelWithoutDot();
+  }
+
   if (dot) {
     return (
       <Tag
@@ -94,7 +111,7 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
         data-tone={tone ?? 'neutral'}
         data-size={size ?? 'md'}
         className={cn(badgeDotVariants({ tone }), BADGE_DOT_SIZE[size ?? 'md'], className)}
-        {...(label ? { role: 'status', 'aria-label': label } : { 'aria-hidden': true })}
+        {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
         {...props}
       />
     );

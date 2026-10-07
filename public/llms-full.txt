@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-07T05:01:04.668Z
+Generated: 2026-10-07T05:30:41.538Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## System Architecture
@@ -812,6 +812,7 @@ Presentational label + control slot + helper/error markup. Renders `children` ve
 
 ### Grid
 Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via …
+  - align: "center" | "end" | "start" | "stretch" = start
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
@@ -1092,7 +1093,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - columns: TableColumn[]
   - density: 'compact' | 'comfortable'
   - description: ReactNode
-  - flush: boolean = false
+  - flush: boolean = true
   - labelledBy: string
   - minWidth: string | number
   - rows: TableRow[]

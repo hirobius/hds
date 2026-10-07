@@ -1094,6 +1094,16 @@
       ],
       "tokenMapping": {},
       "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "center",
+            "end",
+            "start",
+            "stretch"
+          ],
+          "default": "start"
+        },
         "as": {
           "type": "ElementType<any, keyof IntrinsicElements>",
           "default": "div"
@@ -1146,6 +1156,15 @@
         "*"
       ],
       "propConstraints": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "center",
+            "end",
+            "start",
+            "stretch"
+          ]
+        },
         "className": {
           "type": "string"
         },
@@ -1577,9 +1596,11 @@
       },
       "consumers": [
         "src/app/components/field.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.test.tsx",
         "src/app/components/segmented-control.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -2242,7 +2263,7 @@
         },
         "flush": {
           "type": "boolean",
-          "default": false
+          "default": true
         },
         "labelledBy": {
           "type": "string",
@@ -2493,6 +2514,7 @@
         "src/app/components/divider.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/error-pattern.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/slider.tsx",
@@ -3238,6 +3260,7 @@
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -4768,6 +4791,7 @@
         "src/app/components/checkbox.test.tsx",
         "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/menu.tsx",
@@ -4902,6 +4926,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/form-control.ts",
         "src/stories/slider.stories.tsx"
       ],
       "tokenMapping": {
@@ -5607,6 +5632,7 @@
       },
       "consumers": [
         "src/app/components/combobox.test.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
@@ -6882,7 +6908,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
+        "src/app/components/select.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/textarea.stories.tsx"
       ],

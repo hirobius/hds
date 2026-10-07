@@ -184,7 +184,7 @@ export function Table({
   labelledBy,
   minWidth,
   density,
-  flush = false,
+  flush = true,
   stickyHeader = false,
 }: {
   columns: TableColumn[];
@@ -205,6 +205,11 @@ export function Table({
    * default, compact inside `[data-density="compact"]`); pass a value to fix it.
    */
   density?: TableDensity;
+  /**
+   * Drop the scroll region's own inset. On by default: every cell already carries the
+   * surface inset, so a padded region doubled it (48px at the edges, hds#522). Pass
+   * `flush={false}` to restore the extra region padding.
+   */
   flush?: boolean;
   stickyHeader?: boolean;
 }) {
@@ -214,7 +219,7 @@ export function Table({
   const nameId = hasCaption ? captionId : labelledBy;
 
   return (
-    <div>
+    <div className="min-w-0 max-w-full">
       {caption || description ? (
         <div>
           {caption ? (
