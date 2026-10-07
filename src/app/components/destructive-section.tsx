@@ -71,7 +71,7 @@ export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
         <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
           {/* The shared heading pair takes string-only text and no heading id; this section needs a ReactNode title and an id for aria-labelledby. */}
           <div data-slot="copy" className="min-w-0 grow basis-64">
-            <Text id={headingId} as={`h${level}`} variant="heading3">
+            <Text id={headingId} as={`h${level}`} variant="title">
               {title}
             </Text>
             <Text as="p" variant="caption" className="text-muted-foreground">

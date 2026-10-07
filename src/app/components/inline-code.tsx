@@ -27,8 +27,8 @@ const inlineCodeVariants = /* @__PURE__ */ cva(
   {
     variants: {
       density: {
-        comfortable: 'py-[var(--semantic-space-subgrid-gap)] align-[-0.08em] leading-[1]',
-        compact: 'py-[var(--semantic-space-subgrid-hairline)] align-[-0.04em] leading-[0.95]',
+        comfortable: 'py-[var(--semantic-space-subgrid-gap)] align-[-0.08em] leading-[1]', // type-ramp-ok: inline chip hugs the prose line box, so it keeps its own leading
+        compact: 'py-[var(--semantic-space-subgrid-hairline)] align-[-0.04em] leading-[0.95]', // type-ramp-ok: compact chip in dense cells, same reason
       },
     },
     defaultVariants: { density: 'comfortable' },

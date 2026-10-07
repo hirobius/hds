@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-01T14:42:41.226Z",
+  "generated": "2026-10-07T05:00:54.950Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -130,76 +130,90 @@
   ],
   "typographyRamp": {
     "status": "active",
-    "styleCount": 9,
+    "styleCount": 6,
     "source": "hirobius.tokens.json semantic.typography",
     "tokens": [
       {
         "name": "display",
         "size": "48px",
-        "lineHeight": "1.0",
-        "role": "Hero headlines and landing-page displays"
+        "lineHeight": "1.05",
+        "weight": 700,
+        "role": "One per page, hero only"
       },
       {
-        "name": "heading1",
-        "size": "36px",
-        "lineHeight": "1.25",
-        "role": "Primary section headings and h1 text"
-      },
-      {
-        "name": "heading2",
-        "size": "30px",
-        "lineHeight": "1.25",
-        "role": "Secondary section headings and h2 text"
-      },
-      {
-        "name": "heading3",
+        "name": "title",
         "size": "24px",
         "lineHeight": "1.25",
-        "role": "Component headings, card headings, and h3 text"
+        "weight": 700,
+        "role": "Section and card headings"
       },
       {
         "name": "body",
         "size": "16px",
-        "lineHeight": "1.5",
-        "role": "Default long-form prose and body copy"
+        "lineHeight": "1.6",
+        "weight": 400,
+        "role": "Prose"
       },
       {
         "name": "ui",
         "size": "14px",
         "lineHeight": "1.5",
-        "role": "Standard interface text, nav labels, inputs, and controls"
+        "weight": 500,
+        "role": "Controls, nav, table text, values"
       },
       {
         "name": "caption",
         "size": "12px",
         "lineHeight": "1.5",
-        "role": "Active functional role for helper text, error metadata, secondary metadata, and form annotations"
+        "weight": 500,
+        "role": "Metadata, help text and labels, in sentence case"
       },
       {
-        "name": "technical",
-        "size": "12px",
-        "lineHeight": "1.0",
-        "role": "Monospace token keys, code snippets, keyboard shortcuts, hashes, and aligned data readouts"
-      },
-      {
-        "name": "badge",
-        "size": "10px",
-        "lineHeight": "1.0",
-        "role": "Status badges and compact tags only"
+        "name": "mono",
+        "size": "13px",
+        "lineHeight": "1.5",
+        "weight": 400,
+        "role": "Code and ids"
       }
     ],
     "deprecated": [
+      "heading1",
+      "heading2",
+      "heading3",
+      "h1",
+      "h2",
+      "h3",
+      "technical",
+      "badge",
+      "eyebrow",
+      "small",
       "displayXl",
+      "display1",
       "display2",
-      "title",
+      "headingHero",
+      "headingSection",
       "body2",
+      "bodyLarge",
+      "bodySmall",
       "label",
       "labelDescriptive",
       "labelTechnical",
       "micro",
       "monoXs",
       "monoSm"
-    ]
+    ],
+    "aliasOf": {
+      "heading1": "title",
+      "heading2": "title",
+      "heading3": "title",
+      "h1": "title",
+      "h2": "title",
+      "h3": "title",
+      "technical": "mono",
+      "badge": "caption",
+      "eyebrow": "caption",
+      "small": "ui"
+    }
   },
   "patternInventory": [
     "DataTableSection",
@@ -1080,6 +1094,16 @@
       ],
       "tokenMapping": {},
       "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "center",
+            "end",
+            "start",
+            "stretch"
+          ],
+          "default": "start"
+        },
         "as": {
           "type": "ElementType<any, keyof IntrinsicElements>",
           "default": "div"
@@ -1132,6 +1156,15 @@
         "*"
       ],
       "propConstraints": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "center",
+            "end",
+            "start",
+            "stretch"
+          ]
+        },
         "className": {
           "type": "string"
         },
@@ -1563,9 +1596,11 @@
       },
       "consumers": [
         "src/app/components/field.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.test.tsx",
         "src/app/components/segmented-control.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -2228,7 +2263,7 @@
         },
         "flush": {
           "type": "boolean",
-          "default": false
+          "default": true
         },
         "labelledBy": {
           "type": "string",
@@ -2479,6 +2514,7 @@
         "src/app/components/divider.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/error-pattern.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/slider.tsx",
@@ -3224,6 +3260,7 @@
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -3824,7 +3861,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/stat.tsx",
-      "description": "Headline metric — large value, uppercase caption label, optional sub-line.",
+      "description": "Headline metric — large value, caption label, optional sub-line.",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247",
@@ -4754,6 +4791,7 @@
         "src/app/components/checkbox.test.tsx",
         "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/menu.tsx",
@@ -4888,6 +4926,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/form-control.ts",
         "src/stories/slider.stories.tsx"
       ],
       "tokenMapping": {
@@ -5593,6 +5632,7 @@
       },
       "consumers": [
         "src/app/components/combobox.test.tsx",
+        "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
@@ -6868,7 +6908,9 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
+        "src/app/components/select.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/textarea.stories.tsx"
       ],
@@ -6943,7 +6985,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -6989,7 +7031,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7035,7 +7077,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7081,7 +7123,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7132,7 +7174,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.",
+      "description": "Card.Metric — one label, a large value and an optional sub-line inside a Card.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7204,7 +7246,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7273,7 +7315,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label-uppercase + big value (h2) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. Depth comes from semantic.color.border.default (role.border) at rest; elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9666,7 +9708,7 @@
         "path": "primitive.typography.family.display",
         "cssVar": "--primitive-typography-family-display",
         "type": "fontFamily",
-        "description": "Display face: Satoshi Bold (ITF), bound to display/h1/h2/h3 composites.",
+        "description": "Display face: Satoshi Bold (ITF), bound to the display and title composites.",
         "value": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
@@ -9747,6 +9789,13 @@
         "value": "60px"
       },
       {
+        "path": "primitive.typography.size.code",
+        "cssVar": "--primitive-typography-size-code",
+        "type": "dimension",
+        "description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose.",
+        "value": "13px"
+      },
+      {
         "path": "primitive.typography.weight.regular",
         "cssVar": "--primitive-typography-weight-regular",
         "type": "fontWeight",
@@ -9801,6 +9850,20 @@
         "type": "number",
         "description": "Swiss-canon relaxed rhythm (10t-5). Used by body/small/mono composites for long-form prose comfort.",
         "value": "1.625"
+      },
+      {
+        "path": "primitive.typography.lineHeight.display",
+        "cssVar": "--primitive-typography-lineHeight-display",
+        "type": "number",
+        "description": "Display role leading (hds#485).",
+        "value": "1.05"
+      },
+      {
+        "path": "primitive.typography.lineHeight.body",
+        "cssVar": "--primitive-typography-lineHeight-body",
+        "type": "number",
+        "description": "Body role leading (hds#485).",
+        "value": "1.6"
       },
       {
         "path": "primitive.typography.letterSpacing.tight",
@@ -10912,23 +10975,91 @@
         "path": "semantic.typography.display",
         "cssVar": "--semantic-typography-display",
         "type": "typography",
-        "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
+        "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "60px",
+          "fontSize": "48px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
-          "lineHeight": "1"
+          "lineHeight": "1.05"
+        }
+      },
+      {
+        "path": "semantic.typography.title",
+        "cssVar": "--semantic-typography-title",
+        "type": "typography",
+        "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "24px",
+          "fontWeight": "700",
+          "letterSpacing": "-0.01em",
+          "lineHeight": "1.25"
+        }
+      },
+      {
+        "path": "semantic.typography.body",
+        "cssVar": "--semantic-typography-body",
+        "type": "typography",
+        "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "letterSpacing": "0em",
+          "lineHeight": "1.6",
+          "maxWidth": "60ch"
+        }
+      },
+      {
+        "path": "semantic.typography.ui",
+        "cssVar": "--semantic-typography-ui",
+        "type": "typography",
+        "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "1.5",
+          "maxWidth": "60ch"
+        }
+      },
+      {
+        "path": "semantic.typography.caption",
+        "cssVar": "--semantic-typography-caption",
+        "type": "typography",
+        "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+        "composite": {
+          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "1.5"
+        }
+      },
+      {
+        "path": "semantic.typography.mono",
+        "cssVar": "--semantic-typography-mono",
+        "type": "typography",
+        "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+        "composite": {
+          "fontFamily": "\"Geist Mono\", \"Courier New\", monospace",
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "0em",
+          "lineHeight": "1.5",
+          "maxWidth": "60ch"
         }
       },
       {
         "path": "semantic.typography.h1",
         "cssVar": "--semantic-typography-h1",
         "type": "typography",
-        "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
+        "description": "deprecated: use semantic.typography.title",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "48px",
+          "fontSize": "24px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
@@ -10938,95 +11069,39 @@
         "path": "semantic.typography.h2",
         "cssVar": "--semantic-typography-h2",
         "type": "typography",
-        "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
+        "description": "deprecated: use semantic.typography.title",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "30px",
+          "fontSize": "24px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
-          "lineHeight": "40px"
+          "lineHeight": "1.25"
         }
       },
       {
         "path": "semantic.typography.h3",
         "cssVar": "--semantic-typography-h3",
         "type": "typography",
-        "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
+        "description": "deprecated: use semantic.typography.title",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "20px",
+          "fontSize": "24px",
           "fontWeight": "700",
-          "letterSpacing": "0em",
-          "lineHeight": "28px"
-        }
-      },
-      {
-        "path": "semantic.typography.body",
-        "cssVar": "--semantic-typography-body",
-        "type": "typography",
-        "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
-        "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "16px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
-          "lineHeight": "24px",
-          "maxWidth": "60ch"
-        }
-      },
-      {
-        "path": "semantic.typography.ui",
-        "cssVar": "--semantic-typography-ui",
-        "type": "typography",
-        "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
-        "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "14px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
-          "lineHeight": "20px",
-          "maxWidth": "60ch"
-        }
-      },
-      {
-        "path": "semantic.typography.caption",
-        "cssVar": "--semantic-typography-caption",
-        "type": "typography",
-        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
-        "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "12px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
-          "lineHeight": "16px"
+          "letterSpacing": "-0.01em",
+          "lineHeight": "1.25"
         }
       },
       {
         "path": "semantic.typography.eyebrow",
         "cssVar": "--semantic-typography-eyebrow",
         "type": "typography",
-        "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
+        "description": "deprecated: use semantic.typography.caption",
         "composite": {
           "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "12px",
           "fontWeight": "500",
-          "letterSpacing": "0.06em",
-          "lineHeight": "16px",
-          "textTransform": "uppercase"
-        }
-      },
-      {
-        "path": "semantic.typography.mono",
-        "cssVar": "--semantic-typography-mono",
-        "type": "typography",
-        "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
-        "composite": {
-          "fontFamily": "\"Geist Mono\", \"Courier New\", monospace",
-          "fontSize": "14px",
-          "fontWeight": "400",
           "letterSpacing": "0em",
-          "lineHeight": "20px",
-          "maxWidth": "60ch"
+          "lineHeight": "1.5"
         }
       },
       {

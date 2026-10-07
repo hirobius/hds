@@ -110,7 +110,7 @@ export const DataTableSection = /* @__PURE__ */ React.forwardRef<
     <section ref={ref} data-hds-component="DataTableSection" aria-labelledby={headingId} {...props}>
       <Stack gap="tight">
         <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
-          <Text id={headingId} as={`h${level}`} variant="heading3">
+          <Text id={headingId} as={`h${level}`} variant="title">
             {title}
           </Text>
           {toolbar ? (

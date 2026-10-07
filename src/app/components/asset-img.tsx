@@ -207,6 +207,7 @@ export function AssetImg({
         : {
             height: style.maxHeight ?? '70vh',
             width: 'auto',
+            maxWidth: '100%',
             aspectRatio: `${ar}`,
             display: 'block',
             flexShrink: 0,
@@ -239,7 +240,15 @@ export function AssetImg({
     placeholderStyle =
       pw === 0
         ? { width: '100%', aspectRatio: `${ar}`, display: 'block' }
-        : { width: pw, height: ph, display: 'block', flexShrink: 0 };
+        : {
+            // Fit the container: the frame keeps its aspect ratio but never exceeds the
+            // parent (a fixed 373x280 block overflowed a 276px column, hds#522).
+            width: pw,
+            maxWidth: '100%',
+            aspectRatio: `${pw / ph}`,
+            display: 'block',
+            flexShrink: 0,
+          };
   }
 
   return (

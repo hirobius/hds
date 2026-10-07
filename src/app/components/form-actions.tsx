@@ -7,6 +7,7 @@
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
+import { Button, type ButtonProps } from './button';
 import { Stack } from './stack';
 
 /** @public */
@@ -34,6 +35,15 @@ export const FormActions = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Form
     { primary, secondary, destructive, sticky = false, className, style, ...props },
     ref,
   ) {
+    // Button defaults to `secondary`, so a bare <Button label="Save" /> in this slot rendered
+    // as an outline, not the primary action. The slot owns that meaning, so it sets `primary`
+    // on a Button that did not choose a variant (hds#522).
+    const primaryAction =
+      React.isValidElement<ButtonProps>(primary) &&
+      primary.type === Button &&
+      primary.props.variant === undefined
+        ? React.cloneElement(primary, { variant: 'primary' })
+        : primary;
     return (
       <div
         ref={ref}
@@ -55,7 +65,7 @@ export const FormActions = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Form
           <div data-slot="group" className="ml-auto">
             <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
               {secondary}
-              {primary}
+              {primaryAction}
             </Stack>
           </div>
         </Stack>

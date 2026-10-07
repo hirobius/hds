@@ -83,8 +83,8 @@ function SaveFixture() {
         Save
       </button>
       {saved ? (
-        <Alert tone="success" title="Saved">
-          Your changes were saved.
+        <Alert tone="danger" title="Not saved">
+          Your changes were not saved.
         </Alert>
       ) : null}
     </>
@@ -253,8 +253,8 @@ describe('Table screen-reader contract', () => {
 describe('Alert screen-reader contract', () => {
   it('reads a rendered alert: the role, then its title and message', async () => {
     render(
-      <Alert tone="success" title="Saved">
-        Your changes were saved.
+      <Alert tone="danger" title="Not saved">
+        Your changes were not saved.
       </Alert>,
     );
     await startReader();
@@ -265,8 +265,8 @@ describe('Alert screen-reader contract', () => {
     expect(at).toBeGreaterThan(-1);
     expect(log.slice(at, at + 4)).toEqual([
       'alert',
-      'Saved',
-      'Your changes were saved.',
+      'Not saved',
+      'Your changes were not saved.',
       'end of alert',
     ]);
   });
@@ -285,7 +285,9 @@ describe('Alert screen-reader contract', () => {
     // land a frame or more after the insert, so wait for them. The reader joins
     // title and body.
     await waitFor(async () =>
-      expect(await virtual.spokenPhraseLog()).toContain('assertive: SavedYour changes were saved.'),
+      expect(await virtual.spokenPhraseLog()).toContain(
+        'assertive: Not savedYour changes were not saved.',
+      ),
     );
   });
 });

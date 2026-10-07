@@ -94,7 +94,7 @@ export const MetricTiles = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Metr
     const columns = Math.min(Math.max(countTiles(children), 1), MAX_COLUMNS);
     return (
       <div ref={ref} data-hds-component="MetricTiles" {...props}>
-        <Grid columns={columns} gap="tight">
+        <Grid columns={columns} gap="tight" align="stretch">
           {children}
         </Grid>
       </div>

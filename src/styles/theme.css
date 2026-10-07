@@ -14,7 +14,7 @@
  *      tenants/<slug>/tokens.json)
  *
  * Owns content that doesn't belong in the generated token layer:
- *   - Responsive clamp() typography overrides (display, h1, h2, h3)
+ *   - Type ramp role classes (.hds-type-display/title/body/ui/caption/mono)
  *   - Mobile breakpoint overrides (max-width: 639px)
  *   - Component utility classes (.hds-focus, .hds-tag-btn/.hds-tag-pill,
  *     .hds-skeleton, .hds-link, etc.)
@@ -51,21 +51,12 @@
    docs-tooling, animated-label and editorial files. Consumers that use
    ./tokens.css as their only compiled Tailwind (ops: pt-1) still rely on them,
    so they stay emitted until 1.0 drops them in a minor with a migration note. */
-@source inline("pt-1 pb-8 p-16 max-w-2xl h-3.5 w-3.5 sm:text-4xl sm:inline-block group-hover:opacity-100 text-muted-foreground/70 transition-[transform,opacity] data-[highlighted]:text-foreground data-[state=checked]:text-foreground bg-[color:var(--semantic-color-feedback-bg-warning)] border-[color:var(--semantic-color-feedback-warning)]/40 text-[color:var(--semantic-color-feedback-warning)]");
+@source inline("pt-1 pb-8 p-16 max-w-2xl h-3.5 w-3.5 sm:inline-block group-hover:opacity-100 text-muted-foreground/70 transition-[transform,opacity] data-[highlighted]:text-foreground data-[state=checked]:text-foreground bg-[color:var(--semantic-color-feedback-bg-warning)] border-[color:var(--semantic-color-feedback-warning)]/40 text-[color:var(--semantic-color-feedback-warning)]");
 
 @import './tokens.generated.css';
 @import './tenants.css';
 
 :root {
-  /* -- Responsive typography overrides ---------------------------------------- */
-  /* The token JSON stores static (desktop-max) font sizes for Figma compatibility. */
-  /* These clamp() overrides restore fluid responsive scaling in the browser.      */
-  /* 10t-5: Swiss-canon ramp (display 60px, h1 48px, h2 30px, h3 20px). hds#283: display was 72px. */
-  --semantic-typography-display-font-size: clamp(40px, 8vw, 60px);
-  --semantic-typography-h1-font-size: clamp(32px, 6vw, 48px);
-  --semantic-typography-h2-font-size: clamp(24px, 3.5vw, 30px);
-  --semantic-typography-h3-font-size: clamp(18px, 2vw, 20px);
-
   /* -- Responsive layout rhythm ----------------------------------------------- */
   /* Keep shell rhythm adaptive without pushing breakpoint logic into components. */
   /* hds#206: region.gutter steps on the t-shirt scale (lg 32px, sm 16px below 640px). */
@@ -95,7 +86,7 @@
      agreed with the real one at exactly one rung. Zero consumers in hds, ops
      or concrete — and being literals, it could never have followed a token
      change. Removed in #283. */
-  --hds-lineHeight-none: var(--primitive-typography-lineHeight-none);
+  --hds-lineHeight-none: var(--semantic-typography-lineHeight-none);
   --hds-letterSpacing-normal: var(--primitive-typography-letterSpacing-normal);
 
   /* -- Icon sizes ------------------------------------------------------------- */
@@ -279,6 +270,17 @@
   .w-10[class*='h-10'] {
     min-width: var(--primitive-size-interactive-min);
   }
+
+  /* -- Row and small-button touch targets (hds#522) --------------------------
+   * Checkbox/Radio/Toggle rows, Pagination buttons and the copy buttons are
+   * below 44px on touch. The class lifts the hit area only; desktop is unchanged. */
+  .hds-touch-row {
+    min-height: var(--primitive-size-interactive-min);
+  }
+  .hds-touch-target {
+    min-height: var(--primitive-size-interactive-min);
+    min-width: var(--primitive-size-interactive-min);
+  }
 }
 
 /* --- Dark mode --------------------------------------------------------------- */
@@ -371,7 +373,8 @@
 
 .hds-skeleton {
   animation: hds-skeleton-shimmer var(--hds-anim-skeleton);
-  background: var(--semantic-color-surface-raised);
+  /* sunken, not raised: a placeholder on a Card or Surface (raised) must differ from it */
+  background: var(--semantic-color-surface-sunken);
 }
 
 /* --- Audit overlay --------------------------------------------------------- */
@@ -495,6 +498,54 @@ input[data-search-input='true'] {
 }
 .hds-bg-hover-neutral:hover {
   background: var(--semantic-color-surface-raised);
+}
+
+/* --- Type ramp role classes (hds#483) ------------------------------------------
+ * One class per role, for Tailwind-styled components that cannot spread
+ * hds.typeStyles. In the components layer so a className utility still wins. */
+@layer components {
+  .hds-type-display {
+    font-family: var(--semantic-typography-display-font-family);
+    font-size: var(--semantic-typography-display-font-size);
+    font-weight: var(--semantic-typography-display-font-weight);
+    letter-spacing: var(--semantic-typography-display-letter-spacing);
+    line-height: var(--semantic-typography-display-line-height);
+  }
+  .hds-type-title {
+    font-family: var(--semantic-typography-title-font-family);
+    font-size: var(--semantic-typography-title-font-size);
+    font-weight: var(--semantic-typography-title-font-weight);
+    letter-spacing: var(--semantic-typography-title-letter-spacing);
+    line-height: var(--semantic-typography-title-line-height);
+  }
+  .hds-type-body {
+    font-family: var(--semantic-typography-body-font-family);
+    font-size: var(--semantic-typography-body-font-size);
+    font-weight: var(--semantic-typography-body-font-weight);
+    letter-spacing: var(--semantic-typography-body-letter-spacing);
+    line-height: var(--semantic-typography-body-line-height);
+  }
+  .hds-type-ui {
+    font-family: var(--semantic-typography-ui-font-family);
+    font-size: var(--semantic-typography-ui-font-size);
+    font-weight: var(--semantic-typography-ui-font-weight);
+    letter-spacing: var(--semantic-typography-ui-letter-spacing);
+    line-height: var(--semantic-typography-ui-line-height);
+  }
+  .hds-type-caption {
+    font-family: var(--semantic-typography-caption-font-family);
+    font-size: var(--semantic-typography-caption-font-size);
+    font-weight: var(--semantic-typography-caption-font-weight);
+    letter-spacing: var(--semantic-typography-caption-letter-spacing);
+    line-height: var(--semantic-typography-caption-line-height);
+  }
+  .hds-type-mono {
+    font-family: var(--semantic-typography-mono-font-family);
+    font-size: var(--semantic-typography-mono-font-size);
+    font-weight: var(--semantic-typography-mono-font-weight);
+    letter-spacing: var(--semantic-typography-mono-letter-spacing);
+    line-height: var(--semantic-typography-mono-line-height);
+  }
 }
 
 /* --- Focus ring utility ------------------------------------------------------- */
@@ -649,36 +700,21 @@ input[data-search-input='true'] {
     min-height: 100vh;
   }
 
-  /* Heading elements — map to the semantic typography composite tokens.
-   * Single-weight policy (Adrian directive 2026-05-04): every face ships at
-   * 500 only; using bold/semibold here would faux-bold and look fuzzy. */
-  :where([data-hds]) h1 {
-    font-family: var(--semantic-typography-h1-font-family);
-    font-size: var(--semantic-typography-h1-font-size);
-    font-weight: var(--semantic-typography-h1-font-weight);
-    line-height: var(--semantic-typography-h1-line-height);
-    letter-spacing: var(--semantic-typography-h1-letter-spacing);
+  /* Heading elements — map to the type ramp (hds#483). h1 to h3 are the title
+   * role; display is opt-in through <Text variant="display">. h4 and below are ui. */
+  :where([data-hds]) :is(h1, h2, h3) {
+    font-family: var(--semantic-typography-title-font-family);
+    font-size: var(--semantic-typography-title-font-size);
+    font-weight: var(--semantic-typography-title-font-weight);
+    line-height: var(--semantic-typography-title-line-height);
+    letter-spacing: var(--semantic-typography-title-letter-spacing);
   }
-  :where([data-hds]) h2 {
-    font-family: var(--semantic-typography-h2-font-family);
-    font-size: var(--semantic-typography-h2-font-size);
-    font-weight: var(--semantic-typography-h2-font-weight);
-    line-height: var(--semantic-typography-h2-line-height);
-    letter-spacing: var(--semantic-typography-h2-letter-spacing);
-  }
-  :where([data-hds]) h3 {
-    font-family: var(--semantic-typography-h3-font-family);
-    font-size: var(--semantic-typography-h3-font-size);
-    font-weight: var(--semantic-typography-h3-font-weight);
-    line-height: var(--semantic-typography-h3-line-height);
-    letter-spacing: var(--semantic-typography-h3-letter-spacing);
-  }
-  :where([data-hds]) h4 {
-    font-family: var(--semantic-typography-body-font-family);
-    font-size: var(--primitive-typography-size-lg);
-    font-weight: var(--semantic-typography-body-font-weight);
-    line-height: var(--primitive-typography-lineHeight-normal);
-    letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  :where([data-hds]) :is(h4, h5, h6) {
+    font-family: var(--semantic-typography-ui-font-family);
+    font-size: var(--semantic-typography-ui-font-size);
+    font-weight: var(--semantic-typography-ui-font-weight);
+    line-height: var(--semantic-typography-ui-line-height);
+    letter-spacing: var(--semantic-typography-ui-letter-spacing);
   }
 
   /* Inline and block text — inherit body by default, no overrides needed */
