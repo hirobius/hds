@@ -119,7 +119,7 @@ async function measureAll(picked, filter, concurrency) {
         let m;
         try {
           m = await measure(page, p);
-        } catch (e) {
+        } catch {
           // A crashed preview poisons later stories; recycle the page and retry once.
           await page.close().catch(() => {});
           page = await runner.openWorker(context, `http://127.0.0.1:${port}`);
