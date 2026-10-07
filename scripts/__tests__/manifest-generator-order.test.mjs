@@ -31,7 +31,15 @@ const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const MANIFEST = join('public', 'hds-manifest.json');
 
 /** What the manifest steps read. generate-component-api needs tsconfig.json. */
-const TREE = ['scripts', 'src', 'tenants', 'hirobius.tokens.json', 'tsconfig.json', MANIFEST];
+const TREE = [
+  'mcp',
+  'scripts',
+  'src',
+  'tenants',
+  'hirobius.tokens.json',
+  'tsconfig.json',
+  MANIFEST,
+];
 
 /** Both chains parse, discover and type-check the whole component tree, twice. */
 const SETUP_TIMEOUT = 300_000;

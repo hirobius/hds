@@ -16,7 +16,8 @@
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { HOOKS, INTENTS, coreComponents } from './guide.mjs';
+import { CORE_COMPONENTS } from './core-set.mjs';
+import { HOOKS, INTENTS, recommendedComponents } from './guide.mjs';
 
 export const RESULT_BUDGET = 1900;
 
@@ -75,7 +76,7 @@ export function loadCatalog(root) {
 
   /**
    * The flags both search_components and get_component put on a component:
-   * `core` when the guide prefers it, `insteadFor` for each need it is the
+   * `core` for the ratified core set, `recommended` for the rest of what the guide prefers, `insteadFor` for each need it is the
    * wrong answer to (the guide names `use` instead).
    */
   const steer = (name) => {
@@ -84,11 +85,12 @@ export function loadCatalog(root) {
       use: i.use[0],
     }));
     return {
-      ...(core.has(name) ? { core: true } : {}),
+      ...(ratified.has(name) ? { core: true } : recommended.has(name) ? { recommended: true } : {}),
       ...(insteadFor.length ? { insteadFor } : {}),
     };
   };
-  const core = new Set(coreComponents());
+  const ratified = new Set(CORE_COMPONENTS);
+  const recommended = new Set(recommendedComponents());
   const components = Object.keys(api)
     .filter((name) => !api[name].hidden)
     .sort();
@@ -126,14 +128,14 @@ export function loadCatalog(root) {
     for (const name of components) {
       const lower = name.toLowerCase();
       if (lower === compact) add(name, 100);
-      else if (partAliases.has(name) && !core.has(name)) continue;
+      else if (partAliases.has(name) && !recommended.has(name)) continue;
       else if (qWords.some((w) => w.length > 2 && (lower.includes(w) || w.includes(lower))))
         add(name, 20);
       const entry = api[name];
       const text = words(`${entry.description} ${entry.usage?.when ?? ''}`);
       add(name, 2 * qWords.filter((w) => text.includes(w)).length);
       if (scores.get(name) > 0) {
-        if (core.has(name)) add(name, 1);
+        if (recommended.has(name)) add(name, 1);
       }
     }
     const ranked = components
@@ -289,11 +291,12 @@ export function loadCatalog(root) {
 
   // ── list_core ───────────────────────────────────────────────────────────
   function listCore() {
-    const names = [...core].filter((n) => api[n]);
+    const names = [...recommended].filter((n) => api[n]);
     // `id → use`: short enough that every need fits; search_components takes the id.
     const needs = INTENTS.map((i) => `${i.id} → ${i.use.join(', ')}`);
     // Needs are ordered most common first; what does not fit is one search_components away.
     return fitList(needs, (shown, dropped) => ({
+      set: 'recommended: the ratified core plus what the needs name',
       root: names.filter((n) => !patternNames.has(n)),
       patterns: names.filter((n) => patternNames.has(n)),
       hooks: Object.keys(HOOKS),

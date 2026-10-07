@@ -23,7 +23,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { HOOKS, coreComponents } from '../mcp/guide.mjs';
+import { HOOKS, recommendedComponents } from '../mcp/guide.mjs';
 import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -41,7 +41,7 @@ export function buildAgentsMd({ componentApi, patternNames, repoNotes }) {
   const api = componentApi.components;
   const fromPatterns = new Set(patternNames);
   const needs = needsMarkdown(api);
-  const core = coreComponents().filter((n) => api[n]);
+  const core = recommendedComponents().filter((n) => api[n]);
   const rootNames = [...core.filter((n) => !fromPatterns.has(n)), ...Object.keys(HOOKS)].sort();
   const patterns = core.filter((n) => fromPatterns.has(n));
 
@@ -60,6 +60,8 @@ export function buildAgentsMd({ componentApi, patternNames, repoNotes }) {
     '- Without the server, the same data is in `src/app/data/component-api.json` (props, `usage`), `public/hds-manifest.json` (tokens, compound parts), `llms.txt` and `DESIGN.md` in this package.',
     '',
     '## Imports',
+    '',
+    'These are the recommended components: the ratified core set plus every component the needs below name. The ratified core alone is the `core: true` flag in the manifest.',
     '',
     `- \`${PKG}\`: ${rootNames.map(code).join(', ')}.`,
     `- \`${PKG}/patterns\`: ${patterns.map(code).join(', ')}. These are not in the root barrel.`,

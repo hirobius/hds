@@ -201,7 +201,8 @@ describe('snapshot.mjs CLI', () => {
     expect(run(['--dir', dir, '--out', out]).status).toBe(0);
     expect(readFileSync(out, 'utf8')).toBe(formatJson(EXPECTED));
     expect(run(['--dir', dir, '--check', out]).status).toBe(0);
-  });
+    // Three node spawns; the 5s default times out when the whole suite runs at once (pre-push).
+  }, 30_000);
 
   it('--check exits 1 and names the file when the committed snapshot differs', () => {
     const dir = builtPackage();

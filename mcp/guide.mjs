@@ -13,6 +13,8 @@
  * scripts/__tests__/generate-agents-md.test.mjs enforces it.
  */
 
+import { CORE_COMPONENTS } from './core-set.mjs';
+
 /** Hooks are not components, so component-api.json has no entry for them. */
 export const HOOKS = {
   useToast: {
@@ -257,59 +259,14 @@ export const INTENTS = [
 ];
 
 /**
- * The ratified core set (scripts/lib/core-components.mjs, hds#254). Copied, not
- * imported, because scripts/ does not ship; scripts/__tests__/generate-agents-md.test.mjs
- * pins the two together.
+ * The recommended set: the ratified core (mcp/core-set.mjs, hds#254) plus every
+ * component a need above names, hooks excluded. This is a different set from the
+ * ratified core: it adds the patterns and layout parts the guide steers agents to
+ * (Page, MetricTiles, ...). list_core and AGENTS.md show this one and say so; the
+ * manifest `core` flag, llms.txt and SKILL.md show the ratified core.
  */
-export const RATIFIED_CORE = [
-  'Alert',
-  'Avatar',
-  'Badge',
-  'Box',
-  'Breadcrumb',
-  'Button',
-  'Card',
-  'Checkbox',
-  'Combobox',
-  'Container',
-  'Dialog',
-  'Disclosure',
-  'Divider',
-  'EmptyState',
-  'Field',
-  'Grid',
-  'HdsRouterProvider',
-  'HdsThemeProvider',
-  'Icon',
-  'InlineLink',
-  'Input',
-  'Kbd',
-  'Menu',
-  'Pagination',
-  'Popover',
-  'Progress',
-  'Radio',
-  'SegmentedControl',
-  'Select',
-  'Skeleton',
-  'Slider',
-  'Spinner',
-  'Stack',
-  'Surface',
-  'Table',
-  'Tabs',
-  'Tag',
-  'Text',
-  'Textarea',
-  'ToastProvider',
-  'Toggle',
-  'Tooltip',
-  'VisuallyHidden',
-];
-
-/** The core set agents should prefer: the ratified core plus every `use` above, hooks excluded. */
-export function coreComponents() {
-  const names = new Set(RATIFIED_CORE);
+export function recommendedComponents() {
+  const names = new Set(CORE_COMPONENTS);
   for (const intent of INTENTS) for (const name of intent.use) if (!HOOKS[name]) names.add(name);
   return [...names].sort();
 }

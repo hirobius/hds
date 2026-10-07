@@ -36,8 +36,15 @@ contract. At 0.21.0 the core set is 43 names.
 
 ## Decision
 
-1. **The core set is the names in `scripts/lib/core-components.mjs`** (43 at
-   0.21.0). That file is the only list. Adding or removing a core component is
+1. **The core set is the names in `mcp/core-set.mjs`** (43 at 0.21.0).
+   That file is the only list; it lives in `mcp/` because that directory ships in
+   the package and `scripts/` does not, and `scripts/lib/core-components.mjs`
+   re-exports it. The hds-mcp `list_core` tool and `AGENTS.md` show a second,
+   named set, the **recommended** set: the ratified core plus every component
+   `mcp/guide.mjs` names for a need (`recommendedComponents()`). It is not
+   called core, `get_component` marks `core` only on the ratified names, and
+   `scripts/__tests__/core-set-sources.test.mjs` fails when any surface
+   disagrees with its set. Adding or removing a core component is
    an edit there followed by `pnpm manifest:generate` and `pnpm readme:counts`.
 2. **`core` is a manifest flag, not a tier.** `scripts/generate-manifest.mjs`
    writes `core: true` on those specs and omits the field everywhere else;
