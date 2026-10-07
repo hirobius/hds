@@ -12,6 +12,8 @@ import { describe, it, expect } from 'vitest';
 import {
   checkChangesetPresence,
   checkStatusFreshness,
+  hasStatusNote,
+  isStatusNote,
   newestTouching,
   touchesWatchedPath,
 } from '../check-record-freshness.mjs';
@@ -97,5 +99,35 @@ describe('checkChangesetPresence', () => {
     const result = checkChangesetPresence(commits, []);
     expect(result.ok).toBe(false);
     expect(result.offenders.map((c) => c.sha)).toEqual(['bbb']);
+  });
+});
+
+describe('status notes (.status/*.md) — conflict-free alternative to bumping updatedAt', () => {
+  it('recognises a note file but not the README or nested/other paths', () => {
+    expect(isStatusNote('.status/claude-fix-x.md')).toBe(true);
+    expect(isStatusNote('.status/README.md')).toBe(false);
+    expect(isStatusNote('.status/sub/a.md')).toBe(false);
+    expect(isStatusNote('docs/.status/a.md')).toBe(false);
+    expect(isStatusNote('.status/a.txt')).toBe(false);
+  });
+
+  it('hasStatusNote is true only when a pushed commit carries a note', () => {
+    expect(hasStatusNote([commit({ files: ['src/a.ts'] })])).toBe(false);
+    expect(
+      hasStatusNote([commit({ files: ['src/a.ts'] }), commit({ files: ['.status/a.md'] })]),
+    ).toBe(true);
+  });
+
+  it('a note satisfies freshness for a stale status.json', () => {
+    const commits = [
+      commit({ date: '2026-09-23T00:00:00Z', files: ['src/x.ts'] }),
+      commit({ date: '2026-09-23T00:00:01Z', files: ['.status/a.md'] }),
+    ];
+    expect(checkStatusFreshness(commits, '2026-09-01T00:00:00Z').ok).toBe(true);
+  });
+
+  it('canary: without a note, the same stale status.json still fails', () => {
+    const commits = [commit({ date: '2026-09-23T00:00:00Z', files: ['src/x.ts'] })];
+    expect(checkStatusFreshness(commits, '2026-09-01T00:00:00Z').ok).toBe(false);
   });
 });

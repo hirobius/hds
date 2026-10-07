@@ -81,15 +81,15 @@ export const CardGrid: Story = {
       style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', width: '100%' }}
     >
       <Surface>
-        <Text variant="heading3">Default</Text>
+        <Text variant="title">Default</Text>
         <Text variant="body">Component padding, no shadow.</Text>
       </Surface>
       <Surface padding="item">
-        <Text variant="heading3">Item</Text>
+        <Text variant="title">Item</Text>
         <Text variant="body">Compact 16px padding.</Text>
       </Surface>
       <Surface shadow>
-        <Text variant="heading3">Elevated</Text>
+        <Text variant="title">Elevated</Text>
         <Text variant="body">Elevation shadow lift.</Text>
       </Surface>
     </div>

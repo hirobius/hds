@@ -9,12 +9,13 @@ description: "Use when building or editing UI in an app that consumes @hirobius/
 
 ## Install and import
 
-Install `@hirobius/design-system`, import core components from the root barrel (`import { Button } from '@hirobius/design-system'`) and the pattern-tier components from `@hirobius/design-system/patterns` (`import { Page } from '@hirobius/design-system/patterns'`), and load one stylesheet once at the app root.
+Install `@hirobius/design-system`, import core components from the root barrel (`import { Button } from '@hirobius/design-system'`) and the pattern-tier components from `@hirobius/design-system/patterns` (`import { Page } from '@hirobius/design-system/patterns'`), and load one stylesheet once at the app root. Add `import '@hirobius/design-system/fonts.css'` only if you want the HDS brand fonts (optional; skip it to bring your own).
 
 Subpath exports:
 
 - `@hirobius/design-system/tokens.css`
 - `@hirobius/design-system/styles.css`
+- `@hirobius/design-system/fonts.css`
 - `@hirobius/design-system/variables.css`
 - `@hirobius/design-system/static.css`
 - `@hirobius/design-system/tokens`
@@ -27,6 +28,22 @@ Subpath exports:
 - `@hirobius/design-system/scroll`
 - `@hirobius/design-system/patterns`
 - `@hirobius/design-system/icons`
+- `@hirobius/design-system/eslint-plugin`
+
+## Core set
+
+The 43 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+
+- **Actions:** `Button`
+- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
+- **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
+- **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
+- **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
+- **Navigation:** `Breadcrumb`, `InlineLink`, `Pagination`, `Tabs`
+- **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
+- **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
+- **Typography:** `Text`
+- **Utility:** `VisuallyHidden`
 
 ## Allow-list: components you may import
 
@@ -45,7 +62,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
-- `CardMetric` — Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
+- `CardMetric` — Card.Metric — one label, a large value and an optional sub-line inside a Card.
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `EmptyState` — EmptyState — consistent no-data placeholder for lists, grids, and sections.
@@ -54,7 +71,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `InlineCode` — InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
 - `Kbd` — Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
-- `Stat` — Headline metric — large value, uppercase caption label, optional sub-line.
+- `Stat` — Headline metric — large value, caption label, optional sub-line.
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `Timestamp` — Presents a date/time with a machine-readable `dateTime` for accessibility.
@@ -174,7 +191,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 2. `Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.
 3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
-5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile`, and between `Card` and `Surface`, with the "Which one, when" table in `DESIGN.md`.
+5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). A row of headline numbers is always `MetricTiles`; `Stat`, `Card.Metric` and `StatusTile` answer other needs (see "Pick By Need" in `llms.txt`). Pick between `Card` and `Surface` with the "Which one, when" table in `DESIGN.md`.
 6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
 
 Never:

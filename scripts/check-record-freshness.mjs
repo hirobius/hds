@@ -88,11 +88,25 @@ export function newestTouching(commits, prefixes) {
   return newest;
 }
 
+/** A per-PR status note: `.status/<name>.md` (not the README, not nested). */
+export function isStatusNote(file) {
+  return /^\.status\/[^/]+\.md$/.test(file) && file.toLowerCase() !== '.status/readme.md';
+}
+
+/** True when any pushed commit adds/changes a status note. */
+export function hasStatusNote(commits) {
+  return commits.some((c) => c.files.some(isStatusNote));
+}
+
 /**
+ * A `.status/*.md` note in the pushed range counts as a fresh record (it is
+ * folded into status.json later by `pnpm status:fold`), so PRs need not edit
+ * status.json and stop conflicting on it.
  * @param {Commit[]} commits
  * @param {string} statusUpdatedAt - ISO date/datetime from status.json
  */
 export function checkStatusFreshness(commits, statusUpdatedAt) {
+  if (hasStatusNote(commits)) return { ok: true };
   const newest = newestTouching(commits, WATCHED_PREFIXES);
   if (!newest) return { ok: true };
   // Compare as ISO strings when both are comparable that way; status.json's
@@ -131,7 +145,7 @@ function resolveRange(explicitRange) {
   if (explicitRange) return explicitRange;
   try {
     const upstream = git(['rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}']);
-    return `${upstream}..HEAD`;
+    return `${upstream}..HEAD ^origin/main`;
   } catch {
     // No upstream configured (first push of a new branch) — check the tip
     // commit only, which is the one case guaranteed to be about to publish.
@@ -146,7 +160,13 @@ const FIELD_SEP = '\u0002';
 function loadCommits(range) {
   let log;
   try {
-    log = git(['log', `--format=%H${FIELD_SEP}%cI${FIELD_SEP}%B${COMMIT_SEP}`, range]);
+    // `^origin/main` (default range only) skips commits main already holds, so
+    // merging or cherry-picking from main never re-demands a status bump.
+    log = git([
+      'log',
+      `--format=%H${FIELD_SEP}%cI${FIELD_SEP}%B${COMMIT_SEP}`,
+      ...range.split(' '),
+    ]);
   } catch {
     return [];
   }
@@ -204,8 +224,8 @@ function main() {
       `✗ check-record-freshness — status.json is stale.\n` +
         `  commit ${statusResult.newest.sha.slice(0, 8)} (${statusResult.newest.date}) touches ` +
         `src/, scripts/ or docs/adr/, but status.json's updatedAt is ${status.updatedAt}.\n` +
-        `  fix: update status.json (updatedAt, phase, headline, next, blocked) to reflect this ` +
-        `push, per CLAUDE.md, then amend/include it in what you push.`,
+        `  fix: add a one-line note .status/<branch>.md (never conflicts; \`pnpm status:fold\` ` +
+        `folds notes into status.json on main), or run \`pnpm status:touch\` to bump status.json directly.`,
     );
   }
 

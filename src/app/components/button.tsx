@@ -42,7 +42,7 @@ import { isDevelopment } from '../../lib/env';
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (Tailwind has no single utility for transition-[colors,filter]) and the 9999px inset-shadow spread that fills the padding box for the pressed wash
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -54,24 +54,29 @@ const buttonVariants = /* @__PURE__ */ cva(
       // Semantic action color. `neutral` (default) keeps the variant's own
       // colors; the status tones apply a token-driven tonal fill (tinted
       // surface + matching feedback text) that clears AA in BOTH light and dark
-      // because the fg/bg feedback token pair flips together per theme. `!`
-      // (important) lets the tone override whichever `variant` colors are set,
-      // so `tone` composes with any variant. Drives the destructive/status
-      // actions consumers previously kept on MUI.
+      // because the fg/bg feedback token pair flips together per theme. Tone
+      // beats variant by tailwind-merge class-group replacement (ADR-030): cva
+      // emits tone classes after variant classes and the output is only ever
+      // rendered through `cn`, so each tone class replaces the variant class in
+      // its group. That holds only if a tone sets EVERY group a variant sets,
+      // hover fill and hover border included; a group the tone leaves out
+      // leaks the variant's class through (the reason the hover pair is here).
+      // A consumer `className` comes last and overrides tone the same way.
+      // Drives the destructive/status actions consumers previously kept on MUI.
       tone: {
         neutral: '',
         danger:
-          '!border-transparent !bg-feedback-bg-danger !text-feedback-danger hover:!brightness-95 dark:hover:!brightness-110',
+          'border-transparent bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
         success:
-          '!border-transparent !bg-feedback-bg-success !text-feedback-success hover:!brightness-95 dark:hover:!brightness-110',
+          'border-transparent bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
         warning:
-          '!border-transparent !bg-feedback-bg-warning !text-feedback-warning hover:!brightness-95 dark:hover:!brightness-110',
-        info: '!border-transparent !bg-feedback-bg-info !text-feedback-info hover:!brightness-95 dark:hover:!brightness-110',
+          'border-transparent bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
+        info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
       },
       size: {
-        sm: 'h-8 px-3 text-xs [&_svg]:size-3.5',
-        md: 'h-10 px-4 py-2 text-sm [&_svg]:size-4',
-        lg: 'h-12 px-6 text-base [&_svg]:size-5',
+        sm: 'h-8 px-3 hds-type-caption [&_svg]:size-3.5',
+        md: 'h-10 px-4 py-2 hds-type-ui [&_svg]:size-4',
+        lg: 'h-12 px-6 hds-type-ui [&_svg]:size-5',
       },
       iconOnly: {
         true: 'p-0',
@@ -92,7 +97,11 @@ const buttonVariants = /* @__PURE__ */ cva(
   },
 );
 
-const toggleOnClasses = 'data-[pressed=true]:bg-accent data-[pressed=true]:text-accent-foreground';
+// On-state fills with the accent surface (`role.primary`), not `bg-accent`: that
+// role maps to accentSubtle, which is within 1 step of the secondary variant's
+// background, so a pressed toggle looked the same as an unpressed one (hds#522).
+const toggleOnClasses =
+  'data-[pressed=true]:border-transparent data-[pressed=true]:bg-primary data-[pressed=true]:text-primary-foreground data-[pressed=true]:hover:bg-primary/90';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -103,6 +112,8 @@ export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
     Omit<ButtonVariantProps, 'iconOnly'> {
+  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (an outline), so pass `primary` for the main action. */
+  variant?: ButtonVariantProps['variant'];
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */
@@ -188,9 +199,16 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           },
         }
       : { onClick };
+    // A status tone owns the fill, text and border whether or not a toggle is
+    // on (ADR-030). The on-state classes carry a `data-[pressed=true]:` variant,
+    // so tailwind-merge cannot fold them into the tone's plain classes, and
+    // their attribute selector would outrank the tone on specificity; a toned
+    // toggle therefore leaves them out, which renders what the old `!` tone
+    // did (its important declarations hid them). aria-pressed still reports it.
+    const hasStatusTone = tone != null && tone !== 'neutral';
     const classes = cn(
       buttonVariants({ variant, tone, size, iconOnly }),
-      isToggle && toggleOnClasses,
+      isToggle && !hasStatusTone && toggleOnClasses,
       className,
     );
 

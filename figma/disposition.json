@@ -6,18 +6,18 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-01",
+  "generatedAt": "2026-10-07",
   "overrides": {},
   "summary": {
-    "total": 98,
+    "total": 97,
     "byClass": {
-      "library": 57,
+      "library": 56,
       "slot": 19,
       "layout": 9,
       "internal": 13
     },
-    "libraryLinked": 43,
-    "libraryMissing": 14,
+    "libraryLinked": 56,
+    "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -35,7 +35,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24"
     },
     {
       "name": "AssetImg",
@@ -43,7 +43,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-67"
     },
     {
       "name": "Avatar",
@@ -59,7 +59,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63"
     },
     {
       "name": "Badge",
@@ -75,7 +75,7 @@
       "parent": null,
       "category": "Typography",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18"
     },
     {
       "name": "Box",
@@ -211,7 +211,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268"
     },
     {
       "name": "DestructiveSection",
@@ -219,7 +219,7 @@
       "parent": null,
       "category": "Actions",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3"
     },
     {
       "name": "Dialog",
@@ -355,7 +355,7 @@
       "parent": null,
       "category": "Actions",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87"
     },
     {
       "name": "FormField",
@@ -467,7 +467,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2"
     },
     {
       "name": "InlineCode",
@@ -499,7 +499,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9"
     },
     {
       "name": "Menu",
@@ -515,7 +515,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47"
     },
     {
       "name": "MetricTile",
@@ -523,7 +523,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-114"
     },
     {
       "name": "MetricTiles",
@@ -662,14 +662,6 @@
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247"
     },
     {
-      "name": "StatusDot",
-      "class": "library",
-      "parent": null,
-      "category": "Feedback",
-      "tier": "primitive",
-      "figmaUrl": null
-    },
-    {
       "name": "StatusListItem",
       "class": "library",
       "parent": null,
@@ -755,7 +747,7 @@
       "parent": null,
       "category": "Typography",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2022-31"
     },
     {
       "name": "Textarea",
@@ -771,7 +763,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11"
     },
     {
       "name": "ToastProvider",

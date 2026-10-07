@@ -50,7 +50,7 @@ const radioInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-0',
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
 const radioRootVariants = /* @__PURE__ */ cva(
-  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] select-none',
+  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] py-[var(--semantic-space-subgrid-gap)] select-none hds-touch-row',
   {
     variants: {
       state: {
@@ -180,6 +180,10 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
 
   return (
     <motion.label
+      // motion's whileTap puts tabindex=0 on a non-focusable element, which gave
+      // every control two tab stops (the label, then the input). An explicit
+      // tabindex keeps motion from adding it; the native input is the one stop (hds#522).
+      tabIndex={-1}
       whileTap={isDisabled ? undefined : { scale: 0.99 }}
       transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
       className={radioRootVariants({ state: visualState })}

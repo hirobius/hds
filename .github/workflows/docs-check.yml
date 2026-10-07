@@ -1,0 +1,45 @@
+name: Docs guardrails
+
+# Deterministic MDX checks (hds#497): zero-dependency checker
+# (scripts/check-docs.mjs) plus its self-test. No install step needed.
+# Mark the "Docs guardrails" job as a required status check on main
+# (Settings -> Branches) so a red check cannot merge.
+
+on:
+  pull_request:
+    paths:
+      - 'content/**'
+      - 'content-model.md'
+      - 'scripts/check-docs.mjs'
+      - 'scripts/docs-rules.json'
+      - 'scripts/check-docs.selftest.mjs'
+      - '.github/workflows/docs-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/**'
+      - 'content-model.md'
+      - 'scripts/check-docs.mjs'
+      - 'scripts/docs-rules.json'
+      - 'scripts/check-docs.selftest.mjs'
+      - '.github/workflows/docs-check.yml'
+  workflow_dispatch:
+
+jobs:
+  docs-check:
+    name: Docs guardrails
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check MDX guardrails
+        run: node scripts/check-docs.mjs
+
+      - name: Self-test (planted violations must fail)
+        run: node --test scripts/check-docs.selftest.mjs

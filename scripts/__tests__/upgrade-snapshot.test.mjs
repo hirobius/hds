@@ -219,40 +219,134 @@ describe('snapshot.mjs CLI', () => {
   });
 });
 
+/** Export names per entry, as the baseline lists them: the root is the
+ * baseline's root modules together (`export *` forwards no `default`); each
+ * subpath is its `@subpath/<name>` module. */
+function baselineEntries(baseline) {
+  const entries = {};
+  for (const [module, names] of Object.entries(baseline.modules)) {
+    if (module.startsWith('@subpath/')) {
+      entries[`./${module.slice('@subpath/'.length)}`] = [...names].sort();
+    } else {
+      const root = new Set(entries['.'] ?? []);
+      for (const name of names) if (module === '(barrel)' || name !== 'default') root.add(name);
+      entries['.'] = [...root].sort();
+    }
+  }
+  return entries;
+}
+
+function snapshotEntries(snapshot) {
+  return Object.fromEntries(
+    Object.entries(snapshot.entries).map(([entry, names]) => [entry, Object.keys(names).sort()]),
+  );
+}
+
+/** Names the published release exports that the working baseline no longer
+ * does (`removed:<entry>:<name>`, the diff.mjs fact id), and names it gained. */
+function nameDrift(published, working) {
+  const ids = (entries) =>
+    new Set(Object.entries(entries).flatMap(([entry, names]) => names.map((n) => `${entry}:${n}`)));
+  const [was, now] = [ids(published), ids(working)];
+  return {
+    removed: [...was]
+      .filter((id) => !now.has(id))
+      .map((id) => `removed:${id}`)
+      .sort(),
+    added: [...now]
+      .filter((id) => !was.has(id))
+      .map((id) => `added:${id}`)
+      .sort(),
+  };
+}
+
+/** Pending `.changeset/*.md` files with this package's bump and their prose. */
+function readChangesets(dir) {
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.md') && f !== 'README.md')
+    .map((file) => {
+      const text = readFileSync(join(dir, file), 'utf8');
+      const bump = /^['"]?@hirobius\/design-system['"]?\s*:\s*(patch|minor|major)\s*$/m.exec(text);
+      return { file, bump: bump?.[1] ?? null, body: text.replace(/^---[\s\S]*?---/, '') };
+    });
+}
+
+/**
+ * Removals no pending changeset accounts for. Until the upgrade/pending notes
+ * land (hds#448), a removal is explained when a minor or major changeset has a
+ * sentence that names it as a whole word and says it is removed: a removal is
+ * breaking, so a patch cannot carry it (hds#445 decision 3), and a passing
+ * mention ("Badge/StatusDot roles also changed") does not count. Additions
+ * need no step (upgrade/README.md).
+ */
+function unexplainedRemovals(removed, changesets) {
+  const sentences = changesets
+    .filter((c) => c.bump === 'minor' || c.bump === 'major')
+    .flatMap((c) => c.body.split(/(?<=[.!?])\s+/))
+    .filter((sentence) => /\bremov/i.test(sentence));
+  return removed.filter((id) => {
+    const name = id.split(':').at(-1);
+    const word = new RegExp(`(?<![\\w$])${name.replace(/[$]/g, '\\$')}(?![\\w$])`);
+    return !sentences.some((sentence) => word.test(sentence));
+  });
+}
+
 describe('committed release snapshots (docs/api/releases)', () => {
   const read = (file) => JSON.parse(readFileSync(join(REPO, file), 'utf8'));
+  const baseline = read('docs/api/api-baseline.json');
+  const versions = readdirSync(join(REPO, 'docs/api/releases'))
+    .map((f) => f.replace(/\.json$/, ''))
+    .sort(compareVersions);
+  const changesets = readChangesets(join(REPO, '.changeset'));
 
-  // The baseline is the working tree's surface (`pnpm api:check`), refreshed at
-  // every version bump; the snapshot is the published tarball's. For the
-  // release the baseline describes they must list the same names. The root is
-  // the baseline's root modules together (`export *` forwards no `default`);
-  // each subpath is its `@subpath/<name>` module.
-  it('lists the names docs/api/api-baseline.json lists for the same release', () => {
-    const baseline = read('docs/api/api-baseline.json');
-    const versions = readdirSync(join(REPO, 'docs/api/releases'))
-      .map((f) => f.replace(/\.json$/, ''))
-      .sort(compareVersions);
+  // The baseline is the working tree's surface (`pnpm api:check`) and moves
+  // with every merge; the snapshot is the published tarball's and never moves.
+  // Between the release and the next version bump the two may differ, but
+  // only by additions and by removals a pending changeset names.
+  it('differs from the published snapshot of its version only by what pending changesets explain', () => {
     if (!versions.includes(baseline.version)) {
       // The bump ran before the release's snapshot was recorded: nothing to
       // compare yet, but the baseline must then be ahead of every snapshot.
       expect(compareVersions(baseline.version, versions.at(-1))).toBe(1);
       return;
     }
-    const snapshot = read(`docs/api/releases/${baseline.version}.json`);
-    const expected = {};
-    for (const [module, names] of Object.entries(baseline.modules)) {
-      if (module.startsWith('@subpath/')) {
-        expected[`./${module.slice('@subpath/'.length)}`] = [...names].sort();
-      } else {
-        const root = new Set(expected['.'] ?? []);
-        for (const name of names) if (module === '(barrel)' || name !== 'default') root.add(name);
-        expected['.'] = [...root].sort();
-      }
-    }
-    const actual = Object.fromEntries(
-      Object.entries(snapshot.entries).map(([entry, names]) => [entry, Object.keys(names).sort()]),
+    const published = snapshotEntries(read(`docs/api/releases/${baseline.version}.json`));
+    const { removed } = nameDrift(published, baselineEntries(baseline));
+    expect(unexplainedRemovals(removed, changesets)).toEqual([]);
+  });
+
+  it('canary: an unexplained removal, or one carried by a patch changeset, fails', () => {
+    const published = snapshotEntries(read('docs/api/releases/0.20.0.json'));
+    const working = baselineEntries(baseline);
+    // A name no changeset mentions, dropped from the working surface.
+    const victim = published['.'].find(
+      (name) =>
+        working['.'].includes(name) &&
+        unexplainedRemovals([`removed:.:${name}`], changesets).length === 1,
     );
-    expect(actual).toEqual(expected);
+    expect(victim).toBeTruthy();
+    const dropped = { ...working, '.': working['.'].filter((n) => n !== victim) };
+    expect(unexplainedRemovals(nameDrift(published, dropped).removed, changesets)).toContain(
+      `removed:.:${victim}`,
+    );
+
+    // StatusDot is explained by a minor changeset; demoted to patch, it is not.
+    const statusDot = { ...working, '.': working['.'].filter((n) => n !== 'StatusDot') };
+    const removed = nameDrift(published, statusDot).removed.filter((id) =>
+      id.endsWith(':StatusDot'),
+    );
+    expect(removed).toEqual(['removed:.:StatusDot']);
+    const minor = [{ file: 'x.md', bump: 'minor', body: 'Removes `StatusDot`.' }];
+    const patch = [{ ...minor[0], bump: 'patch' }];
+    expect(unexplainedRemovals(removed, minor)).toEqual([]);
+    expect(unexplainedRemovals(removed, patch)).toEqual(removed);
+    // A whole word only: `StatusDotProps` does not explain `StatusDot`.
+    expect(
+      unexplainedRemovals(removed, [{ ...minor[0], body: 'Removes `StatusDotProps`.' }]),
+    ).toEqual(removed);
+    // A passing mention in a sentence that removes nothing does not explain it.
+    const mention = 'Badge/StatusDot roles changed. Other things were removed.';
+    expect(unexplainedRemovals(removed, [{ ...minor[0], body: mention }])).toEqual(removed);
   });
 
   // 0.16.0 is the floor (hds#450): ops and folio resolve it, so their upgrade

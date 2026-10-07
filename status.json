@@ -1,11 +1,12 @@
 {
-  "updatedAt": "2026-10-01T20:35:02Z",
+  "updatedAt": "2026-10-07T07:58:25Z",
   "phase": "active",
   "headline": "0.20.0 is published (npm latest, provenance; main entry about 34 kB gzip). Now building the universal upgrade path (epic hds#445): one machine-readable record per release (upgrade/releases/<v>.json), one command for every consumer (npx @hirobius/design-system@latest upgrade), a generated upgrade page and an automatic notice per consumer. Landed: the release ledger schema, 0.19.1/0.20.0 snapshots and the 0.20.0 ledger (#447), and consumer discovery with redaction for private repos (#453). The core ships as 0.20.x patches; no 1.0 cut.",
   "next": [
+    "Skills standardized 2026-10-06: /pr is the PR format; spec work runs /to-spec → /to-tickets → /implement-spec. Factory-loop epic ops#473 (7 tickets, kit-first: #474 frontier, #475 /pr bodies, #476 wedge).",
     "UPGRADE PATH CORE (hds#445): #450 backfill ledgers 0.17.0-0.19.1 from the published tarballs; #448 gate (every change needs an upgrade step and the right bump; no major below 1.0); #451 compile UPGRADING.md, the CHANGELOG Upgrade block and upgrade/index.json, and ship them; then #452 the one command. All as 0.20.x patches.",
     "OPS UPGRADE (hirobius/ops#442, corrected 2026-10-01): ops resolves 0.16.0, so its upgrade crosses 0.17-0.20. Once #452 ships, the whole upgrade is one command; until then the 4 codemod bins cover the import changes.",
-    "StatusDot is deprecated with @removeIn 0.21.0 (use Badge dot). No minor changeset may land until ops replaces style={s.dot} in FleetAuditPage.tsx (#465 records the step).",
+    "StatusDot and StatusDotProps are removed for 0.21.0 (hds#465, PR #530; use Badge dot). The minor no longer waits on ops: hirobius/ops#538 removes its last use (style={s.dot}) and ops pins ^0.20.0, so nothing breaks until it upgrades.",
     "TOKENS (parked, needs Figma desktop): #431 part 1 and the hds#206 deprecated spacing names; removing them needs the promote plugin (pnpm figma:push --prune) on staging, then the library promotion (#303).",
     "HUMAN (#446), Figma published library (c8MaVgwxOlxm4wr8wnH0Z4): delete IconButton 40:39, NavItem 86:258, NavGroup 86:304, SideNav 86:332 and StepperField 82:425; restyle Tooltip 93:15 (caption text, content.inverse); then publish.",
     "HUMAN (#454), when the announce step (#456) is ready: create HDS_FLEET_TOKEN and paste one workflow change. Decisions on #445 take their defaults on 2026-10-08 unless Adrian replies."
@@ -52,10 +53,10 @@
     "WAVE 2 MERGED + 0.19.0 RELEASED (2026-09-30): #361 eval harness, #359 tarball agent context, #357 contract JSDoc plumbing, #356 portal scope + scrim, #353 consumer SKILL.md, #362 core usage contracts + contract-coverage gate, #358 DestructiveSection/DataTableSection + one container radius, #355 Version Packages. Release run 36732976200 published 0.19.0 with npm provenance (SLSA v1, builder github-hosted, workflow release.yml on refs/heads/main); tag v0.19.0 and the GitHub release exist. Two Button-only budget regressions were fixed at the root (pure annotations on AlertDialog forwardRefs; CommandPalette displayName moved into the declaration so the inlined manifest no longer rides in Button-only bundles, 121.8 -> 56.5 kB); the systemic follow-up is hds#363."
   ],
   "consistency": {
-    "date": "2026-09-30",
+    "date": "2026-10-05",
     "source": "harness",
     "pass": false,
-    "jaccardMin": 0.7368,
-    "lightDiffMax": 1.0268
+    "jaccardMin": 0.4091,
+    "lightDiffMax": 3.2096
   }
 }

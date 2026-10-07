@@ -2,6 +2,7 @@
  * DataTableSection - a titled table with a toolbar, row actions and an empty state.
  * @category Display
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268
  */
 
 import * as React from 'react';
@@ -109,7 +110,7 @@ export const DataTableSection = /* @__PURE__ */ React.forwardRef<
     <section ref={ref} data-hds-component="DataTableSection" aria-labelledby={headingId} {...props}>
       <Stack gap="tight">
         <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
-          <Text id={headingId} as={`h${level}`} variant="heading3">
+          <Text id={headingId} as={`h${level}`} variant="title">
             {title}
           </Text>
           {toolbar ? (

@@ -53,7 +53,7 @@ function FormScreenDemo() {
     <Page maxWidth="content">
       <Stack direction="column" gap="spacious">
         <Stack direction="column" gap="gap">
-          <Text variant="heading2">Create project</Text>
+          <Text variant="title">Create project</Text>
           <Text variant="body">
             One config file drives the whole site — fill in the basics to scaffold it.
           </Text>
@@ -99,7 +99,7 @@ function KpiTile({ label, value, delta }: { label: string; value: string; delta:
       <Stack direction="column" gap="gap">
         <Text variant="caption">{label}</Text>
         <Stack direction="row" wrap="wrap" gap="tight" justify="space-between" align="end">
-          <Text variant="heading2">{value}</Text>
+          <Text variant="title">{value}</Text>
           <Badge tone="success">{delta}</Badge>
         </Stack>
       </Stack>
@@ -121,7 +121,7 @@ function DashboardGridDemo() {
     <Page maxWidth="max">
       <Stack direction="column" gap="spacious">
         <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
-          <Text variant="heading2">Fleet dashboard</Text>
+          <Text variant="title">Fleet dashboard</Text>
           <Stack direction="row" wrap="wrap" gap="tight" align="center">
             <Button variant="secondary">Filter</Button>
             <Button variant="primary">New project</Button>
@@ -141,7 +141,7 @@ function DashboardGridDemo() {
           <Grid.Item colSpan={12}>
             <Surface padding="component">
               <Stack direction="column" gap="normal">
-                <Text variant="heading3">Recent activity</Text>
+                <Text variant="title">Recent activity</Text>
                 <Stack direction="column" gap="gap">
                   <ActivityRow label="hirobius-design-system — release published" tone="success" />
                   <ActivityRow label="ops — guardrail drift detected" tone="warning" />
@@ -183,7 +183,7 @@ function DetailPageDemo() {
           <Field label="Phase" value="Components — 75%" />
         </Stack>
         <Stack direction="column" gap="normal">
-          <Text variant="heading1">Machine-readable AI layout guidance</Text>
+          <Text variant="title">Machine-readable AI layout guidance</Text>
           <Text variant="body">
             Workstream 3 of the layout-consistency epic adds `@ai-rules` docstrings to every layout
             primitive, a &ldquo;How To Lay Out A Screen&rdquo; recipe in `llms.txt`, and golden-path

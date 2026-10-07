@@ -59,13 +59,15 @@ export const FullAnatomy: Story = {
         <Card.Description>Semantic color and spacing tokens for the HDS.</Card.Description>
       </Card.Header>
       <Card.Body>
-        <p style={{ margin: 0, fontSize: '14px' }}>
+        <p style={{ margin: 0, fontSize: 'var(--semantic-typography-ui-font-size)' }}>
           Tokens are sourced from <code>hirobius.tokens.json</code> and published to Figma variables
           on every sync.
         </p>
       </Card.Body>
       <Card.Footer>
-        <span style={{ fontSize: '12px', opacity: 0.6 }}>Last sync: today</span>
+        <span style={{ fontSize: 'var(--semantic-typography-caption-font-size)', opacity: 0.6 }}>
+          Last sync: today
+        </span>
       </Card.Footer>
     </Card>
   ),
@@ -79,7 +81,7 @@ export const HeaderOnly: Story = {
         <Card.Description>Browse all 400+ design tokens.</Card.Description>
       </Card.Header>
       <Card.Body>
-        <p style={{ margin: 0, fontSize: '14px' }}>
+        <p style={{ margin: 0, fontSize: 'var(--semantic-typography-ui-font-size)' }}>
           Filter by primitive, semantic, or component tier.
         </p>
       </Card.Body>
@@ -101,7 +103,9 @@ export const PaddingVariants: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: 360 }}>
       {(['component', 'item', 'px16', 'none'] as const).map((padding) => (
         <Card key={padding} padding={padding}>
-          <p style={{ margin: 0, fontSize: '13px' }}>padding=&quot;{padding}&quot;</p>
+          <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+            padding=&quot;{padding}&quot;
+          </p>
         </Card>
       ))}
     </div>
@@ -121,7 +125,7 @@ export const Elevated: Story = {
   },
   render: () => (
     <Card className="shadow-md" style={{ maxWidth: 360 }}>
-      <p style={{ margin: 0, fontSize: '14px' }}>
+      <p style={{ margin: 0, fontSize: 'var(--semantic-typography-ui-font-size)' }}>
         Elevated card — use for modals, popovers, or highlighted content surfaces.
       </p>
     </Card>
@@ -146,10 +150,14 @@ export const VariantAccent: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '16px', maxWidth: 640 }}>
       <Card variant="default" style={{ flex: 1 }}>
-        <p style={{ margin: 0, fontSize: '13px' }}>variant=&quot;default&quot; (borderless)</p>
+        <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+          variant=&quot;default&quot; (borderless)
+        </p>
       </Card>
       <Card variant="accent" style={{ flex: 1 }}>
-        <p style={{ margin: 0, fontSize: '13px' }}>variant=&quot;accent&quot;</p>
+        <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+          variant=&quot;accent&quot;
+        </p>
       </Card>
     </div>
   ),
@@ -166,7 +174,9 @@ export const Bordered: Story = {
   },
   render: () => (
     <Card bordered style={{ maxWidth: 360 }}>
-      <p style={{ margin: 0, fontSize: '13px' }}>bordered (neutral 1px border)</p>
+      <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+        bordered (neutral 1px border)
+      </p>
     </Card>
   ),
 };
@@ -184,8 +194,50 @@ export const FeedbackTones: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: 360 }}>
       {(['neutral', 'success', 'warning', 'danger', 'info'] as const).map((tone) => (
         <Card key={tone} tone={tone}>
-          <p style={{ margin: 0, fontSize: '13px' }}>tone=&quot;{tone}&quot;</p>
+          <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+            tone=&quot;{tone}&quot;
+          </p>
         </Card>
+      ))}
+    </div>
+  ),
+};
+
+// hds#372 — tone over variant in every Card state. Each status tone sets the
+// border width and colour, so it replaces `accent`'s 2px border and
+// `bordered`'s neutral one through tailwind-merge, not `!` (ADR-030).
+const CARD_TONE_MATRIX_TONES = ['neutral', 'danger', 'success', 'warning', 'info'] as const;
+const CARD_TONE_MATRIX_STATES = [
+  { name: 'default', props: {} },
+  { name: 'accent', props: { variant: 'accent' } },
+  { name: 'bordered', props: { bordered: true } },
+  { name: 'accent selected', props: { variant: 'accent', selectable: true, selected: true } },
+  { name: 'selected', props: { bordered: true, selectable: true, selected: true } },
+] as const;
+
+export const ToneMatrix: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Every tone across `variant`, `bordered` and a selected `selectable` card. A status tone always draws one 1px feedback border, replacing the accent and neutral borders by tailwind-merge class-group replacement rather than the `!` important modifier (ADR-030); selection adds its inset ring on top.',
+      },
+    },
+    // No chromatic modes: VariantAccent is this file's one modes story (see
+    // MODES in .storybook/preview); the axe gate scans this in light and dark.
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      {CARD_TONE_MATRIX_STATES.map(({ name, props }) => (
+        <div key={name} style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {CARD_TONE_MATRIX_TONES.map((tone) => (
+            <Card key={tone} tone={tone} {...props} style={{ minWidth: 160 }}>
+              <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+                {`${name} ${tone}`}
+              </p>
+            </Card>
+          ))}
+        </div>
       ))}
     </div>
   ),
@@ -208,7 +260,9 @@ export const ProgressSlot: Story = {
         </Card.Header>
         <Card.Progress value={68} label="68% complete" />
         <Card.Body>
-          <p style={{ margin: 0, fontSize: '13px' }}>Default neutral fill.</p>
+          <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+            Default neutral fill.
+          </p>
         </Card.Body>
       </Card>
       {(['success', 'warning', 'danger'] as const).map((tone) => (
@@ -259,7 +313,7 @@ function SelectableCards() {
           bordered
           style={{ minWidth: 160 }}
         >
-          <p style={{ margin: 0, fontSize: '13px' }}>{plan}</p>
+          <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>{plan}</p>
         </Card>
       ))}
     </div>

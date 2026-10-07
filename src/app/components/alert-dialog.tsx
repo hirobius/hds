@@ -2,6 +2,7 @@
  * AlertDialog — modal confirmation dialog on Radix AlertDialog.
  * @category Overlays
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix AlertDialog (@radix-ui/react-alert-dialog) themed with the overlay role
@@ -83,7 +84,8 @@ const AlertDialogContent = /* @__PURE__ */ React.forwardRef<
       <AlertDialogPrimitive.Content
         ref={ref}
         className={cn(
-          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border border-border bg-popover p-6 text-popover-foreground shadow-overlay hds-focus',
+          // 16px of page margin each side, so the panel never sits flush to a 390px viewport (hds#522)
+          'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2*var(--semantic-space-scale-sm))] max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))] max-w-lg overflow-y-auto -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border border-border bg-popover p-6 text-popover-foreground shadow-overlay hds-focus',
           className,
         )}
         {...props}
@@ -122,7 +124,7 @@ const AlertDialogTitle = /* @__PURE__ */ React.forwardRef<
 >(function AlertDialogTitle({ className, children, ...props }, ref) {
   return (
     <AlertDialogPrimitive.Title asChild>
-      <Text ref={ref} as="h2" variant="heading3" className={className} {...props}>
+      <Text ref={ref} as="h2" variant="title" className={className} {...props}>
         {children}
       </Text>
     </AlertDialogPrimitive.Title>
@@ -168,6 +170,10 @@ interface AlertDialogComponent extends React.FC<
 /**
  * AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or
  * uncontrolled with `defaultOpen`.
+ * @usage Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.
+ * @whenNot A modal that collects input or shows content, or a confirmation after the action is done.
+ * @useInstead Dialog a modal with a form or other content
+ * @useInstead ToastProvider a brief confirmation after the action
  * @public
  */
 export const AlertDialog: AlertDialogComponent = /* @__PURE__ */ Object.assign(AlertDialogRoot, {

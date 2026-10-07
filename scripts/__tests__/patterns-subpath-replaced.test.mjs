@@ -101,7 +101,7 @@ describe('hds#394 wave 4b in codemods/removed-0.20.json', () => {
     expect(map.get('MultiSelectorOption')).toContain('ComboboxOption');
   });
 
-  it('keeps StatusDot, which ops imports and Badge dot cannot take whole (style)', () => {
+  it('leaves StatusDot out of the codemod: its removal is a manual step (hds#465)', () => {
     expect(loadRemovedNames().has('StatusDot')).toBe(false);
   });
 

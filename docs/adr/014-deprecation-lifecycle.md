@@ -1,6 +1,6 @@
 # ADR-014: Prop/API Deprecation Lifecycle
 
-**Status:** Accepted (2026-06-26, documenting a decision settled earlier); amended (2026-10-01, hds#389): when a removal may ship
+**Status:** Accepted (2026-06-26, documenting a decision settled earlier); amended (2026-10-01, hds#389): when a removal may ship; amended (2026-10-08, hds#465): a removal may ship with a manual step
 
 > Retroactive ADR: this lifecycle was established in prior work (tracked as #15) but
 > never recorded as an ADR.
@@ -68,3 +68,30 @@ The first batch under this amendment is 0.20.0 (hds#389 R1): the 21 root
 re-exports of `/patterns` components, the six `Hds*` aliases, and five docs/lab
 components (CinematicLink, ComponentInstanceMatrix, FoundationSwatch, Sketch,
 Token). 1.0 itself (#396) stays parked until Adrian says go.
+
+## Amendment (2026-10-08): a removal may ship with a manual step
+
+**Decision (hds#465). Default: yes, from 2026-10-08.** If Adrian does not reverse
+it by that date, it stands; the first removal under it is StatusDot in 0.21.0.
+
+The 2026-10-01 amendment says a name with no clean mechanical rewrite is not
+removed. That rule would hold StatusDot back indefinitely: Badge `dot` takes its
+`tone`, `size` and `label`, but Badge is className-only (`check-no-style-prop`),
+so a `style` on StatusDot has no codemod. The rule is relaxed this way:
+
+- A removal may ship **with a manual step** in place of a codemod when the
+  upgrade command can find every use of the name, by import and by JSX tag
+  (`detect.imports` and `detect.jsx` in the release ledger).
+- The deprecation's ledger step carries `removeIn`, a plain-language recipe and
+  those detect patterns. The upgrade command lists it under "Coming next" while
+  the release is ahead of the consumer, and under "Do by hand" once the release
+  that removes the name has shipped.
+- `MIGRATIONS.md` still announces the removal in a dated section, one row per
+  name, and the row's codemod column says `none` with the reason.
+- Everything else in the 2026-10-01 amendment stands: 0.x minors only before
+  1.0, majors from 1.0, and `check-deprecations` fails once the version reaches
+  `@removeIn` while the name is still in the code.
+
+The consumer is not surprised: a caret range such as `^0.20.0` never resolves to
+0.21.0, and the dated `MIGRATIONS.md` section gives the recipe. StatusDot's
+last known consumer, ops, drops it in hirobius/ops#538.

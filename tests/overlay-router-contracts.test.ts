@@ -82,7 +82,6 @@ const REMOVED_BY_PRUNE = new Set([
   'InputGroup',
   'MultiSelector',
   'SelectableCard',
-  'StatusDot',
   'TimeInput',
   'ToggleButton',
   // B5

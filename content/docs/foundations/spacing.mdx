@@ -1,0 +1,32 @@
+---
+title: 'Spacing'
+description: 'Systematic 4px base-unit scale governing layout rhythm, padding, and component gaps.'
+status: 'stable'
+since: '0.1.0'
+---
+
+Spacing in Hirobius creates deliberate, breathable, and predictable layouts across screen densities and viewports.
+
+## Principle
+
+The spacing architecture operates as a structural material across all layouts:
+
+- **4px Base Unit**: Every spacing step snaps to the primitive scale based on a 4px grid; half-steps and arbitrary pixel values are avoided.
+- **Whitespace as Structure**: Generous, intentional spacing separates content sections without relying on heavy borders or decorative lines.
+- **Density Adaptation**: Spacing tokens respond systematically to density modes (such as compact mode) to maintain proportional visual rhythm.
+
+## Token Reference
+
+{/* generated: tokens */}
+
+## Usage Guidance
+
+- Do use spacing tokens alongside layout components such as `Stack`, `Grid`, and `Box` to structure pages.
+- Do maintain consistent internal padding across containers and card surfaces.
+- Do choose spacing tokens based on structural hierarchy and content relationship.
+
+## Don'ts
+
+- Don't hardcode arbitrary pixel values or half-step increments in margins or padding.
+- Don't compress layout whitespace to fit excess content onto a single screen.
+- Don't mix inconsistent gap values within a single stack or grid section.

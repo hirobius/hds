@@ -19,6 +19,7 @@
  * the slices pick blocks by heading, so llms.txt and the slices share text.
  */
 
+import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 import { mkdirSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
@@ -27,6 +28,7 @@ import { fileURLToPath } from 'url';
 import { writeManifest as writeComponentApiManifest } from './generate-component-api.mjs';
 import { buildTokenQuickReference } from './build-token-quick-reference.mjs';
 import { buildWhichOneWhen } from './lib/which-one-when.mjs';
+import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -149,9 +151,15 @@ export function generateLlmsTxt({ write = true } = {}) {
       : '';
   const patternSection = patternLines ? `## Pattern Inventory\n\n${patternLines}\n\n` : '';
 
+  // hds#374: the ratified core set, from the manifest `core` flag.
+  const coreLines = renderCoreSetLines(coreByCategory(manifest.componentSpecs ?? {}));
+  const coreSetSection = coreLines.length
+    ? `## Core set\n\nThe ${coreLines.length} components of the ratified core set (hds#254, ADR-031): brand-neutral, composable, imported from the package root. Build a screen from these first. Each has \`core: true\` in \`public/hds-manifest.json\` and is marked \`[core]\` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from \`@hirobius/design-system/patterns\`.\n\n${coreLines.join('\n')}\n\n`
+    : '';
+
   const whichOneWhenLines = buildWhichOneWhen(manifest.componentSpecs ?? {});
   const whichOneWhenSection = whichOneWhenLines
-    ? `## Which one when\n\nOne line per component that declares when to use it (\`@usage\` / \`@useInstead\` in its JSDoc). Full detail, including \`usage.whenNot\`, \`keyboard\` and \`aiRules\`, is in \`public/hds-manifest.json\` and \`src/app/data/component-api.json\`.\n\n${whichOneWhenLines}\n\n`
+    ? `## Which one when\n\nOne line per component that declares when to use it (\`@usage\` / \`@useInstead\` in its JSDoc); \`[core]\` marks the core set. Full detail, including \`usage.whenNot\`, \`keyboard\` and \`aiRules\`, is in \`public/hds-manifest.json\` and \`src/app/data/component-api.json\`.\n\n${whichOneWhenLines}\n\n`
     : '';
 
   const iconNames = manifest.iconSet?.names ?? [];
@@ -195,6 +203,18 @@ Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> 
 Generated: ${generated}
 Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json\`, \`hirobius.tokens.json\`
 
+## Agents Using The Package: Start Here
+
+- Read \`AGENTS.md\` (package root, \`node_modules/@hirobius/design-system/AGENTS.md\`) first: which component to use for each screen need, the imports, and the rules.
+- MCP server \`hds\` ships in the package: run \`npx hds-mcp\` (stdio). Tools: \`list_core\`, \`search_components\`, \`get_component\`, \`search_tokens\`; each answer is under 2 KB.
+- Lint before you finish: \`import hds from '@hirobius/design-system/eslint-plugin'\` and spread \`hds.configs.recommended\` into \`eslint.config.mjs\`.
+
+## Pick By Need
+
+${NEEDS_INTRO} Generated from \`mcp/guide.mjs\`, the same list as \`AGENTS.md\`.
+
+${needsMarkdown(componentApi.components ?? {})}
+
 ## System Architecture
 
 - Engine: ${manifest.systemSpecs.engine}
@@ -223,7 +243,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 - Detailed prop types, unions, defaults, and descriptions: read \`src/app/data/component-api.json\`.
 - Runtime behavior: read the actual component source under \`src/app/components/\` (and associated styles).
 
-${whichOneWhenSection}## Tokens (Primary Source Of Truth)
+${coreSetSection}${whichOneWhenSection}## Tokens (Primary Source Of Truth)
 
 - Primary token source of truth: \`hirobius.tokens.json\` (W3C DTCG).
 - Prefer \`semantic.*\` and \`component.*\` tokens for product UI. Use \`primitive.*\` only when editing the token system itself.

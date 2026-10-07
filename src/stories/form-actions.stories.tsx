@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormActions } from '../app/components/form-actions';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Patterns/FormActions',
   component: FormActions,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('FormActions'),
     layout: 'padded',
     docs: {
       description: {

@@ -8,6 +8,37 @@
 
 ---
 
+## Autonomy charter — let it drive (Adrian, 2026-10-05)
+
+> "If you buy a self-driving car, you have to let it drive, otherwise what is the point?"
+
+Adrian trusts Claude's code more than his own and wants Claude to have more say.
+This charter outranks the process rules below (not the HARD RULES above).
+
+- **Adrian owns the destination:** what to build, for whom, priority, money,
+  client-facing facts, and anything public or irreversible (deploys, sends,
+  production data, keys, the §0 hard rules).
+- **Claude owns the driving:** architecture, code structure, tooling, test
+  strategy, refactors, naming, file layout, and which skills or process steps a
+  task actually needs. Decide and act; don't ask permission for "how".
+- **Jev is a gauge, not a driver.** Use Jev (`.claude/skills/jev/`) for fast
+  typed calls — sort, score, route, yes/no. Claude owns the final decision and
+  all writing; below Jev's confidence floor, Claude decides. Sending private
+  data to Jev stays Adrian's call.
+- **Push back.** If a rule, constraint, or instruction (including one in this
+  file) makes the output worse, say so in one line with the better option, then
+  follow Adrian's call. Rules here are defaults, not dogma — propose deleting
+  any that cost more than they save.
+- **Outcome checks over process rules.** Protect quality with automated checks
+  (typecheck, tests, CI, branch protection), not with more steps for agents to
+  remember. When a failure happens, prefer a check that catches it over a new
+  paragraph of instructions.
+- **Veto after, not approve before.** Report what you decided and why in a line
+  or two, so Adrian can reverse it — instead of waiting for sign-off on
+  engineering calls.
+
+---
+
 ## 1. AGENT EXECUTION PROTOCOL (MANDATORY)
 
 1. **PRE-FILTER:** Before writing any code, analyze if the user's request affects UI, Layout, CSS, or Components.
@@ -15,13 +46,17 @@
 3. **SELF-HEAL:** If your automated tests fail, do not ask the user for help. Read the terminal output, identify your CSS/layout math error, fix the code, and re-run the tests until they pass.
 4. **FINALIZATION:** Only report back to the user when the tests are 100% green. Do not claim a task is complete if the tests are failing.
 
+### Reporting to Adrian
+
+Message Adrian only when work is done, blocked, or needs his decision. No progress narration. Max 5 lines.
+
 ### 1a. GUARDRAILS (read once at session start)
 
 The repo has a **closed-loop guardrail system** every agent must understand:
 
 - **`docs/guardrails/HARDENING_ROADMAP.md`** — full hardening roadmap, 7 deterministic-gate principles, ranked work, two parallel strength scores (Internal Integrity + Industry Benchmark). The single source of truth for "where are we, where are we going."
 - **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift caught by `validate-guardrail-registry` + `check-validator-wiring`, both pre-commit gates.
-- **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt`, or when a commit touching `src/` has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message.
+- **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` unless a pushed commit adds a `.status/<branch>.md` note instead of editing status.json (no conflicts; `pnpm status:fold` folds on main), or when a commit touching `src/` has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message.
 
 Context Awareness: Always look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for specific overriding rules before editing.
 
@@ -124,16 +159,20 @@ may skip:
 
 - **Building anything (component, token work, validator, fix) → `/implement` + `/tdd`**
   (test-first, red-green-refactor). No "just write it."
-- **Epic / multi-part / fuzzy task → `/to-tickets`** (dependency-ordered
-  tickets); `/grill-me` first if the _plan_ itself is unclear.
-- **Before opening ANY PR → `/code-review`** (dual-axis: standards + spec).
+- **Epic / spec → `/to-spec` → `/to-tickets` → `/implement-spec`** (ticket
+  graph, parallel worktrees, one integration branch); `/grill-me` first if the
+  _plan_ itself is unclear.
+- **Before opening ANY PR → `/code-review`, then write the body with `/pr`**
+  (Summary visual · Evidence · Merge Danger — the fleet's PR format), enforced by
+  `scripts/hooks/check-pr-body.mjs` (needs a `Reviewed:` line).
+- **End of a real session → `/retro`** (environment fixes: checks over prose).
 - **A bug → `/diagnosing-bugs`** (reproduce → minimize → hypothesize → fix),
   then `/tdd`.
 - **Design-touching / new module → `/codebase-design`**; periodic design-debt
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
 - **Charting a multi-decision lane → `/wayfinder`.**
-- **Spec before implement-spec → `/to-spec`.**
+- **Design-touching UI → `/design-review`.**
 
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·

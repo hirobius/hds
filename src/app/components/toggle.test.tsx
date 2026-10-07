@@ -10,23 +10,21 @@ import { Toggle } from './toggle';
 afterEach(cleanup);
 
 describe('Toggle', () => {
-  it('renders a labelled checkbox reflecting the checked prop', () => {
+  it('renders a labelled switch reflecting the checked prop', () => {
     render(<Toggle label="Wi-Fi" checked onChange={() => {}} />);
-    expect((screen.getByRole('checkbox', { name: 'Wi-Fi' }) as HTMLInputElement).checked).toBe(
-      true,
-    );
+    expect((screen.getByRole('switch', { name: 'Wi-Fi' }) as HTMLInputElement).checked).toBe(true);
   });
 
   it('fires onChange with the toggled boolean', () => {
     const onChange = vi.fn();
     render(<Toggle label="Wi-Fi" checked={false} onChange={onChange} />);
-    fireEvent.click(screen.getByRole('checkbox'));
+    fireEvent.click(screen.getByRole('switch'));
     expect(onChange).toHaveBeenCalledWith(true);
   });
 
   it('disables the underlying input', () => {
     render(<Toggle label="Wi-Fi" checked={false} disabled onChange={() => {}} />);
-    expect((screen.getByRole('checkbox') as HTMLInputElement).disabled).toBe(true);
+    expect((screen.getByRole('switch') as HTMLInputElement).disabled).toBe(true);
   });
 
   it('forwards its ref to the input', () => {

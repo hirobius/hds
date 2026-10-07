@@ -12,9 +12,8 @@
  * without its layout. `renderToStaticMarkup` below proves the style is in the
  * server HTML.
  *
- * StatusDot is the exception (last block): Badge `dot` takes its tone, size
- * and label, but ops passes `style`, which Badge does not accept, so
- * StatusDot stays.
+ * StatusDot was removed later, in 0.21.0 (hds#465); the last block keeps the
+ * Badge `dot` recipe it was replaced by true.
  */
 import { createRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -379,7 +378,7 @@ describe('AspectRatio -> Box with style', () => {
   });
 });
 
-describe('StatusDot -> Badge dot: tone, size and label map; style does not', () => {
+describe('Badge dot, the replacement for the removed StatusDot (tone, size, label)', () => {
   it('renders the same dot for each tone and size, decorative without a label', () => {
     const sizes = { sm: 'size-1.5', md: 'size-2', lg: 'size-2.5' } as const;
     for (const [size, cls] of Object.entries(sizes)) {
@@ -393,8 +392,8 @@ describe('StatusDot -> Badge dot: tone, size and label map; style does not', () 
     }
   });
 
-  it('exposes a labelled status role when label is set', () => {
+  it('exposes a labelled image role when label is set', () => {
     render(<Badge dot tone="danger" label="Offline" />);
-    expect(screen.getByRole('status').getAttribute('aria-label')).toBe('Offline');
+    expect(screen.getByRole('img').getAttribute('aria-label')).toBe('Offline');
   });
 });

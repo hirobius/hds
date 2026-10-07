@@ -16,6 +16,7 @@ import { Loader2, X } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -24,9 +25,9 @@ const inputVariants = /* @__PURE__ */ cva(
   {
     variants: {
       size: {
-        sm: 'h-8 text-xs',
-        md: 'h-10 text-sm',
-        lg: 'h-12 text-base',
+        sm: 'h-8 hds-type-caption',
+        md: 'h-10 hds-type-ui',
+        lg: 'h-12 hds-type-body',
       },
       textStyle: {
         body: 'font-sans',
@@ -54,9 +55,9 @@ const inputShellVariants = /* @__PURE__ */ cva(
   {
     variants: {
       size: {
-        sm: 'h-8 text-xs',
-        md: 'h-10 text-sm',
-        lg: 'h-12 text-base',
+        sm: 'h-8 hds-type-caption',
+        md: 'h-10 hds-type-ui',
+        lg: 'h-12 hds-type-body',
       },
       textStyle: {
         body: 'font-sans',
@@ -398,9 +399,9 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   );
 
   return (
-    <div className={cn('flex flex-col gap-1.5', className)}>
+    <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
       {label && (
-        <label htmlFor={id} className="text-xs font-medium text-muted-foreground">
+        <label htmlFor={id} className="hds-type-ui text-foreground">
           {label}
         </label>
       )}
@@ -416,13 +417,13 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
       )}
 
       {helperText && !errorTextId && (
-        <span id={helperTextId} className="text-xs text-muted-foreground">
+        <span id={helperTextId} className="hds-type-caption text-muted-foreground">
           {helperText}
         </span>
       )}
 
       {hasError && (errorMessage || effectiveDemoState === 'error') && (
-        <span id={errorTextId} role="alert" className="text-xs text-destructive">
+        <span id={errorTextId} role="alert" className="hds-type-caption text-destructive">
           {errorMessage || 'Field error'}
         </span>
       )}
