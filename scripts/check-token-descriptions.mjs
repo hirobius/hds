@@ -28,17 +28,25 @@
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const DESCRIPTION_FILE = join(ROOT, 'src', 'app', 'design-system', 'generated-token-descriptions.ts');
+const DESCRIPTION_FILE = join(
+  ROOT,
+  'src',
+  'app',
+  'design-system',
+  'generated-token-descriptions.ts',
+);
 
 // Parse CLI flags
 const args = process.argv.slice(2);
 
 const isFixtureMode = args.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
-const TOKENS_FILE = isFixtureMode && fixtureFile ? resolve(fixtureFile) : join(ROOT, 'hirobius.tokens.json');
+const TOKENS_FILE =
+  isFixtureMode && fixtureFile ? resolve(fixtureFile) : join(ROOT, 'hirobius.tokens.json');
 const maxWordsArg = args.indexOf('--max-words');
 const MAX_WORDS = maxWordsArg >= 0 ? parseInt(args[maxWordsArg + 1], 10) : 20;
 const CHECK_MISSING = !args.includes('--no-missing');
@@ -92,7 +100,7 @@ function collectTokenNodes(obj, pathParts = []) {
 
 let tokens;
 try {
-  tokens = JSON.parse(readFileSync(TOKENS_FILE, 'utf-8'));
+  tokens = readTokenSource(TOKENS_FILE);
 } catch (e) {
   console.error(`✗ check-token-descriptions — could not read ${TOKENS_FILE}: ${e.message}`);
   process.exit(1);
@@ -128,9 +136,11 @@ for (const { path, description, isLeaf } of nodes) {
 const qualityFailures = [];
 
 if (CHECK_QUALITY) {
-  const themeRelativePattern = /\b(darken(?:s|ed)?|lighten(?:s|ed)?|brighten(?:s|ed)?|dim(?:s|med)?|darkens?|lightens?)\b/i;
+  const themeRelativePattern =
+    /\b(darken(?:s|ed)?|lighten(?:s|ed)?|brighten(?:s|ed)?|dim(?:s|med)?|darkens?|lightens?)\b/i;
   const themePairPattern = /\blight\b[\s\S]*\bdark\b|\bdark\b[\s\S]*\blight\b/i;
-  const genericPattern = /^(No token description available\.?|Primitive source value\.|Semantic role token\.|Design token source value\.|Specific value within the .* range at a defined lightness step\.|Discrete values within the .* range at defined lightness steps\.)$/i;
+  const genericPattern =
+    /^(No token description available\.?|Primitive source value\.|Semantic role token\.|Design token source value\.|Specific value within the .* range at a defined lightness step\.|Discrete values within the .* range at defined lightness steps\.)$/i;
 
   function unescapeString(value) {
     return value.replace(/\\n/g, '\n').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
@@ -153,7 +163,9 @@ if (CHECK_QUALITY) {
   }
 
   if (!existsSync(DESCRIPTION_FILE)) {
-    console.warn(`⚠ check-token-descriptions --quality: ${DESCRIPTION_FILE} not found, skipping quality checks.`);
+    console.warn(
+      `⚠ check-token-descriptions --quality: ${DESCRIPTION_FILE} not found, skipping quality checks.`,
+    );
   } else {
     const source = readFileSync(DESCRIPTION_FILE, 'utf8');
     const rows = extractDescriptions(source);
@@ -166,12 +178,16 @@ if (CHECK_QUALITY) {
       }
 
       if (genericPattern.test(cleaned)) {
-        qualityFailures.push(`[${row.line}] ${row.tokenPath} uses a generic fallback description: ${cleaned}`);
+        qualityFailures.push(
+          `[${row.line}] ${row.tokenPath} uses a generic fallback description: ${cleaned}`,
+        );
         continue;
       }
 
       if (themeRelativePattern.test(cleaned) && !themePairPattern.test(cleaned)) {
-        qualityFailures.push(`[${row.line}] ${row.tokenPath} uses one-sided theming language: ${cleaned}`);
+        qualityFailures.push(
+          `[${row.line}] ${row.tokenPath} uses one-sided theming language: ${cleaned}`,
+        );
       }
     }
   }
@@ -183,14 +199,18 @@ const hasViolations = violations.length > 0;
 const hasQualityFailures = qualityFailures.length > 0;
 
 if (!hasViolations && !hasQualityFailures) {
-  const leafCount = nodes.filter(n => n.isLeaf).length;
+  const leafCount = nodes.filter((n) => n.isLeaf).length;
   const qualityMsg = CHECK_QUALITY ? '; generated-token-descriptions.ts quality OK' : '';
-  console.log(`✓ check-token-descriptions — ${leafCount} leaf tokens, all descriptions valid (max ${MAX_WORDS} words)${qualityMsg}`);
+  console.log(
+    `✓ check-token-descriptions — ${leafCount} leaf tokens, all descriptions valid (max ${MAX_WORDS} words)${qualityMsg}`,
+  );
   process.exit(0);
 }
 
 if (hasViolations) {
-  console.error(`\n✗ check-token-descriptions — ${violations.length} violation(s) found (max ${MAX_WORDS} words)\n`);
+  console.error(
+    `\n✗ check-token-descriptions — ${violations.length} violation(s) found (max ${MAX_WORDS} words)\n`,
+  );
   for (const v of violations) {
     if (v.kind === 'missing') {
       console.error(`  MISSING  ${v.path}`);
@@ -198,7 +218,9 @@ if (hasViolations) {
       console.error(`  BLANK    ${v.path}`);
     } else {
       console.error(`  VERBOSE  ${v.path}  (${v.wordCount}w > ${MAX_WORDS}w)`);
-      console.error(`           "${v.description.slice(0, 100)}${v.description.length > 100 ? '...' : ''}"`);
+      console.error(
+        `           "${v.description.slice(0, 100)}${v.description.length > 100 ? '...' : ''}"`,
+      );
     }
   }
   console.error('');
@@ -210,7 +232,9 @@ if (hasQualityFailures) {
   if (qualityFailures.length > 40) {
     console.error(`  ...and ${qualityFailures.length - 40} more.`);
   }
-  console.error('\nDescriptions should explain the token in context without one-sided theme language or generic fallback text.\n');
+  console.error(
+    '\nDescriptions should explain the token in context without one-sided theme language or generic fallback text.\n',
+  );
 }
 
 process.exit(1);

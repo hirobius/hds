@@ -27,6 +27,7 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CORE_SET_BLOCK, collectCoreSet, renderCoreSetBlock } from './lib/core-set.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 export const COUNTS_BLOCK = 'front-door-counts';
 
@@ -73,7 +74,7 @@ export function collectCounts(root) {
     .filter((p) => p.endsWith('.stories.tsx'));
   return {
     components: countBarrelComponentModules(readFileSync(join(root, 'src', 'index.ts'), 'utf8')),
-    tokens: countTokens(JSON.parse(readFileSync(join(root, 'hirobius.tokens.json'), 'utf8'))),
+    tokens: countTokens(readTokenSource(join(root, 'hirobius.tokens.json'))),
     stories: storyFiles.reduce(
       (sum, rel) => sum + countStoryExports(readFileSync(join(root, 'src', rel), 'utf8')),
       0,

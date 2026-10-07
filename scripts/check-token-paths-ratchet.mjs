@@ -34,6 +34,7 @@ import { join, relative, dirname, extname, resolve } from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -53,7 +54,7 @@ function walkTokenTree(obj, prefix, out) {
 }
 
 function loadValidPaths() {
-  const tokens = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+  const tokens = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
   const paths = new Set();
   walkTokenTree(tokens, [], paths);
   const composites = [...paths];

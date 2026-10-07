@@ -17,11 +17,12 @@
  * Run: node scripts/build-figma-variables.mjs
  */
 
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { buildFigmaModel } from './lib/figma-model.mjs';
 import { validateFigmaModel } from './lib/figma-model-invariants.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -127,9 +128,7 @@ export function toRestPayload(model) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const model = buildFigmaModel(
-    JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8')),
-  );
+  const model = buildFigmaModel(readTokenSource(join(ROOT, 'hirobius.tokens.json')));
   const violations = validateFigmaModel(model);
   if (violations.length > 0) {
     console.error(

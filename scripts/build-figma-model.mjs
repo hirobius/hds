@@ -11,12 +11,13 @@
  * the hirobius.figma-variables*.json exports). Nothing here talks to Figma.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { buildFigmaModel } from './lib/figma-model.mjs';
 import { loadBrandModes } from './lib/figma-brand-modes.mjs';
 import { validateFigmaModel, summarizeFigmaModel } from './lib/figma-model-invariants.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -28,7 +29,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  * @returns {{ model: object, summary: object, violations: string[] }}
  */
 export function writeFigmaModel({ tokensPath, outPath, brands = null }) {
-  const model = buildFigmaModel(JSON.parse(readFileSync(tokensPath, 'utf8')), { brands });
+  const model = buildFigmaModel(readTokenSource(tokensPath), { brands });
   const violations = validateFigmaModel(model);
   if (violations.length === 0) {
     mkdirSync(dirname(outPath), { recursive: true });
@@ -63,7 +64,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const { summary, violations } = writeFigmaModel({
       tokensPath,
       outPath,
-      brands: loadBrandModes(ROOT, JSON.parse(readFileSync(tokensPath, 'utf8'))),
+      brands: loadBrandModes(ROOT, readTokenSource(tokensPath)),
     });
     if (violations.length > 0) {
       console.error(

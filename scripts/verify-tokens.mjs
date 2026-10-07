@@ -25,6 +25,7 @@ import {
   ELEVATION_SLOTS,
 } from './build-tokens.mjs';
 import { readModes } from './lib/token-modes.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -252,7 +253,7 @@ function loadFile(path, label) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const raw = JSON.parse(loadFile(join(ROOT, 'hirobius.tokens.json'), 'hirobius.tokens.json'));
+  const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
   const cssText = loadFile(join(ROOT, 'src', 'styles', 'tokens.css'), 'tokens.css');
   const tsText = loadFile(
     join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'),

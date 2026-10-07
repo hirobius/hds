@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-07T05:00:54.950Z",
+  "generated": "2026-10-07T17:58:53.026Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -11577,10 +11577,10 @@
       {
         "path": "component.tag.lineHeight",
         "cssVar": "--component-tag-lineHeight",
-        "type": "dimension",
+        "type": "number",
         "description": "Readable label rhythm for tags.",
         "alias": "{primitive.typography.lineHeight.normal}",
-        "resolvedValue": "undefinedundefined"
+        "resolvedValue": "1.5"
       },
       {
         "path": "component.tag.minWidth",

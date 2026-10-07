@@ -34,6 +34,7 @@ import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from '
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { tmpdir } from 'node:os';
+import { readTokenSource } from './lib/token-source.mjs';
 
 import { resolveScanRoots } from './lib/scan-roots.mjs';
 
@@ -983,7 +984,7 @@ function getIntegrityGrade(score) {
   return 'F';
 }
 
-const tokens = JSON.parse(readFileSync(join(INPUT_ROOT, 'hirobius.tokens.json'), 'utf8'));
+const tokens = readTokenSource(join(INPUT_ROOT, 'hirobius.tokens.json'));
 const themeCssPath = join(INPUT_ROOT, 'src', 'styles', 'theme.css');
 const tokensCssPath = join(INPUT_ROOT, 'src', 'styles', 'tokens.css');
 const themeCss = readFileSync(themeCssPath, 'utf8');
