@@ -21,16 +21,19 @@
  *   3. something is breaking (a breaking fact, a note that says so, or a step
  *      that removes, moves, renames or folds something public) and the
  *      changesets bump @hirobius/design-system by less than minor below 1.0
- *      (major from 1.0). On the Version PR (package.json past the snapshot, no
- *      changesets left) the real bump is checked instead, and the ledger of
- *      package.json's version must not record a smaller bump than its breaking
- *      steps need. Once that release is published and changesets are pending
- *      again, but before anyone records it (snapshot, ledger, notes moved to
- *      upgrade/sources/<version>/notes; by hand until hds#451), the notes
- *      whose changesets are gone, and the facts their steps list, are that
- *      release's: they still cover their facts but do not count toward the
- *      next bump, and the gate names the release to record;
- *   4. a changeset bumps major below 1.0, or the version crosses 1.0, without
+ *      (major from 1.0). The ledger of package.json's version must not
+ *      record a smaller bump than its breaking steps need. `pnpm
+ *      changeset:version` records each release on its Version PR
+ *      (scripts/upgrade/compile.mjs --release, hds#451: snapshot, ledger,
+ *      notes moved to upgrade/sources/<version>/notes). A Version PR cut
+ *      without it (package.json past the snapshot, no changesets left) has
+ *      its real bump checked instead; once that release is published and
+ *      changesets are pending again, but before anyone records it by hand,
+ *      the notes whose changesets are gone, and the facts their steps list,
+ *      are that release's: they still cover their facts but do not count
+ *      toward the next bump, and the gate names the release to record;
+ *   4. a changeset bumps major below 1.0, or the version crosses 1.0 (on the
+ *      Version PR, or in the ledger compile.mjs recorded for it), without
  *      upgrade/ALLOW_1_0 (the 1.0 cut is a decision, #396).
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills the note from the
@@ -165,10 +168,12 @@ function noteViolations(state) {
 /**
  * The notes of a release that is published but not yet recorded: package.json
  * names a version past the newest release snapshot, and changesets are pending
- * again (not the Version PR). Until the release compiler (hds#451) records a
- * release, its notes stay in upgrade/pending after `changeset version`
- * consumed their changesets, so a note whose changeset is gone belongs to the
- * version package.json already names. Its Version PR checked its bump.
+ * again (not the Version PR). A release cut without the release compiler
+ * (scripts/upgrade/compile.mjs --release, hds#451) leaves its notes in
+ * upgrade/pending after `changeset version` consumed their changesets, so a
+ * note whose changeset is gone belongs to the version package.json already
+ * names. Its Version PR checked its bump. A release cut through `pnpm
+ * changeset:version` has its snapshot, so this is always empty for it.
  */
 function releasedNotes(state, versionPr) {
   if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return [];
@@ -278,6 +283,18 @@ function allowViolations(state, versionPr) {
         ]
       : [];
   }
+  // A Version PR the release compiler recorded (hds#451) has its snapshot, so
+  // it is not versionPr above; the ledger it wrote still names the 1.0 cut.
+  const ledger = state.ledger?.release;
+  if (ledger?.bump === 'major' && major(state.version) === 1 && state.version.startsWith('1.0.0')) {
+    return [
+      violation(
+        state.ledger.file,
+        'major-before-1.0',
+        `${state.ledger.file} records ${state.version} as a major release, which cuts 1.0. ${why}.`,
+      ),
+    ];
+  }
   if (major(state.version) !== 0) return [];
   return state.changesets
     .filter((c) => c.bump === 'major')
@@ -338,7 +355,8 @@ export function checkUpgradeLedger(root = REPO) {
 
 /**
  * The published release no snapshot records yet, with the notes that belong
- * to it, or null. Recording it is a manual step until hds#451.
+ * to it, or null: a release cut without compile.mjs --release, which is
+ * then recorded by hand.
  */
 function unrecorded(state, versionPr) {
   if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return null;

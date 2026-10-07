@@ -491,11 +491,13 @@ describe('the committed ledgers (upgrade/releases) and their sources (upgrade/so
     expect(check.status, check.stderr).toBe(0);
   });
 
-  it('has frozen sources for every backfilled ledger', () => {
-    const backfilled = releaseVersions(join(REPO, 'upgrade/releases')).filter(
-      (v) => JSON.parse(readFileSync(join(REPO, `upgrade/releases/${v}.json`), 'utf8')).backfilled,
-    );
-    expect(sourceVersions()).toEqual(backfilled);
+  // Backfilled ledgers (0.17.0 to 0.21.0) and the ones compile.mjs --release
+  // records at changeset version (hds#451) alike: every ledger is built from
+  // inputs frozen with its release.
+  it('has frozen sources for every ledger', () => {
+    const ledgers = releaseVersions(join(REPO, 'upgrade/releases'));
+    expect(ledgers).toEqual(expect.arrayContaining(['0.17.0', '0.20.0', '0.21.0']));
+    expect(sourceVersions()).toEqual(ledgers);
   });
 
   it('cites each CHANGELOG line that its needle still finds in that release section', () => {

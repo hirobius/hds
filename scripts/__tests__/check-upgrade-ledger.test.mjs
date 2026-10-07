@@ -22,6 +22,7 @@ import {
   editPkg,
   note,
   readPkg,
+  recordRelease,
   releasedRepo,
   removeCallout,
   write,
@@ -354,6 +355,18 @@ describe('checkUpgradeLedger: the Version PR checks the real bump', () => {
   it('fails a release that cuts 1.0 without upgrade/ALLOW_1_0', () => {
     const root = versioned('1.0.0', calloutRemoved.steps);
     expect(rules(checkUpgradeLedger(root))).toEqual(['major-before-1.0']);
+    write(root, 'upgrade/ALLOW_1_0', '');
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+
+  // hds#451: compile.mjs --release writes the new version's snapshot on the
+  // Version PR, so that PR no longer looks like one (package.json is not past
+  // the newest snapshot). The ledger it recorded still says major.
+  it('fails a recorded release that cuts 1.0 without upgrade/ALLOW_1_0', () => {
+    const root = versioned('1.0.0', calloutRemoved.steps);
+    recordRelease(root, '1.0.0');
+    expect(rules(checkUpgradeLedger(root))).toEqual(['major-before-1.0']);
+    expect(messages(checkUpgradeLedger(root))).toContain('upgrade/releases/1.0.0.json');
     write(root, 'upgrade/ALLOW_1_0', '');
     expect(checkUpgradeLedger(root).violations).toEqual([]);
   });
