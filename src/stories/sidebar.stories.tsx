@@ -14,7 +14,7 @@ const Panel = ({ label, minHeight = 80 }: { label: string; minHeight?: number })
       borderRadius: '6px',
       padding: '16px',
       minHeight,
-      fontSize: '12px',
+      fontSize: 'var(--semantic-typography-caption-font-size)',
       color: 'var(--semantic-color-content-secondary, #6b7280)',
     }}
   >

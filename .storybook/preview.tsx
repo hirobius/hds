@@ -6,6 +6,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { ThemeProvider } from '../src/app/context/ThemeContext';
 import { GlobalsSync } from './globals-sync';
+import '../src/styles/fonts.css';
 import '../src/styles/index.css';
 import componentApi from '../src/app/data/component-api.json';
 import { extractUsageDescription } from '../src/stories/lib/usage-description';

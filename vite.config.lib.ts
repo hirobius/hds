@@ -94,14 +94,11 @@ export default defineConfig({
   // Do NOT copy the `public/` directory into the library output. The app build
   // (vite.config.mjs) serves portfolio assets, fonts, and manifests from
   // public/, but the published package must not carry ~47MB of portfolio PNGs
-  // and JSON. fonts.css references fonts by absolute `/fonts/...` URLs (served
-  // from public/ by the app, identical to before — no app render/CLS change).
-  // Those URLs don't resolve here (publicDir is off), so Vite leaves them as-is;
-  // the `scripts/embed-fonts.mjs` post-build step then base64-inlines the three
-  // woff2 into dist/tokens.css so a consumer importing
-  // `@hirobius/design-system/tokens.css` gets self-contained fonts with ZERO
-  // setup (P0.3, option a). Trade-off: a larger tokens.css (~111KB gzip);
-  // woff2 is already compressed so gzip recovers most of the base64 overhead.
+  // and JSON. src/styles/fonts.css (absolute `/fonts/...` URLs, served from
+  // public/ by the app) is no longer imported by the library entry, so
+  // tokens.css carries no @font-face. `scripts/build-fonts-css.mjs` ships the
+  // faces as the opt-in `@hirobius/design-system/fonts.css` plus dist/fonts/*.woff2
+  // with URLs relative to it (hds#479).
   publicDir: false,
   resolve: {
     alias: {

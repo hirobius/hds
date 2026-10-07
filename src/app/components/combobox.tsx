@@ -233,7 +233,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             onClick={() => setOpen((o) => !o)}
             className={cn(
               'hds-focus flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input',
-              'bg-background px-3 text-sm text-foreground',
+              'bg-background px-3 hds-type-ui text-foreground',
               'disabled:cursor-not-allowed disabled:opacity-50',
               className,
             )}
@@ -274,7 +274,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             }}
             onKeyDown={onInputKeyDown}
             className={cn(
-              'hds-focus h-10 w-full border-b border-border bg-transparent px-3 text-sm text-foreground',
+              'hds-focus h-10 w-full border-b border-border bg-transparent px-3 hds-type-ui text-foreground',
               'outline-none placeholder:text-muted-foreground',
             )}
           />
@@ -303,7 +303,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                     onMouseEnter={() => setActiveIndex(i)}
                     onClick={() => commit(option)}
                     className={cn(
-                      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
+                      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hds-type-ui outline-none',
                       'data-[active=true]:bg-accent data-[active=true]:text-accent-foreground',
                       'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
                       'disabled:pointer-events-none disabled:opacity-50',
@@ -324,7 +324,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
               option fails axe aria-required-children (hds#407). m-1 stands in
               for the empty listbox's padding, so the box is unchanged. */}
           {filtered.length === 0 ? (
-            <p className="m-1 px-2 py-6 text-center text-sm text-muted-foreground">
+            <p className="m-1 px-2 py-6 text-center hds-type-ui text-muted-foreground">
               {emptyMessage}
             </p>
           ) : null}
@@ -349,7 +349,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                   onClick={() => remove(option, i)}
                   className={cn(
                     'hds-focus inline-flex h-7 items-center gap-1 rounded-sm border border-border bg-muted pl-2 pr-1',
-                    'text-xs text-foreground hover:bg-accent hover:text-accent-foreground',
+                    'hds-type-caption text-foreground hover:bg-accent hover:text-accent-foreground',
                     'disabled:pointer-events-none disabled:opacity-50',
                   )}
                 >
