@@ -1,5 +1,5 @@
 {
-  "$comment": "Every version of @hirobius/design-system published to npm, oldest first (npm view @hirobius/design-system versions --json). Add each release the day it publishes, with its snapshot (node scripts/upgrade/snapshot.mjs --from-npm <version>) and its ledger (upgrade/README.md, Recording a release by hand); hds#451 will do all three at release time. scripts/__tests__/upgrade-history.test.mjs fails while a release after the 0.16.0 floor lacks either.",
+  "$comment": "Every version of @hirobius/design-system published to npm, oldest first (npm view @hirobius/design-system versions --json). scripts/upgrade/compile.mjs --release adds each release here on its Version PR, with its snapshot and its ledger (upgrade/README.md, At release time); a release cut without it is added by hand the day it publishes (Recording a release by hand). scripts/__tests__/upgrade-history.test.mjs fails while a release after the 0.16.0 floor lacks either.",
   "versions": [
     "0.8.1",
     "0.9.0",

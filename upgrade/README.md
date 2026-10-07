@@ -4,8 +4,11 @@ Each release of `@hirobius/design-system` gets one machine-readable record of
 what it changed for a consumer: `upgrade/releases/<version>.json`, from 0.17.0
 on (see [The floor](#the-floor)). The upgrade
 command (`npx @hirobius/design-system@latest upgrade`, hds#452) reads it to run
-the codemods and report what is left, and UPGRADING.md and `upgrade/index.json`
-are compiled from it (hds#451).
+the codemods and report what is left, and UPGRADING.md, `upgrade/index.json`
+and the `release` object of `status.json` are compiled from it
+([What it compiles to](#what-it-compiles-to)). All of it ships in the package
+except `upgrade/pending/`, `upgrade/sources/`, `upgrade/published.json` and
+this README.
 
 ## What a ledger holds
 
@@ -94,15 +97,67 @@ From 0.21.0 on, each changeset carries an `upgrade/pending/<name>.json` note
 upgrade:note` pre-fills it). `scripts/check-upgrade-ledger.mjs` runs in
 `pretest` and fails when a fact since the last release snapshot has no step,
 a changeset has no note, or something breaking ships under less than a minor
-below 1.0. `changeset version` will compile the notes into the release's
-ledger (hds#451). CSS facts, such as removed classes and changed variable
+below 1.0. `pnpm changeset:version` compiles the notes into the release's
+ledger ([At release time](#at-release-time)). CSS facts, such as removed classes and changed variable
 values, come with hds#449; until then a step of kind `removed` written by hand
 covers one, and the gate counts it as breaking.
 
+## At release time
+
+`pnpm changeset:version` (which the release workflow runs to open the Version
+PR) runs `changeset version`, then `node scripts/upgrade/compile.mjs
+--release`, which records the release it just cut:
+
+1. It builds the ledger in memory from the notes in `upgrade/pending/` and
+   the snapshot of the tree, read from source with no build. A fact no note
+   step lists stops it with nothing written.
+2. It writes `docs/api/releases/<version>.json`, freezes each note byte for
+   byte at `upgrade/sources/<version>/notes/<name>.json`, writes
+   `upgrade/sources/<version>/release.json` (each note cites its changeset's
+   CHANGELOG entry, read back from git at HEAD; `.changeset/<name>.md` when
+   git no longer has it) and builds `upgrade/releases/<version>.json` from
+   them with `build-ledger.mjs`, so every ledger, backfilled or not, is built
+   from frozen sources.
+3. It puts an `### Upgrade` block at the top of the new CHANGELOG section,
+   before the citations are numbered: the command (the one command once the
+   package ships it, the exact install until then), then at most five lines,
+   so the GitHub Release leads with it.
+4. It adds the version to `upgrade/published.json`, deletes the merged notes
+   and regenerates UPGRADING.md, `upgrade/index.json` and `status.json`
+   `release`.
+
+The summary is counted from the steps ("1 change to make by hand (1 breaking)
+and 1 that looks different."). To reword it on the Version PR, edit
+`upgrade/sources/<version>/release.json`, then run `node
+scripts/upgrade/build-ledger.mjs <version>` and `node
+scripts/upgrade/compile.mjs`.
+
+## What it compiles to
+
+`node scripts/upgrade/compile.mjs` writes, from the committed ledgers only:
+
+- **UPGRADING.md.** Its first lines say it only knows the releases up to the
+  installed version and where newer steps come from; then how to upgrade (the
+  one command when `package.json#bin` has `design-system`, hds#452; the manual
+  route until then: the exact version, the codemods, the Do by hand list);
+  then every release, newest first, with its summary and four lists. Each step
+  lands in one: a `deprecated` step in **Coming next** (unless a later step
+  removes, moves, renames or folds the same name); a step with `auto` in
+  **Fixed for you**; a `look` step that neither takes something away nor is
+  `manual` in **Looks different**; anything else in **Do by hand**, breaking
+  first. An empty list is left out.
+- **`upgrade/index.json`**: every release with its breaking count, the
+  [floor](#the-floor) and what is deprecated today with its `removeIn`.
+- **`status.json` `release`**: the newest release for the fleet dashboard.
+
+`node scripts/upgrade/compile.mjs --check` runs in `pretest` and fails,
+naming the file and the fix, when any of the three differs from what it would
+write. UPGRADING.md and `upgrade/index.json` are in `.prettierignore`.
+
 ## Recording a release by hand
 
-Until the release compiler (hds#451) records each release at `changeset
-version` time, record it by hand once npm has published it, in one follow-up
+A release cut without `pnpm changeset:version` (so without `compile.mjs
+--release`) is recorded by hand once npm has published it, in one follow-up
 PR with `skip-changeset` in its commit message (nothing in it ships):
 
 1. `node scripts/upgrade/snapshot.mjs --from-npm <version>` writes
@@ -138,26 +193,26 @@ The floor is the oldest version the upgrade command can upgrade from. Below
 it, the command changes nothing and exits 2; follow MIGRATIONS.md by hand up to
 the floor. It is 0.16.0, the oldest committed snapshot: the 0.17.0 to 0.21.0
 ledgers cover every release after it through 0.21.0, so a consumer still on
-0.16.0 (folio, and ops until its 0.20.0 bump) crosses no change up to 0.21.0
+0.16.0 crosses no change up to 0.21.0
 that a step does not report.
 
 `upgrade/published.json` lists every version npm has published. A test fails
 while a release after the floor has no snapshot or no ledger, so a release
-that ships without them (as 0.21.0 first did) fails the next `pnpm test`. When
-a release publishes, add its version there with its snapshot and its ledger
-([Recording a release by hand](#recording-a-release-by-hand)); hds#451 will do
-all three at release time. The upgrade command will refuse to
-report "done" across a release that has no ledger.
+that ships without them (as 0.21.0 first did) fails the next `pnpm test`.
+`compile.mjs --release` adds each release there with its snapshot and its
+ledger on the Version PR ([At release time](#at-release-time)); a release cut
+without it is added by hand
+([Recording a release by hand](#recording-a-release-by-hand)). The upgrade
+command will refuse to report "done" across a release that has no ledger.
 
 `floor()` in `scripts/upgrade/history.mjs` computes the floor, for `floor` in
-`upgrade/index.json` (hds#451). Its `historyProblems()`, run by a test, fails
+`upgrade/index.json`. Its `historyProblems()`, run by a test, fails
 when a snapshot after the floor has no ledger, a ledger names the wrong bump,
 or a fact between two consecutive snapshots (an export removed or moved, a
 dependency, peer, engine, exports key or bin) has no step. It reads only
-committed snapshots; the published list is what catches a missing one. Nothing
-adds a version to that list when npm publishes it yet, so a release nobody
-records stays invisible to the test; until hds#451 adds it at release time, the
-gate's "not recorded" line above is the prompt.
+committed snapshots; the published list is what catches a missing one. A
+release cut without `compile.mjs --release` is in neither, so it stays
+invisible to the test; the gate's "not recorded" line above is the prompt.
 
 ## Who is a consumer
 

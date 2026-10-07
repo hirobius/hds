@@ -58,3 +58,27 @@ describe('CONSUMING docs after the 0.20.0 root removals', () => {
     expect(rootRow).not.toMatch(/primitives, patterns/);
   });
 });
+
+// hds#451: `pnpm update` never crosses a 0.x minor, so the upgrade path is the
+// exact version plus UPGRADING.md, and from 0.22.0 one command (hds#452).
+describe('upgrading (hds#451)', () => {
+  const section3 = () => {
+    const doc = read('CONSUMING.md');
+    const start = doc.indexOf('## 3. ');
+    return doc.slice(start, doc.indexOf('\n## ', start + 1));
+  };
+
+  it('CONSUMING.md §3 shows the one command as coming in 0.22.0 and keeps the manual route for today', () => {
+    const s3 = section3();
+    expect(s3).toContain('npx @hirobius/design-system@latest upgrade');
+    expect(s3).toMatch(/0\.22\.0/);
+    expect(s3).toContain('](UPGRADING.md)');
+    expect(s3).toContain(`pnpm add ${PKG}@`);
+    expect(s3).not.toMatch(/pnpm update @hirobius\/design-system\s+#\s*latest/);
+  });
+
+  it('README links UPGRADING.md at the top', () => {
+    const top = read('README.md').split('\n').slice(0, 15).join('\n');
+    expect(top).toContain('](UPGRADING.md)');
+  });
+});

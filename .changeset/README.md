@@ -59,14 +59,16 @@ push time when `src/`, the shipped codemods, `mcp/`, the ESLint plugin,
 ## Releasing
 
 `pnpm changeset:version` consumes the changesets, bumps `package.json` and
-`CHANGELOG.md`, and refreshes `docs/api/api-baseline.json`
+`CHANGELOG.md`, records the release and refreshes `docs/api/api-baseline.json`
 (`scripts/__tests__/check-public-api.test.mjs` checks the two versions match).
-The release compiler (hds#451) will merge the pending notes into
-`upgrade/releases/<version>.json` and delete them at the same step. Until it
-does, the notes stay in `upgrade/pending/` after their changesets are
-consumed, and each release is recorded by hand once it publishes: its snapshot,
-its notes moved to `upgrade/sources/<version>/notes/`, its ledger and its line
-in `upgrade/published.json` (`upgrade/README.md`, "Recording a release by
-hand"). Meanwhile the gate counts those notes as the published release's, not
-the next one's, and prints what is left to record. Publishing runs from
+Recording is `node scripts/upgrade/compile.mjs --release`: it merges the
+pending notes into `upgrade/releases/<version>.json` (freezing them under
+`upgrade/sources/<version>/`), writes the release snapshot, puts an Upgrade
+block at the top of the new CHANGELOG section, adds the version to
+`upgrade/published.json`, deletes the merged notes and regenerates
+UPGRADING.md, `upgrade/index.json` and the `release` object of `status.json`
+(`upgrade/README.md`, "At release time"). A release cut without it is
+recorded by hand once it publishes ("Recording a release by hand"); until
+then the gate counts its notes as that release's, not the next one's, and
+prints what is left to record. Publishing runs from
 `.github/workflows/release.yml`, never by hand.

@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * build-ledger.mjs — builds upgrade/releases/<version>.json for a release that
- * shipped before its ledger was written (`backfilled`, hds#447, hds#450,
- * hds#448), from inputs frozen with that release, so no later edit elsewhere
- * in the repo can rewrite a shipped ledger.
+ * build-ledger.mjs — builds upgrade/releases/<version>.json from inputs frozen
+ * with that release, so no later edit elsewhere in the repo can rewrite a
+ * shipped ledger: for a release that shipped before its ledger was written
+ * (`backfilled`, hds#447, hds#450, hds#448), and for each release the release
+ * compiler records at `changeset version` time (./compile.mjs --release,
+ * hds#451), which freezes the inputs and then builds through
+ * ledgerFromSources.
  *
  * Inputs, all committed and never edited once the ledger ships:
  *
@@ -46,8 +49,8 @@
  * the schema rejects, or a frozen note release.json does not cite stops it.
  * The frozen sources cover 0.17.0 through 0.21.0: 0.17.0 to 0.20.0 from their
  * CHANGELOG sections and codemod data, 0.21.0 from its seven changesets'
- * upgrade notes. Later releases get theirs compiled from the notes at
- * `changeset version` time (hds#451).
+ * upgrade notes. Later releases get theirs frozen and built by
+ * ./compile.mjs --release at `changeset version` time (hds#451).
  *
  *   node scripts/upgrade/build-ledger.mjs [<version>...]           # write (default: every release with sources)
  *   node scripts/upgrade/build-ledger.mjs --check [<version>...]   # exit 1 if a committed ledger is stale
