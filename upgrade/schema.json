@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "@hirobius/design-system upgrade ledger",
-  "description": "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json and $defs.snapshot a release snapshot (docs/api/releases/<version>.json).",
+  "description": "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json) and $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json).",
   "$ref": "#/$defs/release",
   "$defs": {
     "auto": {
@@ -230,6 +230,132 @@
       "additionalProperties": false,
       "description": "upgrade/index.json: the releases the upgrade command knows, and its floor."
     },
+    "pendingNote": {
+      "type": "object",
+      "properties": {
+        "impact": {
+          "type": "string",
+          "enum": [
+            "none",
+            "additive",
+            "look",
+            "behavior",
+            "breaking"
+          ],
+          "description": "The most severe impact of this change on a consumer that does nothing. A change with none says so: impact none, stated, never left out."
+        },
+        "plain": {
+          "description": "The change in one sentence a non-expert can act on, ending in a full stop. Required unless impact is none.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "^[^\\n]+[.]$"
+        },
+        "steps": {
+          "description": "The ledger steps this change adds. A fact the snapshot diff finds (a removed export, a dropped dependency) needs a step that lists it in facts.",
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pendingStep"
+          }
+        }
+      },
+      "required": [
+        "impact"
+      ],
+      "additionalProperties": false,
+      "description": "upgrade/pending/<changeset>.json: the upgrade note a changeset carries until its release (hds#448)."
+    },
+    "pendingStep": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?:removed|moved|renamed|folded|deprecated|value-changed|look|behavior|dependency|peer|engines|exports|tenant|manual)\\/\\S+$",
+          "description": "<kind>/<subject>, a release step id without its version: the compiler (hds#451) prefixes the version when it merges the note into upgrade/releases/<version>.json."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "removed",
+            "moved",
+            "renamed",
+            "folded",
+            "deprecated",
+            "value-changed",
+            "look",
+            "behavior",
+            "dependency",
+            "peer",
+            "engines",
+            "exports",
+            "tenant",
+            "manual"
+          ],
+          "description": "What changed."
+        },
+        "impact": {
+          "type": "string",
+          "enum": [
+            "none",
+            "additive",
+            "look",
+            "behavior",
+            "breaking"
+          ],
+          "description": "What happens to a consumer that does nothing: none, additive (new, opt-in), look, behavior, or breaking (it stops compiling or running)."
+        },
+        "plain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "^[^\\n]+[.]$",
+          "description": "One sentence a non-expert can act on, ending in a full stop."
+        },
+        "auto": {
+          "$ref": "#/$defs/auto"
+        },
+        "detect": {
+          "$ref": "#/$defs/detect"
+        },
+        "done": {
+          "description": "How to tell the consumer has already made this change, in the detect shape: when any of it matches, the step is done even where detect matches too. For a step that asks the consumer to add something, such as an import.",
+          "$ref": "#/$defs/detect"
+        },
+        "removeIn": {
+          "description": "For a deprecation: the version that removes it.",
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "range": {
+          "description": "For a dependency or peer step: the range this package declared before the release, so a consumer that still imports it can add it back.",
+          "type": "string",
+          "minLength": 1
+        },
+        "facts": {
+          "description": "The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.",
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source": {
+          "description": "Where the step comes from. When absent, the compiler (hds#451) fills it in.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "impact",
+        "plain"
+      ],
+      "additionalProperties": false,
+      "description": "One step of a pending note: a release step whose id leaves out the version."
+    },
     "release": {
       "type": "object",
       "properties": {
@@ -441,6 +567,10 @@
           "$ref": "#/$defs/auto"
         },
         "detect": {
+          "$ref": "#/$defs/detect"
+        },
+        "done": {
+          "description": "How to tell the consumer has already made this change, in the detect shape: when any of it matches, the step is done even where detect matches too. For a step that asks the consumer to add something, such as an import.",
           "$ref": "#/$defs/detect"
         },
         "removeIn": {

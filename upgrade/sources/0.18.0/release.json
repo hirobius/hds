@@ -1,0 +1,9 @@
+{
+  "$comment": "Frozen inputs of the 0.18.0 ledger (hds#450), read by scripts/upgrade/build-ledger.mjs. 0.18.0 shipped before ledgers existed, so its record was written after the fact from the published tarball's snapshot (docs/api/releases/0.18.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.18.0 shipped (its section starts on line 3, and is byte-identical to the one at tag v0.18.0); its needle is the text that finds the line. 0.18.0 has no step: its one entry adds the hds-patterns-subpath bin (an addition, which needs none) and documents the deprecation cycle in MIGRATIONS.md, which the package does not ship.",
+  "version": "0.18.0",
+  "previous": "0.17.0",
+  "date": "2026-09-30",
+  "summary": "Adds the hds-patterns-subpath codemod, which moves root imports of the deprecated pattern components to /patterns.",
+  "backfilled": true,
+  "steps": []
+}

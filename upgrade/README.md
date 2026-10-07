@@ -1,7 +1,8 @@
 # Upgrade ledger
 
-Every release of `@hirobius/design-system` has one machine-readable record of
-what it changed for a consumer: `upgrade/releases/<version>.json`. The upgrade
+Each release of `@hirobius/design-system` gets one machine-readable record of
+what it changed for a consumer: `upgrade/releases/<version>.json`, from 0.17.0
+on (see [The floor](#the-floor)). The upgrade
 command (`npx @hirobius/design-system@latest upgrade`, hds#452) reads it to run
 the codemods and report what is left, and UPGRADING.md and `upgrade/index.json`
 are compiled from it (hds#451).
@@ -23,6 +24,8 @@ are compiled from it (hds#451).
   - `detect` says how to find a use in consumer code: named `imports`, `jsx`
     tags, `cssVars` read, `cssVarWrites`, `classes`, `bareImports` of other
     packages, or a `regex`.
+  - `done`, in the same shape, says the consumer has already made the change:
+    for a step that asks them to add something, such as an import.
   - `removeIn` is the release that removes a deprecated name.
   - `facts` lists the snapshot-diff facts the step accounts for.
   - `source` is a CHANGELOG line (numbered as the file read when the release
@@ -37,7 +40,8 @@ of a release snapshot.
 
 1. **Snapshot.** `node scripts/upgrade/snapshot.mjs --from-npm <version>`
    writes `docs/api/releases/<version>.json` from the published tarball: the
-   export names of each entry with the module that declares them, dependencies,
+   export names of each entry (tooling entries such as `./eslint-plugin`
+   included) with the module that declares them, dependencies,
    peers with their optional flag, engines, exports keys, bins and files.
 2. **Diff.** `node scripts/upgrade/diff.mjs <previous> <version>` lists the
    facts between two snapshots: exports removed, moved or added, exports keys,
@@ -46,21 +50,114 @@ of a release snapshot.
    `facts`. Changes the diff cannot see (how something looks or behaves, a
    deprecation, a rename) come from the CHANGELOG and cite its line.
 
-0.20.0 is the first ledger. `scripts/upgrade/build-ledger-0.20.mjs` builds it
-from the 0.19.1 and 0.20.0 snapshots, `codemods/removed-0.20.json`, the
-`RENAMES` map in `codemods/hds-prefix.mjs` and the CHANGELOG, and a test keeps
-the committed file equal to its output. Next, each changeset carries an
-`upgrade/pending/<name>.json` note (hds#448) and `changeset version` compiles
-the notes into the release's ledger (hds#451). CSS facts, such as removed
-classes and changed variable values, come with hds#449.
+Releases that shipped before their ledgers were written are backfilled:
+0.17.0 to 0.21.0. `node scripts/upgrade/build-ledger.mjs <version>` builds each one from
+its two snapshots and inputs frozen in `upgrade/sources/<version>/`:
+`release.json` (the release fields, how its removed and moved names are
+classified, and the steps only the CHANGELOG records, each with its line and
+the text that finds it) and any data file it names. For 0.20.0 those are
+copies of `codemods/removed-0.20.json` and the `RENAMES` map in
+`codemods/hds-prefix.mjs` as 0.20.0 published them, so a later edit to the
+live codemod data, or to the CHANGELOG, can never rewrite a shipped ledger. A
+test keeps every committed ledger equal to the build of its sources
+(`build-ledger.mjs --check`), and another that each cited line still holds its
+text.
+
+The 0.16.0 to 0.19.1 diffs hold only additions (`/patterns`, `/icons`, the
+`hds-patterns-subpath` bin, new names), so those ledgers carry the look,
+behavior and deprecation steps from each CHANGELOG section. 0.18.0 and 0.19.1
+have no step: nothing in them asks anything of a consumer. Every tarball from
+0.16.0 on has `dist/types` for each JS entry, so `snapshot.mjs` reads them all
+unchanged; a tarball without one would stop it with the entry named, rather
+than record a guess.
+
+A deprecated step's `removeIn` is what its release announced. When the release
+named no removal, it is the target a later release set, and the `$comment` of
+`upgrade/sources/<version>/release.json` cites it: 0.17.0 kept its seven
+spacing aliases with no removal release, and their 1.0.0 comes from 0.20.0. A
+later release may remove the name sooner: 0.17.0 deprecated the root pattern
+imports and the `Hds*` names for 1.0.0, and 0.20.0 removed them. Coming next (hds#451, #452)
+lists a deprecation only while no later step removes, moves, renames or folds
+the same name.
+
+0.21.0 shipped with an upgrade note for each of its seven changesets, but
+before the compiler (hds#451), so its ledger is built the same way from the
+notes themselves, frozen at `upgrade/sources/0.21.0/notes/` when their
+changesets were consumed. `release.json` lists them under `notes`, each citing
+its changeset's CHANGELOG entry. Each note step becomes a ledger step field for
+field (impact, plain, detect, done, removeIn, facts), with the version on its
+id. These steps are not marked `backfilled`, because they were written before
+the release.
+
+From 0.21.0 on, each changeset carries an `upgrade/pending/<name>.json` note
+(hds#448; how to write one is in `.changeset/README.md`, and `pnpm
+upgrade:note` pre-fills it). `scripts/check-upgrade-ledger.mjs` runs in
+`pretest` and fails when a fact since the last release snapshot has no step,
+a changeset has no note, or something breaking ships under less than a minor
+below 1.0. `changeset version` will compile the notes into the release's
+ledger (hds#451). CSS facts, such as removed classes and changed variable
+values, come with hds#449; until then a step of kind `removed` written by hand
+covers one, and the gate counts it as breaking.
+
+## Recording a release by hand
+
+Until the release compiler (hds#451) records each release at `changeset
+version` time, record it by hand once npm has published it, in one follow-up
+PR with `skip-changeset` in its commit message (nothing in it ships):
+
+1. `node scripts/upgrade/snapshot.mjs --from-npm <version>` writes
+   `docs/api/releases/<version>.json`; the same command with `--check` must
+   then pass.
+2. Move each note whose changeset the release consumed (its
+   `.changeset/<name>.md` is gone) from `upgrade/pending/<name>.json` to
+   `upgrade/sources/<version>/notes/<name>.json`, unchanged. A note whose
+   changeset is still pending stays where it is.
+3. Write `upgrade/sources/<version>/release.json`, with
+   `upgrade/sources/0.21.0/release.json` as the model: `version`, `previous`,
+   `date`, `summary`, `backfilled: true`, and under `notes` each moved note's
+   name with the `source` of its changeset's CHANGELOG entry
+   (`CHANGELOG.md:<line>`, numbered as the file read when the release shipped:
+   `changelogSource()` in `scripts/upgrade/ledger.mjs` gives it) and the
+   `needle` text that finds that line.
+4. `node scripts/upgrade/build-ledger.mjs <version>` writes
+   `upgrade/releases/<version>.json`. It stops on a fact no note step lists.
+5. Add the version to `upgrade/published.json`, and move the ranges in this
+   README ("0.17.0 to <version>").
+6. `pnpm test`.
+
+Until that PR lands, `package.json` names a version with no snapshot. Once
+changesets are pending again, the gate treats each note in `upgrade/pending/`
+whose changeset is gone as that release's: its steps still cover their facts,
+but neither it nor those facts count toward the next bump (its Version PR
+already checked them), and the gate prints these steps with the release's
+version and notes filled in.
 
 ## The floor
 
 The floor is the oldest version the upgrade command can upgrade from. Below
 it, the command changes nothing and exits 2; follow MIGRATIONS.md by hand up to
-the floor. It is `floor` in `upgrade/index.json` and will be 0.16.0 once the
-0.17.0 to 0.19.1 ledgers are backfilled (hds#450). Today only 0.20.0, from
-0.19.1, has a ledger.
+the floor. It is 0.16.0, the oldest committed snapshot: the 0.17.0 to 0.21.0
+ledgers cover every release after it through 0.21.0, so a consumer still on
+0.16.0 (folio, and ops until its 0.20.0 bump) crosses no change up to 0.21.0
+that a step does not report.
+
+`upgrade/published.json` lists every version npm has published. A test fails
+while a release after the floor has no snapshot or no ledger, so a release
+that ships without them (as 0.21.0 first did) fails the next `pnpm test`. When
+a release publishes, add its version there with its snapshot and its ledger
+([Recording a release by hand](#recording-a-release-by-hand)); hds#451 will do
+all three at release time. The upgrade command will refuse to
+report "done" across a release that has no ledger.
+
+`floor()` in `scripts/upgrade/history.mjs` computes the floor, for `floor` in
+`upgrade/index.json` (hds#451). Its `historyProblems()`, run by a test, fails
+when a snapshot after the floor has no ledger, a ledger names the wrong bump,
+or a fact between two consecutive snapshots (an export removed or moved, a
+dependency, peer, engine, exports key or bin) has no step. It reads only
+committed snapshots; the published list is what catches a missing one. Nothing
+adds a version to that list when npm publishes it yet, so a release nobody
+records stays invisible to the test; until hds#451 adds it at release time, the
+gate's "not recorded" line above is the prompt.
 
 ## Who is a consumer
 
