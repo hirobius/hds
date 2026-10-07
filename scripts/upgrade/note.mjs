@@ -13,7 +13,10 @@
  * what to detect in consumer code (the imports, the package, the subpath) and
  * an impact guessed from the fact (./ledger.mjs factImpact). The note's
  * impact is the most severe of its steps, additive when the change only adds,
- * none when the diff sees nothing.
+ * none when the diff sees nothing. An addition (an export, exports key,
+ * dependency or bin) needs no step, so nothing ties it to a changeset: it
+ * makes the guess additive only when this is the one pending changeset and no
+ * other note lists it, never from another changeset's additions.
  *
  * Every plain line it writes is a TODO the gate refuses, because only a person
  * can say what a consumer should do. With impact none and nothing to tell,
@@ -110,6 +113,22 @@ export function stepsForFacts(facts) {
   return [...steps.values()];
 }
 
+/**
+ * The additions `target`'s note can claim: none while another changeset is
+ * pending, since the diff cannot say whose an addition is, and none that
+ * another note already lists.
+ */
+function ownAdditions(state, target, facts) {
+  if (state.changesets.some((c) => c.name !== target)) return [];
+  const elsewhere = new Set(
+    state.notes
+      .filter((n) => n.name !== target)
+      .flatMap(noteSteps)
+      .flatMap((step) => step.facts ?? []),
+  );
+  return facts.filter((fact) => factImpact(fact) === 'additive' && !elsewhere.has(fact.id));
+}
+
 /** The changeset name to write a note for. */
 function pickName(state, name) {
   if (name) return basename(name).replace(/\.(md|json)$/, '');
@@ -164,7 +183,7 @@ export function writeNote(root, { name } = {}) {
     added.push(step.id);
   }
 
-  const additive = facts.some((fact) => factImpact(fact) === 'additive') ? 'additive' : 'none';
+  const additive = ownAdditions(state, target, facts).length > 0 ? 'additive' : 'none';
   const known = IMPACTS.includes(base?.impact) ? base.impact : 'none';
   const impact = [additive, ...steps.map((s) => s.impact)]
     .filter((i) => IMPACTS.includes(i))

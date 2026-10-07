@@ -27,8 +27,9 @@
  *      hds#448, no upgrade note) and CHANGELOG.md goes stale exactly the way
  *      hds#249 found it (last touched two months before two ADRs and a wave
  *      of commits landed). What ships (hds#448): anything under src/; the
- *      shipped code beside it (codemods/, mcp/, scripts/eslint-plugin-hds/,
- *      tests and fixtures left out); hirobius.tokens.json and
+ *      shipped code beside it, which is what package.json#files lists under
+ *      codemods/, mcp/ and scripts/eslint-plugin-hds/ (codemods/lib/ does
+ *      not ship; tests and fixtures left out); hirobius.tokens.json and
  *      tailwind.config.tokens.cjs; and package.json, but only the fields a
  *      consumer installs or resolves (CONSUMER_PACKAGE_FIELDS: dependencies,
  *      peers, engines, exports, bin, files and the like). A scripts or
@@ -66,8 +67,12 @@ const STATUS_PATH = path.join(ROOT, 'status.json');
 const CHANGESET_DIR = path.join(ROOT, '.changeset');
 
 const WATCHED_PREFIXES = ['src/', 'scripts/', 'docs/adr/'];
-/** Directories whose files ship in the package (tests and fixtures aside). */
-const CHANGESET_PREFIXES = ['src/', 'codemods/', 'mcp/', 'scripts/eslint-plugin-hds/'];
+/**
+ * Directories of shipped code beside src/. Not all of each ships (codemods/lib/
+ * serves the upgrade command in this repo), so package.json#files says which
+ * of their files do.
+ */
+const SHIPPED_CODE_DIRS = ['codemods/', 'mcp/', 'scripts/eslint-plugin-hds/'];
 /** Single files whose change reaches consumers through the build. */
 const CHANGESET_FILES = ['hirobius.tokens.json', 'tailwind.config.tokens.cjs'];
 /** Beside shipped code but never shipped: tests, fixtures, prose. */
@@ -115,15 +120,58 @@ export function touchesWatchedPath(file, prefixes) {
 }
 
 /**
- * True when a change to `file` ships to consumers. src/ counts whole, as it
- * always has; the other shipped directories leave out their tests, fixtures
- * and prose.
- * @param {string} file - a repo-relative path
+ * The package.json#files entries under SHIPPED_CODE_DIRS, read from this
+ * tree; the whole directories when package.json cannot be read or has no
+ * `files` (npm then packs everything).
+ * @returns {string[]}
  */
-export function shipsToConsumers(file) {
+function readShippedCode() {
+  try {
+    const { files } = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    if (!Array.isArray(files)) return SHIPPED_CODE_DIRS;
+    return files.filter((entry) => touchesWatchedPath(entry, SHIPPED_CODE_DIRS));
+  } catch {
+    return SHIPPED_CODE_DIRS;
+  }
+}
+
+let shippedCode = null;
+
+/**
+ * True when `file` is `entry` of package.json#files or under it: a file, a
+ * directory (with or without a trailing slash) or a glob (`*`, `**`, `?`).
+ */
+export function matchesFilesEntry(file, entry) {
+  const clean = entry.replace(/^\.\//, '').replace(/\/+$/, '');
+  if (!/[*?]/.test(clean)) return file === clean || file.startsWith(`${clean}/`);
+  const source = clean
+    .split(/(\*\*|\*|\?)/)
+    .map((part) =>
+      part === '**'
+        ? '.*'
+        : part === '*'
+          ? '[^/]*'
+          : part === '?'
+            ? '[^/]'
+            : part.replace(/[.+^${}()|[\]\\]/g, '\\$&'),
+    )
+    .join('');
+  return new RegExp(`^${source}(?:/.*)?$`).test(file);
+}
+
+/**
+ * True when a change to `file` ships to consumers. src/ counts whole, as it
+ * always has, and so do the token files; beside src/, a file ships when
+ * package.json#files lists it (`shipped`), leaving out tests, fixtures and
+ * prose.
+ * @param {string} file - a repo-relative path
+ * @param {string[]} [shipped] - package.json#files entries under codemods/,
+ *   mcp/ and scripts/eslint-plugin-hds/ (default: this tree's)
+ */
+export function shipsToConsumers(file, shipped = (shippedCode ??= readShippedCode())) {
   if (file.startsWith('src/')) return true;
   if (CHANGESET_FILES.includes(file)) return true;
-  if (!touchesWatchedPath(file, CHANGESET_PREFIXES)) return false;
+  if (!shipped.some((entry) => matchesFilesEntry(file, entry))) return false;
   return !NOT_SHIPPED.some((pattern) => pattern.test(file));
 }
 
@@ -159,7 +207,7 @@ export function consumerPackageChanges(before, after) {
 /** Why a commit needs a changeset: shipped files, then package.json fields. */
 export function changesetReasons(commit) {
   return [
-    ...commit.files.filter(shipsToConsumers),
+    ...commit.files.filter((file) => shipsToConsumers(file)),
     ...(commit.packageFields ?? []).map((field) => `package.json ${field}`),
   ];
 }

@@ -163,6 +163,30 @@ describe('writeNote', () => {
     });
   });
 
+  // An added export needs no step, so nothing ties it to one changeset. With
+  // another changeset pending, the addition may be that one's (hds#448 verify).
+  it("does not guess additive from another changeset's additions", () => {
+    const root = releasedRepo();
+    write(
+      root,
+      'src/patterns.ts',
+      'export function Page() { return null; }\nexport const x = 1;\n',
+    );
+    changeset(root, 'add-x', 'patch');
+    changeset(root, 'fix-copy', 'patch');
+    // Before add-x has its note, and after.
+    expect(writeNote(root, { name: 'fix-copy' }).note).toEqual({
+      impact: 'none',
+      plain: TODO_PLAIN,
+    });
+    note(root, 'add-x', { impact: 'additive', plain: 'Patterns export x.' });
+    note(root, 'fix-copy', { impact: 'none' });
+    expect(writeNote(root, { name: 'fix-copy' }).note).toEqual({ impact: 'none' });
+    // A step for an unrelated fact still sets the impact it needs.
+    removeCallout(root);
+    expect(writeNote(root, { name: 'fix-copy' }).note.impact).toBe('breaking');
+  });
+
   it('keeps what the author wrote, adds only what is still uncovered, and a second run changes nothing', () => {
     const root = releasedRepo();
     removeCallout(root);

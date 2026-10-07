@@ -119,6 +119,40 @@ describe('what needs a changeset: what ships to consumers (hds#448)', () => {
     }
   });
 
+  // codemods/ also holds what does not ship (codemods/lib/, used by the
+  // upgrade command in this repo); package.json#files is the list that ships.
+  it('counts only the codemods, MCP and plugin files package.json#files ships', () => {
+    expect(shipsToConsumers('codemods/lib/installed-version.mjs')).toBe(false);
+    expect(shipsToConsumers('codemods/hds-prefix.mjs')).toBe(true);
+    expect(shipsToConsumers('codemods/patterns-subpath.names.json')).toBe(true);
+    expect(shipsToConsumers('mcp/catalog.mjs')).toBe(true);
+    expect(shipsToConsumers('scripts/eslint-plugin-hds/package.json')).toBe(true);
+    expect(shipsToConsumers('scripts/eslint-plugin-hds/eslint.config.mjs')).toBe(false);
+  });
+
+  it('reads the shipped list it is given: files, directories with or without a slash, and globs', () => {
+    const files = [
+      'codemods/new.mjs',
+      'mcp',
+      'scripts/eslint-plugin-hds/rules/',
+      'codemods/*.json',
+    ];
+    expect(shipsToConsumers('codemods/new.mjs', files)).toBe(true);
+    expect(shipsToConsumers('codemods/new.mjs.bak', files)).toBe(false);
+    expect(shipsToConsumers('codemods/hds-prefix.mjs', files)).toBe(false);
+    expect(shipsToConsumers('codemods/removed-0.20.json', files)).toBe(true);
+    expect(shipsToConsumers('codemods/lib/data.json', files)).toBe(false);
+    expect(shipsToConsumers('mcp/hds-mcp.mjs', files)).toBe(true);
+    expect(shipsToConsumers('mcpx/hds-mcp.mjs', files)).toBe(false);
+    expect(shipsToConsumers('scripts/eslint-plugin-hds/rules/no-raw-controls.mjs', files)).toBe(
+      true,
+    );
+    expect(shipsToConsumers('scripts/eslint-plugin-hds/index.mjs', files)).toBe(false);
+    // src/ and the token files ship whatever the list says.
+    expect(shipsToConsumers('src/index.ts', [])).toBe(true);
+    expect(shipsToConsumers('hirobius.tokens.json', [])).toBe(true);
+  });
+
   it('leaves out tooling, docs, and the tests and fixtures beside shipped code', () => {
     for (const file of [
       'scripts/check-upgrade-ledger.mjs',
