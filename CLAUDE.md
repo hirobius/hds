@@ -92,16 +92,19 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   Figma file by hand; `pnpm figma:snapshot --ingest` records the file into the committed
   `figma/snapshot.json`; `pnpm check:figma-drift` compares the two. Runbook:
   `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, demo tenants
-  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. There
-  is one Figma file, the HDS library, `libraryFileKey` in `figma/links.json`; there is no
-  staging file since 2026-10-07 (ADR-026 amendment). Agents may read it and write
-  components in it live: restyle, add, copy or redraw, one `use_figma` script naming the
-  node ids it touches, screenshots before and after. Tokens reach it only from code, through
-  the Sync plugin or `delta.js` (ADR-032, ADR-033). Never delete anything in Figma and never
-  publish; Adrian publishes. A component removed from code moves to the "Archive" page as
-  `_<Name> (archived <date>)`, one deprecated in code to the "Deprecated" page. A deliberate
-  prune is the promote plugin, and only Adrian runs it; agents never run a `--prune` build.
-  Pro allows 200 MCP calls a day —
+  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. In the
+  HDS library (`libraryFileKey` in `figma/links.json`, ADR-026 amended 2026-10-07) agents
+  may restyle, fix, add, copy or redraw components (one `use_figma` script naming the node
+  ids it touches, screenshots before and after), but never delete anything in the library
+  and never publish (Adrian publishes): a component removed from code moves to its
+  "Archive" page as `_<Name> (archived <date>)`, one deprecated in code to its "Deprecated"
+  page, and tokens reach the library only from code through the Sync plugin or `delta.js`,
+  never a `--prune` build (only Adrian prunes). HDS Staging (`stagingFileKey`) is the
+  scratch workbench where an agent drafts a new component with the library's variables and
+  styles, then ingests it by redrawing it in the library, points its `@figma` tag at the
+  library node and deletes the draft (agents may delete there; Sync and `delta.js` never
+  target it; steps in `figma/README.md`, "New components: draft in staging, ingest to the
+  library"). Pro allows 200 MCP calls a day —
   batch them, and never retry a rate-limit error. Code Connect
   v2 templates are generated and gated locally, but publishing needs a Figma
   Organization plan, so no mapping is live and Dev Mode shows no HDS snippets.

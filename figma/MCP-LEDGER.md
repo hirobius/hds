@@ -13,15 +13,17 @@ not in the ledger was not budgeted.
   the day's budget in a minute.
 - `use_figma` writes are a free beta that Figma has said will become
   usage-billed (ADR-026 §5).
-- **Write target: the library `2VgBbVpKiDnu0aftJEVyBQ`** (ADR-026, amended
-  2026-10-07, `figma/links.json`). There is no staging file since 2026-10-07:
-  sessions logged before the switch, some of them on 2026-10-07, call this same
-  file staging. Agents write
-  components there (restyle, add, copy or redraw), never delete anything in
-  Figma and never publish it; Adrian publishes. Variables and styles come only
-  from code, through Sync or `delta.js`. The retired library
-  `c8MaVgwxOlxm4wr8wnH0Z4` is never written. A library write's row names the
-  file key and every node id its script touches, and its before and after
+- **Write targets** (ADR-026, amended 2026-10-07, `figma/links.json`). The
+  library `2VgBbVpKiDnu0aftJEVyBQ`: sessions logged before 2026-10-07, and
+  some on that day, call this same file staging, the staging copy that became
+  the library. Agents write components there (restyle, fix, add, copy or
+  redraw), never delete anything in the library and never publish it; Adrian
+  publishes. Variables and styles come only from code, through Sync or
+  `delta.js`. HDS Staging `C85ZXnwtVc4AteeIOZfXRC` is the workbench where an
+  agent drafts a new component, then redraws it in the library and deletes the
+  draft; Sync and `delta.js` never target it. The retired library
+  `c8MaVgwxOlxm4wr8wnH0Z4` is never written. A write's row names the file key
+  and every node id its script touches, and its before and after
   `get_screenshot` calls get rows of their own.
 - Collecting a Sync (`figma/README.md`, "Agent: collect a sync") costs one
   `use_figma` read per receipt page: 1 for a delta, 2 for a full snapshot, plus

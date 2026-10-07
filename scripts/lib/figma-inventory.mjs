@@ -260,12 +260,14 @@ function explainStatus(status, path) {
  * `get_metadata` cannot answer "is this file a faithful copy" either: it lists
  * one page for the real library too, so REST is the only honest check.
  *
- * `--file staging` resolved `stagingFileKey` until 2026-10-07, when the
- * staging copy became the one library (ADR-026, amended 2026-10-07). It now
- * refuses and says so, rather than reading some other file.
+ * `--file staging` reads HDS Staging (`stagingFileKey`), the draft workbench
+ * (ADR-026, A4): an inspection of the drafts in progress, `workbench: true`,
+ * so the CLI lists them instead of comparing the file with the library, which
+ * it is not a copy of. Without `stagingFileKey` it refuses rather than reading
+ * some other file.
  *
  * @param {object} links - figma/links.json
- * @returns {{ fileKey: string, label: string, isDefault: boolean }}
+ * @returns {{ fileKey: string, label: string, isDefault: boolean, workbench: boolean }}
  */
 export function resolveTarget(args, links) {
   const index = args.indexOf('--file');
@@ -276,7 +278,12 @@ export function resolveTarget(args, links) {
           "Set it to the library's file key: the segment after /design/ in its URL.",
       );
     }
-    return { fileKey: links.libraryFileKey, label: 'libraryFileKey', isDefault: true };
+    return {
+      fileKey: links.libraryFileKey,
+      label: 'libraryFileKey',
+      isDefault: true,
+      workbench: false,
+    };
   }
 
   const value = args[index + 1];
@@ -284,10 +291,18 @@ export function resolveTarget(args, links) {
     throw new Error('--file needs a Figma file key.');
   }
   if (value === 'staging') {
-    throw new Error(
-      'There is no staging file: on 2026-10-07 the staging copy became the one library ' +
-        `(ADR-026, amended 2026-10-07). Drop --file to read the library (${links.libraryFileKey}).`,
-    );
+    if (!links.stagingFileKey) {
+      throw new Error(
+        'stagingFileKey is not set in figma/links.json, so there is no HDS Staging workbench to read ' +
+          `(ADR-026, A4). Drop --file to read the library (${links.libraryFileKey}).`,
+      );
+    }
+    return {
+      fileKey: links.stagingFileKey,
+      label: 'stagingFileKey (HDS Staging, the draft workbench)',
+      isDefault: false,
+      workbench: true,
+    };
   }
-  return { fileKey: value, label: 'the key passed to --file', isDefault: false };
+  return { fileKey: value, label: 'the key passed to --file', isDefault: false, workbench: false };
 }

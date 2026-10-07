@@ -3,7 +3,8 @@
  * Hirobius Design System — builds figma/push/use-figma/delta.js, the zero-click
  * agent sync (hds#418, hds#397 C3): one use_figma call that applies a merged
  * token change to the library and writes the Sync receipt, with no step by
- * Adrian. There is no staging file (ADR-026, amended 2026-10-07).
+ * Adrian (ADR-026, amended 2026-10-07). HDS Staging, the draft workbench of
+ * amendment A4, has no local variables and is never a delta.js target.
  *
  * `pnpm figma:push --delta` plans offline against the committed
  * figma/snapshot.json and bakes into delta.js:

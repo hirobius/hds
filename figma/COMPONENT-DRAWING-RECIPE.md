@@ -5,23 +5,36 @@ into the staging copy that became the library on 2026-10-07. The pilot existed t
 answer one question: if an agent can draw one component correctly, are the other
 40 mechanical? They are — provided the steps below are followed in order.
 
-**Write target: the library, `libraryFileKey` in `figma/links.json`** (ADR-026,
-amended 2026-10-07). There is no staging file since 2026-10-07. In the library an
-agent may restyle, add, copy or redraw a component; it never deletes anything in
-Figma and never publishes: Adrian publishes. Every write also follows these rules:
+**Where to draw** (ADR-026, amended 2026-10-07; both keys in `figma/links.json`):
+
+- **A new component** (the library does not have it yet): draft it in HDS Staging
+  (`C85ZXnwtVc4AteeIOZfXRC`), the scratch workbench, bound to the library's variables and
+  styles; then ingest it by redrawing it in the library and delete the draft
+  ([Ingesting a draft](#ingesting-a-draft-into-the-library),
+  [Cleaning up HDS Staging](#cleaning-up-hds-staging)). Agents may delete in HDS Staging.
+  Sync and `delta.js` never target it: it has no local variables.
+- **Restyling, fixing or copying a component the library has**: work in the library
+  (`2VgBbVpKiDnu0aftJEVyBQ`) directly.
+
+In the library an agent may restyle, fix, add, copy or redraw a component; it never
+deletes anything in the library and never publishes: Adrian publishes. Every write, in
+either file, also follows these rules:
 
 - One `use_figma` script per write. Its first statement throws unless
-  `figma.fileKey` is the library key. It names the node ids it changes (or, for a
-  new component, the page it lands on), returns the ids it creates, and touches
-  nothing else. Log the file key and those ids in `figma/MCP-LEDGER.md` before
-  the call.
-- No `remove()`, on anything. Retiring a component is a move (below).
+  `figma.fileKey` is the key of the file it is meant for: the library key, or for a
+  draft the staging key. It names the node ids it changes (or, for a new component,
+  the page it lands on), returns the ids it creates, and touches nothing else. Log
+  the file key and those ids in `figma/MCP-LEDGER.md` before the call.
+- No `remove()` in the library, on anything. Retiring a component is a move (below).
+  The one `remove()` is a draft in HDS Staging after its ingest.
 - Screenshot every component before and after the write (`get_screenshot`, as
   base64 where the proxy blocks figma.com), and check it with `get_metadata`
   (step 7).
-- Bind only to the library's own variables and styles, found by name; create
-  none. Variables and styles come from code, through Sync or `delta.js`.
-- Report the component, its node ids and both screenshots to Adrian, who
+- Bind only to the library's variables and styles; create none. In the library they
+  are local, found by name; in HDS Staging they come from the enabled library,
+  imported by key. Variables and styles come from code, into the library only,
+  through Sync or `delta.js`.
+- Report the component, its library node ids and both screenshots to Adrian, who
   publishes.
 
 ## Preconditions
@@ -44,6 +57,10 @@ Figma and never publishes: Adrian publishes. Every write also follows these rule
    variable name mirrors the CSS custom property:
    `--semantic-color-feedback-info` → `color/feedback/info`. Watch the
    deliberate renames — the `danger` prop maps to the **error** token pair.
+   In the library the variable is local: find it by that name. In HDS Staging it
+   lives in the enabled library: find its key with `search_design_system` and
+   import it with `figma.variables.importVariableByKeyAsync` (a text or effect
+   style with `figma.importStyleByKeyAsync`).
 
 3. **Copy an existing sibling's conventions, don't invent them.** Read the
    nearest already-drawn component (Badge for a tone axis, Button for a
@@ -86,20 +103,44 @@ Figma and never publishes: Adrian publishes. Every write also follows these rule
   baked colour, so it cannot be used to prove a binding is live. Resolve
   `variable.valuesByMode` and follow the aliases instead.
 
+## Ingesting a draft into the library
+
+A draft in HDS Staging is a reference, not a source: Figma cannot copy nodes between
+files, so the ingest redraws the component in the library.
+
+1. **Freeze the draft.** Its last `get_screenshot` and `get_metadata` (step 7) are what
+   the redraw must match: variant names and grid, the default variant, sizes, bindings.
+2. **Redraw it in the library** with steps 1 to 8 above, in one `use_figma` script whose
+   first statement throws unless `figma.fileKey` is the library key
+   `2VgBbVpKiDnu0aftJEVyBQ`. Bind to the library's own local variables and styles, found
+   by the same names the draft imported; create none. Screenshot the target page before.
+3. **Compare.** Screenshot the new component and check it with `get_metadata`; it matches
+   the frozen draft, variant for variant.
+4. **Link it** (next section) to the library node, never the draft.
+
 ## Linking it to code
 
-A component drawn in the library gets its `@figma` tag at its library node from
-the start (`https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=...`).
-Add the tag, run `pnpm manifest:generate` and `pnpm figma:links`, then refresh
-`figma/inventory.json` with `pnpm figma:inventory --fetch`. The manifest's
-`variantAxes` and `figmaUrl` populate from that tag, and `check:figma-mapping`
-then enforces the axes against the real props. `pnpm check:figma-retired-keys`
-fails if a link points at a retired file.
+A component drawn in the library gets its `@figma` tag at its library node
+(`https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=...`),
+never at a draft in HDS Staging. Add the tag, run `pnpm manifest:generate` and
+`pnpm figma:links`, then refresh `figma/inventory.json` with
+`pnpm figma:inventory --fetch`. The manifest's `variantAxes` and `figmaUrl` populate
+from that tag, and `check:figma-mapping` then enforces the axes against the real
+props. `pnpm check:figma-retired-keys` fails if a link points at a retired file or at
+HDS Staging.
 
 The promotion step of the staging era, before 2026-10-07 (Adrian copying
 components into the old library, then re-pointing each tag), is gone: the
 staging copy became the library under the same node ids, so its tags only
 changed file key.
+
+## Cleaning up HDS Staging
+
+Once the library component is linked and `pnpm check:figma-retired-keys` passes,
+delete the draft: one `use_figma` script whose first statement throws unless
+`figma.fileKey` is the staging key `C85ZXnwtVc4AteeIOZfXRC`, and which calls
+`remove()` on the draft's node ids only (log them in the ledger first). HDS Staging
+holds only work in progress; a shipped component lives in the library alone.
 
 ## Retiring a component (never delete)
 

@@ -35,8 +35,12 @@ const LINKS = Object.freeze({
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
+  // HDS Staging, the draft workbench (ADR-026, A4): never a Sync target, and never baked in.
+  stagingFileKey: 'STAGINGKEY000000000000',
+  stagingFileName: 'HDS Staging',
 });
 const RETIRED = LINKS.retiredFiles[0];
+const STAGING = { fileKey: LINKS.stagingFileKey, fileName: LINKS.stagingFileName };
 const BUNDLE_URL = 'https://hirobius-design-system.vercel.app/figma/sync-bundle.json';
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const PLUGIN = buildSyncPlugin(LINKS);
@@ -98,7 +102,7 @@ describe('Sync plugin files', () => {
     }
   });
 
-  it('bake the library and the retired files from figma/links.json, and no staging file', () => {
+  it('bake the library and the retired files from figma/links.json, never HDS Staging', () => {
     const baked = JSON.parse(/^const SYNC = Object\.freeze\((.*)\);$/m.exec(PLUGIN['code.js'])[1]);
     expect(baked).toMatchObject({
       libraryFileKey: LINKS.libraryFileKey,
@@ -107,6 +111,11 @@ describe('Sync plugin files', () => {
       retiredFileNames: [RETIRED.fileName],
     });
     expect(Object.keys(baked).filter((key) => /staging/i.test(key))).toEqual([]);
+    expect(PLUGIN['code.js']).not.toContain(STAGING.fileKey);
+    // The same build without the workbench: adding it to links.json changes no plugin file.
+    const { stagingFileKey, stagingFileName, ...withoutStaging } = LINKS;
+    expect([stagingFileKey, stagingFileName]).toEqual([STAGING.fileKey, STAGING.fileName]);
+    expect(buildSyncPlugin(withoutStaging)).toEqual(PLUGIN);
   });
 
   it('a bundle carries its payload checksum, never a prune, and the expected plugin files', () => {
@@ -209,6 +218,31 @@ describe('Sync in the library file', () => {
     expect(figma.writes.slice(before)).toEqual([]);
   });
 
+  it('never deletes: a variable the model does not have stays, and Sync and Plan report deleted 0', async () => {
+    // hdsSyncMain forces prune off whatever the bundle says; with prune on,
+    // this file's extra variable would be removed and the line would read
+    // "deleted 1". Only the promote plugin, run by Adrian, deletes.
+    const figma = libraryFile();
+    expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
+    const semantic = (await figma.variables.getLocalVariableCollectionsAsync()).find(
+      (c) => c.name === 'Hirobius/Semantic',
+    );
+    figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
+    const start = figma.writes.length;
+
+    const plan = await runPlugin(PLUGIN, 'plan', figma);
+    expect(plan.ok, plan.error).toBe(true);
+    expect(plan.result.prune).toBe(false);
+    expect(plan.result.summary.totals.deleted).toBe(0);
+
+    const synced = await runPlugin(PLUGIN, 'sync', figma);
+    expect(synced.ok, synced.error).toBe(true);
+    expect(synced.title).toContain(NOTHING_LINE);
+    expect(figma.writes.slice(start).filter((write) => /remove/i.test(write))).toEqual([]);
+    const names = (await figma.variables.getLocalVariablesAsync()).map((v) => v.name);
+    expect(names).toContain('legacy/unused');
+  });
+
   it('Plan reads the bundle and writes nothing', async () => {
     const figma = libraryFile();
     const plan = await runPlugin(PLUGIN, 'plan', figma);
@@ -283,6 +317,19 @@ describe('file guard: Sync writes nothing outside the library', () => {
 
   it('any other file key', async () => {
     await refused(libraryFile('SOMEOTHERFILE000000000'), /SOMEOTHERFILE000000000/);
+  });
+
+  it('HDS Staging, the draft workbench, by its key: tokens sync to the library only', async () => {
+    const error = await refused(
+      libraryFile(STAGING.fileKey, STAGING.fileName),
+      /not the HDS library/,
+    );
+    expect(error).toContain(STAGING.fileKey);
+    expect(error).toContain(LINKS.libraryFileKey);
+  });
+
+  it('HDS Staging where Figma gives no key: it carries no library marker', async () => {
+    await refused(libraryFile(null, STAGING.fileName), /not marked as the HDS library/);
   });
 
   it('checks the deny list before the allow list', async () => {
@@ -368,6 +415,18 @@ describe('Mark this file as the HDS library', () => {
     expect(result.error).toMatch(/not a link/);
     expect(result.error).toContain('Share > Copy link');
     expect(writes).toEqual([]);
+  });
+
+  it('refuses HDS Staging, the draft workbench, by its name and by its link', async () => {
+    for (const [figma, pattern] of [
+      [libraryFile(null, STAGING.fileName), /named "HDS Staging"/],
+      [libraryFile(null), new RegExp(`${STAGING.fileKey}, not the library`)],
+    ]) {
+      const { result, writes } = await mark(figma, linkTo(STAGING.fileKey));
+      expect(result.ok).toBe(false);
+      expect(result.error).toMatch(pattern);
+      expect(writes).toEqual([]);
+    }
   });
 
   it('refuses a link to another file', async () => {

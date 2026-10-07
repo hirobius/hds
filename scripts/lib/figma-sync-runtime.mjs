@@ -21,8 +21,9 @@
  * it, and prune is forced off here, in code. Order of checks for Sync and
  * Plan: the bundle (reachable, JSON, this plugin's build, its checksum, no
  * prune), then the file (a retired file is denied before the library is
- * allowed), then the push. There is no staging file (ADR-026, amended
- * 2026-10-07): Sync writes to the one library.
+ * allowed), then the push. Sync writes to the one library (ADR-026, amended
+ * 2026-10-07); HDS Staging, the draft workbench (amendment A4), is never
+ * baked in, so it is refused like any file but the library.
  *
  * Receipt (hds#417). After a verified push and its snapshot, Sync writes the
  * snapshot back into the file as shared plugin data on figma.root: pages

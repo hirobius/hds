@@ -2,25 +2,35 @@
 /**
  * The Figma rule agents read, kept in one piece (ADR-026, amended 2026-10-07).
  *
- * Adrian's three decisions of 2026-10-07:
- *   1. Agents may write components in the HDS library (restyle, add, copy or
- *      redraw), but never delete anything in Figma and never publish: Adrian
- *      publishes.
+ * Adrian's decisions of 2026-10-07:
+ *   1. Agents may write components in the HDS library (restyle, fix, add, copy
+ *      or redraw), but never delete anything in the library and never publish:
+ *      Adrian publishes.
  *   2. Retiring without deleting: a component deprecated in code moves to a
  *      "Deprecated" page and keeps being published; one removed from code moves
  *      to an "Archive" page as "_<Name> (archived <date>)"; Adrian deletes later.
- *   3. The staging copy became the one library; there is no staging file, and
- *      tokens sync straight into the library (still never deleting; a prune is
- *      the promote plugin, run by Adrian). The old library is retired.
+ *   3. The staging copy became the one library, and tokens sync straight into
+ *      it (still never deleting; a prune is the promote plugin, run by Adrian).
+ *      The old library is retired.
+ *   4. HDS Staging (C85ZXnwtVc4AteeIOZfXRC), a clean workbench with the
+ *      library enabled and no local variables: an agent drafts a NEW component
+ *      there with the library's variables and styles, then ingests it by
+ *      redrawing it in the library with the drawing recipe, links its @figma
+ *      tag to the library node and deletes the draft. Agents may delete in
+ *      staging; Sync and delta.js never target it.
  *
  * Seams under test:
- *   1. ADR-026 keeps its original text and records the amendment with all three.
- *   2. figma/links.json names the one library and the retired file, and no
- *      staging file.
- *   3. Each steering surface states the rule in one paragraph (library, never
- *      delete, never publish), and every mention of staging there says it is
- *      gone. Session logs in the MCP ledger are history, so only its preamble
- *      is held to this.
+ *   1. ADR-026 keeps its original text and records the amendment with all four.
+ *   2. figma/links.json names the one library, the retired file and HDS
+ *      Staging, with a comment stating the workbench's purpose and rules.
+ *   3. Each steering surface states the library rule in one paragraph
+ *      (library, never delete, never publish) and the staging rule in one
+ *      (HDS Staging, draft, ingest by redrawing, Sync and delta.js never
+ *      target it), and no mention of staging there sends tokens to it or
+ *      treats it as the library's duplicate. Session logs in the MCP ledger are
+ *      history, so only its preamble is held to this.
+ *   4. CLAUDE.md gives each rule one sentence; the README and the recipe give
+ *      the exact draft, ingest and cleanup steps.
  *
  * Reads repo files only. Writes nothing and spawns nothing.
  */
@@ -34,6 +44,7 @@ const read = (rel) => readFileSync(path.join(ROOT, rel), 'utf8');
 
 const LIBRARY = '2VgBbVpKiDnu0aftJEVyBQ';
 const RETIRED = 'c8MaVgwxOlxm4wr8wnH0Z4';
+const STAGING = 'C85ZXnwtVc4AteeIOZfXRC';
 
 /** Where an agent learns where it may write in Figma, and the part of each that is current rule. */
 const STEERING = {
@@ -51,14 +62,40 @@ const STEERING = {
 const blocks = (text) => text.split(/\n\s*\n/).map((b) => b.replace(/\s+/g, ' '));
 const steering = (rel) => blocks(STEERING[rel](read(rel)));
 
-/** The paragraph that states the rule: the library, never delete, never publish. */
+/** The paragraph (or sentence) that states the library rule: the library, never delete, never publish. */
 const statesRule = (block) =>
   /library/i.test(block) && /never delete/i.test(block) && /never publish/i.test(block);
-/** A mention of staging that says it is gone, not one that sends an agent there. */
-const stagingIsGone = (block) =>
-  /no staging|staging (file |copy )?(was|is) (dropped|retired|gone)|staging[- ]era|formerly|was the staging|until 2026-10-07|before 2026-10-07|became the (one )?library|stagingFileKey.*(retired|dropped|gone)/i.test(
+/**
+ * The paragraph (or sentence) that states the staging rule: HDS Staging is where a new
+ * component is drafted, it is ingested by redrawing it in the library, and Sync and
+ * delta.js never target it.
+ */
+const statesStagingRule = (block) =>
+  /HDS Staging/.test(block) &&
+  /draft/i.test(block) &&
+  /redraw/i.test(block) &&
+  /\bSync\b.{0,60}\bnever\b|\bnever\b.{0,60}\bSync\b/.test(block) &&
+  /delta\.js/.test(block);
+/** A mention of staging as the workbench, or as history (the staging copy that became the library). */
+const stagingIsWorkbenchOrHistory = (block) =>
+  /HDS Staging|stagingFileKey|workbench|drafts? in staging/.test(block) ||
+  /staging[- ]era|formerly|was the staging|until 2026-10-07|before 2026-10-07|became the (one )?library|staging copy/i.test(
     block,
   );
+/** Wording of the two-file model this branch replaced, or of the one-file model before HDS Staging. */
+const STALE = [
+  /no staging file/i,
+  /staging is dropped/i,
+  /there is one Figma file/i,
+  /never delete anything in Figma/i,
+  /promotes? (it |staging )?(→|to|into) the library/i,
+];
+/** Sentences, with code spans and Markdown left intact. */
+const sentences = (text) =>
+  text
+    .replace(/\s+/g, ' ')
+    .split(/(?<=[.!?])\s+(?=[A-Z"`*(])/)
+    .filter(Boolean);
 
 const ADR = 'docs/adr/026-agent-figma-writes.md';
 /** ADR-026's amendment section, from its heading to the next `## ` heading or the end. */
@@ -104,15 +141,31 @@ describe('ADR-026 records the 2026-10-07 amendment and keeps its history', () =>
     expect(body).toMatch(/leading underscore/i);
   });
 
-  it('decision 3: the copy is the one library, staging is dropped, tokens sync into it', () => {
+  it('decision 3: the copy is the one library, the duplicate staging model is gone, tokens sync into it', () => {
     const body = amendment();
     expect(body).toContain(LIBRARY);
     expect(body).toContain(RETIRED);
-    expect(body).toMatch(/no staging file|staging is dropped/i);
+    expect(body).toMatch(/no duplicate to promote|nothing to promote/i);
     expect(body).toMatch(/delta\.js/);
     expect(body).toMatch(/Sync/);
     expect(body).toMatch(/--prune/);
     expect(body).toMatch(/promote plugin/);
+  });
+
+  it('decision 4: HDS Staging, the workbench where new components are drafted and then ingested', () => {
+    const body = amendment();
+    expect(body).toContain('### A4.');
+    expect(body).toContain(STAGING);
+    expect(body).toContain('"HDS Staging"');
+    expect(body).toMatch(/no local variables/i);
+    expect(body).toMatch(/redraw/i);
+    expect(body).toMatch(/cannot copy nodes between files/i);
+    expect(body).toMatch(/COMPONENT-DRAWING-RECIPE\.md/);
+    expect(body).toMatch(/delete(s)? the draft/i);
+    expect(body).toMatch(/may delete in (HDS )?Staging/i);
+    expect(body).toMatch(/never (delete|deletes) (anything )?in the library/i);
+    expect(body).toMatch(/Sync[^.]*never[^.]*staging|never target (it|HDS Staging|staging)/i);
+    expect(body).toMatch(/check-figma-retired-keys/);
   });
 
   it('keeps the guard rails for every library write and the read budget', () => {
@@ -126,7 +179,7 @@ describe('ADR-026 records the 2026-10-07 amendment and keeps its history', () =>
   });
 });
 
-describe('figma/links.json names one library and the retired file', () => {
+describe('figma/links.json names one library, the retired file and HDS Staging', () => {
   const links = JSON.parse(read('figma/links.json'));
 
   it('points at the one library', () => {
@@ -138,8 +191,15 @@ describe('figma/links.json names one library and the retired file', () => {
     expect(links.retiredFiles.map((f) => f.fileKey)).toEqual([RETIRED]);
   });
 
-  it('names no staging file', () => {
-    expect(Object.keys(links).filter((key) => /staging/i.test(key))).toEqual([]);
+  it('names HDS Staging, the draft workbench, and states its purpose and rules', () => {
+    expect(links.stagingFileKey).toBe(STAGING);
+    expect(links.stagingFileName).toBe('HDS Staging');
+    const comment = links.$comment_staging.replace(/\s+/g, ' ');
+    expect(statesStagingRule(comment)).toBe(true);
+    expect(comment).toMatch(/new component/i);
+    expect(comment).toMatch(/may delete/i);
+    expect(comment).toMatch(/no local variables/i);
+    expect(comment).toMatch(/check-figma-retired-keys/);
   });
 
   it('describes the Sync plugin refusing a retired file first', () => {
@@ -152,13 +212,93 @@ describe('steering surfaces agree with the amended rule', () => {
     expect(steering(rel).some(statesRule)).toBe(true);
   });
 
-  it.each(Object.keys(STEERING))('%s never sends an agent to a staging file', (rel) => {
-    const stale = steering(rel).filter((b) => /staging/i.test(b) && !stagingIsGone(b));
+  it.each(Object.keys(STEERING))(
+    '%s states the staging rule in one paragraph: draft in HDS Staging, ingest by redrawing, never a token target',
+    (rel) => {
+      expect(steering(rel).some(statesStagingRule)).toBe(true);
+    },
+  );
+
+  it.each(Object.keys(STEERING))(
+    '%s mentions staging only as the workbench or as history',
+    (rel) => {
+      const stray = steering(rel).filter(
+        (b) => /staging/i.test(b) && !stagingIsWorkbenchOrHistory(b),
+      );
+      expect(stray).toEqual([]);
+    },
+  );
+
+  it.each(Object.keys(STEERING))('%s keeps none of the replaced wording', (rel) => {
+    const stale = steering(rel).filter((b) => STALE.some((pattern) => pattern.test(b)));
     expect(stale).toEqual([]);
   });
 
   it.each(Object.keys(STEERING))('%s does not call the library read-only to agents', (rel) => {
     expect(steering(rel).filter((b) => /read-only to agents/i.test(b))).toEqual([]);
+  });
+});
+
+describe('CLAUDE.md gives each rule one sentence', () => {
+  const figma = () => {
+    const text = read('CLAUDE.md');
+    const start = text.indexOf('- **Figma Sync:**');
+    return text.slice(start, text.indexOf('\n## ', start));
+  };
+
+  it('one sentence for the library rule', () => {
+    expect(sentences(figma()).filter(statesRule)).toHaveLength(1);
+  });
+
+  it('one sentence for the staging rule, which also says agents may delete there', () => {
+    const staging = sentences(figma()).filter(statesStagingRule);
+    expect(staging).toHaveLength(1);
+    expect(staging[0]).toMatch(/may delete/i);
+  });
+});
+
+describe('the steps: draft in staging, ingest to the library, clean up', () => {
+  const steps = () => {
+    const text = read('figma/README.md');
+    const start = text.indexOf('## New components: draft in staging, ingest to the library');
+    if (start === -1) return '';
+    const next = text.indexOf('\n## ', start + 1);
+    return text.slice(start, next === -1 ? undefined : next);
+  };
+
+  it('figma/README.md has the section, with numbered steps in order', () => {
+    const body = steps();
+    expect(body).not.toBe('');
+    const order = [
+      /HDS Staging/,
+      new RegExp(`figma\\.fileKey[^\\n]*${STAGING}|${STAGING}[^\\n]*figma\\.fileKey`),
+      /library's (own )?variables and styles/i,
+      /redraw/i,
+      new RegExp(`figma\\.fileKey[^\\n]*${LIBRARY}|${LIBRARY}[^\\n]*figma\\.fileKey|library key`),
+      /@figma/,
+      /pnpm manifest:generate/,
+      /delete the draft/i,
+      /check:figma-retired-keys/,
+    ];
+    let at = 0;
+    for (const pattern of order) {
+      const found = body.slice(at).search(pattern);
+      expect(found, String(pattern)).toBeGreaterThanOrEqual(0);
+      at += found;
+    }
+    expect(body).toMatch(/^1\. /m);
+    expect(body.replace(/\s+/g, ' ')).toMatch(
+      /never (go )?(in|to) (the )?(HDS )?Staging|staging has no local variables/i,
+    );
+  });
+
+  it('the drawing recipe has the ingest and the cleanup steps', () => {
+    const recipe = read('figma/COMPONENT-DRAWING-RECIPE.md');
+    expect(recipe).toMatch(/^## .*Ingest/m);
+    expect(recipe).toMatch(/^## .*[Cc]lean(ing)? ?up/m);
+    expect(recipe.replace(/\s+/g, ' ')).toMatch(/cannot copy nodes between files/i);
+    expect(recipe).toContain(STAGING);
+    expect(recipe).toContain(LIBRARY);
   });
 });
 

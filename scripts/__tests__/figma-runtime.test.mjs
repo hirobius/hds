@@ -37,8 +37,12 @@ const LINKS = Object.freeze({
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
+  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
+  stagingFileKey: 'STAGINGKEY000000000000',
+  stagingFileName: 'HDS Staging',
 });
 const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
+const STAGING_KEY = LINKS.stagingFileKey;
 /** A use_figma push script for the fixture links (the library above). */
 const pushScript = (options = {}) => buildUseFigmaPushScript(model, { ...options, links: LINKS });
 const snapshotScript = () => buildUseFigmaSnapshotScript(LINKS);
@@ -209,7 +213,7 @@ describe('use_figma scripts', () => {
     });
 
     it('a retired file, a file with no key or any other file: reads nothing but figma.fileKey', async () => {
-      for (const key of [RETIRED_KEY, null, undefined, OTHER_KEY]) {
+      for (const key of [RETIRED_KEY, STAGING_KEY, null, undefined, OTHER_KEY]) {
         for (const [id, script] of scripts()) {
           const figma = newFixtureFile();
           figma.fileKey = key;

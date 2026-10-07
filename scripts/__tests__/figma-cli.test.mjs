@@ -58,6 +58,8 @@ const LINKS = {
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
 };
+/** HDS Staging, the draft workbench (ADR-026, A4): optional in figma/links.json, and never a target. */
+const STAGING = { stagingFileKey: 'STAGINGKEY000000000000', stagingFileName: 'HDS Staging' };
 const writeLinks = (root, links) => {
   mkdirSync(join(root, 'figma'), { recursive: true });
   writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(links, null, 2));
@@ -164,7 +166,27 @@ describe('pnpm figma:push', () => {
     });
   });
 
-  it('refuses to build without the library key or name, or when a retired file is the library', () => {
+  it('builds the same carriers with or without HDS Staging: it is never a target', () => {
+    const files = (links) => {
+      const root = tempRoot();
+      writeLinks(root, links);
+      const outDir = join(root, 'figma', 'push');
+      writePushArtifacts({ root, outDir });
+      return Object.fromEntries(
+        ['plugin/code.js', 'use-figma/02-semantic.js', 'use-figma/receipt.js'].map((rel) => [
+          rel,
+          readFileSync(join(outDir, rel), 'utf8'),
+        ]),
+      );
+    };
+    const withStaging = files({ ...LINKS, ...STAGING });
+    expect(withStaging).toEqual(files(LINKS));
+    for (const text of Object.values(withStaging)) {
+      expect(text).not.toContain(STAGING.stagingFileKey);
+    }
+  });
+
+  it('refuses to build without the library key or name, or when a retired file or HDS Staging is the library', () => {
     const retired = (file) => ({ ...LINKS, retiredFiles: [{ ...LINKS.retiredFiles[0], ...file }] });
     const cases = [
       [{ ...LINKS, libraryFileKey: null }, /libraryFileKey/],
@@ -179,6 +201,22 @@ describe('pnpm figma:push', () => {
         /retired.*libraryFileName|libraryFileName.*retired/,
       ],
       [retired({ fileKey: '' }), /retiredFiles\[0\]/],
+      // HDS Staging, the draft workbench, is optional, but never the library or a retired file.
+      [{ ...LINKS, ...STAGING, stagingFileKey: LINKS.libraryFileKey }, /stagingFileKey.*library/],
+      [
+        { ...LINKS, ...STAGING, stagingFileName: LINKS.libraryFileName },
+        /stagingFileName.*library/,
+      ],
+      [
+        { ...LINKS, ...STAGING, stagingFileKey: LINKS.retiredFiles[0].fileKey },
+        /stagingFileKey.*retired/,
+      ],
+      [
+        { ...LINKS, ...STAGING, stagingFileName: LINKS.retiredFiles[0].fileName },
+        /stagingFileName.*retired/,
+      ],
+      [{ ...LINKS, stagingFileKey: STAGING.stagingFileKey }, /stagingFileName/],
+      [{ ...LINKS, stagingFileName: STAGING.stagingFileName }, /stagingFileKey/],
     ];
     for (const [links, message] of cases) {
       const root = tempRoot();

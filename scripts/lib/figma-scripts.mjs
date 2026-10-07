@@ -481,12 +481,62 @@ const PLUGIN_BUILD_PLACEHOLDER = '--------';
 const PLUGIN_BUILD_LINE = /^const PLUGIN_BUILD = '[^'\n]*';$/m;
 
 /**
+ * HDS Staging, the draft workbench (ADR-026, amendment A4), from
+ * figma/links.json: `{ fileKey, fileName }`, or null when links.json names
+ * none. It is optional, and it is never a target: no carrier bakes it, so the
+ * Sync plugin, delta.js and every use_figma script refuse it as they refuse any
+ * file but the library. Throws when only one of stagingFileKey and
+ * stagingFileName is set, or when either is the library's or a retired
+ * file's: names and keys must tell the three apart.
+ *
+ * @param {object} links  figma/links.json
+ * @param {string} [fix]  appended to every refusal (what was not done, and the fix)
+ */
+export function stagingFrom(links = {}, fix = '') {
+  const key = links.stagingFileKey ?? null;
+  const name = links.stagingFileName ?? null;
+  if (key === null && name === null) return null;
+  for (const [field, value, other] of [
+    ['stagingFileKey', key, 'stagingFileName'],
+    ['stagingFileName', name, 'stagingFileKey'],
+  ]) {
+    if (typeof value !== 'string' || !value) {
+      throw new Error(
+        `figma/links.json sets ${other} but has no ${field}: HDS Staging needs both, or neither.${fix}`,
+      );
+    }
+  }
+  const retired = Array.isArray(links.retiredFiles) ? links.retiredFiles : [];
+  if (key === links.libraryFileKey) {
+    throw new Error(
+      `figma/links.json: stagingFileKey is the library's key (${key}). HDS Staging is a separate draft workbench, never the library.${fix}`,
+    );
+  }
+  if (name === links.libraryFileName) {
+    throw new Error(
+      `figma/links.json: stagingFileName is the library's name ("${name}"), so names cannot tell the workbench from the library.${fix}`,
+    );
+  }
+  if (retired.some((file) => file && file.fileKey === key)) {
+    throw new Error(`figma/links.json: stagingFileKey (${key}) is a retired file's key.${fix}`);
+  }
+  if (retired.some((file) => file && file.fileName === name)) {
+    throw new Error(
+      `figma/links.json: stagingFileName ("${name}") is a retired file's name.${fix}`,
+    );
+  }
+  return { fileKey: key, fileName: name };
+}
+
+/**
  * What the Sync plugin bakes in from figma/links.json: the one host it may
  * fetch from, the one file it may write to (the library, ADR-026 amended
- * 2026-10-07: there is no staging file) and the retired files it refuses by
- * key or by name. Refuses, before anything is built, a links file that would
+ * 2026-10-07) and the retired files it refuses by key or by name. HDS
+ * Staging, the draft workbench, is never baked in: Sync refuses it as any file
+ * but the library. Refuses, before anything is built, a links file that would
  * give the plugin no safe target: a missing library key or name, a missing
- * retiredFiles list, a retired file that has the library's key or name, or a
+ * retiredFiles list, a retired file that has the library's key or name, a
+ * staging workbench that is the library or a retired file (stagingFrom), or a
  * Storybook URL that is not https.
  */
 export function syncConfigFromLinks(links = {}) {
@@ -522,6 +572,7 @@ export function syncConfigFromLinks(links = {}) {
       );
     }
   });
+  stagingFrom(links, ` Nothing was built.${fix}`);
   let origin = null;
   try {
     origin = new URL(links.storybookUrl).origin;

@@ -307,7 +307,12 @@ describe('fetchFile', () => {
 });
 
 describe('resolveTarget', () => {
-  const links = { libraryFileKey: 'LIB', retiredFiles: [{ fileKey: 'OLD' }] };
+  const links = {
+    libraryFileKey: 'LIB',
+    retiredFiles: [{ fileKey: 'OLD' }],
+    stagingFileKey: 'STG',
+    stagingFileName: 'HDS Staging',
+  };
 
   it('defaults to the library', () => {
     const t = resolveTarget([], links);
@@ -321,11 +326,25 @@ describe('resolveTarget', () => {
     });
   });
 
-  it('refuses `--file staging`: there has been no staging file since 2026-10-07', () => {
-    // The error is the documentation: the duplicate became the library.
-    expect(() => resolveTarget(['--fetch', '--file', 'staging'], links)).toThrow(
-      /no staging file.*2026-10-07.*library/s,
+  it('reads HDS Staging with `--file staging`: an inspection of the drafts, never written to the inventory', () => {
+    expect(resolveTarget(['--fetch', '--file', 'staging'], links)).toEqual({
+      fileKey: 'STG',
+      label: 'stagingFileKey (HDS Staging, the draft workbench)',
+      isDefault: false,
+      workbench: true,
+    });
+  });
+
+  it('refuses `--file staging` when figma/links.json names no workbench, rather than reading another file', () => {
+    const { stagingFileKey, stagingFileName, ...withoutStaging } = links;
+    expect([stagingFileKey, stagingFileName]).toEqual(['STG', 'HDS Staging']);
+    expect(() => resolveTarget(['--file', 'staging'], withoutStaging)).toThrow(
+      /stagingFileKey is not set.*HDS Staging/s,
     );
+  });
+
+  it('a raw `--file <key>` is a plain inspection, not the workbench', () => {
+    expect(resolveTarget(['--file', 'qhlYOkWPKs8MfO3x1M5W4f'], links).workbench).toBe(false);
   });
 
   it('explains how to get a key when libraryFileKey is unset', () => {

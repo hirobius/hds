@@ -65,6 +65,9 @@ const LINKS = Object.freeze({
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
+  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
+  stagingFileKey: 'STAGINGKEY000000000000',
+  stagingFileName: 'HDS Staging',
 });
 const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
 const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
@@ -488,6 +491,7 @@ describe('delta.js refuses, writing nothing', () => {
 
   for (const [label, key] of [
     ['a retired file key', RETIRED_KEY],
+    ['HDS Staging, the draft workbench (tokens sync to the library only)', LINKS.stagingFileKey],
     ['a null key', null],
     ['no key at all', undefined],
     ['any other file', 'SOMEOTHERFILE000000000'],

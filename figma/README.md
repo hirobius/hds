@@ -23,24 +23,72 @@ committed. `figma/snapshot.json` is committed: it records Figma's state.
 
 ## Where agents write
 
-There is one Figma file: the HDS library, `HDS Tokens & Components`
-(`2VgBbVpKiDnu0aftJEVyBQ`, `libraryFileKey` in `figma/links.json`). There is no staging
-file since 2026-10-07: the staging copy became the library (ADR-026, amended 2026-10-07),
-and the old library (`retiredFiles` in `figma/links.json`) is never linked or written
-again; `pnpm check:figma-retired-keys` rejects a reference to it.
+Two Figma files (ADR-026, amended 2026-10-07; both in `figma/links.json`):
 
-- **Components.** Agents may restyle, add, copy or redraw components in the library, with
-  one `use_figma` script that names the node ids it touches, and screenshots before and
-  after. The steps are in `figma/COMPONENT-DRAWING-RECIPE.md`.
-- **Variables and styles** come only from code: the Sync plugin (one click by Adrian) or
-  `delta.js` (an agent, zero clicks), below. Neither ever deletes.
-- **Never delete anything in Figma and never publish.** Adrian publishes. A deliberate
-  prune is the promote plugin (`pnpm figma:push --prune`), and only Adrian runs it.
+- **The HDS library**, `HDS Tokens & Components` (`2VgBbVpKiDnu0aftJEVyBQ`,
+  `libraryFileKey`): the one file consumers subscribe to. The staging copy became this
+  library on 2026-10-07, and the old library (`retiredFiles`) is never linked or written
+  again.
+- **HDS Staging** (`C85ZXnwtVc4AteeIOZfXRC`, `stagingFileKey`): a scratch workbench with the
+  library enabled and no local variables. An agent drafts a new component there, then
+  ingests it by redrawing it in the library and deletes the draft
+  ([below](#new-components-draft-in-staging-ingest-to-the-library)). Sync and `delta.js`
+  never target it.
+
+The rules:
+
+- **Components.** In the library, agents may restyle, fix, add, copy or redraw components,
+  with one `use_figma` script that names the node ids it touches, and screenshots before
+  and after. The steps are in `figma/COMPONENT-DRAWING-RECIPE.md`.
+- **Variables and styles** come only from code, into the library only: the Sync plugin (one
+  click by Adrian) or `delta.js` (an agent, zero clicks), below. Neither ever deletes.
+- **Never delete anything in the library and never publish it.** Adrian publishes. A
+  deliberate prune is the promote plugin (`pnpm figma:push --prune`), and only Adrian runs
+  it. HDS Staging is the one file where an agent deletes: its own drafts, after the ingest.
 - **Retiring a component is a move, not a delete.** Removed from code: move it to the
   "Archive" page and rename it `_<Name> (archived <date>)`; the leading underscore keeps it
   out of publishing, and Adrian deletes it later. Deprecated in code: move it to the
   "Deprecated" page, keep it published, and start its description with
   `Deprecated: use <replacement>. Removed in <removeIn>.`
+- **Links from code name the library.** `pnpm check:figma-retired-keys` fails on an
+  `@figma` tag, Code Connect template, manifest or disposition link to a retired file or to
+  HDS Staging.
+
+## New components: draft in staging, ingest to the library
+
+For a component the library does not have yet (ADR-026, A4). Restyling, fixing or copying
+one it has needs no draft: do that in the library. HDS Staging
+(https://www.figma.com/design/C85ZXnwtVc4AteeIOZfXRC) has the library enabled and no local
+variables, so tokens never go to staging: Sync and `delta.js` refuse it, and staging has no
+local variables to sync. Log every call in `figma/MCP-LEDGER.md` before making it, and load
+the `figma-use` and `figma-generate-library` skills first.
+
+1. **Draft in HDS Staging.** One `use_figma` script whose first statement is
+   `if (figma.fileKey !== 'C85ZXnwtVc4AteeIOZfXRC') throw new Error('Not HDS Staging');`.
+   Draw the component with `figma/COMPONENT-DRAWING-RECIPE.md` steps 1 to 8, bound only to
+   the library's variables and styles: find them with `search_design_system` and import
+   each by its key (`figma.variables.importVariableByKeyAsync`,
+   `figma.importStyleByKeyAsync`). Create no variable, collection, mode or style.
+2. **Check the draft.** `get_screenshot` and `get_metadata` on it (recipe step 7) until it
+   matches the code: every variant of the cva matrix, the right default, no clipping. Keep
+   its final screenshot and metadata: they are the reference for the redraw.
+3. **Redraw it in the library.** Figma cannot copy nodes between files, so the ingest is a
+   new drawing, not a move. One `use_figma` script whose first statement is
+   `if (figma.fileKey !== '2VgBbVpKiDnu0aftJEVyBQ') throw new Error('Not the HDS library');`
+   (the library key), following the recipe again and binding to the library's own
+   variables and styles by name. Screenshot the target page before, and the component
+   after; compare the after shot with the draft's.
+4. **Link it.** Point the component's `@figma` tag at the library node
+   (`https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=<id>`),
+   never the draft. Run `pnpm manifest:generate`, `pnpm figma:links` and
+   `pnpm figma:inventory --fetch`.
+5. **Clean up HDS Staging.** Delete the draft: one `use_figma` script, first statement the
+   staging check of step 1, that calls `remove()` on the draft's node ids only. Agents may
+   delete in staging; they never delete in the library. With a Figma token,
+   `pnpm figma:inventory --fetch --file staging` lists the drafts left, writing nothing.
+6. **Check and report.** `pnpm check:figma-retired-keys` passes (no link names HDS
+   Staging). Report the component, its library node ids and the before and after
+   screenshots to Adrian, who publishes.
 
 ## Brand and Density
 

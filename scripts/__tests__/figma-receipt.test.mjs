@@ -45,8 +45,12 @@ const LINKS = Object.freeze({
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
+  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
+  stagingFileKey: 'STAGINGKEY000000000000',
+  stagingFileName: 'HDS Staging',
 });
 const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
+const STAGING_KEY = LINKS.stagingFileKey;
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 const PAGE_CHARS = 15000;
@@ -356,7 +360,7 @@ describe('figma/push/use-figma/receipt.js', () => {
 
   it('reads nothing but figma.fileKey in a retired file, in a file with no key, or in any other file', async () => {
     const { receiptScript } = await synced();
-    for (const key of [RETIRED_KEY, null, undefined, 'SOMEOTHERFILE000000000']) {
+    for (const key of [RETIRED_KEY, STAGING_KEY, null, undefined, 'SOMEOTHERFILE000000000']) {
       const { proxy, reads, figma } = watched(key);
       setRootData(figma, 'syncReceipt', '{"secret":true}');
       await expect(runReceipt(receiptScript, proxy)).rejects.toThrow(
@@ -449,7 +453,7 @@ describe('pnpm figma:snapshot --from-receipt', () => {
 
   it('refuses a read from any file but the library', async () => {
     const s = await synced();
-    for (const file of [RETIRED_KEY, null, 'SOMEOTHERFILE000000000']) {
+    for (const file of [RETIRED_KEY, STAGING_KEY, null, 'SOMEOTHERFILE000000000']) {
       const reads = loadReads(await collect(s));
       reads[0].file = file;
       refuses(s.root, saveReads(s.root, reads), /not the HDS library/);

@@ -85,13 +85,16 @@ It copies them without indentation (about 5,500 characters), blank lines, or the
 ## Amendment (2026-10-07): delta.js targets the library
 
 ADR-026's amendment of 2026-10-07 made the staging copy, `2VgBbVpKiDnu0aftJEVyBQ`, the one
-HDS library and dropped staging. Everywhere this ADR says staging, `delta.js` now works on
+HDS library and dropped the staging duplicate. Everywhere this ADR says staging, `delta.js` now works on
 the library; every guard stays, in the same order.
 
 - **The first statement** is now `if (figma.fileKey !== library || retired.indexOf(figma.fileKey) !== -1) throw`,
   with the library key and the retired keys (`figma/links.json` `retiredFiles`, the old
   library `c8MaVgwxOlxm4wr8wnH0Z4`) baked in. `PLAN.files` carries `{ library, retired }`,
   and `hdsAgentRun` checks them again. A missing library key still refuses the build.
+  HDS Staging, the draft workbench of ADR-026's amendment A4 (`stagingFileKey`), is never
+  baked in: it has no local variables, and `delta.js` refuses it like any file but the
+  library.
 - **It still never deletes.** `--prune`, and any variable, mode or style the library holds
   that the model does not, still refuse and route to the promote plugin
   (`pnpm figma:push --prune`), which only Adrian runs.

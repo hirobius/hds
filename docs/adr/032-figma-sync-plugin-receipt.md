@@ -87,13 +87,17 @@ After the verified push and its snapshot, Sync writes the snapshot into the file
 ## Amendment (2026-10-07): Sync targets the library
 
 ADR-026's amendment of 2026-10-07 made the staging copy, `2VgBbVpKiDnu0aftJEVyBQ`, the one
-HDS library and dropped staging. So §3 changes target, and nothing else in this ADR does:
+HDS library and dropped the staging duplicate. So §3 changes target, and nothing else in this ADR does:
 Sync still carries no model, still never prunes, and the receipt (§4, §6) is unchanged.
 
 - **What is baked.** `pnpm figma:push` bakes `libraryFileKey`, `libraryFileName` and, from
   `retiredFiles`, each retired file's key and name. It refuses to build while the library key
   or name is missing, while `retiredFiles` is missing, or when a retired file has the
-  library's key or name. There is no staging key to bake.
+  library's key or name. No staging key is baked: HDS Staging, the draft workbench
+  ADR-026 added later the same day (amendment A4, `stagingFileKey`), is never a Sync
+  target, so Sync refuses it like any file but the library, and the plugin files are the
+  same with or without it in `figma/links.json`. `pnpm figma:push` does refuse a staging
+  key or name that is the library's or a retired file's.
 - **The order of checks.** Deny first: a retired file, by key (`c8MaVgwxOlxm4wr8wnH0Z4`, the
   old library) or by name (`HDS Tokens & Components (old)`), is refused whatever else is
   true. Then allow the library key; any other key is refused. Where Figma gives no key, allow

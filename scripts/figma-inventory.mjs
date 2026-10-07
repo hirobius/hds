@@ -7,6 +7,8 @@
  *   pnpm figma:inventory --json               the same, as JSON
  *   FIGMA_ACCESS_TOKEN=<token> pnpm figma:inventory --fetch
  *                                             re-read the document and rewrite the inventory
+ *   ... --fetch --file staging                list the drafts in HDS Staging (stagingFileKey),
+ *                                             writing nothing; --file <key> inspects another file
  *
  * The committed inventory is what makes the Figma library legible to an agent
  * with no Figma access at all: page names, component-set ids, variant counts.
@@ -51,7 +53,7 @@ async function refetch() {
     process.exit(1);
   }
 
-  const { fileKey, label, isDefault } = target;
+  const { fileKey, label, isDefault, workbench } = target;
 
   const source = figmaTokenSource();
   if (source) console.log(`  using the Figma token from ${source}`);
@@ -73,6 +75,21 @@ async function refetch() {
   // inspection — overwriting inventory.json with a duplicate's or a retired
   // file's contents would make check-figma-coverage police the wrong
   // document, silently.
+  // HDS Staging is a workbench, not a copy of the library: list its drafts.
+  if (workbench) {
+    console.log(`\n  Read ${label} (${fileKey}) — NOT written to figma/inventory.json.\n`);
+    for (const page of inventory.pages) {
+      const names = page.assets.map((asset) => asset.name).join(', ');
+      console.log(`  ${page.name}: ${page.assets.length} draft(s)${names ? ` — ${names}` : ''}`);
+    }
+    console.log(
+      assets
+        ? '\n  A draft that is already redrawn and linked in the library is deleted from staging (figma/README.md, "New components").\n'
+        : '\n  ✓ No drafts in HDS Staging.\n',
+    );
+    process.exit(0);
+  }
+
   if (!isDefault) {
     console.log(
       `\n  Read ${label} (${fileKey}) — NOT written to figma/inventory.json.\n` +
