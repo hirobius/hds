@@ -288,6 +288,7 @@
     "scaffold:tenant": "node scripts/scaffold-tenant.mjs",
     "size-limit": "size-limit --config .size-limit.cjs",
     "status:touch": "node scripts/status-touch.mjs",
+    "status:fold": "node scripts/status-fold.mjs",
     "smoke:consumer": "node scripts/smoke-consumer.mjs && node scripts/check-published-types.mjs && node scripts/check-rsc-directives.mjs && node scripts/check-pack-contents.mjs",
     "storybook": "storybook dev -p 6006",
     "storybook:deploy": "node scripts/deploy-storybook.mjs",
