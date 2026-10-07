@@ -1,7 +1,66 @@
 # Hirobius Design System
 
-Generated: 2026-10-07T08:15:57.576Z
+Generated: 2026-10-07T08:49:50.079Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
+
+## Agents Using The Package: Start Here
+
+- Read `AGENTS.md` (package root, `node_modules/@hirobius/design-system/AGENTS.md`) first: which component to use for each screen need, the imports, and the rules.
+- MCP server `hds` ships in the package: run `npx hds-mcp` (stdio). Tools: `list_core`, `search_components`, `get_component`, `search_tokens`; each answer is under 2 KB.
+- Lint before you finish: `import hds from '@hirobius/design-system/eslint-plugin'` and spread `hds.configs.recommended` into `eslint.config.mjs`.
+
+## Pick By Need
+
+One answer per need. Use the components after the arrow; what follows "Not:" is what agents reached for instead, which is the wrong answer for that need even where it has a purpose of its own. Generated from `mcp/guide.mjs`, the same list as `AGENTS.md`.
+
+- **Outermost wrapper of a screen** → `Page`, `Stack`. Not: `Container`, `Box`, a bare Stack as the root.
+  `<Page><Stack gap="spacious">…one child per section…</Stack></Page>`. `Container` is for a full-bleed surface that is not a page.
+- **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
+  Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
+- **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
+  `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, `StatusTile` for a state with notes (never a number).
+- **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
+  `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
+- **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
+  `<Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">…</TabsContent></Tabs>`.
+- **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`, StatusDot (deprecated).
+  `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.
+- **Form with fields and a submit button** → `Form`, `Textarea`, `Input`, `FormActions`, `Button`. Not: a raw `<form>`, a Stack of Buttons as the footer.
+  `<Form onSubmit={…}><Textarea label="Notes" … /><FormActions primary={<Button type="submit">Save note</Button>} /></Form>`; every field takes its own `label`.
+- **Confirm a destructive or irreversible action (delete, archive, remove)** → `AlertDialog`, `Button`. Not: `Dialog`, `window.confirm`.
+  Trigger, title, description, Cancel and Action parts: `<AlertDialog><AlertDialog.Trigger asChild><Button …>Archive</Button></AlertDialog.Trigger><AlertDialog.Content><AlertDialog.Header><AlertDialog.Title>…</AlertDialog.Title><AlertDialog.Description>…</AlertDialog.Description></AlertDialog.Header><AlertDialog.Footer><AlertDialog.Cancel asChild><Button variant="secondary">Cancel</Button></AlertDialog.Cancel><AlertDialog.Action asChild><Button tone="danger" onClick={…}>Archive</Button></AlertDialog.Action></AlertDialog.Footer></AlertDialog.Content></AlertDialog>`. Focus moves in and returns to the trigger for you.
+- **Brief confirmation after an action (saved, archived, sent)** → `ToastProvider`, `useToast`. Not: `Badge`, `Alert`, `Text`.
+  Wrap the app root once in `<ToastProvider>`, then `toast({ title: "Note saved", tone: "success" })` from `useToast()`.
+- **Message that stays next to its content (error, warning, info)** → `Alert`. Not: Text in a coloured Surface.
+  `<Alert tone="warning">…</Alert>`.
+- **Button or row action** → `Button`. Not: a raw `<button>`, InlineLink for an action.
+  Row actions: `<Button variant="tertiary" size="sm" aria-label="View Brand refresh">View</Button>`; the destructive one adds `tone="danger"`.
+- **Space between sections or items** → `Stack`, `Grid`. Not: margins on children, raw px gaps such as px8.
+  Stack `gap`: `spacious` between page sections, `normal` inside a section, `tight` between buttons. `Grid` for two-dimensional layout.
+- **Padded background or a titled content object** → `Surface`, `Card`. Not: a Box with background and padding.
+  `Surface` for a plain padded background; `Card` only when the content has a title or can be pressed.
+- **Progress bar or ring** → `Progress`. Not: a hand-built bar.
+  `<Progress value={60} label="Upload" />`; inside an existing `Card`, `CardProgress`.
+- **Body copy** → `Text`. Not: Text as a section heading.
+  Section headings come from the pattern that owns the section (`PageHeader` `title`, `DataTableSection` `title`), not from extra Text.
+- **Empty state for a list or section** → `EmptyState`. Not: Text saying "No items".
+  `DataTableSection` shows its own through `emptyTitle`; use `EmptyState` elsewhere.
+- **The one irreversible action of a screen (delete the client, close the account)** → `DestructiveSection`. Not: a danger Button that acts without a confirm.
+  Last on the screen: `<DestructiveSection title="Delete client" description="…" actionLabel="Delete" onConfirm={…} />`; it opens its own AlertDialog. A per-row destructive action uses AlertDialog directly.
+- **Read-only details as label and value pairs** → `MetadataList`, `Field`. Not: a Table with two columns, Text pairs in a Stack.
+  `<MetadataList items={[{ term: "Owner", description: "Ada" }]} />` for a set; `Field` for one pair.
+- **A person, or a group of people** → `Avatar`, `AvatarGroup`. Not: an image in a rounded Box.
+  `<Avatar src alt initials />`; several in a row: `<AvatarGroup max={3}>…Avatars…</AvatarGroup>`.
+- **A date or time** → `Timestamp`. Not: a formatted string in Text.
+  `<Timestamp date="2026-10-14" />` renders a `<time dateTime>`; a date in a table cell may stay plain text.
+- **A keyboard key or shortcut hint** → `Kbd`. Not: `InlineCode`, Text in a Box.
+  `<Kbd>⌘K</Kbd>`.
+- **A quotation with attribution** → `Blockquote`. Not: Callout for a quote, italic Text.
+  `<Blockquote attribution="Ada Lovelace">…</Blockquote>`.
+- **A fixed-width side rail beside fluid content, or a row that stacks when narrow** → `Sidebar`, `Switcher`. Not: a Grid with media queries.
+  `Sidebar` (`side`, `sideWidth`) for rail + content; `Switcher` (`threshold`) for a row that flips to a column. Neither needs a media query.
+- **Keep an element stuck while its region scrolls** → `Pin`. Not: position: sticky in style.
+  `<Pin top="…">…</Pin>` inside the scrolling region.
 
 ## System Architecture
 
@@ -41,17 +100,18 @@ This file intentionally does not embed prop tables or long-form API docs.
 One line per component that declares when to use it (`@usage` / `@useInstead` in its JSDoc). Full detail, including `usage.whenNot`, `keyboard` and `aiRules`, is in `public/hds-manifest.json` and `src/app/data/component-api.json`.
 
 Alert: Show a persistent inline message with a severity, next to the content it concerns. Use instead: ToastProvider, Badge
+AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
 Avatar: Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
 Badge: Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
 Box: Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
 Button: Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
 Card: Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option. Use instead: Surface, Card.Metric
-CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card.
+CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card. Use instead: MetricTiles
 Checkbox: Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 Combobox: Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
 Container: Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
-Dialog: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider
+Dialog: Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
 Disclosure: Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
 Divider: Separate two regions of content with a thin semantic rule. Use instead: Stack, Surface
 EmptyState: Say that a list, grid or section has no data yet, with a title and an optional description. Use instead: Skeleton, Alert
@@ -74,8 +134,8 @@ Skeleton: Reserve the shape of content that is still loading, so the layout does
 Slider: Pick a number within a known range by dragging, when the exact value matters less than the position. Use instead: Input
 Spinner: Show that something is loading when the wait is short or has no measurable end. Use instead: Progress, Skeleton
 Stack: Space a row or column of content with token gaps and simple flex alignment. Use instead: Grid, Surface
-Stat: Show one standalone headline figure with its label and an optional sub-line. Use instead: Card.Metric, StatusTile
-StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: Card.Metric, StatusListItem
+Stat: Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line. Use instead: MetricTiles, Card.Metric, StatusTile
+StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: MetricTiles, Card.Metric, StatusListItem
 Surface: Wrap content in a padded, background-bearing inset surface with no header or footer anatomy. Use instead: Card, Stack
 Table: Show rows of structured data in aligned columns, with optional sorting. Use instead: Field, Stack
 Tabs: Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
@@ -114,7 +174,7 @@ Canonical skeleton, outermost to innermost:
 2. `Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.
 3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
-5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile`, and between `Card` and `Surface`, with the "Which one, when" table in `DESIGN.md`.
+5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). A row of headline numbers is always `MetricTiles`; `Stat`, `Card.Metric` and `StatusTile` answer other needs (see "Pick By Need" in `llms.txt`). Pick between `Card` and `Surface` with the "Which one, when" table in `DESIGN.md`.
 6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
 
 Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, `check-hardcoded-spacing.mjs`, `check-hardcoded-colors.mjs`):

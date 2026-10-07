@@ -3201,6 +3201,10 @@
           {
             "component": "ToastProvider",
             "reason": "a brief confirmation"
+          },
+          {
+            "component": "AlertDialog",
+            "reason": "confirming a destructive or irreversible action"
           }
         ]
       },
@@ -3939,9 +3943,13 @@
         "primitives-stat--with-sub"
       ],
       "usage": {
-        "when": "Show one standalone headline figure with its label and an optional sub-line.",
-        "whenNot": "A figure inside a Card, or a status with a trailing badge.",
+        "when": "Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.",
+        "whenNot": "A row of headline numbers on a screen, a figure inside a Card, or a status with a trailing badge.",
         "useInstead": [
+          {
+            "component": "MetricTiles",
+            "reason": "a row of headline numbers (one MetricTile per number)"
+          },
           {
             "component": "Card.Metric",
             "reason": "a figure inside a Card (hds#254 folds Stat into the Card slot)"
@@ -4106,11 +4114,15 @@
       ],
       "usage": {
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
-        "whenNot": "A single headline figure, or a row inside a list.",
+        "whenNot": "A headline number (never a value), or a row inside a list.",
         "useInstead": [
           {
+            "component": "MetricTiles",
+            "reason": "a row of headline numbers"
+          },
+          {
             "component": "Card.Metric",
-            "reason": "a headline figure (hds#254 folds StatusTile into the Card slot)"
+            "reason": "a headline figure inside a Card (hds#254 folds StatusTile into the Card slot)"
           },
           {
             "component": "StatusListItem",
@@ -5561,6 +5573,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert-dialog.tsx",
         "src/app/components/alert.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/toast.test.tsx",
@@ -6469,6 +6482,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/destructive-section.tsx",
+        "src/app/components/dialog.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
         "src/stories/alert-dialog.stories.tsx",
@@ -6508,7 +6522,21 @@
       "storyIds": [
         "primitives-alert-dialog--dark-scope",
         "primitives-alert-dialog--default"
-      ]
+      ],
+      "usage": {
+        "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
+        "whenNot": "A modal that collects input or shows content, or a confirmation after the action is done.",
+        "useInstead": [
+          {
+            "component": "Dialog",
+            "reason": "a modal with a form or other content"
+          },
+          {
+            "component": "ToastProvider",
+            "reason": "a brief confirmation after the action"
+          }
+        ]
+      }
     },
     "Box": {
       "category": "Layout",
@@ -7236,7 +7264,13 @@
       ],
       "usage": {
         "when": "Show one headline figure (a KPI, a count, a total) with its label inside a Card.",
-        "whenNot": "A metric outside a Card, or several figures that share one label."
+        "whenNot": "A metric outside a Card, or several figures that share one label.",
+        "useInstead": [
+          {
+            "component": "MetricTiles",
+            "reason": "a row of headline numbers with no enclosing Card"
+          }
+        ]
       }
     },
     "CardProgress": {
@@ -8264,6 +8298,7 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
+        "src/app/components/stat.tsx",
         "src/stories/metric-tile.stories.tsx",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx"
@@ -8330,7 +8365,10 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/card.tsx",
         "src/app/components/metric-tiles.test.tsx",
+        "src/app/components/stat.tsx",
+        "src/app/components/status-tile.tsx",
         "src/stories/metric-tile.stories.tsx",
         "src/stories/metric-tiles.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx"

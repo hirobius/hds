@@ -7,7 +7,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RENAMES, transformSource, findUnrewritable } from '../../codemods/hds-prefix.mjs';
 
@@ -333,8 +333,12 @@ describe('package', () => {
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
     for (const bin of Object.values(pkg.bin)) {
       const src = readFileSync(join(REPO, bin), 'utf8');
-      for (const [, rel] of src.matchAll(/^import .* from '\.\/([^']+)';$/gm))
+      const dir = dirname(bin);
+      for (const [, rel] of src.matchAll(/^import .* from '\.\/([^']+)';$/gm)) {
+        // A bin outside codemods/ (mcp/hds-mcp.mjs) ships its whole directory.
+        if (dir !== 'codemods' && pkg.files.includes(`${dir}/`)) continue;
         expect(pkg.files, `${bin} imports ./${rel}`).toContain(`codemods/${rel}`);
+      }
     }
   });
 
