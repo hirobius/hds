@@ -125,10 +125,12 @@ PR) runs `changeset version`, then `node scripts/upgrade/compile.mjs
 2. It writes `docs/api/releases/<version>.json`, freezes each note byte for
    byte at `upgrade/sources/<version>/notes/<name>.json`, writes
    `upgrade/sources/<version>/release.json` (each note cites its changeset's
-   CHANGELOG entry, read back from git at HEAD; `.changeset/<name>.md` when
-   git no longer has it) and builds `upgrade/releases/<version>.json` from
-   them with `build-ledger.mjs`, so every ledger, backfilled or not, is built
-   from frozen sources.
+   CHANGELOG entry, found by the commit that added the changeset, as
+   `changeset version` writes it, else by the changeset's first line read
+   back from git at HEAD; `.changeset/<name>.md` when neither finds one, which
+   `check-upgrade-ledger` then fails on the Version PR, naming the fix) and
+   builds `upgrade/releases/<version>.json` from them with `build-ledger.mjs`,
+   so every ledger, backfilled or not, is built from frozen sources.
 3. It puts an `### Upgrade` block at the top of the new CHANGELOG section,
    before the citations are numbered: the command (the one command once the
    package ships it, the exact install until then), then at most five lines,

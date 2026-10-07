@@ -642,31 +642,63 @@ function changesetAtHead(repo, name) {
   }
 }
 
+/**
+ * The commit `changeset version` names in a changeset's CHANGELOG entry: the
+ * first seven characters of the newest commit that added the changeset, which
+ * @changesets/changelog-git reads with this same git log. Null when git has
+ * none (a changeset never committed).
+ */
+function changesetCommit(repo, name) {
+  try {
+    const sha = execFileSync(
+      'git',
+      ['log', '--diff-filter=A', '--max-count=1', '--format=%H', '--', `.changeset/${name}.md`],
+      { cwd: repo, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+    ).trim();
+    return /^[0-9a-f]{40,64}$/.test(sha) ? sha.slice(0, 7) : null;
+  } catch {
+    return null;
+  }
+}
+
 const plainText = (text) => text.replace(/[*_`\\]/g, '');
 
 /**
- * The citation of a changeset's CHANGELOG entry in `version`'s section:
- * `changeset version` writes it as `- <commit>: <first line>`. The needle is
- * that text from the commit on, cut at a word once it is 40 characters long,
- * or longer until it finds that one line. Null when no single entry matches.
+ * The entries whose text is the changeset's first line. Prettier may have
+ * reworded markup in an entry, so a prefix is enough; an entry whose whole
+ * text is the line wins over one that only starts with it.
  */
-function entryCite(changelog, version, line) {
-  if (!line) return null;
+function entriesByText(entries, line) {
+  if (!line) return [];
+  const bare = (text) => plainText(text.replace(/^[0-9a-f]{7,40}: /, ''));
+  const want = plainText(line);
+  const candidates = entries.filter((text) => bare(text).startsWith(want.slice(0, 40)));
+  const exact = candidates.filter((text) => bare(text) === want);
+  return exact.length > 0 ? exact : candidates;
+}
+
+/**
+ * The citation of a changeset's CHANGELOG entry in `version`'s section:
+ * `changeset version` writes it as `- <commit>: <first line>`. The entry is
+ * the one with the changeset's commit (changesetCommit) or, when several
+ * share that commit or none has it, the one with its first line. The needle
+ * is that text from the commit on, cut at a word once it is 40 characters
+ * long, or longer until it finds that one line. Null when no single entry
+ * matches.
+ * @param {{ line: string | null, commit: string | null }} changeset
+ */
+function entryCite(changelog, version, { line, commit }) {
   const lines = changelog.split('\n');
   const heading = lines.indexOf(`## ${version}`);
   let end = lines.findIndex((l, i) => i > heading && l.startsWith('## '));
   if (end === -1) end = lines.length;
-  const bare = (text) => plainText(text.replace(/^[0-9a-f]{7,40}: /, ''));
-  const want = plainText(line);
-  const candidates = lines
+  const all = lines
     .slice(heading + 1, end)
     .filter((l) => l.startsWith('- '))
-    .map((l) => l.slice(2))
-    .filter((text) => bare(text).startsWith(want.slice(0, 40)));
-  // Prettier may have reworded markup in the entry, so a prefix is enough;
-  // an entry whose whole text is the line wins over one that only starts with it.
-  const exact = candidates.filter((text) => bare(text) === want);
-  const entries = exact.length > 0 ? exact : candidates;
+    .map((l) => l.slice(2));
+  const byCommit = commit ? all.filter((text) => text.startsWith(`${commit}: `)) : [];
+  const entries =
+    byCommit.length === 1 ? byCommit : entriesByText(byCommit.length > 0 ? byCommit : all, line);
   if (entries.length !== 1) return null;
   const words = entries[0].split(' ');
   for (let n = 1; n <= words.length; n++) {
@@ -725,7 +757,9 @@ function inPreMode(repo) {
  *     Version PR will publish), read from source with no build;
  *   - upgrade/sources/<version>/notes/<changeset>.json, each pending note
  *     byte for byte, and release.json citing each one's CHANGELOG entry
- *     (from git, `.changeset/<name>.md` when git no longer has it);
+ *     (found by the commit that added its changeset, else by its first
+ *     line; `.changeset/<name>.md` when neither finds one, which leaves
+ *     check-upgrade-ledger red on the Version PR);
  *   - upgrade/releases/<version>.json, built from those by build-ledger;
  *   - the `### Upgrade` block at the top of the version's CHANGELOG section,
  *     before the citations are numbered, so they count its lines;
@@ -826,7 +860,10 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
   const cites = {};
   for (const name of Object.keys(notes).sort()) {
     const text = changesetAtHead(repo, name);
-    const cite = text === null ? null : entryCite(changelog, version, firstLine(text));
+    const cite = entryCite(changelog, version, {
+      line: text === null ? null : firstLine(text),
+      commit: changesetCommit(repo, name),
+    });
     if (!cite) uncited.push(name);
     cites[name] = cite ?? draftCites[name];
   }
@@ -1019,7 +1056,7 @@ async function main(argv) {
       );
       for (const name of result.uncited) {
         console.error(
-          `! compile.mjs — no single ${result.version} CHANGELOG entry matches the changeset of upgrade note ${name}, so its steps cite .changeset/${name}.md`,
+          `! compile.mjs — no single ${result.version} CHANGELOG entry matches the changeset of upgrade note ${name}, by its commit or its first line, so its steps cite .changeset/${name}.md, which this release deletes; check-upgrade-ledger fails until upgrade/sources/${result.version}/release.json cites the entry`,
         );
       }
     } else {

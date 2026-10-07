@@ -22,7 +22,9 @@
  *      listing a fact the diff no longer has (a reverted removal), or, once
  *      package.json's version has its snapshot, a note with no changeset of
  *      the same name (hds#541: it would be recorded citing a changeset that
- *      never existed);
+ *      never existed); or a step of package.json's ledger citing
+ *      `.changeset/<name>.md`, which its own Version PR deletes (compile.mjs
+ *      found no CHANGELOG entry for that changeset);
  *   3. something is breaking (a breaking fact, a note that says so, or a step
  *      that removes, moves, renames or folds something public) and the
  *      changesets bump @hirobius/design-system by less than minor below 1.0
@@ -214,7 +216,33 @@ function noteViolations(state, versionPr) {
       ),
     );
   }
+  out.push(...deadCitations(state));
   return out;
+}
+
+/**
+ * Steps of package.json's ledger that cite `.changeset/<name>.md`: compile.mjs
+ * --release found no single CHANGELOG entry for that changeset, and the
+ * Version PR that recorded the ledger deletes the file, so the published
+ * ledger would cite nothing. One violation per changeset.
+ */
+function deadCitations(state) {
+  const { ledger, version } = state;
+  const bySource = new Map();
+  for (const step of ledger?.release?.steps ?? []) {
+    if (!/^\.changeset\/.+\.md$/.test(step.source ?? '')) continue;
+    bySource.set(step.source, [...(bySource.get(step.source) ?? []), step.id]);
+  }
+  const sources = `upgrade/sources/${version}/release.json`;
+  return [...bySource].map(([source, ids]) => {
+    const name = source.slice('.changeset/'.length, -'.md'.length);
+    return violation(
+      ledger.file,
+      'ledger-cites-changeset',
+      `${ledger.file}: ${list(ids)} ${ids.length === 1 ? 'cites' : 'cite'} ${source}, a file this release deletes: compile.mjs --release found no single ${version} CHANGELOG entry for that changeset. In ${sources}, set notes.${name} to { "needle": <text of its entry>, "source": "CHANGELOG.md:<line>" }, then run node scripts/upgrade/build-ledger.mjs ${version} and node scripts/upgrade/compile.mjs.`,
+      { steps: ids },
+    );
+  });
 }
 
 /**

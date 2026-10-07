@@ -952,6 +952,106 @@ describe('compile.mjs --release, right after changeset version', () => {
     expect(JSON.parse(read(root, 'upgrade/published.json')).versions).toEqual(['0.20.0', '0.21.0']);
   });
 
+  // changesets writes each entry as `- <first 7 of the commit that added the
+  // changeset>: <first line>`, so that commit tells apart two changesets that
+  // share a first line; the text tells apart two added by one commit.
+  it('cites each note by the commit that added its changeset, when changesets share a first line or a commit', () => {
+    const root = releasedRepo();
+    write(root, 'CHANGELOG.md', '# Changelog\n\n## 0.20.0\n\n- 1111111: Before.\n');
+    write(root, 'upgrade/published.json', json({ $comment: 'Fixture.', versions: ['0.20.0'] }));
+    write(root, 'status.json', json(STATUS));
+    const commit = (message) =>
+      git(root, '-c', 'user.name=t', '-c', 'user.email=t@example.com', 'commit', '-qm', message);
+    git(root, 'init', '-q');
+    git(root, 'add', '-A');
+    commit('base');
+    const texts = { 'docs-a': 'Docs only.', 'docs-b': 'Docs only.', 'docs-c': 'Docs and more.' };
+    for (const names of [['docs-a'], ['docs-b', 'docs-c']]) {
+      for (const name of names) {
+        write(root, `${CHANGESETS}/${name}.md`, `---\n'${PKG}': patch\n---\n\n${texts[name]}\n`);
+        note(root, name, { impact: 'look', plain: `${name} looks different.` });
+      }
+      git(root, 'add', '-A');
+      commit(names.join(' '));
+    }
+    const hash = Object.fromEntries(
+      Object.keys(texts).map((name) => [
+        name,
+        git(
+          root,
+          'log',
+          '--diff-filter=A',
+          '--max-count=1',
+          '--format=%H',
+          '--',
+          `${CHANGESETS}/${name}.md`,
+        )
+          .stdout.trim()
+          .slice(0, 7),
+      ]),
+    );
+    expect(hash['docs-a']).not.toBe(hash['docs-b']);
+    expect(hash['docs-b']).toBe(hash['docs-c']);
+    // changeset version:
+    for (const name of Object.keys(texts)) rmSync(join(root, `${CHANGESETS}/${name}.md`));
+    editPkg(root, (pkg) => (pkg.version = '0.20.1'));
+    const entry = (name) => `- ${hash[name]}: ${texts[name]}`;
+    write(
+      root,
+      'CHANGELOG.md',
+      [
+        '# Changelog',
+        '',
+        '## 0.20.1',
+        '',
+        '### Patch Changes',
+        '',
+        entry('docs-b'),
+        entry('docs-c'),
+        entry('docs-a'),
+        '',
+        '## 0.20.0',
+        '',
+        '- 1111111: Before.',
+        '',
+      ].join('\n'),
+    );
+
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    expect(res.stderr).toBe('');
+    const lines = read(root, 'CHANGELOG.md').split('\n');
+    const lineOf = (name) =>
+      `CHANGELOG.md:${lines.indexOf(entry(name)) - lines.indexOf('## 0.20.1') + 3}`;
+    const { notes } = JSON.parse(read(root, 'upgrade/sources/0.20.1/release.json'));
+    expect(notes).toEqual({
+      'docs-a': { needle: entry('docs-a').slice(2), source: lineOf('docs-a') },
+      'docs-b': { needle: entry('docs-b').slice(2), source: lineOf('docs-b') },
+      'docs-c': { needle: entry('docs-c').slice(2), source: lineOf('docs-c') },
+    });
+    expect(new Set(Object.values(notes).map((cite) => cite.source)).size).toBe(3);
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+
+  // A step citing .changeset/<name>.md cites a file its own Version PR deletes,
+  // so the gate turns that PR red instead of a warning in the release log.
+  it('leaves the gate red when a recorded step cites its changeset file, naming the fix', () => {
+    const root = versionedRepo();
+    note(root, 'late', { impact: 'look', plain: 'Tile has a softer shadow.' });
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    expect(res.stderr).toContain(`${CHANGESETS}/late.md`);
+    const gate = checkUpgradeLedger(root);
+    expect(gate.violations.map((v) => [v.file, v.rule])).toEqual([
+      ['upgrade/releases/0.21.0.json', 'ledger-cites-changeset'],
+    ]);
+    const [{ message }] = gate.violations;
+    expect(message).toContain('0.21.0/look/late');
+    expect(message).toContain(`${CHANGESETS}/late.md`);
+    expect(message).toContain('upgrade/sources/0.21.0/release.json');
+    expect(message).toContain('node scripts/upgrade/build-ledger.mjs 0.21.0');
+  });
+
   it('leaves a tree the upgrade gate and compile.mjs --check pass, with no "not recorded" hint', () => {
     const root = versionedRepo();
     expect(run(['--release', '--date', '2026-10-08', '--repo', root]).status).toBe(0);
