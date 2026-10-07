@@ -98,7 +98,11 @@ async function measureAll(picked, filter, concurrency) {
   });
   const results = [];
   let next = 0;
-  const work = picked.filter((p) => !filter || new RegExp(filter, 'i').test(p.component));
+  // Not written as a negation of `filter`: Tailwind's source scan reads
+  // scripts/ too, reads a bang followed by `filter` as the important `filter`
+  // utility, and compiles a dead important rule into dist/styles.css (ADR-030).
+  const pattern = filter ? new RegExp(filter, 'i') : null;
+  const work = pattern ? picked.filter((p) => pattern.test(p.component)) : picked;
   const measure = async (page, p) => {
     const err = await runner.renderStory(page, p.storyId);
     if (err) return { error: err };
