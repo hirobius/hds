@@ -32,8 +32,9 @@
  * The build reads nothing else (not the live CHANGELOG; a test checks that
  * each needle still finds its cited line). A removed name no rule classifies,
  * a fact no step lists, a step listing a fact the diff lacks, or a step the
- * schema rejects stops it. Releases after 0.20.0 get their ledger from the
- * changesets' upgrade notes instead (hds#448, hds#451).
+ * schema rejects stops it. The frozen sources cover 0.17.0 through 0.20.0.
+ * 0.21.0 shipped with no ledger; hds#448 adds it next, and later releases get
+ * theirs from the changesets' upgrade notes instead (hds#448, hds#451).
  *
  *   node scripts/upgrade/build-ledger.mjs [<version>...]           # write (default: every release with sources)
  *   node scripts/upgrade/build-ledger.mjs --check [<version>...]   # exit 1 if a committed ledger is stale

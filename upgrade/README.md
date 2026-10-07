@@ -1,7 +1,8 @@
 # Upgrade ledger
 
-Every release of `@hirobius/design-system` has one machine-readable record of
-what it changed for a consumer: `upgrade/releases/<version>.json`. The upgrade
+Each release of `@hirobius/design-system` gets one machine-readable record of
+what it changed for a consumer: `upgrade/releases/<version>.json` (0.21.0
+shipped without one; see [The floor](#the-floor)). The upgrade
 command (`npx @hirobius/design-system@latest upgrade`, hds#452) reads it to run
 the codemods and report what is left, and UPGRADING.md and `upgrade/index.json`
 are compiled from it (hds#451).
@@ -86,13 +87,21 @@ hds#449.
 The floor is the oldest version the upgrade command can upgrade from. Below
 it, the command changes nothing and exits 2; follow MIGRATIONS.md by hand up to
 the floor. It is 0.16.0, the oldest committed snapshot: the 0.17.0 to 0.20.0
-ledgers cover every release after it, so a consumer still on 0.16.0 (folio,
-and ops until its 0.20.0 bump) crosses no change that a step does not report.
-`floor()` in `scripts/upgrade/history.mjs` computes it, for `floor` in
+ledgers cover every release after it through 0.20.0, so a consumer still on
+0.16.0 (folio, and ops until its 0.20.0 bump) crosses no change up to 0.20.0
+that a step does not report.
+
+0.21.0 shipped without a ledger or a snapshot; hds#448 adds its ledger next.
+The upgrade command will refuse to report "done" across a release that has no
+ledger, so an upgrade that crosses 0.21.0 is never reported done before that
+ledger lands.
+
+`floor()` in `scripts/upgrade/history.mjs` computes the floor, for `floor` in
 `upgrade/index.json` (hds#451). Its `historyProblems()`, run by a test, fails
 when a snapshot after the floor has no ledger, a ledger names the wrong bump,
 or a fact between two consecutive snapshots (an export removed or moved, a
-dependency, peer, engine, exports key or bin) has no step.
+dependency, peer, engine, exports key or bin) has no step. It reads only
+committed snapshots, so it cannot see 0.21.0 until that snapshot is committed.
 
 ## Who is a consumer
 
