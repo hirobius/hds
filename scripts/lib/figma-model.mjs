@@ -240,6 +240,21 @@ export const CH_BASIS = Object.freeze({
     'public/fonts/satoshi/satoshi-500.woff2: hmtx advance of "0" (693) / head.unitsPerEm (1000), measured 2026-09-16',
 });
 
+/**
+ * The weight of the Satoshi face a requested weight renders on. Only the 500
+ * and 700 faces ship (src/styles/fonts.css), so CSS font matching puts 400 and
+ * below on the 500 face and 600 and above on the 700 face. The body role asks
+ * for 400 (hds#483) and so renders the 500 face CH_BASIS was measured from;
+ * re-measure, and drop this, when a 400 face ships.
+ */
+const SATOSHI_FACE_WEIGHTS = [500, 700];
+function renderedWeight(family, weight) {
+  if (family !== 'Satoshi' || typeof weight !== 'number') return weight;
+  const heavier = SATOSHI_FACE_WEIGHTS.find((w) => w >= weight);
+  if (weight > 500 && heavier) return heavier;
+  return weight <= 500 ? 500 : 700;
+}
+
 function chToPx(graph, count) {
   const body = graph.byPath.get(CH_BASIS.style);
   if (body?.type !== 'typography') {
@@ -254,9 +269,10 @@ function chToPx(graph, count) {
     'fontFamily',
   );
   const weight = graph.resolveRef(body.value.fontWeight, at('fontWeight'));
-  if (family !== CH_BASIS.family || weight !== CH_BASIS.weight) {
+  const face = renderedWeight(family, weight);
+  if (family !== CH_BASIS.family || face !== CH_BASIS.weight) {
     throw new Error(
-      `Cannot convert ch: CH_BASIS was measured for ${CH_BASIS.family} ${CH_BASIS.weight} but ${CH_BASIS.style} now renders ${family} ${weight} — re-measure zeroAdvanceEm from that font file.`,
+      `Cannot convert ch: CH_BASIS was measured for ${CH_BASIS.family} ${CH_BASIS.weight} but ${CH_BASIS.style} now renders ${family} ${face} — re-measure zeroAdvanceEm from that font file.`,
     );
   }
   const fontSize = toFigmaValue(

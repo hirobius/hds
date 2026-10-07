@@ -13,7 +13,7 @@ const Panel = ({ label }: { label: string }) => (
       border: '1px solid var(--semantic-color-border-default, #d1d5db)',
       borderRadius: '6px',
       padding: '16px',
-      fontSize: '12px',
+      fontSize: 'var(--semantic-typography-caption-font-size)',
       color: 'var(--semantic-color-content-secondary, #6b7280)',
     }}
   >

@@ -133,7 +133,7 @@ export const FormFieldShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, F
     const errorId = `${controlId}-error`;
     return (
       <div ref={ref} className={cn('flex flex-col gap-2', className)}>
-        <label htmlFor={controlId} className="text-sm font-medium text-foreground">
+        <label htmlFor={controlId} className="hds-type-ui text-foreground">
           {label}
           {required ? (
             <span aria-hidden="true" className="text-destructive">
@@ -144,12 +144,12 @@ export const FormFieldShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, F
         </label>
         {children}
         {description && !error ? (
-          <p id={descriptionId} className="text-xs text-muted-foreground">
+          <p id={descriptionId} className="hds-type-caption text-muted-foreground">
             {description}
           </p>
         ) : null}
         {error ? (
-          <p id={errorId} role="alert" className="text-xs text-destructive">
+          <p id={errorId} role="alert" className="hds-type-caption text-destructive">
             {error}
           </p>
         ) : null}

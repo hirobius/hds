@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 425 tokens, aliases, and TS refs in one shot.
+Checks all 434 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -231,18 +231,19 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 <!-- auto:start:typography -->
 
-| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                                                                              |
-| ----------------- | ---------- | ------ | ----------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `display`         | 60px       | 700    | 1           | -0.01em        | Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).                                                                        |
-| `h1`              | 48px       | 700    | 1.25        | -0.01em        | Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).                                    |
-| `h2`              | 30px       | 700    | 40px        | -0.01em        | Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).                                             |
-| `h3`              | 20px       | 700    | 28px        | 0em            | Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).                                 |
-| `body`            | 16px       | 500    | 24px        | 0em            | Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).                                                           |
-| `ui`              | 14px       | 500    | 20px        | 0em            | UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).                                                      |
-| `caption`         | 12px       | 500    | 16px        | 0em            | Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283). |
-| `eyebrow`         | 12px       | 500    | 16px        | 0.06em         | Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).                                                         |
-| `mono`            | 14px       | 400    | 20px        | 0em            | Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).                               |
-| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                                                                       |
+| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                      |
+| ----------------- | ---------- | ------ | ----------- | -------------- | -------------------------------------------------------------------------------- |
+| `display`         | 48px       | 700    | 1.05        | -0.01em        | One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.                         |
+| `title`           | 24px       | 600    | 1.25        | -0.01em        | Section and card headings. 24px / 1.25 / 600. Role 2 of 6.                       |
+| `body`            | 16px       | 400    | 1.6         | 0em            | Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.                              |
+| `ui`              | 14px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.                |
+| `caption`         | 12px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6. |
+| `mono`            | 13px       | 400    | 1.5         | 0em            | Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.                 |
+| `h1`              | 24px       | 600    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `h2`              | 24px       | 600    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `h3`              | 24px       | 600    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `eyebrow`         | 12px       | 500    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                      |
+| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.               |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
 
@@ -258,6 +259,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 - `primitive.typography.size.4xl` = **36px**
 - `primitive.typography.size.5xl` = **48px**
 - `primitive.typography.size.6xl` = **60px**
+- `primitive.typography.size.code` = **13px**
 <!-- auto:end:typography -->
 
 ---
