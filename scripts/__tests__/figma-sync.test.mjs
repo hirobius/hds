@@ -177,7 +177,7 @@ describe('Sync in the staging file', () => {
       pushedAt: ingested.snapshot.lastPush.pushedAt,
       takenAt: ingested.snapshot.takenAt,
       post: synced.result.checksum,
-      counts: { collections: 4, modes: 5, variables: 57, textStyles: 3, effectStyles: 3 },
+      counts: { collections: 4, modes: 5, variables: 58, textStyles: 3, effectStyles: 3 },
     });
     expect(receipt.line).toMatch(/^updated 0 · created \d+ · deleted 0$/);
   });
@@ -198,7 +198,7 @@ describe('Sync in the staging file', () => {
     const plan = await runPlugin(PLUGIN, 'plan', figma);
     expect(plan.ok, plan.error).toBe(true);
     expect(plan.result.mode).toBe('dry-run');
-    expect(plan.result.summary.variables.created).toBe(57);
+    expect(plan.result.summary.variables.created).toBe(58);
     expect(figma.writes).toEqual([]);
   });
 

@@ -234,24 +234,22 @@ function isRelativeTypography(graph, token) {
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
   family: 'Satoshi',
-  weight: 500,
-  zeroAdvanceEm: 0.693,
+  weight: 400,
+  zeroAdvanceEm: 0.683,
   measuredFrom:
-    'public/fonts/satoshi/satoshi-500.woff2: hmtx advance of "0" (693) / head.unitsPerEm (1000), measured 2026-09-16',
+    'public/fonts/satoshi/satoshi-400.woff2: advance of "0" at 1000px in Chromium (683; the same method gives 693 for the 500 face, matching its hmtx), measured 2026-10-07',
 });
 
 /**
- * The weight of the Satoshi face a requested weight renders on. Only the 500
- * and 700 faces ship (src/styles/fonts.css), so CSS font matching puts 400 and
- * below on the 500 face and 600 and above on the 700 face. The body role asks
- * for 400 (hds#483) and so renders the 500 face CH_BASIS was measured from;
- * re-measure, and drop this, when a 400 face ships.
+ * The weight of the Satoshi face a requested weight renders on. The 400, 500
+ * and 700 faces ship (src/styles/fonts.css); CSS font matching puts a weight
+ * with no face of its own on the nearest shipped one.
  */
-const SATOSHI_FACE_WEIGHTS = [500, 700];
+const SATOSHI_FACE_WEIGHTS = [400, 500, 700];
 function renderedWeight(family, weight) {
   if (family !== 'Satoshi' || typeof weight !== 'number') return weight;
-  const heavier = SATOSHI_FACE_WEIGHTS.find((w) => w >= weight);
-  if (weight > 500 && heavier) return heavier;
+  if (SATOSHI_FACE_WEIGHTS.includes(weight)) return weight;
+  if (weight < 400) return 400;
   return weight <= 500 ? 500 : 700;
 }
 

@@ -77,6 +77,7 @@
       },
       "weight": {
         "$type": "fontWeight",
+        "regular": { "$value": 400 },
         "medium": { "$value": 500 },
         "bold": { "$value": 700 }
       },
@@ -196,7 +197,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.base}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "28px",
           "maxWidth": { "value": 60, "unit": "ch" }
