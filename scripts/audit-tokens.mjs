@@ -35,6 +35,8 @@ import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { tmpdir } from 'node:os';
 
+import { resolveScanRoots } from './lib/scan-roots.mjs';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
@@ -119,12 +121,11 @@ function runScanSource() {
     };
   });
 
-  const TARGET_DIRS = [
-    join(ROOT, 'src/app/components'),
-    join(ROOT, 'src/app/styles'),
-    join(ROOT, 'src/app/pages'),
-    join(ROOT, 'src/app/design-system'),
-  ];
+  // src/app/styles and src/app/pages no longer exist; a missing root now throws.
+  const TARGET_DIRS = resolveScanRoots(['src/app/components', 'src/app/design-system'], {
+    root: ROOT,
+    gate: 'audit-tokens',
+  });
 
   let totalViolations = 0;
   let typographyViolations = 0;

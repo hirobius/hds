@@ -26,13 +26,19 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, relative, resolve } from 'path';
 
+import { resolveScanRoots } from './lib/scan-roots.mjs';
+
 const ROOT = process.cwd();
 
 // Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
 const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
-const SCAN_DIRS = [join(ROOT, 'src/app/components'), join(ROOT, 'src/app/pages')];
+// src/app/pages was removed; a missing root now throws instead of scanning less.
+const SCAN_DIRS = resolveScanRoots(['src/app/components'], {
+  root: ROOT,
+  gate: 'check-focus-states',
+});
 const SKIP_DIRS = new Set(['figma', 'sketches']);
 const SKIP_FILES = new Set(['types.ts', 'hooks.ts', 'HdsWebGLTriangleLogo.tsx']);
 

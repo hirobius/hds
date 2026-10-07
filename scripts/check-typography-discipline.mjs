@@ -192,17 +192,10 @@ if ((RUN_ALL || FONT_FILES_ONLY) && !isFixtureMode) {
 if (RUN_ALL || OVERRIDES_ONLY) {
   const SRC = path.join(ROOT, 'src');
 
-  const ALLOWLIST_PREFIXES_OVERRIDES = ['src/app/pages/sketches/'];
-  const ALLOWLIST_FILES_OVERRIDES = new Set([
-    'src/app/pages/hds/TypographyPage.tsx',
-    'src/app/pages/hds/TypographyTestPage.tsx',
-    'src/app/pages/ops/agentic-os/AgenticOSPage.tsx',
-    'src/app/pages/ops/agentic-os/StatusBanner.tsx',
-    'src/app/pages/ops/agentic-os/KpiCards.tsx',
-    'src/app/pages/ops/agentic-os/SkillsBar.tsx',
-    'src/app/pages/ops/agentic-os/LanesGrid.tsx',
-    'src/app/pages/ops/agentic-os/StrengthFooter.tsx',
-  ]);
+  // Every former exemption lived under src/app/pages (removed), so none could
+  // match. Emptied: a returning path needs a fresh decision, not a stale one.
+  const ALLOWLIST_PREFIXES_OVERRIDES = [];
+  const ALLOWLIST_FILES_OVERRIDES = new Set([]);
   const SKIP_BASENAME_PATTERNS = [/^generated-/, /\.generated\./, /\.test\./, /\.spec\./];
   const SKIP_EXACT_FILES = new Set([
     'src/styles/tokens.css',
