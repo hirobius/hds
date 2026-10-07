@@ -1,0 +1,28 @@
+{
+  "_comment": "Canary for scripts/check-layout-contract.mjs: a deliberately bad component. --strict must exit 1 on this file.",
+  "contract": {
+    "Canary": { "width": "hug", "height": "hug", "pads": false, "kind": "leaf", "probe": true }
+  },
+  "measurements": [
+    {
+      "component": "Canary",
+      "storyId": "canary--bad",
+      "title": "Canary/Bad",
+      "measurement": {
+        "target": "div.canary",
+        "probeWidth": 480,
+        "probeHeight": 800,
+        "width": 480,
+        "height": 800,
+        "contentExtent": 120,
+        "wideWidth": 1200,
+        "margins": [{ "el": "div.canary", "margin": "0px 0px 24px 0px" }],
+        "nested": [{ "outer": "div.canary", "inner": "div.canary-body" }],
+        "gaps": [{ "el": "div.canary", "gap": "row-gap 12px" }],
+        "siblingControlWidths": [],
+        "overflow390": 40,
+        "remPx": 16
+      }
+    }
+  ]
+}

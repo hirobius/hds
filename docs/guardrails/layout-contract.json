@@ -1,0 +1,632 @@
+{
+  "version": 1,
+  "components": {
+    "Alert": {
+      "width": "fill",
+      "height": "hug",
+      "pads": true,
+      "kind": "container",
+      "probe": true
+    },
+    "AlertDialog": {
+      "width": "hug",
+      "height": "hug",
+      "pads": true,
+      "kind": "overlay",
+      "probe": false
+    },
+    "AssetImg": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Avatar": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "AvatarGroup": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Badge": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Blockquote": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Box": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "primitive",
+      "probe": true
+    },
+    "Breadcrumb": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Button": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Callout": {
+      "width": "fill",
+      "height": "hug",
+      "pads": true,
+      "kind": "container",
+      "probe": true
+    },
+    "Card": {
+      "width": "fill",
+      "height": "hug",
+      "pads": true,
+      "kind": "container",
+      "probe": true
+    },
+    "CardBody": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardDescription": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardFooter": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardHeader": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardMetric": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardProgress": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardTitle": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "Checkbox": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "CodeBlock": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Combobox": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true,
+      "maxWidth": "40rem"
+    },
+    "Container": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "primitive",
+      "probe": true
+    },
+    "DataTableSection": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "DestructiveSection": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "Dialog": {
+      "width": "hug",
+      "height": "hug",
+      "pads": true,
+      "kind": "overlay",
+      "probe": false
+    },
+    "DialogClose": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogContent": {
+      "width": "hug",
+      "height": "hug",
+      "pads": true,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogDescription": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogFooter": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogHeader": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogOverlay": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogPortal": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogTitle": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "DialogTrigger": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "Disclosure": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "Divider": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "EmptyState": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "Field": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Form": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "FormActions": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "FormField": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "FormFieldShell": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "Grid": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "primitive",
+      "probe": true
+    },
+    "HdsRouterProvider": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "provider",
+      "probe": false
+    },
+    "HdsThemeProvider": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "provider",
+      "probe": false
+    },
+    "Icon": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "InlineCode": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "InlineLink": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Input": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true,
+      "maxWidth": "40rem"
+    },
+    "Kbd": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Menu": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "overlay",
+      "probe": false
+    },
+    "MetadataList": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "MetricTile": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "MetricTiles": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "Page": {
+      "width": "fill",
+      "height": "hug",
+      "pads": true,
+      "kind": "primitive",
+      "probe": true
+    },
+    "PageHeader": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Pagination": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Pin": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "primitive",
+      "probe": true
+    },
+    "Popover": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "overlay",
+      "probe": false
+    },
+    "Progress": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Radio": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Reveal": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "provider",
+      "probe": false
+    },
+    "SegmentedControl": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Select": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true,
+      "maxWidth": "40rem"
+    },
+    "Sidebar": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "primitive",
+      "probe": true
+    },
+    "Skeleton": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Slider": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Spinner": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Stack": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "primitive",
+      "probe": true
+    },
+    "Stat": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "StatusDot": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "StatusListItem": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "StatusTile": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Surface": {
+      "width": "fill",
+      "height": "hug",
+      "pads": true,
+      "kind": "primitive",
+      "probe": true
+    },
+    "Switcher": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "primitive",
+      "probe": true
+    },
+    "Table": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Tabs": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "TabsContent": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "TabsList": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "TabsTrigger": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "Tag": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Text": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Textarea": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true,
+      "maxWidth": "40rem"
+    },
+    "Timestamp": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "ToastProvider": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "provider",
+      "probe": false
+    },
+    "Toggle": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Tooltip": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "overlay",
+      "probe": false
+    },
+    "VisuallyHidden": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "provider",
+      "probe": false
+    }
+  }
+}

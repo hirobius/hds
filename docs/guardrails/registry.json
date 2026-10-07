@@ -570,6 +570,26 @@
       "firingChannels": ["pre-commit"]
     },
     {
+      "id": "check-layout-contract",
+      "description": "The v1 layout contract (2026-10-07) as a deterministic Playwright gate. Renders each component's default story from storybook-static in Chromium inside a 480px probe container taller than the child and measures fill/hug width against docs/guardrails/layout-contract.json, height stretch, outer margins, nested padding, form-control max width and sibling widths, horizontal overflow at 390px, and gaps off the xs..xl scale. WARN mode (exit 0); --strict exits 1. Needs `pnpm build-storybook` first. Baseline: docs/audits/layout-contract-baseline.md.",
+      "severity": "warn",
+      "gateScript": "scripts/check-layout-contract.mjs",
+      "fixturePath": "fixtures/check-layout-contract",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand"
+    },
+    {
+      "id": "check-tailwind-spacing-scale",
+      "description": "Flags raw numeric Tailwind spacing utilities (gap-2, p-5, px-3, mb-6, -mt-6, space-y-1.5) in src/app/components/**, which ignore density and sit outside the xs..xl scale and the gates that read only style and sx. WARN mode (exit 0); --strict exits 1. Companion to check-layout-contract.",
+      "severity": "warn",
+      "gateScript": "scripts/check-tailwind-spacing-scale.mjs",
+      "fixturePath": "fixtures/check-tailwind-spacing-scale",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-storybook-axe",
       "description": "Scans every built story (storybook-static) in light and dark with axe-core (wcag2a, wcag2aa, wcag21aa, wcag22aa) and fails on serious or critical violations that are not in scripts/axe-allowlist.json. An allowlist entry that matches nothing also fails, so the list cannot rot. Needs `pnpm build-storybook` first (hds#310).",
       "severity": "error",
