@@ -127,6 +127,10 @@
       "enum": ["primitive", "pattern", "template", "utility"],
       "description": "Component classification used for asymmetric documentation weight and LLM-surface filtering. Required — every spec in componentSpecs and utilities must carry a tier. Definitions: primitive = atomic, generally-interactive building blocks shipped as the public flagship API (HdsButton, HdsInput, HdsCard, HdsDialog) — heavy doc weight (full API pages, prop tables, anatomy diagrams). pattern = composition of primitives expressing a recurring product intent (HdsBreadcrumbs, HdsToolbar, HdsAlertBanner) — light doc weight (usage page with one canonical example). template = page-shaped layouts that consume primitives + patterns (HdsAppShell, HdsAuthLayout, HdsSettingsLayout) — kept in componentSpecs but not surfaced in public-facing human docs (templates are gallery-only). utility = behavioral, runtime, or non-visual helpers that don't render product surfaces (HdsControls, HdsErrorBoundary, HdsNotFoundPattern) — physically isolated under top-level `utilities` (peer to componentSpecs), hidden from LLM-facing inventory and public docs. Public docs surface = primitive + pattern only. The `experiment` tier was removed in 8x-6 — exploratory work lives in the vibe sketchbook outside the component library."
     },
+    "core": {
+      "type": "boolean",
+      "description": "true on the components of the ratified core set (hds#254, ADR-031): the brand-neutral, composable surface every HDS screen is built from. Written by scripts/generate-manifest.mjs from scripts/lib/core-components.mjs and absent on every other spec. Independent of `tier` (ADR-006): five core components are tier pattern, and not every tier primitive component is core. Optional/additive."
+    },
     "stability": {
       "type": "string",
       "enum": ["stable", "beta"],

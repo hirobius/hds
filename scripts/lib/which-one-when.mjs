@@ -6,10 +6,13 @@
  * sorted by name:
  *   `Name: when. Use instead: A, B`
  * The `Use instead:` tail is left off when the component names no alternative.
+ * A spec with `core: true` (the hds#254 core set, hds#374) reads
+ *   `Name: [core] when. …`
+ * so the name stays first and line parsers keyed on `Name: ` keep working.
  */
 
 /**
- * @param {Record<string, { hidden?: boolean, deprecated?: string, usage?: { when?: string, useInstead?: Array<{component: string}> } }>} specs
+ * @param {Record<string, { hidden?: boolean, core?: boolean, deprecated?: string, usage?: { when?: string, useInstead?: Array<{component: string}> } }>} specs
  * @returns {string} newline-joined lines, or '' when no component is tagged
  */
 export function buildWhichOneWhen(specs) {
@@ -19,7 +22,8 @@ export function buildWhichOneWhen(specs) {
     .map(([name, spec]) => {
       const when = spec.usage.when.replace(/[.\s]+$/, '');
       const instead = (spec.usage.useInstead ?? []).map((entry) => entry.component);
-      return `${name}: ${when}.${instead.length ? ` Use instead: ${instead.join(', ')}` : ''}`;
+      const core = spec.core === true ? '[core] ' : '';
+      return `${name}: ${core}${when}.${instead.length ? ` Use instead: ${instead.join(', ')}` : ''}`;
     })
     .join('\n');
 }

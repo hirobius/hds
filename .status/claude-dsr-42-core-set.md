@@ -1,0 +1,1 @@
+Core set published (hds#374, ADR-031): core: true on the 43 core specs in the manifest, component-api.json and the agent projection; llms.txt and the hds-consumer skill gain a "Core set" section; the README lists the 43 by category and the 12 /patterns modules.

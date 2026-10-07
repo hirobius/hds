@@ -11,8 +11,8 @@
  *   states, figmaId, figmaUrl, categorySource, governedCategory,
  *   hidden, docExempt, compoundMembers, sourceExport, figmaLink (figma-only)
  *
- * Keeps: category, tier, props, allowedChildren, variantAxes, requiredProps,
- *   a11yRules (the keyboard + ARIA contract), usage, keyboard, aiRules,
+ * Keeps: category, tier, core (hds#374), props, allowedChildren, variantAxes,
+ *   requiredProps, a11yRules (the keyboard + ARIA contract), usage, keyboard, aiRules,
  *   deprecated / removeIn / useInstead (hds#390)
  *
  * Also strips the full `tokens` section (use public/llms.txt for token ref).

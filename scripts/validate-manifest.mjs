@@ -317,6 +317,11 @@ function validateComponent(component, spec, schemaRequired, violations) {
   validateContract(component, spec, violations);
   validateDeprecation(component, spec, violations);
 
+  // hds#374: written only on the core set, and only as `true`; non-core specs omit it.
+  if ('core' in spec && spec.core !== true) {
+    pushViolation(violations, component, 'core', 'must be true when present (omit it otherwise)');
+  }
+
   if ('tier' in spec) {
     if (typeof spec.tier !== 'string' || !TIER_VALUES.has(spec.tier)) {
       pushViolation(

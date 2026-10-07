@@ -30,6 +30,21 @@ Subpath exports:
 - `@hirobius/design-system/icons`
 - `@hirobius/design-system/eslint-plugin`
 
+## Core set
+
+The 43 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+
+- **Actions:** `Button`
+- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
+- **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
+- **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
+- **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
+- **Navigation:** `Breadcrumb`, `InlineLink`, `Pagination`, `Tabs`
+- **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
+- **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
+- **Typography:** `Text`
+- **Utility:** `VisuallyHidden`
+
 ## Allow-list: components you may import
 
 Components you may import from `@hirobius/design-system`. Providers, hooks and helpers documented in `docs/CONSUMING.md` (for example `HdsThemeProvider`, `useHdsTheme`, `cn`) are also public. If a need is not covered, route it upstream instead of hand-rolling it.

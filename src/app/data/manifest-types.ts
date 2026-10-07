@@ -83,6 +83,8 @@ export type ManifestComponentSpec = {
   hidden?: boolean;
   docExempt?: boolean;
   tier?: string;
+  /** In the ratified core set (hds#254, ADR-031). Present only as `true`; independent of `tier`. */
+  core?: true;
   stability?: 'stable' | 'beta';
   consumers?: string[];
   tokenMapping?: Record<string, string>;
@@ -138,6 +140,8 @@ export type ManifestApiComponent = {
   hidden?: boolean;
   figmaUrl?: string | null;
   description?: string;
+  /** In the ratified core set (hds#254, ADR-031). Present only as `true`. */
+  core?: true;
   usage?: ManifestUsage;
   keyboard?: ManifestKeyboardEntry[];
   aiRules?: string;

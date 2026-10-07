@@ -16,6 +16,7 @@ import { fileURLToPath } from 'url';
 import { discoverHdsComponents } from './component-discovery.mjs';
 import { compactContract, mergeSlots } from './lib/jsdoc-contract.mjs';
 import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
+import { applyCoreFlag } from './lib/core-set.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -310,6 +311,18 @@ for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
 }
 manifest.utilities = utilities;
 delete manifest.experiments;
+
+// hds#374: `core: true` on the ratified core specs (scripts/lib/core-components.mjs).
+// Utilities never carry it.
+const coreWithoutSpec = applyCoreFlag(manifest.componentSpecs);
+for (const spec of Object.values(manifest.utilities)) delete spec.core;
+if (coreWithoutSpec.length > 0) {
+  console.warn(
+    `⚠ core component(s) with no componentSpecs entry: ${coreWithoutSpec.join(', ')}. ` +
+      'Renamed, removed or retiered to utility? Update scripts/lib/core-components.mjs ' +
+      '(the hds#254 list) or restore the component.',
+  );
+}
 
 manifest.inventory.uncategorized = activeDiscoveredComponents
   .filter((entry) => !entry.hidden && !entry.category && !entry.docExempt)

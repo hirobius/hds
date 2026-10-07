@@ -38,6 +38,7 @@ import reactDocgenTypescript from 'react-docgen-typescript';
 import ts from 'typescript';
 import { discoverHdsComponents } from './component-discovery.mjs';
 import { compactContract, stripJsdocTags } from './lib/jsdoc-contract.mjs';
+import { CORE_COMPONENTS } from './lib/core-components.mjs';
 import {
   buildUtilityMap,
   mergeReferences,
@@ -661,6 +662,8 @@ export function buildManifest() {
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
   const components = {};
+  // hds#374: the same `core: true` flag the manifest carries, from the same list.
+  const coreFlag = (name) => (CORE_COMPONENTS.includes(name) ? { core: true } : {});
 
   for (const doc of docs) {
     const relativePath = doc.filePath
@@ -696,6 +699,7 @@ export function buildManifest() {
         metadata?.description ||
         cleanText(doc.description) ||
         extractComponentDescription(source, doc.displayName),
+      ...coreFlag(doc.displayName),
       ...(metadata ? compactContract(metadata) : {}),
       ...(metadata?.category ? { category: metadata.category } : {}),
       ...(metadata ? { hidden: Boolean(metadata.hidden) } : {}),
@@ -718,6 +722,7 @@ export function buildManifest() {
     components[metadata.name] = {
       filePath: metadata.filePath,
       description: metadata.description || extractComponentDescription(source, metadata.name),
+      ...coreFlag(metadata.name),
       ...(metadata.category ? { category: metadata.category } : {}),
       ...compactContract(metadata),
       hidden: Boolean(metadata.hidden),
