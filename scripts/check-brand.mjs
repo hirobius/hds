@@ -26,6 +26,7 @@ import { fileURLToPath } from 'url';
 import { homedir } from 'os';
 
 import { brandAccent, violationsInSource } from './lib/brand-truth.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -45,7 +46,7 @@ const LEGACY_FONT_DECLARATION_PATTERN = new RegExp(
 
 // ── Read current brand values ─────────────────────────────────────────────────
 
-const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
 
 // #246: this used to read `primitive.color.blue.500` directly, then validate the
 // docs against it. After #208 repointed the accent to a neutral the gate went on

@@ -19,6 +19,7 @@ import { fileURLToPath } from 'url';
 import { writeGenerated } from './lib/write-generated.mjs';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { readModes } from './lib/token-modes.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 import { darkAliasReemissions } from './lib/dark-alias-reemit.mjs';
 
@@ -1594,7 +1595,7 @@ export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
 
 // ── CLI entry (runs only when invoked directly) ───────────────────────────────
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+  const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
 
   // Run structural validation before compiling
   const validationErrors = validateTokens(raw);
