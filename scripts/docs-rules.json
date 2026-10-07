@@ -1,1 +1,11 @@
-{"allowedFrontmatterKeys":["title","description","component","status","since","related"],"contentRoot":"content/docs","deprecationGuide":"guides/deprecation.mdx","markers":{"propsTodoPrefix":"{/* props: TODO","tokens":"{/* generated: tokens */}"},"providerComponents":["HdsRouterProvider","HdsThemeProvider","ToastProvider"],"providerGuide":"guides/providers.mdx","requiredFrontmatterKeys":["title","description","status"],"slugExceptions":{},"statusEnum":["stable","deprecated","experimental"]}
+{
+  "allowedFrontmatterKeys": ["title", "description", "component", "status", "since", "related"],
+  "contentRoot": "content/docs",
+  "deprecationGuide": "guides/deprecation.mdx",
+  "markers": { "propsTodoPrefix": "{/* props: TODO", "tokens": "{/* generated: tokens */}" },
+  "providerComponents": ["HdsRouterProvider", "HdsThemeProvider", "ToastProvider"],
+  "providerGuide": "guides/providers.mdx",
+  "requiredFrontmatterKeys": ["title", "description", "status"],
+  "slugExceptions": {},
+  "statusEnum": ["stable", "deprecated", "experimental"]
+}

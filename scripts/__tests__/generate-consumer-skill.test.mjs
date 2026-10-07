@@ -209,6 +209,20 @@ describe('buildConsumerSkill (in-memory)', () => {
     expect(LINT_INSTALL_LINE).toContain('github:hirobius/hds#path:/scripts/eslint-plugin-hds');
   });
 
+  it('emits one "## Core set" section before the allow-list, grouped by category (hds#374)', () => {
+    const m = fixtureManifest();
+    m.componentSpecs.Zed.core = true;
+    m.componentSpecs.Beta.core = true;
+    const out = build({ manifest: m });
+    expect(out.match(/^## Core set$/gm)).toHaveLength(1);
+    expect(out.indexOf('## Core set')).toBeLessThan(out.indexOf('## Allow-list'));
+    expect(out).toContain('- **Core:** `Zed`\n- **Forms:** `Beta`');
+  });
+
+  it('leaves the section out when no spec is core', () => {
+    expect(build()).not.toContain('## Core set');
+  });
+
   it('changes when a name is added to the inventory', () => {
     const m = fixtureManifest();
     m.componentInventory.push('Gamma');

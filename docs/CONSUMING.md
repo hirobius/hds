@@ -225,25 +225,25 @@ export function Example() {
 
 ### Subpath exports
 
-| Import                                  | What you get                                                                                                                  |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`               | The core components + the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns`             |
-| `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                       |
-| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Satoshi 400/500/700 + Geist Mono 400 (`@font-face`, relative woff2 URLs)                                |
-| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                   |
-| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                  |
-| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                               |
-| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                                                             |
-| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                                                    |
-| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                                                    |
-| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                                                        |
-| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                                                |
-| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                         |
-| `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                  |
-| `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14) |
-| `@hirobius/design-system/patterns`      | The `pattern`-tier components (`Page`, `PageHeader`, `Form`, `FormField`, `CodeBlock`); root copies removed in 0.20.0         |
-| `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                            |
-| `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                   |
+| Import                                  | What you get                                                                                                                                                                                                                            |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@hirobius/design-system`               | The 43-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
+| `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                 |
+| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Satoshi 400/500/700 + Geist Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                                          |
+| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                             |
+| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                            |
+| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                                                                                                                                         |
+| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                                                                                                                                                                       |
+| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                                                                                                                                                              |
+| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                                                                                                                                                              |
+| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                                                                                                                                                                  |
+| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                                                                                                                                                          |
+| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                   |
+| `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                            |
+| `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14)                                                                                                           |
+| `@hirobius/design-system/patterns`      | The 12 pattern modules (`Page`, `PageHeader`, `Form`, `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                                       |
+| `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
+| `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
 
 ### Semantic feedback / status tokens
 
