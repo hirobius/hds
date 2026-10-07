@@ -28,6 +28,7 @@ const PUBLIC = join(ROOT, 'public');
 
 // Keep in sync with the @font-face URLs in src/styles/fonts.css.
 const FONTS = [
+  '/fonts/satoshi/satoshi-400.woff2',
   '/fonts/satoshi/satoshi-500.woff2',
   '/fonts/satoshi/satoshi-700.woff2',
   '/fonts/geist-mono/geist-mono-400.woff2',
