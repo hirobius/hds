@@ -176,6 +176,11 @@ pr:*)
   echo "ralph: ✅ $RESULT"
   finish 0
   ;;
+closed:*)
+  RESULT="closed #$ISSUE" EXIT_REASON="${outcome#closed:}"
+  echo "ralph: ✅ closed #$ISSUE — ${outcome#closed:}"
+  finish 0
+  ;;
 parked:*)
   RESULT="parked #$ISSUE" EXIT_REASON="${outcome#parked:}"
   echo "ralph: 🅿️ parked #$ISSUE — ${outcome#parked:}"
