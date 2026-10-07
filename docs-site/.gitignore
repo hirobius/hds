@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Next.js build output / static export
+.next/
+out/
+
+# fumadocs-mdx generated collection glue — regenerated on every build
+.source/
+
+# Left over from the PoC, which consumed HDS as a packed tarball. The app now
+# links the repo root (link:..), built first by `pnpm docs:prepare`.
+.pkg/
+
+# Misc
+*.log
+.DS_Store
+
+# TypeScript incremental build info
+*.tsbuildinfo
