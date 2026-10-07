@@ -136,8 +136,15 @@ pre {
 }
 
 /* Keep short values (hex, px) on one line; composites still wrap at spaces. */
-.hds-token-table td:nth-child(2) {
+.hds-token-table td:nth-child(2),
+.hds-token-table td:nth-child(3) {
   min-width: 9.5rem;
+}
+
+.hds-token-same,
+.hds-preview-missing {
+  color: var(--semantic-color-content-secondary);
+  font-size: 0.8125rem;
 }
 
 .hds-token-value {

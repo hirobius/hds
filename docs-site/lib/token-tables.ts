@@ -15,6 +15,12 @@ export interface TokenRow {
   cssVar: string | null;
   /** Fully resolved light-mode value. */
   value: string;
+  /**
+   * Fully resolved dark-mode value (`$extensions['com.figma.variables'].modes.Dark`,
+   * the same source scripts/build-handoff.mjs reads), or null when the token
+   * has no Dark mode and so is the same in both themes.
+   */
+  darkValue: string | null;
   description: string;
   /** True when the value is a color and should render a swatch. */
   swatch: boolean;
@@ -81,23 +87,49 @@ export function resolveTokenValue(tokens: Json, value: Json, seen: string[] = []
 
 const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+function darkRaw(node: Node): Json | undefined {
+  const ext = node.$extensions;
+  if (!isNode(ext)) return undefined;
+  const figma = ext['com.figma.variables'];
+  if (!isNode(figma) || !isNode(figma.modes)) return undefined;
+  return figma.modes.Dark;
+}
+
+function rowFor(tokens: Json, path: string, node: Node): TokenRow {
+  const raw = node.$value;
+  const value = resolveTokenValue(tokens, raw);
+  const dark = darkRaw(node);
+  return {
+    token: path,
+    cssVar: isNode(raw) && !('unit' in raw) ? null : cssVarFor(path),
+    value,
+    darkValue: dark === undefined ? null : resolveTokenValue(tokens, dark),
+    description: typeof node.$description === 'string' ? node.$description : '',
+    swatch: path.startsWith('semantic.color.') && /^(#|rgb|hsl|oklch)/i.test(value),
+  };
+}
+
+/**
+ * One token by dotted path, or null when the path is not a token (a group, or a
+ * path that no longer exists). Component pages use this to resolve the manifest's
+ * `tokenMapping`, which can lag a token rename; a stale entry must not break the page.
+ */
+export function tokenRow(tokens: Json, path: string): TokenRow | null {
+  let node: Json;
+  try {
+    node = lookup(tokens, path);
+  } catch {
+    return null;
+  }
+  return isNode(node) && '$value' in node ? rowFor(tokens, path, node) : null;
+}
+
 function collect(tokens: Json, node: Node, path: string, out: TokenRow[]): void {
   for (const [key, child] of Object.entries(node)) {
     if (key.startsWith('$') || !isNode(child)) continue;
     const childPath = `${path}.${key}`;
-    if ('$value' in child) {
-      const raw = child.$value;
-      const value = resolveTokenValue(tokens, raw);
-      out.push({
-        token: childPath,
-        cssVar: isNode(raw) && !('unit' in raw) ? null : cssVarFor(childPath),
-        value,
-        description: typeof child.$description === 'string' ? child.$description : '',
-        swatch: childPath.startsWith('semantic.color.') && /^(#|rgb|hsl|oklch)/i.test(value),
-      });
-    } else {
-      collect(tokens, child, childPath, out);
-    }
+    if ('$value' in child) out.push(rowFor(tokens, childPath, child));
+    else collect(tokens, child, childPath, out);
   }
 }
 
