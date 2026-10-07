@@ -7,7 +7,12 @@
  */
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { buildTokenSections, cssVarFor, resolveTokenValue } from '../../docs-site/lib/token-tables';
+import {
+  buildTokenSections,
+  cssVarFor,
+  resolveTokenValue,
+  tokenRow,
+} from '../../docs-site/lib/token-tables';
 
 const fixture = {
   primitive: {
@@ -20,7 +25,18 @@ const fixture = {
     color: {
       surface: {
         $description: 'Surface group',
-        page: { $value: '{primitive.color.neutral.white}', $description: 'Page background.' },
+        page: {
+          $value: '{primitive.color.neutral.white}',
+          $description: 'Page background.',
+          $extensions: {
+            'com.figma.variables': {
+              modes: {
+                Light: '{primitive.color.neutral.white}',
+                Dark: '{primitive.color.neutral.900}',
+              },
+            },
+          },
+        },
       },
       content: { primary: { $value: '{primitive.color.neutral.900}' } },
     },
@@ -78,9 +94,15 @@ describe('buildTokenSections', () => {
       token: 'semantic.color.surface.page',
       cssVar: '--semantic-color-surface-page',
       value: '#ffffff',
+      darkValue: '#171717',
       description: 'Page background.',
       swatch: true,
     });
+  });
+
+  it('leaves darkValue null for a token with no Dark mode', () => {
+    const [, content] = buildTokenSections(fixture, 'color');
+    expect(content?.rows[0]?.darkValue).toBeNull();
   });
 
   it('marks only color rows as swatches', () => {
@@ -93,6 +115,18 @@ describe('buildTokenSections', () => {
 
   it('rejects an unknown page so a stray marker breaks the build instead of rendering nothing', () => {
     expect(() => buildTokenSections(fixture, 'button')).toThrow(/button/);
+  });
+});
+
+describe('tokenRow', () => {
+  it('resolves one token by dotted path, with its dark value', () => {
+    expect(tokenRow(fixture, 'semantic.color.surface.page')?.darkValue).toBe('#171717');
+    expect(tokenRow(fixture, 'primitive.color.neutral.900')?.value).toBe('#171717');
+  });
+
+  it('returns null for a path that is not a token, so a stale mapping does not break a page', () => {
+    expect(tokenRow(fixture, 'semantic.color.nope')).toBeNull();
+    expect(tokenRow(fixture, 'semantic.color.surface')).toBeNull();
   });
 });
 
@@ -109,8 +143,16 @@ describe('against the real hirobius.tokens.json', () => {
     },
   );
 
-  it('puts surface.page in the color table at its known light value', () => {
+  it('puts surface.page in the color table at its known light and dark values', () => {
     const rows = buildTokenSections(real, 'color').flatMap((s) => s.rows);
-    expect(rows.find((r) => r.token === 'semantic.color.surface.page')?.value).toBe('#ffffff');
+    const page = rows.find((r) => r.token === 'semantic.color.surface.page');
+    expect(page?.value).toBe('#ffffff');
+    expect(page?.darkValue).toBe('#000000');
+  });
+
+  it('never leaves a dark value unresolved', () => {
+    for (const row of buildTokenSections(real, 'color').flatMap((s) => s.rows)) {
+      if (row.darkValue !== null) expect(row.darkValue).not.toMatch(/[{}]/);
+    }
   });
 });
