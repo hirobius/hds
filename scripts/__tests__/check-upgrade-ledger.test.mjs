@@ -538,6 +538,15 @@ describe('checkUpgradeLedger: the release snapshot', () => {
   });
 });
 
+// Between a release publishing and someone recording it (until hds#451 does it
+// at changeset version), the gate passes and prints one "! … not recorded" hint
+// on stderr. That hint must not fail pnpm test for every PR in the window.
+const onlyRecordHints = (stderr) =>
+  stderr
+    .split('\n')
+    .filter((line) => line.trim() !== '')
+    .every((line) => line.startsWith('! check-upgrade-ledger — '));
+
 describe('check-upgrade-ledger.mjs CLI', () => {
   const run = (args, env = {}) =>
     spawnSync(process.execPath, [CLI, ...args], {
@@ -552,6 +561,7 @@ describe('check-upgrade-ledger.mjs CLI', () => {
     const failed = run(['--root', root]);
     expect(failed.status).toBe(1);
     expect(failed.stderr).toContain('pnpm upgrade:note');
+    expect(onlyRecordHints(failed.stderr)).toBe(false);
   });
 
   it('says on stderr how to record a published release it finds unrecorded, and still passes', () => {
@@ -569,6 +579,7 @@ describe('check-upgrade-ledger.mjs CLI', () => {
       'move upgrade/pending/drop-callout.json to upgrade/sources/0.21.0/notes/',
     );
     expect(res.stderr).toContain('upgrade/published.json');
+    expect(onlyRecordHints(res.stderr)).toBe(true);
   });
 
   it('--json prints the gate-output shape', () => {
@@ -592,8 +603,8 @@ describe('check-upgrade-ledger.mjs CLI', () => {
 
   it('passes on this repository, with no network and no build', () => {
     const res = run([]);
-    expect(res.stderr).toBe('');
     expect(res.status).toBe(0);
+    expect(onlyRecordHints(res.stderr)).toBe(true);
   });
 
   it('runs in pretest, so pnpm test fails a change without its step', () => {
