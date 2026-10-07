@@ -81,8 +81,8 @@ npx -p @hirobius/design-system@0.21.0 hds-tile-grid --root .
 - HdsSlider is removed from the package root; use Slider, the same component under its bare name. Codemod: `hds-prefix`.
 - HdsToggle is removed from the package root; use Toggle, the same component under its bare name. Codemod: `hds-prefix`.
 - HdsTooltip is removed from the package root; use Tooltip, the same component under its bare name. Codemod: `hds-prefix`.
-- NotFoundPattern is removed; use ErrorPattern displayText="404" message="Page not found" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it) instead. Codemod: `hds-not-found-pattern`.
-- TileGrid is removed; use Grid layout="auto-fill" minItemWidth="…" gap="medium" (hds-tile-grid rewrites it) instead. Codemod: `hds-tile-grid`.
+- NotFoundPattern is removed; use ErrorPattern displayText="404" message="Page not found" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it) instead.
+- TileGrid is removed; use Grid layout="auto-fill" minItemWidth="…" gap="medium" (hds-tile-grid rewrites it) instead.
 
 ### Looks different
 
@@ -97,9 +97,9 @@ npx -p @hirobius/design-system@0.21.0 hds-tile-grid --root .
 ### Coming next
 
 - Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead. Removed in 1.0.0.
-- Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then. Removed in 1.0.0.
-- StatusDot still works but is removed in 0.21.0; use Badge dot with the same tone, size and label, and move any style prop to a wrapper or a className first. Removed in [0.21.0](#0210).
-- StatusDotProps is removed in 0.21.0; use BadgeProps instead. Removed in [0.21.0](#0210).
+- Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then.
+- StatusDot still works but is removed in 0.21.0; use Badge dot with the same tone, size and label, and move any style prop to a wrapper or a className first.
+- StatusDotProps is removed in 0.21.0; use BadgeProps instead.
 - hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs. Removed in 1.0.0.
 - Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind. Removed in 1.0.0.
 

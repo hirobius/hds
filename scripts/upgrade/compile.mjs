@@ -296,18 +296,29 @@ function howTo({ latest, floor: oldest, command }) {
 /** The link to a release's section of UPGRADING.md. */
 const sectionLink = (version) => `[${version}](#${version.replace(/\./g, '')})`;
 
+/** True when `plain` already says `text`, in any case, as whole words. */
+function says(plain, text) {
+  const escaped = text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(?<![\\w-])${escaped}(?![\\w-])`, 'i').test(plain);
+}
+
 /**
  * What follows a deprecation's plain line: the release that removes it, or,
  * once a later release took some or all of it away (deprecationRemovals),
- * which release did, linked.
+ * which release did, linked. Nothing when the plain line already says it is
+ * removed in that release and none of it went early or in part.
  */
 function removalTail(step, removals) {
   const { uses = [], removed = new Map() } = removals?.get(step.id) ?? {};
-  if (removed.size === 0) return ` Removed in ${step.removeIn}.`;
   const versions = [...new Set(removed.values())].sort(compareVersions);
+  const asPlanned =
+    removed.size === 0 ||
+    (removed.size === uses.length && versions.length === 1 && versions[0] === step.removeIn);
+  if (asPlanned && says(step.plain, `removed in ${step.removeIn}`)) return '';
+  if (removed.size === 0) return ` Removed in ${step.removeIn}.`;
   const where = versions.map(sectionLink).join(' and ');
   if (removed.size === uses.length) {
-    return versions.length === 1 && versions[0] === step.removeIn
+    return asPlanned
       ? ` Removed in ${where}.`
       : ` Removed early, in ${where} (planned for ${step.removeIn}).`;
   }
@@ -315,10 +326,13 @@ function removalTail(step, removals) {
   return ` ${codeList(gone)} ${gone.length === 1 ? 'was' : 'were'} removed in ${where}; the rest is removed in ${step.removeIn}.`;
 }
 
-/** The tail of a step's bullet in `list`. */
+/** The tail of a step's bullet in `list`: nothing the plain line already says. */
 function tailOf(list, removals) {
   if (list === 'fixedForYou') {
-    return (step) => ` Codemod: \`${[step.auto.codemod, ...step.auto.args].join(' ')}\`.`;
+    return (step) => {
+      const command = [step.auto.codemod, ...step.auto.args].join(' ');
+      return says(step.plain, command) ? '' : ` Codemod: \`${command}\`.`;
+    };
   }
   if (list === 'comingNext') return (step) => removalTail(step, removals);
   return () => '';

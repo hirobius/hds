@@ -474,6 +474,88 @@ describe('UPGRADING.md: steps that share one sentence share one bullet', () => {
   });
 });
 
+describe('UPGRADING.md: a bullet never says the same thing twice', () => {
+  const step = (id, plain, extra = {}) => ({
+    id,
+    kind: id.split('/')[1],
+    impact: 'breaking',
+    plain,
+    detect: { imports: [{ from: PKG, names: [id.split('/')[2]] }] },
+    source: 'x',
+    ...extra,
+  });
+  const deprecated = (id, plain, removeIn) =>
+    step(id, plain, {
+      impact: 'none',
+      removeIn,
+      ...(id.endsWith('gap-names') ? { detect: { regex: ["gap='tight'"] } } : {}),
+    });
+  const ledgers = [
+    {
+      ...LEDGER_0_11,
+      steps: [
+        step('0.11.0/moved/Page', 'Page moves to /patterns (hds-move rewrites it).', {
+          auto: { codemod: 'hds-move', args: [] },
+        }),
+        step('0.11.0/moved/Shell', 'Shell moves to /patterns (hds-move rewrites it).', {
+          auto: { codemod: 'hds-move', args: ['--only', 'Shell'] },
+        }),
+        deprecated(
+          '0.11.0/deprecated/Badge',
+          'Badge still works but is removed in 0.12.0; use Tag instead.',
+          '0.12.0',
+        ),
+        deprecated(
+          '0.11.0/deprecated/gap-names',
+          'The gap names still work and are Removed in 1.0.0 with no replacement.',
+          '1.0.0',
+        ),
+        deprecated(
+          '0.11.0/deprecated/Early',
+          'Early still works but is removed in 1.0.0; use Late instead.',
+          '1.0.0',
+        ),
+      ],
+    },
+    {
+      ...LEDGER_0_12,
+      steps: [
+        step('0.12.0/removed/Badge', 'Badge is removed; use Tag instead.'),
+        step('0.12.0/removed/Early', 'Early is removed; use Late instead.'),
+      ],
+    },
+  ];
+
+  it('drops a tail the plain line already says, and keeps one that adds a fact', () => {
+    const { upgrading } = compileOutputs({ repo: historyRepo({ ledgers }) });
+    const section = upgrading.slice(upgrading.indexOf('## 0.11.0'));
+    expect(section).toContain(
+      [
+        '- Page moves to /patterns (hds-move rewrites it).',
+        '- Shell moves to /patterns (hds-move rewrites it). Codemod: `hds-move --only Shell`.',
+        '',
+      ].join('\n'),
+    );
+    expect(section).toContain(
+      [
+        '### Coming next',
+        '',
+        '- Badge still works but is removed in 0.12.0; use Tag instead.',
+        '- The gap names still work and are Removed in 1.0.0 with no replacement.',
+        '- Early still works but is removed in 1.0.0; use Late instead. Removed early, in [0.12.0](#0120) (planned for 1.0.0).',
+        '',
+      ].join('\n'),
+    );
+  });
+
+  it('does the same in the Upgrade block', () => {
+    const block = upgradeBlock(ledgers[0], { command: true, bin: {} });
+    expect(block).toContain(
+      '- Coming next: Badge still works but is removed in 0.12.0; use Tag instead.',
+    );
+  });
+});
+
 describe('UPGRADING.md: plain lines stay plain text', () => {
   it('escapes what GitHub would read as markup, and leaves an underscore inside a word alone', () => {
     const ledger = {
