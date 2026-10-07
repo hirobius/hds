@@ -18,9 +18,9 @@ const MAX_COLUMNS = 4;
 /**
  * The one tile height. Every tile in every row is at least this tall, whatever
  * its tone and whether or not it has a sub line, so tiles line up across rows
- * and across screens. 120px, expressed from size tokens.
+ * and across screens. `semantic.size.tile`, 120px.
  */
-const TILE_MIN_HEIGHT = 'calc(var(--primitive-size-96) + var(--primitive-size-24))';
+const TILE_MIN_HEIGHT = 'var(--semantic-size-tile)';
 
 /** A non-breaking space keeps the sub line's height when there is no sub text. */
 const EMPTY_SUB = ' ';
@@ -42,6 +42,7 @@ export interface MetricTileProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the
  * eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a
  * tile needs no enclosing `Card`.
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-114
  */
 export const MetricTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, MetricTileProps>(
   function MetricTile({ label, value, sub, tone = 'neutral', style, ...props }, ref) {
@@ -93,7 +94,7 @@ export const MetricTiles = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Metr
     const columns = Math.min(Math.max(countTiles(children), 1), MAX_COLUMNS);
     return (
       <div ref={ref} data-hds-component="MetricTiles" {...props}>
-        <Grid columns={columns} gap="tight">
+        <Grid columns={columns} gap="tight" align="stretch">
           {children}
         </Grid>
       </div>

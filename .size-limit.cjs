@@ -49,8 +49,8 @@
  *
  * Re-baselined 2026-09-24 (hds#279): the alternative rejected above was taken.
  * `observedTokens` no longer ships in src/app/data/component-api.json at all —
- * grep confirmed `buildObservedTokenRows` (tokenTableUtils.ts, the one function
- * that reads observedTokens rows) has ZERO importers anywhere in src/, so there
+ * grep confirmed `buildObservedTokenRows` (module since deleted, hds#391; the one
+ * function that reads observedTokens rows) had ZERO importers anywhere in src/, so there
  * was no "runtime-only token rows" behaviour to preserve in the first place;
  * the concern above turned out to be unfounded once checked. The three actual
  * importers of component-api.json (api-reference.tsx, component-instance-matrix.tsx,
@@ -70,6 +70,13 @@
  * exclusive consumers — a dead island reachable from nothing, superseded by the
  * Storybook-built reference site. `component-api.json` now has two importers:
  * api-reference.tsx and component-instance-matrix.tsx. See docs/adr/029-decisions-carried-over.md.
+ *
+ * Note (hds#389 R1, 2026-10-01): both importers named above are gone.
+ * api-reference.tsx moved to src/docs-tooling/ in hds#299 and was deleted with
+ * that tree in hds#391, and component-instance-matrix.tsx was deleted with
+ * ComponentInstanceMatrix in 0.20.0, so nothing under src/ imports
+ * component-api.json now (it still ships as a package file). The importer lists
+ * above are history; no budget changed.
  *
  * Re-baselined 2026-09-30, manifest entry only: 54.46 kB -> 55.71 kB after
  * hds#334 (Radix passthrough props for 7 overlay parts), hds#342 (the
@@ -119,6 +126,14 @@
  * package outside that allow-list, and check-pure-annotations also flags a
  * bare Object.assign(<Component>, …) and any top-level `X.Part = …` write.
  *
+ * Fonts split out (hds#479, 2026-10-07): the base64-inlined faces were ~85% of
+ * tokens.css and styles.css. Fonts now ship as the opt-in fonts.css plus
+ * dist/fonts/*.woff2. Measured on the type-ramp branch (4 faces), gzip:
+ *   tokens.css 152.76 kB -> 20.28 kB, budget 140 kB -> 23 kB (+~10%)
+ *   styles.css 152.17 kB -> 19.64 kB, budget 140 kB -> 22 kB (+~10%)
+ *   fonts.css + 4 woff2: 132.16 kB raw (130.27 kB woff2 + 1.88 kB css), budget 146 kB
+ * Approved by Adrian 2026-10-07.
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.
@@ -144,16 +159,25 @@ module.exports = [
     gzip: true,
   },
   {
-    name: 'tokens.css (CSS bundle, fonts embedded)',
+    name: 'tokens.css (CSS bundle, no fonts)',
     path: 'dist/tokens.css',
-    limit: '140 kB',
+    limit: '23 kB',
     gzip: true,
   },
   {
     name: 'styles.css (scoped-only CSS bundle)',
     path: 'dist/styles.css',
-    limit: '140 kB',
+    limit: '22 kB',
     gzip: true,
+  },
+  {
+    // Opt-in fonts (hds#479): fonts.css plus its four woff2 files, raw bytes
+    // (woff2 is already compressed, so gzip would only hide the real transfer).
+    name: 'fonts.css + woff2 files (opt-in, raw)',
+    path: ['dist/fonts.css', 'dist/fonts/*.woff2'],
+    limit: '146 kB',
+    gzip: false,
+    brotli: false,
   },
   {
     name: 'Button-only root import (dist/probe/button-only.js)',

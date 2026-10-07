@@ -88,7 +88,8 @@ const DialogContent = /* @__PURE__ */ React.forwardRef<
       <DialogPrimitive.Content
         ref={ref}
         className={cn(
-          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border border-border bg-popover p-6 text-popover-foreground shadow-overlay hds-focus',
+          // 16px of page margin each side, so the panel never sits flush to a 390px viewport (hds#522)
+          'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2*var(--semantic-space-scale-sm))] max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))] max-w-lg overflow-y-auto -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border border-border bg-popover p-6 text-popover-foreground shadow-overlay hds-focus',
           className,
         )}
         {...props}
@@ -144,7 +145,7 @@ const DialogTitle = /* @__PURE__ */ React.forwardRef<
   // id that backs aria-labelledby) on the heading element.
   return (
     <DialogPrimitive.Title asChild>
-      <Text ref={ref} as="h2" variant="heading3" className={className} {...props}>
+      <Text ref={ref} as="h2" variant="title" className={className} {...props}>
         {children}
       </Text>
     </DialogPrimitive.Title>
@@ -208,9 +209,10 @@ interface DialogComponent extends React.FC<DialogProps> {
  * and a file-level @figma would hand all ten this one node.
  * @usage Interrupt the page with a modal that needs a decision or focused input before people continue.
  * @whenNot A preview on hover, a message that needs no reply, or content that can stay inline.
- * @useInstead HoverCard a preview on hover or focus
+ * @useInstead Tooltip a short hint on hover or focus
  * @useInstead Alert a message that needs no reply
  * @useInstead ToastProvider a brief confirmation
+ * @useInstead AlertDialog confirming a destructive or irreversible action
  * @slot trigger The element that opens the dialog (Dialog.Trigger).
  * @slot overlay The scrim that dims the page behind the dialog (Dialog.Overlay).
  * @slot surface The modal surface (Dialog.Content).

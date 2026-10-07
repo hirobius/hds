@@ -143,7 +143,7 @@ export function buildTypography(raw) {
   lines.push(`HDS ships three typefaces — each with a distinct and exclusive role:`);
   lines.push('');
   lines.push(
-    `- **Display / Heading font**: ${displayFam}. Bound exclusively to \`display\`, \`h1\`, \`h2\`, and \`h3\` styles. Never used for body copy or UI labels.`,
+    `- **Display / Heading font**: ${displayFam}. Bound exclusively to the \`display\` and \`title\` styles. Never used for body copy or UI labels.`,
   );
   lines.push(
     `- **Body / UI font**: ${family}. All prose, labels, small text, captions, and UI copy.`,
@@ -169,7 +169,7 @@ export function buildTypography(raw) {
     .sort((a, b) => Number(weightMap[a]) - Number(weightMap[b]))
     .map((k) => `\`${weightMap[k]}\` ${k}`)
     .join(', ');
-  const headingW = uniq(['display', 'h1', 'h2', 'h3'].map(weightOf));
+  const headingW = uniq(['display', 'title'].map(weightOf));
   const bodyW = uniq(['body', 'ui', 'caption'].map(weightOf));
   const phrase = (ws) =>
     ws.length === 1
@@ -179,7 +179,7 @@ export function buildTypography(raw) {
   const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(String(weightMap[k])));
 
   lines.push(
-    `Weights declared: ${declared}. Heading styles (display · h1 · h2 · h3) use ` +
+    `Weights declared: ${declared}. Heading styles (display · title) use ` +
       `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}.` +
       (unused.length
         ? ` Declared but unused by any semantic role: ${unused
@@ -196,14 +196,14 @@ export function buildTypography(raw) {
     const v = t?.$value ?? {};
     const raw = t?.$description ?? '';
     const afterDash = raw.split(' — ')[1];
-    const desc = ((afterDash ?? raw).split('.')[0] ?? '').trim();
+    const desc = ((afterDash ?? raw).split(/\.(?:\s|$)/)[0] ?? '').trim();
     const size = lookup(v.fontSize, sizeMap);
     const wgt = lookup(v.fontWeight, weightMap);
     lines.push(row(`\`semantic.typography.${path.join('.')}\``, size, wgt, desc || '—'));
   }
   lines.push('');
   lines.push(
-    '> Responsive `clamp()` overrides live in `src/styles/theme.css`; tokens store the desktop-max static value.',
+    '> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.',
   );
   return lines.join('\n');
 }
@@ -232,7 +232,7 @@ export function buildSpacing(raw) {
   lines.push(`Scale: ${scale}`);
   lines.push('');
   lines.push(
-    'Use `primitive.space.*` for layout rhythm, padding, and gaps. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
+    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
   );
   return lines.join('\n');
 }
@@ -361,7 +361,7 @@ export function buildComponents(raw, manifest) {
       radius: `\`${actionRad}\` (\`semantic.radius.action\`)`,
       states: 'default · hover · focus · active · disabled · loading',
       notes:
-        'Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon buttons (`IconButton`) follow the same token surface. Icon-only actions use `IconButton` with an icon from `@hirobius/design-system/icons`.',
+        'Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon-only buttons (`iconOnly`) follow the same token surface. Icon-only actions use `Button iconOnly` with a `label` and an `Icon` from `@hirobius/design-system/icons` in `iconLeft`.',
     },
     {
       name: 'Inputs',

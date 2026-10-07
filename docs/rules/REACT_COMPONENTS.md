@@ -9,26 +9,26 @@
    and `button.tsx` as the reference exemplar. Enforced (rules A–D) by
    `scripts/check-prop-vocabulary.mjs`.
 
-## Typography — 8-Style Swiss-Canon Ramp (non-negotiable)
+## Typography — 5 Roles Plus Mono (non-negotiable)
 
-Values are the ground truth from `hirobius.tokens.json` → `semantic.typography.*`.
+Values are the ground truth from `hirobius.tokens.json` → `semantic.typography.*` (hds#483, Adrian's decision 2026-10-07).
 
-| Token / alias        | Size (desktop max) | Weight      | Role                                                                                                                      |
-| -------------------- | ------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `display`            | 72px / 1.0         | 300 light   | Hero headlines and landing-page displays                                                                                  |
-| `h1` / `heading1`    | 48px / 1.25        | 300 light   | Primary section headings (h1)                                                                                             |
-| `h2` / `heading2`    | 30px / 1.375       | 300 light   | Secondary section headings (h2)                                                                                           |
-| `h3` / `heading3`    | 20px / 1.375       | 500 medium  | Component and card headers (h3)                                                                                           |
-| `body`               | 17px / 1.625       | 400 regular | Body prose — default text style                                                                                           |
-| `small` / `ui`       | 15px / 1.625       | 400 regular | UI labels, sidebars, nav, footnotes                                                                                       |
-| `caption`            | 13px / 1.5         | 400 regular | Helper text, secondary metadata, form annotations                                                                         |
-| `mono` / `technical` | 15px / 1.625       | 400 regular | Monospace: code snippets, token names, keyboard shortcuts, git hashes, hex codes, IP addresses, and aligned data readouts |
+| Role      | Size / line-height | Weight | Use                                         |
+| --------- | ------------------ | ------ | ------------------------------------------- |
+| `display` | 48 / 1.05          | 700    | One per page, hero only                     |
+| `title`   | 24 / 1.25          | 700    | Section and card headings                   |
+| `body`    | 16 / 1.6           | 400    | Prose                                       |
+| `ui`      | 14 / 1.5           | 500    | Controls, nav, table text, values           |
+| `caption` | 12 / 1.5           | 500    | Metadata, help text, labels (sentence case) |
+| `mono`    | 13 / 1.5           | 400    | Code and ids                                |
 
-`body`, `small`/`ui`, and `caption` must have line-height ≥ 1.5. If a UI element feels too small, use `small`/`ui` (15px) — never drop to `mono`/`technical` or `caption` for standard text. Use `caption` (not `mono`/`technical`) for form helper text and secondary prose annotations.
+Set type with `<Text variant="…">`, `hds.typeStyles.<role>`, or the `.hds-type-<role>` class (`src/styles/theme.css`) in Tailwind-styled components. Never a raw `text-sm`, `font-medium`, `leading-5` or `fontSize`: `scripts/check-type-ramp.mjs` fails the commit (exempt a line with `// type-ramp-ok: <reason>`).
 
-Do use `technical` for code snippets, token names, keyboard shortcuts, git hashes, hex codes, IP addresses, and exact numerical readouts that need monospaced alignment.
+Deprecated aliases still resolve, to the role they now point at, and go in 1.0.0: `h1`, `h2`, `h3` and `heading1` to `heading3` → `title`; `technical` → `mono`; `eyebrow`, `badge`, `micro` → `caption`; `small` → `ui`. Do not use them in new code; the gate fails a reference to one.
 
-Do not use `technical` for status tags, categories, dates, user names, or general metadata. Use `ui`, `caption`, or `badge` instead.
+Use `ui` for standard UI text, `caption` for helper text and metadata, and `mono` only for code, token names, keyboard shortcuts, git hashes, hex codes and ids, never for status tags, categories, dates or user names. Casing is never changed inline; labels are sentence case.
+
+Satoshi ships a 500 and a 700 face only (no 600, which is why `title` is 700), so `body` (400) renders on the 500 face until a Satoshi Regular (400) face is added.
 
 ## Spacing — 24px Component Padding Standard
 
@@ -40,12 +40,19 @@ Do not use `technical` for status tags, categories, dates, user names, or genera
 
 `surface.padding` is the default inset for breathable shared surfaces (tenants may retune it per brand and density; it replaces the deprecated `component.padding`, hds#206). Use it for cards, forms, and panels; reserve `scale.xs` (was `component.gap`) for the 8px label/input rhythm and `subgrid.gap` for micro-spacing only.
 
+**Spacing is the t-shirt scale**, `semantic.space.scale.{xs,sm,md,lg,xl}`: 8/16/24/32/48px at the default density, 6/12/20/24/40px under `data-density="compact"` (hds#206). Box `sx` spacing shorthands (`m`, `mb`, `p`, `gap`, …) take the steps by name (`sx={{ p: 'md' }}`); a raw integer there is a count of 4px units and fails `check-spacing-vocabulary`, and Box `sx`'s `'tight'` to `'spacious'` are deprecated. The layout components' `gap` (Grid, Sidebar, Switcher, Card, Stack) still takes `'tight'` | `'normal'` | `'inset'` | `'spacious'`, which read `sm` to `xl`. A component resolves those names through `resolveSpacingValue` with `LAYOUT_GAP` or `LAYOUT_GAP_NAMES` from `src/app/components/box-sx.ts`, never its own map: `check-layout-gap-vocabulary` fails a second copy (hds#404). [MIGRATIONS.md](../../MIGRATIONS.md) maps the old names to the steps.
+
 ## Forbidden Patterns — Compositional Guardrails
 
 ## UI Integrity Constitution
 
-- **The Gap Mandate**: Every `Grid` and `Stack` must declare an explicit `gap`. Never rely on the component default when composing production UI.
-- **The Containment Rule**: Every text-holding surface or card must have internal padding. Use `HdsSurface` padding (`component` or `item`) or another approved inset pattern so text never sits flush against a border.
+- **The layout contract (v1, 2026-10-07)** replaces the old Gap Mandate and Containment Rule. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode today).
+  1. Every component declares `fill` or `hug` on each axis. Leaves hug; Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. Override with the one prop `width="hug|fill"`. Height always hugs; stretching is the parent's job (`align="stretch"`), so no root `h-full`, `height: 100%` or `self-*`.
+  2. Only containers pad (Card, Surface, Alert, Callout, Dialog, Page). Compound parts have zero padding; the container's `gap` spaces them. A padded container directly in a padded container is an error unless the inner one has `padding="none"`.
+  3. One spacing scale, `xs…xl` (plus `none`), for every `gap` and `padding` prop. Padding is `none | sm | md`, default `md`, density-aware. Every gap defaults to `md`, so declaring it is optional.
+  4. No outer margins on any component, and no raw numeric Tailwind spacing (`gap-2`, `p-5`); use `gap-[var(--semantic-space-scale-md)]`.
+  5. Primitives are Stack, Grid, Page (absorbs Container) and Surface; Box and Pin are escape hatches; Sidebar and Switcher fold into Stack and Grid.
+  6. Form controls in a form context have a max width (`40rem`) and siblings share one width.
 - **The Shadow Token Convention**: Any page-specific or one-off layout styling must use the `--hds-local-[Category]-[Property]-[Name]` naming convention so local overrides never pollute `hirobius.tokens.json`. Page-specific shadows must derive from a `semantic.shadow.*` token; never raw rgba.
 - **Accessibility-First**: Semantic parity is required. All new components must pass standard aria-label and color contrast checks; this will be enforced by `axe-playwright`.
 - **Automated Auto-Journaling**: Every autonomous visual fix or self-heal must append a timestamped Dev Note to `docs/CASE_STUDY_JOURNAL.md` describing the layout drift and how it was reconciled.
@@ -56,12 +63,12 @@ The sanctioned escape hatch on every primitive is **`className`** — not inline
 
 - **Non-interactive feedback primitives — `Badge`, `Alert`, `Callout` — are className-only.** Their interfaces `Omit<…HTMLAttributes…, 'style'>`; they expose no `style` prop. They fully own their visual surface through `cva()` variants, and inline `style` would silently override governed tone/background/radius. Enforced by **`check-no-style-prop`** (`// style-prop-ok: <reason>` to exempt).
 - **Converged primitives author zero inline styles.** `button`, `input`, `badge`, `surface`, `callout` carry **no `style={{ … }}` object literal** in their own render — all styling lives in `cva()`. A caller-supplied **passthrough** (`style={callerStyle}`) for layout is allowed on `Surface`/`Card`; a primitive computing its _own_ inline style object is not. Enforced by the `converged-inline-style` rule in **`check-style-discipline`** (append a component to its `CONVERGED_SET` as it converges).
-- **Interactive / layout primitives** (`Button`, `IconButton`, `Surface`, `Card`, `Icon`, `Input`) keep `style` as an escape hatch for one-off visual treatments (e.g. a glassmorphism nav button) and layout positioning the component doesn't govern (`margin`, `position`, `width`). They must still not use `style` to override a property the component already governs via tokens/cva.
+- **Interactive / layout primitives** (`Button`, `Surface`, `Card`, `Icon`, `Input`, `Box`) keep `style` as an escape hatch for one-off visual treatments (e.g. a glassmorphism nav button) and `position`. Sizing goes through `width="hug|fill"` and spacing through the scale, never `style` `margin` or `width` (layout contract). They must still not use `style` to override a property the component already governs via tokens/cva.
 - **`className` overrides `tone` exactly as it overrides `variant`.** Inside a primitive, `tone` beats `variant` by tailwind-merge class-group replacement in `cn`, never by the `!` important modifier, and a consumer `className` (appended last) wins either the same way. See [ADR-030](../adr/030-tone-precedence-without-important.md); `tests/no-important-modifier.test.ts` keeps `!` out of component class strings.
 
 ### Containers
 
-- **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="component"` (24px) for cards, `padding="item"` (16px) for compact items), consistent radius (`rounded-lg`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` on layout primitives accepts HDS token keys (`'normal'`, `'px24'`).
+- **NEVER manually style containers with `backgroundColor`, `border`, `borderRadius`, `padding`** — ALWAYS use `<HdsSurface>` to enforce padding guardrails (`padding="md"` for cards, `padding="sm"` for compact items; `component` and `item` are the legacy names for the same two steps), consistent radius (`rounded-lg`), and automatic dark/light theming. `HdsSurface` `padding` prop accepts only `'component' | 'item' | 'none'` — never pass raw token keys like `'px24'`; `gap` and `padding` take the `xs…xl` scale names.
 - **No `<Divider>` for layout separation** — use 48px gap (`space.12`) between major sections; whitespace is the separator.
 
 #### Card don'ts (explicit anti-pattern list)
@@ -77,14 +84,12 @@ Every item below is a build error. If an AI agent or human produces any of these
 
 ### Typography
 
-- **NEVER manually stack headings + subheadings using `<Stack>`** — ALWAYS use:
-  - `<TextLockup title="..." description="..." size="section|metric|detail" />` for doc surfaces and displays (preset sizes with automatic secondary color)
-  - `<HeadingStack level="heading1|heading2|heading3" heading="..." subheading="..." />` for semantic heading pairs (enforced secondary color, automatic gaps)
+- **Heading + supporting line = `Stack` + `Text`** — the two lockup components that wrapped this pair were removed in 0.20.0 (hds#394). Compose it from the primitives, never from raw tags or ad hoc margins:
+  - `<Stack gap="xs"><Text variant="heading2" as="h2">Title</Text><Text variant="body" className="text-muted-foreground">Supporting line</Text></Stack>`
+  - pick the heading level with `variant="heading1|heading2|heading3"` (and the matching `as`); the supporting line is always `text-muted-foreground`, and the gap comes from `Stack`, never a margin.
 - **No deprecated typography tokens** — `label`, `labelTechnical`, `micro`, `monoXs`, `monoSm`, `body2`, `displayXl`, `display2`, and `title` are all removed. Update any reference found during review.
-- **No hardcoded pixels in layout props** — do not pass raw values like `gap="12px"`, `style={{ padding: '10px' }}`, or `mt={15}`. Use semantic gap keys: `gap="tight"` (16px), `gap="normal"` (24px), `gap="gap"` (8px component rhythm), or primitive space keys like `gap="px24"`. Do NOT pass raw pixel strings like `"12px"` or `"16px"` as gap values.
+- **No hardcoded pixels in layout props** — do not pass raw values like `gap="12px"`, `style={{ padding: '10px' }}`, or `mt={15}`. Use the scale names `xs…xl` (8/16/24/32/48px at default density). The layout names (`tight`, `normal`, `inset`, `spacious`), subgrid names (`gap`), and `pxN` keys are legacy aliases being removed. Do NOT pass raw pixel strings like `"12px"` or `"16px"` as gap values.
 - **No tight line-heights** — all `body`, `ui`, and `caption` text must have line-height 1.5.
-- **DocLayout reading width** — All `DocLayout` content slots, including technical foundation pages, must default to `maxWidth="content"` to maintain optimal reading line lengths and a cohesive center column. Only break out to `maxWidth="max"` for full-bleed data tables or massive galleries.
-- **Sidebar symmetry** — All documentation sidebars (`navSlot` and `tocSlot`) must use `variant="ui"` typography for standard link text to ensure bilateral visual symmetry.
 
 For component recipes, visual hierarchy, text alignment, and responsiveness patterns see **HDS V2 Guardrails** in `public/llms.txt`.
 
@@ -158,6 +163,13 @@ uncontrolled (`defaultValue`) modes to match native `<input>` ergonomics for
 simple text fields. The selection controls do not. Do not add `defaultValue` to
 the selection controls without revisiting this contract.
 
+`Button`'s toggle props are the second deliberate exception (hds#393): a toggle
+Button takes `pressed` with `onPressedChange` (controlled) or `defaultPressed`
+(uncontrolled), the split Radix Toggle offers. A toggle Button is an action
+control with an on/off state (`aria-pressed`), not a selection control, and a
+toolbar toggle often needs no page state. `Card`'s `selectable` / `selected` is
+a selection control and stays controlled-only.
+
 ## Elevation roles
 
 Bind to the role token — never write raw shadow, surface, or border values by hand. The role bundles all three so primitives can't mismatch.
@@ -195,7 +207,20 @@ A tag body runs until the next `@tag`, a blank line, or the end of the block; co
  */
 ```
 
-`node scripts/check-contract-coverage.mjs` lists the 42 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
+### Deprecation tags
+
+A block that carries `@deprecated <notice>` also gives the spec `deprecated` (the notice), `removeIn` (from `@removeIn <semver>` in the same block) and `useInstead` (the first `@useInstead <Component>` in the same block: the replacement). The export's own block wins over the file-level block, and a `@deprecated` on a prop inside a props interface does not deprecate the component. A deprecated spec stays in the manifest, but `skills/hds-consumer/SKILL.md`, the "Which one when" section and the props digest in `public/llms*.txt` leave it out (hds#390). Name a replacement that exists, or say in the notice that there is none.
+
+```tsx
+/**
+ * Tile — a padded status block.
+ * @deprecated Use StatusTile; the props are the same.
+ * @removeIn 1.0.0
+ * @useInstead StatusTile
+ */
+```
+
+`node scripts/check-contract-coverage.mjs` lists the 43 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
 
 ## Component Inventory & Fallbacks
 

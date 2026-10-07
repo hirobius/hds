@@ -8,7 +8,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { Button, buttonVariants } from '@/app/components/button';
+import { Button } from '@/app/components/button';
 
 describe('Button contract', () => {
   it('renders without crashing', () => {
@@ -85,24 +85,56 @@ describe('Button contract', () => {
 // fill and border), so the later tone class wins each group and the variant's
 // hover classes cannot leak through.
 //
-// The variant classes are read off `buttonVariants` itself rather than listed
-// here, so a class a variant gains later (an `active:bg-*` group, say) has to
-// be replaced by every tone from the day it lands, or this suite goes red.
+// The variant classes are read off a rendered Button rather than listed here,
+// so a class a variant gains later (an `active:bg-*` group, say) has to be
+// replaced by every tone from the day it lands, or this suite goes red. Every
+// shape a Button renders in is covered: a text label, `iconOnly`, a toggle off
+// and on (`pressed`), and `asChild`.
 
 const VARIANTS = ['primary', 'secondary', 'tertiary'] as const;
 const STATUS_TONES = ['danger', 'success', 'warning', 'info'] as const;
+const SHAPES = ['label', 'iconOnly', 'toggle off', 'toggle on', 'asChild'] as const;
 
-const splitClasses = (cls: string) => cls.split(/\s+/).filter(Boolean);
+type Variant = (typeof VARIANTS)[number] | null;
+type Tone = (typeof STATUS_TONES)[number] | 'neutral';
+type Shape = (typeof SHAPES)[number];
 
-// An explicit `null` switches a cva variant off without falling back to its
-// default, so with every other variant off the output is the base string plus
-// the one variant's own classes.
-const VARIANT_ONLY = { tone: null, size: null, iconOnly: null } as const;
-const BASE_CLASSES = new Set(splitClasses(buttonVariants({ variant: null, ...VARIANT_ONLY })));
+const classesOf = (el: Element | null) => (el?.className ?? '').split(/\s+/).filter(Boolean);
+
+const Icon = () => <svg aria-hidden="true" />;
+
+/** Render one Button in `shape` and return its root element. */
+function renderButton(variant: Variant, tone: Tone, shape: Shape = 'label', className?: string) {
+  const common = { variant, tone, className };
+  const { container } = render(
+    shape === 'iconOnly' ? (
+      <Button {...common} iconOnly label="Close" iconLeft={<Icon />} />
+    ) : shape === 'toggle off' ? (
+      <Button {...common} pressed={false}>
+        Label
+      </Button>
+    ) : shape === 'toggle on' ? (
+      <Button {...common} pressed>
+        Label
+      </Button>
+    ) : shape === 'asChild' ? (
+      <Button {...common} asChild>
+        <a href="#x">Label</a>
+      </Button>
+    ) : (
+      <Button {...common}>Label</Button>
+    ),
+  );
+  return container.firstElementChild;
+}
+
+// An explicit `null` variant switches the cva variant off without falling back
+// to its default, so the difference is exactly the classes the variant adds.
+const BASE_CLASSES = new Set(classesOf(renderButton(null, 'neutral')));
 
 /** The classes `variant` itself adds on top of the base string. */
 const variantClasses = (variant: (typeof VARIANTS)[number]) =>
-  splitClasses(buttonVariants({ variant, ...VARIANT_ONLY })).filter((c) => !BASE_CLASSES.has(c));
+  classesOf(renderButton(variant, 'neutral')).filter((c) => !BASE_CLASSES.has(c));
 
 /**
  * Variant classes a status tone keeps on purpose. `border` is secondary's 1px
@@ -121,68 +153,83 @@ const toneClasses = (tone: (typeof STATUS_TONES)[number]) => [
   'dark:hover:brightness-110',
 ];
 
-const classesOf = (el: Element | null) => (el?.className ?? '').split(/\s+/).filter(Boolean);
+/** A toggle's on-state classes, keyed to data-pressed="true". */
+const TOGGLE_ON = [
+  'data-[pressed=true]:border-transparent',
+  'data-[pressed=true]:bg-primary',
+  'data-[pressed=true]:text-primary-foreground',
+  'data-[pressed=true]:hover:bg-primary/90',
+];
 
 describe('Button tone over variant', () => {
-  const combos = VARIANTS.flatMap((variant) =>
-    STATUS_TONES.map((tone) => [variant, tone] as const),
-  );
-
-  it.each(VARIANTS)('reads the classes variant=%s adds off buttonVariants', (variant) => {
+  it.each(VARIANTS)('reads the classes variant=%s adds off a rendered Button', (variant) => {
     const own = variantClasses(variant);
     expect(own.length).toBeGreaterThan(0);
     expect(own.some((c) => c.startsWith('hover:'))).toBe(true);
     expect(own).not.toContain('inline-flex');
   });
 
+  const combos = VARIANTS.flatMap((variant) =>
+    STATUS_TONES.flatMap((tone) => SHAPES.map((shape) => [variant, tone, shape] as const)),
+  );
+
   it.each(combos)(
-    'variant=%s tone=%s: the tone classes replace the variant colours, with no !',
-    (variant, tone) => {
-      const { container } = render(
-        <Button variant={variant} tone={tone}>
-          Label
-        </Button>,
-      );
-      const el = container.querySelector('button');
+    'variant=%s tone=%s (%s): the tone classes replace the variant colours, with no !',
+    (variant, tone, shape) => {
+      const el = renderButton(variant, tone, shape);
       const classes = classesOf(el);
       const mustReplace = variantClasses(variant).filter((c) => !TONE_KEEPS.includes(c));
 
       expect(classes).toEqual(expect.arrayContaining(toneClasses(tone)));
       expect(classes.filter((c) => mustReplace.includes(c))).toEqual([]);
+      // The toggle on-state sits behind data-[pressed=true]:, which outranks a
+      // plain tone class on specificity, so a toned toggle leaves it out.
+      expect(classes.filter((c) => c.startsWith('data-[pressed=true]:'))).toEqual([]);
       expect(el?.className).not.toContain('!');
     },
   );
 
+  it.each(VARIANTS.flatMap((variant) => SHAPES.map((shape) => [variant, shape] as const)))(
+    'variant=%s tone=neutral (%s) keeps every variant class and no feedback colour',
+    (variant, shape) => {
+      const classes = classesOf(renderButton(variant, 'neutral', shape));
+      expect(classes).toEqual(expect.arrayContaining(variantClasses(variant)));
+      expect(classes.filter((c) => c.includes('feedback'))).toEqual([]);
+    },
+  );
+
+  it.each(VARIANTS)('variant=%s tone=neutral: a toggle carries the on-state classes', (variant) => {
+    for (const shape of ['toggle off', 'toggle on'] as const) {
+      expect(classesOf(renderButton(variant, 'neutral', shape))).toEqual(
+        expect.arrayContaining(TOGGLE_ON),
+      );
+    }
+  });
+
+  it('a toned toggle still reports its state to assistive tech', () => {
+    const el = renderButton('secondary', 'danger', 'toggle on');
+    expect(el?.getAttribute('aria-pressed')).toBe('true');
+    expect(el?.getAttribute('data-pressed')).toBe('true');
+  });
+
   it('secondary keeps its 1px border width under a tone, so the box does not shift', () => {
-    const { container } = render(
-      <Button variant="secondary" tone="danger">
-        Label
-      </Button>,
-    );
-    expect(classesOf(container.querySelector('button'))).toContain('border');
+    expect(classesOf(renderButton('secondary', 'danger'))).toContain('border');
   });
 
   it('tone=neutral keeps the variant colours (bg-primary for variant=primary)', () => {
-    const { container } = render(
-      <Button variant="primary" tone="neutral">
-        Label
-      </Button>,
-    );
-    const classes = classesOf(container.querySelector('button'));
+    const classes = classesOf(renderButton('primary', 'neutral'));
     expect(classes).toContain('bg-primary');
     expect(classes.filter((c) => c.includes('feedback'))).toEqual([]);
   });
 
-  it('a consumer className overrides a tone colour the same way it overrides a variant colour', () => {
-    const { container } = render(
-      <Button variant="primary" tone="danger" className="bg-background">
-        Label
-      </Button>,
-    );
-    const classes = classesOf(container.querySelector('button'));
-    expect(classes).toContain('bg-background');
-    expect(
-      classes.filter((c) => c.includes('bg-feedback-bg-danger') && !c.startsWith('hover:')),
-    ).toEqual([]);
-  });
+  it.each(SHAPES)(
+    'a consumer className overrides a tone colour the same way it overrides a variant colour (%s)',
+    (shape) => {
+      const classes = classesOf(renderButton('primary', 'danger', shape, 'bg-background'));
+      expect(classes).toContain('bg-background');
+      expect(
+        classes.filter((c) => c.includes('bg-feedback-bg-danger') && !c.startsWith('hover:')),
+      ).toEqual([]);
+    },
+  );
 });

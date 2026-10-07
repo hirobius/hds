@@ -12,9 +12,9 @@ pnpm add @hirobius/design-system
 
 <!-- auto:start:front-door-counts -->
 
-- **109** public component modules, exported from `src/index.ts`
-- **383** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **485** Storybook stories in **121** story files
+- **53** public component modules, exported from `src/index.ts`
+- **389** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **340** Storybook stories in **71** story files
 
 <!-- auto:end:front-door-counts -->
 
@@ -29,9 +29,12 @@ Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds
 
 <!-- auto:start:consumer-usage -->
 
-The Ops dashboard (`hirobius/ops`) is the only verified component-level consumer: **35** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main` (measured at commit `01fce2f`).
+The Ops dashboard (`hirobius/ops`) is the only product app that uses components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main` (measured at commit `76ef65e`).
 
-Other consumers: the split into product apps and token-level sites is not yet confirmed, so it is not stated here.
+| Consumer kind     | Count | How it uses HDS                           |
+| ----------------- | ----- | ----------------------------------------- |
+| Product apps      | 1     | Components and tokens                     |
+| Token-level sites | 4     | Tokens and CSS only, no component imports |
 
 [![Ops library page](docs/images/ops-library.png)](docs/images/ops-library.png)
 
@@ -39,7 +42,7 @@ Other consumers: the split into product apps and token-level sites is not yet co
 
 <!-- auto:end:consumer-usage -->
 
-The numbers come from `pnpm consumer:usage --root <ops checkout>`, which measures that checkout and records its commit in `docs/data/consumer-usage.json`; without a root it reuses the committed snapshot. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file and stays out of this section until `consumersConfirmed` there is set to true.
+The numbers come from `pnpm consumer:usage --root <ops checkout>`, which measures that checkout's `src/` and records its commit in `docs/data/consumer-usage.json` (pass `--commit <sha>` when the root is a `git archive` export); without a root it reuses the committed snapshot. A deprecated alias counts as the component it points to (`HdsCheckbox` as `Checkbox`). The components that Ops's page- and video-clone prompts tell generated code to import are listed there as `promptContracts` and are not counted here. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file, not a measurement. It was confirmed on 2026-10-01 (hds#389: there is no second product app), so `consumersConfirmed` there is true and the table above shows it.
 
 ## Using the published package
 
@@ -63,8 +66,9 @@ npm install @hirobius/design-system react react-dom
 ```
 
 ```tsx
-// once at the app root — full bundle: tokens + theme + utilities + embedded fonts
+// once at the app root — full bundle: tokens + theme + utilities
 import '@hirobius/design-system/tokens.css';
+import '@hirobius/design-system/fonts.css'; // optional: the HDS brand fonts
 import { Button } from '@hirobius/design-system';
 
 // add data-hds to the root (or any section) so the scoped base styles apply
@@ -153,7 +157,7 @@ pnpm build-storybook
 
 HDS is built around three structural rules:
 
-- **Strict semantics** — public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `TextLockup` instead of raw layout divs or ad hoc CSS.
+- **Strict semantics** — public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `Text` instead of raw layout divs or ad hoc CSS.
 - **Polymorphism** — primitives preserve semantic HTML while staying composable through governed APIs such as `forwardRef`, `as`, and layout slots.
 - **12-column grid** — page structure follows a consistent editorial grid: readable center columns, intentional breakout zones, and explicit `gap` ownership rather than one-off spacing math.
 
@@ -174,7 +178,7 @@ What CI and the hooks check today, and nothing more:
 - **Contrast:** `scripts/check-contrast.mjs` enforces WCAG AA contrast on the core token pairs, in light and dark. It runs in CI and the pre-commit hook.
 - **Lint:** `jsx-a11y` rules run inside ESLint with zero warnings allowed.
 - **Focus:** `scripts/check-focus-states.mjs` (`pnpm check:focus`) audits focus styles on interactive components. It runs in `pretest` under `pnpm test`, so in the pre-push hook and in CI, and passes with 0 violations.
-- **Storybook:** the `addon-a11y` panel shows axe results for each story while you review it. The gate is `scripts/check-storybook-axe.mjs`: CI scans every built story in light and dark and fails on serious or critical violations, with an empty allowlist (`scripts/axe-allowlist.json`).
+- **Storybook:** the `addon-a11y` panel shows axe results for each story while you review it. The gate is `scripts/check-storybook-axe.mjs`: CI scans every built story in light and dark, including the open Select and Combobox, and fails on serious or critical violations outside its allowlist (`scripts/axe-allowlist.json`). The allowlist has one entry: `aria-hidden-focus` on the open Select story, where Radix Select hides the page around its listbox while focus stays trapped inside it (hds#407).
 
 Screen-reader output is checked by `tests/primitive-contracts/screen-reader.contract.test.tsx`, which runs in `pnpm test` and walks Dialog, Menu, Select, Combobox, Table and Alert with a virtual screen-reader (`@guidepup/virtual-screen-reader`) under jsdom, asserting the role, name and state phrases it reads and the alert's live-region announcement; it reads the jsdom accessibility tree, not what a desktop or mobile screen-reader says.
 
@@ -201,7 +205,7 @@ The gates are deterministic and need no browser or live site:
 Three agents build the same Client-detail screen from the public docs, and `pnpm eval:consistency` measures how alike the results are: builds, token violations, axe, component-set overlap (Jaccard) and pixel diff. Today it runs the offline half over a directory of apps (`pnpm eval:consistency -- --apps <dir> --offline`, violations and Jaccard from source only). The ledger, the thresholds and the screen spec live in [`eval/consistency/`](eval/consistency/README.md). The latest recorded run, as printed by `pnpm eval:consistency -- --summary`:
 
 ```text
-Agent consistency 2026-09-30 (harness, design-system 0.18.0): FAIL - builds 3/3, violations 0, axe 0, Jaccard min 0.7368 (limit >= 0.85), light diff max 1.0268% (limit <= 1.5%)
+Agent consistency 2026-10-05 (harness, design-system 0.20.0): FAIL - builds 3/3, violations 0, axe 0, Jaccard min 0.4091 (limit >= 0.85), light diff max 3.2096% (limit <= 1.5%)
 ```
 
 The baseline misses its thresholds on purpose: they are not softened to make it pass.

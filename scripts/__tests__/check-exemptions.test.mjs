@@ -63,6 +63,8 @@ describe('check-exemptions', () => {
   it.each([
     ['spacing-vocab-ok', 'scripts/check-spacing-vocabulary.mjs'],
     ['motion-animate-var-ok', 'src/app/components/__tests__/no-css-var-in-motion-animate.test.ts'],
+    ['layout-gap-ok', 'scripts/check-layout-gap-vocabulary.mjs'],
+    ['type-ramp-ok', 'scripts/check-type-ramp.mjs'],
   ])('knows %s, the marker %s documents', (marker) => {
     const r = runOnText(`${marker}.ts`, `const x = 1; // ${marker}: intentional exception\n`);
     expect(r.stderr).toBe('');

@@ -15,7 +15,7 @@ is the canonical consumption guide — point other teams here.
 >
 > 1. **`react-router` is now optional** — components route through an adapter and
 >    fall back to plain anchors when no router is provided (§5).
-> 2. **Fonts are bundled** — `tokens.css` embeds the typefaces; no font files to copy (§3).
+> 2. **Fonts are opt-in** — `import '@hirobius/design-system/fonts.css'` for the brand typefaces; the woff2 ship in the package, nothing to copy (§3).
 > 3. **Base styles are scoped to `[data-hds]`** — add that attribute to your root
 >    or section so HDS doesn't fight a host app's resets/fonts (§4, §6).
 
@@ -43,7 +43,7 @@ HDS ships **three** stylesheets. Pick one by how much you want HDS to own:
 
 ```ts
 // RECOMMENDED for embedding in an existing app (e.g. MUI): tokens + component
-// styles + utilities + embedded fonts, with NO global reset. Styles every HDS
+// styles + utilities, with NO global reset. Styles every HDS
 // component and changes ZERO host-element styles.
 import '@hirobius/design-system/styles.css';
 
@@ -56,17 +56,31 @@ import '@hirobius/design-system/tokens.css';
 import '@hirobius/design-system/variables.css';
 ```
 
-| Stylesheet          | Tokens | Components + utilities | Embedded fonts |     Global reset      |
-| ------------------- | :----: | :--------------------: | :------------: | :-------------------: |
-| **`styles.css`**    |   ✅   |           ✅           |       ✅       |        ❌ none        |
-| **`tokens.css`**    |   ✅   |           ✅           |       ✅       | ⚠️ Tailwind preflight |
-| **`variables.css`** |   ✅   |           ❌           |       ❌       |        ❌ none        |
+| Stylesheet          | Tokens | Components + utilities |     Global reset      |
+| ------------------- | :----: | :--------------------: | :-------------------: |
+| **`styles.css`**    |   ✅   |           ✅           |        ❌ none        |
+| **`tokens.css`**    |   ✅   |           ✅           | ⚠️ Tailwind preflight |
+| **`variables.css`** |   ✅   |           ❌           |        ❌ none        |
 
 All three:
 
 - **Need no Tailwind config** in the consumer — utilities ship compiled.
-- **Need no font files** — the woff2 are inlined (the file is correspondingly
-  larger; woff2 is already compressed so gzip recovers most of it).
+- **Carry no font files.** Fonts are a separate, optional import (below).
+
+### Brand fonts (optional)
+
+```ts
+import '@hirobius/design-system/fonts.css'; // Satoshi 400/500/700 + Geist Mono 400
+```
+
+`fonts.css` declares the four `@font-face` blocks with `font-display: swap`. Its
+URLs are relative (`./fonts/satoshi-400.woff2`), and the woff2 files ship in the
+package, so Vite, Next and webpack resolve and hash them; there is nothing to
+copy. Import it alongside one of the stylesheets above to keep the HDS fonts.
+Skip it to bring your own: `tokens.css` and `styles.css` keep the
+`--hds-font-family*` variables, so text falls back to the family stack
+(`"Satoshi", system-ui, …`) and uses your font if you declare that family
+yourself.
 
 HDS's own base styles (type baseline, resets) are scoped to the `[data-hds]`
 subtree (§4) in **all** bundles, so they never touch host elements. The only
@@ -101,7 +115,7 @@ Without `data-hds`, components still get their own token-driven styling, but the
 global type baseline and resets won't apply (text falls back to the host font).
 Put `data-hds` as high as makes sense — on `<html>`/`<body>` for an
 HDS-first app, or on a wrapper for a section. Overlays (Dialog, AlertDialog,
-Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) inherit the nearest
+Menu, Popover, Select, Tooltip) inherit the nearest
 `data-hds` scope, so a `<div data-hds data-theme="dark">` themes them too; pass
 `container` on the Content part to portal elsewhere. If the scope element
 creates a containing block or stacking context (`transform`, `filter`, `z-index`,
@@ -155,7 +169,7 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
   resets will fight if both target `body`.
 - **Styled path (recommended for MUI/host embedding):** import
   `@hirobius/design-system/styles.css` instead of `tokens.css`. It ships the full
-  component styling (tokens + utilities + fonts) but **no global reset** — HDS's
+  component styling (tokens + utilities) but **no global reset** — HDS's
   own base is scoped to `[data-hds]`, so it styles every HDS component and
   **cannot** restyle your host's `*`, `body`, headings, `button`, `a`, or form
   controls. This is the clean way to run HDS next to `<CssBaseline>`: no reset
@@ -213,8 +227,9 @@ export function Example() {
 
 | Import                                  | What you get                                                                                                                  |
 | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`               | All public components + the router seam (`HdsRouterProvider`, `useHdsRouter`)                                                 |
-| `@hirobius/design-system/styles.css`    | Components + utilities + tokens + fonts, NO global reset (host-safe; recommended for embedding)                               |
+| `@hirobius/design-system`               | The core components + the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns`             |
+| `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                       |
+| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Satoshi 400/500/700 + Geist Mono 400 (`@font-face`, relative woff2 URLs)                                |
 | `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                   |
 | `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                  |
 | `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                               |
@@ -226,6 +241,9 @@ export function Example() {
 | `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                         |
 | `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                  |
 | `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14) |
+| `@hirobius/design-system/patterns`      | The `pattern`-tier components (`Page`, `PageHeader`, `Form`, `FormField`, `CodeBlock`); root copies removed in 0.20.0         |
+| `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                            |
+| `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                   |
 
 ### Semantic feedback / status tokens
 
@@ -287,8 +305,9 @@ import {
 
 ## 8.5 Optional — typed, schema-validated forms (React Hook Form + Zod)
 
-The main barrel is validation-agnostic: `FormField` takes a plain `error`
-string, so you bring your own validation. If you want a batteries-included
+The plain `FormField` (from `@hirobius/design-system/patterns`) is
+validation-agnostic: it takes a plain `error` string, so you bring your own
+validation. If you want a batteries-included
 layer, the `/form` subpath wires [React Hook Form](https://react-hook-form.com)
 to [Zod](https://zod.dev). It's opt-in — `react-hook-form`, `zod`, and
 `@hookform/resolvers` are **optional peer deps**, so they only land in your
@@ -338,7 +357,8 @@ function ApplyForm() {
   validation (no native browser popups racing your schema).
 - `HdsFormField` — a **render-prop**: spread the supplied props onto your
   control. It binds the control to RHF by `name` and shows the field's Zod
-  error through the same label/error/aria markup as the core `FormField`. (It's
+  error through the same label/error/aria markup as the `FormField` in
+  `@hirobius/design-system/patterns`. (It's
   a render-prop, not a cloned child, so RHF's callback ref attaches cleanly.)
 
 **SSR / Astro / Next.js RSC:** this layer is client-only (RHF uses hooks +
@@ -428,16 +448,15 @@ by `scripts/check-hardcoded-colors.mjs`, `scripts/check-hardcoded-spacing.mjs`,
 and `scripts/check-layout-discipline.mjs` — internal scripts that only run
 here. `@hirobius/eslint-plugin-hds` (`scripts/eslint-plugin-hds/`) ships the
 same discipline as an installable ESLint plugin for consumer apps, flagging
-raw hex/px values in `style`, `className`, and `Box` `sx` props before they
-reach code review.
+raw hex/px values in `style`, `className`, and `Box` `sx` props, and raw HTML
+form controls, before they reach code review.
 
-```bash
-pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"
-```
+It ships inside this package as the `@hirobius/design-system/eslint-plugin`
+subpath, so an app that has the design system installed needs only `eslint`:
 
 ```js
 // eslint.config.mjs
-import hds from '@hirobius/eslint-plugin-hds';
+import hds from '@hirobius/design-system/eslint-plugin';
 
 export default [
   {
@@ -448,12 +467,21 @@ export default [
 ];
 ```
 
-Four rules ship in `recommended`: `no-raw-hex` (error), `no-raw-px-spacing`
-(error), `sx-token-first` (error — raw hex/px inside `Box` `sx`, where token
-keys are mandatory), and `prefer-hds-layout-primitive` (warn — ad-hoc
-`display: flex`/`grid` where Stack/Grid likely fits). Full rule docs, examples,
-and the "why `scripts/eslint-plugin-hds/` and not a top-level workspace
-package" packaging note live in
+Without the package (for example in a repo that only lints), install the same
+plugin from git:
+
+```bash
+pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"
+```
+
+and import it as `@hirobius/eslint-plugin-hds`.
+
+Five rules ship in `recommended`: `no-raw-hex` (error), `no-raw-px-spacing`
+(error), `no-raw-controls` (error — raw `<button>`, `<input>`, `<select>`,
+`<textarea>` or `<form>` where an HDS component exists), `sx-token-first`
+(error — raw hex/px inside `Box` `sx`, where token keys are mandatory), and
+`prefer-hds-layout-primitive` (warn — ad-hoc `display: flex`/`grid` where
+Stack/Grid likely fits). Full rule docs and examples live in
 [`scripts/eslint-plugin-hds/README.md`](../scripts/eslint-plugin-hds/README.md).
 
 ### Agent skill
@@ -736,23 +764,27 @@ CSS, only the visual surface of the five primitives above.
 
 ## 15. Icons — the `/icons` subpath
 
-`IconButton` and `Icon` take an `icon` prop. Get one from the curated subpath;
-`lucide-react` does not need to be installed separately.
+`Icon` takes an `icon` prop. Get one from the curated subpath;
+`lucide-react` does not need to be installed separately. An icon-only button is
+`Button iconOnly` with a `label` (its accessible name) and the `Icon` in
+`iconLeft`.
 
 ```tsx
-import { IconButton } from '@hirobius/design-system';
+import { Button, Icon } from '@hirobius/design-system';
 import { Ellipsis } from '@hirobius/design-system/icons';
 
-<IconButton icon={Ellipsis} label="Row actions" />;
+<Button iconOnly label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />;
 ```
 
 The full name list is `iconSet.names` in the manifest (and the Icons section of
 `llms.txt`). Canonical Lucide 0.487.0 names only: `MoreHorizontal` is
 `Ellipsis`, `MoreVertical` is `EllipsisVertical`, `AlertTriangle` is
 `TriangleAlert`, `Home` is `House`, `Filter` is `Funnel`. Icon-only actions (row
-menus, close, edit) use `IconButton`; do not hand-roll a button with a glyph. For
+menus, close, edit) use `Button iconOnly`; do not hand-roll a button with a glyph. For
 an icon outside the set, install `lucide-react@0.487.0` so the `LucideIcon` type
 stays identical.
 
-`Calendar` and `Menu` share names with HDS components; alias them:
-`import { Calendar as CalendarIcon, Menu as MenuIcon } from '@hirobius/design-system/icons'`.
+`Menu` shares its name with the HDS `Menu` component; alias it:
+`import { Menu as MenuIcon } from '@hirobius/design-system/icons'`. (`Calendar`
+collided too until the HDS `Calendar` was removed in 0.20.0, hds#394; it imports
+under its own name now.)

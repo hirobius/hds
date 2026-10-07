@@ -14,21 +14,15 @@
  * (column) layout once there are more than `limit` children, regardless of
  * container width — use it to stop a row from thinning out into an
  * unreadable N-up strip. Do NOT use Switcher for content that should always
- * wrap in place — use Cluster.
+ * wrap in place — use Stack with `direction="row"` and `wrap="wrap"`.
  *
  * Every Layout reference: https://every-layout.dev/layouts/the-switcher/
  */
 
 import React from 'react';
+import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type LayoutGap = 'tight' | 'normal' | 'inset' | 'spacious';
-
-const gapMap: Record<LayoutGap, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
 
 export interface SwitcherProps {
   /** Switcher content — peer items that flip between row and column as a unit. */
@@ -65,7 +59,7 @@ export const Switcher = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Switche
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: gapMap[gap],
+          gap: resolveSpacingValue(gap, LAYOUT_GAP),
           ...(forceStacked && { flexDirection: 'column' }),
           ...style,
         }}

@@ -3,6 +3,7 @@
  * @see src/app/components/button.tsx
  */
 import type { Meta, StoryObj } from '@storybook/react';
+import { Bold, Italic, Star, X } from 'lucide-react';
 import { Button } from '../app/components/button';
 import { MODES } from '../../.storybook/preview';
 import { designParameters } from './design-parameters';
@@ -103,6 +104,49 @@ export const Disabled: Story = {
     disabled: true,
     children: 'Disabled',
   },
+};
+
+// ── iconOnly and pressed (hds#393) ─────────────────────────────────────────
+
+export const IconOnly: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`iconOnly` renders only `iconLeft`, so `label` becomes the aria-label. In development, an icon-only Button with no label, aria-label, aria-labelledby or title logs a warning.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+      <Button iconOnly size="sm" label="Close" iconLeft={<X />} />
+      <Button iconOnly label="Close" iconLeft={<X />} />
+      <Button iconOnly size="lg" variant="primary" label="Close" iconLeft={<X />} />
+    </div>
+  ),
+};
+
+export const Pressed: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`pressed` (controlled) or `defaultPressed` (uncontrolled) makes a Button a toggle: it sets aria-pressed and data-pressed, and `onPressedChange` gets the next state. Pressed fills with role.accent. Click to toggle.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+      <Button iconOnly label="Bold" iconLeft={<Bold />} defaultPressed />
+      <Button iconOnly label="Italic" iconLeft={<Italic />} defaultPressed={false} />
+      <Button variant="tertiary" iconLeft={<Star />} defaultPressed>
+        Starred
+      </Button>
+      <Button variant="tertiary" iconLeft={<Star />} defaultPressed={false}>
+        Star
+      </Button>
+    </div>
+  ),
 };
 
 // ── A11y demo ───────────────────────────────────────────────────────────────

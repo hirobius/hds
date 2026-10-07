@@ -148,7 +148,8 @@ export const tokenValues = {
         "3xl": "30px",
         "4xl": "36px",
         "5xl": "48px",
-        "6xl": "60px"
+        "6xl": "60px",
+        code: "13px"
       },
       weight: {
         regular: "400",
@@ -161,7 +162,9 @@ export const tokenValues = {
         tight: "1.25",
         snug: "1.375",
         normal: "1.5",
-        relaxed: "1.625"
+        relaxed: "1.625",
+        display: "1.05",
+        body: "1.6"
       },
       letterSpacing: {
         tight: "-0.01em",
@@ -204,6 +207,7 @@ export const tokenValues = {
       "64": "64px",
       "80": "80px",
       "96": "96px",
+      "120": "120px",
       interactive: {
         min: "44px",
         minCompact: "24px"

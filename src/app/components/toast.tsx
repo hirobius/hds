@@ -166,11 +166,9 @@ export function ToastProvider({
                 aria-hidden
               />
               <div className="flex min-w-0 flex-col gap-1">
-                <ToastPrimitive.Title className="text-sm font-medium">
-                  {t.title}
-                </ToastPrimitive.Title>
+                <ToastPrimitive.Title className="hds-type-ui">{t.title}</ToastPrimitive.Title>
                 {t.description ? (
-                  <ToastPrimitive.Description className="text-sm text-muted-foreground">
+                  <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
                     {t.description}
                   </ToastPrimitive.Description>
                 ) : null}
@@ -197,6 +195,3 @@ export function ToastProvider({
     </ToastContext.Provider>
   );
 }
-
-/** @internal — CVA variant helper; compose via ToastOptions.tone instead. */
-export { toastIconVariants };

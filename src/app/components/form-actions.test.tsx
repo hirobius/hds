@@ -9,7 +9,7 @@ const follows = (a: HTMLElement, b: HTMLElement) =>
 
 const row = (container: HTMLElement) =>
   container.querySelector(
-    '[data-hds-component="FormActions"] > [data-hds-component="Cluster"]',
+    '[data-hds-component="FormActions"] > [data-hds-component="Stack"]',
   ) as HTMLElement;
 
 describe('FormActions', () => {

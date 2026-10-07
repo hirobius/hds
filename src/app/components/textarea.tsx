@@ -16,11 +16,12 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
 const textareaVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-70',
+  'flex w-full rounded-md border bg-background px-3 py-2 hds-type-ui text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-70',
   {
     variants: {
       resize: {
@@ -96,9 +97,9 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
 
     return (
-      <div className={cn('flex flex-col gap-1.5', className)}>
+      <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
         {label && (
-          <label htmlFor={id} className="text-xs font-medium text-muted-foreground">
+          <label htmlFor={id} className="hds-type-ui text-foreground">
             {label}
           </label>
         )}
@@ -118,13 +119,13 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
         />
 
         {helperText && !errorTextId && (
-          <span id={helperTextId} className="text-xs text-muted-foreground">
+          <span id={helperTextId} className="hds-type-caption text-muted-foreground">
             {helperText}
           </span>
         )}
 
         {hasError && errorMessage && (
-          <span id={errorTextId} role="alert" className="text-xs text-destructive">
+          <span id={errorTextId} role="alert" className="hds-type-caption text-destructive">
             {errorMessage}
           </span>
         )}
@@ -132,6 +133,3 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Textarea props instead. */
-export { textareaVariants };

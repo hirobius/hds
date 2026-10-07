@@ -698,25 +698,11 @@ export function buildManifest(allTokens, raw) {
       ...(SYSTEM_MANIFEST.componentSpecs?.Button ?? {}),
       sourcePath: 'src/app/components/button.tsx',
       sourceExport: 'Button',
-      props: {
-        variant: {
-          type: 'enum',
-          values: ['primary', 'secondary', 'tertiary'],
-          default: 'secondary',
-        },
-        tone: {
-          type: 'enum',
-          values: ['neutral', 'danger', 'success', 'warning', 'info'],
-          default: 'neutral',
-        },
-        size: { type: 'enum', values: ['sm', 'md', 'lg'], default: 'md' },
-        disabled: { type: 'boolean', default: false },
-        loading: { type: 'boolean', default: false },
-        label: { type: 'string', optional: true },
-        iconLeft: { type: 'ReactNode', optional: true },
-        iconRight: { type: 'ReactNode', optional: true },
-        iconOnly: { type: 'boolean', default: false },
-      },
+      // No `props` here (hds#390). enrich-manifest owns every spec's props and
+      // rebuilds them from component-api.json (the code) on each run; a list
+      // written here replaced that refresh whenever `pnpm tokens` ran last, so
+      // the manifest depended on which command ran most recently (the hds#379
+      // failure, for props). The spread above forwards the refreshed props.
       tokens: {
         background: 'role.primary',
         text: 'role.primary-foreground',
@@ -773,25 +759,7 @@ export function buildManifest(allTokens, raw) {
       ...(SYSTEM_MANIFEST.componentSpecs?.Card ?? {}),
       sourcePath: 'src/app/components/Card.tsx',
       sourceExport: 'Card',
-      props: {
-        as: { type: 'string', optional: true },
-        padding: {
-          type: 'enum',
-          values: ['component', 'item', 'none', 'px24', 'px16'],
-          default: 'component',
-        },
-        gap: { type: 'enum', values: ['tight', 'normal', 'inset', 'spacious'], default: 'tight' },
-        noPadding: { type: 'boolean', default: false },
-        variant: { type: 'enum', values: ['default', 'accent'], default: 'default' },
-        tone: {
-          type: 'enum',
-          values: ['neutral', 'danger', 'success', 'warning', 'info'],
-          default: 'neutral',
-        },
-        bordered: { type: 'boolean', default: false },
-        className: { type: 'string', optional: true },
-        children: { type: 'ReactNode' },
-      },
+      // No `props` here: enrich-manifest owns them (hds#390, see Button).
       tokens: {
         background: 'role.card',
         text: 'role.card-foreground',
@@ -813,22 +781,7 @@ export function buildManifest(allTokens, raw) {
       ...(SYSTEM_MANIFEST.componentSpecs?.Input ?? {}),
       sourcePath: 'src/app/components/Input.tsx',
       sourceExport: 'Input',
-      props: {
-        type: {
-          type: 'enum',
-          values: ['text', 'email', 'password', 'search', 'tel', 'url', 'number'],
-          default: 'text',
-        },
-        size: { type: 'enum', values: ['sm', 'md', 'lg'], default: 'md' },
-        textStyle: { type: 'enum', values: ['body', 'mono'], default: 'body' },
-        label: { type: 'string', optional: true },
-        placeholder: { type: 'string', optional: true },
-        helperText: { type: 'string', optional: true },
-        error: { type: 'boolean', default: false },
-        errorMessage: { type: 'string', optional: true },
-        disabled: { type: 'boolean', default: false },
-        loading: { type: 'boolean', default: false },
-      },
+      // No `props` here: enrich-manifest owns them (hds#390, see Button).
       tokens: {
         background: 'role.background',
         text: 'role.foreground',
@@ -868,15 +821,10 @@ export function buildManifest(allTokens, raw) {
       ...(SYSTEM_MANIFEST.componentSpecs?.Dialog ?? {}),
       sourcePath: 'src/app/components/Dialog.tsx',
       sourceExport: 'Dialog',
-      props: {
-        open: { type: 'boolean', optional: true },
-        defaultOpen: { type: 'boolean', optional: true },
-        modal: { type: 'boolean', default: true },
-        // title / description / hideClose are NOT Dialog root props: they live
-        // on the compound parts (Dialog.Title / Dialog.Description children,
-        // Dialog.Content hideClose) — bound below as `Part.prop`.
-        children: { type: 'ReactNode' },
-      },
+      // No `props` here: enrich-manifest owns them (hds#390, see Button).
+      // title / description / hideClose are NOT Dialog root props: they live
+      // on the compound parts (Dialog.Title / Dialog.Description children,
+      // Dialog.Content hideClose), bound below as `Part.prop`.
       tokens: {
         background: 'role.popover',
         text: 'role.popover-foreground',
@@ -1026,60 +974,6 @@ export function buildManifest(allTokens, raw) {
       componentProperties: [],
       states: ['default'],
     },
-    HeadingStack: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.HeadingStack ?? {}),
-      variantAxes: [],
-      componentProperties: [
-        {
-          name: 'Heading',
-          type: 'TEXT',
-          defaultValue: 'Heading',
-          sourceProp: 'heading',
-          boundTo: 'characters',
-          targetSelector: 'Heading',
-        },
-        {
-          name: 'Subheading',
-          type: 'TEXT',
-          defaultValue: 'Supporting subheading',
-          sourceProp: 'subheading',
-          boundTo: 'characters',
-          targetSelector: 'Subheading',
-        },
-      ],
-      states: ['default'],
-    },
-    TextLockup: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.TextLockup ?? {}),
-      variantAxes: ['size'],
-      componentProperties: [
-        {
-          name: 'Eyebrow',
-          type: 'TEXT',
-          defaultValue: 'EYEBROW',
-          sourceProp: 'eyebrow',
-          boundTo: 'characters',
-          targetSelector: 'Eyebrow',
-        },
-        {
-          name: 'Title',
-          type: 'TEXT',
-          defaultValue: 'Title text',
-          sourceProp: 'title',
-          boundTo: 'characters',
-          targetSelector: 'Title',
-        },
-        {
-          name: 'Description',
-          type: 'TEXT',
-          defaultValue: 'Description',
-          sourceProp: 'description',
-          boundTo: 'characters',
-          targetSelector: 'Description',
-        },
-      ],
-      states: ['default'],
-    },
   };
 
   const formatToken = (t) => {
@@ -1191,19 +1085,19 @@ export function buildManifest(allTokens, raw) {
       'Stack',
       'Divider',
       'Icon',
-      'IconButton',
       'SegmentedControl',
       'InlineCode',
       'InlineLink',
       'CodeBlock',
-      'DocLinkCard',
     ],
     typographyRamp: SYSTEM_MANIFEST.typographyRamp ?? null,
     patternInventory: SYSTEM_MANIFEST.patternInventory ?? [],
     // hds#342: forwarded verbatim from generate-manifest (build-tokens runs after it).
     ...(SYSTEM_MANIFEST.iconSet ? { iconSet: SYSTEM_MANIFEST.iconSet } : {}),
     phases: SYSTEM_MANIFEST.phases ?? [],
-    health: SYSTEM_MANIFEST.health ?? null,
+    // No `health` (hds#431): it was a frozen 2026-06-18 snapshot no script
+    // wrote, forwarded unchanged into ./manifest. Dropping the key here also
+    // drops it from public/hds-manifest.json on the next run.
     inventory: SYSTEM_MANIFEST.inventory ?? {},
     agentEntrypoint: 'llms.txt',
     breakingChangePolicy:

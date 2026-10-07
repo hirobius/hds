@@ -67,6 +67,76 @@ describe('readComponentTags', () => {
     const source = `/**\n * @category Actions\n * @figma Variant=Button/Variant\n */\nexport const Button = () => null;\n`;
     expect(readComponentTags(source, 'Button').figmaUrl).toBeNull();
   });
+
+  it('reads a tag only at the start of a JSDoc line, not an @word inside prose (hds#390)', () => {
+    // hds-tooltip.tsx says "the internal `ExpandTooltip` (an @internal
+    // image-expand pill …)" in its description, and that prose hid the public
+    // Tooltip from the manifest, SKILL.md and llms.txt.
+    const prose = `/**\n * Tooltip.\n * @category Overlays\n * Unlike ExpandTooltip (an @internal pill), this one is public.\n */\nexport const Tooltip = () => null;\n`;
+    expect(readComponentTags(prose, 'Tooltip')).toMatchObject({
+      internal: false,
+      category: 'Overlays',
+    });
+    const tagged = `/**\n * Pill.\n * @internal\n */\nexport const ExpandTooltip = () => null;\n`;
+    expect(readComponentTags(tagged, 'ExpandTooltip').internal).toBe(true);
+  });
+});
+
+describe('readComponentTags — deprecation (hds#390)', () => {
+  it('reads @deprecated, @removeIn and @useInstead from the export block', () => {
+    const source = `/**\n * @category Layout\n */\n\n/**\n * Row.\n * @deprecated Use Stack with wrap.\n * @removeIn 1.0.0\n * @useInstead Stack\n */\nexport const Cluster = () => null;\n`;
+    expect(readComponentTags(source, 'Cluster').deprecation).toEqual({
+      deprecated: 'Use Stack with wrap.',
+      removeIn: '1.0.0',
+      useInstead: 'Stack',
+    });
+  });
+
+  it('falls back to the file block, and is null when neither block is deprecated', () => {
+    const fileLevel = `/**\n * @category Layout\n * @deprecated The whole module goes.\n * @removeIn 1.0.0\n */\n\n/**\n * Row.\n */\nexport const Cluster = () => null;\n`;
+    expect(readComponentTags(fileLevel, 'Cluster').deprecation).toEqual({
+      deprecated: 'The whole module goes.',
+      removeIn: '1.0.0',
+    });
+    const none = `/**\n * @category Layout\n */\n\n/**\n * Row.\n */\nexport const Cluster = () => null;\n`;
+    expect(readComponentTags(none, 'Cluster').deprecation).toBeNull();
+  });
+
+  it('does not deprecate a component for a deprecated prop inside its props interface', () => {
+    const source = `/**\n * @category Display\n */\n\nexport interface DividerProps {\n  /**\n   * @deprecated Use variant="strong".\n   */\n  strong?: boolean;\n}\n\n/**\n * Rule.\n */\nexport const Divider = () => null;\n`;
+    expect(readComponentTags(source, 'Divider').deprecation).toBeNull();
+  });
+});
+
+describe('discoverHdsComponents — deprecations (hds#390)', () => {
+  it('finds no component deprecated once 0.21.0 removed StatusDot (hds#465)', () => {
+    // Deprecated JSDoc on a type or prop (ActivityFeed's ActivityStatus) does
+    // not deprecate a component, so the assertion scopes to components.
+    // StatusDot was the last one: deprecated for Badge dot, removed in 0.21.0 (hds#465).
+    const { components } = discoverHdsComponents();
+    const deprecated = components
+      .filter((c) => c.deprecation && c.filePath.startsWith('src/app/components/'))
+      .map((c) => [c.name, c.deprecation.removeIn]);
+    expect(deprecated).toEqual([]);
+    const names = components.map((c) => c.name);
+    for (const gone of [
+      'CinematicLink',
+      'ComponentInstanceMatrix',
+      'FoundationSwatch',
+      'Sketch',
+      'Token',
+    ])
+      expect(names).not.toContain(gone);
+  }, 60_000);
+});
+
+describe('discoverHdsComponents — Tooltip (hds#390)', () => {
+  it('discovers the exported Tooltip as public', () => {
+    const tooltip = discoverHdsComponents().components.find(
+      (c) => c.name === 'Tooltip' && c.filePath === 'src/app/components/hds-tooltip.tsx',
+    );
+    expect(tooltip).toMatchObject({ hidden: false, category: 'Overlays', tagState: 'doc-exempt' });
+  }, 60_000);
 });
 
 describe('readComponentTags — @screenPattern (hds#337)', () => {

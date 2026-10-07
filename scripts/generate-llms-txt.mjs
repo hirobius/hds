@@ -19,6 +19,7 @@
  * the slices pick blocks by heading, so llms.txt and the slices share text.
  */
 
+import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 import { mkdirSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
@@ -95,10 +96,15 @@ const clip = (v, n) => {
   return one.length > n ? `${one.slice(0, n - 1)}…` : one;
 };
 
-/** Compact per-component digest: no examples, defaults clipped. */
-function buildPropsDigest(api) {
+/**
+ * Compact per-component digest: no examples, defaults clipped. A component
+ * whose manifest spec is deprecated is left out (hds#390): it stays importable
+ * until its removeIn release, but agents are not pointed at it.
+ */
+function buildPropsDigest(api, specs = {}) {
   const comps = api.components ?? {};
   return Object.keys(comps)
+    .filter((name) => !specs[name]?.deprecated)
     .sort()
     .map((name) => {
       const c = comps[name];
@@ -156,7 +162,7 @@ export function generateLlmsTxt({ write = true } = {}) {
   ]);
   const iconCollisions = iconNames.filter((n) => hdsNames.has(n));
   const collisionNote = iconCollisions.length
-    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} share names with HDS components; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
+    ? `\n\nName collisions: ${iconCollisions.map((n) => `\`${n}\``).join(' and ')} ${iconCollisions.length === 1 ? 'shares a name with an HDS component' : 'share names with HDS components'}; alias the icon: \`import { ${iconCollisions.map((n) => `${n} as ${n}Icon`).join(', ')} } from '${manifest.iconSet.subpath}'\`.`
     : '';
   const lucideVersion = String(pkg.dependencies?.['lucide-react'] ?? '').replace(/^[^\d]*/, '');
   const iconSection = iconNames.length
@@ -165,13 +171,13 @@ export function generateLlmsTxt({ write = true } = {}) {
 Icons come from the curated subpath \`${manifest.iconSet.subpath}\`; nothing extra to install.
 
 \`\`\`tsx
-import { IconButton } from '@hirobius/design-system';
+import { Button, Icon } from '@hirobius/design-system';
 import { Ellipsis } from '${manifest.iconSet.subpath}';
 
-<IconButton icon={Ellipsis} label="Row actions" />
+<Button iconOnly label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />
 \`\`\`
 
-Rule: icon-only actions (row menus, close, edit) use \`IconButton\`; do not hand-roll a button with a glyph or text "...".
+Rule: icon-only actions (row menus, close, edit) use \`Button iconOnly\` with a \`label\` and an \`Icon\` in \`iconLeft\`; do not hand-roll a button with a glyph or text "...".
 
 Names: ${iconNames.join(', ')}
 
@@ -189,6 +195,18 @@ Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> 
 
 Generated: ${generated}
 Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json\`, \`hirobius.tokens.json\`
+
+## Agents Using The Package: Start Here
+
+- Read \`AGENTS.md\` (package root, \`node_modules/@hirobius/design-system/AGENTS.md\`) first: which component to use for each screen need, the imports, and the rules.
+- MCP server \`hds\` ships in the package: run \`npx hds-mcp\` (stdio). Tools: \`list_core\`, \`search_components\`, \`get_component\`, \`search_tokens\`; each answer is under 2 KB.
+- Lint before you finish: \`import hds from '@hirobius/design-system/eslint-plugin'\` and spread \`hds.configs.recommended\` into \`eslint.config.mjs\`.
+
+## Pick By Need
+
+${NEEDS_INTRO} Generated from \`mcp/guide.mjs\`, the same list as \`AGENTS.md\`.
+
+${needsMarkdown(componentApi.components ?? {})}
 
 ## System Architecture
 
@@ -282,7 +300,7 @@ When building any card component or card-like surface, ALL of the following rule
 
 Cards default to \`elevation.flat\`. Popovers/tooltips/dropdowns use \`elevation.floating\`. Dialogs/sheets use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
-Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest \`data-hds\` scope, so they inherit its theme (for example \`<div data-hds data-theme="dark">\`); pass \`container\` on the Content part to override.
+Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest \`data-hds\` scope, so they inherit its theme (for example \`<div data-hds data-theme="dark">\`); pass \`container\` on the Content part to override.
 
 ## Slices And Full Bundle
 
@@ -342,7 +360,7 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
       })
       .join('\n\n');
 
-  const digest = buildPropsDigest(componentApi);
+  const digest = buildPropsDigest(componentApi, manifest.componentSpecs ?? {});
   const digestSection = `## Component Props Digest\n\nCompact: name, first line of description, then prop: type = default. Full detail in \`src/app/data/component-api.json\`.\n\n${digest}`;
 
   const designMd = readFileSync(join(ROOT, 'DESIGN.md'), 'utf8').trim();

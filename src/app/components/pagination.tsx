@@ -7,15 +7,14 @@
  * @useInstead Breadcrumb a hierarchy trail
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194
  */
-// motion-ok: every interactive control is a Button or IconButton, which own
-// their hover/press motion feedback; Pagination adds no bespoke interactive
-// surface of its own.
+// motion-ok: every interactive control is a Button, which owns its hover/press
+// motion feedback; Pagination adds no bespoke interactive surface of its own.
 
 import * as React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
-import { IconButton } from './icon-button';
+import { Icon } from './icon';
 
 // ── Range helper ─────────────────────────────────────────────────────────────
 // Produces e.g. [1, 'ellipsis', 4, 5, 6, 'ellipsis', 20] for page 5 of 20.
@@ -77,13 +76,14 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
       <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
         <ul className="flex flex-wrap items-center gap-1">
           <li>
-            <IconButton
-              icon={ChevronLeft}
+            <Button
+              iconOnly
               size="sm"
               variant="tertiary"
               aria-label="Previous page"
               disabled={page <= 1}
               onClick={() => go(page - 1)}
+              iconLeft={<Icon icon={ChevronLeft} size="small" />}
             />
           </li>
           {tokens.map((token, index) =>
@@ -100,6 +100,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
                 <Button
                   variant={token === page ? 'secondary' : 'tertiary'}
                   size="sm"
+                  className="hds-touch-target"
                   aria-label={`Page ${token}`}
                   aria-current={token === page ? 'page' : undefined}
                   onClick={() => go(token)}
@@ -110,13 +111,14 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
             ),
           )}
           <li>
-            <IconButton
-              icon={ChevronRight}
+            <Button
+              iconOnly
               size="sm"
               variant="tertiary"
               aria-label="Next page"
               disabled={page >= count}
               onClick={() => go(page + 1)}
+              iconLeft={<Icon icon={ChevronRight} size="small" />}
             />
           </li>
         </ul>

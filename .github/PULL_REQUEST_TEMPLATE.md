@@ -1,63 +1,29 @@
 <!--
-Thanks for contributing to the Hirobius Design System (HDS).
-
-Before opening this PR, please confirm you've read CONTRIBUTING.md.
-
-Required checks: see docs/operations/required-checks.md
+Fleet PR format (2026-10-06): the `/pr` skill (.claude/skills/pr), built on
+Dex Horthy's show-me. Skip preambles, keep prose brief.
 -->
 
-## Linked issue
-
-<!-- Link to the GitHub Issue this PR closes (e.g. `Closes #123`). -->
-<!-- If this PR is not driven by an issue, briefly explain why. -->
-
-Issue: `#<issue-number-or-N/A>`
+Closes #<n>
 
 ## Summary
 
-<!-- 1–3 sentences. What changed and why. -->
+<!-- The smallest visual that makes the change clear: pseudocode, call tree,
+component tree, file tree, Mermaid, or a diff-sketch. One short line beside it. -->
 
-## Validator output
+## Evidence
 
-<!-- Paste the output of the 6 pre-commit gates. Do not skip. -->
+- **Before:** <!-- screenshot / output / failing test run -->
+  **After:** <!-- screenshot / output / passing test run -->
 
-```
-$ pnpm typecheck
-<paste exit status + last lines>
+<!-- Screenshots for visual changes. Otherwise the exact test that failed then
+passed, or the gate output (`pnpm typecheck`, `pnpm test`). -->
 
-$ node scripts/check-manifest-drift.mjs
-<paste output>
+## Merge Danger
 
-$ node scripts/check-binding-drift.mjs
-<paste output>
+**Door:** <!-- one-way or two-way -->
 
-$ node scripts/check-source-canon.mjs
-<paste output>
+**Blast Radius:** <!-- one word, e.g. none · layout · consumers · data -->
 
-$ node scripts/validate-manifest.mjs
-<paste output>
-```
+<!-- optional: what could break, and for whom -->
 
-Reference: `docs/operations/required-checks.md`
-
-## Breaking change
-
-- [ ] This PR introduces a breaking change to a public API surface
-      (component prop, token alias, manifest schema, validator behavior, exported type).
-
-If checked, please describe the migration path below.
-
-<!-- migration notes -->
-
-## Screenshots (if visual)
-
-- [ ] If this PR changes UI, before/after screenshots are attached.
-- [ ] N/A — this PR is non-visual.
-
-<!-- attach images here -->
-
-## Checklist
-
-- [ ] Commit message follows `<scope>(<area>): <summary>` format
-      with the `Co-Authored-By` trailer (see CONTRIBUTING.md).
-- [ ] No `--no-verify` was used to bypass gates.
+Reviewed: <!-- /code-review result, e.g. standards 0 hard · spec 0 missing -->

@@ -2,13 +2,18 @@
  * DestructiveSection - the one place a screen puts an irreversible action.
  * @category Actions
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3
  */
+// motion-ok: composition only. The one control is a danger Button, which owns
+// its hover/press transition (transition-[colors,filter]); the AlertDialog it
+// opens owns open/close. The section has no hover, press or open state of its
+// own, so there is nothing here to animate.
 
 import * as React from 'react';
 import { AlertDialog } from './alert-dialog';
 import { Button } from './button';
 import { Card } from './card';
-import { Cluster } from './cluster';
+import { Stack } from './stack';
 import { Text } from './text';
 
 /** @public */
@@ -63,10 +68,10 @@ export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
       {...props}
     >
       <Card tone="danger">
-        <Cluster gap="normal" align="center" justify="space-between">
+        <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
           {/* The shared heading pair takes string-only text and no heading id; this section needs a ReactNode title and an id for aria-labelledby. */}
           <div data-slot="copy" className="min-w-0 grow basis-64">
-            <Text id={headingId} as={`h${level}`} variant="heading3">
+            <Text id={headingId} as={`h${level}`} variant="title">
               {title}
             </Text>
             <Text as="p" variant="caption" className="text-muted-foreground">
@@ -98,7 +103,7 @@ export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
               </AlertDialog.Content>
             </AlertDialog>
           </div>
-        </Cluster>
+        </Stack>
       </Card>
     </section>
   );

@@ -16,11 +16,16 @@ export type ErrorPatternProps = {
   displayText?: string;
   /** Supporting message explaining the recovery state to the user. */
   message?: string;
+  /**
+   * Fill the viewport height and centre the surface in it, for a routed error page.
+   * Off by default: the pattern then fits its container and never exceeds it.
+   */
+  fullPage?: boolean;
 };
 
 const recoveryWrapStyle = {
-  minHeight: '100vh',
   display: 'flex',
+  maxWidth: '100%',
   alignItems: 'center' as const,
   justifyContent: 'center' as const,
   fontFamily: hds.fontFamily,
@@ -32,12 +37,16 @@ const recoveryWrapStyle = {
 export function ErrorPattern({
   displayText = 'Oops',
   message = 'Something went wrong',
+  fullPage = false,
 }: ErrorPatternProps) {
   const spatialMotion = useHdsMotion('spatial');
 
   return (
-    <div style={recoveryWrapStyle} data-role="error-recovery">
-      <Surface padding="component">
+    <div
+      style={fullPage ? { ...recoveryWrapStyle, minHeight: '100vh' } : recoveryWrapStyle}
+      data-role="error-recovery"
+    >
+      <Surface padding="component" className="min-w-0 max-w-full">
         <motion.div
           initial={{ opacity: 0, y: 2 }}
           animate={{ opacity: 1, y: 0 }}
@@ -48,16 +57,16 @@ export function ErrorPattern({
               variant="display"
               as="h1"
               className="text-primary"
-              style={{ whiteSpace: 'nowrap' }}
+              style={{ overflowWrap: 'anywhere' }}
             >
               {displayText}
             </Text>
 
             <Text
-              variant="heading2"
+              variant="title"
               as="p"
               className="text-secondary"
-              style={{ whiteSpace: 'nowrap' }}
+              style={{ overflowWrap: 'anywhere' }}
             >
               {message}
             </Text>

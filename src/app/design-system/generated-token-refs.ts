@@ -147,7 +147,8 @@ export const tokenRefs = {
         "3xl": "var(--primitive-typography-size-3xl)",
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
-        "6xl": "var(--primitive-typography-size-6xl)"
+        "6xl": "var(--primitive-typography-size-6xl)",
+        code: "var(--primitive-typography-size-code)"
       },
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
@@ -160,7 +161,9 @@ export const tokenRefs = {
         tight: "var(--primitive-typography-lineHeight-tight)",
         snug: "var(--primitive-typography-lineHeight-snug)",
         normal: "var(--primitive-typography-lineHeight-normal)",
-        relaxed: "var(--primitive-typography-lineHeight-relaxed)"
+        relaxed: "var(--primitive-typography-lineHeight-relaxed)",
+        display: "var(--primitive-typography-lineHeight-display)",
+        body: "var(--primitive-typography-lineHeight-body)"
       },
       letterSpacing: {
         tight: "var(--primitive-typography-letterSpacing-tight)",
@@ -203,6 +206,7 @@ export const tokenRefs = {
       "64": "var(--primitive-size-64)",
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
+      "120": "var(--primitive-size-120)",
       interactive: {
         min: "var(--primitive-size-interactive-min)",
         minCompact: "var(--primitive-size-interactive-minCompact)"
@@ -388,26 +392,12 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-display-letter-spacing)",
         lineHeight: "var(--semantic-typography-display-line-height)"
       },
-      h1: {
-        fontFamily: "var(--semantic-typography-h1-font-family)",
-        fontSize: "var(--semantic-typography-h1-font-size)",
-        fontWeight: "var(--semantic-typography-h1-font-weight)",
-        letterSpacing: "var(--semantic-typography-h1-letter-spacing)",
-        lineHeight: "var(--semantic-typography-h1-line-height)"
-      },
-      h2: {
-        fontFamily: "var(--semantic-typography-h2-font-family)",
-        fontSize: "var(--semantic-typography-h2-font-size)",
-        fontWeight: "var(--semantic-typography-h2-font-weight)",
-        letterSpacing: "var(--semantic-typography-h2-letter-spacing)",
-        lineHeight: "var(--semantic-typography-h2-line-height)"
-      },
-      h3: {
-        fontFamily: "var(--semantic-typography-h3-font-family)",
-        fontSize: "var(--semantic-typography-h3-font-size)",
-        fontWeight: "var(--semantic-typography-h3-font-weight)",
-        letterSpacing: "var(--semantic-typography-h3-letter-spacing)",
-        lineHeight: "var(--semantic-typography-h3-line-height)"
+      title: {
+        fontFamily: "var(--semantic-typography-title-font-family)",
+        fontSize: "var(--semantic-typography-title-font-size)",
+        fontWeight: "var(--semantic-typography-title-font-weight)",
+        letterSpacing: "var(--semantic-typography-title-letter-spacing)",
+        lineHeight: "var(--semantic-typography-title-line-height)"
       },
       body: {
         fontFamily: "var(--semantic-typography-body-font-family)",
@@ -432,14 +422,6 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-caption-letter-spacing)",
         lineHeight: "var(--semantic-typography-caption-line-height)"
       },
-      eyebrow: {
-        fontFamily: "var(--semantic-typography-eyebrow-font-family)",
-        fontSize: "var(--semantic-typography-eyebrow-font-size)",
-        fontWeight: "var(--semantic-typography-eyebrow-font-weight)",
-        letterSpacing: "var(--semantic-typography-eyebrow-letter-spacing)",
-        lineHeight: "var(--semantic-typography-eyebrow-line-height)",
-        textTransform: "var(--semantic-typography-eyebrow-text-transform)"
-      },
       mono: {
         fontFamily: "var(--semantic-typography-mono-font-family)",
         fontSize: "var(--semantic-typography-mono-font-size)",
@@ -447,6 +429,34 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-mono-letter-spacing)",
         lineHeight: "var(--semantic-typography-mono-line-height)",
         maxWidth: "var(--semantic-typography-mono-max-width)"
+      },
+      h1: {
+        fontFamily: "var(--semantic-typography-h1-font-family)",
+        fontSize: "var(--semantic-typography-h1-font-size)",
+        fontWeight: "var(--semantic-typography-h1-font-weight)",
+        letterSpacing: "var(--semantic-typography-h1-letter-spacing)",
+        lineHeight: "var(--semantic-typography-h1-line-height)"
+      },
+      h2: {
+        fontFamily: "var(--semantic-typography-h2-font-family)",
+        fontSize: "var(--semantic-typography-h2-font-size)",
+        fontWeight: "var(--semantic-typography-h2-font-weight)",
+        letterSpacing: "var(--semantic-typography-h2-letter-spacing)",
+        lineHeight: "var(--semantic-typography-h2-line-height)"
+      },
+      h3: {
+        fontFamily: "var(--semantic-typography-h3-font-family)",
+        fontSize: "var(--semantic-typography-h3-font-size)",
+        fontWeight: "var(--semantic-typography-h3-font-weight)",
+        letterSpacing: "var(--semantic-typography-h3-letter-spacing)",
+        lineHeight: "var(--semantic-typography-h3-line-height)"
+      },
+      eyebrow: {
+        fontFamily: "var(--semantic-typography-eyebrow-font-family)",
+        fontSize: "var(--semantic-typography-eyebrow-font-size)",
+        fontWeight: "var(--semantic-typography-eyebrow-font-weight)",
+        letterSpacing: "var(--semantic-typography-eyebrow-letter-spacing)",
+        lineHeight: "var(--semantic-typography-eyebrow-line-height)"
       },
       lineHeight: {
         none: "var(--semantic-typography-lineHeight-none)"
@@ -516,6 +526,7 @@ export const tokenRefs = {
         lg: "var(--semantic-size-icon-lg)"
       },
       avatar: "var(--semantic-size-avatar)",
+      tile: "var(--semantic-size-tile)",
       row: {
         compact: "var(--semantic-size-row-compact)",
         comfortable: "var(--semantic-size-row-comfortable)"

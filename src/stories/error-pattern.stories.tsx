@@ -14,7 +14,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Full-viewport governed recovery surface for routed application errors. Animates in on mount; provides a Back button that calls window.history.back(). Pair with NotFoundPattern for 404 routes.',
+          'Governed recovery surface for routed application errors. It fits its container; pass `fullPage` to fill the viewport and centre it, as a routed error or 404 page does. Animates in on mount; provides a Back button that calls window.history.back(). For a 404 route, pass displayText="404" and message="Page not found" with `fullPage` (the NotFound story).',
       },
     },
   },
@@ -34,12 +34,13 @@ export const NotFound: Story = {
   args: {
     displayText: '404',
     message: 'Page not found',
+    fullPage: true,
   },
   parameters: {
     docs: {
       description: {
         story:
-          'Mirrors the output of NotFoundPattern — 404 display text with a human-readable message.',
+          'The 404 route: 404 display text with a human-readable message. NotFoundPattern rendered exactly this until 0.20.0 removed it (hds-not-found-pattern rewrites it).',
       },
     },
   },

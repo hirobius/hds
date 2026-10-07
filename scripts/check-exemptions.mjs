@@ -63,9 +63,14 @@ const MARKERS = [
   // check-spacing-vocabulary.mjs (hds#206) documents and honors this marker;
   // leaving it out made this gate reject the other gate's own escape hatch.
   'spacing-vocab-ok',
+  // check-layout-gap-vocabulary.mjs (hds#404) documents and honors this
+  // marker; the same omission as the two above would make this gate reject it.
+  'layout-gap-ok',
+  // check-type-ramp.mjs (hds#486) documents and honors this marker.
+  'type-ramp-ok',
   // Same gap for src/app/components/__tests__/no-css-var-in-motion-animate.test.ts,
   // which honors `motion-animate-var-ok` (hds#372).
-  // scripts/__tests__/check-exemptions.test.mjs pins both.
+  // scripts/__tests__/check-exemptions.test.mjs pins every sibling-gate marker.
   'motion-animate-var-ok',
 ];
 

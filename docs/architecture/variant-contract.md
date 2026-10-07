@@ -35,8 +35,8 @@ export interface XProps extends Omit<React.HTMLAttributes<...>, ...>, XVariantPr
 | `size`    | Physical scale.                                                                                                                                                                                                     | **Fixed set:** `sm \| md \| lg`. **Never `default`/`compact`** as size values.                                                                        | Only when the component has more than one size.                                              |
 | `density` | Context density — how tightly packed the component reads in a dense vs. spacious layout.                                                                                                                            | **Fixed set:** `comfortable \| compact`.                                                                                                              | Only when the component's layout genuinely varies by surrounding density (e.g. a table row). |
 
-A component does not need all four axes — `StatusDot` and `Spinner` (already
-converted, see `src/app/components/status-dot.tsx` and `spinner.tsx`) only
+A component does not need all four axes — `Badge` and `Spinner` (already
+converted, see `src/app/components/badge.tsx` and `spinner.tsx`) only
 need a subset. What the contract forbids is **inventing a new vocabulary for
 an axis that already has one** — e.g. spelling the destructive tone `error`,
 or sizing a control `default`/`compact` instead of `sm`/`md`/`lg`.
@@ -54,7 +54,7 @@ disabled:pointer-events-none disabled:opacity-50
 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5
 ```
 
-Non-interactive display primitives (`StatusDot`, `Badge`) have no interactive
+Non-interactive display primitives (`Badge`, `Spinner`) have no interactive
 states and only need the `rest` styling — that's expected, not a gap.
 
 ## Tokens only

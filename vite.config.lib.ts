@@ -8,7 +8,7 @@
  *   import { hds, tokens } from '@hirobius/design-system/tokens';
  *   import { cn } from '@hirobius/design-system/cn';
  *   import manifest from '@hirobius/design-system/manifest';
- *   import { Form, TopNav } from '@hirobius/design-system/patterns';
+ *   import { Form, Page } from '@hirobius/design-system/patterns';
  *
  * Output is ESM-only (no CJS dual emit) — modern, smaller footprint, matches
  * shadcn/Radix/cva-style packaging conventions. Consumers must use a bundler
@@ -94,14 +94,11 @@ export default defineConfig({
   // Do NOT copy the `public/` directory into the library output. The app build
   // (vite.config.mjs) serves portfolio assets, fonts, and manifests from
   // public/, but the published package must not carry ~47MB of portfolio PNGs
-  // and JSON. fonts.css references fonts by absolute `/fonts/...` URLs (served
-  // from public/ by the app, identical to before — no app render/CLS change).
-  // Those URLs don't resolve here (publicDir is off), so Vite leaves them as-is;
-  // the `scripts/embed-fonts.mjs` post-build step then base64-inlines the three
-  // woff2 into dist/tokens.css so a consumer importing
-  // `@hirobius/design-system/tokens.css` gets self-contained fonts with ZERO
-  // setup (P0.3, option a). Trade-off: a larger tokens.css (~111KB gzip);
-  // woff2 is already compressed so gzip recovers most of the base64 overhead.
+  // and JSON. src/styles/fonts.css (absolute `/fonts/...` URLs, served from
+  // public/ by the app) is no longer imported by the library entry, so
+  // tokens.css carries no @font-face. `scripts/build-fonts-css.mjs` ships the
+  // faces as the opt-in `@hirobius/design-system/fonts.css` plus dist/fonts/*.woff2
+  // with URLs relative to it (hds#479).
   publicDir: false,
   resolve: {
     alias: {
@@ -141,11 +138,10 @@ export default defineConfig({
         // useScrollProgress). `lenis` is an OPTIONAL peer, externalized below, so
         // this never lands in the main barrel. See ADR-021 / #116.
         scroll: path.resolve(__dirname, 'src/scroll/index.ts'),
-        // Subpath: the 22 pattern-tier components (hds#254). Still re-exported
-        // from the main barrel too (deprecated, root re-export kept for one
-        // minor) — this entry is the forward-looking import path.
+        // Subpath: the pattern-tier components (hds#254). The only entry that
+        // exports them since 0.20.0 removed their root re-exports (hds#389).
         patterns: path.resolve(__dirname, 'src/patterns.ts'),
-        // Subpath: curated Lucide icon re-export for IconButton (hds#342).
+        // Subpath: curated Lucide icon re-export for Icon and icon-only Button (hds#342).
         // lucide-react stays external below; consumers tree-shake the bare import.
         icons: path.resolve(__dirname, 'src/icons.ts'),
       },

@@ -24,9 +24,31 @@ const run = (...args) =>
   });
 
 describe('core component list', () => {
-  it('has the 42 core names of the hds#254 table, without duplicates', () => {
-    expect(CORE_COMPONENTS).toHaveLength(42);
-    expect(new Set(CORE_COMPONENTS).size).toBe(42);
+  it('has the 43 core names: the 42 of the hds#254 table less the three hds#394 removed, plus the four hds#393 added', () => {
+    expect(CORE_COMPONENTS).toHaveLength(43);
+    expect(new Set(CORE_COMPONENTS).size).toBe(43);
+  });
+
+  it('the guardrail registry entry states no core count other than the list length', () => {
+    const { gates } = JSON.parse(
+      readFileSync(path.join(ROOT, 'docs/guardrails/registry.json'), 'utf8'),
+    );
+    const entry = gates.find((g) => g.id === 'check-contract-coverage');
+    expect(entry).toBeDefined();
+    const counts = [...entry.description.matchAll(/\b(\d+) core\b/g)].map((m) => Number(m[1]));
+    expect(counts.filter((n) => n !== CORE_COMPONENTS.length)).toEqual([]);
+  });
+
+  it('drops ButtonGroup, ContextMenu and HoverCard, removed in 0.20.0 (hds#394)', () => {
+    for (const gone of ['ButtonGroup', 'ContextMenu', 'HoverCard']) {
+      expect(CORE_COMPONENTS).not.toContain(gone);
+    }
+  });
+
+  it('adds Menu, Popover, Tooltip and HdsRouterProvider (hds#393 step 7)', () => {
+    for (const added of ['Menu', 'Popover', 'Tooltip', 'HdsRouterProvider']) {
+      expect(CORE_COMPONENTS).toContain(added);
+    }
   });
 
   it('applies the hds#315 renames', () => {
@@ -72,10 +94,10 @@ describe('check-contract-coverage CLI', () => {
     expect(findContractGaps(CORE_COMPONENTS, manifest.componentSpecs)).toEqual([]);
   });
 
-  it('--enforce exits 0 and reports 42/42 core components covered', () => {
+  it('--enforce exits 0 and reports 43/43 core components covered', () => {
     const out = run('--enforce');
     expect(out.status).toBe(0);
-    expect(out.stdout).toContain('42/42');
+    expect(out.stdout).toContain('43/43');
   });
 
   it('defaults to --report and exits 0', () => {
@@ -135,8 +157,19 @@ describe('llms.txt "Which one when"', () => {
 });
 
 describe('keyboard contract tags on core overlays', () => {
-  it.each(['Combobox', 'ContextMenu', 'Dialog', 'HoverCard'])('%s declares keyboard', (name) => {
+  // The hds#393 overlays, plus Select: its listbox popup has the same contract.
+  const overlays = ['Combobox', 'Dialog', 'Menu', 'Popover', 'Select', 'Tooltip'];
+
+  it.each(overlays)('%s is core and declares keyboard', (name) => {
+    expect(CORE_COMPONENTS).toContain(name);
     expect(manifest.componentSpecs[name].keyboard?.length).toBeGreaterThan(0);
+  });
+
+  it('covers every core component the manifest files under Overlays', () => {
+    const coreOverlays = CORE_COMPONENTS.filter(
+      (n) => manifest.componentSpecs[n]?.category === 'Overlays',
+    );
+    expect(coreOverlays.filter((n) => !overlays.includes(n))).toEqual([]);
   });
 });
 

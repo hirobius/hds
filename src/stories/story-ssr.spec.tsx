@@ -11,10 +11,11 @@
  * `story-render.spec.tsx` (the jsdom mount gate) both only ever client-render,
  * so this class of bug is invisible to every other gate.
  *
- * Canary: reverting the hds#284 fix (`<style>{STYLES}</style>` instead of
- * `<style dangerouslySetInnerHTML={{ __html: STYLES }} />` in
- * stacked-card-rail.tsx) makes this test fail, naming
- * "stacked-card-rail › Default" (or whichever exported story renders first).
+ * Canary: hds#284's subject, StackedCardRail, was removed in 0.20.0 (hds#394),
+ * and no component renders a JSX `<style>` today (Box's sx rules go into
+ * document.head at runtime). The gate stays so the bug cannot come back: a
+ * story that renders `<style>{css}</style>` instead of
+ * `<style dangerouslySetInnerHTML={{ __html: css }} />` fails here (security-ok: quoted in prose, not rendered).
  *
  * Stories are wrapped in the SAME providers as .storybook/preview.tsx
  * (MemoryRouter + ThemeProvider) so this gate stays faithful to how the
@@ -83,7 +84,7 @@ for (const [path, mod] of Object.entries(modules)) {
           `${name} › ${exportName}: server-rendered <style> content contains an ` +
             'HTML-escaped entity (e.g. &quot;). Browsers parse <style> as raw text, so ' +
             'the entity is never decoded and the CSS is broken until hydration replaces ' +
-            'the subtree (hds#284). Use <style dangerouslySetInnerHTML={{ __html: ... }} /> ' +
+            'the subtree (hds#284). Use <style dangerouslySetInnerHTML={{ __html: ... }} /> ' + // security-ok: advice text in a failure message; nothing is rendered
             'instead of <style>{cssString}</style>.',
         ).toEqual([]);
       });

@@ -1,24 +1,19 @@
 /**
  * docs-tooling boundary (hds#133, option A).
  *
- * The token-lab views (token lists, legacy token governance panel) are docs-site
- * tooling, not consumer components. They live under `src/docs-tooling/lab/`,
- * outside `src/app/components/` (which component discovery scans into the
- * published manifest), and nothing in the published component tree may import
- * docs tooling back.
+ * Docs-site tooling (token-lab views, doc-page chrome, sketch controls) is not
+ * a consumer component. hds#133 moved it out of `src/app/components/` (which
+ * component discovery scans into the published manifest) into
+ * `src/docs-tooling/`; hds#391 then deleted that directory outright, because
+ * nothing imported it. These two tests stop docs tooling from coming back
+ * through the published component tree or the public barrels.
  */
 import { describe, it, expect } from 'vitest';
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..');
 const COMPONENTS = path.join(ROOT, 'src/app/components');
-const LAB_MODULES = [
-  'legacy-token-detail.tsx',
-  'legacy-token-list.tsx',
-  'token-collection-list.tsx',
-  'token-list.tsx',
-];
 
 function walk(dir) {
   return readdirSync(dir).flatMap((name) => {
@@ -28,13 +23,6 @@ function walk(dir) {
 }
 
 describe('docs-tooling boundary', () => {
-  it('keeps the token-lab modules out of src/app/components', () => {
-    for (const mod of LAB_MODULES) {
-      expect(existsSync(path.join(COMPONENTS, 'lab', mod)), mod).toBe(false);
-      expect(existsSync(path.join(ROOT, 'src/docs-tooling/lab', mod)), mod).toBe(true);
-    }
-  });
-
   it('no published component imports docs tooling', () => {
     const offenders = walk(COMPONENTS)
       .filter((f) => /\.(tsx?|mjs)$/.test(f))

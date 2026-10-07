@@ -486,7 +486,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display face: Satoshi Bold (ITF), bound to display/h1/h2/h3 composites."
+          "$description": "Display face: Satoshi Bold (ITF), bound to the display and title composites."
         },
         "mono": {
           "$value": ["Geist Mono", "Courier New", "monospace"],
@@ -564,6 +564,13 @@
             "unit": "px"
           },
           "$description": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl."
+        },
+        "code": {
+          "$value": {
+            "value": 13,
+            "unit": "px"
+          },
+          "$description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose."
         }
       },
       "weight": {
@@ -599,6 +606,14 @@
         "relaxed": {
           "$value": 1.625,
           "$description": "Swiss-canon relaxed rhythm (10t-5). Used by body/small/mono composites for long-form prose comfort."
+        },
+        "display": {
+          "$value": 1.05,
+          "$description": "Display role leading (hds#485)."
+        },
+        "body": {
+          "$value": 1.6,
+          "$description": "Body role leading (hds#485)."
         }
       },
       "letterSpacing": {
@@ -829,6 +844,14 @@
           "unit": "px"
         },
         "$description": "96px size step."
+      },
+      "120": {
+        "$type": "dimension",
+        "$value": {
+          "value": 120,
+          "unit": "px"
+        },
+        "$description": "120px size step. Backs semantic.size.tile."
       },
       "$description": "Unaliased dimensional values.",
       "interactive": {
@@ -1669,84 +1692,40 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "8-style Swiss-canon type ramp: display, h1–h3, body, small, caption, mono.",
+      "$description": "5-role type ramp plus mono (hds#483): display, title, body, ui, caption, mono. h1, h2, h3 and eyebrow are deprecated aliases.",
       "display": {
-        "$value": {
-          "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.6xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
-          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
-          "lineHeight": "{primitive.typography.lineHeight.none}"
-        },
-        "$description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
-        "$extensions": {
-          "com.figma.variables": {
-            "fontSize": "clamp(40px, 8vw, 60px)",
-            "note": "Figma stores the 60px desktop-max static value. Browser CSS overrides with fluid scaling (40px min → 60px max). See src/styles/theme.css."
-          }
-        }
-      },
-      "h1": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.5xl}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
-          "lineHeight": "{primitive.typography.lineHeight.tight}"
+          "lineHeight": "{primitive.typography.lineHeight.display}"
         },
-        "$description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
-        "$extensions": {
-          "com.figma.variables": {
-            "fontSize": "clamp(32px, 6vw, 48px)",
-            "note": "Figma stores the 48px desktop-max static value. Browser CSS overrides with fluid scaling (32px min → 48px max). See src/styles/theme.css."
-          }
-        }
+        "$description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6."
       },
-      "h2": {
+      "title": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.3xl}",
+          "fontSize": "{primitive.typography.size.2xl}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
-          "lineHeight": "40px"
+          "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
-        "$description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
-        "$extensions": {
-          "com.figma.variables": {
-            "fontSize": "clamp(24px, 3.5vw, 30px)",
-            "note": "Figma stores the 30px desktop-max static value. Browser CSS overrides with fluid scaling (24px min → 30px max). See src/styles/theme.css."
-          }
-        }
-      },
-      "h3": {
-        "$value": {
-          "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
-          "lineHeight": "28px"
-        },
-        "$description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
-        "$extensions": {
-          "com.figma.variables": {
-            "fontSize": "clamp(18px, 2vw, 20px)",
-            "note": "Figma stores the 20px desktop-max static value. Browser CSS overrides with fluid scaling (18px min → 20px max). See src/styles/theme.css."
-          }
-        }
+        "$description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6."
       },
       "body": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.base}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
-          "lineHeight": "24px",
+          "lineHeight": "{primitive.typography.lineHeight.body}",
           "maxWidth": {
             "value": 60,
             "unit": "ch"
           }
         },
-        "$description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px)."
+        "$description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6."
       },
       "ui": {
         "$value": {
@@ -1754,13 +1733,13 @@
           "fontSize": "{primitive.typography.size.sm}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
-          "lineHeight": "20px",
+          "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
             "value": 60,
             "unit": "ch"
           }
         },
-        "$description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px)."
+        "$description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6."
       },
       "caption": {
         "$value": {
@@ -1768,34 +1747,67 @@
           "fontSize": "{primitive.typography.size.xs}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
-          "lineHeight": "16px"
+          "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
-        "$description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283)."
+        "$description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6."
+      },
+      "mono": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.mono}",
+          "fontSize": "{primitive.typography.size.code}",
+          "fontWeight": "{primitive.typography.weight.regular}",
+          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "lineHeight": "{primitive.typography.lineHeight.normal}",
+          "maxWidth": {
+            "value": 60,
+            "unit": "ch"
+          }
+        },
+        "$description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6."
+      },
+      "h1": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.display}",
+          "fontSize": "{primitive.typography.size.2xl}",
+          "fontWeight": "{primitive.typography.weight.bold}",
+          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
+          "lineHeight": "{primitive.typography.lineHeight.tight}"
+        },
+        "$description": "deprecated: use semantic.typography.title",
+        "$deprecated": "hds#483 — use semantic.typography.title"
+      },
+      "h2": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.display}",
+          "fontSize": "{primitive.typography.size.2xl}",
+          "fontWeight": "{primitive.typography.weight.bold}",
+          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
+          "lineHeight": "{primitive.typography.lineHeight.tight}"
+        },
+        "$description": "deprecated: use semantic.typography.title",
+        "$deprecated": "hds#483 — use semantic.typography.title"
+      },
+      "h3": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.display}",
+          "fontSize": "{primitive.typography.size.2xl}",
+          "fontWeight": "{primitive.typography.weight.bold}",
+          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
+          "lineHeight": "{primitive.typography.lineHeight.tight}"
+        },
+        "$description": "deprecated: use semantic.typography.title",
+        "$deprecated": "hds#483 — use semantic.typography.title"
       },
       "eyebrow": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.xs}",
           "fontWeight": "{primitive.typography.weight.medium}",
-          "letterSpacing": "{primitive.typography.letterSpacing.caps}",
-          "lineHeight": "16px",
-          "textTransform": "uppercase"
-        },
-        "$description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px)."
-      },
-      "mono": {
-        "$value": {
-          "fontFamily": "{primitive.typography.family.mono}",
-          "fontSize": "{primitive.typography.size.sm}",
-          "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
-          "lineHeight": "20px",
-          "maxWidth": {
-            "value": 60,
-            "unit": "ch"
-          }
+          "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
-        "$description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px)."
+        "$description": "deprecated: use semantic.typography.caption",
+        "$deprecated": "hds#483 — use semantic.typography.caption"
       },
       "lineHeight": {
         "none": {
@@ -2032,6 +2044,10 @@
       "avatar": {
         "$value": "{primitive.size.40}",
         "$description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242)."
+      },
+      "tile": {
+        "$value": "{primitive.size.120}",
+        "$description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403)."
       },
       "row": {
         "$description": "Table row minimum height by density.",

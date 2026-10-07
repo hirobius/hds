@@ -1,9 +1,26 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import ts from 'typescript';
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { __resetDeprecationWarnings } from '../../lib/deprecation';
-import { resolveSx, sxClassName, injectSx, __resetBoxSxForTests, type SxObject } from './box-sx';
+import {
+  resolveSx,
+  resolveSpacingValue,
+  sxClassName,
+  injectSx,
+  __resetBoxSxForTests,
+  LAYOUT_GAP,
+  LAYOUT_GAP_NAMES,
+  SPACE_SCALE,
+  type SxObject,
+} from './box-sx';
 import { Stack } from './stack';
+import { Grid } from './grid';
+import { Sidebar, type SidebarProps } from './sidebar';
+import { Switcher } from './switcher';
+import { Card } from './card';
 
 afterEach(() => {
   __resetBoxSxForTests();
@@ -113,6 +130,97 @@ describe("resolveSx — deprecated 'tight'..'spacious' warn once (hds#206, ADR-0
     }
     expect(warn).not.toHaveBeenCalled();
   });
+});
+
+// hds#404: one copy of the layout-gap names, here, for every layout component.
+describe('LAYOUT_GAP — the one layout-gap vocabulary (hds#404)', () => {
+  it("maps the four names to the scale steps Stack's gap reads", () => {
+    expect(LAYOUT_GAP_NAMES).toEqual({
+      tight: SPACE_SCALE.sm,
+      normal: SPACE_SCALE.md,
+      inset: SPACE_SCALE.lg,
+      spacious: SPACE_SCALE.xl,
+    });
+  });
+
+  it.each(Object.entries(LAYOUT_GAP_NAMES))('resolves %s to %s', (name, css) => {
+    expect(resolveSpacingValue(name, LAYOUT_GAP)).toBe(css);
+  });
+
+  it('is closed: anything else resolves to undefined, so the prop sets no style', () => {
+    for (const value of [0, 12, 'sm', 'xl', '1rem', 'gap', 'px16', 'constructor', 'var(--x)']) {
+      expect(resolveSpacingValue(value, LAYOUT_GAP)).toBeUndefined();
+    }
+  });
+
+  // Cluster, Cover, Bleed and Center resolved through it too until 0.20.0 removed them (hds#394).
+  const LAYOUT_FILES = ['grid', 'sidebar', 'switcher', 'card', 'stack'];
+
+  it.each(LAYOUT_FILES)('%s.tsx has no gap map of its own: it resolves through box-sx', (name) => {
+    const source = readFileSync(join(__dirname, `${name}.tsx`), 'utf8');
+    expect(source).toMatch(/import \{[^}]*\bresolveSpacingValue\b[^}]*\} from '\.\/box-sx'/);
+    expect(source).toMatch(/import \{[^}]*\bLAYOUT_GAP(_NAMES)?\b[^}]*\} from '\.\/box-sx'/);
+    expect(source).not.toMatch(/var\(--semantic-space-scale-/);
+    expect(source).not.toMatch(/\b(tight|normal|inset|spacious): SPACE_SCALE\./);
+  });
+
+  it("the layout components' names do not warn: only Box sx's are deprecated", () => {
+    __resetDeprecationWarnings();
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const two = [createElement('i', { key: 'a' }), createElement('i', { key: 'b' })];
+    for (const gap of Object.keys(LAYOUT_GAP_NAMES) as (keyof typeof LAYOUT_GAP_NAMES)[]) {
+      renderToStaticMarkup(createElement(Grid, { gap }, 'x'));
+      renderToStaticMarkup(createElement(Sidebar, { gap } as SidebarProps, ...two));
+      renderToStaticMarkup(createElement(Switcher, { gap }, 'x'));
+      renderToStaticMarkup(createElement(Card, { gap }, 'x'));
+    }
+    expect(warn).not.toHaveBeenCalled();
+    vi.restoreAllMocks();
+  });
+});
+
+/**
+ * Type-checks `source` as a module beside box-sx.ts, under the repo's
+ * tsconfig, and returns that module's own errors. Test files sit outside
+ * `pnpm typecheck`, so this is how a test pins a signature.
+ */
+function typeErrorsBesideBoxSx(source: string): string[] {
+  const root = join(__dirname, '..', '..', '..');
+  const { config } = ts.readConfigFile(join(root, 'tsconfig.json'), ts.sys.readFile);
+  const { options } = ts.parseJsonConfigFileContent(config, ts.sys, root);
+  const file = join(__dirname, '__resolve-spacing-value-types.ts');
+  const host = ts.createCompilerHost(options);
+  const { getSourceFile, fileExists } = host;
+  host.fileExists = (name) => name === file || fileExists.call(host, name);
+  host.getSourceFile = (name, language, ...rest) =>
+    name === file
+      ? ts.createSourceFile(name, source, language)
+      : getSourceFile.call(host, name, language, ...rest);
+  const program = ts.createProgram([file], options, host);
+  return ts
+    .getPreEmitDiagnostics(program, program.getSourceFile(file))
+    .map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
+}
+
+describe('resolveSpacingValue — its return type follows the vocabulary (hds#404)', () => {
+  it('is never undefined for an open vocabulary and never a number for a closed one', () => {
+    const errors = typeErrorsBesideBoxSx(`
+      import { resolveSpacingValue, LAYOUT_GAP, type SpacingVocabulary } from './box-sx';
+      type Equals<A, B> =
+        (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2 ? true : false;
+      declare const value: string | number;
+      declare const either: SpacingVocabulary;
+      const units = resolveSpacingValue(value, { names: { sm: 'a' }, numbers: 'units' });
+      const raw = resolveSpacingValue(value, { names: {}, numbers: 'raw' });
+      const closed = resolveSpacingValue(value, LAYOUT_GAP);
+      const unknown = resolveSpacingValue(value, either);
+      export const unitsIsStringOrNumber: Equals<typeof units, string | number> = true;
+      export const rawIsStringOrNumber: Equals<typeof raw, string | number> = true;
+      export const closedIsStringOrUndefined: Equals<typeof closed, string | undefined> = true;
+      export const eitherIsAnyOfThem: Equals<typeof unknown, string | number | undefined> = true;
+    `);
+    expect(errors).toEqual([]);
+  }, 60_000);
 });
 
 describe('resolveSx — token colors', () => {

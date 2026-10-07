@@ -4,13 +4,14 @@
  * @tier primitive
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155
  */
-// motion-ok: copy feedback is handled by the nested IconButton, while the inline code chip stays visually stable inside prose and tables
+// motion-ok: copy feedback is handled by the nested icon-only Button, while the inline code chip stays visually stable inside prose and tables
 import { useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Copy, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
-import { IconButton } from './icon-button';
+import { Button } from './button';
+import { Icon } from './icon';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Non-interactive — no hover/active/focus states. `density` is the contract's
@@ -26,8 +27,8 @@ const inlineCodeVariants = /* @__PURE__ */ cva(
   {
     variants: {
       density: {
-        comfortable: 'py-[var(--semantic-space-subgrid-gap)] align-[-0.08em] leading-[1]',
-        compact: 'py-[var(--semantic-space-subgrid-hairline)] align-[-0.04em] leading-[0.95]',
+        comfortable: 'py-[var(--semantic-space-subgrid-gap)] align-[-0.08em] leading-[1]', // type-ramp-ok: inline chip hugs the prose line box, so it keeps its own leading
+        compact: 'py-[var(--semantic-space-subgrid-hairline)] align-[-0.04em] leading-[0.95]', // type-ramp-ok: compact chip in dense cells, same reason
       },
     },
     defaultVariants: { density: 'comfortable' },
@@ -104,18 +105,16 @@ export function InlineCode({
         ...style,
       }}
     >
-      <IconButton
-        icon={copied ? Check : Copy}
+      <Button
+        iconOnly
         size="sm"
         variant="tertiary"
-        label={copied ? 'Copied' : 'Copy'}
+        aria-label={copied ? 'Copied' : 'Copy'}
         onClick={handleCopy}
         style={copied ? { color: 'var(--semantic-color-content-accent)' } : undefined}
+        iconLeft={<Icon icon={copied ? Check : Copy} size="small" />}
       />
       {codeEl}
     </span>
   );
 }
-
-/** @internal — CVA variant helper; compose via InlineCode props instead. */
-export { inlineCodeVariants };

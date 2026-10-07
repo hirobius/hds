@@ -18,7 +18,7 @@
  * @primitive Dialog Menu Select Combobox Table Alert
  */
 import { useState } from 'react';
-import { describe, it, test, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { virtual } from '@guidepup/virtual-screen-reader';
 import { Table, type TableColumn, type TableRow } from '@/app/components/table';
@@ -30,12 +30,6 @@ import {
   SelectFixture,
   ComboboxFixture,
 } from './overlay-fixtures';
-
-// Component defects this suite found (#376). Each case that shows one is
-// test.fails: it goes green while the defect is there and turns red the day it
-// is fixed, at which point swap test.fails for it.
-const SELECT_LISTBOX_NAME_ISSUE = 'https://github.com/hirobius/hds/issues/398';
-const COMBOBOX_DIALOG_NAME_ISSUE = 'https://github.com/hirobius/hds/issues/399';
 
 afterEach(async () => {
   await virtual.stop();
@@ -89,8 +83,8 @@ function SaveFixture() {
         Save
       </button>
       {saved ? (
-        <Alert tone="success" title="Saved">
-          Your changes were saved.
+        <Alert tone="danger" title="Not saved">
+          Your changes were not saved.
         </Alert>
       ) : null}
     </>
@@ -155,24 +149,34 @@ describe('Select screen-reader contract', () => {
     expect(log).toContain('option, Cherry, not selected, position 3, set size 3');
   });
 
-  // Radix Select Content renders role="listbox" with no aria-labelledby, and
-  // select.tsx passes no aria-label, so the reader says "listbox" with no name.
-  test.fails(
-    `names the open listbox by the field label (${SELECT_LISTBOX_NAME_ISSUE})`,
-    async () => {
-      render(<SelectFixture />);
-      await startReader();
-      await press(screen.getByRole('combobox'), '{Enter}');
-      await screen.findByRole('listbox');
-      // Focus lands on the selected option: step past the end of the listbox, then back to its start.
-      await next(4);
-      await previous(5);
+  // With the label hidden, the trigger still carries the field label, not only
+  // the value (hds#408).
+  it('reads the closed trigger with the field label when the label is hidden', async () => {
+    render(<SelectFixture showLabel={false} />);
+    await startReader();
+    await next(2);
 
-      const log = await virtual.spokenPhraseLog();
-      expect(log).toContain('end of listbox, Fruit, orientated vertically');
-      expect(log).toContain('listbox, Fruit, orientated vertically');
-    },
-  );
+    const log = await virtual.spokenPhraseLog();
+    expect(log).toContain(
+      'combobox, Fruit: Apple, has popup listbox, not expanded, no autocomplete',
+    );
+  });
+
+  // Radix Select Content names nothing itself: select.tsx labels the listbox
+  // with the field label (hds#398).
+  it('names the open listbox by the field label', async () => {
+    render(<SelectFixture />);
+    await startReader();
+    await press(screen.getByRole('combobox'), '{Enter}');
+    await screen.findByRole('listbox');
+    // Focus lands on the selected option: step past the end of the listbox, then back to its start.
+    await next(4);
+    await previous(5);
+
+    const log = await virtual.spokenPhraseLog();
+    expect(log).toContain('end of listbox, Fruit, orientated vertically');
+    expect(log).toContain('listbox, Fruit, orientated vertically');
+  });
 });
 
 describe('Combobox screen-reader contract', () => {
@@ -202,9 +206,25 @@ describe('Combobox screen-reader contract', () => {
     expect(log).toContain('combobox, Fruit, has popup listbox, expanded, 1 control');
   });
 
-  // The popover is Popover.Content, role="dialog", and combobox.tsx gives it no
-  // aria-label, so the reader enters an unnamed "dialog".
-  test.fails(`names the open popover dialog (${COMBOBOX_DIALOG_NAME_ISSUE})`, async () => {
+  // Each option's <li> is role="none", so the option's parent in the
+  // accessibility tree is the listbox and the reader counts it among its
+  // siblings, not alone in a list item (hds#407).
+  it('reads each open option with its real position and set size', async () => {
+    render(<ComboboxFixture />);
+    await startReader();
+    await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
+    await screen.findByRole('listbox');
+    await next(8);
+
+    const log = await virtual.spokenPhraseLog();
+    expect(log).toContain('option, Apple, not selected, position 1, set size 3');
+    expect(log).toContain('option, Banana, not selected, position 2, set size 3');
+    expect(log).toContain('option, Cherry, not selected, position 3, set size 3');
+  });
+
+  // The popover is Popover.Content, role="dialog": combobox.tsx names it with
+  // the field label, so the reader does not enter an unnamed "dialog" (hds#399).
+  it('names the open popover dialog by the field label', async () => {
     render(<ComboboxFixture />);
     await startReader();
     await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
@@ -233,8 +253,8 @@ describe('Table screen-reader contract', () => {
 describe('Alert screen-reader contract', () => {
   it('reads a rendered alert: the role, then its title and message', async () => {
     render(
-      <Alert tone="success" title="Saved">
-        Your changes were saved.
+      <Alert tone="danger" title="Not saved">
+        Your changes were not saved.
       </Alert>,
     );
     await startReader();
@@ -245,8 +265,8 @@ describe('Alert screen-reader contract', () => {
     expect(at).toBeGreaterThan(-1);
     expect(log.slice(at, at + 4)).toEqual([
       'alert',
-      'Saved',
-      'Your changes were saved.',
+      'Not saved',
+      'Your changes were not saved.',
       'end of alert',
     ]);
   });
@@ -265,7 +285,9 @@ describe('Alert screen-reader contract', () => {
     // land a frame or more after the insert, so wait for them. The reader joins
     // title and body.
     await waitFor(async () =>
-      expect(await virtual.spokenPhraseLog()).toContain('assertive: SavedYour changes were saved.'),
+      expect(await virtual.spokenPhraseLog()).toContain(
+        'assertive: Not savedYour changes were not saved.',
+      ),
     );
   });
 });

@@ -8,8 +8,8 @@ import path from 'path';
 import { readFileSync } from 'fs';
 import react from '@vitejs/plugin-react';
 
-// Mirror the app/lib `virtual:hds-manifest` plugin so components that import the
-// manifest (e.g. CommandPalette) resolve it under vitest — including the
+// Mirror the app/lib `virtual:hds-manifest` plugin so any module that imports the
+// manifest that way resolves it under vitest (CommandPalette did until 0.20.0) — including the
 // story-render smoke gate that renders every story.
 const hdsManifestModuleId = 'virtual:hds-manifest';
 const resolvedHdsManifestModuleId = `\0${hdsManifestModuleId}`;
@@ -43,6 +43,8 @@ export default defineConfig({
     // under /tests and are run via `pnpm test:*`.)
     include: [
       'scripts/__tests__/**/*.{test,spec}.mjs',
+      // The consumer ESLint plugin's RuleTester suites (shipped as ./eslint-plugin).
+      'scripts/eslint-plugin-hds/__tests__/**/*.test.mjs',
       'src/**/*.{test,spec}.{ts,tsx,js,jsx}',
       // Contract tests (tests/primitive-contracts/*.contract.test.tsx) are vitest +
       // React Testing Library, so collect .tsx here. Playwright (testMatch '**/*.spec.ts')

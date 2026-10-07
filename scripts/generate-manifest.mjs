@@ -28,7 +28,6 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['Badge', 'Badge'],
   ['Card', 'Card'],
   ['CodeBlock', 'CodeBlock'],
-  ['ControlsPanel', 'ControlsPanel'],
   ['Divider', 'Divider'],
   // HdsTooltip -> Tooltip (hds#315): the public Radix tooltip took the bare name;
   // the internal image-expand pill is ExpandTooltip (@internal, not exported).
@@ -38,20 +37,13 @@ const COMPONENT_NAME_OVERRIDES = new Map([
   ['HdsSelect', 'Select'],
   ['HdsSlider', 'Slider'],
   ['HdsToggle', 'Toggle'],
-  // Lightbox was de-prefixed (HdsLightbox → Lightbox) but keeps its filename
-  // (image-lightbox.tsx), so the filePath-based orphan prune can't clear the
-  // old spec. Remap it here so the curated metadata migrates and no ghost
-  // HdsLightbox entry survives regen.
-  ['HdsLightbox', 'Lightbox'],
   ['Icon', 'Icon'],
   ['Input', 'Input'],
   ['InlineCode', 'InlineCode'],
   ['InlineLink', 'InlineLink'],
   ['Nav', 'HdsNav'],
   ['Stack', 'Stack'],
-  ['StepperField', 'StepperField'],
   ['Tag', 'Tag'],
-  ['Token', 'Token'],
 ]);
 
 function readJson(path) {
@@ -68,14 +60,8 @@ function uniqueSorted(values) {
 
 function getPreviewSizing(componentName) {
   switch (componentName) {
-    case 'AnimatedLabel':
-    case 'TextLockup':
-    case 'HdsSidebarUtilityButton':
-      return 'compact';
     case 'HdsComponentDoc':
-    case 'FoundationSwatch':
     case 'Table':
-    case 'ComponentInstanceMatrix':
     case 'InfoPage':
       return 'full';
     default:
@@ -208,12 +194,16 @@ manifest.componentSpecs = remappedSpecs;
 manifest.inventory = manifest.inventory ?? {};
 
 for (const entry of activeDiscoveredComponents) {
-  // Contract fields are rebuilt from the tags on every run: drop last run's so
-  // a removed tag removes its field. `slots` is hand-kept, merged below.
+  // Contract and deprecation fields are rebuilt from the tags on every run:
+  // drop last run's so a removed tag removes its field. `slots` is hand-kept,
+  // merged below.
   const {
     usage: _u,
     keyboard: _k,
     aiRules: _a,
+    deprecated: _d,
+    removeIn: _r,
+    useInstead: _i,
     ...current
   } = manifest.componentSpecs[entry.name] ?? {};
   const contract = compactContract(entry);
@@ -250,11 +240,14 @@ for (const entry of activeDiscoveredComponents) {
     ...(contract.usage ? { usage: contract.usage } : {}),
     ...(contract.keyboard ? { keyboard: contract.keyboard } : {}),
     ...(contract.aiRules ? { aiRules: contract.aiRules } : {}),
+    // hds#390: `deprecated` (the notice), `removeIn`, `useInstead`, from the
+    // @deprecated block. Consumer surfaces (SKILL.md, llms) skip these specs.
+    ...(entry.deprecation ?? {}),
     ...(slots ? { slots } : {}),
     // The component's `@figma` JSDoc tag is the only source: removing the tag
     // unmaps the component (and its Code Connect template) on the next regen.
     figmaUrl: entry.figmaUrl ?? null,
-    figmaId: current.figmaId ?? (entry.name === 'TextLockup' ? 'text-lockup-pattern' : null),
+    figmaId: current.figmaId ?? null,
     // figmaLink: explicit "View in Figma" target (10d-14). A real Figma URL or
     // null, never a placeholder. Legacy `TODO:hds-master:<Name>` markers are
     // dropped here so they cannot survive a regen; see scripts/lib/figma-link.mjs.

@@ -98,13 +98,13 @@ export type ManifestComponentSpec = {
   usage?: ManifestUsage;
   keyboard?: ManifestKeyboardEntry[];
   aiRules?: string;
+  /** Deprecation notice from the component's `@deprecated` JSDoc tag (hds#390). */
+  deprecated?: string;
+  /** Release that removes the deprecated component, from `@removeIn`. */
+  removeIn?: string;
+  /** Replacement for the deprecated component, from `@useInstead` in the same block. */
+  useInstead?: string;
 };
-
-/**
- * Alias of ManifestComponentSpec for hds-search.ts back-compat.
- * @deprecated Use ManifestComponentSpec directly in new code.
- */
-export type ManifestSpec = ManifestComponentSpec;
 
 /** The root SystemManifest shape (virtual:hds-manifest). */
 export type SystemManifest = {
