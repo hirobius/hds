@@ -32,7 +32,7 @@ import { cn } from '../../lib/utils';
  * @whenNot A compact mode switch with no panels, or content that must all be visible.
  * @useInstead SegmentedControl a compact switch with no panels
  * @useInstead Disclosure optional content that expands in place
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-89
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89
  */
 export const Tabs = TabsPrimitive.Root;
 

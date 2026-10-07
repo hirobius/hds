@@ -7,7 +7,7 @@
  * @useInstead Checkbox independent options that can be ticked together
  * @useInstead Select a long list that can collapse into a dropdown
  * @useInstead SegmentedControl a compact switch between two to five views or modes
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17
  */
 
 import { forwardRef } from 'react';

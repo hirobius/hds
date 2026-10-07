@@ -54,9 +54,8 @@ afterEach(() => {
 const LINKS = {
   storybookUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
-  stagingFileKey: 'STAGINGKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
-  stagingFileName: 'HDS Tokens & Components (Copy)',
+  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
 };
 const writeLinks = (root, links) => {
   mkdirSync(join(root, 'figma'), { recursive: true });
@@ -131,12 +130,21 @@ describe('pnpm figma:push', () => {
     });
   });
 
-  it('refuses to build when the staging and library keys are equal, or either is null', () => {
+  it('refuses to build without the library key or name, or when a retired file is the library', () => {
+    const retired = (file) => ({ ...LINKS, retiredFiles: [{ ...LINKS.retiredFiles[0], ...file }] });
     const cases = [
-      [{ ...LINKS, stagingFileKey: LINKS.libraryFileKey }, /stagingFileKey equals libraryFileKey/],
-      [{ ...LINKS, stagingFileKey: null }, /stagingFileKey/],
       [{ ...LINKS, libraryFileKey: null }, /libraryFileKey/],
-      [{ ...LINKS, stagingFileName: undefined }, /stagingFileName/],
+      [{ ...LINKS, libraryFileName: undefined }, /libraryFileName/],
+      [{ ...LINKS, retiredFiles: undefined }, /retiredFiles/],
+      [
+        retired({ fileKey: LINKS.libraryFileKey }),
+        /retired.*libraryFileKey|libraryFileKey.*retired/,
+      ],
+      [
+        retired({ fileName: LINKS.libraryFileName }),
+        /retired.*libraryFileName|libraryFileName.*retired/,
+      ],
+      [retired({ fileKey: '' }), /retiredFiles\[0\]/],
     ];
     for (const [links, message] of cases) {
       const root = tempRoot();

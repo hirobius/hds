@@ -18,7 +18,7 @@ import {
   resolveTarget,
 } from '../lib/figma-inventory.mjs';
 
-const FILE_KEY = 'c8MaVgwxOlxm4wr8wnH0Z4';
+const FILE_KEY = '2VgBbVpKiDnu0aftJEVyBQ';
 
 /** Shaped after the real document; ids are the ones verified on 2026-09-20. */
 const FILE = {
@@ -89,6 +89,30 @@ const FILE = {
           },
         ],
       },
+      {
+        // Retired without deleting (ADR-026, amended 2026-10-07): a component
+        // removed from code waits here, renamed, for Adrian to delete it.
+        id: '2083:2',
+        name: 'Archive',
+        type: 'CANVAS',
+        children: [
+          {
+            id: '2083:3',
+            name: 'Archived 2026-10-07',
+            type: 'SECTION',
+            children: [
+              {
+                id: '40:39',
+                name: '_IconButton (archived 2026-10-07)',
+                type: 'COMPONENT_SET',
+                children: [{ id: '40:3', name: 'Size=md', type: 'COMPONENT' }],
+              },
+            ],
+          },
+        ],
+      },
+      // The page an archived component left: empty, not deleted.
+      { id: '40:2', name: 'IconButton', type: 'CANVAS', children: [] },
     ],
   },
 };
@@ -127,6 +151,21 @@ describe('parseDocument', () => {
     expect(cover.kind).toBe('doc');
     expect(cover.assets).toEqual([]);
     expect(inventory.pages.find((page) => page.name === 'Button').kind).toBe('components');
+  });
+
+  it('classifies the Archive page as archive, listing what waits there', () => {
+    const inventory = parseDocument(FILE, FILE_KEY);
+    const archive = inventory.pages.find((page) => page.name === 'Archive');
+    expect(archive.kind).toBe('archive');
+    expect(archive.assets).toEqual([
+      {
+        id: '40:39',
+        name: '_IconButton (archived 2026-10-07)',
+        type: 'COMPONENT_SET',
+        variantCount: 1,
+      },
+    ]);
+    expect(inventory.pages.find((page) => page.name === 'IconButton').kind).toBe('empty');
   });
 
   it('carries the file key and name through', () => {
@@ -178,6 +217,12 @@ describe('coverage', () => {
     expect(report.total).toBe(2);
     expect(report.mapped).toBe(1);
     expect(report.unmapped.map((u) => u.name)).toEqual(['Alert']);
+  });
+
+  it('never reports an archived component, which is no longer in code, as a coverage gap', () => {
+    const report = coverage(inventory, { componentSpecs: {} });
+    expect(report.unmapped.some((u) => u.page === 'Archive')).toBe(false);
+    expect(report.total).toBe(2);
   });
 
   it('never reports an icon sheet as a coverage gap', () => {
@@ -262,33 +307,31 @@ describe('fetchFile', () => {
 });
 
 describe('resolveTarget', () => {
-  const links = { libraryFileKey: 'LIB', stagingFileKey: 'STAGE' };
+  const links = { libraryFileKey: 'LIB', retiredFiles: [{ fileKey: 'OLD' }] };
 
-  it('defaults to the published library', () => {
+  it('defaults to the library', () => {
     const t = resolveTarget([], links);
     expect(t).toMatchObject({ fileKey: 'LIB', isDefault: true });
   });
 
-  it('resolves `--file staging` by name so no key needs pasting', () => {
-    expect(resolveTarget(['--fetch', '--file', 'staging'], links)).toMatchObject({
-      fileKey: 'STAGE',
-      isDefault: false,
-    });
-  });
-
-  it('accepts a raw file key', () => {
+  it('accepts a raw file key, read without writing the inventory', () => {
     expect(resolveTarget(['--file', 'qhlYOkWPKs8MfO3x1M5W4f'], links)).toMatchObject({
       fileKey: 'qhlYOkWPKs8MfO3x1M5W4f',
       isDefault: false,
     });
   });
 
-  it('explains how to get a key when staging is unset', () => {
-    // The error is the documentation: this is the exact moment someone needs
-    // to know a Figma file key is the URL segment after /design/.
-    expect(() =>
-      resolveTarget(['--file', 'staging'], { libraryFileKey: 'LIB', stagingFileKey: null }),
-    ).toThrow(/\/design\//);
+  it('refuses `--file staging`: there has been no staging file since 2026-10-07', () => {
+    // The error is the documentation: the duplicate became the library.
+    expect(() => resolveTarget(['--fetch', '--file', 'staging'], links)).toThrow(
+      /no staging file.*2026-10-07.*library/s,
+    );
+  });
+
+  it('explains how to get a key when libraryFileKey is unset', () => {
+    // This is the exact moment someone needs to know a Figma file key is the
+    // URL segment after /design/.
+    expect(() => resolveTarget([], { libraryFileKey: null })).toThrow(/\/design\//);
   });
 
   it('rejects --file with no value rather than reading the wrong file', () => {
@@ -297,12 +340,13 @@ describe('resolveTarget', () => {
   });
 
   it('never marks a non-default target as default, so it cannot overwrite the inventory', () => {
-    // isDefault is what gates the write to figma/inventory.json. If a staging
-    // read ever came back isDefault, check-figma-coverage would start policing
-    // the duplicate instead of the library, and say nothing.
+    // isDefault is what gates the write to figma/inventory.json. If another
+    // file's read ever came back isDefault, check-figma-coverage would start
+    // policing that file instead of the library, and say nothing.
     for (const args of [
-      ['--file', 'staging'],
+      ['--file', 'OLD'],
       ['--file', 'ANY'],
+      ['--file', 'LIB'],
     ]) {
       expect(resolveTarget(args, links).isDefault).toBe(false);
     }

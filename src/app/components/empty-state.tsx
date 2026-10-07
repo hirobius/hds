@@ -6,7 +6,7 @@
  * @whenNot Content that is still loading, or a full-page error.
  * @useInstead Skeleton content that is still loading
  * @useInstead Alert a message about something that went wrong
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352
  * @ai-intent Inline empty-state placeholder so any list, grid, or section can
  *   communicate "no data yet" with consistent muted typography instead of agents
  *   inventing one-off `<p>No items.</p>` lines.

@@ -34,6 +34,14 @@ const ASSET_TYPES = new Set(['COMPONENT_SET', 'COMPONENT']);
 const DOC_PAGE_NAMES = new Set(['Cover', 'Color', 'Typography', 'ColorDoc', 'TypographyDoc']);
 
 /**
+ * The page a component removed from code moves to instead of being deleted
+ * (ADR-026, amended 2026-10-07). A component deprecated in code moves to a
+ * "Deprecated" page instead, which stays a components page: it is still in
+ * code and keeps its @figma link.
+ */
+const ARCHIVE_PAGE_NAME = 'Archive';
+
+/**
  * Reduce a `GET /v1/files/:key` response to the inventory we keep in the repo.
  *
  * A page contributes its top-level component sets and any bare components that
@@ -73,8 +81,13 @@ export function parseDocument(file, fileKey) {
  *              nobody should ever close.
  *   components the real surface: sets and standalone components that a React
  *              component is expected to correspond to.
+ *   archive    components removed from code, waiting for Adrian to delete them
+ *              (ADR-026, amended 2026-10-07: agents never delete in Figma; they
+ *              move a removed component here as "_<Name> (archived <date>)").
+ *              Inventoried, never policed: no code component may claim them.
  */
 function classifyPage(canvas, assets) {
+  if (canvas.name === ARCHIVE_PAGE_NAME) return 'archive';
   if (assets.length === 0) return DOC_PAGE_NAMES.has(canvas.name) ? 'doc' : 'empty';
   const allIcons = assets.every(
     (asset) => asset.type === 'COMPONENT' && asset.name.startsWith('Icon/'),
@@ -240,17 +253,16 @@ function explainStatus(status, path) {
 /**
  * The file to read, and where that choice came from.
  *
- * Defaults to the published library. `--file <key>` points at another file
- * WITHOUT writing figma/inventory.json, which is what makes a staging
- * duplicate checkable: ADR-026 says agents may only write to the duplicate
- * named by `stagingFileKey`, but nothing could tell you whether that
- * duplicate was a faithful copy or a near-empty file with a Cover page.
- * Figma's MCP `get_metadata` cannot answer it either — it lists one page for
- * the real library too — so REST is the only honest check, and it was
- * hardcoded to `libraryFileKey`.
+ * Defaults to the library, `libraryFileKey`, the only read that rewrites
+ * figma/inventory.json. `--file <key>` points at another file WITHOUT writing
+ * figma/inventory.json, which keeps an inspection (a retired file, someone's
+ * duplicate) from replacing the library's inventory. Figma's MCP
+ * `get_metadata` cannot answer "is this file a faithful copy" either: it lists
+ * one page for the real library too, so REST is the only honest check.
  *
- * `--file staging` resolves `stagingFileKey` by name, so the common case
- * needs no copy-pasted key.
+ * `--file staging` resolved `stagingFileKey` until 2026-10-07, when the
+ * staging copy became the one library (ADR-026, amended 2026-10-07). It now
+ * refuses and says so, rather than reading some other file.
  *
  * @param {object} links - figma/links.json
  * @returns {{ fileKey: string, label: string, isDefault: boolean }}
@@ -258,21 +270,24 @@ function explainStatus(status, path) {
 export function resolveTarget(args, links) {
   const index = args.indexOf('--file');
   if (index === -1) {
+    if (!links.libraryFileKey) {
+      throw new Error(
+        'libraryFileKey is not set in figma/links.json, so there is no library to read. ' +
+          "Set it to the library's file key: the segment after /design/ in its URL.",
+      );
+    }
     return { fileKey: links.libraryFileKey, label: 'libraryFileKey', isDefault: true };
   }
 
   const value = args[index + 1];
   if (!value || value.startsWith('--')) {
-    throw new Error('--file needs a Figma file key, or the word `staging`.');
+    throw new Error('--file needs a Figma file key.');
   }
   if (value === 'staging') {
-    if (!links.stagingFileKey) {
-      throw new Error(
-        'stagingFileKey is null in figma/links.json, so there is no staging file to read. ' +
-          "Duplicate the library in Figma, then set it to the new file's key (the segment after /design/ in its URL).",
-      );
-    }
-    return { fileKey: links.stagingFileKey, label: 'stagingFileKey', isDefault: false };
+    throw new Error(
+      'There is no staging file: on 2026-10-07 the staging copy became the one library ' +
+        `(ADR-026, amended 2026-10-07). Drop --file to read the library (${links.libraryFileKey}).`,
+    );
   }
   return { fileKey: value, label: 'the key passed to --file', isDefault: false };
 }

@@ -270,7 +270,7 @@ describe('Sync plugin manifest (figma/push/plugin, hds#411)', () => {
       { name: 'Sync', command: 'sync' },
       { name: 'Plan (dry run)', command: 'plan' },
       { name: 'Check this file', command: 'check' },
-      { name: 'Mark this file as HDS staging', command: 'mark' },
+      { name: 'Mark this file as the HDS library', command: 'mark' },
     ]);
     expect(manifest.enablePrivatePluginApi).toBe(true);
   });

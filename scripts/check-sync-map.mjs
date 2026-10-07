@@ -17,16 +17,16 @@
  *
  * Exit 1 when a component regresses below the recorded coverage, or when a
  * story file resolves to no component. Existing gaps are reported, not failed:
- * 41 library components have no Figma node by known backlog, and failing on
- * that would make the gate a permanent red nobody reads.
+ * a backlog gap (in 2026-09 41 library components had no Figma node; since
+ * 2026-10-07 all 56 do) would otherwise make the gate a permanent red nobody
+ * reads.
  *
  * docs/sync-map.json (hds#277): committed generated output, `$comment: "Do not
  * hand-edit."`. --write is what regenerates it, but nothing ran --write in a
  * way that would fail on drift, so a hand-edit or a stale regenerate could sit
  * there indefinitely still asserting it was current. --check computes the same
  * content --write would produce and diffs it byte-for-byte against what's on
- * disk, naming every component whose row disagrees (same pattern as
- * `pnpm figma:staging-inventory --check` in generate-staging-inventory.mjs).
+ * disk, naming every component whose row disagrees.
  * Wired into .husky/pre-commit alongside the plain (unwritten) run above.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';

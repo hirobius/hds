@@ -2,20 +2,21 @@
 /**
  * Hirobius Design System — builds figma/push/use-figma/delta.js, the zero-click
  * agent sync (hds#418, hds#397 C3): one use_figma call that applies a merged
- * token change to staging and writes the Sync receipt, with no step by Adrian.
+ * token change to the library and writes the Sync receipt, with no step by
+ * Adrian. There is no staging file (ADR-026, amended 2026-10-07).
  *
  * `pnpm figma:push --delta` plans offline against the committed
  * figma/snapshot.json and bakes into delta.js:
  *   - PLAN: the change as a model slice (the variables, collections and
- *     styles the plan touches, as patches over what staging holds, plus every
- *     variable they alias, as anchors), the pin (the committed checksum,
- *     takenAt and file), both file keys, and the checksum of the plan the
- *     slice gives against the snapshot;
+ *     styles the plan touches, as patches over what the library holds, plus
+ *     every variable they alias, as anchors), the pin (the committed checksum,
+ *     takenAt and file), the library key and the retired keys, and the
+ *     checksum of the plan the slice gives against the snapshot;
  *   - PLAN_CHECKSUM over PLAN, and the runtime delta.js reaches
  *     (figma-agent-runtime.mjs hdsAgentRun: hdsApply, hdsPlan, hdsReadState,
  *     hdsFontPreflight, the snapshot delta codec and the C2 receipt writer),
  *     checked by hdsVerifyRuntime like every use_figma carrier.
- * Its first statement refuses any file but staging. See hdsAgentRun for what
+ * Its first statement refuses any file but the library. See hdsAgentRun for what
  * it checks and does in Figma.
  *
  * It refuses to build, naming the route. To Sync: a plan that moves
@@ -23,9 +24,9 @@
  * style description holding " ' < > & (use_figma's read of one is not
  * measured), or makes a delta.js over 45,000 characters (use_figma takes
  * 50,000). To the promote plugin, because delta.js and Sync never delete:
- * --prune, and any variable, mode or style staging holds that the model
+ * --prune, and any variable, mode or style the library holds that the model
  * does not (an extra, such as a token deleted from hirobius.tokens.json).
- * delta.js counts the extras again in staging.
+ * delta.js counts the extras again in the library.
  */
 
 import {
@@ -64,7 +65,7 @@ const ROUTE_TO_PROMOTE =
 /** Why --delta never builds with --prune. */
 export const DELTA_PRUNE_REFUSAL = `delta.js refused: it never deletes, so --delta refuses --prune.${ROUTE_TO_PROMOTE}`;
 const ROUTE_TO_SYNC =
-  ' Route it to Sync: ask Adrian to run Sync in staging (Plugins > Development > HDS tokens sync > Sync), then collect its receipt (figma/README.md "Agent: collect a sync"). No delta.js was written.';
+  ' Route it to Sync: ask Adrian to run Sync in the library (Plugins > Development > HDS tokens sync > Sync), then collect its receipt (figma/README.md "Agent: collect a sync"). No delta.js was written.';
 
 const canonical = (value) => JSON.parse(JSON.stringify(value));
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -226,7 +227,7 @@ function sliceOf(push, snapshot, plan) {
  *
  * @param {object} model  The Figma model.
  * @param {{ renames?: object, snapshotFile: {checksum: string, snapshot: object}|null, links: object, commit: string, prune?: boolean, pageChars?: number }} options
- * @returns {{ text: string|null, chars: number, line: string, changes: string[], warnings: string[], base: string, modelHash: string, commit: string, staging: string, nothing?: string }}
+ * @returns {{ text: string|null, chars: number, line: string, changes: string[], warnings: string[], base: string, modelHash: string, commit: string, library: string, nothing?: string }}
  */
 export function buildUseFigmaDeltaScript(
   model,
@@ -235,7 +236,7 @@ export function buildUseFigmaDeltaScript(
   if (prune) throw new Error(DELTA_PRUNE_REFUSAL);
   const sync = syncConfigFromLinks(links);
   if (!snapshotFile) {
-    refuse(`there is no committed figma/snapshot.json to pin staging to.${ROUTE_TO_SYNC}`);
+    refuse(`there is no committed figma/snapshot.json to pin the library to.${ROUTE_TO_SYNC}`);
   }
   if (typeof commit !== 'string' || !/^[0-9a-f]{7,40}$/.test(commit)) {
     throw new Error(
@@ -255,7 +256,7 @@ export function buildUseFigmaDeltaScript(
     base: snapshotFile.checksum,
     modelHash: payload.modelHash,
     commit,
-    staging: sync.stagingFileKey,
+    library: sync.libraryFileKey,
   };
   if (plan.moves.length) {
     refuse(
@@ -278,7 +279,7 @@ export function buildUseFigmaDeltaScript(
   ];
   if (extra.length) {
     refuse(
-      `staging holds ${extra.length} item(s) the model does not have (${extra.join('; ')}), and delta.js never deletes.${ROUTE_TO_PROMOTE}`,
+      `the library holds ${extra.length} item(s) the model does not have (${extra.join('; ')}), and delta.js never deletes.${ROUTE_TO_PROMOTE}`,
     );
   }
   const styled = hdsAgentStyleText(plan);
@@ -300,13 +301,13 @@ export function buildUseFigmaDeltaScript(
       ...report,
       text: null,
       chars: 0,
-      nothing: `staging already holds model ${payload.modelHash} (figma/snapshot.json ${snapshotFile.checksum}): nothing to sync, so no delta.js was written.`,
+      nothing: `the library already holds model ${payload.modelHash} (figma/snapshot.json ${snapshotFile.checksum}): nothing to sync, so no delta.js was written.`,
     };
   }
 
   const { slice, textStyles, effectStyles, kept, storedPaths } = sliceOf(push, snapshot, plan);
   const data = canonical({
-    files: { staging: sync.stagingFileKey, library: sync.libraryFileKey },
+    files: { library: sync.libraryFileKey, retired: sync.retiredFileKeys },
     base: { checksum: snapshotFile.checksum, takenAt: snapshot.takenAt, file: snapshot.file },
     modelHash: payload.modelHash,
     commit,
@@ -315,7 +316,7 @@ export function buildUseFigmaDeltaScript(
     textStyles,
     effectStyles,
     options: { prune: false, scope: null, renames: usedRenames(storedPaths, renames) },
-    // What staging must hold (hdsAgentHeld): the snapshot less the extras.
+    // What the library must hold (hdsAgentHeld): the snapshot less the extras.
     held: hdsAgentHeld(snapshot).map(
       (count, i) =>
         count - [extras.variables, extras.modes, extras.textStyles, extras.effectStyles][i].length,
@@ -346,11 +347,11 @@ export function buildUseFigmaDeltaScript(
   data.planSum = hdsChecksum(JSON.stringify(slicePlan));
 
   const text = [
-    `if (figma.fileKey !== '${sync.stagingFileKey}' || figma.fileKey === '${sync.libraryFileKey}') {`,
-    `  throw new Error('Refused: this is not the HDS staging file (${sync.stagingFileKey}). delta.js writes to staging only. Nothing was read or written.');`,
+    `if (figma.fileKey !== '${sync.libraryFileKey}' || ${JSON.stringify(sync.retiredFileKeys).replace(/"/g, "'")}.indexOf(figma.fileKey) !== -1) {`,
+    `  throw new Error('Refused: this is not the HDS library (${sync.libraryFileKey}). delta.js writes to the library only. Nothing was read or written.');`,
     '}',
     `// HDS figma:push --delta (hds#418): ${report.line}, model ${payload.modelHash}, commit ${commit.slice(0, 7)}.`,
-    `// Generated by \`pnpm figma:push --delta\`; pass it to use_figma on staging unmodified (figma/README.md "Agent sync").`,
+    `// Generated by \`pnpm figma:push --delta\`; pass it to use_figma on the library unmodified (figma/README.md "Agent sync").`,
     `const PLAN = ${JSON.stringify(data)};`,
     `const PLAN_CHECKSUM = '${hdsChecksum(JSON.stringify(data))}';`,
     '',

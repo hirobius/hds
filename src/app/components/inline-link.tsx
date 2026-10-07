@@ -6,7 +6,7 @@
  * @whenNot An action that changes something, or a control that needs button styling.
  * @useInstead Button an action or a link that needs button styling
  * @useInstead Text unlinked body copy
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161
  */
 import React from 'react';
 import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';

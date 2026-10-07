@@ -11,14 +11,14 @@
  *   figma/push/plugin/            the Sync plugin: Sync · Plan · Check this file · Mark
  *                                 (no model inside; it fetches the sync bundle, ADR-032)
  *   figma/push/promote/           HDS tokens promote (baked): Plan push · Push · Take snapshot,
- *                                 with the model baked in, for library promotion and prunes
+ *                                 with the model baked in, for a deliberate prune (Adrian runs it)
  *   figma/push/use-figma/NN-*.js  use_figma scripts for the Figma MCP server, run in order
  *   figma/push/use-figma/snapshot.js
- *   figma/push/use-figma/receipt.js  reads a Sync's receipt from staging, for
+ *   figma/push/use-figma/receipt.js  reads a Sync's receipt from the library, for
  *                                 pnpm figma:snapshot --from-receipt (hds#417)
  *   figma/push/use-figma/delta.js    with --delta only: the zero-click agent sync
  *                                 (hds#418), one use_figma call that applies the
- *                                 change since figma/snapshot.json to staging
+ *                                 change since figma/snapshot.json to the library
  *
  * A push matches by token path (then TOKEN_MIGRATION.md renames, codeSyntax,
  * name), updates before it creates, renames a collection's initial mode, and
@@ -86,7 +86,7 @@ export function readLinks(root) {
  * Builds and validates the model and the Sync plugin's file guard, then
  * (re)writes every carrier under outDir. Throws before writing anything when
  * the model breaks an invariant, or when figma/links.json gives the Sync
- * plugin no safe target (a staging or library key missing, or both equal).
+ * plugin no safe target (no library key or name, or a retired file that is the library).
  *
  * @param {{ root: string, outDir: string, prune?: boolean }} options
  * @returns {{ model: object, renames: object, prune: boolean, pluginBuild: string, files: Array<{path: string, bytes: number}> }}
@@ -228,7 +228,7 @@ export function formatDeltaRun(result) {
     ...result.changes.map((change) => `    ${change}`),
     ...result.warnings.map((warning) => `    ⚠ ${warning}`),
     '',
-    `  Next: log the call in figma/MCP-LEDGER.md, then pass delta.js unmodified to one use_figma call on staging ${result.staging}.`,
+    `  Next: log the call in figma/MCP-LEDGER.md, then pass delta.js unmodified to one use_figma call on the library ${result.library}.`,
     '  Save what it returns and run pnpm figma:snapshot --from-receipt <file> (when it returns only the head, first run',
     '  use-figma/receipt.js once per page). On a refusal: stop, never retry. Runbook: figma/README.md "Agent sync (zero clicks)".',
   ].join('\n');
@@ -257,10 +257,10 @@ function formatRun({ model, prune, files, pluginBuild }, outDir) {
     '',
     `  Sync plugin (build ${pluginBuild}; code.js ${sizeOf('plugin/code.js').toLocaleString('en-US')} B, no model inside):`,
     `    ${rel}/plugin/  →  overwrite manifest.json, code.js and ui.html in the folder Figma imported "HDS tokens sync" from.`,
-    '    In staging: Plugins → Development → HDS tokens sync → Sync. It fetches the model the Storybook deploy publishes,',
+    '    In the library: Plugins → Development → HDS tokens sync → Sync. It fetches the model the Storybook deploy publishes,',
     '    so these files change only when the plugin build above does. It never prunes.',
     '',
-    '  Promote plugin, model baked in (library promotion and deliberate prunes only):',
+    '  Promote plugin, model baked in (deliberate prunes only, run by Adrian):',
     `    Figma desktop → Plugins → Development → Import plugin from manifest… → ${rel}/promote/manifest.json`,
     '    Run "Plan push (dry run, writes nothing)", read the plan, then run the push command.',
     '',

@@ -26,7 +26,7 @@ import {
 } from '../lib/design-links.mjs';
 
 const ALERT_URL =
-  'https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34';
+  'https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34';
 
 const storySource = ({
   component = 'Alert',
@@ -67,7 +67,7 @@ const alertSpec = {
 
 describe('parseFigmaNodeUrl', () => {
   it.each([
-    [ALERT_URL, { fileKey: 'c8MaVgwxOlxm4wr8wnH0Z4', nodeId: '33:34' }],
+    [ALERT_URL, { fileKey: '2VgBbVpKiDnu0aftJEVyBQ', nodeId: '33:34' }],
     [
       'https://www.figma.com/file/AbC123/Name?node-id=12%3A7',
       { fileKey: 'AbC123', nodeId: '12:7' },
@@ -148,7 +148,7 @@ describe('collectDesignLinks', () => {
       {
         name: 'Alert',
         figmaUrl: ALERT_URL,
-        fileKey: 'c8MaVgwxOlxm4wr8wnH0Z4',
+        fileKey: '2VgBbVpKiDnu0aftJEVyBQ',
         nodeId: '33:34',
         importLine: "import { Alert } from '@hirobius/design-system';",
         description: 'Alert - compact feedback surface with contextual severity.',
@@ -372,7 +372,7 @@ const run = async (script, figma) =>
   );
 
 describe('buildDescriptionsScript', () => {
-  const FILE_KEY = 'c8MaVgwxOlxm4wr8wnH0Z4';
+  const FILE_KEY = '2VgBbVpKiDnu0aftJEVyBQ';
   const linksWith = ({ spec = alertSpec, storybookUrl = null } = {}) =>
     collectDesignLinks({
       manifest: manifest({ Alert: spec }),
@@ -628,14 +628,14 @@ describe('syncDevResources', () => {
           id: 'r2',
           name: 'HDS story',
           url: 'https://old.example.org',
-          file_key: 'c8MaVgwxOlxm4wr8wnH0Z4',
+          file_key: '2VgBbVpKiDnu0aftJEVyBQ',
           node_id: '33:34',
         },
       ],
     });
     const result = await syncDevResources({ links, token: 'tkn', fetchImpl: api.fetchImpl });
     expect(api.calls.map((c) => `${c.method} ${c.url}`)).toEqual([
-      'GET https://api.figma.com/v1/files/c8MaVgwxOlxm4wr8wnH0Z4/dev_resources?node_ids=33%3A34',
+      'GET https://api.figma.com/v1/files/2VgBbVpKiDnu0aftJEVyBQ/dev_resources?node_ids=33%3A34',
       'POST https://api.figma.com/v1/dev_resources',
       'PUT https://api.figma.com/v1/dev_resources',
     ]);
@@ -645,7 +645,7 @@ describe('syncDevResources', () => {
         {
           name: 'HDS source',
           url: links[0].source.url,
-          file_key: 'c8MaVgwxOlxm4wr8wnH0Z4',
+          file_key: '2VgBbVpKiDnu0aftJEVyBQ',
           node_id: '33:34',
         },
       ],
@@ -676,7 +676,7 @@ describe('syncDevResources', () => {
     const api = fakeFigmaApi({
       postErrors: [
         {
-          file_key: 'c8MaVgwxOlxm4wr8wnH0Z4',
+          file_key: '2VgBbVpKiDnu0aftJEVyBQ',
           node_id: '33:34',
           error: 'The node already has the maximum of 10 dev resources',
         },

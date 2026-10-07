@@ -1,6 +1,6 @@
 # ADR-026: Agents May Write to Figma, on a Staging File
 
-**Status:** Accepted (2026-09-20). Supersedes ADR-025's agent-write constraint (Consequences, "Live Figma reads and writes need Adrian's authenticated MCP session"). Every other part of ADR-025 stands.
+**Status:** Accepted (2026-09-20); amended 2026-10-07: one library file and no staging file; agents write components and sync tokens into the library, never delete anything in Figma and never publish (see [Amendment (2026-10-07)](#amendment-2026-10-07-one-library-agents-write-it-adrian-publishes)). Supersedes ADR-025's agent-write constraint (Consequences, "Live Figma reads and writes need Adrian's authenticated MCP session"). Every other part of ADR-025 stands.
 
 ## Context
 
@@ -53,6 +53,8 @@ authentication, the same as reads. No separate approval per call.
 
 ### 2. Never to the published library
 
+> Superseded 2026-10-07 by the [amendment](#amendment-2026-10-07-one-library-agents-write-it-adrian-publishes) below: the staging file became the library, and agents write it. Kept as written, as the record of the earlier rule.
+
 The published library file — `HDS Tokens & Components`, `c8MaVgwxOlxm4wr8wnH0Z4` — is
 **read-only to agents**. Every consumer of HDS resolves components and variables from it, so
 an agent write there propagates instantly and irreversibly to every file that subscribes.
@@ -97,3 +99,120 @@ lands, this ADR gets a cost line or a successor.
 - Resolved from ADR-025's "Still unverified" list: the Pro upgrade **is** complete with a Full
   seat, and the Figma file **does** contain real published component sets. The rest of that
   list stands.
+
+## Amendment (2026-10-07): one library, agents write it, Adrian publishes
+
+**Decisions (Adrian, 2026-10-07, in chat).** Three, and they override §2 and the
+Consequences above where they differ. §1 (agents write through the MCP server), §3 (demo
+tenants only) and §4 (the read budget) stand. Code is still the source of truth (ADR-025).
+
+### A1. Agents may write components in the HDS library
+
+An agent may restyle an existing component, add a component, and copy or redraw a
+component, in the library itself. An agent **never deletes** anything in Figma: no node,
+component, variant, page, variable, collection, mode or style. An agent **never
+publishes**: Adrian clicks Publish, so nothing an agent writes reaches a subscribing file
+until he has looked at it.
+
+### A2. Retiring a component without deleting it
+
+- A component **deprecated in code** (`@deprecated` on the component in `src`) moves to a
+  page named "Deprecated" and stays published. Its description starts
+  `Deprecated: use <replacement>. Removed in <removeIn>.`, and its `@figma` link stays.
+- A component **removed from code** moves to a page named "Archive" and is renamed
+  `_<Name> (archived 2026-10-07)`, with the date it was archived. The leading underscore keeps
+  it out of publishing. Adrian reviews the Archive page and deletes what he no longer wants.
+- `figma/inventory.json` classifies the Archive page as `archive`, so
+  `check-figma-coverage` never asks code to claim what waits there. A "Deprecated" page
+  stays a components page: its components are still in code.
+
+On 2026-10-07 the 37 components removed from code on main went to the Archive page
+(`2083:2`). None was deprecated at component level (every `@deprecated` in
+`src/app/components` is on a prop), so there is no Deprecated page yet.
+
+### A3. The staging copy is the one library; staging is dropped
+
+"HDS Tokens & Components (Copy)", `2VgBbVpKiDnu0aftJEVyBQ`, the staging file of §2, became
+the one HDS library; Adrian renames it "HDS Tokens & Components". There is no staging file
+afterwards. The old library, `c8MaVgwxOlxm4wr8wnH0Z4`, is renamed
+"HDS Tokens & Components (old)" and unpublished by Adrian, once consumer files have swapped
+to the new library.
+
+Variables and tokens therefore sync straight into the library: the Sync plugin (ADR-032)
+and `delta.js` (ADR-033) target it. Both still never delete. A deliberate prune is still
+the promote plugin (`pnpm figma:push --prune`), and only Adrian runs it.
+
+In `figma/links.json`, `libraryFileKey` is `2VgBbVpKiDnu0aftJEVyBQ`, `stagingFileKey` and
+`stagingFileName` are gone (a missing staging key is the normal state, not an error), and
+the old key is listed under `retiredFiles`. `check-figma-retired-keys` rejects a reference
+to a retired key in `src`, `public`, docs data and figma data, and the Sync plugin,
+`receipt.js` and `delta.js` refuse a retired file.
+
+### Why
+
+- §2 assumed that promoting staging into the library was a short manual step. It was not.
+  Pro has no branching (ADR-025 capability table), so there is no merge, and promotion meant
+  copying components between files by hand. That held hds#303 (components drawn in staging
+  and verified live on 2026-09-27) and hds#446 (the Tooltip restyle) on Adrian's time for
+  weeks. His answer: "I'm not doing this by hand."
+- The copy already held everything the old library had, under the same node ids. The Figma
+  stage of 2026-10-07 compared them: all 117 top-level components and all 236 variants of
+  the old file exist in the copy, 41 of the 47 non-icon components differ only by the
+  typography bindings and token-driven sizes the copy adds, and the one thing the old file
+  had ahead, that day's Tooltip restyle, was carried over. Making the copy the library ends
+  promotion instead of automating it, and re-pointing a link is a file-key swap.
+- §2 said an agent write in the library "propagates instantly and irreversibly to every
+  file that subscribes". A library change reaches subscribing files only when it is
+  published. The irreversible step is Publish, so the gate sits there, together with
+  delete, the one edit a before screenshot cannot put back.
+
+### Guard rails for every library write
+
+1. **One `use_figma` script per write, naming its nodes.** It lists the node ids it
+   changes, or for a new component the page it lands on, returns the ids it creates, and
+   touches nothing else. Its first statement throws unless `figma.fileKey` is the library
+   key. The ledger row (`figma/MCP-LEDGER.md`) names the file key and the node ids before
+   the call is made.
+2. **Never delete.** The script calls `remove()` on nothing and uses no variable,
+   collection, mode or style API that deletes. Retiring a component is a move (A2).
+3. **Never publish.** The agent reports what changed (component, node ids, before and
+   after) and Adrian publishes.
+4. **Screenshot before and after** every component the script changes (`get_screenshot`,
+   as base64 where the egress proxy blocks figma.com), and check the structure with
+   `get_metadata`, as in `figma/COMPONENT-DRAWING-RECIPE.md` step 7. The before screenshot
+   is the record of what was there.
+5. **Bind to the library's own variables and styles,** found by name. A component write
+   creates no variable, collection, mode, text style or effect style: those come from code,
+   through Sync or `delta.js`.
+6. **Record it in the repo.** Point each `@figma` tag the write touched at its node, run
+   `pnpm manifest:generate` and `pnpm figma:links`, and refresh `figma/inventory.json` with
+   `pnpm figma:inventory --fetch` when components were added, moved or renamed.
+7. **Budget the calls.** 200 MCP calls a day and 10 a minute (§4); count every `use_figma`
+   and `get_screenshot` call. On a rate-limit error, stop and report; never retry.
+
+### Consequences
+
+- hds#303's components and the Tooltip restyle (hds#446) are library components once Adrian
+  publishes; nothing is left to promote. `pnpm figma:staging-inventory` and
+  `figma/STAGING-INVENTORY.md` are retired, and their rows are in `figma/inventory.json`.
+- Every link from code to Figma (the `@figma` tags, the manifest, `docs/DESIGN_LINKS.md`,
+  `docs/sync-map.json`, `figma/disposition.json`, the Code Connect templates) points at the
+  library. Node ids were kept, so only the file key changed.
+- `check-figma-staging-urls` became `check-figma-retired-keys`.
+- The Sync plugin needs new files (`pnpm figma:push`) once this lands: the earlier build
+  refuses a file named "HDS Tokens & Components", and the library takes that name.
+- Consumer files must use Swap library: component keys changed with the duplicate, so
+  components map by name, and the archived ones do not map. Designs bound to a variable
+  only the old file had lose that binding.
+- Pagination `86:194` still nests the archived IconButton for its arrows, so
+  `_IconButton (archived 2026-10-07)` must stay until Pagination is redrawn with Button
+  (`iconOnly`).
+- The library now changes between publishes. Anyone who opens it sees unpublished agent
+  edits; subscribing files do not.
+- A write can still be wrong. The before screenshot, the ledger's node ids and the file's
+  version history are how a bad edit is found and undone; there is no automated rollback.
+- The steering surfaces state this rule: `CLAUDE.md`, `figma/links.json`,
+  `figma/README.md`, `figma/COMPONENT-DRAWING-RECIPE.md` and `figma/MCP-LEDGER.md`.
+  `scripts/__tests__/figma-one-library-rule.test.mjs` fails when one of them sends an agent
+  to a staging file, calls the library read-only to agents, or drops never delete or never
+  publish.

@@ -1,6 +1,6 @@
 # ADR-032: The Sync Plugin Fetches Its Model; the Promote Plugin Stays Baked
 
-**Status:** Proposed (2026-10-01). Refines ADR-025 §2 ("Push on Pro") and works inside ADR-026 §2 (agents and plugins write to staging, never to the library). hds#411, child C1 of epic hds#397.
+**Status:** Proposed (2026-10-01); amended 2026-10-07: Sync targets the one library, not staging (see [Amendment (2026-10-07)](#amendment-2026-10-07-sync-targets-the-library)). Refines ADR-025 §2 ("Push on Pro") and works inside ADR-026 §2 (agents and plugins write to staging, never to the library), which ADR-026's 2026-10-07 amendment replaced. hds#411, child C1 of epic hds#397.
 
 ## Context
 
@@ -83,3 +83,33 @@ After the verified push and its snapshot, Sync writes the snapshot into the file
 - `figma/links.json` gains `libraryFileName` and `stagingFileName`. Renaming either file in Figma means updating them and rebuilding the plugin.
 - A receipt can go stale when something else writes to staging after a Sync (the promote plugin, an agent drawing session, a hand edit). The promote plugin clears it, and the collector checks `lastPush` and the counts against the live file before it trusts `post` (§6). An edit that changes neither (a description typed by hand) passes that check; the commit gate then compares the snapshot with the model, not with the live file.
 - Unverified, failing closed: whether a Pro development plugin gets `figma.fileKey` with `enablePrivatePluginApi` (the marker path covers "no"), and whether the plugin window's fetch from a `null` origin succeeds under `allowedDomains` (a failed fetch is refused with the URL and the fix). The first live Sync and **Check this file** settle both.
+
+## Amendment (2026-10-07): Sync targets the library
+
+ADR-026's amendment of 2026-10-07 made the staging copy, `2VgBbVpKiDnu0aftJEVyBQ`, the one
+HDS library and dropped staging. So §3 changes target, and nothing else in this ADR does:
+Sync still carries no model, still never prunes, and the receipt (§4, §6) is unchanged.
+
+- **What is baked.** `pnpm figma:push` bakes `libraryFileKey`, `libraryFileName` and, from
+  `retiredFiles`, each retired file's key and name. It refuses to build while the library key
+  or name is missing, while `retiredFiles` is missing, or when a retired file has the
+  library's key or name. There is no staging key to bake.
+- **The order of checks.** Deny first: a retired file, by key (`c8MaVgwxOlxm4wr8wnH0Z4`, the
+  old library) or by name (`HDS Tokens & Components (old)`), is refused whatever else is
+  true. Then allow the library key; any other key is refused. Where Figma gives no key, allow
+  only a file marked as the library (shared plugin data `hirobius/libraryFileKey` equal to the
+  library key) **and** named exactly `HDS Tokens & Components`. The staging-era marker
+  (`hirobius/stagingFileKey`) counts when it holds the library key: Mark stamped the copy
+  with it before 2026-10-07, under the copy's old name, so no other file can carry it with
+  that value and the library's name.
+- **Mark this file as the HDS library** replaces "Mark this file as HDS staging". It writes
+  the marker only in a file named exactly like the library, when the pasted key is the
+  library key, and refuses a retired file by key, by name or by the pasted key.
+- **receipt.js** and `--from-receipt` read and accept the library only, and refuse a retired
+  key.
+- **The promote plugin** (§5) keeps its id and name, so Figma needs no re-import. It no
+  longer promotes anything: it is the deliberate prune (`pnpm figma:push --prune`), and only
+  Adrian runs it. Sync and `delta.js` never delete.
+- **New plugin files.** The build before this amendment refuses a file named
+  "HDS Tokens & Components" by name, so once Adrian renames the copy, Sync needs the files
+  `pnpm figma:push` writes from this amendment on.

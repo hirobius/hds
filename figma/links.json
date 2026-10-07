@@ -3,10 +3,16 @@
   "repository": "https://github.com/hirobius/hds",
   "branch": "main",
   "storybookUrl": "https://hirobius-design-system.vercel.app",
-  "libraryFileKey": "c8MaVgwxOlxm4wr8wnH0Z4",
-  "stagingFileKey": "2VgBbVpKiDnu0aftJEVyBQ",
+  "libraryFileKey": "2VgBbVpKiDnu0aftJEVyBQ",
   "libraryFileName": "HDS Tokens & Components",
-  "stagingFileName": "HDS Tokens & Components (Copy)",
-  "$comment_figmaFiles": "ADR-026. libraryFileKey is the published library 'HDS Tokens & Components' and is READ-ONLY to agents — every consumer resolves from it, so an agent write there propagates irreversibly. Agent writes go to stagingFileKey, a duplicate Adrian promotes by hand (Pro has no branching, so there is no automatic merge). While stagingFileKey is null an agent has no legal write target; that is the intended failure mode, not a reason to fall back to the library.",
-  "$comment_sync": "ADR-032. pnpm figma:push bakes both keys and both file names into the Sync plugin (figma/push/plugin), never reading them from the bundle it fetches: it refuses the library by key or by name first, then allows the staging key, or, where Figma gives no file key, a file marked as staging AND named exactly stagingFileName. It refuses to build while either key is null or the two are equal."
+  "retiredFiles": [
+    {
+      "fileKey": "c8MaVgwxOlxm4wr8wnH0Z4",
+      "fileName": "HDS Tokens & Components (old)",
+      "retiredOn": "2026-10-07",
+      "why": "The library before 2026-10-07. Its duplicate 2VgBbVpKiDnu0aftJEVyBQ, formerly the staging copy, became the one library under the same node ids; Adrian renames this file and unpublishes it."
+    }
+  ],
+  "$comment_figmaFiles": "ADR-026, amended 2026-10-07. There is one Figma file: libraryFileKey is THE HDS library, and there is no staging file. Agents may write components in it (restyle, add, copy or redraw), but never delete anything in Figma and never publish it: Adrian publishes. Tokens and variables sync straight into it (the Sync plugin and delta.js), which never delete; a deliberate prune is the promote plugin, run by Adrian. retiredFiles are files that must never be linked or written again: check-figma-retired-keys rejects a reference to one in src, public, docs or figma data, and the Sync plugin, receipt.js and delta.js refuse them.",
+  "$comment_sync": "ADR-032, amended 2026-10-07. pnpm figma:push bakes libraryFileKey, libraryFileName and the retiredFiles keys and names into the Sync plugin (figma/push/plugin), never reading them from the bundle it fetches: it refuses a retired file by key or by name first, then allows the library key, or, where Figma gives no file key, a file marked as the HDS library AND named exactly libraryFileName. It refuses to build while libraryFileKey or libraryFileName is missing or a retired file has the library's key or name."
 }

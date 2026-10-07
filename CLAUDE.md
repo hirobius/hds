@@ -92,10 +92,15 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   Figma file by hand; `pnpm figma:snapshot --ingest` records the file into the committed
   `figma/snapshot.json`; `pnpm check:figma-drift` compares the two. Runbook:
   `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, demo tenants
-  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. Agents
-  may read and write Figma live (ADR-026), but only to the staging duplicate named by
-  `stagingFileKey` in `figma/links.json`; the published library is read-only to agents, and
-  an unset `stagingFileKey` means no write target at all. Pro allows 200 MCP reads a day —
+  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. There
+  is one Figma file, the HDS library, `libraryFileKey` in `figma/links.json`; there is no
+  staging file since 2026-10-07 (ADR-026 amendment). Agents may read it and write
+  components in it live: restyle, add, copy or redraw, one `use_figma` script naming the
+  node ids it touches, screenshots before and after. Tokens reach it only from code, through
+  the Sync plugin or `delta.js` (ADR-032, ADR-033). Never delete anything in Figma and never
+  publish; Adrian publishes. A component removed from code moves to the "Archive" page as
+  `_<Name> (archived <date>)`, one deprecated in code to the "Deprecated" page. A deliberate
+  prune is the promote plugin, and only Adrian runs it. Pro allows 200 MCP calls a day —
   batch them, and never retry a rate-limit error. Code Connect
   v2 templates are generated and gated locally, but publishing needs a Figma
   Organization plan, so no mapping is live and Dev Mode shows no HDS snippets.

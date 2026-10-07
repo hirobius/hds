@@ -193,6 +193,9 @@ shows no HDS snippets; publishing is Organization-gated", never a count of live 
   (2026-09-20):** the account was since confirmed Full seat / admin / Pro, and this ADR's own
   capability table already listed `use_figma` writes as available on Pro. Agents may read and
   write live, to a staging duplicate only; the published library stays read-only to agents.
+  (ADR-026 was amended 2026-10-07: the staging copy became the one library, there is no
+  staging file, and agents write components and sync tokens straight into it, never deleting
+  anything in Figma and never publishing; Adrian publishes.)
 - Snapshot reads must batch to stay inside the Pro MCP limit of 200 read calls a day, and
   `use_figma` writes will become usage-billed when the beta ends.
 - Docs do not claim, until each becomes true: automatic Figma sync in CI; that Figma's

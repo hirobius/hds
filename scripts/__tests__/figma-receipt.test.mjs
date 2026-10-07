@@ -43,10 +43,10 @@ import { runSyncPlugin, serve } from './helpers/sync-plugin.mjs';
 const LINKS = Object.freeze({
   storybookUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
-  stagingFileKey: 'STAGINGKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
-  stagingFileName: 'HDS Tokens & Components (Copy)',
+  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
 });
+const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 const PAGE_CHARS = 15000;
@@ -65,9 +65,9 @@ const tempRoot = () => {
   writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(LINKS, null, 2));
   return root;
 };
-const stagingFile = () => {
-  const figma = newFixtureFile({ fileName: LINKS.stagingFileName });
-  figma.fileKey = LINKS.stagingFileKey;
+const libraryFile = () => {
+  const figma = newFixtureFile({ fileName: LINKS.libraryFileName });
+  figma.fileKey = LINKS.libraryFileKey;
   return figma;
 };
 const rootData = (figma, key) => figma.root.getSharedPluginData('hirobius', key);
@@ -90,7 +90,7 @@ const removeVariable = async (figma, name) =>
   (await figma.variables.getLocalVariablesAsync()).find((v) => v.name === name).remove();
 
 /**
- * A repo root and a staging file. `base` decides what main has committed as
+ * A repo root and a library file. `base` decides what main has committed as
  * figma/snapshot.json before the Sync: 'edited' (the model pushed, then one
  * variable removed and one description changed in Figma), 'empty' (a snapshot
  * of the empty file) or null (none). Then `pnpm figma:push` writes the
@@ -98,7 +98,7 @@ const removeVariable = async (figma, name) =>
  */
 async function synced({ base = 'edited', compression = true } = {}) {
   const root = tempRoot();
-  const figma = stagingFile();
+  const figma = libraryFile();
   if (base === 'edited') {
     await pushModel(figma);
     await removeVariable(figma, 'ring');
@@ -297,7 +297,7 @@ describe('Sync writes the snapshot into the file as receipt pages', () => {
     const body = JSON.stringify({ full: snapshot });
     const pairAt = (text, i) => /[\uD800-\uDBFF]/.test(text[i]);
     for (let pageChars = 2; pageChars <= 24; pageChars++) {
-      const figma = stagingFile();
+      const figma = libraryFile();
       const sync = { rawChars: Infinity, pageChars, maxPages: 10000, gzipTimeoutMs: 1 };
       const head = await hdsSyncStamp(
         figma,
@@ -326,7 +326,7 @@ describe('Sync writes the snapshot into the file as receipt pages', () => {
 describe('figma/push/use-figma/receipt.js', () => {
   /** A file whose every property read is logged: what the script touched before it refused. */
   const watched = (fileKey) => {
-    const figma = stagingFile();
+    const figma = libraryFile();
     figma.fileKey = fileKey;
     const reads = [];
     const proxy = new Proxy(figma, {
@@ -338,7 +338,7 @@ describe('figma/push/use-figma/receipt.js', () => {
     return { proxy, reads, figma };
   };
 
-  it('is at most 1,500 chars, and its first statement refuses any file but staging', async () => {
+  it('is at most 1,500 chars, and its first statement refuses any file but the library', async () => {
     const { receiptScript } = await synced();
     expect(receiptScript.length).toBeLessThanOrEqual(1500);
     const ast = parse(receiptScript, {
@@ -349,30 +349,30 @@ describe('figma/push/use-figma/receipt.js', () => {
     });
     const first = receiptScript.slice(ast.body[0].start, ast.body[0].end);
     expect(ast.body[0].type).toBe('IfStatement');
-    expect(first).toContain(`figma.fileKey !== '${LINKS.stagingFileKey}'`);
-    expect(first).toContain(`figma.fileKey === '${LINKS.libraryFileKey}'`);
+    expect(first).toContain(`figma.fileKey !== '${LINKS.libraryFileKey}'`);
+    expect(first).toContain(`'${RETIRED_KEY}'`);
     expect(first).toMatch(/throw new Error/);
   });
 
-  it('reads nothing but figma.fileKey in the library, in a file with no key, or in any other file', async () => {
+  it('reads nothing but figma.fileKey in a retired file, in a file with no key, or in any other file', async () => {
     const { receiptScript } = await synced();
-    for (const key of [LINKS.libraryFileKey, null, undefined, 'SOMEOTHERFILE000000000']) {
+    for (const key of [RETIRED_KEY, null, undefined, 'SOMEOTHERFILE000000000']) {
       const { proxy, reads, figma } = watched(key);
       setRootData(figma, 'syncReceipt', '{"secret":true}');
       await expect(runReceipt(receiptScript, proxy)).rejects.toThrow(
-        /not the HDS staging file.*Nothing was read/,
+        /not the HDS library.*Nothing was read/,
       );
       expect(reads, String(key)).toEqual(['fileKey']);
       expect(figma.writes.filter((w) => !w.includes('syncReceipt'))).toEqual([]);
     }
   });
 
-  it('in staging: returns the head, page i and the live fingerprint, and writes nothing', async () => {
+  it('in the library: returns the head, page i and the live fingerprint, and writes nothing', async () => {
     const s = await synced({ base: 'empty', compression: false });
     const before = s.figma.writes.length;
     const read = await runReceipt(s.receiptScript, s.figma, 1);
     expect(read).toEqual({
-      file: LINKS.stagingFileKey,
+      file: LINKS.libraryFileKey,
       page: 1,
       head: rootData(s.figma, 'syncReceipt'),
       text: s.page(1),
@@ -425,7 +425,7 @@ describe('pnpm figma:snapshot --from-receipt', () => {
     const s = await synced();
     const files = await collect(s);
     // Main moved on: another snapshot is committed now.
-    const other = stagingFile();
+    const other = libraryFile();
     await pushModel(other);
     await commitSnapshot(s.root, other);
     refuses(s.root, files, /base.*committed figma\/snapshot\.json.*Sync again/s);
@@ -447,18 +447,18 @@ describe('pnpm figma:snapshot --from-receipt', () => {
     refuses(s.root, files.slice(0, 1), /page 1 .*missing.*const PAGE = 1/s);
   });
 
-  it('refuses a read from any file but staging', async () => {
+  it('refuses a read from any file but the library', async () => {
     const s = await synced();
-    for (const file of [LINKS.libraryFileKey, null, 'SOMEOTHERFILE000000000']) {
+    for (const file of [RETIRED_KEY, null, 'SOMEOTHERFILE000000000']) {
       const reads = loadReads(await collect(s));
       reads[0].file = file;
-      refuses(s.root, saveReads(s.root, reads), /staging/);
+      refuses(s.root, saveReads(s.root, reads), /not the HDS library/);
     }
   });
 
   it('refuses a stale receipt: the live file has another variable count than the receipt', async () => {
     const s = await synced();
-    // Something else wrote to staging after the Sync (an agent drawing session, a hand edit).
+    // Something else wrote to the library after the Sync (an agent drawing session, a hand edit).
     const [collection] = await s.figma.variables.getLocalVariableCollectionsAsync();
     s.figma.variables.createVariable('hand/made', collection, 'FLOAT');
     refuses(s.root, await collect(s), /stale.*variables 58 in the receipt, 59 live/s);
@@ -466,7 +466,7 @@ describe('pnpm figma:snapshot --from-receipt', () => {
 
   it("refuses a stale receipt: the live lastPush is not the receipt's", async () => {
     const s = await synced();
-    // Another push (the promote plugin, a use_figma script) stamped staging after the Sync.
+    // Another push (the promote plugin, a use_figma script) stamped the library after the Sync.
     setRootData(
       s.figma,
       'lastPush',
@@ -524,7 +524,7 @@ describe('the promote plugin clears the Sync receipt', () => {
     expect(plan.ok, plan.error).toBe(true);
     expect(rootData(s.figma, 'syncReceipt')).not.toBe('');
 
-    const fresh = stagingFile();
+    const fresh = libraryFile();
     const before = fresh.writes.length;
     expect((await runPromote(s.promote, 'snapshot', fresh)).ok).toBe(true);
     expect(fresh.writes.slice(before)).toEqual([]);
