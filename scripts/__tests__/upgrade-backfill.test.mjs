@@ -161,10 +161,19 @@ describe('0.17.0', () => {
     expect(step.plain).toMatch(/40px/);
     expect(step.detect.cssVars).toEqual(['--semantic-typography-h2-line-height']);
     expect(citedEntry('0.17.0', step.source, CHANGELOG)).toMatch(/^- d41c65e: Standard type ramp/);
-    const [source] = step.detect.regex;
-    expect(new RegExp(source).test('<Text variant="heading2">')).toBe(true);
-    expect(new RegExp(source).test('<HeadingStack level="heading2" />')).toBe(true);
-    expect(new RegExp(source).test('<Text variant="heading3">')).toBe(false);
+    expect(anyRegex(step, '<Text variant="heading2">')).toBe(true);
+    expect(anyRegex(step, '<HeadingStack level="heading2" />')).toBe(true);
+    expect(anyRegex(step, '<Text variant="heading3">')).toBe(false);
+  });
+
+  it('finds a raw h2, which theme.css styles inside a data-hds scope', () => {
+    // v0.17.0 theme.css:990: `:where([data-hds]) h2 { line-height: var(--semantic-typography-h2-line-height) }`.
+    const step = byId('0.17.0/look/h2-line-height');
+    expect(anyRegex(step, '<h2>Plans</h2>')).toBe(true);
+    expect(anyRegex(step, '<h2 className="title">Plans</h2>')).toBe(true);
+    expect(anyRegex(step, '<h3>Plans</h3>')).toBe(false);
+    expect(anyRegex(step, '<h20>')).toBe(false);
+    expect(step.plain).toMatch(/h2/);
   });
 
   it('records the Table ARIA structure as a behavior step', () => {

@@ -203,10 +203,10 @@
       "kind": "look",
       "subject": "h2-line-height",
       "impact": "look",
-      "plain": "Second-level headings (Text and HeadingStack heading2) keep their 30px size, but their line height drops from 42px to 40px.",
+      "plain": "Second-level headings (Text and HeadingStack heading2, and any h2 inside HdsThemeProvider or another data-hds element) keep their 30px size, but their line height drops from 42px to 40px.",
       "detect": {
         "cssVars": ["--semantic-typography-h2-line-height"],
-        "regex": ["\\bheading2\\b"]
+        "regex": ["\\bheading2\\b", "<h2\\b"]
       },
       "needle": "42px→40px onto the 4px grid",
       "source": "CHANGELOG.md:80"
