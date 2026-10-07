@@ -55,6 +55,24 @@ export function factImpact(fact) {
   throw new Error(`unknown fact kind: ${fact.kind}`);
 }
 
+/**
+ * Step kinds that take something public away (hds#445 decision 3): an export
+ * removed, moved, renamed or folded into another, and what the snapshot diff
+ * cannot see yet, such as a removed CSS variable or class (hds#449). Each
+ * forces the breaking bump whatever its impact says, because a consumer that
+ * used the thing has to change.
+ */
+const REMOVING_STEP_KINDS = new Set(['removed', 'moved', 'renamed', 'folded']);
+
+/**
+ * True when a step needs the breaking bump: its impact is breaking, or its
+ * kind takes something public away.
+ * @param {{ kind?: string, impact?: string }} step
+ */
+export function stepIsBreaking(step) {
+  return step.impact === 'breaking' || REMOVING_STEP_KINDS.has(step.kind);
+}
+
 /** Bumps from smallest to largest; `none` is a changeset that releases nothing. */
 export const BUMP_RANK = { none: 0, patch: 1, minor: 2, major: 3 };
 

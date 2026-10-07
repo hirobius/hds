@@ -184,6 +184,30 @@ describe('checkUpgradeLedger: facts need steps', () => {
     expect(rules(checkUpgradeLedger(root))).toEqual(['bump-too-small']);
   });
 
+  it('wants a minor changeset for a step that removes what the diff cannot see, such as a CSS variable', () => {
+    const root = releasedRepo();
+    changeset(root, 'eyebrow', 'patch');
+    const plain = 'Set text-transform: uppercase yourself where an eyebrow must stay uppercase.';
+    note(root, 'eyebrow', {
+      impact: 'look',
+      plain,
+      steps: [
+        {
+          id: 'removed/--semantic-typography-eyebrow-text-transform',
+          kind: 'removed',
+          impact: 'look',
+          plain,
+          detect: { cssVars: ['--semantic-typography-eyebrow-text-transform'] },
+        },
+      ],
+    });
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['bump-too-small']);
+    expect(messages(result)).toContain('removed/--semantic-typography-eyebrow-text-transform');
+    changeset(root, 'eyebrow', 'minor');
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+
   it('reads package.json scripts and devDependencies as no change at all', () => {
     const root = releasedRepo();
     editPkg(root, (pkg) => {

@@ -184,6 +184,38 @@ describe('PendingNote (upgrade/pending/<changeset>.json, hds#448)', () => {
     expect(parse(removal()).error?.issues ?? []).toEqual([]);
   });
 
+  /** A step that asks the consumer to add something: done says how to tell it is there. */
+  const addImport = () => ({
+    impact: 'look',
+    plain: "Add import '@hirobius/design-system/fonts.css' to keep the brand fonts.",
+    steps: [
+      {
+        id: 'manual/fonts-css',
+        kind: 'manual',
+        impact: 'look',
+        plain: "Add import '@hirobius/design-system/fonts.css' to keep the brand fonts.",
+        detect: { regex: ['@hirobius/design-system/(?:tokens|styles)\\.css[\'"]'] },
+        done: { regex: ['@hirobius/design-system/fonts\\.css[\'"]'] },
+      },
+    ],
+  });
+
+  it('accepts a step that says how to tell it is already done (done, in the detect shape)', () => {
+    expect(parse(addImport()).error?.issues ?? []).toEqual([]);
+    const ledger = validLedger();
+    ledger.steps[1].done = { imports: [{ from: ROOT, names: ['Badge'] }] };
+    expect(Release.safeParse(ledger).error?.issues ?? []).toEqual([]);
+  });
+
+  it('rejects an empty done, and a done regex that does not compile', () => {
+    const empty = addImport();
+    empty.steps[0].done = {};
+    expect(paths(empty)).toContain('steps.0.done');
+    const bad = addImport();
+    bad.steps[0].done = { regex: ['('] };
+    expect(paths(bad)).toContain('steps.0.done.regex.0');
+  });
+
   const cases = {
     'a note with no impact': ['impact', (n) => delete n.impact],
     'an impact other than none with no plain line': ['plain', (n) => delete n.plain],

@@ -18,7 +18,8 @@
  *   2. a .changeset/*.md has no upgrade/pending/<same name>.json, or that note
  *      does not fit the schema: impact always stated ("none" included), a plain
  *      line unless impact is none, and no TODO left from `pnpm upgrade:note`;
- *   3. something is breaking (a breaking fact, or a note that says so) and the
+ *   3. something is breaking (a breaking fact, a note that says so, or a step
+ *      that removes, moves, renames or folds something public) and the
  *      changesets bump @hirobius/design-system by less than minor below 1.0
  *      (major from 1.0). On the Version PR (package.json past the snapshot, no
  *      changesets left) the real bump is checked instead, and the ledger of
@@ -45,6 +46,7 @@ import {
   breakingBump,
   bumpBetween,
   factImpact,
+  stepIsBreaking,
   uncoveredFacts,
 } from './upgrade/ledger.mjs';
 import {
@@ -155,14 +157,21 @@ function noteViolations(state) {
   return out;
 }
 
-/** What says the change is breaking: fact ids, note files and step ids. */
+/**
+ * What says the change is breaking: fact ids, note files and step ids. A note
+ * that says breaking counts as a whole; otherwise each of its steps that takes
+ * something away counts (a removed CSS variable the diff cannot see yet).
+ */
 function breakingEvidence(state, versionPr) {
   const facts = versionPr ? state.facts : newFacts(state);
   const evidence = facts.filter((fact) => factImpact(fact) === 'breaking').map((fact) => fact.id);
-  for (const note of state.notes) if (noteImpact(note) === 'breaking') evidence.push(note.file);
+  for (const note of state.notes) {
+    if (noteImpact(note) === 'breaking') evidence.push(note.file);
+    else for (const step of noteSteps(note)) if (stepIsBreaking(step)) evidence.push(step.id);
+  }
   if (versionPr) {
     for (const step of state.ledger?.release?.steps ?? []) {
-      if (step.impact === 'breaking') evidence.push(step.id);
+      if (stepIsBreaking(step)) evidence.push(step.id);
     }
   }
   return [...new Set(evidence)];
@@ -210,7 +219,7 @@ function bumpViolations(state, versionPr) {
   // The ledger of package.json's version, as compiled: its bump must cover its
   // own breaking steps. (On the Version PR the real bump is checked above.)
   if (!versionPr && ledger?.release) {
-    const breaking = ledger.release.steps.filter((step) => step.impact === 'breaking');
+    const breaking = ledger.release.steps.filter(stepIsBreaking);
     const need = breakingBump(version);
     if (breaking.length > 0 && BUMP_RANK[ledger.release.bump] < BUMP_RANK[need]) {
       out.push(

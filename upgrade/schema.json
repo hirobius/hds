@@ -318,6 +318,10 @@
         "detect": {
           "$ref": "#/$defs/detect"
         },
+        "done": {
+          "description": "How to tell the consumer has already made this change, in the detect shape: when any of it matches, the step is done even where detect matches too. For a step that asks the consumer to add something, such as an import.",
+          "$ref": "#/$defs/detect"
+        },
         "removeIn": {
           "description": "For a deprecation: the version that removes it.",
           "type": "string",
@@ -563,6 +567,10 @@
           "$ref": "#/$defs/auto"
         },
         "detect": {
+          "$ref": "#/$defs/detect"
+        },
+        "done": {
+          "description": "How to tell the consumer has already made this change, in the detect shape: when any of it matches, the step is done even where detect matches too. For a step that asks the consumer to add something, such as an import.",
           "$ref": "#/$defs/detect"
         },
         "removeIn": {

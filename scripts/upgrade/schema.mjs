@@ -199,6 +199,9 @@ const stepFields = () => ({
   plain: plainLine(),
   auto: Auto.optional(),
   detect: Detect.optional(),
+  done: Detect.optional().describe(
+    'How to tell the consumer has already made this change, in the detect shape: when any of it matches, the step is done even where detect matches too. For a step that asks the consumer to add something, such as an import.',
+  ),
   removeIn: version().optional().describe('For a deprecation: the version that removes it.'),
   range: z
     .string()
