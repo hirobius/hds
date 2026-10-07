@@ -164,7 +164,7 @@ and no local variables by design. It is not a duplicate of the library, and noth
 is promoted. It is where an agent drafts a **new** component:
 
 1. **Draft** the component in HDS Staging, bound to the library's own variables and styles
-   (enabled from the library, found by name), creating none.
+   (found with `search_design_system` and imported by key), creating none.
 2. **Ingest** it when it is ready: redraw it in the library with
    `figma/COMPONENT-DRAWING-RECIPE.md`, since Figma cannot copy nodes between files. The
    ingest is a library write, so the guard rails below apply to it.

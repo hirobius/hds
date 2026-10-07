@@ -482,7 +482,8 @@ What a push does:
   component tokens into `Hirobius/Semantic`), the push creates it in its new
   collection and keeps the old variable, with every binding to it. The plan
   lists it under moves and warns. Rebind its layers to the new variable; Adrian
-  then deletes the old one in Figma, because an agent never deletes. Prune never
+  then deletes the old one in Figma, because an agent never deletes anything in
+  the library. Prune never
   deletes a moved variable, and drift reports it as an extra until it is gone.
 - **Updates before it creates.** Renames that collide (a swap, a chain) go through
   temporary names first.
