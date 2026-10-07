@@ -81,9 +81,13 @@ named no removal, it is the target a later release set, and the `$comment` of
 `upgrade/sources/<version>/release.json` cites it: 0.17.0 kept its seven
 spacing aliases with no removal release, and their 1.0.0 comes from 0.20.0. A
 later release may remove the name sooner: 0.17.0 deprecated the root pattern
-imports and the `Hds*` names for 1.0.0, and 0.20.0 removed them. Coming next (hds#451, #452)
-lists a deprecation only while no later step removes, moves, renames or folds
-the same name.
+imports and the `Hds*` names for 1.0.0, and 0.20.0 removed them. UPGRADING.md
+keeps such a deprecation in its release's Coming next and says which release
+took it away ("Removed early, in 0.20.0"), name by name when only some of its
+names went; `upgrade/index.json` lists only what is still deprecated.
+`scripts/__tests__/upgrade-deprecations.test.mjs` fails while a `@deprecated`
+on the public surface has no deprecation step (Divider `strong` and
+InlineCode `compact`, deprecated before the floor, are recorded from 0.22.0).
 
 0.21.0 shipped with an upgrade note for each of its seven changesets, but
 before the compiler (hds#451), so its ledger is built the same way from the
@@ -156,13 +160,17 @@ release.
   one command when `package.json#bin` has `design-system`, hds#452; the manual
   route until then: the exact version, the codemods, the Do by hand list);
   then every release, newest first, with its summary and four lists. Each step
-  lands in one: a `deprecated` step in **Coming next** (unless a later step
-  removes, moves, renames or folds the same name); a step with `auto` in
-  **Fixed for you**; a `look` step that neither takes something away nor is
-  `manual` in **Looks different**; anything else in **Do by hand**, breaking
-  first. An empty list is left out.
+  lands in exactly one: a `deprecated` step in **Coming next** (with the
+  release that took it away, when a later step removes, moves, renames or
+  folds it); a step with `auto` in **Fixed for you**; a `look` step that
+  neither takes something away nor is `manual` in **Looks different**;
+  anything else in **Do by hand**, breaking first. An empty list is left out.
+  Steps of one list whose sentences differ only in the name share one bullet
+  that lists the names.
 - **`upgrade/index.json`**: every release with its breaking count, the
-  [floor](#the-floor) and what is deprecated today with its `removeIn`.
+  [floor](#the-floor) and what is deprecated today with its `removeIn`: each
+  imported name and class still deprecated, or the step's subject (a token
+  path, a prop) when it lists neither.
 - **`status.json` `release`**: the newest release for the fleet dashboard.
 
 `node scripts/upgrade/compile.mjs --check` runs in `pretest` and fails,
@@ -205,7 +213,7 @@ version and notes filled in.
 ## The floor
 
 The floor is the oldest version the upgrade command can upgrade from. Below
-it, the command changes nothing and exits 2; follow MIGRATIONS.md by hand up to
+it, the command changes nothing and exits 2; follow CHANGELOG.md by hand up to
 the floor. It is 0.16.0, the oldest committed snapshot: the 0.17.0 to 0.21.0
 ledgers cover every release after it through 0.21.0, so a consumer still on
 0.16.0 crosses no change up to 0.21.0

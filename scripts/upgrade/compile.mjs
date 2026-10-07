@@ -12,7 +12,9 @@
  *     version) and where newer steps come from, how to upgrade, then every
  *     release newest first, each with a one-line summary and four lists:
  *     Fixed for you, Looks different, Coming next, Do by hand (listOf below
- *     maps each step to one; an empty list is left out);
+ *     maps each step to exactly one; an empty list is left out). Steps whose
+ *     sentences differ only in the name share a bullet (bulletsOf), and a
+ *     deprecation a later release took away says which (removalTail);
  *   - upgrade/index.json: every release with its breaking count, the floor
  *     (./history.mjs) and what is deprecated today, with its removeIn;
  *   - status.json `release`: the newest release, for the fleet dashboard.
@@ -131,47 +133,105 @@ export function listOf(step) {
 }
 
 const subject = (step) => step.id.split('/').slice(2).join('/');
-const usesOf = (step) => [
-  `subject:${subject(step)}`,
+
+/** The names a step's detect lists, as keys: imports, CSS variables and classes. */
+const namedUses = (step) => [
   ...(step.detect?.imports ?? []).flatMap((i) => i.names.map((name) => `import:${i.from}:${name}`)),
   ...(step.detect?.cssVars ?? []).map((name) => `cssVar:${name}`),
   ...(step.detect?.classes ?? []).map((name) => `class:${name}`),
 ];
+/** A use key as a consumer reads it: the name, CSS variable, class or subject. */
+const useName = (use) => use.slice(use.lastIndexOf(':') + 1);
 
 /**
- * The ids of deprecations a later release took away: a later step that
- * removes, moves, renames or folds the same subject, import, CSS variable or
- * class (upgrade/README.md: Coming next lists a deprecation only while no
- * later step does). Its replacement step says what to do instead.
+ * What later releases took away of each deprecation, use by use (hds#451).
+ * A deprecation's uses are the names its detect lists (imports, CSS
+ * variables, classes) or, with none, its subject. A later step that removes,
+ * moves, renames or folds takes each use it lists, or a subject use by its
+ * subject; one with the deprecation's subject and no names of its own takes
+ * all of it. Only the first release to take a use counts.
  * @param {{ version: string, steps: any[] }[]} ledgers
+ * @returns {Map<string, { uses: string[], removed: Map<string, string> }>} by step id;
+ *   `removed` maps each use taken to the version that took it
  */
-export function supersededDeprecations(ledgers) {
-  const out = new Set();
+export function deprecationRemovals(ledgers) {
+  const out = new Map();
   for (const ledger of ledgers) {
+    const later = ledgers.filter((l) => compareVersions(l.version, ledger.version) > 0);
     for (const step of ledger.steps.filter((s) => s.kind === 'deprecated')) {
-      const uses = new Set(usesOf(step));
-      const later = ledgers.filter((l) => compareVersions(l.version, ledger.version) > 0);
-      const gone = later.some((l) =>
-        l.steps.some((s) => REMOVING.has(s.kind) && usesOf(s).some((use) => uses.has(use))),
-      );
-      if (gone) out.add(step.id);
+      const named = namedUses(step);
+      const uses = named.length > 0 ? named : [`subject:${subject(step)}`];
+      const removed = new Map();
+      for (const { version, steps } of later) {
+        for (const taker of steps.filter((s) => REMOVING.has(s.kind))) {
+          const own = namedUses(taker);
+          const takes =
+            own.length === 0 && subject(taker) === subject(step)
+              ? uses
+              : uses.filter((use) => own.includes(use) || use === `subject:${subject(taker)}`);
+          for (const use of takes) if (!removed.has(use)) removed.set(use, version);
+        }
+      }
+      out.set(step.id, { uses, removed });
     }
   }
   return out;
 }
 
-/** A release's steps by list, superseded deprecations left out; Do by hand most severe first. */
-function listsOf(ledger, superseded = new Set()) {
+/** A release's steps by list, every step in exactly one; Do by hand most severe first. */
+function listsOf(ledger) {
   const lists = Object.fromEntries(LISTS.map((list) => [list, []]));
-  for (const step of ledger.steps) {
-    if (!superseded.has(step.id)) lists[listOf(step)].push(step);
-  }
+  for (const step of ledger.steps) lists[listOf(step)].push(step);
   const severity = (step) => IMPACTS.length - IMPACTS.indexOf(step.impact);
   lists.doByHand = lists.doByHand
     .map((step, i) => [step, i])
     .sort(([a, i], [b, j]) => severity(a) - severity(b) || i - j)
     .map(([step]) => step);
   return lists;
+}
+
+/** `a`, `b` and `c`, each in code spans. */
+const codeList = (names) => {
+  const spans = names.map((name) => `\`${name}\``);
+  return spans.length === 1 ? spans[0] : `${spans.slice(0, -1).join(', ')} and ${spans.at(-1)}`;
+};
+
+/**
+ * `plain` with its one mention of `name`, as a whole word, cut out: the two
+ * halves around it, or null when the name is not there exactly once.
+ */
+function aroundName(plain, name) {
+  const parts = plain.split(name);
+  if (parts.length !== 2) return null;
+  const word = /[A-Za-z0-9_$]/;
+  if (word.test(parts[0].at(-1) ?? '') || word.test(parts[1][0] ?? '')) return null;
+  return parts;
+}
+
+/**
+ * The bullets of one list. Steps whose plain lines differ only in their
+ * subject's name, with the same tail (the codemod, the removal), share one
+ * bullet that names them in step order: 0.20.0 removes 103 names with one
+ * sentence. Every other step is a bullet of its own.
+ * @param {any[]} steps
+ * @param {(step: any) => string} tailOf the text after the plain line
+ * @returns {{ steps: any[], text: string }[]}
+ */
+function bulletsOf(steps, tailOf) {
+  const groups = new Map();
+  for (const step of steps) {
+    const tail = tailOf(step);
+    const parts = aroundName(step.plain, subject(step));
+    const key = parts ? `${parts.join('\u0000')}\u0000${tail}` : `step\u0000${step.id}`;
+    if (!groups.has(key)) groups.set(key, { steps: [], parts, tail });
+    groups.get(key).steps.push(step);
+  }
+  return [...groups.values()].map(({ steps: members, parts, tail }) => {
+    if (members.length === 1) return { steps: members, text: `${md(members[0].plain)}${tail}` };
+    const these = parts[0] === '' ? 'Each of these' : 'each of these';
+    const sentence = md(`${parts[0]}${these}${parts[1]}`).replace(/\.$/, '');
+    return { steps: members, text: `${sentence}: ${codeList(members.map(subject))}.${tail}` };
+  });
 }
 
 /**
@@ -213,14 +273,14 @@ function intro({ latest, command }) {
 const major = (version) => Number(version.split('.')[0]);
 
 function howTo({ latest, floor: oldest, command }) {
-  const older = `From an older version, follow MIGRATIONS.md up to ${oldest} first.`;
+  const older = `from an older version, first reach ${oldest} with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.`;
   if (command) {
     return [
       '```sh',
       ONE_COMMAND,
       '```',
       '',
-      `It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from ${oldest} on. ${older}`,
+      `It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from ${oldest} on; ${older}`,
     ];
   }
   const crosses = major(latest) === 0 ? 'a 0.x minor' : 'a major';
@@ -229,16 +289,64 @@ function howTo({ latest, floor: oldest, command }) {
     '2. For each release you cross, run the codemods listed under Fixed for you.',
     '3. Then work through its Do by hand list.',
     '',
-    `This file covers every release after ${oldest}. ${older}`,
+    `This file covers every release after ${oldest}; ${older}`,
   ];
 }
 
-/** The lines of one list: its heading, any intro, then one item per step. */
-function listLines(history, ledger, list, steps) {
+/** The link to a release's section of UPGRADING.md. */
+const sectionLink = (version) => `[${version}](#${version.replace(/\./g, '')})`;
+
+/**
+ * What follows a deprecation's plain line: the release that removes it, or,
+ * once a later release took some or all of it away (deprecationRemovals),
+ * which release did, linked.
+ */
+function removalTail(step, removals) {
+  const { uses = [], removed = new Map() } = removals?.get(step.id) ?? {};
+  if (removed.size === 0) return ` Removed in ${step.removeIn}.`;
+  const versions = [...new Set(removed.values())].sort(compareVersions);
+  const where = versions.map(sectionLink).join(' and ');
+  if (removed.size === uses.length) {
+    return versions.length === 1 && versions[0] === step.removeIn
+      ? ` Removed in ${where}.`
+      : ` Removed early, in ${where} (planned for ${step.removeIn}).`;
+  }
+  const gone = uses.filter((use) => removed.has(use)).map(useName);
+  return ` ${codeList(gone)} ${gone.length === 1 ? 'was' : 'were'} removed in ${where}; the rest is removed in ${step.removeIn}.`;
+}
+
+/** The tail of a step's bullet in `list`. */
+function tailOf(list, removals) {
+  if (list === 'fixedForYou') {
+    return (step) => ` Codemod: \`${[step.auto.codemod, ...step.auto.args].join(' ')}\`.`;
+  }
+  if (list === 'comingNext') return (step) => removalTail(step, removals);
+  return () => '';
+}
+
+/**
+ * Every committed release, newest first, with its bullets by list: each step
+ * in exactly one bullet of one list (a test holds it to that).
+ * @returns {{ ledger: any, lists: Record<string, { steps: any[], text: string }[]> }[]}
+ */
+export function releaseSections(history) {
+  const removals = deprecationRemovals(history.ledgers);
+  return [...history.ledgers].reverse().map((ledger) => {
+    const steps = listsOf(ledger);
+    const lists = Object.fromEntries(
+      LISTS.map((list) => [list, bulletsOf(steps[list], tailOf(list, removals))]),
+    );
+    return { ledger, lists };
+  });
+}
+
+/** The lines of one list: its heading, any intro, then its bullets. */
+function listLines(history, ledger, list, bullets) {
   const lines = [`### ${HEADINGS[list]}`, ''];
   if (list === 'fixedForYou') {
     if (history.command) lines.push('The upgrade command runs these codemods for you.', '');
     else {
+      const steps = bullets.flatMap((bullet) => bullet.steps);
       const commands = [
         ...new Set(steps.map((s) => codemodCommand(history, s.auto, ledger.version))),
       ];
@@ -252,20 +360,11 @@ function listLines(history, ledger, list, steps) {
       );
     }
   }
-  for (const step of steps) {
-    const tail =
-      list === 'fixedForYou'
-        ? ` Codemod: \`${[step.auto.codemod, ...step.auto.args].join(' ')}\`.`
-        : list === 'comingNext'
-          ? ` Removed in ${step.removeIn}.`
-          : '';
-    lines.push(`- ${md(step.plain)}${tail}`);
-  }
+  for (const bullet of bullets) lines.push(`- ${bullet.text}`);
   return [...lines, ''];
 }
 
-function releaseLines(history, ledger, superseded) {
-  const lists = listsOf(ledger, superseded);
+function releaseLines(history, { ledger, lists }) {
   const lines = [
     `## ${ledger.version}`,
     '',
@@ -279,7 +378,6 @@ function releaseLines(history, ledger, superseded) {
 
 /** UPGRADING.md, from the history. */
 function renderUpgrading(history) {
-  const superseded = supersededDeprecations(history.ledgers);
   return [
     `# Upgrading ${PACKAGE}`,
     '',
@@ -289,9 +387,7 @@ function renderUpgrading(history) {
     '',
     ...howTo(history),
     '',
-    ...[...history.ledgers]
-      .reverse()
-      .flatMap((ledger) => releaseLines(history, ledger, superseded)),
+    ...releaseSections(history).flatMap((section) => releaseLines(history, section)),
     '<!-- Generated by scripts/upgrade/compile.mjs from upgrade/releases/*.json; do not edit. Run node scripts/upgrade/compile.mjs to regenerate. -->',
     '',
   ].join('\n');
@@ -306,19 +402,29 @@ const entryOf = (from) =>
       : null;
 
 /**
- * What is deprecated today: each deprecation no later release took away, one
- * entry per imported name (with the exports key it is imported from), or one
- * named by the step's subject when it is not an import (a token path, a prop
- * value). Soonest removal first.
+ * What is deprecated today: what no later release took away of each
+ * deprecation (deprecationRemovals), one entry per imported name (with the
+ * exports key it is imported from) and per class, or one named by the
+ * step's subject when it lists neither (a token path, a prop, a prop value),
+ * while any of it is left. Soonest removal first.
  */
-function deprecatedNow(ledgers, superseded) {
+function deprecatedNow(ledgers) {
+  const removals = deprecationRemovals(ledgers);
   const out = [];
   for (const step of ledgers.flatMap((ledger) => ledger.steps)) {
-    if (step.kind !== 'deprecated' || superseded.has(step.id)) continue;
-    const imports = step.detect?.imports ?? [];
-    const names = imports.length
-      ? imports.flatMap((i) => i.names.map((name) => ({ name, entry: entryOf(i.from) })))
-      : [{ name: subject(step), entry: null }];
+    if (step.kind !== 'deprecated') continue;
+    const { uses, removed } = removals.get(step.id);
+    if (removed.size === uses.length) continue;
+    const imports = (step.detect?.imports ?? []).flatMap((i) =>
+      i.names
+        .filter((name) => !removed.has(`import:${i.from}:${name}`))
+        .map((name) => ({ name, entry: entryOf(i.from) })),
+    );
+    const classes = (step.detect?.classes ?? [])
+      .filter((name) => !removed.has(`class:${name}`))
+      .map((name) => ({ name, entry: null }));
+    const listed = (step.detect?.imports?.length ?? 0) + (step.detect?.classes?.length ?? 0) > 0;
+    const names = listed ? [...imports, ...classes] : [{ name: subject(step), entry: null }];
     for (const { name, entry } of names) {
       out.push({ name, ...(entry ? { entry } : {}), removeIn: step.removeIn, step: step.id });
     }
@@ -347,7 +453,7 @@ function buildIndex(history) {
       breaking: ledger.steps.filter((step) => step.impact === 'breaking').length,
       summary: ledger.summary,
     })),
-    deprecated: deprecatedNow(history.ledgers, supersededDeprecations(history.ledgers)),
+    deprecated: deprecatedNow(history.ledgers),
   };
   const result = Index.safeParse(index);
   if (!result.success) {
@@ -394,13 +500,11 @@ export function upgradeBlock(ledger, { command, bin }) {
             .join(' and ')} (${n}).`,
     );
   }
-  items.push(...lists.doByHand.map((step) => `Do by hand: ${md(step.plain)}`));
-  items.push(...lists.looksDifferent.map((step) => `Looks different: ${md(step.plain)}`));
-  items.push(
-    ...lists.comingNext.map(
-      (step) => `Coming next: ${md(step.plain)} Removed in ${step.removeIn}.`,
-    ),
-  );
+  const itemsOf = (list, label) =>
+    bulletsOf(lists[list], tailOf(list)).map((bullet) => `${label}: ${bullet.text}`);
+  items.push(...itemsOf('doByHand', 'Do by hand'));
+  items.push(...itemsOf('looksDifferent', 'Looks different'));
+  items.push(...itemsOf('comingNext', 'Coming next'));
   const url = `${UPGRADING_URL}#${ledger.version.replace(/\./g, '')}`;
   const shown = items.slice(0, BLOCK_ITEMS);
   const left = items.length - shown.length;
@@ -441,6 +545,14 @@ function releaseStatus(history) {
     floor: history.floor,
     upgrade: upgradeCommand(history, ledger.version),
   };
+}
+
+/**
+ * What the generated files are compiled from (readHistory), for a repo.
+ * @param {{ repo?: string }} [options]
+ */
+export function compileHistory({ repo = REPO } = {}) {
+  return readHistory(repo);
 }
 
 /**

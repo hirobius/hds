@@ -17,7 +17,13 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
-import { compileOutputs, upgradeBlock } from '../upgrade/compile.mjs';
+import {
+  LISTS,
+  compileHistory,
+  compileOutputs,
+  releaseSections,
+  upgradeBlock,
+} from '../upgrade/compile.mjs';
 import { formatJson } from '../upgrade/format.mjs';
 import { Index } from '../upgrade/schema.mjs';
 import { snapshotFromSource } from '../upgrade/snapshot.mjs';
@@ -222,7 +228,7 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
         '2. For each release you cross, run the codemods listed under Fixed for you.',
         '3. Then work through its Do by hand list.',
         '',
-        'This file covers every release after 0.10.0. From an older version, follow MIGRATIONS.md up to 0.10.0 first.',
+        'This file covers every release after 0.10.0; from an older version, first reach 0.10.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.',
         '',
         '## 0.12.1',
         '',
@@ -260,9 +266,11 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
         '',
         '- Card has a softer shadow.',
         '',
-        // Tile's deprecation is not here: 0.12.0 removed it.
+        // Every step lands in one list: 0.12.0 removed Tile sooner than
+        // announced, and the deprecation says so, linking that release.
         '### Coming next',
         '',
+        '- Tile still works but is deprecated; use Card instead. Removed early, in [0.12.0](#0120) (planned for 1.0.0).',
         "- The spacing names 'tight' and 'loose' still work but are deprecated; use 'sm' and 'lg'. Removed in 1.0.0.",
         '',
         // Breaking first, then behavior; ledger order within each.
@@ -288,7 +296,7 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
       'npx @hirobius/design-system@latest upgrade',
       '```',
       '',
-      "It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.10.0 on. From an older version, follow MIGRATIONS.md up to 0.10.0 first.",
+      "It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.10.0 on; from an older version, first reach 0.10.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.",
       '',
     ]);
     const fixed = lines.indexOf('### Fixed for you');
@@ -298,6 +306,170 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
       'The upgrade command runs these codemods for you.',
       '',
       `- Page is no longer exported from the package root; import it from ${PKG}/patterns instead. Codemod: \`hds-move\`.`,
+    ]);
+  });
+});
+
+describe('a deprecation a later release takes away, use by use', () => {
+  const PATTERNS = `${PKG}/patterns`;
+  const deprecations = {
+    ...LEDGER_0_11,
+    steps: [
+      {
+        id: '0.11.0/deprecated/Hero',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: 'Hero, HeroProps and Banner still work but are deprecated; use Section instead.',
+        detect: { imports: [{ from: PATTERNS, names: ['Hero', 'HeroProps', 'Banner'] }] },
+        removeIn: '1.0.0',
+        source: 'x',
+      },
+      {
+        id: '0.11.0/deprecated/kept-utilities',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: 'The utilities pt-1, pb-8 and p-16 still ship but are deprecated.',
+        detect: { classes: ['pt-1', 'pb-8', 'p-16'] },
+        removeIn: '1.0.0',
+        source: 'x',
+      },
+    ],
+  };
+  const removals = {
+    ...LEDGER_0_12,
+    steps: [
+      {
+        id: '0.12.0/removed/HeroProps',
+        kind: 'removed',
+        impact: 'breaking',
+        plain: 'HeroProps is removed; use SectionProps instead.',
+        detect: { imports: [{ from: PATTERNS, names: ['HeroProps'] }] },
+        source: 'x',
+      },
+      {
+        id: '0.12.0/removed/pt-1',
+        kind: 'removed',
+        impact: 'look',
+        plain:
+          'The pt-1 utility is no longer in styles.css, so generate it with your own Tailwind.',
+        detect: { classes: ['pt-1'] },
+        source: 'x',
+      },
+    ],
+  };
+
+  it('keeps the rest in upgrade/index.json: each name, class or subject still deprecated', () => {
+    const { index } = compileOutputs({ repo: historyRepo({ ledgers: [deprecations, removals] }) });
+    expect(JSON.parse(index).deprecated).toEqual([
+      { name: 'Banner', entry: './patterns', removeIn: '1.0.0', step: '0.11.0/deprecated/Hero' },
+      { name: 'Hero', entry: './patterns', removeIn: '1.0.0', step: '0.11.0/deprecated/Hero' },
+      { name: 'p-16', removeIn: '1.0.0', step: '0.11.0/deprecated/kept-utilities' },
+      { name: 'pb-8', removeIn: '1.0.0', step: '0.11.0/deprecated/kept-utilities' },
+    ]);
+  });
+
+  it('keeps the deprecation in Coming next, naming what went and when', () => {
+    const { upgrading } = compileOutputs({
+      repo: historyRepo({ ledgers: [deprecations, removals] }),
+    });
+    expect(upgrading).toContain(
+      [
+        '### Coming next',
+        '',
+        '- Hero, HeroProps and Banner still work but are deprecated; use Section instead. `HeroProps` was removed in [0.12.0](#0120); the rest is removed in 1.0.0.',
+        '- The utilities pt-1, pb-8 and p-16 still ship but are deprecated. `pt-1` was removed in [0.12.0](#0120); the rest is removed in 1.0.0.',
+        '',
+      ].join('\n'),
+    );
+  });
+
+  it('lands every step of every committed release in exactly one bullet of one list', () => {
+    const sections = releaseSections(compileHistory());
+    for (const { ledger, lists } of sections) {
+      const placed = LISTS.flatMap((list) =>
+        lists[list].flatMap((bullet) => bullet.steps.map((step) => step.id)),
+      );
+      expect(placed.sort(), ledger.version).toEqual(ledger.steps.map((step) => step.id).sort());
+    }
+    expect(sections.map((s) => s.ledger.version)).toContain('0.17.0');
+  });
+});
+
+describe('UPGRADING.md: steps that share one sentence share one bullet', () => {
+  const PATTERNS = `${PKG}/patterns`;
+  const removed = (name) => ({
+    id: `0.13.0/removed/${name}`,
+    kind: 'removed',
+    impact: 'breaking',
+    plain: `${name} is removed with no drop-in replacement, so rewrite or delete the code that imports it.`,
+    detect: { imports: [{ from: PKG, names: [name] }] },
+    source: 'x',
+  });
+  const moved = (name) => ({
+    id: `0.13.0/moved/${name}`,
+    kind: 'moved',
+    impact: 'breaking',
+    plain: `${name} is no longer exported from the package root; import it from ${PATTERNS} instead.`,
+    auto: { codemod: 'hds-move', args: [] },
+    detect: { imports: [{ from: PKG, names: [name] }] },
+    source: 'x',
+  });
+  const dependency = (name) => ({
+    id: `0.13.0/dependency/${name}`,
+    kind: 'dependency',
+    impact: 'breaking',
+    plain: `HDS no longer installs ${name}, so add it to your own dependencies if your code imports it.`,
+    detect: { bareImports: [name] },
+    source: 'x',
+  });
+  const LEDGER_0_13 = {
+    version: '0.13.0',
+    date: '2026-10-04',
+    bump: 'minor',
+    summary: 'Removals.',
+    backfilled: false,
+    steps: [
+      removed('Alpha'),
+      removed('Beta'),
+      removed('Gamma'),
+      // Alpha's name is in this sentence too, so it cannot join a group.
+      { ...removed('Delta'), plain: 'Delta is removed; use Alpha instead.' },
+      moved('Page'),
+      moved('Shell'),
+      dependency('@scope/pkg'),
+      dependency('lodash'),
+    ],
+  };
+
+  it('lists the names after the shared sentence, in step order, codemod and all', () => {
+    const { upgrading } = compileOutputs({
+      repo: historyRepo({ ledgers: [LEDGER_0_11, LEDGER_0_12, LEDGER_0_13] }),
+    });
+    const section = upgrading.slice(upgrading.indexOf('## 0.13.0'), upgrading.indexOf('## 0.12.0'));
+    expect(section).toContain(
+      `- Each of these is no longer exported from the package root; import it from ${PATTERNS} instead: \`Page\` and \`Shell\`. Codemod: \`hds-move\`.\n`,
+    );
+    expect(section).toContain(
+      [
+        '### Do by hand',
+        '',
+        '- Each of these is removed with no drop-in replacement, so rewrite or delete the code that imports it: `Alpha`, `Beta` and `Gamma`.',
+        '- Delta is removed; use Alpha instead.',
+        '- HDS no longer installs each of these, so add it to your own dependencies if your code imports it: `@scope/pkg` and `lodash`.',
+        '',
+      ].join('\n'),
+    );
+  });
+
+  it('groups the same way in the Upgrade block, so a big release still fits in five lines', () => {
+    const block = upgradeBlock(LEDGER_0_13, { command: false, bin: { 'hds-move': 'x.mjs' } });
+    expect(block.slice(6)).toEqual([
+      `- Fixed for you: run \`npx -p ${PKG}@0.13.0 hds-move --root .\` (2 steps).`,
+      '- Do by hand: Each of these is removed with no drop-in replacement, so rewrite or delete the code that imports it: `Alpha`, `Beta` and `Gamma`.',
+      '- Do by hand: Delta is removed; use Alpha instead.',
+      '- Do by hand: HDS no longer installs each of these, so add it to your own dependencies if your code imports it: `@scope/pkg` and `lodash`.',
+      '- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0130).',
+      '',
     ]);
   });
 });

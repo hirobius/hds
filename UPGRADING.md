@@ -8,7 +8,7 @@ This file only knows the releases up to the version you have installed, 0.21.0. 
 2. For each release you cross, run the codemods listed under Fixed for you.
 3. Then work through its Do by hand list.
 
-This file covers every release after 0.16.0. From an older version, follow MIGRATIONS.md up to 0.16.0 first.
+This file covers every release after 0.16.0; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
 
 ## 0.21.0
 
@@ -74,38 +74,7 @@ npx -p @hirobius/design-system@0.21.0 hds-prefix --root .
 npx -p @hirobius/design-system@0.21.0 hds-tile-grid --root .
 ```
 
-- AssetImg is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- AssetImgProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- CodeBlock is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- CodeBlockProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- ErrorPattern is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- ErrorPatternProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- FieldWiring is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- FieldWiringInput is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- Form is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- FormField is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- FormFieldProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- FormFieldShell is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- FormFieldShellProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- FormProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- Page is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- PageProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- Reveal is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- RevealAnimation is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- RevealProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- StatusTile is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- StatusTileProps is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- StatusTileTone is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- blockCodeTextVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- blockContainerVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- blockHeaderVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- chevronVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- collapsibleToggleVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- copyButtonVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- inlineCodeTextVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- inlineWrapperVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- prePanelVariants is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
-- useFieldWiring is no longer exported from the package root; import it from @hirobius/design-system/patterns instead. Codemod: `hds-patterns-subpath`.
+- Each of these is no longer exported from the package root; import it from @hirobius/design-system/patterns instead: `AssetImg`, `AssetImgProps`, `CodeBlock`, `CodeBlockProps`, `ErrorPattern`, `ErrorPatternProps`, `FieldWiring`, `FieldWiringInput`, `Form`, `FormField`, `FormFieldProps`, `FormFieldShell`, `FormFieldShellProps`, `FormProps`, `Page`, `PageProps`, `Reveal`, `RevealAnimation`, `RevealProps`, `StatusTile`, `StatusTileProps`, `StatusTileTone`, `blockCodeTextVariants`, `blockContainerVariants`, `blockHeaderVariants`, `chevronVariants`, `collapsibleToggleVariants`, `copyButtonVariants`, `inlineCodeTextVariants`, `inlineWrapperVariants`, `prePanelVariants` and `useFieldWiring`. Codemod: `hds-patterns-subpath`.
 - HdsCheckbox is removed from the package root; use Checkbox, the same component under its bare name. Codemod: `hds-prefix`.
 - HdsRadio is removed from the package root; use Radio, the same component under its bare name. Codemod: `hds-prefix`.
 - HdsSelect is removed from the package root; use Select, the same component under its bare name. Codemod: `hds-prefix`.
@@ -129,152 +98,18 @@ npx -p @hirobius/design-system@0.21.0 hds-tile-grid --root .
 
 - Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead. Removed in 1.0.0.
 - Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then. Removed in 1.0.0.
+- StatusDot still works but is removed in 0.21.0; use Badge dot with the same tone, size and label, and move any style prop to a wrapper or a className first. Removed in [0.21.0](#0210).
+- StatusDotProps is removed in 0.21.0; use BadgeProps instead. Removed in [0.21.0](#0210).
 - hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs. Removed in 1.0.0.
 - Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind. Removed in 1.0.0.
 
 ### Do by hand
 
-- ActivityEvent is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ActivityFeed is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ActivityFeedProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ActivityStatus is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ActivityTone is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- AppShell is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- AppShellProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ButtonGroup is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ButtonGroupProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Calendar is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CalendarProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Carousel is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CarouselProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CaseStudyLayout is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CaseStudyLayoutProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CinematicLink is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CinematicLinkProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CommandPalette is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- CommandPaletteProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ComponentInstanceMatrix is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ContextMenu is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DateInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DateInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DateRangeInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DateRangeInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DateTimeInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DateTimeInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DocLinkCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- DocLinkCardProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ErrorBoundary is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ErrorBoundaryProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- FileInput is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- FileInputProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- FoundationSwatch is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- FoundationSwatchProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HdsDocsShell is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HdsDocsShellProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HdsSystemDocLayout is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HeadingStack is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HeadingStackProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HistoryCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HistoryCardCommit is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HistoryCardProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- HoverCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Lightbox is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- LightboxProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- NavGroup is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- NavGroupProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- NavItem is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- NavProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- OverflowList is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- OverflowListProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- SideNav is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- SideNavLevel is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- SideNavProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Sketch is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- SketchProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- StackedCardRail is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- StackedCardRailCard is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- StackedCardRailProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Step is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Stepper is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- StepperField is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- StepperFieldProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- StepperProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TextLockup is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TextLockupProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Token is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TokenProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Tokenizer is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TokenizerProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- Toolbar is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- ToolbarComponent is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TopNav is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TopNavProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TreeList is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TreeListProps is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- TreeNode is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- activityAvatarVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- activityToneVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- appShellVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- badgeVariants is no longer exported, so style its component through the component's props instead.
-- blockquoteVariants is no longer exported, so style its component through the component's props instead.
-- buttonGroupVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- buttonVariants is no longer exported, so style its component through the component's props instead.
-- cardVariants is no longer exported, so style its component through the component's props instead.
-- carouselControlVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- circularProgressVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- cmdkDescriptionVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- cmdkKindBadgeVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- cmdkRowVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- crumbLabelVariants is no longer exported, so style its component through the component's props instead.
-- defaultActivityEvents is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- disclosureTriggerVariants is no longer exported, so style its component through the component's props instead.
-- docLinkCardVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- fieldValueVariants is no longer exported, so style its component through the component's props instead.
-- fileInputVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- hdsTimeInputVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- hdsToggleButtonVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- headingStackLevelVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- headingStackVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- inlineCodeVariants is no longer exported, so style its component through the component's props instead.
-- inputVariants is no longer exported, so style its component through the component's props instead.
-- kbdVariants is no longer exported, so style its component through the component's props instead.
-- metadataListVariants is no longer exported, so style its component through the component's props instead.
-- navGroupLabelVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- navIndicatorVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- navItemVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- overflowBubbleVariants is no longer exported, so style its component through the component's props instead.
-- progressTrackVariants is no longer exported, so style its component through the component's props instead.
-- segmentedControlDescriptionVariants is no longer exported, so style its component through the component's props instead.
-- segmentedControlFocusRingVariants is no longer exported, so style its component through the component's props instead.
-- segmentedControlIndicatorVariants is no longer exported, so style its component through the component's props instead.
-- segmentedControlItemVariants is no longer exported, so style its component through the component's props instead.
-- segmentedControlLabelVariants is no longer exported, so style its component through the component's props instead.
-- segmentedControlRailVariants is no longer exported, so style its component through the component's props instead.
-- segmentedControlWrapperVariants is no longer exported, so style its component through the component's props instead.
-- selectableCardVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- sideNavVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- skeletonVariants is no longer exported, so style its component through the component's props instead.
-- spinnerVariants is no longer exported, so style its component through the component's props instead.
-- statVariants is no longer exported, so style its component through the component's props instead.
-- statusDotVariants is no longer exported, so style its component through the component's props instead.
-- statusListItemDotVariants is no longer exported, so style its component through the component's props instead.
-- stepMarkerVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- surfaceVariants is no longer exported, so style its component through the component's props instead.
-- tableDataCellVariants is no longer exported, so style its component through the component's props instead.
-- tableHeaderCellVariants is no longer exported, so style its component through the component's props instead.
-- tableSortButtonVariants is no longer exported, so style its component through the component's props instead.
-- tagButtonVariants is no longer exported, so style its component through the component's props instead.
-- tagPillVariants is no longer exported, so style its component through the component's props instead.
-- textVariants is no longer exported, so style its component through the component's props instead.
-- textareaVariants is no longer exported, so style its component through the component's props instead.
-- toastIconVariants is no longer exported, so style its component through the component's props instead.
-- tokenLabelVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- tokenNodeInlineVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
-- tokenShellVariants is removed with no drop-in replacement, so rewrite or delete the code that imports it.
+- Each of these is removed with no drop-in replacement, so rewrite or delete the code that imports it: `ActivityEvent`, `ActivityFeed`, `ActivityFeedProps`, `ActivityStatus`, `ActivityTone`, `AppShell`, `AppShellProps`, `ButtonGroup`, `ButtonGroupProps`, `Calendar`, `CalendarProps`, `Carousel`, `CarouselProps`, `CaseStudyLayout`, `CaseStudyLayoutProps`, `CinematicLink`, `CinematicLinkProps`, `CommandPalette`, `CommandPaletteProps`, `ComponentInstanceMatrix`, `ContextMenu`, `DateInput`, `DateInputProps`, `DateRangeInput`, `DateRangeInputProps`, `DateTimeInput`, `DateTimeInputProps`, `DocLinkCard`, `DocLinkCardProps`, `ErrorBoundary`, `ErrorBoundaryProps`, `FileInput`, `FileInputProps`, `FoundationSwatch`, `FoundationSwatchProps`, `HdsDocsShell`, `HdsDocsShellProps`, `HdsSystemDocLayout`, `HeadingStack`, `HeadingStackProps`, `HistoryCard`, `HistoryCardCommit`, `HistoryCardProps`, `HoverCard`, `Lightbox`, `LightboxProps`, `NavGroup`, `NavGroupProps`, `NavItem`, `NavProps`, `OverflowList`, `OverflowListProps`, `SideNav`, `SideNavLevel`, `SideNavProps`, `Sketch`, `SketchProps`, `StackedCardRail`, `StackedCardRailCard`, `StackedCardRailProps`, `Step`, `Stepper`, `StepperField`, `StepperFieldProps`, `StepperProps`, `TextLockup`, `TextLockupProps`, `Token`, `TokenProps`, `Tokenizer`, `TokenizerProps`, `Toolbar`, `ToolbarComponent`, `TopNav`, `TopNavProps`, `TreeList`, `TreeListProps`, `TreeNode`, `activityAvatarVariants`, `activityToneVariants`, `appShellVariants`, `buttonGroupVariants`, `carouselControlVariants`, `circularProgressVariants`, `cmdkDescriptionVariants`, `cmdkKindBadgeVariants`, `cmdkRowVariants`, `defaultActivityEvents`, `docLinkCardVariants`, `fileInputVariants`, `hdsTimeInputVariants`, `hdsToggleButtonVariants`, `headingStackLevelVariants`, `headingStackVariants`, `navGroupLabelVariants`, `navIndicatorVariants`, `navItemVariants`, `selectableCardVariants`, `sideNavVariants`, `stepMarkerVariants`, `tokenLabelVariants`, `tokenNodeInlineVariants` and `tokenShellVariants`.
+- Each of these is no longer exported, so style its component through the component's props instead: `badgeVariants`, `blockquoteVariants`, `buttonVariants`, `cardVariants`, `crumbLabelVariants`, `disclosureTriggerVariants`, `fieldValueVariants`, `inlineCodeVariants`, `inputVariants`, `kbdVariants`, `metadataListVariants`, `overflowBubbleVariants`, `progressTrackVariants`, `segmentedControlDescriptionVariants`, `segmentedControlFocusRingVariants`, `segmentedControlIndicatorVariants`, `segmentedControlItemVariants`, `segmentedControlLabelVariants`, `segmentedControlRailVariants`, `segmentedControlWrapperVariants`, `skeletonVariants`, `spinnerVariants`, `statVariants`, `statusDotVariants`, `statusListItemDotVariants`, `surfaceVariants`, `tableDataCellVariants`, `tableHeaderCellVariants`, `tableSortButtonVariants`, `tagButtonVariants`, `tagPillVariants`, `textVariants`, `textareaVariants` and `toastIconVariants`.
 - AspectRatio is removed; use Box style={{ aspectRatio: '16 / 9' }} instead.
-- AspectRatioProps is removed; use BoxProps instead.
+- Each of these is removed; use BoxProps instead: `AspectRatioProps`, `BleedProps`, `CoverProps` and `FrameProps`.
 - Bleed is removed; use Box style={{ marginInline: 'calc(-1 \* var(--semantic-space-scale-md))' }} instead.
-- BleedProps is removed; use BoxProps instead.
 - Center is removed; use Container maxWidth="content", with a Box style={{ paddingInline }} inside for the gutter instead.
 - CenterProps is removed; use ContainerProps instead.
 - CircularProgress is removed; use Progress variant="circular" instead.
@@ -282,13 +117,11 @@ npx -p @hirobius/design-system@0.21.0 hds-tile-grid --root .
 - Cluster is removed; use Stack direction="row" wrap="wrap" align="center" instead.
 - ClusterProps is removed; use StackProps instead.
 - Cover is removed; use Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }} around a Box style={{ marginBlock: 'auto' }} instead.
-- CoverProps is removed; use BoxProps instead.
 - Frame is removed; use Box style={{ aspectRatio: '16 / 9', overflow: 'hidden', borderRadius: hds.borderRadius.md }} instead.
-- FrameProps is removed; use BoxProps instead.
 - IconButton is removed; use Button iconOnly label="…" iconLeft={\<Icon icon={…} />} instead.
-- IconButtonProps is removed; use ButtonProps instead.
+- Each of these is removed; use ButtonProps instead: `IconButtonProps` and `ToggleButtonProps`.
 - InputGroup is removed; use Input prefix / suffix instead.
-- InputGroupProps is removed; use InputProps instead.
+- Each of these is removed; use InputProps instead: `InputGroupProps` and `TimeInputProps`.
 - MultiSelector is removed; use Combobox multiple instead.
 - MultiSelectorOption is removed; use ComboboxOption instead.
 - MultiSelectorProps is removed; use ComboboxMultipleProps instead.
@@ -296,16 +129,8 @@ npx -p @hirobius/design-system@0.21.0 hds-tile-grid --root .
 - SelectableCardProps is removed; use CardProps instead.
 - TileGridProps is removed; use GridProps (minTileWidth is minItemWidth, gap 'sm' is 'medium') instead.
 - TimeInput is removed; use Input type="time" instead.
-- TimeInputProps is removed; use InputProps instead.
 - ToggleButton is removed; use Button pressed onPressedChange (variant="ghost" is variant="tertiary") instead.
-- ToggleButtonProps is removed; use ButtonProps instead.
-- HDS no longer installs @radix-ui/react-aspect-ratio, so add it to your own dependencies if your code imports it.
-- HDS no longer installs @radix-ui/react-context-menu, so add it to your own dependencies if your code imports it.
-- HDS no longer installs @radix-ui/react-hover-card, so add it to your own dependencies if your code imports it.
-- HDS no longer installs @radix-ui/react-toggle, so add it to your own dependencies if your code imports it.
-- HDS no longer installs @radix-ui/react-toolbar, so add it to your own dependencies if your code imports it.
-- HDS no longer installs date-fns, so add it to your own dependencies if your code imports it.
-- HDS no longer installs react-day-picker, so add it to your own dependencies if your code imports it.
+- HDS no longer installs each of these, so add it to your own dependencies if your code imports it: `@radix-ui/react-aspect-ratio`, `@radix-ui/react-context-menu`, `@radix-ui/react-hover-card`, `@radix-ui/react-toggle`, `@radix-ui/react-toolbar`, `date-fns` and `react-day-picker`.
 - An icon-only Button now takes its accessible name from label, unless it has an aria-label.
 - Card selectable, which replaces SelectableCard, toggles on click or Space only, so code or tests that press Enter to toggle it must press Space instead.
 - Combobox options now report their real position, and a Select with showLabel={false} is named by its label and value, so tests that find them by role and name may need updating.
@@ -358,6 +183,13 @@ Released 2026-09-30 (minor). Adds /patterns and the standard type ramp; root pat
 
 ### Coming next
 
+- Importing each of these from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead: `ActivityFeed`, `AppShell`, `AssetImg`, `Calendar`, `Carousel`, `CodeBlock`, `CommandPalette`, `DocLinkCard`, `ErrorPattern`, `FileInput`, `Form`, `Lightbox`, `NavItem`, `OverflowList`, `Page`, `Reveal`, `SideNav`, `Stepper`, `Toolbar`, `TopNav` and `TreeList`. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
+- HdsCheckbox still works but is deprecated; use Checkbox, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
+- HdsRadio still works but is deprecated; use Radio, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
+- HdsSelect still works but is deprecated; use Select, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
+- HdsSlider still works but is deprecated; use Slider, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
+- HdsToggle still works but is deprecated; use Toggle, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
+- HdsTooltip still works but is deprecated; use Tooltip, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
 - The spacing token semantic.space.component.gap (--semantic-space-component-gap) still works but is deprecated; use semantic.space.scale.xs, the same 8px at the default density. Removed in 1.0.0.
 - The spacing token semantic.space.component.padding (--semantic-space-component-padding) still works but is deprecated; use semantic.space.surface.padding, which it now aliases. Removed in 1.0.0.
 - The spacing token semantic.space.layout.gutter (--semantic-space-layout-gutter) still works but is deprecated; use semantic.space.region.gutter, which it now aliases. Removed in 1.0.0.

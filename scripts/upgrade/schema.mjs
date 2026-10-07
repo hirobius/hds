@@ -416,7 +416,7 @@ export const Index = z
               .string()
               .min(1)
               .describe(
-                'The deprecated export or, for a deprecation that is not an import (a token path, a prop value), the subject of its step.',
+                'The deprecated export or class or, for a deprecation that lists neither (a token path, a prop, a prop value), the subject of its step.',
               ),
             entry: z
               .string()

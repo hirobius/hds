@@ -1,4 +1,26 @@
 {
   "impact": "none",
-  "plain": "Read UPGRADING.md in the package for what each release asks of you, newest first."
+  "plain": "Read UPGRADING.md in the package for what each release asks of you, newest first.",
+  "steps": [
+    {
+      "id": "deprecated/Divider.strong",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Divider's strong prop, deprecated since before 0.16.0, still works; use variant=\"strong\" instead.",
+      "detect": {
+        "regex": ["<Divider\\b[^>]*\\sstrong\\b"]
+      },
+      "removeIn": "1.0.0"
+    },
+    {
+      "id": "deprecated/InlineCode.compact",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "InlineCode's compact prop, deprecated since before 0.16.0, still works; use density=\"compact\" instead.",
+      "detect": {
+        "regex": ["<InlineCode\\b[^>]*\\scompact\\b"]
+      },
+      "removeIn": "1.0.0"
+    }
+  ]
 }
