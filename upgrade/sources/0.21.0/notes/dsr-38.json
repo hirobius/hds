@@ -1,0 +1,15 @@
+{
+  "impact": "behavior",
+  "plain": "A className on Button or Card can now override the colours a tone sets, so check any toned Button or Card that also passes colour classes.",
+  "steps": [
+    {
+      "id": "behavior/Button-Card-tone-className",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A className on Button or Card can now override the colours a tone sets, so check any toned Button or Card that also passes colour classes.",
+      "detect": {
+        "regex": ["<(?:Button|Card)\\b(?=[^>]*\\btone=)(?=[^>]*\\bclassName=)"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "impact": "breaking",
+  "plain": "StatusDot and StatusDotProps are removed, so replace each <StatusDot tone size label> with <Badge dot tone size label> (BadgeProps for the type), moving any style to a wrapper element or a className first.",
+  "steps": [
+    {
+      "id": "removed/StatusDot",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "StatusDot and StatusDotProps are removed, so replace each <StatusDot tone size label> with <Badge dot tone size label> (BadgeProps for the type), moving any style to a wrapper element or a className first.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["StatusDot", "StatusDotProps"]
+          }
+        ],
+        "jsx": ["StatusDot"]
+      },
+      "facts": ["removed:.:StatusDot", "removed:.:StatusDotProps"]
+    }
+  ]
+}

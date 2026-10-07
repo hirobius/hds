@@ -1,0 +1,21 @@
+{
+  "impact": "breaking",
+  "plain": "Callout is removed, so replace it with Alert.",
+  "steps": [
+    {
+      "id": "removed/Callout",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Callout is removed, so replace it with Alert.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Callout"]
+          }
+        ]
+      },
+      "facts": ["removed:.:Callout"]
+    }
+  ]
+}

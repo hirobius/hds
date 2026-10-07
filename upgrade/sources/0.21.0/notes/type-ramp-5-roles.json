@@ -1,0 +1,51 @@
+{
+  "impact": "look",
+  "plain": "Text follows a new 5-role type ramp, so check your pages after upgrading: headings render at 24px, display at 48px and body at 16px, and eyebrow, badge and micro text is no longer uppercase.",
+  "steps": [
+    {
+      "id": "look/type-ramp",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Headings (h1 to h3, heading1 to heading3) now render at 24px, display at 48px, body at 16px with 1.6 leading and mono at 13px, and eyebrow, badge and micro text is no longer uppercase.",
+      "detect": {
+        "jsx": ["Text"],
+        "regex": ["\\btypeStyles\\b", "var\\(\\s*--semantic-typography-"]
+      }
+    },
+    {
+      "id": "deprecated/Text-variants",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead.",
+      "detect": {
+        "regex": [
+          "<Text\\b[^>]*\\bvariant=\\{?\\s*[\"'](?:heading[123]|technical|eyebrow|badge|docLede|docBody|docSmall|docCode)[\"']"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "facts": ["added:.:TextVariant"]
+    },
+    {
+      "id": "deprecated/typeStyles-aliases",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead.",
+      "detect": {
+        "regex": [
+          "\\btypeStyles\\.(?:h[123]|heading[123]|headingHero|headingSection|display[12]|displayXl|body2|bodyLarge|small|bodySmall|label|labelDescriptive|labelTechnical|eyebrow|badge|micro|technical|monoXs|monoSm)\\b",
+          "\\bsemantic\\.typography\\.(?:label|labelDescriptive|labelTechnical)\\b"
+        ]
+      },
+      "removeIn": "1.0.0"
+    },
+    {
+      "id": "removed/--semantic-typography-eyebrow-text-transform",
+      "kind": "removed",
+      "impact": "look",
+      "plain": "The CSS variable --semantic-typography-eyebrow-text-transform is gone, so set text-transform: uppercase yourself where a label must stay uppercase.",
+      "detect": {
+        "cssVars": ["--semantic-typography-eyebrow-text-transform"]
+      }
+    }
+  ]
+}

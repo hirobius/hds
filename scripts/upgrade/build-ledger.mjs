@@ -2,9 +2,9 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
  * build-ledger.mjs — builds upgrade/releases/<version>.json for a release that
- * shipped before ledgers existed (`backfilled`, hds#447, hds#450), from inputs
- * frozen with that release, so no later edit elsewhere in the repo can rewrite
- * a shipped ledger.
+ * shipped before its ledger was written (`backfilled`, hds#447, hds#450,
+ * hds#448), from inputs frozen with that release, so no later edit elsewhere
+ * in the repo can rewrite a shipped ledger.
  *
  * Inputs, all committed and never edited once the ledger ships:
  *
@@ -24,6 +24,17 @@
  *         release shipped (./ledger.mjs changelogSource), carries the `needle`
  *         text that finds the line, and is marked backfilled. `each` repeats a
  *         step per name ({name}; an object map also fills {to}).
+ *       notes: for a release whose changesets carried upgrade notes (hds#448)
+ *         but that shipped before the compiler (hds#451), each changeset's
+ *         name with the CHANGELOG line of its entry (`source`, and the
+ *         `needle` that finds it). The notes themselves, upgrade/pending/
+ *         <changeset>.json as `changeset version` left them, are frozen at
+ *         notes/<changeset>.json and must fit PendingNote. Each note step
+ *         becomes a release step field for field, its id prefixed with the
+ *         version and its source the note's citation unless it names its
+ *         own. They were written before the release, so they are not marked
+ *         backfilled. The facts they list are theirs: no name rule
+ *         classifies them.
  *   - the data files the rules name, such as 0.20.0's removed.json and
  *     renames.json: codemods/removed-0.20.json and the RENAMES map of
  *     codemods/hds-prefix.mjs as 0.20.0 published them. The live files keep
@@ -31,10 +42,12 @@
  *
  * The build reads nothing else (not the live CHANGELOG; a test checks that
  * each needle still finds its cited line). A removed name no rule classifies,
- * a fact no step lists, a step listing a fact the diff lacks, or a step the
- * schema rejects stops it. The frozen sources cover 0.17.0 through 0.20.0.
- * 0.21.0 shipped with no ledger; hds#448 adds it next, and later releases get
- * theirs from the changesets' upgrade notes instead (hds#448, hds#451).
+ * a fact no step lists, a step listing a fact the diff lacks, a step or note
+ * the schema rejects, or a frozen note release.json does not cite stops it.
+ * The frozen sources cover 0.17.0 through 0.21.0: 0.17.0 to 0.20.0 from their
+ * CHANGELOG sections and codemod data, 0.21.0 from its seven changesets'
+ * upgrade notes. Later releases get theirs compiled from the notes at
+ * `changeset version` time (hds#451).
  *
  *   node scripts/upgrade/build-ledger.mjs [<version>...]           # write (default: every release with sources)
  *   node scripts/upgrade/build-ledger.mjs --check [<version>...]   # exit 1 if a committed ledger is stale
@@ -46,7 +59,7 @@ import { fileURLToPath } from 'node:url';
 import { diffSnapshots } from './diff.mjs';
 import { formatJson } from './format.mjs';
 import { assembleRelease, uncoveredFacts } from './ledger.mjs';
-import { compareVersions } from './schema.mjs';
+import { PendingNote, compareVersions } from './schema.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const PACKAGE = '@hirobius/design-system';
@@ -65,21 +78,47 @@ export function sourceVersions({ repo = REPO } = {}) {
     .sort(compareVersions);
 }
 
+/** A frozen upgrade note, validated: it must be what the gate accepted. */
+function readNote(dir, rel) {
+  const file = join(dir, rel);
+  if (!existsSync(file)) throw new Error(`${rel} is cited in release.json but missing`);
+  const result = PendingNote.safeParse(readJson(file));
+  if (!result.success) {
+    const problems = result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`);
+    throw new Error(`${rel} does not fit PendingNote: ${problems.join('; ')}`);
+  }
+  return result.data;
+}
+
 /**
- * A release's frozen inputs: release.json and every data file its rules name.
- * @returns {{ release: any, data: Record<string, any> }}
+ * A release's frozen inputs: release.json, every data file its rules name and
+ * every upgrade note it cites (notes/<changeset>.json).
+ * @returns {{ release: any, data: Record<string, any>, notes: Record<string, any> }}
  */
 export function readSources(version, { repo = REPO } = {}) {
   const dir = sourcesDir(repo, version);
+  const where = `upgrade/sources/${version}`;
   const release = readJson(join(dir, 'release.json'));
   if (release.version !== version) {
-    throw new Error(`upgrade/sources/${version}/release.json holds version ${release.version}`);
+    throw new Error(`${where}/release.json holds version ${release.version}`);
   }
   const data = {};
   for (const rule of Object.values(release.names ?? {})) {
     if (rule.data && !(rule.data in data)) data[rule.data] = readJson(join(dir, rule.data));
   }
-  return { release, data };
+  const cited = Object.keys(release.notes ?? {});
+  const frozen = existsSync(join(dir, 'notes'))
+    ? readdirSync(join(dir, 'notes')).filter((file) => file.endsWith('.json'))
+    : [];
+  for (const file of frozen) {
+    if (!cited.includes(file.replace(/\.json$/, ''))) {
+      throw new Error(`${where}/notes/${file} is not cited in release.json notes`);
+    }
+  }
+  const notes = Object.fromEntries(
+    cited.map((name) => [name, readNote(repo, `${where}/notes/${name}.json`)]),
+  );
+  return { release, data, notes };
 }
 
 /** `{name}` and `{to}` filled in a template string. */
@@ -211,14 +250,39 @@ function handSteps(release) {
 }
 
 /**
+ * The steps of the release's frozen upgrade notes: each note step with the
+ * version on its id and, unless it names its own, its changeset's CHANGELOG
+ * entry as its source. A CHANGELOG citation must carry its needle.
+ */
+function noteSteps(release, notes) {
+  return Object.entries(release.notes ?? {}).flatMap(([name, cite]) => {
+    if (CHANGELOG_CITE.test(cite.source ?? '') && !cite.needle) {
+      throw new Error(`${release.version} note ${name} cites ${cite.source} with no needle`);
+    }
+    if (!cite.source) throw new Error(`${release.version} note ${name} has no source`);
+    return (notes[name].steps ?? []).map(({ id, source, ...step }) => ({
+      id: `${release.version}/${id}`,
+      ...step,
+      source: source ?? cite.source,
+    }));
+  });
+}
+
+/**
  * The ledger of `version`, built from its two snapshots and its frozen sources.
  * Throws when a fact has no step or a step does not fit upgrade/schema.json.
  */
 export function buildLedger(version, { repo = REPO } = {}) {
-  const { release, data } = readSources(version, { repo });
+  const { release, data, notes } = readSources(version, { repo });
   const snapshot = (v) => readJson(join(repo, 'docs/api/releases', `${v}.json`));
   const next = snapshot(version);
   const facts = diffSnapshots(snapshot(release.previous), next);
+
+  // Written steps (notes, then hand steps) own the facts they list; the rules
+  // classify only what is left, so a note's removal is never classified twice.
+  const written = [...noteSteps(release, notes), ...handSteps(release)];
+  const listed = new Set(written.flatMap((step) => step.facts ?? []));
+  const open = facts.filter((fact) => !listed.has(fact.id));
 
   const ledger = assembleRelease({
     version,
@@ -227,9 +291,9 @@ export function buildLedger(version, { repo = REPO } = {}) {
     summary: release.summary,
     backfilled: release.backfilled,
     steps: [
-      ...nameSteps({ release, data, facts, next }),
-      ...dependencySteps({ release, facts }),
-      ...handSteps(release),
+      ...nameSteps({ release, data, facts: open, next }),
+      ...dependencySteps({ release, facts: open }),
+      ...written,
     ],
   });
 

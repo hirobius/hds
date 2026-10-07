@@ -62,7 +62,9 @@
  * in `pretest` (`audit-component-integrity.mjs --api`), so CI fails a removed
  * export instead of only `check:full` and `check:release`.
  * Run `pnpm api:update` after any intentional API change, then commit the
- * updated docs/api/api-baseline.json.
+ * updated docs/api/api-baseline.json. A removal needs its upgrade step and a
+ * minor changeset first (`pnpm upgrade:note`, REMOVAL_HINT below, hds#448):
+ * the baseline only says what the surface is, never how a consumer upgrades.
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
@@ -87,6 +89,19 @@ function readPackageVersion(root = ROOT) {
     return 'unknown';
   }
 }
+
+/**
+ * What to do about a removal, in order (hds#448). `pnpm api:update` alone used
+ * to clear a removed export with no migration step and under any bump; the
+ * upgrade gate (scripts/check-upgrade-ledger.mjs) now wants the step and the
+ * minor first, so the baseline is accepted last.
+ */
+export const REMOVAL_HINT = [
+  'A removal breaks consumers that use it. If it is intended:',
+  '  1. pnpm upgrade:note  writes its upgrade step to upgrade/pending/<changeset>.json; replace the TODO plain line',
+  "  2. make that changeset '@hirobius/design-system': minor (major from 1.0)",
+  '  3. pnpm api:update    accepts the new surface in docs/api/api-baseline.json',
+];
 
 const args = new Set(process.argv.slice(2));
 const UPDATE_BASELINE = args.has('--update-baseline');
@@ -532,10 +547,7 @@ async function main() {
   }
 
   if (breakingChanges.length > 0) {
-    console.error(
-      `[check-public-api] To accept these changes (e.g. an intentional major-version bump), run:\n` +
-        `[check-public-api]   pnpm api:update`,
-    );
+    for (const line of REMOVAL_HINT) console.error(`[check-public-api] ${line}`);
     process.exit(1);
   }
 

@@ -155,3 +155,62 @@ describe('check-record-freshness CLI', () => {
     expect(runGate('HEAD~2..HEAD').status).toBe(0);
   });
 });
+
+describe('check-record-freshness CLI: package.json (hds#448)', () => {
+  let repo;
+  const writePkg = (pkg) =>
+    writeFileSync(path.join(repo, 'package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
+  const run = (range) => {
+    try {
+      execFileSync(process.execPath, [GATE, '--range', range], {
+        cwd: repo,
+        encoding: 'utf8',
+        env: CLEAN_ENV,
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      return { status: 0, stderr: '' };
+    } catch (error) {
+      return { status: error.status ?? 1, stderr: error.stderr ?? '' };
+    }
+  };
+  const pkg = {
+    name: '@hirobius/design-system',
+    version: '0.20.0',
+    dependencies: { clsx: '^2.1.1', 'date-fns': '^4.1.0' },
+    scripts: { test: 'vitest run' },
+  };
+
+  beforeAll(() => {
+    repo = mkdtempSync(path.join(os.tmpdir(), 'check-record-freshness-pkg-'));
+    git(['init', '-q'], repo);
+    git(['config', 'user.email', 'test@example.com'], repo);
+    git(['config', 'user.name', 'Test'], repo);
+    mkdirSync(path.join(repo, '.changeset'), { recursive: true });
+    writeFileSync(path.join(repo, '.changeset', 'README.md'), '# changesets\n');
+    writeFileSync(
+      path.join(repo, 'status.json'),
+      JSON.stringify({ updatedAt: '2099-01-01T00:00:00Z' }, null, 2),
+    );
+    writePkg(pkg);
+    commitAll(repo, 'chore: initial commit');
+  });
+
+  afterAll(() => {
+    rmSync(repo, { recursive: true, force: true });
+  });
+
+  it('a package.json edit to scripts alone needs no changeset', () => {
+    writePkg({ ...pkg, scripts: { ...pkg.scripts, lint: 'eslint .' } });
+    commitAll(repo, 'chore: lint script');
+    expect(run('HEAD~1..HEAD').status).toBe(0);
+  });
+
+  it('a dropped dependency needs a changeset, and the message names the field', () => {
+    writePkg({ ...pkg, dependencies: { clsx: '^2.1.1' }, scripts: { test: 'vitest run' } });
+    commitAll(repo, 'chore(deps): drop date-fns');
+    const result = run('HEAD~1..HEAD');
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toMatch(/package\.json dependencies/);
+    expect(result.stderr).toMatch(/pnpm upgrade:note/);
+  });
+});

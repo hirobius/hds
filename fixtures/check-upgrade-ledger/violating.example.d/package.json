@@ -1,0 +1,23 @@
+{
+  "name": "@hirobius/design-system",
+  "version": "0.20.0",
+  "exports": {
+    ".": {
+      "types": "./dist/types/src/index.d.ts",
+      "import": "./dist/hirobius-ui.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "clsx": "^2.1.1"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

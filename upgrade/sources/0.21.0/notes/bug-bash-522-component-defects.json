@@ -1,0 +1,279 @@
+{
+  "impact": "behavior",
+  "plain": "Cards, Surfaces and StatusTiles now hug their content and several components were fixed, so pass align=\"stretch\" to a Grid whose tiles must share a height and flush={false} to a Table that needs its old padding.",
+  "steps": [
+    {
+      "id": "look/Grid-align-start",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Grid now aligns its items to the start and Grid.Item no longer sets height: 100%, so pass align=\"stretch\" to a Grid whose Cards, Surfaces or StatusTiles must share one height.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Grid"]
+          }
+        ],
+        "jsx": ["Grid", "Grid.Item"]
+      }
+    },
+    {
+      "id": "look/Card-Surface-StatusTile-height",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Card, Surface and StatusTile no longer fill their parent's height, so give the parent a stretching layout (Grid align=\"stretch\") where one must fill it.",
+      "detect": {
+        "jsx": ["Card", "Surface", "StatusTile"]
+      }
+    },
+    {
+      "id": "look/Table-flush",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Table no longer pads its scroll region by default, so pass flush={false} where you want the old inset back.",
+      "detect": {
+        "jsx": ["Table"]
+      }
+    },
+    {
+      "id": "look/ErrorPattern-fullPage",
+      "kind": "look",
+      "impact": "look",
+      "plain": "ErrorPattern now fits its container instead of filling the viewport height, so pass fullPage where it is a whole error page.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["ErrorPattern"]
+          }
+        ],
+        "jsx": ["ErrorPattern"]
+      }
+    },
+    {
+      "id": "look/form-control-width",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Input, Textarea, Select, Combobox and Slider are now at most 40rem wide, so set --hds-form-control-max-width or add max-w-none to the control's className where one must be wider.",
+      "detect": {
+        "jsx": ["Input", "Textarea", "Select", "Combobox", "Slider"]
+      }
+    },
+    {
+      "id": "look/Select-matches-Input",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Select now matches Input (40px tall, 44px on small screens, the same fill and an up-down chevron), and the built-in labels of Input, Textarea and Select are 14px like a FormField label.",
+      "detect": {
+        "jsx": ["Select", "Input", "Textarea"]
+      }
+    },
+    {
+      "id": "look/Progress-fill",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Progress now shows its neutral fill on a visible track, and its sm bar is 6px tall.",
+      "detect": {
+        "jsx": ["Progress"]
+      }
+    },
+    {
+      "id": "look/SegmentedControl-hug",
+      "kind": "look",
+      "impact": "look",
+      "plain": "SegmentedControl md segments now hug their labels in a 40px rail (sm 32px), so every segment shows instead of one filling the rail.",
+      "detect": {
+        "jsx": ["SegmentedControl"]
+      }
+    },
+    {
+      "id": "look/Slider-track",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Slider's track is now an 8px bar with a visible fill instead of a padded 48px slab.",
+      "detect": {
+        "jsx": ["Slider"]
+      }
+    },
+    {
+      "id": "look/Skeleton-rectangular",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A rectangular Skeleton is now 5rem tall by default and uses the sunken surface fill, so it shows on a Card.",
+      "detect": {
+        "jsx": ["Skeleton"]
+      }
+    },
+    {
+      "id": "look/Disclosure-card",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Disclosure variant=\"card\" no longer clips its content or leaves empty space when closed.",
+      "detect": {
+        "jsx": ["Disclosure"]
+      }
+    },
+    {
+      "id": "look/CodeBlock-padding",
+      "kind": "look",
+      "impact": "look",
+      "plain": "CodeBlock pads its code 16px instead of 80px.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["CodeBlock"]
+          }
+        ],
+        "jsx": ["CodeBlock"]
+      }
+    },
+    {
+      "id": "look/AssetImg-fallback",
+      "kind": "look",
+      "impact": "look",
+      "plain": "AssetImg without a src now shows a fallback that fits its container.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["AssetImg"]
+          }
+        ],
+        "jsx": ["AssetImg"]
+      }
+    },
+    {
+      "id": "look/control-rows",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Checkbox, Radio and Toggle rows now share one inset and height.",
+      "detect": {
+        "jsx": ["Checkbox", "Radio", "Toggle"]
+      }
+    },
+    {
+      "id": "look/touch-targets",
+      "kind": "look",
+      "impact": "look",
+      "plain": "On touch screens, Checkbox, Radio and Toggle rows, the Pagination page buttons and the CodeBlock copy button are now at least 44px tall.",
+      "detect": {
+        "jsx": ["Checkbox", "Radio", "Toggle", "Pagination", "CodeBlock"]
+      }
+    },
+    {
+      "id": "look/Stat-align",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Stat now aligns its content to the start.",
+      "detect": {
+        "jsx": ["Stat"]
+      }
+    },
+    {
+      "id": "look/MetadataList-horizontal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A horizontal MetadataList now sizes its term column to its content.",
+      "detect": {
+        "jsx": ["MetadataList"]
+      }
+    },
+    {
+      "id": "look/Divider-vertical",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A vertical Divider now stretches across its row without needing a parent height.",
+      "detect": {
+        "regex": ["<Divider\\b[^>]*\\borientation=\\{?\\s*[\"']vertical[\"']"]
+      }
+    },
+    {
+      "id": "look/Dialog-margin",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Dialog and AlertDialog now keep a 16px margin from the screen edge and scroll inside when taller than the screen.",
+      "detect": {
+        "jsx": ["Dialog", "AlertDialog"]
+      }
+    },
+    {
+      "id": "look/Button-pressed",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A pressed toggle Button now fills with the accent surface, so it reads as on.",
+      "detect": {
+        "regex": ["<Button\\b[^>]*\\bpressed\\b"]
+      }
+    },
+    {
+      "id": "look/FormActions-primary",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A Button with no variant in FormActions primary now renders as primary, so pass variant where you want another style there.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": ["FormActions"]
+          }
+        ],
+        "jsx": ["FormActions"]
+      }
+    },
+    {
+      "id": "behavior/Alert-role",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "An info or success Alert now has role=\"status\" instead of role=\"alert\", so tests that find it by role must look for status.",
+      "detect": {
+        "jsx": ["Alert"]
+      }
+    },
+    {
+      "id": "behavior/Toggle-role-switch",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Toggle's input now has role=\"switch\", so tests that find it by role checkbox must look for switch.",
+      "detect": {
+        "jsx": ["Toggle"]
+      }
+    },
+    {
+      "id": "behavior/Badge-dot-role",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A labelled dot Badge now has role=\"img\" instead of role=\"status\", so tests that find it by role must look for img.",
+      "detect": {
+        "regex": ["<Badge\\b[^>]*\\bdot\\b"]
+      }
+    },
+    {
+      "id": "behavior/one-tab-stop",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Checkbox, Radio and Toggle now take one tab stop each instead of two, so keyboard tests that press Tab twice per control must press it once.",
+      "detect": {
+        "jsx": ["Checkbox", "Radio", "Toggle"]
+      }
+    },
+    {
+      "id": "behavior/Combobox-focus",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Combobox now returns focus to its trigger after Escape or a pick.",
+      "detect": {
+        "jsx": ["Combobox"]
+      }
+    },
+    {
+      "id": "behavior/Badge-label-warning",
+      "kind": "behavior",
+      "impact": "none",
+      "plain": "A Badge with label but no dot now warns once in development, because label only names a dot badge, so put the text in children instead.",
+      "detect": {
+        "regex": ["<Badge\\b(?![^>]*\\bdot\\b)[^>]*\\blabel="]
+      }
+    }
+  ]
+}

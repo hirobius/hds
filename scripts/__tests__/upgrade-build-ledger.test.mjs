@@ -144,7 +144,13 @@ const DATA = {
 };
 
 /** A temp repo with only the snapshots and the frozen sources: no CHANGELOG, no codemods. */
-function fixtureRepo({ prev = PREV, next = NEXT, release = RELEASE, data = DATA } = {}) {
+function fixtureRepo({
+  prev = PREV,
+  next = NEXT,
+  release = RELEASE,
+  data = DATA,
+  notes = {},
+} = {}) {
   const repo = mkdtempSync(join(tmpdir(), 'hds-build-ledger-'));
   temps.push(repo);
   const write = (rel, value) => {
@@ -156,6 +162,9 @@ function fixtureRepo({ prev = PREV, next = NEXT, release = RELEASE, data = DATA 
   write(`upgrade/sources/${release.version}/release.json`, release);
   for (const [file, value] of Object.entries(data)) {
     write(`upgrade/sources/${release.version}/${file}`, value);
+  }
+  for (const [name, value] of Object.entries(notes)) {
+    write(`upgrade/sources/${release.version}/notes/${name}.json`, value);
   }
   return repo;
 }
@@ -336,6 +345,139 @@ describe('buildLedger', () => {
   });
 });
 
+// A release that shipped with upgrade notes (hds#448) but before the compiler
+// (hds#451): its changesets' notes, upgrade/pending/<changeset>.json as
+// `changeset version` left them, are frozen under notes/, and release.json
+// cites each changeset's CHANGELOG entry. Their steps were written before the
+// release, so they are not backfilled, and they carry over field for field.
+describe('buildLedger from frozen upgrade notes', () => {
+  const chartGone = {
+    impact: 'breaking',
+    plain: 'Chart is removed, so draw charts with your own library.',
+    steps: [
+      {
+        id: 'removed/Chart',
+        kind: 'removed',
+        impact: 'breaking',
+        plain: 'Chart is removed, so draw charts with your own library.',
+        detect: { imports: [{ from: PKG, names: ['Chart'] }], jsx: ['Chart'] },
+        facts: ['removed:.:Chart'],
+      },
+    ],
+  };
+  const fontsOptIn = {
+    impact: 'look',
+    plain: 'Add the fonts.css import, or text renders in the system font.',
+    steps: [
+      {
+        id: 'manual/fonts-css',
+        kind: 'manual',
+        impact: 'look',
+        plain: 'Add the fonts.css import, or text renders in the system font.',
+        detect: { regex: ['@hirobius/design-system/tokens\\.css[\'"]'] },
+        done: { regex: ['@hirobius/design-system/fonts\\.css[\'"]'] },
+        source: 'MIGRATIONS.md',
+      },
+    ],
+  };
+  const coreFlag = { impact: 'additive', plain: 'The manifest marks the core set.' };
+  const NOTES = { 'drop-chart': chartGone, 'fonts-opt-in': fontsOptIn, 'core-flag': coreFlag };
+  const CITES = {
+    'drop-chart': { needle: 'abc1234: Chart', source: 'CHANGELOG.md:12' },
+    'fonts-opt-in': { needle: 'def5678: Fonts', source: 'CHANGELOG.md:14' },
+    'core-flag': { needle: 'fed4321: Core', source: 'CHANGELOG.md:16' },
+  };
+  // Chart is the note's to explain: the frozen codemod data leaves it out, so
+  // no name rule classifies it. The other names still go through the rules.
+  const release = { ...RELEASE, notes: CITES };
+  const data = {
+    ...DATA,
+    'removed.json': { ...DATA['removed.json'], modules: { 'src/button.tsx': ['buttonVariants'] } },
+  };
+
+  it('carries each note step over with its version and its changeset entry, not backfilled', () => {
+    const ledger = buildLedger('1.1.0', { repo: fixtureRepo({ release, data, notes: NOTES }) });
+    expect(ledger.steps.find((step) => step.id === '1.1.0/removed/Chart')).toEqual({
+      id: '1.1.0/removed/Chart',
+      kind: 'removed',
+      impact: 'breaking',
+      plain: 'Chart is removed, so draw charts with your own library.',
+      detect: { imports: [{ from: PKG, names: ['Chart'] }], jsx: ['Chart'] },
+      facts: ['removed:.:Chart'],
+      source: 'CHANGELOG.md:12',
+    });
+    // A step's own source wins over its note's citation; done carries over.
+    expect(ledger.steps.find((step) => step.id === '1.1.0/manual/fonts-css')).toEqual({
+      id: '1.1.0/manual/fonts-css',
+      kind: 'manual',
+      impact: 'look',
+      plain: 'Add the fonts.css import, or text renders in the system font.',
+      detect: { regex: ['@hirobius/design-system/tokens\\.css[\'"]'] },
+      done: { regex: ['@hirobius/design-system/fonts\\.css[\'"]'] },
+      source: 'MIGRATIONS.md',
+    });
+  });
+
+  it('lets the note explain the facts it lists, so no name rule has to classify them', () => {
+    const ledger = buildLedger('1.1.0', { repo: fixtureRepo({ release, data, notes: NOTES }) });
+    const chart = ledger.steps.filter((step) => step.facts?.includes('removed:.:Chart'));
+    expect(chart.map((step) => step.id)).toEqual(['1.1.0/removed/Chart']);
+    // The other names still go through the rules.
+    expect(ledger.steps.map((step) => step.id)).toEqual(
+      expect.arrayContaining(['1.1.0/removed/buttonVariants', '1.1.0/moved/Page']),
+    );
+  });
+
+  it('adds no step for a note that has none, and refuses a frozen note release.json does not cite', () => {
+    const ledger = buildLedger('1.1.0', { repo: fixtureRepo({ release, data, notes: NOTES }) });
+    const { 'core-flag': _core, ...stepped } = NOTES;
+    const { 'core-flag': _cite, ...steppedCites } = CITES;
+    const without = { ...release, notes: steppedCites };
+    expect(
+      buildLedger('1.1.0', { repo: fixtureRepo({ release: without, data, notes: stepped }) }),
+    ).toEqual(ledger);
+    expect(() =>
+      buildLedger('1.1.0', { repo: fixtureRepo({ release: without, data, notes: NOTES }) }),
+    ).toThrow(/notes\/core-flag\.json is not cited/);
+  });
+
+  it('refuses a note cited with no needle, a note file that is missing, and a note the schema rejects', () => {
+    const bare = { ...release, notes: { ...CITES, 'drop-chart': { source: 'CHANGELOG.md:12' } } };
+    expect(() =>
+      buildLedger('1.1.0', { repo: fixtureRepo({ release: bare, data, notes: NOTES }) }),
+    ).toThrow(/note drop-chart cites CHANGELOG\.md:12 with no needle/);
+    const { 'fonts-opt-in': _fonts, ...missing } = NOTES;
+    expect(() =>
+      buildLedger('1.1.0', { repo: fixtureRepo({ release, data, notes: missing }) }),
+    ).toThrow(/upgrade\/sources\/1\.1\.0\/notes\/fonts-opt-in\.json/);
+    const todo = {
+      ...NOTES,
+      'core-flag': {
+        impact: 'additive',
+        plain: 'TODO: one sentence a consumer can act on, ending in a full stop.',
+      },
+    };
+    expect(() =>
+      buildLedger('1.1.0', { repo: fixtureRepo({ release, data, notes: todo }) }),
+    ).toThrow(/notes\/core-flag\.json.*TODO/);
+  });
+
+  it('still refuses a note step listing a fact the diff does not have', () => {
+    const stale = {
+      ...NOTES,
+      'drop-chart': {
+        ...chartGone,
+        steps: [{ ...chartGone.steps[0], facts: ['removed:.:Chart', 'removed:.:Nope'] }],
+      },
+    };
+    expect(() =>
+      buildLedger('1.1.0', { repo: fixtureRepo({ release, data, notes: stale }) }),
+    ).toThrow(
+      /1\.1\.0\/removed\/Chart lists removed:\.:Chart, removed:\.:Nope|lists removed:\.:Nope/,
+    );
+  });
+});
+
 describe('the committed ledgers (upgrade/releases) and their sources (upgrade/sources)', () => {
   it('builds every ledger that has sources byte for byte, and build-ledger.mjs --check agrees', () => {
     const versions = sourceVersions();
@@ -359,10 +501,15 @@ describe('the committed ledgers (upgrade/releases) and their sources (upgrade/so
   it('cites each CHANGELOG line that its needle still finds in that release section', () => {
     const changelog = readFileSync(join(REPO, 'CHANGELOG.md'), 'utf8');
     for (const version of sourceVersions()) {
-      for (const step of readSources(version).release.steps) {
-        if (!step.source.startsWith('CHANGELOG.md:')) continue;
-        expect(changelogSource(changelog, version, step.needle), `${version} ${step.subject}`).toBe(
-          step.source,
+      const { release } = readSources(version);
+      const cites = [
+        ...(release.steps ?? []).map((step) => [step.subject, step]),
+        ...Object.entries(release.notes ?? {}),
+      ];
+      for (const [what, cite] of cites) {
+        if (!cite.source.startsWith('CHANGELOG.md:')) continue;
+        expect(changelogSource(changelog, version, cite.needle), `${version} ${what}`).toBe(
+          cite.source,
         );
       }
     }

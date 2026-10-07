@@ -14,6 +14,7 @@ import { formatJson } from '../upgrade/format.mjs';
 import {
   IMPACTS,
   Index,
+  PendingNote,
   Release,
   STEP_KINDS,
   Snapshot,
@@ -115,6 +116,10 @@ describe('Release (a ledger)', () => {
       'steps.0.plain',
       (l) => (l.steps[0].plain = 'Page moved to /patterns'),
     ],
+    'a plain line still holding the upgrade:note TODO': [
+      'steps.0.plain',
+      (l) => (l.steps[0].plain = 'TODO: one sentence a consumer can act on.'),
+    ],
     'a plain line over two lines': [
       'steps.0.plain',
       (l) => (l.steps[0].plain = 'Page moved\nto /patterns.'),
@@ -146,6 +151,108 @@ describe('Release (a ledger)', () => {
       expect(result.error.issues.map((issue) => issue.path.join('.'))).toContain(path);
     });
   }
+});
+
+describe('PendingNote (upgrade/pending/<changeset>.json, hds#448)', () => {
+  const removal = () => ({
+    impact: 'breaking',
+    plain: 'Callout is removed, so replace it with Alert.',
+    steps: [
+      {
+        id: 'removed/Callout',
+        kind: 'removed',
+        impact: 'breaking',
+        plain: 'Callout is removed, so replace it with Alert.',
+        detect: { imports: [{ from: ROOT, names: ['Callout'] }] },
+        facts: ['removed:.:Callout'],
+      },
+    ],
+  });
+  const parse = (note) => PendingNote.safeParse(note);
+  const paths = (note) => (parse(note).error?.issues ?? []).map((i) => i.path.join('.'));
+
+  it('accepts an explicit impact none with no plain line', () => {
+    expect(parse({ impact: 'none' }).error?.issues ?? []).toEqual([]);
+  });
+
+  it('accepts a plain line with no steps, for a change no fact records', () => {
+    const note = { impact: 'behavior', plain: 'Select no longer closes when the page scrolls.' };
+    expect(parse(note).error?.issues ?? []).toEqual([]);
+  });
+
+  it('accepts steps in the release step shape, the version left out of the id and source optional', () => {
+    expect(parse(removal()).error?.issues ?? []).toEqual([]);
+  });
+
+  /** A step that asks the consumer to add something: done says how to tell it is there. */
+  const addImport = () => ({
+    impact: 'look',
+    plain: "Add import '@hirobius/design-system/fonts.css' to keep the brand fonts.",
+    steps: [
+      {
+        id: 'manual/fonts-css',
+        kind: 'manual',
+        impact: 'look',
+        plain: "Add import '@hirobius/design-system/fonts.css' to keep the brand fonts.",
+        detect: { regex: ['@hirobius/design-system/(?:tokens|styles)\\.css[\'"]'] },
+        done: { regex: ['@hirobius/design-system/fonts\\.css[\'"]'] },
+      },
+    ],
+  });
+
+  it('accepts a step that says how to tell it is already done (done, in the detect shape)', () => {
+    expect(parse(addImport()).error?.issues ?? []).toEqual([]);
+    const ledger = validLedger();
+    ledger.steps[1].done = { imports: [{ from: ROOT, names: ['Badge'] }] };
+    expect(Release.safeParse(ledger).error?.issues ?? []).toEqual([]);
+  });
+
+  it('rejects an empty done, and a done regex that does not compile', () => {
+    const empty = addImport();
+    empty.steps[0].done = {};
+    expect(paths(empty)).toContain('steps.0.done');
+    const bad = addImport();
+    bad.steps[0].done = { regex: ['('] };
+    expect(paths(bad)).toContain('steps.0.done.regex.0');
+  });
+
+  const cases = {
+    'a note with no impact': ['impact', (n) => delete n.impact],
+    'an impact other than none with no plain line': ['plain', (n) => delete n.plain],
+    'a plain line still holding the upgrade:note TODO': [
+      'plain',
+      (n) => (n.plain = 'TODO: one sentence a consumer can act on.'),
+    ],
+    'a step plain line still holding the TODO': [
+      'steps.0.plain',
+      (n) => (n.steps[0].plain = 'TODO: one sentence a consumer can act on.'),
+    ],
+    'a step id that carries a version': [
+      'steps.0.id',
+      (n) => (n.steps[0].id = '0.20.1/removed/Callout'),
+    ],
+    'a step id that names another kind': ['steps.0.id', (n) => (n.steps[0].id = 'moved/Callout')],
+    'a breaking step under a note that says additive': ['impact', (n) => (n.impact = 'additive')],
+    'two steps with one id': ['steps.1.id', (n) => n.steps.push({ ...n.steps[0] })],
+    'an empty steps list': ['steps', (n) => (n.steps = [])],
+    'an unknown field': ['', (n) => (n.bump = 'minor')],
+  };
+  for (const [name, [path, change]] of Object.entries(cases)) {
+    it(`rejects ${name}${path ? ` at ${path}` : ''}`, () => {
+      const note = removal();
+      change(note);
+      expect(parse(note).success).toBe(false);
+      expect(paths(note)).toContain(path);
+    });
+  }
+
+  it('says what to do with a TODO plain line', () => {
+    const note = { impact: 'additive', plain: 'TODO: one sentence a consumer can act on.' };
+    const messages = parse(note)
+      .error.issues.map((i) => i.message)
+      .join('\n');
+    expect(messages).toMatch(/TODO.*pnpm upgrade:note/);
+  });
 });
 
 describe('Index (upgrade/index.json, written by hds#451)', () => {
@@ -239,7 +346,16 @@ describe('upgrade/schema.json', () => {
   it('describes a release ledger at the root, with the index and snapshot shapes in $defs', () => {
     const schema = buildJsonSchema();
     expect(schema.$ref).toBe('#/$defs/release');
-    for (const def of ['release', 'step', 'detect', 'auto', 'index', 'snapshot']) {
+    for (const def of [
+      'release',
+      'step',
+      'detect',
+      'auto',
+      'index',
+      'snapshot',
+      'pendingNote',
+      'pendingStep',
+    ]) {
       expect(Object.keys(schema.$defs)).toContain(def);
     }
     expect(schema.$defs.step.properties.kind.enum).toEqual(STEP_KINDS);

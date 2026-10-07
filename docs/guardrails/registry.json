@@ -551,7 +551,7 @@
     },
     {
       "id": "check-record-freshness",
-      "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, unless a pushed commit adds a `.status/<branch>.md` note (conflict-free; `pnpm status:fold` folds notes into status.json on main). Commits already on origin/main are ignored. Names the offending commit and the fix. Separately fails when a pushed commit touches src/ with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a source change cannot ship with CHANGELOG.md left to go stale.",
+      "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, unless a pushed commit adds a `.status/<branch>.md` note (conflict-free; `pnpm status:fold` folds notes into status.json on main). Commits already on origin/main are ignored. Names the offending commit and the fix. Separately fails when a pushed commit changes what ships (src/; the files package.json#files ships from codemods/, mcp/ and scripts/eslint-plugin-hds/, so not codemods/lib/, minus tests and fixtures; hirobius.tokens.json; tailwind.config.tokens.cjs; or a package.json field a consumer installs or resolves, such as dependencies, peers, engines, exports, bin or files, read from the field diff so scripts and devDependencies edits ask for nothing, hds#448) with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a shipped change cannot reach a release with CHANGELOG.md and its upgrade note left behind.",
       "severity": "error",
       "gateScript": "scripts/check-record-freshness.mjs",
       "owner": "Adrian",
@@ -900,6 +900,18 @@
       "severity": "error",
       "gateScript": "scripts/upgrade/schema.mjs",
       "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree",
+      "supportsJson": true
+    },
+    {
+      "id": "check-upgrade-ledger",
+      "description": "Upgrade-ledger gate (hds#448): compares the working tree, read from source with no build (scripts/upgrade/snapshot.mjs snapshotFromSource), with the newest docs/api/releases/<v>.json at or below package.json's version, and fails when a fact that takes something away (an export removed or moved, an exports key, dependency or bin gone, a narrowed peer, raised engines) has no step in upgrade/pending/*.json; when a .changeset/*.md has no upgrade/pending/<same name>.json stating its impact (and, unless none, a plain line with no TODO left); when a breaking change (a breaking fact, a note that says breaking, or a step that removes, moves, renames or folds something public, such as a CSS variable the diff cannot see yet) rides a changeset smaller than minor below 1.0 (major from 1.0), or, on the Version PR, a real bump that small; and when a major changeset or version would cut 1.0 without upgrade/ALLOW_1_0. Every message names pnpm upgrade:note. Runs in pretest, so pre-push, CI and the Ralph gate run it; adds about 0.9s (0.86-0.97s over five runs on the 0.21.0 tree, no network, no build).",
+      "severity": "error",
+      "gateScript": "scripts/check-upgrade-ledger.mjs",
+      "fixturePath": "fixtures/check-upgrade-ledger",
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pnpm-meta",

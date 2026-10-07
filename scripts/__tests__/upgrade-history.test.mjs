@@ -9,10 +9,14 @@
  * each expected problem is read off the fixture, not recomputed.
  */
 import { describe, it, expect, afterEach } from 'vitest';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { floor, historyProblems, releaseVersions } from '../upgrade/history.mjs';
+import { compareVersions } from '../upgrade/schema.mjs';
+
+const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 
 const temps = [];
 afterEach(() => {
@@ -186,5 +190,38 @@ describe('the committed history (docs/api/releases, upgrade/releases)', () => {
       '0.20.0',
     ]);
     expect(historyProblems()).toEqual([]);
+  });
+});
+
+// historyProblems() reads only committed snapshots, so a release that shipped
+// with neither snapshot nor ledger (0.21.0 did) is invisible to it. The list of
+// what npm published is what it is checked against: upgrade/published.json,
+// updated by hand when a release publishes until hds#451 does it.
+describe('every published release (upgrade/published.json)', () => {
+  const { versions } = JSON.parse(readFileSync(join(REPO, 'upgrade/published.json'), 'utf8'));
+  const has = (rel) => existsSync(join(REPO, rel));
+
+  it("is npm's version list, oldest first, through 0.21.0", () => {
+    expect([...versions].sort(compareVersions)).toEqual(versions);
+    expect(new Set(versions).size).toBe(versions.length);
+    expect(versions).toEqual(expect.arrayContaining(['0.16.0', '0.20.0', '0.21.0']));
+  });
+
+  it('has a snapshot and a ledger for each release after the 0.16.0 floor, and a snapshot for the floor', () => {
+    const missing = [];
+    for (const version of versions.filter((v) => !v.includes('-'))) {
+      if (compareVersions(version, floor()) < 0) continue;
+      if (!has(`docs/api/releases/${version}.json`))
+        missing.push(`docs/api/releases/${version}.json`);
+      if (version !== floor() && !has(`upgrade/releases/${version}.json`)) {
+        missing.push(`upgrade/releases/${version}.json`);
+      }
+    }
+    expect(missing).toEqual([]);
+    expect(floor()).toBe('0.16.0');
+  });
+
+  it('lists every committed snapshot, so none records a version npm never published', () => {
+    for (const version of releaseVersions()) expect(versions, version).toContain(version);
   });
 });
