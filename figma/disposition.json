@@ -10,46 +10,18 @@
   "overrides": {
     "StatusDot": {
       "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
-    },
-    "Kbd": {
-      "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
-    },
-    "Blockquote": {
-      "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
-    },
-    "Timestamp": {
-      "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
-    },
-    "AvatarGroup": {
-      "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
-    },
-    "MetadataList": {
-      "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
-    },
-    "DestructiveSection": {
-      "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
-    },
-    "Icon": {
-      "class": "internal",
-      "reason": "held: prune candidate, see hds prune review 2026-10-07"
+      "reason": "deprecated: @removeIn 0.21.0, replaced by Badge dot"
     }
   },
   "summary": {
     "total": 98,
     "byClass": {
-      "library": 49,
+      "library": 56,
       "slot": 19,
       "layout": 9,
-      "internal": 21
+      "internal": 14
     },
-    "libraryLinked": 49,
+    "libraryLinked": 56,
     "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
@@ -88,13 +60,11 @@
     },
     {
       "name": "AvatarGroup",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63"
     },
     {
       "name": "Badge",
@@ -106,13 +76,11 @@
     },
     {
       "name": "Blockquote",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Typography",
       "tier": "primitive",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18"
     },
     {
       "name": "Box",
@@ -252,13 +220,11 @@
     },
     {
       "name": "DestructiveSection",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Actions",
       "tier": "pattern",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3"
     },
     {
       "name": "Dialog",
@@ -502,13 +468,11 @@
     },
     {
       "name": "Icon",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2"
     },
     {
       "name": "InlineCode",
@@ -536,13 +500,11 @@
     },
     {
       "name": "Kbd",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9"
     },
     {
       "name": "Menu",
@@ -554,13 +516,11 @@
     },
     {
       "name": "MetadataList",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47"
     },
     {
       "name": "MetricTile",
@@ -714,7 +674,7 @@
       "tier": "primitive",
       "figmaUrl": null,
       "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "overrideReason": "deprecated: @removeIn 0.21.0, replaced by Badge dot"
     },
     {
       "name": "StatusListItem",
@@ -814,13 +774,11 @@
     },
     {
       "name": "Timestamp",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "held: prune candidate, see hds prune review 2026-10-07"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11"
     },
     {
       "name": "ToastProvider",

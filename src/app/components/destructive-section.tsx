@@ -2,6 +2,7 @@
  * DestructiveSection - the one place a screen puts an irreversible action.
  * @category Actions
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3
  */
 // motion-ok: composition only. The one control is a danger Button, which owns
 // its hover/press transition (transition-[colors,filter]); the AlertDialog it

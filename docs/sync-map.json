@@ -8,19 +8,19 @@
       "rendered-defects": 26
     },
     "byClass": {
-      "library": 49,
-      "internal": 21,
+      "library": 56,
       "slot": 19,
-      "layout": 9
+      "layout": 9,
+      "internal": 14
     },
     "orphanStories": 2,
     "storyCoverage": {
-      "expected": 77,
-      "covered": 77
+      "expected": 84,
+      "covered": 84
     },
     "figmaCoverage": {
-      "expected": 49,
-      "covered": 49
+      "expected": 56,
+      "covered": 56
     }
   },
   "rows": [
@@ -47,7 +47,7 @@
     },
     {
       "name": "Blockquote",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/blockquote.tsx",
       "storyFiles": ["src/stories/blockquote.stories.tsx"],
       "storyIds": [
@@ -56,10 +56,10 @@
         "primitives-blockquote--with-attribution"
       ],
       "storyCount": 3,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 3,
       "gaps": ["rendered-defects"],
       "synced": false
@@ -365,7 +365,7 @@
     },
     {
       "name": "Kbd",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/kbd.tsx",
       "storyFiles": ["src/stories/kbd.stories.tsx"],
       "storyIds": [
@@ -374,17 +374,17 @@
         "primitives-kbd--sizes"
       ],
       "storyCount": 3,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 3,
       "gaps": ["rendered-defects"],
       "synced": false
     },
     {
       "name": "MetadataList",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/metadata-list.tsx",
       "storyFiles": ["src/stories/metadata-list.stories.tsx"],
       "storyIds": [
@@ -393,10 +393,10 @@
         "patterns-metadata-list--horizontal"
       ],
       "storyCount": 3,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 3,
       "gaps": ["rendered-defects"],
       "synced": false
@@ -658,7 +658,7 @@
     },
     {
       "name": "AvatarGroup",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/avatar-group.tsx",
       "storyFiles": ["src/stories/avatar-group.stories.tsx"],
       "storyIds": [
@@ -667,10 +667,10 @@
         "primitives-avatar-group--with-overflow"
       ],
       "storyCount": 3,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 0,
       "gaps": [],
       "synced": true
@@ -875,7 +875,7 @@
     },
     {
       "name": "DestructiveSection",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/destructive-section.tsx",
       "storyFiles": ["src/stories/destructive-section.stories.tsx"],
       "storyIds": [
@@ -885,10 +885,10 @@
         "patterns-destructivesection--separate-button-label"
       ],
       "storyCount": 4,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 0,
       "gaps": [],
       "synced": true
@@ -1401,7 +1401,7 @@
     },
     {
       "name": "Icon",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/icon.tsx",
       "storyFiles": ["src/stories/icon.stories.tsx"],
       "storyIds": [
@@ -1413,10 +1413,10 @@
         "primitives-icon--size-gallery"
       ],
       "storyCount": 6,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 0,
       "gaps": [],
       "synced": true
@@ -1983,15 +1983,15 @@
     },
     {
       "name": "Timestamp",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/timestamp.tsx",
       "storyFiles": ["src/stories/timestamp.stories.tsx"],
       "storyIds": ["primitives-timestamp--default", "primitives-timestamp--formats"],
       "storyCount": 2,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 0,
       "gaps": [],
       "synced": true

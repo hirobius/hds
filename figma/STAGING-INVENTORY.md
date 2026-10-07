@@ -24,7 +24,7 @@ no tag is invisible to the gate: a gap in the measurement, not drift. Tagging it
 with its staging node (2026-10-07 onward) closes that gap, at the price of one
 re-point per tag at promotion.
 
-## Drawn in staging (11 components)
+## Drawn in staging (12 components)
 
 | Component | Kind | Variants | Drawn | Node |
 |---|---|---|---|---|
@@ -33,6 +33,7 @@ re-point per tag at promotion.
 | [AvatarGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2030-63) | set | 6 | 2026-09-23 | `2030-63` |
 | [Blockquote](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2024-18) | set | 6 | 2026-09-23 | `2024-18` |
 | [DataTableSection](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-268) | set | 4 | 2026-10-07 | `2075-268` |
+| [DestructiveSection](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2076-3) | component | — | 2026-10-07 | `2076-3` |
 | [FormActions](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-87) | set | 8 | 2026-10-07 | `2075-87` |
 | [Kbd](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2026-9) | set | 3 | 2026-09-23 | `2026-9` |
 | [MetadataList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-47) | set | 4 | 2026-09-23 | `2041-47` |

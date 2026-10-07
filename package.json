@@ -187,6 +187,7 @@
     "check:figma-coverage": "node scripts/check-figma-coverage.mjs",
     "check:figma-drift": "node scripts/check-figma-drift.mjs",
     "check:figma-mapping": "node scripts/check-figma-mapping.mjs",
+    "check:figma-staging-urls": "node scripts/check-figma-staging-urls.mjs",
     "check:focus": "node scripts/check-focus-states.mjs",
     "check:font-files": "node scripts/check-typography-discipline.mjs --font-files-only",
     "check:fonts": "node scripts/check-typography-discipline.mjs --fonts-only",

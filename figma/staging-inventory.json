@@ -60,6 +60,12 @@
       "variants": 5,
       "node": "2075-114",
       "drawn": "2026-10-07"
+    },
+    "DestructiveSection": {
+      "kind": "component",
+      "variants": null,
+      "node": "2076-3",
+      "drawn": "2026-10-07"
     }
   },
   "drawnEarlier": {

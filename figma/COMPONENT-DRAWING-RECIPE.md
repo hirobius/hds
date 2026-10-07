@@ -78,7 +78,9 @@ only in staging still gets its `@figma` tag, pointing at the **staging** node
 manifest, Storybook's Design tab and `figma:disposition` see a node. Add the
 tag, run `pnpm manifest:generate` and `pnpm figma:links`, and list the
 component in `figma/staging-inventory.json`
-(`pnpm figma:staging-inventory`). After promoting, take the new library node ID
+(`pnpm figma:staging-inventory`). `pnpm check:figma-staging-urls` lists every
+tag still pointing at staging (a warning) and fails if one reaches a Code
+Connect template. After promoting, take the new library node ID
 for each, replace the tag URL, then run `pnpm manifest:generate` again. The
 manifest's `variantAxes` and `figmaUrl` populate from that tag, and
 `check:figma-mapping` then enforces the axes against the real props.
