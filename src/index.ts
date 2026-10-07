@@ -80,7 +80,6 @@ export * from './app/components/text';
 
 // ── Astryx-gap coverage — Tier 1 native primitives (0.12.0) ──
 export * from './app/components/kbd';
-export * from './app/components/status-dot';
 export * from './app/components/timestamp';
 export * from './app/components/blockquote';
 export * from './app/components/visually-hidden';

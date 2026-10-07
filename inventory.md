@@ -200,13 +200,13 @@ Composite surfaces, layout section templates, and domain adapters.
 
 ## 5. Guides Inventory
 
-| Guide Title                | Proposed MDX Path                         | Description                                                                                                                       |
-| :------------------------- | :---------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| **Getting Started**        | `content/docs/guides/getting-started.mdx` | Installation, setup, first component, and router integration.                                                                     |
-| **Providers & Setup**      | `content/docs/guides/providers.mdx`       | Consolidated setup guide covering `HdsThemeProvider`, `HdsRouterProvider`, and `ToastProvider`.                                   |
-| **Tokens & Architecture**  | `content/docs/guides/tokens.mdx`          | Token pipeline (DTCG -> CSS/TS/Figma), 3-tier architecture, theme dials.                                                          |
-| **Upgrade Path**           | `content/docs/guides/upgrade.mdx`         | Versioning policy, running release codemods, breaking-change windows.                                                             |
-| **Deprecation & Removals** | `content/docs/guides/deprecation.mdx`     | Documenting the 46 deprecated components (including `StatusDot`), 32 removed 0.20 components, replacements, and removal timeline. |
+| Guide Title                | Proposed MDX Path                         | Description                                                                                                                                   |
+| :------------------------- | :---------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Getting Started**        | `content/docs/guides/getting-started.mdx` | Installation, setup, first component, and router integration.                                                                                 |
+| **Providers & Setup**      | `content/docs/guides/providers.mdx`       | Consolidated setup guide covering `HdsThemeProvider`, `HdsRouterProvider`, and `ToastProvider`.                                               |
+| **Tokens & Architecture**  | `content/docs/guides/tokens.mdx`          | Token pipeline (DTCG -> CSS/TS/Figma), 3-tier architecture, theme dials.                                                                      |
+| **Upgrade Path**           | `content/docs/guides/upgrade.mdx`         | Versioning policy, running release codemods, breaking-change windows.                                                                         |
+| **Deprecation & Removals** | `content/docs/guides/deprecation.mdx`     | Documenting the 46 deprecated components (`StatusDot` was removed in 0.21.0), 32 removed 0.20 components, replacements, and removal timeline. |
 
 ---
 
@@ -255,6 +255,6 @@ These 32 components were removed in v0.20.0 with no survivor and MUST NOT have l
    - `static-primitives.stories.tsx`, `type-specimen.stories.tsx`, `design-parameters.ts` — internal design specimens. Folded into Foundation docs.
    - `patterns-client-detail.stories.tsx`, `patterns-layout.stories.tsx`, `patterns-scroll.stories.tsx` — portfolio-specific mock pages. Excluded from core component docs.
 2. **Deprecated Component Routing:**
-   - `StatusDot` is deprecated at v0.20.0 (use `<Badge dot>`) and is routed to `guides/deprecation.mdx` rather than having a live component page.
+   - `StatusDot` was removed in v0.21.0 (use `<Badge dot>`) and is covered in `guides/deprecation.mdx`, with no component page.
 3. **Docs App Route Coverage:**
    - Current custom docs app routes under `/hds/` mapped 1:1 to Fumadocs `content/docs/` hierarchy.

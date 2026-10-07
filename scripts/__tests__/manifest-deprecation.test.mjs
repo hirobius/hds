@@ -18,7 +18,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
 
 describe('committed manifest', () => {
-  it('has no spec for the five hds#232 docs/lab internals 0.20.0 removed, and only StatusDot deprecated', () => {
+  it('has no spec for the five hds#232 docs/lab internals 0.20.0 removed, and StatusDot (0.21.0) gone, so nothing deprecated', () => {
     for (const gone of [
       'CinematicLink',
       'ComponentInstanceMatrix',
@@ -30,9 +30,9 @@ describe('committed manifest', () => {
     const deprecated = Object.entries(manifest.componentSpecs)
       .filter(([, spec]) => spec.deprecated)
       .map(([name]) => name);
-    // StatusDot: deprecated for Badge dot, removed in 0.21.0 (hds#395).
-    expect(deprecated).toEqual(['StatusDot']);
-    expect(manifest.componentSpecs.StatusDot.removeIn).toBe('0.21.0');
+    // StatusDot was deprecated for Badge dot and removed in 0.21.0 (hds#465).
+    expect(manifest.componentSpecs.StatusDot).toBeUndefined();
+    expect(deprecated).toEqual([]);
   });
 
   it('never carries removeIn or useInstead on a spec that is not deprecated', () => {

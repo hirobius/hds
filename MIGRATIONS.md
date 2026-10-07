@@ -586,3 +586,24 @@ included. The helpers of the removed components above are listed in that table.
 | `textareaVariants`                     | `textarea`          | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `textVariants`                         | `text`              | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `toastIconVariants`                    | `toast`             | No replacement; the cva helper is private to its module. Style through the component's props. | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+
+## 0.21.0 removals (2026-10-07)
+
+ADR-014's 2026-10-08 amendment (hds#465) lets a removal ship with a manual step
+when the upgrade command can find every use. StatusDot is the first.
+
+### StatusDot (hds#465)
+
+StatusDot and StatusDotProps were deprecated in 0.20.0 with `@removeIn 0.21.0`
+(see [StatusDot is deprecated](#statusdot-is-deprecated-removed-in-0210-hds395)).
+Both are gone from the package root. Ops, the last consumer, drops them in
+hirobius/ops#538.
+
+| Removed          | Use instead                                   | Codemod                                                      |
+| ---------------- | --------------------------------------------- | ------------------------------------------------------------ |
+| `StatusDot`      | `<Badge dot tone={…} size={…} label={…} />`   | none: a `style` has no Badge mapping, so the edit is by hand |
+| `StatusDotProps` | `BadgeProps` (`dot`, `tone`, `size`, `label`) | none                                                         |
+
+`npx @hirobius/design-system@latest upgrade` finds each use by import and by
+JSX tag. Move any `style` to a wrapper or a `className` first, as the 0.20.0
+section shows.

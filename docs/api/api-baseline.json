@@ -14,7 +14,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.20.0",
-  "generatedAt": "2026-10-01",
+  "generatedAt": "2026-10-07",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -116,9 +116,8 @@
       "TableSortDirection"
     ],
     "./app/components/tag": ["Tag", "TagProps"],
-    "./app/components/text": ["Text", "TextProps"],
+    "./app/components/text": ["Text", "TextProps", "TextVariant"],
     "./app/components/kbd": ["Kbd", "KbdProps"],
-    "./app/components/status-dot": ["StatusDot", "StatusDotProps"],
     "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
     "./app/components/blockquote": ["Blockquote", "BlockquoteProps"],
     "./app/components/visually-hidden": ["VisuallyHidden", "VisuallyHiddenProps"],

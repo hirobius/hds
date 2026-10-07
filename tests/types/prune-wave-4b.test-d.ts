@@ -131,15 +131,15 @@ const _frame = createElement(Box, {
 const _bleed = createElement(Box, { style: { marginInline: `calc(-1 * ${md})` } });
 const _aspect = createElement(Box, { style: { aspectRatio: '1' } });
 
-// StatusDot tone size label -> Badge dot
+// StatusDot (removed in 0.21.0) tone size label -> Badge dot
 const _dot = createElement(Badge, { dot: true, tone: 'success', size: 'sm', label: 'Online' });
 
 // ── Negative assertions (deliberate type errors) ──────────────────────────────
 
 type BadgeProps = ComponentProps<typeof Badge>;
 
-// Badge is className-only (check-no-style-prop), so the `style` ops passes to
-// StatusDot (src/app/pages/ops/audit/FleetAuditPage.tsx) has no Badge mapping.
+// Badge is className-only (check-no-style-prop), so a `style` that was passed to
+// the removed StatusDot has no Badge mapping.
 // @ts-expect-error — BadgeProps has no style
 const _dotStyle: BadgeProps['style'] = { marginTop: 8 };
 

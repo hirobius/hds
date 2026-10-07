@@ -79,8 +79,8 @@ const WAVE_4A_PATTERNS = [
 
 /**
  * hds#394 wave 4b: removed in 0.20.0, each folded into a survivor hds#393
- * shipped (MIGRATIONS.md maps every prop). StatusDot is not here: ops passes it
- * `style`, which Badge `dot` does not take, so it stays for now.
+ * shipped (MIGRATIONS.md maps every prop). StatusDot is not here: it was removed
+ * later, in 0.21.0 (hds#465), with a manual step because Badge takes no `style`.
  */
 const WAVE_4B = [
   'IconButton',
@@ -167,7 +167,7 @@ describe('public component export names', () => {
     }
     expect(valueNames).toContain('Combobox');
     expect(valueNames).toContain('Badge');
-    expect(valueNames, 'StatusDot stays until ops stops passing it style').toContain('StatusDot');
+    expect(names, 'StatusDot was removed in 0.21.0 (hds#465)').not.toContain('StatusDot');
   });
 
   it('no longer exports NotFoundPattern, TileGrid or StatusTile (hds#395, 0.20.0)', () => {
