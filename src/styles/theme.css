@@ -270,6 +270,17 @@
   .w-10[class*='h-10'] {
     min-width: var(--primitive-size-interactive-min);
   }
+
+  /* -- Row and small-button touch targets (hds#522) --------------------------
+   * Checkbox/Radio/Toggle rows, Pagination buttons and the copy buttons are
+   * below 44px on touch. The class lifts the hit area only; desktop is unchanged. */
+  .hds-touch-row {
+    min-height: var(--primitive-size-interactive-min);
+  }
+  .hds-touch-target {
+    min-height: var(--primitive-size-interactive-min);
+    min-width: var(--primitive-size-interactive-min);
+  }
 }
 
 /* --- Dark mode --------------------------------------------------------------- */
@@ -362,7 +373,8 @@
 
 .hds-skeleton {
   animation: hds-skeleton-shimmer var(--hds-anim-skeleton);
-  background: var(--semantic-color-surface-raised);
+  /* sunken, not raised: a placeholder on a Card or Surface (raised) must differ from it */
+  background: var(--semantic-color-surface-sunken);
 }
 
 /* --- Audit overlay --------------------------------------------------------- */

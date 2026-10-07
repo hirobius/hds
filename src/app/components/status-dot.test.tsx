@@ -22,9 +22,9 @@ describe('StatusDot', () => {
     expect(container.firstElementChild?.getAttribute('data-tone')).toBe('success');
   });
 
-  it('exposes a labelled status role when label is provided', () => {
+  it('exposes a labelled image role when label is provided (not a live region, hds#522)', () => {
     render(<StatusDot tone="danger" label="Offline" />);
-    const el = screen.getByRole('status');
+    const el = screen.getByRole('img');
     expect(el.getAttribute('aria-label')).toBe('Offline');
   });
 

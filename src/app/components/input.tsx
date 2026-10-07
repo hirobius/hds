@@ -16,6 +16,7 @@ import { Loader2, X } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -398,9 +399,9 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   );
 
   return (
-    <div className={cn('flex flex-col gap-1.5', className)}>
+    <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
       {label && (
-        <label htmlFor={id} className="hds-type-caption text-muted-foreground">
+        <label htmlFor={id} className="hds-type-ui text-foreground">
           {label}
         </label>
       )}

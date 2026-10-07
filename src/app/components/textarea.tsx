@@ -16,6 +16,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -96,9 +97,9 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
 
     return (
-      <div className={cn('flex flex-col gap-1.5', className)}>
+      <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
         {label && (
-          <label htmlFor={id} className="hds-type-caption text-muted-foreground">
+          <label htmlFor={id} className="hds-type-ui text-foreground">
             {label}
           </label>
         )}

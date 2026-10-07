@@ -57,6 +57,11 @@ export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   style?: CSSProperties;
   /** Escape hatch: only use when tokenized props cannot express the required wrapper class. */
   className?: string;
+  /**
+   * Cross-axis alignment of items in a row. Defaults to 'start': items hug their
+   * own height. Pass 'stretch' where a row of tiles must share one height.
+   */
+  align?: 'start' | 'center' | 'end' | 'stretch';
   /** Element rendered as the outer wrapper. Defaults to 'div'. */
   as?: React.ElementType;
 }
@@ -82,7 +87,6 @@ const GridItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridItemProps>
   const itemStyle: CSSProperties = {
     ...(colSpan !== undefined && { gridColumn: `span min(var(--current-cols, 12), ${colSpan})` }),
     ...(colOffset !== undefined && { gridColumnStart: colOffset }),
-    height: '100%',
     minWidth: 0,
     ...style,
   };
@@ -92,6 +96,13 @@ const GridItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridItemProps>
     </Tag>
   );
 });
+
+const ALIGN_ITEMS = {
+  start: 'start',
+  center: 'center',
+  end: 'end',
+  stretch: 'stretch',
+} as const;
 
 /** The item width 'auto-fit' and 'auto-fill' wrap at when `minItemWidth` is not set. */
 const DEFAULT_MIN_ITEM_WIDTH = '280px';
@@ -118,6 +129,7 @@ const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(fu
     subgrid = false,
     style,
     className,
+    align = 'start',
     as: Tag = 'div',
     ...rest
   },
@@ -157,7 +169,7 @@ const GridInner = /* @__PURE__ */ React.forwardRef<HTMLDivElement, GridProps>(fu
 
   const gridStyle = {
     display: 'grid',
-    alignItems: 'stretch',
+    alignItems: ALIGN_ITEMS[align],
     ...(gridTemplateColumns !== undefined && { gridTemplateColumns }),
     ...(isFixedLayout && {
       '--current-cols': String(currentColumns),
