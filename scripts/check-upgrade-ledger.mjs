@@ -286,7 +286,7 @@ function allowViolations(state, versionPr) {
   // A Version PR the release compiler recorded (hds#451) has its snapshot, so
   // it is not versionPr above; the ledger it wrote still names the 1.0 cut.
   const ledger = state.ledger?.release;
-  if (ledger?.bump === 'major' && major(state.version) === 1 && state.version.startsWith('1.0.0')) {
+  if (ledger?.bump === 'major' && /^1\.0\.0(?:-|$)/.test(state.version)) {
     return [
       violation(
         state.ledger.file,

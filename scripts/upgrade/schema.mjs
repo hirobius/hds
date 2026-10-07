@@ -410,7 +410,12 @@ export const Index = z
       .array(
         z
           .object({
-            name: z.string().min(1).describe('The deprecated export.'),
+            name: z
+              .string()
+              .min(1)
+              .describe(
+                'The deprecated export or, for a deprecation that is not an import (a token path, a prop value), the subject of its step.',
+              ),
             entry: z
               .string()
               .optional()

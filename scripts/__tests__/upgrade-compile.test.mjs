@@ -712,6 +712,35 @@ describe('compile.mjs --release, right after changeset version', () => {
     });
   });
 
+  // hds#541: before compile.mjs recorded releases, a note with no changeset
+  // after a release counted as that release's, so a stray breaking note could
+  // ride a patch. Once --release has recorded the release, no such window
+  // opens: every pending note counts toward the next bump.
+  it('leaves no window for a stray note: a breaking one after the release fails the next patch', () => {
+    const root = versionedRepo();
+    expect(run(['--release', '--date', '2026-10-08', '--repo', root]).status).toBe(0);
+    write(root, 'src/index.ts', '');
+    write(root, `${CHANGESETS}/fix-y.md`, `---\n'${PKG}': patch\n---\n\nFix y.\n`);
+    note(root, 'fix-y', { impact: 'none' });
+    note(root, 'stray', {
+      impact: 'breaking',
+      plain: 'Button is removed, so use your own.',
+      steps: [
+        {
+          id: 'removed/Button',
+          kind: 'removed',
+          impact: 'breaking',
+          plain: 'Button is removed, so use your own.',
+          facts: ['removed:.:Button'],
+        },
+      ],
+    });
+    const gate = checkUpgradeLedger(root);
+    expect(gate.violations.map((v) => v.rule)).toEqual(['bump-too-small']);
+    expect(gate.violations[0].message).toContain('upgrade/pending/stray.json');
+    expect(gate.summary.unrecorded).toBeNull();
+  });
+
   it('records nothing a second time, and nothing on a tree whose version already has its snapshot', () => {
     const root = versionedRepo();
     run(['--release', '--date', '2026-10-08', '--repo', root]);
