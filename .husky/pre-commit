@@ -73,3 +73,10 @@ node scripts/check-spacing-vocabulary.mjs
 # the TypeScript API, no build, no network.
 echo "Layout-gap vocabulary (one name map, in box-sx.ts)…"
 node scripts/check-layout-gap-vocabulary.mjs
+
+# hds#486: the type ramp is 5 roles plus mono (display, title, body, ui, caption,
+# mono). A raw size, weight or line height in src/, or a deprecated composite
+# (h1..h3, eyebrow, technical, ...), reads as design but is off the ramp. Source
+# only: reads src/ and hirobius.tokens.json, no build, no network.
+echo "Type ramp (src/ uses the six roles only)…"
+node scripts/check-type-ramp.mjs

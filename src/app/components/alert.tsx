@@ -73,7 +73,9 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
   return (
     <motion.div
       ref={ref}
-      role="alert"
+      // Urgent tones interrupt (assertive); info and success are polite status
+      // messages, not alerts (hds#522).
+      role={tone === 'danger' || tone === 'warning' ? 'alert' : 'status'}
       initial={{ opacity: 0, y: -4 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}

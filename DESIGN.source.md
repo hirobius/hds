@@ -94,7 +94,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
 | Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                          | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
-| Title                    | `hds.typeStyles.heading3` / `<HdsText variant="heading3">`                                               | Any other type style for the primary card heading                                           |
+| Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                        | Any other type style for the primary card heading                                           |
 | Subtitle / meta          | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)`                                     | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                 | Background fill change, border color shift, or opacity fade on hover                        |
 
@@ -106,7 +106,7 @@ Five patterns sit above the primitives so that every screen is composed the same
 
 ### Page title rule
 
-Every screen has exactly one `PageHeader`. The page title is `heading2` (30px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` and `h1` are reserved for marketing and landing surfaces and are never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
+Every screen has exactly one `PageHeader`. The page title is `title` (24px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
 
 ### Which one, when
 
@@ -127,7 +127,7 @@ Three more needs are props on an existing component, not components of their own
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
-`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `heading2`, the label as an eyebrow and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
+`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `title`, the label in `caption` and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
 
 ### Destructive and table sections
 

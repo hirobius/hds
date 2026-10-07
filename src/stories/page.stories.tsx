@@ -46,7 +46,7 @@ export const Default: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">
+            <Text variant="title" as="h1">
               Page shell — default padding
             </Text>
             <Text variant="body">
@@ -71,7 +71,7 @@ export const ContentWidth: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">
+            <Text variant="title" as="h1">
               Content width (760 px)
             </Text>
             <Text variant="body">
@@ -102,7 +102,7 @@ export const CompactPadding: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">
+            <Text variant="title" as="h1">
               Compact padding
             </Text>
             <Text variant="body">
@@ -133,7 +133,7 @@ export const NoPadding: Story = {
       <Page {...args}>
         <Surface>
           <Stack gap="normal">
-            <Text variant="heading2" as="h1">
+            <Text variant="title" as="h1">
               No padding
             </Text>
             <Text variant="body">

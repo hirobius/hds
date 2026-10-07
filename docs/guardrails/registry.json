@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "ce2e1d203598374af0408551a68d0b2c353817c5d6da39d3c2f474e562f8165b",
-  "precommitStructureHashUpdatedAt": "2026-10-06T08:00:19.221Z",
+  "precommitStructureHash": "a3199bdd892e5ab9b26f0bc2c3bbf9c4003e38ed132be69e3cff0d8d7407389e",
+  "precommitStructureHashUpdatedAt": "2026-10-07T04:38:11.501Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -508,6 +508,18 @@
       "supportsJson": true
     },
     {
+      "id": "check-type-ramp",
+      "description": "hds#486 -- keeps src/ on the type ramp of 5 roles plus mono (display, title, body, ui, caption, mono; epic hds#483). Fails a font size, weight or line height outside the roles: any Tailwind text-<size>, font-<weight> or leading-* utility, a text-[12px] arbitrary size, an inline or CSS font-size/font-weight/line-height whose value is a literal, and a raw rung of the primitive scale (--primitive-typography-size-*); and fails a deprecated composite (typeStyles.h1/heading1-3/technical/eyebrow/..., --semantic-typography-h1..h3/eyebrow, semantic.typography.h1..h3/eyebrow, Text variants heading1-3/technical/eyebrow/badge/doc*). A role var, inherit, unset and initial are fine. Also reads hirobius.tokens.json: exactly six live semantic.typography composites, and each deprecated alias (h1, h2, h3 to title; eyebrow to caption) equal to its role. Exempts tokens.ts and text.tsx (they define the deprecated names), generated CSS/TS, fonts.css and tests; a line is exempt with // type-ramp-ok: <reason> on the same line or either line above. Known limit: a value reached through an identifier or a class name assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-type-ramp.mjs",
+      "fixturePath": "fixtures/check-type-ramp",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
       "id": "check-sync-map",
       "description": "Joins the four records that describe a component -- source file, manifest entry, Storybook story, Figma node -- into one table with a per-component verdict, so an editing target can be looked up instead of remembered. Re-derives story ids from source rather than trusting the manifest, so a stale manifest fails rather than passing a gate whose job is to prove the records agree. Fails on a drop in story or Figma coverage, on a story file that resolves to no component, and on manifest drift. Expectations come from the ratified disposition (hds#235): a layout primitive is never reported as missing a Figma node it is not supposed to have. Also writes docs/sync-map.json (--write) -- committed generated output the agent-facing README describes as 'the same data for agents'. --check (hds#277) recomputes it and diffs byte-for-byte against what's on disk, failing and naming every disagreeing component if the committed file has drifted from its source records (hand-edited or stale). Pre-commit runs the plain gate (coverage/orphan checks) and `--check` (docs/sync-map.json drift) back to back.",
       "severity": "error",
@@ -528,7 +540,7 @@
     },
     {
       "id": "check-record-freshness",
-      "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, naming the offending commit and the fix. Separately fails when a pushed commit touches src/ with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a source change cannot ship with CHANGELOG.md left to go stale.",
+      "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, unless a pushed commit adds a `.status/<branch>.md` note (conflict-free; `pnpm status:fold` folds notes into status.json on main). Commits already on origin/main are ignored. Names the offending commit and the fix. Separately fails when a pushed commit touches src/ with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a source change cannot ship with CHANGELOG.md left to go stale.",
       "severity": "error",
       "gateScript": "scripts/check-record-freshness.mjs",
       "owner": "Adrian",
