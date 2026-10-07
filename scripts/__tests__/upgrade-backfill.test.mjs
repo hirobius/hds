@@ -146,6 +146,20 @@ describe('0.17.0', () => {
     expect(step.detect.cssVars).toContain('--primitive-typography-size-xs');
   });
 
+  it('records the h2 line height the type ramp entry moved from 42px to 40px', () => {
+    // v0.16.0 tokens.css: --semantic-typography-h2-line-height: 42px; v0.17.0: 40px.
+    const step = byId('0.17.0/look/h2-line-height');
+    expect(step).toMatchObject({ kind: 'look', impact: 'look', backfilled: true });
+    expect(step.plain).toMatch(/42px/);
+    expect(step.plain).toMatch(/40px/);
+    expect(step.detect.cssVars).toEqual(['--semantic-typography-h2-line-height']);
+    expect(citedEntry('0.17.0', step.source, CHANGELOG)).toMatch(/^- d41c65e: Standard type ramp/);
+    const [source] = step.detect.regex;
+    expect(new RegExp(source).test('<Text variant="heading2">')).toBe(true);
+    expect(new RegExp(source).test('<HeadingStack level="heading2" />')).toBe(true);
+    expect(new RegExp(source).test('<Text variant="heading3">')).toBe(false);
+  });
+
   it('records the Table ARIA structure as a behavior step', () => {
     const step = byId('0.17.0/behavior/Table-aria-structure');
     expect(step).toMatchObject({

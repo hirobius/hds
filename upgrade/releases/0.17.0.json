@@ -705,6 +705,22 @@
       "source": "CHANGELOG.md:103"
     },
     {
+      "id": "0.17.0/look/h2-line-height",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Second-level headings (Text and HeadingStack heading2) keep their 30px size, but their line height drops from 42px to 40px.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h2-line-height"
+        ],
+        "regex": [
+          "\\bheading2\\b"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:80"
+    },
+    {
       "id": "0.17.0/look/hds-focus-ring",
       "kind": "look",
       "impact": "look",

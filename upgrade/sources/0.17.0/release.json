@@ -201,6 +201,18 @@
     },
     {
       "kind": "look",
+      "subject": "h2-line-height",
+      "impact": "look",
+      "plain": "Second-level headings (Text and HeadingStack heading2) keep their 30px size, but their line height drops from 42px to 40px.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h2-line-height"],
+        "regex": ["\\bheading2\\b"]
+      },
+      "needle": "42px→40px onto the 4px grid",
+      "source": "CHANGELOG.md:80"
+    },
+    {
+      "kind": "look",
       "subject": "Badge-CommandPalette-SegmentedControl-text",
       "impact": "look",
       "plain": "Badge text grows from 11px to 12px, CommandPalette's kind badges, shortcuts and footer from 10px to 12px, and SegmentedControl labels shrink from 15px to 14px on a 20px line, now that they use the ramp's text-xs and text-sm.",
