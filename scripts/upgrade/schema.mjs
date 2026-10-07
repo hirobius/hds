@@ -12,6 +12,12 @@
  * UPGRADING.md and upgrade/index.json; the gate (hds#448) fails a change that has
  * no step. This file is their contract, so all three read the same shape.
  *
+ * Between releases, each changeset carries a pending note,
+ * upgrade/pending/<changeset>.json (PendingNote): its impact, one plain line,
+ * and the steps it adds, each a release step whose id leaves out the version
+ * (`removed/Callout`). The compiler prefixes the version when it merges the
+ * notes into the release's ledger.
+ *
  * zod is the single source. upgrade/schema.json is generated from it for
  * editors and non-JavaScript readers; `--check` (in pretest) fails when the
  * committed file is not byte-equal to what this file generates.
@@ -94,6 +100,22 @@ const compiles = (source) => {
 
 const oneSentence = (text) => !/[.!?]["')\]]?\s+[A-Z]/.test(text);
 
+/** What `pnpm upgrade:note` writes where a person has to: the gate refuses it. */
+export const TODO_PLAIN = 'TODO: one sentence a consumer can act on, ending in a full stop.';
+const notTodo = (text) => !/^\s*TODO\b/i.test(text);
+const TODO_MESSAGE =
+  'plain still holds the TODO pnpm upgrade:note wrote; replace it with one sentence a consumer can act on';
+
+const plainLine = () =>
+  z
+    .string()
+    .min(1)
+    .max(300)
+    .regex(/^[^\n]+[.]$/)
+    .refine(oneSentence, 'plain is one sentence')
+    .refine(notTodo, TODO_MESSAGE)
+    .describe('One sentence a non-expert can act on, ending in a full stop.');
+
 export const Auto = z
   .object({
     codemod: z
@@ -166,6 +188,45 @@ export const Detect = z
   .meta({ minProperties: 1 })
   .describe('How to find a use of the changed thing in consumer code. Any match is a use.');
 
+/** The fields a release step and a pending step share, in schema order. */
+const stepFields = () => ({
+  kind: z.enum(STEP_KINDS).describe('What changed.'),
+  impact: z
+    .enum(IMPACTS)
+    .describe(
+      'What happens to a consumer that does nothing: none, additive (new, opt-in), look, behavior, or breaking (it stops compiling or running).',
+    ),
+  plain: plainLine(),
+  auto: Auto.optional(),
+  detect: Detect.optional(),
+  done: Detect.optional().describe(
+    'How to tell the consumer has already made this change, in the detect shape: when any of it matches, the step is done even where detect matches too. For a step that asks the consumer to add something, such as an import.',
+  ),
+  removeIn: version().optional().describe('For a deprecation: the version that removes it.'),
+  range: z
+    .string()
+    .min(1)
+    .optional()
+    .describe(
+      'For a dependency or peer step: the range this package declared before the release, so a consumer that still imports it can add it back.',
+    ),
+  facts: z
+    .array(z.string().min(1))
+    .min(1)
+    .optional()
+    .describe(
+      'The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.',
+    ),
+});
+
+const deprecationNamesRemoveIn = [
+  (step) => step.kind !== 'deprecated' || step.removeIn !== undefined,
+  {
+    message: 'a deprecation names the version that removes it (removeIn)',
+    path: ['removeIn'],
+  },
+];
+
 export const Step = z
   .object({
     id: z
@@ -174,36 +235,7 @@ export const Step = z
       .describe(
         'Stable id, <version>/<kind>/<subject>: the subject is the export, package, component or variable the step is about.',
       ),
-    kind: z.enum(STEP_KINDS).describe('What changed.'),
-    impact: z
-      .enum(IMPACTS)
-      .describe(
-        'What happens to a consumer that does nothing: none, additive (new, opt-in), look, behavior, or breaking (it stops compiling or running).',
-      ),
-    plain: z
-      .string()
-      .min(1)
-      .max(300)
-      .regex(/^[^\n]+[.]$/)
-      .refine(oneSentence, 'plain is one sentence')
-      .describe('One sentence a non-expert can act on, ending in a full stop.'),
-    auto: Auto.optional(),
-    detect: Detect.optional(),
-    removeIn: version().optional().describe('For a deprecation: the version that removes it.'),
-    range: z
-      .string()
-      .min(1)
-      .optional()
-      .describe(
-        'For a dependency or peer step: the range this package declared before the release, so a consumer that still imports it can add it back.',
-      ),
-    facts: z
-      .array(z.string().min(1))
-      .min(1)
-      .optional()
-      .describe(
-        'The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.',
-      ),
+    ...stepFields(),
     backfilled: z
       .boolean()
       .optional()
@@ -220,10 +252,7 @@ export const Step = z
     message: 'the id names a different kind than `kind`',
     path: ['id'],
   })
-  .refine((step) => step.kind !== 'deprecated' || step.removeIn !== undefined, {
-    message: 'a deprecation names the version that removes it (removeIn)',
-    path: ['removeIn'],
-  })
+  .refine(...deprecationNamesRemoveIn)
   .describe('One thing a consumer may have to do, or should know, when crossing this release.');
 
 export const Release = z
@@ -273,6 +302,84 @@ export const Release = z
   })
   .describe(
     'A release ledger, upgrade/releases/<version>.json: every step a consumer crosses with this release.',
+  );
+
+/** IMPACTS from least to most severe: a note is at least as severe as each of its steps. */
+const severity = (impact) => IMPACTS.indexOf(impact);
+
+export const PendingStep = z
+  .object({
+    id: z
+      .string()
+      .regex(new RegExp(`^(?:${STEP_KINDS.join('|')})/\\S+$`))
+      .describe(
+        '<kind>/<subject>, a release step id without its version: the compiler (hds#451) prefixes the version when it merges the note into upgrade/releases/<version>.json.',
+      ),
+    ...stepFields(),
+    source: z
+      .string()
+      .min(1)
+      .optional()
+      .describe('Where the step comes from. When absent, the compiler (hds#451) fills it in.'),
+  })
+  .strict()
+  .refine((step) => step.id.split('/')[0] === step.kind, {
+    message: 'the id names a different kind than `kind`',
+    path: ['id'],
+  })
+  .refine(...deprecationNamesRemoveIn)
+  .describe('One step of a pending note: a release step whose id leaves out the version.');
+
+export const PendingNote = z
+  .object({
+    impact: z
+      .enum(IMPACTS)
+      .describe(
+        'The most severe impact of this change on a consumer that does nothing. A change with none says so: impact none, stated, never left out.',
+      ),
+    plain: plainLine()
+      .optional()
+      .describe(
+        'The change in one sentence a non-expert can act on, ending in a full stop. Required unless impact is none.',
+      ),
+    steps: z
+      .array(PendingStep)
+      .min(1)
+      .optional()
+      .describe(
+        'The ledger steps this change adds. A fact the snapshot diff finds (a removed export, a dropped dependency) needs a step that lists it in facts.',
+      ),
+  })
+  .strict()
+  .superRefine((note, ctx) => {
+    if (note.impact !== 'none' && note.plain === undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        message: `impact is ${note.impact}, so plain is required: one sentence a consumer can act on`,
+        path: ['plain'],
+      });
+    }
+    const seen = new Set();
+    (note.steps ?? []).forEach((step, i) => {
+      if (severity(step.impact) > severity(note.impact)) {
+        ctx.addIssue({
+          code: 'custom',
+          message: `step ${step.id} is ${step.impact}, so the note's impact is at least ${step.impact}`,
+          path: ['impact'],
+        });
+      }
+      if (seen.has(step.id)) {
+        ctx.addIssue({
+          code: 'custom',
+          message: `two steps share the id ${step.id}`,
+          path: ['steps', i, 'id'],
+        });
+      }
+      seen.add(step.id);
+    });
+  })
+  .describe(
+    'upgrade/pending/<changeset>.json: the upgrade note a changeset carries until its release (hds#448).',
   );
 
 export const Index = z
@@ -353,13 +460,15 @@ export function buildJsonSchema() {
   registry.add(Release, { id: 'release' });
   registry.add(Index, { id: 'index' });
   registry.add(Snapshot, { id: 'snapshot' });
+  registry.add(PendingStep, { id: 'pendingStep' });
+  registry.add(PendingNote, { id: 'pendingNote' });
   const { schemas } = z.toJSONSchema(registry, { uri: (id) => `#/$defs/${id}` });
   const defs = sortedObject(schemas, ({ $schema: _schema, $id: _id, ...body }) => body);
   return {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
     title: '@hirobius/design-system upgrade ledger',
     description:
-      'Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json and $defs.snapshot a release snapshot (docs/api/releases/<version>.json).',
+      "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json) and $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json).",
     $ref: '#/$defs/release',
     $defs: defs,
   };

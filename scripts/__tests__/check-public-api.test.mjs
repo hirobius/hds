@@ -15,10 +15,20 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { collectPublicApi, diffSurfaces } from '../lib/check-public-api.mjs';
+import { REMOVAL_HINT, collectPublicApi, diffSurfaces } from '../lib/check-public-api.mjs';
 import { TOOLING_EXPORTS } from '../lib/package-entries.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+describe('the removal hint (hds#448)', () => {
+  it('sends a removal to pnpm upgrade:note and a minor changeset before pnpm api:update accepts it', () => {
+    const text = REMOVAL_HINT.join('\n');
+    expect(text).toContain('pnpm upgrade:note');
+    expect(text).toMatch(/minor/);
+    // api:update alone cleared a removal with no step (the 0.20.0 gap), so it comes last.
+    expect(text.indexOf('pnpm upgrade:note')).toBeLessThan(text.indexOf('pnpm api:update'));
+  });
+});
 
 describe('diffSurfaces (check-public-api breaking-change guard)', () => {
   it('reports a removed export as a breaking change', () => {

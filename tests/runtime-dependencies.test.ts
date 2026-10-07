@@ -14,8 +14,12 @@
  * package used only there belongs in `devDependencies`.
  *
  * The fix for a failure is to drop the package, not to exempt it here:
- * `pnpm remove <name>` in a checkout with its own install, plus a patch
- * changeset that names it.
+ * `pnpm remove <name>` in a checkout with its own install, plus a minor
+ * changeset that names it (a major from 1.0) and its upgrade step from
+ * `pnpm upgrade:note`. A consumer that imports the package without declaring
+ * it breaks when HDS stops installing it, so a dropped dependency is breaking
+ * (hds#445 decision 3); 0.20.0 shipped five under Patch Changes before
+ * scripts/check-upgrade-ledger.mjs read the bump (hds#448).
  */
 
 import { describe, it, expect } from 'vitest';
@@ -96,7 +100,8 @@ describe('runtime dependencies', () => {
     expect(
       unused,
       `In package.json dependencies but imported by nothing under src/ that ships. ` +
-        `Drop each with \`pnpm remove <name>\` and a patch changeset that names it.`,
+        `Drop each with \`pnpm remove <name>\`, a minor changeset that names it, and its upgrade ` +
+        `step from \`pnpm upgrade:note\` (a dropped dependency is breaking, hds#448).`,
     ).toEqual([]);
   });
 
