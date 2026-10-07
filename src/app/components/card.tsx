@@ -22,7 +22,7 @@
  *   zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans).
  * - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its
  *   spacing — never crowds adjacent prose.
- * - Metric: single label-uppercase + big value (h2) + optional sub-line.
+ * - Metric: single label + big value (title) + optional sub-line.
  *   Reserved vertical block. Use multiple side-by-side via flex/grid container.
  * - Body: prose, lists, structured content. NO inline status, progress, or
  *   thin colored bars. Group sections via separate <Card.Body> blocks.
@@ -307,7 +307,7 @@ const CardTitle = /* @__PURE__ */ React.forwardRef<
   React.HTMLAttributes<HTMLHeadingElement>
 >(function CardTitle({ className, children, ...rest }, ref) {
   return (
-    <Text ref={ref} variant="heading3" className={className} {...rest}>
+    <Text ref={ref} as="h3" variant="title" className={className} {...rest}>
       {children}
     </Text>
   );
@@ -457,7 +457,7 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
+ * Card.Metric — one label, a large value and an optional sub-line inside a Card.
  * @usage Show one headline figure (a KPI, a count, a total) with its label inside a Card.
  * @whenNot A metric outside a Card, or several figures that share one label.
  */
@@ -467,7 +467,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
       <div ref={ref} className={cn('flex flex-col px-6', className)} style={style} {...props}>
         <p
           style={{
-            ...hds.typeStyles.eyebrow,
+            ...hds.typeStyles.caption,
             margin: '0 0 6px',
             color: 'var(--semantic-color-content-secondary)',
           }}
@@ -477,7 +477,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
         <p
           // inline-ok: token-driven value, slot-internal
           style={{
-            ...hds.typeStyles.h2,
+            ...hds.typeStyles.title,
             margin: 0,
             color: METRIC_TONE_VALUE_COLOR[tone],
           }}

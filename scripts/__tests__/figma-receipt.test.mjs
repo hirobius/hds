@@ -461,7 +461,7 @@ describe('pnpm figma:snapshot --from-receipt', () => {
     // Something else wrote to staging after the Sync (an agent drawing session, a hand edit).
     const [collection] = await s.figma.variables.getLocalVariableCollectionsAsync();
     s.figma.variables.createVariable('hand/made', collection, 'FLOAT');
-    refuses(s.root, await collect(s), /stale.*variables 57 in the receipt, 58 live/s);
+    refuses(s.root, await collect(s), /stale.*variables 58 in the receipt, 59 live/s);
   });
 
   it("refuses a stale receipt: the live lastPush is not the receipt's", async () => {

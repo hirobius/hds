@@ -28,28 +28,29 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 <!-- auto:start:typography -->
 HDS ships three typefaces — each with a distinct and exclusive role:
 
-- **Display / Heading font**: Satoshi. Bound exclusively to `display`, `h1`, `h2`, and `h3` styles. Never used for body copy or UI labels.
+- **Display / Heading font**: Satoshi. Bound exclusively to the `display` and `title` styles. Never used for body copy or UI labels.
 - **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: Geist Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · h1 · h2 · h3) use `700` bold; body, UI, and caption use `500` medium. Declared but unused by any semantic role: `400` regular.
+Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
 
 ### Type ramp
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
-| `semantic.typography.display` | 60px | 700 | Display headline |
-| `semantic.typography.h1` | 48px | 700 | Primary section headings (h1) |
-| `semantic.typography.h2` | 30px | 700 | Secondary section headings (h2) |
-| `semantic.typography.h3` | 20px | 700 | Component and card headers (h3) |
-| `semantic.typography.body` | 16px | 500 | Body prose |
-| `semantic.typography.ui` | 14px | 500 | UI text for nav, labels, captions |
-| `semantic.typography.caption` | 12px | 500 | Caption / helper text |
-| `semantic.typography.eyebrow` | 12px | 500 | Eyebrow / kicker label |
-| `semantic.typography.mono` | 14px | 400 | Monospace for code, token names, shortcuts |
+| `semantic.typography.display` | 48px | 700 | One per page, hero only |
+| `semantic.typography.title` | 24px | 700 | Section and card headings |
+| `semantic.typography.body` | 16px | 400 | Prose |
+| `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.mono` | 13px | 400 | Code and ids |
+| `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.eyebrow` | 12px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
-> Responsive `clamp()` overrides live in `src/styles/theme.css`; tokens store the desktop-max static value.
+> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
 ## Spacing
@@ -152,7 +153,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
 | Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                          | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
-| Title                    | `hds.typeStyles.heading3` / `<HdsText variant="heading3">`                                               | Any other type style for the primary card heading                                           |
+| Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                        | Any other type style for the primary card heading                                           |
 | Subtitle / meta          | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)`                                     | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                 | Background fill change, border color shift, or opacity fade on hover                        |
 
@@ -164,7 +165,7 @@ Five patterns sit above the primitives so that every screen is composed the same
 
 ### Page title rule
 
-Every screen has exactly one `PageHeader`. The page title is `heading2` (30px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` and `h1` are reserved for marketing and landing surfaces and are never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
+Every screen has exactly one `PageHeader`. The page title is `title` (24px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
 
 ### Which one, when
 
@@ -185,7 +186,7 @@ Three more needs are props on an existing component, not components of their own
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
-`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `heading2`, the label as an eyebrow and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
+`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `title`, the label in `caption` and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
 
 ### Destructive and table sections
 
@@ -217,6 +218,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (385 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (389 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

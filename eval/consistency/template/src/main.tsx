@@ -1,6 +1,7 @@
 import { StrictMode, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@hirobius/design-system/tokens.css';
+import '@hirobius/design-system/fonts.css';
 import * as entry from './App';
 
 // The template owns the documented scope: `data-hds` opts the subtree into the

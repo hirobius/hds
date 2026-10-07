@@ -126,6 +126,14 @@
  * package outside that allow-list, and check-pure-annotations also flags a
  * bare Object.assign(<Component>, …) and any top-level `X.Part = …` write.
  *
+ * Fonts split out (hds#479, 2026-10-07): the base64-inlined faces were ~85% of
+ * tokens.css and styles.css. Fonts now ship as the opt-in fonts.css plus
+ * dist/fonts/*.woff2. Measured on the type-ramp branch (4 faces), gzip:
+ *   tokens.css 152.76 kB -> 20.28 kB, budget 140 kB -> 23 kB (+~10%)
+ *   styles.css 152.17 kB -> 19.64 kB, budget 140 kB -> 22 kB (+~10%)
+ *   fonts.css + 4 woff2: 132.16 kB raw (130.27 kB woff2 + 1.88 kB css), budget 146 kB
+ * Approved by Adrian 2026-10-07.
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.
@@ -151,16 +159,25 @@ module.exports = [
     gzip: true,
   },
   {
-    name: 'tokens.css (CSS bundle, fonts embedded)',
+    name: 'tokens.css (CSS bundle, no fonts)',
     path: 'dist/tokens.css',
-    limit: '140 kB',
+    limit: '23 kB',
     gzip: true,
   },
   {
     name: 'styles.css (scoped-only CSS bundle)',
     path: 'dist/styles.css',
-    limit: '140 kB',
+    limit: '22 kB',
     gzip: true,
+  },
+  {
+    // Opt-in fonts (hds#479): fonts.css plus its four woff2 files, raw bytes
+    // (woff2 is already compressed, so gzip would only hide the real transfer).
+    name: 'fonts.css + woff2 files (opt-in, raw)',
+    path: ['dist/fonts.css', 'dist/fonts/*.woff2'],
+    limit: '146 kB',
+    gzip: false,
+    brotli: false,
   },
   {
     name: 'Button-only root import (dist/probe/button-only.js)',

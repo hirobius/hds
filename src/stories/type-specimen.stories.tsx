@@ -110,13 +110,13 @@ const shell: React.CSSProperties = {
   minHeight: '100vh',
 };
 const eyebrow: React.CSSProperties = {
-  ...hds.typeStyles.eyebrow,
+  ...hds.typeStyles.caption,
   color: 'var(--semantic-color-content-secondary)',
   display: 'block',
   marginBottom: hds.space.px8,
 };
 const mono: React.CSSProperties = {
-  ...hds.typeStyles.monoSm,
+  ...hds.typeStyles.mono,
   color: 'var(--semantic-color-content-secondary)',
 };
 const band: React.CSSProperties = {
@@ -132,6 +132,7 @@ function RampView() {
   const m = useMetrics(RUNG_SPECS);
   return (
     <div style={shell}>
+      {/* type-ramp-ok: the label names the primitive scale this story specimens */}
       <span style={eyebrow}>primitive.typography.size</span>
       <div>
         {RUNGS.map(([name, ref], i) => {
@@ -140,6 +141,7 @@ function RampView() {
           const ratio = here && below ? here / below : null;
           return (
             <div key={name} style={band}>
+              {/* type-ramp-ok: specimen of the raw primitive rungs, not product text */}
               <span style={{ fontSize: ref, lineHeight: 1.1, minWidth: 0 }}>Ag</span>
               <span style={{ ...mono, whiteSpace: 'nowrap' }}>
                 {name} · {here === null ? '—' : `${here}px`}
@@ -156,17 +158,7 @@ function RampView() {
 /** Every primitive rung, rendered at its own size, with the ratio to the rung below. */
 export const Ramp: Story = { render: () => <RampView /> };
 
-const COMPOSITES = [
-  'display',
-  'h1',
-  'h2',
-  'h3',
-  'body',
-  'ui',
-  'caption',
-  'eyebrow',
-  'mono',
-] as const;
+const COMPOSITES = ['display', 'title', 'body', 'ui', 'caption', 'mono'] as const;
 
 /** Stable identity so useMetrics' effect does not re-run every render. */
 const COMPOSITE_SPECS = COMPOSITES.map((c) => ({
@@ -187,7 +179,6 @@ function compositeStyle(c: (typeof COMPOSITES)[number]): React.CSSProperties {
     fontWeight: `var(--semantic-typography-${c}-font-weight)` as never,
     letterSpacing: `var(--semantic-typography-${c}-letter-spacing)`,
     lineHeight: `var(--semantic-typography-${c}-line-height)`,
-    textTransform: c === 'eyebrow' ? 'uppercase' : undefined,
   };
 }
 

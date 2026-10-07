@@ -144,7 +144,7 @@ const DialogTitle = /* @__PURE__ */ React.forwardRef<
   // id that backs aria-labelledby) on the heading element.
   return (
     <DialogPrimitive.Title asChild>
-      <Text ref={ref} as="h2" variant="heading3" className={className} {...props}>
+      <Text ref={ref} as="h2" variant="title" className={className} {...props}>
         {children}
       </Text>
     </DialogPrimitive.Title>

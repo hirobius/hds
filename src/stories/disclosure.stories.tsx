@@ -73,7 +73,7 @@ function ControlledRender() {
           border: '1px solid var(--semantic-color-border-default, #d1d5db)',
           background: 'transparent',
           cursor: 'pointer',
-          fontSize: '13px',
+          fontSize: 'var(--semantic-typography-mono-font-size)',
         }}
       >
         {open ? 'Close' : 'Open'} externally

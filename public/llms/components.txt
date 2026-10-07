@@ -139,7 +139,7 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
   - metadata: ReactNode
 
 ### CardMetric
-Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
+Card.Metric — one label, a large value and an optional sub-line inside a Card.
   - label: ReactNode
   - sub: ReactNode
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -571,7 +571,7 @@ Stack — one-dimensional layout primitive.
   - wrap: FlexWrap
 
 ### Stat
-Headline metric — large value, uppercase caption label, optional sub-line.
+Headline metric — large value, caption label, optional sub-line.
   - label: string
   - sub: ReactNode
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null

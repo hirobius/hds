@@ -42,7 +42,7 @@ import { isDevelopment } from '../../lib/env';
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (Tailwind has no single utility for transition-[colors,filter]) and the 9999px inset-shadow spread that fills the padding box for the pressed wash
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -69,9 +69,9 @@ const buttonVariants = /* @__PURE__ */ cva(
         info: '!border-transparent !bg-feedback-bg-info !text-feedback-info hover:!brightness-95 dark:hover:!brightness-110',
       },
       size: {
-        sm: 'h-8 px-3 text-xs [&_svg]:size-3.5',
-        md: 'h-10 px-4 py-2 text-sm [&_svg]:size-4',
-        lg: 'h-12 px-6 text-base [&_svg]:size-5',
+        sm: 'h-8 px-3 hds-type-caption [&_svg]:size-3.5',
+        md: 'h-10 px-4 py-2 hds-type-ui [&_svg]:size-4',
+        lg: 'h-12 px-6 hds-type-ui [&_svg]:size-5',
       },
       iconOnly: {
         true: 'p-0',

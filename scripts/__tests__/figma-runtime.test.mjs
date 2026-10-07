@@ -126,7 +126,7 @@ describe('use_figma scripts', () => {
       lines.push(report.line);
     }
     expect(lines).toEqual([
-      'updated 0 · created 20 · deleted 0',
+      'updated 0 · created 21 · deleted 0',
       'updated 0 · created 29 · deleted 0',
       'updated 0 · created 7 · deleted 0',
       'updated 0 · created 6 · deleted 0',
@@ -141,7 +141,7 @@ describe('use_figma scripts', () => {
     await runUseFigma(buildUseFigmaPushScript(model), figma);
     const { checksum, snapshot } = await runUseFigma(buildUseFigmaSnapshotScript(), figma);
     expect(checksum).toBe(hdsChecksum(JSON.stringify(snapshot)));
-    expect(snapshot.collections.map((c) => c.variables.length)).toEqual([19, 27, 6, 5]);
+    expect(snapshot.collections.map((c) => c.variables.length)).toEqual([20, 27, 6, 5]);
   });
 
   it('a mistyped payload digit makes the script fail before writing', async () => {
@@ -195,7 +195,7 @@ describe('use_figma scripts', () => {
         buildUseFigmaPushScript(model).replace(/\n/g, '\r\n'),
         figma,
       );
-      expect(report.summary.variables.created).toBe(57);
+      expect(report.summary.variables.created).toBe(58);
     });
 
     describe('where Figma hides function source, refuse and name the plugin that does the job (hds#415)', () => {
@@ -341,7 +341,7 @@ describe('development plugin', () => {
 
     const pushed = await runPlugin(files, 'push', figma);
     expect(pushed.ok).toBe(true);
-    expect(pushed.result.summary.variables.created).toBe(57);
+    expect(pushed.result.summary.variables.created).toBe(58);
 
     const snap = await runPlugin(files, 'snapshot', figma);
     expect(snap.fileName).toBe('figma-snapshot.json');

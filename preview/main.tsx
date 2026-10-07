@@ -21,6 +21,7 @@ import { Tag } from '../src/app/components/tag';
 import { Divider } from '../src/app/components/divider';
 import { Stack } from '../src/app/components/stack';
 import { Surface } from '../src/app/components/surface';
+import '../src/styles/fonts.css';
 import '../src/styles/index.css';
 import './preview.css';
 

@@ -92,13 +92,13 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
               }
             >
               <dt
-                className="text-sm font-medium"
+                className="hds-type-ui"
                 style={{ color: 'var(--semantic-color-content-secondary)' }}
               >
                 {item.term}
               </dt>
               <dd
-                className="m-0 text-sm"
+                className="m-0 hds-type-ui"
                 style={{ color: 'var(--semantic-color-content-primary)' }}
               >
                 {item.description}
@@ -107,7 +107,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
           ))}
           {footer != null && (
             <div
-              className="p-5 text-sm"
+              className="p-5 hds-type-ui"
               style={{
                 borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-subtle)`,
                 background: 'var(--semantic-color-surface-raised)',
@@ -132,7 +132,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
         >
           {items.map((item, index) => (
             <React.Fragment key={index}>
-              <dt className="text-sm font-medium text-muted-foreground">{item.term}</dt>
+              <dt className="hds-type-ui text-muted-foreground">{item.term}</dt>
               <dd className={cn('m-0 text-foreground')}>{item.description}</dd>
             </React.Fragment>
           ))}
@@ -149,7 +149,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
       >
         {items.map((item, index) => (
           <div key={index} className="flex flex-col gap-0.5">
-            <dt className="text-sm font-medium text-muted-foreground">{item.term}</dt>
+            <dt className="hds-type-ui text-muted-foreground">{item.term}</dt>
             <dd className={cn('m-0 text-foreground')}>{item.description}</dd>
           </div>
         ))}

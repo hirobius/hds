@@ -128,6 +128,7 @@ const config = {
         '4xl': 'var(--primitive-typography-size-4xl)',
         '5xl': 'var(--primitive-typography-size-5xl)',
         '6xl': 'var(--primitive-typography-size-6xl)',
+        code: 'var(--primitive-typography-size-code)',
       },
       letterSpacing: {
         caps: 'var(--primitive-typography-letterSpacing-caps)',

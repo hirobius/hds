@@ -15,7 +15,7 @@ graph TB
   end
 
   subgraph BUILD["⚙️ TOKEN & LIB BUILD PIPELINE (KEEP — but lean)"]
-    bt["build-tokens · embed-fonts<br/>build-styles-css · build-vars-css"]:::keep
+    bt["build-tokens · build-fonts-css<br/>build-styles-css · build-vars-css"]:::keep
     mg["generate-manifest · component-api"]:::trim
   end
 

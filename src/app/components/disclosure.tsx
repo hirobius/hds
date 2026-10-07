@@ -161,6 +161,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
             }}
             // Was --primitive-typography-size-base: a chevron BOX sized off the body
             // type rung, so a ramp change would have resized it. Now the icon token.
+            // type-ramp-ok: leading-none on an icon box, not text
             // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
             className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
           >

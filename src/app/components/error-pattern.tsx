@@ -54,7 +54,7 @@ export function ErrorPattern({
             </Text>
 
             <Text
-              variant="heading2"
+              variant="title"
               as="p"
               className="text-secondary"
               style={{ whiteSpace: 'nowrap' }}

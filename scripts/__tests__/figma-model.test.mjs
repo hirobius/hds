@@ -192,10 +192,10 @@ describe('buildFigmaModel — not in Figma', () => {
 describe('buildFigmaModel — ch widths', () => {
   it('converts ch to px with the measured "0" advance at the body text size', () => {
     const model = buildFigmaModel(fixture);
-    // 50ch × 0.693em (Satoshi 500 "0" advance) × 17px (body font size) = 589.05px
+    // 50ch × 0.683em (Satoshi 400 "0" advance) × 17px (body font size) = 580.55px
     expect(variable(model, 'primitive.size.width.50ch')).toMatchObject({
       unit: 'px',
-      valuesByMode: { Default: { value: 589.05 } },
+      valuesByMode: { Default: { value: 580.55 } },
     });
     expect(variable(model, 'semantic.layout.prose.maxWidth')).toMatchObject({
       unit: 'px',
@@ -207,7 +207,7 @@ describe('buildFigmaModel — ch widths', () => {
     const changed = structuredClone(fixture);
     changed.semantic.typography.body.$value.fontFamily = '{primitive.typography.family.mono}';
     expect(() => buildFigmaModel(changed)).toThrow(
-      /ch.*measured for Satoshi 500.*Geist Mono 500.*re-measure/,
+      /ch.*measured for Satoshi 400.*Geist Mono 400.*re-measure/,
     );
   });
 });
@@ -595,12 +595,12 @@ describe('summarizeFigmaModel', () => {
   it('counts variables per collection, Light/Dark differences, styles and exclusions', () => {
     expect(summarizeFigmaModel(buildFigmaModel(fixture))).toEqual({
       collections: [
-        { name: 'Hirobius/Primitives', modes: ['Default'], variables: 19 },
+        { name: 'Hirobius/Primitives', modes: ['Default'], variables: 20 },
         { name: 'Hirobius/Semantic', modes: ['Light', 'Dark'], variables: 27 },
         { name: 'Hirobius/Component', modes: ['Default'], variables: 6 },
         { name: 'Hirobius/Role', modes: ['Default'], variables: 5 },
       ],
-      variables: 57,
+      variables: 58,
       // shadow.color, surface.page, content.primary, button.text (border.default is equal in both)
       themeDifferences: 4,
       textStyles: 3,

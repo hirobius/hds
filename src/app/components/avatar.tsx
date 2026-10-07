@@ -15,13 +15,13 @@ import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 const avatarVariants = /* @__PURE__ */ cva(
-  'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-muted-foreground font-medium uppercase select-none',
+  'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-muted-foreground uppercase select-none',
   {
     variants: {
       size: {
-        sm: 'h-8 w-8 text-xs',
-        md: 'h-10 w-10 text-sm',
-        lg: 'h-12 w-12 text-base',
+        sm: 'h-8 w-8 hds-type-caption',
+        md: 'h-10 w-10 hds-type-ui',
+        lg: 'h-12 w-12 hds-type-body',
       },
     },
     defaultVariants: { size: 'md' },

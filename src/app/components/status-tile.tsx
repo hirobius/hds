@@ -43,9 +43,9 @@ export const StatusTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Statu
         {...props}
       >
         <div className="min-w-0 flex-1">
-          <p className="m-0 text-sm text-foreground">{title}</p>
+          <p className="m-0 hds-type-ui text-foreground">{title}</p>
           {notes?.map((note, i) => (
-            <p key={i} className="m-0 mt-1 text-xs text-muted-foreground">
+            <p key={i} className="m-0 mt-1 hds-type-caption text-muted-foreground">
               {note}
             </p>
           ))}

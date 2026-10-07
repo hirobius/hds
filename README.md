@@ -13,7 +13,7 @@ pnpm add @hirobius/design-system
 <!-- auto:start:front-door-counts -->
 
 - **54** public component modules, exported from `src/index.ts`
-- **385** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **389** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 - **340** Storybook stories in **71** story files
 
 <!-- auto:end:front-door-counts -->
@@ -66,8 +66,9 @@ npm install @hirobius/design-system react react-dom
 ```
 
 ```tsx
-// once at the app root — full bundle: tokens + theme + utilities + embedded fonts
+// once at the app root — full bundle: tokens + theme + utilities
 import '@hirobius/design-system/tokens.css';
+import '@hirobius/design-system/fonts.css'; // optional: the HDS brand fonts
 import { Button } from '@hirobius/design-system';
 
 // add data-hds to the root (or any section) so the scoped base styles apply

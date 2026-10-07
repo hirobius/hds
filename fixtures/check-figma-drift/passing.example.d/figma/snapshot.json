@@ -1,15 +1,15 @@
 {
-  "checksum": "c44c867c",
+  "checksum": "ace842bc",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-09-17T00:00:00.000Z",
+    "takenAt": "2026-10-07T05:17:26.800Z",
     "file": {
-      "name": "HDS drift fixture",
+      "name": "HDS scratch file",
       "key": null
     },
     "lastPush": {
-      "modelHash": "044203c3",
-      "pushedAt": "2026-09-17T00:00:00.000Z",
+      "modelHash": "75e3838a",
+      "pushedAt": "2026-10-07T05:17:26.799Z",
       "scope": null
     },
     "collections": [
@@ -214,7 +214,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 589.049988
+                "value": 580.549988
               }
             }
           },
@@ -287,7 +287,7 @@
             }
           },
           {
-            "id": "VariableID:1:28",
+            "id": "VariableID:1:29",
             "name": "typography/size/4xl",
             "path": "primitive.typography.size.4xl",
             "resolvedType": "FLOAT",
@@ -304,7 +304,7 @@
             }
           },
           {
-            "id": "VariableID:1:27",
+            "id": "VariableID:1:28",
             "name": "typography/size/base",
             "path": "primitive.typography.size.base",
             "resolvedType": "FLOAT",
@@ -321,7 +321,7 @@
             }
           },
           {
-            "id": "VariableID:1:26",
+            "id": "VariableID:1:27",
             "name": "typography/size/xs",
             "path": "primitive.typography.size.xs",
             "resolvedType": "FLOAT",
@@ -338,7 +338,7 @@
             }
           },
           {
-            "id": "VariableID:1:25",
+            "id": "VariableID:1:26",
             "name": "typography/weight/bold",
             "path": "primitive.typography.weight.bold",
             "resolvedType": "FLOAT",
@@ -355,7 +355,7 @@
             }
           },
           {
-            "id": "VariableID:1:24",
+            "id": "VariableID:1:25",
             "name": "typography/weight/medium",
             "path": "primitive.typography.weight.medium",
             "resolvedType": "FLOAT",
@@ -368,6 +368,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 500
+              }
+            }
+          },
+          {
+            "id": "VariableID:1:24",
+            "name": "typography/weight/regular",
+            "path": "primitive.typography.weight.regular",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-weight-regular)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 400
               }
             }
           }
@@ -385,7 +402,7 @@
         ],
         "variables": [
           {
-            "id": "VariableID:1:34",
+            "id": "VariableID:1:35",
             "name": "accent/hover",
             "path": "semantic.accent.hover",
             "resolvedType": "COLOR",
@@ -410,7 +427,7 @@
             }
           },
           {
-            "id": "VariableID:1:37",
+            "id": "VariableID:1:38",
             "name": "borderWidth/default",
             "path": "semantic.borderWidth.default",
             "resolvedType": "FLOAT",
@@ -434,7 +451,7 @@
             }
           },
           {
-            "id": "VariableID:1:55",
+            "id": "VariableID:1:56",
             "name": "button/text",
             "path": "component.button.text",
             "resolvedType": "COLOR",
@@ -450,17 +467,17 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:1:32",
+                "alias": "VariableID:1:33",
                 "to": "Hirobius/Semantic: color/content/primary"
               },
               "Dark": {
-                "alias": "VariableID:1:30",
+                "alias": "VariableID:1:31",
                 "to": "Hirobius/Semantic: color/surface/page"
               }
             }
           },
           {
-            "id": "VariableID:1:33",
+            "id": "VariableID:1:34",
             "name": "color/border/default",
             "path": "semantic.color.border.default",
             "resolvedType": "COLOR",
@@ -484,7 +501,7 @@
             }
           },
           {
-            "id": "VariableID:1:32",
+            "id": "VariableID:1:33",
             "name": "color/content/primary",
             "path": "semantic.color.content.primary",
             "resolvedType": "COLOR",
@@ -510,7 +527,7 @@
             }
           },
           {
-            "id": "VariableID:1:31",
+            "id": "VariableID:1:32",
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
             "resolvedType": "COLOR",
@@ -535,7 +552,7 @@
             }
           },
           {
-            "id": "VariableID:1:30",
+            "id": "VariableID:1:31",
             "name": "color/surface/page",
             "path": "semantic.color.surface.page",
             "resolvedType": "COLOR",
@@ -560,7 +577,7 @@
             }
           },
           {
-            "id": "VariableID:1:39",
+            "id": "VariableID:1:40",
             "name": "layout/grid/columns/desktop",
             "path": "semantic.layout.grid.columns.desktop",
             "resolvedType": "FLOAT",
@@ -584,7 +601,7 @@
             }
           },
           {
-            "id": "VariableID:1:38",
+            "id": "VariableID:1:39",
             "name": "layout/prose/maxWidth",
             "path": "semantic.layout.prose.maxWidth",
             "resolvedType": "FLOAT",
@@ -608,7 +625,7 @@
             }
           },
           {
-            "id": "VariableID:1:36",
+            "id": "VariableID:1:37",
             "name": "radius/action",
             "path": "semantic.radius.action",
             "resolvedType": "FLOAT",
@@ -632,7 +649,7 @@
             }
           },
           {
-            "id": "VariableID:1:29",
+            "id": "VariableID:1:30",
             "name": "shadow/color",
             "path": "primitive.shadow.color",
             "resolvedType": "COLOR",
@@ -662,7 +679,7 @@
             }
           },
           {
-            "id": "VariableID:1:35",
+            "id": "VariableID:1:36",
             "name": "space/component/gap",
             "path": "semantic.space.component.gap",
             "resolvedType": "FLOAT",
@@ -686,7 +703,7 @@
             }
           },
           {
-            "id": "VariableID:1:45",
+            "id": "VariableID:1:46",
             "name": "typography/body/font-family",
             "path": "semantic.typography.body.font-family",
             "resolvedType": "STRING",
@@ -710,7 +727,7 @@
             }
           },
           {
-            "id": "VariableID:1:46",
+            "id": "VariableID:1:47",
             "name": "typography/body/font-size",
             "path": "semantic.typography.body.font-size",
             "resolvedType": "FLOAT",
@@ -724,17 +741,17 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:1:27",
+                "alias": "VariableID:1:28",
                 "to": "Hirobius/Primitives: typography/size/base"
               },
               "Dark": {
-                "alias": "VariableID:1:27",
+                "alias": "VariableID:1:28",
                 "to": "Hirobius/Primitives: typography/size/base"
               }
             }
           },
           {
-            "id": "VariableID:1:47",
+            "id": "VariableID:1:48",
             "name": "typography/body/font-weight",
             "path": "semantic.typography.body.font-weight",
             "resolvedType": "FLOAT",
@@ -749,16 +766,16 @@
             "valuesByMode": {
               "Light": {
                 "alias": "VariableID:1:24",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "to": "Hirobius/Primitives: typography/weight/regular"
               },
               "Dark": {
                 "alias": "VariableID:1:24",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
           {
-            "id": "VariableID:1:48",
+            "id": "VariableID:1:49",
             "name": "typography/body/letter-spacing",
             "path": "semantic.typography.body.letter-spacing",
             "resolvedType": "FLOAT",
@@ -780,7 +797,7 @@
             }
           },
           {
-            "id": "VariableID:1:49",
+            "id": "VariableID:1:50",
             "name": "typography/body/line-height",
             "path": "semantic.typography.body.line-height",
             "resolvedType": "FLOAT",
@@ -802,7 +819,7 @@
             }
           },
           {
-            "id": "VariableID:1:50",
+            "id": "VariableID:1:51",
             "name": "typography/caption/font-family",
             "path": "semantic.typography.caption.font-family",
             "resolvedType": "STRING",
@@ -826,7 +843,7 @@
             }
           },
           {
-            "id": "VariableID:1:51",
+            "id": "VariableID:1:52",
             "name": "typography/caption/font-size",
             "path": "semantic.typography.caption.font-size",
             "resolvedType": "FLOAT",
@@ -848,7 +865,7 @@
             }
           },
           {
-            "id": "VariableID:1:52",
+            "id": "VariableID:1:53",
             "name": "typography/caption/font-weight",
             "path": "semantic.typography.caption.font-weight",
             "resolvedType": "FLOAT",
@@ -862,17 +879,17 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:1:24",
+                "alias": "VariableID:1:25",
                 "to": "Hirobius/Primitives: typography/weight/medium"
               },
               "Dark": {
-                "alias": "VariableID:1:24",
+                "alias": "VariableID:1:25",
                 "to": "Hirobius/Primitives: typography/weight/medium"
               }
             }
           },
           {
-            "id": "VariableID:1:53",
+            "id": "VariableID:1:54",
             "name": "typography/caption/letter-spacing",
             "path": "semantic.typography.caption.letter-spacing",
             "resolvedType": "FLOAT",
@@ -894,7 +911,7 @@
             }
           },
           {
-            "id": "VariableID:1:54",
+            "id": "VariableID:1:55",
             "name": "typography/caption/line-height",
             "path": "semantic.typography.caption.line-height",
             "resolvedType": "FLOAT",
@@ -916,7 +933,7 @@
             }
           },
           {
-            "id": "VariableID:1:40",
+            "id": "VariableID:1:41",
             "name": "typography/h1/font-family",
             "path": "semantic.typography.h1.font-family",
             "resolvedType": "STRING",
@@ -940,7 +957,7 @@
             }
           },
           {
-            "id": "VariableID:1:41",
+            "id": "VariableID:1:42",
             "name": "typography/h1/font-size",
             "path": "semantic.typography.h1.font-size",
             "resolvedType": "FLOAT",
@@ -954,17 +971,17 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:1:28",
+                "alias": "VariableID:1:29",
                 "to": "Hirobius/Primitives: typography/size/4xl"
               },
               "Dark": {
-                "alias": "VariableID:1:28",
+                "alias": "VariableID:1:29",
                 "to": "Hirobius/Primitives: typography/size/4xl"
               }
             }
           },
           {
-            "id": "VariableID:1:42",
+            "id": "VariableID:1:43",
             "name": "typography/h1/font-weight",
             "path": "semantic.typography.h1.font-weight",
             "resolvedType": "FLOAT",
@@ -978,17 +995,17 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:1:25",
+                "alias": "VariableID:1:26",
                 "to": "Hirobius/Primitives: typography/weight/bold"
               },
               "Dark": {
-                "alias": "VariableID:1:25",
+                "alias": "VariableID:1:26",
                 "to": "Hirobius/Primitives: typography/weight/bold"
               }
             }
           },
           {
-            "id": "VariableID:1:43",
+            "id": "VariableID:1:44",
             "name": "typography/h1/letter-spacing",
             "path": "semantic.typography.h1.letter-spacing",
             "resolvedType": "FLOAT",
@@ -1010,7 +1027,7 @@
             }
           },
           {
-            "id": "VariableID:1:44",
+            "id": "VariableID:1:45",
             "name": "typography/h1/line-height",
             "path": "semantic.typography.h1.line-height",
             "resolvedType": "FLOAT",
@@ -1044,7 +1061,7 @@
         ],
         "variables": [
           {
-            "id": "VariableID:1:56",
+            "id": "VariableID:1:57",
             "name": "button/bg",
             "path": "component.button.bg",
             "resolvedType": "COLOR",
@@ -1059,13 +1076,13 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:31",
+                "alias": "VariableID:1:32",
                 "to": "Hirobius/Semantic: color/surface/accent"
               }
             }
           },
           {
-            "id": "VariableID:1:59",
+            "id": "VariableID:1:60",
             "name": "button/fontSize",
             "path": "component.button.fontSize",
             "resolvedType": "FLOAT",
@@ -1079,13 +1096,13 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:26",
+                "alias": "VariableID:1:27",
                 "to": "Hirobius/Primitives: typography/size/xs"
               }
             }
           },
           {
-            "id": "VariableID:1:60",
+            "id": "VariableID:1:61",
             "name": "button/fontWeight",
             "path": "component.button.fontWeight",
             "resolvedType": "FLOAT",
@@ -1099,13 +1116,13 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:24",
+                "alias": "VariableID:1:25",
                 "to": "Hirobius/Primitives: typography/weight/medium"
               }
             }
           },
           {
-            "id": "VariableID:1:58",
+            "id": "VariableID:1:59",
             "name": "button/height",
             "path": "component.button.height",
             "resolvedType": "FLOAT",
@@ -1125,7 +1142,7 @@
             }
           },
           {
-            "id": "VariableID:1:57",
+            "id": "VariableID:1:58",
             "name": "button/paddingX",
             "path": "component.button.paddingX",
             "resolvedType": "FLOAT",
@@ -1145,7 +1162,7 @@
             }
           },
           {
-            "id": "VariableID:1:61",
+            "id": "VariableID:1:62",
             "name": "lightbox/backdrop/blur",
             "path": "component.lightbox.backdrop.blur",
             "resolvedType": "FLOAT",
@@ -1177,7 +1194,7 @@
         ],
         "variables": [
           {
-            "id": "VariableID:1:62",
+            "id": "VariableID:1:63",
             "name": "background",
             "path": "role.background",
             "resolvedType": "COLOR",
@@ -1192,13 +1209,13 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:30",
+                "alias": "VariableID:1:31",
                 "to": "Hirobius/Semantic: color/surface/page"
               }
             }
           },
           {
-            "id": "VariableID:1:63",
+            "id": "VariableID:1:64",
             "name": "card-foreground",
             "path": "role.card-foreground",
             "resolvedType": "COLOR",
@@ -1214,13 +1231,13 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:32",
+                "alias": "VariableID:1:33",
                 "to": "Hirobius/Semantic: color/content/primary"
               }
             }
           },
           {
-            "id": "VariableID:1:65",
+            "id": "VariableID:1:66",
             "name": "primary",
             "path": "role.primary",
             "resolvedType": "COLOR",
@@ -1235,13 +1252,13 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:31",
+                "alias": "VariableID:1:32",
                 "to": "Hirobius/Semantic: color/surface/accent"
               }
             }
           },
           {
-            "id": "VariableID:1:66",
+            "id": "VariableID:1:67",
             "name": "radius",
             "path": "role.radius",
             "resolvedType": "FLOAT",
@@ -1255,13 +1272,13 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:36",
+                "alias": "VariableID:1:37",
                 "to": "Hirobius/Semantic: radius/action"
               }
             }
           },
           {
-            "id": "VariableID:1:64",
+            "id": "VariableID:1:65",
             "name": "ring",
             "path": "role.ring",
             "resolvedType": "COLOR",
@@ -1275,7 +1292,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:1:33",
+                "alias": "VariableID:1:34",
                 "to": "Hirobius/Semantic: color/border/default"
               }
             }
@@ -1285,12 +1302,12 @@
     ],
     "textStyles": [
       {
-        "id": "S:1:68",
+        "id": "S:1:69",
         "name": "typography/body",
         "path": "semantic.typography.body",
         "description": "",
         "fontFamily": "Satoshi",
-        "fontStyle": "Medium",
+        "fontStyle": "Regular",
         "fontSize": 17,
         "lineHeight": {
           "unit": "PIXELS",
@@ -1302,15 +1319,15 @@
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
-          "fontFamily": "VariableID:1:45",
-          "fontSize": "VariableID:1:46",
-          "fontWeight": "VariableID:1:47",
-          "letterSpacing": "VariableID:1:48",
-          "lineHeight": "VariableID:1:49"
+          "fontFamily": "VariableID:1:46",
+          "fontSize": "VariableID:1:47",
+          "fontWeight": "VariableID:1:48",
+          "letterSpacing": "VariableID:1:49",
+          "lineHeight": "VariableID:1:50"
         }
       },
       {
-        "id": "S:1:69",
+        "id": "S:1:70",
         "name": "typography/caption",
         "path": "semantic.typography.caption",
         "description": "",
@@ -1327,15 +1344,15 @@
         },
         "textCase": "UPPER",
         "boundVariables": {
-          "fontFamily": "VariableID:1:50",
-          "fontSize": "VariableID:1:51",
-          "fontWeight": "VariableID:1:52",
-          "letterSpacing": "VariableID:1:53",
-          "lineHeight": "VariableID:1:54"
+          "fontFamily": "VariableID:1:51",
+          "fontSize": "VariableID:1:52",
+          "fontWeight": "VariableID:1:53",
+          "letterSpacing": "VariableID:1:54",
+          "lineHeight": "VariableID:1:55"
         }
       },
       {
-        "id": "S:1:67",
+        "id": "S:1:68",
         "name": "typography/h1",
         "path": "semantic.typography.h1",
         "description": "Page title.",
@@ -1352,24 +1369,24 @@
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
-          "fontFamily": "VariableID:1:40",
-          "fontSize": "VariableID:1:41",
-          "fontWeight": "VariableID:1:42",
-          "letterSpacing": "VariableID:1:43",
-          "lineHeight": "VariableID:1:44"
+          "fontFamily": "VariableID:1:41",
+          "fontSize": "VariableID:1:42",
+          "fontWeight": "VariableID:1:43",
+          "letterSpacing": "VariableID:1:44",
+          "lineHeight": "VariableID:1:45"
         }
       }
     ],
     "effectStyles": [
       {
-        "id": "S:1:71",
+        "id": "S:1:72",
         "name": "elevation/flat",
         "path": "semantic.elevation.flat",
         "description": "No shadow, hairline border.",
         "effects": []
       },
       {
-        "id": "S:1:72",
+        "id": "S:1:73",
         "name": "elevation/raised",
         "path": "semantic.elevation.raised",
         "description": "",
@@ -1413,7 +1430,7 @@
         ]
       },
       {
-        "id": "S:1:70",
+        "id": "S:1:71",
         "name": "shadow/subtle",
         "path": "semantic.shadow.subtle",
         "description": "Resting shadow.",

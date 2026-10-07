@@ -9,26 +9,26 @@
    and `button.tsx` as the reference exemplar. Enforced (rules A–D) by
    `scripts/check-prop-vocabulary.mjs`.
 
-## Typography — 8-Style Swiss-Canon Ramp (non-negotiable)
+## Typography — 5 Roles Plus Mono (non-negotiable)
 
-Values are the ground truth from `hirobius.tokens.json` → `semantic.typography.*`.
+Values are the ground truth from `hirobius.tokens.json` → `semantic.typography.*` (hds#483, Adrian's decision 2026-10-07).
 
-| Token / alias        | Size (desktop max) | Weight      | Role                                                                                                                      |
-| -------------------- | ------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `display`            | 72px / 1.0         | 300 light   | Hero headlines and landing-page displays                                                                                  |
-| `h1` / `heading1`    | 48px / 1.25        | 300 light   | Primary section headings (h1)                                                                                             |
-| `h2` / `heading2`    | 30px / 1.375       | 300 light   | Secondary section headings (h2)                                                                                           |
-| `h3` / `heading3`    | 20px / 1.375       | 500 medium  | Component and card headers (h3)                                                                                           |
-| `body`               | 17px / 1.625       | 400 regular | Body prose — default text style                                                                                           |
-| `small` / `ui`       | 15px / 1.625       | 400 regular | UI labels, sidebars, nav, footnotes                                                                                       |
-| `caption`            | 13px / 1.5         | 400 regular | Helper text, secondary metadata, form annotations                                                                         |
-| `mono` / `technical` | 15px / 1.625       | 400 regular | Monospace: code snippets, token names, keyboard shortcuts, git hashes, hex codes, IP addresses, and aligned data readouts |
+| Role      | Size / line-height | Weight | Use                                         |
+| --------- | ------------------ | ------ | ------------------------------------------- |
+| `display` | 48 / 1.05          | 700    | One per page, hero only                     |
+| `title`   | 24 / 1.25          | 700    | Section and card headings                   |
+| `body`    | 16 / 1.6           | 400    | Prose                                       |
+| `ui`      | 14 / 1.5           | 500    | Controls, nav, table text, values           |
+| `caption` | 12 / 1.5           | 500    | Metadata, help text, labels (sentence case) |
+| `mono`    | 13 / 1.5           | 400    | Code and ids                                |
 
-`body`, `small`/`ui`, and `caption` must have line-height ≥ 1.5. If a UI element feels too small, use `small`/`ui` (15px) — never drop to `mono`/`technical` or `caption` for standard text. Use `caption` (not `mono`/`technical`) for form helper text and secondary prose annotations.
+Set type with `<Text variant="…">`, `hds.typeStyles.<role>`, or the `.hds-type-<role>` class (`src/styles/theme.css`) in Tailwind-styled components. Never a raw `text-sm`, `font-medium`, `leading-5` or `fontSize`: `scripts/check-type-ramp.mjs` fails the commit (exempt a line with `// type-ramp-ok: <reason>`).
 
-Do use `technical` for code snippets, token names, keyboard shortcuts, git hashes, hex codes, IP addresses, and exact numerical readouts that need monospaced alignment.
+Deprecated aliases still resolve, to the role they now point at, and go in 1.0.0: `h1`, `h2`, `h3` and `heading1` to `heading3` → `title`; `technical` → `mono`; `eyebrow`, `badge`, `micro` → `caption`; `small` → `ui`. Do not use them in new code; the gate fails a reference to one.
 
-Do not use `technical` for status tags, categories, dates, user names, or general metadata. Use `ui`, `caption`, or `badge` instead.
+Use `ui` for standard UI text, `caption` for helper text and metadata, and `mono` only for code, token names, keyboard shortcuts, git hashes, hex codes and ids, never for status tags, categories, dates or user names. Casing is never changed inline; labels are sentence case.
+
+Satoshi ships a 500 and a 700 face only (no 600, which is why `title` is 700), so `body` (400) renders on the 500 face until a Satoshi Regular (400) face is added.
 
 ## Spacing — 24px Component Padding Standard
 

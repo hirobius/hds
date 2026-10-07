@@ -96,9 +96,9 @@ describe('DESIGN.md screen rules', () => {
     expect(design).not.toMatch(/4px action radius/);
   });
 
-  it('states the page-title rule and names heading2', () => {
-    const rule = design.split('\n').find((l) => /page.title/i.test(l) && l.includes('heading2'));
-    expect(rule, 'no line stating the page-title rule with heading2').toBeDefined();
+  it('states the page-title rule and names title', () => {
+    const rule = design.split('\n').find((l) => /page.title/i.test(l) && l.includes('`title`'));
+    expect(rule, 'no line stating the page-title rule with title').toBeDefined();
     expect(design).toMatch(/exactly one `PageHeader`/);
   });
 });

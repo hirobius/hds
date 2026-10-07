@@ -234,11 +234,24 @@ function isRelativeTypography(graph, token) {
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
   family: 'Satoshi',
-  weight: 500,
-  zeroAdvanceEm: 0.693,
+  weight: 400,
+  zeroAdvanceEm: 0.683,
   measuredFrom:
-    'public/fonts/satoshi/satoshi-500.woff2: hmtx advance of "0" (693) / head.unitsPerEm (1000), measured 2026-09-16',
+    'public/fonts/satoshi/satoshi-400.woff2: advance of "0" at 1000px in Chromium (683; the same method gives 693 for the 500 face, matching its hmtx), measured 2026-10-07',
 });
+
+/**
+ * The weight of the Satoshi face a requested weight renders on. The 400, 500
+ * and 700 faces ship (src/styles/fonts.css); CSS font matching puts a weight
+ * with no face of its own on the nearest shipped one.
+ */
+const SATOSHI_FACE_WEIGHTS = [400, 500, 700];
+function renderedWeight(family, weight) {
+  if (family !== 'Satoshi' || typeof weight !== 'number') return weight;
+  if (SATOSHI_FACE_WEIGHTS.includes(weight)) return weight;
+  if (weight < 400) return 400;
+  return weight <= 500 ? 500 : 700;
+}
 
 function chToPx(graph, count) {
   const body = graph.byPath.get(CH_BASIS.style);
@@ -254,9 +267,10 @@ function chToPx(graph, count) {
     'fontFamily',
   );
   const weight = graph.resolveRef(body.value.fontWeight, at('fontWeight'));
-  if (family !== CH_BASIS.family || weight !== CH_BASIS.weight) {
+  const face = renderedWeight(family, weight);
+  if (family !== CH_BASIS.family || face !== CH_BASIS.weight) {
     throw new Error(
-      `Cannot convert ch: CH_BASIS was measured for ${CH_BASIS.family} ${CH_BASIS.weight} but ${CH_BASIS.style} now renders ${family} ${weight} — re-measure zeroAdvanceEm from that font file.`,
+      `Cannot convert ch: CH_BASIS was measured for ${CH_BASIS.family} ${CH_BASIS.weight} but ${CH_BASIS.style} now renders ${family} ${face} — re-measure zeroAdvanceEm from that font file.`,
     );
   }
   const fontSize = toFigmaValue(

@@ -33,6 +33,11 @@ export const REQUIRED = [
   'public/hds-manifest.json',
   'hirobius.tokens.json',
   'dist/hirobius-ui.js',
+  'dist/fonts.css',
+  'dist/fonts/satoshi-400.woff2',
+  'dist/fonts/satoshi-500.woff2',
+  'dist/fonts/satoshi-700.woff2',
+  'dist/fonts/geist-mono-400.woff2',
 ];
 
 /** Prefix rules; a path is forbidden when it matches and is not in `allow`. */

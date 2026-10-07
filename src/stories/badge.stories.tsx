@@ -99,7 +99,14 @@ export const Dot: Story = {
         <Badge dot size="md" tone="success" label="Online, medium" />
         <Badge dot size="lg" tone="success" label="Online, large" />
       </div>
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', fontSize: '14px' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'center',
+          fontSize: 'var(--semantic-typography-ui-font-size)',
+        }}
+      >
         <Badge dot tone="success" />
         <span>Online (the dot is decorative here)</span>
       </div>

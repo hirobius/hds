@@ -1,10 +1,10 @@
-body[data-hds-xray="true"] [data-hds-component] {
+body[data-hds-xray='true'] [data-hds-component] {
   outline: 1px dashed var(--semantic-color-feedback-info);
   position: relative;
 }
 
-body[data-hds-xray="true"] [data-hds-component]::before {
-  content: attr(data-hds-component) " | " attr(data-hds-metrics);
+body[data-hds-xray='true'] [data-hds-component]::before {
+  content: attr(data-hds-component) ' | ' attr(data-hds-metrics);
   position: absolute;
   top: 0;
   left: 0;
@@ -14,9 +14,9 @@ body[data-hds-xray="true"] [data-hds-component]::before {
   background: var(--semantic-color-feedback-info);
   color: var(--semantic-color-content-onAccent);
   font-family: var(--semantic-typography-mono-font-family);
-  font-size: 10px;
+  font-size: var(--semantic-typography-caption-font-size);
   font-weight: var(--semantic-typography-mono-font-weight);
-  line-height: 1;
+  line-height: var(--semantic-typography-caption-line-height);
   white-space: nowrap;
   pointer-events: none;
 }

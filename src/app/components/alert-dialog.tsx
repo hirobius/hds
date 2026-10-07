@@ -122,7 +122,7 @@ const AlertDialogTitle = /* @__PURE__ */ React.forwardRef<
 >(function AlertDialogTitle({ className, children, ...props }, ref) {
   return (
     <AlertDialogPrimitive.Title asChild>
-      <Text ref={ref} as="h2" variant="heading3" className={className} {...props}>
+      <Text ref={ref} as="h2" variant="title" className={className} {...props}>
         {children}
       </Text>
     </AlertDialogPrimitive.Title>

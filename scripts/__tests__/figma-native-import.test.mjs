@@ -62,7 +62,7 @@ describe('buildNativeImportFiles', () => {
 
   it('writes px dimensions as { value, unit: "px" }, other numbers as number, families as fontFamily', () => {
     const primitives = file('01-primitive/Default.json').tokens;
-    expect(leaf(primitives, 'size/width/50ch').$value).toEqual({ value: 589.05, unit: 'px' });
+    expect(leaf(primitives, 'size/width/50ch').$value).toEqual({ value: 580.55, unit: 'px' });
     expect(leaf(primitives, 'size/width/50ch').$type).toBe('dimension');
     expect(leaf(primitives, 'typography/weight/bold')).toMatchObject({
       $type: 'number',

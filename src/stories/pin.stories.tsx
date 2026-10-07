@@ -41,7 +41,7 @@ export const Sidebar: Story = {
             borderRadius: 'var(--semantic-radius-action, 8px)',
             background: 'var(--semantic-color-surface-raised, #f4f4f5)',
             border: '1px solid var(--semantic-color-border-default, #d4d4d8)',
-            fontSize: 13,
+            fontSize: 'var(--semantic-typography-mono-font-size)',
           }}
         >
           Pinned rail — stays put while you scroll →

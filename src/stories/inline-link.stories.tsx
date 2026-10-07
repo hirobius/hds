@@ -76,7 +76,7 @@ export const InBodyCopy: Story = {
     },
   },
   render: () => (
-    <p style={{ maxWidth: '480px', lineHeight: 1.6 }}>
+    <p style={{ maxWidth: '480px', lineHeight: 'var(--semantic-typography-body-line-height)' }}>
       The Hirobius Design System ships a token-driven{' '}
       <InlineLink href="/components">component library</InlineLink> and a Figma bridge. Read the{' '}
       <InlineLink href="https://hirobius.com/docs">public documentation</InlineLink> for full

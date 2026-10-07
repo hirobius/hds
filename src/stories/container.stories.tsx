@@ -37,7 +37,7 @@ export const ContentWidth: Story = {
     <div style={{ padding: '24px', background: 'var(--semantic-color-surface-page, #f9fafb)' }}>
       <Container {...args}>
         <Surface>
-          <Text variant="heading2">Content width (760px)</Text>
+          <Text variant="title">Content width (760px)</Text>
           <Text variant="body">
             This container constrains prose to a comfortable reading measure. Use for documentation
             pages, case studies, and article layouts.
@@ -54,7 +54,7 @@ export const MaxWidth: Story = {
     <div style={{ padding: '24px', background: 'var(--semantic-color-surface-page, #f9fafb)' }}>
       <Container {...args}>
         <Surface>
-          <Text variant="heading2">Max width (1200px)</Text>
+          <Text variant="title">Max width (1200px)</Text>
           <Text variant="body">
             Full layout width for dashboard surfaces, galleries, and grid-heavy pages.
           </Text>

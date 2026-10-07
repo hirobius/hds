@@ -40,17 +40,17 @@ export const Default: Story = {
         <TabsTrigger value="usage">Usage</TabsTrigger>
       </TabsList>
       <TabsContent value="overview">
-        <p className="text-sm text-muted-foreground">
+        <p className="hds-type-ui text-muted-foreground">
           A high-level summary of the component — purpose, tier, and Figma link.
         </p>
       </TabsContent>
       <TabsContent value="props">
-        <p className="text-sm text-muted-foreground">
+        <p className="hds-type-ui text-muted-foreground">
           Prop table generated from the TypeScript interface via component-api.json.
         </p>
       </TabsContent>
       <TabsContent value="usage">
-        <p className="text-sm text-muted-foreground">
+        <p className="hds-type-ui text-muted-foreground">
           Code snippets and best-practice guidance for integrating the component.
         </p>
       </TabsContent>
@@ -108,15 +108,15 @@ export const WithDisabledTab: Story = {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="published">
-        <p className="text-sm text-muted-foreground">Live components visible in production.</p>
+        <p className="hds-type-ui text-muted-foreground">Live components visible in production.</p>
       </TabsContent>
       <TabsContent value="draft">
-        <p className="text-sm text-muted-foreground">
+        <p className="hds-type-ui text-muted-foreground">
           Work-in-progress components not yet released.
         </p>
       </TabsContent>
       <TabsContent value="archived">
-        <p className="text-sm text-muted-foreground">Archived content.</p>
+        <p className="hds-type-ui text-muted-foreground">Archived content.</p>
       </TabsContent>
     </Tabs>
   ),
@@ -128,7 +128,7 @@ function ControlledTabsDemo() {
   const [tab, setTab] = React.useState('design');
   return (
     <div style={{ width: '480px' }}>
-      <p className="mb-4 text-xs text-muted-foreground">
+      <p className="mb-4 hds-type-caption text-muted-foreground">
         Active: <strong>{tab}</strong>
       </p>
       <Tabs value={tab} onValueChange={setTab}>
@@ -138,13 +138,15 @@ function ControlledTabsDemo() {
           <TabsTrigger value="inspect">Inspect</TabsTrigger>
         </TabsList>
         <TabsContent value="design">
-          <p className="text-sm text-muted-foreground">Figma canvas and component properties.</p>
+          <p className="hds-type-ui text-muted-foreground">
+            Figma canvas and component properties.
+          </p>
         </TabsContent>
         <TabsContent value="code">
-          <p className="text-sm text-muted-foreground">Generated TSX snippet and imports.</p>
+          <p className="hds-type-ui text-muted-foreground">Generated TSX snippet and imports.</p>
         </TabsContent>
         <TabsContent value="inspect">
-          <p className="text-sm text-muted-foreground">
+          <p className="hds-type-ui text-muted-foreground">
             Token values, spacing, and computed styles.
           </p>
         </TabsContent>

@@ -202,8 +202,14 @@ const hds = {
       },
     },
     typography: {
+      /** @deprecated hds#483 — use `typeStyles.ui`.
+       * @removeIn 1.0.0 */
       label: tokenRefs.semantic.typography.ui as React.CSSProperties,
+      /** @deprecated hds#483 — use `typeStyles.ui`.
+       * @removeIn 1.0.0 */
       labelDescriptive: tokenRefs.semantic.typography.ui as React.CSSProperties,
+      /** @deprecated hds#483 — use `typeStyles.mono`.
+       * @removeIn 1.0.0 */
       labelTechnical: tokenRefs.semantic.typography.mono as React.CSSProperties,
     },
   },
@@ -211,44 +217,136 @@ const hds = {
   // Each style object spreads directly into a React inline style prop.
   // CSS vars resolve at paint time — no hardcoded pixel values.
   typeStyles: {
-    // ── Canonical composites (Adrian directive 2026-05-04) ────────────────────
-    // 7 roles. body/ui/eyebrow/mono carry maxWidth: 60ch where appropriate.
-    // Eyebrow bakes text-transform: uppercase + caps tracking into the token —
-    // never re-apply textTransform inline. Casing changes are eyebrow-only.
+    // ── The 5-role ramp plus mono (hds#483) ───────────────────────────────────
+    // display 48 / title 24 / body 16 / ui 14 / caption 12 / mono 13. body, ui
+    // and mono carry maxWidth: 60ch. Casing is never changed inline.
     display: tokenRefs.semantic.typography.display as React.CSSProperties,
-    h1: tokenRefs.semantic.typography.h1 as React.CSSProperties,
-    h2: tokenRefs.semantic.typography.h2 as React.CSSProperties,
-    h3: tokenRefs.semantic.typography.h3 as React.CSSProperties,
+    title: tokenRefs.semantic.typography.title as React.CSSProperties,
     body: tokenRefs.semantic.typography.body as React.CSSProperties,
     ui: tokenRefs.semantic.typography.ui as React.CSSProperties,
-    eyebrow: tokenRefs.semantic.typography.eyebrow as React.CSSProperties,
-    mono: tokenRefs.semantic.typography.mono as React.CSSProperties,
-    // ── Migration aliases → canonical composites ──────────────────────────────
-    // Pre-2026-05-04 names map to the new roles. small → ui; the eyebrow-pattern
-    // callsites migrate explicitly to typeStyles.eyebrow as part of the
-    // ops-dashboard sweep. caption now resolves to its own 12/16 composite
-    // (semantic.typography.caption, matching Figma) rather than aliasing ui.
-    small: tokenRefs.semantic.typography.ui as React.CSSProperties,
     caption: tokenRefs.semantic.typography.caption as React.CSSProperties,
-    heading1: tokenRefs.semantic.typography.h1 as React.CSSProperties,
-    heading2: tokenRefs.semantic.typography.h2 as React.CSSProperties,
-    heading3: tokenRefs.semantic.typography.h3 as React.CSSProperties,
-    technical: tokenRefs.semantic.typography.mono as React.CSSProperties,
-    badge: tokenRefs.semantic.typography.eyebrow as React.CSSProperties,
-    micro: tokenRefs.semantic.typography.eyebrow as React.CSSProperties,
+    mono: tokenRefs.semantic.typography.mono as React.CSSProperties,
+    // ── Deprecated aliases → the six roles ────────────────────────────────────
+    // Every pre-cut name still resolves, to the role it now points at.
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    h1: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    h2: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    h3: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    heading1: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    heading2: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    heading3: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    headingHero: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    headingSection: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.title`.
+     * @removeIn 1.0.0
+     */
+    display2: tokenRefs.semantic.typography.title as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.display`.
+     * @removeIn 1.0.0
+     */
     displayXl: tokenRefs.semantic.typography.display as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.display`.
+     * @removeIn 1.0.0
+     */
     display1: tokenRefs.semantic.typography.display as React.CSSProperties,
-    display2: tokenRefs.semantic.typography.h1 as React.CSSProperties,
-    headingHero: tokenRefs.semantic.typography.h1 as React.CSSProperties,
-    headingSection: tokenRefs.semantic.typography.h3 as React.CSSProperties,
-    title: tokenRefs.semantic.typography.body as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.body`.
+     * @removeIn 1.0.0
+     */
     body2: tokenRefs.semantic.typography.body as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.body`.
+     * @removeIn 1.0.0
+     */
     bodyLarge: tokenRefs.semantic.typography.body as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.ui`.
+     * @removeIn 1.0.0
+     */
+    small: tokenRefs.semantic.typography.ui as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.ui`.
+     * @removeIn 1.0.0
+     */
     bodySmall: tokenRefs.semantic.typography.ui as React.CSSProperties,
-    monoXs: tokenRefs.semantic.typography.mono as React.CSSProperties,
-    monoSm: tokenRefs.semantic.typography.mono as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.ui`.
+     * @removeIn 1.0.0
+     */
     label: tokenRefs.semantic.typography.ui as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.ui`.
+     * @removeIn 1.0.0
+     */
     labelDescriptive: tokenRefs.semantic.typography.ui as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.caption`.
+     * @removeIn 1.0.0
+     */
+    eyebrow: tokenRefs.semantic.typography.caption as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.caption`.
+     * @removeIn 1.0.0
+     */
+    badge: tokenRefs.semantic.typography.caption as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.caption`.
+     * @removeIn 1.0.0
+     */
+    micro: tokenRefs.semantic.typography.caption as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.mono`.
+     * @removeIn 1.0.0
+     */
+    technical: tokenRefs.semantic.typography.mono as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.mono`.
+     * @removeIn 1.0.0
+     */
+    monoXs: tokenRefs.semantic.typography.mono as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.mono`.
+     * @removeIn 1.0.0
+     */
+    monoSm: tokenRefs.semantic.typography.mono as React.CSSProperties,
+    /**
+     * @deprecated hds#483 — use `typeStyles.mono`.
+     * @removeIn 1.0.0
+     */
     labelTechnical: tokenRefs.semantic.typography.mono as React.CSSProperties,
   },
 

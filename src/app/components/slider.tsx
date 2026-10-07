@@ -63,7 +63,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
             duration: productiveMotion.duration,
             ease: productiveMotion.easing,
           }}
-          style={{ ...hds.typeStyles.technical }}
+          style={{ ...hds.typeStyles.mono }}
         >
           {value}
         </motion.span>

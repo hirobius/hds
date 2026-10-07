@@ -115,6 +115,7 @@
   --primitive-typography-size-4xl: 36px;
   --primitive-typography-size-5xl: 48px;
   --primitive-typography-size-6xl: 60px;
+  --primitive-typography-size-code: 13px;
   --primitive-typography-weight-regular: 400;
   --primitive-typography-weight-medium: 500;
   --primitive-typography-weight-bold: 700;
@@ -124,6 +125,8 @@
   --primitive-typography-lineHeight-snug: 1.375;
   --primitive-typography-lineHeight-normal: 1.5;
   --primitive-typography-lineHeight-relaxed: 1.625;
+  --primitive-typography-lineHeight-display: 1.05;
+  --primitive-typography-lineHeight-body: 1.6;
   --primitive-typography-letterSpacing-tight: -0.01em;
   --primitive-typography-letterSpacing-normal: 0em;
   --primitive-typography-letterSpacing-caps: 0.06em;
@@ -264,62 +267,67 @@
   --semantic-layout-grid-columns-desktop: var(--primitive-grid-columns-3);
   /* semantic.typography.display */
   --semantic-typography-display-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-display-font-size: var(--primitive-typography-size-6xl);
+  --semantic-typography-display-font-size: var(--primitive-typography-size-5xl);
   --semantic-typography-display-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-display-letter-spacing: var(--primitive-typography-letterSpacing-tight);
-  --semantic-typography-display-line-height: var(--primitive-typography-lineHeight-none);
-  /* semantic.typography.h1 */
-  --semantic-typography-h1-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-h1-font-size: var(--primitive-typography-size-5xl);
-  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-bold);
-  --semantic-typography-h1-letter-spacing: var(--primitive-typography-letterSpacing-tight);
-  --semantic-typography-h1-line-height: var(--primitive-typography-lineHeight-tight);
-  /* semantic.typography.h2 */
-  --semantic-typography-h2-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-h2-font-size: var(--primitive-typography-size-3xl);
-  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-bold);
-  --semantic-typography-h2-letter-spacing: var(--primitive-typography-letterSpacing-tight);
-  --semantic-typography-h2-line-height: 40px;
-  /* semantic.typography.h3 */
-  --semantic-typography-h3-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-h3-font-size: var(--primitive-typography-size-xl);
-  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-bold);
-  --semantic-typography-h3-letter-spacing: var(--primitive-typography-letterSpacing-normal);
-  --semantic-typography-h3-line-height: 28px;
+  --semantic-typography-display-line-height: var(--primitive-typography-lineHeight-display);
+  /* semantic.typography.title */
+  --semantic-typography-title-font-family: var(--primitive-typography-family-display);
+  --semantic-typography-title-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-title-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-title-letter-spacing: var(--primitive-typography-letterSpacing-tight);
+  --semantic-typography-title-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.body */
   --semantic-typography-body-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-body-font-size: var(--primitive-typography-size-base);
-  --semantic-typography-body-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-body-font-weight: var(--primitive-typography-weight-regular);
   --semantic-typography-body-letter-spacing: var(--primitive-typography-letterSpacing-normal);
-  --semantic-typography-body-line-height: 24px;
+  --semantic-typography-body-line-height: var(--primitive-typography-lineHeight-body);
   --semantic-typography-body-max-width: 60ch;
   /* semantic.typography.ui */
   --semantic-typography-ui-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-ui-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-ui-font-weight: var(--primitive-typography-weight-medium);
   --semantic-typography-ui-letter-spacing: var(--primitive-typography-letterSpacing-normal);
-  --semantic-typography-ui-line-height: 20px;
+  --semantic-typography-ui-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-ui-max-width: 60ch;
   /* semantic.typography.caption */
   --semantic-typography-caption-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-caption-font-size: var(--primitive-typography-size-xs);
   --semantic-typography-caption-font-weight: var(--primitive-typography-weight-medium);
   --semantic-typography-caption-letter-spacing: var(--primitive-typography-letterSpacing-normal);
-  --semantic-typography-caption-line-height: 16px;
+  --semantic-typography-caption-line-height: var(--primitive-typography-lineHeight-normal);
+  /* semantic.typography.mono */
+  --semantic-typography-mono-font-family: var(--primitive-typography-family-mono);
+  --semantic-typography-mono-font-size: var(--primitive-typography-size-code);
+  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-regular);
+  --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-mono-line-height: var(--primitive-typography-lineHeight-normal);
+  --semantic-typography-mono-max-width: 60ch;
+  /* semantic.typography.h1 */
+  --semantic-typography-h1-font-family: var(--primitive-typography-family-display);
+  --semantic-typography-h1-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h1-letter-spacing: var(--primitive-typography-letterSpacing-tight);
+  --semantic-typography-h1-line-height: var(--primitive-typography-lineHeight-tight);
+  /* semantic.typography.h2 */
+  --semantic-typography-h2-font-family: var(--primitive-typography-family-display);
+  --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h2-letter-spacing: var(--primitive-typography-letterSpacing-tight);
+  --semantic-typography-h2-line-height: var(--primitive-typography-lineHeight-tight);
+  /* semantic.typography.h3 */
+  --semantic-typography-h3-font-family: var(--primitive-typography-family-display);
+  --semantic-typography-h3-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h3-letter-spacing: var(--primitive-typography-letterSpacing-tight);
+  --semantic-typography-h3-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.eyebrow */
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-xs);
   --semantic-typography-eyebrow-font-weight: var(--primitive-typography-weight-medium);
-  --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-caps);
-  --semantic-typography-eyebrow-line-height: 16px;
-  --semantic-typography-eyebrow-text-transform: uppercase;
-  /* semantic.typography.mono */
-  --semantic-typography-mono-font-family: var(--primitive-typography-family-mono);
-  --semantic-typography-mono-font-size: var(--primitive-typography-size-sm);
-  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-regular);
-  --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
-  --semantic-typography-mono-line-height: 20px;
-  --semantic-typography-mono-max-width: 60ch;
+  --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-lineHeight-none: var(--primitive-typography-lineHeight-none);
   --semantic-docs-space-section: var(--primitive-space-12);
   --semantic-docs-space-paragraph: var(--primitive-space-6);

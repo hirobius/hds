@@ -42,7 +42,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 /** Stylesheet subpaths: real exports with nothing for attw to resolve. */
-const CSS_ENTRYPOINTS = ['tokens.css', 'styles.css', 'variables.css', 'static.css'];
+const CSS_ENTRYPOINTS = ['tokens.css', 'styles.css', 'variables.css', 'static.css', 'fonts.css'];
 
 function main() {
   const types = path.join(ROOT, 'dist', 'types');

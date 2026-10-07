@@ -102,7 +102,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
           className={cn(
-            'hds-focus group flex w-full items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm',
+            'hds-focus group flex w-full items-center justify-between gap-2 rounded-md border px-3 py-2 hds-type-ui',
             'border-input bg-muted text-foreground transition-colors',
             'hover:border-ring data-[state=open]:border-ring',
           )}
@@ -140,7 +140,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
                   key={opt.value}
                   value={opt.value}
                   className={cn(
-                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-sm outline-none',
+                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui outline-none',
                     'text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
                     'data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring',
                   )}
