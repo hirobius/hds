@@ -2851,6 +2851,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ],
       "usage": {
@@ -6971,6 +6972,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7017,6 +7019,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7063,6 +7066,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7114,6 +7118,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7182,6 +7187,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ],
       "usage": {
@@ -7261,6 +7267,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7307,6 +7314,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },

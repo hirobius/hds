@@ -203,6 +203,46 @@ export const FeedbackTones: Story = {
   ),
 };
 
+// hds#372 — tone over variant in every Card state. Each status tone sets the
+// border width and colour, so it replaces `accent`'s 2px border and
+// `bordered`'s neutral one through tailwind-merge, not `!` (ADR-030).
+const CARD_TONE_MATRIX_TONES = ['neutral', 'danger', 'success', 'warning', 'info'] as const;
+const CARD_TONE_MATRIX_STATES = [
+  { name: 'default', props: {} },
+  { name: 'accent', props: { variant: 'accent' } },
+  { name: 'bordered', props: { bordered: true } },
+  { name: 'accent selected', props: { variant: 'accent', selectable: true, selected: true } },
+  { name: 'selected', props: { bordered: true, selectable: true, selected: true } },
+] as const;
+
+export const ToneMatrix: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Every tone across `variant`, `bordered` and a selected `selectable` card. A status tone always draws one 1px feedback border, replacing the accent and neutral borders by tailwind-merge class-group replacement rather than the `!` important modifier (ADR-030); selection adds its inset ring on top.',
+      },
+    },
+    // No chromatic modes: VariantAccent is this file's one modes story (see
+    // MODES in .storybook/preview); the axe gate scans this in light and dark.
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      {CARD_TONE_MATRIX_STATES.map(({ name, props }) => (
+        <div key={name} style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {CARD_TONE_MATRIX_TONES.map((tone) => (
+            <Card key={tone} tone={tone} {...props} style={{ minWidth: 160 }}>
+              <p style={{ margin: 0, fontSize: 'var(--semantic-typography-mono-font-size)' }}>
+                {`${name} ${tone}`}
+              </p>
+            </Card>
+          ))}
+        </div>
+      ))}
+    </div>
+  ),
+};
+
 export const ProgressSlot: Story = {
   parameters: {
     docs: {

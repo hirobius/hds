@@ -177,6 +177,12 @@ export const AllVariantsRow: Story = {
 
 const TONE_MATRIX_VARIANTS = ['primary', 'secondary', 'tertiary'] as const;
 const TONE_MATRIX_TONES = ['danger', 'success', 'warning', 'info'] as const;
+const TONE_MATRIX_ROW = {
+  display: 'flex',
+  gap: '12px',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+} as const;
 
 export const ToneMatrix: Story = {
   parameters: {
@@ -184,20 +190,17 @@ export const ToneMatrix: Story = {
     docs: {
       description: {
         story:
-          'Every variant × status tone, plus a disabled and a loading toned button. `tone` replaces the variant colours (fill, border, text and their hover states) through tailwind-merge class-group replacement, not the `!` important modifier (ADR-030), so each row must look the same across variants.',
+          'Every variant × status tone as a labelled button, then as an `iconOnly` button, then as a toggle off and on, plus a disabled and a loading toned button. `tone` replaces the variant colours (fill, border, text and their hover states) through tailwind-merge class-group replacement, not the `!` important modifier (ADR-030), so each tone must look the same across variants. A toned toggle keeps the tone colours when on; aria-pressed carries its state.',
       },
     },
-    // hds#372 — the 12 variant × tone combos reach the axe gate and the
-    // brand/density/theme modes matrix through this one story.
+    // hds#372 — every variant × tone combo, in every Button shape, reaches the
+    // axe gate and the brand/density/theme modes matrix through this one story.
     chromatic: { modes: MODES },
   },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {TONE_MATRIX_VARIANTS.map((variant) => (
-        <div
-          key={variant}
-          style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}
-        >
+        <div key={variant} style={TONE_MATRIX_ROW}>
           {TONE_MATRIX_TONES.map((tone) => (
             <Button key={tone} variant={variant} tone={tone}>
               {`${variant} ${tone}`}
@@ -205,7 +208,7 @@ export const ToneMatrix: Story = {
           ))}
         </div>
       ))}
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+      <div style={TONE_MATRIX_ROW}>
         <Button variant="primary" tone="danger" disabled>
           Disabled danger
         </Button>
@@ -213,6 +216,29 @@ export const ToneMatrix: Story = {
           Loading warning
         </Button>
       </div>
+      <div style={TONE_MATRIX_ROW}>
+        {TONE_MATRIX_VARIANTS.flatMap((variant) =>
+          TONE_MATRIX_TONES.map((tone) => (
+            <Button
+              key={`${variant}-${tone}`}
+              variant={variant}
+              tone={tone}
+              iconOnly
+              label={`${variant} ${tone}`}
+              iconLeft={<Star />}
+            />
+          )),
+        )}
+      </div>
+      {([false, true] as const).map((pressed) => (
+        <div key={String(pressed)} style={TONE_MATRIX_ROW}>
+          {TONE_MATRIX_TONES.map((tone) => (
+            <Button key={tone} variant="secondary" tone={tone} pressed={pressed}>
+              {`${tone} ${pressed ? 'on' : 'off'}`}
+            </Button>
+          ))}
+        </div>
+      ))}
     </div>
   ),
 };

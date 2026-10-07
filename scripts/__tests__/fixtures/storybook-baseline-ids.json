@@ -409,6 +409,7 @@
     "primitives-card--selectable",
     "patterns-metrictile--default",
     "patterns-metrictile--danger",
-    "patterns-metrictile--docs"
+    "patterns-metrictile--docs",
+    "primitives-card--tone-matrix"
   ]
 }
