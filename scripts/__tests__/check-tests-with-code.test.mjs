@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeAll, afterAll } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -15,6 +15,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
 const SCRIPT = join(ROOT, 'scripts', 'check-tests-with-code.mjs');
 
+// Strip GIT_* vars: under a pre-push hook (esp. from a worktree) git exports
+// GIT_DIR/GIT_INDEX_FILE etc., which would redirect every command here into
+// the real repo — committing junk, moving HEAD and setting core.bare.
+const cleanEnv = () =>
+  Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
+
 let cleanup = [];
 afterEach(() => {
   for (const d of cleanup) rmSync(d, { recursive: true, force: true });
@@ -25,6 +31,7 @@ const git = (cwd, ...args) =>
   execFileSync('git', ['-c', 'user.email=t@t', '-c', 'user.name=t', ...args], {
     cwd,
     encoding: 'utf8',
+    env: cleanEnv(),
   });
 
 /** Scratch repo whose origin/main is the initial commit; `files` land on a feature branch. */
@@ -56,7 +63,10 @@ function repo({ files, messages = ['work'], withOrigin = true, baseFiles = [], d
 
 function run(cwd) {
   try {
-    return { code: 0, out: execFileSync('node', [SCRIPT], { cwd, encoding: 'utf8' }) };
+    return {
+      code: 0,
+      out: execFileSync('node', [SCRIPT], { cwd, encoding: 'utf8', env: cleanEnv() }),
+    };
   } catch (e) {
     return { code: e.status ?? 1, out: (e.stdout ?? '') + (e.stderr ?? '') };
   }
@@ -153,7 +163,7 @@ describe('fixture mode (proof-of-firing)', () => {
         cwd: ROOT,
         encoding: 'utf8',
         env: {
-          ...process.env,
+          ...cleanEnv(),
           FIXTURE_FILE: join(ROOT, 'fixtures', 'check-tests-with-code', name),
         },
       });
@@ -167,5 +177,41 @@ describe('fixture mode (proof-of-firing)', () => {
   });
   it('violating.example.json -> exit 1', () => {
     expect(fx('violating.example.json').code).toBe(1);
+  });
+});
+
+describe('hook environment isolation', () => {
+  // A pre-push hook exports GIT_DIR. Point it at a decoy repo and prove the
+  // scratch-repo helpers never touch it.
+  let decoy;
+  let saved;
+  const state = () => ({
+    head: execFileSync('git', ['symbolic-ref', 'HEAD'], {
+      cwd: decoy,
+      encoding: 'utf8',
+      env: cleanEnv(),
+    }),
+    bare: execFileSync('git', ['config', '--get', 'core.bare'], {
+      cwd: decoy,
+      encoding: 'utf8',
+      env: cleanEnv(),
+    }),
+    refs: execFileSync('git', ['for-each-ref'], { cwd: decoy, encoding: 'utf8', env: cleanEnv() }),
+  });
+  beforeAll(() => {
+    decoy = mkdtempSync(join(tmpdir(), 'tests-with-code-decoy-'));
+    execFileSync('git', ['init', '-q', '-b', 'decoy'], { cwd: decoy, env: cleanEnv() });
+    saved = process.env.GIT_DIR;
+    process.env.GIT_DIR = join(decoy, '.git');
+  });
+  afterAll(() => {
+    if (saved === undefined) delete process.env.GIT_DIR;
+    else process.env.GIT_DIR = saved;
+    rmSync(decoy, { recursive: true, force: true });
+  });
+  it('leaves the repo named by an inherited GIT_DIR untouched', () => {
+    const before = state();
+    expect(run(repo({ files: ['src/a.mjs', 'scripts/__tests__/a.test.mjs'] })).code).toBe(0);
+    expect(state()).toEqual(before);
   });
 });
