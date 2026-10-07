@@ -244,7 +244,10 @@ describe('hds-mcp over stdio', () => {
     expect(one.data.insteadFor).toEqual(hit.insteadFor);
     expect(hit.core).toBeUndefined();
     expect(one.data.core).toBeUndefined();
-    const core = await callTool(server, 'get_component', { name: 'MetricTiles' });
+    const rec = await callTool(server, 'get_component', { name: 'MetricTiles' });
+    expect(rec.data.recommended).toBe(true);
+    expect(rec.data.core).toBeUndefined();
+    const core = await callTool(server, 'get_component', { name: 'Button' });
     expect(core.data.core).toBe(true);
   });
 
