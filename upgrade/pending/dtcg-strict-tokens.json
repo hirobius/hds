@@ -1,0 +1,31 @@
+{
+  "impact": "breaking",
+  "plain": "If your code reads the raw tokens (the tokens export or hirobius.tokens.json), read motion easing from $value.timingFunction and each elevation level and the elastic spring from $extensions[\"com.hirobius.hds\"].$value; CSS variables are unchanged.",
+  "steps": [
+    {
+      "id": "value-changed/tokens-json-dtcg",
+      "kind": "value-changed",
+      "impact": "breaking",
+      "plain": "The raw tokens (the tokens export and hirobius.tokens.json) are strict DTCG now, so read semantic.motion.*.$value.timingFunction instead of .easing, and the elastic spring and each semantic.elevation level from $extensions[\"com.hirobius.hds\"].$value.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["tokens"]
+          }
+        ],
+        "regex": ["hirobius\\.tokens\\.json"]
+      }
+    },
+    {
+      "id": "look/component-tag-lineHeight",
+      "kind": "look",
+      "impact": "look",
+      "plain": "--component-tag-lineHeight is now 1.5 instead of an invalid value the browser ignored, so text that reads it gets that line height.",
+      "detect": {
+        "cssVars": ["--component-tag-lineHeight"],
+        "regex": ["\\bcomponent\\.tag\\.lineHeight\\b"]
+      }
+    }
+  ]
+}
