@@ -97,7 +97,9 @@ From 0.21.0 on, each changeset carries an `upgrade/pending/<name>.json` note
 upgrade:note` pre-fills it). `scripts/check-upgrade-ledger.mjs` runs in
 `pretest` and fails when a fact since the last release snapshot has no step,
 a changeset has no note, or something breaking ships under less than a minor
-below 1.0. `pnpm changeset:version` compiles the notes into the release's
+below 1.0. It also fails what `pnpm changeset:version` would refuse or
+misfile: a note step that lists a fact the diff no longer has (a reverted
+removal), and a note with no changeset of its name (hds#541). `pnpm changeset:version` compiles the notes into the release's
 ledger ([At release time](#at-release-time)). CSS facts, such as removed classes and changed variable
 values, come with hds#449; until then a step of kind `removed` written by hand
 covers one, and the gate counts it as breaking.

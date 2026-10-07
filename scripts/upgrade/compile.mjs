@@ -619,8 +619,22 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
   const notes = Object.fromEntries(pendingNotes.map((n) => [n.name, n.note]));
   const next = snapshotFromSource(repo);
   const previousSnapshot = readJson(join(snapshotsDir, `${previous}.json`));
+  const facts = diffSnapshots(previousSnapshot, next);
+  // ledgerFromSources refuses these too, but by step id: name the note.
+  const known = new Set(facts.map((fact) => fact.id));
+  const stale = pendingNotes.flatMap((n) =>
+    (n.note.steps ?? []).flatMap((step) => {
+      const ids = (step.facts ?? []).filter((id) => !known.has(id));
+      return ids.length ? [`${n.file}: step ${step.id} lists ${ids.join(', ')}`] : [];
+    }),
+  );
+  if (stale.length > 0) {
+    throw new Error(
+      `${stale.join('\n')}\nthe ${previous} -> ${version} diff has no such fact (the change was reverted, or an earlier release shipped it). Take it out of the note's facts (pnpm upgrade:note then adds a step for any fact still uncovered), then rerun pnpm changeset:version.`,
+    );
+  }
   const missed = uncoveredFacts(
-    diffSnapshots(previousSnapshot, next),
+    facts,
     Object.values(notes).flatMap((note) => note.steps ?? []),
   );
   if (missed.length > 0) {

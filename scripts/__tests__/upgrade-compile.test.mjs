@@ -736,9 +736,25 @@ describe('compile.mjs --release, right after changeset version', () => {
       ],
     });
     const gate = checkUpgradeLedger(root);
-    expect(gate.violations.map((v) => v.rule)).toEqual(['bump-too-small']);
-    expect(gate.violations[0].message).toContain('upgrade/pending/stray.json');
+    expect(gate.violations.map((v) => v.rule)).toEqual([
+      'note-without-changeset',
+      'bump-too-small',
+    ]);
+    expect(gate.violations[0].file).toBe('upgrade/pending/stray.json');
+    expect(gate.violations[1].message).toContain('upgrade/pending/stray.json');
     expect(gate.summary.unrecorded).toBeNull();
+  });
+
+  // hds#541: the orphan itself is named in pretest, whatever its impact,
+  // rather than merged at the next release citing a changeset that never was.
+  it('leaves no orphan note to the next release: one with impact none fails the gate too', () => {
+    const root = versionedRepo();
+    expect(run(['--release', '--date', '2026-10-08', '--repo', root]).status).toBe(0);
+    note(root, 'orphan', { impact: 'none' });
+    const gate = checkUpgradeLedger(root);
+    expect(gate.violations.map((v) => [v.file, v.rule])).toEqual([
+      ['upgrade/pending/orphan.json', 'note-without-changeset'],
+    ]);
   });
 
   it('records nothing a second time, and nothing on a tree whose version already has its snapshot', () => {
@@ -748,6 +764,22 @@ describe('compile.mjs --release, right after changeset version', () => {
     expect(run(['--release', '--date', '2026-10-09', '--repo', root]).status).toBe(0);
     expect(read(root, 'CHANGELOG.md')).toBe(changelog);
     expect(JSON.parse(read(root, 'upgrade/releases/0.21.0.json')).date).toBe('2026-10-08');
+  });
+
+  it('stops with nothing written, naming the note, when a note step lists a fact the diff does not have', () => {
+    const root = versionedRepo();
+    const [step] = calloutGone.steps;
+    note(root, 'drop-callout', {
+      ...calloutGone,
+      steps: [{ ...step, facts: ['removed:.:Callout', 'removed:.:Button'] }],
+    });
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status).toBe(2);
+    expect(res.stderr).toContain('upgrade/pending/drop-callout.json');
+    expect(res.stderr).toContain('removed:.:Button');
+    expect(res.stderr).toContain('pnpm upgrade:note');
+    expect(existsSync(join(root, 'docs/api/releases/0.21.0.json'))).toBe(false);
+    expect(existsSync(join(root, 'upgrade/pending/drop-callout.json'))).toBe(true);
   });
 
   it('stops with nothing written when a fact has no step, or while changesets are still pending', () => {

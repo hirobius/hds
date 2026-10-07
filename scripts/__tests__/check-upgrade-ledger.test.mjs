@@ -273,6 +273,39 @@ describe('checkUpgradeLedger: changesets need notes', () => {
   });
 });
 
+// What `pnpm changeset:version` (scripts/upgrade/compile.mjs --release) would
+// refuse or lose, the gate refuses first, so the Version PR never stops on it.
+describe('checkUpgradeLedger: notes the release could not record', () => {
+  it('fails a note step listing a fact the diff no longer has, such as a reverted removal, naming the note and the fact', () => {
+    const root = releasedRepo();
+    // Callout is still exported: the removal was reverted, its note left behind.
+    changeset(root, 'drop-callout', 'minor');
+    note(root, 'drop-callout', calloutRemoved);
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['step-fact-unknown']);
+    expect(result.violations[0].file).toBe('upgrade/pending/drop-callout.json');
+    expect(messages(result)).toContain('removed/Callout lists removed:.:Callout');
+    expect(messages(result)).toContain('pnpm upgrade:note');
+  });
+
+  it('fails a note with no changeset of the same name, naming both', () => {
+    const root = releasedRepo();
+    note(root, 'orphan', { impact: 'none' });
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['note-without-changeset']);
+    expect(result.violations[0].file).toBe('upgrade/pending/orphan.json');
+    expect(messages(result)).toContain(`${CHANGESETS}/orphan.md`);
+    expect(messages(result)).toContain('pnpm upgrade:note');
+  });
+
+  it('passes a note whose changeset is pending beside it', () => {
+    const root = releasedRepo();
+    changeset(root, 'quiet', 'patch');
+    note(root, 'quiet', { impact: 'none' });
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+});
+
 describe('checkUpgradeLedger: no 1.0 cut', () => {
   it('fails a major changeset at 0.20.0 without upgrade/ALLOW_1_0', () => {
     const root = releasedRepo();
