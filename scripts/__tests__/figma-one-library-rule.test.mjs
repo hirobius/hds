@@ -162,30 +162,34 @@ describe('steering surfaces agree with the amended rule', () => {
   });
 });
 
+const readme = () => read('figma/README.md');
+/** A README section, from its `### ` heading to the next heading of any level. */
+const section = (heading) => {
+  const text = readme();
+  const start = text.indexOf(`### ${heading}`);
+  if (start === -1) return '';
+  const next = text.slice(start + 4).search(/\n#{2,3} /);
+  return text.slice(start, next === -1 ? undefined : start + 4 + next).replace(/\s+/g, ' ');
+};
+/** An ADR's 2026-10-07 amendment, from its heading to the next `## ` heading or the end. */
+const adrAmendment = (rel) => {
+  const text = read(rel);
+  const start = text.indexOf('## Amendment (2026-10-07)');
+  if (start === -1) return '';
+  const next = text.indexOf('\n## ', start + 1);
+  return text.slice(start, next === -1 ? undefined : next).replace(/\s+/g, ' ');
+};
+const adr032 = () => adrAmendment('docs/adr/032-figma-sync-plugin-receipt.md');
+const SYNC_STEPS = 'Sync: the routine path (one click)';
+
 describe('the switch has a safe order, and no carrier lets an agent delete', () => {
-  const readme = () => read('figma/README.md');
-  /** A README section, from its `### ` heading to the next heading of any level. */
-  const section = (heading) => {
-    const text = readme();
-    const start = text.indexOf(`### ${heading}`);
-    if (start === -1) return '';
-    const next = text.slice(start + 4).search(/\n#{2,3} /);
-    return text.slice(start, next === -1 ? undefined : start + 4 + next).replace(/\s+/g, ' ');
-  };
-  /** ADR-032's 2026-10-07 amendment, from its heading to the next `## ` heading or the end. */
-  const adr032 = () => {
-    const text = read('docs/adr/032-figma-sync-plugin-receipt.md');
-    const start = text.indexOf('## Amendment (2026-10-07)');
-    if (start === -1) return '';
-    const next = text.indexOf('\n## ', start + 1);
-    return text.slice(start, next === -1 ? undefined : next).replace(/\s+/g, ' ');
-  };
-  // Until it is renamed, the old library has the library's name, and Figma gives the plugin no key.
+  // The rename guards the path where Figma gives no key: there the old library, still named
+  // like the library, is told apart only by the marker and Mark's link check.
   const precondition =
     /rename the old (library|file) to "?HDS Tokens & Components \(old\)"? before (you )?load(ing)? the new plugin files/i;
 
   it('the Sync steps make renaming the old file "(old)" a precondition of the new plugin files', () => {
-    expect(section('Sync: the routine path (one click)')).toMatch(precondition);
+    expect(section(SYNC_STEPS)).toMatch(precondition);
   });
 
   it('ADR-032 states the same precondition', () => {
@@ -193,7 +197,7 @@ describe('the switch has a safe order, and no carrier lets an agent delete', () 
   });
 
   it("Mark asks for this file's link, which tells the library from the old file", () => {
-    for (const body of [section('Sync: the routine path (one click)'), adr032()]) {
+    for (const body of [section(SYNC_STEPS), adr032()]) {
       expect(body).toMatch(/Share > Copy link/);
       expect(body).toMatch(/paste (this|the) file's (own )?link/i);
     }
@@ -215,11 +219,79 @@ describe('the switch has a safe order, and no carrier lets an agent delete', () 
   });
 });
 
+describe('what Figma gives the Sync plugin matches figma/snapshot.json', () => {
+  const snapshot = JSON.parse(read('figma/snapshot.json')).snapshot;
+  /** The current-rule part of each surface that explains how Sync tells the files apart. */
+  const surfaces = {
+    'CLAUDE.md': () => read('CLAUDE.md'),
+    'figma/README.md': () => readme(),
+    'ADR-026 amendment': () => amendment(),
+    'ADR-032 amendment': () => adr032(),
+    'ADR-033 amendment': () => adrAmendment('docs/adr/033-zero-click-agent-sync.md'),
+    '.status note': () => read('.status/claude-dsr-73-figma-library-writes.md'),
+  };
+  const claimsNoKey =
+    /Figma gives (the|this) plugin no (file )?key|records `?(file\.key|"key"): null`?\)?,? so/i;
+
+  it('the snapshot the Sync plugin took records the file key Figma gave it', () => {
+    expect(snapshot.file.key).toBe(LIBRARY);
+  });
+
+  it.each(Object.keys(surfaces))('%s does not claim Figma gives the plugin no file key', (name) => {
+    const text = surfaces[name]().replace(/\s+/g, ' ');
+    expect(text).not.toBe('');
+    expect(text.match(claimsNoKey)).toBeNull();
+  });
+
+  it('ADR-032 records the key the plugin got and that Sync refuses the old library by it', () => {
+    const body = adr032();
+    expect(body).toMatch(/659efcc3/);
+    expect(body).toMatch(/figma\/snapshot\.json/);
+    expect(body).toMatch(new RegExp(`refuses? ${RETIRED} by (its )?key`));
+  });
+
+  it('the Sync steps say the same, and keep the rename for the no-key path', () => {
+    const steps = section(SYNC_STEPS);
+    expect(steps).toMatch(new RegExp(`refuses? the old library by its key,? ${RETIRED}`));
+    expect(steps).toMatch(/where Figma gives no (file )?key/i);
+  });
+
+  it('the Sync steps say when the new plugin files start to work', () => {
+    const steps = section(SYNC_STEPS);
+    expect(steps).toMatch(/merged/i);
+    expect(steps).toMatch(/Storybook deploy/i);
+    expect(steps).toMatch(/out of date/i);
+  });
+});
+
 describe('the MCP ledger', () => {
   const ledger = () => read('figma/MCP-LEDGER.md');
 
   it('keeps each day total on one line, so prettier cannot turn a wrapped sum into a list item', () => {
     expect(ledger()).not.toMatch(/^\s*- \d+\. /m);
-    expect(ledger()).toMatch(/^.*Calls logged for 2026-10-07: 36 of 200 \(16, 7 and 13\)\.$/m);
+    expect(ledger()).toMatch(/^.*Calls logged for 2026-10-07: 38 of 200 \(16, 7, 13 and 2\)\.$/m);
+  });
+
+  /** Each `## <date> · …` session's "Session total: N calls", in ledger order. */
+  const sessionTotals = (date) =>
+    ledger()
+      .split(/\n(?=## )/)
+      .filter((section) => section.startsWith(`## ${date} ·`))
+      .map((section) => {
+        const total = section.replace(/\s+/g, ' ').match(/Session total: (\d+)\b/);
+        return total ? Number(total[1]) : null;
+      });
+
+  it("sums each day's sessions, one term per session in ledger order", () => {
+    const days = [...ledger().matchAll(/^Calls logged for (\S+): (\d+) of 200 \((.+)\)\.$/gm)];
+    expect(days.length).toBeGreaterThan(0);
+    for (const [, date, total, terms] of days) {
+      const parts = terms.split(/, | and /).map(Number);
+      expect(parts, date).toEqual(sessionTotals(date));
+      expect(
+        parts.reduce((a, b) => a + b, 0),
+        date,
+      ).toBe(Number(total));
+    }
   });
 });

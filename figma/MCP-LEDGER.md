@@ -15,7 +15,8 @@ not in the ledger was not budgeted.
   usage-billed (ADR-026 §5).
 - **Write target: the library `2VgBbVpKiDnu0aftJEVyBQ`** (ADR-026, amended
   2026-10-07, `figma/links.json`). There is no staging file since 2026-10-07:
-  sessions logged before then call this same file staging. Agents write
+  sessions logged before the switch, some of them on 2026-10-07, call this same
+  file staging. Agents write
   components there (restyle, add, copy or redraw), never delete anything in
   Figma and never publish it; Adrian publishes. Variables and styles come only
   from code, through Sync or `delta.js`. The retired library
@@ -33,7 +34,11 @@ not in the ledger was not budgeted.
 
 One section per session: `## <date> · session <branch or id>`, then one row per
 call, numbered from 1 in the order made. Kind is `read`, or `write (n/cap)` when
-the session has a write cap. End the section with the session's totals.
+the session has a write cap. End the section with the session's totals
+(`**Session total: N calls…**`). Below a day's last section, one line sums them,
+one term per session in ledger order:
+`Calls logged for <date>: <sum> of 200 (<a>, <b> and <c>).`
+`figma-one-library-rule.test.mjs` checks the sum.
 
 | #   | Time (UTC) | Tool | Kind | Purpose | Result |
 | --- | ---------- | ---- | ---- | ------- | ------ |
@@ -152,4 +157,4 @@ calls.
 Nothing was written to Figma. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not
 touched.
 
-Calls logged for 2026-10-07: 36 of 200 (16, 7 and 13).
+Calls logged for 2026-10-07: 38 of 200 (16, 7, 13 and 2).

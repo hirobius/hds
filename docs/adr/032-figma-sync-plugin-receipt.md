@@ -109,12 +109,19 @@ Sync still carries no model, still never prunes, and the receipt (§4, §6) is u
   exactly like the library whose link holds the library key, and refuses a retired file by
   its key, its name, its link or a pasted retired key. The no-marker refusal tells Adrian to
   check the link the same way, and not to Mark a file whose link holds another key.
+- **The plugin gets the file key.** The Sync of 2026-10-07 (plugin build 659efcc3, whose
+  manifest sets `enablePrivatePluginApi`) recorded `file.key: "2VgBbVpKiDnu0aftJEVyBQ"` in
+  `figma/snapshot.json` (#538), where every earlier snapshot recorded `null`. That settles
+  the first open question under Consequences: a Pro development plugin gets
+  `figma.fileKey`. With the key, Sync refuses c8MaVgwxOlxm4wr8wnH0Z4 by key, whatever the
+  file is named, and allows the library by key, whatever it is named. The marker and name
+  path above is the fallback for a file where Figma gives no key.
 - **Precondition: rename the old library to "HDS Tokens & Components (old)" before loading
-  the new plugin files.** Figma gives the plugin no file key (`figma/snapshot.json` records
-  `file.key: null`), so until that rename the name cannot tell the old library from the
-  library, and the no-key path rests on the marker and on Mark's link check alone. The
-  order: rename the old library, rename the copy "HDS Tokens & Components", overwrite the
-  plugin's three files, then Sync.
+  the new plugin files.** It is a precaution for the no-key path, not the only safeguard:
+  where Figma gives no key, the old library, until renamed, has the library's name, and
+  only the marker and Mark's link check tell it from the library. The order: rename the old
+  library, rename the copy "HDS Tokens & Components", overwrite the plugin's three files,
+  then Sync.
 - **receipt.js** and `--from-receipt` read and accept the library only, and refuse a retired
   key.
 - **The promote plugin** (§5) keeps its id and name, so Figma needs no re-import. It no
@@ -122,7 +129,9 @@ Sync still carries no model, still never prunes, and the receipt (§4, §6) is u
   Adrian runs it. Sync and `delta.js` never delete.
 - **New plugin files.** The build before this amendment refuses a file named
   "HDS Tokens & Components" by name, so once Adrian renames the copy, Sync needs the files
-  `pnpm figma:push` writes from this amendment on.
+  `pnpm figma:push` writes from this amendment on. Those files work only once the commit
+  that carries them is merged to `main` and the Storybook deploy serves its bundle: until
+  then the bundle names the old build, and the new files say the plugin is out of date.
 - **Size.** `code.js` now carries its code without the indentation that starts each line
   (the build checks the syntax tree is unchanged): 52,876 B against the 60,000 B budget,
   down from 59,702 B, so the next change has room.

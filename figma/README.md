@@ -165,12 +165,17 @@ bakes them in (ADR-032).
 ### Sync: the routine path (one click)
 
 **Before the first Sync after the 2026-10-07 switch,** rename the old library to
-"HDS Tokens & Components (old)" before you load the new plugin files. Until
-then it carries the library's name, Figma gives the plugin no file key, and
-only that name keeps Sync and Mark out of it (ADR-032, amendment of
-2026-10-07). The order: rename the old library "HDS Tokens & Components (old)",
-rename the copy "HDS Tokens & Components", load the new plugin files (step 1),
-then Sync (step 2).
+"HDS Tokens & Components (old)" before you load the new plugin files. The plugin
+gets the file key (the Sync of 2026-10-07 recorded it in `figma/snapshot.json`),
+so Sync refuses the old library by its key, c8MaVgwxOlxm4wr8wnH0Z4, whatever its
+name. The rename guards the case where Figma gives no file key: there the old
+library, until renamed, carries the library's name, and only the marker and
+Mark's link check tell the two files apart (ADR-032, amendment of 2026-10-07).
+The order: rename the old library "HDS Tokens & Components (old)", rename the
+copy "HDS Tokens & Components", load the new plugin files (step 1), then Sync
+(step 2). The new files work only once the switch is merged to `main` and the
+Storybook deploy serves its bundle; before that they say the plugin is out of
+date, and the old files refuse the renamed copy by its name.
 
 1. Once per plugin build: an agent runs `pnpm figma:push` and sends you `figma/push/plugin/`. Overwrite `manifest.json`, `code.js` and `ui.html` in the folder Figma imported "HDS tokens sync" from.
 2. In the library (https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ): Plugins > Development > HDS tokens sync > **Sync**. If it says it got no file key, copy the file's link (Share > Copy link). When the link holds `2VgBbVpKiDnu0aftJEVyBQ`, run **Mark this file as the HDS library** from the same menu, paste the file's own link, then Sync again. A link with any other key is not the library: do not Mark it.

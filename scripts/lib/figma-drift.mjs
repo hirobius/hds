@@ -225,7 +225,7 @@ export function formatDrift(report, { snapshotLabel = 'figma/snapshot.json' } = 
   } else {
     const c = report.counts;
     lines.push(
-      `✗ ${report.items.length} drift item(s): ${c.missing} missing, ${c.extra} extra, ${c.changed} changed. Fix Figma with pnpm figma:push (add --prune to delete extras), then take a new snapshot.`,
+      `✗ ${report.items.length} drift item(s): ${c.missing} missing, ${c.extra} extra, ${c.changed} changed. Fix Figma with pnpm figma:push (Sync or delta.js), then take a new snapshot. Sync and delta.js never delete: an extra is deleted only by the promote plugin (pnpm figma:push --prune), which only Adrian runs (figma/README.md, "Promote plugin and use_figma scripts").`,
     );
   }
   return lines.join('\n');

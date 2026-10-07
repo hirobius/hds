@@ -204,9 +204,12 @@ refuse a retired file.
   library. Node ids were kept, so only the file key changed.
 - `check-figma-staging-urls` became `check-figma-retired-keys`.
 - The Sync plugin needs new files (`pnpm figma:push`) once this lands: the earlier build
-  refuses a file named "HDS Tokens & Components", and the library takes that name. Rename
-  the old library "HDS Tokens & Components (old)" before loading them: Figma gives the
-  plugin no file key, so until then only Mark's link check tells the two files apart
+  refuses a file named "HDS Tokens & Components", and the library takes that name. They
+  work once this is merged and the Storybook deploy serves the new bundle. The plugin gets
+  the file key (the Sync of 2026-10-07 recorded it in `figma/snapshot.json`), so Sync
+  refuses c8MaVgwxOlxm4wr8wnH0Z4 by key whatever its name. Renaming the old library
+  "HDS Tokens & Components (old)" before loading the new files still guards the path where
+  Figma gives no key, where only the marker and Mark's link check tell the two files apart
   (ADR-032, amendment).
 - Consumer files must use Swap library: component keys changed with the duplicate, so
   components map by name, and the archived ones do not map. Designs bound to a variable
