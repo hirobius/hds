@@ -288,11 +288,11 @@
       "supportsJson": true
     },
     {
-      "id": "check-figma-staging-urls",
-      "description": "Lists every consumer-facing place a STAGING Figma file URL appears (manifest figmaUrl, which feeds Storybook's Design tab; docs/DESIGN_LINKS.md) as a WARN naming the components to re-point after Adrian promotes staging to the library (ADR-026). ERROR only in Code Connect (src/app/components/*.figma.ts, figma/code-connect.json), so a publish cannot ship staging links to Dev Mode. Also runs in pnpm test through scripts/__tests__/check-figma-staging-urls.test.mjs.",
+      "id": "check-figma-retired-keys",
+      "description": "Rejects every link from code to a Figma file that is not the HDS library (ADR-026, amended 2026-10-07): a retired file (figma/links.json retiredFiles: the old library, retired 2026-10-07 when its duplicate became the one HDS library) or HDS Staging (stagingFileKey, the draft workbench of amendment A4: a shipped component links its library node, never its staging draft). Scans src (@figma tags, Code Connect templates), public (the manifest figmaUrl Storybook's Design tab reads), docs data (sync-map, DESIGN_LINKS.md, the shipped docs/CONSUMING.md), figma data (disposition, inventory, Code Connect registry), mcp/ and content/docs, and the files the package ships from the repo root (README.md, llms.txt, DESIGN.md, AGENTS.md, CONSUMING.md). ERROR on any finding, naming file, line and kind (retired or staging) with the fix for each; figma/links.json and prose (ADRs, figma/*.md, where the drawing recipe names the workbench) are not scanned, and a missing scan root, shipped root file or retiredFiles list, or a staging key that is the library's, fails loudly. FIXTURE_DIR runs it on fixtures/check-figma-retired-keys. Also runs in pnpm test through scripts/__tests__/check-figma-retired-keys.test.mjs, whose real-tree case gates the repo.",
       "severity": "error",
-      "gateScript": "scripts/check-figma-staging-urls.mjs",
-      "fixturePath": null,
+      "gateScript": "scripts/check-figma-retired-keys.mjs",
+      "fixturePath": "fixtures/check-figma-retired-keys",
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "on-demand",

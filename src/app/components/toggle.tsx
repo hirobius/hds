@@ -6,7 +6,7 @@
  * @whenNot A choice that only takes effect after submitting a form, or picking from several options.
  * @useInstead Checkbox a form option confirmed on submit
  * @useInstead Radio one choice from a set
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19
  */
 
 import { forwardRef } from 'react';

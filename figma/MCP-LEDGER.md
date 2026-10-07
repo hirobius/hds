@@ -13,9 +13,18 @@ not in the ledger was not budgeted.
   the day's budget in a minute.
 - `use_figma` writes are a free beta that Figma has said will become
   usage-billed (ADR-026 §5).
-- **Write target: staging `2VgBbVpKiDnu0aftJEVyBQ` only.** The published
-  library `c8MaVgwxOlxm4wr8wnH0Z4` is read-only to agents (ADR-026 §2,
-  `figma/links.json`).
+- **Write targets** (ADR-026, amended 2026-10-07, `figma/links.json`). The
+  library `2VgBbVpKiDnu0aftJEVyBQ`: sessions logged before 2026-10-07, and
+  some on that day, call this same file staging, the staging copy that became
+  the library. Agents write components there (restyle, fix, add, copy or
+  redraw), never delete anything in the library and never publish it; Adrian
+  publishes. Variables and styles come only from code, through Sync or
+  `delta.js`. HDS Staging `C85ZXnwtVc4AteeIOZfXRC` is the workbench where an
+  agent drafts a new component, then redraws it in the library and deletes the
+  draft; Sync, `delta.js` and the promote plugin never target it. The retired library
+  `c8MaVgwxOlxm4wr8wnH0Z4` is never written. A write's row names the file key
+  and every node id its script touches, and its before and after
+  `get_screenshot` calls get rows of their own.
 - Collecting a Sync (`figma/README.md`, "Agent: collect a sync") costs one
   `use_figma` read per receipt page: 1 for a delta, 2 for a full snapshot, plus
   one `get_figma_skill` load when the figma-use skill is not loaded yet.
@@ -27,7 +36,11 @@ not in the ledger was not budgeted.
 
 One section per session: `## <date> · session <branch or id>`, then one row per
 call, numbered from 1 in the order made. Kind is `read`, or `write (n/cap)` when
-the session has a write cap. End the section with the session's totals.
+the session has a write cap. End the section with the session's totals
+(`**Session total: N calls…**`). Below a day's last section, one line sums them,
+one term per session in ledger order:
+`Calls logged for <date>: <sum> of 200 (<a>, <b> and <c>).`
+`figma-one-library-rule.test.mjs` checks the sum.
 
 | #   | Time (UTC) | Tool | Kind | Purpose | Result |
 | --- | ---------- | ---- | ---- | ------- | ------ |
@@ -101,6 +114,36 @@ Rows 13–16 were first stamped 05:00–05:12, after the fact; an independent ch
 
 **Session total: 16 calls** (first pass 12 of 60, second pass 4 of 25: 4 `use_figma`, 1 draw, 2 temporary-frame screenshot passes, 1 read; the earlier reads included the mistyped-key mistake in #10 and the cropped screenshots in #15). No rate-limit errors. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not touched. No snapshot taken: `pnpm figma:push --delta` reports staging already holds model `0a5ebbff` (nothing to sync), the snapshot records variables and styles only, and drawing changed neither, so `check:figma-drift` stays at 0 drift.
 
+## 2026-10-07 · Tooltip agent (hds#446)
+
+Logged after the calls, from the orchestrator's count of 7. The per-call rows
+were not recorded at the time, so purpose and result are given for the session
+only.
+
+| #   | Time (UTC)   | Tool         | Kind         | Purpose                      | Result                                                                                                                                                |
+| --- | ------------ | ------------ | ------------ | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1–7 | not recorded | Figma MCP ×7 | not recorded | The Tooltip restyle, hds#446 | Not recorded per call. The Figma stage below found that day's Tooltip `93:15` restyle in the old library `c8MaVgwxOlxm4wr8wnH0Z4` and carried it over |
+
+**Session total: 7 calls.** Rate-limit errors: not recorded.
+
+## 2026-10-07 · Figma stage of the one-library switch (ADR-026 amendment)
+
+Logged after the calls, from the stage's report. The copy
+`2VgBbVpKiDnu0aftJEVyBQ` was compared with the old library
+`c8MaVgwxOlxm4wr8wnH0Z4` and prepared to become the one library. Both write
+scripts first checked `figma.fileKey === '2VgBbVpKiDnu0aftJEVyBQ'` and threw
+otherwise.
+
+| #    | Time (UTC)   | Tool                 | Kind              | Purpose                                                                                                                                                                         | Result                                                                                                                                                                                                                   |
+| ---- | ------------ | -------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1–2  | not recorded | `get_figma_skill` ×2 | read              | Mandatory skill loads before `use_figma`                                                                                                                                        |                                                                                                                                                                                                                          |
+| 3–13 | not recorded | `use_figma` ×11      | read ×8, write ×3 | Read both files (pages, every top-level component with a structural hash, variables, styles, per-variant hashes); write the Tooltip restyle and the Archive move in the library | Same node ids for all 117 old top-level components and 236 variants. Writes: Tooltip `93:15`, `93:16`, `110:1077`, `110:1078` restyled; page Archive `2083:2`, section `2083:3`, 37 removed components moved and renamed |
+
+One write was rolled back by Figma because its return value was over the 20 KB
+limit, then retried and committed, so 2 writes landed. **Session total: 13
+calls, 11 of them `use_figma`.** No rate-limit errors. The old library was only
+read; nothing was deleted or published.
+
 ## 2026-10-07 · session `claude/dsr-74-figma-title-sync` (collect a Sync)
 
 Collecting the Sync Adrian ran in staging (plugin build 659efcc3, bundle from
@@ -115,3 +158,5 @@ calls.
 **Session total: 2 calls, 1 of them `use_figma` (read).** No rate-limit errors.
 Nothing was written to Figma. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not
 touched.
+
+Calls logged for 2026-10-07: 38 of 200 (16, 7, 13 and 2).

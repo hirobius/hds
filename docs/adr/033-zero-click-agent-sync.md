@@ -1,6 +1,6 @@
 # ADR-033: Zero-Click Agent Sync Through One Pinned use_figma Call
 
-**Status:** Proposed (2026-10-01). Works inside ADR-026 (agents write to staging, never to the library) and next to ADR-032 (the Sync plugin and its receipt). hds#418, child C3 of epic hds#397.
+**Status:** Proposed (2026-10-01); amended 2026-10-07: `delta.js` targets the one library, not staging (see [Amendment (2026-10-07)](#amendment-2026-10-07-deltajs-targets-the-library)). Works inside ADR-026 (agents write to staging, never to the library, until its 2026-10-07 amendment made the staging copy the one library) and next to ADR-032 (the Sync plugin and its receipt). hds#418, child C3 of epic hds#397.
 
 ## Context
 
@@ -81,3 +81,25 @@ It copies them without indentation (about 5,500 characters), blank lines, or the
 - 938 characters of headroom remain for today's plan. Each further created variable costs about 300 (234 to 407 measured), so 2–4 more fit. Larger changes go to Sync, and say so.
 - Something else may write to staging after the committed snapshot: a Sync whose receipt nobody collected, or a hand edit. The pin then refuses until the snapshot is current again.
 - Unmeasured: whether use_figma escapes a style description on read (§3). Until a live read settles it, a plan that writes a style description holding `" ' < > &` goes to Sync. The first live run settles whether the inline return stays under use_figma's output cap, at about 4.6 KB today.
+
+## Amendment (2026-10-07): delta.js targets the library
+
+ADR-026's amendment of 2026-10-07 made the staging copy, `2VgBbVpKiDnu0aftJEVyBQ`, the one
+HDS library and dropped the staging duplicate. Everywhere this ADR says staging, `delta.js` now works on
+the library; every guard stays, in the same order.
+
+- **The first statement** is now `if (figma.fileKey !== library || retired.indexOf(figma.fileKey) !== -1) throw`,
+  with the library key and the retired keys (`figma/links.json` `retiredFiles`, the old
+  library `c8MaVgwxOlxm4wr8wnH0Z4`) baked in. `PLAN.files` carries `{ library, retired }`,
+  and `hdsAgentRun` checks them again. A missing library key still refuses the build.
+  HDS Staging, the draft workbench of ADR-026's amendment A4 (`stagingFileKey`), is never
+  baked in: it has no local variables, and `delta.js` refuses it like any file but the
+  library.
+- **It still never deletes.** `--prune`, and any variable, mode or style the library holds
+  that the model does not, still refuse and route to the promote plugin
+  (`pnpm figma:push --prune`), which only Adrian runs.
+- **The pin is unchanged.** `figma/snapshot.json` was taken from this same file while it
+  was staging, so its checksum still pins the library; its recorded file name is normalized
+  like `takenAt`.
+- **Size.** The longer messages and the retired keys add 46 characters to `delta.js`
+  (measured on 2026-10-07 for the same plan before and after).

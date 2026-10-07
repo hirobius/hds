@@ -26,7 +26,7 @@ import {
 } from '../lib/design-links.mjs';
 
 const ALERT_URL =
-  'https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34';
+  'https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34';
 
 const storySource = ({
   component = 'Alert',
@@ -67,7 +67,7 @@ const alertSpec = {
 
 describe('parseFigmaNodeUrl', () => {
   it.each([
-    [ALERT_URL, { fileKey: 'c8MaVgwxOlxm4wr8wnH0Z4', nodeId: '33:34' }],
+    [ALERT_URL, { fileKey: '2VgBbVpKiDnu0aftJEVyBQ', nodeId: '33:34' }],
     [
       'https://www.figma.com/file/AbC123/Name?node-id=12%3A7',
       { fileKey: 'AbC123', nodeId: '12:7' },
@@ -148,7 +148,7 @@ describe('collectDesignLinks', () => {
       {
         name: 'Alert',
         figmaUrl: ALERT_URL,
-        fileKey: 'c8MaVgwxOlxm4wr8wnH0Z4',
+        fileKey: '2VgBbVpKiDnu0aftJEVyBQ',
         nodeId: '33:34',
         importLine: "import { Alert } from '@hirobius/design-system';",
         description: 'Alert - compact feedback surface with contextual severity.',
@@ -322,7 +322,7 @@ describe('planDevResources', () => {
  * descriptions (descriptionMarkdown) and figma.util.normalizeMarkdown exists,
  * as in the Plugin API; without it, nodes have a plain `description` only.
  */
-function fakeFile(nodes, { normalizeMarkdown } = {}) {
+function fakeFile(nodes, { normalizeMarkdown, fileKey = '2VgBbVpKiDnu0aftJEVyBQ' } = {}) {
   const byId = new Map(
     nodes.map((n) => [
       n.id,
@@ -337,6 +337,7 @@ function fakeFile(nodes, { normalizeMarkdown } = {}) {
   );
   const writes = [];
   const figma = {
+    fileKey,
     root: { name: 'HDS Tokens & Components' },
     getNodeByIdAsync: async (id) => {
       const n = byId.get(id);
@@ -372,7 +373,7 @@ const run = async (script, figma) =>
   );
 
 describe('buildDescriptionsScript', () => {
-  const FILE_KEY = 'c8MaVgwxOlxm4wr8wnH0Z4';
+  const FILE_KEY = '2VgBbVpKiDnu0aftJEVyBQ';
   const linksWith = ({ spec = alertSpec, storybookUrl = null } = {}) =>
     collectDesignLinks({
       manifest: manifest({ Alert: spec }),
@@ -541,6 +542,29 @@ describe('buildDescriptionsScript', () => {
     expect([...onlyFrame.writes, ...empty.writes]).toEqual([]);
   });
 
+  it('its first statement refuses any file but its own, reading nothing but figma.fileKey', async () => {
+    // Node ids survive a duplicate, so only the key tells the library from the
+    // old library (ADR-026, amended 2026-10-07).
+    const script = buildDescriptionsScript(links, FILE_KEY);
+    expect(script.split('\n')[0]).toBe(`if (figma.fileKey !== '${FILE_KEY}') {`);
+    for (const key of ['OLDLIBRARYKEY000000000', null, undefined]) {
+      const file = fakeFile([componentSet()]);
+      file.figma.fileKey = key;
+      const reads = [];
+      const watched = new Proxy(file.figma, {
+        get(target, prop) {
+          reads.push(String(prop));
+          return Reflect.get(target, prop);
+        },
+      });
+      await expect(run(script, watched), String(key)).rejects.toThrow(
+        new RegExp(`not Figma file ${FILE_KEY}.*Nothing was read or written`),
+      );
+      expect(reads, String(key)).toEqual(['fileKey']);
+      expect(file.writes, String(key)).toEqual([]);
+    }
+  });
+
   it('carries only the links of its own file, and refuses a payload changed in transit', async () => {
     const other = { ...links[0], name: 'Badge', fileKey: 'OtherFile', nodeId: '1:1' };
     const script = buildDescriptionsScript([...links, other], FILE_KEY);
@@ -628,14 +652,14 @@ describe('syncDevResources', () => {
           id: 'r2',
           name: 'HDS story',
           url: 'https://old.example.org',
-          file_key: 'c8MaVgwxOlxm4wr8wnH0Z4',
+          file_key: '2VgBbVpKiDnu0aftJEVyBQ',
           node_id: '33:34',
         },
       ],
     });
     const result = await syncDevResources({ links, token: 'tkn', fetchImpl: api.fetchImpl });
     expect(api.calls.map((c) => `${c.method} ${c.url}`)).toEqual([
-      'GET https://api.figma.com/v1/files/c8MaVgwxOlxm4wr8wnH0Z4/dev_resources?node_ids=33%3A34',
+      'GET https://api.figma.com/v1/files/2VgBbVpKiDnu0aftJEVyBQ/dev_resources?node_ids=33%3A34',
       'POST https://api.figma.com/v1/dev_resources',
       'PUT https://api.figma.com/v1/dev_resources',
     ]);
@@ -645,7 +669,7 @@ describe('syncDevResources', () => {
         {
           name: 'HDS source',
           url: links[0].source.url,
-          file_key: 'c8MaVgwxOlxm4wr8wnH0Z4',
+          file_key: '2VgBbVpKiDnu0aftJEVyBQ',
           node_id: '33:34',
         },
       ],
@@ -676,7 +700,7 @@ describe('syncDevResources', () => {
     const api = fakeFigmaApi({
       postErrors: [
         {
-          file_key: 'c8MaVgwxOlxm4wr8wnH0Z4',
+          file_key: '2VgBbVpKiDnu0aftJEVyBQ',
           node_id: '33:34',
           error: 'The node already has the maximum of 10 dev resources',
         },
