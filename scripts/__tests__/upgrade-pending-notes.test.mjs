@@ -10,8 +10,11 @@
  * as `0.21.0/removed/StatusDot`. So this test reads both places, finds a step
  * by its id's tail, and names no pending file: it holds on both sides of the
  * release, the way tests/removed-0.20-release-notes.test.ts names no changeset.
- * Only 0.21.0's ledger is read: older ledgers reuse tails (0.17.0 has its own
- * look/type-ramp).
+ * Only the ledgers built from notes are read (each release with an
+ * upgrade/sources/<version>/notes directory, 0.21.0 on), so a step tried here
+ * before its release is still found after it; the older ledgers reuse tails
+ * (0.17.0 has its own look/type-ramp). A tail two of those releases share is
+ * named by its full id, such as `0.21.0/look/type-ramp`.
  */
 import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -29,10 +32,19 @@ const readJsonDir = (rel) => {
     .map((f) => JSON.parse(readFileSync(join(dir, f), 'utf8')));
 };
 
+/** The releases whose ledgers were built from upgrade notes. */
+const FROM_NOTES = new Set(
+  existsSync(join(REPO, 'upgrade/sources'))
+    ? readdirSync(join(REPO, 'upgrade/sources')).filter((version) =>
+        existsSync(join(REPO, 'upgrade/sources', version, 'notes')),
+      )
+    : [],
+);
+
 const STEPS = [
   ...readJsonDir('upgrade/pending').flatMap((note) => note.steps ?? []),
   ...readJsonDir('upgrade/releases')
-    .filter((release) => release.version === '0.21.0')
+    .filter((release) => FROM_NOTES.has(release.version))
     .flatMap((release) => release.steps),
 ];
 

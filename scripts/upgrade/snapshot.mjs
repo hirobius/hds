@@ -80,7 +80,7 @@ export const RELEASES_DIR = join(REPO, 'docs/api/releases');
  */
 function moduleId(dir, file) {
   const path = relative(dir, file).split(sep).join('/');
-  return path.replace(/^dist\/types\//, '').replace(/\.d\.[cm]?ts$|\.[cm]?tsx?$/, '');
+  return path.replace(/^dist\/types\//, '').replace(/\.d\.[cm]?ts$|\.[cm]?ts$|\.tsx$/, '');
 }
 
 function binMap(pkg) {
