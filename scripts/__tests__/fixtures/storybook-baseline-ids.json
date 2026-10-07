@@ -409,6 +409,9 @@
     "primitives-button--pressed",
     "primitives-badge--dot",
     "primitives-progress--circular",
-    "primitives-card--selectable"
+    "primitives-card--selectable",
+    "patterns-metrictile--default",
+    "patterns-metrictile--danger",
+    "patterns-metrictile--docs"
   ]
 }

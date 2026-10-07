@@ -2,6 +2,7 @@
  * FormActions - the footer row of a form: primary right-most, secondary to its left.
  * @category Actions
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87
  */
 
 import * as React from 'react';
