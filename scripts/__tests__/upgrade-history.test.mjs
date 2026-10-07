@@ -173,9 +173,18 @@ describe('floor and releaseVersions', () => {
 });
 
 describe('the committed history (docs/api/releases, upgrade/releases)', () => {
+  // Starts with, not equals: `changeset version` writes each new release's
+  // snapshot and ledger (hds#451), so the list grows with every release.
   it('starts at the 0.16.0 floor, and every later release has a ledger that covers its diff', () => {
     expect(floor()).toBe('0.16.0');
-    expect(releaseVersions()).toEqual(['0.16.0', '0.17.0', '0.18.0', '0.19.0', '0.19.1', '0.20.0']);
+    expect(releaseVersions().slice(0, 6)).toEqual([
+      '0.16.0',
+      '0.17.0',
+      '0.18.0',
+      '0.19.0',
+      '0.19.1',
+      '0.20.0',
+    ]);
     expect(historyProblems()).toEqual([]);
   });
 });
