@@ -1,1 +1,1 @@
-StatusDot and StatusDotProps removed for 0.21.0 (hds#465): Badge dot replaces them, minor changeset, ADR-014 amended.
+StatusDot and StatusDotProps removed for 0.21.0 (hds#465): Badge dot replaces them, minor changeset, ADR-014 amended. The upgrade-snapshot test now checks that the working API baseline differs from the published 0.20.0 snapshot only by additions and by removals a minor changeset names; status.json's "no minor until ops" line is updated (ops#538, ops pins ^0.20.0).
