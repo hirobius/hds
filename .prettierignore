@@ -48,6 +48,10 @@ fixtures/check-figma-drift/**/snapshot.json
 docs/api/releases/
 upgrade/releases/
 upgrade/schema.json
+# Compiled from the ledgers by scripts/upgrade/compile.mjs (hds#451), whose
+# --check (pretest) compares bytes.
+UPGRADING.md
+upgrade/index.json
 
 # Lock + node
 pnpm-lock.yaml

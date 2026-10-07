@@ -1,0 +1,116 @@
+{
+  "package": "@hirobius/design-system",
+  "latest": "0.21.0",
+  "floor": "0.16.0",
+  "versions": [
+    {
+      "version": "0.17.0",
+      "date": "2026-09-30",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "Adds /patterns and the standard type ramp; root pattern imports, Hds* names and seven spacing tokens are deprecated."
+    },
+    {
+      "version": "0.18.0",
+      "date": "2026-09-30",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "Adds the hds-patterns-subpath codemod, which moves root imports of the deprecated pattern components to /patterns."
+    },
+    {
+      "version": "0.19.0",
+      "date": "2026-09-30",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "Overlays portal into the nearest data-hds scope, compact density tightens spacing, containers share one radius; adds /icons."
+    },
+    {
+      "version": "0.19.1",
+      "date": "2026-09-30",
+      "bump": "patch",
+      "breaking": 0,
+      "summary": "Smaller Button-only bundles for webpack and esbuild, and Storybook accessibility fixes; nothing for a consumer to change."
+    },
+    {
+      "version": "0.20.0",
+      "date": "2026-10-01",
+      "bump": "minor",
+      "breaking": 212,
+      "summary": "Pattern components move to /patterns; deprecated, lab and folded components, Hds* aliases and 7 runtime deps are removed."
+    },
+    {
+      "version": "0.21.0",
+      "date": "2026-10-07",
+      "bump": "minor",
+      "breaking": 2,
+      "summary": "StatusDot is removed, fonts move to an opt-in fonts.css, the type ramp is cut to 5 roles; AGENTS.md, hds-mcp and the ESLint plugin ship."
+    }
+  ],
+  "deprecated": [
+    {
+      "name": "Box-sx-layout-names",
+      "removeIn": "1.0.0",
+      "step": "0.20.0/deprecated/Box-sx-layout-names"
+    },
+    {
+      "name": "Stack-gap-layout-names",
+      "removeIn": "1.0.0",
+      "step": "0.20.0/deprecated/Stack-gap-layout-names"
+    },
+    {
+      "name": "Text-variants",
+      "removeIn": "1.0.0",
+      "step": "0.21.0/deprecated/Text-variants"
+    },
+    {
+      "name": "hds.density",
+      "removeIn": "1.0.0",
+      "step": "0.20.0/deprecated/hds.density"
+    },
+    {
+      "name": "kept-utilities",
+      "removeIn": "1.0.0",
+      "step": "0.20.0/deprecated/kept-utilities"
+    },
+    {
+      "name": "semantic.space.component.gap",
+      "removeIn": "1.0.0",
+      "step": "0.17.0/deprecated/semantic.space.component.gap"
+    },
+    {
+      "name": "semantic.space.component.padding",
+      "removeIn": "1.0.0",
+      "step": "0.17.0/deprecated/semantic.space.component.padding"
+    },
+    {
+      "name": "semantic.space.layout.gutter",
+      "removeIn": "1.0.0",
+      "step": "0.17.0/deprecated/semantic.space.layout.gutter"
+    },
+    {
+      "name": "semantic.space.layout.inset",
+      "removeIn": "1.0.0",
+      "step": "0.17.0/deprecated/semantic.space.layout.inset"
+    },
+    {
+      "name": "semantic.space.layout.normal",
+      "removeIn": "1.0.0",
+      "step": "0.17.0/deprecated/semantic.space.layout.normal"
+    },
+    {
+      "name": "semantic.space.layout.spacious",
+      "removeIn": "1.0.0",
+      "step": "0.17.0/deprecated/semantic.space.layout.spacious"
+    },
+    {
+      "name": "semantic.space.layout.tight",
+      "removeIn": "1.0.0",
+      "step": "0.17.0/deprecated/semantic.space.layout.tight"
+    },
+    {
+      "name": "typeStyles-aliases",
+      "removeIn": "1.0.0",
+      "step": "0.21.0/deprecated/typeStyles-aliases"
+    }
+  ]
+}

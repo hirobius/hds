@@ -275,8 +275,24 @@ function noteSteps(release, notes) {
 export function buildLedger(version, { repo = REPO } = {}) {
   const { release, data, notes } = readSources(version, { repo });
   const snapshot = (v) => readJson(join(repo, 'docs/api/releases', `${v}.json`));
-  const next = snapshot(version);
-  const facts = diffSnapshots(snapshot(release.previous), next);
+  return ledgerFromSources({
+    release,
+    data,
+    notes,
+    previous: snapshot(release.previous),
+    next: snapshot(version),
+  });
+}
+
+/**
+ * buildLedger on inputs already in memory: release.json, its data files and
+ * notes (as readSources returns them) and the two snapshots. The release
+ * compiler (./compile.mjs) builds a ledger this way before it writes any of
+ * those inputs, so a fact no note covers stops it with nothing written.
+ */
+export function ledgerFromSources({ release, data = {}, notes = {}, previous, next }) {
+  const { version } = release;
+  const facts = diffSnapshots(previous, next);
 
   // Written steps (notes, then hand steps) own the facts they list; the rules
   // classify only what is left, so a note's removal is never classified twice.

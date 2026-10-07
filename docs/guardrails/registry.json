@@ -907,6 +907,18 @@
       "supportsJson": true
     },
     {
+      "id": "upgrade-compile",
+      "description": "Release-compiler drift (hds#451): `node scripts/upgrade/compile.mjs --check` fails when UPGRADING.md or upgrade/index.json is not byte-equal to what scripts/upgrade/compile.mjs compiles from the committed ledgers (upgrade/releases/<v>.json), or when status.json has no `release` object or one that is not the newest ledger's, naming the file and the fix (`node scripts/upgrade/compile.mjs`). Reads committed files only: no network, no build, never writes. Runs in pretest; scripts/__tests__/upgrade-compile.test.mjs proves it fails on a hand edit to UPGRADING.md. The same script records each release at `pnpm changeset:version` (--release).",
+      "severity": "error",
+      "gateScript": "scripts/upgrade/compile.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree",
+      "supportsJson": true
+    },
+    {
       "id": "check-upgrade-ledger",
       "description": "Upgrade-ledger gate (hds#448): compares the working tree, read from source with no build (scripts/upgrade/snapshot.mjs snapshotFromSource), with the newest docs/api/releases/<v>.json at or below package.json's version, and fails when a fact that takes something away (an export removed or moved, an exports key, dependency or bin gone, a narrowed peer, raised engines) has no step in upgrade/pending/*.json; when a .changeset/*.md has no upgrade/pending/<same name>.json stating its impact (and, unless none, a plain line with no TODO left); when a breaking change (a breaking fact, a note that says breaking, or a step that removes, moves, renames or folds something public, such as a CSS variable the diff cannot see yet) rides a changeset smaller than minor below 1.0 (major from 1.0), or, on the Version PR, a real bump that small; and when a major changeset or version would cut 1.0 without upgrade/ALLOW_1_0. Every message names pnpm upgrade:note. Runs in pretest, so pre-push, CI and the Ralph gate run it; adds about 0.9s (0.86-0.97s over five runs on the 0.21.0 tree, no network, no build).",
       "severity": "error",
