@@ -2,6 +2,7 @@
  * Timestamp — renders a date/time as a semantic <time> element.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11
  */
 
 import * as React from 'react';

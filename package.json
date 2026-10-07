@@ -40,6 +40,7 @@
     },
     "./tokens.css": "./dist/tokens.css",
     "./styles.css": "./dist/styles.css",
+    "./fonts.css": "./dist/fonts.css",
     "./variables.css": "./dist/variables.css",
     "./static.css": "./dist/static.css",
     "./tokens": {
@@ -92,6 +93,10 @@
       "import": "./dist/icons.js",
       "default": "./dist/icons.js"
     },
+    "./eslint-plugin": {
+      "types": "./scripts/eslint-plugin-hds/index.d.mts",
+      "default": "./scripts/eslint-plugin-hds/index.mjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -114,7 +119,13 @@
     "codemods/unrewritable.mjs",
     "codemods/jsx-fold.mjs",
     "codemods/not-found-pattern.mjs",
-    "codemods/tile-grid.mjs"
+    "codemods/tile-grid.mjs",
+    "AGENTS.md",
+    "mcp/",
+    "scripts/eslint-plugin-hds/index.mjs",
+    "scripts/eslint-plugin-hds/index.d.mts",
+    "scripts/eslint-plugin-hds/package.json",
+    "scripts/eslint-plugin-hds/rules/"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -160,7 +171,7 @@
     "audit:sidecar": "node scripts/generate-security-posture.mjs",
     "audit:style-dictionary": "bash scripts/poc/style-dictionary-poc/run.sh",
     "build-storybook": "storybook build",
-    "build:lib": "vite build -c vite.config.lib.ts && pnpm build:types && node scripts/build-vars-css.mjs && node scripts/embed-fonts.mjs && node scripts/build-styles-css.mjs && node scripts/build-static-css.mjs",
+    "build:lib": "vite build -c vite.config.lib.ts && pnpm build:types && node scripts/build-vars-css.mjs && node scripts/build-fonts-css.mjs && node scripts/build-styles-css.mjs && node scripts/build-static-css.mjs",
     "build:types": "tsc -p tsconfig.dts.json && node scripts/strip-dts-side-effects.mjs && node scripts/add-dts-extensions.mjs",
     "catalog": "node scripts/generate-visual-catalog.mjs",
     "changelog:generate": "node scripts/generate-changelog.mjs",
@@ -181,11 +192,13 @@
     "check:dimensions": "node scripts/check-dimensions.mjs",
     "check:doc-refs": "node scripts/check-link-integrity.mjs --doc-refs-only",
     "check:docs": "node scripts/audit-component-integrity.mjs --docs && node scripts/check-token-descriptions.mjs --no-missing --quality",
+    "check:docs-guardrails": "node scripts/check-docs.mjs",
     "check:exemptions": "node scripts/check-exemptions.mjs",
     "check:fast": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/build-tokens.mjs && node scripts/verify-tokens.mjs && node scripts/audit-tokens.mjs --full && pnpm typecheck && node scripts/check-css-integrity.mjs && node scripts/audit-component-integrity.mjs --tokens && pnpm check:docs && node scripts/check-ref-forwarding.mjs && node scripts/check-hardcoded-spacing.mjs && node scripts/check-dimensions.mjs && node scripts/check-hardcoded-breakpoints.mjs && node scripts/check-typography-discipline.mjs && pnpm check:mojibake && node scripts/check-style-discipline.mjs --style-props-only && node scripts/check-tier-bypass.mjs && node scripts/check-link-integrity.mjs --doc-refs-only && node scripts/check-brand.mjs && node scripts/check-registry.mjs && node scripts/check-template-source-of-truth.mjs",
     "check:figma-coverage": "node scripts/check-figma-coverage.mjs",
     "check:figma-drift": "node scripts/check-figma-drift.mjs",
     "check:figma-mapping": "node scripts/check-figma-mapping.mjs",
+    "check:figma-staging-urls": "node scripts/check-figma-staging-urls.mjs",
     "check:focus": "node scripts/check-focus-states.mjs",
     "check:font-files": "node scripts/check-typography-discipline.mjs --font-files-only",
     "check:fonts": "node scripts/check-typography-discipline.mjs --fonts-only",
@@ -219,6 +232,8 @@
     "check:spacing": "node scripts/check-hardcoded-spacing.mjs",
     "check:spacing-vocabulary": "node scripts/check-spacing-vocabulary.mjs",
     "check:story-coverage": "node scripts/check-story-coverage.mjs",
+    "check:layout-contract": "node scripts/check-layout-contract.mjs",
+    "check:spacing-scale": "node scripts/check-tailwind-spacing-scale.mjs",
     "check:storybook-axe": "node scripts/check-storybook-axe.mjs",
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:sync-map": "node scripts/check-sync-map.mjs",
@@ -240,8 +255,12 @@
     "closure:plan:check": "node scripts/generate-closure-plan.mjs --check",
     "docs:api": "node scripts/generate-component-api.mjs",
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
+    "docs:build": "pnpm docs:prepare && pnpm --dir docs-site build",
+    "docs:components": "node scripts/generate-docs-components.mjs",
     "docs:component": "node scripts/generate-component-page.mjs",
+    "docs:dev": "pnpm docs:prepare && pnpm --dir docs-site dev",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
+    "docs:prepare": "pnpm build:lib && pnpm docs:api && pnpm docs:components && pnpm --dir docs-site install --frozen-lockfile",
     "docs:site": "node scripts/generate-component-page.mjs --all --clean",
     "docs:site:inline": "node scripts/generate-component-page.mjs --all --clean --inline",
     "docs:site:shots": "node scripts/generate-component-page.mjs --all --clean --shots",
@@ -265,8 +284,8 @@
     "health-commit": "pnpm check:semantic-report && node scripts/print-health-commit.mjs",
     "icons:sync": "node scripts/sync-icons.mjs",
     "knip": "knip",
-    "lint": "eslint src scripts validators tests --max-warnings=0",
-    "lint:fix": "eslint src scripts validators tests --fix",
+    "lint": "eslint src scripts validators tests mcp --max-warnings=0",
+    "lint:fix": "eslint src scripts validators tests mcp --fix",
     "llms:generate": "node scripts/generate-llms-txt.mjs",
     "skill:generate": "node scripts/generate-consumer-skill.mjs",
     "check:consumer-skill": "node scripts/generate-consumer-skill.mjs --check",
@@ -276,7 +295,7 @@
     "prebuild:lib": "node scripts/generate-component-api.mjs",
     "prepare": "node scripts/setup-hooks.mjs",
     "prestorybook": "node scripts/generate-component-api.mjs",
-    "pretest": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/check-manifest-schema-semver.mjs && node scripts/audit-component-integrity.mjs --completeness && node scripts/audit-component-integrity.mjs --api && node scripts/check-source-canon.mjs && node scripts/check-binding-drift.mjs && node scripts/check-registry.mjs && node scripts/check-tenant-tokens.mjs && node scripts/check-props-exports.mjs && knip --no-exit-code && node scripts/check-dark-alias-flip.mjs && node scripts/check-focus-states.mjs && node scripts/generate-staging-inventory.mjs --check && node scripts/generate-consumer-skill.mjs --check && node scripts/check-deprecations.mjs && node scripts/upgrade/schema.mjs --check && node scripts/check-upgrade-ledger.mjs",
+    "pretest": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/check-manifest-schema-semver.mjs && node scripts/audit-component-integrity.mjs --completeness && node scripts/audit-component-integrity.mjs --api && node scripts/check-source-canon.mjs && node scripts/check-binding-drift.mjs && node scripts/check-registry.mjs && node scripts/check-tenant-tokens.mjs && node scripts/check-props-exports.mjs && knip --no-exit-code && node scripts/check-dark-alias-flip.mjs && node scripts/check-focus-states.mjs && node scripts/generate-staging-inventory.mjs --check && node scripts/generate-consumer-skill.mjs --check && node scripts/generate-agents-md.mjs --check && node scripts/check-deprecations.mjs && node scripts/upgrade/schema.mjs --check && node scripts/check-docs.mjs && node --test scripts/check-docs.selftest.mjs && node scripts/check-upgrade-ledger.mjs",
     "pretypecheck": "node scripts/audit-tokens.mjs --report-only",
     "preview:build": "vite build --config preview/vite.config.mjs",
     "promote": "node scripts/promote.mjs",
@@ -285,6 +304,9 @@
     "scaffold:component": "node scripts/scaffold-component.mjs",
     "scaffold:tenant": "node scripts/scaffold-tenant.mjs",
     "size-limit": "size-limit --config .size-limit.cjs",
+    "layout-contract:generate": "node scripts/generate-layout-contract.mjs",
+    "status:touch": "node scripts/status-touch.mjs",
+    "status:fold": "node scripts/status-fold.mjs",
     "smoke:consumer": "node scripts/smoke-consumer.mjs && node scripts/check-published-types.mjs && node scripts/check-rsc-directives.mjs && node scripts/check-pack-contents.mjs",
     "storybook": "storybook dev -p 6006",
     "storybook:deploy": "node scripts/deploy-storybook.mjs",
@@ -297,7 +319,7 @@
     "test:figma": "npx tsx scripts/figma-sync.ts",
     "test:phase1": "node scripts/test-phase1.mjs",
     "test:watch": "vitest",
-    "tokens": "node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/build-tokens.mjs && node scripts/audit-tokens.mjs --forbidden && node scripts/check-typography-discipline.mjs --overrides-only && node scripts/build-handoff.mjs && node scripts/build-design-md.mjs && node scripts/generate-llms-txt.mjs && node scripts/generate-consumer-skill.mjs && node scripts/build-readme-counts.mjs",
+    "tokens": "node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/build-tokens.mjs && node scripts/audit-tokens.mjs --forbidden && node scripts/check-typography-discipline.mjs --overrides-only && node scripts/build-handoff.mjs && node scripts/build-design-md.mjs && node scripts/generate-llms-txt.mjs && node scripts/generate-consumer-skill.mjs && node scripts/generate-agents-md.mjs && node scripts/build-readme-counts.mjs",
     "tokens:audit": "node scripts/audit-component-integrity.mjs --tokens",
     "tokens:build": "node scripts/build-hds-tokens.mjs",
     "tokens:index": "node scripts/build-token-index.mjs",
@@ -310,8 +332,10 @@
     "watch:metrics": "nodemon --watch src/app/components --watch src/app/pages --watch src/app/design-system --watch src/app/styles -e tsx,ts,css --exec \"node scripts/audit-tokens.mjs --full && node scripts/generate-manifest.mjs\"",
     "consumer:usage": "node scripts/count-consumer-usage.mjs",
     "upgrade:consumers": "node scripts/upgrade/consumers.mjs",
-    "upgrade:note": "node scripts/upgrade/note.mjs",
-    "codemod:names": "node scripts/build-codemod-pattern-names.mjs"
+    "codemod:names": "node scripts/build-codemod-pattern-names.mjs",
+    "agents:generate": "node scripts/generate-agents-md.mjs",
+    "check:agents-md": "node scripts/generate-agents-md.mjs --check",
+    "upgrade:note": "node scripts/upgrade/note.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.18",
@@ -421,6 +445,7 @@
     "hds-patterns-subpath": "codemods/patterns-subpath.mjs",
     "hds-prefix": "codemods/hds-prefix.mjs",
     "hds-not-found-pattern": "codemods/not-found-pattern.mjs",
-    "hds-tile-grid": "codemods/tile-grid.mjs"
+    "hds-tile-grid": "codemods/tile-grid.mjs",
+    "hds-mcp": "mcp/hds-mcp.mjs"
   }
 }

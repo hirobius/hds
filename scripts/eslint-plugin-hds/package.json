@@ -1,14 +1,12 @@
 {
   "name": "@hirobius/eslint-plugin-hds",
-  "version": "0.1.0",
-  "description": "Consumer ESLint plugin for the Hirobius Design System — flags raw hex/px layout values in style, className, and Box sx.",
+  "version": "0.2.0",
+  "description": "Consumer ESLint plugin for the Hirobius Design System — flags raw hex/px values in style, className and Box sx, and raw HTML form controls.",
   "type": "module",
   "main": "index.mjs",
-  "exports": {
-    ".": "./index.mjs"
-  },
   "files": [
     "index.mjs",
+    "index.d.mts",
     "rules",
     "README.md"
   ],
@@ -23,9 +21,10 @@
     "eslint": "^9.0.0 || ^10.0.0"
   },
   "scripts": {
-    "test": "node --test __tests__"
+    "test": "pnpm --dir ../.. exec vitest run scripts/eslint-plugin-hds"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "types": "index.d.mts"
 }

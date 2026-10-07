@@ -1,5 +1,5 @@
 {
-  "$comment": "Story and docs ids from a build of the tree before the #308 retitle, plus the ids of stories added since (append them here; the second test below fails on any id not listed). Retitles must keep every id (existing links) except the hidden internals. A story deleted with its component leaves the list (0.20.0, hds#389: CinematicLink, ComponentInstanceMatrix, FoundationSwatch, Sketch, Token; hds#395: NotFoundPattern, TileGrid), and a story named for a removed component is renamed with it, which changes its id: StatusTile's TileGrid story is InGrid (primitives-status-tile--tile-grid became --in-grid, 0.20.0, hds#395).",
+  "$comment": "Story and docs ids from a build of the tree before the #308 retitle, plus the ids of stories added since (append them here; the second test below fails on any id not listed). Retitles must keep every id (existing links) except the hidden internals. A story deleted with its component leaves the list (0.20.0, hds#389: CinematicLink, ComponentInstanceMatrix, FoundationSwatch, Sketch, Token; hds#395: NotFoundPattern, TileGrid; 0.21.0, hds#465: StatusDot), and a story named for a removed component is renamed with it, which changes its id: StatusTile's TileGrid story is InGrid (primitives-status-tile--tile-grid became --in-grid, 0.20.0, hds#395).",
   "ids": [
     "feedback-error-pattern--default",
     "feedback-error-pattern--docs",
@@ -123,6 +123,7 @@
     "primitives-button--secondary",
     "primitives-button--small",
     "primitives-button--tertiary",
+    "primitives-button--tone-matrix",
     "primitives-callout--accent",
     "primitives-callout--all-tones",
     "primitives-callout--danger",
@@ -315,10 +316,6 @@
     "primitives-static-css--docs",
     "primitives-static-css--light",
     "primitives-static-css--side-by-side",
-    "primitives-status-dot--default",
-    "primitives-status-dot--docs",
-    "primitives-status-dot--tones",
-    "primitives-status-dot--with-label-text",
     "primitives-status-list-item--danger",
     "primitives-status-list-item--default",
     "primitives-status-list-item--docs",
@@ -409,6 +406,10 @@
     "primitives-button--pressed",
     "primitives-badge--dot",
     "primitives-progress--circular",
-    "primitives-card--selectable"
+    "primitives-card--selectable",
+    "patterns-metrictile--default",
+    "patterns-metrictile--danger",
+    "patterns-metrictile--docs",
+    "primitives-card--tone-matrix"
   ]
 }

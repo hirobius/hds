@@ -2,6 +2,7 @@
  * Blockquote — quoted passage with an optional attribution.
  * @category Typography
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18
  */
 
 import * as React from 'react';
@@ -12,19 +13,16 @@ import { cn } from '../../lib/utils';
 // A left accent rail + indentation. Emphasis is font-medium (never bold); the
 // attribution steps down one level on the same hue via the secondary content
 // color rather than a second hue.
-const blockquoteVariants = /* @__PURE__ */ cva(
-  'border-l-2 border-border pl-4 font-medium text-foreground',
-  {
-    variants: {
-      size: {
-        sm: 'text-sm',
-        md: 'text-base',
-        lg: 'text-lg',
-      },
+const blockquoteVariants = /* @__PURE__ */ cva('border-l-2 border-border pl-4 text-foreground', {
+  variants: {
+    size: {
+      sm: 'hds-type-ui',
+      md: 'hds-type-body',
+      lg: 'hds-type-title',
     },
-    defaultVariants: { size: 'md' },
   },
-);
+  defaultVariants: { size: 'md' },
+});
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -51,7 +49,7 @@ export const Blockquote = /* @__PURE__ */ React.forwardRef<HTMLQuoteElement, Blo
       >
         {children}
         {attribution != null && (
-          <footer className="mt-2 text-sm font-medium text-muted-foreground">{attribution}</footer>
+          <footer className="mt-2 hds-type-ui text-muted-foreground">{attribution}</footer>
         )}
       </blockquote>
     );

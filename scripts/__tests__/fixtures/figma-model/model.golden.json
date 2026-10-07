@@ -218,7 +218,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 589.05
+              "value": 580.55
             }
           }
         },
@@ -270,6 +270,23 @@
           "valuesByMode": {
             "Default": {
               "value": "Geist Mono"
+            }
+          }
+        },
+        {
+          "path": "primitive.typography.weight.regular",
+          "name": "typography/weight/regular",
+          "resolvedType": "FLOAT",
+          "unit": null,
+          "description": "",
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "var(--primitive-typography-weight-regular)"
+          },
+          "valuesByMode": {
+            "Default": {
+              "value": 400
             }
           }
         },
@@ -793,10 +810,10 @@
           },
           "valuesByMode": {
             "Light": {
-              "alias": "primitive.typography.weight.medium"
+              "alias": "primitive.typography.weight.regular"
             },
             "Dark": {
-              "alias": "primitive.typography.weight.medium"
+              "alias": "primitive.typography.weight.regular"
             }
           }
         },
@@ -1246,8 +1263,8 @@
       "path": "semantic.typography.body",
       "description": "",
       "fontFamily": "Satoshi",
-      "fontStyle": "Medium",
-      "fontWeight": 500,
+      "fontStyle": "Regular",
+      "fontWeight": 400,
       "fontSize": 17,
       "lineHeight": {
         "unit": "PIXELS",

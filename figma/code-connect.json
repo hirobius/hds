@@ -384,10 +384,6 @@
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },
-    "src/app/components/status-dot.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
     "src/app/components/blockquote.tsx": {
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
