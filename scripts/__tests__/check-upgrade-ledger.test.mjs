@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
 import { collectPublicApi } from '../lib/check-public-api.mjs';
 import { formatJson } from '../upgrade/format.mjs';
-import { snapshotFromSource } from '../upgrade/snapshot.mjs';
+import { snapshotFromSource, snapshotPackage } from '../upgrade/snapshot.mjs';
 import {
   PACKAGE,
   changeset,
@@ -366,6 +366,81 @@ describe('checkUpgradeLedger: the Version PR checks the real bump', () => {
     );
     editPkg(root, (pkg) => (pkg.version = '0.20.1'));
     expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+});
+
+describe('checkUpgradeLedger: a release recorded from its tarball', () => {
+  /**
+   * The repo at a release with a tooling export (./eslint-plugin: hand-written
+   * types that ship as written), its release snapshot recorded the way
+   * `snapshot.mjs --from-npm` reads the tarball: dist/types for the built
+   * entries, the shipped .d.mts for the tooling one.
+   */
+  function releasedFromTarball() {
+    const root = releasedRepo();
+    editPkg(root, (pkg) => {
+      pkg.exports['./eslint-plugin'] = {
+        types: './scripts/eslint-plugin-hds/index.d.mts',
+        default: './scripts/eslint-plugin-hds/index.mjs',
+      };
+      pkg.files.push(
+        'scripts/eslint-plugin-hds/index.mjs',
+        'scripts/eslint-plugin-hds/index.d.mts',
+      );
+    });
+    write(
+      root,
+      'scripts/eslint-plugin-hds/index.d.mts',
+      'declare const plugin: { configs: object };\nexport default plugin;\n',
+    );
+    write(root, 'scripts/eslint-plugin-hds/index.mjs', 'export default { configs: {} };\n');
+    const built = join(root, 'tarball');
+    write(built, 'package.json', JSON.stringify(readPkg(root)));
+    write(
+      built,
+      'scripts/eslint-plugin-hds/index.d.mts',
+      'declare const plugin: { configs: object };\nexport default plugin;\n',
+    );
+    write(
+      built,
+      'dist/types/src/index.d.ts',
+      "export * from './button.js';\nexport * from './callout.js';\n",
+    );
+    write(built, 'dist/types/src/button.d.ts', 'export declare function Button(): null;\n');
+    write(built, 'dist/types/src/callout.d.ts', 'export declare function Callout(): null;\n');
+    write(built, 'dist/types/src/patterns.d.ts', 'export declare function Page(): null;\n');
+    write(root, 'docs/api/releases/0.20.0.json', formatJson(snapshotPackage(built)));
+    return root;
+  }
+
+  it('finds no fact in the released tree, tooling export included', () => {
+    const root = releasedFromTarball();
+    const released = JSON.parse(formatJson(snapshotPackage(join(root, 'tarball'))));
+    expect(released.entries['./eslint-plugin']).toEqual({
+      default: 'scripts/eslint-plugin-hds/index',
+    });
+    const result = checkUpgradeLedger(root);
+    expect(result.violations).toEqual([]);
+    expect(result.summary.facts).toBe(0);
+  });
+
+  // The verifier's repro: a patch changeset and its note on the released tree
+  // failed on removed:./eslint-plugin:default, which no change had made.
+  it('passes a patch changeset with its note on top of the release', () => {
+    const root = releasedFromTarball();
+    changeset(root, 'fix-copy', 'patch');
+    note(root, 'fix-copy', { impact: 'none' });
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+
+  it('still fails a tooling export that loses its default, naming the fact', () => {
+    const root = releasedFromTarball();
+    write(root, 'scripts/eslint-plugin-hds/index.d.mts', 'export {};\n');
+    changeset(root, 'drop-plugin', 'patch');
+    note(root, 'drop-plugin', { impact: 'none' });
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['bump-too-small', 'fact-without-step']);
+    expect(messages(result)).toContain('removed:./eslint-plugin:default');
   });
 });
 

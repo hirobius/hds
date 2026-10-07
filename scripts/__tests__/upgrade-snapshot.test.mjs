@@ -4,7 +4,9 @@
  * `exports` entry's `types` condition points at.
  *
  * The fixture is a synthetic built package, so the expected snapshot below is
- * written out by hand from what the files declare, not recomputed.
+ * written out by hand from what the files declare, not recomputed. Like the
+ * real package it has a tooling export (./eslint-plugin): hand-written types
+ * that ship as written, not built from src/.
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { spawnSync } from 'node:child_process';
@@ -20,6 +22,7 @@ import {
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { diffSnapshots } from '../upgrade/diff.mjs';
 import { formatJson } from '../upgrade/format.mjs';
 import { Snapshot, compareVersions } from '../upgrade/schema.mjs';
 import { snapshotFromNpm, snapshotFromSource, snapshotPackage } from '../upgrade/snapshot.mjs';
@@ -59,9 +62,20 @@ function fixturePackageJson(version) {
         types: './dist/types/src/app/design-system/tokens.d.ts',
         import: './dist/tokens.js',
       },
+      // A tooling entry: its types are hand-written and ship as they are.
+      './eslint-plugin': {
+        types: './scripts/eslint-plugin-hds/index.d.mts',
+        default: './scripts/eslint-plugin-hds/index.mjs',
+      },
       './package.json': './package.json',
     },
-    files: ['dist', 'codemods/b.mjs', 'codemods/a.mjs'],
+    files: [
+      'dist',
+      'codemods/b.mjs',
+      'codemods/a.mjs',
+      'scripts/eslint-plugin-hds/index.mjs',
+      'scripts/eslint-plugin-hds/index.d.mts',
+    ],
     bin: { 'hds-b': 'codemods/b.mjs', 'hds-a': 'codemods/a.mjs' },
     dependencies: { zeta: '^1.0.0', alpha: '2.0.0' },
     peerDependencies: { react: '^18.3.0 || ^19.0.0', lenis: '^1.3.0' },
@@ -70,11 +84,26 @@ function fixturePackageJson(version) {
   });
 }
 
+/** The tooling entry's files, the same bytes in the source tree and the tarball. */
+function writeEslintPlugin(write) {
+  write(
+    'scripts/eslint-plugin-hds/index.d.mts',
+    [
+      "import type { ESLint, Linter } from 'eslint';",
+      'declare const plugin: ESLint.Plugin & { configs: { recommended: Linter.Config[] } };',
+      'export default plugin;',
+      '',
+    ].join('\n'),
+  );
+  write('scripts/eslint-plugin-hds/index.mjs', 'export default { rules: {}, configs: {} };\n');
+}
+
 /** A built package: package.json plus dist/types, laid out the way build:types emits it. */
 function builtPackage(version = '1.2.3') {
   const root = tempDir('hds-snap-');
   const write = writer(root);
   write('package.json', fixturePackageJson(version));
+  writeEslintPlugin(write);
   // The root barrel, as add-dts-extensions.mjs leaves it: `.js` specifiers.
   write(
     'dist/types/src/index.d.ts',
@@ -133,6 +162,7 @@ function sourcePackage(version = '1.2.3') {
   const root = tempDir('hds-src-');
   const write = writer(root);
   write('package.json', fixturePackageJson(version));
+  writeEslintPlugin(write);
   // Source specifiers carry no extension.
   write(
     'src/index.ts',
@@ -198,10 +228,13 @@ const EXPECTED = {
       hds: 'src/index',
       tokens: 'src/index',
     },
+    // A shipped-as-written module's id is its path in the package, without
+    // its extension, like every other id.
+    './eslint-plugin': { default: 'scripts/eslint-plugin-hds/index' },
     './patterns': { Page: 'src/app/components/page', PageProps: 'src/app/components/page' },
     './tokens': { ct: 'src/app/design-system/tokens', default: 'src/app/design-system/tokens' },
   },
-  exportsKeys: ['.', './package.json', './patterns', './styles.css', './tokens'],
+  exportsKeys: ['.', './eslint-plugin', './package.json', './patterns', './styles.css', './tokens'],
   dependencies: { alpha: '2.0.0', zeta: '^1.0.0' },
   peerDependencies: {
     lenis: { range: '^1.3.0', optional: true },
@@ -209,7 +242,13 @@ const EXPECTED = {
   },
   engines: { node: '>=20', pnpm: '>=8' },
   bin: { 'hds-a': 'codemods/a.mjs', 'hds-b': 'codemods/b.mjs' },
-  files: ['codemods/a.mjs', 'codemods/b.mjs', 'dist'],
+  files: [
+    'codemods/a.mjs',
+    'codemods/b.mjs',
+    'dist',
+    'scripts/eslint-plugin-hds/index.d.mts',
+    'scripts/eslint-plugin-hds/index.mjs',
+  ],
 };
 
 describe('snapshotPackage', () => {
@@ -255,25 +294,76 @@ describe('snapshotFromSource', () => {
   });
 });
 
+/**
+ * Stands in for `npm pack <spec>`: writes the tarball npm would of the built
+ * package `src` (under `package/`), so no test touches the network.
+ */
+function packer(src, calls = []) {
+  return (spec, destination) => {
+    calls.push({ spec, destination });
+    const staging = tempDir('hds-pack-');
+    spawnSync('cp', ['-R', src, join(staging, 'package')]);
+    const version = JSON.parse(readFileSync(join(src, 'package.json'), 'utf8')).version;
+    const file = join(destination, `hirobius-design-system-${version}.tgz`);
+    const tar = spawnSync('tar', ['-czf', file, '-C', staging, 'package']);
+    expect(tar.status).toBe(0);
+    return file;
+  };
+}
+
 describe('snapshotFromNpm', () => {
   it('packs the version into a temp dir, extracts it, snapshots it and removes the temp dir', () => {
-    const src = builtPackage('9.8.7');
     const calls = [];
-    // Stands in for `npm pack @hirobius/design-system@9.8.7`: writes the
-    // tarball npm would, so no test touches the network.
-    const pack = (spec, destination) => {
-      calls.push({ spec, destination });
-      const staging = tempDir('hds-pack-');
-      spawnSync('cp', ['-R', src, join(staging, 'package')]);
-      const file = join(destination, 'hirobius-design-system-9.8.7.tgz');
-      const tar = spawnSync('tar', ['-czf', file, '-C', staging, 'package']);
-      expect(tar.status).toBe(0);
-      return file;
-    };
+    const pack = packer(builtPackage('9.8.7'), calls);
     const snap = snapshotFromNpm('9.8.7', { pack });
     expect(calls.map((c) => c.spec)).toEqual(['@hirobius/design-system@9.8.7']);
     expect(snap).toEqual({ ...EXPECTED, version: '9.8.7' });
     expect(existsSync(calls[0].destination)).toBe(false);
+  });
+});
+
+// The gate (scripts/check-upgrade-ledger.mjs) diffs the source tree against the
+// snapshot --from-npm recorded from the release's tarball. If the two paths read
+// any exports entry differently, every pull request after that release fails on
+// a fact nobody made: 0.21.0's ./eslint-plugin read as removed:./eslint-plugin:default
+// because the source path skipped tooling entries (hds#448 verify).
+describe('the source tree at a release and that release tarball', () => {
+  const objectEntries = (pkg) =>
+    Object.entries(pkg.exports)
+      .filter(([, value]) => value && typeof value === 'object')
+      .map(([key]) => key)
+      .sort();
+
+  it('snapshot with no diff, for every exports entry, tooling ones included', () => {
+    const published = snapshotFromNpm('1.2.3', { pack: packer(builtPackage('1.2.3')) });
+    const source = snapshotFromSource(sourcePackage('1.2.3'));
+    expect(diffSnapshots(published, source)).toEqual([]);
+    const keys = objectEntries(JSON.parse(fixturePackageJson('1.2.3')));
+    expect(keys).toContain('./eslint-plugin');
+    expect(Object.keys(published.entries).sort()).toEqual(keys);
+    expect(Object.keys(source.entries).sort()).toEqual(keys);
+    for (const key of keys) expect(source.entries[key], key).toEqual(published.entries[key]);
+  });
+
+  it('see a tooling entry losing its default export from either side', () => {
+    const dir = sourcePackage();
+    writeFileSync(join(dir, 'scripts/eslint-plugin-hds/index.d.mts'), 'export {};\n');
+    const published = snapshotFromNpm('1.2.3', { pack: packer(builtPackage('1.2.3')) });
+    expect(diffSnapshots(published, snapshotFromSource(dir)).map((fact) => fact.id)).toEqual([
+      'removed:./eslint-plugin:default',
+    ]);
+  });
+
+  it('names a tooling entry whose types file is missing from the source tree', () => {
+    const dir = sourcePackage();
+    rmSync(join(dir, 'scripts/eslint-plugin-hds/index.d.mts'));
+    expect(() => snapshotFromSource(dir)).toThrow(/\.\/eslint-plugin.*index\.d\.mts/);
+  });
+
+  it('this repository: the source snapshot reads every JS entry of package.json#exports', () => {
+    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
+    expect(objectEntries(pkg)).toContain('./eslint-plugin');
+    expect(Object.keys(snapshotFromSource(REPO).entries).sort()).toEqual(objectEntries(pkg));
   });
 });
 

@@ -36,6 +36,18 @@
  * docs/api/releases/0.20.0.json in every field. The release compiler (hds#451)
  * writes the next release's snapshot this way at `changeset version` time.
  *
+ * Tooling entries (TOOLING_EXPORTS, such as ./eslint-plugin since 0.21.0) are
+ * read too, on both paths. Their types are hand-written and ship as written,
+ * so the source tree holds the very file the tarball does, at the same path;
+ * the source path reads it there. They count because a consumer imports them
+ * like any other entry (AGENTS.md tells every consumer to load
+ * `@hirobius/design-system/eslint-plugin`), so dropping their default export
+ * breaks a consumer's lint config and is a fact the ledger must report. The
+ * API surface gates leave them out (package-entries.mjs) because they read the
+ * TypeScript built from src/, which these entries are not. Before this, the
+ * source path skipped them while the tarball path read them, so every tree
+ * after 0.21.0 diffed to removed:./eslint-plugin:default, a fact nobody made.
+ *
  * Usage:
  *   node scripts/upgrade/snapshot.mjs --from-npm <version>   # writes docs/api/releases/<version>.json
  *   node scripts/upgrade/snapshot.mjs --from-npm <version> --check   # exit 1 if that file differs
@@ -55,17 +67,20 @@ import { tmpdir } from 'node:os';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectModuleSymbols } from '../lib/check-public-api.mjs';
-import { readJsExportEntries } from '../lib/package-entries.mjs';
+import { TOOLING_EXPORTS, readJsExportEntries } from '../lib/package-entries.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 export const RELEASES_DIR = join(REPO, 'docs/api/releases');
 
-/** A declaring file as a module id: relative to dist/types, without its extension. */
+/**
+ * A declaring file as a module id: relative to dist/types (or, for a file
+ * that ships as written, to the package root), without its extension.
+ */
 function moduleId(dir, file) {
   const path = relative(dir, file).split(sep).join('/');
-  return path.replace(/^dist\/types\//, '').replace(/\.d\.ts$|\.tsx?$/, '');
+  return path.replace(/^dist\/types\//, '').replace(/\.d\.[cm]?ts$|\.[cm]?tsx?$/, '');
 }
 
 function binMap(pkg) {
@@ -130,16 +145,39 @@ export function snapshotPackage(dir) {
 }
 
 /**
+ * A tooling entry's types file in the source tree: it ships as written, so it
+ * is at the path its `types` condition names.
+ */
+function shippedTypesFile(root, key, value) {
+  const file = typeof value.types === 'string' ? join(root, value.types) : null;
+  if (!file || !existsSync(file)) {
+    throw new Error(
+      `exports["${key}"].types is ${JSON.stringify(value.types)}, which is not in ${root}; a tooling entry ships its types as written`,
+    );
+  }
+  return file;
+}
+
+/**
  * The snapshot of a source tree (this repo, or a test's copy of its layout),
- * read without building: each exports entry from the source file its `types`
- * declarations are emitted from. Same shape and module ids as snapshotPackage.
+ * read without building: each built exports entry from the source file its
+ * `types` declarations are emitted from, and each tooling entry from the types
+ * file it ships as written. Same shape, entries and module ids as
+ * snapshotPackage gives for the tarball built from this tree.
  * @param {string} root the directory holding package.json and src/
  */
 export function snapshotFromSource(root) {
   const pkg = readPackageJson(root);
+  const exportsMap = exportsOf(pkg);
+  const built = new Map(readJsExportEntries(root).map(({ key, file }) => [key, file]));
   const entries = {};
-  for (const { key, file } of readJsExportEntries(root)) entries[key] = entryNames(root, file);
-  return packageFacts(pkg, exportsOf(pkg), entries);
+  for (const [key, value] of Object.entries(exportsMap)) {
+    if (!value || typeof value !== 'object') continue; // stylesheets, ./package.json
+    const file = built.get(key) ?? (TOOLING_EXPORTS.has(key) && shippedTypesFile(root, key, value));
+    if (!file) throw new Error(`exports["${key}"] has no source snapshot.mjs can read`);
+    entries[key] = entryNames(root, file);
+  }
+  return packageFacts(pkg, exportsMap, entries);
 }
 
 /** `npm pack <spec>` into `destination`; returns the tarball path. */
