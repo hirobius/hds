@@ -16,6 +16,7 @@ import {
   hasStatusNote,
   isStatusNote,
   newestTouching,
+  shippedCodeEntries,
   shipsToConsumers,
   touchesWatchedPath,
 } from '../check-record-freshness.mjs';
@@ -119,8 +120,9 @@ describe('what needs a changeset: what ships to consumers (hds#448)', () => {
     }
   });
 
-  // codemods/ also holds what does not ship (codemods/lib/, used by the
-  // upgrade command in this repo); package.json#files is the list that ships.
+  // codemods/ also holds what does not ship yet (codemods/lib/ serves
+  // pnpm upgrade:consumers here, and joins files when the upgrade command,
+  // hds#452, ships it); package.json#files is the list that ships.
   it('counts only the codemods, MCP and plugin files package.json#files ships', () => {
     expect(shipsToConsumers('codemods/lib/installed-version.mjs')).toBe(false);
     expect(shipsToConsumers('codemods/hds-prefix.mjs')).toBe(true);
@@ -151,6 +153,23 @@ describe('what needs a changeset: what ships to consumers (hds#448)', () => {
     // src/ and the token files ship whatever the list says.
     expect(shipsToConsumers('src/index.ts', [])).toBe(true);
     expect(shipsToConsumers('hirobius.tokens.json', [])).toBe(true);
+  });
+
+  // The list a real package.json gives, read whole: a directory with or
+  // without ./ or a trailing slash, a parent of a shipped directory, or a glob.
+  it('reads package.json#files as npm does, within codemods/, mcp/ and the ESLint plugin', () => {
+    const ships = (file, files) => shipsToConsumers(file, shippedCodeEntries({ files }));
+    expect(ships('mcp/hds-mcp.mjs', ['mcp'])).toBe(true);
+    expect(ships('mcp/hds-mcp.mjs', ['./mcp/'])).toBe(true);
+    expect(ships('scripts/eslint-plugin-hds/index.mjs', ['scripts/'])).toBe(true);
+    expect(ships('codemods/tile-grid.mjs', ['**/*.mjs'])).toBe(true);
+    expect(ships('codemods/tile-grid.mjs', ['dist', 'codemods/hds-prefix.mjs'])).toBe(false);
+    expect(ships('mcpx/hds-mcp.mjs', ['mcpx', 'mcp'])).toBe(false);
+    // Outside those directories a files entry adds nothing: tooling stays tooling.
+    expect(ships('scripts/check-upgrade-ledger.mjs', ['scripts/'])).toBe(false);
+    // With no files list npm packs everything, so the whole directories ship.
+    expect(ships('codemods/lib/installed-version.mjs', undefined)).toBe(true);
+    expect(shippedCodeEntries(null)).toEqual(['codemods/', 'mcp/', 'scripts/eslint-plugin-hds/']);
   });
 
   it('leaves out tooling, docs, and the tests and fixtures beside shipped code', () => {

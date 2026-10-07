@@ -68,9 +68,10 @@ const CHANGESET_DIR = path.join(ROOT, '.changeset');
 
 const WATCHED_PREFIXES = ['src/', 'scripts/', 'docs/adr/'];
 /**
- * Directories of shipped code beside src/. Not all of each ships (codemods/lib/
- * serves the upgrade command in this repo), so package.json#files says which
- * of their files do.
+ * Directories of shipped code beside src/. Not all of each ships: codemods/lib/
+ * serves `pnpm upgrade:consumers` here today and joins package.json#files when
+ * the upgrade command (hds#452) ships it. So package.json#files says which of
+ * their files ship, and a file it adds there needs a changeset from then on.
  */
 const SHIPPED_CODE_DIRS = ['codemods/', 'mcp/', 'scripts/eslint-plugin-hds/'];
 /** Single files whose change reaches consumers through the build. */
@@ -120,16 +121,23 @@ export function touchesWatchedPath(file, prefixes) {
 }
 
 /**
- * The package.json#files entries under SHIPPED_CODE_DIRS, read from this
- * tree; the whole directories when package.json cannot be read or has no
- * `files` (npm then packs everything).
+ * What shipsToConsumers matches a file under SHIPPED_CODE_DIRS against:
+ * package.json#files whole and as written (matchesFilesEntry reads each entry
+ * the way npm does), or the whole directories when there is no `files` list
+ * (npm then packs everything). Entries outside those directories, such as
+ * dist, never match a file in them, so they change nothing.
+ * @param {{ files?: unknown } | null | undefined} pkg - a parsed package.json
  * @returns {string[]}
  */
+export function shippedCodeEntries(pkg) {
+  if (!Array.isArray(pkg?.files)) return SHIPPED_CODE_DIRS;
+  return pkg.files.filter((entry) => typeof entry === 'string');
+}
+
+/** shippedCodeEntries of this tree's package.json; the whole directories when it cannot be read. */
 function readShippedCode() {
   try {
-    const { files } = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-    if (!Array.isArray(files)) return SHIPPED_CODE_DIRS;
-    return files.filter((entry) => touchesWatchedPath(entry, SHIPPED_CODE_DIRS));
+    return shippedCodeEntries(JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8')));
   } catch {
     return SHIPPED_CODE_DIRS;
   }
@@ -161,16 +169,18 @@ export function matchesFilesEntry(file, entry) {
 
 /**
  * True when a change to `file` ships to consumers. src/ counts whole, as it
- * always has, and so do the token files; beside src/, a file ships when
- * package.json#files lists it (`shipped`), leaving out tests, fixtures and
- * prose.
+ * always has, and so do the token files; beside src/, a file under
+ * SHIPPED_CODE_DIRS ships when package.json#files lists it (`shipped`),
+ * leaving out tests, fixtures and prose. Elsewhere (scripts/, docs) a file is
+ * tooling whatever `files` says.
  * @param {string} file - a repo-relative path
- * @param {string[]} [shipped] - package.json#files entries under codemods/,
- *   mcp/ and scripts/eslint-plugin-hds/ (default: this tree's)
+ * @param {string[]} [shipped] - package.json#files entries, as
+ *   shippedCodeEntries reads them (default: this tree's)
  */
 export function shipsToConsumers(file, shipped = (shippedCode ??= readShippedCode())) {
   if (file.startsWith('src/')) return true;
   if (CHANGESET_FILES.includes(file)) return true;
+  if (!touchesWatchedPath(file, SHIPPED_CODE_DIRS)) return false;
   if (!shipped.some((entry) => matchesFilesEntry(file, entry))) return false;
   return !NOT_SHIPPED.some((pattern) => pattern.test(file));
 }
