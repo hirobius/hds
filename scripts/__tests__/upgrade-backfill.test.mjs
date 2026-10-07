@@ -1,12 +1,13 @@
 /**
  * The backfilled ledgers 0.17.0, 0.18.0, 0.19.0 and 0.19.1 (hds#450): ops and
- * folio resolve 0.16.0, so their upgrade crosses these releases too. API and
+ * folio resolved 0.16.0 when it was filed, so an upgrade crosses these too. API and
  * package steps come from the snapshot diffs, which hold only additions here;
  * look, behavior and deprecation steps come from each release's CHANGELOG
  * section, cited as the file read when it shipped.
  *
- * Expectations come from hds#450 (the lines it names, in today's CHANGELOG),
- * npm's publish dates and the release notes, not from the generator.
+ * Expectations come from hds#450 (the lines it names, in the CHANGELOG as it
+ * read at 0.20.0), the release tags' source, npm's publish dates and the
+ * release notes, not from the generator.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';

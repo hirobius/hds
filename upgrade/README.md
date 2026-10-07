@@ -82,8 +82,9 @@ hds#449.
 
 The floor is the oldest version the upgrade command can upgrade from. Below
 it, the command changes nothing and exits 2; follow MIGRATIONS.md by hand up to
-the floor. It is 0.16.0, the oldest committed snapshot, which ops and folio
-resolve: the 0.17.0 to 0.20.0 ledgers cover every release after it.
+the floor. It is 0.16.0, the oldest committed snapshot: the 0.17.0 to 0.20.0
+ledgers cover every release after it, so a consumer still on 0.16.0 (folio,
+and ops until its 0.20.0 bump) crosses no change that a step does not report.
 `floor()` in `scripts/upgrade/history.mjs` computes it, for `floor` in
 `upgrade/index.json` (hds#451). Its `historyProblems()`, run by a test, fails
 when a snapshot after the floor has no ledger, a ledger names the wrong bump,

@@ -349,8 +349,8 @@ describe('committed release snapshots (docs/api/releases)', () => {
     expect(unexplainedRemovals(removed, [{ ...minor[0], body: mention }])).toEqual(removed);
   });
 
-  // 0.16.0 is the floor (hds#450): ops and folio resolve it, so their upgrade
-  // crosses every later release, and each needs its snapshot to be diffed.
+  // 0.16.0 is the floor (hds#450): ops and folio resolved it when hds#450 was
+  // filed, so an upgrade crosses every later release, each diffed from its snapshot.
   it('holds a snapshot of every release from the 0.16.0 floor, each named for its version and fitting the schema', () => {
     expect(versions).toEqual(['0.16.0', '0.17.0', '0.18.0', '0.19.0', '0.19.1', '0.20.0']);
     for (const version of versions) {
