@@ -86,12 +86,14 @@ const base = {
   columns,
   rows,
 };
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Patterns/DataTableSection',
   component: DataTableSection,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('DataTableSection'),
     layout: 'padded',
     docs: {
       description: {

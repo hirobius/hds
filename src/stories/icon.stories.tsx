@@ -5,12 +5,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Star, Settings, ChevronRight, AlertCircle, CheckCircle2, Info } from 'lucide-react';
 import { Icon } from '../app/components/icon';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Icon',
   component: Icon,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('Icon'),
     layout: 'centered',
     docs: {
       description: {

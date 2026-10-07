@@ -111,6 +111,8 @@ describe('buildDisposition (real repo)', () => {
     // The whole point: `figma:links --check` measures 139 and reports a
     // 95-component hole. The honest denominator is smaller.
     expect(summary.byClass.library).toBeLessThan(summary.total);
-    expect(summary.byClass.library).toBeGreaterThan(50);
+    // 56 on 2026-10-07 (every held component un-held, StatusDot overridden out as deprecated).
+    // A floor at the real count: losing a library component must be a decision, not drift.
+    expect(summary.byClass.library).toBeGreaterThanOrEqual(56);
   });
 });

@@ -13,12 +13,14 @@ const base = {
   confirmBody: 'Archived clients stop receiving updates. You can restore them later.',
   onConfirm: () => {},
 };
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Patterns/DestructiveSection',
   component: DestructiveSection,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('DestructiveSection'),
     layout: 'padded',
     docs: {
       description: {

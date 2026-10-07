@@ -8,34 +8,38 @@ Every component below lives ONLY in the staging file `2VgBbVpKiDnu0aftJEVyBQ`. P
 the published library is read-only to agents, so promotion is a manual step
 Adrian performs.
 
-**Do not add an `@figma` JSDoc tag for anything on this list yet.** Staging node
-ids do not survive promotion — `figma/COMPONENT-DRAWING-RECIPE.md` §Promotion is
-the sequence: promote, take the NEW library node id, add the tag, then
-`pnpm manifest:generate`.
+**A component drawn on 2026-10-07 or later carries an `@figma` tag that points at
+STAGING** (so Figma coverage reads true and the manifest has a node). Staging node
+ids do not survive promotion, so after Adrian promotes, re-point each tag at the
+NEW library node id and run `pnpm manifest:generate`
+(`figma/COMPONENT-DRAWING-RECIPE.md` §Promotion). Components drawn before that date
+are not tagged yet; the same promotion step tags them.
 
 
-## Why the sync gate still reports these as missing
+## Why a tag is the only record the gate can read
 
 `check-sync-map` counts a library component as linked when it carries an
-`@figma` tag or a `figma/mapping-overrides.json` entry. The recipe forbids
-tagging a component that lives only in staging. So **staging work is
-structurally invisible to the gate**, and Figma coverage reads 47/88 until
-promotion — not because the components are absent, but because the only record
-the gate can read is the one the recipe says not to write yet. That is a gap in
-the measurement, not drift.
+`@figma` tag or a `figma/mapping-overrides.json` entry. A staged component with
+no tag is invisible to the gate: a gap in the measurement, not drift. Tagging it
+with its staging node (2026-10-07 onward) closes that gap, at the price of one
+re-point per tag at promotion.
 
-## Drawn 2026-09-23 (8 components)
+## Drawn in staging (12 components)
 
-| Component | Kind | Variants | Node |
-|---|---|---|---|
-| [AlertDialog](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2035-24) | component | — | `2035-24` |
-| [AssetImg](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-67) | set | 2 | `2041-67` |
-| [AvatarGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2030-63) | set | 6 | `2030-63` |
-| [Blockquote](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2024-18) | set | 6 | `2024-18` |
-| [Kbd](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2026-9) | set | 3 | `2026-9` |
-| [MetadataList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-47) | set | 4 | `2041-47` |
-| [Text](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2022-31) | set | 14 | `2022-31` |
-| [Timestamp](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2031-11) | set | 4 | `2031-11` |
+| Component | Kind | Variants | Drawn | Node |
+|---|---|---|---|---|
+| [AlertDialog](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2035-24) | component | — | 2026-09-23 | `2035-24` |
+| [AssetImg](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-67) | set | 2 | 2026-09-23 | `2041-67` |
+| [AvatarGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2030-63) | set | 6 | 2026-09-23 | `2030-63` |
+| [Blockquote](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2024-18) | set | 6 | 2026-09-23 | `2024-18` |
+| [DataTableSection](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-268) | set | 4 | 2026-10-07 | `2075-268` |
+| [DestructiveSection](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2076-3) | component | — | 2026-10-07 | `2076-3` |
+| [FormActions](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-87) | set | 8 | 2026-10-07 | `2075-87` |
+| [Kbd](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2026-9) | set | 3 | 2026-09-23 | `2026-9` |
+| [MetadataList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-47) | set | 4 | 2026-09-23 | `2041-47` |
+| [MetricTile](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-114) | set | 5 | 2026-10-07 | `2075-114` |
+| [Text](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2022-31) | set | 14 | 2026-09-23 | `2022-31` |
+| [Timestamp](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2031-11) | set | 4 | 2026-09-23 | `2031-11` |
 
 Drawn earlier, same status: **[Icon](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=27-2)** (70 components) and **[StatusDot](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2003-2)** (1 set).
 

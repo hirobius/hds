@@ -7,12 +7,13 @@ import { Timestamp } from '../app/components/timestamp';
 
 const SAMPLE = new Date('2026-07-04T12:00:00.000Z');
 const NOW = new Date('2026-07-04T14:30:00.000Z');
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Timestamp',
   component: Timestamp,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { ...designParameters('Timestamp'), layout: 'padded' },
   argTypes: {
     format: { control: { type: 'select' }, options: ['date', 'time', 'datetime', 'relative'] },
   },

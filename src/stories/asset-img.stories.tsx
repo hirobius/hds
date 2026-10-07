@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { AssetImg } from '../app/components/asset-img';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Asset Img',
   component: AssetImg,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('AssetImg'),
     layout: 'centered',
     docs: {
       description: {

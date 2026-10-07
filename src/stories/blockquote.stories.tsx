@@ -4,12 +4,13 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Blockquote } from '../app/components/blockquote';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Blockquote',
   component: Blockquote,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { ...designParameters('Blockquote'), layout: 'padded' },
   argTypes: {
     size: { control: { type: 'select' }, options: ['sm', 'md', 'lg'] },
   },

@@ -40,7 +40,7 @@ const entries = Object.entries(data.components).sort(([a], [b]) => a.localeCompa
 const nodeUrl = (node) => `https://www.figma.com/design/${fileKey}/?node-id=${node}`;
 
 const row = ([name, c]) =>
-  `| [${name}](${nodeUrl(c.node)}) | ${c.kind} | ${c.variants ?? '—'} | \`${c.node}\` |`;
+  `| [${name}](${nodeUrl(c.node)}) | ${c.kind} | ${c.variants ?? '—'} | ${c.drawn ?? data.drawnOn} | \`${c.node}\` |`;
 
 const earlier = Object.entries(data.drawnEarlier ?? {})
   .map(([name, c]) => `**[${name}](${nodeUrl(c.node)})** (${c.variants} ${c.kind})`)
@@ -56,26 +56,26 @@ Every component below lives ONLY in the staging file \`${fileKey}\`. Per ADR-026
 the published library is read-only to agents, so promotion is a manual step
 Adrian performs.
 
-**Do not add an \`@figma\` JSDoc tag for anything on this list yet.** Staging node
-ids do not survive promotion — \`figma/COMPONENT-DRAWING-RECIPE.md\` §Promotion is
-the sequence: promote, take the NEW library node id, add the tag, then
-\`pnpm manifest:generate\`.
+**A component drawn on 2026-10-07 or later carries an \`@figma\` tag that points at
+STAGING** (so Figma coverage reads true and the manifest has a node). Staging node
+ids do not survive promotion, so after Adrian promotes, re-point each tag at the
+NEW library node id and run \`pnpm manifest:generate\`
+(\`figma/COMPONENT-DRAWING-RECIPE.md\` §Promotion). Components drawn before that date
+are not tagged yet; the same promotion step tags them.
 
 
-## Why the sync gate still reports these as missing
+## Why a tag is the only record the gate can read
 
 \`check-sync-map\` counts a library component as linked when it carries an
-\`@figma\` tag or a \`figma/mapping-overrides.json\` entry. The recipe forbids
-tagging a component that lives only in staging. So **staging work is
-structurally invisible to the gate**, and Figma coverage reads 47/88 until
-promotion — not because the components are absent, but because the only record
-the gate can read is the one the recipe says not to write yet. That is a gap in
-the measurement, not drift.
+\`@figma\` tag or a \`figma/mapping-overrides.json\` entry. A staged component with
+no tag is invisible to the gate: a gap in the measurement, not drift. Tagging it
+with its staging node (2026-10-07 onward) closes that gap, at the price of one
+re-point per tag at promotion.
 
-## Drawn ${data.drawnOn} (${entries.length} components)
+## Drawn in staging (${entries.length} components)
 
-| Component | Kind | Variants | Node |
-|---|---|---|---|
+| Component | Kind | Variants | Drawn | Node |
+|---|---|---|---|---|
 ${entries.map(row).join('\n')}
 
 Drawn earlier, same status: ${earlier}.

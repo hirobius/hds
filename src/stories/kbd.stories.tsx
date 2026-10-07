@@ -4,12 +4,13 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Kbd } from '../app/components/kbd';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Kbd',
   component: Kbd,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { ...designParameters('Kbd'), layout: 'padded' },
   argTypes: {
     size: { control: { type: 'select' }, options: ['sm', 'md', 'lg'] },
   },
